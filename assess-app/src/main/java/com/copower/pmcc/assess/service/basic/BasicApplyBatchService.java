@@ -2002,8 +2002,11 @@ public class BasicApplyBatchService {
                 basicHouseTrading.setHouseId(targetHouse.getId());
             }
             BeanUtils.copyProperties(tradingOld, basicHouseTrading, "id", "houseId", "creator", "gmtCreated", "gmtModified");
-            basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicHouseTrading, false);
+        }else{
+            basicHouseTrading = new BasicHouseTrading();
+            basicHouseTrading.setHouseId(targetHouse.getId());
         }
+        basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicHouseTrading, false);
 
         List<BasicHouseRoom> basicHouseRoomList = null;
         List<BasicHouseCorollaryEquipment> basicHouseCorollaryEquipmentList = null;

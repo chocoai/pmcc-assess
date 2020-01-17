@@ -136,7 +136,7 @@
                                 </button>
                                 <button type="button" class="btn btn-primary"
                                         onclick="detailInfo.prototype.backTask()">
-                                    任务退回
+                                    取消认领任务
                                 </button>
                             </div>
                         </div>
@@ -1649,8 +1649,12 @@
                         idArray.push(item.id);
                     }
                 })
-                var ids = idArray.join()
-                Alert("确认退回!", 2, null, function () {
+                var ids = idArray.join();
+                if(!ids){
+                    toastr.info('至少选择一条非审批中或审批通过的任务');
+                    return false;
+                }
+                Alert("确认取消任务!", 2, null, function () {
                     $.ajax({
                         url: "${pageContext.request.contextPath}/netInfoAssignTask/backTask",
                         type: "post",
@@ -1658,11 +1662,11 @@
                         data: {ids: ids},
                         success: function (result) {
                             if (result.ret) {
-                                toastr.success('删除成功');
+                                toastr.success('取消认领任务成功');
                                 detailInfo.prototype.loadDataDicList();
                             }
                             else {
-                                Alert("保存数据失败，失败原因:" + result.errmsg);
+                                Alert("取消认领任务失败，失败原因:" + result.errmsg);
                             }
                         },
                         error: function (result) {
@@ -1671,7 +1675,7 @@
                     })
                 });
             } else {
-                toastr.info('请选择要退回的任务');
+                toastr.info('请选择要取消认领的任务');
             }
         },
     }

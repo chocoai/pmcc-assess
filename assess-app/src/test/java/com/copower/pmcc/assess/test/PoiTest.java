@@ -641,6 +641,13 @@ public class PoiTest {
             e.printStackTrace();
         }
     }
+
+    @org.junit.Test
+    public void testDateConvert(){
+        System.out.println(DateUtils.format(DateUtils.parse("40769"),DateUtils.DATE_PATTERN));
+        System.out.println(DateUtils.format(DateUtils.convertDate("40769"),DateUtils.DATE_PATTERN));
+
+    }
 }
 
 

@@ -106,8 +106,6 @@ public class DeclareRealtyRealEstateCertService {
         int successCount = 0;
         //工作表的第一行
         row = sheet.getRow(0);
-        //总列数
-        int colLength = row.getPhysicalNumberOfCells() != 0 ? row.getPhysicalNumberOfCells() : row.getLastCellNum();
         //总行数
         int rowLength = sheet.getPhysicalNumberOfRows() != 0 ? sheet.getPhysicalNumberOfRows() : sheet.getLastRowNum();
         rowLength = rowLength - startRowNumber;
@@ -117,8 +115,6 @@ public class DeclareRealtyRealEstateCertService {
         }
         //----------------------------||----------------------
         for (int i = startRowNumber; i <= rowLength; i++) {
-            //标识符
-            boolean flag = true;
             DeclareRealtyRealEstateCert oo = null;
             try {
                 row = sheet.getRow(i);
@@ -134,11 +130,6 @@ public class DeclareRealtyRealEstateCertService {
                 if (!declarePublicService.realEstateCert(oo, builder, row, i)) {
                     continue;
                 }
-            } catch (Exception e) {
-                flag = false;
-                builder.append(String.format("\n第%s行异常：%s", i, e.getMessage()));
-            }
-            if (flag) {
                 oo.setCreator(commonService.thisUserAccount());
                 declareRealtyRealEstateCertDao.addDeclareRealtyRealEstateCert(oo);
                 DeclareBuildEngineeringAndEquipmentCenter center = new DeclareBuildEngineeringAndEquipmentCenter();
@@ -147,9 +138,11 @@ public class DeclareRealtyRealEstateCertService {
                 center.setType(DeclareRealtyRealEstateCert.class.getSimpleName());
                 declareBuildEngineeringAndEquipmentCenterService.saveAndUpdateDeclareBuildEngineeringAndEquipmentCenter(center);
                 successCount++;
+            } catch (Exception e) {
+                builder.append(String.format("\n第%s行异常，请检查数据格式", i));
             }
         }
-        return String.format("数据总条数%s，成功%s，失败%s。%s", rowLength, successCount, rowLength - successCount, builder.toString());
+        return String.format("数据总条数%s，成功%s，失败%s。\n%s", rowLength, successCount, rowLength - successCount, builder.toString());
     }
 
     public Integer saveAndUpdateDeclareRealtyRealEstateCert(DeclareRealtyRealEstateCert declareRealtyRealEstateCert) {
@@ -159,6 +152,7 @@ public class DeclareRealtyRealEstateCertService {
     public Integer saveAndUpdateDeclareRealtyRealEstateCert(DeclareRealtyRealEstateCert declareRealtyRealEstateCert, boolean updateNull) {
         if (declareRealtyRealEstateCert.getId() == null) {
             declareRealtyRealEstateCert.setCreator(commonService.thisUserAccount());
+            declareRealtyRealEstateCert.setAutoInitNumber(declareRealtyRealEstateCertDao.getCountByPlanDetailsId(declareRealtyRealEstateCert.getPlanDetailsId()) + 1);
             Integer id = declareRealtyRealEstateCertDao.addDeclareRealtyRealEstateCert(declareRealtyRealEstateCert);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(DeclareRealtyRealEstateCert.class), id);
             return id;

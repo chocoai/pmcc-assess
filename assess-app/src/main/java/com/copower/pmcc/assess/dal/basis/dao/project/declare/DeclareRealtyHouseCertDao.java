@@ -66,6 +66,13 @@ public class DeclareRealtyHouseCertDao {
     public List<DeclareRealtyHouseCert> getDeclareRealtyHouseCertList(DeclareRealtyHouseCert declareRealtyHouseCert) {
         DeclareRealtyHouseCertExample example = new DeclareRealtyHouseCertExample();
         MybatisUtils.convertObj2Example(declareRealtyHouseCert, example);
+        example.setOrderByClause("auto_init_number,id");
         return declareRealtyHouseCertMapper.selectByExample(example);
+    }
+
+    public Integer getCountByPlanDetailsId(Integer planDetailsId){
+        DeclareRealtyHouseCertExample example = new DeclareRealtyHouseCertExample();
+        example.createCriteria().andPlanDetailsIdEqualTo(planDetailsId);
+        return declareRealtyHouseCertMapper.countByExample(example);
     }
 }

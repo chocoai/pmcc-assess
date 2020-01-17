@@ -11,6 +11,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Iterator;
 
 /**
  * @Auther: zch
@@ -112,5 +117,35 @@ public class BasicUnitHuxingController {
         }
     }
 
+    @ResponseBody
+    @GetMapping(value = "/getAttachmentId",name = "获取附件id")
+    public HttpResult getAttachmentId(Integer tableId) {
+        try {
+            Integer attachmentId = basicUnitHuxingService.getAttachmentId(tableId);
+            return HttpResult.newCorrectResult(attachmentId);
+        } catch (Exception e) {
+            logger.error("获取附件id异常", e);
+            return HttpResult.newErrorResult("获取附件id异常");
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/importHouse", name = "导入", method = RequestMethod.POST)
+    public HttpResult importHouse(HttpServletRequest request, Integer unitId) {
+        try {
+            MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+            Iterator<String> fileNames = multipartRequest.getFileNames();
+            MultipartFile multipartFile = multipartRequest.getFile(fileNames.next());
+            if (multipartFile.isEmpty()) {
+                return HttpResult.newErrorResult("上传的文件不能为空");
+            }
+            String str = basicUnitHuxingService.importHouse(multipartFile, unitId);
+            return HttpResult.newCorrectResult(str);
+        } catch (Exception e) {
+            logger.error("导入数据异常", e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+
+    }
 
 }

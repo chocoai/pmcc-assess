@@ -252,8 +252,6 @@ public class DeclareRealtyLandCertService {
         int startRowNumber = 1;
         //导入成功数据条数
         int successCount = 0;
-        //总列数
-        int colLength = row.getPhysicalNumberOfCells() != 0 ? row.getPhysicalNumberOfCells() : row.getLastCellNum();
         //总行数
         int rowLength = sheet.getPhysicalNumberOfRows() != 0 ? sheet.getPhysicalNumberOfRows() : sheet.getLastRowNum();
         rowLength = rowLength - startRowNumber;
@@ -262,8 +260,6 @@ public class DeclareRealtyLandCertService {
             return builder.toString();
         }
         for (int i = startRowNumber; i < startRowNumber + rowLength; i++) {
-            //标识符
-            boolean flag = true;
             DeclareRealtyLandCert oo = null;
             try {
                 oo = new DeclareRealtyLandCert();
@@ -277,16 +273,13 @@ public class DeclareRealtyLandCertService {
                 if (!declarePublicService.land(oo, builder, row, i)) {
                     continue;
                 }
-            } catch (Exception e) {
-                flag = false;
-                builder.append(String.format("\n第%s行异常：%s", i, e.getMessage()));
-            }
-            if (flag) {
                 oo.setCreator(commonService.thisUserAccount());
                 oo.setPid(0);
                 oo.setEnable(DeclareTypeEnum.MasterData.getKey());
                 declareRealtyLandCertDao.addDeclareRealtyLandCert(oo);
                 successCount++;
+            } catch (Exception e) {
+                builder.append(String.format("\n第%s行异常：请检查数据格式", i));
             }
         }
         return String.format("数据总条数%s，成功%s，失败%s。%s", rowLength, successCount, rowLength - successCount, builder.toString());
@@ -300,10 +293,10 @@ public class DeclareRealtyLandCertService {
     public Integer saveAndUpdateDeclareRealtyLandCert(DeclareRealtyLandCert declareRealtyLandCert, boolean updateNull) {
         if (declareRealtyLandCert.getId() == null) {
             declareRealtyLandCert.setCreator(commonService.thisUserAccount());
-            Integer id = null;
-            id = declareRealtyLandCertDao.addDeclareRealtyLandCert(declareRealtyLandCert);
-            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(DeclareRealtyLandCert.class), id);
-            return id;
+            declareRealtyLandCert.setAutoInitNumber(declareRealtyLandCertDao.getCountByPlanDetailsId(declareRealtyLandCert.getPlanDetailsId()) + 1);
+            declareRealtyLandCertDao.addDeclareRealtyLandCert(declareRealtyLandCert);
+            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(DeclareRealtyLandCert.class), declareRealtyLandCert.getId());
+            return declareRealtyLandCert.getId();
         } else {
             declareRealtyLandCertDao.updateDeclareRealtyLandCert(declareRealtyLandCert,updateNull);
             updateDeclareRealtyLandCertAndUpdateDeclareRecordOrJudgeObject(declareRealtyLandCert);

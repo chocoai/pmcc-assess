@@ -10,7 +10,6 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hwpf.HWPFDocument;
 import org.apache.poi.hwpf.extractor.WordExtractor;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
@@ -384,9 +383,9 @@ public class PoiUtils {
         String cellValue = "";
         if (cell == null) {
             return cellValue;
-        } else if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
+        } else if (cell.getCellTypeEnum() == CellType.STRING) {
             cellValue = cell.getStringCellValue();
-        } else if (cell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC) {
+        } else if (cell.getCellTypeEnum() == CellType.NUMERIC) {
             if (HSSFDateUtil.isCellDateFormatted(cell)) {
                 double d = cell.getNumericCellValue();
                 Date date = HSSFDateUtil.getJavaDate(d);
@@ -394,13 +393,9 @@ public class PoiUtils {
             } else {
                 cellValue = decimalFormat.format((cell.getNumericCellValue()));
             }
-        } else if (cell.getCellType() == Cell.CELL_TYPE_BLANK) {
-            cellValue = "";
-        } else if (cell.getCellType() == Cell.CELL_TYPE_BOOLEAN) {
+        } else if (cell.getCellTypeEnum() == CellType.BOOLEAN) {
             cellValue = String.valueOf(cell.getBooleanCellValue());
-        } else if (cell.getCellType() == Cell.CELL_TYPE_ERROR) {
-            cellValue = "";
-        } else if (cell.getCellType() == Cell.CELL_TYPE_FORMULA) {
+        } else if (cell.getCellTypeEnum() == CellType.FORMULA) {
             try {
                 cellValue = String.valueOf(cell.getStringCellValue());
             } catch (IllegalStateException e) {

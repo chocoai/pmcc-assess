@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.dal.basis.dao.project.declare;
 
+import com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyHouseCertExample;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyRealEstateCert;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyRealEstateCertExample;
 import com.copower.pmcc.assess.dal.basis.mapper.DeclareRealtyRealEstateCertMapper;
@@ -65,6 +66,13 @@ public class DeclareRealtyRealEstateCertDao {
     public List<DeclareRealtyRealEstateCert> getDeclareRealtyRealEstateCertList(DeclareRealtyRealEstateCert declareRealtyRealEstateCert){
         DeclareRealtyRealEstateCertExample example = new DeclareRealtyRealEstateCertExample();
         MybatisUtils.convertObj2Example(declareRealtyRealEstateCert, example);
+        example.setOrderByClause("auto_init_number,id");
         return declareRealtyRealEstateCertMapper.selectByExample(example);
+    }
+
+    public Integer getCountByPlanDetailsId(Integer planDetailsId){
+        DeclareRealtyRealEstateCertExample example = new DeclareRealtyRealEstateCertExample();
+        example.createCriteria().andPlanDetailsIdEqualTo(planDetailsId);
+        return declareRealtyRealEstateCertMapper.countByExample(example);
     }
 }

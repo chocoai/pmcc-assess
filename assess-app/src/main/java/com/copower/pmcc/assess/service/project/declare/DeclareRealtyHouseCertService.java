@@ -77,7 +77,7 @@ public class DeclareRealtyHouseCertService {
     private ProjectPlanDetailsService projectPlanDetailsService;
 
 
-    public void attachmentAutomatedWarrants(DeclarePublicService.AutomatedWarrants automatedWarrants)throws Exception{
+    public void attachmentAutomatedWarrants(DeclarePublicService.AutomatedWarrants automatedWarrants) throws Exception {
         declarePublicService.attachmentAutomatedWarrants(automatedWarrants);
     }
 
@@ -210,8 +210,6 @@ public class DeclareRealtyHouseCertService {
         int startRowNumber = 1;
         //导入成功数据条数
         int successCount = 0;
-        //总列数
-        int colLength = row.getPhysicalNumberOfCells() != 0 ? row.getPhysicalNumberOfCells() : row.getLastCellNum();
         //总行数
         int rowLength = sheet.getPhysicalNumberOfRows() != 0 ? sheet.getPhysicalNumberOfRows() : sheet.getLastRowNum();
         rowLength = rowLength - startRowNumber;
@@ -244,7 +242,7 @@ public class DeclareRealtyHouseCertService {
                 declareBuildEngineeringAndEquipmentCenterService.saveAndUpdateDeclareBuildEngineeringAndEquipmentCenter(center);
                 successCount++;
             } catch (Exception e) {
-                builder.append(String.format("\n第%s行异常：%s", i + 1, e.getMessage()));
+                builder.append(String.format("\n第%s行异常，请检查数据格式", i));
             }
         }
         return String.format("数据总条数%s，成功%s，失败%s。%s", rowLength, successCount, rowLength - successCount, builder.toString());
@@ -258,10 +256,10 @@ public class DeclareRealtyHouseCertService {
     public Integer saveAndUpdateDeclareRealtyHouseCert(DeclareRealtyHouseCert declareRealtyHouseCert, boolean updateNull) {
         if (declareRealtyHouseCert.getId() == null) {
             declareRealtyHouseCert.setCreator(commonService.thisUserAccount());
-            Integer id = null;
-            id = declareRealtyHouseCertDao.addDeclareRealtyHouseCert(declareRealtyHouseCert);
-            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class), id);
-            return id;
+            declareRealtyHouseCert.setAutoInitNumber(declareRealtyHouseCertDao.getCountByPlanDetailsId(declareRealtyHouseCert.getPlanDetailsId()) + 1);
+            declareRealtyHouseCertDao.addDeclareRealtyHouseCert(declareRealtyHouseCert);
+            baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class), declareRealtyHouseCert.getId());
+            return declareRealtyHouseCert.getId();
         } else {
             declareRealtyHouseCertDao.updateDeclareRealtyHouseCert(declareRealtyHouseCert, updateNull);
             updateDeclareRealtyHouseCertAndUpdateDeclareRecordOrJudgeObject(declareRealtyHouseCert);
@@ -492,7 +490,7 @@ public class DeclareRealtyHouseCertService {
                 if (baseDataDic != null) {
                     if (StringUtils.isNotEmpty(baseDataDic.getRemark())) {
                         declareRecord.setLandRightType(baseDataDic.getRemark());
-                    }else {
+                    } else {
                         declareRecord.setLandRightType(baseDataDic.getName());
                     }
                 }
