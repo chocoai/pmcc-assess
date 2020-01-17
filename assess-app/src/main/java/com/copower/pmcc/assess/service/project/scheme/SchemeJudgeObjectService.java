@@ -212,17 +212,48 @@ public class SchemeJudgeObjectService {
         return judgeObjects;
     }
 
-    public List<SchemeJudgeObject> getChildrenJudgeObject(Integer id) {
-        SchemeJudgeObject schemeJudgeObject = new SchemeJudgeObject();
-        schemeJudgeObject.setPid(id);
-        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getJudgeObjectList(schemeJudgeObject);
-        return judgeObjectList;
+    public List<SchemeJudgeObject> getJudgeObjectListByIds(List<Integer> judgeObjectIds) {
+        if (CollectionUtils.isEmpty(judgeObjectIds)) return null;
+        return schemeJudgeObjectDao.getListByIds(judgeObjectIds);
     }
 
-    public List<SchemeJudgeObjectVo> getListByPid(Integer pid) {
+    public List<SchemeJudgeObject> getChildrenJudgeObject(Integer id) {
+        return schemeJudgeObjectDao.getListByPid(id);
+    }
+
+    /**
+     * 获取拆分的估价对象
+     *
+     * @param splitFromId
+     * @return
+     */
+    public List<SchemeJudgeObject> getJudgeObjectListBySplitFrom(Integer splitFromId) {
+        SchemeJudgeObject where = new SchemeJudgeObject();
+        where.setSplitFrom(splitFromId);
+        return schemeJudgeObjectDao.getJudgeObjectList(where);
+    }
+
+    /**
+     * 获取估价对象数据列表
+     *
+     * @param pid
+     * @return
+     */
+    public BootstrapTableVo getBootstrapTableVoByPid(Integer pid) {
+        BootstrapTableVo vo = new BootstrapTableVo();
         SchemeJudgeObject schemeJudgeObject = new SchemeJudgeObject();
         schemeJudgeObject.setPid(pid);
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getJudgeObjectList(schemeJudgeObject);
+        vo.setRows(org.apache.commons.collections.CollectionUtils.isEmpty(judgeObjectList) ? new ArrayList<SchemeJudgeObject>() : judgeObjectList);
+        vo.setTotal(page.getTotal());
+        return vo;
+    }
+
+
+    public List<SchemeJudgeObjectVo> getListByPid(Integer pid) {
+        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getListByPid(pid);
         if (CollectionUtils.isEmpty(judgeObjectList)) return null;
         List<DeclareRecord> declareRecords = declareRecordService.getDeclareRecordListByIds(LangUtils.transform(judgeObjectList, o -> o.getDeclareRecordId()));
         List<SchemeJudgeObjectVo> judgeObjectVoList = Lists.newArrayList();
@@ -287,24 +318,6 @@ public class SchemeJudgeObjectService {
         return null;
     }
 
-    /**
-     * 获取估价对象数据列表
-     *
-     * @param pid
-     * @return
-     */
-    public BootstrapTableVo getJudgeObjectListByPid(Integer pid) {
-        BootstrapTableVo vo = new BootstrapTableVo();
-        SchemeJudgeObject schemeJudgeObject = new SchemeJudgeObject();
-        schemeJudgeObject.setPid(pid);
-        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
-        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getJudgeObjectList(schemeJudgeObject);
-        vo.setRows(org.apache.commons.collections.CollectionUtils.isEmpty(judgeObjectList) ? new ArrayList<SchemeJudgeObject>() : judgeObjectList);
-        vo.setTotal(page.getTotal());
-        return vo;
-    }
-
     public boolean removeSchemeJudgeObject(Integer id) {
         return schemeJudgeObjectDao.removeSchemeJudgeObject(id);
     }
@@ -333,12 +346,11 @@ public class SchemeJudgeObjectService {
         if (CollectionUtils.isNotEmpty(judgeObjectList)) {
             for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
                 schemeJudgeObject.setAreaGroupId(schemeJudgeObject.getOriginalAreaGroupId());
-                schemeJudgeObject.setNumber(schemeJudgeObject.getOriginalNumber());
                 schemeJudgeObject.setOriginalAreaGroupId(null);
-                schemeJudgeObject.setOriginalNumber(null);
                 schemeJudgeObjectDao.updateSchemeJudgeObject(schemeJudgeObject);
             }
         }
+        reNumberJudgeObject(originalAreaGroupId);
     }
 
     /**
@@ -388,6 +400,7 @@ public class SchemeJudgeObjectService {
             }
             SchemeJudgeObject splitJudgeObject = new SchemeJudgeObject();
             splitJudgeObject.setPid(0);
+            splitJudgeObject.setSplitFrom(schemeJudgeObject.getId());
             splitJudgeObject.setProjectId(schemeJudgeObject.getProjectId());
             splitJudgeObject.setAreaGroupId(schemeJudgeObject.getAreaGroupId());
             splitJudgeObject.setOriginalAreaGroupId(schemeJudgeObject.getOriginalAreaGroupId());
@@ -753,7 +766,7 @@ public class SchemeJudgeObjectService {
                             appendTaskForJudgeObject(appendTaskDto);
                         }
                     }
-                    List<ProjectPhase> judgeProjectPhases =schemeAreaGroupService.getAreaProjectPhaseListByEntrustPurpose(projectInfo,schemeAreaGroup.getEntrustPurpose());
+                    List<ProjectPhase> judgeProjectPhases = schemeAreaGroupService.getAreaProjectPhaseListByEntrustPurpose(projectInfo, schemeAreaGroup.getEntrustPurpose());
                     if (CollectionUtils.isNotEmpty(judgeProjectPhases)) {
                         for (ProjectPhase projectPhase : judgeProjectPhases) {
                             savePlanDetails(projectInfo, projectWorkStage, projectPlan, schemeAreaGroup.getId(), schemeAreaGroup, null, schemeAreaGroup.getAreaName(), projectPhase, projectManager);
@@ -923,7 +936,7 @@ public class SchemeJudgeObjectService {
     }
 
 
-    private int savePlanDetails(ProjectInfo projectInfo, ProjectWorkStage projectWorkStage, ProjectPlan projectPlan, int sorting, SchemeAreaGroup schemeAreaGroup, Integer judgeObjectId, String planRemarks, ProjectPhase projectPhase, String projectManager) throws BpmException {
+    public int savePlanDetails(ProjectInfo projectInfo, ProjectWorkStage projectWorkStage, ProjectPlan projectPlan, int sorting, SchemeAreaGroup schemeAreaGroup, Integer judgeObjectId, String planRemarks, ProjectPhase projectPhase, String projectManager) throws BpmException {
         ProjectPlanDetails details = new ProjectPlanDetails();
         details.setProjectWorkStageId(projectPlan.getWorkStageId());
         details.setPlanId(projectPlan.getId());
@@ -1000,38 +1013,6 @@ public class SchemeJudgeObjectService {
         return schemeJudgeObjectDao.getListByDeclareIds(declareRecordIds);
     }
 
-    /**
-     * 根据申报id获取查勘中房屋信息
-     *
-     * @param declareId
-     * @return
-     */
-    public BasicHouse getBasicHouseByDeclareId(Integer declareId, Integer categoryId) {
-        try {
-            ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.SCENE_EXPLORE, categoryId);
-            ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetails(declareId, projectPhase.getId());
-            BasicApply basicApply = basicApplyService.getBasicApplyByPlanDetailsId(planDetails.getId());
-            BasicHouse basicHouse = basicHouseService.getHouseByApplyId(basicApply.getId());
-            return basicHouse;
-        } catch (Exception e) {
-            logger.error("获取房屋信息异常", e);
-            return null;
-        }
-    }
-
-    /**
-     * 更新出租占用情况
-     *
-     * @param id
-     * @param rentalPossessionDesc
-     */
-    public void updateRentalPossessionDesc(Integer id, String rentalPossessionDesc) throws BusinessException {
-        SchemeJudgeObject judgeObject = this.getSchemeJudgeObject(id);
-        if (judgeObject == null)
-            throw new BusinessException(HttpReturnEnum.NOTFIND.getName());
-        this.updateSchemeJudgeObject(judgeObject);
-    }
-
     public List<SchemeJudgeObject> getListByIds(List<Integer> judgeIds) {
         return schemeJudgeObjectDao.getListByIds(judgeIds);
     }
@@ -1069,4 +1050,53 @@ public class SchemeJudgeObjectService {
             schemeJudgeObjectDao.updateSchemeJudgeObject(schemeJudgeObject);
         }
     }
+
+    /**
+     * 区域下的估价对象重新排号
+     *
+     * @param areaGroupId
+     */
+    public void reNumberJudgeObject(Integer areaGroupId) {
+        //1.根据权证的编号确定估价对象的序号 2.将合并对象独立处理
+        List<SchemeJudgeObject> judgeObjects = getJudgeObjectDeclareListByAreaId(areaGroupId);
+        int i = 1;
+        for (SchemeJudgeObject judgeObject : judgeObjects) {
+            judgeObject.setNumber(String.valueOf(i));
+            judgeObject.setName(String.format("%s%s", i, BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME));
+            updateSchemeJudgeObject(judgeObject);
+            //处理该估价对象的拆分对象
+            List<SchemeJudgeObject> splitJudgeObjectList = getJudgeObjectListBySplitFrom(judgeObject.getId());
+            if (CollectionUtils.isNotEmpty(splitJudgeObjectList)) {
+                splitJudgeObjectList.forEach(o->{
+                    o.setNumber(judgeObject.getNumber());
+                    judgeObject.setName(String.format("%s-%s%s", o.getNumber(),o.getSplitNumber(), BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME));
+                });
+            }
+            i++;
+        }
+        SchemeJudgeObject where = new SchemeJudgeObject();
+        where.setAreaGroupId(areaGroupId);
+        where.setBisMerge(true);
+        List<SchemeJudgeObject> mergeJudgeObjectList = schemeJudgeObjectDao.getJudgeObjectList(where);
+        if(CollectionUtils.isNotEmpty(mergeJudgeObjectList)){
+            for (SchemeJudgeObject mergeJudgeObject : mergeJudgeObjectList) {
+                StringBuilder numberBuilder=new StringBuilder();
+                List<SchemeJudgeObject> childrenJudgeObject = getChildrenJudgeObject(mergeJudgeObject.getId());
+                if(CollectionUtils.isNotEmpty(childrenJudgeObject)){
+                    for (SchemeJudgeObject object : childrenJudgeObject) {
+                        numberBuilder.append(object.getNumber());
+                        if (object.getSplitNumber() != null && object.getSplitNumber() > 0)
+                            numberBuilder.append("-").append(object.getSplitNumber());
+                        numberBuilder.append(",");
+                    }
+                }
+                mergeJudgeObject.setNumber(numberBuilder.toString());
+                mergeJudgeObject.setName(String.format("%s%s", mergeJudgeObject.getNumber(), BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME));
+                updateSchemeJudgeObject(mergeJudgeObject);
+            }
+        }
+
+
+    }
+
 }

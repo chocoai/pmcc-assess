@@ -8,6 +8,7 @@ import com.copower.pmcc.assess.common.PoiUtils;
 import com.copower.pmcc.assess.common.enums.DeclareTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
+import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareApplyDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.declare.DeclareRealtyHouseCertVo;
@@ -483,7 +484,7 @@ public class DeclarePublicService {
         }
         //关联附件编号
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(35)))) {
-            oo.setAutoInitNumber(PoiUtils.getCellValue(row.getCell(35)));
+            oo.setAutoInitNumber(Integer.valueOf(PoiUtils.getCellValue(row.getCell(35))));
         }
         return true;
     }
@@ -686,7 +687,7 @@ public class DeclarePublicService {
         }
         //关联附件编号
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(18)))) {
-            declareRealtyLandCert.setAutoInitNumber(PoiUtils.getCellValue(row.getCell(18)));
+            declareRealtyLandCert.setAutoInitNumber(Integer.valueOf(PoiUtils.getCellValue(row.getCell(18))));
         }
         return true;
     }
@@ -726,23 +727,19 @@ public class DeclarePublicService {
             return false;
         }
         //房产权证号
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(3)))) {
+        if (StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(3)))) {
             String certName = PoiUtils.getCellValue(row.getCell(3));
             declareRealtyHouseCert.setCertName(certName);
-            //编号
-            String numberStr = StringUtils.substringAfterLast(declareRealtyHouseCert.getCertName(), "第");
-            declareRealtyHouseCert.setNumber(generateCommonMethod.getNumber(numberStr));
-            String before = StringUtils.substringBefore(declareRealtyHouseCert.getCertName(), "字");
-            String tempString = before;
-            for (BaseDataDic type : types) {
-                tempString = tempString.replace(type.getName(), "");
-            }
-            declareRealtyHouseCert.setLocation(tempString);
-            tempString = before.replace(tempString, "");
-            for (BaseDataDic type : types) {
-                if (type.getName().equals(tempString)) {
-                    declareRealtyHouseCert.setType(type.getId().toString());
-                }
+            declareRealtyHouseCert.setNumber(generateCommonMethod.getNumber(certName));//编号
+            if (certName.contains(BaseConstant.ASSESS_REALTY_HOUSE_CERT_RIGHT + BaseConstant.ASSESS_REALTY_HOUSE_CERT_CHECK)) {
+                declareRealtyHouseCert.setType(String.valueOf(baseDataDicService.getDataDicIdByName(types, BaseConstant.ASSESS_REALTY_HOUSE_CERT_RIGHT + BaseConstant.ASSESS_REALTY_HOUSE_CERT_CHECK)));
+                declareRealtyHouseCert.setLocation(StringUtils.substringBefore(certName,BaseConstant.ASSESS_REALTY_HOUSE_CERT_RIGHT + BaseConstant.ASSESS_REALTY_HOUSE_CERT_CHECK));
+            } else if (certName.contains(BaseConstant.ASSESS_REALTY_HOUSE_CERT_RIGHT)) {
+                declareRealtyHouseCert.setType(String.valueOf(baseDataDicService.getDataDicIdByName(types, BaseConstant.ASSESS_REALTY_HOUSE_CERT_RIGHT)));
+                declareRealtyHouseCert.setLocation(StringUtils.substringBefore(certName,BaseConstant.ASSESS_REALTY_HOUSE_CERT_RIGHT));
+            } else if (certName.contains(BaseConstant.ASSESS_REALTY_HOUSE_CERT_CHECK)) {
+                declareRealtyHouseCert.setType(String.valueOf(baseDataDicService.getDataDicIdByName(types, BaseConstant.ASSESS_REALTY_HOUSE_CERT_CHECK)));
+                declareRealtyHouseCert.setLocation(StringUtils.substringBefore(certName, BaseConstant.ASSESS_REALTY_HOUSE_CERT_CHECK));
             }
         } else {
             builder.append(String.format("\n第%s行异常：房产权证号必须填写", i));
@@ -919,7 +916,7 @@ public class DeclarePublicService {
         }
         //关联附件编号
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(24)))) {
-            declareRealtyHouseCert.setAutoInitNumber(PoiUtils.getCellValue(row.getCell(24)));
+            declareRealtyHouseCert.setAutoInitNumber(Integer.valueOf(PoiUtils.getCellValue(row.getCell(24))));
         }
         return true;
     }
@@ -1190,7 +1187,7 @@ public class DeclarePublicService {
         if (CollectionUtils.isEmpty(linkedList)) {
             throw new Exception("传入的文档没有图片");
         }
-        LinkedHashMap<String, Integer> linkedHashMap = Maps.newLinkedHashMap();
+        LinkedHashMap<Integer, Integer> linkedHashMap = Maps.newLinkedHashMap();
         if (Objects.equal(FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class), automatedWarrants.getTableName())) {
             DeclareRealtyHouseCert query = new DeclareRealtyHouseCert();
             query.setPlanDetailsId(automatedWarrants.getPlanDetailsId());
@@ -1198,9 +1195,6 @@ public class DeclarePublicService {
             List<DeclareRealtyHouseCertVo> declareRealtyHouseCertVoList = declareRealtyHouseCertService.lists(query);
             if (CollectionUtils.isNotEmpty(declareRealtyHouseCertVoList)) {
                 for (DeclareRealtyHouseCertVo declareRealtyHouseCertVo : declareRealtyHouseCertVoList) {
-                    if (StringUtils.isEmpty(declareRealtyHouseCertVo.getAutoInitNumber())) {
-                        continue;
-                    }
                     linkedHashMap.put(declareRealtyHouseCertVo.getAutoInitNumber(), declareRealtyHouseCertVo.getId());
                 }
             }
@@ -1242,17 +1236,13 @@ public class DeclarePublicService {
      * @param automatedWarrants
      * @return
      */
-    private LinkedList<Integer> getFilterAutomatedWarrants(LinkedHashMap<String, Integer> linkedHashMap, AutomatedWarrants automatedWarrants) {
+    private LinkedList<Integer> getFilterAutomatedWarrants(LinkedHashMap<Integer, Integer> linkedHashMap, AutomatedWarrants automatedWarrants) {
         LinkedList<Integer> linkedList = Lists.newLinkedList();
-        Iterator<Map.Entry<String, Integer>> entryIterator = linkedHashMap.entrySet().iterator();
+        Iterator<Map.Entry<Integer, Integer>> entryIterator = linkedHashMap.entrySet().iterator();
         LinkedHashMap<Integer, Integer> integerLinkedHashMap = Maps.newLinkedHashMap();
         while (entryIterator.hasNext()) {
-            Map.Entry<String, Integer> integerEntry = entryIterator.next();
-            String key = integerEntry.getKey();
-            if (StringUtils.isNotBlank(automatedWarrants.getPrefixNumber())) {
-                key = StringUtils.remove(integerEntry.getKey(), automatedWarrants.getPrefixNumber());
-            }
-            int number = Integer.parseInt(key);
+            Map.Entry<Integer, Integer> integerEntry = entryIterator.next();
+            Integer number = integerEntry.getKey();
             if (number > automatedWarrants.getEndNumber().intValue() || number < automatedWarrants.getStartNumber().intValue()) {
                 continue;
             }

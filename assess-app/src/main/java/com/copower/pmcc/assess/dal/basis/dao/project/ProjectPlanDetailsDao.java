@@ -137,9 +137,10 @@ public class ProjectPlanDetailsDao {
         return i == 1;
     }
 
-    public Boolean updateProjectPlanDetailsAndNull(ProjectPlanDetails projectPlanDetails) {
-        int i = projectPlanDetailsMapper.updateByPrimaryKeySelective(projectPlanDetails);
-        return i == 1;
+    public List<ProjectPlanDetails> getProjectPlanDetailsByAreaId(Integer areaId){
+        ProjectPlanDetailsExample example = new ProjectPlanDetailsExample();
+        example.createCriteria().andAreaIdEqualTo(areaId).andJudgeObjectIdIsNull();
+        return projectPlanDetailsMapper.selectByExample(example);
     }
 
     /**

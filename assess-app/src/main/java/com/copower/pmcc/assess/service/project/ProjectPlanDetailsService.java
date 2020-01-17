@@ -599,6 +599,10 @@ public class ProjectPlanDetailsService {
         return projectPlanDetailsDao.getProjectPlanDetailsByIds(ids);
     }
 
+    public List<ProjectPlanDetails> getProjectPlanDetailsByAreaId(Integer areaId) {
+        return projectPlanDetailsDao.getProjectPlanDetailsByAreaId(areaId);
+    }
+
     /**
      * 删除阶段下的所有任务
      *
@@ -630,12 +634,10 @@ public class ProjectPlanDetailsService {
             throw new BusinessException("已完成的任务才允许重启");
 
         projectPlanDetails.setStatus(ProcessStatusEnum.RUN.getValue());
-        projectPlanDetails.setTaskSubmitTime(null);
         projectPlanDetails.setBisStart(false);
         projectPlanDetails.setProcessInsId("0");
-        projectPlanDetails.setActualHours(null);
         projectPlanDetails.setBisRestart(true);
-        projectPlanDetailsDao.updateProjectPlanDetailsAndNull(projectPlanDetails);
+        projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetails);
 
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
         ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlanDetails.getProjectWorkStageId());

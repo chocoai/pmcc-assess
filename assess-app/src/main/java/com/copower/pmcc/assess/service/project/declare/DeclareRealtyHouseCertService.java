@@ -221,8 +221,6 @@ public class DeclareRealtyHouseCertService {
         }
         for (int i = startRowNumber; i < rowLength + startRowNumber; i++) {
             DeclareRealtyHouseCert oo = null;
-            //标识符
-            boolean flag = true;
             try {
                 row = sheet.getRow(i);
                 if (row == null) {
@@ -236,11 +234,6 @@ public class DeclareRealtyHouseCertService {
                 if (!declarePublicService.house(oo, builder, row, i)) {
                     continue;
                 }
-            } catch (Exception e) {
-                flag = false;
-                builder.append(String.format("\n第%s行异常：%s", i + 1, e.getMessage()));
-            }
-            if (flag) {
                 oo.setCreator(commonService.thisUserAccount());
                 oo.setEnable(DeclareTypeEnum.MasterData.getKey());
                 declareRealtyHouseCertDao.addDeclareRealtyHouseCert(oo);
@@ -250,6 +243,8 @@ public class DeclareRealtyHouseCertService {
                 center.setType(DeclareRealtyHouseCert.class.getSimpleName());
                 declareBuildEngineeringAndEquipmentCenterService.saveAndUpdateDeclareBuildEngineeringAndEquipmentCenter(center);
                 successCount++;
+            } catch (Exception e) {
+                builder.append(String.format("\n第%s行异常：%s", i + 1, e.getMessage()));
             }
         }
         return String.format("数据总条数%s，成功%s，失败%s。%s", rowLength, successCount, rowLength - successCount, builder.toString());

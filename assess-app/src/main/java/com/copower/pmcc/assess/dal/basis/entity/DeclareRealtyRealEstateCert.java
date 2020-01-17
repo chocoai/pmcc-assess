@@ -10,6 +10,8 @@ public class DeclareRealtyRealEstateCert {
 
     private Integer planDetailsId;
 
+    private Integer autoInitNumber;
+
     private String province;
 
     private String city;
@@ -34,6 +36,8 @@ public class DeclareRealtyRealEstateCert {
 
     private Integer publicSituation;
 
+    private String publicSituationRemark;
+
     private String streetNumber;
 
     private String attachedNumber;
@@ -51,6 +55,8 @@ public class DeclareRealtyRealEstateCert {
     private Integer nature;
 
     private String houseCertUse;
+
+    private String houseCertUseCategory;
 
     private String housingStructure;
 
@@ -92,6 +98,8 @@ public class DeclareRealtyRealEstateCert {
 
     private String landCertUseCategory;
 
+    private String acquisitionType;
+
     private Date terminationDate;
 
     private String memo;
@@ -114,6 +122,8 @@ public class DeclareRealtyRealEstateCert {
 
     private String realEstateUnitNumber;
 
+    private BigDecimal landApportionArea;
+
     private Boolean bisRecord;
 
     private String creator;
@@ -121,16 +131,6 @@ public class DeclareRealtyRealEstateCert {
     private Date gmtCreated;
 
     private Date gmtModified;
-
-    private BigDecimal landApportionArea;
-
-    private String houseCertUseCategory;
-
-    private String acquisitionType;
-
-    private String publicSituationRemark;
-
-    private String autoInitNumber;
 
     public Integer getId() {
         return id;
@@ -154,6 +154,14 @@ public class DeclareRealtyRealEstateCert {
 
     public void setPlanDetailsId(Integer planDetailsId) {
         this.planDetailsId = planDetailsId;
+    }
+
+    public Integer getAutoInitNumber() {
+        return autoInitNumber;
+    }
+
+    public void setAutoInitNumber(Integer autoInitNumber) {
+        this.autoInitNumber = autoInitNumber;
     }
 
     public String getProvince() {
@@ -252,6 +260,14 @@ public class DeclareRealtyRealEstateCert {
         this.publicSituation = publicSituation;
     }
 
+    public String getPublicSituationRemark() {
+        return publicSituationRemark;
+    }
+
+    public void setPublicSituationRemark(String publicSituationRemark) {
+        this.publicSituationRemark = publicSituationRemark == null ? null : publicSituationRemark.trim();
+    }
+
     public String getStreetNumber() {
         return streetNumber;
     }
@@ -322,6 +338,14 @@ public class DeclareRealtyRealEstateCert {
 
     public void setHouseCertUse(String houseCertUse) {
         this.houseCertUse = houseCertUse == null ? null : houseCertUse.trim();
+    }
+
+    public String getHouseCertUseCategory() {
+        return houseCertUseCategory;
+    }
+
+    public void setHouseCertUseCategory(String houseCertUseCategory) {
+        this.houseCertUseCategory = houseCertUseCategory == null ? null : houseCertUseCategory.trim();
     }
 
     public String getHousingStructure() {
@@ -484,6 +508,14 @@ public class DeclareRealtyRealEstateCert {
         this.landCertUseCategory = landCertUseCategory == null ? null : landCertUseCategory.trim();
     }
 
+    public String getAcquisitionType() {
+        return acquisitionType;
+    }
+
+    public void setAcquisitionType(String acquisitionType) {
+        this.acquisitionType = acquisitionType == null ? null : acquisitionType.trim();
+    }
+
     public Date getTerminationDate() {
         return terminationDate;
     }
@@ -572,6 +604,14 @@ public class DeclareRealtyRealEstateCert {
         this.realEstateUnitNumber = realEstateUnitNumber == null ? null : realEstateUnitNumber.trim();
     }
 
+    public BigDecimal getLandApportionArea() {
+        return landApportionArea;
+    }
+
+    public void setLandApportionArea(BigDecimal landApportionArea) {
+        this.landApportionArea = landApportionArea;
+    }
+
     public Boolean getBisRecord() {
         return bisRecord;
     }
@@ -602,45 +642,5 @@ public class DeclareRealtyRealEstateCert {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public BigDecimal getLandApportionArea() {
-        return landApportionArea;
-    }
-
-    public void setLandApportionArea(BigDecimal landApportionArea) {
-        this.landApportionArea = landApportionArea;
-    }
-
-    public String getHouseCertUseCategory() {
-        return houseCertUseCategory;
-    }
-
-    public void setHouseCertUseCategory(String houseCertUseCategory) {
-        this.houseCertUseCategory = houseCertUseCategory == null ? null : houseCertUseCategory.trim();
-    }
-
-    public String getAcquisitionType() {
-        return acquisitionType;
-    }
-
-    public void setAcquisitionType(String acquisitionType) {
-        this.acquisitionType = acquisitionType == null ? null : acquisitionType.trim();
-    }
-
-    public String getPublicSituationRemark() {
-        return publicSituationRemark;
-    }
-
-    public void setPublicSituationRemark(String publicSituationRemark) {
-        this.publicSituationRemark = publicSituationRemark == null ? null : publicSituationRemark.trim();
-    }
-
-    public String getAutoInitNumber() {
-        return autoInitNumber;
-    }
-
-    public void setAutoInitNumber(String autoInitNumber) {
-        this.autoInitNumber = autoInitNumber == null ? null : autoInitNumber.trim();
     }
 }

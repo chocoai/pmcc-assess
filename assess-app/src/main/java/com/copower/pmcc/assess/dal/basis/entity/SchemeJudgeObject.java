@@ -78,6 +78,8 @@ public class SchemeJudgeObject {
 
     private String splitExplain;
 
+    private Integer splitFrom;
+
     private Boolean bisSplit;
 
     private Boolean bisMerge;
@@ -388,6 +390,14 @@ public class SchemeJudgeObject {
 
     public void setSplitExplain(String splitExplain) {
         this.splitExplain = splitExplain == null ? null : splitExplain.trim();
+    }
+
+    public Integer getSplitFrom() {
+        return splitFrom;
+    }
+
+    public void setSplitFrom(Integer splitFrom) {
+        this.splitFrom = splitFrom;
     }
 
     public Boolean getBisSplit() {

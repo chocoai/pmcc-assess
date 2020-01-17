@@ -30,20 +30,40 @@
                     </table>
                 </form>
             </div>
+        </c:if>
 
+        <c:if test="${!empty boxReActivityDtoList && bisCheck==1}">
 
-            <div class=" col-xs-6  col-sm-6  col-md-6  col-lg-6 col-xs-offset-6 col-sm-offset-6 col-md-offset-6 col-lg-offset-6">
-                <c:if test="${flog == 'details'}">
-
-                    <c:if test="${boxReActivityDto != null && bisCheck==1}">
-                        <button class="btn btn-success" onclick="saveAssessmentItem();">
+            <c:forEach items="${boxReActivityDtoList}" var="itemActivityDto">
+                <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                    <table class="table" id="chksTableList${itemActivityDto.id}">
+                        <thead>
+                        <tr>
+                            <th width="3%">序号</th>
+                            <th width="7%">节点名称</th>
+                            <th width="50%">考核标准</th>
+                            <th width="10%">打分</th>
+                            <th width="10%">说明</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <script>
+                    $(function () {
+                        assessmentCommonHandle.loadChksServerNew('${itemActivityDto.id}',$("#chksTableList${itemActivityDto.id}").find("tbody")) ;
+                    });
+                </script>
+                <div class=" col-xs-6  col-sm-6  col-md-6  col-lg-6 col-xs-offset-6 col-sm-offset-6 col-md-offset-6 col-lg-offset-6">
+                    <c:if test="${flog == 'details'}">
+                        <button class="btn btn-success" onclick="saveAssessmentItem('${itemActivityDto.id}','${itemActivityDto.cnName}','#chksTableList${itemActivityDto.id}');">
                             保存考核记录
                         </button>
                     </c:if>
+                </div>
+            </c:forEach>
 
-
-                </c:if>
-            </div>
 
             <div class=" col-xs-6  col-sm-6  col-md-6  col-lg-6 col-xs-offset-6 col-sm-offset-6 col-md-offset-6 col-lg-offset-6">
                 <c:if test="${flog == 'details'}">
@@ -123,44 +143,15 @@
 <script type="text/javascript">
 
     $(document).ready(function () {
+
         assessmentCommonHandle.loadChksServerViewTable();
 
         if ('${boxReActivityDto}') {
-            if ('${spotReActivityDto}') {
-                //抽查节点不需要普通考核
-                if ('${boxReActivityDto.id}' == '${spotReActivityDto.id}') {
-//                    return false;
-                }
-            }
             if ("${bisCheck}" == 1) {
-                loadChksServerData();
+                assessmentCommonHandle.loadChksServerNew('${boxReActivityDto.id}',$("#chksTableList").find("tbody")) ;
             }
         }
     });
-
-    function loadChksServerData() {
-        var target = $("#chksTableList").find("tbody");
-        var option = {
-            boxId: '${boxReDto.id}',
-            activityId: '${boxReActivityDto.id}',
-            projectId: '${projectPlanDetails.projectId}',
-            planDetailsId: '${projectPlanDetails.id}',
-            planId: '${projectPlanDetails.planId}',
-            isEffective: true //数据必须有效
-        };
-        if ('${processInsId}') {
-            option.processInsId = '${processInsId}';
-        }
-        if (!option.processInsId) {
-            if ('${projectPlanDetails.processInsId}') {
-                option.processInsId = '${projectPlanDetails.processInsId}';
-            }
-        }
-        assessmentCommonHandle.loadChksServerBase(option, {
-            boxId: option.boxId,
-            boxReActivitiId: option.activityId
-        }, target);
-    }
 
 
     /*显示抽查数据页面*/

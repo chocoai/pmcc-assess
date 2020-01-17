@@ -2,17 +2,25 @@ package com.copower.pmcc.assess.service.chks;
 
 
 import com.alibaba.fastjson.JSONObject;
+import com.copower.pmcc.assess.common.enums.DeclareTypeEnum;
 import com.copower.pmcc.assess.common.enums.ResponsibileModelEnum;
+import com.copower.pmcc.assess.common.enums.chks.ChksCustomizeEnum;
 import com.copower.pmcc.assess.common.enums.chks.ChksRuningEnum;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectWorkStage;
+import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
+import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dto.output.project.declare.DeclareRealtyHouseCertVo;
+import com.copower.pmcc.assess.dto.output.project.declare.DeclareRealtyLandCertVo;
+import com.copower.pmcc.assess.dto.output.project.declare.DeclareRealtyRealEstateCertVo;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
+import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.ProjectPlanService;
 import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
+import com.copower.pmcc.assess.service.project.declare.DeclareRealtyHouseCertService;
+import com.copower.pmcc.assess.service.project.declare.DeclareRealtyLandCertService;
+import com.copower.pmcc.assess.service.project.declare.DeclareRealtyRealEstateCertService;
 import com.copower.pmcc.bpm.api.dto.BoxApprovalLogVo;
 import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
@@ -77,6 +85,17 @@ public class ChksAssessmentProjectPerformanceService {
     private BpmRpcProcessInsManagerService bpmRpcProcessInsManagerService;
     @Autowired
     private BpmRpcProjectTaskService bpmRpcProjectTaskService;
+    @Autowired
+    private ProjectPhaseService projectPhaseService;
+    @Autowired
+    private DeclareRealtyHouseCertService declareRealtyHouseCertService;
+    @Autowired
+    private DeclareRealtyLandCertService declareRealtyLandCertService;
+    @Autowired
+    private DeclareRealtyRealEstateCertService declareRealtyRealEstateCertService;
+    @Autowired
+    private ChksCustomerAssessmentPlanDetailService chksCustomerAssessmentPlanDetailService;
+
 
     public ChksBootstrapTableVo getChksBootstrapTableVo(AssessmentProjectPerformanceDto where, String activityIds) {
         List<Integer> activityList = null;
@@ -221,22 +240,30 @@ public class ChksAssessmentProjectPerformanceService {
         saveAssessmentProjectPerformanceBase(dto, JSONObject.parseArray(chksScore, AssessmentProjectPerformanceDetailDto.class), projectPlanDetails);
     }
 
-    public List<BoxReActivityDto> getAssessmentProjectPerformanceNext(Integer boxId, BoxReActivityDto boxReActivityDto, boolean spotCheck) {
+    public List<BoxReActivityDto> getAssessmentProjectPerformanceNext(Integer boxId, Integer boxReActivitiId, List<BoxReActivityDto> boxReActivityDtoList, boolean spotCheck) {
         if (spotCheck) {
-            return getAssessmentProjectPerformanceNext(boxId, 0, spotCheck);
+            return getAssessmentProjectPerformanceNext(boxId, null, spotCheck);
         }
-        return getAssessmentProjectPerformanceNext(boxId, boxReActivityDto.getId(), spotCheck);
+        if (!spotCheck) {
+            if (boxReActivitiId != null) {
+                return getAssessmentProjectPerformanceNext(boxId, Lists.newArrayList(bpmRpcBoxService.getBoxreActivityInfoById(boxReActivitiId)), spotCheck);
+            }
+            if (CollectionUtils.isNotEmpty(boxReActivityDtoList)) {
+                return getAssessmentProjectPerformanceNext(boxId, boxReActivityDtoList, spotCheck);
+            }
+        }
+        return new ArrayList<>();
     }
 
     /**
      * 获取目标节点可以查看的节点  (筛选根据bpm中排序顺序来判断,即当低于他的顺序视为可以查看[相当于下级])
      *
      * @param boxId
-     * @param boxReActivitiId
-     * @param spotCheck       是否是抽查或者巡查
+     * @param boxReActivityDtos
+     * @param spotCheck         是否是抽查或者巡查
      * @return
      */
-    public List<BoxReActivityDto> getAssessmentProjectPerformanceNext(Integer boxId, Integer boxReActivitiId, boolean spotCheck) {
+    public List<BoxReActivityDto> getAssessmentProjectPerformanceNext(Integer boxId, List<BoxReActivityDto> boxReActivityDtos, boolean spotCheck) {
         List<BoxReActivityDto> targetList = new ArrayList<>(0);
         List<BoxReActivityDto> boxReActivityDtoList = bpmRpcBoxService.getBoxReActivityByBoxId(boxId);
         if (CollectionUtils.isEmpty(boxReActivityDtoList)) {
@@ -245,16 +272,21 @@ public class ChksAssessmentProjectPerformanceService {
         if (spotCheck) {//巡查或者抽查人员可以看到目标模型下的所有节点
             return boxReActivityDtoList;
         }
-        BoxReActivityDto boxReActivityDto = null;
-        if (boxReActivitiId != null) {
-            boxReActivityDto = bpmRpcBoxService.getBoxreActivityInfoById(boxReActivitiId);
-        }
-        if (boxReActivityDto == null) {
+        if (CollectionUtils.isEmpty(boxReActivityDtos)) {
             return targetList;
         }
-        if (boxReActivityDto.getSortMultilevel() == null) {
-            return targetList;
-        }
+        Ordering<BoxReActivityDto> ordering = Ordering.from(new Comparator<BoxReActivityDto>() {
+            @Override
+            public int compare(BoxReActivityDto o1, BoxReActivityDto o2) {
+                if (o1.getSortMultilevel() == null || o2.getSortMultilevel() == null) {
+                    return 0;
+                }
+                return o1.getSortMultilevel().compareTo(o2.getSortMultilevel());
+            }
+        });
+        Collections.sort(boxReActivityDtos, ordering.reverse());
+        //取列表中最大的
+        BoxReActivityDto boxReActivityDto = boxReActivityDtos.get(0);
         // 将 模型下所有节点中的我们目标节点给删除,并且对列表中的进行排序筛选
         Iterator<BoxReActivityDto> boxReActivityDtoIterator = boxReActivityDtoList.iterator();
         while (boxReActivityDtoIterator.hasNext()) {
@@ -319,6 +351,7 @@ public class ChksAssessmentProjectPerformanceService {
                             if (assessmentItem != null) {
                                 performanceDetailDto.setMinScore(assessmentItem.getMinScore());
                                 performanceDetailDto.setMaxScore(assessmentItem.getMaxScore());
+                                performanceDetailDto.setStandardScore(assessmentItem.getStandardScore());
                             }
                         }
                     }
@@ -453,6 +486,19 @@ public class ChksAssessmentProjectPerformanceService {
         if (CollectionUtils.isEmpty(boxApprovalLogVoList)) {
             return;
         }
+        //需要特殊处理的工作事项
+        List<ProjectPhase> projectPhaseList = getChksRuningEnumKeys();
+        ProjectPhase targetPhase = null;
+        if (CollectionUtils.isNotEmpty(projectPhaseList)) {
+            Iterator<ProjectPhase> projectPhaseIterator = projectPhaseList.iterator();
+            while (projectPhaseIterator.hasNext()) {
+                ProjectPhase projectPhase = projectPhaseIterator.next();
+                if (Objects.equal(projectPhase.getId(), projectPlanDetails.getProjectPhaseId())) {
+                    targetPhase = new ProjectPhase();
+                    BeanUtils.copyProperties(projectPhase, targetPhase);
+                }
+            }
+        }
         Collection<AssessmentProjectPerformanceDto> collection = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(assessmentProjectPerformanceDtoList) && CollectionUtils.isNotEmpty(thisProjectPerformanceDtoList)) {
             collection = CollectionUtils.subtract(assessmentProjectPerformanceDtoList, thisProjectPerformanceDtoList);
@@ -460,54 +506,71 @@ public class ChksAssessmentProjectPerformanceService {
         //过去的考核记录
         List<AssessmentProjectPerformanceDto> pastProjectPerformanceDtoList = Lists.newArrayList(collection);
 
-        LinkedListMultimap<String, String> creatorMaps = LinkedListMultimap.create();//审批人 人员和流程实例id的 key-value map
+        //审批人 流程实例id以及 activityId ==> key-(key-value) map
+        LinkedListMultimap<String, KeyValueDto> creatorMaps = LinkedListMultimap.create();
         Iterator<BoxApprovalLogVo> boxApprovalLogVoIterator = boxApprovalLogVoList.iterator();
         while (boxApprovalLogVoIterator.hasNext()) {
             BoxApprovalLogVo boxApprovalLogVo = boxApprovalLogVoIterator.next();
-            creatorMaps.put(boxApprovalLogVo.getCreator(), boxApprovalLogVo.getProcessInsId());
+            KeyValueDto keyValueDto = new KeyValueDto(boxApprovalLogVo.getProcessInsId(), boxApprovalLogVo.getActivityId().toString());
+            keyValueDto.setExplain(boxApprovalLogVo.getActivityName());
+            creatorMaps.put(boxApprovalLogVo.getCreator(), keyValueDto);
         }
-        BiFunction<List<AssessmentProjectPerformanceDto>, LinkedListMultimap<String, String>, LinkedListMultimap<Integer, String>> biFunction = new BiFunction<List<AssessmentProjectPerformanceDto>, LinkedListMultimap<String, String>, LinkedListMultimap<Integer, String>>() {
+
+        /**
+         * LinkedListMultimap<Integer, KeyValueDto>>  planDetailsId,<create,activityId>
+         */
+        BiFunction<List<AssessmentProjectPerformanceDto>, LinkedListMultimap<String, KeyValueDto>, LinkedListMultimap<Integer, KeyValueDto>> biFunction = new BiFunction<List<AssessmentProjectPerformanceDto>, LinkedListMultimap<String, KeyValueDto>, LinkedListMultimap<Integer, KeyValueDto>>() {
             @Override
-            public LinkedListMultimap<Integer, String> apply(List<AssessmentProjectPerformanceDto> assessmentProjectPerformanceDtos, LinkedListMultimap<String, String> stringStringLinkedHashMap) {
-                LinkedListMultimap<Integer, String> integerStringMap = LinkedListMultimap.create();
-                Iterator<Map.Entry<String, String>> entryIterator = stringStringLinkedHashMap.entries().iterator();
+            public LinkedListMultimap<Integer, KeyValueDto> apply(List<AssessmentProjectPerformanceDto> assessmentProjectPerformanceDtos, LinkedListMultimap<String, KeyValueDto> stringStringLinkedHashMap) {
+                LinkedListMultimap<Integer, KeyValueDto> integerStringMap = LinkedListMultimap.create();
+                Iterator<Map.Entry<String, KeyValueDto>> entryIterator = stringStringLinkedHashMap.entries().iterator();
                 while (entryIterator.hasNext()) {
-                    Map.Entry<String, String> stringEntry = entryIterator.next();
+                    Map.Entry<String, KeyValueDto> stringEntry = entryIterator.next();
                     if (CollectionUtils.isNotEmpty(assessmentProjectPerformanceDtos)) {
                         //当人员和流程实例id 在考核记录记录中找不到则返回true
                         Iterator<AssessmentProjectPerformanceDto> iterator = assessmentProjectPerformanceDtos.iterator();
                         while (iterator.hasNext()) {
                             AssessmentProjectPerformanceDto oo = iterator.next();
-                            boolean check = Objects.equal(stringEntry.getKey(), oo.getExaminePeople()) && Objects.equal(stringEntry.getValue(), oo.getProcessInsId());
+                            boolean check = Objects.equal(stringEntry.getKey(), oo.getExaminePeople()) && Objects.equal(stringEntry.getValue().getKey(), oo.getProcessInsId()) && Objects.equal(oo.getActivityId().toString(), stringEntry.getValue().getValue());
                             if (!check) {
-                                integerStringMap.put(oo.getPlanDetailsId(), stringEntry.getKey());
+                                KeyValueDto keyValueDto = new KeyValueDto(stringEntry.getKey(), stringEntry.getValue().getValue());
+                                keyValueDto.setExplain(stringEntry.getValue().getExplain());
+                                integerStringMap.put(oo.getPlanDetailsId(), keyValueDto);
                             }
                         }
                     } else {
-                        ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetailsByProcessInsId(stringEntry.getValue());
+                        ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetailsByProcessInsId(stringEntry.getValue().getKey());
                         if (planDetails != null) {
-                            integerStringMap.put(planDetails.getId(), stringEntry.getKey());
+                            KeyValueDto keyValueDto = new KeyValueDto(stringEntry.getKey(), stringEntry.getValue().getValue());
+                            keyValueDto.setExplain(stringEntry.getValue().getExplain());
+                            integerStringMap.put(planDetails.getId(), keyValueDto);
                         }
                     }
                 }
                 return integerStringMap;
             }
         };
-        BiPredicate<List<AssessmentProjectPerformanceDto>, LinkedListMultimap<String, String>> biPredicate = new BiPredicate<List<AssessmentProjectPerformanceDto>, LinkedListMultimap<String, String>>() {
+
+        BiPredicate<List<AssessmentProjectPerformanceDto>, LinkedListMultimap<String, KeyValueDto>> biPredicate = new BiPredicate<List<AssessmentProjectPerformanceDto>, LinkedListMultimap<String, KeyValueDto>>() {
             @Override
-            public boolean test(List<AssessmentProjectPerformanceDto> assessmentProjectPerformanceDtos, LinkedListMultimap<String, String> stringStringLinkedHashMap) {
+            public boolean test(List<AssessmentProjectPerformanceDto> assessmentProjectPerformanceDtos, LinkedListMultimap<String, KeyValueDto> stringStringLinkedHashMap) {
                 int count = 0;//定义一个未匹配到的计数器,当没有匹配到一次 计数器自动加1
                 if (CollectionUtils.isEmpty(assessmentProjectPerformanceDtos)) {
                     return false;
                 }
-                Iterator<Map.Entry<String, String>> entryIterator = stringStringLinkedHashMap.entries().iterator();
+                Iterator<Map.Entry<String, KeyValueDto>> entryIterator = stringStringLinkedHashMap.entries().iterator();
                 while (entryIterator.hasNext()) {
-                    Map.Entry<String, String> stringEntry = entryIterator.next();
+                    Map.Entry<String, KeyValueDto> stringEntry = entryIterator.next();
                     //当人员和流程实例id 在考核记录记录中找不到则返回true ,就说明没有匹配到
-                    if (assessmentProjectPerformanceDtos.stream().noneMatch(oo -> Objects.equal(stringEntry.getKey(), oo.getExaminePeople()) && Objects.equal(stringEntry.getValue(), oo.getProcessInsId()))) {
+                    boolean tempFlag = assessmentProjectPerformanceDtos.stream().noneMatch(oo -> {
+                        boolean flagA = Objects.equal(stringEntry.getKey(), oo.getExaminePeople());
+                        boolean flagB = Objects.equal(stringEntry.getValue().getKey(), oo.getProcessInsId());
+                        boolean flagC = Objects.equal(stringEntry.getValue().getValue(), oo.getActivityId().toString());
+                        return flagA && flagB && flagC;
+                    });
+                    if (tempFlag) {
                         count++;
                     }
-
                 }
                 return count == 0;
             }
@@ -539,18 +602,131 @@ public class ChksAssessmentProjectPerformanceService {
         //2:部分跳过或者全部跳过但是保留有审批人数据  有审批记录却没有考核记录的对审批人发起考核任务并且到详情页面考核
         if (!testCheck) {
             //获取那些保留了审批记录却没有 考核记录的人员
-            LinkedListMultimap<Integer, String> integerStringMap = biFunction.apply(thisProjectPerformanceDtoList, creatorMaps);
+            LinkedListMultimap<Integer, KeyValueDto> integerStringMap = biFunction.apply(thisProjectPerformanceDtoList, creatorMaps);
             if (!integerStringMap.isEmpty()) {
-                Collection<Map.Entry<Integer, String>> entryCollection = integerStringMap.entries();
-                Iterator<Map.Entry<Integer, String>> listIterator = entryCollection.iterator();
+                Collection<Map.Entry<Integer, KeyValueDto>> entryCollection = integerStringMap.entries();
+                Iterator<Map.Entry<Integer, KeyValueDto>> listIterator = entryCollection.iterator();
                 while (listIterator.hasNext()) {
-                    Map.Entry<Integer, String> integerStringEntry = listIterator.next();
+                    Map.Entry<Integer, KeyValueDto> integerStringEntry = listIterator.next();
                     ProjectPlanDetails target = projectPlanDetailsService.getProjectPlanDetailsById(integerStringEntry.getKey());
                     if (target == null) {
                         continue;
                     }
-                    appendTask(target, projectInfo, projectWorkStage, integerStringEntry.getValue());
+                    if (targetPhase == null) {
+                        appendTask(target, projectInfo, projectWorkStage, integerStringEntry.getValue());
+                    }
+                    if (targetPhase != null) {
+                        switch (targetPhase.getPhaseKey()) {
+                            case AssessPhaseKeyConstant.ASSET_DECLARE:
+                                //申报状态下
+                                handleDeclareTask(target, projectInfo, projectWorkStage, integerStringEntry.getValue());
+                                break;
+                            case AssessPhaseKeyConstant.CASE_STUDY_EXTEND://穿透一下
+                            case AssessPhaseKeyConstant.SCENE_EXPLORE:
+                                //查勘状态下
+                                handleExploreTask(target, projectInfo, projectWorkStage, integerStringEntry.getValue());
+                                break;
+                            default:
+                                break;
+                        }
+                    }
                 }
+            }
+        }
+    }
+
+    /**
+     * 查勘
+     * @param target
+     * @param projectInfo
+     * @param projectWorkStage
+     * @param keyValueDto
+     * @throws Exception
+     */
+    private void handleExploreTask(ProjectPlanDetails target, ProjectInfo projectInfo, ProjectWorkStage projectWorkStage,KeyValueDto keyValueDto)throws Exception{
+        ProjectPlanDetails projectPlanDetails = appendTask(target, projectInfo, projectWorkStage, keyValueDto);
+        if (projectPlanDetails == null){
+            return;
+        }
+    }
+
+    /**
+     * 申报
+     * @param target
+     * @param projectInfo
+     * @param projectWorkStage
+     * @param keyValueDto
+     * @throws Exception
+     */
+    private void handleDeclareTask(ProjectPlanDetails target, ProjectInfo projectInfo, ProjectWorkStage projectWorkStage,KeyValueDto keyValueDto)throws Exception {
+        DeclareRealtyHouseCert realtyHouseCert = new DeclareRealtyHouseCert();
+        realtyHouseCert.setPlanDetailsId(target.getId());
+        realtyHouseCert.setEnable(DeclareTypeEnum.MasterData.getKey());
+        List<DeclareRealtyHouseCertVo> declareRealtyHouseCertVoList = declareRealtyHouseCertService.lists(realtyHouseCert);
+        DeclareRealtyLandCert realtyLandCert = new DeclareRealtyLandCert();
+        realtyLandCert.setPlanDetailsId(target.getId());
+        realtyLandCert.setEnable(DeclareTypeEnum.MasterData.getKey());
+        List<DeclareRealtyLandCertVo> declareRealtyLandCertVoList = declareRealtyLandCertService.lists(realtyLandCert);
+        DeclareRealtyRealEstateCert realtyRealEstateCert = new DeclareRealtyRealEstateCert();
+        realtyRealEstateCert.setPlanDetailsId(target.getId());
+        realtyRealEstateCert.setEnable(DeclareTypeEnum.MasterData.getKey());
+        List<DeclareRealtyRealEstateCertVo> declareRealtyRealEstateCertVoList = declareRealtyRealEstateCertService.landLevels(realtyRealEstateCert);
+        int sizeTotal = declareRealtyHouseCertVoList.size() + declareRealtyLandCertVoList.size() + declareRealtyRealEstateCertVoList.size();
+        if (sizeTotal == 0){
+            return;
+        }
+        ProjectPlanDetails projectPlanDetails = appendTask(target, projectInfo, projectWorkStage, keyValueDto);
+        if (projectPlanDetails == null){
+            return;
+        }
+        BiFunction<Integer,String,ChksCustomerAssessmentPlanDetail> biFunction = new BiFunction<Integer, String, ChksCustomerAssessmentPlanDetail>() {
+            @Override
+            public ChksCustomerAssessmentPlanDetail apply(Integer integer, String s) {
+                ChksCustomerAssessmentPlanDetail assessmentPlanDetail = new ChksCustomerAssessmentPlanDetail();
+                assessmentPlanDetail.setTableId(integer);
+                assessmentPlanDetail.setTableName(s);
+                assessmentPlanDetail.setBisEnable(true);
+                assessmentPlanDetail.setProjectId(projectInfo.getId());
+                assessmentPlanDetail.setProjectName(projectInfo.getProjectName());
+                assessmentPlanDetail.setCreator(keyValueDto.getKey());
+                assessmentPlanDetail.setType(ChksCustomizeEnum.declare.getKey());
+                assessmentPlanDetail.setMasterId(projectPlanDetails.getId());
+                assessmentPlanDetail.setProcessInsId(target.getProcessInsId());
+                assessmentPlanDetail.setPlanId(target.getPlanId());
+                assessmentPlanDetail.setUrl(ChksCustomerAssessmentPlanDetailService.applyUrl);
+                if (StringUtils.isNotBlank(keyValueDto.getValue())) {
+                    if (NumberUtils.isNumber(keyValueDto.getValue())) {
+                        BoxReActivityDto boxReActivityDto = bpmRpcBoxService.getBoxreActivityInfoById(Integer.parseInt(keyValueDto.getValue()));
+                        if (boxReActivityDto != null) {
+                            assessmentPlanDetail.setActivityId(boxReActivityDto.getId());
+                            assessmentPlanDetail.setBoxId(boxReActivityDto.getBoxId());
+                            assessmentPlanDetail.setActivityName(boxReActivityDto.getCnName());
+                        }
+                    }
+                }
+                chksCustomerAssessmentPlanDetailService.saveAndUpdateChksCustomerAssessmentPlanDetail(assessmentPlanDetail,true);
+                return assessmentPlanDetail;
+            }
+        };
+        if (CollectionUtils.isNotEmpty(declareRealtyHouseCertVoList)){
+            Iterator<DeclareRealtyHouseCertVo> houseCertVoIterator = declareRealtyHouseCertVoList.iterator();
+            while (houseCertVoIterator.hasNext()){
+                DeclareRealtyHouseCertVo realtyHouseCertVo = houseCertVoIterator.next();
+                ChksCustomerAssessmentPlanDetail assessmentPlanDetail = biFunction.apply(realtyHouseCertVo.getId(),FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class)) ;
+            }
+        }
+        if (CollectionUtils.isNotEmpty(declareRealtyLandCertVoList)){
+            Iterator<DeclareRealtyLandCertVo> declareRealtyLandCertVoIterator = declareRealtyLandCertVoList.iterator();
+            while (declareRealtyLandCertVoIterator.hasNext()){
+                DeclareRealtyLandCertVo realtyLandCertVo = declareRealtyLandCertVoIterator.next();
+                ChksCustomerAssessmentPlanDetail assessmentPlanDetail = biFunction.apply(realtyLandCertVo.getId(),FormatUtils.entityNameConvertToTableName(DeclareRealtyLandCert.class)) ;
+            }
+        }
+        if (CollectionUtils.isNotEmpty(declareRealtyRealEstateCertVoList)){
+            ListIterator<DeclareRealtyRealEstateCertVo> realtyRealEstateCertVoListIterator = declareRealtyRealEstateCertVoList.listIterator();
+            while (realtyRealEstateCertVoListIterator.hasNext()){
+                DeclareRealtyRealEstateCertVo realEstateCertVo = realtyRealEstateCertVoListIterator.next();
+                ChksCustomerAssessmentPlanDetail assessmentPlanDetail = biFunction.apply(realEstateCertVo.getId(),FormatUtils.entityNameConvertToTableName(DeclareRealtyRealEstateCert.class)) ;
             }
         }
     }
@@ -562,20 +738,24 @@ public class ChksAssessmentProjectPerformanceService {
      * @param target
      * @param projectInfo
      * @param projectWorkStage
-     * @param account
      * @throws Exception
      */
-    private void appendTask(ProjectPlanDetails target, ProjectInfo projectInfo, ProjectWorkStage projectWorkStage, String account) throws Exception {
+    private ProjectPlanDetails appendTask(ProjectPlanDetails target, ProjectInfo projectInfo, ProjectWorkStage projectWorkStage, KeyValueDto keyValueDto) throws Exception {
         LinkedList<String> linkedList = Lists.newLinkedList();
-        if (StringUtils.isNotBlank(target.getProcessInsId())) {
-            Integer boxReActivitiId = getBoxReActivitiId(target.getProcessInsId(), account);
-            if (boxReActivitiId != null) {
-                BoxReActivityDto boxReActivityDto = bpmRpcBoxService.getBoxreActivityInfoById(boxReActivitiId);
-                if (boxReActivityDto != null) {
-                    linkedList.add(boxReActivityDto.getCnName());
+        if (StringUtils.isNotBlank(keyValueDto.getExplain())) {
+            linkedList.add(keyValueDto.getExplain());
+        }
+        if (StringUtils.isBlank(keyValueDto.getExplain())) {
+            if (StringUtils.isNotBlank(keyValueDto.getValue())) {
+                if (NumberUtils.isNumber(keyValueDto.getValue())) {
+                    BoxReActivityDto boxReActivityDto = bpmRpcBoxService.getBoxreActivityInfoById(Integer.parseInt(keyValueDto.getValue()));
+                    if (boxReActivityDto != null) {
+                        linkedList.add(boxReActivityDto.getCnName());
+                    }
                 }
             }
         }
+        String account = keyValueDto.getKey();
         if (StringUtils.isNotBlank(projectWorkStage.getWorkStageName())) {
             linkedList.add(projectWorkStage.getWorkStageName());
         }
@@ -620,6 +800,7 @@ public class ChksAssessmentProjectPerformanceService {
         if (projectPlanResponsibility.getId() != null) {
             bpmRpcProjectTaskService.updateProjectTask(projectPlanResponsibility);
         }
+        return projectPlanDetails;
     }
 
     public void updateAssessmentProjectPerformanceDto(AssessmentProjectPerformanceDto assessmentProjectPerformanceDto, boolean updateNull) {
@@ -735,7 +916,8 @@ public class ChksAssessmentProjectPerformanceService {
      * @param processInsId
      * @return
      */
-    public Integer getBoxReActivitiId(String processInsId, String creator) {
+    public List<Integer> getBoxReActivitiId(String processInsId, String creator) {
+        List<Integer> integerList = new ArrayList<>();
         List<BoxApprovalLogVo> boxApprovalLogVoList = getBoxApprovalLogVoList(processInsId);
         if (CollectionUtils.isEmpty(boxApprovalLogVoList)) {
             return null;
@@ -748,11 +930,11 @@ public class ChksAssessmentProjectPerformanceService {
             BoxApprovalLogVo next = iterator.next();
             if (Objects.equal(creator, next.getCreator())) {
                 if (Objects.equal(processInsId, next.getProcessInsId())) {
-                    return next.getActivityId();
+                    integerList.add(next.getActivityId());
                 }
             }
         }
-        return null;
+        return integerList;
     }
 
 
@@ -782,23 +964,43 @@ public class ChksAssessmentProjectPerformanceService {
     /**
      * 获取节点模型数据
      *
-     * @param boxReActivitiId
      * @param processInsId
      * @return
      * @throws Exception
      */
-    public BoxReActivityDto getFilterBoxReActivityDto(Integer boxReActivitiId, String processInsId) {
-
-        if (boxReActivitiId != null) {
-            return bpmRpcBoxService.getBoxreActivityInfoById(boxReActivitiId);
-        }
+    public List<BoxReActivityDto> getFilterBoxReActivityDto(String processInsId) {
+        final List<BoxReActivityDto> boxReActivityDtoList = new ArrayList<>();
         if (StringUtils.isNotBlank(processInsId)) {
-            boxReActivitiId = getBoxReActivitiId(processInsId, null);
-            if (boxReActivitiId != null) {
-                return bpmRpcBoxService.getBoxreActivityInfoById(boxReActivitiId);
+            List<Integer> integerList = getBoxReActivitiId(processInsId, null);
+            if (CollectionUtils.isNotEmpty(integerList)) {
+                integerList.forEach(boxReActivitiId -> {
+                    BoxReActivityDto boxReActivityDto = bpmRpcBoxService.getBoxreActivityInfoById(boxReActivitiId);
+                    if (boxReActivityDto != null) {
+                        boxReActivityDtoList.add(boxReActivityDto);
+                    }
+                });
             }
         }
-        return null;
+        return boxReActivityDtoList;
+    }
+
+    /**
+     * 获取需要特殊处理的考核  工作事项
+     *
+     * @return
+     */
+    private List<ProjectPhase> getChksRuningEnumKeys() {
+        final List<ProjectPhase> projectPhaseList = new ArrayList<>();
+        final List<String> keys = Arrays.asList(AssessPhaseKeyConstant.ASSET_DECLARE, AssessPhaseKeyConstant.SCENE_EXPLORE, AssessPhaseKeyConstant.CASE_STUDY_EXTEND);
+        ProjectPhase select = new ProjectPhase();
+        keys.forEach(s -> {
+            select.setPhaseKey(s);
+            List<ProjectPhase> phaseList = projectPhaseService.getProjectPhaseList(select);
+            if (CollectionUtils.isNotEmpty(phaseList)) {
+                projectPhaseList.addAll(phaseList);
+            }
+        });
+        return projectPhaseList;
     }
 
     /**
@@ -808,25 +1010,48 @@ public class ChksAssessmentProjectPerformanceService {
      * @param boxId
      * @return
      */
-    public ChksRuningEnum getChksRuningEnum(BoxReActivityDto boxReActivityDto, Integer boxId, String processInsId, boolean approval) {
+    public ChksRuningEnum getChksRuningEnum(List<BoxReActivityDto> boxReActivityDtoList, ProjectPhase projectPhase, Integer boxId, String processInsId, boolean approval) {
+        final List<ProjectPhase> projectPhaseList = getChksRuningEnumKeys();
+        if (CollectionUtils.isNotEmpty(projectPhaseList)) {
+            for (ProjectPhase target : projectPhaseList) {
+                if (Objects.equal(target.getId(), projectPhase.getId())) {
+                    return ChksRuningEnum.CHKS_FINSH_ENUM_RUN;
+                }
+            }
+        }
         AssessmentProjectPerformanceQuery query = new AssessmentProjectPerformanceQuery(boxId);
         query.setProcessInsId(processInsId);
         query.setEffective(true);
-        if (boxReActivityDto != null) {
-            query.setActivityId(boxReActivityDto.getId());
+        int j = 0;
+        if (CollectionUtils.isNotEmpty(boxReActivityDtoList)) {
+            Iterator<BoxReActivityDto> boxReActivityDtoIterator = boxReActivityDtoList.listIterator();
+            while (boxReActivityDtoIterator.hasNext()) {
+                int i = 0;
+                BoxReActivityDto boxReActivityDto = boxReActivityDtoIterator.next();
+                query.setActivityId(boxReActivityDto.getId());
+                ChksRuningEnum target = getChksRuningEnumHandle(boxReActivityDto, boxId, processInsId, approval);
+                if (target != null && target.getKey() == ChksRuningEnum.CHKS_FINSH_ENUM_RUN.getKey()) {
+                    i++;
+                }
+                //本次所有的考核记录
+                List<AssessmentProjectPerformanceDto> assessmentProjectPerformanceDtoList = getAssessmentProjectPerformanceDtoList(query);
+                if (CollectionUtils.isNotEmpty(assessmentProjectPerformanceDtoList)) {
+                    i++;
+                }
+                //暂时设为false,为以后bpm中会配置此考核是否按照常规考核进行
+                if (false){
+                    i++;
+                }
+                if (i != 0) {
+                    j++;
+                }
+            }
+        }
+        if (j == 0) {
+            return ChksRuningEnum.CHKS_RUNING_ENUM_RUN;
         } else {
             return ChksRuningEnum.CHKS_FINSH_ENUM_RUN;
         }
-        ChksRuningEnum target = getChksRuningEnumHandle(boxReActivityDto, boxId, processInsId, approval);
-        if (target != null) {
-            return target;
-        }
-        //本次所有的考核记录
-        List<AssessmentProjectPerformanceDto> assessmentProjectPerformanceDtoList = getAssessmentProjectPerformanceDtoList(query);
-        if (CollectionUtils.isNotEmpty(assessmentProjectPerformanceDtoList)) {
-            return ChksRuningEnum.CHKS_FINSH_ENUM_RUN;
-        }
-        return ChksRuningEnum.CHKS_RUNING_ENUM_RUN;
     }
 
     /**
@@ -845,10 +1070,10 @@ public class ChksAssessmentProjectPerformanceService {
         if (StringUtils.isBlank(processInsId)) {
             return null;
         }
-        if (boxReActivityDto == null){
+        if (boxReActivityDto == null) {
             return null;
         }
-        if (boxId == null){
+        if (boxId == null) {
             return null;
         }
         List<BoxReActivityDto> boxReActivityDtoList = bpmRpcBoxService.getBoxReActivityByBoxId(boxId);

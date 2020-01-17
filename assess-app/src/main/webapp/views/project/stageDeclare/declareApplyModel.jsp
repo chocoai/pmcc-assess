@@ -25,7 +25,8 @@
     };
 
     //坐落拼接
-    commonDeclareApplyModel.seatJoin= function (engine) {
+    commonDeclareApplyModel.seatJoin = function (engine) {
+        if (engine.find("input[name='beLocated']").val()) return false;
         var district = engine.find("select[name='district'] option:selected").text();
         var city = engine.find("select[name='city'] option:selected").text();
         var unit = engine.find("input[name='unit']").val();
@@ -62,14 +63,13 @@
         } else {
             buildingNumber = "";
         }
-        text = (streetNumber + attachedNumber + buildingNumber + unit + floor + roomNumber).replace(/号+/,'号');
-        if(commonDeclareApplyModel.isNotBlank(district)){
-            engine.find("input[name='beLocated']").val(district+text);
-            return;
-        }
-        if(commonDeclareApplyModel.isNotBlank(city)){
-            engine.find("input[name='beLocated']").val(city+text);
-            return;
+        text = (streetNumber + attachedNumber + buildingNumber + unit + floor + roomNumber).replace(/号+/, '号');
+        if (commonDeclareApplyModel.isNotBlank(district)) {
+            if (text.indexOf(district) < 0) {
+                engine.find("input[name='beLocated']").val(district + text);
+            }
+        } else if (commonDeclareApplyModel.isNotBlank(city) && text.indexOf(city) < 0) {
+            engine.find("input[name='beLocated']").val(city + text);
         }
         engine.find("input[name='beLocated']").val(text);
     };
@@ -194,6 +194,9 @@
             text = $(that).val();
             if (commonDeclareApplyModel.isNotBlank(text)) {
                 var engine = $(that).closest("#" + commonDeclareApplyModel.config.house.handleId);
+                if (commonDeclareApplyModel.isNotBlank(engine.find("input[name='certName']").val())) {
+                    return false;
+                }
                 var location = engine.find("input[name='location']").val();
                 var number = engine.find("input[name='number']").val();
                 var id = engine.find("select[name='type']").val();
@@ -1455,9 +1458,7 @@
                 <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                     <div class="input-group">
                         <input type="text" name="houseCertUse" class="form-control" list="realHouseUseList" required>
-                        <datalist id="realHouseUseList">
-
-                        </datalist>
+                        <datalist id="realHouseUseList"></datalist>
                         <span class="input-group-btn">
                                                 <button type="button" class="btn btn-default docs-tooltip"
                                                         onclick="$(this).closest('.input-group').find('input').val('');"
@@ -1470,15 +1471,13 @@
             </div>
             <div class="x-valid">
                 <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                    房屋用途类别
+                    房屋用途类别<span class="symbol required"></span>
                 </label>
                 <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                     <div class="input-group">
                         <input type="text" name="houseCertUseCategory" class="form-control"
-                               list="houseCertUseCategoryList1">
-                        <datalist id="houseCertUseCategoryList1">
-
-                        </datalist>
+                               list="houseCertUseCategoryList1" required>
+                        <datalist id="houseCertUseCategoryList1"></datalist>
                         <span class="input-group-btn">
                                                 <button type="button" class="btn btn-default docs-tooltip"
                                                         onclick="$(this).closest('.input-group').find('input').val('');"
@@ -1536,10 +1535,10 @@
 
         <div class="form-group">
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">分摊面积</label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">公摊面积</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <input type="text"
-                           placeholder="分摊面积(数字)" name="apportionmentArea" class="form-control"
+                           placeholder="公摊面积(数字)" name="apportionmentArea" class="form-control"
                            data-rule-maxlength="100" data-rule-number='true'>
                 </div>
             </div>
@@ -2039,9 +2038,7 @@
                 <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                     <div class="input-group">
                         <input type="text" name="houseCertUse" class="form-control" list="realHouseUseList2">
-                        <datalist id="realHouseUseList2">
-
-                        </datalist>
+                        <datalist id="realHouseUseList2"></datalist>
                         <span class="input-group-btn">
                                                 <button type="button" class="btn btn-default docs-tooltip"
                                                         onclick="$(this).closest('.input-group').find('input').val('');"
@@ -2054,15 +2051,13 @@
             </div>
             <div class="x-valid">
                 <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                    房屋用途类别
+                    房屋用途类别<span class="symbol required"></span>
                 </label>
                 <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                     <div class="input-group">
-                        <input type="text" name="houseCertUseCategory" class="form-control"
+                        <input type="text" name="houseCertUseCategory" class="form-control" required
                                list="houseCertUseCategoryList2">
-                        <datalist id="houseCertUseCategoryList2">
-
-                        </datalist>
+                        <datalist id="houseCertUseCategoryList2"></datalist>
                         <span class="input-group-btn">
                                                 <button type="button" class="btn btn-default docs-tooltip"
                                                         onclick="$(this).closest('.input-group').find('input').val('');"
@@ -2376,9 +2371,7 @@
                 <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                     <div class="input-group">
                         <input type="text" name="certUse" class="form-control" list="houseUseList" required="required">
-                        <datalist id="houseUseList">
-
-                        </datalist>
+                        <datalist id="houseUseList"></datalist>
                         <span class="input-group-btn">
                                                 <button type="button" class="btn btn-default docs-tooltip"
                                                         onclick="$(this).closest('.input-group').find('input').val('');"
@@ -2391,14 +2384,13 @@
             </div>
             <div class="x-valid">
                 <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                    房屋用途类别
+                    房屋用途类别<span class="symbol required"></span>
                 </label>
                 <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                     <div class="input-group">
-                        <input type="text" name="certUseCategory" class="form-control" list="housecertUseCategoryList">
-                        <datalist id="housecertUseCategoryList">
-
-                        </datalist>
+                        <input type="text" name="certUseCategory" class="form-control" list="housecertUseCategoryList"
+                               required>
+                        <datalist id="housecertUseCategoryList"></datalist>
                         <span class="input-group-btn">
                                                 <button type="button" class="btn btn-default docs-tooltip"
                                                         onclick="$(this).closest('.input-group').find('input').val('');"
@@ -2478,13 +2470,10 @@
                 </div>
             </div>
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">分摊面积<span
-                        class="symbol required"></span></label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">分摊面积</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text" required="required"
-                           placeholder="分摊面积(数字)" name="apportionmentArea" class="form-control"
-                           data-rule-maxlength="100"
-                           data-rule-number='true'>
+                    <input type="text" placeholder="分摊面积(数字)" name="apportionmentArea" class="form-control"
+                           data-rule-maxlength="100" data-rule-number='true'>
                 </div>
             </div>
         </div>
@@ -2812,11 +2801,9 @@
                 </div>
             </div>
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">分摊面积<span
-                        class="symbol required"></span></label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">分摊面积</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text" required="required"
-                           placeholder="分摊面积(数字)" name="apportionmentArea" class="form-control"
+                    <input type="text" placeholder="分摊面积(数字)" name="apportionmentArea" class="form-control"
                            data-rule-maxlength="100" data-rule-number='true'>
                 </div>
             </div>

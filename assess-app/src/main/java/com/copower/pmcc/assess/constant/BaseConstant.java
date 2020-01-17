@@ -35,4 +35,6 @@ public class BaseConstant {
     public static final String ASSESS_JUDGE_OBJECT_CN_NAME = "号估价对象";
     public static final String ASSESS_CertGetQuestion_YES_NAME = "有权证";
     public static final String ASSESS_CertGetQuestion_NO_NAME = "无权证";
+    public static final String ASSESS_REALTY_HOUSE_CERT_RIGHT = "房权证";
+    public static final String ASSESS_REALTY_HOUSE_CERT_CHECK = "监证";
 }

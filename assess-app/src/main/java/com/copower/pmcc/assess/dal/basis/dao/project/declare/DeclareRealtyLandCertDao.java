@@ -63,6 +63,7 @@ public class DeclareRealtyLandCertDao {
         DeclareRealtyLandCertExample.Criteria criteria = example.createCriteria();
         criteria.andIdIsNotNull();
         criteria.andPlanDetailsIdEqualTo(planDetailsId);
+        example.setOrderByClause("auto_init_number,id");
         return declareRealtyLandCertMapper.selectByExample(example);
     }
 
@@ -76,6 +77,7 @@ public class DeclareRealtyLandCertDao {
     public List<DeclareRealtyLandCert> getDeclareRealtyLandCertList(DeclareRealtyLandCert declareRealtyLandCert){
         DeclareRealtyLandCertExample example = new DeclareRealtyLandCertExample();
         MybatisUtils.convertObj2Example(declareRealtyLandCert, example);
+        example.setOrderByClause("auto_init_number,id");
         return declareRealtyLandCertMapper.selectByExample(example);
     }
 }

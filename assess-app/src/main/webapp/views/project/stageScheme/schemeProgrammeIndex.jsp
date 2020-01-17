@@ -100,6 +100,16 @@
                                     <button class="btn btn-xs btn-warning btn-area-merge">
                                         合并
                                     </button>
+                                    <c:if test="${item.bisSplit ne true}">
+                                        <button class="btn btn-xs btn-success btn-area-split">
+                                            拆分
+                                        </button>
+                                    </c:if>
+                                </c:if>
+                                <c:if test="${item.bisSplit eq true}">
+                                    <button class="btn btn-xs btn-warning btn-area-split-remove">
+                                        移除
+                                    </button>
                                 </c:if>
                             </small>
                         </h3>
@@ -228,11 +238,6 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="form-group">
-
-
-                            </div>
                             <div class="form-group">
                                 <div class="x-valid">
                                     <label class="col-sm-1 control-label">
@@ -317,8 +322,6 @@
                     </div>
                 </div>
             </c:forEach>
-
-
             <div class="x_panel">
                 <div class="x_content">
                     <div class="col-sm-4 col-sm-offset-5">
@@ -522,7 +525,7 @@
             </ul>
             <h3>
                 <input type="checkbox">
-                <label>{mergeNumber}</label>
+                <label style="word-break: break-all">{mergeNumber}</label>
                 <small>
                     <a href="javascript://" onclick="programme.splitJudge(this);"
                        class="btn btn-xs btn-success judge-split tooltips">拆分</a>
@@ -686,9 +689,6 @@
 
 <script type="text/javascript">
     $(function () {
-//        $(".area_panel .x_title").each(function () {
-//            $(this).trigger('click');
-//        })
         programme.loadDeclareRecordList();
 
         //阻止合并按钮的冒泡
@@ -699,6 +699,15 @@
         //阻止合并按钮的冒泡
         $(".btn-area-merge-cancel").click(function (e) {
             programme.areaMergeCancel($(this).closest('.area_panel').find('[name=areaGroupId]').val());
+            e.stopPropagation();
+        })
+
+        $(".btn-area-split").click(function (e) {
+            programme.areaGroupSplit(this);
+            e.stopPropagation();
+        })
+        $(".btn-area-split-remove").click(function (e) {
+            programme.areaGroupSplitRemove(this);
             e.stopPropagation();
         })
     });
@@ -862,6 +871,57 @@
             }
         }
     };
+
+    //区域拆分
+    programme.areaGroupSplit = function (_this) {
+        var judgeObjectContent = $(_this).closest('.area_panel').find('.judge-object-content');
+        var checkedBoxs = judgeObjectContent.find('input:checkbox:checked');
+        if (checkedBoxs.length <= 0) {
+            toastr.info('请选择需要拆分到新区域的估价对象');
+            return false;
+        }
+        var judgeObjectIdArray = [];
+        checkedBoxs.each(function () {
+            judgeObjectIdArray.push($(this).closest('.x_panel').find('[data-name=id]').val());
+        })
+
+        $.ajax({
+            url: '${pageContext.request.contextPath}/schemeProgramme/areaGroupSplit',
+            data: {
+                planId: '${projectPlanDetails.planId}',
+                areaGroupId: $(_this).closest('.area_panel').find('[name=areaGroupId]').val(),
+                judgeObjectIds: judgeObjectIdArray.join()
+            },
+            dataType: 'json',
+            success: function (result) {
+                if (result.ret) {
+                    Alert('区域拆分成功', 1, null, function () {
+                        window.location.href = window.location.href;
+                    })
+                } else {
+                    Alert(result.errmsg);
+                }
+            }
+        })
+    }
+
+    //拆分区域移除
+    programme.areaGroupSplitRemove = function (_this) {
+        $.ajax({
+            url: '${pageContext.request.contextPath}/schemeProgramme/areaGroupSplitRemove',
+            data: {
+                areaGroupId: $(_this).closest('.area_panel').find('[name=areaGroupId]').val()
+            },
+            dataType: 'json',
+            success: function (result) {
+                if (result.ret) {
+                    $(_this).closest('.area_panel').remove();
+                } else {
+                    Alert(result.errmsg);
+                }
+            }
+        })
+    }
 
     //区域合并提交
     programme.areaMergeSubmit = function () {
