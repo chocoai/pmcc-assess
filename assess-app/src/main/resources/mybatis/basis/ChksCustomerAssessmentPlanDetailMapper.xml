@@ -7,6 +7,7 @@
     <result column="project_id" property="projectId" jdbcType="INTEGER" />
     <result column="plan_id" property="planId" jdbcType="INTEGER" />
     <result column="project_name" property="projectName" jdbcType="VARCHAR" />
+    <result column="type_name" property="typeName" jdbcType="VARCHAR" />
     <result column="type" property="type" jdbcType="VARCHAR" />
     <result column="box_id" property="boxId" jdbcType="INTEGER" />
     <result column="activity_id" property="activityId" jdbcType="INTEGER" />
@@ -80,7 +81,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, process_ins_id, project_id, plan_id, project_name, type, box_id, activity_id, 
+    id, process_ins_id, project_id, plan_id, project_name, type_name, type, box_id, activity_id, 
     activity_name, table_id, table_name, project_details_url, bis_enable, url, master_id, 
     modified, creator, created
   </sql>
@@ -119,17 +120,19 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_chks_customer_assessment_plan_detail (process_ins_id, project_id, plan_id, 
-      project_name, type, box_id, 
-      activity_id, activity_name, table_id, 
-      table_name, project_details_url, bis_enable, 
-      url, master_id, modified, 
-      creator, created)
+      project_name, type_name, type, 
+      box_id, activity_id, activity_name, 
+      table_id, table_name, project_details_url, 
+      bis_enable, url, master_id, 
+      modified, creator, created
+      )
     values (#{processInsId,jdbcType=VARCHAR}, #{projectId,jdbcType=INTEGER}, #{planId,jdbcType=INTEGER}, 
-      #{projectName,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{boxId,jdbcType=INTEGER}, 
-      #{activityId,jdbcType=INTEGER}, #{activityName,jdbcType=VARCHAR}, #{tableId,jdbcType=INTEGER}, 
-      #{tableName,jdbcType=VARCHAR}, #{projectDetailsUrl,jdbcType=VARCHAR}, #{bisEnable,jdbcType=BIT}, 
-      #{url,jdbcType=VARCHAR}, #{masterId,jdbcType=INTEGER}, #{modified,jdbcType=TIMESTAMP}, 
-      #{creator,jdbcType=VARCHAR}, #{created,jdbcType=TIMESTAMP})
+      #{projectName,jdbcType=VARCHAR}, #{typeName,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, 
+      #{boxId,jdbcType=INTEGER}, #{activityId,jdbcType=INTEGER}, #{activityName,jdbcType=VARCHAR}, 
+      #{tableId,jdbcType=INTEGER}, #{tableName,jdbcType=VARCHAR}, #{projectDetailsUrl,jdbcType=VARCHAR}, 
+      #{bisEnable,jdbcType=BIT}, #{url,jdbcType=VARCHAR}, #{masterId,jdbcType=INTEGER}, 
+      #{modified,jdbcType=TIMESTAMP}, #{creator,jdbcType=VARCHAR}, #{created,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ChksCustomerAssessmentPlanDetail" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -148,6 +151,9 @@
       </if>
       <if test="projectName != null" >
         project_name,
+      </if>
+      <if test="typeName != null" >
+        type_name,
       </if>
       <if test="type != null" >
         type,
@@ -201,6 +207,9 @@
       </if>
       <if test="projectName != null" >
         #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="typeName != null" >
+        #{typeName,jdbcType=VARCHAR},
       </if>
       <if test="type != null" >
         #{type,jdbcType=VARCHAR},
@@ -267,6 +276,9 @@
       <if test="record.projectName != null" >
         project_name = #{record.projectName,jdbcType=VARCHAR},
       </if>
+      <if test="record.typeName != null" >
+        type_name = #{record.typeName,jdbcType=VARCHAR},
+      </if>
       <if test="record.type != null" >
         type = #{record.type,jdbcType=VARCHAR},
       </if>
@@ -318,6 +330,7 @@
       project_id = #{record.projectId,jdbcType=INTEGER},
       plan_id = #{record.planId,jdbcType=INTEGER},
       project_name = #{record.projectName,jdbcType=VARCHAR},
+      type_name = #{record.typeName,jdbcType=VARCHAR},
       type = #{record.type,jdbcType=VARCHAR},
       box_id = #{record.boxId,jdbcType=INTEGER},
       activity_id = #{record.activityId,jdbcType=INTEGER},
@@ -349,6 +362,9 @@
       </if>
       <if test="projectName != null" >
         project_name = #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="typeName != null" >
+        type_name = #{typeName,jdbcType=VARCHAR},
       </if>
       <if test="type != null" >
         type = #{type,jdbcType=VARCHAR},
@@ -398,6 +414,7 @@
       project_id = #{projectId,jdbcType=INTEGER},
       plan_id = #{planId,jdbcType=INTEGER},
       project_name = #{projectName,jdbcType=VARCHAR},
+      type_name = #{typeName,jdbcType=VARCHAR},
       type = #{type,jdbcType=VARCHAR},
       box_id = #{boxId,jdbcType=INTEGER},
       activity_id = #{activityId,jdbcType=INTEGER},

@@ -56,7 +56,7 @@ public class ChksCustomerAssessmentPlanDetailService {
             return;
         }
         if (oo.getId() != null && oo.getId() != 0) {
-            chksCustomerAssessmentPlanDetailDao.updateChksCustomerAssessmentPlanDetail(oo, updateNull);
+           updateChksCustomerAssessmentPlanDetail(oo, updateNull);
         } else {
             saveChksCustomerAssessmentPlanDetail(oo);
         }
@@ -117,7 +117,5 @@ public class ChksCustomerAssessmentPlanDetailService {
     //com.copower.pmcc.assess.controller.chks.ChksCustomerAssessmentPlanDetailController.apply()
     public static String applyUrl = "/chksCustomerAssessmentPlanDetail/apply" ;
 
-    //com.copower.pmcc.assess.controller.chks.ChksCustomerAssessmentPlanDetailController.approval()
-    public static String approvalUrl = "/chksCustomerAssessmentPlanDetail/approval" ;
 
 }

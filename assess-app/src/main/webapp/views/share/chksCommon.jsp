@@ -372,41 +372,7 @@
         });
     };
 
-    assessmentCommonHandle.loadChksServerViewTable = function () {
-        var target = $("#boxReActivityDtoTableView");
-        var options = {
-            boxId: '${boxReDto.id}',
-            projectId: '${projectPlanDetails.projectId}',
-            planId: '${projectPlanDetails.planId}',
-            planDetailsId: '${projectPlanDetails.id}',
-            spotActivityId: 0,
-            isEffective:true
-        };
-        if ('${processInsId}') {
-            options.processInsId = '${processInsId}';
-        }
-        if (!options.processInsId) {
-            if ('${projectPlanDetails.processInsId}') {
-                options.processInsId = '${projectPlanDetails.processInsId}';
-            }
-        }
-        if ('${activityDtoList}') {
-            var activityIds = [];
-            var data = null;
-            try {
-                data = JSON.parse('${el:toJsonString(activityDtoList)}');
-            } catch (e) {
-                console.log(e);
-            }
-            if (data) {
-                $.each(data, function (i, item) {
-                    activityIds.push(item.id);
-                });
-            }
-            if (activityIds.length != 0) {
-                options.activityIdList = activityIds.join(",");
-            }
-        }
+    assessmentCommonHandle.loadChksServerViewBaseTable = function (target,options) {
         var headHtml = "<caption>参考考核数据(包含所在权限下本次流程的所有数据)</caption>";
         headHtml += "<thead>";
         headHtml += "<tr><td width='5%' align='center' >被考核人</td> <td width='5%' align='center'>考核人</td> <td width='60%' align='center'>考核详情</td> <td width='5%' align='center'>得分</td> <td width='5%' align='center'>考核时间</td> <td width='20%' align='center'>综合说明</td></tr>";
@@ -443,6 +409,44 @@
             bodyHtml += "</tbody>";
             target.empty().append(headHtml + bodyHtml);
         });
+    };
+
+    assessmentCommonHandle.loadChksServerViewTable = function () {
+        var target = $("#boxReActivityDtoTableView");
+        var options = {
+            boxId: '${boxReDto.id}',
+            projectId: '${projectPlanDetails.projectId}',
+            planId: '${projectPlanDetails.planId}',
+            planDetailsId: '${projectPlanDetails.id}',
+            spotActivityId: 0,
+            isEffective:true
+        };
+        if ('${processInsId}') {
+            options.processInsId = '${processInsId}';
+        }
+        if (!options.processInsId) {
+            if ('${projectPlanDetails.processInsId}') {
+                options.processInsId = '${projectPlanDetails.processInsId}';
+            }
+        }
+        if ('${activityDtoList}') {
+            var activityIds = [];
+            var data = null;
+            try {
+                data = JSON.parse('${el:toJsonString(activityDtoList)}');
+            } catch (e) {
+                console.log(e);
+            }
+            if (data) {
+                $.each(data, function (i, item) {
+                    activityIds.push(item.id);
+                });
+            }
+            if (activityIds.length != 0) {
+                options.activityIdList = activityIds.join(",");
+            }
+        }
+        assessmentCommonHandle.loadChksServerViewBaseTable(target,options) ;
     };
 
     assessmentCommonHandle.saveAssessmentServer = function (data, callback) {
