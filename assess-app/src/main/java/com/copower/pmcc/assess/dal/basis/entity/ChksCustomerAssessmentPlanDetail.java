@@ -13,6 +13,8 @@ public class ChksCustomerAssessmentPlanDetail {
 
     private String projectName;
 
+    private String typeName;
+
     private String type;
 
     private Integer boxId;
@@ -77,6 +79,14 @@ public class ChksCustomerAssessmentPlanDetail {
 
     public void setProjectName(String projectName) {
         this.projectName = projectName == null ? null : projectName.trim();
+    }
+
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public void setTypeName(String typeName) {
+        this.typeName = typeName == null ? null : typeName.trim();
     }
 
     public String getType() {

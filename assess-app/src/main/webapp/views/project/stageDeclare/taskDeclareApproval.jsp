@@ -694,7 +694,7 @@
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" target="_blank" data-original-title="考核任务" href="${pageContext.request.contextPath}' + row.url + '">考核任务<i class="fa fa-search fa-white"></i></a>';
+                str += '<a class="btn btn-xs btn-success" target="_blank" href="${pageContext.request.contextPath}' + row.url +"?id="+row.id+  '" >考核任务 <i class="fa fa-check-circle"></i></a>';
                 str += '</div>';
                 return str;
             }

@@ -685,6 +685,9 @@ public class ChksAssessmentProjectPerformanceService {
                 ChksCustomerAssessmentPlanDetail assessmentPlanDetail = new ChksCustomerAssessmentPlanDetail();
                 assessmentPlanDetail.setTableId(integer);
                 assessmentPlanDetail.setTableName(s);
+                assessmentPlanDetail.setBisEnable(true);
+                assessmentPlanDetail.setProjectId(projectInfo.getId());
+                assessmentPlanDetail.setProjectName(projectInfo.getProjectName());
                 assessmentPlanDetail.setCreator(keyValueDto.getKey());
                 assessmentPlanDetail.setType(ChksCustomizeEnum.declare.getKey());
                 assessmentPlanDetail.setMasterId(projectPlanDetails.getId());
