@@ -205,6 +205,7 @@ public class GenerateBaseDataService {
             projectDocumentDto.setCustomer(getPrincipal());
             projectDocumentDto.setCompanyName(qualificationDto != null ? qualificationDto.getOrganizationName() : "");
             projectDocumentDto.setDocumentNumber(getWordNumber());
+            projectDocumentDto.setProjectId(projectInfo.getId());
             projectDocumentDto.setAppKey(applicationConstant.getAppKey());
             projectDocumentDto.setTableName(FormatUtils.entityNameConvertToTableName(GenerateReportInfo.class));
             projectDocumentDto.setTableId(generateReportInfo.getId());

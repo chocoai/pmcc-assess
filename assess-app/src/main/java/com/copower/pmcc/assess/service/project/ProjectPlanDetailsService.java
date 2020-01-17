@@ -147,26 +147,45 @@ public class ProjectPlanDetailsService {
     /**
      * 删除任务
      *
-     * @param planDetailsId
+     * @param planDetailsIds
      */
     @Transactional(rollbackFor = Exception.class)
-    public void deletePlanDetailsById(Integer planDetailsId) {
-        projectPlanDetailsDao.deleteProjectPlanDetails(planDetailsId);
+    public void deletePlanDetailsByIds(List<Integer> planDetailsIds) throws BusinessException {
+        if (CollectionUtils.isEmpty(planDetailsIds))
+            throw new BusinessException("没有可允许删除的任务");
+        List<ProjectPlanDetails> planDetailsList = getProjectPlanDetailsByIds(planDetailsIds);
+        int successCount = 0;
+        for (ProjectPlanDetails projectPlanDetails : planDetailsList) {
+            if (projectPlanDetails.getStatus() == ProcessStatusEnum.FINISH.getName())
+                continue;
+            if (projectPlanDetails.getBisStart() == Boolean.TRUE)
+                continue;
+            if (projectPlanDetails.getBisRestart() == Boolean.TRUE)
+                continue;
+            bpmRpcProjectTaskService.deleteProjectTaskByPlanDetailsId(applicationConstant.getAppKey(), projectPlanDetails.getId());
+            projectPlanDetailsDao.deleteProjectPlanDetails(projectPlanDetails.getId());
+            successCount++;
+        }
+        if (successCount <= 0)
+            throw new BusinessException("没有可允许删除的任务");
     }
 
+    /**
+     * 添加任务
+     *
+     * @param projectPlanDetails
+     */
     @Transactional(rollbackFor = Exception.class)
-    public void initiateStagePlanTask(Integer planId, Integer projectId) {
-        ProjectInfoVo projectInfo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(projectId));
-        ProjectPlan projectPlan = projectPlanService.getProjectplanById(planId);
-        ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlan.getWorkStageId());
-        ProjectPlanDetails select = new ProjectPlanDetails();
-        select.setProjectId(projectId);
-        select.setPlanId(planId);
-        select.setStatus(ProcessStatusEnum.WAIT.getValue());
-        List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsDao.getListObject(select);
-        if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
-            projectPlanDetailsList.forEach(projectPlanDetails -> {
-                projectPlanDetails.setStatus(ProcessStatusEnum.RUN.getValue());
+    public void addPlanDetailsTask(ProjectPlanDetails projectPlanDetails) throws BusinessException {
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
+        ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlanDetails.getProjectWorkStageId());
+        String phaseName = projectPlanDetails.getProjectPhaseName();
+        if (StringUtils.isNotBlank(phaseName)) {
+            List<String> list = FormatUtils.transformString2List(phaseName);
+            list.forEach(o -> {
+                ProjectPlanDetails item = new ProjectPlanDetails();
+                BeanUtils.copyProperties(projectPlanDetails, item);
+                item.setProjectPhaseName(o);
                 projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetails);
                 try {
                     projectPlanService.saveProjectPlanDetailsResponsibility(projectPlanDetails, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.TASK);
@@ -177,64 +196,6 @@ public class ProjectPlanDetailsService {
         }
     }
 
-    /**
-     * 自动分派改阶段下的所有任务
-     *
-     * @param projectId
-     * @param projectWorkStageId
-     * @throws BpmException
-     */
-    @Transactional(rollbackFor = Exception.class)
-    public void autoStagePlanTask(Integer projectId, Integer projectWorkStageId) throws BpmException {
-        ProjectInfoVo projectInfo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(projectId));
-        ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectWorkStageId);
-        ProjectPhase select = new ProjectPhase();
-        select.setProjectClassId(projectInfo.getProjectClassId());
-        select.setProjectTypeId(projectInfo.getProjectTypeId());
-        select.setProjectCategoryId(projectInfo.getProjectCategoryId());
-        select.setWorkStageId(projectWorkStageId);
-        List<ProjectPhase> projectPhaseList = projectPhaseService.getProjectPhaseList(select);
-        if (CollectionUtils.isEmpty(projectPhaseList)) {
-            return;
-        }
-        List<ProjectPlan> projectPlans = projectPlanService.getProjectPlanList2(projectInfo.getId(), projectWorkStageId, projectInfo.getProjectCategoryId());
-        if (CollectionUtils.isEmpty(projectPlans)) {
-            return;
-        }
-        for (ProjectPhase projectPhase : projectPhaseList) {
-            int sort = 10;
-            ProjectPlanDetails projectPlanDetails = new ProjectPlanDetails();
-            projectPlanDetails.setPlanStartDate(new Date());
-            projectPlanDetails.setPlanEndDate(new Date());
-            projectPlanDetails.setPlanHours(new BigDecimal(0));
-            projectPlanDetails.setExecuteUserAccount(projectInfo.getProjectMemberVo().getUserAccountManager());
-            projectPlanDetails.setProjectId(projectInfo.getId());
-            projectPlanDetails.setPlanId(projectPlans.get(0).getId());
-            projectPlanDetails.setProjectPhaseId(projectPhase.getId());
-            projectPlanDetails.setProjectWorkStageId(projectWorkStageId);
-            projectPlanDetails.setProjectPhaseName(projectPhase.getProjectPhaseName());
-            projectPlanDetails.setSorting(++sort);
-            projectPlanDetails.setStatus(ProcessStatusEnum.RUN.getValue());
-            projectPlanDetailsDao.addProjectPlanDetails(projectPlanDetails);
-            projectPlanService.saveProjectPlanDetailsResponsibility(projectPlanDetails, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.TASK);
-        }
-    }
-
-    /**
-     * 项目菜单任务分派 添加任务
-     *
-     * @param projectPlanDetails
-     */
-    @Transactional(rollbackFor = Exception.class)
-    public void saveProjectStagePlan(ProjectPlanDetails projectPlanDetails) {
-        if (projectPlanDetails.getId() != null && projectPlanDetails.getId() > 0) {
-            projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetails);
-        } else {
-            projectPlanDetails.setStatus(ProcessStatusEnum.WAIT.getValue());
-            projectPlanDetails.setCreator(processControllerComponent.getThisUser());
-            projectPlanDetailsDao.addProjectPlanDetails(projectPlanDetails);
-        }
-    }
 
     /**
      * 获取权证下的调查信息内容

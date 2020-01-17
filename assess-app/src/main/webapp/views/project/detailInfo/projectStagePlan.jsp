@@ -2,8 +2,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <c:if test="${projectPlan.projectStatus ne 'wait'}">
     <style>
-        .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td { word-break: break-all; }
-        .table > thead > tr > th:nth-child(4) { width: 200px; }
+        .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+            word-break: break-all;
+        }
+
+        .table > thead > tr > th:nth-child(4) {
+            width: 200px;
+        }
     </style>
     <div class="row">
         <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
@@ -14,8 +19,9 @@
                         <small>
                             <a target="_blank" class="btn btn-xs btn-primary"
                                href="${pageContext.request.contextPath}/projectReportFile/index?projectId=${projectInfo.id}">估价委托书及相关证明</a>
-                                <input type="button" class="btn btn-xs btn-primary" onclick="projectDetailsEnterNextStage();"
-                                value="进入下阶段">
+                            <input type="button" class="btn btn-xs btn-primary"
+                                   onclick="projectDetailsEnterNextStage();"
+                                   value="进入下阶段">
                             <span id="workStageCustomBtn">
                         </span>
                         </small>
@@ -53,7 +59,8 @@
                                     开始时间
                                 </label>
                                 <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                    <input type="text" placeholder="开始时间" data-date-format="yyyy-mm-dd" name="planStartDate"
+                                    <input type="text" placeholder="开始时间" data-date-format="yyyy-mm-dd"
+                                           name="planStartDate"
                                            class="form-control dbdate" readonly="readonly">
                                 </div>
                             </div>
@@ -62,7 +69,8 @@
                                     结束时间
                                 </label>
                                 <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                    <input type="text" placeholder="结束时间" data-date-format="yyyy-mm-dd" name="planEndDate"
+                                    <input type="text" placeholder="结束时间" data-date-format="yyyy-mm-dd"
+                                           name="planEndDate"
                                            class="form-control dbdate" readonly="readonly">
                                 </div>
                             </div>
@@ -80,9 +88,9 @@
                                 <div class=" col-xs-9  col-sm-9  col-md-9  col-lg-9 ">
                                     <a class="btn btn-primary" onclick="projectStagePlan.loadProjectTaskList();">查询</a>
                                     <a class="btn btn-info" onclick="projectStagePlan.createTask()">添加任务</a>
-                                        <%--<a class="btn btn-info" onclick="projectStagePlan.autoCreateTask();">一键添加任务</a>--%>
-                                    <a class="btn btn-danger" onclick="projectStagePlan.startTask()">发起任务</a>
-                                    <a class="btn btn-primary" onclick="projectStagePlan.setExecuteUserAccount();">设置责任人</a>
+                                    <a class="btn btn-danger" onclick="projectStagePlan.deletePlanDetailsByIds()">删除任务</a>
+                                    <a class="btn btn-primary"
+                                       onclick="projectStagePlan.setExecuteUserAccount();">设置责任人</a>
                                 </div>
                             </div>
                         </div>
@@ -509,34 +517,34 @@
         }
         var rows = projectStagePlan.stageTable.bootstrapTable('getSelections');
         if (!rows || rows.length <= 0) {
-            toastr.info("请选择要安排人员的任务");
-        } else {
-            var idArray = [];
-            $.each(rows, function (i, item) {
-                idArray.push(item.id);
-            });
-            projectStagePlan.selectExecuteUserAccount(false, function (data) {
-                if (data && data.account) {
-                    $.ajax({
-                        url: '${pageContext.request.contextPath}/projectPlanDetails/batchUpdateExecuteUser',
-                        data: {
-                            planDetailsIds: idArray.join(","),
-                            newExecuteUser: data.account
-                        },
-                        success: function (result) {
-                            if (result.ret) {
-                                toastr.success('责任人调整成功');
-                                projectStagePlan.stageTable.bootstrapTable('refresh');
-                            } else {
-                                Alert(result.errmsg);
-                            }
-                        }
-                    });
-                } else {
-                    Alert("还未选择任何人员");
-                }
-            });
+            toastr.info("还未选择相关任务");
         }
+        var idArray = [];
+        $.each(rows, function (i, item) {
+            idArray.push(item.id);
+        });
+        projectStagePlan.selectExecuteUserAccount(false, function (data) {
+            if (data && data.account) {
+                $.ajax({
+                    url: '${pageContext.request.contextPath}/projectPlanDetails/batchUpdateExecuteUser',
+                    data: {
+                        planDetailsIds: idArray.join(","),
+                        newExecuteUser: data.account
+                    },
+                    success: function (result) {
+                        if (result.ret) {
+                            toastr.success('责任人调整成功');
+                            projectStagePlan.stageTable.bootstrapTable('refresh');
+                        } else {
+                            Alert(result.errmsg);
+                        }
+                    }
+                });
+            } else {
+                Alert("还未选择任何人员");
+            }
+        });
+
     };
 
     /**
@@ -610,66 +618,38 @@
     };
 
     /**
-     * 发起任务
-     */
-    projectStagePlan.startTask = function () {
-        $.ajax({
-            url: "${pageContext.request.contextPath}/projectPlanDetails/initiateStagePlanTask",
-            data: {planId: '${projectPlan.id}', projectId: '${projectInfo.id}'},
-            type: "post",
-            dataType: "json",
-            success: function (result) {
-                if (result.ret) {
-                    toastr.info("任务发起成功!");
-                    projectStagePlan.stageTable.bootstrapTable('refresh');
-                } else {
-                    Alert("失败:" + result.errmsg);
-                }
-            },
-            error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
-            }
-        });
-    };
-
-    /*自动安排任务*/
-    projectStagePlan.autoCreateTask = function () {
-        $.ajax({
-            url: "${pageContext.request.contextPath}/projectPlanDetails/autoStagePlanTask",
-            data: {projectId: '${projectInfo.id}', projectWorkStageId: '${projectWorkStage.id}'},
-            type: "post",
-            dataType: "json",
-            success: function (result) {
-                if (result.ret) {
-                    toastr.info("完成!");
-                    projectStagePlan.stageTable.bootstrapTable('refresh');
-                } else {
-                    Alert("失败:" + result.errmsg);
-                }
-            },
-            error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
-            }
-        });
-    };
-
-    /**
      * 删除任务
      * @param id
      */
-    projectStagePlan.deleteStagePlan = function (id) {
-        Alert("确定删除", 2, null, function () {
+    projectStagePlan.deletePlanDetailsByIds = function () {
+        if ('${projectInfo.projectMemberVo.userAccountManager}' != '${sysUserDto.userAccount}') {
+            toastr.info("只有项目经理才能安排任务的执行人员");
+            return false;
+        }
+        var rows = projectStagePlan.stageTable.bootstrapTable('getSelections');
+        if (!rows || rows.length <= 0) {
+            toastr.info("还未选择相关任务");
+            return false;
+        }
+        var idArray = [];
+        $.each(rows, function (i, item) {
+            idArray.push(item.id);
+        });
+
+        Alert("删除后数据将无法恢复，确定要删除么？", 2, null, function () {
             $.ajax({
-                url: "${pageContext.request.contextPath}/projectPlanDetails/deletePlanDetailsById",
-                data: {planDetailsId: id},
+                url: "${pageContext.request.contextPath}/projectPlanDetails/deletePlanDetailsByIds",
+                data: {
+                    planDetailsIds: idArray.join()
+                },
                 type: "post",
                 dataType: "json",
                 success: function (result) {
                     if (result.ret) {
                         toastr.info("任务已经删除!");
-                        projectStagePlan.stageTable.bootstrapTable('refresh');
+                        projectStagePlan.loadProjectTaskList();
                     } else {
-                        Alert("失败:" + result.errmsg);
+                        Alert(result.errmsg);
                     }
                 },
                 error: function (result) {
