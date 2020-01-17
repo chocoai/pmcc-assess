@@ -484,7 +484,7 @@ public class DeclarePublicService {
         }
         //关联附件编号
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(35)))) {
-            oo.setAutoInitNumber(PoiUtils.getCellValue(row.getCell(35)));
+            oo.setAutoInitNumber(Integer.valueOf(PoiUtils.getCellValue(row.getCell(35))));
         }
         return true;
     }
@@ -687,7 +687,7 @@ public class DeclarePublicService {
         }
         //关联附件编号
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(18)))) {
-            declareRealtyLandCert.setAutoInitNumber(PoiUtils.getCellValue(row.getCell(18)));
+            declareRealtyLandCert.setAutoInitNumber(Integer.valueOf(PoiUtils.getCellValue(row.getCell(18))));
         }
         return true;
     }
@@ -916,7 +916,7 @@ public class DeclarePublicService {
         }
         //关联附件编号
         if (org.apache.commons.lang3.StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(24)))) {
-            declareRealtyHouseCert.setAutoInitNumber(PoiUtils.getCellValue(row.getCell(24)));
+            declareRealtyHouseCert.setAutoInitNumber(Integer.valueOf(PoiUtils.getCellValue(row.getCell(24))));
         }
         return true;
     }
@@ -1187,7 +1187,7 @@ public class DeclarePublicService {
         if (CollectionUtils.isEmpty(linkedList)) {
             throw new Exception("传入的文档没有图片");
         }
-        LinkedHashMap<String, Integer> linkedHashMap = Maps.newLinkedHashMap();
+        LinkedHashMap<Integer, Integer> linkedHashMap = Maps.newLinkedHashMap();
         if (Objects.equal(FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class), automatedWarrants.getTableName())) {
             DeclareRealtyHouseCert query = new DeclareRealtyHouseCert();
             query.setPlanDetailsId(automatedWarrants.getPlanDetailsId());
@@ -1195,9 +1195,6 @@ public class DeclarePublicService {
             List<DeclareRealtyHouseCertVo> declareRealtyHouseCertVoList = declareRealtyHouseCertService.lists(query);
             if (CollectionUtils.isNotEmpty(declareRealtyHouseCertVoList)) {
                 for (DeclareRealtyHouseCertVo declareRealtyHouseCertVo : declareRealtyHouseCertVoList) {
-                    if (StringUtils.isEmpty(declareRealtyHouseCertVo.getAutoInitNumber())) {
-                        continue;
-                    }
                     linkedHashMap.put(declareRealtyHouseCertVo.getAutoInitNumber(), declareRealtyHouseCertVo.getId());
                 }
             }
@@ -1239,17 +1236,13 @@ public class DeclarePublicService {
      * @param automatedWarrants
      * @return
      */
-    private LinkedList<Integer> getFilterAutomatedWarrants(LinkedHashMap<String, Integer> linkedHashMap, AutomatedWarrants automatedWarrants) {
+    private LinkedList<Integer> getFilterAutomatedWarrants(LinkedHashMap<Integer, Integer> linkedHashMap, AutomatedWarrants automatedWarrants) {
         LinkedList<Integer> linkedList = Lists.newLinkedList();
-        Iterator<Map.Entry<String, Integer>> entryIterator = linkedHashMap.entrySet().iterator();
+        Iterator<Map.Entry<Integer, Integer>> entryIterator = linkedHashMap.entrySet().iterator();
         LinkedHashMap<Integer, Integer> integerLinkedHashMap = Maps.newLinkedHashMap();
         while (entryIterator.hasNext()) {
-            Map.Entry<String, Integer> integerEntry = entryIterator.next();
-            String key = integerEntry.getKey();
-            if (StringUtils.isNotBlank(automatedWarrants.getPrefixNumber())) {
-                key = StringUtils.remove(integerEntry.getKey(), automatedWarrants.getPrefixNumber());
-            }
-            int number = Integer.parseInt(key);
+            Map.Entry<Integer, Integer> integerEntry = entryIterator.next();
+            Integer number = integerEntry.getKey();
             if (number > automatedWarrants.getEndNumber().intValue() || number < automatedWarrants.getStartNumber().intValue()) {
                 continue;
             }

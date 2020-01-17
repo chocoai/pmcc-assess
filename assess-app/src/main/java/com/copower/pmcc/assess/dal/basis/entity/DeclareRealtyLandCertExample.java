@@ -286,6 +286,66 @@ public class DeclareRealtyLandCertExample {
             return (Criteria) this;
         }
 
+        public Criteria andAutoInitNumberIsNull() {
+            addCriterion("auto_init_number is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAutoInitNumberIsNotNull() {
+            addCriterion("auto_init_number is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAutoInitNumberEqualTo(Integer value) {
+            addCriterion("auto_init_number =", value, "autoInitNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andAutoInitNumberNotEqualTo(Integer value) {
+            addCriterion("auto_init_number <>", value, "autoInitNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andAutoInitNumberGreaterThan(Integer value) {
+            addCriterion("auto_init_number >", value, "autoInitNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andAutoInitNumberGreaterThanOrEqualTo(Integer value) {
+            addCriterion("auto_init_number >=", value, "autoInitNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andAutoInitNumberLessThan(Integer value) {
+            addCriterion("auto_init_number <", value, "autoInitNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andAutoInitNumberLessThanOrEqualTo(Integer value) {
+            addCriterion("auto_init_number <=", value, "autoInitNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andAutoInitNumberIn(List<Integer> values) {
+            addCriterion("auto_init_number in", values, "autoInitNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andAutoInitNumberNotIn(List<Integer> values) {
+            addCriterion("auto_init_number not in", values, "autoInitNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andAutoInitNumberBetween(Integer value1, Integer value2) {
+            addCriterion("auto_init_number between", value1, value2, "autoInitNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andAutoInitNumberNotBetween(Integer value1, Integer value2) {
+            addCriterion("auto_init_number not between", value1, value2, "autoInitNumber");
+            return (Criteria) this;
+        }
+
         public Criteria andLandCertGetQuestionIsNull() {
             addCriterion("land_cert_get_question is null");
             return (Criteria) this;
@@ -1023,6 +1083,76 @@ public class DeclareRealtyLandCertExample {
 
         public Criteria andPublicSituationNotBetween(Integer value1, Integer value2) {
             addCriterion("public_situation not between", value1, value2, "publicSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andPublicSituationRemarkIsNull() {
+            addCriterion("public_situation_remark is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPublicSituationRemarkIsNotNull() {
+            addCriterion("public_situation_remark is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPublicSituationRemarkEqualTo(String value) {
+            addCriterion("public_situation_remark =", value, "publicSituationRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andPublicSituationRemarkNotEqualTo(String value) {
+            addCriterion("public_situation_remark <>", value, "publicSituationRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andPublicSituationRemarkGreaterThan(String value) {
+            addCriterion("public_situation_remark >", value, "publicSituationRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andPublicSituationRemarkGreaterThanOrEqualTo(String value) {
+            addCriterion("public_situation_remark >=", value, "publicSituationRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andPublicSituationRemarkLessThan(String value) {
+            addCriterion("public_situation_remark <", value, "publicSituationRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andPublicSituationRemarkLessThanOrEqualTo(String value) {
+            addCriterion("public_situation_remark <=", value, "publicSituationRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andPublicSituationRemarkLike(String value) {
+            addCriterion("public_situation_remark like", value, "publicSituationRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andPublicSituationRemarkNotLike(String value) {
+            addCriterion("public_situation_remark not like", value, "publicSituationRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andPublicSituationRemarkIn(List<String> values) {
+            addCriterion("public_situation_remark in", values, "publicSituationRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andPublicSituationRemarkNotIn(List<String> values) {
+            addCriterion("public_situation_remark not in", values, "publicSituationRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andPublicSituationRemarkBetween(String value1, String value2) {
+            addCriterion("public_situation_remark between", value1, value2, "publicSituationRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andPublicSituationRemarkNotBetween(String value1, String value2) {
+            addCriterion("public_situation_remark not between", value1, value2, "publicSituationRemark");
             return (Criteria) this;
         }
 
@@ -3013,146 +3143,6 @@ public class DeclareRealtyLandCertExample {
 
         public Criteria andGmtModifiedNotBetween(Date value1, Date value2) {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
-            return (Criteria) this;
-        }
-
-        public Criteria andPublicSituationRemarkIsNull() {
-            addCriterion("public_situation_remark is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andPublicSituationRemarkIsNotNull() {
-            addCriterion("public_situation_remark is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andPublicSituationRemarkEqualTo(String value) {
-            addCriterion("public_situation_remark =", value, "publicSituationRemark");
-            return (Criteria) this;
-        }
-
-        public Criteria andPublicSituationRemarkNotEqualTo(String value) {
-            addCriterion("public_situation_remark <>", value, "publicSituationRemark");
-            return (Criteria) this;
-        }
-
-        public Criteria andPublicSituationRemarkGreaterThan(String value) {
-            addCriterion("public_situation_remark >", value, "publicSituationRemark");
-            return (Criteria) this;
-        }
-
-        public Criteria andPublicSituationRemarkGreaterThanOrEqualTo(String value) {
-            addCriterion("public_situation_remark >=", value, "publicSituationRemark");
-            return (Criteria) this;
-        }
-
-        public Criteria andPublicSituationRemarkLessThan(String value) {
-            addCriterion("public_situation_remark <", value, "publicSituationRemark");
-            return (Criteria) this;
-        }
-
-        public Criteria andPublicSituationRemarkLessThanOrEqualTo(String value) {
-            addCriterion("public_situation_remark <=", value, "publicSituationRemark");
-            return (Criteria) this;
-        }
-
-        public Criteria andPublicSituationRemarkLike(String value) {
-            addCriterion("public_situation_remark like", value, "publicSituationRemark");
-            return (Criteria) this;
-        }
-
-        public Criteria andPublicSituationRemarkNotLike(String value) {
-            addCriterion("public_situation_remark not like", value, "publicSituationRemark");
-            return (Criteria) this;
-        }
-
-        public Criteria andPublicSituationRemarkIn(List<String> values) {
-            addCriterion("public_situation_remark in", values, "publicSituationRemark");
-            return (Criteria) this;
-        }
-
-        public Criteria andPublicSituationRemarkNotIn(List<String> values) {
-            addCriterion("public_situation_remark not in", values, "publicSituationRemark");
-            return (Criteria) this;
-        }
-
-        public Criteria andPublicSituationRemarkBetween(String value1, String value2) {
-            addCriterion("public_situation_remark between", value1, value2, "publicSituationRemark");
-            return (Criteria) this;
-        }
-
-        public Criteria andPublicSituationRemarkNotBetween(String value1, String value2) {
-            addCriterion("public_situation_remark not between", value1, value2, "publicSituationRemark");
-            return (Criteria) this;
-        }
-
-        public Criteria andAutoInitNumberIsNull() {
-            addCriterion("auto_init_number is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andAutoInitNumberIsNotNull() {
-            addCriterion("auto_init_number is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andAutoInitNumberEqualTo(String value) {
-            addCriterion("auto_init_number =", value, "autoInitNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andAutoInitNumberNotEqualTo(String value) {
-            addCriterion("auto_init_number <>", value, "autoInitNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andAutoInitNumberGreaterThan(String value) {
-            addCriterion("auto_init_number >", value, "autoInitNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andAutoInitNumberGreaterThanOrEqualTo(String value) {
-            addCriterion("auto_init_number >=", value, "autoInitNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andAutoInitNumberLessThan(String value) {
-            addCriterion("auto_init_number <", value, "autoInitNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andAutoInitNumberLessThanOrEqualTo(String value) {
-            addCriterion("auto_init_number <=", value, "autoInitNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andAutoInitNumberLike(String value) {
-            addCriterion("auto_init_number like", value, "autoInitNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andAutoInitNumberNotLike(String value) {
-            addCriterion("auto_init_number not like", value, "autoInitNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andAutoInitNumberIn(List<String> values) {
-            addCriterion("auto_init_number in", values, "autoInitNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andAutoInitNumberNotIn(List<String> values) {
-            addCriterion("auto_init_number not in", values, "autoInitNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andAutoInitNumberBetween(String value1, String value2) {
-            addCriterion("auto_init_number between", value1, value2, "autoInitNumber");
-            return (Criteria) this;
-        }
-
-        public Criteria andAutoInitNumberNotBetween(String value1, String value2) {
-            addCriterion("auto_init_number not between", value1, value2, "autoInitNumber");
             return (Criteria) this;
         }
     }

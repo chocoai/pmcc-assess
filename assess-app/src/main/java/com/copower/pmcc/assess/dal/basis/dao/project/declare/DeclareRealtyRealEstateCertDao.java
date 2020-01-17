@@ -65,6 +65,7 @@ public class DeclareRealtyRealEstateCertDao {
     public List<DeclareRealtyRealEstateCert> getDeclareRealtyRealEstateCertList(DeclareRealtyRealEstateCert declareRealtyRealEstateCert){
         DeclareRealtyRealEstateCertExample example = new DeclareRealtyRealEstateCertExample();
         MybatisUtils.convertObj2Example(declareRealtyRealEstateCert, example);
+        example.setOrderByClause("auto_init_number,id");
         return declareRealtyRealEstateCertMapper.selectByExample(example);
     }
 }

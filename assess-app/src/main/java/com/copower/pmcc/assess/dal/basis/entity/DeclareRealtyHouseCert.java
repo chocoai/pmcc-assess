@@ -10,6 +10,8 @@ public class DeclareRealtyHouseCert {
 
     private Integer planDetailsId;
 
+    private Integer autoInitNumber;
+
     private String certName;
 
     private String province;
@@ -25,6 +27,8 @@ public class DeclareRealtyHouseCert {
     private String ownership;
 
     private Integer publicSituation;
+
+    private String publicSituationRemark;
 
     private String beLocated;
 
@@ -47,6 +51,8 @@ public class DeclareRealtyHouseCert {
     private String floorCount;
 
     private String certUse;
+
+    private String certUseCategory;
 
     private String housingStructure;
 
@@ -80,6 +86,10 @@ public class DeclareRealtyHouseCert {
 
     private String declareType;
 
+    private String groundNum;
+
+    private BigDecimal apportionmentArea;
+
     private String enable;
 
     private Boolean bisRecord;
@@ -89,16 +99,6 @@ public class DeclareRealtyHouseCert {
     private Date gmtCreated;
 
     private Date gmtModified;
-
-    private String groundNum;
-
-    private BigDecimal apportionmentArea;
-
-    private String certUseCategory;
-
-    private String publicSituationRemark;
-
-    private String autoInitNumber;
 
     public Integer getId() {
         return id;
@@ -122,6 +122,14 @@ public class DeclareRealtyHouseCert {
 
     public void setPlanDetailsId(Integer planDetailsId) {
         this.planDetailsId = planDetailsId;
+    }
+
+    public Integer getAutoInitNumber() {
+        return autoInitNumber;
+    }
+
+    public void setAutoInitNumber(Integer autoInitNumber) {
+        this.autoInitNumber = autoInitNumber;
     }
 
     public String getCertName() {
@@ -186,6 +194,14 @@ public class DeclareRealtyHouseCert {
 
     public void setPublicSituation(Integer publicSituation) {
         this.publicSituation = publicSituation;
+    }
+
+    public String getPublicSituationRemark() {
+        return publicSituationRemark;
+    }
+
+    public void setPublicSituationRemark(String publicSituationRemark) {
+        this.publicSituationRemark = publicSituationRemark == null ? null : publicSituationRemark.trim();
     }
 
     public String getBeLocated() {
@@ -274,6 +290,14 @@ public class DeclareRealtyHouseCert {
 
     public void setCertUse(String certUse) {
         this.certUse = certUse == null ? null : certUse.trim();
+    }
+
+    public String getCertUseCategory() {
+        return certUseCategory;
+    }
+
+    public void setCertUseCategory(String certUseCategory) {
+        this.certUseCategory = certUseCategory == null ? null : certUseCategory.trim();
     }
 
     public String getHousingStructure() {
@@ -404,6 +428,22 @@ public class DeclareRealtyHouseCert {
         this.declareType = declareType == null ? null : declareType.trim();
     }
 
+    public String getGroundNum() {
+        return groundNum;
+    }
+
+    public void setGroundNum(String groundNum) {
+        this.groundNum = groundNum == null ? null : groundNum.trim();
+    }
+
+    public BigDecimal getApportionmentArea() {
+        return apportionmentArea;
+    }
+
+    public void setApportionmentArea(BigDecimal apportionmentArea) {
+        this.apportionmentArea = apportionmentArea;
+    }
+
     public String getEnable() {
         return enable;
     }
@@ -442,45 +482,5 @@ public class DeclareRealtyHouseCert {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public String getGroundNum() {
-        return groundNum;
-    }
-
-    public void setGroundNum(String groundNum) {
-        this.groundNum = groundNum == null ? null : groundNum.trim();
-    }
-
-    public BigDecimal getApportionmentArea() {
-        return apportionmentArea;
-    }
-
-    public void setApportionmentArea(BigDecimal apportionmentArea) {
-        this.apportionmentArea = apportionmentArea;
-    }
-
-    public String getCertUseCategory() {
-        return certUseCategory;
-    }
-
-    public void setCertUseCategory(String certUseCategory) {
-        this.certUseCategory = certUseCategory == null ? null : certUseCategory.trim();
-    }
-
-    public String getPublicSituationRemark() {
-        return publicSituationRemark;
-    }
-
-    public void setPublicSituationRemark(String publicSituationRemark) {
-        this.publicSituationRemark = publicSituationRemark == null ? null : publicSituationRemark.trim();
-    }
-
-    public String getAutoInitNumber() {
-        return autoInitNumber;
-    }
-
-    public void setAutoInitNumber(String autoInitNumber) {
-        this.autoInitNumber = autoInitNumber == null ? null : autoInitNumber.trim();
     }
 }
