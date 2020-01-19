@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.service.project.scheme;
 
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
+import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeLiquidationAnalysisJudgeDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.data.DataTaxRateAllocationService;
@@ -8,8 +9,11 @@ import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import com.copower.pmcc.erp.common.utils.LangUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -36,6 +40,8 @@ public class ProjectTaskLiquidationAnalysisAssist implements ProjectTaskInterfac
     private DataTaxRateAllocationService dataTaxRateAllocationService;
     @Autowired
     private DeclareRecordService declareRecordService;
+    @Autowired
+    private SchemeLiquidationAnalysisJudgeDao schemeLiquidationAnalysisJudgeDao;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
@@ -52,11 +58,37 @@ public class ProjectTaskLiquidationAnalysisAssist implements ProjectTaskInterfac
             schemeLiquidationAnalysisGroup.setPlanDetailsId(projectPlanDetails.getId());
             schemeLiquidationAnalysisGroup.setAreaId(projectPlanDetails.getAreaId());
             schemeLiquidationAnalysisService.saveLiquidationAnalysisGroup(schemeLiquidationAnalysisGroup);
-            schemeLiquidationAnalysisService.initTaxAllocation(projectPlanDetails.getAreaId(), projectPlanDetails.getId(),schemeLiquidationAnalysisGroup.getId());
+            schemeLiquidationAnalysisService.initTaxAllocation(projectPlanDetails.getAreaId(), projectPlanDetails.getId(), schemeLiquidationAnalysisGroup.getId());
         }
         modelAndView.addObject("master", schemeLiquidationAnalysis);
         setModelParam(modelAndView, projectPlanDetails);
+        refreshAnalysisJudge(projectPlanDetails.getAreaId());
         return modelAndView;
+    }
+
+    /**
+     * 刷新关联的估价对象数据
+     * 估价对象数据可能已发生变化
+     * @param areaId
+     */
+    @Transactional(rollbackFor = Exception.class)
+    private void refreshAnalysisJudge(Integer areaId){
+        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectService.getJudgeObjectApplicableListByAreaGroupId(areaId);
+        List<Integer> list = LangUtils.transform(judgeObjectList, o -> o.getId());
+        List<SchemeLiquidationAnalysisJudge> analysisJudgeList = schemeLiquidationAnalysisJudgeDao.getListByAreaId(areaId);
+        if (CollectionUtils.isNotEmpty(analysisJudgeList) && CollectionUtils.isNotEmpty(list)) {
+            analysisJudgeList.forEach(o -> {
+                if (!list.contains(o.getJudgeObjectId())){
+                    schemeLiquidationAnalysisJudgeDao.deleteInfo(o.getId());
+                    return;
+                }
+                SchemeJudgeObject judgeObject = schemeJudgeObjectService.getCacheJudgeObject(o.getJudgeObjectId());
+                if(judgeObject!=null){
+                    o.setName(judgeObject.getName());
+                    schemeLiquidationAnalysisJudgeDao.updateSchemeLiquidationAnalysisJudge(o);
+                }
+            });
+        }
     }
 
     /**
@@ -132,7 +164,7 @@ public class ProjectTaskLiquidationAnalysisAssist implements ProjectTaskInterfac
         String salesTax = String.valueOf(allocationSales.getTaxRate());
         modelAndView.addObject("salesTax", salesTax);
         List<DeclareRecord> declareRecordList = declareRecordService.getDeclareRecordByProjectId(projectPlanDetails.getProjectId());
-        modelAndView.addObject("declareRecordList",declareRecordList);
+        modelAndView.addObject("declareRecordList", declareRecordList);
         modelAndView.addObject("areaGroup", schemeAreaGroupService.getSchemeAreaGroup(projectPlanDetails.getAreaId()));
     }
 }

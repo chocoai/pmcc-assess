@@ -35,26 +35,26 @@ public class SchemeJudgeObjectHistoryDao {
         return schemeJudgeObjectHistoryMapper.deleteByPrimaryKey(id) == 1;
     }
 
-    public boolean deleteSchemeJudgeObjectHistoryByProjectId(Integer projectId) {
+    public boolean deleteHistoryListByProjectId(Integer projectId) {
         if (projectId == null) return false;
         SchemeJudgeObjectHistoryExample example = new SchemeJudgeObjectHistoryExample();
         example.createCriteria().andProjectIdEqualTo(projectId);
         return schemeJudgeObjectHistoryMapper.deleteByExample(example) > 0;
     }
     
-    public List<SchemeJudgeObjectHistory> getListByProjectId(Integer projectId) {
+    public List<SchemeJudgeObjectHistory> getEnableListByProjectId(Integer projectId) {
         if (projectId == null) return null;
         SchemeJudgeObjectHistoryExample example = new SchemeJudgeObjectHistoryExample();
         SchemeJudgeObjectHistoryExample.Criteria criteria = example.createCriteria();
-        criteria.andProjectIdEqualTo(projectId);
+        criteria.andProjectIdEqualTo(projectId).andBisEnableEqualTo(true);
         return schemeJudgeObjectHistoryMapper.selectByExample(example);
     }
 
-    public List<SchemeJudgeObjectHistory> getListByAreaGroupId(Integer areaGroupId) {
+    public List<SchemeJudgeObjectHistory> getEnableListByAreaId(Integer areaGroupId) {
         if (areaGroupId == null) return null;
         SchemeJudgeObjectHistoryExample example = new SchemeJudgeObjectHistoryExample();
         SchemeJudgeObjectHistoryExample.Criteria criteria = example.createCriteria();
-        criteria.andAreaGroupIdEqualTo(areaGroupId);
+        criteria.andAreaGroupIdEqualTo(areaGroupId).andBisEnableEqualTo(true);
         return schemeJudgeObjectHistoryMapper.selectByExample(example);
     }
 }

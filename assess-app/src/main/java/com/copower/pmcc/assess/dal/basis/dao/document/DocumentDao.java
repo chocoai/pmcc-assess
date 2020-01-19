@@ -32,7 +32,9 @@ public class DocumentDao {
     ///region 项目发文
     public List<DocumentSend> getDocumentSendList(DocumentSend documentSend) {
         DocumentSendExample example = new DocumentSendExample();
-        MybatisUtils.convertObj2Example(documentSend, example);
+        DocumentSendExample.Criteria criteria = example.createCriteria();
+        MybatisUtils.convertObj2Criteria(documentSend, criteria);
+        criteria.andStatusIsNotNull();
         return documentSendMapper.selectByExampleWithBLOBs(example);
     }
 

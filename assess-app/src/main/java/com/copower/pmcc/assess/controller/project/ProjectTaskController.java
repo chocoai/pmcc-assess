@@ -133,6 +133,8 @@ public class ProjectTaskController extends BaseController {
         try {
             projectTaskService.submitTask(projectTaskDto);
             return HttpResult.newCorrectResult();
+        } catch (BusinessException e) {
+            return HttpResult.newErrorResult(e.getMessage());
         } catch (Exception e) {
             baseService.writeExceptionInfo(e, "提交工作成果数据异常");
             return HttpResult.newErrorResult("提交工作成果数据异常");
@@ -356,8 +358,8 @@ public class ProjectTaskController extends BaseController {
         modelAndView.addObject(StringUtils.uncapitalize(BoxReDto.class.getSimpleName()), bpmRpcBoxService.getBoxReInfoByBoxId(boxId));
         modelAndView.addObject("boxReActivityDto", boxReActivityDto);//普通考核节点 审批
         modelAndView.addObject("boxReActivityDtoList", boxReActivityDtoList);//普通考核节点 发起的详情task任务
-        if (CollectionUtils.isNotEmpty(boxReActivityDtoList)){
-            modelAndView.addObject(StringUtils.uncapitalize(SysUserDto.class.getSimpleName()),processControllerComponent.getThisUserInfo()) ;
+        if (CollectionUtils.isNotEmpty(boxReActivityDtoList)) {
+            modelAndView.addObject(StringUtils.uncapitalize(SysUserDto.class.getSimpleName()), processControllerComponent.getThisUserInfo());
         }
         modelAndView.addObject("spotReActivityDto", spotReActivityDto);//抽查节点
         //当前节点  可以查看的权限节点信息列表

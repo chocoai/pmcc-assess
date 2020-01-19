@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.common.enums.ComputeDataTypeEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.common.enums.ResponsibileModelEnum;
+import com.copower.pmcc.assess.constant.AssessCacheConstant;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.constant.BaseConstant;
@@ -48,6 +49,7 @@ import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
+import com.copower.pmcc.erp.constant.CacheConstant;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -97,9 +99,7 @@ public class SchemeJudgeObjectService {
     @Autowired
     private SchemeSurePriceFactorDao schemeSurePriceFactorDao;
     @Autowired
-    private BasicApplyService basicApplyService;
-    @Autowired
-    private BasicHouseService basicHouseService;
+    private ProcessControllerComponent processControllerComponent;
     @Autowired
     private ApplicationConstant applicationConstant;
     @Autowired
@@ -128,8 +128,6 @@ public class SchemeJudgeObjectService {
     private BaseParameterService baseParameterService;
     @Autowired
     private BpmRpcBoxService bpmRpcBoxService;
-    @Autowired
-    private ProcessControllerComponent processControllerComponent;
     @Autowired
     private SchemeJudgeObjectHistoryDao schemeJudgeObjectHistoryDao;
 
@@ -557,6 +555,7 @@ public class SchemeJudgeObjectService {
             List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getListByIds(list);
             String number = "," + schemeJudgeObject.getNumber();
             String name = "," + schemeJudgeObject.getName();
+            BigDecimal floorArea = schemeJudgeObject.getFloorArea();
             BigDecimal evaluationArea = schemeJudgeObject.getEvaluationArea();
             if (CollectionUtils.isNotEmpty(judgeObjectList)) {
                 for (SchemeJudgeObject judgeObject : judgeObjectList) {
@@ -567,19 +566,23 @@ public class SchemeJudgeObjectService {
                     String fullNumber = "," + judgeObject.getNumber() + (judgeObject.getSplitNumber() == null ? "" : "-" + judgeObject.getSplitNumber());
                     number = number.replace(fullNumber, "");
                     name = name.replace(fullNumber, "");
+                    floorArea = floorArea.subtract(judgeObject.getFloorArea());
                     evaluationArea = evaluationArea.subtract(judgeObject.getEvaluationArea());
                 }
             }
-            schemeJudgeObject.setNumber(number.replaceAll("^,+?", ""));
-            schemeJudgeObject.setName(name.replaceAll("^,+?", ""));
+            schemeJudgeObject.setNumber(number.replaceAll(",+", ","));
+            schemeJudgeObject.setName(name.replaceAll(",+", ","));
+            schemeJudgeObject.setFloorArea(floorArea);
             schemeJudgeObject.setEvaluationArea(evaluationArea);
             schemeJudgeObjectDao.updateSchemeJudgeObject(schemeJudgeObject);
+            judgeNameChangeEvent(schemeJudgeObject);
         }
 
         if (StringUtils.isNotBlank(addIds)) {
             List<Integer> list = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(addIds));
             List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getListByIds(list);
             String number = schemeJudgeObject.getNumber();
+            BigDecimal floorArea = schemeJudgeObject.getFloorArea();
             BigDecimal evaluationArea = schemeJudgeObject.getEvaluationArea();
             if (CollectionUtils.isNotEmpty(judgeObjectList)) {
                 for (SchemeJudgeObject judgeObject : judgeObjectList) {
@@ -588,13 +591,16 @@ public class SchemeJudgeObjectService {
                     schemeJudgeObjectDao.updateSchemeJudgeObject(judgeObject);
                     String fullNumber = "," + judgeObject.getNumber() + (judgeObject.getSplitNumber() == null ? "" : "-" + judgeObject.getSplitNumber());
                     number = number + fullNumber;
+                    floorArea = floorArea.add(judgeObject.getFloorArea());
                     evaluationArea = evaluationArea.add(judgeObject.getEvaluationArea());
                 }
             }
             schemeJudgeObject.setNumber(number);
             schemeJudgeObject.setName(number + BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME);
+            schemeJudgeObject.setFloorArea(floorArea);
             schemeJudgeObject.setEvaluationArea(evaluationArea);
             schemeJudgeObjectDao.updateSchemeJudgeObject(schemeJudgeObject);
+            judgeNameChangeEvent(schemeJudgeObject);
         }
 
     }
@@ -686,8 +692,6 @@ public class SchemeJudgeObjectService {
         if (count > 0) {
             throw new BusinessException("还有委估对象未设置评估方法请检查");
         }
-
-
         this.saveProgrammeAll(schemeProgrammeDtos);
         ProjectPlan projectPlan = projectPlanService.getProjectplanById(planId);
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
@@ -722,9 +726,7 @@ public class SchemeJudgeObjectService {
             }
             projectPlan.setProcessInsId(processUserDto.getProcessInsId());
             projectPlanService.updateProjectPlan(projectPlan);
-        }
-
-        if (!mustUseBox) {
+        } else {
             this.submitProgrammeHandle(projectInfo, projectPlan, projectWorkStage);
         }
     }
@@ -742,12 +744,11 @@ public class SchemeJudgeObjectService {
         String projectManager = projectMemberService.getProjectManager(projectInfo.getId());
         List<SchemeAreaGroup> areaGroupList = schemeAreaGroupService.getAreaGroupEnableByProjectId(projectInfo.getId());
         if (CollectionUtils.isNotEmpty(areaGroupList)) {
+            Boolean isNeedReNumber = false;
             List<MdNewAndRemoveDto> methodChangeJudges = Lists.newArrayList();//只是改变了评估方法的估价对象
             ProjectPhase phaseSurePrice = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.SURE_PRICE, projectInfo.getProjectCategoryId());
-
-            String mortgageKey = baseDataDicService.getCacheDataDicById(projectInfo.getEntrustPurpose()).getFieldName();
             Map<Integer, ProjectPhase> phaseMap = getProjectPhaseMap(projectInfo.getProjectCategoryId());
-            List<SchemeJudgeObjectHistory> judgeObjectHistoryList = schemeJudgeObjectHistoryDao.getListByProjectId(projectInfo.getId());
+
             SchemeJudgeObjectAppendTaskDto appendTaskDto = new SchemeJudgeObjectAppendTaskDto();
             appendTaskDto.setProjectInfo(projectInfo);
             appendTaskDto.setProjectWorkStage(projectWorkStage);
@@ -779,6 +780,7 @@ public class SchemeJudgeObjectService {
                     //1.先用所有关键信息进行比对，完全一致，这部分数据不做处理，注意有可能选择的方法会不一致
                     //2.不一致，其中新增或发生变化的先删除任务再为其添加新任务；已被删除的估价对象只将其任务删除掉
                     List<SchemeJudgeObject> judgeObjectList = getJudgeObjectApplicableListByAreaGroupId(schemeAreaGroup.getId());
+                    List<SchemeJudgeObjectHistory> judgeObjectHistoryList = schemeJudgeObjectHistoryDao.getEnableListByAreaId(schemeAreaGroup.getId());
                     if (CollectionUtils.isNotEmpty(judgeObjectList)) {
                         Iterator<SchemeJudgeObject> judgeObjectIterator = judgeObjectList.iterator();
                         while (judgeObjectIterator.hasNext()) {
@@ -791,9 +793,20 @@ public class SchemeJudgeObjectService {
                                     boolean isSameDeclareRecordId = publicService.equalsInteger(judgeObject.getDeclareRecordId(), judgeObjectHistory.getDeclareRecordId());
                                     boolean isSameNumber = publicService.equalsString(judgeObject.getNumber(), judgeObjectHistory.getNumber());
                                     boolean isSameSplitNumber = publicService.equalsInteger(judgeObject.getSplitNumber(), judgeObjectHistory.getSplitNumber());
-                                    if (isSameAreaGroupId && isSameDeclareRecordId && isSameNumber && isSameSplitNumber) {
+
+                                    //需做调整
+                                    //1.应该使用估价对象id进行比较，如果估价对象id相同且不是合并对象，则只检查方法是否变更
+                                    //2.如果估价对象id相同且为合并对象，则检查参与合并的对象是否变化，有变化则让确定单价事项重新完成
+                                    if (judgeObject.getId().equals(judgeObjectHistory.getJudgeObjectId())) {
                                         judgeObjectIterator.remove();
                                         judgeObjectHistoryIterator.remove();
+                                        if (judgeObject.getBisMerge() == Boolean.TRUE || judgeObjectHistory.getBisMerge() == Boolean.TRUE) {
+                                            isNeedReNumber = !publicService.listIsConsistent(FormatUtils.transformString2List(judgeObject.getNumber()), FormatUtils.transformString2List(judgeObjectHistory.getNumber()));
+                                            if (isNeedReNumber) {//确定单价事项需重新完成
+                                                ProjectPlanDetails surePricePhase = projectPlanDetailsService.getProjectPlanDetailsByJudgeId(judgeObject.getId(), phaseSurePrice.getId());
+                                                projectPlanDetailsService.replyProjectPlanDetails(surePricePhase.getId(), null);
+                                            }
+                                        }
 
                                         List<String> judgeObjectFunctions = FormatUtils.transformString2List(judgeObject.getJudgeFunction());
                                         List<String> judgeObjectHistoryFunctions = FormatUtils.transformString2List(judgeObjectHistory.getJudgeFunction());
@@ -816,19 +829,24 @@ public class SchemeJudgeObjectService {
                         }
                         //新添加的估价对象
                         if (CollectionUtils.isNotEmpty(judgeObjectList)) {
+                            isNeedReNumber = true;
                             for (SchemeJudgeObject judgeObject : judgeObjectList) {
                                 appendTaskDto.setSchemeJudgeObject(judgeObject);
                                 appendTaskForJudgeObject(appendTaskDto);
                             }
                         }
+                        //已经被移除的估价对象
+                        if (CollectionUtils.isNotEmpty(judgeObjectHistoryList)) {
+                            isNeedReNumber = true;
+                            judgeObjectHistoryList.forEach(o -> {
+                                clearJudgeObjectTask(projectInfo.getId(), o.getJudgeObjectId());
+                            });
+                        }
+                        if (isNeedReNumber) {
+                            reNumberJudgeObject(schemeAreaGroup.getId());
+                        }
                     }
                 }
-            }
-            //已经被移除的估价对象
-            if (CollectionUtils.isNotEmpty(judgeObjectHistoryList)) {
-                judgeObjectHistoryList.forEach(o -> {
-                    clearJudgeObjectTask(projectInfo.getId(), o.getJudgeObjectId());
-                });
             }
 
             //处理只改变了评估方法的估价对象
@@ -879,7 +897,7 @@ public class SchemeJudgeObjectService {
 
     public void recordToHistory(Integer projectId) {
         //先清除上个版本历史数据
-        schemeJudgeObjectHistoryDao.deleteSchemeJudgeObjectHistoryByProjectId(projectId);
+        schemeJudgeObjectHistoryDao.deleteHistoryListByProjectId(projectId);
         List<SchemeJudgeObject> judgeObjects = getJudgeObjectListByProjectId(projectId);
         if (CollectionUtils.isNotEmpty(judgeObjects)) {
             judgeObjects.forEach(o -> {
@@ -893,6 +911,9 @@ public class SchemeJudgeObjectService {
                 judgeObjectHistory.setName(o.getName());
                 judgeObjectHistory.setJudgeFunction(o.getJudgeFunction());
                 judgeObjectHistory.setSorting(o.getSorting());
+                judgeObjectHistory.setBisEnable(o.getBisEnable());
+                judgeObjectHistory.setBisSplit(o.getBisSplit());
+                judgeObjectHistory.setBisMerge(o.getBisMerge());
                 judgeObjectHistory.setCreator(commonService.thisUserAccount());
                 schemeJudgeObjectHistoryDao.addSchemeJudgeObjectHistory(judgeObjectHistory);
             });
@@ -1064,25 +1085,25 @@ public class SchemeJudgeObjectService {
             judgeObject.setNumber(String.valueOf(i));
             judgeObject.setName(String.format("%s%s", i, BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME));
             updateSchemeJudgeObject(judgeObject);
+            judgeNameChangeEvent(judgeObject);
             //处理该估价对象的拆分对象
             List<SchemeJudgeObject> splitJudgeObjectList = getJudgeObjectListBySplitFrom(judgeObject.getId());
             if (CollectionUtils.isNotEmpty(splitJudgeObjectList)) {
-                splitJudgeObjectList.forEach(o->{
+                splitJudgeObjectList.forEach(o -> {
                     o.setNumber(judgeObject.getNumber());
-                    judgeObject.setName(String.format("%s-%s%s", o.getNumber(),o.getSplitNumber(), BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME));
+                    judgeObject.setName(String.format("%s-%s%s", o.getNumber(), o.getSplitNumber(), BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME));
+                    updateSchemeJudgeObject(o);
+                    judgeNameChangeEvent(o);
                 });
             }
             i++;
         }
-        SchemeJudgeObject where = new SchemeJudgeObject();
-        where.setAreaGroupId(areaGroupId);
-        where.setBisMerge(true);
-        List<SchemeJudgeObject> mergeJudgeObjectList = schemeJudgeObjectDao.getJudgeObjectList(where);
-        if(CollectionUtils.isNotEmpty(mergeJudgeObjectList)){
+        List<SchemeJudgeObject> mergeJudgeObjectList = schemeJudgeObjectDao.getMergeListByAreaId(areaGroupId);
+        if (CollectionUtils.isNotEmpty(mergeJudgeObjectList)) {
             for (SchemeJudgeObject mergeJudgeObject : mergeJudgeObjectList) {
-                StringBuilder numberBuilder=new StringBuilder();
+                StringBuilder numberBuilder = new StringBuilder();
                 List<SchemeJudgeObject> childrenJudgeObject = getChildrenJudgeObject(mergeJudgeObject.getId());
-                if(CollectionUtils.isNotEmpty(childrenJudgeObject)){
+                if (CollectionUtils.isNotEmpty(childrenJudgeObject)) {
                     for (SchemeJudgeObject object : childrenJudgeObject) {
                         numberBuilder.append(object.getNumber());
                         if (object.getSplitNumber() != null && object.getSplitNumber() > 0)
@@ -1090,13 +1111,83 @@ public class SchemeJudgeObjectService {
                         numberBuilder.append(",");
                     }
                 }
-                mergeJudgeObject.setNumber(numberBuilder.toString());
+                mergeJudgeObject.setNumber(StringUtils.strip(numberBuilder.toString().replaceAll(",+", ",")));
                 mergeJudgeObject.setName(String.format("%s%s", mergeJudgeObject.getNumber(), BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME));
                 updateSchemeJudgeObject(mergeJudgeObject);
+                judgeNameChangeEvent(mergeJudgeObject);
             }
         }
+        //该区域下变现与受偿款任务重新完成
+        SchemeAreaGroup schemeAreaGroup = schemeAreaGroupService.getSchemeAreaGroup(areaGroupId);
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(schemeAreaGroup.getProjectId());
+        List<ProjectPhase> projectPhases = schemeAreaGroupService.getAreaProjectPhaseListByEntrustPurpose(projectInfo, schemeAreaGroup.getEntrustPurpose());
+        if (CollectionUtils.isNotEmpty(projectPhases)) {
+            for (ProjectPhase projectPhase : projectPhases) {
+                ProjectPlanDetails query = new ProjectPlanDetails();
+                query.setAreaId(areaGroupId);
+                query.setProjectPhaseId(projectPhase.getId());
+                List<ProjectPlanDetails> planDetailsList = projectPlanDetailsService.getProjectDetails(query);
+                if (CollectionUtils.isNotEmpty(planDetailsList)) {
+                    planDetailsList.forEach(o -> {
+                        try {
+                            projectPlanDetailsService.replyProjectPlanDetails(o.getId(), null);
+                        } catch (Exception e) {
+                            logger.error(e.getMessage(), e);
+                        }
+                    });
+                }
+            }
+        }
+        clearCacheJudgeObjectByProjectId(projectInfo.getId());//排号完成清除缓存
+    }
 
+    /**
+     * 获取缓存的估价对象
+     *
+     * @param id
+     * @return
+     */
+    public SchemeJudgeObject getCacheJudgeObject(Integer id) {
+        String rdsKey = CacheConstant.getCostsKeyPrefix(AssessCacheConstant.PMCC_ASSESS_JUDGE_OBJECT_ID, String.valueOf(id));
+        try {
+            SchemeJudgeObject sysDataDic = LangUtils.singleCache(rdsKey, id, SchemeJudgeObject.class, o -> schemeJudgeObjectDao.getSchemeJudgeObject(o));
+            return sysDataDic;
+        } catch (Exception e) {
+            return schemeJudgeObjectDao.getSchemeJudgeObject(id);
+        }
+    }
 
+    /**
+     * 清除项目下估价对象缓存数据
+     *
+     * @param projectId
+     */
+    public void clearCacheJudgeObjectByProjectId(Integer projectId) {
+        SchemeJudgeObject schemeJudgeObject = new SchemeJudgeObject();
+        schemeJudgeObject.setProjectId(projectId);
+        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getJudgeObjectList(schemeJudgeObject);
+        if (CollectionUtils.isNotEmpty(judgeObjectList))
+            judgeObjectList.forEach(o -> processControllerComponent.removeRedisKeyValues(AssessCacheConstant.PMCC_ASSESS_JUDGE_OBJECT_ID, String.valueOf(o.getId())));
+    }
+
+    /**
+     * 当估价对象名称变化时，其他相关联的名称都发生变更
+     *
+     * @param judgeObject
+     */
+    public void judgeNameChangeEvent(SchemeJudgeObject judgeObject) {
+        if (judgeObject == null) return;
+        //1.工作事项备注名称change
+        ProjectPlanDetails where = new ProjectPlanDetails();
+        where.setJudgeObjectId(judgeObject.getId());
+        List<ProjectPlanDetails> planDetailsList = projectPlanDetailsService.getProjectDetails(where);
+        if (CollectionUtils.isNotEmpty(planDetailsList)) {
+            SchemeAreaGroup schemeAreaGroup = schemeAreaGroupService.getSchemeAreaGroup(judgeObject.getAreaGroupId());
+            for (ProjectPlanDetails item : planDetailsList) {
+                item.setPlanRemarks(String.format("%s/%s",schemeAreaGroup.getAreaName(),judgeObject.getName()));
+                projectPlanDetailsService.updateProjectPlanDetails(item);
+            }
+        }
     }
 
 }
