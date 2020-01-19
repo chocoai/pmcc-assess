@@ -42,8 +42,11 @@
             AND (E.u_use_unit_name LIKE
             CONCAT(CONCAT('%',#{unitName}), '%'))
         </if>
-        <if test="reportType!=null">
+        <if test="reportType!=null and consultationId==null">
             AND A.report_type = #{reportType}
+        </if>
+        <if test="reportType!=null and consultationId!=null">
+            AND (A.report_type = #{reportType} or A.report_type = #{consultationId})
         </if>
         <if test="previewsStartDate!=null">
             AND B.preaudit_number_date &gt;= #{previewsStartDate}
@@ -57,6 +60,5 @@
         <if test="resultEndDate!=null">
             AND B.result_number_date &lt;= #{resultEndDate}
         </if>
-        ORDER BY A.id DESC
     </select>
 </mapper>
