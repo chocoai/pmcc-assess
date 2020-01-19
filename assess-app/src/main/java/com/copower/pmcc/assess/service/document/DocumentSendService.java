@@ -400,8 +400,10 @@ public class DocumentSendService {
             projectDocumentDto.setProjectName(projectInfo.getProjectName());
             projectDocumentDto.setCompanyName(qualificationDto != null ? qualificationDto.getOrganizationName() : "");
             projectDocumentDto.setDocumentNumber(wordNumber);
+            projectDocumentDto.setProjectId(projectInfo.getId());
             projectDocumentDto.setAppKey(applicationConstant.getAppKey());
-            projectDocumentDto.setTableName(FormatUtils.entityNameConvertToTableName(GenerateReportInfo.class));
+            projectDocumentDto.setTableName(FormatUtils.entityNameConvertToTableName(DocumentSend.class));
+            projectDocumentDto.setTableId(documentSend.getId());
             projectDocumentDto.setReportDate(DateUtils.formatDate(new Date(), DateUtils.DATE_CHINESE_PATTERN));
             projectDocumentDto.setReportMember(publicService.getUserNameByAccount(processControllerComponent.getThisUser()));
             projectDocumentDto = erpRpcToolsService.saveProjectDocument(projectDocumentDto);

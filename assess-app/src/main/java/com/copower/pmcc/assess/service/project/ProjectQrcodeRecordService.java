@@ -74,13 +74,7 @@ public class ProjectQrcodeRecordService {
         projectDocumentDto.setCustomer(projectTakeNumber.getRealEstateAppraiser());
         projectDocumentDto.setDocumentNumber(projectTakeNumber.getNumberValue());
         projectDocumentDto.setAppKey(applicationConstant.getAppKey());
-
         projectDocumentDto.setProjectId(projectTakeNumber.getProjectId());
-
-        //二维码跳转错误,现在没有解决
-        projectDocumentDto.setErpProjectId(projectTakeNumber.getProjectId());
-
-
         projectDocumentDto.setTableName(FormatUtils.entityNameConvertToTableName(ProjectTakeNumber.class));
         projectDocumentDto.setFieldsName(String.join("_", ProjectTakeNumber.class.getSimpleName(), "BaseOrCode"));
         projectDocumentDto.setTableId(projectTakeNumber.getId());
