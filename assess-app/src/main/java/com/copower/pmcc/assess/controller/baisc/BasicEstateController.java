@@ -1,5 +1,9 @@
 package com.copower.pmcc.assess.controller.baisc;
 
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicAlternativeCaseDao;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDetailDao;
+import com.copower.pmcc.assess.dal.basis.entity.BasicAlternativeCase;
+import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchDetail;
 import com.copower.pmcc.assess.dal.basis.entity.BasicEstate;
 import com.copower.pmcc.assess.service.basic.BasicEstateService;
 import com.copower.pmcc.assess.service.basic.PublicBasicService;
@@ -27,7 +31,9 @@ public class BasicEstateController {
     @Autowired
     private PublicBasicService publicBasicService;
     @Autowired
-    private ProcessControllerComponent processControllerComponent;
+    private BasicAlternativeCaseDao basicAlternativeCaseDao;
+    @Autowired
+    private BasicApplyBatchDetailDao basicApplyBatchDetailDao;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @ResponseBody
@@ -113,6 +119,19 @@ public class BasicEstateController {
     public HttpResult quoteEstateData(Integer id, Integer tableId) {
         try {
             return HttpResult.newCorrectResult(basicEstateService.quoteEstateData(id, tableId));
+        } catch (Exception e) {
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/quoteFromAlternative", name = "引用项目中的数据批量时", method = {RequestMethod.GET})
+    public HttpResult quoteFromAlternative(Integer id, Integer tableId) {
+        try {
+            BasicAlternativeCase alternativeCase = basicAlternativeCaseDao.getBasicAlternativeCaseById(id);
+            BasicApplyBatchDetail batchDetail = basicApplyBatchDetailDao.getInfoById(alternativeCase.getBusinessId());
+            return HttpResult.newCorrectResult(basicEstateService.quoteEstateData(batchDetail.getTableId(), tableId));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(e.getMessage());
