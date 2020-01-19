@@ -391,6 +391,13 @@
                     </div>
                 </c:if>
             </div>
+
+            <div class="x_panel">
+
+                <%@include file="/views/project/chksCustomize/chksSurvey.jsp" %>
+
+            </div>
+
             <div class="x_panel">
                 <div class="x_content">
                     <div style="text-align: center;">
@@ -404,6 +411,7 @@
     </div>
 </div>
 </body>
+<%@include file="/views/share/chksCommon.jsp" %>
 <%@include file="/views/share/main_footer.jsp" %>
 <%@include file="/views/project/tool/toolMapHandleView.jsp" %>
 <script type="text/javascript"
@@ -414,6 +422,7 @@
 <script type="text/javascript">
     $(function () {
         buildingCommon.initDetailById('${basicBuilding.id}', '', false);
+        assessmentCommonHandle.loadChksServerViewTable();
     })
 </script>
 </html>

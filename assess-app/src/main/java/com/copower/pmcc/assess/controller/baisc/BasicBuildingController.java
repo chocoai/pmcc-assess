@@ -1,5 +1,9 @@
 package com.copower.pmcc.assess.controller.baisc;
 
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicAlternativeCaseDao;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDetailDao;
+import com.copower.pmcc.assess.dal.basis.entity.BasicAlternativeCase;
+import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchDetail;
 import com.copower.pmcc.assess.dal.basis.entity.BasicBuilding;
 import com.copower.pmcc.assess.service.basic.BasicBuildingService;
 import com.copower.pmcc.assess.service.basic.PublicBasicService;
@@ -26,7 +30,9 @@ public class BasicBuildingController {
     @Autowired
     private BasicBuildingService basicBuildingService;
     @Autowired
-    private PublicBasicService publicBasicService;
+    private BasicAlternativeCaseDao basicAlternativeCaseDao;
+    @Autowired
+    private BasicApplyBatchDetailDao basicApplyBatchDetailDao;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @ResponseBody
@@ -70,6 +76,19 @@ public class BasicBuildingController {
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(500, e.getMessage());
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/quoteFromAlternative", name = "引用项目中的数据批量时", method = {RequestMethod.GET})
+    public HttpResult quoteFromAlternative(Integer id, Integer tableId) {
+        try {
+            BasicAlternativeCase alternativeCase = basicAlternativeCaseDao.getBasicAlternativeCaseById(id);
+            BasicApplyBatchDetail batchDetail = basicApplyBatchDetailDao.getInfoById(alternativeCase.getBusinessId());
+            return HttpResult.newCorrectResult(basicBuildingService.quoteBuildingData(batchDetail.getTableId(), tableId));
+        } catch (Exception e) {
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(e.getMessage());
         }
     }
 

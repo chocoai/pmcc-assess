@@ -1,32 +1,29 @@
 package com.copower.pmcc.assess.service.report;
 
-import com.copower.pmcc.ad.api.dto.AdPersonalQualificationDto;
 import com.copower.pmcc.ad.api.provider.AdRpcQualificationsService;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.custom.entity.CustomReportGongShangBank;
 import com.copower.pmcc.assess.dal.basis.custom.mapper.CustomReportGongShangBankMapper;
 import com.copower.pmcc.assess.dal.basis.dao.project.initiate.InitiateContactsDao;
-import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
+import com.copower.pmcc.assess.dal.basis.entity.InitiateContacts;
+import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
 import com.copower.pmcc.assess.dto.output.project.initiate.InitiateConsignorVo;
-import com.copower.pmcc.assess.dto.output.project.initiate.InitiatePossessorVo;
 import com.copower.pmcc.assess.dto.output.project.initiate.InitiateUnitInformationVo;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
-import com.copower.pmcc.assess.service.basic.BasicEstateService;
 import com.copower.pmcc.assess.service.project.ProjectNumberRecordService;
 import com.copower.pmcc.assess.service.project.initiate.InitiateConsignorService;
 import com.copower.pmcc.assess.service.project.initiate.InitiatePossessorService;
 import com.copower.pmcc.assess.service.project.initiate.InitiateUnitInformationService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
-import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.DateUtils;
-import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -79,7 +76,7 @@ public class CustomReportGongShangBankService {
     private InitiateContactsDao initiateContactsDao;
 
 
-    public BootstrapTableVo getCustomReportGongShangBankList(String numberValue, String unitName, Integer reportType,String queryPreviewsStartDate,
+    public BootstrapTableVo getCustomReportGongShangBankList(String numberValue, String unitName, Integer reportType, String queryPreviewsStartDate,
                                                              String queryPreviewsEndDate, String queryResultStartDate, String queryResultEndDate) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
@@ -100,7 +97,18 @@ public class CustomReportGongShangBankService {
         if (StringUtils.isNotEmpty(queryResultEndDate)) {
             resultEndDate = DateUtils.parse(queryResultEndDate);
         }
-        List<CustomReportGongShangBank> customNumberRecordList = customReportGongShangBankMapper.getCustomReportGongShangBankList(numberValue, unitName, reportType, previewsStartDate, previewsEndDate, resultStartDate, resultEndDate);
+        List<CustomReportGongShangBank> customNumberRecordList = null;
+        //结果报告
+        BaseDataDic resultReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_RESULT);
+        Integer resultId = resultReport.getId();
+        //咨评报告
+        BaseDataDic consultationReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_CONSULTATION);
+        Integer consultationId = consultationReport.getId();
+        if (reportType == resultId) {
+            customNumberRecordList = customReportGongShangBankMapper.getCustomReportGongShangBankList(numberValue, unitName, reportType, consultationId, previewsStartDate, previewsEndDate, resultStartDate, resultEndDate);
+        } else {
+            customNumberRecordList = customReportGongShangBankMapper.getCustomReportGongShangBankList(numberValue, unitName, reportType, null, previewsStartDate, previewsEndDate, resultStartDate, resultEndDate);
+        }
         List<CustomReportGongShangBank> vos = LangUtils.transform(customNumberRecordList, o -> getCustomReportGongShangBank(o));
         vo.setTotal(page.getTotal());
         vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<CustomReportGongShangBank>() : vos);
@@ -151,7 +159,8 @@ public class CustomReportGongShangBankService {
                 vo.setResultNumber(consultationNumberList.get(0));
             }
             List<String> resultNumberList = projectNumberRecordService.getReportNumberByArea(vo.getProjectId(), vo.getAreaId(), resultId);
-            if (CollectionUtils.isNotEmpty(resultNumberList)) { ;
+            if (CollectionUtils.isNotEmpty(resultNumberList)) {
+                ;
                 vo.setResultNumber(resultNumberList.get(0));
             }
         } else if (vo.getReportType().equals(resultId) || vo.getReportType().equals(consultationId)) {
@@ -184,7 +193,7 @@ public class CustomReportGongShangBankService {
      *
      * @param response
      */
-    public void export(HttpServletResponse response, String numberValue, String unitName, Integer reportType,String queryPreviewsStartDate,
+    public void export(HttpServletResponse response, String numberValue, String unitName, Integer reportType, String queryPreviewsStartDate,
                        String queryPreviewsEndDate, String queryResultStartDate, String queryResultEndDate) throws BusinessException, IOException {
         //获取数据
         Date previewsStartDate = null;
@@ -203,12 +212,22 @@ public class CustomReportGongShangBankService {
         if (StringUtils.isNotEmpty(queryResultEndDate)) {
             resultEndDate = DateUtils.parse(queryResultEndDate);
         }
-        List<CustomReportGongShangBank> customNumberRecordList = customReportGongShangBankMapper.getCustomReportGongShangBankList(numberValue, unitName, reportType, previewsStartDate, previewsEndDate, resultStartDate, resultEndDate);
-        List<CustomReportGongShangBank> vos = LangUtils.transform(customNumberRecordList, o -> getCustomReportGongShangBank(o));
-
+        List<CustomReportGongShangBank> customNumberRecordList = null;
+        //结果报告
+        BaseDataDic resultReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_RESULT);
+        Integer resultId = resultReport.getId();
+        //咨评报告
+        BaseDataDic consultationReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_CONSULTATION);
+        Integer consultationId = consultationReport.getId();
+        if (reportType == resultId) {
+            customNumberRecordList = customReportGongShangBankMapper.getCustomReportGongShangBankList(numberValue, unitName, reportType, consultationId, previewsStartDate, previewsEndDate, resultStartDate, resultEndDate);
+        } else {
+            customNumberRecordList = customReportGongShangBankMapper.getCustomReportGongShangBankList(numberValue, unitName, reportType, null, previewsStartDate, previewsEndDate, resultStartDate, resultEndDate);
+        }
         if (CollectionUtils.isEmpty(customNumberRecordList)) {
             throw new BusinessException("没有获取到有效的数据");
         }
+        List<CustomReportGongShangBank> vos = LangUtils.transform(customNumberRecordList, o -> getCustomReportGongShangBank(o));
         Workbook wb = new HSSFWorkbook();
         Sheet sheet = wb.createSheet();
         Row row = sheet.createRow(0);

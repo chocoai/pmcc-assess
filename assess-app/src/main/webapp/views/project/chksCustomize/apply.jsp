@@ -321,6 +321,7 @@
             </div>
 
             <div class="x_panel">
+
                 <div class="x_content">
 
                     <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
@@ -354,6 +355,64 @@
                         </table>
                     </div>
                 </div>
+
+                <div class="x_content">
+                    <c:if test="${!empty spotAssessmentProjectPerformanceList}">
+                        <c:forEach items="${spotAssessmentProjectPerformanceList}" var="entryItem"
+                                   varStatus="userStatus">
+
+                            <div class="row">
+                                <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                                    <h2 class="text-center">${userStatus.index+1} : ${entryItem.key.key}
+                                        <input type="button" class="btn btn-xs btn-primary" value="抽查"
+                                               onclick="showChkSpotAssessmentParent('${entryItem.key.value}','${entryItem.key.explain}');">
+                                    </h2>
+                                </div>
+                                <table class="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <td width='5%' align='center'>被考核人</td>
+                                        <td width='5%' align='center'>考核人</td>
+                                        <td width='60%' align='center'>考核详情</td>
+                                        <td width='5%' align='center'>得分</td>
+                                        <td width='5%' align='center'>考核时间</td>
+                                        <td width='20%' align='center'>综合说明</td>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <c:forEach items="${entryItem.value}" var="item">
+                                        <tr>
+                                            <td width='5%' align='center'>${item.byExaminePeopleName}</td>
+                                            <td width='5%' align='center'>${item.examinePeopleName}</td>
+                                            <td width='60%' align='center'>
+                                                <table class="table table-striped">
+                                                    <tbody>
+                                                    <c:forEach items="${item.detailList}" var="assessmentItem">
+                                                        <tr>
+                                                            <td width="50%" align="center">考核标准: ${assessmentItem.content}</td>
+                                                            <td width="10%" align="center">实际得分: ${assessmentItem.actualScore}</td>
+                                                            <td width="40%" align="center">考核说明: ${assessmentItem.remark}</td>
+                                                        </tr>
+                                                    </c:forEach>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                            <td width='5%' align='center'>${item.examineScore}</td>
+                                            <td width='5%' align='center'>
+                                                <fmt:formatDate value="${item.examineDate}"
+                                                                pattern="yyyy-MM-dd"/>
+                                            </td>
+                                            <td width='20%' align='center'>${item.remarks}</td>
+                                        </tr>
+                                    </c:forEach>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </c:forEach>
+                    </c:if>
+                </div>
+            </div>
+
             </div>
 
 

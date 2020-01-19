@@ -95,8 +95,173 @@
                 <div class="row">
                     <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
                         <form class="form-horizontal">
+                            <div class="form-group ">
+                                <div>
+                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                        名称
+                                    </label>
+                                    <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                        <input type="text" data-rule-maxlength="50"
+                                               placeholder="名称" id="queryEstateName" name="queryEstateName"
+                                               class="form-control">
+                                    </div>
+                                </div>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                    <button type="button" class="btn btn-primary"
+                                            onclick="projectData.prototype.loadHousesDataList()">
+                                        查询
+                                    </button>
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <table class="table table-bordered" id="projectEstateTable">
+                                </table>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">
+                    关闭
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="divBoxProjectBuild" class="modal fade bs-example-modal-lg" data-backdrop="static"
+     tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">楼栋</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                        <form class="form-horizontal">
+                            <div class="form-group ">
+                                <div>
+                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                        名称
+                                    </label>
+                                    <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                        <input type="text" data-rule-maxlength="50"
+                                               placeholder="名称" id="queryBuildName" name="queryBuildName"
+                                               class="form-control">
+                                    </div>
+                                </div>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                    <button type="button" class="btn btn-primary"
+                                            onclick="projectBuild.prototype.loadDataList()">
+                                        查询
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <table class="table table-bordered" id="projectBuildTable">
+                                </table>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">
+                    关闭
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="divBoxProjectUnit" class="modal fade bs-example-modal-lg" data-backdrop="static"
+     tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">单元</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                        <form class="form-horizontal">
+                            <div class="form-group ">
+                                <div>
+                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                        名称
+                                    </label>
+                                    <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                        <input type="text" data-rule-maxlength="50"
+                                               placeholder="名称" id="queryUnitName" name="queryUnitName"
+                                               class="form-control">
+                                    </div>
+                                </div>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                    <button type="button" class="btn btn-primary"
+                                            onclick="projectUnit.prototype.loadDataList()">
+                                        查询
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <table class="table table-bordered" id="projectUnitTable">
+                                </table>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">
+                    关闭
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="divBoxProjectHouse" class="modal fade bs-example-modal-lg" data-backdrop="static"
+     tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">房屋</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                        <form class="form-horizontal">
+                            <div class="form-group ">
+                                <div>
+                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                        名称
+                                    </label>
+                                    <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                        <input type="text" data-rule-maxlength="50"
+                                               placeholder="名称" id="queryHouseName" name="queryHouseName"
+                                               class="form-control">
+                                    </div>
+                                </div>
+                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                    <button type="button" class="btn btn-primary"
+                                            onclick="projectHouse.prototype.loadDataList()">
+                                        查询
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <table class="table table-bordered" id="projectHouseTable">
                                 </table>
                             </div>
                         </form>
@@ -136,6 +301,39 @@
 
 </script>
 <script type="application/javascript">
+    function infoDetail(id,tbType){
+        $.ajax({
+            url: "${pageContext.request.contextPath}/basicAlternativeCase/infoDetail",
+            type: "post",
+            dataType: "json",
+            data: {
+                id: id
+            },
+            success: function (result) {
+                if (result.ret) {
+                    if(result.data){
+                        var url = '${pageContext.request.contextPath}/basicApplyBatch/informationDetail?';
+                        url += 'applyBatchId=' +  result.data.applyBatchId;
+                        url += '&formClassify=' + result.data.formClassify;
+                        url += '&formType=' + result.data.formType;
+                        url += '&tableId=' + result.data.tableId;
+                        url += '&tableName=' + result.data.tableName;
+                        url += '&tbType=' + tbType;
+                        url += '&planDetailsId='+result.data.planDetailsId;
+                        openWin(url, function () {
+                        })
+                    }
+
+                }
+                else {
+                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        })
+    }
     // 查找项目及楼盘
     var projectData = function () {
 
@@ -225,34 +423,27 @@
                 }
             });
         },
-        showHouseModel: function (planDetailsId) {
-            projectData.prototype.loadHousesDataList(planDetailsId);
+        showHouseModel: function () {
+            projectData.prototype.loadHousesDataList();
             $('#' + projectData.prototype.config().houseBox).modal("show");
         },
-        loadHousesDataList: function (planDetailsId) {
+        loadHousesDataList: function () {
             var cols = [];
             cols.push({field: 'name', title: '名称'});
-            cols.push({
-                field: 'area', title: '区域', formatter: function (value, row, index) {
-                    return AssessCommon.getAreaFullName(row.provinceName, row.cityName, row.districtName);
-                }
-            });
-            cols.push({field: 'blockName', title: '版块'});
-            cols.push({field: 'averagePrice', title: '均价'});
-            cols.push({field: 'coverAnArea', title: '占地面积'});
             cols.push({
                 field: 'id', title: '查询', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
-                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="详情" onclick="projectData.prototype.findData(0,\'estate\',' + row.id + ')"><i class="fa fa-search fa-white"></i></a>';
+                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="查看" onclick="projectData.prototype.findData(' + row.id + ',\'estate\')"><i class="fa fa-search fa-white"></i></a>';
                     str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="引用" onclick="projectData.prototype.quote(' + row.id + ')"><i class="fa fa-check"></i></a>';
                     str += '</div>';
                     return str;
                 }
             });
             $("#" + projectData.prototype.config().houseTable).bootstrapTable('destroy');
-            TableInit(projectData.prototype.config().houseTable, "${pageContext.request.contextPath}/basicApplyBatch/getEstateDataByPlanDetailsId", cols, {
-                planDetailsId: planDetailsId,
+            TableInit(projectData.prototype.config().houseTable, "${pageContext.request.contextPath}/basicAlternativeCase/getBasicAlternativeCaseList", cols, {
+                name: $("#queryEstateName").val(),
+                tbType: "estate",
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -264,13 +455,11 @@
 
         },
         findData: function (id, buildType, estateId) {
-            var href = "${pageContext.request.contextPath}/basicApplyBatch/informationDetail";
-            href += "?id=" + id + "&buildingType=" + buildType + "&estateId=" + estateId;
-            window.open(href, "");
+            infoDetail(id,buildType);
         },
         quote: function (id) {
             $.ajax({
-                url: '${pageContext.request.contextPath}/basicEstate/quoteEstateData',
+                url: '${pageContext.request.contextPath}/basicEstate/quoteFromAlternative',
                 data: {
                     id: id,
                     tableId:${tbId}
@@ -299,31 +488,31 @@
     projectBuild.prototype = {
         config: function () {
             var data = {};
-            data.table = "caseBuildTable";
-            data.box = "caseBuildModal";
+            data.table = "projectBuildTable";
+            data.box = "divBoxProjectBuild";
             return data;
         },
-        showModel: function (estateId) {
-            projectBuild.prototype.loadDataList(estateId);
+        showModel: function () {
+            projectBuild.prototype.loadDataList();
             $('#' + projectBuild.prototype.config().box).modal("show");
         },
-        loadDataList: function (estateId) {
+        loadDataList: function () {
             var cols = [];
-            cols.push({field: 'buildingNumber', title: '楼栋编号'});
-            cols.push({field: 'buildingName', title: '楼栋名称'});
+            cols.push({field: 'name', title: '名称'});
             cols.push({
                 field: 'id', title: '查询', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
-                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="查看" onclick="projectBuild.prototype.findData(' + row.id + ',\'building\',0)"><i class="fa fa-search fa-white"></i></a>';
+                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="查看" onclick="projectBuild.prototype.findData(' + row.id + ',\'building\')"><i class="fa fa-search fa-white"></i></a>';
                     str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="引用" onclick="projectBuild.prototype.quote(' + row.id + ')"><i class="fa fa-check"></i></a>';
                     str += '</div>';
                     return str;
                 }
             });
             $("#" + projectBuild.prototype.config().table).bootstrapTable('destroy');
-            TableInit(projectBuild.prototype.config().table, "${pageContext.request.contextPath}/basicBuilding/getBuildingList", cols, {
-                estateId: estateId
+            TableInit(projectBuild.prototype.config().table, "${pageContext.request.contextPath}/basicAlternativeCase/getBasicAlternativeCaseList", cols, {
+                name: $("#queryBuildName").val(),
+                tbType: "building",
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -334,13 +523,11 @@
             });
         },
         findData: function (id, buildType, estateId) {
-            var href = "${pageContext.request.contextPath}/basicApplyBatch/informationDetail";
-            href += "?id=" + id + "&buildingType=" + buildType + "&estateId=" + estateId;
-            window.open(href, "");
+            infoDetail(id,buildType);
         },
         quote: function (id) {
             $.ajax({
-                url: '${pageContext.request.contextPath}/basicBuilding/quoteBuildingData',
+                url: '${pageContext.request.contextPath}/basicBuilding/quoteFromAlternative',
                 data: {
                     id: id,
                     tableId:${tbId}
@@ -366,31 +553,31 @@
     projectUnit.prototype = {
         config: function () {
             var data = {};
-            data.table = "caseUnitTable";
-            data.box = "caseUnitModal";
+            data.table = "projectUnitTable";
+            data.box = "divBoxProjectUnit";
             return data;
         },
         showModel: function (buildingId) {
-            projectUnit.prototype.loadDataList(buildingId);
+            projectUnit.prototype.loadDataList();
             $('#' + projectUnit.prototype.config().box).modal("show");
         },
-        loadDataList: function (buildingId) {
+        loadDataList: function () {
             var cols = [];
-            cols.push({field: 'unitNumber', title: '单元编号'});
-            cols.push({field: 'elevatorHouseholdRatio', title: '梯户比'});
+            cols.push({field: 'name', title: '名称'});
             cols.push({
                 field: 'id', title: '查询', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
-                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="查看" onclick="projectUnit.prototype.findData(' + row.id + ',\'unit\',0)"><i class="fa fa-search fa-white"></i></a>';
+                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="查看" onclick="projectUnit.prototype.findData(' + row.id + ',\'unit\')"><i class="fa fa-search fa-white"></i></a>';
                     str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="引用" onclick="projectUnit.prototype.quote(' + row.id + ')"><i class="fa fa-check"></i></a>';
                     str += '</div>';
                     return str;
                 }
             });
             $("#" + projectUnit.prototype.config().table).bootstrapTable('destroy');
-            TableInit(projectUnit.prototype.config().table, "${pageContext.request.contextPath}/basicUnit/getBasicUnitList", cols, {
-                buildingId: buildingId
+            TableInit(projectUnit.prototype.config().table, "${pageContext.request.contextPath}/basicAlternativeCase/getBasicAlternativeCaseList", cols, {
+                name: $("#queryUnitName").val(),
+                tbType: "unit",
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -401,13 +588,11 @@
             });
         },
         findData: function (id, buildType, estateId) {
-            var href = "${pageContext.request.contextPath}/basicApplyBatch/informationDetail";
-            href += "?id=" + id + "&buildingType=" + buildType + "&estateId=" + estateId;
-            window.open(href, "");
+            infoDetail(id,buildType);
         },
         quote: function (id) {
             $.ajax({
-                url: '${pageContext.request.contextPath}/basicUnit/quoteUnitData',
+                url: '${pageContext.request.contextPath}/basicUnit/quoteFromAlternative',
                 data: {
                     id: id,
                     tableId:${tbId}
@@ -433,31 +618,31 @@
     projectHouse.prototype = {
         config: function () {
             var data = {};
-            data.table = "caseHouseTable";
-            data.box = "caseHouseModal";
+            data.table = "projectHouseTable";
+            data.box = "divBoxProjectHouse";
             return data;
         },
         showModel: function (unitId) {
-            projectHouse.prototype.loadDataList(unitId);
+            projectHouse.prototype.loadDataList();
             $('#' + projectHouse.prototype.config().box).modal("show");
         },
-        loadDataList: function (unitId) {
+        loadDataList: function () {
             var cols = [];
-            cols.push({field: 'houseNumber', title: '房号'});
-            cols.push({field: 'floor', title: '所在楼层'});
+            cols.push({field: 'name', title: '名称'});
             cols.push({
                 field: 'id', title: '查询', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
-                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="查看" onclick="projectHouse.prototype.findData(' + row.id + ',\'house\',0)"><i class="fa fa-search fa-white"></i></a>';
+                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="查看" onclick="projectHouse.prototype.findData(' + row.id + ',\'house\')"><i class="fa fa-search fa-white"></i></a>';
                     str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="引用" onclick="projectHouse.prototype.quote(' + row.id + ')"><i class="fa fa-check"></i></a>';
                     str += '</div>';
                     return str;
                 }
             });
             $("#" + projectHouse.prototype.config().table).bootstrapTable('destroy');
-            TableInit(projectHouse.prototype.config().table, "${pageContext.request.contextPath}/basicHouse/getBasicHouseList", cols, {
-                unitId: unitId
+            TableInit(projectHouse.prototype.config().table, "${pageContext.request.contextPath}/basicAlternativeCase/getBasicAlternativeCaseList", cols, {
+                name: $("#queryHouseName").val(),
+                tbType: "house",
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -468,13 +653,11 @@
             });
         },
         findData: function (id, buildType, estateId) {
-            var href = "${pageContext.request.contextPath}/basicApplyBatch/informationDetail";
-            href += "?id=" + id + "&buildingType=" + buildType + "&estateId=" + estateId;
-            window.open(href, "");
+            infoDetail(id,buildType);
         },
         quote: function (id) {
             $.ajax({
-                url: '${pageContext.request.contextPath}/basicHouse/quoteHouseData',
+                url: '${pageContext.request.contextPath}/basicHouse/quoteFromAlternative',
                 data: {
                     id: id,
                     tableId:${tbId}

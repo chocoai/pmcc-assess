@@ -154,34 +154,6 @@
     });
 
 
-    /*显示抽查数据页面*/
-    function showChkSpotAssessmentParent(activityId, byExaminePeople) {
-        var box = $("#divChksRecordModal");
-        var from = box.find("form");
-        from.clearAll();
-        var data = {activityId: activityId, byExaminePeople: byExaminePeople};
-        from.initForm(data);
-        box.modal("show");
-        var processInsId = '${processInsId}';
-        if (!processInsId) {
-            processInsId = '${projectPlanDetails.processInsId}';
-        }
-        var option = {
-            spotActivityId: '${spotReActivityDto.id}',
-            projectId: '${projectPlanDetails.projectId}',
-            processInsId: processInsId,
-            planDetailsId: '${projectPlanDetails.id}',
-            planId: '${projectPlanDetails.planId}',
-            boxId: '${boxReDto.id}',
-            activityId: activityId,
-            byExaminePeople: byExaminePeople
-        };
-        var target = $("#tableChkSpotAssessment");
-        assessmentCommonHandle.loadChksServerBase(option, {
-            boxId: option.boxId,
-            boxReActivitiId: option.spotActivityId
-        }, target);
-    }
 
 
     //收集数据 审批的时候

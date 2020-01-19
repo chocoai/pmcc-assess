@@ -9,9 +9,11 @@ import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRealtyHouseCertService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRealtyLandCertService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRealtyRealEstateCertService;
+import com.copower.pmcc.bpm.api.dto.model.BoxReActivityDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
@@ -107,7 +109,7 @@ public class ChksCustomerAssessmentPlanDetailController {
     }
 
     private void params(ModelAndView modelAndView, Integer id) {
-        final String targetObjectInfo = "targetObjectInfo" ;
+        final String targetObjectInfo = "targetObjectInfo";
         if (id == null) {
             return;
         }
@@ -115,21 +117,30 @@ public class ChksCustomerAssessmentPlanDetailController {
         if (chksCustomerAssessmentPlanDetail == null) {
             return;
         }
-        if (Objects.equal(FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class),chksCustomerAssessmentPlanDetail.getTableName())){
+        if (Objects.equal(FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class), chksCustomerAssessmentPlanDetail.getTableName())) {
             chksCustomerAssessmentPlanDetail.setTypeName("房产证考核");
             modelAndView.addObject(targetObjectInfo, declareRealtyHouseCertService.getDeclareRealtyHouseCertVo(declareRealtyHouseCertService.getDeclareRealtyHouseCertById(chksCustomerAssessmentPlanDetail.getTableId())));
         }
-        if (Objects.equal(FormatUtils.entityNameConvertToTableName(DeclareRealtyLandCert.class),chksCustomerAssessmentPlanDetail.getTableName())){
+        if (Objects.equal(FormatUtils.entityNameConvertToTableName(DeclareRealtyLandCert.class), chksCustomerAssessmentPlanDetail.getTableName())) {
             chksCustomerAssessmentPlanDetail.setTypeName("土地证考核");
             modelAndView.addObject(targetObjectInfo, declareRealtyLandCertService.getDeclareRealtyLandCertVo(declareRealtyLandCertService.getDeclareRealtyLandCertById(chksCustomerAssessmentPlanDetail.getTableId())));
         }
-        if (Objects.equal(FormatUtils.entityNameConvertToTableName(DeclareRealtyRealEstateCert.class),chksCustomerAssessmentPlanDetail.getTableName())){
+        if (Objects.equal(FormatUtils.entityNameConvertToTableName(DeclareRealtyRealEstateCert.class), chksCustomerAssessmentPlanDetail.getTableName())) {
             chksCustomerAssessmentPlanDetail.setTypeName("不动产证考核");
             modelAndView.addObject(targetObjectInfo, declareRealtyRealEstateCertService.getDeclareRealtyRealEstateCertVo(declareRealtyRealEstateCertService.getDeclareRealtyRealEstateCertById(chksCustomerAssessmentPlanDetail.getTableId())));
         }
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(chksCustomerAssessmentPlanDetail.getProjectId());
-        if (projectInfo != null){
+        if (projectInfo != null) {
             modelAndView.addObject(StringUtils.uncapitalize(ProjectInfo.class.getSimpleName()), projectInfoService.getSimpleProjectInfoVo(projectInfo));
+        }
+        boolean spotCheck = chksAssessmentProjectPerformanceService.getSpotCheck(chksCustomerAssessmentPlanDetail.getBoxId(), processControllerComponent.getThisUser());
+        BoxReActivityDto spotReActivityDto = chksAssessmentProjectPerformanceService.getSpotBoxReActivityDto(chksCustomerAssessmentPlanDetail.getBoxId());
+        modelAndView.addObject("spotReActivityDto", spotReActivityDto);//抽查节点
+        //抽查或者巡查标识符
+        modelAndView.addObject("spotCheck", spotCheck);
+        modelAndView.addObject(org.apache.commons.lang3.StringUtils.uncapitalize(SysUserDto.class.getSimpleName()),processControllerComponent.getThisUserInfo()) ;
+        if (spotCheck) {
+            modelAndView.addObject("spotAssessmentProjectPerformanceList", chksAssessmentProjectPerformanceService.getAssessmentProjectPerformanceDtoMap(chksCustomerAssessmentPlanDetail.getBoxId(), chksCustomerAssessmentPlanDetail.getProcessInsId()));
         }
         modelAndView.addObject(StringUtils.uncapitalize(ChksCustomerAssessmentPlanDetail.class.getSimpleName()), chksCustomerAssessmentPlanDetail);
         modelAndView.addObject("boxReActivityDto", bpmRpcBoxService.getBoxreActivityInfoById(chksCustomerAssessmentPlanDetail.getActivityId()));//普通考核节点 审批
