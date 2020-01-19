@@ -13,6 +13,8 @@ import com.copower.pmcc.assess.dto.output.project.declare.DeclareRealtyLandCertV
 import com.copower.pmcc.assess.dto.output.project.declare.DeclareRealtyRealEstateCertVo;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.PublicService;
+import com.copower.pmcc.assess.service.basic.BasicApplyBatchDetailService;
+import com.copower.pmcc.assess.service.basic.BasicApplyBatchService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
@@ -96,6 +98,10 @@ public class ChksAssessmentProjectPerformanceService {
     private DeclareRealtyRealEstateCertService declareRealtyRealEstateCertService;
     @Autowired
     private ChksCustomerAssessmentPlanDetailService chksCustomerAssessmentPlanDetailService;
+    @Autowired
+    private BasicApplyBatchDetailService basicApplyBatchDetailService;
+    @Autowired
+    private BasicApplyBatchService basicApplyBatchService;
 
 
     public ChksBootstrapTableVo getChksBootstrapTableVo(AssessmentProjectPerformanceDto where, String activityIds) {
@@ -627,7 +633,7 @@ public class ChksAssessmentProjectPerformanceService {
                         continue;
                     }
                     if (targetPhase == null) {
-                        appendTask(target, projectInfo, projectWorkStage, integerStringEntry.getValue());
+                        appendTask(target, projectInfo, projectWorkStage, integerStringEntry.getValue(), null);
                     }
                     if (targetPhase != null) {
                         switch (targetPhase.getPhaseKey()) {
@@ -659,9 +665,46 @@ public class ChksAssessmentProjectPerformanceService {
      * @throws Exception
      */
     private void handleExploreTask(ProjectPlanDetails target, ProjectInfo projectInfo, ProjectWorkStage projectWorkStage, KeyValueDto keyValueDto) throws Exception {
-        ProjectPlanDetails projectPlanDetails = appendTask(target, projectInfo, projectWorkStage, keyValueDto);
-        if (projectPlanDetails == null) {
+        ProjectPlanDetails projectPlanDetailsForm = appendTask(target, projectInfo, projectWorkStage, keyValueDto, null);
+        if (StringUtils.isBlank(target.getProcessInsId())) {
             return;
+        }
+        BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchByProcessInsId(target.getProcessInsId());
+        if (basicApplyBatch == null) {
+            return;
+        }
+        List<BasicApplyBatchDetail> basicApplyBatchDetailList = basicApplyBatchDetailService.getBuildingBatchDetailsByBatchId(basicApplyBatch.getId());
+        if (CollectionUtils.isEmpty(basicApplyBatchDetailList)) {
+            return;
+        }
+        BasicApplyBatchDetail batchDetail = new BasicApplyBatchDetail();
+        batchDetail.setTableId(basicApplyBatch.getEstateId());
+        batchDetail.setTableName(FormatUtils.entityNameConvertToTableName(BasicEstate.class));
+        basicApplyBatchDetailList.add(batchDetail) ;
+        Iterator<BasicApplyBatchDetail> basicApplyBatchDetailIterator = basicApplyBatchDetailList.iterator();
+        while (basicApplyBatchDetailIterator.hasNext()) {
+            BasicApplyBatchDetail basicApplyBatchDetail = basicApplyBatchDetailIterator.next();
+            String tableName = basicApplyBatchDetail.getTableName();
+            LinkedList<String> linkedList = Lists.newLinkedList();
+            linkedList.add(String.format("basicApplyBatch/informationDetail?%s",tableName));
+            linkedList.add(String.join("","tableId=",basicApplyBatchDetail.getTableId().toString()));
+            linkedList.add(String.join("","formClassify=",basicApplyBatch.getClassify().toString()));
+            linkedList.add(String.join("","formType=",basicApplyBatch.getType().toString()));
+            linkedList.add(String.join("","planDetailsId=",basicApplyBatch.getPlanDetailsId().toString()));
+            linkedList.add(String.join("","applyBatchId=",basicApplyBatch.getId().toString()));
+            if (Objects.equal(tableName, FormatUtils.entityNameConvertToTableName(BasicBuilding.class))) {
+                linkedList.add("tbType=building");
+            }
+            if (Objects.equal(tableName, FormatUtils.entityNameConvertToTableName(BasicHouse.class))) {
+                linkedList.add("tbType=house");
+            }
+            if (Objects.equal(tableName, FormatUtils.entityNameConvertToTableName(BasicUnit.class))) {
+                linkedList.add("tbType=unit");
+            }
+            if (Objects.equal(tableName, FormatUtils.entityNameConvertToTableName(BasicEstate.class))) {
+                linkedList.add("tbType=estate");
+            }
+            appendTask(target,projectInfo,projectWorkStage,keyValueDto,StringUtils.join(linkedList,"&")) ;
         }
     }
 
@@ -691,7 +734,7 @@ public class ChksAssessmentProjectPerformanceService {
         if (sizeTotal == 0) {
             return;
         }
-        ProjectPlanDetails projectPlanDetails = appendTask(target, projectInfo, projectWorkStage, keyValueDto);
+        ProjectPlanDetails projectPlanDetails = appendTask(target, projectInfo, projectWorkStage, keyValueDto, null);
         if (projectPlanDetails == null) {
             return;
         }
@@ -756,7 +799,7 @@ public class ChksAssessmentProjectPerformanceService {
      * @param projectWorkStage
      * @throws Exception
      */
-    private ProjectPlanDetails appendTask(ProjectPlanDetails target, ProjectInfo projectInfo, ProjectWorkStage projectWorkStage, KeyValueDto keyValueDto) throws Exception {
+    private ProjectPlanDetails appendTask(ProjectPlanDetails target, ProjectInfo projectInfo, ProjectWorkStage projectWorkStage, KeyValueDto keyValueDto, String url) throws Exception {
         LinkedList<String> linkedList = Lists.newLinkedList();
         if (StringUtils.isNotBlank(keyValueDto.getExplain())) {
             linkedList.add(keyValueDto.getExplain());
@@ -808,7 +851,11 @@ public class ChksAssessmentProjectPerformanceService {
                     projectPlanResponsibility.setUserAccount(account);
                     projectPlanResponsibility.setPlanEndTime(new Date());
                     projectPlanResponsibility.setAppKey(applicationConstant.getAppKey());
-                    projectPlanService.updateProjectTaskUrl(ResponsibileModelEnum.DETAIL, projectPlanResponsibility);
+                    if (StringUtils.isBlank(url)) {
+                        projectPlanService.updateProjectTaskUrl(ResponsibileModelEnum.DETAIL, projectPlanResponsibility);
+                    } else {
+                        projectPlanResponsibility.setUrl(url);
+                    }
                     projectPlanResponsibility.setCreator(account);
                 }
             }
@@ -1004,13 +1051,13 @@ public class ChksAssessmentProjectPerformanceService {
         List<BoxApprovalLogVo> boxApprovalLogVoList = getBoxApprovalLogVoList(processInsId);
         if (CollectionUtils.isNotEmpty(boxApprovalLogVoList)) {
             Iterator<BoxApprovalLogVo> boxApprovalLogVoIterator = boxApprovalLogVoList.iterator();
-            while (boxApprovalLogVoIterator.hasNext()){
+            while (boxApprovalLogVoIterator.hasNext()) {
                 BoxApprovalLogVo boxApprovalLogVo = boxApprovalLogVoIterator.next();
-                if (boxApprovalLogVo.getBoxId() == null){
+                if (boxApprovalLogVo.getBoxId() == null) {
                     continue;
                 }
                 BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(boxApprovalLogVo.getBoxId());
-                if (boxReDto == null){
+                if (boxReDto == null) {
                     continue;
                 }
                 return boxReDto;
