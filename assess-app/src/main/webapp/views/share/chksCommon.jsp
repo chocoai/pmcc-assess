@@ -39,7 +39,7 @@
             <input data-name="contentId" type="hidden" name="contentId{contentId}" value="{contentId}">
         </td>
         <td>{name}</td>
-        <td>{assessmentDes} 范围:{minScore}~{maxScore}  标准值:{standardScore}</td>
+        <td>{assessmentDes} 范围:{minScore}~{maxScore} 标准值:{standardScore}</td>
         <td>
             <input type="text" required="required" data-rule-number='true'
                    data-name="actualScore"
@@ -65,8 +65,6 @@
 
 
     var assessmentCommonHandle = {};
-
-
 
 
     /**
@@ -171,7 +169,7 @@
             if (performanceId) {
                 obj.performanceId = performanceId;
             }
-            var eleActualScore = ele.find("[data-name='actualScore']") ;
+            var eleActualScore = ele.find("[data-name='actualScore']");
             obj.actualScore = eleActualScore.val();
             obj.remark = ele.find("[data-name='remark']").val();
             if (eleActualScore.size() != 0) {
@@ -287,7 +285,7 @@
         TableInit(table, "${pageContext.request.contextPath}/chksAssessmentProjectPerformance/getChksBootstrapTableVo", cols, query, method);
     };
 
-    assessmentCommonHandle.loadChksServerNew = function (activityId,target) {
+    assessmentCommonHandle.loadChksServerNew = function (activityId, target, assessmentKey) {
         var option = {
             boxId: '${boxReDto.id}',
             activityId: activityId,
@@ -304,75 +302,108 @@
                 option.processInsId = '${projectPlanDetails.processInsId}';
             }
         }
-        assessmentCommonHandle.loadChksServerBase(option, {
+        var tempObj = {
             boxId: option.boxId,
             boxReActivitiId: option.activityId
-        }, target);
+        };
+        if (assessmentKey) {
+            tempObj.assessmentKey = assessmentKey;
+            option.assessmentKey = assessmentKey;
+        }
+        assessmentCommonHandle.loadChksServerBase(option, tempObj, target);
     };
 
-    assessmentCommonHandle.loadChksServerBase = function (option, query, target) {
-        assessmentCommonHandle.getAssessmentProjectPerformanceDtoList(option, function (data) {
-            if (data.length == 0) {
-                assessmentCommonHandle.getAssessmentItemTemplate(query, function (data) {
-                    var restHtml = "";
-                    $.each(data, function (i, item) {
-                        var html = assessmentCommonHandle.replaceAssessmentItem($("#assessmentItemTemplateHTML").html(), {
-                            index: i + 1,
-                            contentId: item.id,
-                            id: 0,
-                            actualScore: '',
-                            remark: '',
-                            performanceId: 0,
-                            name: item.boxReActivitiNameCn,
-                            assessmentDes: item.assessmentDes,
-                            minScore: item.minScore,
-                            maxScore: item.maxScore,
-                            standardScore:item.standardScore
-                        });
-                        restHtml += html;
-                    });
-                    if (data.length >= 1){
-                        var remarksHtml = $("#assessmentItemTemplateRemarksHTML").html();
-                        remarksHtml = remarksHtml.replace(/{remarks}/g, '');
-                        restHtml += remarksHtml;
+    assessmentCommonHandle.loadChksServerBaseVaild = function (data, query, callback) {
+        assessmentCommonHandle.getAssessmentItemTemplate(query, function (item) {
+            var i = 1;
+            $.each(data, function (m, n) {
+                $.each(n.detailList, function (k, obj) {
+                    for (var j = 0; j < item.length; j++) {
+                        var target = item[j];
+                        if (query.assessmentKey) {
+                            if (target.id == obj.contentId && query.assessmentKey == target.assessmentKey) {
+                                i++;
+                            }
+                        }
+                        if (!query.assessmentKey) {
+                            if (target.id == obj.contentId) {
+                                i++;
+                            }
+                        }
                     }
-                    target.empty().append(restHtml);
                 });
-            } else {
-                var restHtml = "";
-                $.each(data, function (i, obj) {
-                    if (obj.detailList) {
-                        $.each(obj.detailList, function (i, item) {
-                            var htmlB = assessmentCommonHandle.replaceAssessmentItem($("#assessmentItemTemplateHTML").html(), {
-                                index: i + 1,
-                                contentId: item.contentId,
-                                id: item.id,
-                                performanceId: obj.id,
-                                name: obj.activityName,
-                                assessmentDes: item.content,
-                                actualScore: item.actualScore,
-                                minScore: item.minScore,
-                                maxScore: item.maxScore,
-                                standardScore: item.standardScore,
-                                remark: item.remark
-                            });
-                            restHtml += htmlB;
-                        });
-                    }
-                    var remarksHtml = $("#assessmentItemTemplateRemarksHTML").html();
-                    if (obj.remarks) {
-                        remarksHtml = remarksHtml.replace(/{remarks}/g, obj.remarks);
-                    } else {
-                        remarksHtml = remarksHtml.replace(/{remarks}/g, '');
-                    }
-                    restHtml += remarksHtml;
-                });
-                target.empty().append(restHtml);
+            });
+            if (callback) {
+                callback(i == 1);
             }
         });
     };
 
-    assessmentCommonHandle.loadChksServerViewBaseTable = function (target,options) {
+    assessmentCommonHandle.loadChksServerBase = function (option, query, target) {
+        assessmentCommonHandle.getAssessmentProjectPerformanceDtoList(option, function (data) {
+            assessmentCommonHandle.loadChksServerBaseVaild(data, query, function (checkRun) {
+                if (checkRun) {
+                    assessmentCommonHandle.getAssessmentItemTemplate(query, function (data) {
+                        var restHtml = "";
+                        $.each(data, function (i, item) {
+                            var html = assessmentCommonHandle.replaceAssessmentItem($("#assessmentItemTemplateHTML").html(), {
+                                index: i + 1,
+                                contentId: item.id,
+                                id: 0,
+                                actualScore: '',
+                                remark: '',
+                                performanceId: 0,
+                                name: item.boxReActivitiNameCn,
+                                assessmentDes: item.assessmentDes,
+                                minScore: item.minScore,
+                                maxScore: item.maxScore,
+                                standardScore: item.standardScore
+                            });
+                            restHtml += html;
+                        });
+                        if (data.length >= 1) {
+                            var remarksHtml = $("#assessmentItemTemplateRemarksHTML").html();
+                            remarksHtml = remarksHtml.replace(/{remarks}/g, '');
+                            restHtml += remarksHtml;
+                        }
+                        target.empty().append(restHtml);
+                    });
+                } else {
+                    var restHtml = "";
+                    $.each(data, function (i, obj) {
+                        if (obj.detailList) {
+                            $.each(obj.detailList, function (i, item) {
+                                var htmlB = assessmentCommonHandle.replaceAssessmentItem($("#assessmentItemTemplateHTML").html(), {
+                                    index: i + 1,
+                                    contentId: item.contentId,
+                                    id: item.id,
+                                    performanceId: obj.id,
+                                    name: obj.activityName,
+                                    assessmentDes: item.content,
+                                    actualScore: item.actualScore,
+                                    minScore: item.minScore,
+                                    maxScore: item.maxScore,
+                                    standardScore: item.standardScore,
+                                    remark: item.remark
+                                });
+                                restHtml += htmlB;
+                            });
+                        }
+                        var remarksHtml = $("#assessmentItemTemplateRemarksHTML").html();
+                        if (obj.remarks) {
+                            remarksHtml = remarksHtml.replace(/{remarks}/g, obj.remarks);
+                        } else {
+                            remarksHtml = remarksHtml.replace(/{remarks}/g, '');
+                        }
+                        restHtml += remarksHtml;
+                    });
+                    target.empty().append(restHtml);
+                }
+            });
+        });
+    };
+
+    assessmentCommonHandle.loadChksServerViewBaseTable = function (target, options) {
         var headHtml = "<caption>参考考核数据(包含所在权限下本次流程的所有数据)</caption>";
         headHtml += "<thead>";
         headHtml += "<tr><td width='5%' align='center' >被考核人</td> <td width='5%' align='center'>考核人</td> <td width='60%' align='center'>考核详情</td> <td width='5%' align='center'>得分</td> <td width='5%' align='center'>考核时间</td> <td width='20%' align='center'>综合说明</td></tr>";
@@ -419,7 +450,7 @@
             planId: '${projectPlanDetails.planId}',
             planDetailsId: '${projectPlanDetails.id}',
             spotActivityId: 0,
-            isEffective:true
+            isEffective: true
         };
         if ('${processInsId}') {
             options.processInsId = '${processInsId}';
@@ -446,7 +477,7 @@
                 options.activityIdList = activityIds.join(",");
             }
         }
-        assessmentCommonHandle.loadChksServerViewBaseTable(target,options) ;
+        assessmentCommonHandle.loadChksServerViewBaseTable(target, options);
     };
 
     assessmentCommonHandle.saveAssessmentServer = function (data, callback) {
@@ -472,9 +503,9 @@
     };
 
 
-    function saveAssessmentItem(activityId,activityName,selector ) {
+    function saveAssessmentItem(activityId, activityName, selector, assessmentKey) {
         var target = $(selector).find("tbody");
-        if (!vaildChksData(target)){
+        if (!vaildChksData(target)) {
             return false;
         }
         var remarks = target.find("textarea[name=remarks]").val();
@@ -512,14 +543,17 @@
                 filterData.push(data[i]);
             }
         }
-        if (filterData.length == 0){
+        if (filterData.length == 0) {
             toastr.warning("详情页考核需要填写全部数据!");
             return false;
         }
-        assessmentCommonHandle.saveAssessmentServer({chksScore: JSON.stringify(filterData), fomData: JSON.stringify(parentData)}, function (data) {
+        assessmentCommonHandle.saveAssessmentServer({
+            chksScore: JSON.stringify(filterData),
+            fomData: JSON.stringify(parentData)
+        }, function (data) {
             toastr.warning("考核成功!");
             assessmentCommonHandle.loadChksServerViewTable();
-            assessmentCommonHandle.loadChksServerNew(activityId,target) ;
+            assessmentCommonHandle.loadChksServerNew(activityId, target, assessmentKey);
         });
     }
 
@@ -530,7 +564,7 @@
         var target = $("#tableChkSpotAssessment");
         var filterData = [];
         var data = [];
-        if (!vaildChksData(target)){
+        if (!vaildChksData(target)) {
             return false;
         }
         var remarks = target.find("textarea[name=remarks]").val();
@@ -540,7 +574,7 @@
                 filterData.push(data[i]);
             }
         }
-        if (filterData.length == 0){
+        if (filterData.length == 0) {
             toastr.warning("详情页考核需要填写全部数据!");
             return false;
         }
@@ -575,19 +609,19 @@
 
     function vaildChksData(target) {
         var table = $("#chksTableList");
-        if (target == null || target == undefined || target == ''){
+        if (target == null || target == undefined || target == '') {
             target = table.find("tbody");
-        }else {
-            table = target.closest("table") ;
+        } else {
+            table = target.closest("table");
         }
-        if (target.find("tr").size() == 0){//这种情况是抽查情况或者没有配模板情况
+        if (target.find("tr").size() == 0) {//这种情况是抽查情况或者没有配模板情况
             return true;
         }
         var remarks = table.find("textarea[name=remarks]").val();
         var data = [];
         var filterData = [];
         assessmentCommonHandle.getChksSonData(target, data);
-        if (data.length == 0){
+        if (data.length == 0) {
             toastr.warning("请确定考核数据填写情况!或者咨询管理员配置考核数据模板!");
             return false;
         }
@@ -604,17 +638,47 @@
             }
 
         }
-        if (filterData.length != 0){
-            if (data.length != filterData.length){
+        if (filterData.length != 0) {
+            if (data.length != filterData.length) {
                 Alert("请填写完整!");
                 return false;
             }
-            if (! remarks){
+            if (!remarks) {
                 Alert("请填写考核说明!");
                 return false;
             }
         }
         return true;
+    }
+
+
+    /*显示抽查数据页面*/
+    function showChkSpotAssessmentParent(activityId, byExaminePeople) {
+        var box = $("#divChksRecordModal");
+        var from = box.find("form");
+        from.clearAll();
+        var data = {activityId: activityId, byExaminePeople: byExaminePeople};
+        from.initForm(data);
+        box.modal("show");
+        var processInsId = '${processInsId}';
+        if (!processInsId) {
+            processInsId = '${projectPlanDetails.processInsId}';
+        }
+        var option = {
+            spotActivityId: '${spotReActivityDto.id}',
+            projectId: '${projectPlanDetails.projectId}',
+            processInsId: processInsId,
+            planDetailsId: '${projectPlanDetails.id}',
+            planId: '${projectPlanDetails.planId}',
+            boxId: '${boxReDto.id}',
+            activityId: activityId,
+            byExaminePeople: byExaminePeople
+        };
+        var target = $("#tableChkSpotAssessment");
+        assessmentCommonHandle.loadChksServerBase(option, {
+            boxId: option.boxId,
+            boxReActivitiId: option.spotActivityId
+        }, target);
     }
 
 </script>

@@ -26,6 +26,7 @@ import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.dto.model.AssessmentItemDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReActivityDto;
+import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProcessInsManagerService;
@@ -317,8 +318,12 @@ public class ChksAssessmentProjectPerformanceService {
     }
 
 
-    public List<AssessmentItemDto> getAssessmentItemTemplate(Integer boxId, Integer boxReActivitiId) {
-        return bpmRpcBoxService.getAssessmentItemList(boxId, boxReActivitiId);
+    public List<AssessmentItemDto> getAssessmentItemTemplate(Integer boxId, Integer boxReActivitiId, String assessmentKey) {
+        if (StringUtils.isBlank(assessmentKey)) {
+            return bpmRpcBoxService.getAssessmentItemList(boxId, boxReActivitiId);
+        } else {
+            return bpmRpcBoxService.getAssessmentItemList(boxId, boxReActivitiId, assessmentKey);
+        }
     }
 
 
@@ -341,20 +346,29 @@ public class ChksAssessmentProjectPerformanceService {
                 if (StringUtils.isNotBlank(vo.getExaminePeople())) {
                     vo.setExaminePeopleName(publicService.getUserNameByAccount(vo.getExaminePeople()));
                 }
+                boolean remove = false;
                 if (CollectionUtils.isNotEmpty(vo.getDetailList())) {
                     Iterator<AssessmentProjectPerformanceDetailDto> detailDtoIterator = vo.getDetailList().iterator();
                     while (detailDtoIterator.hasNext()) {
                         AssessmentProjectPerformanceDetailDto performanceDetailDto = detailDtoIterator.next();
-
                         if (performanceDetailDto.getContentId() != null) {
                             AssessmentItemDto assessmentItem = bpmRpcBoxService.getAssessmentItem(performanceDetailDto.getContentId());
                             if (assessmentItem != null) {
+                                if (StringUtils.isNotBlank(query.getAssessmentKey())) {
+                                    if (!Objects.equal(query.getAssessmentKey(), assessmentItem.getAssessmentKey())) {
+                                        remove = true;
+                                        break;
+                                    }
+                                }
                                 performanceDetailDto.setMinScore(assessmentItem.getMinScore());
                                 performanceDetailDto.setMaxScore(assessmentItem.getMaxScore());
                                 performanceDetailDto.setStandardScore(assessmentItem.getStandardScore());
                             }
                         }
                     }
+                }
+                if (remove) {
+                    assessmentProjectPerformanceDtoIterator.remove();
                 }
             }
         }
@@ -637,28 +651,30 @@ public class ChksAssessmentProjectPerformanceService {
 
     /**
      * 查勘
+     *
      * @param target
      * @param projectInfo
      * @param projectWorkStage
      * @param keyValueDto
      * @throws Exception
      */
-    private void handleExploreTask(ProjectPlanDetails target, ProjectInfo projectInfo, ProjectWorkStage projectWorkStage,KeyValueDto keyValueDto)throws Exception{
+    private void handleExploreTask(ProjectPlanDetails target, ProjectInfo projectInfo, ProjectWorkStage projectWorkStage, KeyValueDto keyValueDto) throws Exception {
         ProjectPlanDetails projectPlanDetails = appendTask(target, projectInfo, projectWorkStage, keyValueDto);
-        if (projectPlanDetails == null){
+        if (projectPlanDetails == null) {
             return;
         }
     }
 
     /**
      * 申报
+     *
      * @param target
      * @param projectInfo
      * @param projectWorkStage
      * @param keyValueDto
      * @throws Exception
      */
-    private void handleDeclareTask(ProjectPlanDetails target, ProjectInfo projectInfo, ProjectWorkStage projectWorkStage,KeyValueDto keyValueDto)throws Exception {
+    private void handleDeclareTask(ProjectPlanDetails target, ProjectInfo projectInfo, ProjectWorkStage projectWorkStage, KeyValueDto keyValueDto) throws Exception {
         DeclareRealtyHouseCert realtyHouseCert = new DeclareRealtyHouseCert();
         realtyHouseCert.setPlanDetailsId(target.getId());
         realtyHouseCert.setEnable(DeclareTypeEnum.MasterData.getKey());
@@ -672,14 +688,14 @@ public class ChksAssessmentProjectPerformanceService {
         realtyRealEstateCert.setEnable(DeclareTypeEnum.MasterData.getKey());
         List<DeclareRealtyRealEstateCertVo> declareRealtyRealEstateCertVoList = declareRealtyRealEstateCertService.landLevels(realtyRealEstateCert);
         int sizeTotal = declareRealtyHouseCertVoList.size() + declareRealtyLandCertVoList.size() + declareRealtyRealEstateCertVoList.size();
-        if (sizeTotal == 0){
+        if (sizeTotal == 0) {
             return;
         }
         ProjectPlanDetails projectPlanDetails = appendTask(target, projectInfo, projectWorkStage, keyValueDto);
-        if (projectPlanDetails == null){
+        if (projectPlanDetails == null) {
             return;
         }
-        BiFunction<Integer,String,ChksCustomerAssessmentPlanDetail> biFunction = new BiFunction<Integer, String, ChksCustomerAssessmentPlanDetail>() {
+        BiFunction<Integer, String, ChksCustomerAssessmentPlanDetail> biFunction = new BiFunction<Integer, String, ChksCustomerAssessmentPlanDetail>() {
             @Override
             public ChksCustomerAssessmentPlanDetail apply(Integer integer, String s) {
                 ChksCustomerAssessmentPlanDetail assessmentPlanDetail = new ChksCustomerAssessmentPlanDetail();
@@ -704,29 +720,29 @@ public class ChksAssessmentProjectPerformanceService {
                         }
                     }
                 }
-                chksCustomerAssessmentPlanDetailService.saveAndUpdateChksCustomerAssessmentPlanDetail(assessmentPlanDetail,true);
+                chksCustomerAssessmentPlanDetailService.saveAndUpdateChksCustomerAssessmentPlanDetail(assessmentPlanDetail, true);
                 return assessmentPlanDetail;
             }
         };
-        if (CollectionUtils.isNotEmpty(declareRealtyHouseCertVoList)){
+        if (CollectionUtils.isNotEmpty(declareRealtyHouseCertVoList)) {
             Iterator<DeclareRealtyHouseCertVo> houseCertVoIterator = declareRealtyHouseCertVoList.iterator();
-            while (houseCertVoIterator.hasNext()){
+            while (houseCertVoIterator.hasNext()) {
                 DeclareRealtyHouseCertVo realtyHouseCertVo = houseCertVoIterator.next();
-                ChksCustomerAssessmentPlanDetail assessmentPlanDetail = biFunction.apply(realtyHouseCertVo.getId(),FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class)) ;
+                ChksCustomerAssessmentPlanDetail assessmentPlanDetail = biFunction.apply(realtyHouseCertVo.getId(), FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class));
             }
         }
-        if (CollectionUtils.isNotEmpty(declareRealtyLandCertVoList)){
+        if (CollectionUtils.isNotEmpty(declareRealtyLandCertVoList)) {
             Iterator<DeclareRealtyLandCertVo> declareRealtyLandCertVoIterator = declareRealtyLandCertVoList.iterator();
-            while (declareRealtyLandCertVoIterator.hasNext()){
+            while (declareRealtyLandCertVoIterator.hasNext()) {
                 DeclareRealtyLandCertVo realtyLandCertVo = declareRealtyLandCertVoIterator.next();
-                ChksCustomerAssessmentPlanDetail assessmentPlanDetail = biFunction.apply(realtyLandCertVo.getId(),FormatUtils.entityNameConvertToTableName(DeclareRealtyLandCert.class)) ;
+                ChksCustomerAssessmentPlanDetail assessmentPlanDetail = biFunction.apply(realtyLandCertVo.getId(), FormatUtils.entityNameConvertToTableName(DeclareRealtyLandCert.class));
             }
         }
-        if (CollectionUtils.isNotEmpty(declareRealtyRealEstateCertVoList)){
+        if (CollectionUtils.isNotEmpty(declareRealtyRealEstateCertVoList)) {
             ListIterator<DeclareRealtyRealEstateCertVo> realtyRealEstateCertVoListIterator = declareRealtyRealEstateCertVoList.listIterator();
-            while (realtyRealEstateCertVoListIterator.hasNext()){
+            while (realtyRealEstateCertVoListIterator.hasNext()) {
                 DeclareRealtyRealEstateCertVo realEstateCertVo = realtyRealEstateCertVoListIterator.next();
-                ChksCustomerAssessmentPlanDetail assessmentPlanDetail = biFunction.apply(realEstateCertVo.getId(),FormatUtils.entityNameConvertToTableName(DeclareRealtyRealEstateCert.class)) ;
+                ChksCustomerAssessmentPlanDetail assessmentPlanDetail = biFunction.apply(realEstateCertVo.getId(), FormatUtils.entityNameConvertToTableName(DeclareRealtyRealEstateCert.class));
             }
         }
     }
@@ -984,6 +1000,25 @@ public class ChksAssessmentProjectPerformanceService {
         return boxReActivityDtoList;
     }
 
+    public BoxReDto getBoxReDto(String processInsId) {
+        List<BoxApprovalLogVo> boxApprovalLogVoList = getBoxApprovalLogVoList(processInsId);
+        if (CollectionUtils.isNotEmpty(boxApprovalLogVoList)) {
+            Iterator<BoxApprovalLogVo> boxApprovalLogVoIterator = boxApprovalLogVoList.iterator();
+            while (boxApprovalLogVoIterator.hasNext()){
+                BoxApprovalLogVo boxApprovalLogVo = boxApprovalLogVoIterator.next();
+                if (boxApprovalLogVo.getBoxId() == null){
+                    continue;
+                }
+                BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(boxApprovalLogVo.getBoxId());
+                if (boxReDto == null){
+                    continue;
+                }
+                return boxReDto;
+            }
+        }
+        return null;
+    }
+
     /**
      * 获取需要特殊处理的考核  工作事项
      *
@@ -1039,7 +1074,7 @@ public class ChksAssessmentProjectPerformanceService {
                     i++;
                 }
                 //暂时设为false,为以后bpm中会配置此考核是否按照常规考核进行
-                if (false){
+                if (false) {
                     i++;
                 }
                 if (i != 0) {

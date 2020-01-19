@@ -564,6 +564,12 @@
                     </script>
                 </form>
             </div>
+
+            <div class="x_panel">
+                <%@include file="/views/project/chksCustomize/chksSurvey.jsp" %>
+            </div>
+
+
             <c:if test="${empty isHistory}">
                 <div class="x_panel">
                     <div class="x_content">
@@ -598,6 +604,7 @@
                     </div>
                 </div>
             </c:if>
+
             <div class="x_panel">
                 <div class="x_content">
                     <div style="text-align: center;">
@@ -612,6 +619,7 @@
 </div>
 </body>
 <%@include file="/views/share/main_footer.jsp" %>
+<%@include file="/views/share/chksCommon.jsp" %>
 <%@include file="/views/project/tool/toolMapHandleView.jsp" %>
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/js/examine/examine.common.js?v=${assessVersion}"></script>
@@ -624,6 +632,7 @@
 <script type="text/javascript">
     $(function () {
         estateCommon.initDetailById('${basicEstate.id}', '', false);
+        assessmentCommonHandle.loadChksServerViewTable();
     })
 </script>
 </html>
