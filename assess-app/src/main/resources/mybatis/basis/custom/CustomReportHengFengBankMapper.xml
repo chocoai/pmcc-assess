@@ -31,7 +31,7 @@
         from tb_project_number_record A
         LEFT JOIN tb_project_info B ON A.project_id = B.id
         LEFT JOIN tb_declare_apply C ON A.project_id = C.project_id
-        LEFT JOIN tb_generate_report_info D ON A.project_id = D.project_id
+        LEFT JOIN tb_generate_report_info D ON A.area_id = D.area_group_id
         LEFT JOIN tb_initiate_unit_information E ON A.project_id = E.project_id
         WHERE 1=1
         and bis_delete = false
