@@ -315,7 +315,7 @@ public class BasicUnitHuxingService {
         for (int i = 0; i < title.size(); i++) {
             Cell cell = row.createCell(i);
             if (title.get(i).contains("房间")) {
-                cell.setCellValue("面积()m²,层高()米，净高()米，开间/宽()米，进深/长()米，日照()，采光()，通风()，隔音()");
+                cell.setCellValue("面积()m²,层高()米,净高()米,开间/宽()米,进深/长()米,日照(),采光(),通风(),隔音()");
             }
         }
 
@@ -467,7 +467,7 @@ public class BasicUnitHuxingService {
             BasicHouseRoom basicHouseRoom = new BasicHouseRoom();
             basicHouseRoom.setHouseId(basicHouse.getId());
             String roomData = PoiUtils.getCellValue(row.getCell(c));
-            String[] split = roomData.split(",");
+            String[] split = roomData.split(",|，");
             List<String> value = Lists.newArrayList();
             for (int n = 0; n < split.length; n++) {
                 String regex = "(?<=\\()[^\\)]+";

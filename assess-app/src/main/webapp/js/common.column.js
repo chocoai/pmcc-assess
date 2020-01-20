@@ -527,7 +527,10 @@ commonColumn.houseRoomColumn = function () {
     var cols = [];
     cols.push({
         field: 'name', title: '房间类型', formatter: function (value, row, index) {
-            var s = row.roomType;
+            var s = "";
+            if (row.roomType) {
+                s += row.roomType;
+            }
             if (row.creatorName) {
                 s += "<label style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</label>"
             }
