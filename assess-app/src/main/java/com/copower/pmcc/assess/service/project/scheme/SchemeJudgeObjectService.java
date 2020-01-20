@@ -162,7 +162,7 @@ public class SchemeJudgeObjectService {
         return schemeJudgeObjectDao.getJudgeObjectList(schemeJudgeObject);
     }
 
-    public List<SchemeJudgeObject> getJudgeObjectListByAreaGroupId(Integer areaGroupId) {
+    public List<SchemeJudgeObject> getJudgeObjectListAllByAreaGroupId(Integer areaGroupId) {
         SchemeJudgeObject schemeJudgeObject = new SchemeJudgeObject();
         schemeJudgeObject.setAreaGroupId(areaGroupId);
         return schemeJudgeObjectDao.getJudgeObjectList(schemeJudgeObject);
@@ -570,8 +570,8 @@ public class SchemeJudgeObjectService {
                     evaluationArea = evaluationArea.subtract(judgeObject.getEvaluationArea());
                 }
             }
-            schemeJudgeObject.setNumber(number.replaceAll(",+", ","));
-            schemeJudgeObject.setName(name.replaceAll(",+", ","));
+            schemeJudgeObject.setNumber(StringUtils.strip(number.replaceAll(",+", ","), ","));
+            schemeJudgeObject.setName(schemeJudgeObject.getNumber() + BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME);
             schemeJudgeObject.setFloorArea(floorArea);
             schemeJudgeObject.setEvaluationArea(evaluationArea);
             schemeJudgeObjectDao.updateSchemeJudgeObject(schemeJudgeObject);
@@ -1111,7 +1111,7 @@ public class SchemeJudgeObjectService {
                         numberBuilder.append(",");
                     }
                 }
-                mergeJudgeObject.setNumber(StringUtils.strip(numberBuilder.toString().replaceAll(",+", ",")));
+                mergeJudgeObject.setNumber(StringUtils.strip(numberBuilder.toString().replaceAll(",+", ","), ","));
                 mergeJudgeObject.setName(String.format("%s%s", mergeJudgeObject.getNumber(), BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME));
                 updateSchemeJudgeObject(mergeJudgeObject);
                 judgeNameChangeEvent(mergeJudgeObject);
@@ -1184,7 +1184,7 @@ public class SchemeJudgeObjectService {
         if (CollectionUtils.isNotEmpty(planDetailsList)) {
             SchemeAreaGroup schemeAreaGroup = schemeAreaGroupService.getSchemeAreaGroup(judgeObject.getAreaGroupId());
             for (ProjectPlanDetails item : planDetailsList) {
-                item.setPlanRemarks(String.format("%s/%s",schemeAreaGroup.getAreaName(),judgeObject.getName()));
+                item.setPlanRemarks(String.format("%s/%s", schemeAreaGroup.getAreaName(), judgeObject.getName()));
                 projectPlanDetailsService.updateProjectPlanDetails(item);
             }
         }

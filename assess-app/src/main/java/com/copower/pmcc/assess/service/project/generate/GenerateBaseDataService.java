@@ -1283,7 +1283,7 @@ public class GenerateBaseDataService {
     public String getDeclareRecordUnitType() throws Exception {
         StringBuilder stringBuilder = new StringBuilder(8);
         Map<String, String> map = Maps.newHashMap();
-        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectListByAreaGroupId(areaId);
+        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectListAllByAreaGroupId(areaId);
         for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
             BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
             if (basicApply == null || basicApply.getId() == null) {
@@ -1331,7 +1331,7 @@ public class GenerateBaseDataService {
      */
     public String getDecorationStatus() {
         Map<Integer, String> map = Maps.newHashMap();
-        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectListByAreaGroupId(areaId);
+        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectListAllByAreaGroupId(areaId);
         for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
             BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
             if (basicApply == null || basicApply.getId() == null) {
@@ -5048,7 +5048,6 @@ public class GenerateBaseDataService {
                 String stringOther = generateHouseEntityService.getOther(judgeObjects);
                 if (StringUtils.isNotBlank(stringOther))
                     stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("13、其它:%s", generateCommonMethod.trim(stringOther))));
-
                 stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("建筑实体分析:%s", generateCommonMethod.trim(generateHouseEntityService.getBuildEntityAnalysis(judgeObjects, schemeAreaGroup)))));
                 documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml(stringBuilder.toString()), true);
             }
@@ -5151,7 +5150,7 @@ public class GenerateBaseDataService {
         String localPath = getLocalPath();
         LinkedHashMap<String, String> map = Maps.newLinkedHashMap();
         List<SchemeJudgeObject> schemeJudgeObjectList = Lists.newArrayList();
-        schemeJudgeObjectService.getJudgeObjectListByAreaGroupId(areaId).forEach(schemeJudgeObject -> {
+        schemeJudgeObjectService.getJudgeObjectListAllByAreaGroupId(areaId).forEach(schemeJudgeObject -> {
             if (schemeJudgeObject.getDeclareRecordId() != null) {
                 schemeJudgeObjectList.add(schemeJudgeObject);
             }
@@ -5401,7 +5400,7 @@ public class GenerateBaseDataService {
     public String getNetAssessmentNumber(BaseReportFieldEnum reportFieldEnum) {
         Map<Integer, String> map = Maps.newHashMap();
         List<SchemeJudgeObject> schemeJudgeObjectList = Lists.newArrayList();
-        schemeJudgeObjectService.getJudgeObjectListByAreaGroupId(areaId).forEach(schemeJudgeObject -> {
+        schemeJudgeObjectService.getJudgeObjectListAllByAreaGroupId(areaId).forEach(schemeJudgeObject -> {
             if (schemeJudgeObject.getDeclareRecordId() != null) {
                 schemeJudgeObjectList.add(schemeJudgeObject);
             }
@@ -6444,7 +6443,7 @@ public class GenerateBaseDataService {
                     buffer.append(generateCommonMethod.judgeSummaryDesc(evaluationAreaMap, "评估面积", false)).append(",");//评估面积
                 }
                 if (!landRightNatureMap.isEmpty()) {
-                    buffer.append(generateCommonMethod.judgeSummaryDesc(landRightNatureMap, "权利性质", false)).append(",");//权利性质
+                    buffer.append(generateCommonMethod.judgeSummaryDesc(landRightNatureMap, "土地权利性质", false)).append(",");//权利性质
                 }
                 if (!structureMap.isEmpty()) {
                     buffer.append(generateCommonMethod.judgeSummaryDesc(structureMap, "房屋结构", false)).append(",");//房屋结构
