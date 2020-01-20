@@ -184,19 +184,19 @@ public class ProjectTakeNumberService {
         projectTakeNumberDao.modifyProjectTakeNumber(projectTakeNumber);
     }
 
-    public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData){
+    public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) {
         ProjectTakeNumber projectTakeNumber = JSONObject.parseObject(formData, ProjectTakeNumber.class);
-      saveAndUpdateProjectTakeNumber(projectTakeNumber, false);
+        saveAndUpdateProjectTakeNumber(projectTakeNumber, false);
         List<ProjectTakeNumberDetail> projectTakeNumberDetailList = projectTakeNumberDetailService.getProjectTakeNumberDetailListByMasterId(projectTakeNumber.getId());
-        if (CollectionUtils.isNotEmpty(projectTakeNumberDetailList)){
+        if (CollectionUtils.isNotEmpty(projectTakeNumberDetailList)) {
             Iterator<ProjectTakeNumberDetail> projectTakeNumberDetailIterator = projectTakeNumberDetailList.iterator();
-            while (projectTakeNumberDetailIterator.hasNext()){
+            while (projectTakeNumberDetailIterator.hasNext()) {
                 ProjectTakeNumberDetail projectTakeNumberDetail = projectTakeNumberDetailIterator.next();
-                if (StringUtils.isNotBlank(projectTakeNumberDetail.getReportTypeName())){
+                if (StringUtils.isNotBlank(projectTakeNumberDetail.getReportTypeName())) {
                     continue;
                 }
                 projectTakeNumberDetail.setReportTypeName(baseDataDicService.getNameById(projectTakeNumberDetail.getReportType()));
-                projectTakeNumberDetailService.saveAndUpdateProjectTakeNumberDetail(projectTakeNumberDetail,true);
+                projectTakeNumberDetailService.saveAndUpdateProjectTakeNumberDetail(projectTakeNumberDetail, true);
             }
         }
     }

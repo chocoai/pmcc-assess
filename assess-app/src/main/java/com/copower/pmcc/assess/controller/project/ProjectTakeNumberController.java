@@ -192,6 +192,16 @@ public class ProjectTakeNumberController extends BaseController {
         }
     }
 
+    @GetMapping(value = "/getProjectTakeNumberDetailById",name = "拿号 get")
+    public HttpResult getProjectTakeNumberDetailById(Integer id) {
+        try {
+            return HttpResult.newCorrectResult(200, projectTakeNumberDetailService.getProjectTakeNumberDetailById(id));
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
+            return HttpResult.newErrorResult(500, e);
+        }
+    }
+
 
     @GetMapping(value = "/toolBaseOrCode", name = "二维码 拿取,加上一个功能替换,假如不存替换的附件id则不替换")
     public HttpResult toolBaseOrCode(Integer takeNumberDetailId, Integer masterId,String attachmentIds) {

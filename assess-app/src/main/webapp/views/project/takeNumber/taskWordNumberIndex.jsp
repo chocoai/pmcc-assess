@@ -200,7 +200,9 @@
                 <form>
                     <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12  panel-heading  text-center">
                         <h2>第{index}拿号
-                            <button class="btn-primary btn" type="button" onclick="baseTakeNumber.removeProjectTakeNumberDetail(this);">移除<i class="fa fa-minus-circle"></i></button>
+                            <button class="btn-primary btn" type="button"
+                                    onclick="baseTakeNumber.removeProjectTakeNumberDetail(this);">移除<i
+                                    class="fa fa-minus-circle"></i></button>
                         </h2>
                     </div>
                     <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12  panel-body ">
@@ -533,8 +535,8 @@
     baseTakeNumber.removeProjectTakeNumberDetail = function (_this) {
         var form = $(_this).closest("form");
         var defaultObj = formSerializeArray(form);
-        baseTakeNumber.ajaxServerMethod(defaultObj,"projectTakeNumber/deleteProjectTakeNumberDetailById","post",function () {
-            form.parent().parent().parent().remove() ;
+        baseTakeNumber.ajaxServerMethod(defaultObj, "projectTakeNumber/deleteProjectTakeNumberDetailById", "post", function () {
+            form.parent().parent().parent().remove();
             toastr.success('移除成功!');
         });
     };
@@ -555,16 +557,17 @@
         if ("${takeNumberDetailIdList}") {
             var takeNumberDetailIdList = '${takeNumberDetailIdList}';
             var frm = baseTakeNumber.handleJquery(baseTakeNumber.config.frm);
-            var data = formSerializeArray(frm);
-            takeNumberDetailIdList = takeNumberDetailIdList.split(",") ;
+            takeNumberDetailIdList = takeNumberDetailIdList.split(",");
             var target = frm.closest(".x_panel");
-            $.each(takeNumberDetailIdList,function (i,id) {
+            $.each(takeNumberDetailIdList, function (i, id) {
                 var html = $("#projectTakeNumberDetailHtml").html();
                 html = html.replace(/{id}/g, id);
                 html = html.replace(/{index}/g, $(document).find("input[name=id]").size() - 1);
                 target.append(html);
                 var form = $("#" + baseTakeNumber.config.detailFileId + id).closest("form");
-                baseTakeNumber.initFormProjectTakeNumberDetailData({masterId:data.id,id:id}, form, true);
+                baseTakeNumber.ajaxServerMethod({id: id}, "projectTakeNumber/getProjectTakeNumberDetailById", "get", function (item) {
+                    baseTakeNumber.initFormProjectTakeNumberDetailData(item, form, true);
+                });
             });
         }
     });
