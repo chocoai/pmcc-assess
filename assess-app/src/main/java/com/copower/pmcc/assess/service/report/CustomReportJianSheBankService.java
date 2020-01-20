@@ -2,8 +2,10 @@ package com.copower.pmcc.assess.service.report;
 
 import com.copower.pmcc.ad.api.dto.AdPersonalQualificationDto;
 import com.copower.pmcc.ad.api.provider.AdRpcQualificationsService;
+import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.custom.entity.CustomReportJianSheBank;
 import com.copower.pmcc.assess.dal.basis.custom.mapper.CustomReportJianSheBankMapper;
+import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.BasicApply;
 import com.copower.pmcc.assess.dal.basis.entity.BasicEstate;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
@@ -74,7 +76,7 @@ public class CustomReportJianSheBankService {
     private BasicEstateService basicEstateService;
 
 
-    public BootstrapTableVo getCustomReportJianSheBankList(String numberValue, String unitName, Integer reportType,String queryPreviewsStartDate,
+    public BootstrapTableVo getCustomReportJianSheBankList(String numberValue, String unitName, Integer reportType, String queryPreviewsStartDate,
                                                            String queryPreviewsEndDate, String queryResultStartDate, String queryResultEndDate) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
@@ -95,7 +97,18 @@ public class CustomReportJianSheBankService {
         if (StringUtils.isNotEmpty(queryResultEndDate)) {
             resultEndDate = DateUtils.parse(queryResultEndDate);
         }
-        List<CustomReportJianSheBank> customNumberRecordList = customReportJianSheBankMapper.getCustomReportJianSheBankList(numberValue, unitName, reportType, previewsStartDate, previewsEndDate, resultStartDate, resultEndDate);
+        List<CustomReportJianSheBank> customNumberRecordList = null;
+        //结果报告
+        BaseDataDic resultReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_RESULT);
+        Integer resultId = resultReport.getId();
+        //咨评报告
+        BaseDataDic consultationReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_CONSULTATION);
+        Integer consultationId = consultationReport.getId();
+        if (reportType == resultId) {
+            customNumberRecordList = customReportJianSheBankMapper.getCustomReportJianSheBankList(numberValue, unitName, reportType, consultationId, previewsStartDate, previewsEndDate, resultStartDate, resultEndDate);
+        } else {
+            customNumberRecordList = customReportJianSheBankMapper.getCustomReportJianSheBankList(numberValue, unitName, reportType, null, previewsStartDate, previewsEndDate, resultStartDate, resultEndDate);
+        }
         List<CustomReportJianSheBank> vos = LangUtils.transform(customNumberRecordList, o -> getCustomReportJianSheBank(o));
         vo.setTotal(page.getTotal());
         vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<CustomReportJianSheBank>() : vos);
@@ -121,7 +134,7 @@ public class CustomReportJianSheBankService {
                     //估价对象坐落位置
                     vo.setSeat(judgeObjectList.get(0).getSeat());
                     BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(judgeObjectList.get(0).getDeclareRecordId());
-                    if(basicApply!=null){
+                    if (basicApply != null) {
                         BasicEstate basicEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
                         if (basicEstate != null) {
                             vo.setEstateName(basicEstate.getName());
@@ -172,7 +185,7 @@ public class CustomReportJianSheBankService {
      *
      * @param response
      */
-    public void export(HttpServletResponse response, String numberValue, String unitName, Integer reportType,String queryPreviewsStartDate,
+    public void export(HttpServletResponse response, String numberValue, String unitName, Integer reportType, String queryPreviewsStartDate,
                        String queryPreviewsEndDate, String queryResultStartDate, String queryResultEndDate) throws BusinessException, IOException {
         //获取数据
         Date previewsStartDate = null;
@@ -191,12 +204,23 @@ public class CustomReportJianSheBankService {
         if (StringUtils.isNotEmpty(queryResultEndDate)) {
             resultEndDate = DateUtils.parse(queryResultEndDate);
         }
-        List<CustomReportJianSheBank> customNumberRecordList = customReportJianSheBankMapper.getCustomReportJianSheBankList(numberValue, unitName, reportType, previewsStartDate, previewsEndDate, resultStartDate, resultEndDate);
-        List<CustomReportJianSheBank> vos = LangUtils.transform(customNumberRecordList, o -> getCustomReportJianSheBank(o));
+        List<CustomReportJianSheBank> customNumberRecordList = null;
+        //结果报告
+        BaseDataDic resultReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_RESULT);
+        Integer resultId = resultReport.getId();
+        //咨评报告
+        BaseDataDic consultationReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_CONSULTATION);
+        Integer consultationId = consultationReport.getId();
+        if (reportType == resultId) {
+            customNumberRecordList = customReportJianSheBankMapper.getCustomReportJianSheBankList(numberValue, unitName, reportType, consultationId, previewsStartDate, previewsEndDate, resultStartDate, resultEndDate);
+        } else {
+            customNumberRecordList = customReportJianSheBankMapper.getCustomReportJianSheBankList(numberValue, unitName, reportType, null, previewsStartDate, previewsEndDate, resultStartDate, resultEndDate);
+        }
 
         if (CollectionUtils.isEmpty(customNumberRecordList)) {
             throw new BusinessException("没有获取到有效的数据");
         }
+        List<CustomReportJianSheBank> vos = LangUtils.transform(customNumberRecordList, o -> getCustomReportJianSheBank(o));
         Workbook wb = new HSSFWorkbook();
         Sheet sheet = wb.createSheet();
         Row row = sheet.createRow(0);

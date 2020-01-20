@@ -395,7 +395,11 @@ public class BasicApplyBatchController extends BaseController {
             }
         }
         modelAndView.setViewName(stringBuffer.toString());
-        chksParams(modelAndView,tbType,planDetailsId) ;
+        try {
+            chksParams(modelAndView,tbType,planDetailsId) ;
+        }catch (Exception e){
+            logger.error("考核参数异常");
+        }
         return modelAndView;
     }
 

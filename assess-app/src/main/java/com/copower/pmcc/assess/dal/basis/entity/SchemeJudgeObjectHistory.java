@@ -23,6 +23,12 @@ public class SchemeJudgeObjectHistory {
 
     private Integer sorting;
 
+    private Boolean bisSplit;
+
+    private Boolean bisMerge;
+
+    private Boolean bisEnable;
+
     private String creator;
 
     private Date gmtCreated;
@@ -107,6 +113,30 @@ public class SchemeJudgeObjectHistory {
 
     public void setSorting(Integer sorting) {
         this.sorting = sorting;
+    }
+
+    public Boolean getBisSplit() {
+        return bisSplit;
+    }
+
+    public void setBisSplit(Boolean bisSplit) {
+        this.bisSplit = bisSplit;
+    }
+
+    public Boolean getBisMerge() {
+        return bisMerge;
+    }
+
+    public void setBisMerge(Boolean bisMerge) {
+        this.bisMerge = bisMerge;
+    }
+
+    public Boolean getBisEnable() {
+        return bisEnable;
+    }
+
+    public void setBisEnable(Boolean bisEnable) {
+        this.bisEnable = bisEnable;
     }
 
     public String getCreator() {

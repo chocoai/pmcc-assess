@@ -16,9 +16,7 @@
         <button type="button" class="btn btn-success" onclick="unitHuxing.prototype.showModel()"
                 data-toggle="modal" href="#divBox"> 新增
         </button>
-        <c:if test="${not empty declareRecord}">
-            <div type="button" class="btn btn-primary" onclick="unitHuxing.prototype.importHouseBtn()"> 导入数据</div>
-        </c:if>
+        <div type="button" class="btn btn-primary" onclick="unitHuxing.prototype.importHouseBtn()"> 导入数据</div>
         <table class="table table-bordered" id="UnitHuxingList">
             <!-- cerare document add ajax data-->
         </table>

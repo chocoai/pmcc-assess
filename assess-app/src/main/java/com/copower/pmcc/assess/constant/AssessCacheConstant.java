@@ -45,6 +45,10 @@ public class AssessCacheConstant {
     public static final String PMCC_ASSESS_DATA_DIC_FIELD = "pmcc:assess:data:dic:field";
     public static final String PMCC_ASSESS_DATA_DIC_FIELD_ITEM = "pmcc:assess:data:dic:field:item";
 
+    //估价对象
+    public static final String PMCC_ASSESS_JUDGE_OBJECT = "pmcc:assess:judge:object";
+    public static final String PMCC_ASSESS_JUDGE_OBJECT_ID = "pmcc:assess:judge:object:id";
+
     //报告字段
     public static final String PMCC_ASSESS_REPORT_FIELD = "pmcc:assess:report:field";
     public static final String PMCC_ASSESS_REPORT_FIELD_ID = "pmcc:assess:report:field:id";

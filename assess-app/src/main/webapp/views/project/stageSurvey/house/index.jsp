@@ -131,20 +131,20 @@
     function showProjectQuoteModal() {
         //打开楼盘modal
         if ("estate" == "${tbType}") {
-            projectData.prototype.showProjectDataModel();
+            projectData.prototype.showHouseModel();
         }
 
         //打开楼栋modal
         if ("building" == "${tbType}") {
-            projectBuild.prototype.showModel(${quoteId});
+            projectBuild.prototype.showModel();
         }
         //打开单元modal
         if ("unit" == "${tbType}") {
-            projectUnit.prototype.showModel(${quoteId});
+            projectUnit.prototype.showModel();
         }
         //打开房屋modal
         if ("house" == "${tbType}") {
-            projectHouse.prototype.showModel(${quoteId});
+            projectHouse.prototype.showModel();
         }
 
     };

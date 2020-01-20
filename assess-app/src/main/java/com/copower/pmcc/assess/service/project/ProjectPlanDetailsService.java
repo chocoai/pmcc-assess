@@ -144,6 +144,15 @@ public class ProjectPlanDetailsService {
         return planDetailsList.get(0);
     }
 
+    public ProjectPlanDetails getProjectPlanDetailsByJudgeId(Integer judgeObjectId, Integer projectPhaseId) {
+        ProjectPlanDetails projectPlanDetails = new ProjectPlanDetails();
+        projectPlanDetails.setJudgeObjectId(judgeObjectId);
+        projectPlanDetails.setProjectPhaseId(projectPhaseId);
+        List<ProjectPlanDetails> planDetailsList = projectPlanDetailsDao.getListObject(projectPlanDetails);
+        if (CollectionUtils.isEmpty(planDetailsList)) return null;
+        return planDetailsList.get(0);
+    }
+
     /**
      * 删除任务
      *
@@ -591,37 +600,38 @@ public class ProjectPlanDetailsService {
         //1.更新任务状态 记录重启原因 2.添加新的待提交任务
         ProjectPlanDetails projectPlanDetails = getProjectPlanDetailsById(planDetailsId);
         if (projectPlanDetails == null) return null;
-        if (!StringUtils.equals(projectPlanDetails.getStatus(), ProcessStatusEnum.FINISH.getValue()))
-            throw new BusinessException("已完成的任务才允许重启");
+        if (StringUtils.equals(projectPlanDetails.getStatus(), ProcessStatusEnum.FINISH.getValue())){
+            projectPlanDetails.setStatus(ProcessStatusEnum.RUN.getValue());
+            projectPlanDetails.setBisStart(false);
+            projectPlanDetails.setProcessInsId("0");
+            projectPlanDetails.setBisRestart(true);
+            projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetails);
 
-        projectPlanDetails.setStatus(ProcessStatusEnum.RUN.getValue());
-        projectPlanDetails.setBisStart(false);
-        projectPlanDetails.setProcessInsId("0");
-        projectPlanDetails.setBisRestart(true);
-        projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetails);
+            ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
+            ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlanDetails.getProjectWorkStageId());
+            projectPlanService.saveProjectPlanDetailsResponsibility(projectPlanDetails, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.TASK);
 
-        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
-        ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlanDetails.getProjectWorkStageId());
-        projectPlanService.saveProjectPlanDetailsResponsibility(projectPlanDetails, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.TASK);
-
-        //新增一条重启记录
-        ProjectTaskReturnRecord projectTaskReturnRecord = JSON.parseObject(formData, ProjectTaskReturnRecord.class);
-        projectTaskReturnRecord.setProjectId(projectPlanDetails.getProjectId());
-        projectTaskReturnRecord.setPlanDetailsId(planDetailsId);
-        projectTaskReturnRecord.setCreator(commonService.thisUserAccount());
-        projectTaskReturnRecord.setReturnPerson(commonService.thisUserAccount());
-        projectTaskReturnRecord.setReturnTime(new Date());
-        Integer returnId = projectTaskReturnRecordDao.addProjectTaskReturnRecord(projectTaskReturnRecord);
-        //修改附件tableId
-        SysAttachmentDto queryParam = new SysAttachmentDto();
-        queryParam.setTableName(FormatUtils.entityNameConvertToTableName(ProjectTaskReturnRecord.class));
-        queryParam.setTableId(0);
-        queryParam.setFieldsName(String.valueOf(planDetailsId));
-        queryParam.setAppKey(applicationConstant.getAppKey());
-        queryParam.setCreater(commonService.thisUserAccount());
-        SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
-        sysAttachmentDto.setTableId(returnId);
-        erpRpcAttachmentService.updateAttachmentByParam(queryParam, sysAttachmentDto);
+        }
+        if(StringUtils.isNotBlank(formData)){
+            //新增一条重启记录
+            ProjectTaskReturnRecord projectTaskReturnRecord = JSON.parseObject(formData, ProjectTaskReturnRecord.class);
+            projectTaskReturnRecord.setProjectId(projectPlanDetails.getProjectId());
+            projectTaskReturnRecord.setPlanDetailsId(planDetailsId);
+            projectTaskReturnRecord.setCreator(commonService.thisUserAccount());
+            projectTaskReturnRecord.setReturnPerson(commonService.thisUserAccount());
+            projectTaskReturnRecord.setReturnTime(new Date());
+            Integer returnId = projectTaskReturnRecordDao.addProjectTaskReturnRecord(projectTaskReturnRecord);
+            //修改附件tableId
+            SysAttachmentDto queryParam = new SysAttachmentDto();
+            queryParam.setTableName(FormatUtils.entityNameConvertToTableName(ProjectTaskReturnRecord.class));
+            queryParam.setTableId(0);
+            queryParam.setFieldsName(String.valueOf(planDetailsId));
+            queryParam.setAppKey(applicationConstant.getAppKey());
+            queryParam.setCreater(commonService.thisUserAccount());
+            SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
+            sysAttachmentDto.setTableId(returnId);
+            erpRpcAttachmentService.updateAttachmentByParam(queryParam, sysAttachmentDto);
+        }
         return getProjectPlanDetailsVo(projectPlanDetails);
     }
 

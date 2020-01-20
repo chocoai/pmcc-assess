@@ -868,7 +868,7 @@ public class BasicHouseService {
         batchDetail.setQuoteId(id);
         batchDetail.setBaseType(BaseConstant.DATABASE_PMCC_ASSESS);
         basicApplyBatchDetailDao.updateInfo(batchDetail);
-        Integer parentTableId = basicApplyBatchDetailService.getParentTableId(batchDetail);
+        //Integer parentTableId = basicApplyBatchDetailService.getParentTableId(batchDetail);
 
         Map<String, Object> objectMap = new HashMap<String, Object>(2);
         BasicHouse oldBasicHouse = this.getBasicHouseById(id);
@@ -879,7 +879,7 @@ public class BasicHouseService {
         basicHouse.setGmtModified(null);
         basicHouse.setId(tableId);
         basicHouse.setApplyId(null);
-        basicHouse.setUnitId(parentTableId);
+        //basicHouse.setUnitId(parentTableId);
 
         this.saveAndUpdateBasicHouse(basicHouse, false);
         objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicHouse.class.getSimpleName()), getBasicHouseVo(basicHouse));

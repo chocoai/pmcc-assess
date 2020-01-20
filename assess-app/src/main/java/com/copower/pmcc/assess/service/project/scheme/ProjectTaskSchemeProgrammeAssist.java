@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.constant.BaseConstant;
+import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeJudgeObjectDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeProgrammeDto;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
@@ -71,6 +72,8 @@ public class ProjectTaskSchemeProgrammeAssist implements ProjectTaskInterface {
     private ProjectPlanService projectPlanService;
     @Autowired
     private ProjectWorkStageService projectWorkStageService;
+    @Autowired
+    private SchemeJudgeObjectDao schemeJudgeObjectDao;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
@@ -135,6 +138,10 @@ public class ProjectTaskSchemeProgrammeAssist implements ProjectTaskInterface {
             }
             ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlan.getProjectId());
             ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlan.getWorkStageId());
+            int count = schemeJudgeObjectDao.getNotSetFunctionCount(projectInfo.getId());
+            if (count > 0) {
+                throw new BusinessException("还有委估对象未设置评估方法请检查");
+            }
             try {
                 schemeJudgeObjectService.submitProgrammeHandle(projectInfo,projectPlan,projectWorkStage) ;
             } catch (BpmException e) {

@@ -118,6 +118,12 @@
                         <a class="btn btn-xs btn-warning paste masterTool" onclick="batchTreeTool.deepCopy();">
                             深复制
                         </a>
+                        <c:if test="${not empty declareRecord}">
+                            <a class="btn btn-xs btn-warning paste alternativeCase" style="display: none"
+                               onclick="batchTreeTool.addToAlternative();">
+                                添加到备选案例
+                            </a>
+                        </c:if>
                     </div>
                     <div id="detail_modal" class="modal fade bs-example-modal-lg" data-backdrop="static"
                          aria-hidden="true"
@@ -813,6 +819,32 @@
         });
     }
 
+    //添加到备选案例
+    batchTreeTool.addToAlternative = function () {
+        Loading.progressShow();
+        var node = zTreeObj.getSelectedNodes()[0];
+        var data = {};
+        data.business_id = node.id;
+        data.business_key = node.type;
+        $.ajax({
+            url: "${pageContext.request.contextPath}/basicAlternativeCase/addToAlternative",
+            data: {
+                formData: JSON.stringify(data)
+            },
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    toastr.success("添加成功");
+                }
+                else {
+                    Alert("添加失败，失败原因:" + result.errmsg, 1, null, null);
+                }
+            }
+        });
+    }
+
     //全部展开或收起
     batchTreeTool.expandAll = function (flag) {
         zTreeObj.expandAll(flag);
@@ -838,6 +870,11 @@
                 $("#btnGroup").find('.btn.deserveTool').hide();
                 $("#btnGroup").find('.btn.deleteTool').hide();
             }
+        }
+        if (node.executor == '${userAccount}') {
+            $("#btnGroup").find('.btn.alternativeCase').show();
+        } else {
+            $("#btnGroup").find('.btn.alternativeCase').hide();
         }
 
     }

@@ -1,5 +1,8 @@
 package com.copower.pmcc.assess.controller.baisc;
 
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicAlternativeCaseDao;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDetailDao;
+import com.copower.pmcc.assess.dal.basis.entity.BasicAlternativeCase;
 import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchDetail;
 import com.copower.pmcc.assess.dal.basis.entity.BasicUnit;
 import com.copower.pmcc.assess.service.basic.BasicApplyBatchDetailService;
@@ -29,6 +32,10 @@ public class BasicUnitController {
     private PublicBasicService publicBasicService;
     @Autowired
     private BasicApplyBatchDetailService basicApplyBatchDetailService;
+    @Autowired
+    private BasicAlternativeCaseDao basicAlternativeCaseDao;
+    @Autowired
+    private BasicApplyBatchDetailDao basicApplyBatchDetailDao;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -120,6 +127,20 @@ public class BasicUnitController {
         }
     }
 
+
+    @ResponseBody
+    @RequestMapping(value = "/quoteFromAlternative", name = "引用项目中的数据批量时", method = {RequestMethod.GET})
+    public HttpResult quoteFromAlternative(Integer id, Integer tableId) {
+        try {
+            BasicAlternativeCase alternativeCase = basicAlternativeCaseDao.getBasicAlternativeCaseById(id);
+            BasicApplyBatchDetail batchDetail = basicApplyBatchDetailDao.getInfoById(alternativeCase.getBusinessId());
+            return HttpResult.newCorrectResult(basicUnitService.quoteUnitData(batchDetail.getTableId(), tableId));
+        } catch (Exception e) {
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
+
     @ResponseBody
     @RequestMapping(value = "/addUnit", name = "添加单元信息", method = {RequestMethod.POST})
     public HttpResult addUnit(String unitNumber) {
@@ -165,7 +186,7 @@ public class BasicUnitController {
         try {
             BasicApplyBatchDetail unitDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail("tb_basic_unit", id);
             Integer quoteId = 0;
-            if (unitDetail != null && unitDetail.getPid()!= null) {
+            if (unitDetail != null && unitDetail.getPid()!= null &&unitDetail.getUpgradeTableId()==null) {
                 quoteId = basicApplyBatchDetailService.getDataById(unitDetail.getPid()).getQuoteId();
             }
             return HttpResult.newCorrectResult(200, quoteId);

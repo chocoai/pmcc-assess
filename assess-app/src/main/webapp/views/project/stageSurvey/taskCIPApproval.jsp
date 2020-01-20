@@ -91,6 +91,12 @@
                                         编辑
                                     </a>
                                 </c:if>
+                                <c:if test="${not empty declareRecord && flog!='approval'}">
+                                    <a class="btn btn-xs btn-warning paste alternativeCase" style="display: none"
+                                       onclick="addToAlternative();">
+                                        添加到备选案例
+                                    </a>
+                                </c:if>
                             </div>
                         </div>
                     </div>
@@ -124,6 +130,11 @@
                 pIdKey: "pid",
                 rootPId: 0
             }
+        },// 回调函数
+        callback: {
+            onClick: function (event, treeId, treeNode, clickFlag) {
+                showFunctionBtn();
+            }
         }
     };
 
@@ -140,6 +151,7 @@
                 var rootNode = zTreeObj.getNodes()[0];
                 zTreeObj.selectNode(rootNode);
                 zTreeObj.expandAll(true);
+                zTreeObj.setting.callback.onClick(null, zTreeObj.setting.treeId, rootNode);//调用事件
             }
         })
     }
@@ -188,7 +200,41 @@
     //    console.log(parseParam(obj, 'stu')) ;
     //output: "stu.name=tom&stu.class.className=class1&stu.classMates[0].name=lily"
 
+    function showFunctionBtn() {
+        var node = zTreeObj.getSelectedNodes()[0];
+        if (node.executor == '${userAccount}') {
+            $("#btnGroup").find('.btn.alternativeCase').show();
+        } else {
+            $("#btnGroup").find('.btn.alternativeCase').hide();
+        }
 
+    }
+
+    //添加到备选案例
+    function addToAlternative() {
+        Loading.progressShow();
+        var node = zTreeObj.getSelectedNodes()[0];
+        var data = {};
+        data.business_id = node.id;
+        data.business_key = node.type;
+        $.ajax({
+            url: "${pageContext.request.contextPath}/basicAlternativeCase/addToAlternative",
+            data: {
+                formData: JSON.stringify(data)
+            },
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    toastr.success("添加成功");
+                }
+                else {
+                    Alert("添加失败，失败原因:" + result.errmsg, 1, null, null);
+                }
+            }
+        });
+    }
 </script>
 </body>
 </html>

@@ -180,6 +180,8 @@ public class ProjectTaskService {
             }else {
                 bean.applyCommit(projectPlanDetails, processUserDto.getProcessInsId(), projectTaskDto.getFormData());
             }
+        }catch (BusinessException e){
+            throw new BusinessException(e.getMessage());
         } catch (Exception e) {
             if (StringUtils.isNotBlank(processUserDto.getProcessInsId())) {
                 bpmRpcActivitiProcessManageService.closeProcess(processUserDto.getProcessInsId());

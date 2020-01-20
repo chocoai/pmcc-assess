@@ -145,6 +145,13 @@ public class SchemeJudgeObjectDao {
         return mapper.selectByExample(example);
     }
 
+    public List<SchemeJudgeObject> getMergeListByAreaId(Integer areaGroupId) {
+        SchemeJudgeObjectExample example = new SchemeJudgeObjectExample();
+        example.createCriteria().andAreaGroupIdEqualTo(areaGroupId).andBisMergeEqualTo(true);
+        example.setOrderByClause("sorting,split_number");
+        return mapper.selectByExample(example);
+    }
+
     public int getNotSetFunctionCount(Integer projectId) {
         SchemeJudgeObjectExample example = new SchemeJudgeObjectExample();
         example.createCriteria().andProjectIdEqualTo(projectId).andBisEnableEqualTo(true).andBisSetFunctionEqualTo(false);
@@ -170,6 +177,18 @@ public class SchemeJudgeObjectDao {
     public int getCountByAreaGroupId(Integer areaGroupId){
         SchemeJudgeObjectExample example = new SchemeJudgeObjectExample();
         example.createCriteria().andAreaGroupIdEqualTo(areaGroupId);
+        return mapper.countByExample(example);
+    }
+
+    public int getCountBySplitFrom(Integer judgeObjectId){
+        SchemeJudgeObjectExample example = new SchemeJudgeObjectExample();
+        example.createCriteria().andSplitFromEqualTo(judgeObjectId);
+        return mapper.countByExample(example);
+    }
+
+    public int getCountByPid(Integer pid){
+        SchemeJudgeObjectExample example = new SchemeJudgeObjectExample();
+        example.createCriteria().andPidEqualTo(pid);
         return mapper.countByExample(example);
     }
 }

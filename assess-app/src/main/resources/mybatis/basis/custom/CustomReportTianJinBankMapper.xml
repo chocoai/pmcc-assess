@@ -24,7 +24,7 @@
         A.report_type,E.u_use_unit_name, B.preaudit_number_date, B.result_number_date
         from tb_project_number_record A
         LEFT JOIN tb_project_info B ON A.project_id = B.id
-        LEFT JOIN tb_generate_report_info D ON A.project_id = D.project_id
+        LEFT JOIN tb_generate_report_info D ON A.area_id = D.area_group_id
         LEFT JOIN tb_initiate_unit_information E ON A.project_id = E.project_id
         WHERE 1=1
         and bis_delete = false
@@ -36,8 +36,11 @@
             AND (E.u_use_unit_name LIKE
             CONCAT(CONCAT('%',#{unitName}), '%'))
         </if>
-        <if test="reportType!=null">
+        <if test="reportType!=null and consultationId==null">
             AND A.report_type = #{reportType}
+        </if>
+        <if test="reportType!=null and consultationId!=null">
+            AND (A.report_type = #{reportType} or A.report_type = #{consultationId})
         </if>
         <if test="previewsStartDate!=null">
             AND B.preaudit_number_date &gt;= #{previewsStartDate}
@@ -51,6 +54,5 @@
         <if test="resultEndDate!=null">
             AND B.result_number_date &lt;= #{resultEndDate}
         </if>
-        ORDER BY A.id DESC
     </select>
 </mapper>

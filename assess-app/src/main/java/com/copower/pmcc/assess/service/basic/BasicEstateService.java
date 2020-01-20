@@ -681,9 +681,11 @@ public class BasicEstateService {
         this.clearInvalidChildData(tableId);
         //更新批量申请表信息
         BasicApplyBatch applyBatch = basicApplyBatchService.getBasicApplyBatchByEstateId(tableId);
-        applyBatch.setQuoteId(quoteId);
-        applyBatch.setBaseType(BaseConstant.DATABASE_PMCC_ASSESS);
-        basicApplyBatchDao.updateInfo(applyBatch);
+        if(applyBatch!=null){
+            applyBatch.setQuoteId(quoteId);
+            applyBatch.setBaseType(BaseConstant.DATABASE_PMCC_ASSESS);
+            basicApplyBatchDao.updateInfo(applyBatch);
+        }
 
         BasicApplyBatchDetail batchDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail("tb_basic_estate", tableId);
         batchDetail.setQuoteId(quoteId);

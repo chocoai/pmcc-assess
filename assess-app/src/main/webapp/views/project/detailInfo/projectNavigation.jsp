@@ -4,6 +4,9 @@
         <div class="navbar nav_title" style="border: 0;">
             <span class="site_title" onclick="openProjectInfoUrl();" style="cursor: pointer">
                 项目阶段
+                <small>
+                    <a href="${pageContext.request.contextPath}/home/main" class="btn btn-xs btn-success">首页</a>
+                </small>
             </span>
         </div>
         <div class="clearfix"></div>
@@ -41,9 +44,12 @@
                 <h3><a id="menu_toggle"><i class="fa fa-bars"></i></a>
                     <strong onclick="openProjectInfoUrl();" style="cursor: pointer">${projectInfo.projectName}</strong>
                     <span class="label label-info">${projectInfo.projectStatus}</span>
-                    <a target="_blank"
-                       href="${pageContext.request.contextPath}/projectInfo/projectDetails?projectId=${projectId}">老项目详情</a>
                 </h3></div>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a class="dropdown-toggle" href="${pageContext.request.contextPath}/home/main"><i class="fa fa-home tooltips " style="font-size: 26px" data-placement="bottom" data-original-title="首页"></i>${sysUserDto.userName}</a>
+                </li>
+            </ul>
         </nav>
     </div>
 </div>

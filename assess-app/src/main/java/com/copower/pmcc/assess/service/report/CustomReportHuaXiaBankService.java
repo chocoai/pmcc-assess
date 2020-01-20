@@ -1,7 +1,6 @@
 package com.copower.pmcc.assess.service.report;
 
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.dal.basis.custom.entity.CustomReportHengFengBank;
 import com.copower.pmcc.assess.dal.basis.custom.entity.CustomReportHuaXiaBank;
 import com.copower.pmcc.assess.dal.basis.custom.mapper.CustomReportHuaXiaBankMapper;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
@@ -61,7 +60,7 @@ public class CustomReportHuaXiaBankService {
     private ProjectNumberRecordService projectNumberRecordService;
 
 
-    public BootstrapTableVo getCustomReportHuaXiaBankList(String numberValue, String unitName, Integer reportType,String queryPreviewsStartDate,
+    public BootstrapTableVo getCustomReportHuaXiaBankList(String numberValue, String unitName, Integer reportType, String queryPreviewsStartDate,
                                                           String queryPreviewsEndDate, String queryResultStartDate, String queryResultEndDate) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
@@ -82,7 +81,18 @@ public class CustomReportHuaXiaBankService {
         if (StringUtils.isNotEmpty(queryResultEndDate)) {
             resultEndDate = DateUtils.parse(queryResultEndDate);
         }
-        List<CustomReportHuaXiaBank> customNumberRecordList = customReportHuaXiaBankMapper.getCustomReportHuaXiaBankList(numberValue, unitName, reportType, previewsStartDate, previewsEndDate, resultStartDate, resultEndDate);
+        List<CustomReportHuaXiaBank> customNumberRecordList = null;
+        //结果报告
+        BaseDataDic resultReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_RESULT);
+        Integer resultId = resultReport.getId();
+        //咨评报告
+        BaseDataDic consultationReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_CONSULTATION);
+        Integer consultationId = consultationReport.getId();
+        if (reportType == resultId) {
+            customNumberRecordList = customReportHuaXiaBankMapper.getCustomReportHuaXiaBankList(numberValue, unitName, reportType, consultationId, previewsStartDate, previewsEndDate, resultStartDate, resultEndDate);
+        } else {
+            customNumberRecordList = customReportHuaXiaBankMapper.getCustomReportHuaXiaBankList(numberValue, unitName, reportType, null, previewsStartDate, previewsEndDate, resultStartDate, resultEndDate);
+        }
         List<CustomReportHuaXiaBank> vos = LangUtils.transform(customNumberRecordList, o -> getCustomReportHuaXiaBank(o));
         vo.setTotal(page.getTotal());
         vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<CustomReportHuaXiaBank>() : vos);
@@ -179,7 +189,7 @@ public class CustomReportHuaXiaBankService {
      *
      * @param response
      */
-    public void export(HttpServletResponse response, String numberValue, String unitName, Integer reportType,String queryPreviewsStartDate,
+    public void export(HttpServletResponse response, String numberValue, String unitName, Integer reportType, String queryPreviewsStartDate,
                        String queryPreviewsEndDate, String queryResultStartDate, String queryResultEndDate) throws BusinessException, IOException {
         //获取数据
         Date previewsStartDate = null;
@@ -198,12 +208,23 @@ public class CustomReportHuaXiaBankService {
         if (StringUtils.isNotEmpty(queryResultEndDate)) {
             resultEndDate = DateUtils.parse(queryResultEndDate);
         }
-        List<CustomReportHuaXiaBank> customNumberRecordList = customReportHuaXiaBankMapper.getCustomReportHuaXiaBankList(numberValue, unitName, reportType, previewsStartDate, previewsEndDate, resultStartDate, resultEndDate);
-        List<CustomReportHuaXiaBank> vos = LangUtils.transform(customNumberRecordList, o -> getCustomReportHuaXiaBank(o));
+        List<CustomReportHuaXiaBank> customNumberRecordList = null;
+        //结果报告
+        BaseDataDic resultReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_RESULT);
+        Integer resultId = resultReport.getId();
+        //咨评报告
+        BaseDataDic consultationReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_CONSULTATION);
+        Integer consultationId = consultationReport.getId();
+        if (reportType == resultId) {
+            customNumberRecordList = customReportHuaXiaBankMapper.getCustomReportHuaXiaBankList(numberValue, unitName, reportType, consultationId, previewsStartDate, previewsEndDate, resultStartDate, resultEndDate);
+        } else {
+            customNumberRecordList = customReportHuaXiaBankMapper.getCustomReportHuaXiaBankList(numberValue, unitName, reportType, null, previewsStartDate, previewsEndDate, resultStartDate, resultEndDate);
+        }
 
         if (CollectionUtils.isEmpty(customNumberRecordList)) {
             throw new BusinessException("没有获取到有效的数据");
         }
+        List<CustomReportHuaXiaBank> vos = LangUtils.transform(customNumberRecordList, o -> getCustomReportHuaXiaBank(o));
         Workbook wb = new HSSFWorkbook();
         Sheet sheet = wb.createSheet();
         Row row = sheet.createRow(0);

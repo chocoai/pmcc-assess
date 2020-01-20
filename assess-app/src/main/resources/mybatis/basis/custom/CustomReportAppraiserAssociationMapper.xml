@@ -40,8 +40,11 @@
             AND (B.project_name LIKE
             CONCAT(CONCAT('%',#{projectName}), '%'))
         </if>
-        <if test="reportType!=null">
+        <if test="reportType!=null and consultationId==null">
             AND A.report_type = #{reportType}
+        </if>
+        <if test="reportType!=null and consultationId!=null">
+            AND (A.report_type = #{reportType} or A.report_type = #{consultationId})
         </if>
         <if test="numberValue!=null and numberValue!=''">
             AND (A.number_value LIKE
@@ -63,6 +66,5 @@
         <if test="resultEndDate!=null">
             AND B.result_number_date &lt;= #{resultEndDate}
         </if>
-        ORDER BY A.id DESC
     </select>
 </mapper>

@@ -34,13 +34,6 @@ public class SchemeLiquidationAnalysisJudgeDao {
         return schemeLiquidationAnalysisJudgeMapper.updateByPrimaryKeySelective(schemeLiquidationAnalysisJudge) == 1;
     }
 
-
-    /**
-     * 删除
-     *
-     * @param id
-     * @return
-     */
     public boolean deleteInfo(Integer id) {
         return schemeLiquidationAnalysisJudgeMapper.deleteByPrimaryKey(id) > 0;
     }
@@ -48,6 +41,12 @@ public class SchemeLiquidationAnalysisJudgeDao {
     public List<SchemeLiquidationAnalysisJudge> getSchemeLiquidationAnalysisJudgeList(SchemeLiquidationAnalysisJudge schemeLiquidationAnalysisJudge) {
         SchemeLiquidationAnalysisJudgeExample example = new SchemeLiquidationAnalysisJudgeExample();
         MybatisUtils.convertObj2Example(schemeLiquidationAnalysisJudge, example);
+        return schemeLiquidationAnalysisJudgeMapper.selectByExample(example);
+    }
+
+    public List<SchemeLiquidationAnalysisJudge> getListByAreaId(Integer areaId) {
+        SchemeLiquidationAnalysisJudgeExample example = new SchemeLiquidationAnalysisJudgeExample();
+        example.createCriteria().andAreaIdEqualTo(areaId);
         return schemeLiquidationAnalysisJudgeMapper.selectByExample(example);
     }
 

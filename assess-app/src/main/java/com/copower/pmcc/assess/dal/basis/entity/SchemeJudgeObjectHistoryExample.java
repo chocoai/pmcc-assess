@@ -735,6 +735,186 @@ public class SchemeJudgeObjectHistoryExample {
             return (Criteria) this;
         }
 
+        public Criteria andBisSplitIsNull() {
+            addCriterion("bis_split is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisSplitIsNotNull() {
+            addCriterion("bis_split is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisSplitEqualTo(Boolean value) {
+            addCriterion("bis_split =", value, "bisSplit");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisSplitNotEqualTo(Boolean value) {
+            addCriterion("bis_split <>", value, "bisSplit");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisSplitGreaterThan(Boolean value) {
+            addCriterion("bis_split >", value, "bisSplit");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisSplitGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_split >=", value, "bisSplit");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisSplitLessThan(Boolean value) {
+            addCriterion("bis_split <", value, "bisSplit");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisSplitLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_split <=", value, "bisSplit");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisSplitIn(List<Boolean> values) {
+            addCriterion("bis_split in", values, "bisSplit");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisSplitNotIn(List<Boolean> values) {
+            addCriterion("bis_split not in", values, "bisSplit");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisSplitBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_split between", value1, value2, "bisSplit");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisSplitNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_split not between", value1, value2, "bisSplit");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisMergeIsNull() {
+            addCriterion("bis_merge is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisMergeIsNotNull() {
+            addCriterion("bis_merge is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisMergeEqualTo(Boolean value) {
+            addCriterion("bis_merge =", value, "bisMerge");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisMergeNotEqualTo(Boolean value) {
+            addCriterion("bis_merge <>", value, "bisMerge");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisMergeGreaterThan(Boolean value) {
+            addCriterion("bis_merge >", value, "bisMerge");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisMergeGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_merge >=", value, "bisMerge");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisMergeLessThan(Boolean value) {
+            addCriterion("bis_merge <", value, "bisMerge");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisMergeLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_merge <=", value, "bisMerge");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisMergeIn(List<Boolean> values) {
+            addCriterion("bis_merge in", values, "bisMerge");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisMergeNotIn(List<Boolean> values) {
+            addCriterion("bis_merge not in", values, "bisMerge");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisMergeBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_merge between", value1, value2, "bisMerge");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisMergeNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_merge not between", value1, value2, "bisMerge");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableIsNull() {
+            addCriterion("bis_enable is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableIsNotNull() {
+            addCriterion("bis_enable is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableEqualTo(Boolean value) {
+            addCriterion("bis_enable =", value, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableNotEqualTo(Boolean value) {
+            addCriterion("bis_enable <>", value, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableGreaterThan(Boolean value) {
+            addCriterion("bis_enable >", value, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_enable >=", value, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableLessThan(Boolean value) {
+            addCriterion("bis_enable <", value, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_enable <=", value, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableIn(List<Boolean> values) {
+            addCriterion("bis_enable in", values, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableNotIn(List<Boolean> values) {
+            addCriterion("bis_enable not in", values, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_enable between", value1, value2, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_enable not between", value1, value2, "bisEnable");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;

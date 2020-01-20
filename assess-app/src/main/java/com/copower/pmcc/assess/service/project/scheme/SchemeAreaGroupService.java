@@ -158,12 +158,12 @@ public class SchemeAreaGroupService {
     public void generatorAreaGroup(Integer projectId) {
         //1.清除原相关数据 2.重新生成所有数据
         //1.清除估价对象，清除区域,清除区域相关的工作事项
-
         //1.先分析出区域，与上次生成的区域做比较，如果区域没有发生变化则不处理区域下挂的任务，如果有新增或删除则需处理
         List<DeclareRecord> declareRecords = declareRecordDao.getPartInDeclareRecordsByProjectId(projectId);
         List<SchemeAreaGroup> newAreaGroups = groupDeclareRecord(declareRecords);
-        if (CollectionUtils.isEmpty(newAreaGroups)) return;
+        newAreaGroups = CollectionUtils.isEmpty(newAreaGroups) ? Lists.newArrayList() : newAreaGroups;
         List<SchemeAreaGroup> historyAreaGroups = getAreaGroupEnableByProjectId(projectId);
+        historyAreaGroups = CollectionUtils.isEmpty(historyAreaGroups) ? Lists.newArrayList() : historyAreaGroups;
         List<SchemeAreaGroup> sameAreaGroups = Lists.newArrayList();//新旧一致的区域
         Iterator historyAreaGroupIterator = historyAreaGroups.iterator();
         while (historyAreaGroupIterator.hasNext()) {
@@ -183,7 +183,7 @@ public class SchemeAreaGroupService {
         }
         if (CollectionUtils.isNotEmpty(historyAreaGroups)) {//清除无效的区域
             for (SchemeAreaGroup schemeAreaGroup : historyAreaGroups) {
-                List<SchemeJudgeObject> judgeObjects = schemeJudgeObjectService.getJudgeObjectListByAreaGroupId(schemeAreaGroup.getId());
+                List<SchemeJudgeObject> judgeObjects = schemeJudgeObjectService.getJudgeObjectFullListByAreaId(schemeAreaGroup.getId());
                 if (CollectionUtils.isNotEmpty(judgeObjects)) {//清除估价对象下的任务
                     judgeObjects.forEach(o -> schemeJudgeObjectService.clearJudgeObjectTask(projectId, o.getId()));
                     schemeJudgeObjectDao.deleteJudgeObjectByAreaId(schemeAreaGroup.getId());
@@ -243,14 +243,36 @@ public class SchemeAreaGroupService {
                         if (declareRecord.getId().equals(judgeObject.getDeclareRecordId())) {
                             declareRecordIterator.remove();
                             judgeObjectIterator.remove();
+
                         }
                     }
                 }
+                Boolean isNeedReNumber = false;//是否需要重新编号
                 if (CollectionUtils.isNotEmpty(declareRecordList)) {//为权证添加估价对象
+                    isNeedReNumber = true;
                     declareRecordList.forEach(o -> declareRecordToJudgeObject(o, sameAreaGroup, schemeJudgeObjectDao.getAreaGroupMaxNumber(projectId, sameAreaGroup.getId()) + 1));
                 }
                 if (CollectionUtils.isNotEmpty(judgeObjectDeclareList)) {//需被移除的估价对象
-                    judgeObjectDeclareList.forEach(o -> schemeJudgeObjectService.clearJudgeObjectTask(projectId, o.getId()));
+                    isNeedReNumber = true;
+                    for (SchemeJudgeObject judgeObject : judgeObjectDeclareList) {
+                        if (schemeJudgeObjectDao.getCountBySplitFrom(judgeObject.getId()) > 0) {//表示该对象是被拆分过的对象，将拆分的子对象也删除
+                            List<SchemeJudgeObject> listBySplitFrom = schemeJudgeObjectService.getJudgeObjectListBySplitFrom(judgeObject.getId());
+                            if (CollectionUtils.isNotEmpty(listBySplitFrom)) ;
+                            listBySplitFrom.forEach(o -> schemeJudgeObjectService.clearJudgeObjectTask(projectId, o.getId()));
+                        }
+                        schemeJudgeObjectService.clearJudgeObjectTask(projectId, judgeObject.getId());
+                    }
+                }
+                //如果合并的估价对象下，没有估价对象则将其删除
+                List<SchemeJudgeObject> mergeList = schemeJudgeObjectDao.getMergeListByAreaId(sameAreaGroup.getId());
+                if (CollectionUtils.isNotEmpty(mergeList)) {
+                    for (SchemeJudgeObject mergeJudgeObject : mergeList) {
+                        if (schemeJudgeObjectDao.getCountByPid(mergeJudgeObject.getId()) <= 0)
+                            schemeJudgeObjectService.clearJudgeObjectTask(projectId, mergeJudgeObject.getId());
+                    }
+                }
+
+                if (isNeedReNumber) {
                     schemeJudgeObjectService.reNumberJudgeObject(sameAreaGroup.getId()); //需要重新排号
                 }
             }
@@ -287,8 +309,7 @@ public class SchemeAreaGroupService {
         schemeJudgeObject.setCertUse(declareRecord.getCertUse());
         schemeJudgeObject.setPracticalUse(declareRecord.getPracticalUse());
         if (declareRecord.getLandUseEndDate() != null) {
-            schemeJudgeObject.setLandUseEndDate(declareRecord.getLandUseEndDate());
-            //计算出土地剩余年限
+            schemeJudgeObject.setLandUseEndDate(declareRecord.getLandUseEndDate());//计算出土地剩余年限
             schemeJudgeObject.setLandRemainingYear(mdIncomeService.getLandSurplusYear(declareRecord.getLandUseEndDate(), areaGroup.getValueTimePoint()));
         }
         schemeJudgeObject.setEvaluationArea(declareRecord.getPracticalArea());
@@ -362,12 +383,12 @@ public class SchemeAreaGroupService {
             for (SchemeJudgeObject o : judgeObjectListAll) {
                 if (o.getBisSplit() == Boolean.TRUE) {//找出应该有的拆分数据是否都存在
                     if (!judgeObjectListAll.contains(o.getSplitFrom()))
-                        throw new BusinessException(String.format("拆分对象%s未包所有拆分对象",schemeJudgeObjectService.getSchemeJudgeObject(o.getSplitFrom()).getName()));
+                        throw new BusinessException(String.format("拆分对象%s未包所有拆分对象", schemeJudgeObjectService.getSchemeJudgeObject(o.getSplitFrom()).getName()));
                     List<SchemeJudgeObject> listBySplitFrom = schemeJudgeObjectService.getJudgeObjectListBySplitFrom(o.getSplitFrom());
                     List<Integer> list = LangUtils.transform(listBySplitFrom, p -> p.getId());
                     for (Integer integer : list) {
                         if (!judgeObjectListAll.contains(integer))
-                            throw new BusinessException(String.format("拆分对象%s未包所有拆分对象",schemeJudgeObjectService.getSchemeJudgeObject(o.getSplitFrom()).getName()));
+                            throw new BusinessException(String.format("拆分对象%s未包所有拆分对象", schemeJudgeObjectService.getSchemeJudgeObject(o.getSplitFrom()).getName()));
                     }
                 }
                 o.setAreaGroupId(newAreaGroup.getId());

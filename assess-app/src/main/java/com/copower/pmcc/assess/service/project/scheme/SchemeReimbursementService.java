@@ -229,6 +229,7 @@ public class SchemeReimbursementService {
         if (projectPlanDetails == null || CollectionUtils.isEmpty(schemeJudgeObjectList) || projectPhase == null || schemeReimbursement == null) {
             return;
         }
+
         ProjectPlanDetails query = new ProjectPlanDetails();
         query.setProjectId(projectPlanDetails.getProjectId());
         query.setProjectPhaseId(projectPhase.getId());
