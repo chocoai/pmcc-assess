@@ -420,7 +420,7 @@ public class SchemeAreaGroupService {
         //1.删除该区域下任务 2.将估价对象还原到原区域中 3.删除该区域
         clearAreaGroupTask(Lists.newArrayList(getSchemeAreaGroup(areaGroupId)));
         SchemeAreaGroup sourceSplitAreaGroup = getSourceSplitAreaGroup(areaGroupId);
-        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectService.getJudgeObjectListByAreaGroupId(areaGroupId);
+        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectService.getJudgeObjectListAllByAreaGroupId(areaGroupId);
         if (CollectionUtils.isNotEmpty(judgeObjectList)) {
             judgeObjectList.forEach(o -> {
                 o.setAreaGroupId(sourceSplitAreaGroup.getId());
@@ -502,7 +502,7 @@ public class SchemeAreaGroupService {
             oldAreaGroup.setBisEnable(false);
             schemeAreaGroupDao.update(oldAreaGroup);
 
-            List<SchemeJudgeObject> judgeObjects = schemeJudgeObjectService.getJudgeObjectListByAreaGroupId(oldAreaGroup.getId());
+            List<SchemeJudgeObject> judgeObjects = schemeJudgeObjectService.getJudgeObjectListAllByAreaGroupId(oldAreaGroup.getId());
             if (CollectionUtils.isNotEmpty(judgeObjects)) {
                 for (SchemeJudgeObject judgeObject : judgeObjects) {
                     judgeObject.setOriginalAreaGroupId(oldAreaGroup.getId());

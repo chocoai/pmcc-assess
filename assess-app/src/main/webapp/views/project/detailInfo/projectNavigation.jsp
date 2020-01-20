@@ -4,9 +4,6 @@
         <div class="navbar nav_title" style="border: 0;">
             <span class="site_title" onclick="openProjectInfoUrl();" style="cursor: pointer">
                 项目阶段
-                <small>
-                    <a href="${pageContext.request.contextPath}/home/main" class="btn btn-xs btn-success">首页</a>
-                </small>
             </span>
         </div>
         <div class="clearfix"></div>
