@@ -3563,17 +3563,29 @@ public class GenerateBaseDataService {
                         BigDecimal price = new BigDecimal(0);
                         BigDecimal total = new BigDecimal(0);
                         for (Map.Entry<BasicApply, SchemeJudgeObject> integerEntry : schemeJudgeObjectLinkedHashMap.entrySet()) {
-                            DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(integerEntry.getValue().getDeclareRecordId());
-                            if (declareRecord != null && declareRecord.getPracticalArea() != null) {
-                                evaluationArea = evaluationArea.add(declareRecord.getPracticalArea());
+                            SchemeJudgeObject schemeJudgeObject = integerEntry.getValue();
+
+//                            DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
+//                            if (declareRecord != null && declareRecord.getPracticalArea() != null) {
+//                                evaluationArea = evaluationArea.add(declareRecord.getPracticalArea());
+//                            }
+//                            if (declareRecord != null && declareRecord.getPrice() != null) {
+//                                price = price.add(declareRecord.getPrice());
+//                            }
+//                            if (declareRecord != null && declareRecord.getPrice() != null && declareRecord.getPracticalArea() != null) {
+//                                total = total.add(declareRecord.getPracticalArea().multiply(declareRecord.getPrice()));
+//                            }
+
+                            if (schemeJudgeObject.getEvaluationArea() != null){
+                                evaluationArea = evaluationArea.add(schemeJudgeObject.getEvaluationArea());
                             }
-                            if (declareRecord != null && declareRecord.getPrice() != null) {
-                                price = price.add(declareRecord.getPrice());
+                            if (schemeJudgeObject.getPrice() != null){
+                                price = price.add(schemeJudgeObject.getPrice());
                             }
-                            if (declareRecord != null && declareRecord.getPrice() != null && declareRecord.getPracticalArea() != null) {
-                                total = total.add(declareRecord.getPracticalArea().multiply(declareRecord.getPrice()));
+                            if (schemeJudgeObject.getEvaluationArea() != null && schemeJudgeObject.getPrice() != null){
+                                total = total.add(schemeJudgeObject.getEvaluationArea().multiply(schemeJudgeObject.getPrice()));
                             }
-                            this.writeJudgeObjectResultSurveyInCell(integerEntry.getKey(), integerEntry.getValue(), builder, doubleLinkedList, seat, mortgageFlag, schemeJudgeObjectList.size() <= 20);
+                            writeJudgeObjectResultSurveyInCell(integerEntry.getKey(), schemeJudgeObject, builder, doubleLinkedList, seat, mortgageFlag, schemeJudgeObjectList.size() <= 20);
                         }
                         Cell cellRange0 = null;
                         for (int j = 0; j < colMax; j++) {
@@ -3735,19 +3747,22 @@ public class GenerateBaseDataService {
         } else {
             linkedLists.add(nullValue);
         }
-        if (declareRecord != null && declareRecord.getFloorArea() != null) {//6
-            linkedLists.add(declareRecord.getFloorArea().toString());
+        if (schemeJudgeObject.getEvaluationArea() != null) {//6
+            linkedLists.add(schemeJudgeObject.getEvaluationArea().toString());
         } else {
             linkedLists.add(nullValue);
         }
         //使用什么单位
         String unit = "元/㎡";
         if (basicApply != null) {
-            BasicHouseTrading basicHouseTrading = basicHouseTradingService.getTradingByHouseId(basicApply.getBasicHouseId());
-            BaseDataDic buildAreaUnitPrice = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_BUILD_AREA_UNIT_PRICE);
-            BaseDataDic buildInteriorUnitPrice = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_INTERIOR_AREA_UNIT_PRICE);
-            if (basicHouseTrading.getPriceConnotation() != buildAreaUnitPrice.getId() && basicHouseTrading.getPriceConnotation() != buildInteriorUnitPrice.getId()) {
-                unit = basicHouseTrading.getPriceConnotationUnit();
+            try {
+                BasicHouseTrading basicHouseTrading = basicHouseTradingService.getTradingByHouseId(basicApply.getBasicHouseId());
+                BaseDataDic buildAreaUnitPrice = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_BUILD_AREA_UNIT_PRICE);
+                BaseDataDic buildInteriorUnitPrice = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_INTERIOR_AREA_UNIT_PRICE);
+                if (basicHouseTrading.getPriceConnotation() != buildAreaUnitPrice.getId() && basicHouseTrading.getPriceConnotation() != buildInteriorUnitPrice.getId()) {
+                    unit = basicHouseTrading.getPriceConnotationUnit();
+                }
+            } catch (Exception e) {
             }
         }
         if (schemeJudgeObject.getPrice() != null) {//7
@@ -3755,8 +3770,8 @@ public class GenerateBaseDataService {
         } else {
             linkedLists.add(nullValue);
         }
-        if (schemeJudgeObject.getPrice() != null && declareRecord.getFloorArea() != null) {//8
-            BigDecimal total = schemeJudgeObject.getPrice().multiply(declareRecord.getFloorArea());
+        if (schemeJudgeObject.getPrice() != null && schemeJudgeObject.getEvaluationArea() != null) {//8
+            BigDecimal total = schemeJudgeObject.getPrice().multiply(schemeJudgeObject.getEvaluationArea());
             total = total.divide(new BigDecimal(10000));
             total = total.setScale(2, BigDecimal.ROUND_HALF_UP);
             linkedLists.add(total.toString());
@@ -3770,8 +3785,8 @@ public class GenerateBaseDataService {
         }
         //抵押=总价-法定
         if (reimbursement) {
-            if (schemeJudgeObject.getPrice() != null && declareRecord.getFloorArea() != null) {
-                BigDecimal totol = schemeJudgeObject.getPrice().multiply(declareRecord.getFloorArea());
+            if (schemeJudgeObject.getPrice() != null && schemeJudgeObject.getEvaluationArea() != null) {
+                BigDecimal totol = schemeJudgeObject.getPrice().multiply(schemeJudgeObject.getEvaluationArea());
                 BigDecimal mortgage = totol.subtract(knowTotalPrice);
                 mortgage = mortgage.divide(new BigDecimal(10000));
                 mortgage = mortgage.setScale(2, BigDecimal.ROUND_HALF_UP);
