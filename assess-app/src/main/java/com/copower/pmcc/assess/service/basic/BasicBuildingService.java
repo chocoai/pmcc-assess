@@ -531,7 +531,7 @@ public class BasicBuildingService {
         batchDetail.setQuoteId(id);
         batchDetail.setBaseType(BaseConstant.DATABASE_PMCC_ASSESS);
         basicApplyBatchDetailDao.updateInfo(batchDetail);
-        Integer parentTableId = basicApplyBatchDetailService.getParentTableId(batchDetail);
+        //Integer parentTableId = basicApplyBatchDetailService.getParentTableId(batchDetail);
 
         BasicBuildingVo oldBasicBuilding = this.getBasicBuildingById(id);
         if (oldBasicBuilding == null) {
@@ -544,7 +544,7 @@ public class BasicBuildingService {
         basicBuilding.setGmtModified(null);
         basicBuilding.setId(tableId);
         basicBuilding.setApplyId(null);
-        basicBuilding.setEstateId(parentTableId);
+        //basicBuilding.setEstateId(parentTableId);
         this.saveAndUpdateBasicBuilding(basicBuilding, false);
 
         //删除原有的附件

@@ -205,7 +205,7 @@ public class BasicHouseController {
         try {
             BasicApplyBatchDetail houseDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail("tb_basic_house", id);
             Integer quoteId = 0;
-            if (houseDetail != null && houseDetail.getPid() != null) {
+            if (houseDetail != null && houseDetail.getPid() != null &&houseDetail.getUpgradeTableId()==null) {
                 quoteId = basicApplyBatchDetailService.getDataById(houseDetail.getPid()).getQuoteId();
             }
             return HttpResult.newCorrectResult(200, quoteId);

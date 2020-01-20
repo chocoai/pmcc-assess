@@ -490,7 +490,7 @@ public class BasicUnitService {
         batchDetail.setQuoteId(id);
         batchDetail.setBaseType(BaseConstant.DATABASE_PMCC_ASSESS);
         basicApplyBatchDetailDao.updateInfo(batchDetail);
-        Integer parentTableId = basicApplyBatchDetailService.getParentTableId(batchDetail);
+        //Integer parentTableId = basicApplyBatchDetailService.getParentTableId(batchDetail);
 
         BasicUnit oldBasicUnit = this.getBasicUnitById(id);
         BasicUnit basicUnit = new BasicUnit();
@@ -500,7 +500,7 @@ public class BasicUnitService {
         basicUnit.setGmtModified(null);
         basicUnit.setId(tableId);
         basicUnit.setApplyId(null);
-        basicUnit.setBuildingId(parentTableId);
+        //basicUnit.setBuildingId(parentTableId);
 
         this.saveAndUpdateBasicUnit(basicUnit, false);
 
