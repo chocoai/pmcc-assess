@@ -8,8 +8,10 @@ import com.copower.pmcc.assess.dal.basis.dao.project.ProjectNumberRecordDao;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectNumberRecord;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectTakeNumber;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectTakeNumberDetail;
 import com.copower.pmcc.assess.dto.output.project.ProjectTakeNumberVo;
 import com.copower.pmcc.assess.service.BaseService;
+import com.copower.pmcc.assess.service.ProjectTakeNumberDetailService;
 import com.copower.pmcc.assess.service.ProjectTakeNumberService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
@@ -25,8 +27,8 @@ import com.copower.pmcc.erp.api.dto.SysSymbolListDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
-import com.copower.pmcc.erp.common.utils.FormatUtils;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -60,6 +62,8 @@ public class ProjectTakeNumberController extends BaseController {
     private BaseAttachmentService baseAttachmentService;
     @Autowired
     private ProjectNumberRecordService projectNumberRecordService;
+    @Autowired
+    private ProjectTakeNumberDetailService projectTakeNumberDetailService;
 
     @RequestMapping(value = "/apply", name = "项目拿号申请")
     public ModelAndView apply(Integer projectId) throws BusinessException {
@@ -154,9 +158,34 @@ public class ProjectTakeNumberController extends BaseController {
         try {
             ProjectTakeNumber projectTakeNumber = JSONObject.parseObject(formData, ProjectTakeNumber.class);
             SysSymbolListDto sysSymbolListDto = projectNumberRecordService.getSysSymbolListDto(areaId, projectTakeNumber.getProjectId(), projectTakeNumber.getReportType(), projectTakeNumber.getAssessProjectType());
+            ProjectTakeNumberDetail projectTakeNumberDetail = new ProjectTakeNumberDetail();
             projectTakeNumber.setNumberValue(sysSymbolListDto.getSymbol());
-            projectTakeNumberService.saveAndUpdateProjectTakeNumber(projectTakeNumber, false);
-            return HttpResult.newCorrectResult(200, projectTakeNumber);
+            BeanUtils.copyProperties(projectTakeNumber,projectTakeNumberDetail);
+            projectTakeNumberDetailService.saveAndUpdateProjectTakeNumberDetail(projectTakeNumberDetail,false);
+            return HttpResult.newCorrectResult(200, projectTakeNumberDetail);
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
+            return HttpResult.newErrorResult(500, e);
+        }
+    }
+
+    @PostMapping(value = "/saveAndUpdateProjectTakeNumberDetail",name = "拿号从表 save")
+    public HttpResult saveAndUpdateProjectTakeNumberDetail(String formData, @RequestParam(name = "updateNull", defaultValue = "false") boolean updateNull) {
+        try {
+            ProjectTakeNumberDetail projectTakeNumberDetail = JSONObject.parseObject(formData, ProjectTakeNumberDetail.class);
+            projectTakeNumberDetailService.saveAndUpdateProjectTakeNumberDetail(projectTakeNumberDetail, updateNull);
+            return HttpResult.newCorrectResult(200, projectTakeNumberDetail);
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
+            return HttpResult.newErrorResult(500, e);
+        }
+    }
+
+    @PostMapping(value = "/deleteProjectTakeNumberDetailById",name = "拿号 从表删除")
+    public HttpResult deleteProjectTakeNumberDetailById(String id) {
+        try {
+            projectTakeNumberDetailService.deleteProjectTakeNumberDetailById(id);
+            return HttpResult.newCorrectResult(200, "");
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult(500, e);
@@ -165,18 +194,19 @@ public class ProjectTakeNumberController extends BaseController {
 
 
     @GetMapping(value = "/toolBaseOrCode", name = "二维码 拿取,加上一个功能替换,假如不存替换的附件id则不替换")
-    public HttpResult toolBaseOrCode(Integer takeNumberId,String attachmentIds) {
+    public HttpResult toolBaseOrCode(Integer takeNumberDetailId, Integer masterId,String attachmentIds) {
         try {
-            ProjectTakeNumber projectTakeNumber = projectTakeNumberService.getProjectTakeNumberById(takeNumberId) ;
-            SysAttachmentDto sysAttachmentDto = projectQrcodeRecordService.toolBaseOrCode(projectTakeNumber);
+            ProjectTakeNumber projectTakeNumber = projectTakeNumberService.getProjectTakeNumberById(masterId);
+            ProjectTakeNumberDetail projectTakeNumberDetail = projectTakeNumberDetailService.getProjectTakeNumberDetailById(takeNumberDetailId) ;
+            SysAttachmentDto sysAttachmentDto = projectQrcodeRecordService.toolBaseOrCode(projectTakeNumber,projectTakeNumberDetail);
             sysAttachmentDto.setFilePath(baseAttachmentService.getViewImageUrl(sysAttachmentDto.getId()));
-            if (StringUtils.isNotBlank(attachmentIds)){
+            if (StringUtils.isNotBlank(attachmentIds)) {
                 //二维码附件
                 SysAttachmentDto query = new SysAttachmentDto();
                 query.setTableName(sysAttachmentDto.getTableName());
                 query.setTableId(sysAttachmentDto.getTableId());
                 query.setFieldsName(sysAttachmentDto.getFieldsName());
-                projectTakeNumberService.replaceDocument(attachmentIds,projectTakeNumber.getNumberValue(),query) ;
+                projectTakeNumberService.replaceDocument(attachmentIds, projectTakeNumberDetail.getNumberValue(), query);
             }
             return HttpResult.newCorrectResult(200, sysAttachmentDto);
         } catch (Exception e) {

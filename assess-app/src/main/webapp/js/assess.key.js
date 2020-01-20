@@ -78,6 +78,7 @@ AssessDBKey.MdIncome = "tb_md_income";
 AssessDBKey.ProjectChangeLog = "tb_project_change_log";
 AssessDBKey.ProjectSubsequent = "tb_project_subsequent";
 AssessDBKey.ProjectTakeNumber = "tb_project_take_number";
+AssessDBKey.ProjectTakeNumberDetail = "tb_project_take_number_detail";
 /**
  * 项目分类key
  */

@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.dal.basis.dao.project.ProjectQrcodeRecordDao;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectQrcodeRecord;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectTakeNumber;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectTakeNumberDetail;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.erp.api.dto.ProjectDocumentDto;
@@ -62,37 +63,30 @@ public class ProjectQrcodeRecordService {
      * 形成二维码附件图片
      *
      * @param projectTakeNumber
+     * @param projectTakeNumberDetail
      * @return
      * @throws Exception
      */
-    public SysAttachmentDto toolBaseOrCode(ProjectTakeNumber projectTakeNumber) throws Exception {
+    public SysAttachmentDto toolBaseOrCode(ProjectTakeNumber projectTakeNumber, ProjectTakeNumberDetail projectTakeNumberDetail) throws Exception {
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectTakeNumber.getProjectId());
         ProjectDocumentDto projectDocumentDto = new ProjectDocumentDto();
         projectDocumentDto.setProjectName(projectInfo.getProjectName());
-        adRpcQualificationsService.getCompanyQualificationForPractising(publicService.getCurrentCompany().getCompanyId());
         projectDocumentDto.setCompanyName(adRpcQualificationsService.getCompanyQualificationForPractising(publicService.getCurrentCompany().getCompanyId()).getOrganizationName());
         projectDocumentDto.setCustomer(projectTakeNumber.getRealEstateAppraiser());
-        projectDocumentDto.setDocumentNumber(projectTakeNumber.getNumberValue());
+        projectDocumentDto.setDocumentNumber(projectTakeNumberDetail.getNumberValue());
         projectDocumentDto.setAppKey(applicationConstant.getAppKey());
         projectDocumentDto.setProjectId(projectTakeNumber.getProjectId());
-        projectDocumentDto.setTableName(FormatUtils.entityNameConvertToTableName(ProjectTakeNumber.class));
-        projectDocumentDto.setFieldsName(String.join("_", ProjectTakeNumber.class.getSimpleName(), "BaseOrCode"));
-        projectDocumentDto.setTableId(projectTakeNumber.getId());
+        projectDocumentDto.setFieldsName(String.join("", "ProjectTakeNumber_BaseOrCode", projectTakeNumberDetail.getId().toString()));
+        projectDocumentDto.setTableName(FormatUtils.entityNameConvertToTableName(ProjectTakeNumberDetail.class));
+        projectDocumentDto.setTableId(projectTakeNumberDetail.getId());
         projectDocumentDto.setReportDate(DateUtils.formatDate(projectTakeNumber.getReportIssuanceDate(), DateUtils.DATE_CHINESE_PATTERN));
         projectDocumentDto.setReportMember(publicService.getUserNameByAccount(projectTakeNumber.getRealEstateAppraiser()));
         projectDocumentDto.setCreator(projectTakeNumber.getRealEstateAppraiser());
         ProjectDocumentDto document = erpRpcToolsService.saveProjectDocument(projectDocumentDto);
-        if (document != null){
-            BeanUtils.copyProperties(document,projectDocumentDto);
+        if (document != null) {
+            BeanUtils.copyProperties(document, projectDocumentDto);
         }
-        String qrCode = "";
-        if (StringUtils.isNotBlank(projectDocumentDto.getQrcode())) {
-            qrCode = projectDocumentDto.getQrcode();
-        }else {
-            StringBuilder stringBuilder = new StringBuilder(8);
-            stringBuilder.append("").append("文号:").append(projectTakeNumber.getNumberValue()).append(";").append(StringUtils.repeat("\n\r\t", 1));
-            qrCode = stringBuilder.toString();
-        }
+        String qrCode = projectDocumentDto.getQrcode();
         String folder = System.getProperty("java.io.tmpdir");
         String imagePath = String.join("", folder, File.separator, UUID.randomUUID().toString(), ".", "jpg");
         FileUtils.base64ToImage(qrCode, imagePath);
@@ -100,7 +94,7 @@ public class ProjectQrcodeRecordService {
         sysAttachmentDto.setTableId(projectDocumentDto.getTableId());
         sysAttachmentDto.setTableName(projectDocumentDto.getTableName());
         sysAttachmentDto.setFieldsName(projectDocumentDto.getFieldsName());
-        baseAttachmentService.deleteAttachmentByDto(sysAttachmentDto) ;
+        baseAttachmentService.deleteAttachmentByDto(sysAttachmentDto);
         //上传形成附件
         return baseAttachmentService.importAjaxFileHandle(imagePath, sysAttachmentDto);
     }

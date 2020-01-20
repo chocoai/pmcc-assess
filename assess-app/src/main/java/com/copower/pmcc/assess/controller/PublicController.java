@@ -145,8 +145,11 @@ public class PublicController {
     }
 
     @RequestMapping(value = "/saveAndUpdateSysAttachmentDto", method = {RequestMethod.POST}, name = "新增或者更新附件")
-    public HttpResult saveAndUpdateSysAttachmentDto(SysAttachmentDto sysAttachmentDto) {
+    public HttpResult saveAndUpdateSysAttachmentDto(SysAttachmentDto sysAttachmentDto,String formData) {
         try {
+            if (StringUtils.isNotBlank(formData)){
+                sysAttachmentDto = JSONObject.parseObject(formData,SysAttachmentDto.class) ;
+            }
             saveAndUpdateSysAttachmentDto2(sysAttachmentDto) ;
             return HttpResult.newCorrectResult(sysAttachmentDto);
         } catch (Exception e) {

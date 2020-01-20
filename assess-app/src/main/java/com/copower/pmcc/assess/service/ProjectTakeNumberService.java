@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.aspose.words.*;
 import com.copower.pmcc.ad.api.enums.AdPersonalEnum;
 import com.copower.pmcc.assess.common.AsposeUtils;
@@ -57,6 +58,9 @@ import java.util.*;
 import java.util.List;
 import java.util.regex.Pattern;
 
+/**
+ * 项目拿号
+ */
 @Service
 public class ProjectTakeNumberService {
     @Autowired
@@ -83,6 +87,8 @@ public class ProjectTakeNumberService {
     private BaseAttachmentService baseAttachmentService;
     @Autowired
     private BaseProjectClassifyService baseProjectClassifyService;
+    @Autowired
+    private ProjectTakeNumberDetailService projectTakeNumberDetailService;
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -176,6 +182,23 @@ public class ProjectTakeNumberService {
 
     public void editData(ProjectTakeNumber projectTakeNumber) {
         projectTakeNumberDao.modifyProjectTakeNumber(projectTakeNumber);
+    }
+
+    public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData){
+        ProjectTakeNumber projectTakeNumber = JSONObject.parseObject(formData, ProjectTakeNumber.class);
+      saveAndUpdateProjectTakeNumber(projectTakeNumber, false);
+        List<ProjectTakeNumberDetail> projectTakeNumberDetailList = projectTakeNumberDetailService.getProjectTakeNumberDetailListByMasterId(projectTakeNumber.getId());
+        if (CollectionUtils.isNotEmpty(projectTakeNumberDetailList)){
+            Iterator<ProjectTakeNumberDetail> projectTakeNumberDetailIterator = projectTakeNumberDetailList.iterator();
+            while (projectTakeNumberDetailIterator.hasNext()){
+                ProjectTakeNumberDetail projectTakeNumberDetail = projectTakeNumberDetailIterator.next();
+                if (StringUtils.isNotBlank(projectTakeNumberDetail.getReportTypeName())){
+                    continue;
+                }
+                projectTakeNumberDetail.setReportTypeName(baseDataDicService.getNameById(projectTakeNumberDetail.getReportType()));
+                projectTakeNumberDetailService.saveAndUpdateProjectTakeNumberDetail(projectTakeNumberDetail,true);
+            }
+        }
     }
 
     public void saveAndUpdateProjectTakeNumber(ProjectTakeNumber projectTakeNumber, Boolean updateNull) {

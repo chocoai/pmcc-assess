@@ -610,7 +610,7 @@ $(function () {
                 $.ajax({
                     url: getContextPath() + "/public/saveAndUpdateSysAttachmentDto",
                     type: "POST",
-                    data: item,
+                    data: {formData:JSON.stringify(item)},
                     dataType: "json",
                     success: function (result) {
                         if (result.ret) {

@@ -11,7 +11,6 @@
             <%@include file="/views/share/form_head.jsp" %>
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
-
             <div class="x_panel area_panel">
 
                 <div class="x_title collapse-link">
@@ -23,7 +22,7 @@
                 </div>
 
                 <div class="x_content">
-                    <form class="form-horizontal" id="frmProjectTakeNumber">
+                    <form class="form-horizontal">
                         <input type="hidden" name="id" value="${projectTakeNumber.id}">
                         <input type="hidden" name="assessProjectType" value="${projectTakeNumber.assessProjectType}">
                         <input type="hidden" name="projectId" value="${projectPlanDetails.projectId}">
@@ -87,59 +86,52 @@
                                 </div>
                             </div>
                         </div>
-
-
-
-                        <div class="form-group">
-
-                            <div class="x-valid">
-                                <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
-                                    二维码
-                                </label>
-                                <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
-                                    <div id="_ProjectTakeNumber_BaseOrCode"></div>
-                                    <img src="">
-                                </div>
-
-                            </div>
-
-                            <div class="x-valid">
-                                <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
-                                    文档
-                                </label>
-                                <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
-                                    <div id="_ProjectTakeNumber_Document"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-
-                            <div class="x-valid">
-                                <label class="col-md-1 col-sm-1 col-xs-12 control-label">
-                                    报告类型<span class="symbol required"></span>
-                                </label>
-                                <div class="col-md-3 col-sm-3 col-xs-12">
-                                    <label class="form-control"
-                                           name="reportType">${projectTakeNumber.reportTypeName}</label>
-                                </div>
-                            </div>
-
-                            <div class="x-valid">
-                                <label class="col-md-1 col-sm-1 col-xs-12 control-label">
-                                    文号
-                                </label>
-                                <div class="col-md-3 col-sm-3 col-xs-12">
-                                    <label class="form-control"
-                                           name="numberValue">${projectTakeNumber.numberValue}</label>
-                                </div>
-                            </div>
-
-
-                        </div>
-                        
                     </form>
                 </div>
+
+                <c:forEach items="${projectTakeNumberDetailList}" var="projectTakeNumberDetail" varStatus="userStatus">
+                    <div class="x_content">
+                        <div class=" col-xs-1  col-sm-1  col-md-1  col-lg-1">
+                        </div>
+                        <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
+                            <div class="row panel">
+                                <form>
+                                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12  panel-heading  text-center">
+                                        <h2>第${userStatus.index+1}拿号
+                                        </h2>
+                                    </div>
+                                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12  panel-body ">
+                                        <div class="row">
+                                            <input type="hidden" name="id" value="${projectTakeNumberDetail.id}">
+                                            <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                                                二维码:<div id="_ProjectTakeNumber_BaseOrCode${projectTakeNumberDetail.id}"></div>
+                                            </div>
+                                            <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                                                <label class="form-control">报告类型:${projectTakeNumberDetail.reportTypeName}</label>
+                                            </div>
+                                            <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                                                上传的文档:<div id="_projectTakeNumberDetailSysAttachmentDto${projectTakeNumberDetail.id}"></div>
+                                            </div>
+                                            <div class="x-valid">
+                                                <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                                                    <label class="form-control">文号:${projectTakeNumberDetail.numberValue}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <script>
+                        $(document).ready(function () {
+                            var fileArr = ["ProjectTakeNumber_BaseOrCode${projectTakeNumberDetail.id}" , "projectTakeNumberDetailSysAttachmentDto${projectTakeNumberDetail.id}" ];
+                            $.each(fileArr, function (i, n) {
+                                baseTakeNumber.showFile(n, AssessDBKey.ProjectTakeNumberDetail, '${projectTakeNumberDetail.id}', false);
+                            });
+                        });
+                    </script>
+                </c:forEach>
 
             </div>
 
@@ -169,10 +161,6 @@
         }
     };
 
-    baseTakeNumber.config = {
-        frm: $("#frmProjectTakeNumber")
-    };
-
     baseTakeNumber.showFile = function (target, tableName, id, deleteFlag) {
         FileUtils.getFileShows({
             target: target,
@@ -187,23 +175,6 @@
     };
 
 
-    baseTakeNumber.initFormData = function (data) {
-        var fileArr = ["ProjectTakeNumber_BaseOrCode","ProjectTakeNumber_Document"];
-        var frm = baseTakeNumber.handleJquery(baseTakeNumber.config.frm);
-        frm.find("img").attr({src: data.imgPath});
-        if (fileArr) {
-            $.each(fileArr, function (i, n) {
-                baseTakeNumber.showFile(n, AssessDBKey.ProjectTakeNumber, baseTakeNumber.isNotBlank(data.id) ? data.id : '0', false);
-            });
-        }
-    };
-
-    $(function () {
-        if ("${projectTakeNumber}") {
-            var obj = '${el:toJsonString(projectTakeNumber)}';
-            baseTakeNumber.initFormData(JSON.parse(obj));
-        }
-    });
 
 </script>
 

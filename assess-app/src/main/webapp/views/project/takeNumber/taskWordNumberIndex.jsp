@@ -12,7 +12,7 @@
             <%@include file="/views/share/form_head.jsp" %>
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
-            <div class="x_panel area_panel">
+            <div class="x_panel">
 
                 <div class="x_title collapse-link">
                     <ul class="nav navbar-right panel_toolbox">
@@ -118,81 +118,30 @@
                         </div>
 
                         <div class="form-group">
-
-                            <div class="x-valid">
-                                <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
-                                    二维码
-                                </label>
-                                <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
-                                    <div id="_ProjectTakeNumber_BaseOrCode"></div>
-                                    <img src="">
-                                </div>
-
-                            </div>
-
-                            <div class="x-valid">
-
-                                <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                                    <input id="ProjectTakeNumber_DocumentHandle"
-                                           name="file" type="file" style="display: none"
-                                           onchange="baseTakeNumber.upFileLoadReport(this)">
-                                    <div class="btn btn-primary"
-                                         onclick="$(this).prev().trigger('click')">上传报告
-                                    </div>
-                                </div>
-
-                                <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
-                                    文档
-                                </label>
-                                <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
-                                    <div id="_ProjectTakeNumber_Document"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-
-                            <div class="x-valid">
-                                <label class="col-md-1 col-sm-1 col-xs-12 control-label">
-                                    报告类型<span class="symbol required"></span>
-                                </label>
-                                <div class="col-md-3 col-sm-3 col-xs-12">
-                                    <select name="reportType" class="form-control search-select select2" required>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="x-valid">
-                                <label class="col-md-1 col-sm-1 col-xs-12 control-label">
-                                    文号
-                                </label>
-                                <div class="col-md-3 col-sm-3 col-xs-12">
-                                    <label class="form-control"
-                                           name="numberValue">${projectTakeNumber.numberValue}</label>
-                                </div>
-                            </div>
-
-                            <div class="x-valid">
-                                <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
-                                    拿号
-                                </label>
-                                <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                                    <button type="button" class="btn-primary btn"
-                                            onclick="baseTakeNumber.getReportNumber(this)"><i
-                                            class="fa fa-dot-circle-o"></i></button>
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <div class="form-group">
                             <div class="x-valid">
                                 <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
                                     说明
                                 </label>
                                 <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
                                 <textarea class="form-control" name="remark" rows="4"
-                                          data-rule-maxlength="255" placeholder=""></textarea>
+                                          data-rule-maxlength="255" placeholder="说明"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="x-valid">
+                                <label class="col-xs-4  col-sm-4  col-md-4  col-lg-4 control-label">
+                                    每个文件都可以生成自己的文号和二维码(可以一次性上传多个)
+                                </label>
+
+                                <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                                    <input id="ProjectTakeNumber_DocumentHandle"
+                                           name="file" multiple="multiple" type="file" style="display: none"
+                                           onchange="baseTakeNumber.upFileLoadReport(this)">
+                                    <div class="btn btn-primary"
+                                         onclick="$(this).prev().trigger('click')">上传报告
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -240,6 +189,74 @@
 <input type="file" id="ajaxFileUpload" name="file" style="display: none;">
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/js/ajaxfileupload.js?v=${assessVersion}"></script>
+
+<script type="text/html" id="projectTakeNumberDetailHtml">
+
+    <div>
+        <div class=" col-xs-1  col-sm-1  col-md-1  col-lg-1">
+        </div>
+        <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
+            <div class="row panel">
+                <form>
+                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12  panel-heading  text-center">
+                        <h2>第{index}拿号
+                            <button class="btn-primary btn" type="button" onclick="baseTakeNumber.removeProjectTakeNumberDetail(this);">移除<i class="fa fa-minus-circle"></i></button>
+                        </h2>
+                    </div>
+                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12  panel-body ">
+                        <div class="row">
+                            <input type="hidden" name="id" value="{id}">
+                            <input type="hidden" name="masterId">
+                            <div class=" col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
+                                二维码
+                            </div>
+                            <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
+                                <div id="_ProjectTakeNumber_BaseOrCode{id}"></div>
+                                <img src="">
+                            </div>
+                            <div class=" col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
+                                报告类型<span class="symbol required"></span>
+                            </div>
+                            <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
+                                <select name="reportType" required="required"
+                                        class="form-control search-select select2">
+                                </select>
+                            </div>
+                            <div class=" col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
+                                上传的文档
+                            </div>
+                            <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
+                                <input id="projectTakeNumberDetailSysAttachmentDto{id}" placeholder="继续上传待替换附件"
+                                       class="form-control"
+                                       type="file">
+                                <div id="_projectTakeNumberDetailSysAttachmentDto{id}"></div>
+                            </div>
+                            <div class="x-valid">
+                                <label class="col-md-1 col-sm-1 col-xs-12 control-label">
+                                    文号
+                                </label>
+                                <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
+                                    <input type="text" class="form-control" name="numberValue" readonly="readonly">
+                                </div>
+                            </div>
+                            <div class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
+                                拿取文号
+                            </div>
+                            <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
+                                <button type="button" class="btn-primary btn"
+                                        onclick="baseTakeNumber.getReportNumber(this)"><i
+                                        class="fa fa-dot-circle-o"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+</script>
+
 <script>
 
     var baseTakeNumber = {};
@@ -260,7 +277,8 @@
     };
 
     baseTakeNumber.config = {
-        frm: $("#frmProjectTakeNumber")
+        frm: $("#frmProjectTakeNumber"),
+        detailFileId: "projectTakeNumberDetailSysAttachmentDto"
     };
 
     baseTakeNumber.fileUpload = function (target, tableName, id, deleteFlag) {
@@ -319,6 +337,12 @@
         });
     };
 
+    baseTakeNumber.saveAndUpdateProjectTakeNumberDetail = function (data, callback) {
+        baseTakeNumber.ajaxServerMethod({formData: JSON.stringify(data)}, "projectTakeNumber/saveAndUpdateProjectTakeNumberDetail", "post", callback, function (message) {
+            toastr.info(message);
+        });
+    };
+
 
     //公共  赋值 方法
     baseTakeNumber.baseInitFormData = function (form, item, fileArr, bisDetail, tableName, inputArr) {
@@ -346,18 +370,39 @@
     };
 
     baseTakeNumber.initFormData = function (data) {
-        var fileArr = ["ProjectTakeNumber_BaseOrCode", "ProjectTakeNumber_Document"];
+        var fileArr = [];
         var inputArr = ["investigationsStartDate", "investigationsEndDate", "reportIssuanceDate", "homeWorkEndTime"];
         var frm = baseTakeNumber.handleJquery(baseTakeNumber.config.frm);
         baseTakeNumber.baseInitFormData(frm, data, fileArr, true, AssessDBKey.ProjectTakeNumber, inputArr);
-        AssessCommon.loadDataDicByKey(AssessDicKey.REPORT_TYPE, data.reportType, function (html, data) {
-            frm.find("select[name='reportType']").empty().html(html).trigger('change');
-        });
-        frm.find("img").attr({src: data.imgPath});
         if (data.qualificationType) {
             baseTakeNumber.getAdPersonalIdentityDto({qualificationType: data.qualificationType}, function (item) {
                 baseTakeNumber.dataQualificationShow(item, data.realEstateAppraiser, frm);
             });
+        }
+    };
+
+    baseTakeNumber.initFormProjectTakeNumberDetailData = function (data, frm, init) {
+        try {
+            if (init) {
+                frm.find(".select2").each(function () {
+                    $(this).select2();
+                });
+            }
+        } catch (e) {
+        }
+        var fileArr = ["ProjectTakeNumber_BaseOrCode" + data.id, "projectTakeNumberDetailSysAttachmentDto" + data.id];
+        if (data.imgPath) {
+            frm.find("img").attr({src: data.imgPath});
+        }
+        AssessCommon.loadDataDicByKey(AssessDicKey.REPORT_TYPE, data.reportType, function (html, data) {
+            frm.find("select[name='reportType']").empty().html(html).trigger('change');
+        });
+        baseTakeNumber.baseInitFormData(frm, data, fileArr, true, AssessDBKey.ProjectTakeNumberDetail, []);
+        if (data.numberValue) {
+            frm.find("input[name='numberValue']").val(data.numberValue);
+        }
+        if (data.masterId) {
+            frm.find("input[name='masterId']").val(data.masterId);
         }
     };
 
@@ -389,16 +434,22 @@
 
 
     /*拿取文号*/
-    baseTakeNumber.getReportNumber = function () {
+    baseTakeNumber.getReportNumber = function (_this) {
         var frm = baseTakeNumber.handleJquery(baseTakeNumber.config.frm);
+        var form = $(_this).closest("form");
         if (!frm.valid()) {
             return false;
         }
+        if (!form.valid()) {
+            return false;
+        }
         var objData = formSerializeArray(frm);
+        var defaultObj = formSerializeArray(form);
+        jQuery.extend(objData, defaultObj);
         var queryFile = {
             tableId: objData.id,
-            tableName: AssessDBKey.ProjectTakeNumber,
-            fieldsName: "ProjectTakeNumber_Document"
+            tableName: AssessDBKey.ProjectTakeNumberDetail,
+            fieldsName: baseTakeNumber.config.detailFileId + objData.id
         };
         Loading.progressShow();
         //获取上传的附件
@@ -406,16 +457,20 @@
             var ids = [];
             if (fileArrays) {
                 $.each(fileArrays, function (i, item) {
-                    ids.push(item.id) ;
+                    ids.push(item.id);
                 })
             }
-            console.log(fileArrays) ;
             baseTakeNumber.ajaxServerMethod({formData: JSON.stringify(objData)}, "projectTakeNumber/getProjectWordNumber", "get", function (data) {
-                baseTakeNumber.ajaxServerMethod({takeNumberId: objData.id,attachmentIds:ids.join(",")}, "projectTakeNumber/toolBaseOrCode", "get", function (sysAttachmentDto) {
+                baseTakeNumber.initFormProjectTakeNumberDetailData(data, form, false);
+                baseTakeNumber.ajaxServerMethod({
+                    takeNumberDetailId: objData.id,
+                    masterId: objData.masterId,
+                    attachmentIds: ids.join(",")
+                }, "projectTakeNumber/toolBaseOrCode", "get", function (sysAttachmentDto) {
                     Loading.progressHide();
                     data.imgPath = "${pageContext.request.contextPath}" + sysAttachmentDto.filePath;
                     data.attachmentId = sysAttachmentDto.id;
-                    baseTakeNumber.initFormData(data);
+                    baseTakeNumber.initFormProjectTakeNumberDetailData(data, form, false);
                 }, function (error) {
                     Loading.progressHide();
                     Alert(error);
@@ -429,14 +484,14 @@
 
     baseTakeNumber.upFileLoadReport = function () {
         var frm = baseTakeNumber.handleJquery(baseTakeNumber.config.frm);
-        var data = formSerializeArray(frm);
+        var parentData = formSerializeArray(frm);
         var fileElementId = "ProjectTakeNumber_DocumentHandle";
         $.ajaxFileUpload({
             type: "POST",
             url: "${pageContext.request.contextPath}/public/importAjaxFile",
             data: {
                 tableName: AssessDBKey.ProjectTakeNumber,
-                tableId: data.id,
+                tableId: parentData.id,
                 fieldsName: "ProjectTakeNumber_Document"
             },//要传到后台的参数，没有可以不写
             secureuri: false,//是否启用安全提交，默认为false
@@ -445,13 +500,42 @@
             async: false,
             success: function (result) {
                 if (result.ret) {
-                    baseTakeNumber.initFormData(data);
+                    var ids = result.data.split(",");
+                    $.each(ids, function (count, attachmentId) {
+                        var html = $("#projectTakeNumberDetailHtml").html();
+                        var target = frm.closest(".x_panel");
+                        baseTakeNumber.saveAndUpdateProjectTakeNumberDetail({masterId: parentData.id}, function (data) {
+                            html = html.replace(/{id}/g, data.id);
+                            html = html.replace(/{index}/g, $(document).find("input[name=id]").size() - 1);
+                            target.append(html);
+                            AssessCommon.getSysAttachmentDto(attachmentId, function (sysAttachmentDto) {
+                                sysAttachmentDto.fieldsName = baseTakeNumber.config.detailFileId + data.id;
+                                sysAttachmentDto.tableId = data.id;
+                                sysAttachmentDto.tableName = AssessDBKey.ProjectTakeNumberDetail;
+                                AssessCommon.saveAndUpdateSysAttachmentDto(sysAttachmentDto, function () {
+                                    baseTakeNumber.initFormData(parentData);
+                                    var form = $("#" + baseTakeNumber.config.detailFileId + data.id).closest("form");
+                                    data.masterId = parentData.id;
+                                    baseTakeNumber.initFormProjectTakeNumberDetailData(data, form, true);
+                                });
+                            });
+                        });
+                    });
                 }
             },
             error: function (result, status, e) {
                 Loading.progressHide();
                 Alert("调用服务端方法失败，失败原因:" + result);
             }
+        });
+    };
+
+    baseTakeNumber.removeProjectTakeNumberDetail = function (_this) {
+        var form = $(_this).closest("form");
+        var defaultObj = formSerializeArray(form);
+        baseTakeNumber.ajaxServerMethod(defaultObj,"projectTakeNumber/deleteProjectTakeNumberDetailById","post",function () {
+            form.parent().parent().parent().remove() ;
+            toastr.success('移除成功!');
         });
     };
 
@@ -467,6 +551,21 @@
         if ("${projectTakeNumber}") {
             var obj = '${el:toJsonString(projectTakeNumber)}';
             baseTakeNumber.initFormData(JSON.parse(obj));
+        }
+        if ("${takeNumberDetailIdList}") {
+            var takeNumberDetailIdList = '${takeNumberDetailIdList}';
+            var frm = baseTakeNumber.handleJquery(baseTakeNumber.config.frm);
+            var data = formSerializeArray(frm);
+            takeNumberDetailIdList = takeNumberDetailIdList.split(",") ;
+            var target = frm.closest(".x_panel");
+            $.each(takeNumberDetailIdList,function (i,id) {
+                var html = $("#projectTakeNumberDetailHtml").html();
+                html = html.replace(/{id}/g, id);
+                html = html.replace(/{index}/g, $(document).find("input[name=id]").size() - 1);
+                target.append(html);
+                var form = $("#" + baseTakeNumber.config.detailFileId + id).closest("form");
+                baseTakeNumber.initFormProjectTakeNumberDetailData({masterId:data.id,id:id}, form, true);
+            });
         }
     });
 
