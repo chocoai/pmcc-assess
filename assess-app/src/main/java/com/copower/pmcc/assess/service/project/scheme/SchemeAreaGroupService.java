@@ -183,7 +183,7 @@ public class SchemeAreaGroupService {
         }
         if (CollectionUtils.isNotEmpty(historyAreaGroups)) {//清除无效的区域
             for (SchemeAreaGroup schemeAreaGroup : historyAreaGroups) {
-                List<SchemeJudgeObject> judgeObjects = schemeJudgeObjectService.getJudgeObjectFullListByAreaId(schemeAreaGroup.getId());
+                List<SchemeJudgeObject> judgeObjects = schemeJudgeObjectService.getJudgeObjectListAllByAreaGroupId(schemeAreaGroup.getId());
                 if (CollectionUtils.isNotEmpty(judgeObjects)) {//清除估价对象下的任务
                     judgeObjects.forEach(o -> schemeJudgeObjectService.clearJudgeObjectTask(projectId, o.getId()));
                     schemeJudgeObjectDao.deleteJudgeObjectByAreaId(schemeAreaGroup.getId());
@@ -365,6 +365,7 @@ public class SchemeAreaGroupService {
         SchemeAreaGroup sourceAreaGroup = getSchemeAreaGroup(areaGroupId);
         SchemeAreaGroup newAreaGroup = new SchemeAreaGroup();
         BeanUtils.copyProperties(sourceAreaGroup, newAreaGroup, "id", "creator", "gmtCreated", "gmtModified");
+        newAreaGroup.setAreaName(String.format("%s【拆%s】", newAreaGroup.getAreaName(), schemeJudgeObjectDao.getCountBySplitFrom(areaGroupId) + 1));
         newAreaGroup.setSplitFrom(sourceAreaGroup.getId());
         newAreaGroup.setBisSplit(true);
         saveAreaGroup(newAreaGroup);
@@ -418,7 +419,6 @@ public class SchemeAreaGroupService {
     @Transactional(rollbackFor = Exception.class)
     public void areaGroupSplitRemove(Integer areaGroupId) {
         //1.删除该区域下任务 2.将估价对象还原到原区域中 3.删除该区域
-        clearAreaGroupTask(Lists.newArrayList(getSchemeAreaGroup(areaGroupId)));
         SchemeAreaGroup sourceSplitAreaGroup = getSourceSplitAreaGroup(areaGroupId);
         List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectService.getJudgeObjectListAllByAreaGroupId(areaGroupId);
         if (CollectionUtils.isNotEmpty(judgeObjectList)) {
@@ -427,6 +427,7 @@ public class SchemeAreaGroupService {
                 schemeJudgeObjectService.updateSchemeJudgeObject(o);
             });
         }
+        clearAreaGroupTask(Lists.newArrayList(getSchemeAreaGroup(areaGroupId)));
         remove(areaGroupId);
         schemeJudgeObjectService.reNumberJudgeObject(sourceSplitAreaGroup.getId());
     }

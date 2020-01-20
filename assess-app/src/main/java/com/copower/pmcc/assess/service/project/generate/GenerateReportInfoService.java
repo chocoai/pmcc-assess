@@ -11,17 +11,14 @@ import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.google.common.collect.Lists;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @Auther: zch
@@ -72,9 +69,25 @@ public class GenerateReportInfoService {
         GenerateReportInfo where = new GenerateReportInfo();
         where.setProjectId(projectId);
         List<GenerateReportInfo> generationList = generateReportGenerationList(where);
-        if (org.apache.commons.collections.CollectionUtils.isEmpty(generationList)) {
-            generationList = Lists.newArrayList();
-            List<SchemeAreaGroup> areaGroupList = schemeAreaGroupService.getAreaGroupEnableByProjectId(projectId);
+        List<SchemeAreaGroup> areaGroupList = schemeAreaGroupService.getAreaGroupEnableByProjectId(projectId);
+        if(CollectionUtils.isEmpty(areaGroupList)) return Lists.newArrayList();
+        Iterator<SchemeAreaGroup> areaGroupIterator = areaGroupList.iterator();
+        while (areaGroupIterator.hasNext()) {
+            SchemeAreaGroup areaGroup = (SchemeAreaGroup) areaGroupIterator.next();
+            if (CollectionUtils.isNotEmpty(generationList)) {
+                Iterator<GenerateReportInfo> reportInfoIterator = generationList.iterator();
+                while (reportInfoIterator.hasNext()) {
+                    if(reportInfoIterator.next().getAreaGroupId().equals(areaGroup.getId())){
+                        reportInfoIterator.remove();
+                        areaGroupIterator.remove();
+                    }
+                }
+            }
+        }
+        if(CollectionUtils.isNotEmpty(generationList)){
+            generationList.forEach(o->deleteGenerateReportInfo(o.getId()));
+        }
+        if(CollectionUtils.isNotEmpty(areaGroupList)){
             for (SchemeAreaGroup schemeAreaGroup : areaGroupList) {
                 GenerateReportInfo generateReportInfo = new GenerateReportInfo();
                 generateReportInfo.setProjectId(projectId);
@@ -89,7 +102,9 @@ public class GenerateReportInfoService {
                 generationList.add(generateReportInfo);
             }
         }
-        return LangUtils.transform(generationList, o -> getGenerateReportInfoVo(o));
+
+
+        return LangUtils.transform(generateReportGenerationList(where), o -> getGenerateReportInfoVo(o));
     }
 
 
