@@ -110,6 +110,12 @@
             cols.push({field: 'year', title: '年份'});
             cols.push({field: 'number', title: '编号'});
             cols.push({field: 'numberValue', title: '文号'});
+            cols.push({field: 'bisDelete', title: '状态', formatter: function (value, row, index) {
+                if(value==false){
+                    return "有效";
+                }
+                return "无效";
+            }});
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
