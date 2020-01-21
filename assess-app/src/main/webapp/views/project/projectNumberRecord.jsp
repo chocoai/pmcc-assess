@@ -63,11 +63,6 @@
                                         onclick="projectNumberRecord.prototype.loadDataDicList()">
                                     查询
                                 </button>
-
-                                <%--<button type="button" class="btn btn-success"--%>
-                                        <%--onclick="projectNumberRecord.prototype.showModel()"--%>
-                                        <%--data-toggle="modal" href="#divBox"> 新增--%>
-                                <%--</button>--%>
                             </div>
                         </div>
 
@@ -83,8 +78,6 @@
     <!-- end: MAIN CONTAINER -->
 </div>
 </body>
-<%@include file="/views/data/dataPropertyServiceItem.jsp" %>
-<%@include file="/views/data/dataPropertyModelQuote.jsp" %>
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="text/javascript">
     $(function () {
