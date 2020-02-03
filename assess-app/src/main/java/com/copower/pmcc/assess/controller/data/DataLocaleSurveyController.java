@@ -2,14 +2,13 @@ package com.copower.pmcc.assess.controller.data;
 
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.basis.entity.DataLocaleSurveyPicture;
+import com.copower.pmcc.assess.dal.basis.entity.DataLocaleSurvey;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
-import com.copower.pmcc.assess.service.data.DataLocaleSurveyPictureService;
+import com.copower.pmcc.assess.service.data.DataLocaleSurveyService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,14 +25,14 @@ import java.util.List;
  * @Date: 2018/9/7 10:00
  * @Description:现场查勘图片配置
  */
-@RequestMapping(value = "/dataLocaleSurveyPicture")
+@RequestMapping(value = "/dataLocaleSurvey")
 @Controller
-public class DataLocaleSurveyPictureController {
+public class DataLocaleSurveyController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
-    private DataLocaleSurveyPictureService dataLocaleSurveyPictureService;
+    private DataLocaleSurveyService dataLocaleSurveyService;
     @Autowired
     private ErpAreaService erpAreaService;
     @Autowired
@@ -41,38 +40,41 @@ public class DataLocaleSurveyPictureController {
 
     @RequestMapping(value = "/view", name = "转到index页面 ", method = {RequestMethod.GET})
     public ModelAndView index() {
-        String view = "/data/dataLocaleSurveyPictureView";
+        String view = "/data/dataLocaleSurveyView";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
         List<BaseDataDic> pictureTemplates = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_LOCALE_SURVEY_PICTURE_TEMPLATE);
         modelAndView.addObject("pictureTemplates", pictureTemplates);
+        //超级管理员
+        String account = processControllerComponent.getThisUser();
+        if (processControllerComponent.userIsAdmin(account)) {//失效的方法
+            modelAndView.addObject("permission", "admin");//不设置 processControllerComponent.getThisUser(),防止超级管理员变更或者直接变为一组
+        } else {
+            modelAndView.addObject("permission", account);
+        }
         return modelAndView;
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getDataLocaleSurveyPictureById", method = {RequestMethod.GET}, name = "获取现场查勘图片配置")
+    @RequestMapping(value = "/getDataLocaleSurveyById", method = {RequestMethod.GET}, name = "获取现场查勘图片配置")
     public HttpResult getById(Integer id) {
-        DataLocaleSurveyPicture dataLocaleSurveyPicture = null;
+        DataLocaleSurvey dataLocaleSurvey = null;
         try {
             if (id != null) {
-                dataLocaleSurveyPicture = dataLocaleSurveyPictureService.getDataLocaleSurveyPictureById(id);
+                dataLocaleSurvey = dataLocaleSurveyService.getDataLocaleSurveyById(id);
             }
         } catch (Exception e1) {
             logger.error(String.format("exception: %s" + e1.getMessage()), e1);
             return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
         }
-        return HttpResult.newCorrectResult(dataLocaleSurveyPicture);
+        return HttpResult.newCorrectResult(dataLocaleSurvey);
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getDataLocaleSurveyPictureList", method = {RequestMethod.GET}, name = "获取现场查勘图片配置列表")
-    public BootstrapTableVo getExamineEstateNetworkList(Integer masterId) {
+    @RequestMapping(value = "/getDataLocaleSurveyList", method = {RequestMethod.GET}, name = "获取现场查勘图片配置列表")
+    public BootstrapTableVo getExamineEstateNetworkList(Integer type,String name) {
         BootstrapTableVo vo = null;
-        DataLocaleSurveyPicture dataLocaleSurveyPicture = new DataLocaleSurveyPicture();
-        if (masterId != null) {
-            dataLocaleSurveyPicture.setMasterId(masterId);
-        }
         try {
-            vo = dataLocaleSurveyPictureService.getDataLocaleSurveyPictureListVos(dataLocaleSurveyPicture);
+            vo = dataLocaleSurveyService.getDataLocaleSurveyListVos(type,name);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s", e1.getMessage()), e1);
             return null;
@@ -81,13 +83,26 @@ public class DataLocaleSurveyPictureController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/deleteDataLocaleSurveyPictureById", method = {RequestMethod.POST}, name = "删除现场查勘图片配置")
+    @RequestMapping(value = "/getDataLocaleSurveyListBySurvey", method = {RequestMethod.GET}, name = "获取现场查勘图片配置列表")
+    public BootstrapTableVo getDataLocaleSurveyListBySurvey(Integer type,String name) {
+        BootstrapTableVo vo = null;
+        try {
+            vo = dataLocaleSurveyService.getDataLocaleSurveyListBySurvey(type,name);
+        } catch (Exception e1) {
+            logger.error(String.format("exception: %s", e1.getMessage()), e1);
+            return null;
+        }
+        return vo;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/deleteDataLocaleSurveyById", method = {RequestMethod.POST}, name = "删除现场查勘图片配置")
     public HttpResult delete(Integer id) {
         try {
             if (id != null) {
-                DataLocaleSurveyPicture dataLocaleSurveyPicture = new DataLocaleSurveyPicture();
-                dataLocaleSurveyPicture.setId(id);
-                dataLocaleSurveyPictureService.removeDataLocaleSurveyPicture(dataLocaleSurveyPicture);
+                DataLocaleSurvey dataLocaleSurvey = new DataLocaleSurvey();
+                dataLocaleSurvey.setId(id);
+                dataLocaleSurveyService.removeDataLocaleSurvey(dataLocaleSurvey);
                 return HttpResult.newCorrectResult();
             }
         } catch (Exception e1) {
@@ -98,10 +113,10 @@ public class DataLocaleSurveyPictureController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/saveAndUpdateDataLocaleSurveyPicture", method = {RequestMethod.POST}, name = "更新现场查勘图片配置")
-    public HttpResult saveAndUpdate(DataLocaleSurveyPicture dataLocaleSurveyPicture) {
+    @RequestMapping(value = "/saveAndUpdateDataLocaleSurvey", method = {RequestMethod.POST}, name = "更新现场查勘图片配置")
+    public HttpResult saveAndUpdate(DataLocaleSurvey dataLocaleSurvey) {
         try {
-            dataLocaleSurveyPictureService.saveAndUpdateDataLocaleSurveyPicture(dataLocaleSurveyPicture);
+            dataLocaleSurveyService.saveAndUpdateDataLocaleSurvey(dataLocaleSurvey);
             return HttpResult.newCorrectResult("保存 success!");
         } catch (Exception e) {
             logger.error(String.format("exception: %s", e.getMessage()), e);
