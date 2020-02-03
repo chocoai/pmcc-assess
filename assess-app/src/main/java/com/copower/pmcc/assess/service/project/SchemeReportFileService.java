@@ -18,6 +18,7 @@ import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.basic.*;
 import com.copower.pmcc.assess.service.data.DataLocaleSurveyPictureService;
+import com.copower.pmcc.assess.service.data.DataLocaleSurveyService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryContentService;
@@ -91,6 +92,9 @@ public class SchemeReportFileService extends BaseService {
     private BasicApplyBatchDetailService basicApplyBatchDetailService;
     @Autowired
     private BasicApplyBatchService basicApplyBatchService;
+ @Autowired
+    private DataLocaleSurveyService dataLocaleSurveyService;
+
 
     /**
      * 保存数据
@@ -860,10 +864,10 @@ public class SchemeReportFileService extends BaseService {
         return baseAttachmentService.getAttachmentList(reportAttachment);
     }
 
-    public void affirmPictureTemplate(Integer type, Integer declareRecordId) {
+    public void affirmPictureTemplate(Integer masterId, Integer declareRecordId) {
         //获取模板
         DataLocaleSurveyPicture dataLocaleSurveyPicture = new DataLocaleSurveyPicture();
-        dataLocaleSurveyPicture.setType(type);
+        dataLocaleSurveyPicture.setMasterId(masterId);
         List<DataLocaleSurveyPictureVo> localeSurveyPictures = dataLocaleSurveyPictureService.getDataLocaleSurveyPictureVos(dataLocaleSurveyPicture);
         if (CollectionUtils.isNotEmpty(localeSurveyPictures)) {
             for (DataLocaleSurveyPictureVo surveyPictureVo : localeSurveyPictures) {
@@ -892,4 +896,25 @@ public class SchemeReportFileService extends BaseService {
 
     }
 
+    //保存到模板
+    public void saveToTemplate(String name, Integer declareRecordId) {
+        DataLocaleSurvey dataLocaleSurvey = new DataLocaleSurvey();
+        dataLocaleSurvey.setName(name);
+        dataLocaleSurveyService.saveAndUpdateDataLocaleSurvey(dataLocaleSurvey);
+        SchemeReportFileItem schemeReportFileItem = new SchemeReportFileItem();
+        schemeReportFileItem.setDeclareRecordId(declareRecordId);
+        List<SchemeReportFileItem> reportFileItemList = schemeReportFileItemDao.getReportFileItemList(schemeReportFileItem);
+        if(CollectionUtils.isNotEmpty(reportFileItemList)){
+            for (SchemeReportFileItem fileItem: reportFileItemList) {
+                DataLocaleSurveyPicture dataLocaleSurveyPicture = new DataLocaleSurveyPicture();
+                dataLocaleSurveyPicture.setMasterId(dataLocaleSurvey.getId());
+                dataLocaleSurveyPicture.setFileName(fileItem.getFileName());
+                dataLocaleSurveyPicture.setSorting(fileItem.getSorting());
+                dataLocaleSurveyPicture.setCertifyPart(fileItem.getCertifyPart());
+                dataLocaleSurveyPicture.setCertifyPartCategory(fileItem.getCertifyPartCategory());
+                dataLocaleSurveyPictureService.saveAndUpdateDataLocaleSurveyPicture(dataLocaleSurveyPicture);
+            }
+        }
+
+    }
 }
