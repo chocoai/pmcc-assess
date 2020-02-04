@@ -240,6 +240,7 @@ declareCommon.getLandColumn = function () {
     cols.push({field: 'landNumber', title: '地号'});
     cols.push({field: 'graphNumber', title: '图号'});
     cols.push({field: 'useRightArea', title: '使用权面积'});
+    cols.push({field: 'autoInitNumber', title: '编号'});
     return cols;
 };
 
@@ -257,6 +258,7 @@ declareCommon.getHouseColumn = function () {
     cols.push({field: 'ownership', title: '房屋所有权人'});
     cols.push({field: 'floorArea', title: '建筑面积'});
     cols.push({field: 'planningUseName', title: '规划用途'});
+    cols.push({field: 'autoInitNumber', title: '编号'});
     return cols;
 };
 
@@ -279,6 +281,7 @@ declareCommon.getRealEstateColumn = function () {
     //         return "暂时没有参与下一阶段任务";
     //     }
     // });
+    cols.push({field: 'autoInitNumber', title: '编号'});
     return cols;
 };
 

@@ -19,6 +19,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Pattern;
 
 
 /**
@@ -490,6 +491,15 @@ public class ArithmeticUtils implements Serializable {
         String v1 = getBigDecimalString(bigDecimal);
         String v2 = bigDecimal.toBigInteger().toString();
         return v1.equals(v2);
+    }
+
+    public static boolean isInteger(String str) {
+        try {
+            Integer.parseInt(str);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 
     /**

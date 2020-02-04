@@ -26,6 +26,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Multimap;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
@@ -45,6 +46,7 @@ import java.io.FileInputStream;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Auther: zch
@@ -101,7 +103,7 @@ public class DeclareRealtyRealEstateCertService {
         //只取第一个sheet
         Sheet sheet = workbook.getSheetAt(0);
         //读取数据的起始行
-        int startRowNumber = 1;
+        int startRowNumber = 2;
         //导入成功数据条数
         int successCount = 0;
         //工作表的第一行
@@ -113,8 +115,9 @@ public class DeclareRealtyRealEstateCertService {
             builder.append("没有数据!");
             return builder.toString();
         }
+        Multimap<String, Map.Entry<Class<?>, Integer>> classArrayListMultimap = declarePublicService.getMultimapByClass(DeclareRealtyRealEstateCert.class,row) ;
         //----------------------------||----------------------
-        for (int i = startRowNumber; i <= rowLength; i++) {
+        for (int i = startRowNumber; i < startRowNumber + rowLength; i++)  {
             DeclareRealtyRealEstateCert oo = null;
             try {
                 row = sheet.getRow(i);
@@ -127,7 +130,7 @@ public class DeclareRealtyRealEstateCertService {
                 oo.setEnable(DeclareTypeEnum.MasterData.getKey());
                 oo.setId(null);
                 //excel处理
-                if (!declarePublicService.realEstateCert(oo, builder, row, i)) {
+                if (!declarePublicService.realEstateCert(classArrayListMultimap,oo, builder, row)) {
                     continue;
                 }
                 oo.setCreator(commonService.thisUserAccount());

@@ -23,6 +23,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Multimap;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
@@ -42,6 +43,7 @@ import java.io.FileInputStream;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Auther: zch
@@ -107,7 +109,7 @@ public class DeclareRealtyHouseCertService {
         //工作表的第一行
         row = sheet.getRow(0);
         //读取数据的起始行
-        int startRowNumber = 1;
+        int startRowNumber = 2;
         //导入成功数据条数
         int successCount = 0;
         //总列数
@@ -119,6 +121,7 @@ public class DeclareRealtyHouseCertService {
             builder.append("没有数据!");
             return builder.toString();
         }
+        Multimap<String, Map.Entry<Class<?>, Integer>> classArrayListMultimap = declarePublicService.getMultimapByClass(DeclareRealtyLandCert.class,row) ;
         for (int i = startRowNumber; i < startRowNumber + rowLength; i++) {
             DeclareRealtyLandCert landCert = null;
             try {
@@ -128,7 +131,7 @@ public class DeclareRealtyHouseCertService {
                     builder.append(String.format("\n第%s行异常：%s", i, "没有数据"));
                     continue;
                 }
-                if (!declarePublicService.land(landCert, builder, row, i)) {
+                if (!declarePublicService.land(classArrayListMultimap,landCert, builder, row)) {
                     continue;
                 }
                 landCert.setEnable(DeclareTypeEnum.BranchData.getKey());
@@ -139,18 +142,15 @@ public class DeclareRealtyHouseCertService {
                 continue;
             }
             List<DeclareRealtyHouseCert> declareRealtyHouseCertList = Lists.newArrayList();
-            //房产证的土地证号和土地证图号
             DeclareRealtyHouseCert houseCert = new DeclareRealtyHouseCert();
             houseCert.setPlanDetailsId(planDetailsId);
             //  房产证座落和土地证座落匹配
             if (CollectionUtils.isEmpty(declareRealtyHouseCertList)) {
-                if (StringUtils.isNotBlank(landCert.getBeLocated())) {
-                    houseCert.setBeLocated(landCert.getBeLocated());
+                if (landCert.getAutoInitNumber() != null) {
+                    houseCert.setAutoInitNumber(landCert.getAutoInitNumber());
                     List<DeclareRealtyHouseCert> listB = declareRealtyHouseCertDao.getDeclareRealtyHouseCertList(houseCert);
                     if (CollectionUtils.isNotEmpty(listB)) {
                         declareRealtyHouseCertList.addAll(listB);
-                    } else {
-                        houseCert.setBeLocated(null);
                     }
                 }
             }
@@ -207,7 +207,7 @@ public class DeclareRealtyHouseCertService {
         //工作表的第一行
         row = sheet.getRow(0);
         //读取数据的起始行
-        int startRowNumber = 1;
+        int startRowNumber = 2;
         //导入成功数据条数
         int successCount = 0;
         //总行数
@@ -217,6 +217,7 @@ public class DeclareRealtyHouseCertService {
             builder.append("没有数据!");
             return builder.toString();
         }
+        Multimap<String, Map.Entry<Class<?>, Integer>> classArrayListMultimap = declarePublicService.getMultimapByClass(DeclareRealtyHouseCert.class,row) ;
         for (int i = startRowNumber; i < rowLength + startRowNumber; i++) {
             DeclareRealtyHouseCert oo = null;
             try {
@@ -229,7 +230,7 @@ public class DeclareRealtyHouseCertService {
                 BeanUtils.copyProperties(declareRealtyHouseCert, oo);
                 oo.setId(null);
                 //excel 处理
-                if (!declarePublicService.house(oo, builder, row, i)) {
+                if (!declarePublicService.house(classArrayListMultimap,oo, builder, row)) {
                     continue;
                 }
                 oo.setCreator(commonService.thisUserAccount());
