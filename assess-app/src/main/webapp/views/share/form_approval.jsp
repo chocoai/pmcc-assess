@@ -6,8 +6,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<form id="frm_approval" class="form-horizontal">
-    <c:if test="${flog=='approval'}">
+<c:if test="${flog=='approval'}">
+    <form id="frm_approval" class="form-horizontal">
         <div class="x_panel">
             <div class="x_title collapse-link">
                 <ul class="nav navbar-right panel_toolbox">
@@ -115,12 +115,11 @@
                 </div>
             </div>
         </div>
+    </form>
+    <%--流程可考核，並且不是事后考核--%>
+    <c:if test="${boxReDto.bisLaunchCheck eq true and boxReDto.chksProcess ne 1}">
+        <%@include file="form_chks.jsp" %>
     </c:if>
-</form>
-<c:if test="${showCheck==2}">
-    <%@include file="form_chks.jsp" %>
-</c:if>
-<c:if test="${flog=='approval'}">
     <div class="x_panel">
         <div class="x_content">
             <div class="form-group" style="text-align: center;">
@@ -137,10 +136,11 @@
     </div>
 </c:if>
 <c:if test="${flog=='details'}">
+    <c:if test="${boxReDto.bisLaunchCheck eq true}">
+        <%@include file="form_chks.jsp" %>
+    </c:if>
     <%@include file="/views/share/form_details.jsp" %>
 </c:if>
-
-
 <script type="application/javascript">
     var formApproval = {
         valid: function () {
