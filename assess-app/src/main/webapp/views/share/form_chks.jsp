@@ -9,7 +9,6 @@
         <h3>考核信息</h3>
         <div class="clearfix"></div>
     </div>
-
     <div class="x_content">
 
         <c:if test="${!empty boxReActivityDto}">

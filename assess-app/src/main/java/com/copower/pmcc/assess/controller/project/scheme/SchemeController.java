@@ -185,9 +185,21 @@ public class SchemeController {
 
     @ResponseBody
     @RequestMapping(value = "/affirmPictureTemplate", name = "确认模板 ", method = RequestMethod.POST)
-    public HttpResult affirmPictureTemplate(Integer type, Integer declareRecordId) {
+    public HttpResult affirmPictureTemplate(Integer masterId, Integer declareRecordId) {
         try {
-            schemeReportFileService.affirmPictureTemplate(type, declareRecordId);
+            schemeReportFileService.affirmPictureTemplate(masterId, declareRecordId);
+            return HttpResult.newCorrectResult();
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/saveToTemplate", name = "确认模板 ", method = RequestMethod.POST)
+    public HttpResult saveToTemplate(String name, Integer declareRecordId) {
+        try {
+            schemeReportFileService.saveToTemplate(name, declareRecordId);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             logger.error(e.getMessage());

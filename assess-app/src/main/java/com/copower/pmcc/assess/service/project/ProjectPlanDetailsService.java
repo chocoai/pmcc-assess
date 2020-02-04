@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.service.project;
 
 import com.alibaba.fastjson.JSON;
+import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.common.enums.ResponsibileModelEnum;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
@@ -195,9 +196,18 @@ public class ProjectPlanDetailsService {
                 ProjectPlanDetails item = new ProjectPlanDetails();
                 BeanUtils.copyProperties(projectPlanDetails, item);
                 item.setProjectPhaseName(o);
-                projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetails);
+                item.setBisEnable(true);
+                item.setProcessInsId("0");
+                item.setPid(0);
+                item.setSorting(0);
+                item.setStatus(ProjectStatusEnum.RUNING.getKey());
                 try {
-                    projectPlanService.saveProjectPlanDetailsResponsibility(projectPlanDetails, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.TASK);
+                    saveProjectPlanDetails(item);
+                } catch (BusinessException e) {
+                    logger.error(e.getMessage(),e);
+                }
+                try {
+                    projectPlanService.saveProjectPlanDetailsResponsibility(item, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.TASK);
                 } catch (BpmException e) {
                     logger.error(e.getMessage());
                 }

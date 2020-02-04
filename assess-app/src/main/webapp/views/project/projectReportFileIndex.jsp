@@ -106,23 +106,23 @@
                             </div>
                         </div>
                         <%--<div class="x_panel">--%>
-                            <%--<div class="x_title collapse-link">--%>
-                                <%--<h4>权属证明复印件</h4>--%>
-                                <%--<div class="clearfix"></div>--%>
-                            <%--</div>--%>
-                            <%--<div class="x_content" id="ownershipCertHtml">--%>
-                            <%--</div>--%>
+                        <%--<div class="x_title collapse-link">--%>
+                        <%--<h4>权属证明复印件</h4>--%>
+                        <%--<div class="clearfix"></div>--%>
+                        <%--</div>--%>
+                        <%--<div class="x_content" id="ownershipCertHtml">--%>
+                        <%--</div>--%>
                         <%--</div>--%>
                         <%--<div class="x_panel">--%>
-                            <%--<div class="x_title collapse-link">--%>
-                                <%--<ul class="nav navbar-right panel_toolbox">--%>
-                                    <%--<li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>--%>
-                                <%--</ul>--%>
-                                <%--<h4>关联土地证附件</h4>--%>
-                                <%--<div class="clearfix"></div>--%>
-                            <%--</div>--%>
-                            <%--<div class="x_content collapse" id="landFileHtml">--%>
-                            <%--</div>--%>
+                        <%--<div class="x_title collapse-link">--%>
+                        <%--<ul class="nav navbar-right panel_toolbox">--%>
+                        <%--<li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>--%>
+                        <%--</ul>--%>
+                        <%--<h4>关联土地证附件</h4>--%>
+                        <%--<div class="clearfix"></div>--%>
+                        <%--</div>--%>
+                        <%--<div class="x_content collapse" id="landFileHtml">--%>
+                        <%--</div>--%>
                         <%--</div>--%>
                         <div class="x_panel">
                             <div class="x_title">
@@ -333,21 +333,25 @@
                                         <label class="col-sm-1 control-label">类型<span
                                                 class="symbol required"></span></label>
                                         <div class="col-sm-3">
-                                            <select name="type" class="form-control search-select select2" required>
+                                            <select id='type' name='type' class='form-control search-select select2'
+                                                    onchange="typeOnchange(this)">
+                                                <option value="-1">-请选择-</option>
+                                                <option value="0">系统</option>
+                                                <option value="1">个人</option>
                                             </select>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <table class="table table-bordered" id="dataLocaleSurveyList">
+                            <!-- cerare document add ajax data-->
+                        </table>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" data-dismiss="modal" class="btn btn-default">
                         关闭
-                    </button>
-                    <button type="button" onclick="affirmPictureTemplate()" class="btn btn-primary">
-                        确认
                     </button>
                 </div>
             </form>
@@ -402,6 +406,82 @@
         </div>
     </div>
 </div>
+<div id="divBoxTemplateDetail" class="modal fade bs-example-modal-lg" data-backdrop="static"
+     tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">明细</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <form id="frmMaster" class="form-horizontal">
+                        <input type="hidden" id="masterId">
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                            <button type="button" data-dismiss="modal" class="btn btn-default"
+                                    onclick="dataLocaleSurveyPicture.prototype.showModel()">
+                                新增
+                            </button>
+                            <table class="table table-bordered" id="dataLocaleSurveyPictureList">
+                                <!-- cerare document add ajax data-->
+                            </table>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">
+                    关闭
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="divBoxSaveTemplate" class="modal fade bs-example-modal-lg" data-backdrop="static"
+     tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">保存到模板</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <form id="frmTemplateMaster" class="form-horizontal">
+                    <input type="hidden" name="declareRecordId">
+                        <div class="form-group ">
+                            <div class="x-valid">
+                                <label class="col-sm-1 control-label">
+                                    名称
+                                </label>
+                                <div class="col-sm-3">
+                                    <input type="text" data-rule-maxlength="50"
+                                           placeholder="名称" id="name" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-primary" onclick="saveToTemplate()">
+                    保存
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 <script type="text/html" id="reportFileCustomHtml">
     <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
         <div class="x_panel">
@@ -432,6 +512,66 @@
         loadUploadFiles(AssessDBKey.ProjectInfo, "${projectInfo.id}", AssessUploadKey.PROJECT_PROXY);
     });
 
+    function typeOnchange(_this) {
+        var type = $(_this).val();
+        if (type) {
+            loadLocalSurveyTemplateList(type);
+        }
+    }
+
+    function loadLocalSurveyTemplateList(type) {
+        var cols = [];
+        cols.push({field: 'name', title: '名称'});
+        cols.push({field: 'typeName', title: '类型'});
+        cols.push({field: 'sorting', title: '排序'});
+        cols.push({field: 'remark', title: '备注'});
+        cols.push({
+            field: 'id', title: '操作', formatter: function (value, row, index) {
+                var str = '<div class="btn-margin">';
+                <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
+                str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="明细" onclick="showTemplateModel(' + row.id + ')"><i class="fa fa-search fa-white"></i></a>';
+                str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="选择" onclick="affirmPictureTemplate(' + row.id + ')"><i class="fa fa-check fa-white"></i></a>';
+                str += '</div>';
+                return str;
+            }
+        });
+        $("#dataLocaleSurveyList").bootstrapTable('destroy');
+        TableInit("dataLocaleSurveyList", "${pageContext.request.contextPath}/dataLocaleSurvey/getDataLocaleSurveyListBySurvey", cols, {
+            type: type,
+        }, {
+            showColumns: false,
+            showRefresh: false,
+            search: false,
+            onLoadSuccess: function () {
+                $('.tooltips').tooltip();
+            }
+        });
+    }
+
+    function showTemplateModel(id) {
+        loadTemplateDetailList(id);
+        $('#divBoxTemplateDetail').modal("show");
+    }
+
+    function loadTemplateDetailList(id) {
+        var cols = [];
+        cols.push({field: 'fileName', title: '名称'});
+        cols.push({field: 'certifyPartName', title: '对应查勘部位'});
+        cols.push({field: 'certifyPartCategoryName', title: '附件类别'});
+        cols.push({field: 'sorting', title: '排序'});
+        cols.push({field: 'remark', title: '备注'});
+        $("#dataLocaleSurveyPictureList").bootstrapTable('destroy');
+        TableInit("dataLocaleSurveyPictureList", "${pageContext.request.contextPath}/dataLocaleSurveyPicture/getDataLocaleSurveyPictureList", cols, {
+            masterId: id
+        }, {
+            showColumns: false,
+            showRefresh: false,
+            search: false,
+            onLoadSuccess: function () {
+                $('.tooltips').tooltip();
+            }
+        });
+    }
 
     function getLandFileAllByDeclareRecord(tbody, declareRecordId) {
         $.ajax({
@@ -938,26 +1078,23 @@
     function selectPictureTempale(declareRecordId) {
         $("#frmPictureType").clearAll();
         $("#frmPictureType").find("input[name='declareRecordId']").val(declareRecordId);
-        AssessCommon.loadDataDicByKey(AssessDicKey.DATA_LOCALE_SURVEY_PICTURE_TEMPLATE, '', function (html, data) {
-            $("#frmPictureType").find("select[name='type']").empty().html(html).trigger('change');
-        });
+
         $("#selectPictureTypeModal").modal("show");
 
     }
 
     //确认模板
-    function affirmPictureTemplate() {
+    function affirmPictureTemplate(masterId) {
         if (!$("#frmPictureType").valid()) {
             return false;
         }
-        var type = $("#frmPictureType").find("select[name='type']").val();
         var declareRecordId = $("#frmPictureType").find("input[name='declareRecordId']").val();
         $.ajax({
             url: "${pageContext.request.contextPath}/scheme/affirmPictureTemplate",
             type: "post",
             dataType: "json",
             data: {
-                type: type,
+                masterId: masterId,
                 declareRecordId: declareRecordId
             },
             success: function (result) {
@@ -1147,6 +1284,7 @@
             }
         })
     }
+
     //位置示意图html
     function loadPositionHtml(declareRecord) {
         var html = '';
@@ -1169,12 +1307,50 @@
         html += '<strong>' + declareRecord.name + '</strong>';
         html += '<small><input type="button" value="新增照片" onclick="addLiveSituationFile(' + declareRecord.id + ')" class="btn btn-success btn-xs"></small>';
         html += '<small><input type="button" value="选择查勘中图片" onclick="getLiveSituationAll(' + declareRecord.id + ')" class="btn btn-success btn-xs"></small>';
-        html += '<small><input type="button" value="新增查勘照片模板" onclick="selectPictureTempale(' + declareRecord.id + ')" class="btn btn-success btn-xs"></small></h4>';
+        html += '<small><input type="button" value="选择模板" onclick="selectPictureTempale(' + declareRecord.id + ')" class="btn btn-success btn-xs"></small>';
+        html += '<small><input type="button" value="保存到模板" onclick="saveToTemplateModal(' + declareRecord.id + ')" class="btn btn-success btn-xs"></small></h4>';
         html += '</div><table class="table table-hover"><thead><tr><th width="10%">文件名称</th><th width="10%">排序</th><th width="20%">附件</th><th width="15%">对应查勘部位</th><th width="10%">附件类别</th><th width="10%">是否上报告</th><th width="20%">操作</th></tr></thead>';
         html += '<tbody data-id="' + declareRecord.id + '" data-name="live_situation_select"></tbody></table>';
         html += '</div></div></div>';
         $("#liveSituationHtml").empty().append(html);
         loadLiveSituation($('tbody[data-id=' + declareRecord.id + '][data-name=live_situation_select]'), declareRecord.id);
+    }
+
+    function saveToTemplateModal(declareRecordId) {
+        $('#divBoxSaveTemplate').modal("show");
+        $("#frmTemplateMaster").find("input[name='declareRecordId']").val(declareRecordId);
+    }
+
+    //保存到模板
+    function saveToTemplate() {
+        if ($("#frmTemplateMaster").valid()) {
+            var name = $("#frmTemplateMaster").find("#name").val();
+            var declareRecordId = $("#frmTemplateMaster").find("input[name='declareRecordId']").val();
+            Loading.progressShow();
+            $.ajax({
+                url: "${pageContext.request.contextPath}/scheme/saveToTemplate",
+                type: "post",
+                dataType: "json",
+                data: {
+                    name: name,
+                    declareRecordId: declareRecordId
+                },
+                success: function (result) {
+                    Loading.progressHide();
+                    if (result.ret) {
+                        toastr.success('保存成功');
+                        $('#divBoxSaveTemplate').modal('hide');
+                    }
+                    else {
+                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Loading.progressHide();
+                    Alert("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        }
     }
 
     //权属证明复印件html
