@@ -57,6 +57,17 @@ public class SchemeController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "/getLiveSituationByCertifyPart", name = "根据类型获取委估对象下实况图片 ", method = RequestMethod.POST)
+    public HttpResult getLiveSituationByCertifyPart(Integer certifyPart,Integer declareRecordId) {
+        try {
+            return HttpResult.newCorrectResult(schemeReportFileService.getLiveSituationByCertifyPart(certifyPart,declareRecordId));
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/correspondingSitePic", name = "获取对应位置查勘图片 ", method = RequestMethod.POST)
     public HttpResult getLiveSituationAll(Integer declareRecordId,Integer certifyPartCategory) {
         try {
@@ -201,6 +212,18 @@ public class SchemeController {
         try {
             schemeReportFileService.saveToTemplate(name, declareRecordId);
             return HttpResult.newCorrectResult();
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
+
+
+    @ResponseBody
+    @RequestMapping(value = "/generateLiveSituation", name = "预览实况照片报告 ", method = RequestMethod.POST)
+    public HttpResult generateLiveSituation(Integer declareRecordId) {
+        try {
+            return HttpResult.newCorrectResult(schemeReportFileService.generateLiveSituation(declareRecordId));
         } catch (Exception e) {
             logger.error(e.getMessage());
             return HttpResult.newErrorResult(e.getMessage());
