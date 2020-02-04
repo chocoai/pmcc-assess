@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.dal.basis.entity.ProjectPhase;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dto.input.project.ProjectTaskDto;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
+import com.copower.pmcc.assess.proxy.face.AssessmentTaskInterface;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.PublicService;
@@ -15,14 +16,15 @@ import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.ProjectTaskService;
+import com.copower.pmcc.bpm.api.dto.ActivitiTaskNodeDto;
+import com.copower.pmcc.bpm.api.dto.BoxApprovalLogVo;
 import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReActivityDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxRuDto;
-import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
-import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
-import com.copower.pmcc.bpm.api.provider.BpmRpcToolsService;
+import com.copower.pmcc.bpm.api.exception.BpmException;
+import com.copower.pmcc.bpm.api.provider.*;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
@@ -32,6 +34,7 @@ import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.SpringContextUtils;
+import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -82,6 +85,12 @@ public class ProjectTaskController extends BaseController {
     private ChksAssessmentProjectPerformanceService chksAssessmentProjectPerformanceService;
     @Autowired
     private ProcessControllerComponent processControllerComponent;
+    @Autowired
+    private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
+    @Autowired
+    private BpmRpcProcessInsManagerService bpmRpcProcessInsManagerService;
+    @Autowired
+    private ApplicationConstant applicationConstant;
 
 
     @RequestMapping(value = "/projectTaskIndex", name = "提交工作成果公共页面")
@@ -142,7 +151,7 @@ public class ProjectTaskController extends BaseController {
     }
 
     @RequestMapping(value = "/projectTaskApproval", name = "工作成果审批")
-    public ModelAndView projectTaskApproval(String processInsId, String taskId, Integer boxId, String agentUserAccount) {
+    public ModelAndView projectTaskApproval(String processInsId, String taskId, Integer boxId, String agentUserAccount) throws BpmException {
         String viewUrl = "projectTaskAssist";
 
         ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsByProcessInsId(processInsId);
@@ -161,8 +170,20 @@ public class ProjectTaskController extends BaseController {
                     agentUserAccount = String.valueOf(Lists.newArrayList(intersection).get(0));
             }
         }
-
         ModelAndView modelAndView = bean.approvalView(processInsId, taskId, boxId, projectPlanDetails, agentUserAccount);
+        ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId()));
+        modelAndView.addObject("projectInfo", projectInfoVo);
+        //生成考核任务
+        BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(boxId);
+        if(boxReDto!=null&&boxReDto.getBisLaunchCheck()==Boolean.TRUE){
+            AssessmentTaskInterface assessmentTaskBean = (AssessmentTaskInterface) SpringContextUtils.getBean("assessmentTaskService");
+            ActivitiTaskNodeDto activitiTaskNodeDto = bpmRpcActivitiProcessManageService.queryCurrentTask(taskId, commonService.thisUserAccount());
+            BootstrapTableVo tableVo = bpmRpcProcessInsManagerService.getApprovalLogForApp(applicationConstant.getAppKey(), processInsId, 0, 1000);
+            List<BoxApprovalLogVo> rows = tableVo.getRows();
+            BoxReActivityDto boxReActivityDto = bpmRpcBoxService.getBoxreActivityInfoByBoxIdSorting(boxId, activitiTaskNodeDto.getCurrentStep());
+            assessmentTaskBean.createAssessmentTask(processInsId, boxReActivityDto.getId(), rows.get(0).getCreator(), projectInfoVo, projectPlanDetails);
+        }
+
         modelAndView.addObject("projectPlanDetails", projectPlanDetails);
         List<SysAttachmentDto> projectPhaseProcessTemplate = baseAttachmentService.getProjectPhaseProcessTemplate(projectPhase.getId());
         modelAndView.addObject("projectPhaseProcessTemplate", projectPhaseProcessTemplate);
@@ -178,8 +199,6 @@ public class ProjectTaskController extends BaseController {
         modelAndView.addObject("viewUrl", viewUrl);
         modelAndView.addObject("projectId", projectPlanDetails.getProjectId());
         modelAndView.addObject("projectFlog", "1");
-        ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId()));
-        modelAndView.addObject("projectInfo", projectInfoVo);
         return modelAndView;
     }
 
