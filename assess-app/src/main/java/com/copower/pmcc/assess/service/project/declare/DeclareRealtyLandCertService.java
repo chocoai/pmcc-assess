@@ -27,6 +27,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Multimap;
 import com.google.common.collect.Ordering;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -44,10 +45,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileInputStream;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 /**
  * @Auther: zch
@@ -116,7 +114,7 @@ public class DeclareRealtyLandCertService {
         //工作表的第一行
         row = sheet.getRow(0);
         //读取数据的起始行
-        int startRowNumber = 1;
+        int startRowNumber = 2;
         //导入成功数据条数
         int successCount = 0;
         //总列数
@@ -128,6 +126,7 @@ public class DeclareRealtyLandCertService {
             builder.append("没有数据!");
             return builder.toString();
         }
+        Multimap<String, Map.Entry<Class<?>, Integer>> classArrayListMultimap = declarePublicService.getMultimapByClass(DeclareRealtyHouseCert.class,row) ;
         for (int i = startRowNumber; i < rowLength + startRowNumber; i++) {
             DeclareRealtyHouseCert houseCert = null;
             //标识符
@@ -139,7 +138,7 @@ public class DeclareRealtyLandCertService {
                     continue;
                 }
                 houseCert = new DeclareRealtyHouseCert();
-                if (!declarePublicService.house(houseCert, builder, row, i)) {
+                if (!declarePublicService.house(classArrayListMultimap,houseCert, builder, row)) {
                     continue;
                 }
                 houseCert.setEnable(DeclareTypeEnum.BranchData.getKey());
@@ -249,7 +248,7 @@ public class DeclareRealtyLandCertService {
         //工作表的第一行
         row = sheet.getRow(0);
         //读取数据的起始行
-        int startRowNumber = 1;
+        int startRowNumber = 2;
         //导入成功数据条数
         int successCount = 0;
         //总行数
@@ -259,6 +258,7 @@ public class DeclareRealtyLandCertService {
             builder.append("没有数据!");
             return builder.toString();
         }
+        Multimap<String, Map.Entry<Class<?>, Integer>> classArrayListMultimap = declarePublicService.getMultimapByClass(DeclareRealtyLandCert.class,row) ;
         for (int i = startRowNumber; i < startRowNumber + rowLength; i++) {
             DeclareRealtyLandCert oo = null;
             try {
@@ -270,7 +270,7 @@ public class DeclareRealtyLandCertService {
                 }
                 BeanUtils.copyProperties(declareRealtyLandCert, oo);
                 oo.setId(null);
-                if (!declarePublicService.land(oo, builder, row, i)) {
+                if (!declarePublicService.land(classArrayListMultimap,oo, builder, row)) {
                     continue;
                 }
                 oo.setCreator(commonService.thisUserAccount());
