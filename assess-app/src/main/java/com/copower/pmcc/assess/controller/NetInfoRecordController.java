@@ -62,7 +62,7 @@ public class NetInfoRecordController {
     @ResponseBody
     @RequestMapping(value = "/getInfoRecordList", name = "信息列表", method = RequestMethod.GET)
     public BootstrapTableVo getInfoRecordList(String queryTitle, String queryWebName, String province, String city, String queryContent, String queryType, String queryStartTime, String queryEndTime) throws Exception {
-        return netInfoRecordService.getInfoRecordList(queryTitle, queryWebName, province, city, queryContent, queryType, queryStartTime, queryEndTime,null,0);
+        return netInfoRecordService.getInfoRecordList(queryTitle, queryWebName, province, city, queryContent, queryType, queryStartTime, queryEndTime, null, 0);
     }
 
     @ResponseBody
@@ -107,9 +107,9 @@ public class NetInfoRecordController {
 
     @ResponseBody
     @RequestMapping(value = "/assignTask", name = "分派任务", method = {RequestMethod.POST})
-    public HttpResult assignTask(String executor,String ids) {
+    public HttpResult assignTask(String executor, String ids) {
         try {
-            netInfoRecordService.assignTask(executor,ids);
+            netInfoRecordService.assignTask(executor, ids);
             return HttpResult.newCorrectResult("保存 success!");
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());
@@ -120,5 +120,19 @@ public class NetInfoRecordController {
     @RequestMapping(value = "/getInfoRecordListByIds", name = "信息列表", method = RequestMethod.GET)
     public BootstrapTableVo getInfoRecordListByIds(String ids) throws Exception {
         return netInfoRecordService.getInfoRecordListByIds(ids);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/closeItem", name = "关闭", method = {RequestMethod.POST})
+    public HttpResult closeItem(Integer id, String closeReason) {
+        try {
+            NetInfoRecord record = netInfoRecordDao.getInfoById(id);
+            record.setCloseReason(closeReason);
+            record.setBisDelete(true);
+            netInfoRecordDao.updateInfo(record);
+            return HttpResult.newCorrectResult("关闭成功");
+        } catch (Exception e) {
+            return HttpResult.newErrorResult(e.getMessage());
+        }
     }
 }

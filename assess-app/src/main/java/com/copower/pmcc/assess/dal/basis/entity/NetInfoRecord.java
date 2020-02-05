@@ -58,6 +58,10 @@ public class NetInfoRecord {
 
     private String belongType;
 
+    private String closeReason;
+
+    private Boolean bisDelete;
+
     public Integer getId() {
         return id;
     }
@@ -272,5 +276,21 @@ public class NetInfoRecord {
 
     public void setBelongType(String belongType) {
         this.belongType = belongType == null ? null : belongType.trim();
+    }
+
+    public String getCloseReason() {
+        return closeReason;
+    }
+
+    public void setCloseReason(String closeReason) {
+        this.closeReason = closeReason == null ? null : closeReason.trim();
+    }
+
+    public Boolean getBisDelete() {
+        return bisDelete;
+    }
+
+    public void setBisDelete(Boolean bisDelete) {
+        this.bisDelete = bisDelete;
     }
 }
