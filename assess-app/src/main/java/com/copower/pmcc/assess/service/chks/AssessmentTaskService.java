@@ -33,7 +33,7 @@ public class AssessmentTaskService implements AssessmentTaskInterface {
     @Autowired
     private CommonService commonService;
     @Override
-    public void createAssessmentTask(String processInsId, Integer activityId, String byExamineUser, ProjectInfo projectInfo, ProjectPlanDetails projectPlanDetails) {
+    public void createAssessmentTask(String processInsId, Integer activityId,String taskId, String byExamineUser, ProjectInfo projectInfo, ProjectPlanDetails projectPlanDetails) {
         BoxRuDto boxRuDto = bpmRpcBoxService.getBoxRuByProcessInstId(processInsId);
         if (boxRuDto == null) return;
         BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(boxRuDto.getBoxId());
@@ -44,6 +44,7 @@ public class AssessmentTaskService implements AssessmentTaskInterface {
             dto.setProjectId(projectInfo.getId());
             dto.setProjectName(projectInfo.getProjectName());
         }
+        dto.setTaskId(taskId);
         dto.setBoxId(boxReDto.getId());
         BoxReActivityDto activityDto = bpmRpcBoxService.getBoxreActivityInfoById(activityId);
         dto.setActivityId(activityId);
