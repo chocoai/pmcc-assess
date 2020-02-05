@@ -196,9 +196,9 @@ public class ProjectTaskController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "/submitTaskApproval", name = "审批提交的工作成果数据", method = RequestMethod.POST)
-    public HttpResult submitTaskApproval(ApprovalModelDto approvalModelDto, String formData, String chksScore, String chksRemarks, String byExaminePeople) {
+    public HttpResult submitTaskApproval(ApprovalModelDto approvalModelDto, String formData) {
         try {
-            projectTaskService.submitTaskApproval(approvalModelDto, formData, chksScore, chksRemarks, byExaminePeople);
+            projectTaskService.submitTaskApproval(approvalModelDto, formData);
             return HttpResult.newCorrectResult();
         } catch (BusinessException e) {
             baseService.writeExceptionInfo(e);
