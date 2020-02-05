@@ -119,8 +119,8 @@
                                     测试
                                 </button>
                                 <%--<button type="button" class="btn btn-primary"--%>
-                                        <%--onclick="detailInfo.prototype.assignTask()">--%>
-                                    <%--任务分派--%>
+                                <%--onclick="detailInfo.prototype.assignTask()">--%>
+                                <%--任务分派--%>
                                 <%--</button>--%>
                                 <button type="button" class="btn btn-primary"
                                         onclick="detailInfo.prototype.assignTask()">
@@ -253,7 +253,48 @@
         </div>
     </div>
 </div>
+<div id="divBoxClose" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">关闭原因</h3>
+            </div>
+            <div class="modal-body">
 
+                <form id="closeFrm" class="form-horizontal">
+                    <input type="hidden" name="id">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">关闭原因</label>
+                                        <div class="col-sm-10">
+                                    <textarea placeholder="关闭原因" name="closeReason" id="closeReason" required
+                                              class="form-control"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">
+                    取消
+                </button>
+                <button type="button" onclick="detailInfo.prototype.closeItem()" class="btn btn-primary">
+                    确认关闭
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="text/javascript">
     $(function () {
@@ -281,11 +322,13 @@
             cols.push({field: 'title', title: '标题', width: '13%'});
             cols.push({field: 'province', title: '省', width: '5%'});
             cols.push({field: 'city', title: '市', width: '5%'});
-            cols.push({field: 'sourceSiteName', title: '来源网站', width: '10%', formatter: function (value, row, index) {
-                var str='<a href="'+row.sourceSiteUrl+'" target="_blank" >'+row.sourceSiteName+'</a>';
-                str+='<br/>('+row.sourceSiteUrl+')';
-                return str;
-            }});
+            cols.push({
+                field: 'sourceSiteName', title: '来源网站', width: '8%', formatter: function (value, row, index) {
+                    var str = '<a href="' + row.sourceSiteUrl + '" target="_blank" >' + row.sourceSiteName + '</a>';
+                    str += '<br/>(' + row.sourceSiteUrl + ')';
+                    return str;
+                }
+            });
             cols.push({field: 'type', title: '类型', width: '6%'});
             cols.push({
                 field: 'beginTime', title: '开始时间', width: '7%', formatter: function (value, row, index) {
@@ -299,9 +342,10 @@
             });
             cols.push({field: 'content', title: '内容', width: '25%'});
             cols.push({
-                field: 'id', title: '操作', formatter: function (value, row, index) {
+                field: 'id', title: '操作', width: '7%', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="查看网址" onclick="detailInfo.prototype.openItem(' + index + ')"><i class="fa fa-eye fa-white"></i></a>';
+                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="关闭" onclick="detailInfo.prototype.closeModal(' + row.id + ')"><i class="fa fa-trash-o"></i></a>';
                     str += '</div>';
                     return str;
                 }
@@ -449,6 +493,44 @@
                     Alert("调用服务端方法失败，失败原因:" + result);
                 }
             })
+        },
+        closeModal: function (id) {
+            $("#closeFrm").clearAll();
+            $("#closeFrm").find("input[name='id']").val(id);
+            $('#divBoxClose').modal("show");
+        },
+        closeItem: function () {
+            Alert("确认关闭", 2, null, function () {
+                if (!$("#closeFrm").valid()) {
+                    return false;
+                }
+                var closeReason = $("#closeFrm").find("#closeReason").val();
+                var id = $("#closeFrm").find("input[name='id']").val();
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/netInfoRecordController/closeItem",
+                    type: "post",
+                    dataType: "json",
+                    data: {
+                        id: id,
+                        closeReason: closeReason
+                    },
+                    success: function (result) {
+                        if (result.ret) {
+                            toastr.success('关闭成功');
+                            $('#divBoxClose').modal('hide');
+                            detailInfo.prototype.loadDataDicList();
+                        }
+                        else {
+                            Alert("保存数据失败，失败原因:" + result.errmsg);
+                        }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
+                    }
+                })
+            });
+
+
         }
 
     }

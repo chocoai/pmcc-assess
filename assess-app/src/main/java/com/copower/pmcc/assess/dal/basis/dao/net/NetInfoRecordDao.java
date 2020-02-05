@@ -71,6 +71,7 @@ public class NetInfoRecordDao {
         if(status!=null){
             criteria.andStatusEqualTo(status);
         }
+        criteria.andBisDeleteEqualTo(false);
         example.setOrderByClause("id desc");
         return netInfoRecordMapper.selectByExample(example);
     }

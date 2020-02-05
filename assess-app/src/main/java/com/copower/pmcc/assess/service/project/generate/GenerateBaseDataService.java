@@ -5923,9 +5923,9 @@ public class GenerateBaseDataService {
                         builder.insertHtml(generateCommonMethod.getWarpCssHtml(schemeJudgeObject.getName()), true);
                     }
                     if (schemeReportFileItemList.size() > 1) {
-                        this.imageInsertToWrod3(schemeReportFileItemList, 3, builder);
+                        generateCommonMethod.imageInsertToWrod3(schemeReportFileItemList, 3, builder);
                     } else {
-                        this.imageInsertToWrod3(schemeReportFileItemList, 1, builder);
+                        generateCommonMethod.imageInsertToWrod3(schemeReportFileItemList, 1, builder);
                     }
                 }
             }
@@ -5934,84 +5934,6 @@ public class GenerateBaseDataService {
         return localPath;
     }
 
-    public void imageInsertToWrod3(List<SchemeReportFileItem> schemeReportFileList, Integer colCount, DocumentBuilder builder) throws Exception {
-        if (CollectionUtils.isEmpty(schemeReportFileList)) throw new RuntimeException("imgPathList empty");
-        if (colCount == null || colCount <= 0) throw new RuntimeException("colCount empty");
-        if (builder == null) throw new RuntimeException("builder empty");
-        Table table = builder.startTable();
-        int rowLength = (schemeReportFileList.size() % colCount > 0 ? (schemeReportFileList.size() / colCount) + 1 : schemeReportFileList.size() / colCount) * 2;//行数
-        Integer index = 0;
-        //根据不同列数设置 表格与图片的宽度 总宽度为560
-        int maxWidth = 325;
-        int cellWidth = maxWidth / colCount;
-        for (int j = 0; j < rowLength; j++) {
-            //插入图片
-            if (j % 2 == 0) {
-                for (int k = 0; k < colCount; k++) {
-                    index = j / 2 * colCount + k;
-                    if (index < schemeReportFileList.size()) {
-                        SchemeReportFileItem schemeReportFileItem = schemeReportFileList.get(index);
-                        List<SysAttachmentDto> attachmentList = schemeReportFileService.getAttachmentListBySchemeReportFile(schemeReportFileItem);
-                        if (CollectionUtils.isEmpty(attachmentList)) continue;
-                        builder.insertCell();
-                        String imgPath = "";
-                        List<String> paths = Lists.newArrayList();
-                        for (SysAttachmentDto item : attachmentList) {
-                            String itemImgPath = baseAttachmentService.downloadFtpFileToLocal(item.getId());
-                            if (StringUtils.isNotEmpty(itemImgPath) && FileUtils.checkImgSuffix(itemImgPath)) {
-                                paths.add(baseAttachmentService.downloadFtpFileToLocal(item.getId()));
-                            }
-                        }
-                        if (paths.size() == 0) continue;
-                        imgPath = generateCommonMethod.getCombinationOfhead(paths);
-
-                        int width = maxWidth / colCount;
-                        int height = maxWidth / colCount;
-                        if (schemeReportFileList.size() == 1) {
-                            height = 145;
-                        }
-                        builder.insertImage(imgPath, RelativeHorizontalPosition.MARGIN, 0,
-                                RelativeVerticalPosition.MARGIN, 0, width, height, WrapType.INLINE);
-                        //设置样式
-                        builder.getCellFormat().getBorders().setColor(Color.white);
-                        builder.getCellFormat().getBorders().getLeft().setLineWidth(1.0);
-                        builder.getCellFormat().getBorders().getRight().setLineWidth(1.0);
-                        builder.getCellFormat().getBorders().getTop().setLineWidth(1.0);
-                        builder.getCellFormat().getBorders().getBottom().setLineWidth(1.0);
-                        builder.getCellFormat().setWidth(cellWidth);
-                        builder.getCellFormat().setVerticalMerge(CellVerticalAlignment.CENTER);
-//                        builder.getRowFormat().setAlignment(RowAlignment.LEFT);
-                        // builder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
-                    }
-                }
-                builder.endRow();
-            }
-            //插入名称
-            if (j % 2 != 0) {
-                for (int k = 0; k < colCount; k++) {
-                    index = j / 2 * colCount + k;
-                    if (index < schemeReportFileList.size()) {
-                        SchemeReportFileItem schemeReportFileItem = schemeReportFileList.get(index);
-                        List<SysAttachmentDto> attachmentList = schemeReportFileService.getAttachmentListBySchemeReportFile(schemeReportFileItem);
-                        if (CollectionUtils.isEmpty(attachmentList)) continue;
-                        List<String> paths = Lists.newArrayList();
-                        for (SysAttachmentDto item : attachmentList) {
-                            String itemImgPath = baseAttachmentService.downloadFtpFileToLocal(item.getId());
-                            if (StringUtils.isNotEmpty(itemImgPath) && FileUtils.checkImgSuffix(itemImgPath)) {
-                                paths.add(baseAttachmentService.downloadFtpFileToLocal(item.getId()));
-                            }
-                        }
-                        if (paths.size() == 0) continue;
-                        builder.insertCell();
-                        builder.getFont().setName("宋体");
-                        builder.getFont().setSize(10.5);
-                        builder.write(schemeReportFileItem.getFileName());
-                    }
-                }
-                builder.endRow();
-            }
-        }
-    }
 
     /**
      * 估价对象权属证明复印件

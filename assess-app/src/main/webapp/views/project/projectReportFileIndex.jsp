@@ -202,6 +202,17 @@
                                                    name="sorting" placeholder="排序">
                                         </div>
                                     </div>
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">
+                                            是否上报告
+                                        </label>
+                                        <div class="col-sm-3">
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" id="bisEnable" name="bisEnable"
+                                                       value="true" checked>
+                                            </label>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
@@ -223,14 +234,10 @@
                                         </div>
                                     </div>
                                     <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            是否上报告
-                                        </label>
                                         <div class="col-sm-3">
-                                            <label class="checkbox-inline">
-                                                <input type="checkbox" id="bisEnable" name="bisEnable"
-                                                       value="true" checked>
-                                            </label>
+                                            <small><input type="button" value="选择查勘照片"
+                                                          onclick="getLiveSituationByCertifyPart()"
+                                                          class="btn btn-success btn-xs"></small>
                                         </div>
                                     </div>
                                 </div>
@@ -296,6 +303,49 @@
                                         </tr>
                                         </thead>
                                         <tbody data-id="all_live_situation">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-default">
+                        关闭
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div id="examineFileModalByCertifyPart" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">查勘照片</h3>
+            </div>
+            <form id="examineFileFrmByCertifyPart" class="form-horizontal">
+                <input type="hidden" name="id">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel-body">
+                                <div class="">
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th>序号</th>
+                                            <th>文件名称</th>
+                                            <th>附件</th>
+                                            <th>操作</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody data-id="certifyPart_file">
                                         </tbody>
                                     </table>
                                 </div>
@@ -456,7 +506,7 @@
             <div class="modal-body">
                 <div class="row">
                     <form id="frmTemplateMaster" class="form-horizontal">
-                    <input type="hidden" name="declareRecordId">
+                        <input type="hidden" name="declareRecordId">
                         <div class="form-group ">
                             <div class="x-valid">
                                 <label class="col-sm-1 control-label">
@@ -908,6 +958,62 @@
         })
     }
 
+    //预览实况照片图片
+    function generateLiveSituation(declareRecordId) {
+        Loading.progressShow();
+        $.ajax({
+            url: '${pageContext.request.contextPath}/scheme/generateLiveSituation',
+            data: {
+                declareRecordId: declareRecordId
+            },
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    if (result.data) {
+                        FileUtils.showAttachment(result.data.id,result.data.fileExtension);
+                    }
+
+                } else {
+                    Alert(result.errmsg);
+                }
+            }
+        })
+    }
+
+    //根据类型获取委估对象下实况图片
+    function getLiveSituationByCertifyPart() {
+        var declareRecordId = $("#frmItemFile").find("input[name='declareRecordId']").val();
+        var certifyPart = $("#frmItemFile").find("select[name='certifyPart']").val();
+        if(!certifyPart){
+            alert("先选择查勘部位");
+            return;
+        }
+        $.ajax({
+            url: '${pageContext.request.contextPath}/scheme/getLiveSituationByCertifyPart',
+            data: {
+                certifyPart: certifyPart,
+                declareRecordId: declareRecordId
+            },
+            success: function (result) {
+                if (result.ret) {
+                    if (result.data) {
+                        var html = '';
+                        $.each(result.data, function (i, item) {
+                            ++i;
+                            html += '<tr><th scope="row">' + i + '</th><td>' + item.reName + '</td><td>' + item.fileName + '</td><td>' +
+                                '<input type="button" class="btn btn-xs btn-primary" value="查看" onclick="FileUtils.showAttachment(' + item.id + ',\'' + item.fileExtension + '\');">' +
+                                '<input type="button" class="btn btn-xs btn-primary" value="选择" onclick="selectLiveSituationByCertifyPart(' + item.id + ');"></td></tr>';
+                        })
+                        $("#examineFileFrmByCertifyPart").find('tbody[data-id=certifyPart_file]').empty().append(html);
+                    }
+                    $("#examineFileModalByCertifyPart").modal("show");
+                } else {
+                    Alert(result.errmsg);
+                }
+            }
+        })
+    }
+
     //选择查勘中照片
     function selectLiveSituation(attachmentId, declareRecordId, fileName) {
         Loading.progressShow();
@@ -923,6 +1029,30 @@
                 Alert("选择图片成功!", 1, null, function () {
                     loadLiveSituation($('tbody[data-id=' + declareRecordId + '][data-name=live_situation_select]'), declareRecordId);
                 });
+            }
+        })
+    }
+
+    //选择查勘部位照片
+    function selectLiveSituationByCertifyPart(attachmentId) {
+        var reportFileItemId = $("#frmItemFile").find("[name='id']").val();
+        Loading.progressShow();
+        $.ajax({
+            url: '${pageContext.request.contextPath}/scheme/selectCorrespondingSitePic',
+            data: {
+                attachmentId: attachmentId,
+                reportFileItemId: reportFileItemId
+            },
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    toastr.success('选择成功');
+                    $("#examineFileModalByCertifyPart").modal("hide");
+                    loadUploadFiles(AssessDBKey.DeclareRecord, reportFileItemId, "live_situation_select_supplement", "uploadSupplementFile");
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result);
             }
         })
     }
@@ -1308,7 +1438,8 @@
         html += '<small><input type="button" value="新增照片" onclick="addLiveSituationFile(' + declareRecord.id + ')" class="btn btn-success btn-xs"></small>';
         html += '<small><input type="button" value="选择查勘中图片" onclick="getLiveSituationAll(' + declareRecord.id + ')" class="btn btn-success btn-xs"></small>';
         html += '<small><input type="button" value="选择模板" onclick="selectPictureTempale(' + declareRecord.id + ')" class="btn btn-success btn-xs"></small>';
-        html += '<small><input type="button" value="保存到模板" onclick="saveToTemplateModal(' + declareRecord.id + ')" class="btn btn-success btn-xs"></small></h4>';
+        html += '<small><input type="button" value="保存到模板" onclick="saveToTemplateModal(' + declareRecord.id + ')" class="btn btn-success btn-xs"></small>';
+        html += '<small><input type="button" value="预览实况图片" onclick="generateLiveSituation(' + declareRecord.id + ')" class="btn btn-success btn-xs"></small></h4>';
         html += '</div><table class="table table-hover"><thead><tr><th width="10%">文件名称</th><th width="10%">排序</th><th width="20%">附件</th><th width="15%">对应查勘部位</th><th width="10%">附件类别</th><th width="10%">是否上报告</th><th width="20%">操作</th></tr></thead>';
         html += '<tbody data-id="' + declareRecord.id + '" data-name="live_situation_select"></tbody></table>';
         html += '</div></div></div>';

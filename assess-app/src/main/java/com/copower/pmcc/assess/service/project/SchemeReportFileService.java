@@ -1,5 +1,7 @@
 package com.copower.pmcc.assess.service.project;
 
+import com.aspose.words.*;
+import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.FileUtils;
 import com.copower.pmcc.assess.common.enums.AssessUploadEnum;
 import com.copower.pmcc.assess.common.enums.basic.EstateTaggingTypeEnum;
@@ -20,6 +22,9 @@ import com.copower.pmcc.assess.service.basic.*;
 import com.copower.pmcc.assess.service.data.DataLocaleSurveyPictureService;
 import com.copower.pmcc.assess.service.data.DataLocaleSurveyService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
+import com.copower.pmcc.assess.service.project.generate.GenerateBaseDataService;
+import com.copower.pmcc.assess.service.project.generate.GenerateCommonMethod;
+import com.copower.pmcc.assess.service.project.generate.GenerateReportService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryContentService;
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryService;
@@ -37,6 +42,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -92,8 +99,13 @@ public class SchemeReportFileService extends BaseService {
     private BasicApplyBatchDetailService basicApplyBatchDetailService;
     @Autowired
     private BasicApplyBatchService basicApplyBatchService;
- @Autowired
+    @Autowired
     private DataLocaleSurveyService dataLocaleSurveyService;
+
+    @Autowired
+    private GenerateCommonMethod generateCommonMethod;
+    @Autowired
+    private SchemeReportFileService schemeReportFileService;
 
 
     /**
@@ -366,6 +378,126 @@ public class SchemeReportFileService extends BaseService {
         return attachmentDtoList;
     }
 
+
+    /**
+     * 根据类型获取委估对象下实况图片
+     *
+     * @param certifyPart
+     * @param declareRecordId
+     * @return
+     */
+    public List<SysAttachmentDto> getLiveSituationByCertifyPart(Integer certifyPart, Integer declareRecordId) throws Exception {
+        BaseDataDic dataDic = baseDataDicService.getDataDicById(certifyPart);
+        //1.楼盘外观图 2.楼栋外装图、外观图
+        //2.委估对象是合并对象，楼盘楼栋相关图值取一份
+        BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(declareRecordId);
+        List<SysAttachmentDto> attachmentDtoList = Lists.newArrayList();
+        List<SysAttachmentDto> dtoList = null;
+        if (basicApply != null) {
+            if ("basicEstate".equals(dataDic.getFieldName())) {
+                BasicEstate basicEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
+                if (basicEstate != null) {
+                    dtoList = baseAttachmentService.getByField_tableId(basicEstate.getId(), AssessUploadEnum.ESTATE_FLOOR_APPEARANCE_FIGURE.getKey(), FormatUtils.entityNameConvertToTableName(BasicEstate.class));
+                    removeGenerateFile(dtoList);
+                    if (CollectionUtils.isNotEmpty(dtoList)) {
+                        dtoList.forEach(o -> {
+                            o.setReName(AssessUploadEnum.ESTATE_FLOOR_APPEARANCE_FIGURE.getValue());
+                            attachmentDtoList.add(o);
+                        });
+                    }
+                    dtoList = baseAttachmentService.getByField_tableId(basicEstate.getId(), AssessUploadEnum.ESTATE_FLOOR_TOTAL_PLAN.getKey(), FormatUtils.entityNameConvertToTableName(BasicEstate.class));
+                    removeGenerateFile(dtoList);
+                    if (CollectionUtils.isNotEmpty(dtoList)) {
+                        dtoList.forEach(o -> {
+                            o.setReName(AssessUploadEnum.ESTATE_FLOOR_TOTAL_PLAN.getValue());
+                            attachmentDtoList.add(o);
+                        });
+                    }
+                }
+            }
+            if ("basicBuilding".equals(dataDic.getFieldName())) {
+                BasicBuilding basicBuilding = basicBuildingService.getBasicBuildingByApplyId(basicApply.getId());
+                if (basicBuilding != null) {
+                    dtoList = baseAttachmentService.getByField_tableId(basicBuilding.getId(), AssessUploadEnum.BUILDING_FIGURE_OUTSIDE.getKey(), FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
+                    removeGenerateFile(dtoList);
+                    if (CollectionUtils.isNotEmpty(dtoList)) {
+                        dtoList.forEach(o -> {
+                            o.setReName(AssessUploadEnum.BUILDING_FIGURE_OUTSIDE.getValue());
+                            attachmentDtoList.add(o);
+                        });
+                    }
+
+                    dtoList = baseAttachmentService.getByField_tableId(basicBuilding.getId(), AssessUploadEnum.BUILDING_FLOOR_APPEARANCE_FIGURE.getKey(), FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
+                    removeGenerateFile(dtoList);
+                    if (CollectionUtils.isNotEmpty(dtoList)) {
+                        dtoList.forEach(o -> {
+                            o.setReName(AssessUploadEnum.BUILDING_FLOOR_APPEARANCE_FIGURE.getValue());
+                            attachmentDtoList.add(o);
+                        });
+                    }
+                    dtoList = baseAttachmentService.getByField_tableId(basicBuilding.getId(), AssessUploadEnum.BUILDING_FLOOR_PLAN.getKey(), FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
+                    removeGenerateFile(dtoList);
+                    if (CollectionUtils.isNotEmpty(dtoList)) {
+                        dtoList.forEach(o -> {
+                            o.setReName(AssessUploadEnum.BUILDING_FLOOR_PLAN.getValue());
+                            attachmentDtoList.add(o);
+                        });
+                    }
+                }
+            }
+            if ("basicUnit".equals(dataDic.getFieldName())) {
+                BasicUnit basicUnit = basicUnitService.getBasicUnitByApplyId(basicApply.getId());
+                if (basicUnit != null) {
+                    dtoList = baseAttachmentService.getByField_tableId(basicUnit.getId(), AssessUploadEnum.UNIT_APPEARANCE.getKey(), FormatUtils.entityNameConvertToTableName(BasicUnit.class));
+                    removeGenerateFile(dtoList);
+                    if (CollectionUtils.isNotEmpty(dtoList)) {
+                        dtoList.forEach(o -> {
+                            o.setReName(AssessUploadEnum.UNIT_APPEARANCE.getValue());
+                            attachmentDtoList.add(o);
+                        });
+                    }
+                }
+            }
+            if ("basicHouse".equals(dataDic.getFieldName())) {
+                BasicHouse basicHouse = basicHouseService.getHouseByApplyId(basicApply.getId());
+                if (basicHouse != null) {
+                    dtoList = baseAttachmentService.getByField_tableId(basicHouse.getId(), AssessUploadEnum.HOUSE_DECORATE.getKey(), FormatUtils.entityNameConvertToTableName(BasicHouse.class));
+                    removeGenerateFile(dtoList);
+                    if (CollectionUtils.isNotEmpty(dtoList)) {
+                        dtoList.forEach(o -> {
+                            o.setReName(AssessUploadEnum.HOUSE_DECORATE.getValue());
+                            attachmentDtoList.add(o);
+                        });
+                    }
+
+                    dtoList = baseAttachmentService.getByField_tableId(basicHouse.getId(), AssessUploadEnum.HOUSE_IMG_PLAN.getKey(), FormatUtils.entityNameConvertToTableName(BasicHouse.class));
+                    removeGenerateFile(dtoList);
+                    if (CollectionUtils.isNotEmpty(dtoList)) {
+                        dtoList.forEach(o -> {
+                            o.setReName(AssessUploadEnum.HOUSE_IMG_PLAN.getValue());
+                            attachmentDtoList.add(o);
+                        });
+                    }
+
+                    List<BasicHouseRoom> basicHouseRoomList = basicHouseRoomService.getBasicHouseRoomList(basicHouse.getId());
+                    if (CollectionUtils.isNotEmpty(basicHouseRoomList)) {
+                        for (BasicHouseRoom item : basicHouseRoomList) {
+                            dtoList = baseAttachmentService.getByField_tableId(item.getId(), AssessUploadEnum.HOUSE_ROOM_FILE.getKey(), FormatUtils.entityNameConvertToTableName(BasicHouseRoom.class));
+                            removeGenerateFile(dtoList);
+                            if (CollectionUtils.isNotEmpty(dtoList)) {
+                                dtoList.forEach(o -> {
+                                    o.setReName(String.format("%s", item.getRoomType()));
+                                    attachmentDtoList.add(o);
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return attachmentDtoList;
+    }
 
     /**
      * 获取委估对象下对应位置的实况图片
@@ -904,8 +1036,8 @@ public class SchemeReportFileService extends BaseService {
         SchemeReportFileItem schemeReportFileItem = new SchemeReportFileItem();
         schemeReportFileItem.setDeclareRecordId(declareRecordId);
         List<SchemeReportFileItem> reportFileItemList = schemeReportFileItemDao.getReportFileItemList(schemeReportFileItem);
-        if(CollectionUtils.isNotEmpty(reportFileItemList)){
-            for (SchemeReportFileItem fileItem: reportFileItemList) {
+        if (CollectionUtils.isNotEmpty(reportFileItemList)) {
+            for (SchemeReportFileItem fileItem : reportFileItemList) {
                 DataLocaleSurveyPicture dataLocaleSurveyPicture = new DataLocaleSurveyPicture();
                 dataLocaleSurveyPicture.setMasterId(dataLocaleSurvey.getId());
                 dataLocaleSurveyPicture.setFileName(fileItem.getFileName());
@@ -916,5 +1048,61 @@ public class SchemeReportFileService extends BaseService {
             }
         }
 
+    }
+
+    //预览实况照片
+    public SysAttachmentDto generateLiveSituation(Integer declareRecordId) {
+        try {
+            // word文档
+            String localPath = generateCommonMethod.getLocalPath();
+            Document document = new Document();
+            DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
+            List<SchemeReportFileItem> schemeReportFileItemList = schemeReportFileService.getReportListByDeclareRecordId(declareRecordId);
+            if (CollectionUtils.isNotEmpty(schemeReportFileItemList)) {
+                builder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
+                if (schemeReportFileItemList.size() > 1) {
+                    generateCommonMethod.imageInsertToWrod3(schemeReportFileItemList, 3, builder);
+                } else {
+                    generateCommonMethod.imageInsertToWrod3(schemeReportFileItemList, 1, builder);
+                }
+            }
+            document.save(localPath);
+            ImageSaveOptions options = new ImageSaveOptions(SaveFormat.PNG);
+            //生成png
+            String imgLocalPath = generateCommonMethod.getLocalPath("实况照片报告", "png");
+            File file = new File(imgLocalPath);
+            FileOutputStream os = new FileOutputStream(file);
+            options.setPageIndex(0);
+            document.save(os, options);
+            os.close();
+
+
+            SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
+            sysAttachmentDto.setTableId(declareRecordId);
+            sysAttachmentDto.setFieldsName("实况照片报告");
+            baseAttachmentService.deleteAttachmentByDto(sysAttachmentDto);
+            //上传形成附件
+            return baseAttachmentService.importAjaxFileHandle(imgLocalPath, sysAttachmentDto);
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    /**
+     * 功能描述: 设置默认字体
+     *
+     * @param:
+     * @return:
+     * @author: huhao
+     * @date: 2019/3/1 14:32
+     */
+    private DocumentBuilder getDefaultDocumentBuilderSetting(Document doc) throws Exception {
+        DocumentBuilder builder = new DocumentBuilder(doc);
+        AsposeUtils.setDefaultFontSettings(builder);
+        return builder;
     }
 }
