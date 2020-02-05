@@ -1,5 +1,7 @@
 package com.copower.pmcc.assess.service.project;
 
+import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
+import com.copower.pmcc.assess.common.enums.ResponsibileModelEnum;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectTaskReturnRecordDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
@@ -13,6 +15,7 @@ import com.copower.pmcc.assess.service.event.EmptyProcessEvent;
 import com.copower.pmcc.assess.service.event.project.ProjectTaskEvent;
 import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
 import com.copower.pmcc.bpm.api.dto.ProcessUserDto;
+import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.dto.model.ProcessExecution;
@@ -26,6 +29,9 @@ import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.chks.api.dto.AssessmentProjectPerformanceDto;
+import com.copower.pmcc.chks.api.dto.AssessmentProjectPerformanceQuery;
+import com.copower.pmcc.chks.api.provider.ChksRpcAssessmentService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -36,6 +42,7 @@ import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.common.utils.SpringContextUtils;
+import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -92,7 +99,9 @@ public class ProjectTaskService {
     @Autowired
     private PublicService publicService;
     @Autowired
-    private ChksAssessmentProjectPerformanceService chksAssessmentProjectPerformanceService;
+    private ChksRpcAssessmentService chksRpcAssessmentService;
+    @Autowired
+    private ApplicationConstant applicationConstant;
 
     @Transactional(rollbackFor = Exception.class)
     public void submitTask(ProjectTaskDto projectTaskDto) throws Exception {
@@ -127,7 +136,7 @@ public class ProjectTaskService {
             processInfo.setWorkStageId(projectWorkStage.getId());
             try {
                 processUserDto = processControllerComponent.processStart(processControllerComponent.getThisUser(), processInfo, projectTaskDto.getNextApproval(), false);
-                publicService.setRedisProcessExecutorName(processUserDto.getProcessInsId(),ProjectTaskEvent.class.getSimpleName());
+                publicService.setRedisProcessExecutorName(processUserDto.getProcessInsId(), ProjectTaskEvent.class.getSimpleName());
             } catch (BpmException e) {
                 throw new BusinessException(e.getMessage());
             }
@@ -155,21 +164,21 @@ public class ProjectTaskService {
         try {
             boolean hangup = false;
             //需要放在所在业务bean的下面  例如申报等会有一些操作是下个阶段所需要的
-            if (StringUtils.isNotBlank(processUserDto.getProcessInsId()) && !projectPlanDetails.getBisRestart().booleanValue()){
+            if (StringUtils.isNotBlank(processUserDto.getProcessInsId()) && !projectPlanDetails.getBisRestart().booleanValue()) {
                 if (projectPhase.getBisWait() != null && projectPhase.getBisWait()) {//可以挂起任务
                     hangup = true;
                 }
             }
-            if (hangup){
+            if (hangup) {
                 projectPlanDetails.setStatus(ProcessStatusEnum.HANGUP.getValue());//将任务设为挂起
                 projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetails);
                 bean.applyCommit(projectPlanDetails, processUserDto.getProcessInsId(), projectTaskDto.getFormData());
                 //执行监听器逻辑代码
                 String executorName = publicService.getRedisProcessExecutorName(processUserDto.getProcessInsId());
-                if(StringUtils.isNotBlank(executorName)){
-                    ProcessEventExecutor  processEventExecutor = (ProcessEventExecutor) SpringContextUtils.getBean(executorName);
-                    if(processEventExecutor!=null){
-                        ProcessExecution processExecution =new ProcessExecution();
+                if (StringUtils.isNotBlank(executorName)) {
+                    ProcessEventExecutor processEventExecutor = (ProcessEventExecutor) SpringContextUtils.getBean(executorName);
+                    if (processEventExecutor != null) {
+                        ProcessExecution processExecution = new ProcessExecution();
                         processExecution.setProcessInstanceId(processUserDto.getProcessInsId());
                         processExecution.setProcessStatus(ProcessStatusEnum.FINISH);
                         processEventExecutor.processFinishExecute(processExecution);
@@ -177,10 +186,10 @@ public class ProjectTaskService {
                 }
                 //更新为空监听器
                 bpmRpcActivitiProcessManageService.setProcessEventExecutor(processUserDto.getProcessInsId(), EmptyProcessEvent.class.getSimpleName());
-            }else {
+            } else {
                 bean.applyCommit(projectPlanDetails, processUserDto.getProcessInsId(), projectTaskDto.getFormData());
             }
-        }catch (BusinessException e){
+        } catch (BusinessException e) {
             throw new BusinessException(e.getMessage());
         } catch (Exception e) {
             if (StringUtils.isNotBlank(processUserDto.getProcessInsId())) {
@@ -209,13 +218,8 @@ public class ProjectTaskService {
         }
     }
 
-    public void submitTaskApproval(ApprovalModelDto approvalModelDto, String formData, String chksScore, String remarks, String byExaminePeople) throws BusinessException {
-
+    public void submitTaskApproval(ApprovalModelDto approvalModelDto, String formData) throws BusinessException {
         ProjectPlanDetails projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsItemByProcessInsId(approvalModelDto.getProcessInsId());
-        if (StringUtils.isNotBlank(chksScore)) {
-            //存入考核的数据走这里
-            chksAssessmentProjectPerformanceService.saveAssessmentProjectPerformance(approvalModelDto, chksScore, remarks, byExaminePeople);
-        }
         ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlanDetails.getProjectWorkStageId());
 
         ProjectTaskInterface bean = (ProjectTaskInterface) SpringContextUtils.getBean(approvalModelDto.getViewUrl());
@@ -224,6 +228,58 @@ public class ProjectTaskService {
         approvalModelDto.setWorkStageId(projectWorkStage.getId());
         approvalModelDto.setWorkPhaseId(projectPlanDetails.getProjectPhaseId());
         approvalModelDto.setWorkStage(projectWorkStage.getWorkStageName());
+
+        //0.当流程以同意的方式提交时，且审批人没有在审批时填写考核信息，则将该任务节点的考核数据的考核人设置为当前人
+        //1.提交流程时，检查当前人在该流程上有无没有提交的考核任务
+        //2.如果任务都处理完成，讲相关的projectTask任务删除
+        //3.如果还有没处理完成的考核任务，并且projectTask表中没有为当前人生成任务，则创建一个任务
+        //4.创建的任务，访问地址为该流程配置的详情地址
+        if (TaskHandleStateEnum.AGREE.getValue().equals(approvalModelDto.getConclusion())) {
+            AssessmentProjectPerformanceQuery query=new AssessmentProjectPerformanceQuery();
+            query.setProcessInsId(approvalModelDto.getProcessInsId());
+            query.setActivityId(approvalModelDto.getActivityId());
+            query.setTaskId(approvalModelDto.getTaskId());
+            query.setExamineStatus(ProjectStatusEnum.RUNING.getKey());
+            List<AssessmentProjectPerformanceDto> performanceDtos = chksRpcAssessmentService.getAssessmentProjectPerformanceDtoList(query);
+            if(CollectionUtils.isNotEmpty(performanceDtos)){
+                for (AssessmentProjectPerformanceDto performanceDto : performanceDtos) {
+                    performanceDto.setExaminePeople(processControllerComponent.getThisUser());
+                    performanceDto.setExaminePeopleName(processControllerComponent.getThisUserInfo().getUserName());
+                    chksRpcAssessmentService.updateAssessmentProjectPerformanceDto(performanceDto,false);
+                }
+            }
+            query=new AssessmentProjectPerformanceQuery();
+            query.setProcessInsId(approvalModelDto.getProcessInsId());
+            query.setExaminePeople(processControllerComponent.getThisUser());
+            performanceDtos = chksRpcAssessmentService.getAssessmentProjectPerformanceDtoList(query);
+            ProjectResponsibilityDto projectResponsibilityDto=new ProjectResponsibilityDto();
+            projectResponsibilityDto.setUserAccount(processControllerComponent.getThisUser());
+            projectResponsibilityDto.setProcessInsId(approvalModelDto.getProcessInsId());
+            List<ProjectResponsibilityDto> projectTaskList = bpmRpcProjectTaskService.getProjectTaskList(projectResponsibilityDto);
+            if(CollectionUtils.isEmpty(performanceDtos)){
+                if(CollectionUtils.isNotEmpty(projectTaskList)){
+                    projectTaskList.forEach(o->bpmRpcProjectTaskService.deleteProjectTask(o.getId()));
+                }
+            }else{
+                if(CollectionUtils.isEmpty(projectTaskList)){
+                    BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(approvalModelDto.getBoxId());
+                    ProjectResponsibilityDto projectPlanResponsibility = new ProjectResponsibilityDto();
+                    projectPlanResponsibility.setPlanId(projectPlanDetails.getPlanId());
+                    projectPlanResponsibility.setPlanDetailsId(projectPlanDetails.getId());
+                    projectPlanResponsibility.setPlanDetailsName("");
+                    projectPlanResponsibility.setProjectId(projectPlanDetails.getProjectId());
+                    projectPlanResponsibility.setProjectName("");
+                    projectPlanResponsibility.setUserAccount(processControllerComponent.getThisUser());
+                    projectPlanResponsibility.setModel(ResponsibileModelEnum.TASK.getId());
+                    projectPlanResponsibility.setCreator(processControllerComponent.getThisUser());
+                    projectPlanResponsibility.setConclusion(ResponsibileModelEnum.TASK.getName());//
+                    projectPlanResponsibility.setAppKey(applicationConstant.getAppKey());
+                    projectPlanResponsibility.setUrl(boxReDto.getProcessDisplayUrl());
+                    bpmRpcProjectTaskService.saveProjectTaskExtend(projectPlanResponsibility);
+                }
+            }
+        }
+
         try {
             processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
         } catch (BpmException e) {
