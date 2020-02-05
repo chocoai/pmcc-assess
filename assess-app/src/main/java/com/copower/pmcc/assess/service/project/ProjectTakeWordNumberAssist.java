@@ -98,15 +98,15 @@ public class ProjectTakeWordNumberAssist implements ProjectTaskInterface {
         modelAndView.addObject(StringUtils.uncapitalize(ProjectTakeNumber.class.getSimpleName()), projectTakeNumberVo);
         List<Integer> takeNumberDetailIdLists = new ArrayList<>(1);
         List<ProjectTakeNumberDetail> projectTakeNumberDetailList = projectTakeNumberDetailService.getProjectTakeNumberDetailListByMasterId(projectTakeNumberVo.getId());
-        if (CollectionUtils.isEmpty(projectTakeNumberDetailList)) {
-            if (init) {
-                ProjectTakeNumberDetail detail = new ProjectTakeNumberDetail();
-                detail.setMasterId(projectTakeNumberVo.getId());
-                projectTakeNumberDetailService.saveAndUpdateProjectTakeNumberDetail(detail, false);
-                projectTakeNumberDetailList.add(detail);
-            }
-
-        }
+//        if (CollectionUtils.isEmpty(projectTakeNumberDetailList)) {
+//            if (init) {
+//                ProjectTakeNumberDetail detail = new ProjectTakeNumberDetail();
+//                detail.setMasterId(projectTakeNumberVo.getId());
+//                projectTakeNumberDetailService.saveAndUpdateProjectTakeNumberDetail(detail, false);
+//                projectTakeNumberDetailList.add(detail);
+//            }
+//
+//        }
         if (CollectionUtils.isNotEmpty(projectTakeNumberDetailList)) {
             projectTakeNumberDetailList.forEach(projectTakeNumberDetail -> takeNumberDetailIdLists.add(projectTakeNumberDetail.getId()));
             if (!init){

@@ -31,6 +31,45 @@
     </div>
 </div>
 
+
+<div id="divAssessmentProjectPerformanceBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">考核记录填写</h3>
+            </div>
+            <div class="modal-body">
+                <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                    <table class="table-striped table" id="tableAssessmentProjectPerformanceBox">
+                        <thead>
+                        <tr>
+                            <th width="3%">序号</th>
+                            <th width="7%">节点名称</th>
+                            <th width="50%">考核标准</th>
+                            <th width="10%">打分</th>
+                            <th width="10%">说明</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-primary" onclick="assessmentCommonHandle.saveAssessmentProjectPerformanceBoxData();">
+                    保存
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type="text/html" id="assessmentItemTemplateHTML">
     <tr>
         <td>{index}
@@ -237,13 +276,13 @@
 
     assessmentCommonHandle.getChksBootstrapTableVoBase = function (table, query, data) {
         var cols = [];
-        cols.push({field: 'projectName', title: '项目名称'});
-        cols.push({field: 'processInsId', title: '流程实例'});
-        cols.push({field: 'remarks', title: '综合说明'});
-        cols.push({field: 'businessKey', title: '业务名称'});
         cols.push({field: 'activityName', title: '考核节点'});
-        cols.push({field: 'examinePeopleName', title: '考核人'});
         cols.push({field: 'byExaminePeopleName', title: '被考核人'});
+        cols.push({field: 'examinePeopleName', title: '考核人'});
+        cols.push({field: 'examineScore', title: '考核得分'});
+//        cols.push({field: 'projectName', title: '项目名称'});
+//        cols.push({field: 'processInsId', title: '流程实例'});
+//        cols.push({field: 'businessKey', title: '业务名称'});
         cols.push({
             field: 'examineDate', title: '考核时间', formatter: function (value, row, index) {
                 if (value) {
@@ -253,21 +292,30 @@
             }
         });
         cols.push({
-            field: 'id', title: '考核详细', formatter: function (value, row, index) {
-                var html = "<div class='list-group'>";
-                $.each(row.detailList, function (i, item) {
-                    html += "<p class='list-group-item-text'>";
-                    html += "考核项" + item.content;
-                    html += "实际得分" + item.actualScore;
-                    html += "说明" + item.remark;
-                    html += "</p>";
-                });
-                html += "</div>";
-                return html;
+            field: 'examineStatus', title: '考核操作', formatter: function (value, row, index) {
+                var str = "";
+                //完成之后查看
+                if (value == 'finish') {
+                    str += "<a onclick='assessmentCommonHandle.taskOpenWin(\"" + 'ssjsdj' + "\")' href='javascript://' style='margin-left: 5px;' data-placement='top' data-original-title='考核填写' class='btn btn-xs btn-warning tooltips'  ><i class='fa fa-search fa-white'></i></a>";
+
+                    return "考核完成";
+                }
+                //考核未完成
+                if (value == 'runing') {
+                    var btnClass = 'btn-success';
+                    //进入一个地址来考核
+                    if (row.examineUrl) {
+                        str += "<a onclick='assessmentCommonHandle.taskOpenWin(\"" + row.examineUrl + "\")' href='javascript://' style='margin-left: 5px;' data-placement='top' data-original-title='考核填写' class='btn btn-xs " + btnClass + " tooltips'  ><i class='fa fa-arrow-right fa-white'></i></a>";
+                    } else {
+                        //使用弹窗考核
+                        str += "<a onclick='assessmentCommonHandle.openAssessmentProjectPerformanceBox(" + row.id + ")' style='margin-left: 5px;' data-placement='top' data-original-title='考核填写' class='btn btn-xs btn-primary tooltips'  ><i class='fa fa-edit fa-white'></i></a>";
+                    }
+
+                }
+                return str;
             }
         });
-        cols.push({field: 'examineScore', title: '考核分值'});
-        cols.push({field: 'validScore', title: '实际分值'});
+        cols.push({field: 'remarks', title: '综合评价'});
         if (data) {
             $.each(data, function (i, item) {
                 cols.push(item);
@@ -283,6 +331,54 @@
         };
         table.bootstrapTable('destroy');
         TableInit(table, "${pageContext.request.contextPath}/chksAssessmentProjectPerformance/getChksBootstrapTableVo", cols, query, method);
+    };
+
+    assessmentCommonHandle.taskOpenWin = function (url) {
+        openWin(url, function () {
+            //
+        })
+    };
+
+    assessmentCommonHandle.saveAssessmentProjectPerformanceBoxData = function () {
+        var target = $("#tableAssessmentProjectPerformanceBox").find("tbody") ;
+        if (!vaildChksData(target)) {
+            return false;
+        }
+    };
+
+    assessmentCommonHandle.openAssessmentProjectPerformanceBox = function (id) {
+        var target = $("#assessmentTableList") ;
+        var box = $("#divAssessmentProjectPerformanceBox") ;
+        var table = $("#tableAssessmentProjectPerformanceBox").find("tbody") ;
+        var item = target.bootstrapTable('getRowByUniqueId', id);
+        box.modal("show");
+
+        assessmentCommonHandle.getAssessmentItemTemplate({boxReActivitiId:item.activityId}, function (data) {
+            var restHtml = "";
+            $.each(data, function (i, item) {
+                var html = assessmentCommonHandle.replaceAssessmentItem($("#assessmentItemTemplateHTML").html(), {
+                    index: i + 1,
+                    contentId: item.id,
+                    id: 0,
+                    actualScore: '',
+                    remark: '',
+                    performanceId: 0,
+                    name: item.boxReActivitiNameCn,
+                    assessmentDes: item.assessmentDes,
+                    minScore: item.minScore,
+                    maxScore: item.maxScore,
+                    standardScore: item.standardScore
+                });
+                restHtml += html;
+            });
+            if (data.length >= 1) {
+                var remarksHtml = $("#assessmentItemTemplateRemarksHTML").html();
+                remarksHtml = remarksHtml.replace(/{remarks}/g, '');
+                restHtml += remarksHtml;
+            }
+            table.empty().append(restHtml);
+        });
+        console.log(item) ;
     };
 
     assessmentCommonHandle.loadChksServerNew = function (activityId, target, assessmentKey) {

@@ -11,6 +11,7 @@ import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.declare.DeclareRealtyHouseCertVo;
 import com.copower.pmcc.assess.dto.output.project.declare.DeclareRealtyLandCertVo;
 import com.copower.pmcc.assess.dto.output.project.declare.DeclareRealtyRealEstateCertVo;
+import com.copower.pmcc.assess.proxy.face.AssessmentTaskInterface;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.basic.BasicApplyBatchDetailService;
@@ -23,6 +24,7 @@ import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRealtyHouseCertService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRealtyLandCertService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRealtyRealEstateCertService;
+import com.copower.pmcc.bpm.api.dto.ActivitiTaskNodeDto;
 import com.copower.pmcc.bpm.api.dto.BoxApprovalLogVo;
 import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
@@ -30,6 +32,8 @@ import com.copower.pmcc.bpm.api.dto.model.AssessmentItemDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReActivityDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
+import com.copower.pmcc.bpm.api.exception.BpmException;
+import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProcessInsManagerService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
@@ -38,10 +42,13 @@ import com.copower.pmcc.chks.api.dto.*;
 import com.copower.pmcc.chks.api.provider.ChksRpcAssessmentService;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.copower.pmcc.erp.common.utils.LangUtils;
+import com.copower.pmcc.erp.common.utils.SpringContextUtils;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.github.pagehelper.PageHelper;
 import com.google.common.base.Objects;
@@ -102,6 +109,10 @@ public class ChksAssessmentProjectPerformanceService {
     private BasicApplyBatchDetailService basicApplyBatchDetailService;
     @Autowired
     private BasicApplyBatchService basicApplyBatchService;
+    @Autowired
+    private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
+    @Autowired
+    private CommonService commonService;
 
 
     public ChksBootstrapTableVo getChksBootstrapTableVo(AssessmentProjectPerformanceDto where, String activityIds) {
@@ -680,18 +691,18 @@ public class ChksAssessmentProjectPerformanceService {
         BasicApplyBatchDetail batchDetail = new BasicApplyBatchDetail();
         batchDetail.setTableId(basicApplyBatch.getEstateId());
         batchDetail.setTableName(FormatUtils.entityNameConvertToTableName(BasicEstate.class));
-        basicApplyBatchDetailList.add(batchDetail) ;
+        basicApplyBatchDetailList.add(batchDetail);
         Iterator<BasicApplyBatchDetail> basicApplyBatchDetailIterator = basicApplyBatchDetailList.iterator();
         while (basicApplyBatchDetailIterator.hasNext()) {
             BasicApplyBatchDetail basicApplyBatchDetail = basicApplyBatchDetailIterator.next();
             String tableName = basicApplyBatchDetail.getTableName();
             LinkedList<String> linkedList = Lists.newLinkedList();
-            linkedList.add(String.format("basicApplyBatch/informationDetail?%s",tableName));
-            linkedList.add(String.join("","tableId=",basicApplyBatchDetail.getTableId().toString()));
-            linkedList.add(String.join("","formClassify=",basicApplyBatch.getClassify().toString()));
-            linkedList.add(String.join("","formType=",basicApplyBatch.getType().toString()));
-            linkedList.add(String.join("","planDetailsId=",basicApplyBatch.getPlanDetailsId().toString()));
-            linkedList.add(String.join("","applyBatchId=",basicApplyBatch.getId().toString()));
+            linkedList.add(String.format("basicApplyBatch/informationDetail?%s", tableName));
+            linkedList.add(String.join("", "tableId=", basicApplyBatchDetail.getTableId().toString()));
+            linkedList.add(String.join("", "formClassify=", basicApplyBatch.getClassify().toString()));
+            linkedList.add(String.join("", "formType=", basicApplyBatch.getType().toString()));
+            linkedList.add(String.join("", "planDetailsId=", basicApplyBatch.getPlanDetailsId().toString()));
+            linkedList.add(String.join("", "applyBatchId=", basicApplyBatch.getId().toString()));
             if (Objects.equal(tableName, FormatUtils.entityNameConvertToTableName(BasicBuilding.class))) {
                 linkedList.add("tbType=building");
             }
@@ -704,7 +715,7 @@ public class ChksAssessmentProjectPerformanceService {
             if (Objects.equal(tableName, FormatUtils.entityNameConvertToTableName(BasicEstate.class))) {
                 linkedList.add("tbType=estate");
             }
-            appendTask(target,projectInfo,projectWorkStage,keyValueDto,StringUtils.join(linkedList,"&")) ;
+            appendTask(target, projectInfo, projectWorkStage, keyValueDto, StringUtils.join(linkedList, "&"));
         }
     }
 
@@ -1302,4 +1313,51 @@ public class ChksAssessmentProjectPerformanceService {
         return boxApprovalLogDtoList;
     }
 
+    public void generateAssessmentTask(String processInsId, Integer boxId, String taskId, ProjectInfo projectInfo, ProjectPlanDetails projectPlanDetails) throws BpmException {
+        //1.当前节点任务是否已生成，已生成则不再重复生成
+        //2.将比当前节点序号大的节点考核任务置位无效状态
+        BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(boxId);
+        if (boxReDto != null && boxReDto.getBisLaunchCheck() == Boolean.TRUE) {
+            ActivitiTaskNodeDto activitiTaskNodeDto = bpmRpcActivitiProcessManageService.queryCurrentTask(taskId, commonService.thisUserAccount());
+            BoxReActivityDto currentActivity = bpmRpcBoxService.getBoxreActivityInfoByBoxIdSorting(boxId, activitiTaskNodeDto.getCurrentStep());
+            List<BoxReActivityDto> reActivityDtos = bpmRpcBoxService.getBoxReActivityByBoxId(boxId);
+            if (CollectionUtils.isNotEmpty(reActivityDtos)) {
+                List<BoxReActivityDto> filter = LangUtils.filter(reActivityDtos, o -> {
+                    return o.getSortMultilevel() > currentActivity.getSortMultilevel();
+                });
+                if(CollectionUtils.isNotEmpty(filter)){
+                    AssessmentProjectPerformanceQuery query=new AssessmentProjectPerformanceQuery();
+                    query.setProcessInsId(processInsId);
+                    query.setActivityIds(LangUtils.transform(filter,o->o.getId()));
+                    List<AssessmentProjectPerformanceDto> performanceDtos = chksRpcAssessmentService.getAssessmentProjectPerformanceDtoList(query);
+                    if(CollectionUtils.isNotEmpty(performanceDtos))
+                        chksRpcAssessmentService.deleteAssessmentProjectPerformanceByIds(LangUtils.transform(performanceDtos,o->o.getId()));
+                }
+            }
+            Integer count = chksRpcAssessmentService.getAssessmentProjectPerformanceCount(processInsId, currentActivity.getId(), taskId);
+            if (count > 0) return;
+            String checkBean = "assessmentTaskService";//默认生成考核任务服务方法
+            checkBean = StringUtils.isNoneBlank(boxReDto.getCheckBean()) ? boxReDto.getCheckBean() : checkBean;
+            checkBean = StringUtils.isNoneBlank(currentActivity.getCheckBean()) ? currentActivity.getCheckBean() : checkBean;
+            AssessmentTaskInterface assessmentTaskBean = (AssessmentTaskInterface) SpringContextUtils.getBean(checkBean);
+            BootstrapTableVo tableVo = bpmRpcProcessInsManagerService.getApprovalLogForApp(applicationConstant.getAppKey(), processInsId, 0, 1000);
+            List<BoxApprovalLogVo> rows = tableVo.getRows();
+            assessmentTaskBean.createAssessmentTask(processInsId, currentActivity.getId(),taskId, rows.get(0).getCreator(), projectInfo, projectPlanDetails);
+        }
+    }
+
+    public void generateAssessmentTask(String processInsId, Integer boxId, String taskId) throws BpmException {
+        generateAssessmentTask(processInsId, boxId, taskId, null, null);
+    }
+
+
+    public void createAssessmentProjectTask(){
+        //0.当流程以同意的方式提交时，且审批人没有在审批时填写考核信息，则将该任务节点的考核数据的考核人设置为当前人
+        //1.提交流程时，检查当前人在该流程上有无没有提交的考核任务
+        //2.如果任务都处理完成，讲相关的projectTask任务删除
+        //3.如果还有没处理完成的考核任务，并且projectTask表中没有为当前人生成任务，则创建一个任务
+        //4.创建的任务，访问地址为该流程配置的详情地址
+
+
+    }
 }
