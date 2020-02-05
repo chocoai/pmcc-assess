@@ -23,7 +23,7 @@ import org.springframework.stereotype.Component;
 public class AssessmentTaskDeclareService implements AssessmentTaskInterface {
 
     @Override
-    public void createAssessmentTask(String processInsId, Integer activityId, String byExamineUser, ProjectInfo projectInfo, ProjectPlanDetails projectPlanDetails) {
+    public void createAssessmentTask(String processInsId, Integer activityId,String taskId, String byExamineUser, ProjectInfo projectInfo, ProjectPlanDetails projectPlanDetails) {
 
     }
 }

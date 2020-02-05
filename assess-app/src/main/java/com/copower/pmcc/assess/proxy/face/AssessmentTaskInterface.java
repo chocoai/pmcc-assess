@@ -15,5 +15,5 @@ public interface AssessmentTaskInterface {
      * @param projectInfo
      * @param projectPlanDetails
      */
-    void createAssessmentTask(String processInsId, Integer activityId, String byExamineUser, ProjectInfo projectInfo, ProjectPlanDetails projectPlanDetails);
+    void createAssessmentTask(String processInsId, Integer activityId,String taskId, String byExamineUser, ProjectInfo projectInfo, ProjectPlanDetails projectPlanDetails);
 }

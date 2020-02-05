@@ -878,6 +878,48 @@
         </div>
     </div>
 </div>
+<div id="divBoxClose" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">关闭原因</h3>
+            </div>
+            <div class="modal-body">
+
+                <form id="closeFrm" class="form-horizontal">
+                    <input type="hidden" name="id">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class="col-sm-1 control-label">关闭原因</label>
+                                        <div class="col-sm-10">
+                                    <textarea placeholder="关闭原因" name="closeReason" id="closeReason" required
+                                              class="form-control"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">
+                    取消
+                </button>
+                <button type="button" onclick="detailInfo.prototype.closeItem()" class="btn btn-primary">
+                    确认关闭
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <%@include file="/views/share/main_footer.jsp" %>
@@ -946,10 +988,11 @@
                 }
             });
             cols.push({
-                field: 'id', width: '6%', title: '操作', formatter: function (value, row, index) {
+                field: 'id', width: '9%', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="补全信息" onclick="detailInfo.prototype.showTableListModal(' + row.id + ',' + row.status + ')"><i class="fa fa-edit fa-white"></i></a>';
                     str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="查看网址" onclick="detailInfo.prototype.openItem(' + index + ')"><i class="fa fa-eye fa-white"></i></a>';
+                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="关闭" onclick="detailInfo.prototype.closeModal(' + row.id + ')"><i class="fa fa-trash-o"></i></a>';
                     str += '</div>';
                     return str;
                 }
@@ -980,13 +1023,13 @@
                 window.open(row.sourceSiteUrl, "");
             }
         },
-        showTableListModal: function (masterId,status) {
+        showTableListModal: function (masterId, status) {
             detailInfo.prototype.loadLandHistoryList(masterId);
             detailInfo.prototype.loadHouseHistoryList(masterId);
             $("#frmAdd").find("input[name='masterId']").val(masterId);
-            if(status == 3||status == 4){
+            if (status == 3 || status == 4) {
                 $("#frmAdd").find("#addBtn").hide();
-            }else{
+            } else {
                 $("#frmAdd").find("#addBtn").show();
             }
             $('#divBoxTableList').modal("show");
@@ -1645,12 +1688,12 @@
             if (rows && rows.length > 0) {
                 var idArray = [];
                 $.each(rows, function (i, item) {
-                    if (item.status != 3&&item.status != 4) {
+                    if (item.status != 3 && item.status != 4) {
                         idArray.push(item.id);
                     }
                 })
                 var ids = idArray.join();
-                if(!ids){
+                if (!ids) {
                     toastr.info('至少选择一条非审批中或审批通过的任务');
                     return false;
                 }
@@ -1677,7 +1720,44 @@
             } else {
                 toastr.info('请选择要取消认领的任务');
             }
+        }, closeModal: function (id) {
+            $("#closeFrm").clearAll();
+            $("#closeFrm").find("input[name='id']").val(id);
+            $('#divBoxClose').modal("show");
         },
+        closeItem: function () {
+            Alert("确认关闭", 2, null, function () {
+                if (!$("#closeFrm").valid()) {
+                    return false;
+                }
+                var closeReason = $("#closeFrm").find("#closeReason").val();
+                var id = $("#closeFrm").find("input[name='id']").val();
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/netInfoRecordController/closeItem",
+                    type: "post",
+                    dataType: "json",
+                    data: {
+                        id: id,
+                        closeReason: closeReason
+                    },
+                    success: function (result) {
+                        if (result.ret) {
+                            toastr.success('关闭成功');
+                            $('#divBoxClose').modal('hide');
+                            detailInfo.prototype.loadDataDicList();
+                        }
+                        else {
+                            Alert("保存数据失败，失败原因:" + result.errmsg);
+                        }
+                    },
+                    error: function (result) {
+                        Alert("调用服务端方法失败，失败原因:" + result);
+                    }
+                })
+            });
+
+
+        }
     }
 
 </script>

@@ -1885,6 +1885,136 @@ public class NetInfoRecordExample {
             addCriterion("belong_type not between", value1, value2, "belongType");
             return (Criteria) this;
         }
+
+        public Criteria andCloseReasonIsNull() {
+            addCriterion("close_reason is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCloseReasonIsNotNull() {
+            addCriterion("close_reason is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCloseReasonEqualTo(String value) {
+            addCriterion("close_reason =", value, "closeReason");
+            return (Criteria) this;
+        }
+
+        public Criteria andCloseReasonNotEqualTo(String value) {
+            addCriterion("close_reason <>", value, "closeReason");
+            return (Criteria) this;
+        }
+
+        public Criteria andCloseReasonGreaterThan(String value) {
+            addCriterion("close_reason >", value, "closeReason");
+            return (Criteria) this;
+        }
+
+        public Criteria andCloseReasonGreaterThanOrEqualTo(String value) {
+            addCriterion("close_reason >=", value, "closeReason");
+            return (Criteria) this;
+        }
+
+        public Criteria andCloseReasonLessThan(String value) {
+            addCriterion("close_reason <", value, "closeReason");
+            return (Criteria) this;
+        }
+
+        public Criteria andCloseReasonLessThanOrEqualTo(String value) {
+            addCriterion("close_reason <=", value, "closeReason");
+            return (Criteria) this;
+        }
+
+        public Criteria andCloseReasonLike(String value) {
+            addCriterion("close_reason like", value, "closeReason");
+            return (Criteria) this;
+        }
+
+        public Criteria andCloseReasonNotLike(String value) {
+            addCriterion("close_reason not like", value, "closeReason");
+            return (Criteria) this;
+        }
+
+        public Criteria andCloseReasonIn(List<String> values) {
+            addCriterion("close_reason in", values, "closeReason");
+            return (Criteria) this;
+        }
+
+        public Criteria andCloseReasonNotIn(List<String> values) {
+            addCriterion("close_reason not in", values, "closeReason");
+            return (Criteria) this;
+        }
+
+        public Criteria andCloseReasonBetween(String value1, String value2) {
+            addCriterion("close_reason between", value1, value2, "closeReason");
+            return (Criteria) this;
+        }
+
+        public Criteria andCloseReasonNotBetween(String value1, String value2) {
+            addCriterion("close_reason not between", value1, value2, "closeReason");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteIsNull() {
+            addCriterion("bis_delete is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteIsNotNull() {
+            addCriterion("bis_delete is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteEqualTo(Boolean value) {
+            addCriterion("bis_delete =", value, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteNotEqualTo(Boolean value) {
+            addCriterion("bis_delete <>", value, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteGreaterThan(Boolean value) {
+            addCriterion("bis_delete >", value, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_delete >=", value, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteLessThan(Boolean value) {
+            addCriterion("bis_delete <", value, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_delete <=", value, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteIn(List<Boolean> values) {
+            addCriterion("bis_delete in", values, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteNotIn(List<Boolean> values) {
+            addCriterion("bis_delete not in", values, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_delete between", value1, value2, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_delete not between", value1, value2, "bisDelete");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {
