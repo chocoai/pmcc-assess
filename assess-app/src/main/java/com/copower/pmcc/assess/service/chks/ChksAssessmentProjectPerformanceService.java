@@ -11,6 +11,7 @@ import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.declare.DeclareRealtyHouseCertVo;
 import com.copower.pmcc.assess.dto.output.project.declare.DeclareRealtyLandCertVo;
 import com.copower.pmcc.assess.dto.output.project.declare.DeclareRealtyRealEstateCertVo;
+import com.copower.pmcc.assess.proxy.face.AssessmentTaskInterface;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.basic.BasicApplyBatchDetailService;
@@ -23,6 +24,7 @@ import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRealtyHouseCertService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRealtyLandCertService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRealtyRealEstateCertService;
+import com.copower.pmcc.bpm.api.dto.ActivitiTaskNodeDto;
 import com.copower.pmcc.bpm.api.dto.BoxApprovalLogVo;
 import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
@@ -30,6 +32,8 @@ import com.copower.pmcc.bpm.api.dto.model.AssessmentItemDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReActivityDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
+import com.copower.pmcc.bpm.api.exception.BpmException;
+import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProcessInsManagerService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
@@ -38,10 +42,12 @@ import com.copower.pmcc.chks.api.dto.*;
 import com.copower.pmcc.chks.api.provider.ChksRpcAssessmentService;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.copower.pmcc.erp.common.utils.SpringContextUtils;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.github.pagehelper.PageHelper;
 import com.google.common.base.Objects;
@@ -102,6 +108,10 @@ public class ChksAssessmentProjectPerformanceService {
     private BasicApplyBatchDetailService basicApplyBatchDetailService;
     @Autowired
     private BasicApplyBatchService basicApplyBatchService;
+    @Autowired
+    private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
+    @Autowired
+    private CommonService commonService;
 
 
     public ChksBootstrapTableVo getChksBootstrapTableVo(AssessmentProjectPerformanceDto where, String activityIds) {
@@ -1302,4 +1312,20 @@ public class ChksAssessmentProjectPerformanceService {
         return boxApprovalLogDtoList;
     }
 
+    public void generateAssessmentTask(String processInsId,Integer boxId,String taskId,ProjectInfo projectInfo,ProjectPlanDetails projectPlanDetails) throws BpmException {
+        //1.当前节点任务是否已生成，已生成则不再重复生成 2.将比当前节点序号大的节点考核任务置位无效状态
+        BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(boxId);
+        if(boxReDto!=null&&boxReDto.getBisLaunchCheck()==Boolean.TRUE){
+            AssessmentTaskInterface assessmentTaskBean = (AssessmentTaskInterface) SpringContextUtils.getBean("assessmentTaskService");
+            ActivitiTaskNodeDto activitiTaskNodeDto = bpmRpcActivitiProcessManageService.queryCurrentTask(taskId, commonService.thisUserAccount());
+            BootstrapTableVo tableVo = bpmRpcProcessInsManagerService.getApprovalLogForApp(applicationConstant.getAppKey(), processInsId, 0, 1000);
+            List<BoxApprovalLogVo> rows = tableVo.getRows();
+            BoxReActivityDto boxReActivityDto = bpmRpcBoxService.getBoxreActivityInfoByBoxIdSorting(boxId, activitiTaskNodeDto.getCurrentStep());
+            assessmentTaskBean.createAssessmentTask(processInsId, boxReActivityDto.getId(), rows.get(0).getCreator(), projectInfo, projectPlanDetails);
+        }
+    }
+
+    public void generateAssessmentTask(String processInsId,Integer boxId,String taskId) throws BpmException {
+        generateAssessmentTask(processInsId,boxId,taskId,null,null);
+    }
 }
