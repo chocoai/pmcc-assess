@@ -148,7 +148,7 @@ public class ChksAssessmentProjectPerformanceService {
             if (assessmentProjectPerformanceDto.getValidScore() == null) {
                 assessmentProjectPerformanceDto.setValidScore(new BigDecimal(0));
             }
-            if (assessmentProjectPerformanceDto.getExamineScore() == null){
+            if (assessmentProjectPerformanceDto.getExamineScore() == null) {
                 assessmentProjectPerformanceDto.setExamineScore(new BigDecimal(0));
             }
             assessmentProjectPerformanceDto.setExamineStatus(examineStatus);
@@ -1329,40 +1329,40 @@ public class ChksAssessmentProjectPerformanceService {
         return boxApprovalLogDtoList;
     }
 
-    public void generateAssessmentTask(String processInsId, Integer boxId, String taskId, ProjectInfo projectInfo, ProjectPlanDetails projectPlanDetails) throws BpmException {
-        //1.当前节点任务是否已生成，已生成则不再重复生成 2.将比当前节点序号大的节点考核任务置位无效状态
+    //1.当前节点任务是否已生成，已生成则不再重复生成 2.将比当前节点序号大的节点考核任务置位无效状态
     public void generateAssessmentTask(String processInsId, Integer boxId, String taskId, ProjectInfo projectInfo, ProjectPlanDetails projectPlanDetails) throws BpmException {
         //1.当前节点任务是否已生成，已生成则不再重复生成
         //2.将比当前节点序号大的节点考核任务置位无效状态
         BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(boxId);
         if (boxReDto != null && boxReDto.getBisLaunchCheck() == Boolean.TRUE) {
-            AssessmentTaskInterface assessmentTaskBean = (AssessmentTaskInterface) SpringContextUtils.getBean("assessmentTaskService");
-        if (boxReDto != null && boxReDto.getBisLaunchCheck() == Boolean.TRUE) {
-            ActivitiTaskNodeDto activitiTaskNodeDto = bpmRpcActivitiProcessManageService.queryCurrentTask(taskId, commonService.thisUserAccount());
-            BoxReActivityDto currentActivity = bpmRpcBoxService.getBoxreActivityInfoByBoxIdSorting(boxId, activitiTaskNodeDto.getCurrentStep());
-            List<BoxReActivityDto> reActivityDtos = bpmRpcBoxService.getBoxReActivityByBoxId(boxId);
-            if (CollectionUtils.isNotEmpty(reActivityDtos)) {
-                List<BoxReActivityDto> filter = LangUtils.filter(reActivityDtos, o -> {
-                    return o.getSortMultilevel() > currentActivity.getSortMultilevel();
-                });
-                if(CollectionUtils.isNotEmpty(filter)){
-                    AssessmentProjectPerformanceQuery query=new AssessmentProjectPerformanceQuery();
-                    query.setProcessInsId(processInsId);
-                    query.setActivityIds(LangUtils.transform(filter,o->o.getId()));
-                    List<AssessmentProjectPerformanceDto> performanceDtos = chksRpcAssessmentService.getAssessmentProjectPerformanceDtoList(query);
-                    if(CollectionUtils.isNotEmpty(performanceDtos))
-                        chksRpcAssessmentService.deleteAssessmentProjectPerformanceByIds(LangUtils.transform(performanceDtos,o->o.getId()));
+//            AssessmentTaskInterface assessmentTaskBean = (AssessmentTaskInterface) SpringContextUtils.getBean("assessmentTaskService");
+            if (boxReDto != null && boxReDto.getBisLaunchCheck() == Boolean.TRUE) {
+                ActivitiTaskNodeDto activitiTaskNodeDto = bpmRpcActivitiProcessManageService.queryCurrentTask(taskId, commonService.thisUserAccount());
+                BoxReActivityDto currentActivity = bpmRpcBoxService.getBoxreActivityInfoByBoxIdSorting(boxId, activitiTaskNodeDto.getCurrentStep());
+                List<BoxReActivityDto> reActivityDtos = bpmRpcBoxService.getBoxReActivityByBoxId(boxId);
+                if (CollectionUtils.isNotEmpty(reActivityDtos)) {
+                    List<BoxReActivityDto> filter = LangUtils.filter(reActivityDtos, o -> {
+                        return o.getSortMultilevel() > currentActivity.getSortMultilevel();
+                    });
+                    if (CollectionUtils.isNotEmpty(filter)) {
+                        AssessmentProjectPerformanceQuery query = new AssessmentProjectPerformanceQuery();
+                        query.setProcessInsId(processInsId);
+                        query.setActivityIds(LangUtils.transform(filter, o -> o.getId()));
+                        List<AssessmentProjectPerformanceDto> performanceDtos = chksRpcAssessmentService.getAssessmentProjectPerformanceDtoList(query);
+                        if (CollectionUtils.isNotEmpty(performanceDtos))
+                            chksRpcAssessmentService.deleteAssessmentProjectPerformanceByIds(LangUtils.transform(performanceDtos, o -> o.getId()));
+                    }
                 }
+                Integer count = chksRpcAssessmentService.getAssessmentProjectPerformanceCount(processInsId, currentActivity.getId(), taskId);
+                if (count > 0) return;
+                String checkBean = "assessmentTaskService";//默认生成考核任务服务方法
+                checkBean = StringUtils.isNoneBlank(boxReDto.getCheckBean()) ? boxReDto.getCheckBean() : checkBean;
+                checkBean = StringUtils.isNoneBlank(currentActivity.getCheckBean()) ? currentActivity.getCheckBean() : checkBean;
+                AssessmentTaskInterface assessmentTaskBean = (AssessmentTaskInterface) SpringContextUtils.getBean(checkBean);
+                BootstrapTableVo tableVo = bpmRpcProcessInsManagerService.getApprovalLogForApp(applicationConstant.getAppKey(), processInsId, 0, 1000);
+                List<BoxApprovalLogVo> rows = tableVo.getRows();
+                assessmentTaskBean.createAssessmentTask(processInsId, currentActivity.getId(), taskId, rows.get(0).getCreator(), projectInfo, projectPlanDetails);
             }
-            Integer count = chksRpcAssessmentService.getAssessmentProjectPerformanceCount(processInsId, currentActivity.getId(), taskId);
-            if (count > 0) return;
-            String checkBean = "assessmentTaskService";//默认生成考核任务服务方法
-            checkBean = StringUtils.isNoneBlank(boxReDto.getCheckBean()) ? boxReDto.getCheckBean() : checkBean;
-            checkBean = StringUtils.isNoneBlank(currentActivity.getCheckBean()) ? currentActivity.getCheckBean() : checkBean;
-            AssessmentTaskInterface assessmentTaskBean = (AssessmentTaskInterface) SpringContextUtils.getBean(checkBean);
-            BootstrapTableVo tableVo = bpmRpcProcessInsManagerService.getApprovalLogForApp(applicationConstant.getAppKey(), processInsId, 0, 1000);
-            List<BoxApprovalLogVo> rows = tableVo.getRows();
-            assessmentTaskBean.createAssessmentTask(processInsId, currentActivity.getId(),taskId, rows.get(0).getCreator(), projectInfo, projectPlanDetails);
         }
     }
 
@@ -1371,7 +1371,7 @@ public class ChksAssessmentProjectPerformanceService {
     }
 
 
-    public void createAssessmentProjectTask(){
+    public void createAssessmentProjectTask() {
         //0.当流程以同意的方式提交时，且审批人没有在审批时填写考核信息，则将该任务节点的考核数据的考核人设置为当前人
         //1.提交流程时，检查当前人在该流程上有无没有提交的考核任务
         //2.如果任务都处理完成，讲相关的projectTask任务删除
