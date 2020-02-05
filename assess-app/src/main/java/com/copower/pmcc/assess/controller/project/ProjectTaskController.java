@@ -174,15 +174,7 @@ public class ProjectTaskController extends BaseController {
         ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId()));
         modelAndView.addObject("projectInfo", projectInfoVo);
         //生成考核任务
-        BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(boxId);
-        if(boxReDto!=null&&boxReDto.getBisLaunchCheck()==Boolean.TRUE){
-            AssessmentTaskInterface assessmentTaskBean = (AssessmentTaskInterface) SpringContextUtils.getBean("assessmentTaskService");
-            ActivitiTaskNodeDto activitiTaskNodeDto = bpmRpcActivitiProcessManageService.queryCurrentTask(taskId, commonService.thisUserAccount());
-            BootstrapTableVo tableVo = bpmRpcProcessInsManagerService.getApprovalLogForApp(applicationConstant.getAppKey(), processInsId, 0, 1000);
-            List<BoxApprovalLogVo> rows = tableVo.getRows();
-            BoxReActivityDto boxReActivityDto = bpmRpcBoxService.getBoxreActivityInfoByBoxIdSorting(boxId, activitiTaskNodeDto.getCurrentStep());
-            assessmentTaskBean.createAssessmentTask(processInsId, boxReActivityDto.getId(), rows.get(0).getCreator(), projectInfoVo, projectPlanDetails);
-        }
+        chksAssessmentProjectPerformanceService.generateAssessmentTask(processInsId,boxId,taskId,projectInfoVo,projectPlanDetails);
 
         modelAndView.addObject("projectPlanDetails", projectPlanDetails);
         List<SysAttachmentDto> projectPhaseProcessTemplate = baseAttachmentService.getProjectPhaseProcessTemplate(projectPhase.getId());
