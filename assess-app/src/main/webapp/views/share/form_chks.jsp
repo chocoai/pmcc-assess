@@ -132,6 +132,11 @@
         </c:if>
 
         <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+            <table class="table" id="assessmentTableList">
+            </table>
+        </div>
+
+        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
             <table class="table" id="boxReActivityDtoTableView">
             </table>
         </div>
@@ -142,6 +147,20 @@
 <script type="text/javascript">
 
     $(document).ready(function () {
+
+
+        (function (json) {
+            if (!json.processInsId) {
+                if ('${projectPlanDetails.processInsId}') {
+                    json.processInsId = '${projectPlanDetails.processInsId}';
+                }
+                if ('${activityId}') {
+                    json.activityId = '${activityId}';
+                }
+            }
+            assessmentCommonHandle.getChksBootstrapTableVoBase($("#assessmentTableList"),json) ;
+        }({processInsId:'${processInsId}',boxId:'${boxReDto.id}'}));
+
 
         assessmentCommonHandle.loadChksServerViewTable();
 
