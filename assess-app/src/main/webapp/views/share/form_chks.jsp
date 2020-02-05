@@ -162,11 +162,11 @@
         }({processInsId:'${processInsId}',boxId:'${boxReDto.id}'}));
 
 
-        assessmentCommonHandle.loadChksServerViewTable();
+//        assessmentCommonHandle.loadChksServerViewTable();
 
         if ('${boxReActivityDto}') {
             if ("${bisCheck}" == 1) {
-                assessmentCommonHandle.loadChksServerNew('${boxReActivityDto.id}',$("#chksTableList").find("tbody")) ;
+                <%--assessmentCommonHandle.loadChksServerNew('${boxReActivityDto.id}',$("#chksTableList").find("tbody")) ;--%>
             }
         }
     });

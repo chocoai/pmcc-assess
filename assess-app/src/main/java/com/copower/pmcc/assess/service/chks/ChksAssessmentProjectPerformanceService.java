@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.service.chks;
 
 
 import com.alibaba.fastjson.JSONObject;
+import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.common.enums.DeclareTypeEnum;
 import com.copower.pmcc.assess.common.enums.ResponsibileModelEnum;
 import com.copower.pmcc.assess.common.enums.chks.ChksCustomizeEnum;
@@ -59,6 +60,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
@@ -137,6 +139,20 @@ public class ChksAssessmentProjectPerformanceService {
      * @param detailDtoList
      */
     public void saveAssessmentServer(AssessmentProjectPerformanceDto assessmentProjectPerformanceDto, List<AssessmentProjectPerformanceDetailDto> detailDtoList, Integer planDetailsId) {
+        if (assessmentProjectPerformanceDto.getId() != null && assessmentProjectPerformanceDto.getId() != 0) {
+            AssessmentProjectPerformanceDto target = chksRpcAssessmentService.getAssessmentProjectPerformanceById(assessmentProjectPerformanceDto.getId());
+            String remarks = assessmentProjectPerformanceDto.getRemarks();
+            String examineStatus = assessmentProjectPerformanceDto.getExamineStatus();
+            BeanCopyHelp.copyPropertiesIgnoreNull(target, assessmentProjectPerformanceDto);
+            if (assessmentProjectPerformanceDto.getValidScore() == null) {
+                assessmentProjectPerformanceDto.setValidScore(new BigDecimal(0));
+            }
+            if (assessmentProjectPerformanceDto.getExamineScore() == null){
+                assessmentProjectPerformanceDto.setExamineScore(new BigDecimal(0));
+            }
+            assessmentProjectPerformanceDto.setExamineStatus(examineStatus);
+            assessmentProjectPerformanceDto.setRemarks(remarks);
+        }
         if (assessmentProjectPerformanceDto.getProjectId() != null) {
             ProjectInfo projectInfo = projectInfoService.getProjectInfoById(assessmentProjectPerformanceDto.getProjectId());
             if (projectInfo != null) {
@@ -222,7 +238,7 @@ public class ChksAssessmentProjectPerformanceService {
             Iterator<AssessmentProjectPerformanceDetailDto> detailDtoIterator = detailDtos.iterator();
             while (detailDtoIterator.hasNext()) {
                 AssessmentProjectPerformanceDetailDto performanceDetailDto = detailDtoIterator.next();
-                if (performanceDetailDto.getPerformanceId() != null) {
+                if (performanceDetailDto.getPerformanceId() != null && performanceDetailDto.getPerformanceId() != 0) {
                     projectPerformanceDto.setId(performanceDetailDto.getPerformanceId());
                 }
                 performanceDetailDto.setCreator(processControllerComponent.getThisUser());
@@ -690,18 +706,18 @@ public class ChksAssessmentProjectPerformanceService {
         BasicApplyBatchDetail batchDetail = new BasicApplyBatchDetail();
         batchDetail.setTableId(basicApplyBatch.getEstateId());
         batchDetail.setTableName(FormatUtils.entityNameConvertToTableName(BasicEstate.class));
-        basicApplyBatchDetailList.add(batchDetail) ;
+        basicApplyBatchDetailList.add(batchDetail);
         Iterator<BasicApplyBatchDetail> basicApplyBatchDetailIterator = basicApplyBatchDetailList.iterator();
         while (basicApplyBatchDetailIterator.hasNext()) {
             BasicApplyBatchDetail basicApplyBatchDetail = basicApplyBatchDetailIterator.next();
             String tableName = basicApplyBatchDetail.getTableName();
             LinkedList<String> linkedList = Lists.newLinkedList();
-            linkedList.add(String.format("basicApplyBatch/informationDetail?%s",tableName));
-            linkedList.add(String.join("","tableId=",basicApplyBatchDetail.getTableId().toString()));
-            linkedList.add(String.join("","formClassify=",basicApplyBatch.getClassify().toString()));
-            linkedList.add(String.join("","formType=",basicApplyBatch.getType().toString()));
-            linkedList.add(String.join("","planDetailsId=",basicApplyBatch.getPlanDetailsId().toString()));
-            linkedList.add(String.join("","applyBatchId=",basicApplyBatch.getId().toString()));
+            linkedList.add(String.format("basicApplyBatch/informationDetail?%s", tableName));
+            linkedList.add(String.join("", "tableId=", basicApplyBatchDetail.getTableId().toString()));
+            linkedList.add(String.join("", "formClassify=", basicApplyBatch.getClassify().toString()));
+            linkedList.add(String.join("", "formType=", basicApplyBatch.getType().toString()));
+            linkedList.add(String.join("", "planDetailsId=", basicApplyBatch.getPlanDetailsId().toString()));
+            linkedList.add(String.join("", "applyBatchId=", basicApplyBatch.getId().toString()));
             if (Objects.equal(tableName, FormatUtils.entityNameConvertToTableName(BasicBuilding.class))) {
                 linkedList.add("tbType=building");
             }
@@ -714,7 +730,7 @@ public class ChksAssessmentProjectPerformanceService {
             if (Objects.equal(tableName, FormatUtils.entityNameConvertToTableName(BasicEstate.class))) {
                 linkedList.add("tbType=estate");
             }
-            appendTask(target,projectInfo,projectWorkStage,keyValueDto,StringUtils.join(linkedList,"&")) ;
+            appendTask(target, projectInfo, projectWorkStage, keyValueDto, StringUtils.join(linkedList, "&"));
         }
     }
 
@@ -1312,10 +1328,10 @@ public class ChksAssessmentProjectPerformanceService {
         return boxApprovalLogDtoList;
     }
 
-    public void generateAssessmentTask(String processInsId,Integer boxId,String taskId,ProjectInfo projectInfo,ProjectPlanDetails projectPlanDetails) throws BpmException {
+    public void generateAssessmentTask(String processInsId, Integer boxId, String taskId, ProjectInfo projectInfo, ProjectPlanDetails projectPlanDetails) throws BpmException {
         //1.当前节点任务是否已生成，已生成则不再重复生成 2.将比当前节点序号大的节点考核任务置位无效状态
         BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(boxId);
-        if(boxReDto!=null&&boxReDto.getBisLaunchCheck()==Boolean.TRUE){
+        if (boxReDto != null && boxReDto.getBisLaunchCheck() == Boolean.TRUE) {
             AssessmentTaskInterface assessmentTaskBean = (AssessmentTaskInterface) SpringContextUtils.getBean("assessmentTaskService");
             ActivitiTaskNodeDto activitiTaskNodeDto = bpmRpcActivitiProcessManageService.queryCurrentTask(taskId, commonService.thisUserAccount());
             BootstrapTableVo tableVo = bpmRpcProcessInsManagerService.getApprovalLogForApp(applicationConstant.getAppKey(), processInsId, 0, 1000);
@@ -1325,7 +1341,7 @@ public class ChksAssessmentProjectPerformanceService {
         }
     }
 
-    public void generateAssessmentTask(String processInsId,Integer boxId,String taskId) throws BpmException {
-        generateAssessmentTask(processInsId,boxId,taskId,null,null);
+    public void generateAssessmentTask(String processInsId, Integer boxId, String taskId) throws BpmException {
+        generateAssessmentTask(processInsId, boxId, taskId, null, null);
     }
 }

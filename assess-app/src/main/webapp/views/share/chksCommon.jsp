@@ -32,7 +32,8 @@
 </div>
 
 
-<div id="divAssessmentProjectPerformanceBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+<div id="divAssessmentProjectPerformanceBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -40,6 +41,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
                 <h3 class="modal-title">考核记录填写</h3>
+                <input type="hidden" name="id">
             </div>
             <div class="modal-body">
                 <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
@@ -62,8 +64,46 @@
                 <button type="button" data-dismiss="modal" class="btn btn-default">
                     关闭
                 </button>
-                <button type="button" class="btn btn-primary" onclick="assessmentCommonHandle.saveAssessmentProjectPerformanceBoxData();">
+                <button type="button" class="btn btn-primary"
+                        onclick="assessmentCommonHandle.saveAssessmentProjectPerformanceBoxData();">
                     保存
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="divAssessmentProjectPerformanceBoxDetail" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">考核详情记录</h3>
+            </div>
+            <div class="modal-body">
+                <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                    <table class="table-striped table" id="tableAssessmentProjectPerformanceBoxDetail">
+                        <thead>
+                        <tr>
+                            <th width="3%">序号</th>
+                            <th width="7%">节点名称</th>
+                            <th width="50%">考核标准</th>
+                            <th width="10%">打分</th>
+                            <th width="10%">说明</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">
+                    关闭
                 </button>
             </div>
         </div>
@@ -280,9 +320,6 @@
         cols.push({field: 'byExaminePeopleName', title: '被考核人'});
         cols.push({field: 'examinePeopleName', title: '考核人'});
         cols.push({field: 'examineScore', title: '考核得分'});
-//        cols.push({field: 'projectName', title: '项目名称'});
-//        cols.push({field: 'processInsId', title: '流程实例'});
-//        cols.push({field: 'businessKey', title: '业务名称'});
         cols.push({
             field: 'examineDate', title: '考核时间', formatter: function (value, row, index) {
                 if (value) {
@@ -294,12 +331,17 @@
         cols.push({
             field: 'examineStatus', title: '考核操作', formatter: function (value, row, index) {
                 var str = "";
+
                 //完成之后查看
                 if (value == 'finish') {
-                    str += "<a onclick='assessmentCommonHandle.taskOpenWin(\"" + 'ssjsdj' + "\")' href='javascript://' style='margin-left: 5px;' data-placement='top' data-original-title='考核填写' class='btn btn-xs btn-warning tooltips'  ><i class='fa fa-search fa-white'></i></a>";
-
-                    return "考核完成";
+                    if (row.examineUrl) {
+                        str += "<a onclick='assessmentCommonHandle.taskOpenWin(\"" + row.examineUrl + "\")' href='javascript://' style='margin-left: 5px;' data-placement='top' data-original-title='考核查看' class='btn btn-xs btn-warning tooltips'  ><i class='fa fa-search fa-white'></i></a>";
+                    } else {
+                        //使用弹窗考核
+                        str += "<a onclick='assessmentCommonHandle.findAssessmentProjectPerformanceBox(" + row.id + ")' style='margin-left: 5px;' data-placement='top' data-original-title='考核查看' class='btn btn-xs btn-primary tooltips'  ><i class='fa fa-search fa-white'></i></a>";
+                    }
                 }
+
                 //考核未完成
                 if (value == 'runing') {
                     var btnClass = 'btn-success';
@@ -340,20 +382,47 @@
     };
 
     assessmentCommonHandle.saveAssessmentProjectPerformanceBoxData = function () {
-        var target = $("#tableAssessmentProjectPerformanceBox").find("tbody") ;
+        var target = $("#tableAssessmentProjectPerformanceBox").find("tbody");
+        var box = $("#divAssessmentProjectPerformanceBox");
         if (!vaildChksData(target)) {
             return false;
         }
+        var data = [];
+        var filterData = [];
+        var remarks = target.find("textarea[name=remarks]").val();
+        assessmentCommonHandle.getChksSonData(target, data);
+        for (var i = 0; i < data.length; i++) {
+            if (data[i].actualScore) {
+                filterData.push(data[i]);
+            }
+        }
+        if (filterData.length == 0) {
+            toastr.warning("考核需要填写全部数据!");
+            return false;
+        }
+        var parentData = {
+            id: box.find("input[name=id]").val(),
+            remarks: remarks,
+            examineStatus: 'finish'
+        };
+        assessmentCommonHandle.saveAssessmentServer({
+            chksScore: JSON.stringify(filterData),
+            fomData: JSON.stringify(parentData)
+        }, function (data) {
+            toastr.warning("考核成功!");
+            box.modal("hide");
+            $("#assessmentTableList").bootstrapTable('refresh');
+        });
     };
 
     assessmentCommonHandle.openAssessmentProjectPerformanceBox = function (id) {
-        var target = $("#assessmentTableList") ;
-        var box = $("#divAssessmentProjectPerformanceBox") ;
-        var table = $("#tableAssessmentProjectPerformanceBox").find("tbody") ;
+        var target = $("#assessmentTableList");
+        var box = $("#divAssessmentProjectPerformanceBox");
+        var table = $("#tableAssessmentProjectPerformanceBox").find("tbody");
         var item = target.bootstrapTable('getRowByUniqueId', id);
         box.modal("show");
-
-        assessmentCommonHandle.getAssessmentItemTemplate({boxReActivitiId:item.activityId}, function (data) {
+        box.find("input[name=id]").val(id);
+        assessmentCommonHandle.getAssessmentItemTemplate({boxReActivitiId: item.activityId}, function (data) {
             var restHtml = "";
             $.each(data, function (i, item) {
                 var html = assessmentCommonHandle.replaceAssessmentItem($("#assessmentItemTemplateHTML").html(), {
@@ -378,7 +447,43 @@
             }
             table.empty().append(restHtml);
         });
-        console.log(item) ;
+    };
+
+    assessmentCommonHandle.findAssessmentProjectPerformanceBox = function (id) {
+        var target = $("#assessmentTableList");
+        var box = $("#divAssessmentProjectPerformanceBoxDetail");
+        var table = $("#tableAssessmentProjectPerformanceBoxDetail").find("tbody");
+        var obj = target.bootstrapTable('getRowByUniqueId', id);
+        box.modal("show");
+        var restHtml = "";
+        if (obj.detailList) {
+            $.each(obj.detailList, function (i, item) {
+                var htmlB = assessmentCommonHandle.replaceAssessmentItem($("#assessmentItemTemplateHTML").html(), {
+                    index: i + 1,
+                    contentId: item.contentId,
+                    id: item.id,
+                    performanceId: obj.id,
+                    name: obj.activityName,
+                    assessmentDes: item.content,
+                    actualScore: item.actualScore,
+                    minScore: item.minScore,
+                    maxScore: item.maxScore,
+                    standardScore: item.standardScore,
+                    remark: item.remark
+                });
+                restHtml += htmlB;
+            });
+        }
+        var remarksHtml = $("#assessmentItemTemplateRemarksHTML").html();
+        if (obj.remarks) {
+            remarksHtml = remarksHtml.replace(/{remarks}/g, obj.remarks);
+        } else {
+            remarksHtml = remarksHtml.replace(/{remarks}/g, '');
+        }
+        restHtml += remarksHtml;
+        table.empty().append(restHtml);
+        table.find("input").attr({readonly:'readonly'});
+        table.find("textarea").attr({readonly:'readonly'});
     };
 
     assessmentCommonHandle.loadChksServerNew = function (activityId, target, assessmentKey) {
@@ -589,6 +694,7 @@
                         callback(result.data);
                     }
                 } else {
+                    console.log(result);
                     Alert("失败，失败原因:" + result.errmsg);
                 }
             },
