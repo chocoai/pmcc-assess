@@ -1,9 +1,9 @@
 package com.copower.pmcc.assess.controller;
 
-import com.copower.pmcc.assess.dal.basis.dao.funi.CaseFuniHousesDao;
-import com.copower.pmcc.assess.dal.basis.dao.funi.CaseFuniHousesMatingDao;
-import com.copower.pmcc.assess.dal.basis.dao.funi.CaseFuniHousesPropertyDao;
-import com.copower.pmcc.assess.dal.basis.dao.funi.CaseFuniHousesTypeDao;
+import com.copower.pmcc.assess.dal.cases.dao.CaseFuniHousesDao;
+import com.copower.pmcc.assess.dal.cases.dao.CaseFuniHousesMatingDao;
+import com.copower.pmcc.assess.dal.cases.dao.CaseFuniHousesPropertyDao;
+import com.copower.pmcc.assess.dal.cases.dao.CaseFuniHousesTypeDao;
 import com.copower.pmcc.assess.dal.cases.entity.CaseFuniHouses;
 import com.copower.pmcc.assess.dal.cases.entity.CaseFuniHousesMating;
 import com.copower.pmcc.assess.dal.cases.entity.CaseFuniHousesProperty;

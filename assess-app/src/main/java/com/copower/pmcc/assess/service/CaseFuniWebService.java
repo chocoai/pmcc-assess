@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.service;
 
-import com.copower.pmcc.assess.dal.basis.dao.funi.*;
+import com.copower.pmcc.assess.dal.cases.dao.*;
 import com.copower.pmcc.assess.dal.cases.entity.*;
 import com.copower.pmcc.assess.service.assist.DdlMySqlAssist;
 import com.copower.pmcc.erp.common.exception.BusinessException;

@@ -1,4 +1,4 @@
-package com.copower.pmcc.assess.dal.basis.dao.funi;
+package com.copower.pmcc.assess.dal.cases.dao;
 
 import com.copower.pmcc.assess.dal.cases.entity.CaseFuniPropertyManagement;
 import com.copower.pmcc.assess.dal.cases.entity.CaseFuniPropertyManagementExample;
