@@ -4,6 +4,7 @@ package com.copower.pmcc.assess.service.chks;
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.common.enums.DeclareTypeEnum;
+import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.common.enums.ResponsibileModelEnum;
 import com.copower.pmcc.assess.common.enums.chks.ChksCustomizeEnum;
 import com.copower.pmcc.assess.common.enums.chks.ChksRuningEnum;
@@ -33,6 +34,7 @@ import com.copower.pmcc.bpm.api.dto.model.AssessmentItemDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReActivityDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
+import com.copower.pmcc.bpm.api.enums.TaskHandleStateEnum;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
@@ -1335,7 +1337,6 @@ public class ChksAssessmentProjectPerformanceService {
         //2.将比当前节点序号大的节点考核任务置位无效状态
         BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(boxId);
         if (boxReDto != null && boxReDto.getBisLaunchCheck() == Boolean.TRUE) {
-//            AssessmentTaskInterface assessmentTaskBean = (AssessmentTaskInterface) SpringContextUtils.getBean("assessmentTaskService");
             if (boxReDto != null && boxReDto.getBisLaunchCheck() == Boolean.TRUE) {
                 ActivitiTaskNodeDto activitiTaskNodeDto = bpmRpcActivitiProcessManageService.queryCurrentTask(taskId, commonService.thisUserAccount());
                 BoxReActivityDto currentActivity = bpmRpcBoxService.getBoxreActivityInfoByBoxIdSorting(boxId, activitiTaskNodeDto.getCurrentStep());
@@ -1354,14 +1355,27 @@ public class ChksAssessmentProjectPerformanceService {
                     }
                 }
                 Integer count = chksRpcAssessmentService.getAssessmentProjectPerformanceCount(processInsId, currentActivity.getId(), taskId);
-                if (count > 0) return;
-                String checkBean = "assessmentTaskService";//默认生成考核任务服务方法
-                checkBean = StringUtils.isNoneBlank(boxReDto.getCheckBean()) ? boxReDto.getCheckBean() : checkBean;
-                checkBean = StringUtils.isNoneBlank(currentActivity.getCheckBean()) ? currentActivity.getCheckBean() : checkBean;
-                AssessmentTaskInterface assessmentTaskBean = (AssessmentTaskInterface) SpringContextUtils.getBean(checkBean);
-                BootstrapTableVo tableVo = bpmRpcProcessInsManagerService.getApprovalLogForApp(applicationConstant.getAppKey(), processInsId, 0, 1000);
-                List<BoxApprovalLogVo> rows = tableVo.getRows();
-                assessmentTaskBean.createAssessmentTask(processInsId, currentActivity.getId(), taskId, rows.get(0).getCreator(), projectInfo, projectPlanDetails);
+                if (count > 0) {
+                    return;
+                } else {
+                    //先清理掉当前节点的任务
+                    AssessmentProjectPerformanceQuery query = new AssessmentProjectPerformanceQuery();
+                    query.setProcessInsId(processInsId);
+                    query.setActivityId(currentActivity.getId());
+                    List<AssessmentProjectPerformanceDto> performanceDtoList = chksRpcAssessmentService.getAssessmentProjectPerformanceDtoList(query);
+                    if (CollectionUtils.isNotEmpty(performanceDtoList)) {
+                        performanceDtoList.forEach(o -> chksRpcAssessmentService.deleteAssessmentProjectPerformanceByIds(LangUtils.transform(performanceDtoList, p -> p.getId())));
+                    }
+
+                    String checkBean = "assessmentTaskService";//默认生成考核任务服务方法
+                    checkBean = StringUtils.isNoneBlank(boxReDto.getCheckBean()) ? boxReDto.getCheckBean() : checkBean;
+                    checkBean = StringUtils.isNoneBlank(currentActivity.getCheckBean()) ? currentActivity.getCheckBean() : checkBean;
+                    AssessmentTaskInterface assessmentTaskBean = (AssessmentTaskInterface) SpringContextUtils.getBean(checkBean);
+                    BootstrapTableVo tableVo = bpmRpcProcessInsManagerService.getApprovalLogForApp(applicationConstant.getAppKey(), processInsId, 0, 1000);
+                    List<BoxApprovalLogVo> rows = tableVo.getRows();
+                    assessmentTaskBean.createAssessmentTask(processInsId, currentActivity.getId(), taskId, rows.get(0).getCreator(), projectInfo, projectPlanDetails);
+                }
+
             }
         }
     }
@@ -1370,14 +1384,114 @@ public class ChksAssessmentProjectPerformanceService {
         generateAssessmentTask(processInsId, boxId, taskId, null, null);
     }
 
+    public void createAssessmentProjectTask(ApprovalModelDto approvalModelDto,ProjectInfo projectInfo,ProjectPlanDetails projectPlanDetails) {
+        BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(approvalModelDto.getBoxId());
+        if (boxReDto.getBisLaunchCheck() == Boolean.TRUE) {
+            //0.当流程以同意的方式提交时，且审批人没有在审批时填写考核信息，则将该任务节点的考核数据的考核人设置为当前人
+            //1.提交流程时，检查当前人在该流程上有无没有提交的考核任务
+            //2.如果任务都处理完成，讲相关的projectTask任务删除
+            //3.如果还有没处理完成的考核任务，并且projectTask表中没有为当前人生成任务，则创建一个任务
+            //4.创建的任务，访问地址为该流程配置的详情地址
+            if (TaskHandleStateEnum.AGREE.getValue().equalsIgnoreCase(approvalModelDto.getConclusion())) {
+                AssessmentProjectPerformanceQuery query = new AssessmentProjectPerformanceQuery();
+                query.setProcessInsId(approvalModelDto.getProcessInsId());
+                query.setActivityId(approvalModelDto.getActivityId());
+                query.setTaskId(approvalModelDto.getTaskId());
+                query.setExamineStatus(ProjectStatusEnum.RUNING.getKey());
+                List<AssessmentProjectPerformanceDto> performanceDtos = chksRpcAssessmentService.getAssessmentProjectPerformanceDtoList(query);
+                if (CollectionUtils.isNotEmpty(performanceDtos)) {
+                    for (AssessmentProjectPerformanceDto performanceDto : performanceDtos) {
+                        performanceDto.setExaminePeople(processControllerComponent.getThisUser());
+                        performanceDto.setExaminePeopleName(processControllerComponent.getThisUserInfo().getUserName());
+                        chksRpcAssessmentService.updateAssessmentProjectPerformanceDto(performanceDto, false);
+                    }
+                }
+                query = new AssessmentProjectPerformanceQuery();
+                query.setProcessInsId(approvalModelDto.getProcessInsId());
+                query.setExaminePeople(processControllerComponent.getThisUser());
+                performanceDtos = chksRpcAssessmentService.getAssessmentProjectPerformanceDtoList(query);
+                ProjectResponsibilityDto projectResponsibilityDto = new ProjectResponsibilityDto();
+                projectResponsibilityDto.setUserAccount(processControllerComponent.getThisUser());
+                projectResponsibilityDto.setProcessInsId(approvalModelDto.getProcessInsId());
+                List<ProjectResponsibilityDto> projectTaskList = bpmRpcProjectTaskService.getProjectTaskList(projectResponsibilityDto);
+                if (CollectionUtils.isEmpty(performanceDtos)) {
+                    if (CollectionUtils.isNotEmpty(projectTaskList)) {
+                        projectTaskList.forEach(o -> bpmRpcProjectTaskService.deleteProjectTask(o.getId()));
+                    }
+                } else {
+                    if (CollectionUtils.isEmpty(projectTaskList)) {
+                        ProjectResponsibilityDto projectPlanResponsibility = new ProjectResponsibilityDto();
+                        projectPlanResponsibility.setProcessInsId(approvalModelDto.getProcessInsId());
+                        projectPlanResponsibility.setProjectId(projectPlanDetails.getProjectId());
+                        projectPlanResponsibility.setPlanId(projectPlanDetails.getPlanId());
+                        projectPlanResponsibility.setPlanDetailsId(projectPlanDetails.getId());
+                        projectPlanResponsibility.setPlanDetailsName(String.format("(考核)%s[%s]", approvalModelDto.getWorkStage(), approvalModelDto.getWorkPhase()));
+                        projectPlanResponsibility.setProjectName(projectInfo.getProjectName());
+                        projectPlanResponsibility.setUserAccount(processControllerComponent.getThisUser());
+                        projectPlanResponsibility.setModel(ResponsibileModelEnum.TASK.getId());
+                        projectPlanResponsibility.setCreator(processControllerComponent.getThisUser());
+                        projectPlanResponsibility.setConclusion(String.format("(考核)%s-%s",processControllerComponent.getThisUser(),approvalModelDto.getProcessInsId()));//
+                        projectPlanResponsibility.setAppKey(applicationConstant.getAppKey());
+                        projectPlanResponsibility.setUrl(String.format("/%s%s?boxId=%s&processInsId=%s",applicationConstant.getAppKey(),boxReDto.getProcessDisplayUrl(),approvalModelDto.getBoxId(),approvalModelDto.getProcessInsId()));
+                        bpmRpcProjectTaskService.saveProjectTaskExtend(projectPlanResponsibility);
+                    }
+                }
+            } else if (TaskHandleStateEnum.BACK.getValue().equalsIgnoreCase(approvalModelDto.getConclusion())) {
+                //清理掉所有考核任务
+                clearAssessmentProjectPerformanceAll(approvalModelDto.getProcessInsId());
+            } else if (TaskHandleStateEnum.REJECT.getValue().equalsIgnoreCase(approvalModelDto.getConclusion())) {
+                //清理掉当前节点生成的考核任务
+                AssessmentProjectPerformanceQuery query = new AssessmentProjectPerformanceQuery();
+                query.setProcessInsId(approvalModelDto.getProcessInsId());
+                query.setActivityId(approvalModelDto.getActivityId());
+                List<AssessmentProjectPerformanceDto> performanceDtoList = chksRpcAssessmentService.getAssessmentProjectPerformanceDtoList(query);
+                if (CollectionUtils.isNotEmpty(performanceDtoList)) {
+                    performanceDtoList.forEach(o -> chksRpcAssessmentService.deleteAssessmentProjectPerformanceByIds(LangUtils.transform(performanceDtoList, p -> p.getId())));
+                }
+                clearAssessmentProjectTask(approvalModelDto.getProcessInsId(), processControllerComponent.getThisUser());
+            }
+        }
+    }
 
-    public void createAssessmentProjectTask() {
-        //0.当流程以同意的方式提交时，且审批人没有在审批时填写考核信息，则将该任务节点的考核数据的考核人设置为当前人
-        //1.提交流程时，检查当前人在该流程上有无没有提交的考核任务
-        //2.如果任务都处理完成，讲相关的projectTask任务删除
-        //3.如果还有没处理完成的考核任务，并且projectTask表中没有为当前人生成任务，则创建一个任务
-        //4.创建的任务，访问地址为该流程配置的详情地址
+    /**
+     * 清理当前人考核ProjectTask任务
+     *
+     * @param processInsId
+     * @param userAccount
+     */
+    public void clearAssessmentProjectTask(String processInsId, String userAccount) {
+        AssessmentProjectPerformanceQuery query = new AssessmentProjectPerformanceQuery();
+        query.setProcessInsId(processInsId);
+        query.setExaminePeople(userAccount);
+        List<AssessmentProjectPerformanceDto> performanceDtoList = chksRpcAssessmentService.getAssessmentProjectPerformanceDtoList(query);
+        if (CollectionUtils.isEmpty(performanceDtoList)) {
+            ProjectResponsibilityDto projectResponsibilityDto = new ProjectResponsibilityDto();
+            projectResponsibilityDto.setUserAccount(processControllerComponent.getThisUser());
+            projectResponsibilityDto.setProcessInsId(processInsId);
+            List<ProjectResponsibilityDto> projectTaskList = bpmRpcProjectTaskService.getProjectTaskList(projectResponsibilityDto);
+            if (CollectionUtils.isNotEmpty(projectTaskList)) {
+                projectTaskList.forEach(o -> bpmRpcProjectTaskService.deleteProjectTask(o.getId()));
+            }
+        }
+    }
 
-
+    /**
+     * 清理流程所有考核任务
+     *
+     * @param processInsId
+     */
+    public void clearAssessmentProjectPerformanceAll(String processInsId) {
+        AssessmentProjectPerformanceQuery query = new AssessmentProjectPerformanceQuery();
+        query.setProcessInsId(processInsId);
+        List<AssessmentProjectPerformanceDto> performanceDtoList = chksRpcAssessmentService.getAssessmentProjectPerformanceDtoList(query);
+        if (CollectionUtils.isNotEmpty(performanceDtoList)) {
+            performanceDtoList.forEach(o -> chksRpcAssessmentService.deleteAssessmentProjectPerformanceByIds(LangUtils.transform(performanceDtoList, p -> p.getId())));
+        }
+        ProjectResponsibilityDto projectResponsibilityDto = new ProjectResponsibilityDto();
+        projectResponsibilityDto.setProcessInsId(processInsId);
+        List<ProjectResponsibilityDto> projectTaskList = bpmRpcProjectTaskService.getProjectTaskList(projectResponsibilityDto);
+        if (CollectionUtils.isNotEmpty(projectTaskList)) {
+            projectTaskList.forEach(o -> bpmRpcProjectTaskService.deleteProjectTask(o.getId()));
+        }
     }
 }

@@ -50,6 +50,8 @@ public class BaseProcessEvent implements ProcessEventExecutor {
     private CustomDdlTableMapper customDdlTableMapper;
     @Autowired
     private BpmRpcProcessExecutionService bpmRpcProcessExecutionService;
+    @Autowired
+    private ChksAssessmentProjectPerformanceService chksAssessmentProjectPerformanceService;
 
     @Override
     public void processStartExecute(String s) {
@@ -64,6 +66,18 @@ public class BaseProcessEvent implements ProcessEventExecutor {
             String sql = String.format("update %s set status='%s' where id=%s", boxRuDto.getTableName(), processExecution.getProcessStatus().getValue(), boxRuDto.getTableId());
             customDdlTableMapper.customTableSelect(sql);
         } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
+        }
+
+        //如果流程是被关闭的，则有考核任务都关闭掉
+        try{
+            if (ProcessStatusEnum.CLOSE.getValue().equalsIgnoreCase(processExecution.getProcessStatus().getValue())) {
+                BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(boxRuDto.getBoxId());
+                if(boxReDto.getBisLaunchCheck()==Boolean.TRUE){
+                    chksAssessmentProjectPerformanceService.clearAssessmentProjectPerformanceAll(processExecution.getProcessInstanceId());
+                }
+            }
+        }catch (Exception e){
             baseService.writeExceptionInfo(e);
         }
     }
