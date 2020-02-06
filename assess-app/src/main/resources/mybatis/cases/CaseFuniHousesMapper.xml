@@ -1,0 +1,584 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.copower.pmcc.assess.dal.cases.mapper.CaseFuniHousesMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.cases.entity.CaseFuniHouses" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="lpmc" property="lpmc" jdbcType="VARCHAR" />
+    <result column="jzmj" property="jzmj" jdbcType="VARCHAR" />
+    <result column="zdmj" property="zdmj" jdbcType="VARCHAR" />
+    <result column="rjl" property="rjl" jdbcType="VARCHAR" />
+    <result column="lhl" property="lhl" jdbcType="VARCHAR" />
+    <result column="cwxx" property="cwxx" jdbcType="VARCHAR" />
+    <result column="lpdz" property="lpdz" jdbcType="VARCHAR" />
+    <result column="sldz" property="sldz" jdbcType="VARCHAR" />
+    <result column="kfsbh" property="kfsbh" jdbcType="INTEGER" />
+    <result column="kfs" property="kfs" jdbcType="VARCHAR" />
+    <result column="xsxkz" property="xsxkz" jdbcType="VARCHAR" />
+    <result column="lpjs" property="lpjs" jdbcType="VARCHAR" />
+    <result column="jd" property="jd" jdbcType="VARCHAR" />
+    <result column="wd" property="wd" jdbcType="VARCHAR" />
+    <result column="funiweb" property="funiweb" jdbcType="VARCHAR" />
+    <result column="qybh" property="qybh" jdbcType="INTEGER" />
+    <result column="qy" property="qy" jdbcType="VARCHAR" />
+    <result column="sqbh" property="sqbh" jdbcType="INTEGER" />
+    <result column="sq" property="sq" jdbcType="VARCHAR" />
+    <result column="sfbh" property="sfbh" jdbcType="INTEGER" />
+    <result column="sf" property="sf" jdbcType="VARCHAR" />
+    <result column="csbh" property="csbh" jdbcType="INTEGER" />
+    <result column="csmc" property="csmc" jdbcType="VARCHAR" />
+    <result column="bis_edit" property="bisEdit" jdbcType="BIT" />
+    <result column="xmdz" property="xmdz" jdbcType="VARCHAR" />
+    <result column="lptp" property="lptp" jdbcType="VARCHAR" />
+    <result column="lpjj" property="lpjj" jdbcType="VARCHAR" />
+    <result column="complete" property="complete" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, lpmc, jzmj, zdmj, rjl, lhl, cwxx, lpdz, sldz, kfsbh, kfs, xsxkz, lpjs, jd, wd, 
+    funiweb, qybh, qy, sqbh, sq, sfbh, sf, csbh, csmc, bis_edit, xmdz, lptp, lpjj, complete
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseFuniHousesExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_case_funi_houses
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_case_funi_houses
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_case_funi_houses
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseFuniHousesExample" >
+    delete from tb_case_funi_houses
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseFuniHouses" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_case_funi_houses (lpmc, jzmj, zdmj, 
+      rjl, lhl, cwxx, lpdz, 
+      sldz, kfsbh, kfs, xsxkz, 
+      lpjs, jd, wd, funiweb, 
+      qybh, qy, sqbh, sq, 
+      sfbh, sf, csbh, csmc, 
+      bis_edit, xmdz, lptp, lpjj, 
+      complete)
+    values (#{lpmc,jdbcType=VARCHAR}, #{jzmj,jdbcType=VARCHAR}, #{zdmj,jdbcType=VARCHAR}, 
+      #{rjl,jdbcType=VARCHAR}, #{lhl,jdbcType=VARCHAR}, #{cwxx,jdbcType=VARCHAR}, #{lpdz,jdbcType=VARCHAR}, 
+      #{sldz,jdbcType=VARCHAR}, #{kfsbh,jdbcType=INTEGER}, #{kfs,jdbcType=VARCHAR}, #{xsxkz,jdbcType=VARCHAR}, 
+      #{lpjs,jdbcType=VARCHAR}, #{jd,jdbcType=VARCHAR}, #{wd,jdbcType=VARCHAR}, #{funiweb,jdbcType=VARCHAR}, 
+      #{qybh,jdbcType=INTEGER}, #{qy,jdbcType=VARCHAR}, #{sqbh,jdbcType=INTEGER}, #{sq,jdbcType=VARCHAR}, 
+      #{sfbh,jdbcType=INTEGER}, #{sf,jdbcType=VARCHAR}, #{csbh,jdbcType=INTEGER}, #{csmc,jdbcType=VARCHAR}, 
+      #{bisEdit,jdbcType=BIT}, #{xmdz,jdbcType=VARCHAR}, #{lptp,jdbcType=VARCHAR}, #{lpjj,jdbcType=VARCHAR}, 
+      #{complete,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseFuniHouses" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_case_funi_houses
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="lpmc != null" >
+        lpmc,
+      </if>
+      <if test="jzmj != null" >
+        jzmj,
+      </if>
+      <if test="zdmj != null" >
+        zdmj,
+      </if>
+      <if test="rjl != null" >
+        rjl,
+      </if>
+      <if test="lhl != null" >
+        lhl,
+      </if>
+      <if test="cwxx != null" >
+        cwxx,
+      </if>
+      <if test="lpdz != null" >
+        lpdz,
+      </if>
+      <if test="sldz != null" >
+        sldz,
+      </if>
+      <if test="kfsbh != null" >
+        kfsbh,
+      </if>
+      <if test="kfs != null" >
+        kfs,
+      </if>
+      <if test="xsxkz != null" >
+        xsxkz,
+      </if>
+      <if test="lpjs != null" >
+        lpjs,
+      </if>
+      <if test="jd != null" >
+        jd,
+      </if>
+      <if test="wd != null" >
+        wd,
+      </if>
+      <if test="funiweb != null" >
+        funiweb,
+      </if>
+      <if test="qybh != null" >
+        qybh,
+      </if>
+      <if test="qy != null" >
+        qy,
+      </if>
+      <if test="sqbh != null" >
+        sqbh,
+      </if>
+      <if test="sq != null" >
+        sq,
+      </if>
+      <if test="sfbh != null" >
+        sfbh,
+      </if>
+      <if test="sf != null" >
+        sf,
+      </if>
+      <if test="csbh != null" >
+        csbh,
+      </if>
+      <if test="csmc != null" >
+        csmc,
+      </if>
+      <if test="bisEdit != null" >
+        bis_edit,
+      </if>
+      <if test="xmdz != null" >
+        xmdz,
+      </if>
+      <if test="lptp != null" >
+        lptp,
+      </if>
+      <if test="lpjj != null" >
+        lpjj,
+      </if>
+      <if test="complete != null" >
+        complete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="lpmc != null" >
+        #{lpmc,jdbcType=VARCHAR},
+      </if>
+      <if test="jzmj != null" >
+        #{jzmj,jdbcType=VARCHAR},
+      </if>
+      <if test="zdmj != null" >
+        #{zdmj,jdbcType=VARCHAR},
+      </if>
+      <if test="rjl != null" >
+        #{rjl,jdbcType=VARCHAR},
+      </if>
+      <if test="lhl != null" >
+        #{lhl,jdbcType=VARCHAR},
+      </if>
+      <if test="cwxx != null" >
+        #{cwxx,jdbcType=VARCHAR},
+      </if>
+      <if test="lpdz != null" >
+        #{lpdz,jdbcType=VARCHAR},
+      </if>
+      <if test="sldz != null" >
+        #{sldz,jdbcType=VARCHAR},
+      </if>
+      <if test="kfsbh != null" >
+        #{kfsbh,jdbcType=INTEGER},
+      </if>
+      <if test="kfs != null" >
+        #{kfs,jdbcType=VARCHAR},
+      </if>
+      <if test="xsxkz != null" >
+        #{xsxkz,jdbcType=VARCHAR},
+      </if>
+      <if test="lpjs != null" >
+        #{lpjs,jdbcType=VARCHAR},
+      </if>
+      <if test="jd != null" >
+        #{jd,jdbcType=VARCHAR},
+      </if>
+      <if test="wd != null" >
+        #{wd,jdbcType=VARCHAR},
+      </if>
+      <if test="funiweb != null" >
+        #{funiweb,jdbcType=VARCHAR},
+      </if>
+      <if test="qybh != null" >
+        #{qybh,jdbcType=INTEGER},
+      </if>
+      <if test="qy != null" >
+        #{qy,jdbcType=VARCHAR},
+      </if>
+      <if test="sqbh != null" >
+        #{sqbh,jdbcType=INTEGER},
+      </if>
+      <if test="sq != null" >
+        #{sq,jdbcType=VARCHAR},
+      </if>
+      <if test="sfbh != null" >
+        #{sfbh,jdbcType=INTEGER},
+      </if>
+      <if test="sf != null" >
+        #{sf,jdbcType=VARCHAR},
+      </if>
+      <if test="csbh != null" >
+        #{csbh,jdbcType=INTEGER},
+      </if>
+      <if test="csmc != null" >
+        #{csmc,jdbcType=VARCHAR},
+      </if>
+      <if test="bisEdit != null" >
+        #{bisEdit,jdbcType=BIT},
+      </if>
+      <if test="xmdz != null" >
+        #{xmdz,jdbcType=VARCHAR},
+      </if>
+      <if test="lptp != null" >
+        #{lptp,jdbcType=VARCHAR},
+      </if>
+      <if test="lpjj != null" >
+        #{lpjj,jdbcType=VARCHAR},
+      </if>
+      <if test="complete != null" >
+        #{complete,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseFuniHousesExample" resultType="java.lang.Integer" >
+    select count(*) from tb_case_funi_houses
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_case_funi_houses
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.lpmc != null" >
+        lpmc = #{record.lpmc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.jzmj != null" >
+        jzmj = #{record.jzmj,jdbcType=VARCHAR},
+      </if>
+      <if test="record.zdmj != null" >
+        zdmj = #{record.zdmj,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rjl != null" >
+        rjl = #{record.rjl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lhl != null" >
+        lhl = #{record.lhl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cwxx != null" >
+        cwxx = #{record.cwxx,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lpdz != null" >
+        lpdz = #{record.lpdz,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sldz != null" >
+        sldz = #{record.sldz,jdbcType=VARCHAR},
+      </if>
+      <if test="record.kfsbh != null" >
+        kfsbh = #{record.kfsbh,jdbcType=INTEGER},
+      </if>
+      <if test="record.kfs != null" >
+        kfs = #{record.kfs,jdbcType=VARCHAR},
+      </if>
+      <if test="record.xsxkz != null" >
+        xsxkz = #{record.xsxkz,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lpjs != null" >
+        lpjs = #{record.lpjs,jdbcType=VARCHAR},
+      </if>
+      <if test="record.jd != null" >
+        jd = #{record.jd,jdbcType=VARCHAR},
+      </if>
+      <if test="record.wd != null" >
+        wd = #{record.wd,jdbcType=VARCHAR},
+      </if>
+      <if test="record.funiweb != null" >
+        funiweb = #{record.funiweb,jdbcType=VARCHAR},
+      </if>
+      <if test="record.qybh != null" >
+        qybh = #{record.qybh,jdbcType=INTEGER},
+      </if>
+      <if test="record.qy != null" >
+        qy = #{record.qy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sqbh != null" >
+        sqbh = #{record.sqbh,jdbcType=INTEGER},
+      </if>
+      <if test="record.sq != null" >
+        sq = #{record.sq,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sfbh != null" >
+        sfbh = #{record.sfbh,jdbcType=INTEGER},
+      </if>
+      <if test="record.sf != null" >
+        sf = #{record.sf,jdbcType=VARCHAR},
+      </if>
+      <if test="record.csbh != null" >
+        csbh = #{record.csbh,jdbcType=INTEGER},
+      </if>
+      <if test="record.csmc != null" >
+        csmc = #{record.csmc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bisEdit != null" >
+        bis_edit = #{record.bisEdit,jdbcType=BIT},
+      </if>
+      <if test="record.xmdz != null" >
+        xmdz = #{record.xmdz,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lptp != null" >
+        lptp = #{record.lptp,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lpjj != null" >
+        lpjj = #{record.lpjj,jdbcType=VARCHAR},
+      </if>
+      <if test="record.complete != null" >
+        complete = #{record.complete,jdbcType=BIT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_case_funi_houses
+    set id = #{record.id,jdbcType=INTEGER},
+      lpmc = #{record.lpmc,jdbcType=VARCHAR},
+      jzmj = #{record.jzmj,jdbcType=VARCHAR},
+      zdmj = #{record.zdmj,jdbcType=VARCHAR},
+      rjl = #{record.rjl,jdbcType=VARCHAR},
+      lhl = #{record.lhl,jdbcType=VARCHAR},
+      cwxx = #{record.cwxx,jdbcType=VARCHAR},
+      lpdz = #{record.lpdz,jdbcType=VARCHAR},
+      sldz = #{record.sldz,jdbcType=VARCHAR},
+      kfsbh = #{record.kfsbh,jdbcType=INTEGER},
+      kfs = #{record.kfs,jdbcType=VARCHAR},
+      xsxkz = #{record.xsxkz,jdbcType=VARCHAR},
+      lpjs = #{record.lpjs,jdbcType=VARCHAR},
+      jd = #{record.jd,jdbcType=VARCHAR},
+      wd = #{record.wd,jdbcType=VARCHAR},
+      funiweb = #{record.funiweb,jdbcType=VARCHAR},
+      qybh = #{record.qybh,jdbcType=INTEGER},
+      qy = #{record.qy,jdbcType=VARCHAR},
+      sqbh = #{record.sqbh,jdbcType=INTEGER},
+      sq = #{record.sq,jdbcType=VARCHAR},
+      sfbh = #{record.sfbh,jdbcType=INTEGER},
+      sf = #{record.sf,jdbcType=VARCHAR},
+      csbh = #{record.csbh,jdbcType=INTEGER},
+      csmc = #{record.csmc,jdbcType=VARCHAR},
+      bis_edit = #{record.bisEdit,jdbcType=BIT},
+      xmdz = #{record.xmdz,jdbcType=VARCHAR},
+      lptp = #{record.lptp,jdbcType=VARCHAR},
+      lpjj = #{record.lpjj,jdbcType=VARCHAR},
+      complete = #{record.complete,jdbcType=BIT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseFuniHouses" >
+    update tb_case_funi_houses
+    <set >
+      <if test="lpmc != null" >
+        lpmc = #{lpmc,jdbcType=VARCHAR},
+      </if>
+      <if test="jzmj != null" >
+        jzmj = #{jzmj,jdbcType=VARCHAR},
+      </if>
+      <if test="zdmj != null" >
+        zdmj = #{zdmj,jdbcType=VARCHAR},
+      </if>
+      <if test="rjl != null" >
+        rjl = #{rjl,jdbcType=VARCHAR},
+      </if>
+      <if test="lhl != null" >
+        lhl = #{lhl,jdbcType=VARCHAR},
+      </if>
+      <if test="cwxx != null" >
+        cwxx = #{cwxx,jdbcType=VARCHAR},
+      </if>
+      <if test="lpdz != null" >
+        lpdz = #{lpdz,jdbcType=VARCHAR},
+      </if>
+      <if test="sldz != null" >
+        sldz = #{sldz,jdbcType=VARCHAR},
+      </if>
+      <if test="kfsbh != null" >
+        kfsbh = #{kfsbh,jdbcType=INTEGER},
+      </if>
+      <if test="kfs != null" >
+        kfs = #{kfs,jdbcType=VARCHAR},
+      </if>
+      <if test="xsxkz != null" >
+        xsxkz = #{xsxkz,jdbcType=VARCHAR},
+      </if>
+      <if test="lpjs != null" >
+        lpjs = #{lpjs,jdbcType=VARCHAR},
+      </if>
+      <if test="jd != null" >
+        jd = #{jd,jdbcType=VARCHAR},
+      </if>
+      <if test="wd != null" >
+        wd = #{wd,jdbcType=VARCHAR},
+      </if>
+      <if test="funiweb != null" >
+        funiweb = #{funiweb,jdbcType=VARCHAR},
+      </if>
+      <if test="qybh != null" >
+        qybh = #{qybh,jdbcType=INTEGER},
+      </if>
+      <if test="qy != null" >
+        qy = #{qy,jdbcType=VARCHAR},
+      </if>
+      <if test="sqbh != null" >
+        sqbh = #{sqbh,jdbcType=INTEGER},
+      </if>
+      <if test="sq != null" >
+        sq = #{sq,jdbcType=VARCHAR},
+      </if>
+      <if test="sfbh != null" >
+        sfbh = #{sfbh,jdbcType=INTEGER},
+      </if>
+      <if test="sf != null" >
+        sf = #{sf,jdbcType=VARCHAR},
+      </if>
+      <if test="csbh != null" >
+        csbh = #{csbh,jdbcType=INTEGER},
+      </if>
+      <if test="csmc != null" >
+        csmc = #{csmc,jdbcType=VARCHAR},
+      </if>
+      <if test="bisEdit != null" >
+        bis_edit = #{bisEdit,jdbcType=BIT},
+      </if>
+      <if test="xmdz != null" >
+        xmdz = #{xmdz,jdbcType=VARCHAR},
+      </if>
+      <if test="lptp != null" >
+        lptp = #{lptp,jdbcType=VARCHAR},
+      </if>
+      <if test="lpjj != null" >
+        lpjj = #{lpjj,jdbcType=VARCHAR},
+      </if>
+      <if test="complete != null" >
+        complete = #{complete,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.cases.entity.CaseFuniHouses" >
+    update tb_case_funi_houses
+    set lpmc = #{lpmc,jdbcType=VARCHAR},
+      jzmj = #{jzmj,jdbcType=VARCHAR},
+      zdmj = #{zdmj,jdbcType=VARCHAR},
+      rjl = #{rjl,jdbcType=VARCHAR},
+      lhl = #{lhl,jdbcType=VARCHAR},
+      cwxx = #{cwxx,jdbcType=VARCHAR},
+      lpdz = #{lpdz,jdbcType=VARCHAR},
+      sldz = #{sldz,jdbcType=VARCHAR},
+      kfsbh = #{kfsbh,jdbcType=INTEGER},
+      kfs = #{kfs,jdbcType=VARCHAR},
+      xsxkz = #{xsxkz,jdbcType=VARCHAR},
+      lpjs = #{lpjs,jdbcType=VARCHAR},
+      jd = #{jd,jdbcType=VARCHAR},
+      wd = #{wd,jdbcType=VARCHAR},
+      funiweb = #{funiweb,jdbcType=VARCHAR},
+      qybh = #{qybh,jdbcType=INTEGER},
+      qy = #{qy,jdbcType=VARCHAR},
+      sqbh = #{sqbh,jdbcType=INTEGER},
+      sq = #{sq,jdbcType=VARCHAR},
+      sfbh = #{sfbh,jdbcType=INTEGER},
+      sf = #{sf,jdbcType=VARCHAR},
+      csbh = #{csbh,jdbcType=INTEGER},
+      csmc = #{csmc,jdbcType=VARCHAR},
+      bis_edit = #{bisEdit,jdbcType=BIT},
+      xmdz = #{xmdz,jdbcType=VARCHAR},
+      lptp = #{lptp,jdbcType=VARCHAR},
+      lpjj = #{lpjj,jdbcType=VARCHAR},
+      complete = #{complete,jdbcType=BIT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
