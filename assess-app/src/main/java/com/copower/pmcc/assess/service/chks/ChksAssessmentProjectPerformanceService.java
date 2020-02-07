@@ -1340,6 +1340,9 @@ public class ChksAssessmentProjectPerformanceService {
             if (boxReDto != null && boxReDto.getBisLaunchCheck() == Boolean.TRUE) {
                 ActivitiTaskNodeDto activitiTaskNodeDto = bpmRpcActivitiProcessManageService.queryCurrentTask(taskId, commonService.thisUserAccount());
                 BoxReActivityDto currentActivity = bpmRpcBoxService.getBoxreActivityInfoByBoxIdSorting(boxId, activitiTaskNodeDto.getCurrentStep());
+                if (currentActivity == null || currentActivity.getBisViewChk() == Boolean.FALSE) return;
+                List<AssessmentItemDto> assessmentItemList = bpmRpcBoxService.getAssessmentItemList(boxId, currentActivity.getActivityId());
+                if (CollectionUtils.isEmpty(assessmentItemList)) return;
                 List<BoxReActivityDto> reActivityDtos = bpmRpcBoxService.getBoxReActivityByBoxId(boxId);
                 if (CollectionUtils.isNotEmpty(reActivityDtos)) {
                     List<BoxReActivityDto> filter = LangUtils.filter(reActivityDtos, o -> {
@@ -1384,7 +1387,7 @@ public class ChksAssessmentProjectPerformanceService {
         generateAssessmentTask(processInsId, boxId, taskId, null, null);
     }
 
-    public void createAssessmentProjectTask(ApprovalModelDto approvalModelDto,ProjectInfo projectInfo,ProjectPlanDetails projectPlanDetails) {
+    public void createAssessmentProjectTask(ApprovalModelDto approvalModelDto, ProjectInfo projectInfo, ProjectPlanDetails projectPlanDetails) {
         BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(approvalModelDto.getBoxId());
         if (boxReDto.getBisLaunchCheck() == Boolean.TRUE) {
             //0.当流程以同意的方式提交时，且审批人没有在审批时填写考核信息，则将该任务节点的考核数据的考核人设置为当前人
@@ -1430,9 +1433,9 @@ public class ChksAssessmentProjectPerformanceService {
                         projectPlanResponsibility.setUserAccount(processControllerComponent.getThisUser());
                         projectPlanResponsibility.setModel(ResponsibileModelEnum.TASK.getId());
                         projectPlanResponsibility.setCreator(processControllerComponent.getThisUser());
-                        projectPlanResponsibility.setConclusion(String.format("(考核)%s-%s",processControllerComponent.getThisUser(),approvalModelDto.getProcessInsId()));//
+                        projectPlanResponsibility.setConclusion(String.format("(考核)%s-%s", processControllerComponent.getThisUser(), approvalModelDto.getProcessInsId()));//
                         projectPlanResponsibility.setAppKey(applicationConstant.getAppKey());
-                        projectPlanResponsibility.setUrl(String.format("/%s%s?boxId=%s&processInsId=%s",applicationConstant.getAppKey(),boxReDto.getProcessDisplayUrl(),approvalModelDto.getBoxId(),approvalModelDto.getProcessInsId()));
+                        projectPlanResponsibility.setUrl(String.format("/%s%s?boxId=%s&processInsId=%s", applicationConstant.getAppKey(), boxReDto.getProcessDisplayUrl(), approvalModelDto.getBoxId(), approvalModelDto.getProcessInsId()));
                         bpmRpcProjectTaskService.saveProjectTaskExtend(projectPlanResponsibility);
                     }
                 }

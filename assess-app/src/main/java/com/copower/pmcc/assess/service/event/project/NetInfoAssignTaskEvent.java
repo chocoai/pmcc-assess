@@ -125,6 +125,6 @@ public class NetInfoAssignTaskEvent extends BaseProcessEvent {
             stringBuilder.append(unitNumber).append("单元");
         if (StringUtils.isNotBlank(houseNumber))
             stringBuilder.append(houseNumber).append("号");
-        return stringBuilder.toString();
+        return stringBuilder.toString().replaceAll("号+?","号");
     }
 }
