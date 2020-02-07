@@ -38,7 +38,7 @@ public class NetInfoRecordDao {
      * @return
      */
     public List<NetInfoRecord> getNetInfoRecordListByName(String queryTitle, String queryWebName, String provinceName, String cityName, String queryContent,
-                                                          String queryType, Date queryStratTime, Date queryEndTime, String executor,Integer status) {
+                                                          String queryType, Date queryStratTime, Date queryEndTime, String executor, Integer status) {
         NetInfoRecordExample example = new NetInfoRecordExample();
         NetInfoRecordExample.Criteria criteria = example.createCriteria();
         if (StringUtils.isNotBlank(queryTitle)) {
@@ -68,7 +68,7 @@ public class NetInfoRecordDao {
         if (queryEndTime != null) {
             criteria.andBeginTimeLessThanOrEqualTo(queryEndTime);
         }
-        if(status!=null){
+        if (status != null) {
             criteria.andStatusEqualTo(status);
         }
         criteria.andBisDeleteEqualTo(false);
@@ -109,6 +109,13 @@ public class NetInfoRecordDao {
      * @return
      */
     public boolean addInfo(NetInfoRecord examineInfo) {
+        //验证重复 重复数据自动设置为删除状态
+        NetInfoRecordExample example = new NetInfoRecordExample();
+        NetInfoRecordExample.Criteria criteria = example.createCriteria();
+        criteria.andProvinceEqualTo(examineInfo.getProvince()).andTitleEqualTo(examineInfo.getTitle());
+        if (netInfoRecordMapper.countByExample(example) > 0) {
+            examineInfo.setBisDelete(true);
+        }
         return netInfoRecordMapper.insertSelective(examineInfo) > 0;
     }
 
