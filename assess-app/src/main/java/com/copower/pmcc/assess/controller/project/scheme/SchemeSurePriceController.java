@@ -17,8 +17,13 @@ import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -43,7 +48,7 @@ public class SchemeSurePriceController {
     public HttpResult getSchemeSurePriceItemList(Integer judgeObjectId, boolean isUpdatePrice) {
         try {
             List<SchemeSurePriceItem> schemeSurePriceList = schemeSurePriceService.getSchemeSurePriceItemList(judgeObjectId, isUpdatePrice);
-            return HttpResult.newCorrectResult(200,schemeSurePriceList);
+            return HttpResult.newCorrectResult(200, schemeSurePriceList);
         } catch (Exception e) {
             baseService.writeExceptionInfo(e, errorInfo);
             return HttpResult.newErrorResult(500, "获取数据异常");
@@ -55,7 +60,7 @@ public class SchemeSurePriceController {
     public HttpResult getAdjustObjectListByPid(Integer judgeObjectId) {
         try {
             List<SchemeJudgeObjectVo> vos = schemeJudgeObjectService.getAdjustObjectListByPid(judgeObjectId);
-            return HttpResult.newCorrectResult(200,vos);
+            return HttpResult.newCorrectResult(200, vos);
         } catch (Exception e) {
             baseService.writeExceptionInfo(e, errorInfo);
             return HttpResult.newErrorResult(500, "获取数据异常");
@@ -119,5 +124,33 @@ public class SchemeSurePriceController {
             baseService.writeExceptionInfo(e, errorInfo);
             return HttpResult.newErrorResult("更新计算的估价对象单价异常");
         }
+    }
+
+    @RequestMapping(value = "/generateAndExport", name = "生成并导出模板")
+    public void generateAndExport(HttpServletResponse response, Integer pid) throws Exception {
+        try {
+            schemeSurePriceService.generateAndExport(response, pid);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/importData", name = "上传", method = RequestMethod.POST)
+    public HttpResult importData(HttpServletRequest request, Integer pid) {
+        try {
+            MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+            Iterator<String> fileNames = multipartRequest.getFileNames();
+            MultipartFile multipartFile = multipartRequest.getFile(fileNames.next());
+            if (multipartFile.isEmpty()) {
+                return HttpResult.newErrorResult("上传的文件不能为空");
+            }
+            String str = schemeSurePriceService.importData(multipartFile, pid);
+            return HttpResult.newCorrectResult(str);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+
     }
 }

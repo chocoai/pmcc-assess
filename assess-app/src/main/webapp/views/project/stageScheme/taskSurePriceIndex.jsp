@@ -80,6 +80,16 @@
                                  onclick="surePrice.pasteBatch();">粘贴
                             </div>
                         </small>
+                        <small>
+                            <div class="btn btn-xs btn-warning"
+                                 onclick="surePrice.exportData();">生成下载模板
+                            </div>
+                        </small>
+                        <small>
+                            <div class="btn btn-xs btn-warning"
+                                 onclick="$('#ajaxFileUploadBtn').val('').trigger('click')">导入
+                            </div>
+                        </small>
                     </h3>
                     <div class="clearfix"></div>
                 </div>
@@ -122,6 +132,8 @@
         </div>
     </div>
 </div>
+<input type="file" id="ajaxFileUploadBtn" name="file" style="display: none;"
+       onchange="surePrice.importData();">
 
 <%--确定单价模板--%>
 <script type="text/html" id="surePriceTemp">
@@ -252,6 +264,8 @@
         </td>
     </tr>
 </script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/ajaxfileupload.js?v=${assessVersion}"></script>
 <%@include file="/views/share/main_footer.jsp" %>
 <script type="application/javascript">
     $(function () {
@@ -373,7 +387,7 @@
                     }
                     var ele = target.find("tbody");
                     ele.empty();
-                    $.each(data,function (i, item) {
+                    $.each(data, function (i, item) {
                         var model = $("#adjust_JudgeObject_Model");
                         var html = model.html();
                         html = html.replace(/{id}/g, item.id);
@@ -689,6 +703,41 @@
                 else {
                     Alert("获取数据失败，失败原因:" + result.errmsg, 1, null, null);
                 }
+            }
+        });
+    }
+
+    //生成并下载模板
+    surePrice.exportData = function () {
+        var pid = ${projectPlanDetails.judgeObjectId};
+        var href = "${pageContext.request.contextPath}/schemeSurePrice/generateAndExport";
+        href += "?pid=" + pid;
+
+        window.open(href, "");
+    }
+    //导入
+    surePrice.importData = function () {
+        Loading.progressShow();
+        $.ajaxFileUpload({
+            type: "POST",
+            url: getContextPath() + "/schemeSurePrice/importData",
+            data: {
+                pid: ${projectPlanDetails.judgeObjectId}
+            },//要传到后台的参数，没有可以不写
+            secureuri: false,//是否启用安全提交，默认为false
+            fileElementId: 'ajaxFileUploadBtn',//文件选择框的id属性
+            dataType: 'json',//服务器返回的格式
+            async: false,
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    Alert(result.data);
+                    surePrice.loadAdjustJudgeObject('${projectPlanDetails.judgeObjectId}');
+                }
+            },
+            error: function (result, status, e) {
+                Loading.progressHide();
+                Alert("调用服务端方法失败，失败原因:" + result);
             }
         });
     }
