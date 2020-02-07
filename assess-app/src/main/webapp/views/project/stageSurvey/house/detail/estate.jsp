@@ -632,7 +632,6 @@
 <script type="text/javascript">
     $(function () {
         estateCommon.initDetailById('${basicEstate.id}', '', false);
-        assessmentCommonHandle.loadChksServerViewTable();
     })
 </script>
 </html>

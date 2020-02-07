@@ -19,10 +19,11 @@ import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
-import com.copower.pmcc.bpm.api.dto.model.BoxReActivityDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.chks.api.dto.AssessmentProjectPerformanceDto;
+import com.copower.pmcc.chks.api.provider.ChksRpcAssessmentService;
 import com.copower.pmcc.crm.api.dto.CrmBaseDataDicDto;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -60,7 +61,8 @@ import java.util.Map;
 @RequestMapping("/basicApplyBatch")
 public class BasicApplyBatchController extends BaseController {
     private Logger logger = LoggerFactory.getLogger(getClass());
-
+    @Autowired
+    private ChksRpcAssessmentService chksRpcAssessmentService;
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
@@ -322,7 +324,7 @@ public class BasicApplyBatchController extends BaseController {
 
 
     @RequestMapping(value = "/informationDetail", name = "信息详情页面", method = RequestMethod.GET)
-    public ModelAndView informationDetail(Integer formClassify, Integer formType, Integer tableId, String tableName, String tbType, Integer planDetailsId, Integer applyBatchId, boolean isHistory) throws Exception {
+    public ModelAndView informationDetail(Integer formClassify, Integer formType, Integer tableId, String tableName, String tbType, Integer planDetailsId, Integer applyBatchId, boolean isHistory,Integer assessmentPerformanceId) throws Exception {
         final StringBuffer stringBuffer = new StringBuffer("/project/stageSurvey");
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(stringBuffer.toString());
         modelAndView.addObject("formType", BasicApplyTypeEnum.getEnumById(formType).getKey());
@@ -396,7 +398,7 @@ public class BasicApplyBatchController extends BaseController {
         }
         modelAndView.setViewName(stringBuffer.toString());
         try {
-            chksParams(modelAndView,tbType,planDetailsId) ;
+            chksParams(modelAndView,tbType,planDetailsId,assessmentPerformanceId) ;
         }catch (Exception e){
             logger.error("考核参数异常");
         }
@@ -409,28 +411,17 @@ public class BasicApplyBatchController extends BaseController {
      * @param tbType
      * @param planDetailsId
      */
-    private void chksParams(ModelAndView modelAndView,String tbType, Integer planDetailsId){
+    private void chksParams(ModelAndView modelAndView,String tbType, Integer planDetailsId,Integer assessmentPerformanceId){
         ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
         BoxReDto boxReDto =  chksAssessmentProjectPerformanceService.getBoxReDto(projectPlanDetails.getProcessInsId()) ;
-        List<BoxReActivityDto> boxReActivityDtoList =chksAssessmentProjectPerformanceService.getFilterBoxReActivityDto(projectPlanDetails.getProcessInsId());
-        BoxReActivityDto spotReActivityDto = chksAssessmentProjectPerformanceService.getSpotBoxReActivityDto(boxReDto.getId());
-        modelAndView.addObject("spotReActivityDto", spotReActivityDto);//抽查节点
+        AssessmentProjectPerformanceDto assessmentProjectPerformanceDto = chksRpcAssessmentService.getAssessmentProjectPerformanceById(assessmentPerformanceId) ;
+        modelAndView.addObject(org.apache.commons.lang3.StringUtils.uncapitalize(AssessmentProjectPerformanceDto.class.getSimpleName()), assessmentProjectPerformanceDto);
         modelAndView.addObject(org.apache.commons.lang3.StringUtils.uncapitalize(BoxReDto.class.getSimpleName()),boxReDto);
-        boolean spotCheck = chksAssessmentProjectPerformanceService.getSpotCheck(boxReDto.getId(), processControllerComponent.getThisUser());
-        //抽查或者巡查标识符
-        modelAndView.addObject("spotCheck", spotCheck);
-        if (spotCheck) {
-            modelAndView.addObject("spotAssessmentProjectPerformanceList", chksAssessmentProjectPerformanceService.getAssessmentProjectPerformanceDtoMap(boxReDto.getId(), projectPlanDetails.getProcessInsId()));
-        }
-        if (CollectionUtils.isEmpty(boxReActivityDtoList)){
-            return;
-        }
         modelAndView.addObject("tbType", tbType);
         modelAndView.addObject(org.apache.commons.lang3.StringUtils.uncapitalize(ProjectPlanDetails.class.getSimpleName()), projectPlanDetails);
-        modelAndView.addObject("boxReActivityDtoList", boxReActivityDtoList);//普通考核节点 发起的详情task任务
         modelAndView.addObject(org.apache.commons.lang3.StringUtils.uncapitalize(SysUserDto.class.getSimpleName()),processControllerComponent.getThisUserInfo()) ;
         //当前节点  可以查看的权限节点信息列表
-        modelAndView.addObject("activityDtoList", chksAssessmentProjectPerformanceService.getAssessmentProjectPerformanceNext(boxReActivityDtoList.get(0).getBoxId(), null, null, chksAssessmentProjectPerformanceService.getSpotCheck(boxReActivityDtoList.get(0).getBoxId(), processControllerComponent.getThisUser())));
+        modelAndView.addObject("activityDtoList", chksAssessmentProjectPerformanceService.getAssessmentProjectPerformanceNext(assessmentProjectPerformanceDto.getBoxId(), assessmentProjectPerformanceDto.getActivityId(), null, chksAssessmentProjectPerformanceService.getSpotCheck(assessmentProjectPerformanceDto.getBoxId(), processControllerComponent.getThisUser())));
     }
 
     /**

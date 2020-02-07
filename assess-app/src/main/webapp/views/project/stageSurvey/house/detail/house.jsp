@@ -529,7 +529,6 @@
 <script>
     $(function () {
         houseCommon.initDetailById('${basicHouse.id}', '', false);
-        assessmentCommonHandle.loadChksServerViewTable();
     })
 </script>
 </html>

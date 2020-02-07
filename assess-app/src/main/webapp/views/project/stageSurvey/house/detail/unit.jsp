@@ -105,7 +105,6 @@
 <script type="text/javascript">
     $(function () {
         unitCommon.initById('${basicUnit.id}');
-        assessmentCommonHandle.loadChksServerViewTable();
     })
 </script>
 </html>

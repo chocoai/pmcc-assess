@@ -1,94 +1,145 @@
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="x_content">
-    <c:if test="${!empty boxReActivityDtoList}">
+    <c:if test="${!empty assessmentProjectPerformanceDto}">
 
-        <c:forEach items="${boxReActivityDtoList}" var="itemActivityDto">
-            <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                <table class="table" id="chksTableList${itemActivityDto.id}">
-                    <thead>
-                    <tr>
-                        <th width="3%">序号</th>
-                        <th width="7%">节点名称</th>
-                        <th width="50%">考核标准</th>
-                        <th width="10%">打分</th>
-                        <th width="10%">说明</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-            </div>
-            <script>
-                $(function () {
-                    assessmentCommonHandle.loadChksServerNew('${itemActivityDto.id}',$("#chksTableList${itemActivityDto.id}").find("tbody"),'${tbType}') ;
-                });
-            </script>
+        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+            <table class="table" id="chksTableList">
+                <thead>
+                <tr>
+                    <th width="3%">序号</th>
+                    <th width="7%">节点名称</th>
+                    <th width="50%">考核标准</th>
+                    <th width="10%">打分(分值)</th>
+                    <th width="10%">说明</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+
+        <c:if test="${assessmentProjectPerformanceDto.examineStatus == finish}">
             <div class=" col-xs-6  col-sm-6  col-md-6  col-lg-6 col-xs-offset-6 col-sm-offset-6 col-md-offset-6 col-lg-offset-6">
-                <button class="btn btn-success" onclick="saveAssessmentItem('${itemActivityDto.id}','${itemActivityDto.cnName}','#chksTableList${itemActivityDto.id}','${tbType}');">
+                <button class="btn btn-success" onclick="saveAssessmentSurveyItem();">
                     保存考核记录
                 </button>
             </div>
-        </c:forEach>
-        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-            <table class="table" id="boxReActivityDtoTableView">
-            </table>
-        </div>
+        </c:if>
+
     </c:if>
 </div>
 
-<div class="x_content">
-    <c:if test="${!empty spotAssessmentProjectPerformanceList}">
-        <c:forEach items="${spotAssessmentProjectPerformanceList}" var="entryItem"
-                   varStatus="userStatus">
+<script type="text/javascript">
 
-            <div class="row">
-                <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                    <h2 class="text-center">${userStatus.index+1} : ${entryItem.key.key}
-                        <input type="button" class="btn btn-xs btn-primary" value="抽查"
-                               onclick="showChkSpotAssessmentParent('${entryItem.key.value}','${entryItem.key.explain}');">
-                    </h2>
-                </div>
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <td width='5%' align='center'>被考核人</td>
-                        <td width='5%' align='center'>考核人</td>
-                        <td width='60%' align='center'>考核详情</td>
-                        <td width='5%' align='center'>得分</td>
-                        <td width='5%' align='center'>考核时间</td>
-                        <td width='20%' align='center'>综合说明</td>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <c:forEach items="${entryItem.value}" var="item">
-                        <tr>
-                            <td width='5%' align='center'>${item.byExaminePeopleName}</td>
-                            <td width='5%' align='center'>${item.examinePeopleName}</td>
-                            <td width='60%' align='center'>
-                                <table class="table table-striped">
-                                    <tbody>
-                                    <c:forEach items="${item.detailList}" var="assessmentItem">
-                                        <tr>
-                                            <td width="50%" align="center">考核标准: ${assessmentItem.content}</td>
-                                            <td width="10%" align="center">实际得分: ${assessmentItem.actualScore}</td>
-                                            <td width="40%" align="center">考核说明: ${assessmentItem.remark}</td>
-                                        </tr>
-                                    </c:forEach>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td width='5%' align='center'>${item.examineScore}</td>
-                            <td width='5%' align='center'>
-                                <fmt:formatDate value="${item.examineDate}"
-                                                pattern="yyyy-MM-dd"/>
-                            </td>
-                            <td width='20%' align='center'>${item.remarks}</td>
-                        </tr>
-                    </c:forEach>
-                    </tbody>
-                </table>
-            </div>
-        </c:forEach>
-    </c:if>
-</div>
+    function saveAssessmentSurveyItem() {
+        var target = $("#chksTableList").find("tbody");
+        if (!vaildChksData(target)) {
+            return false;
+        }
+        var data = [];
+        var filterData = [];
+        var remarks = target.find("textarea[name=remarks]").val();
+        assessmentCommonHandle.getChksSonData(target, data);
+        for (var i = 0; i < data.length; i++) {
+            if (data[i].actualScore) {
+                filterData.push(data[i]);
+            }
+        }
+        if (filterData.length == 0) {
+            toastr.warning("考核需要填写全部数据!");
+            return false;
+        }
+        var parentData = {
+            id: '${assessmentProjectPerformanceDto.id}',
+            remarks: remarks,
+            examineStatus: 'finish'
+        };
+        assessmentCommonHandle.saveAssessmentServer({
+            chksScore: JSON.stringify(filterData),
+            fomData: JSON.stringify(parentData)
+        }, function (data) {
+            toastr.warning("考核成功!");
+            finishAssessmentSurveyItem() ;
+        });
+    };
+
+    function finishAssessmentSurveyItem() {
+        var target = $("#chksTableList").find("tbody");
+        var obj = {activityName: '${assessmentProjectPerformanceDto.activityName}',id:'${assessmentProjectPerformanceDto.id}',remarks:'${assessmentProjectPerformanceDto.remarks}'};
+        assessmentCommonHandle.getAssessmentProjectPerformanceDetailByPerformanceIdList(obj.id, function (data) {
+            var restHtml = "";
+            $.each(data, function (i, item) {
+                var htmlB = assessmentCommonHandle.replaceAssessmentItem($("#assessmentItemTemplateHTML").html(), {
+                    index: i + 1,
+                    contentId: item.contentId,
+                    id: item.id,
+                    performanceId: obj.id,
+                    name: obj.activityName,
+                    assessmentDes: item.content,
+                    actualScore: item.actualScore,
+                    minScore: item.minScore,
+                    maxScore: item.maxScore,
+                    standardScore: item.standardScore,
+                    remark: item.remark
+                });
+                restHtml += htmlB;
+            });
+            var remarksHtml = $("#assessmentItemTemplateRemarksHTML").html();
+            if (obj.remarks) {
+                remarksHtml = remarksHtml.replace(/{remarks}/g, obj.remarks);
+            } else {
+                remarksHtml = remarksHtml.replace(/{remarks}/g, '');
+            }
+            restHtml += remarksHtml;
+            target.empty().append(restHtml);
+            target.find("input").attr({readonly: 'readonly'});
+            target.find("textarea").attr({readonly: 'readonly'});
+        });
+    }
+
+    $(document).ready(function () {
+        var target = $("#chksTableList").find("tbody");
+
+        if ('${assessmentProjectPerformanceDto.examineStatus}' == 'runing'){
+            assessmentCommonHandle.getAssessmentItemTemplate({
+                boxReActivitiId: '${assessmentProjectPerformanceDto.activityId}',
+                boxId: '${assessmentProjectPerformanceDto.boxId}',
+                assessmentKey: '${assessmentProjectPerformanceDto.assessmentKey}'
+            }, function (data) {
+                console.log(data) ;
+
+                var restHtml = "";
+                $.each(data, function (i, item) {
+                    var html = assessmentCommonHandle.replaceAssessmentItem($("#assessmentItemTemplateHTML").html(), {
+                        index: i + 1,
+                        contentId: item.id,
+                        id: 0,
+                        actualScore: '',
+                        remark: '',
+                        performanceId: 0,
+                        name: item.boxReActivitiNameCn,
+                        assessmentDes: item.assessmentDes,
+                        minScore: item.minScore,
+                        maxScore: item.maxScore,
+                        standardScore: item.standardScore
+                    });
+                    restHtml += html;
+                });
+                if (data.length >= 1) {
+                    var remarksHtml = $("#assessmentItemTemplateRemarksHTML").html();
+                    remarksHtml = remarksHtml.replace(/{remarks}/g, '');
+                    restHtml += remarksHtml;
+                }
+                target.empty().append(restHtml);
+            });
+        }
+
+        if ('${assessmentProjectPerformanceDto.examineStatus}' == 'finish'){
+            finishAssessmentSurveyItem() ;
+        }
+
+
+    });
+
+
+</script>

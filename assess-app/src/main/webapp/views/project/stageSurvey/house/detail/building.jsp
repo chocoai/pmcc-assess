@@ -422,7 +422,6 @@
 <script type="text/javascript">
     $(function () {
         buildingCommon.initDetailById('${basicBuilding.id}', '', false);
-        assessmentCommonHandle.loadChksServerViewTable();
     })
 </script>
 </html>
