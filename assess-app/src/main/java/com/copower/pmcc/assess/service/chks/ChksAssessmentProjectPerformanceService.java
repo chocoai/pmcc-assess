@@ -1334,7 +1334,7 @@ public class ChksAssessmentProjectPerformanceService {
                 ActivitiTaskNodeDto activitiTaskNodeDto = bpmRpcActivitiProcessManageService.queryCurrentTask(taskId, commonService.thisUserAccount());
                 BoxReActivityDto currentActivity = bpmRpcBoxService.getBoxreActivityInfoByBoxIdSorting(boxId, activitiTaskNodeDto.getCurrentStep());
                 if (currentActivity == null || currentActivity.getBisViewChk() == Boolean.FALSE) return;
-                List<AssessmentItemDto> assessmentItemList = bpmRpcBoxService.getAssessmentItemList(boxId, currentActivity.getActivityId());
+                List<AssessmentItemDto> assessmentItemList = bpmRpcBoxService.getAssessmentItemList(boxId, currentActivity.getId());
                 if (CollectionUtils.isEmpty(assessmentItemList)) return;
                 List<BoxReActivityDto> reActivityDtos = bpmRpcBoxService.getBoxReActivityByBoxId(boxId);
                 if (CollectionUtils.isNotEmpty(reActivityDtos)) {
