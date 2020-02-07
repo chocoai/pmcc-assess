@@ -131,7 +131,6 @@
                                                 });
                                             </script>
                                         </c:if>
-
                                         <select name="entrustmentPurpose" class="form-control" required="required"
                                                 onchange="programme.changeEntrustmentPurpose(this,null);">
                                             <option value="">-请选择-</option>

@@ -204,6 +204,7 @@ public class SchemeAreaGroupService {
                 areaGroup.setValueTimePoint(projectInfo.getValuationDate());
                 areaGroup.setEntrustPurpose(projectInfo.getEntrustPurpose());
                 areaGroup.setRemarkEntrustPurpose(projectInfo.getRemarkEntrustPurpose());
+                areaGroup.setEntrustAimType(projectInfo.getEntrustAimType());
                 areaGroup.setValueDefinition(projectInfo.getValueType());
                 areaGroup.setValueDefinitionDesc(projectInfo.getRemarkValueType());
                 areaGroup.setPropertyScope(Integer.valueOf(StringUtils.defaultIfBlank(projectInfo.getPropertyScope(), "0")));
