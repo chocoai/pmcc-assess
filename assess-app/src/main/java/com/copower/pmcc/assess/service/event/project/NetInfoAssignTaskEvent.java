@@ -69,6 +69,7 @@ public class NetInfoAssignTaskEvent extends BaseProcessEvent {
                 //验证后写入到标准表中
                 if (caseBaseHouseService.checkFullName(getFullName(o.getName(), o.getBuildingNumber(), o.getUnitNumber(), o.getHouseNumber()))) {
                     CaseBaseHouse caseBaseHouse = new CaseBaseHouse();
+                    caseBaseHouse.setCaseHouseId(o.getId());
                     caseBaseHouse.setProvince(o.getProvince());
                     caseBaseHouse.setCity(o.getCity());
                     caseBaseHouse.setDistrict(o.getDistrict());

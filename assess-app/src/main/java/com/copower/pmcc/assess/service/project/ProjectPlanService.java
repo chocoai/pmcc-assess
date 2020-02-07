@@ -333,105 +333,6 @@ public class ProjectPlanService {
 
     }
 
-    @Transactional(rollbackFor = Exception.class)
-    public void saveProjectPlan(String formData, String appointUserAccount) throws BusinessException, BpmException {
-        ProjectPlanDto projectPlanDto = JSON.parseObject(formData, ProjectPlanDto.class);
-        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDto.getProjectId());
-        ProjectPlan projectPlan = projectPlanDao.getProjectPlanById(projectPlanDto.getId());//取得项目计划
-        if (projectPlanDto.getBisChildren().equals("0")) {
-            //更新计划内容
-            projectPlan.setProjectPlanStart(projectPlanDto.getProjectPlanStart());
-            projectPlan.setProjectPlanEnd(projectPlanDto.getProjectPlanEnd());
-            projectPlan.setPlanRemarks(projectPlanDto.getPlanRemarks());
-            projectPlanDao.updateProjectPlan(projectPlan);
-        }
-        //更新计划明细的顺序
-        String detailsSoring = projectPlanDto.getDetailsSoring();
-        if (StringUtils.isNotBlank(detailsSoring)) {
-            updateDetailsSorting(detailsSoring);
-        }
-        bpmRpcProjectTaskService.deleteProjectTaskByPlanId(applicationConstant.getAppKey(), projectPlan.getId());//删除待提交任务
-        ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlan.getWorkStageId());
-
-        if (projectPlanDto.getDetailsPlan() != null && projectPlanDto.getDetailsPlan().equals("1"))//指定了下级细分人员，则写入任务对应表中
-        {
-            saveProjectPlanResponsibility(projectPlan, projectPlanDto.getNextApproval(), projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.NEWPLAN);
-        } else {
-            /**
-             * 处理过程
-             * 1、判断最后一个层级的责任人或责任部门是否指定
-             * 2、判断根据配置，计划是否需要进行相应的计划审批，如果要审批，则发起计划审批流程
-             *3、如果都已指定，且不需要审批，则责任人的任务发起相应的任务流程，指定部门则发起相应的Pengding流程，部门领导继续安排项目计划
-             * 4、保存项目计划
-             */
-
-            List<ProjectPlanDetails> projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsLastLayer(projectPlanDto.getId(), ProcessStatusEnum.NOPROCESS.getValue());
-            if (CollectionUtils.isEmpty(projectPlanDetails))
-                throw new BusinessException("请为阶段设置相关任务");
-            //数据效性验证
-            StringBuilder sb = new StringBuilder();
-            for (ProjectPlanDetails item : projectPlanDetails) {
-                if (item.getProjectPhaseId() == null || item.getProjectPhaseId() == 0) {
-                    sb.append(String.format("%s请设置相应的[所属工作内容]<br/>", item.getProjectPhaseName()));
-                }
-                if (item.getPlanStartDate() == null) {
-                    sb.append(String.format("%s请设置相应的[开始时间]<br/>", item.getProjectPhaseName()));
-                }
-                if (item.getPlanEndDate() == null) {
-                    sb.append(String.format("%s请设置相应的[结束时间]<br/>", item.getProjectPhaseName()));
-                }
-                if (StringUtils.isBlank(item.getExecuteUserAccount()) && item.getExecuteDepartmentId() == null) {
-                    sb.append(String.format("%s请设置相应的[责任人或责任部门中的一个]<br/>", item.getProjectPhaseName()));
-                }
-            }
-
-            if (sb.length() > 0) {
-                throw new BusinessException(sb.toString());
-            }
-            //====验证结束
-            //将任务安排给相应的责任，如果还有部门时，则需要部门安排计划后再审批
-            boolean bisAllUser = true;//是否所有细都安排具体人员
-            for (ProjectPlanDetails item : projectPlanDetails) {
-                if (StringUtils.isBlank(item.getExecuteUserAccount()) && item.getExecuteDepartmentId() != null) {
-                    bisAllUser = false;
-                    List<String> departmentDA = bpmRpcBoxRoleUserService.getDepartmentFgld(item.getExecuteDepartmentId());
-                    if (CollectionUtils.isNotEmpty(departmentDA)) {
-                        item.setExecuteUserAccount(FormatUtils.transformListString(departmentDA));
-                    }
-                    saveProjectPlanDetailsResponsibility(item, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.PLAN);
-
-                    //更新当前级的上一级为第一级
-                    item.setFirstPid(item.getId());
-                    projectPlanDetailsDao.updateProjectPlanDetails(item);
-                }
-            }
-            projectPlan.setProjectStatus(ProjectStatusEnum.PLAN.getKey());
-            projectPlanDao.updateProjectPlan(projectPlan);
-            if (bisAllUser) {
-                if (StringUtils.isNotBlank(projectWorkStage.getBoxName())) {
-                    //发起计划复核流程
-                    startProjectPlanApproval(projectPlan, projectInfo.getProjectName(), appointUserAccount);
-                } else {
-                    for (ProjectPlanDetails item : projectPlanDetails) {
-
-                        if (StringUtils.isNotBlank(item.getExecuteUserAccount())) {
-                            saveProjectPlanDetailsResponsibility(item, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.TASK);
-                            item.setStatus(ProcessStatusEnum.RUN.getValue());
-                            projectPlanDetailsDao.updateProjectPlanDetails(item);
-                        }
-                    }
-                    String sql = String.format("UPDATE tb_project_plan_details SET status='%s' WHERE plan_id=%s and bis_last_layer=1;", ProcessStatusEnum.RUN.getValue(), projectPlan.getId());
-                    ddlMySqlAssist.customTableDdl(sql);//更新数据
-
-                    //如果项目所有的计划都已完成，则更新当前阶段计划完成
-                    projectPlan.setProjectStatus(ProjectStatusEnum.TASK.getKey());
-                    projectPlanDao.updateProjectPlan(projectPlan);
-
-                }
-            }
-        }
-    }
-
     /**
      * 保存项目任务数据
      *
@@ -447,6 +348,7 @@ public class ProjectPlanService {
         projectPlanResponsibility.setPlanDetailsName(String.format("%s[%s]", workStageName, item.getProjectPhaseName()));
         projectPlanResponsibility.setProjectId(item.getProjectId());
         projectPlanResponsibility.setProjectName(projectName);
+        projectPlanResponsibility.setProcessInsId(item.getProcessInsId());
         projectPlanResponsibility.setUserAccount(item.getExecuteUserAccount());
         projectPlanResponsibility.setModel(responsibileModelEnum.getId());
         try {
@@ -456,31 +358,6 @@ public class ProjectPlanService {
         }
         projectPlanResponsibility.setConclusion(responsibileModelEnum.getName());//
         projectPlanResponsibility.setPlanEndTime(item.getPlanEndDate());
-        projectPlanResponsibility.setAppKey(applicationConstant.getAppKey());
-        updateProjectTaskUrl(responsibileModelEnum, projectPlanResponsibility);
-        bpmRpcProjectTaskService.saveProjectTaskExtend(projectPlanResponsibility);
-    }
-
-    /**
-     * 保存项目任务数据
-     *
-     * @param projectPlan
-     * @param nextUser
-     * @param projectName
-     * @param workStageName
-     * @param responsibileModelEnum
-     */
-    public void saveProjectPlanResponsibility(ProjectPlan projectPlan, String nextUser, String projectName, String workStageName, ResponsibileModelEnum responsibileModelEnum) throws BpmException {
-        ProjectResponsibilityDto projectPlanResponsibility = new ProjectResponsibilityDto();
-        projectPlanResponsibility.setPlanId(projectPlan.getId());
-        projectPlanResponsibility.setPlanDetailsId(0);
-        projectPlanResponsibility.setPlanDetailsName(String.format("%s[%s]", workStageName, responsibileModelEnum.getName()));
-        projectPlanResponsibility.setProjectId(projectPlan.getProjectId());
-        projectPlanResponsibility.setProjectName(projectName);
-        projectPlanResponsibility.setUserAccount(nextUser);
-        projectPlanResponsibility.setModel(responsibileModelEnum.getId());
-        projectPlanResponsibility.setCreator(processControllerComponent.getThisUser());
-        projectPlanResponsibility.setConclusion(responsibileModelEnum.getName());//
         projectPlanResponsibility.setAppKey(applicationConstant.getAppKey());
         updateProjectTaskUrl(responsibileModelEnum, projectPlanResponsibility);
         bpmRpcProjectTaskService.saveProjectTaskExtend(projectPlanResponsibility);
@@ -518,52 +395,6 @@ public class ProjectPlanService {
         projectPlanResponsibility.setUrl(url);
     }
 
-    /**
-     * 功能:发起项目计划审批流程
-     *
-     * @param projectPlan
-     * @throws BusinessException
-     */
-    private void startProjectPlanApproval(ProjectPlan projectPlan, String projectName, String appointUserAccount) throws BusinessException {
-        ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlan.getWorkStageId());
-
-        //发起审批流程
-        String folio = String.format("计划审批【%s】%s", projectWorkStage.getWorkStageName(), projectName);
-        ProcessUserDto processUserDto = new ProcessUserDto();
-        Integer boxIdByBoxName = bpmRpcBoxService.getBoxIdByBoxName(projectWorkStage.getBoxName());
-        BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(boxIdByBoxName);
-        ProcessInfo processInfo = new ProcessInfo();
-        processInfo.setProjectId(projectPlan.getProjectId());
-        processInfo.setProcessName(boxReDto.getProcessName());
-        processInfo.setGroupName(boxReDto.getGroupName());
-        processInfo.setFolio(folio);//流程描述
-        processInfo.setTableName("tb_project_plan");
-        processInfo.setTableId(projectPlan.getId());
-        processInfo.setBoxId(boxReDto.getId());
-        processInfo.setWorkStage(projectWorkStage.getWorkStageName());
-        processInfo.setProcessEventExecutorName(ProjectPlanApprovalEvent.class.getSimpleName());
-        processInfo.setBisDraftStart(false);
-        processInfo.setWorkStageId(projectWorkStage.getId());
-        try {
-            processUserDto = processControllerComponent.processStart(processControllerComponent.getThisUser(), processInfo, appointUserAccount, false);//发起流程，并返回流程实例编号
-        } catch (BpmException e) {
-            throw new BusinessException(e.getMessage());
-        }
-        projectPlan.setProcessInsId(processUserDto.getProcessInsId());
-        projectPlan.setStatus(ProcessStatusEnum.RUN.getValue());
-        if (!projectPlanDao.updateProjectPlan(projectPlan)) {
-            bpmRpcActivitiProcessManageService.closeProcess(processUserDto.getProcessInsId());
-            throw new BusinessException(HttpReturnEnum.SAVEFAIL.getName());
-
-        }
-        if (CollectionUtils.isNotEmpty(processUserDto.getSkipActivity())) {
-            try {
-                processControllerComponent.autoProcessSubmitLoopTaskNodeArg(processInfo, processUserDto);
-            } catch (BpmException e) {
-                throw new BusinessException("跳过节点自动提交失败");
-            }
-        }
-    }
 
     public String getProjectCurrStage(Integer projectId) {
         List<ProjectPlan> projectPlanByStatus = projectPlanDao.getProjectPlanByStatus(Lists.newArrayList(projectId), ProjectStatusEnum.PLAN.getName());
@@ -587,48 +418,6 @@ public class ProjectPlanService {
         } else {
             return "";
         }
-    }
-
-    public void submitPlanEdit(String formData) throws BusinessException {
-        ProjectPlanDto projectPlanDto = JSON.parseObject(formData, ProjectPlanDto.class);
-        ApprovalModelDto approvalModelDto = JSON.parseObject(formData, ApprovalModelDto.class);
-        ProjectPlan projectPlan = projectPlanDao.getProjectPlanById(projectPlanDto.getId());//取得项目计划
-        //更新计划内容
-        projectPlan.setProjectPlanStart(projectPlanDto.getProjectPlanStart());
-        projectPlan.setProjectPlanEnd(projectPlanDto.getProjectPlanEnd());
-        projectPlan.setPlanRemarks(projectPlanDto.getPlanRemarks());
-        projectPlanDao.updateProjectPlan(projectPlan);
-        //更新计划明细的顺序
-        String detailsSoring = projectPlanDto.getDetailsSoring();
-        updateDetailsSorting(detailsSoring);
-        ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlan.getWorkStageId());
-        approvalModelDto.setWorkStage(projectWorkStage.getWorkStageName());
-        approvalModelDto.setWorkStageId(projectPlan.getWorkStageId());
-        approvalModelDto.setWorkPhaseId(0);
-        approvalModelDto.setOpinions("返回修改");
-        approvalModelDto.setActivityKey(ProcessActivityEnum.EDIT.getValue());
-        approvalModelDto.setConclusion(TaskHandleStateEnum.AGREE.getValue());
-        approvalModelDto.setCurrentStep(-1);
-
-        try {
-            processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
-        } catch (BpmException e) {
-            throw new BusinessException(e.getMessage());
-        }
-    }
-
-    public ProjectPlan RestartPlan(ProjectWorkStageRestart projectWorkStageRestart) throws BpmException {
-        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectWorkStageRestart.getProjectId());
-        ProjectPlan projectPlan = getProjectplanById(projectWorkStageRestart.getProjectPlanOldId());
-        ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlan.getWorkStageId());
-        String workStageUserAccounts = projectWorkStageService.getWorkStageUserAccounts(projectWorkStage.getId(), projectPlan.getProjectId());
-        if (StringUtils.isNotBlank(workStageUserAccounts)) {
-            List<String> strings = FormatUtils.transformString2List(workStageUserAccounts);
-            for (String s : strings) {
-                saveProjectPlanResponsibility(projectPlan, s, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.NEWPLAN);
-            }
-        }
-        return projectPlan;
     }
 
     public Boolean updateProjectPlan(ProjectPlan projectPlan) {
@@ -684,16 +473,7 @@ public class ProjectPlanService {
                             if (projectWorkStage.getStageForm().endsWith("Execute")) {//后台自动执行计划内容
                                 ProjectPlanExecuteInterface bean = (ProjectPlanExecuteInterface) SpringContextUtils.getBean(projectWorkStage.getStageForm());
                                 bean.execute(plan, projectWorkStage);
-                            } else {//页面实施计划编制
-                                String userAccounts = projectWorkStageService.getWorkStageUserAccounts(plan.getWorkStageId(), plan.getProjectId());
-                                if (StringUtils.isNotBlank(userAccounts)) {
-                                    List<String> strings = FormatUtils.transformString2List(userAccounts);
-                                    for (String s : strings) {
-                                        saveProjectPlanResponsibility(plan, s, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.NEWPLAN);
-                                    }
-                                } else {
-                                    throw new BusinessException(projectWorkStage.getWorkStageName() + "阶段没有配置相应的责任人");
-                                }
+                            } else {
                                 plan.setProjectStatus(ProjectStatusEnum.PLAN.getKey());
                                 projectPlanDao.updateProjectPlan(plan);
                             }
@@ -740,40 +520,6 @@ public class ProjectPlanService {
             }
         }
         return nextStagePlanList;
-    }
-
-    /**
-     * 重启阶段计划
-     *
-     * @param planId
-     * @param reason
-     */
-    @Transactional(rollbackFor = Exception.class)
-    public void replyProjectPlan(Integer planId, String reason) throws BusinessException {
-        ProjectPlan projectPlan = this.getProjectplanById(planId);
-        if (projectPlan == null) return;
-
-        projectPlan.setProjectStatus(ProjectStatusEnum.PLAN.getKey());
-        projectPlan.setRestartReason(reason);
-        projectPlan.setProcessInsId("-1");
-        projectPlan.setBisRestart(true);
-        projectPlanDao.updateProjectPlan(projectPlan);
-
-        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlan.getProjectId());
-        ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlan.getWorkStageId());
-        String userAccounts = projectWorkStageService.getWorkStageUserAccounts(projectPlan.getWorkStageId(), projectPlan.getProjectId());
-        if (StringUtils.isNotBlank(userAccounts)) {
-            List<String> strings = FormatUtils.transformString2List(userAccounts);
-            strings.forEach(o -> {
-                try {
-                    saveProjectPlanResponsibility(projectPlan, o, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.NEWPLAN);
-                } catch (BpmException e) {
-                    e.printStackTrace();
-                }
-            });
-        } else {
-            throw new BusinessException(projectWorkStage.getWorkStageName() + "阶段没有配置相应的责任人");
-        }
     }
 
     /**
