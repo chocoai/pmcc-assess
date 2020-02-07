@@ -146,6 +146,9 @@ public class ChksAssessmentProjectPerformanceService {
             AssessmentProjectPerformanceDto target = chksRpcAssessmentService.getAssessmentProjectPerformanceById(assessmentProjectPerformanceDto.getId());
             String remarks = assessmentProjectPerformanceDto.getRemarks();
             String examineStatus = assessmentProjectPerformanceDto.getExamineStatus();
+            String examineUrl = assessmentProjectPerformanceDto.getExamineUrl();
+            String tableName = assessmentProjectPerformanceDto.getTableName();
+            Integer tableId = assessmentProjectPerformanceDto.getTableId();
             BeanCopyHelp.copyPropertiesIgnoreNull(target, assessmentProjectPerformanceDto);
             if (assessmentProjectPerformanceDto.getValidScore() == null) {
                 assessmentProjectPerformanceDto.setValidScore(new BigDecimal(0));
@@ -153,8 +156,21 @@ public class ChksAssessmentProjectPerformanceService {
             if (assessmentProjectPerformanceDto.getExamineScore() == null) {
                 assessmentProjectPerformanceDto.setExamineScore(new BigDecimal(0));
             }
-            assessmentProjectPerformanceDto.setExamineStatus(examineStatus);
-            assessmentProjectPerformanceDto.setRemarks(remarks);
+            if (StringUtils.isNotBlank(examineStatus)) {
+                assessmentProjectPerformanceDto.setExamineStatus(examineStatus);
+            }
+            if (StringUtils.isNotBlank(remarks)) {
+                assessmentProjectPerformanceDto.setRemarks(remarks);
+            }
+            if (StringUtils.isNotBlank(examineUrl)) {
+                assessmentProjectPerformanceDto.setExamineUrl(examineUrl);
+            }
+            if (StringUtils.isNotBlank(tableName)) {
+                assessmentProjectPerformanceDto.setTableName(tableName);
+            }
+            if (tableId != null) {
+                assessmentProjectPerformanceDto.setTableId(tableId);
+            }
         }
         if (assessmentProjectPerformanceDto.getProjectId() != null) {
             ProjectInfo projectInfo = projectInfoService.getProjectInfoById(assessmentProjectPerformanceDto.getProjectId());
@@ -395,9 +411,6 @@ public class ChksAssessmentProjectPerformanceService {
                                         break;
                                     }
                                 }
-                                performanceDetailDto.setMinScore(assessmentItem.getMinScore());
-                                performanceDetailDto.setMaxScore(assessmentItem.getMaxScore());
-                                performanceDetailDto.setStandardScore(assessmentItem.getStandardScore());
                             }
                         }
                     }
@@ -407,32 +420,12 @@ public class ChksAssessmentProjectPerformanceService {
                 }
             }
         }
-        if (CollectionUtils.isNotEmpty(assessmentProjectPerformanceDtos)) {
-            Ordering<AssessmentProjectPerformanceDto> ordering = Ordering.from(new Comparator<AssessmentProjectPerformanceDto>() {
-                @Override
-                public int compare(AssessmentProjectPerformanceDto o1, AssessmentProjectPerformanceDto o2) {
-                    BoxReActivityDto boxReActivityDtoA1 = bpmRpcBoxService.getBoxreActivityInfoById(o1.getActivityId());
-                    BoxReActivityDto boxReActivityDtoA2 = bpmRpcBoxService.getBoxreActivityInfoById(o2.getActivityId());
-                    if (boxReActivityDtoA1 == null || boxReActivityDtoA2 == null) {
-                        return 0;
-                    }
-                    Integer a = boxReActivityDtoA1.getSortMultilevel();
-                    Integer b = boxReActivityDtoA2.getSortMultilevel();
-                    if (a == null) {
-                        a = boxReActivityDtoA1.getSorting();
-                    }
-                    if (b == null) {
-                        b = boxReActivityDtoA2.getSorting();
-                    }
-                    if (a == null || b == null) {
-                        return 0;
-                    }
-                    return Integer.compare(a, b);
-                }
-            });
-            Collections.sort(assessmentProjectPerformanceDtos, ordering);
-        }
+        chksRpcAssessmentService.sortAssessmentProjectPerformanceDtoList(assessmentProjectPerformanceDtos);
         return assessmentProjectPerformanceDtos;
+    }
+
+    public List<AssessmentProjectPerformanceDetailDto> getAssessmentProjectPerformanceDetailByPerformanceIdList(Integer performanceId) {
+        return chksRpcAssessmentService.getAssessmentProjectPerformanceDetailByPerformanceIdList(performanceId);
     }
 
 
@@ -1358,6 +1351,14 @@ public class ChksAssessmentProjectPerformanceService {
                     }
                 }
                 Integer count = chksRpcAssessmentService.getAssessmentProjectPerformanceCount(processInsId, currentActivity.getId(), taskId);
+                if (count > 0) return;
+                String checkBean = StringUtils.uncapitalize(AssessmentTaskService.class.getSimpleName());//默认生成考核任务服务方法
+                checkBean = StringUtils.isNoneBlank(boxReDto.getCheckBean()) ? boxReDto.getCheckBean() : checkBean;
+                checkBean = StringUtils.isNoneBlank(currentActivity.getCheckBean()) ? currentActivity.getCheckBean() : checkBean;
+                AssessmentTaskInterface assessmentTaskBean = (AssessmentTaskInterface) SpringContextUtils.getBean(checkBean);
+                BootstrapTableVo tableVo = bpmRpcProcessInsManagerService.getApprovalLogForApp(applicationConstant.getAppKey(), processInsId, 0, 1000);
+                List<BoxApprovalLogVo> rows = tableVo.getRows();
+                assessmentTaskBean.createAssessmentTask(processInsId, currentActivity.getId(), taskId, rows.get(0).getCreator(), projectInfo, projectPlanDetails);
                 if (count > 0) {
                     return;
                 } else {
@@ -1370,12 +1371,12 @@ public class ChksAssessmentProjectPerformanceService {
                         performanceDtoList.forEach(o -> chksRpcAssessmentService.deleteAssessmentProjectPerformanceByIds(LangUtils.transform(performanceDtoList, p -> p.getId())));
                     }
 
-                    String checkBean = "assessmentTaskService";//默认生成考核任务服务方法
+                    checkBean = "assessmentTaskService";//默认生成考核任务服务方法
                     checkBean = StringUtils.isNoneBlank(boxReDto.getCheckBean()) ? boxReDto.getCheckBean() : checkBean;
                     checkBean = StringUtils.isNoneBlank(currentActivity.getCheckBean()) ? currentActivity.getCheckBean() : checkBean;
-                    AssessmentTaskInterface assessmentTaskBean = (AssessmentTaskInterface) SpringContextUtils.getBean(checkBean);
-                    BootstrapTableVo tableVo = bpmRpcProcessInsManagerService.getApprovalLogForApp(applicationConstant.getAppKey(), processInsId, 0, 1000);
-                    List<BoxApprovalLogVo> rows = tableVo.getRows();
+                    assessmentTaskBean = (AssessmentTaskInterface) SpringContextUtils.getBean(checkBean);
+                    tableVo = bpmRpcProcessInsManagerService.getApprovalLogForApp(applicationConstant.getAppKey(), processInsId, 0, 1000);
+                    rows = tableVo.getRows();
                     assessmentTaskBean.createAssessmentTask(processInsId, currentActivity.getId(), taskId, rows.get(0).getCreator(), projectInfo, projectPlanDetails);
                 }
 

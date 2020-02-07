@@ -46,6 +46,16 @@ public class ChksAssessmentProjectPerformanceController {
         }
     }
 
+    @GetMapping(value = "/getAssessmentProjectPerformanceDetailByPerformanceIdList", name = "获取考核后的数据   子数据")
+    public HttpResult getAssessmentProjectPerformanceDetailByPerformanceIdList(Integer performanceId) {
+        try {
+            return HttpResult.newCorrectResult(200, chksAssessmentProjectPerformanceService.getAssessmentProjectPerformanceDetailByPerformanceIdList(performanceId));
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e, "获取考核后的数据   子数据");
+            return HttpResult.newErrorResult(500, e.getMessage());
+        }
+    }
+
     @GetMapping(value = "/conversionProjectPerformanceDtoMap", name = "获取考核后的数据")
     public HttpResult conversionProjectPerformanceDtoMap(AssessmentProjectPerformanceQuery query, String activityIdList) {
         try {

@@ -158,6 +158,25 @@
                     json.activityId = '${activityId}';
                 }
             }
+            if ('${activityDtoList}') {
+                var activityIds = [];
+                var data = null;
+                try {
+                    data = JSON.parse('${el:toJsonString(activityDtoList)}');
+                } catch (e) {
+                    console.log(e);
+                }
+                if (data) {
+                    $.each(data, function (i, item) {
+                        activityIds.push(item.id);
+                    });
+                }
+                if (activityIds.length != 0) {
+                    json.activityIds = activityIds.join(",");
+                    json.activityId = null;
+                }
+            }
+
             assessmentCommonHandle.getChksBootstrapTableVoBase($("#assessmentTableList"),json) ;
         }({processInsId:'${processInsId}',boxId:'${boxReDto.id}'}));
 

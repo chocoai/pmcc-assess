@@ -25,7 +25,7 @@
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
                     </ul>
-                    <h3>申报考核</h3>
+                    <h3>申报考核 详情</h3>
                     <div class="clearfix"></div>
                 </div>
 
@@ -339,17 +339,20 @@
                             </table>
                         </form>
                     </div>
+                </div>
+            </div>
+
+            <div class="x_panel">
+                <div class="x_content">
                     <div class=" col-xs-6  col-sm-6  col-md-6  col-lg-6 col-xs-offset-6 col-sm-offset-6 col-md-offset-6 col-lg-offset-6">
-                        <button class="btn btn-success" onclick="chksCustomer.saveAssessmentItem();">
-                            保存考核记录
+                        <button class="btn btn-default" onclick="window.close()">
+                            关闭
                         </button>
                     </div>
                 </div>
             </div>
 
         </div>
-
-
 
 
     </div>
@@ -383,70 +386,39 @@
         newFileId: declareCommon.config.declareRealty.newFileId
     };
 
-    chksCustomer.saveAssessmentItem = function () {
-        var target = $("#chksTableList").find("tbody");
-        if (!vaildChksData(target)) {
-            return false;
-        }
-        var filterData = [];
-        var data = [];
-        var remarks = target.find("textarea[name=remarks]").val();
-        assessmentCommonHandle.getChksSonData(target, data);
-        for (var i = 0; i < data.length; i++) {
-            if (data[i].actualScore) {
-                filterData.push(data[i]);
-            }
-        }
-        if (filterData.length == 0) {
-            toastr.warning("详情页考核需要填写全部数据!");
-            return false;
-        }
-        var parentData = {
-            id: '${assessmentProjectPerformanceDto.id}',
-            remarks: remarks,
-            examineStatus: 'finish',
-            examineUrl: "/chksCustomerAssessmentPlanDetail/detail?id=${assessmentProjectPerformanceDto.id}"
-        };
-        assessmentCommonHandle.saveAssessmentServer({
-            chksScore: JSON.stringify(filterData),
-            fomData: JSON.stringify(parentData)
-        }, function (data) {
-            toastr.warning("考核成功!");
-            window.close();
-        });
-    };
 
     chksCustomer.loadChksServerNew = function () {
         var target = $("#chksTableList").find("tbody");
-        assessmentCommonHandle.getAssessmentItemTemplate({
-            boxReActivitiId: '${assessmentProjectPerformanceDto.activityId}',
-            boxId: '${assessmentProjectPerformanceDto.boxId}'
-        }, function (data) {
+        var obj = {activityName: '${assessmentProjectPerformanceDto.activityName}',id:'${assessmentProjectPerformanceDto.id}',remarks:'${assessmentProjectPerformanceDto.remarks}'};
+        assessmentCommonHandle.getAssessmentProjectPerformanceDetailByPerformanceIdList(obj.id, function (data) {
             var restHtml = "";
             $.each(data, function (i, item) {
-                var html = assessmentCommonHandle.replaceAssessmentItem($("#assessmentItemTemplateHTML").html(), {
+                var htmlB = assessmentCommonHandle.replaceAssessmentItem($("#assessmentItemTemplateHTML").html(), {
                     index: i + 1,
-                    contentId: item.id,
-                    id: 0,
-                    actualScore: '',
-                    remark: '',
-                    performanceId: 0,
-                    name: item.boxReActivitiNameCn,
-                    assessmentDes: item.assessmentDes,
+                    contentId: item.contentId,
+                    id: item.id,
+                    performanceId: obj.id,
+                    name: obj.activityName,
+                    assessmentDes: item.content,
+                    actualScore: item.actualScore,
                     minScore: item.minScore,
                     maxScore: item.maxScore,
-                    standardScore: item.standardScore
+                    standardScore: item.standardScore,
+                    remark: item.remark
                 });
-                restHtml += html;
+                restHtml += htmlB;
             });
-            if (data.length >= 1) {
-                var remarksHtml = $("#assessmentItemTemplateRemarksHTML").html();
+            var remarksHtml = $("#assessmentItemTemplateRemarksHTML").html();
+            if (obj.remarks) {
+                remarksHtml = remarksHtml.replace(/{remarks}/g, obj.remarks);
+            } else {
                 remarksHtml = remarksHtml.replace(/{remarks}/g, '');
-                restHtml += remarksHtml;
             }
+            restHtml += remarksHtml;
             target.empty().append(restHtml);
+            target.find("input").attr({readonly: 'readonly'});
+            target.find("textarea").attr({readonly: 'readonly'});
         });
-
     };
 
 
@@ -466,8 +438,8 @@
                     declareCommon.initHouse(data, selector.find("form"), [chksCustomer.houseConfig.fileId], null, false);
                     var attribute = {readonly: "readonly", 'class': 'form-control'};
                     declareCommon.getDeclareBuildCenter(data.centerId, function (centerData) {
-                        if (! centerData){
-                            return ;
+                        if (!centerData) {
+                            return;
                         }
                         if (declareCommon.isNotBlank(centerData.landId)) {//关联情况
                             declareCommon.getLandData(centerData.landId, function (data) {
@@ -496,8 +468,8 @@
                     declareCommon.initLand(data, selector.find("form"), [chksCustomer.landConfig.fileId], null, false);
 
                     declareCommon.getDeclareBuildCenter(data.centerId, function (centerData) {
-                        if (! centerData){
-                            return ;
+                        if (!centerData) {
+                            return;
                         }
                         //建设工程规划许可证
                         if (centerData.buildingPermitId) {
@@ -560,8 +532,8 @@
                     declareCommon.initDeclareRealty(data, selector.find("form"), [chksCustomer.declareRealtyRealEstateCertConfig.newFileId], null, false);
 
                     declareCommon.getDeclareBuildCenter(data.centerId, function (centerData) {
-                        if (! centerData){
-                            return ;
+                        if (!centerData) {
+                            return;
                         }
                         //建设工程规划许可证
                         if (centerData.buildingPermitId) {

@@ -1,10 +1,8 @@
 package com.copower.pmcc.assess.controller.chks;
 
-import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.chks.ChksAssessmentProjectPerformanceService;
-import com.copower.pmcc.assess.service.chks.ChksCustomerAssessmentPlanDetailService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRealtyHouseCertService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRealtyLandCertService;
@@ -13,9 +11,9 @@ import com.copower.pmcc.bpm.api.dto.model.BoxReActivityDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.chks.api.dto.AssessmentProjectPerformanceDto;
+import com.copower.pmcc.chks.api.provider.ChksRpcAssessmentService;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
-import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
-import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.google.common.base.Objects;
 import org.apache.commons.lang3.StringUtils;
@@ -36,8 +34,6 @@ public class ChksCustomerAssessmentPlanDetailController {
     @Autowired
     private ProjectInfoService projectInfoService;
     @Autowired
-    private ChksCustomerAssessmentPlanDetailService chksCustomerAssessmentPlanDetailService;
-    @Autowired
     private ChksAssessmentProjectPerformanceService chksAssessmentProjectPerformanceService;
     @Autowired
     private DeclareRealtyHouseCertService declareRealtyHouseCertService;
@@ -49,6 +45,8 @@ public class ChksCustomerAssessmentPlanDetailController {
     private ProcessControllerComponent processControllerComponent;
     @Autowired
     private BpmRpcBoxService bpmRpcBoxService;
+    @Autowired
+    private ChksRpcAssessmentService chksRpcAssessmentService;
 
     @GetMapping(value = "/apply")
     public ModelAndView apply(Integer id) {
@@ -57,95 +55,46 @@ public class ChksCustomerAssessmentPlanDetailController {
         return modelAndView;
     }
 
-
-    @PostMapping(value = "/saveChksCustomerAssessmentPlanDetailAndUpdate")
-    public HttpResult saveChksCustomerAssessmentPlanDetailAndUpdate(String formData, @RequestParam(name = "updateNull", defaultValue = "false") boolean updateNull) {
-        try {
-            ChksCustomerAssessmentPlanDetail chksCustomerAssessmentPlanDetail = JSONObject.parseObject(formData, ChksCustomerAssessmentPlanDetail.class);
-            chksCustomerAssessmentPlanDetailService.saveAndUpdateChksCustomerAssessmentPlanDetail(chksCustomerAssessmentPlanDetail, updateNull);
-            return HttpResult.newCorrectResult(200, chksCustomerAssessmentPlanDetail);
-        } catch (Exception e) {
-            baseService.writeExceptionInfo(e);
-            return HttpResult.newErrorResult(500, e);
-        }
+    @GetMapping(value = "/detail")
+    public ModelAndView detail(Integer id) {
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/chksCustomize/detail");
+        params(modelAndView, id);
+        return modelAndView;
     }
 
-    @PostMapping(value = "/deleteChksCustomerAssessmentPlanDetailById")
-    public HttpResult deleteChksCustomerAssessmentPlanDetailById(String id) {
-        try {
-            chksCustomerAssessmentPlanDetailService.deleteChksCustomerAssessmentPlanDetailById(id);
-            return HttpResult.newCorrectResult(200, "success");
-        } catch (Exception e) {
-            baseService.writeExceptionInfo(e);
-            return HttpResult.newErrorResult(500, e);
-        }
-    }
-
-    @GetMapping(value = "/getChksCustomerAssessmentPlanDetailById")
-    public HttpResult getChksCustomerAssessmentPlanDetailById(Integer id) {
-        try {
-            return HttpResult.newCorrectResult(200, chksCustomerAssessmentPlanDetailService.getChksCustomerAssessmentPlanDetailById(id));
-        } catch (Exception e) {
-            baseService.writeExceptionInfo(e);
-            return HttpResult.newErrorResult(500, e);
-        }
-    }
-
-    @GetMapping(value = "/getBootstrapTableVo")
-    public BootstrapTableVo getBootstrapTableVo(String formData) {
-        ChksCustomerAssessmentPlanDetail chksCustomerAssessmentPlanDetail = JSONObject.parseObject(formData, ChksCustomerAssessmentPlanDetail.class);
-        return chksCustomerAssessmentPlanDetailService.getBootstrapTableVo(chksCustomerAssessmentPlanDetail);
-    }
-
-    @GetMapping(value = "/getChksCustomerAssessmentPlanDetailListByQuery")
-    public HttpResult getChksCustomerAssessmentPlanDetailListByQuery(String formData) {
-        try {
-            ChksCustomerAssessmentPlanDetail chksCustomerAssessmentPlanDetail = JSONObject.parseObject(formData, ChksCustomerAssessmentPlanDetail.class);
-            return HttpResult.newCorrectResult(200, chksCustomerAssessmentPlanDetailService.getChksCustomerAssessmentPlanDetailListByQuery(chksCustomerAssessmentPlanDetail));
-        } catch (Exception e) {
-            baseService.writeExceptionInfo(e);
-            return HttpResult.newErrorResult(500, e);
-        }
-    }
 
     private void params(ModelAndView modelAndView, Integer id) {
         final String targetObjectInfo = "targetObjectInfo";
         if (id == null) {
             return;
         }
-        ChksCustomerAssessmentPlanDetail chksCustomerAssessmentPlanDetail = chksCustomerAssessmentPlanDetailService.getChksCustomerAssessmentPlanDetailById(id);
-        if (chksCustomerAssessmentPlanDetail == null) {
+        AssessmentProjectPerformanceDto assessmentProjectPerformanceDto = chksRpcAssessmentService.getAssessmentProjectPerformanceById(id) ;
+        if (assessmentProjectPerformanceDto == null) {
             return;
         }
-        if (Objects.equal(FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class), chksCustomerAssessmentPlanDetail.getTableName())) {
-            chksCustomerAssessmentPlanDetail.setTypeName("房产证考核");
-            modelAndView.addObject(targetObjectInfo, declareRealtyHouseCertService.getDeclareRealtyHouseCertVo(declareRealtyHouseCertService.getDeclareRealtyHouseCertById(chksCustomerAssessmentPlanDetail.getTableId())));
+        if (Objects.equal(FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class), assessmentProjectPerformanceDto.getTableName())) {
+            modelAndView.addObject(targetObjectInfo, declareRealtyHouseCertService.getDeclareRealtyHouseCertVo(declareRealtyHouseCertService.getDeclareRealtyHouseCertById(assessmentProjectPerformanceDto.getTableId())));
         }
-        if (Objects.equal(FormatUtils.entityNameConvertToTableName(DeclareRealtyLandCert.class), chksCustomerAssessmentPlanDetail.getTableName())) {
-            chksCustomerAssessmentPlanDetail.setTypeName("土地证考核");
-            modelAndView.addObject(targetObjectInfo, declareRealtyLandCertService.getDeclareRealtyLandCertVo(declareRealtyLandCertService.getDeclareRealtyLandCertById(chksCustomerAssessmentPlanDetail.getTableId())));
+        if (Objects.equal(FormatUtils.entityNameConvertToTableName(DeclareRealtyLandCert.class), assessmentProjectPerformanceDto.getTableName())) {
+            modelAndView.addObject(targetObjectInfo, declareRealtyLandCertService.getDeclareRealtyLandCertVo(declareRealtyLandCertService.getDeclareRealtyLandCertById(assessmentProjectPerformanceDto.getTableId())));
         }
-        if (Objects.equal(FormatUtils.entityNameConvertToTableName(DeclareRealtyRealEstateCert.class), chksCustomerAssessmentPlanDetail.getTableName())) {
-            chksCustomerAssessmentPlanDetail.setTypeName("不动产证考核");
-            modelAndView.addObject(targetObjectInfo, declareRealtyRealEstateCertService.getDeclareRealtyRealEstateCertVo(declareRealtyRealEstateCertService.getDeclareRealtyRealEstateCertById(chksCustomerAssessmentPlanDetail.getTableId())));
+        if (Objects.equal(FormatUtils.entityNameConvertToTableName(DeclareRealtyRealEstateCert.class), assessmentProjectPerformanceDto.getTableName())) {
+            modelAndView.addObject(targetObjectInfo, declareRealtyRealEstateCertService.getDeclareRealtyRealEstateCertVo(declareRealtyRealEstateCertService.getDeclareRealtyRealEstateCertById(assessmentProjectPerformanceDto.getTableId())));
         }
-        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(chksCustomerAssessmentPlanDetail.getProjectId());
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(assessmentProjectPerformanceDto.getProjectId());
         if (projectInfo != null) {
             modelAndView.addObject(StringUtils.uncapitalize(ProjectInfo.class.getSimpleName()), projectInfoService.getSimpleProjectInfoVo(projectInfo));
         }
-        boolean spotCheck = chksAssessmentProjectPerformanceService.getSpotCheck(chksCustomerAssessmentPlanDetail.getBoxId(), processControllerComponent.getThisUser());
-        BoxReActivityDto spotReActivityDto = chksAssessmentProjectPerformanceService.getSpotBoxReActivityDto(chksCustomerAssessmentPlanDetail.getBoxId());
+        boolean spotCheck = chksAssessmentProjectPerformanceService.getSpotCheck(assessmentProjectPerformanceDto.getBoxId(), processControllerComponent.getThisUser());
+        BoxReActivityDto spotReActivityDto = chksAssessmentProjectPerformanceService.getSpotBoxReActivityDto(assessmentProjectPerformanceDto.getBoxId());
         modelAndView.addObject("spotReActivityDto", spotReActivityDto);//抽查节点
         //抽查或者巡查标识符
         modelAndView.addObject("spotCheck", spotCheck);
         modelAndView.addObject(org.apache.commons.lang3.StringUtils.uncapitalize(SysUserDto.class.getSimpleName()),processControllerComponent.getThisUserInfo()) ;
-        if (spotCheck) {
-            modelAndView.addObject("spotAssessmentProjectPerformanceList", chksAssessmentProjectPerformanceService.getAssessmentProjectPerformanceDtoMap(chksCustomerAssessmentPlanDetail.getBoxId(), chksCustomerAssessmentPlanDetail.getProcessInsId()));
-        }
-        modelAndView.addObject(StringUtils.uncapitalize(ChksCustomerAssessmentPlanDetail.class.getSimpleName()), chksCustomerAssessmentPlanDetail);
-        modelAndView.addObject("boxReActivityDto", bpmRpcBoxService.getBoxreActivityInfoById(chksCustomerAssessmentPlanDetail.getActivityId()));//普通考核节点 审批
-        modelAndView.addObject(StringUtils.uncapitalize(BoxReDto.class.getSimpleName()), bpmRpcBoxService.getBoxReInfoByBoxId(chksCustomerAssessmentPlanDetail.getBoxId()));
+        modelAndView.addObject(StringUtils.uncapitalize(AssessmentProjectPerformanceDto.class.getSimpleName()), assessmentProjectPerformanceDto);
+        modelAndView.addObject("boxReActivityDto", bpmRpcBoxService.getBoxreActivityInfoById(assessmentProjectPerformanceDto.getActivityId()));//普通考核节点 审批
+        modelAndView.addObject(StringUtils.uncapitalize(BoxReDto.class.getSimpleName()), bpmRpcBoxService.getBoxReInfoByBoxId(assessmentProjectPerformanceDto.getBoxId()));
         //当前节点  可以查看的权限节点信息列表
-        modelAndView.addObject("activityDtoList", chksAssessmentProjectPerformanceService.getAssessmentProjectPerformanceNext(chksCustomerAssessmentPlanDetail.getBoxId(), chksCustomerAssessmentPlanDetail.getActivityId(), null, chksAssessmentProjectPerformanceService.getSpotCheck(chksCustomerAssessmentPlanDetail.getBoxId(), processControllerComponent.getThisUser())));
+        modelAndView.addObject("activityDtoList", chksAssessmentProjectPerformanceService.getAssessmentProjectPerformanceNext(assessmentProjectPerformanceDto.getBoxId(), assessmentProjectPerformanceDto.getActivityId(), null, chksAssessmentProjectPerformanceService.getSpotCheck(assessmentProjectPerformanceDto.getBoxId(), processControllerComponent.getThisUser())));
     }
 }
