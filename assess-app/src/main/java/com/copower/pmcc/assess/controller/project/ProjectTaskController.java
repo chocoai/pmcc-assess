@@ -1,12 +1,10 @@
 package com.copower.pmcc.assess.controller.project;
 
-import com.copower.pmcc.assess.common.enums.chks.ChksRuningEnum;
 import com.copower.pmcc.assess.controller.BaseController;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPhase;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dto.input.project.ProjectTaskDto;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
-import com.copower.pmcc.assess.proxy.face.AssessmentTaskInterface;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.PublicService;
@@ -16,18 +14,14 @@ import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.ProjectTaskService;
-import com.copower.pmcc.bpm.api.dto.ActivitiTaskNodeDto;
-import com.copower.pmcc.bpm.api.dto.BoxApprovalLogVo;
 import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReActivityDto;
-import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxRuDto;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.api.provider.*;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
-import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -59,6 +53,7 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "/ProjectTask")
 public class ProjectTaskController extends BaseController {
+    final private String activityId = "activityId";
     @Autowired
     private ProjectPlanDetailsService projectPlanDetailsService;
     @Autowired
@@ -174,7 +169,7 @@ public class ProjectTaskController extends BaseController {
         ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId()));
         modelAndView.addObject("projectInfo", projectInfoVo);
         //生成考核任务
-        chksAssessmentProjectPerformanceService.generateAssessmentTask(processInsId,boxId,taskId,projectInfoVo,projectPlanDetails);
+        chksAssessmentProjectPerformanceService.generateAssessmentTask(processInsId, boxId, taskId, projectInfoVo, projectPlanDetails);
 
         modelAndView.addObject("projectPlanDetails", projectPlanDetails);
         List<SysAttachmentDto> projectPhaseProcessTemplate = baseAttachmentService.getProjectPhaseProcessTemplate(projectPhase.getId());
@@ -191,6 +186,9 @@ public class ProjectTaskController extends BaseController {
         modelAndView.addObject("viewUrl", viewUrl);
         modelAndView.addObject("projectId", projectPlanDetails.getProjectId());
         modelAndView.addObject("projectFlog", "1");
+        if (modelAndView.getModel().containsKey(activityId)) {
+            setCheckParams(boxId, (Integer) modelAndView.getModel().get(activityId), modelAndView);
+        }
         return modelAndView;
     }
 
@@ -290,6 +288,9 @@ public class ProjectTaskController extends BaseController {
                 }
             }
         }
+        if (modelAndView.getModel().containsKey(activityId)) {
+            setCheckParams(boxId, (Integer) modelAndView.getModel().get(activityId), modelAndView);
+        }
         return modelAndView;
     }
 
@@ -310,6 +311,26 @@ public class ProjectTaskController extends BaseController {
     public BootstrapTableVo loadReturnRecordList(Integer planDetailsId) {
         BootstrapTableVo bootstrapTableVo = projectTaskService.getDataLandLevelListVos(planDetailsId);
         return bootstrapTableVo;
+    }
+
+    /**
+     * @param boxId
+     * @param boxReActivitiId 注意此参数可能是错误的
+     * @param modelAndView
+     */
+    private void setCheckParams(Integer boxId, Integer boxReActivitiId, ModelAndView modelAndView) {
+        if (boxReActivitiId == null) {
+            return;
+        }
+        BoxReActivityDto boxReActivityDto = bpmRpcBoxService.getBoxreActivityInfoById(boxReActivitiId);
+        if (boxId == null || boxId == 0) {
+            boxId = bpmRpcBoxService.getEndActivityByBoxId(boxReActivitiId).getBoxId();
+        }
+        //巡查人或者抽查人  可以看到当前模型下 所有人的考核记录
+        boolean spotCheck = chksAssessmentProjectPerformanceService.getSpotCheck(boxId, processControllerComponent.getThisUser());
+        //当前节点  可以查看的权限节点信息列表
+        modelAndView.addObject("activityDtoList", chksAssessmentProjectPerformanceService.getAssessmentProjectPerformanceNext(boxId, boxReActivitiId, null, spotCheck));
+        modelAndView.addObject("boxReActivityDto", boxReActivityDto);//考核节点
     }
 
 }

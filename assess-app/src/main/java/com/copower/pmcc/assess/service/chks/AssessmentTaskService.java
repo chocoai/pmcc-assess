@@ -18,6 +18,8 @@ import com.copower.pmcc.erp.constant.ApplicationConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+
 /**
  * 生成考核任务默认类
  * Created by wangpc on 2020/2/4.
@@ -56,6 +58,7 @@ public class AssessmentTaskService implements AssessmentTaskInterface {
             dto.setPlanDetailsId(projectPlanDetails.getId());
         }
         dto.setCreator(commonService.thisUserAccount());
+        dto.setValidScore(new BigDecimal(0));
         chksRpcAssessmentService.saveAndUpdateAssessmentProjectPerformanceDto(dto, true);
     }
 }

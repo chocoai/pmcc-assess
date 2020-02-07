@@ -51,7 +51,7 @@
                             <th width="3%">序号</th>
                             <th width="7%">节点名称</th>
                             <th width="50%">考核标准</th>
-                            <th width="10%">打分</th>
+                            <th width="10%">打分(分值)</th>
                             <th width="10%">说明</th>
                         </tr>
                         </thead>
@@ -92,7 +92,7 @@
                             <th width="3%">序号</th>
                             <th width="7%">节点名称</th>
                             <th width="50%">考核标准</th>
-                            <th width="10%">打分</th>
+                            <th width="10%">打分(分值)</th>
                             <th width="10%">说明</th>
                         </tr>
                         </thead>
@@ -200,6 +200,27 @@
             type: "get",
             dataType: "json",
             data: query,
+            success: function (result) {
+                if (result.ret) {
+                    if (callback) {
+                        callback(result.data);
+                    }
+                } else {
+                    Alert("失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result.errmsg);
+            }
+        });
+    };
+
+    assessmentCommonHandle.getAssessmentProjectPerformanceDetailByPerformanceIdList = function (id, callback) {
+        $.ajax({
+            url: "${pageContext.request.contextPath}/chksAssessmentProjectPerformance/getAssessmentProjectPerformanceDetailByPerformanceIdList",
+            type: "get",
+            dataType: "json",
+            data: {performanceId:id},
             success: function (result) {
                 if (result.ret) {
                     if (callback) {
@@ -376,8 +397,9 @@
     };
 
     assessmentCommonHandle.taskOpenWin = function (url) {
+        url = "${pageContext.request.contextPath}"+url ;
         openWin(url, function () {
-            //
+            $("#assessmentTableList").bootstrapTable('refresh');
         })
     };
 
@@ -422,7 +444,7 @@
         var item = target.bootstrapTable('getRowByUniqueId', id);
         box.modal("show");
         box.find("input[name=id]").val(id);
-        assessmentCommonHandle.getAssessmentItemTemplate({boxReActivitiId: item.activityId}, function (data) {
+        assessmentCommonHandle.getAssessmentItemTemplate({boxReActivitiId: item.activityId,boxId:item.boxId}, function (data) {
             var restHtml = "";
             $.each(data, function (i, item) {
                 var html = assessmentCommonHandle.replaceAssessmentItem($("#assessmentItemTemplateHTML").html(), {
