@@ -165,10 +165,10 @@ public class ChksAssessmentProjectPerformanceService {
             if (StringUtils.isNotBlank(examineUrl)) {
                 assessmentProjectPerformanceDto.setExamineUrl(examineUrl);
             }
-            if (StringUtils.isNotBlank(tableName)){
+            if (StringUtils.isNotBlank(tableName)) {
                 assessmentProjectPerformanceDto.setTableName(tableName);
             }
-            if (tableId != null){
+            if (tableId != null) {
                 assessmentProjectPerformanceDto.setTableId(tableId);
             }
         }
@@ -424,8 +424,8 @@ public class ChksAssessmentProjectPerformanceService {
         return assessmentProjectPerformanceDtos;
     }
 
-    public List<AssessmentProjectPerformanceDetailDto> getAssessmentProjectPerformanceDetailByPerformanceIdList(Integer performanceId){
-        return chksRpcAssessmentService.getAssessmentProjectPerformanceDetailByPerformanceIdList(performanceId) ;
+    public List<AssessmentProjectPerformanceDetailDto> getAssessmentProjectPerformanceDetailByPerformanceIdList(Integer performanceId) {
+        return chksRpcAssessmentService.getAssessmentProjectPerformanceDetailByPerformanceIdList(performanceId);
     }
 
 
@@ -1368,12 +1368,12 @@ public class ChksAssessmentProjectPerformanceService {
                         performanceDtoList.forEach(o -> chksRpcAssessmentService.deleteAssessmentProjectPerformanceByIds(LangUtils.transform(performanceDtoList, p -> p.getId())));
                     }
 
-                    String checkBean = "assessmentTaskService";//默认生成考核任务服务方法
+                    checkBean = "assessmentTaskService";//默认生成考核任务服务方法
                     checkBean = StringUtils.isNoneBlank(boxReDto.getCheckBean()) ? boxReDto.getCheckBean() : checkBean;
                     checkBean = StringUtils.isNoneBlank(currentActivity.getCheckBean()) ? currentActivity.getCheckBean() : checkBean;
-                    AssessmentTaskInterface assessmentTaskBean = (AssessmentTaskInterface) SpringContextUtils.getBean(checkBean);
-                    BootstrapTableVo tableVo = bpmRpcProcessInsManagerService.getApprovalLogForApp(applicationConstant.getAppKey(), processInsId, 0, 1000);
-                    List<BoxApprovalLogVo> rows = tableVo.getRows();
+                    assessmentTaskBean = (AssessmentTaskInterface) SpringContextUtils.getBean(checkBean);
+                    tableVo = bpmRpcProcessInsManagerService.getApprovalLogForApp(applicationConstant.getAppKey(), processInsId, 0, 1000);
+                    rows = tableVo.getRows();
                     assessmentTaskBean.createAssessmentTask(processInsId, currentActivity.getId(), taskId, rows.get(0).getCreator(), projectInfo, projectPlanDetails);
                 }
 
@@ -1385,7 +1385,7 @@ public class ChksAssessmentProjectPerformanceService {
         generateAssessmentTask(processInsId, boxId, taskId, null, null);
     }
 
-    public void createAssessmentProjectTask(ApprovalModelDto approvalModelDto,ProjectInfo projectInfo,ProjectPlanDetails projectPlanDetails) {
+    public void createAssessmentProjectTask(ApprovalModelDto approvalModelDto, ProjectInfo projectInfo, ProjectPlanDetails projectPlanDetails) {
         BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(approvalModelDto.getBoxId());
         if (boxReDto.getBisLaunchCheck() == Boolean.TRUE) {
             //0.当流程以同意的方式提交时，且审批人没有在审批时填写考核信息，则将该任务节点的考核数据的考核人设置为当前人
@@ -1431,9 +1431,9 @@ public class ChksAssessmentProjectPerformanceService {
                         projectPlanResponsibility.setUserAccount(processControllerComponent.getThisUser());
                         projectPlanResponsibility.setModel(ResponsibileModelEnum.TASK.getId());
                         projectPlanResponsibility.setCreator(processControllerComponent.getThisUser());
-                        projectPlanResponsibility.setConclusion(String.format("(考核)%s-%s",processControllerComponent.getThisUser(),approvalModelDto.getProcessInsId()));//
+                        projectPlanResponsibility.setConclusion(String.format("(考核)%s-%s", processControllerComponent.getThisUser(), approvalModelDto.getProcessInsId()));//
                         projectPlanResponsibility.setAppKey(applicationConstant.getAppKey());
-                        projectPlanResponsibility.setUrl(String.format("/%s%s?boxId=%s&processInsId=%s",applicationConstant.getAppKey(),boxReDto.getProcessDisplayUrl(),approvalModelDto.getBoxId(),approvalModelDto.getProcessInsId()));
+                        projectPlanResponsibility.setUrl(String.format("/%s%s?boxId=%s&processInsId=%s", applicationConstant.getAppKey(), boxReDto.getProcessDisplayUrl(), approvalModelDto.getBoxId(), approvalModelDto.getProcessInsId()));
                         bpmRpcProjectTaskService.saveProjectTaskExtend(projectPlanResponsibility);
                     }
                 }
