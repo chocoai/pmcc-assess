@@ -77,26 +77,26 @@ public class AssessmentTaskDeclareService implements AssessmentTaskInterface {
             Iterator<DeclareRealtyHouseCertVo> houseCertVoIterator = declareRealtyHouseCertVoList.iterator();
             while (houseCertVoIterator.hasNext()) {
                 DeclareRealtyHouseCertVo realtyHouseCertVo = houseCertVoIterator.next();
-                saveAssessmentProjectPerformanceDto(processInsId,activityId,taskId,byExamineUser,projectInfo,projectPlanDetails,boxReDto,FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class),realtyHouseCertVo.getId());
+                saveAssessmentProjectPerformanceDto(processInsId,activityId,taskId,byExamineUser,projectInfo,projectPlanDetails,boxReDto,FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class),realtyHouseCertVo.getId(),realtyHouseCert.getCertName());
             }
         }
         if (CollectionUtils.isNotEmpty(declareRealtyLandCertVoList)) {
             Iterator<DeclareRealtyLandCertVo> declareRealtyLandCertVoIterator = declareRealtyLandCertVoList.iterator();
             while (declareRealtyLandCertVoIterator.hasNext()) {
                 DeclareRealtyLandCertVo realtyLandCertVo = declareRealtyLandCertVoIterator.next();
-                saveAssessmentProjectPerformanceDto(processInsId,activityId,taskId,byExamineUser,projectInfo,projectPlanDetails,boxReDto,FormatUtils.entityNameConvertToTableName(DeclareRealtyLandCert.class),realtyLandCertVo.getId());
+                saveAssessmentProjectPerformanceDto(processInsId,activityId,taskId,byExamineUser,projectInfo,projectPlanDetails,boxReDto,FormatUtils.entityNameConvertToTableName(DeclareRealtyLandCert.class),realtyLandCertVo.getId(),realtyLandCertVo.getLandCertName());
             }
         }
         if (CollectionUtils.isNotEmpty(declareRealtyRealEstateCertVoList)) {
             ListIterator<DeclareRealtyRealEstateCertVo> realtyRealEstateCertVoListIterator = declareRealtyRealEstateCertVoList.listIterator();
             while (realtyRealEstateCertVoListIterator.hasNext()) {
                 DeclareRealtyRealEstateCertVo realEstateCertVo = realtyRealEstateCertVoListIterator.next();
-                saveAssessmentProjectPerformanceDto(processInsId,activityId,taskId,byExamineUser,projectInfo,projectPlanDetails,boxReDto,FormatUtils.entityNameConvertToTableName(DeclareRealtyRealEstateCert.class),realEstateCertVo.getId());
+                saveAssessmentProjectPerformanceDto(processInsId,activityId,taskId,byExamineUser,projectInfo,projectPlanDetails,boxReDto,FormatUtils.entityNameConvertToTableName(DeclareRealtyRealEstateCert.class),realEstateCertVo.getId(),realEstateCertVo.getCertName());
             }
         }
     }
 
-    private void saveAssessmentProjectPerformanceDto(String processInsId, Integer activityId,String taskId, String byExamineUser, ProjectInfo projectInfo, ProjectPlanDetails projectPlanDetails,BoxReDto boxReDto,String tableName,Integer tableId){
+    private void saveAssessmentProjectPerformanceDto(String processInsId, Integer activityId,String taskId, String byExamineUser, ProjectInfo projectInfo, ProjectPlanDetails projectPlanDetails,BoxReDto boxReDto,String tableName,Integer tableId,String businessKey){
         AssessmentProjectPerformanceDto dto = new AssessmentProjectPerformanceDto();
         dto.setProcessInsId(processInsId);
         dto.setAppKey(applicationConstant.getAppKey());
@@ -108,7 +108,9 @@ public class AssessmentTaskDeclareService implements AssessmentTaskInterface {
         dto.setBoxId(boxReDto.getId());
         BoxReActivityDto activityDto = bpmRpcBoxService.getBoxreActivityInfoById(activityId);
         dto.setActivityId(activityId);
+        dto.setBusinessKey(businessKey);
         dto.setActivityName(activityDto.getCnName());
+        dto.setSorting(activityDto.getSortMultilevel());
         dto.setByExaminePeople(byExamineUser);
         dto.setExamineStatus(ProjectStatusEnum.RUNING.getKey());
         dto.setTableId(tableId);
