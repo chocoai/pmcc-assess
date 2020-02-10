@@ -18,9 +18,9 @@
             </table>
         </div>
 
-        <c:if test="${assessmentProjectPerformanceDto.examineStatus == finish}">
+        <c:if test="${assessmentProjectPerformanceDto.examineStatus == 'runing'}">
             <div class=" col-xs-6  col-sm-6  col-md-6  col-lg-6 col-xs-offset-6 col-sm-offset-6 col-md-offset-6 col-lg-offset-6">
-                <button class="btn btn-success" onclick="saveAssessmentSurveyItem();">
+                <button class="btn btn-success" onclick="saveAssessmentSurveyItem(this);">
                     保存考核记录
                 </button>
             </div>
@@ -31,7 +31,7 @@
 
 <script type="text/javascript">
 
-    function saveAssessmentSurveyItem() {
+    function saveAssessmentSurveyItem(_this) {
         var target = $("#chksTableList").find("tbody");
         if (!vaildChksData(target)) {
             return false;
@@ -60,6 +60,7 @@
         }, function (data) {
             toastr.warning("考核成功!");
             finishAssessmentSurveyItem() ;
+            $(_this).parent().hide() ;
         });
     };
 

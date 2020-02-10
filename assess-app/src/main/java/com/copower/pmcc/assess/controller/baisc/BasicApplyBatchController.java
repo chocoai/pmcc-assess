@@ -398,7 +398,7 @@ public class BasicApplyBatchController extends BaseController {
         }
         modelAndView.setViewName(stringBuffer.toString());
         try {
-            chksParams(modelAndView,tbType,planDetailsId,assessmentPerformanceId) ;
+            chksParams(modelAndView,planDetailsId,assessmentPerformanceId) ;
         }catch (Exception e){
             logger.error("考核参数异常");
         }
@@ -411,13 +411,12 @@ public class BasicApplyBatchController extends BaseController {
      * @param tbType
      * @param planDetailsId
      */
-    private void chksParams(ModelAndView modelAndView,String tbType, Integer planDetailsId,Integer assessmentPerformanceId){
+    private void chksParams(ModelAndView modelAndView,Integer planDetailsId,Integer assessmentPerformanceId){
         ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
         BoxReDto boxReDto =  chksAssessmentProjectPerformanceService.getBoxReDto(projectPlanDetails.getProcessInsId()) ;
         AssessmentProjectPerformanceDto assessmentProjectPerformanceDto = chksRpcAssessmentService.getAssessmentProjectPerformanceById(assessmentPerformanceId) ;
         modelAndView.addObject(org.apache.commons.lang3.StringUtils.uncapitalize(AssessmentProjectPerformanceDto.class.getSimpleName()), assessmentProjectPerformanceDto);
         modelAndView.addObject(org.apache.commons.lang3.StringUtils.uncapitalize(BoxReDto.class.getSimpleName()),boxReDto);
-        modelAndView.addObject("tbType", tbType);
         modelAndView.addObject(org.apache.commons.lang3.StringUtils.uncapitalize(ProjectPlanDetails.class.getSimpleName()), projectPlanDetails);
         modelAndView.addObject(org.apache.commons.lang3.StringUtils.uncapitalize(SysUserDto.class.getSimpleName()),processControllerComponent.getThisUserInfo()) ;
         //当前节点  可以查看的权限节点信息列表

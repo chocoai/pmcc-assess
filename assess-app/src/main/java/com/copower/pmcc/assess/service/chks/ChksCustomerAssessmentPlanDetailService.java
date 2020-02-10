@@ -114,8 +114,6 @@ public class ChksCustomerAssessmentPlanDetailService {
         return chksCustomerAssessmentPlanDetailDao.getChksCustomerAssessmentPlanDetailListByExample(oo);
     }
 
-    //com.copower.pmcc.assess.controller.chks.ChksCustomerAssessmentPlanDetailController.apply()
-    public static String applyUrl = "/chksCustomerAssessmentPlanDetail/apply" ;
 
 
 }
