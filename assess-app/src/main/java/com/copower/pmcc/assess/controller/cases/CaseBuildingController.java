@@ -3,7 +3,7 @@ package com.copower.pmcc.assess.controller.cases;
 import com.copower.pmcc.assess.common.enums.basic.BasicApplyTypeEnum;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicBuildingDao;
 import com.copower.pmcc.assess.dal.basis.entity.BasicBuilding;
-import com.copower.pmcc.assess.dal.cases.custom.entity.CustomCaseEntity;
+import com.copower.pmcc.assess.dal.basis.custom.entity.CustomCaseEntity;
 import com.copower.pmcc.assess.dal.cases.entity.CaseBuilding;
 import com.copower.pmcc.assess.dal.cases.entity.CaseEstate;
 import com.copower.pmcc.assess.service.basic.PublicBasicService;

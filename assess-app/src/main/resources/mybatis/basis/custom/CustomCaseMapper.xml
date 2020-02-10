@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.copower.pmcc.assess.dal.cases.custom.mapper.CustomCaseMapper">
-    <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.cases.custom.entity.CustomCaseEntity">
+<mapper namespace="com.copower.pmcc.assess.dal.basis.custom.mapper.CustomCaseMapper">
+    <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.custom.entity.CustomCaseEntity">
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="name" property="name" jdbcType="VARCHAR"/>
         <result column="version" property="version" jdbcType="INTEGER"/>
     </resultMap>
     <select id="getCaseEstateList" parameterType="map" resultMap="BaseResultMap">
         SELECT id,`name`,`type`,version FROM (
-        SELECT DISTINCT id,`name`,`type`,version FROM tb_case_estate where 1=1
+        SELECT DISTINCT id,`name`,`type`,version FROM tb_basic_estate where bis_case=1
         <if test="name!=null and name!=''">
             AND `name` LIKE CONCAT(CONCAT('%', #{name}), '%')
         </if>
@@ -27,7 +27,7 @@
 
     <select id="getCaseBuildingList" parameterType="map" resultMap="BaseResultMap">
         SELECT id,building_number AS `name`,`type`,version FROM (
-        SELECT DISTINCT id,building_number,`type`,version FROM tb_case_building WHERE 1=1
+        SELECT DISTINCT id,building_number,`type`,version FROM tb_basic_building WHERE bis_case=1
         <if test="buildingNumber!=null and buildingNumber!=''">
             AND building_number LIKE CONCAT(CONCAT('%', #{buildingNumber}), '%')
         </if>
@@ -40,7 +40,7 @@
 
     <select id="getCaseUnitList" parameterType="map" resultMap="BaseResultMap">
         SELECT id,unit_number AS `name`,`type`,version FROM (
-        SELECT DISTINCT id,unit_number,`type`,version FROM tb_case_unit WHERE 1=1
+        SELECT DISTINCT id,unit_number,`type`,version FROM tb_basic_unit WHERE bis_case=1
         <if test="unitNumber!=null and unitNumber!=''">
             AND unit_number LIKE CONCAT(CONCAT('%', #{unitNumber}), '%')
         </if>
@@ -53,7 +53,7 @@
 
     <select id="getCaseHouseList" parameterType="map" resultMap="BaseResultMap">
         SELECT id,house_number AS `name`,`type`,version FROM (
-        SELECT DISTINCT id,house_number,`type`,version FROM tb_case_house WHERE 1=1
+        SELECT DISTINCT id,house_number,`type`,version FROM tb_basic_house WHERE bis_case=1
         <if test="houseNumber!=null and houseNumber!=''">
             AND house_number LIKE CONCAT(CONCAT('%', #{houseNumber}), '%')
         </if>
@@ -73,34 +73,34 @@
     </sql>
 
     <select id="findCaseBaseHouseList" parameterType="map"
-            resultMap="com.copower.pmcc.assess.dal.cases.mapper.CaseBaseHouseMapper.BaseResultMap">
+            resultMap="com.copower.pmcc.assess.dal.basis.mapper.BasicHouseCaseSummaryMapper.BaseResultMap">
         select
         <include refid="Base_Column_ListCaseBaseHouse"/>
-        from tb_case_base_house
+        from tb_basic_house_case_summary
         <where>
-            <if test="caseBaseHouse.blockName != null and caseBaseHouse.blockName!=''">
-                and block_name LIKE concat(concat('%',#{caseBaseHouse.blockName}),'%')
+            <if test="basicHouseCaseSummary.blockName != null and basicHouseCaseSummary.blockName!=''">
+                and block_name LIKE concat(concat('%',#{basicHouseCaseSummary.blockName}),'%')
             </if>
-            <if test="caseBaseHouse.fullName != null and caseBaseHouse.fullName!=''">
-                and full_name LIKE concat(concat('%',#{caseBaseHouse.fullName}),'%')
+            <if test="basicHouseCaseSummary.fullName != null and basicHouseCaseSummary.fullName!=''">
+                and full_name LIKE concat(concat('%',#{basicHouseCaseSummary.fullName}),'%')
             </if>
-            <if test="caseBaseHouse.street != null and caseBaseHouse.street!=''">
-                and street LIKE concat(concat('%',#{caseBaseHouse.street}),'%')
+            <if test="basicHouseCaseSummary.street != null and basicHouseCaseSummary.street!=''">
+                and street LIKE concat(concat('%',#{basicHouseCaseSummary.street}),'%')
             </if>
-            <if test="caseBaseHouse.province != null and caseBaseHouse.province!=''">
-                and province = #{caseBaseHouse.province}
+            <if test="basicHouseCaseSummary.province != null and basicHouseCaseSummary.province!=''">
+                and province = #{basicHouseCaseSummary.province}
             </if>
-            <if test="caseBaseHouse.city != null and caseBaseHouse.city!=''">
-                and city = #{caseBaseHouse.city}
+            <if test="basicHouseCaseSummary.city != null and basicHouseCaseSummary.city!=''">
+                and city = #{basicHouseCaseSummary.city}
             </if>
-            <if test="caseBaseHouse.district != null and caseBaseHouse.district!=''">
-                and district = #{caseBaseHouse.district}
+            <if test="basicHouseCaseSummary.district != null and basicHouseCaseSummary.district!=''">
+                and district = #{basicHouseCaseSummary.district}
             </if>
-            <if test="caseBaseHouse.houseType != null and caseBaseHouse.houseType!=''">
-                and house_type = #{caseBaseHouse.houseType}
+            <if test="basicHouseCaseSummary.houseType != null and basicHouseCaseSummary.houseType!=''">
+                and house_type = #{basicHouseCaseSummary.houseType}
             </if>
-            <if test="caseBaseHouse.tradingType != null">
-                and trading_type = #{caseBaseHouse.tradingType}
+            <if test="basicHouseCaseSummary.tradingType != null">
+                and trading_type = #{basicHouseCaseSummary.tradingType}
             </if>
             <if test="tradingTimeStart != null">
                 and trading_time <![CDATA[ >= ]]> #{tradingTimeStart}
@@ -122,13 +122,13 @@
          creator, gmt_created, gmt_modified
     </sql>
     <select id="screenBuildList" parameterType="map"
-            resultMap="com.copower.pmcc.assess.dal.cases.mapper.CaseBuildingMapper.BaseResultMap">
+            resultMap="com.copower.pmcc.assess.dal.basis.mapper.BasicBuildingMapper.BaseResultMap">
         SELECT
         <include refid="Base_Column_ListCaseBuilding"/>
         FROM
         ( SELECT DISTINCT
         <include refid="Base_Column_ListCaseBuilding"/>
-        FROM tb_case_building WHERE 1 = 1 AND estate_id = #{estateId} ORDER BY version DESC ) AS T
+        FROM tb_basic_building WHERE 1 = 1 AND estate_id = #{estateId} ORDER BY version DESC ) AS T
         GROUP BY
         building_number
         ORDER BY
@@ -139,18 +139,18 @@
 
     <!-- 筛选标注信息中的单元 -->
     <select id="screenUnitList" parameterType="map"
-            resultMap="com.copower.pmcc.assess.dal.cases.mapper.CaseUnitMapper.BaseResultMap">
+            resultMap="com.copower.pmcc.assess.dal.basis.mapper.BasicUnitMapper.BaseResultMap">
        select * from
-        (SELECT DISTINCT id, building_id ,version,unit_number FROM tb_case_unit WHERE 1 = 1 AND
+        (SELECT DISTINCT id, building_id ,version,unit_number FROM tb_basic_unit WHERE 1 = 1 AND
          building_id = #{buildingId} ORDER BY version DESC )
          AS T GROUP BY unit_number ORDER BY version DESC,unit_number
     </select>
 
     <!-- 筛选标注信息中的房屋 -->
     <select id="screenHouseList" parameterType="map"
-            resultMap="com.copower.pmcc.assess.dal.cases.mapper.CaseHouseMapper.BaseResultMap">
+            resultMap="com.copower.pmcc.assess.dal.basis.mapper.BasicHouseMapper.BaseResultMap">
          select * from
-        (SELECT DISTINCT id, unit_id ,version,house_number FROM tb_case_house WHERE 1 = 1 AND     unit_id = #{unitId}
+        (SELECT DISTINCT id, unit_id ,version,house_number FROM tb_basic_house WHERE 1 = 1 AND     unit_id = #{unitId}
         ORDER BY version DESC )
          AS T GROUP BY house_number ORDER BY version DESC,house_number
     </select>

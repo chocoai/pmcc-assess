@@ -8,7 +8,7 @@ import com.copower.pmcc.assess.dal.basis.dao.basic.BasicHouseDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.BasicHouse;
 import com.copower.pmcc.assess.dal.basis.entity.BasicHouseTrading;
-import com.copower.pmcc.assess.dal.cases.custom.entity.CustomCaseEntity;
+import com.copower.pmcc.assess.dal.basis.custom.entity.CustomCaseEntity;
 import com.copower.pmcc.assess.dal.cases.entity.*;
 import com.copower.pmcc.assess.dto.input.cases.CaseHouseTradingLeaseAndSellDto;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseVo;

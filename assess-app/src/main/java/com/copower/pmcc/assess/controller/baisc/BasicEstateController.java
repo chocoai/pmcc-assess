@@ -1,10 +1,15 @@
 package com.copower.pmcc.assess.controller.baisc;
 
+import com.copower.pmcc.assess.common.enums.basic.BasicApplyTypeEnum;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicAlternativeCaseDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDetailDao;
 import com.copower.pmcc.assess.dal.basis.entity.BasicAlternativeCase;
 import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchDetail;
 import com.copower.pmcc.assess.dal.basis.entity.BasicEstate;
+import com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandState;
+import com.copower.pmcc.assess.dto.output.basic.BasicEstateLandStateVo;
+import com.copower.pmcc.assess.dto.output.basic.BasicEstateVo;
+import com.copower.pmcc.assess.service.basic.BasicEstateLandStateService;
 import com.copower.pmcc.assess.service.basic.BasicEstateService;
 import com.copower.pmcc.assess.service.basic.PublicBasicService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
@@ -14,9 +19,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * @Auther: zch
@@ -34,6 +41,10 @@ public class BasicEstateController {
     private BasicAlternativeCaseDao basicAlternativeCaseDao;
     @Autowired
     private BasicApplyBatchDetailDao basicApplyBatchDetailDao;
+    @Autowired
+    private ProcessControllerComponent processControllerComponent;
+    @Autowired
+    private BasicEstateLandStateService basicEstateLandStateService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @ResponseBody
@@ -51,7 +62,7 @@ public class BasicEstateController {
     @RequestMapping(value = "/saveAndUpdateBasicEstate", name = "新增或者修改", method = {RequestMethod.POST})
     public HttpResult saveAndUpdateBasicEstate(BasicEstate basicEstate) {
         try {
-            return HttpResult.newCorrectResult(basicEstateService.saveAndUpdateBasicEstate(basicEstate,true));
+            return HttpResult.newCorrectResult(basicEstateService.saveAndUpdateBasicEstate(basicEstate, true));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(500, e.getMessage());
@@ -171,5 +182,37 @@ public class BasicEstateController {
         }
     }
 
+    @RequestMapping(value = "/detailView", name = "转到详情页面 ", method = RequestMethod.GET)
+    public ModelAndView detailView(Integer id) throws Exception {
+        String view = "project/stageSurvey/house/detail/estate";
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
+        BasicEstateVo basicEstateVo = publicBasicService.getBasicEstateById(id);
+        modelAndView.addObject(StringUtils.uncapitalize(BasicEstate.class.getSimpleName()), basicEstateVo);
+        BasicEstateLandStateVo landStateVo = basicEstateLandStateService.getBasicEstateLandStateVo(basicEstateLandStateService.getLandStateByEstateId(basicEstateVo.getId()));
+        modelAndView.addObject(StringUtils.uncapitalize(BasicEstateLandState.class.getSimpleName()), landStateVo);
+        if (basicEstateVo.getType() != null) {
+            modelAndView.addObject("formType", BasicApplyTypeEnum.getEnumById(basicEstateVo.getType()).getKey());
+        }
+        return modelAndView;
+    }
 
+    @ResponseBody
+    @RequestMapping(value = "/getCaseEstateVos", method = {RequestMethod.GET}, name = "获取案例 楼盘列表")
+    public BootstrapTableVo getCaseEstateVos(String name, String province, String city, String district) {
+        BasicEstate basicEstate = new BasicEstate();
+        if (!StringUtils.isEmpty(name)) {
+            basicEstate.setName(name);
+        }
+        if (!StringUtils.isEmpty(province)) {
+            basicEstate.setProvince(province);
+        }
+        if (!StringUtils.isEmpty(city)) {
+            basicEstate.setCity(city);
+        }
+        if (!StringUtils.isEmpty(district)) {
+            basicEstate.setDistrict(district);
+        }
+        basicEstate.setBisCase(true);
+        return basicEstateService.getBootstrapTableVo(basicEstate);
+    }
 }

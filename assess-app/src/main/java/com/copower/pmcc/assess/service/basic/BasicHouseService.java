@@ -117,7 +117,7 @@ public class BasicHouseService {
      * @return
      * @throws Exception
      */
-    public BasicHouse getBasicHouseById(Integer id) throws Exception {
+    public BasicHouse getBasicHouseById(Integer id) {
         return basicHouseDao.getBasicHouseById(id);
     }
 
@@ -199,19 +199,7 @@ public class BasicHouseService {
         return basicHouseDao.basicHouseList(basicHouse);
     }
 
-    public BootstrapTableVo getBootstrapTableVo(Integer unitId) throws Exception {
-        BootstrapTableVo vo = new BootstrapTableVo();
-        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
-        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        BasicUnit basicUnit = basicUnitService.getBasicUnitById(unitId);
-        List<BasicHouse> basicHouseList = basicApplyBatchDetailService.getBasicHouseListByBatchId(null, basicUnit);
-        List<BasicHouseVo> transform = LangUtils.transform(basicHouseList, o -> getBasicHouseVo(o));
-        vo.setTotal(page.getTotal());
-        vo.setRows(ObjectUtils.isEmpty(transform) ? new ArrayList<BasicHouseVo>(10) : transform);
-        return vo;
-    }
-
-    public BootstrapTableVo getBootstrapTableVo(BasicHouse basicHouse) throws Exception {
+    public BootstrapTableVo getBootstrapTableVo(BasicHouse basicHouse) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
@@ -234,9 +222,6 @@ public class BasicHouseService {
         if (basicHouse.getCertUse() != null) {
             vo.setCertUseName(baseDataDicService.getNameById(basicHouse.getCertUse()));
         }
-//        if (basicHouse.getOrientation() != null) {
-//            vo.setOrientationName(baseDataDicService.getNameById(basicHouse.getOrientation()));
-//        }
         if (basicHouse.getResearchType() != null) {
             vo.setResearchTypeName(baseDataDicService.getNameById(basicHouse.getResearchType()));
         }
@@ -249,7 +234,6 @@ public class BasicHouseService {
         if (basicHouse.getDecorateSituation() != null) {
             vo.setDecorateSituationName(baseDataDicService.getNameById(basicHouse.getDecorateSituation()));
         }
-        //vo.setSpatialDistributionName(baseDataDicService.getNameById(basicHouse.getSpatialDistribution()));
         vo.setCreatorName(publicService.getUserNameByAccount(basicHouse.getCreator()));
         return vo;
     }
@@ -261,32 +245,13 @@ public class BasicHouseService {
      * @throws Exception
      */
     @Transactional(rollbackFor = Exception.class)
-    public void clearInvalidData(Integer applyId) throws Exception {
-        BasicHouse house = null;
-        if (applyId == null || applyId.equals(0)) {
-            BasicHouse where = new BasicHouse();
-            where.setApplyId(applyId);
-            where.setCreator(commonService.thisUserAccount());
-            List<BasicHouse> houseList = basicHouseDao.basicHouseList(where);
-            if (CollectionUtils.isNotEmpty(houseList)) {
-                house = houseList.get(0);
-            }
-        } else {
-            BasicApply basicApply = basicApplyService.getByBasicApplyId(applyId);
-            if (basicApply != null)
-                house = basicHouseDao.getBasicHouseById(basicApply.getBasicHouseId());
-        }
-        if (house == null) return;
-        //清除标记
-        BasicEstateTagging where = new BasicEstateTagging();
-        where.setTableId(house.getId());
-        where.setType("house");
-        basicEstateTaggingDao.removeBasicEstateTagging(where);
-        clearInvalidChildData(house.getId());//清理从表数据
+    public void clearInvalidData(Integer houseId) throws Exception {
+        if (houseId == null) return;
+        clearInvalidChildData(houseId);//清理从表数据
         StringBuilder sqlBulder = new StringBuilder();
         String baseSql = "update %s set bis_delete=1 where house_id=%s;";
-        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseTrading.class), house.getId()));
-        sqlBulder.append(String.format("update %s set bis_delete=1 where id=%s;", FormatUtils.entityNameConvertToTableName(BasicHouse.class), house.getId()));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseTrading.class), houseId));
+        sqlBulder.append(String.format("update %s set bis_delete=1 where id=%s;", FormatUtils.entityNameConvertToTableName(BasicHouse.class), houseId));
         ddlMySqlAssist.customTableDdl(sqlBulder.toString());
     }
 
@@ -297,6 +262,12 @@ public class BasicHouseService {
      */
     @Transactional(rollbackFor = Exception.class)
     public void clearInvalidChildData(Integer houseId) throws Exception {
+        //清除标记
+        BasicEstateTagging where = new BasicEstateTagging();
+        where.setTableId(houseId);
+        where.setType(EstateTaggingTypeEnum.HOUSE.getKey());
+        basicEstateTaggingDao.removeBasicEstateTagging(where);
+
         StringBuilder sqlBulder = new StringBuilder();
         String baseSql = "update %s set bis_delete=1 where house_id=%s;";
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseTradingSell.class), houseId));
@@ -1112,37 +1083,52 @@ public class BasicHouseService {
     }
 
     /**
-     * 拷贝查勘房屋数据
+     * 拷贝房屋数据
      *
-     * @param sourceHouseId
-     * @param containChild
+     * @param sourceHouseId 源数据Id
+     * @param targetHouseId 目标数据Id
+     * @param containChild  是否拷贝从表数据
      * @return
+     * @throws Exception
      */
     @Transactional(rollbackFor = Exception.class)
-    public BasicHouse copyBasicBuilding(Integer sourceHouseId, Boolean containChild) throws Exception {
-        if (sourceHouseId == null) return null;
+    public BasicHouse copyBasicHouse(Integer sourceHouseId, Integer targetHouseId, Boolean containChild) throws Exception {
         BasicHouse sourceBasicHouse = getBasicHouseById(sourceHouseId);
         if (sourceBasicHouse == null) return null;
-        BasicHouse targetBasicHouse = new BasicHouse();
-        BeanUtils.copyProperties(sourceBasicHouse, targetBasicHouse);
-        targetBasicHouse.setId(null);
-        targetBasicHouse.setCreator(commonService.thisUserAccount());
-        targetBasicHouse.setGmtCreated(null);
-        targetBasicHouse.setGmtModified(null);
+        BasicHouse targetBasicHouse = getBasicHouseById(targetHouseId);
+        if (targetBasicHouse == null) {
+            targetBasicHouse = new BasicHouse();
+            BeanUtils.copyProperties(sourceBasicHouse, targetBasicHouse);
+            targetBasicHouse.setId(null);
+            targetBasicHouse.setCreator(commonService.thisUserAccount());
+            targetBasicHouse.setGmtCreated(null);
+            targetBasicHouse.setGmtModified(null);
+        } else {
+            BeanUtils.copyProperties(sourceBasicHouse, targetBasicHouse,"id");
+        }
         this.saveAndUpdateBasicHouse(targetBasicHouse, true);
 
         BasicHouseTrading sourceBasicHouseTrading = basicHouseTradingService.getTradingByHouseId(sourceHouseId);
         if (sourceBasicHouseTrading != null) {
-            BasicHouseTrading targeBasicHouseTrading = new BasicHouseTrading();
-            BeanUtils.copyProperties(sourceBasicHouseTrading, targeBasicHouseTrading);
-            targeBasicHouseTrading.setId(null);
-            targeBasicHouseTrading.setHouseId(targetBasicHouse.getId());
-            targeBasicHouseTrading.setCreator(commonService.thisUserAccount());
-            targeBasicHouseTrading.setGmtCreated(null);
-            targeBasicHouseTrading.setGmtModified(null);
-            basicHouseTradingService.saveAndUpdateBasicHouseTrading(targeBasicHouseTrading, true);
+            BasicHouseTrading houseTrading = basicHouseTradingService.getTradingByHouseId(targetHouseId);
+            if (houseTrading == null) {
+                houseTrading = new BasicHouseTrading();
+                BeanUtils.copyProperties(sourceBasicHouseTrading, houseTrading);
+                houseTrading.setId(null);
+                houseTrading.setHouseId(targetBasicHouse.getId());
+                houseTrading.setCreator(commonService.thisUserAccount());
+                houseTrading.setGmtCreated(null);
+                houseTrading.setGmtModified(null);
+            } else {
+                BeanUtils.copyProperties(sourceBasicHouseTrading, houseTrading,"id");
+                houseTrading.setHouseId(targetBasicHouse.getId());
+            }
+            basicHouseTradingService.saveAndUpdateBasicHouseTrading(houseTrading, true);
         }
         baseAttachmentService.copyFtpAttachments(sourceHouseId, targetBasicHouse.getId());
+        if (targetHouseId != null && targetHouseId > 0) {//目标数据已存在，先清理目标数据的从表数据
+            clearInvalidChildData(targetHouseId);
+        }
         if (containChild) {
             StringBuilder sqlBuilder = new StringBuilder();
             SynchronousDataDto synchronousDataDto = new SynchronousDataDto();
@@ -1273,5 +1259,41 @@ public class BasicHouseService {
             }
         }
         return targetBasicHouse;
+    }
+
+    /**
+     * 获取当前案例版本号
+     *
+     * @param estateId
+     * @param buildingId
+     * @param unitId
+     * @param houseNumber
+     * @return
+     */
+    public Integer getCurrVersion(Integer estateId, Integer buildingId, Integer unitId, String houseNumber) {
+        BasicHouse where = new BasicHouse();
+        where.setEstateId(estateId);
+        where.setBuildingId(buildingId);
+        where.setUnitId(unitId);
+        where.setHouseNumber(houseNumber);
+        return basicHouseDao.getCountByBasicHouse(where) + 1;
+    }
+
+    /**
+     * 数据转换为案例数据
+     *
+     * @param houseId
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void dataToCase(Integer houseId) {
+        BasicHouse basicHouse = getBasicHouseById(houseId);
+        if (basicHouse == null) return;
+        Integer currVersion = getCurrVersion(basicHouse.getEstateId(), basicHouse.getBuildingId(), basicHouse.getUnitId(), basicHouse.getHouseNumber());
+        //
+        if (currVersion > 1) {//1.将上个版本数据复制一份 2.将数据更新为最新数据 3.更新版本号
+
+        } else {//直接复制数据写入
+
+        }
     }
 }

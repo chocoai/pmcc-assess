@@ -55,5 +55,11 @@ public class BasicHouseDao {
         return basicHouseMapper.selectByExample(example);
     }
 
+    public Integer getCountByBasicHouse(BasicHouse basicHouse){
+        BasicHouseExample example = new BasicHouseExample();
+        BasicHouseExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
+        MybatisUtils.convertObj2Criteria(basicHouse, criteria);
+        return basicHouseMapper.countByExample(example);
+    }
 
 }

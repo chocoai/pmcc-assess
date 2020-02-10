@@ -1,4 +1,4 @@
-package com.copower.pmcc.assess.dal.cases.custom.entity;
+package com.copower.pmcc.assess.dal.basis.custom.entity;
 
 /**
  * Created by kings on 2018-11-21.

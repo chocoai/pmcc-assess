@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.dal.cases.dao;
 
-import com.copower.pmcc.assess.dal.cases.custom.entity.CustomCaseEntity;
-import com.copower.pmcc.assess.dal.cases.custom.mapper.CustomCaseMapper;
+import com.copower.pmcc.assess.dal.basis.custom.entity.CustomCaseEntity;
+import com.copower.pmcc.assess.dal.basis.custom.mapper.CustomCaseMapper;
 import com.copower.pmcc.assess.dal.cases.entity.CaseBuilding;
 import com.copower.pmcc.assess.dal.cases.entity.CaseBuildingExample;
 import com.copower.pmcc.assess.dal.cases.mapper.CaseBuildingMapper;
@@ -10,7 +10,6 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.sql.SQLException;
 import java.util.List;
 
 /**

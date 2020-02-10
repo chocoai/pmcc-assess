@@ -165,7 +165,7 @@ public class BasicEstateService {
     }
 
 
-    public BootstrapTableVo getBootstrapTableVo(BasicEstate basicEstate) throws Exception {
+    public BootstrapTableVo getBootstrapTableVo(BasicEstate basicEstate) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());

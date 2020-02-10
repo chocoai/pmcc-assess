@@ -7,16 +7,18 @@ import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchDetail;
 import com.copower.pmcc.assess.dal.basis.entity.BasicUnit;
 import com.copower.pmcc.assess.service.basic.BasicApplyBatchDetailService;
 import com.copower.pmcc.assess.service.basic.BasicUnitService;
-import com.copower.pmcc.assess.service.basic.PublicBasicService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * @Auther: zch
@@ -29,7 +31,7 @@ public class BasicUnitController {
     @Autowired
     private BasicUnitService basicUnitService;
     @Autowired
-    private PublicBasicService publicBasicService;
+    private ProcessControllerComponent processControllerComponent;
     @Autowired
     private BasicApplyBatchDetailService basicApplyBatchDetailService;
     @Autowired
@@ -38,6 +40,14 @@ public class BasicUnitController {
     private BasicApplyBatchDetailDao basicApplyBatchDetailDao;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
+
+    @RequestMapping(value = "/detailView", name = "转到详情页面 ", method = RequestMethod.GET)
+    public ModelAndView detailView(Integer id) throws Exception {
+        String view = "project/stageSurvey/house/detail/unit";
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
+        modelAndView.addObject(StringUtils.uncapitalize(BasicUnit.class.getSimpleName()), basicUnitService.getBasicUnitById(id));
+        return modelAndView;
+    }
 
     @ResponseBody
     @RequestMapping(value = "/getBasicUnitById", name = "获取数据", method = {RequestMethod.GET})
@@ -71,17 +81,6 @@ public class BasicUnitController {
             return HttpResult.newErrorResult(500, e.getMessage());
         }
     }
-
-//    @ResponseBody
-//    @RequestMapping(value = "/getBootstrapTableVo", method = {RequestMethod.GET})
-//    public BootstrapTableVo getBootstrapTableVo(BasicUnit basicUnit) {
-//        try {
-//            return basicUnitService.getBootstrapTableVo(basicUnit);
-//        } catch (Exception e) {
-//            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
-//            return null;
-//        }
-//    }
 
     @ResponseBody
     @RequestMapping(value = "/basicUnitList", name = "获取数据列表", method = {RequestMethod.GET})
@@ -165,18 +164,12 @@ public class BasicUnitController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getBasicUnitList", method = {RequestMethod.GET}, name = "获取案例 单元列表")
-    public BootstrapTableVo getBasicUnitList(Integer buildingId) {
+    @RequestMapping(value = "/getCaseUnitList", method = {RequestMethod.GET}, name = "获取案例 单元列表")
+    public BootstrapTableVo getCaseUnitList(Integer buildingId) {
         BasicUnit basicUnit = new BasicUnit();
-        BootstrapTableVo vo = new BootstrapTableVo();
-        try {
-            if (buildingId != null) {
-                vo = basicUnitService.getBootstrapTableVo(buildingId);
-            }
-        } catch (Exception e1) {
-            logger.error(String.format("exception: %s", e1.getMessage()), e1);
-            return null;
-        }
+        basicUnit.setBuildingId(buildingId);
+        basicUnit.setBisCase(true);
+        BootstrapTableVo vo = basicUnitService.getBootstrapTableVo(basicUnit);
         return vo;
     }
 

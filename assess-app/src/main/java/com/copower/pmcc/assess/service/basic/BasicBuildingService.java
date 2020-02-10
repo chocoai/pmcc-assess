@@ -195,18 +195,6 @@ public class BasicBuildingService {
         }
     }
 
-    public BootstrapTableVo getBootstrapTableVo(Integer estateId) throws Exception {
-        BootstrapTableVo vo = new BootstrapTableVo();
-        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
-        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        BasicApplyBatch applyBatch = basicApplyBatchService.getBasicApplyBatchByEstateId(estateId);
-        List<BasicBuilding> basicBuildingList = basicApplyBatchDetailService.getBuildingListByBatchId(applyBatch.getId());
-        List<BasicBuildingVo> transform = LangUtils.transform(basicBuildingList, o -> getBasicBuildingVo(o));
-        vo.setTotal(page.getTotal());
-        vo.setRows(ObjectUtils.isEmpty(transform) ? new ArrayList<BasicBuildingVo>(10) : transform);
-        return vo;
-    }
-
     public BootstrapTableVo getBootstrapTableVo(BasicBuilding basicBuilding) throws Exception {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();

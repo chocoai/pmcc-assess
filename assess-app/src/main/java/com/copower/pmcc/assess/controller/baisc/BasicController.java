@@ -1,11 +1,11 @@
-package com.copower.pmcc.assess.controller.cases;
+package com.copower.pmcc.assess.controller.baisc;
 
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.enums.basic.EstateTaggingTypeEnum;
-import com.copower.pmcc.assess.dal.cases.entity.CaseBaseHouse;
+import com.copower.pmcc.assess.dal.basis.entity.BasicHouseCaseSummary;
 import com.copower.pmcc.assess.dto.input.cases.CaseEstateTaggingDto;
-import com.copower.pmcc.assess.dto.output.cases.CaseBaseHouseVo;
-import com.copower.pmcc.assess.service.cases.CaseBaseHouseService;
+import com.copower.pmcc.assess.dto.output.basic.BasicHouseCaseSummaryVo;
+import com.copower.pmcc.assess.service.basic.BasicHouseCaseSummaryService;
 import com.copower.pmcc.assess.service.cases.CaseEstateService;
 import com.copower.pmcc.assess.service.cases.CaseEstateTaggingService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
@@ -31,13 +31,13 @@ import java.util.List;
  * Created by kings on 2018-7-6.
  */
 @Controller
-@RequestMapping(value = "/case", name = "案例 基础")
-public class CaseController {
+@RequestMapping(value = "/basic", name = "案例 基础")
+public class BasicController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
-    private CaseBaseHouseService caseBaseHouseService;
+    private BasicHouseCaseSummaryService basicHouseCaseSummaryService;
     @Autowired
     private CaseEstateService caseEstateService;
     @Autowired
@@ -95,18 +95,18 @@ public class CaseController {
 
     @ResponseBody
     @RequestMapping(value = "/getBootstrapTableCaseBaseHouseVo", method = {RequestMethod.GET}, name = "获取列表")
-    public BootstrapTableVo getBootstrapTableVo(BigDecimal areaStart, BigDecimal areaEnd, String tradingTimeStart, String tradingTimeEnd, CaseBaseHouse caseBaseHouse) {
+    public BootstrapTableVo getBootstrapTableVo(BigDecimal areaStart, BigDecimal areaEnd, String tradingTimeStart, String tradingTimeEnd, BasicHouseCaseSummary basicHouseCaseSummary) {
         BootstrapTableVo vo = null;
         try {
-            Date dateA = null;
-            Date dateB = null;
+            Date start = null;
+            Date end = null;
             if (StringUtils.isNotBlank(tradingTimeStart)) {
-                dateA = DateUtils.parse(tradingTimeStart);
+                start = DateUtils.parse(tradingTimeStart);
             }
             if (StringUtils.isNotBlank(tradingTimeEnd)) {
-                dateB = DateUtils.parse(tradingTimeEnd);
+                end = DateUtils.parse(tradingTimeEnd);
             }
-            //vo = caseBaseHouseService.getBootstrapTableVo(areaStart, areaEnd, dateA, dateB, caseBaseHouse);
+            vo = basicHouseCaseSummaryService.getBootstrapTableVo(areaStart, areaEnd, start, end, basicHouseCaseSummary);
         } catch (Exception e1) {
             logger.error("", e1);
         }
@@ -118,7 +118,7 @@ public class CaseController {
     public HttpResult getDataById(Integer id) {
         try {
             if (id != null) {
-                CaseBaseHouseVo vo = caseBaseHouseService.getCaseBaseHouseVo(caseBaseHouseService.getBaseHouseById(id));
+                BasicHouseCaseSummaryVo vo = basicHouseCaseSummaryService.getBasicHouseCaseSummaryVo(basicHouseCaseSummaryService.getBasicHouseCaseSummaryById(id));
                 return HttpResult.newCorrectResult(vo);
             }
         } catch (Exception e) {

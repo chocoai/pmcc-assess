@@ -5,11 +5,17 @@ import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDetailDao;
 import com.copower.pmcc.assess.dal.basis.entity.BasicAlternativeCase;
 import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchDetail;
 import com.copower.pmcc.assess.dal.basis.entity.BasicHouse;
+import com.copower.pmcc.assess.dal.basis.entity.BasicHouseTrading;
+import com.copower.pmcc.assess.dto.output.basic.BasicHouseTradingVo;
+import com.copower.pmcc.assess.dto.output.basic.BasicHouseVo;
 import com.copower.pmcc.assess.service.basic.BasicApplyBatchDetailService;
 import com.copower.pmcc.assess.service.basic.BasicHouseService;
+import com.copower.pmcc.assess.service.basic.BasicHouseTradingService;
 import com.copower.pmcc.assess.service.basic.PublicBasicService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +23,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * @Auther: zch
@@ -27,6 +34,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class BasicHouseController {
     @Autowired
+    private ProcessControllerComponent processControllerComponent;
+    @Autowired
     private PublicBasicService publicBasicService;
     @Autowired
     private BasicHouseService basicHouseService;
@@ -36,7 +45,20 @@ public class BasicHouseController {
     private BasicAlternativeCaseDao basicAlternativeCaseDao;
     @Autowired
     private BasicApplyBatchDetailDao basicApplyBatchDetailDao;
+    @Autowired
+    private BasicHouseTradingService basicHouseTradingService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
+
+    @RequestMapping(value = "/detailView", name = "转到详情页面 ", method = RequestMethod.GET)
+    public ModelAndView detailView(Integer id) throws Exception {
+        String view = "project/stageSurvey/house/detail/house";
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
+        BasicHouseVo basicHouseVo = publicBasicService.getBasicHouseVoById(id);
+        modelAndView.addObject(StringUtils.uncapitalize(BasicHouse.class.getSimpleName()), basicHouseVo);
+        BasicHouseTradingVo basicHouseTradingVo = basicHouseTradingService.getBasicHouseTradingVo(basicHouseTradingService.getTradingByHouseId(basicHouseVo.getId()));
+        modelAndView.addObject(StringUtils.uncapitalize(BasicHouseTrading.class.getSimpleName()), basicHouseTradingVo);
+        return modelAndView;
+    }
 
     @ResponseBody
     @RequestMapping(value = "/getBasicHouseById", name = "获取数据", method = {RequestMethod.GET})
@@ -70,17 +92,6 @@ public class BasicHouseController {
             return HttpResult.newErrorResult(500, e.getMessage());
         }
     }
-
-//    @ResponseBody
-//    @RequestMapping(value = "/getBootstrapTableVo", method = {RequestMethod.GET})
-//    public BootstrapTableVo getBootstrapTableVo(BasicHouse basicHouse) {
-//        try {
-//            return basicHouseService.getBootstrapTableVo(basicHouse);
-//        } catch (Exception e) {
-//            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
-//            return null;
-//        }
-//    }
 
     @ResponseBody
     @RequestMapping(value = "/basicHouseList", name = "获取数据列表", method = {RequestMethod.GET})
@@ -185,17 +196,12 @@ public class BasicHouseController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getBasicHouseList", method = {RequestMethod.GET}, name = "获取案例 房屋列表")
-    public BootstrapTableVo getBasicHouseList(Integer unitId) {
-        BootstrapTableVo vo = new BootstrapTableVo();
-        try {
-            if (unitId != null) {
-                vo = basicHouseService.getBootstrapTableVo(unitId);
-            }
-        } catch (Exception e1) {
-            logger.error(String.format("exception: %s", e1.getMessage()), e1);
-            return null;
-        }
+    @RequestMapping(value = "/getCaseHouseList", method = {RequestMethod.GET}, name = "获取案例 房屋列表")
+    public BootstrapTableVo getCaseHouseList(Integer unitId) {
+        BasicHouse basicHouse = new BasicHouse();
+        basicHouse.setUnitId(unitId);
+        basicHouse.setBisCase(true);
+        BootstrapTableVo vo = basicHouseService.getBootstrapTableVo(basicHouse);
         return vo;
     }
 
@@ -205,7 +211,7 @@ public class BasicHouseController {
         try {
             BasicApplyBatchDetail houseDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail("tb_basic_house", id);
             Integer quoteId = 0;
-            if (houseDetail != null && houseDetail.getPid() != null &&houseDetail.getUpgradeTableId()==null) {
+            if (houseDetail != null && houseDetail.getPid() != null && houseDetail.getUpgradeTableId() == null) {
                 quoteId = basicApplyBatchDetailService.getDataById(houseDetail.getPid()).getQuoteId();
             }
             return HttpResult.newCorrectResult(200, quoteId);

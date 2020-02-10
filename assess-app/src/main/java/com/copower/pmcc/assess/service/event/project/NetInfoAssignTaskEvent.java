@@ -3,16 +3,12 @@ package com.copower.pmcc.assess.service.event.project;
 import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordDao;
 import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordHouseDao;
 import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordLandDao;
-import com.copower.pmcc.assess.dal.basis.entity.NetInfoAssignTask;
-import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecord;
-import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordHouse;
-import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordLand;
-import com.copower.pmcc.assess.dal.cases.entity.CaseBaseHouse;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.service.NetInfoAssignTaskService;
 import com.copower.pmcc.assess.service.NetInfoRecordHouseService;
 import com.copower.pmcc.assess.service.NetInfoRecordLandService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
-import com.copower.pmcc.assess.service.cases.CaseBaseHouseService;
+import com.copower.pmcc.assess.service.basic.BasicHouseCaseSummaryService;
 import com.copower.pmcc.assess.service.event.BaseProcessEvent;
 import com.copower.pmcc.bpm.api.dto.model.ProcessExecution;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
@@ -41,7 +37,7 @@ public class NetInfoAssignTaskEvent extends BaseProcessEvent {
     @Autowired
     private NetInfoRecordLandDao netInfoRecordLandDao;
     @Autowired
-    private CaseBaseHouseService caseBaseHouseService;
+    private BasicHouseCaseSummaryService basicHouseCaseSummaryService;
     @Autowired
     private BaseAttachmentService baseAttachmentService;
 
@@ -65,42 +61,43 @@ public class NetInfoAssignTaskEvent extends BaseProcessEvent {
         if (CollectionUtils.isNotEmpty(netInfoRecordHouses)) {
             for (NetInfoRecordHouse o : netInfoRecordHouses) {
                 o.setStatus(1);
-                netInfoRecordHouseDao.updateNetInfoRecordHouse(o,true);
+                netInfoRecordHouseDao.updateNetInfoRecordHouse(o, true);
                 //验证后写入到标准表中
-                if (caseBaseHouseService.checkFullName(getFullName(o.getName(), o.getBuildingNumber(), o.getUnitNumber(), o.getHouseNumber()))) {
-                    CaseBaseHouse caseBaseHouse = new CaseBaseHouse();
-                    caseBaseHouse.setCaseHouseId(o.getId());
-                    caseBaseHouse.setProvince(o.getProvince());
-                    caseBaseHouse.setCity(o.getCity());
-                    caseBaseHouse.setDistrict(o.getDistrict());
-                    caseBaseHouse.setFullName(getFullName(o.getName(), o.getBuildingNumber(), o.getUnitNumber(), o.getHouseNumber()));
-                    caseBaseHouse.setStreet(o.getStreet());
-                    caseBaseHouse.setTradingTime(o.getNegotiatedDate());
-                    caseBaseHouse.setTradingUnitPrice(o.getUnitPrice());
-                    caseBaseHouse.setVersion(1);
-                    caseBaseHouse.setHouseType(o.getBelongType());
-                    caseBaseHouse.setHouseCategory(o.getBelongCategory());
-                    caseBaseHouse.setArea(o.getArea());
-                    caseBaseHouse.setEstateName(o.getName());
-                    caseBaseHouse.setDealType(o.getDealType());
-                    caseBaseHouse.setCurrentPrice(o.getCurrentPrice());
-                    caseBaseHouse.setConsultPrice(o.getConsultPrice());
-                    caseBaseHouse.setAssessStandardDate(o.getAssessStandardDate());
-                    caseBaseHouse.setRealizationRatios(o.getHouseRealizationRatios());
-                    caseBaseHouse.setRealizationCycle(o.getRealizationCycle());
-                    caseBaseHouse.setDealPartInfo(o.getDealPartInfo());
-                    caseBaseHouse.setApprover(o.getApprover());
-                    caseBaseHouse.setTradingType(o.getTradingType());
-                    caseBaseHouse.setCreator(o.getCreator());
-                    caseBaseHouseService.addBaseHouse(caseBaseHouse);
+                String fullName = getFullName(o.getName(), o.getBuildingNumber(), o.getUnitNumber(), o.getHouseNumber());
+                if (basicHouseCaseSummaryService.getCountByFullName(fullName) <= 0) {
+                    BasicHouseCaseSummary basicHouseCaseSummary = new BasicHouseCaseSummary();
+                    basicHouseCaseSummary.setCaseHouseId(o.getId());
+                    basicHouseCaseSummary.setProvince(o.getProvince());
+                    basicHouseCaseSummary.setCity(o.getCity());
+                    basicHouseCaseSummary.setDistrict(o.getDistrict());
+                    basicHouseCaseSummary.setFullName(getFullName(o.getName(), o.getBuildingNumber(), o.getUnitNumber(), o.getHouseNumber()));
+                    basicHouseCaseSummary.setStreet(o.getStreet());
+                    basicHouseCaseSummary.setTradingTime(o.getNegotiatedDate());
+                    basicHouseCaseSummary.setTradingUnitPrice(o.getUnitPrice());
+                    basicHouseCaseSummary.setVersion(1);
+                    basicHouseCaseSummary.setHouseType(o.getBelongType());
+                    basicHouseCaseSummary.setHouseCategory(o.getBelongCategory());
+                    basicHouseCaseSummary.setArea(o.getArea());
+                    basicHouseCaseSummary.setEstateName(o.getName());
+                    basicHouseCaseSummary.setDealType(o.getDealType());
+                    basicHouseCaseSummary.setCurrentPrice(o.getCurrentPrice());
+                    basicHouseCaseSummary.setConsultPrice(o.getConsultPrice());
+                    basicHouseCaseSummary.setAssessStandardDate(o.getAssessStandardDate());
+                    basicHouseCaseSummary.setRealizationRatios(o.getHouseRealizationRatios());
+                    basicHouseCaseSummary.setRealizationCycle(o.getRealizationCycle());
+                    basicHouseCaseSummary.setDealPartInfo(o.getDealPartInfo());
+                    basicHouseCaseSummary.setApprover(o.getApprover());
+                    basicHouseCaseSummary.setTradingType(o.getTradingType());
+                    basicHouseCaseSummary.setCreator(o.getCreator());
+                    basicHouseCaseSummaryService.addBaseHouseSummary(basicHouseCaseSummary);
 
                     //附件拷贝
                     SysAttachmentDto example = new SysAttachmentDto();
                     example.setTableId(o.getId());
                     example.setTableName(FormatUtils.entityNameConvertToTableName(NetInfoRecordHouse.class));
                     SysAttachmentDto attachmentDto = new SysAttachmentDto();
-                    attachmentDto.setTableId(caseBaseHouse.getId());
-                    attachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(CaseBaseHouse.class));
+                    attachmentDto.setTableId(basicHouseCaseSummary.getId());
+                    attachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicHouseCaseSummary.class));
                     baseAttachmentService.copyFtpAttachments(example, attachmentDto);
                 }
             }
@@ -110,7 +107,7 @@ public class NetInfoAssignTaskEvent extends BaseProcessEvent {
         if (CollectionUtils.isNotEmpty(netInfoRecordLands)) {
             netInfoRecordLands.forEach(o -> {
                 o.setStatus(1);
-                netInfoRecordLandDao.updateNetInfoRecordLand(o,true);
+                netInfoRecordLandDao.updateNetInfoRecordLand(o, true);
             });
         }
     }
@@ -125,6 +122,6 @@ public class NetInfoAssignTaskEvent extends BaseProcessEvent {
             stringBuilder.append(unitNumber).append("单元");
         if (StringUtils.isNotBlank(houseNumber))
             stringBuilder.append(houseNumber).append("号");
-        return stringBuilder.toString().replaceAll("号+?","号");
+        return stringBuilder.toString().replaceAll("号+?", "号");
     }
 }

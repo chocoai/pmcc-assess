@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.service.cases;
 
-import com.copower.pmcc.assess.dal.cases.custom.mapper.CustomCaseMapper;
+import com.copower.pmcc.assess.dal.basis.custom.mapper.CustomCaseMapper;
+import com.copower.pmcc.assess.dal.basis.entity.BasicHouseCaseSummary;
 import com.copower.pmcc.assess.dal.cases.dao.CaseBaseHouseDao;
 import com.copower.pmcc.assess.dal.cases.entity.CaseBaseHouse;
 import com.copower.pmcc.assess.dto.output.cases.CaseBaseHouseVo;
@@ -32,7 +33,6 @@ import java.util.List;
 public class CaseBaseHouseService {
     @Autowired
     private CaseBaseHouseDao caseBaseHouseDao;
-    @Lazy
     @Autowired
     private CustomCaseMapper customCaseMapper;
     @Autowired
@@ -46,11 +46,11 @@ public class CaseBaseHouseService {
         return caseBaseHouseDao.getBaseHouseById(id);
     }
 
-    public BootstrapTableVo getBootstrapTableVo(BigDecimal areaStart, BigDecimal areaEnd, Date tradingTimeStart, Date tradingTimeEnd, CaseBaseHouse caseBaseHouse) throws Exception {
+    public BootstrapTableVo getBootstrapTableVo(BigDecimal areaStart, BigDecimal areaEnd, Date tradingTimeStart, Date tradingTimeEnd, BasicHouseCaseSummary basicHouseCaseSummary) throws Exception {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<CaseBaseHouse> list = customCaseMapper.findCaseBaseHouseList(areaStart, areaEnd, tradingTimeStart, tradingTimeEnd, caseBaseHouse);
+        List<CaseBaseHouse> list = null;//customCaseMapper.findCaseBaseHouseList(areaStart, areaEnd, tradingTimeStart, tradingTimeEnd, basicHouseCaseSummary);
         List<CaseBaseHouseVo> vos = LangUtils.transform(list, o -> getCaseBaseHouseVo(o));
         vo.setTotal(page.getTotal());
         vo.setRows(vos);

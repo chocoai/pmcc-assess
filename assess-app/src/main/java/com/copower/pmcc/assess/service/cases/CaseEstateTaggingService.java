@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.service.cases;
 
 import com.copower.pmcc.assess.common.enums.basic.EstateTaggingTypeEnum;
-import com.copower.pmcc.assess.dal.cases.custom.mapper.CustomCaseMapper;
+import com.copower.pmcc.assess.dal.basis.custom.mapper.CustomCaseMapper;
 import com.copower.pmcc.assess.dal.cases.dao.CaseEstateTaggingDao;
 import com.copower.pmcc.assess.dal.cases.entity.*;
 import com.copower.pmcc.assess.dto.input.MapDto;

@@ -6,16 +6,18 @@ import com.copower.pmcc.assess.dal.basis.entity.BasicAlternativeCase;
 import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchDetail;
 import com.copower.pmcc.assess.dal.basis.entity.BasicBuilding;
 import com.copower.pmcc.assess.service.basic.BasicBuildingService;
-import com.copower.pmcc.assess.service.basic.PublicBasicService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -33,6 +35,8 @@ public class BasicBuildingController {
     private BasicAlternativeCaseDao basicAlternativeCaseDao;
     @Autowired
     private BasicApplyBatchDetailDao basicApplyBatchDetailDao;
+    @Autowired
+    private ProcessControllerComponent processControllerComponent;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @ResponseBody
@@ -114,17 +118,6 @@ public class BasicBuildingController {
         }
     }
 
-//    @ResponseBody
-//    @RequestMapping(value = "/getBootstrapTableVo", method = {RequestMethod.GET})
-//    public BootstrapTableVo getBootstrapTableVo(BasicBuilding basicBuilding) {
-//        try {
-//            return basicBuildingService.getBootstrapTableVo(basicBuilding);
-//        } catch (Exception e) {
-//            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
-//            return null;
-//        }
-//    }
-
     @ResponseBody
     @RequestMapping(value = "/basicBuildingList", name = "获取数据列表", method = {RequestMethod.GET})
     public HttpResult basicBuildingList(BasicBuilding basicBuilding) {
@@ -159,12 +152,22 @@ public class BasicBuildingController {
         }
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/getBuildingList", method = {RequestMethod.GET}, name = "楼栋--列表")
-    public BootstrapTableVo getBootstrapTableVo(Integer estateId) throws Exception {
-        if (estateId == null) return null;
+    @RequestMapping(value = "/detailView", name = "详情页面 ", method = RequestMethod.GET)
+    public ModelAndView detailView(Integer id) throws Exception {
+        String view = "project/stageSurvey/house/detail/building";
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
+        modelAndView.addObject(StringUtils.uncapitalize(BasicBuilding.class.getSimpleName()), basicBuildingService.getBasicBuildingById(id));
+        return modelAndView;
+    }
 
-        BootstrapTableVo vo = basicBuildingService.getBootstrapTableVo(estateId);
+    @ResponseBody
+    @RequestMapping(value = "/getCaseBuildingList", method = {RequestMethod.GET}, name = "楼栋--列表")
+    public BootstrapTableVo getCaseBuildingList(Integer estateId) throws Exception {
+        if (estateId == null) return null;
+        BasicBuilding building = new BasicBuilding();
+        building.setEstateId(estateId);
+        building.setBisCase(true);
+        BootstrapTableVo vo = basicBuildingService.getBootstrapTableVo(building);
         return vo;
     }
 }

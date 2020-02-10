@@ -248,7 +248,7 @@
                 }
             });
             $("#" + baseFun.config.father.caseEstate.table()).bootstrapTable('destroy');
-            TableInit(baseFun.config.father.caseEstate.table(), "${pageContext.request.contextPath}/caseEstate/getCaseEstateVos", cols, {
+            TableInit(baseFun.config.father.caseEstate.table(), "${pageContext.request.contextPath}/basicEstate/getCaseEstateVos", cols, {
                 name: estate.search,
                 city: estate.city,
                 province: estate.province
@@ -276,7 +276,7 @@
          * @date:2018-09-13
          **/
         findData: function (id) {
-            var href = "${pageContext.request.contextPath}/caseEstate/detailView";
+            var href = "${pageContext.request.contextPath}/basicEstate/detailView";
             href += "?id=" + id;
             window.open(href, "");
         },
@@ -291,7 +291,7 @@
 
     baseFun.caseBuild = {
         findData: function (id) {
-            var href = "${pageContext.request.contextPath}/caseBuilding/detailView";
+            var href = "${pageContext.request.contextPath}/basicBuilding/detailView";
             href += "?id=" + id;
             window.open(href, "");
         },
@@ -310,7 +310,7 @@
                 }
             });
             $("#" + baseFun.config.father.caseBuild.table()).bootstrapTable('destroy');
-            TableInit(baseFun.config.father.caseBuild.table(), "${pageContext.request.contextPath}/caseBuilding/getBuildingList", cols, {
+            TableInit(baseFun.config.father.caseBuild.table(), "${pageContext.request.contextPath}/basicBuilding/getCaseBuildingList", cols, {
                 estateId: estateId
             }, {
                 showColumns: false,
@@ -330,7 +330,7 @@
 
     baseFun.caseUnit = {
         findData: function (id) {
-            var href = "${pageContext.request.contextPath}/caseUnit/detailView";
+            var href = "${pageContext.request.contextPath}/basicUnit/detailView";
             href += "?id=" + id;
             window.open(href, "");
         },
@@ -349,8 +349,8 @@
                 }
             });
             $("#" + baseFun.config.father.caseUnit.table()).bootstrapTable('destroy');
-            TableInit(baseFun.config.father.caseUnit.table(), "${pageContext.request.contextPath}/caseUnit/getCaseUnitList", cols, {
-                caseBuildingId: buildingId
+            TableInit(baseFun.config.father.caseUnit.table(), "${pageContext.request.contextPath}/basicUnit/getCaseUnitList", cols, {
+                buildingId: buildingId
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -369,7 +369,7 @@
 
     baseFun.caseHouse = {
         findData: function (id) {
-            var href = "${pageContext.request.contextPath}/caseHouse/detailView";
+            var href = "${pageContext.request.contextPath}/basicHouse/detailView";
             href += "?id=" + id;
             window.open(href, "");
         },
@@ -388,7 +388,7 @@
                 }
             });
             $("#" + baseFun.config.father.caseHouse.table()).bootstrapTable('destroy');
-            TableInit(baseFun.config.father.caseHouse.table(), "${pageContext.request.contextPath}/caseHouse/getCaseHouseList", cols, {
+            TableInit(baseFun.config.father.caseHouse.table(), "${pageContext.request.contextPath}/basicHouse/getCaseHouseList", cols, {
                 unitId: unitId
             }, {
                 showColumns: false,
@@ -408,9 +408,6 @@
             cityTarget: $("#" + baseFun.config.father.caseEstate.frm()).find('[name=city]')
         });
         baseFun.caseEstate.loadDataList();
-        baseFun.caseBuild.loadDataList(null);
-        baseFun.caseUnit.loadDataList(null);
-        baseFun.caseHouse.loadDataList(null);
         $("#" + baseFun.config.father.caseEstate.frm() + " input[name='search']").apEstate({
             onSelect: function (id, name) {
                 $("#" + baseFun.config.father.caseEstate.frm() + " input[name='search']").val(name) ;

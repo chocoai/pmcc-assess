@@ -1,6 +1,7 @@
-package com.copower.pmcc.assess.dal.cases.custom.mapper;
+package com.copower.pmcc.assess.dal.basis.custom.mapper;
 
-import com.copower.pmcc.assess.dal.cases.custom.entity.CustomCaseEntity;
+import com.copower.pmcc.assess.dal.basis.custom.entity.CustomCaseEntity;
+import com.copower.pmcc.assess.dal.basis.entity.BasicHouseCaseSummary;
 import com.copower.pmcc.assess.dal.cases.entity.*;
 import org.apache.ibatis.annotations.Param;
 
@@ -59,11 +60,11 @@ public interface CustomCaseMapper {
      * @param tradingUnitPriceEnd
      * @param tradingTimeStart
      * @param tradingTimeEnd
-     * @param caseBaseHouse
+     * @param basicHouseCaseSummary
      * @return
      * @throws SQLException
      */
-    public List<CaseBaseHouse> findCaseBaseHouseList(@Param("areaStart") BigDecimal tradingUnitPriceStart, @Param("areaEnd") BigDecimal tradingUnitPriceEnd, @Param("tradingTimeStart") Date tradingTimeStart, @Param("tradingTimeEnd") Date tradingTimeEnd, @Param("caseBaseHouse") CaseBaseHouse caseBaseHouse) throws SQLException;
+    public List<BasicHouseCaseSummary> findCaseBaseHouseList(@Param("areaStart") BigDecimal tradingUnitPriceStart, @Param("areaEnd") BigDecimal tradingUnitPriceEnd, @Param("tradingTimeStart") Date tradingTimeStart, @Param("tradingTimeEnd") Date tradingTimeEnd, @Param("basicHouseCaseSummary") BasicHouseCaseSummary basicHouseCaseSummary) throws SQLException;
 
     /**
      * 筛选版本最新并且筛选版本不重复的楼栋号码

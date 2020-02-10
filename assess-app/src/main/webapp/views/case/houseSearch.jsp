@@ -339,7 +339,7 @@
     var houseFrm = $("#frmCaseBaseHouse");
 
     houseSearch.findHouse = function (id) {
-        var href = "${pageContext.request.contextPath}/caseHouse/detailView";
+        var href = "${pageContext.request.contextPath}/basicHouse/detailView";
         href += "?id=" + id;
         window.open(href, "");
     };
@@ -396,7 +396,7 @@
             }
         });
         $("#tbCaseBaseHouseList").bootstrapTable('destroy');
-        TableInit("tbCaseBaseHouseList", "${pageContext.request.contextPath}/case/getBootstrapTableCaseBaseHouseVo", cols,
+        TableInit("tbCaseBaseHouseList", "${pageContext.request.contextPath}/basic/getBootstrapTableCaseBaseHouseVo", cols,
             formSerializeArray(houseFrm), {
                 showColumns: false,
                 showRefresh: false,
@@ -409,7 +409,7 @@
 
     houseSearch.showItem = function (id) {
         $.ajax({
-            url: "${pageContext.request.contextPath}/case/getDataById",
+            url: "${pageContext.request.contextPath}/basic/getDataById",
             type: "get",
             dataType: "json",
             data: {id: id},
@@ -433,7 +433,7 @@
         FileUtils.getFileShows({
             target: "uploadHouseFile",
             formData: {
-                tableName: "tb_case_base_house",
+                tableName: "tb_basic_house_case_summary",
                 tableId: id
             },
             deleteFlag: true

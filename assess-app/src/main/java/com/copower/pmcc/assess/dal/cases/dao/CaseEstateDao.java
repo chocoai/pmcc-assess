@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.dal.cases.dao;
 
-import com.copower.pmcc.assess.dal.cases.custom.entity.CustomCaseEntity;
-import com.copower.pmcc.assess.dal.cases.custom.mapper.CustomCaseMapper;
+import com.copower.pmcc.assess.dal.basis.custom.entity.CustomCaseEntity;
+import com.copower.pmcc.assess.dal.basis.custom.mapper.CustomCaseMapper;
 import com.copower.pmcc.assess.dal.cases.entity.CaseEstate;
 import com.copower.pmcc.assess.dal.cases.entity.CaseEstateExample;
 import com.copower.pmcc.assess.dal.cases.mapper.CaseEstateMapper;
