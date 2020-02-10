@@ -2576,6 +2576,66 @@ public class BasicEstateExample {
             return (Criteria) this;
         }
 
+        public Criteria andDisplayCaseIdIsNull() {
+            addCriterion("display_case_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayCaseIdIsNotNull() {
+            addCriterion("display_case_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayCaseIdEqualTo(Integer value) {
+            addCriterion("display_case_id =", value, "displayCaseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayCaseIdNotEqualTo(Integer value) {
+            addCriterion("display_case_id <>", value, "displayCaseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayCaseIdGreaterThan(Integer value) {
+            addCriterion("display_case_id >", value, "displayCaseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayCaseIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("display_case_id >=", value, "displayCaseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayCaseIdLessThan(Integer value) {
+            addCriterion("display_case_id <", value, "displayCaseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayCaseIdLessThanOrEqualTo(Integer value) {
+            addCriterion("display_case_id <=", value, "displayCaseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayCaseIdIn(List<Integer> values) {
+            addCriterion("display_case_id in", values, "displayCaseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayCaseIdNotIn(List<Integer> values) {
+            addCriterion("display_case_id not in", values, "displayCaseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayCaseIdBetween(Integer value1, Integer value2) {
+            addCriterion("display_case_id between", value1, value2, "displayCaseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDisplayCaseIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("display_case_id not between", value1, value2, "displayCaseId");
+            return (Criteria) this;
+        }
+
         public Criteria andMapIdIsNull() {
             addCriterion("map_id is null");
             return (Criteria) this;
@@ -2633,6 +2693,186 @@ public class BasicEstateExample {
 
         public Criteria andMapIdNotBetween(Integer value1, Integer value2) {
             addCriterion("map_id not between", value1, value2, "mapId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelevanceIdIsNull() {
+            addCriterion("relevance_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelevanceIdIsNotNull() {
+            addCriterion("relevance_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelevanceIdEqualTo(Integer value) {
+            addCriterion("relevance_id =", value, "relevanceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelevanceIdNotEqualTo(Integer value) {
+            addCriterion("relevance_id <>", value, "relevanceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelevanceIdGreaterThan(Integer value) {
+            addCriterion("relevance_id >", value, "relevanceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelevanceIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("relevance_id >=", value, "relevanceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelevanceIdLessThan(Integer value) {
+            addCriterion("relevance_id <", value, "relevanceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelevanceIdLessThanOrEqualTo(Integer value) {
+            addCriterion("relevance_id <=", value, "relevanceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelevanceIdIn(List<Integer> values) {
+            addCriterion("relevance_id in", values, "relevanceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelevanceIdNotIn(List<Integer> values) {
+            addCriterion("relevance_id not in", values, "relevanceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelevanceIdBetween(Integer value1, Integer value2) {
+            addCriterion("relevance_id between", value1, value2, "relevanceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelevanceIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("relevance_id not between", value1, value2, "relevanceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionIsNull() {
+            addCriterion("version is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionIsNotNull() {
+            addCriterion("version is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionEqualTo(Integer value) {
+            addCriterion("version =", value, "version");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionNotEqualTo(Integer value) {
+            addCriterion("version <>", value, "version");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionGreaterThan(Integer value) {
+            addCriterion("version >", value, "version");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionGreaterThanOrEqualTo(Integer value) {
+            addCriterion("version >=", value, "version");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionLessThan(Integer value) {
+            addCriterion("version <", value, "version");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionLessThanOrEqualTo(Integer value) {
+            addCriterion("version <=", value, "version");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionIn(List<Integer> values) {
+            addCriterion("version in", values, "version");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionNotIn(List<Integer> values) {
+            addCriterion("version not in", values, "version");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionBetween(Integer value1, Integer value2) {
+            addCriterion("version between", value1, value2, "version");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionNotBetween(Integer value1, Integer value2) {
+            addCriterion("version not between", value1, value2, "version");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisCaseIsNull() {
+            addCriterion("bis_case is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisCaseIsNotNull() {
+            addCriterion("bis_case is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisCaseEqualTo(Boolean value) {
+            addCriterion("bis_case =", value, "bisCase");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisCaseNotEqualTo(Boolean value) {
+            addCriterion("bis_case <>", value, "bisCase");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisCaseGreaterThan(Boolean value) {
+            addCriterion("bis_case >", value, "bisCase");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisCaseGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_case >=", value, "bisCase");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisCaseLessThan(Boolean value) {
+            addCriterion("bis_case <", value, "bisCase");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisCaseLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_case <=", value, "bisCase");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisCaseIn(List<Boolean> values) {
+            addCriterion("bis_case in", values, "bisCase");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisCaseNotIn(List<Boolean> values) {
+            addCriterion("bis_case not in", values, "bisCase");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisCaseBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_case between", value1, value2, "bisCase");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisCaseNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_case not between", value1, value2, "bisCase");
             return (Criteria) this;
         }
 
@@ -2883,126 +3123,6 @@ public class BasicEstateExample {
 
         public Criteria andGmtModifiedNotBetween(Date value1, Date value2) {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
-            return (Criteria) this;
-        }
-
-        public Criteria andRelevanceIdIsNull() {
-            addCriterion("relevance_id is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andRelevanceIdIsNotNull() {
-            addCriterion("relevance_id is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andRelevanceIdEqualTo(Integer value) {
-            addCriterion("relevance_id =", value, "relevanceId");
-            return (Criteria) this;
-        }
-
-        public Criteria andRelevanceIdNotEqualTo(Integer value) {
-            addCriterion("relevance_id <>", value, "relevanceId");
-            return (Criteria) this;
-        }
-
-        public Criteria andRelevanceIdGreaterThan(Integer value) {
-            addCriterion("relevance_id >", value, "relevanceId");
-            return (Criteria) this;
-        }
-
-        public Criteria andRelevanceIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("relevance_id >=", value, "relevanceId");
-            return (Criteria) this;
-        }
-
-        public Criteria andRelevanceIdLessThan(Integer value) {
-            addCriterion("relevance_id <", value, "relevanceId");
-            return (Criteria) this;
-        }
-
-        public Criteria andRelevanceIdLessThanOrEqualTo(Integer value) {
-            addCriterion("relevance_id <=", value, "relevanceId");
-            return (Criteria) this;
-        }
-
-        public Criteria andRelevanceIdIn(List<Integer> values) {
-            addCriterion("relevance_id in", values, "relevanceId");
-            return (Criteria) this;
-        }
-
-        public Criteria andRelevanceIdNotIn(List<Integer> values) {
-            addCriterion("relevance_id not in", values, "relevanceId");
-            return (Criteria) this;
-        }
-
-        public Criteria andRelevanceIdBetween(Integer value1, Integer value2) {
-            addCriterion("relevance_id between", value1, value2, "relevanceId");
-            return (Criteria) this;
-        }
-
-        public Criteria andRelevanceIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("relevance_id not between", value1, value2, "relevanceId");
-            return (Criteria) this;
-        }
-
-        public Criteria andDisplayCaseIdIsNull() {
-            addCriterion("display_case_id is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andDisplayCaseIdIsNotNull() {
-            addCriterion("display_case_id is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andDisplayCaseIdEqualTo(Integer value) {
-            addCriterion("display_case_id =", value, "displayCaseId");
-            return (Criteria) this;
-        }
-
-        public Criteria andDisplayCaseIdNotEqualTo(Integer value) {
-            addCriterion("display_case_id <>", value, "displayCaseId");
-            return (Criteria) this;
-        }
-
-        public Criteria andDisplayCaseIdGreaterThan(Integer value) {
-            addCriterion("display_case_id >", value, "displayCaseId");
-            return (Criteria) this;
-        }
-
-        public Criteria andDisplayCaseIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("display_case_id >=", value, "displayCaseId");
-            return (Criteria) this;
-        }
-
-        public Criteria andDisplayCaseIdLessThan(Integer value) {
-            addCriterion("display_case_id <", value, "displayCaseId");
-            return (Criteria) this;
-        }
-
-        public Criteria andDisplayCaseIdLessThanOrEqualTo(Integer value) {
-            addCriterion("display_case_id <=", value, "displayCaseId");
-            return (Criteria) this;
-        }
-
-        public Criteria andDisplayCaseIdIn(List<Integer> values) {
-            addCriterion("display_case_id in", values, "displayCaseId");
-            return (Criteria) this;
-        }
-
-        public Criteria andDisplayCaseIdNotIn(List<Integer> values) {
-            addCriterion("display_case_id not in", values, "displayCaseId");
-            return (Criteria) this;
-        }
-
-        public Criteria andDisplayCaseIdBetween(Integer value1, Integer value2) {
-            addCriterion("display_case_id between", value1, value2, "displayCaseId");
-            return (Criteria) this;
-        }
-
-        public Criteria andDisplayCaseIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("display_case_id not between", value1, value2, "displayCaseId");
             return (Criteria) this;
         }
     }

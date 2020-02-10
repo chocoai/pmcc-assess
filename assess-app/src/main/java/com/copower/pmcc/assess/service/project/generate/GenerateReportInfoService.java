@@ -65,12 +65,12 @@ public class GenerateReportInfoService {
      * @return
      */
     @Transactional(rollbackFor = Exception.class)
-    public List<GenerateReportInfoVo> initGenerateReportInfo(Integer projectId, Integer planId) {
+    public void initGenerateReportInfo(Integer projectId, Integer planId) {
         GenerateReportInfo where = new GenerateReportInfo();
         where.setProjectId(projectId);
         List<GenerateReportInfo> generationList = generateReportGenerationList(where);
         List<SchemeAreaGroup> areaGroupList = schemeAreaGroupService.getAreaGroupEnableByProjectId(projectId);
-        if(CollectionUtils.isEmpty(areaGroupList)) return Lists.newArrayList();
+        if(CollectionUtils.isEmpty(areaGroupList)) return;
         Iterator<SchemeAreaGroup> areaGroupIterator = areaGroupList.iterator();
         while (areaGroupIterator.hasNext()) {
             SchemeAreaGroup areaGroup = (SchemeAreaGroup) areaGroupIterator.next();
@@ -102,9 +102,6 @@ public class GenerateReportInfoService {
                 generationList.add(generateReportInfo);
             }
         }
-
-
-        return LangUtils.transform(generateReportGenerationList(where), o -> getGenerateReportInfoVo(o));
     }
 
 

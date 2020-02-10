@@ -46,10 +46,6 @@ public class DataBlockController extends BaseController {
     private PublicBasicService publicBasicService;
     @Autowired
     private NetInfoRecordService netInfoRecordService;
-    @Autowired
-    private SurveyAssetRightDeclareService surveyAssetRightDeclareService;
-    @Autowired
-    private SchemeLiquidationAnalysisService schemeLiquidationAnalysisService;
 
 
     @RequestMapping(value = "/view", name = "转到index页面 ", method = {RequestMethod.GET})

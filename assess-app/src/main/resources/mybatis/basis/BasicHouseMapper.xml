@@ -4,6 +4,8 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.BasicHouse" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="apply_id" property="applyId" jdbcType="INTEGER" />
+    <result column="estate_id" property="estateId" jdbcType="INTEGER" />
+    <result column="building_id" property="buildingId" jdbcType="INTEGER" />
     <result column="unit_id" property="unitId" jdbcType="INTEGER" />
     <result column="house_number" property="houseNumber" jdbcType="VARCHAR" />
     <result column="floor" property="floor" jdbcType="VARCHAR" />
@@ -33,13 +35,15 @@
     <result column="price_connotation" property="priceConnotation" jdbcType="INTEGER" />
     <result column="decorate_situation_description" property="decorateSituationDescription" jdbcType="VARCHAR" />
     <result column="map_id" property="mapId" jdbcType="INTEGER" />
+    <result column="huxing_data" property="huxingData" jdbcType="VARCHAR" />
+    <result column="relevance_id" property="relevanceId" jdbcType="INTEGER" />
+    <result column="display_case_id" property="displayCaseId" jdbcType="INTEGER" />
+    <result column="version" property="version" jdbcType="INTEGER" />
+    <result column="bis_case" property="bisCase" jdbcType="BIT" />
     <result column="bis_delete" property="bisDelete" jdbcType="BIT" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
-    <result column="relevance_id" property="relevanceId" jdbcType="INTEGER" />
-    <result column="display_case_id" property="displayCaseId" jdbcType="INTEGER" />
-    <result column="huxing_data" property="huxingData" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -100,12 +104,13 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, apply_id, unit_id, house_number, floor, floor_desc, huxing_id, huxing_name, new_huxing_name, 
-    spatial_distribution, spatial_distribution_desc, cert_use, practical_use, orientation, 
-    area, area_desc, research_type, right_interests_restriction, use_environment, description, 
-    case_date, use_year, floor_price, land_location, new_degree, use_condition, use_condition_description, 
-    decorate_situation, price_connotation, decorate_situation_description, map_id, bis_delete, 
-    creator, gmt_created, gmt_modified, relevance_id, display_case_id, huxing_data
+    id, apply_id, estate_id, building_id, unit_id, house_number, floor, floor_desc, huxing_id, 
+    huxing_name, new_huxing_name, spatial_distribution, spatial_distribution_desc, cert_use, 
+    practical_use, orientation, area, area_desc, research_type, right_interests_restriction, 
+    use_environment, description, case_date, use_year, floor_price, land_location, new_degree, 
+    use_condition, use_condition_description, decorate_situation, price_connotation, 
+    decorate_situation_description, map_id, huxing_data, relevance_id, display_case_id, 
+    version, bis_case, bis_delete, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseExample" >
     select
@@ -141,32 +146,36 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_basic_house (apply_id, unit_id, house_number, 
-      floor, floor_desc, huxing_id, 
-      huxing_name, new_huxing_name, spatial_distribution, 
-      spatial_distribution_desc, cert_use, practical_use, 
-      orientation, area, area_desc, 
-      research_type, right_interests_restriction, 
-      use_environment, description, case_date, 
-      use_year, floor_price, land_location, 
-      new_degree, use_condition, use_condition_description, 
+    insert into tb_basic_house (apply_id, estate_id, building_id, 
+      unit_id, house_number, floor, 
+      floor_desc, huxing_id, huxing_name, 
+      new_huxing_name, spatial_distribution, spatial_distribution_desc, 
+      cert_use, practical_use, orientation, 
+      area, area_desc, research_type, 
+      right_interests_restriction, use_environment, 
+      description, case_date, use_year, 
+      floor_price, land_location, new_degree, 
+      use_condition, use_condition_description, 
       decorate_situation, price_connotation, decorate_situation_description, 
-      map_id, bis_delete, creator, 
-      gmt_created, gmt_modified, relevance_id, 
-      display_case_id, huxing_data)
-    values (#{applyId,jdbcType=INTEGER}, #{unitId,jdbcType=INTEGER}, #{houseNumber,jdbcType=VARCHAR}, 
-      #{floor,jdbcType=VARCHAR}, #{floorDesc,jdbcType=VARCHAR}, #{huxingId,jdbcType=INTEGER}, 
-      #{huxingName,jdbcType=VARCHAR}, #{newHuxingName,jdbcType=VARCHAR}, #{spatialDistribution,jdbcType=INTEGER}, 
-      #{spatialDistributionDesc,jdbcType=VARCHAR}, #{certUse,jdbcType=VARCHAR}, #{practicalUse,jdbcType=VARCHAR}, 
-      #{orientation,jdbcType=INTEGER}, #{area,jdbcType=DECIMAL}, #{areaDesc,jdbcType=VARCHAR}, 
-      #{researchType,jdbcType=INTEGER}, #{rightInterestsRestriction,jdbcType=VARCHAR}, 
-      #{useEnvironment,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}, #{caseDate,jdbcType=TIMESTAMP}, 
-      #{useYear,jdbcType=INTEGER}, #{floorPrice,jdbcType=DECIMAL}, #{landLocation,jdbcType=VARCHAR}, 
-      #{newDegree,jdbcType=VARCHAR}, #{useCondition,jdbcType=INTEGER}, #{useConditionDescription,jdbcType=VARCHAR}, 
+      map_id, huxing_data, relevance_id, 
+      display_case_id, version, bis_case, 
+      bis_delete, creator, gmt_created, 
+      gmt_modified)
+    values (#{applyId,jdbcType=INTEGER}, #{estateId,jdbcType=INTEGER}, #{buildingId,jdbcType=INTEGER}, 
+      #{unitId,jdbcType=INTEGER}, #{houseNumber,jdbcType=VARCHAR}, #{floor,jdbcType=VARCHAR}, 
+      #{floorDesc,jdbcType=VARCHAR}, #{huxingId,jdbcType=INTEGER}, #{huxingName,jdbcType=VARCHAR}, 
+      #{newHuxingName,jdbcType=VARCHAR}, #{spatialDistribution,jdbcType=INTEGER}, #{spatialDistributionDesc,jdbcType=VARCHAR}, 
+      #{certUse,jdbcType=VARCHAR}, #{practicalUse,jdbcType=VARCHAR}, #{orientation,jdbcType=INTEGER}, 
+      #{area,jdbcType=DECIMAL}, #{areaDesc,jdbcType=VARCHAR}, #{researchType,jdbcType=INTEGER}, 
+      #{rightInterestsRestriction,jdbcType=VARCHAR}, #{useEnvironment,jdbcType=INTEGER}, 
+      #{description,jdbcType=VARCHAR}, #{caseDate,jdbcType=TIMESTAMP}, #{useYear,jdbcType=INTEGER}, 
+      #{floorPrice,jdbcType=DECIMAL}, #{landLocation,jdbcType=VARCHAR}, #{newDegree,jdbcType=VARCHAR}, 
+      #{useCondition,jdbcType=INTEGER}, #{useConditionDescription,jdbcType=VARCHAR}, 
       #{decorateSituation,jdbcType=INTEGER}, #{priceConnotation,jdbcType=INTEGER}, #{decorateSituationDescription,jdbcType=VARCHAR}, 
-      #{mapId,jdbcType=INTEGER}, #{bisDelete,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{relevanceId,jdbcType=INTEGER}, 
-      #{displayCaseId,jdbcType=INTEGER}, #{huxingData,jdbcType=VARCHAR})
+      #{mapId,jdbcType=INTEGER}, #{huxingData,jdbcType=VARCHAR}, #{relevanceId,jdbcType=INTEGER}, 
+      #{displayCaseId,jdbcType=INTEGER}, #{version,jdbcType=INTEGER}, #{bisCase,jdbcType=BIT}, 
+      #{bisDelete,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouse" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -176,6 +185,12 @@
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="applyId != null" >
         apply_id,
+      </if>
+      <if test="estateId != null" >
+        estate_id,
+      </if>
+      <if test="buildingId != null" >
+        building_id,
       </if>
       <if test="unitId != null" >
         unit_id,
@@ -264,6 +279,21 @@
       <if test="mapId != null" >
         map_id,
       </if>
+      <if test="huxingData != null" >
+        huxing_data,
+      </if>
+      <if test="relevanceId != null" >
+        relevance_id,
+      </if>
+      <if test="displayCaseId != null" >
+        display_case_id,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+      <if test="bisCase != null" >
+        bis_case,
+      </if>
       <if test="bisDelete != null" >
         bis_delete,
       </if>
@@ -276,19 +306,16 @@
       <if test="gmtModified != null" >
         gmt_modified,
       </if>
-      <if test="relevanceId != null" >
-        relevance_id,
-      </if>
-      <if test="displayCaseId != null" >
-        display_case_id,
-      </if>
-      <if test="huxingData != null" >
-        huxing_data,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="applyId != null" >
         #{applyId,jdbcType=INTEGER},
+      </if>
+      <if test="estateId != null" >
+        #{estateId,jdbcType=INTEGER},
+      </if>
+      <if test="buildingId != null" >
+        #{buildingId,jdbcType=INTEGER},
       </if>
       <if test="unitId != null" >
         #{unitId,jdbcType=INTEGER},
@@ -377,6 +404,21 @@
       <if test="mapId != null" >
         #{mapId,jdbcType=INTEGER},
       </if>
+      <if test="huxingData != null" >
+        #{huxingData,jdbcType=VARCHAR},
+      </if>
+      <if test="relevanceId != null" >
+        #{relevanceId,jdbcType=INTEGER},
+      </if>
+      <if test="displayCaseId != null" >
+        #{displayCaseId,jdbcType=INTEGER},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=INTEGER},
+      </if>
+      <if test="bisCase != null" >
+        #{bisCase,jdbcType=BIT},
+      </if>
       <if test="bisDelete != null" >
         #{bisDelete,jdbcType=BIT},
       </if>
@@ -388,15 +430,6 @@
       </if>
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="relevanceId != null" >
-        #{relevanceId,jdbcType=INTEGER},
-      </if>
-      <if test="displayCaseId != null" >
-        #{displayCaseId,jdbcType=INTEGER},
-      </if>
-      <if test="huxingData != null" >
-        #{huxingData,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -414,6 +447,12 @@
       </if>
       <if test="record.applyId != null" >
         apply_id = #{record.applyId,jdbcType=INTEGER},
+      </if>
+      <if test="record.estateId != null" >
+        estate_id = #{record.estateId,jdbcType=INTEGER},
+      </if>
+      <if test="record.buildingId != null" >
+        building_id = #{record.buildingId,jdbcType=INTEGER},
       </if>
       <if test="record.unitId != null" >
         unit_id = #{record.unitId,jdbcType=INTEGER},
@@ -502,6 +541,21 @@
       <if test="record.mapId != null" >
         map_id = #{record.mapId,jdbcType=INTEGER},
       </if>
+      <if test="record.huxingData != null" >
+        huxing_data = #{record.huxingData,jdbcType=VARCHAR},
+      </if>
+      <if test="record.relevanceId != null" >
+        relevance_id = #{record.relevanceId,jdbcType=INTEGER},
+      </if>
+      <if test="record.displayCaseId != null" >
+        display_case_id = #{record.displayCaseId,jdbcType=INTEGER},
+      </if>
+      <if test="record.version != null" >
+        version = #{record.version,jdbcType=INTEGER},
+      </if>
+      <if test="record.bisCase != null" >
+        bis_case = #{record.bisCase,jdbcType=BIT},
+      </if>
       <if test="record.bisDelete != null" >
         bis_delete = #{record.bisDelete,jdbcType=BIT},
       </if>
@@ -514,15 +568,6 @@
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.relevanceId != null" >
-        relevance_id = #{record.relevanceId,jdbcType=INTEGER},
-      </if>
-      <if test="record.displayCaseId != null" >
-        display_case_id = #{record.displayCaseId,jdbcType=INTEGER},
-      </if>
-      <if test="record.huxingData != null" >
-        huxing_data = #{record.huxingData,jdbcType=VARCHAR},
-      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -532,6 +577,8 @@
     update tb_basic_house
     set id = #{record.id,jdbcType=INTEGER},
       apply_id = #{record.applyId,jdbcType=INTEGER},
+      estate_id = #{record.estateId,jdbcType=INTEGER},
+      building_id = #{record.buildingId,jdbcType=INTEGER},
       unit_id = #{record.unitId,jdbcType=INTEGER},
       house_number = #{record.houseNumber,jdbcType=VARCHAR},
       floor = #{record.floor,jdbcType=VARCHAR},
@@ -561,13 +608,15 @@
       price_connotation = #{record.priceConnotation,jdbcType=INTEGER},
       decorate_situation_description = #{record.decorateSituationDescription,jdbcType=VARCHAR},
       map_id = #{record.mapId,jdbcType=INTEGER},
+      huxing_data = #{record.huxingData,jdbcType=VARCHAR},
+      relevance_id = #{record.relevanceId,jdbcType=INTEGER},
+      display_case_id = #{record.displayCaseId,jdbcType=INTEGER},
+      version = #{record.version,jdbcType=INTEGER},
+      bis_case = #{record.bisCase,jdbcType=BIT},
       bis_delete = #{record.bisDelete,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      relevance_id = #{record.relevanceId,jdbcType=INTEGER},
-      display_case_id = #{record.displayCaseId,jdbcType=INTEGER},
-      huxing_data = #{record.huxingData,jdbcType=VARCHAR}
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -577,6 +626,12 @@
     <set >
       <if test="applyId != null" >
         apply_id = #{applyId,jdbcType=INTEGER},
+      </if>
+      <if test="estateId != null" >
+        estate_id = #{estateId,jdbcType=INTEGER},
+      </if>
+      <if test="buildingId != null" >
+        building_id = #{buildingId,jdbcType=INTEGER},
       </if>
       <if test="unitId != null" >
         unit_id = #{unitId,jdbcType=INTEGER},
@@ -665,6 +720,21 @@
       <if test="mapId != null" >
         map_id = #{mapId,jdbcType=INTEGER},
       </if>
+      <if test="huxingData != null" >
+        huxing_data = #{huxingData,jdbcType=VARCHAR},
+      </if>
+      <if test="relevanceId != null" >
+        relevance_id = #{relevanceId,jdbcType=INTEGER},
+      </if>
+      <if test="displayCaseId != null" >
+        display_case_id = #{displayCaseId,jdbcType=INTEGER},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=INTEGER},
+      </if>
+      <if test="bisCase != null" >
+        bis_case = #{bisCase,jdbcType=BIT},
+      </if>
       <if test="bisDelete != null" >
         bis_delete = #{bisDelete,jdbcType=BIT},
       </if>
@@ -677,21 +747,14 @@
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="relevanceId != null" >
-        relevance_id = #{relevanceId,jdbcType=INTEGER},
-      </if>
-      <if test="displayCaseId != null" >
-        display_case_id = #{displayCaseId,jdbcType=INTEGER},
-      </if>
-      <if test="huxingData != null" >
-        huxing_data = #{huxingData,jdbcType=VARCHAR},
-      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouse" >
     update tb_basic_house
     set apply_id = #{applyId,jdbcType=INTEGER},
+      estate_id = #{estateId,jdbcType=INTEGER},
+      building_id = #{buildingId,jdbcType=INTEGER},
       unit_id = #{unitId,jdbcType=INTEGER},
       house_number = #{houseNumber,jdbcType=VARCHAR},
       floor = #{floor,jdbcType=VARCHAR},
@@ -721,13 +784,15 @@
       price_connotation = #{priceConnotation,jdbcType=INTEGER},
       decorate_situation_description = #{decorateSituationDescription,jdbcType=VARCHAR},
       map_id = #{mapId,jdbcType=INTEGER},
+      huxing_data = #{huxingData,jdbcType=VARCHAR},
+      relevance_id = #{relevanceId,jdbcType=INTEGER},
+      display_case_id = #{displayCaseId,jdbcType=INTEGER},
+      version = #{version,jdbcType=INTEGER},
+      bis_case = #{bisCase,jdbcType=BIT},
       bis_delete = #{bisDelete,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      relevance_id = #{relevanceId,jdbcType=INTEGER},
-      display_case_id = #{displayCaseId,jdbcType=INTEGER},
-      huxing_data = #{huxingData,jdbcType=VARCHAR}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

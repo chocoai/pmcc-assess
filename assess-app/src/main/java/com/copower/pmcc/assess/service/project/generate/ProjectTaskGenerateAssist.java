@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.service.project.generate;
 import com.copower.pmcc.ad.api.enums.AdPersonalEnum;
 import com.copower.pmcc.assess.common.enums.AssessProjectTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
+import com.copower.pmcc.assess.dal.basis.dao.project.generate.GenerateReportInfoDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -16,6 +17,7 @@ import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -49,6 +51,8 @@ public class ProjectTaskGenerateAssist implements ProjectTaskInterface {
     private ProjectPlanService projectPlanService;
     @Autowired
     private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
+    @Autowired
+    private GenerateReportInfoDao generateReportInfoDao;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
@@ -88,7 +92,9 @@ public class ProjectTaskGenerateAssist implements ProjectTaskInterface {
         modelAndView.addObject("schemeAreaGroupList", schemeAreaGroupList);
         modelAndView.addObject("projectPlan", projectPlan);
         modelAndView.addObject("qualificationTypes", qualificationTypes);
-        modelAndView.addObject("generationVos", generateReportInfoService.initGenerateReportInfo(projectPlan.getProjectId(),projectPlan.getId()));
+        generateReportInfoService.initGenerateReportInfo(projectPlan.getProjectId(),projectPlan.getId());
+        List<GenerateReportInfo> list =generateReportInfoDao.getGenerateReportInfoList(projectPlan.getProjectId());
+        modelAndView.addObject("generationVos", LangUtils.transform(list, o -> generateReportInfoService.getGenerateReportInfoVo(o)));
         List<KeyValueDto> keyValueDtoList = Lists.newArrayList();
         for (AssessProjectTypeEnum typeEnum: AssessProjectTypeEnum.values()){
             keyValueDtoList.add(new KeyValueDto(typeEnum.getNumber().toString(),typeEnum.getDec())) ;

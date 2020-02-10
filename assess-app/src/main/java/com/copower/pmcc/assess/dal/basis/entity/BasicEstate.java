@@ -80,7 +80,15 @@ public class BasicEstate {
 
     private String locationDescribe;
 
+    private Integer displayCaseId;
+
     private Integer mapId;
+
+    private Integer relevanceId;
+
+    private Integer version;
+
+    private Boolean bisCase;
 
     private Boolean bisDelete;
 
@@ -89,10 +97,6 @@ public class BasicEstate {
     private Date gmtCreated;
 
     private Date gmtModified;
-
-    private Integer relevanceId;
-
-    private Integer displayCaseId;
 
     public Integer getId() {
         return id;
@@ -398,12 +402,44 @@ public class BasicEstate {
         this.locationDescribe = locationDescribe == null ? null : locationDescribe.trim();
     }
 
+    public Integer getDisplayCaseId() {
+        return displayCaseId;
+    }
+
+    public void setDisplayCaseId(Integer displayCaseId) {
+        this.displayCaseId = displayCaseId;
+    }
+
     public Integer getMapId() {
         return mapId;
     }
 
     public void setMapId(Integer mapId) {
         this.mapId = mapId;
+    }
+
+    public Integer getRelevanceId() {
+        return relevanceId;
+    }
+
+    public void setRelevanceId(Integer relevanceId) {
+        this.relevanceId = relevanceId;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
+    public Boolean getBisCase() {
+        return bisCase;
+    }
+
+    public void setBisCase(Boolean bisCase) {
+        this.bisCase = bisCase;
     }
 
     public Boolean getBisDelete() {
@@ -436,21 +472,5 @@ public class BasicEstate {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public Integer getRelevanceId() {
-        return relevanceId;
-    }
-
-    public void setRelevanceId(Integer relevanceId) {
-        this.relevanceId = relevanceId;
-    }
-
-    public Integer getDisplayCaseId() {
-        return displayCaseId;
-    }
-
-    public void setDisplayCaseId(Integer displayCaseId) {
-        this.displayCaseId = displayCaseId;
     }
 }

@@ -8,6 +8,10 @@ public class BasicHouse {
 
     private Integer applyId;
 
+    private Integer estateId;
+
+    private Integer buildingId;
+
     private Integer unitId;
 
     private String houseNumber;
@@ -66,6 +70,16 @@ public class BasicHouse {
 
     private Integer mapId;
 
+    private String huxingData;
+
+    private Integer relevanceId;
+
+    private Integer displayCaseId;
+
+    private Integer version;
+
+    private Boolean bisCase;
+
     private Boolean bisDelete;
 
     private String creator;
@@ -73,12 +87,6 @@ public class BasicHouse {
     private Date gmtCreated;
 
     private Date gmtModified;
-
-    private Integer relevanceId;
-
-    private Integer displayCaseId;
-
-    private String huxingData;
 
     public Integer getId() {
         return id;
@@ -94,6 +102,22 @@ public class BasicHouse {
 
     public void setApplyId(Integer applyId) {
         this.applyId = applyId;
+    }
+
+    public Integer getEstateId() {
+        return estateId;
+    }
+
+    public void setEstateId(Integer estateId) {
+        this.estateId = estateId;
+    }
+
+    public Integer getBuildingId() {
+        return buildingId;
+    }
+
+    public void setBuildingId(Integer buildingId) {
+        this.buildingId = buildingId;
     }
 
     public Integer getUnitId() {
@@ -328,6 +352,46 @@ public class BasicHouse {
         this.mapId = mapId;
     }
 
+    public String getHuxingData() {
+        return huxingData;
+    }
+
+    public void setHuxingData(String huxingData) {
+        this.huxingData = huxingData == null ? null : huxingData.trim();
+    }
+
+    public Integer getRelevanceId() {
+        return relevanceId;
+    }
+
+    public void setRelevanceId(Integer relevanceId) {
+        this.relevanceId = relevanceId;
+    }
+
+    public Integer getDisplayCaseId() {
+        return displayCaseId;
+    }
+
+    public void setDisplayCaseId(Integer displayCaseId) {
+        this.displayCaseId = displayCaseId;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
+    public Boolean getBisCase() {
+        return bisCase;
+    }
+
+    public void setBisCase(Boolean bisCase) {
+        this.bisCase = bisCase;
+    }
+
     public Boolean getBisDelete() {
         return bisDelete;
     }
@@ -358,29 +422,5 @@ public class BasicHouse {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public Integer getRelevanceId() {
-        return relevanceId;
-    }
-
-    public void setRelevanceId(Integer relevanceId) {
-        this.relevanceId = relevanceId;
-    }
-
-    public Integer getDisplayCaseId() {
-        return displayCaseId;
-    }
-
-    public void setDisplayCaseId(Integer displayCaseId) {
-        this.displayCaseId = displayCaseId;
-    }
-
-    public String getHuxingData() {
-        return huxingData;
-    }
-
-    public void setHuxingData(String huxingData) {
-        this.huxingData = huxingData == null ? null : huxingData.trim();
     }
 }
