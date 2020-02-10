@@ -61,6 +61,7 @@ public class AssessmentTaskService implements AssessmentTaskInterface {
         }
         dto.setCreator(commonService.thisUserAccount());
         dto.setValidScore(new BigDecimal(0));
+        dto.setBusinessKey("默认考核类型");
         chksRpcAssessmentService.saveAndUpdateAssessmentProjectPerformanceDto(dto, true);
     }
 }
