@@ -137,44 +137,6 @@
         })
     };
 
-    //项目中引用数据
-    unitCommon.getDataFromProject = function (applyId, callback) {
-        $.ajax({
-            url: getContextPath() + '/basicUnit/getDataFromProject',
-            type: 'get',
-            data: {applyId: applyId},
-            success: function (result) {
-                if (result.ret) {
-                    unitCommon.showUnitView(result.data);
-                    unitCommon.applyId = applyId;
-                    if (callback) {
-                        callback(result.data);
-                    }
-                }
-            }
-        })
-    };
-
-    //项目中引用楼盘(批量)
-    unitCommon.batchGetDataFromProject = function (applyId, tableId, callback) {
-        $.ajax({
-            url: getContextPath() + '/basicUnit/batchGetDataFromProject',
-            type: 'get',
-            data: {
-                applyId: applyId,
-                tableId: tableId
-            },
-            success: function (result) {
-                if (result.ret) {
-                    unitCommon.showUnitView(result.data);
-                    unitCommon.applyId = applyId;
-                    if (callback) {
-                        callback(result.data);
-                    }
-                }
-            }
-        })
-    };
 
     //楼盘标注（通过tableId）
     unitCommon.mapMarker2 = function (readonly, tableId) {
@@ -378,54 +340,6 @@
             }
         })
     };
-
-    unitCommon.onSelect = function (id,name) {
-        $.ajax({
-            url: getContextPath() + '/caseUnit/getCaseUnitById',
-            data: {
-                id: id,
-            },
-            type: 'get',
-            success: function (result) {
-                if (result.ret) {
-                    caseFun.caseUnit.showModel(result.data.buildingId,name);
-                } else {
-                    console.log(result.errmsg);
-                    Alert("转移失败!");
-                }
-            }
-        })
-    };
-
-    unitCommon.autocompleteStart = function () {
-        var id = unitCommon.unitForm.find('[name=id]').val();
-        $.ajax({
-            url: getContextPath() + '/basicUnit/getQuoteBuildingId',
-            data: {
-                id: id,
-            },
-            type: 'get',
-            success: function (result) {
-                if (result.ret) {
-                    var caseBuildingId = result.data;
-                    $("#txt_Unit_search").apUnit({
-                        caseBuildingId: function () {
-                            return caseBuildingId;
-                        },
-                        onSelect: function (id, name) {
-                            unitCommon.onSelect(id,name);
-                        }
-                    });
-                } else {
-                    console.log(result.errmsg);
-                    Alert("转移失败!");
-                }
-            }
-        })
-
-
-    };
-
 
     window.unitCommon = unitCommon;
 })(jQuery);

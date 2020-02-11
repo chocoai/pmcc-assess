@@ -3,11 +3,10 @@ package com.copower.pmcc.assess.controller.baisc;
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.enums.basic.EstateTaggingTypeEnum;
 import com.copower.pmcc.assess.dal.basis.entity.BasicHouseCaseSummary;
-import com.copower.pmcc.assess.dto.input.cases.CaseEstateTaggingDto;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseCaseSummaryVo;
+import com.copower.pmcc.assess.service.basic.BasicEstateService;
+import com.copower.pmcc.assess.service.basic.BasicEstateTaggingService;
 import com.copower.pmcc.assess.service.basic.BasicHouseCaseSummaryService;
-import com.copower.pmcc.assess.service.cases.CaseEstateService;
-import com.copower.pmcc.assess.service.cases.CaseEstateTaggingService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
@@ -17,7 +16,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -25,7 +23,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by kings on 2018-7-6.
@@ -39,16 +36,16 @@ public class BasicController {
     @Autowired
     private BasicHouseCaseSummaryService basicHouseCaseSummaryService;
     @Autowired
-    private CaseEstateService caseEstateService;
+    private BasicEstateService basicEstateService;
     @Autowired
-    private CaseEstateTaggingService caseEstateTaggingService;
+    private BasicEstateTaggingService basicEstateTaggingService;
 
     @RequestMapping(value = "/areaCaseMap", name = "案例地图", method = {RequestMethod.GET})
     public ModelAndView areaEstateCaseMap() {
         String view = "/case/areaCaseMap";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
         try {
-            modelAndView.addObject("mapList", JSON.toJSONString(caseEstateTaggingService.mapDtoList(null, EstateTaggingTypeEnum.ESTATE.getKey())));
+            modelAndView.addObject("mapList", JSON.toJSONString(basicEstateTaggingService.mapDtoList(null, EstateTaggingTypeEnum.ESTATE.getKey())));
         } catch (Exception e1) {
             logger.error("区域楼盘案例获取经度和纬度出错!", e1);
         }
@@ -61,17 +58,7 @@ public class BasicController {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
         try {
             if (estateId != null) {
-                CaseEstateTaggingDto dto = caseEstateTaggingService.getCaseEstateTagging(estateId, EstateTaggingTypeEnum.ESTATE.getKey());
-                if (dto != null) {
-                    List<CaseEstateTaggingDto> list = caseEstateTaggingService.queryCaseEstateTagging(dto.getTableId(), EstateTaggingTypeEnum.ESTATE.getKey());
-                    if (!ObjectUtils.isEmpty(list)) {
-                        for (CaseEstateTaggingDto caseEstateTaggingDto : list) {
-                            dto.getChildren().add(caseEstateTaggingDto);
-                        }
-                    }
-                }
-                modelAndView.addObject("mapTree", JSON.toJSONString(dto));
-                modelAndView.addObject("caseEstate", caseEstateService.getCaseEstateById(estateId));
+                modelAndView.addObject("caseEstate", basicEstateService.getBasicEstateById(estateId));
             }
         } catch (Exception e1) {
             logger.error("区域楼盘案例获取经度和纬度出错!", e1);

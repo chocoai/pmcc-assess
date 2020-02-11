@@ -127,7 +127,7 @@
         var lng = Number(e.lnglat.getLng());
         var lat = Number(e.lnglat.getLat());
         var dataId = e.target.F.extData.dataId;
-        var href = "${pageContext.request.contextPath}/case/estateCaseMap";
+        var href = "${pageContext.request.contextPath}/basic/estateCaseMap";
         href += "?estateId=" + dataId;
         if (areaMap.isNotBlank(dataId)) {
             window.open(href, "");

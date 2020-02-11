@@ -1,9 +1,8 @@
 package com.copower.pmcc.assess.controller.baisc;
 
+import com.copower.pmcc.assess.dal.basis.custom.entity.CustomCaseEntity;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicAlternativeCaseDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDetailDao;
-import com.copower.pmcc.assess.dal.basis.entity.BasicAlternativeCase;
-import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchDetail;
 import com.copower.pmcc.assess.dal.basis.entity.BasicUnit;
 import com.copower.pmcc.assess.service.basic.BasicApplyBatchDetailService;
 import com.copower.pmcc.assess.service.basic.BasicUnitService;
@@ -19,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 /**
  * @Auther: zch
@@ -105,42 +106,6 @@ public class BasicUnitController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getDataFromProject", name = "项目中引用数据", method = {RequestMethod.GET})
-    public HttpResult getDataFromProject(Integer applyId) {
-        try {
-            return HttpResult.newCorrectResult(basicUnitService.getBasicUnitByFromProject(applyId));
-        } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
-            return HttpResult.newErrorResult(e.getMessage());
-        }
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/quoteUnitData", name = "项目中引用数据批量", method = {RequestMethod.GET})
-    public HttpResult quoteUnitData(Integer id, Integer tableId) {
-        try {
-            return HttpResult.newCorrectResult(basicUnitService.quoteUnitData(id, tableId));
-        } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
-            return HttpResult.newErrorResult(e.getMessage());
-        }
-    }
-
-
-    @ResponseBody
-    @RequestMapping(value = "/quoteFromAlternative", name = "引用项目中的数据批量时", method = {RequestMethod.GET})
-    public HttpResult quoteFromAlternative(Integer id, Integer tableId) {
-        try {
-            BasicAlternativeCase alternativeCase = basicAlternativeCaseDao.getBasicAlternativeCaseById(id);
-            BasicApplyBatchDetail batchDetail = basicApplyBatchDetailDao.getInfoById(alternativeCase.getBusinessId());
-            return HttpResult.newCorrectResult(basicUnitService.quoteUnitData(batchDetail.getTableId(), tableId));
-        } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
-            return HttpResult.newErrorResult(e.getMessage());
-        }
-    }
-
-    @ResponseBody
     @RequestMapping(value = "/addUnit", name = "添加单元信息", method = {RequestMethod.POST})
     public HttpResult addUnit(String unitNumber) {
         try {
@@ -151,21 +116,10 @@ public class BasicUnitController {
         }
     }
 
-
-    @ResponseBody
-    @RequestMapping(value = "/appWriteUnit", name = "过程数据转移", method = {RequestMethod.POST})
-    public HttpResult appWriteUnit(Integer caseUnitId, String unitPartInMode, Integer applyId) {
-        try {
-            return HttpResult.newCorrectResult(200, basicUnitService.appWriteUnit(caseUnitId, unitPartInMode, applyId));
-        } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
-            return HttpResult.newErrorResult(500, e.getMessage());
-        }
-    }
-
     @ResponseBody
     @RequestMapping(value = "/getCaseUnitList", method = {RequestMethod.GET}, name = "获取案例 单元列表")
     public BootstrapTableVo getCaseUnitList(Integer buildingId) {
+        if (buildingId == null) return null;
         BasicUnit basicUnit = new BasicUnit();
         basicUnit.setBuildingId(buildingId);
         basicUnit.setBisCase(true);
@@ -174,18 +128,28 @@ public class BasicUnitController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getQuoteBuildingId", name = "获取引用的楼栋id", method = RequestMethod.GET)
-    public HttpResult getAndEditDetail(Integer id) {
+    @RequestMapping(value = "/autoCompleteCaseUnit", method = {RequestMethod.GET}, name = "单元-- 信息自动补全")
+    public HttpResult autoCompleteCaseEstate(String unitNumber, Integer caseBuildingId) {
         try {
-            BasicApplyBatchDetail unitDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail("tb_basic_unit", id);
-            Integer quoteId = 0;
-            if (unitDetail != null && unitDetail.getPid()!= null &&unitDetail.getUpgradeTableId()==null) {
-                quoteId = basicApplyBatchDetailService.getDataById(unitDetail.getPid()).getQuoteId();
-            }
-            return HttpResult.newCorrectResult(200, quoteId);
+            List<CustomCaseEntity> caseEntities = basicUnitService.autoCompleteCaseUnit(unitNumber, caseBuildingId);
+            return HttpResult.newCorrectResult(caseEntities);
+        } catch (Exception e1) {
+            return HttpResult.newErrorResult("异常");
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/quoteCaseUnit", name = "引用案列数据", method = {RequestMethod.GET})
+    public HttpResult quoteCaseUnit(Integer sourceId, Integer targetId) {
+        try {
+            BasicUnit basicUnit = basicUnitService.copyBasicUnitIgnore(sourceId, targetId, true,"estateId","buildingId");
+            basicUnit.setQuoteId(sourceId);
+            basicUnit.setBisCase(false);
+            basicUnitService.saveAndUpdateBasicUnit(basicUnit,false);
+            return HttpResult.newCorrectResult(basicUnit);
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
-            return HttpResult.newErrorResult(500, e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
         }
     }
 

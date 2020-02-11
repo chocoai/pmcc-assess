@@ -28,7 +28,7 @@
                     caseBuildingId = defaults.caseBuildingId;
                 }
                 $.ajax({
-                    url: getContextPath() + "/caseUnit/autoCompleteCaseUnit",
+                    url: getContextPath() + "/basicUnit/autoCompleteCaseUnit",
                     type: "get",
                     dataType: "json",
                     data: {

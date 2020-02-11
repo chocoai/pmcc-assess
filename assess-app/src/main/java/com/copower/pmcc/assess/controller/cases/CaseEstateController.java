@@ -95,7 +95,7 @@ public class CaseEstateController {
             //已复制则更新
             BasicEstate estate = new BasicEstate();
             estate.setDisplayCaseId(id);
-            List<BasicEstate> basicEstates = basicEstateDao.basicEstateList(estate);
+            List<BasicEstate> basicEstates = basicEstateDao.getBasicEstateList(estate);
             if (CollectionUtils.isNotEmpty(basicEstates)) {
                 estate = basicEstates.get(0);
             } else {

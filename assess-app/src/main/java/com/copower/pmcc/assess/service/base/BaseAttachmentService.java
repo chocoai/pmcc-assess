@@ -269,8 +269,9 @@ public class BaseAttachmentService {
      * @param targetTableId
      * @return
      */
-    public void copyFtpAttachments(Integer sourceTableId, Integer targetTableId) throws Exception {
+    public void copyFtpAttachments(String tableName,Integer sourceTableId, Integer targetTableId) throws Exception {
         SysAttachmentDto example = new SysAttachmentDto();
+        example.setTableName(tableName);
         example.setTableId(sourceTableId);
         SysAttachmentDto attachmentDto = new SysAttachmentDto();
         attachmentDto.setTableId(targetTableId);

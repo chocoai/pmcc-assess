@@ -6,17 +6,14 @@ import com.copower.pmcc.assess.common.enums.ResponsibileModelEnum;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectTaskReturnRecordDao;
-import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeSurePriceRecordDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
-import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
-import com.copower.pmcc.assess.service.basic.BasicApplyTransferService;
+import com.copower.pmcc.assess.service.basic.PublicBasicService;
 import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
-import com.copower.pmcc.assess.service.project.scheme.SchemeSurePriceService;
 import com.copower.pmcc.bpm.api.dto.ActivitiTaskNodeDto;
 import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
@@ -48,7 +45,6 @@ import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -58,7 +54,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -103,7 +98,7 @@ public class ProjectPlanDetailsService {
     @Autowired
     private ProjectWorkStageService projectWorkStageService;
     @Autowired
-    private BasicApplyTransferService basicApplyTransferService;
+    private PublicBasicService publicBasicService;
     @Autowired
     private ProjectMemberService projectMemberService;
     @Autowired
@@ -709,7 +704,7 @@ public class ProjectPlanDetailsService {
             throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
         ProjectPlanDetails copyPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsById(copyPlanDetailsId);
         ProjectPlanDetails pastePlanDetails = projectPlanDetailsDao.getProjectPlanDetailsById(pastePlanDetailsId);
-        basicApplyTransferService.copyForExamine(copyPlanDetails.getId(), pastePlanDetails.getId());
+        publicBasicService.copyForExamine(copyPlanDetails.getId(), pastePlanDetails.getId());
     }
 
     /**

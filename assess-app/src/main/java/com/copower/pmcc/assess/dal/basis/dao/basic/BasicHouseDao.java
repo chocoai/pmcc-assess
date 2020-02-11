@@ -1,5 +1,7 @@
 package com.copower.pmcc.assess.dal.basis.dao.basic;
 
+import com.copower.pmcc.assess.dal.basis.custom.entity.CustomCaseEntity;
+import com.copower.pmcc.assess.dal.basis.custom.mapper.CustomCaseMapper;
 import com.copower.pmcc.assess.dal.basis.entity.BasicHouse;
 import com.copower.pmcc.assess.dal.basis.entity.BasicHouseExample;
 import com.copower.pmcc.assess.dal.basis.mapper.BasicHouseMapper;
@@ -7,7 +9,6 @@ import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -20,6 +21,8 @@ public class BasicHouseDao {
 
     @Autowired
     private BasicHouseMapper basicHouseMapper;
+    @Autowired
+    private CustomCaseMapper customCaseMapper;
 
     public BasicHouse getBasicHouseById(Integer id) {
         return basicHouseMapper.selectByPrimaryKey(id);
@@ -62,4 +65,13 @@ public class BasicHouseDao {
         return basicHouseMapper.countByExample(example);
     }
 
+    /**
+     * 获取最新版本房屋信息
+     *
+     * @param unitId
+     * @return
+     */
+    public List<CustomCaseEntity> getLatestVersionHouseList(String houseNumber, Integer unitId) {
+        return customCaseMapper.getCaseHouseList(houseNumber, unitId);
+    }
 }

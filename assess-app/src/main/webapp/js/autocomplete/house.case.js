@@ -28,7 +28,7 @@
                     unitId = defaults.caseUnitId;
                 }
                 $.ajax({
-                    url: getContextPath() + "/caseHouse/autoCompleteCaseHouse",
+                    url: getContextPath() + "/basicHouse/autoCompleteCaseHouse",
                     type: "get",
                     dataType: "json",
                     data: {

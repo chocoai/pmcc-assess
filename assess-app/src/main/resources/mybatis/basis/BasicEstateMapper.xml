@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.BasicEstate" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="apply_id" property="applyId" jdbcType="INTEGER" />
+    <result column="quote_id" property="quoteId" jdbcType="INTEGER" />
     <result column="classify" property="classify" jdbcType="INTEGER" />
     <result column="type" property="type" jdbcType="INTEGER" />
     <result column="province" property="province" jdbcType="VARCHAR" />
@@ -36,8 +37,8 @@
     <result column="supply_road" property="supplyRoad" jdbcType="INTEGER" />
     <result column="supply_water" property="supplyWater" jdbcType="INTEGER" />
     <result column="drain_water" property="drainWater" jdbcType="INTEGER" />
-    <result column="infrastructure" property="infrastructure" jdbcType="VARCHAR" />
     <result column="supply_gas" property="supplyGas" jdbcType="INTEGER" />
+    <result column="infrastructure" property="infrastructure" jdbcType="VARCHAR" />
     <result column="infrastructure_completeness" property="infrastructureCompleteness" jdbcType="INTEGER" />
     <result column="location_describe" property="locationDescribe" jdbcType="VARCHAR" />
     <result column="display_case_id" property="displayCaseId" jdbcType="INTEGER" />
@@ -45,6 +46,7 @@
     <result column="relevance_id" property="relevanceId" jdbcType="INTEGER" />
     <result column="version" property="version" jdbcType="INTEGER" />
     <result column="bis_case" property="bisCase" jdbcType="BIT" />
+    <result column="bis_enable" property="bisEnable" jdbcType="BIT" />
     <result column="bis_delete" property="bisDelete" jdbcType="BIT" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
@@ -109,13 +111,14 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, apply_id, classify, type, province, city, district, block_id, block_name, block_description, 
-    developer, developer_name, name, street_number, street, number, land_level, attach_number, 
-    floor_area, cover_an_area, volumetric_rate, greening_rate, open_time, building_number, 
-    position, description, average_price, price_range, supply_heating, supply_power, 
-    supply_communication, supply_road, supply_water, drain_water, infrastructure, supply_gas, 
-    infrastructure_completeness, location_describe, display_case_id, map_id, relevance_id, 
-    version, bis_case, bis_delete, creator, gmt_created, gmt_modified
+    id, apply_id, quote_id, classify, type, province, city, district, block_id, block_name, 
+    block_description, developer, developer_name, name, street_number, street, number, 
+    land_level, attach_number, floor_area, cover_an_area, volumetric_rate, greening_rate, 
+    open_time, building_number, position, description, average_price, price_range, supply_heating, 
+    supply_power, supply_communication, supply_road, supply_water, drain_water, supply_gas, 
+    infrastructure, infrastructure_completeness, location_describe, display_case_id, 
+    map_id, relevance_id, version, bis_case, bis_enable, bis_delete, creator, gmt_created, 
+    gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstateExample" >
     select
@@ -151,36 +154,38 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_basic_estate (apply_id, classify, type, 
-      province, city, district, 
-      block_id, block_name, block_description, 
-      developer, developer_name, name, 
-      street_number, street, number, 
-      land_level, attach_number, floor_area, 
-      cover_an_area, volumetric_rate, greening_rate, 
-      open_time, building_number, position, 
-      description, average_price, price_range, 
-      supply_heating, supply_power, supply_communication, 
-      supply_road, supply_water, drain_water, 
-      infrastructure, supply_gas, infrastructure_completeness, 
-      location_describe, display_case_id, map_id, 
-      relevance_id, version, bis_case, 
+    insert into tb_basic_estate (apply_id, quote_id, classify, 
+      type, province, city, 
+      district, block_id, block_name, 
+      block_description, developer, developer_name, 
+      name, street_number, street, 
+      number, land_level, attach_number, 
+      floor_area, cover_an_area, volumetric_rate, 
+      greening_rate, open_time, building_number, 
+      position, description, average_price, 
+      price_range, supply_heating, supply_power, 
+      supply_communication, supply_road, supply_water, 
+      drain_water, supply_gas, infrastructure, 
+      infrastructure_completeness, location_describe, 
+      display_case_id, map_id, relevance_id, 
+      version, bis_case, bis_enable, 
       bis_delete, creator, gmt_created, 
       gmt_modified)
-    values (#{applyId,jdbcType=INTEGER}, #{classify,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, 
-      #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, 
-      #{blockId,jdbcType=INTEGER}, #{blockName,jdbcType=VARCHAR}, #{blockDescription,jdbcType=VARCHAR}, 
-      #{developer,jdbcType=VARCHAR}, #{developerName,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
-      #{streetNumber,jdbcType=VARCHAR}, #{street,jdbcType=VARCHAR}, #{number,jdbcType=VARCHAR}, 
-      #{landLevel,jdbcType=INTEGER}, #{attachNumber,jdbcType=VARCHAR}, #{floorArea,jdbcType=DECIMAL}, 
-      #{coverAnArea,jdbcType=DECIMAL}, #{volumetricRate,jdbcType=VARCHAR}, #{greeningRate,jdbcType=VARCHAR}, 
-      #{openTime,jdbcType=TIMESTAMP}, #{buildingNumber,jdbcType=INTEGER}, #{position,jdbcType=INTEGER}, 
-      #{description,jdbcType=VARCHAR}, #{averagePrice,jdbcType=VARCHAR}, #{priceRange,jdbcType=VARCHAR}, 
-      #{supplyHeating,jdbcType=INTEGER}, #{supplyPower,jdbcType=INTEGER}, #{supplyCommunication,jdbcType=INTEGER}, 
-      #{supplyRoad,jdbcType=INTEGER}, #{supplyWater,jdbcType=INTEGER}, #{drainWater,jdbcType=INTEGER}, 
-      #{infrastructure,jdbcType=VARCHAR}, #{supplyGas,jdbcType=INTEGER}, #{infrastructureCompleteness,jdbcType=INTEGER}, 
-      #{locationDescribe,jdbcType=VARCHAR}, #{displayCaseId,jdbcType=INTEGER}, #{mapId,jdbcType=INTEGER}, 
-      #{relevanceId,jdbcType=INTEGER}, #{version,jdbcType=INTEGER}, #{bisCase,jdbcType=BIT}, 
+    values (#{applyId,jdbcType=INTEGER}, #{quoteId,jdbcType=INTEGER}, #{classify,jdbcType=INTEGER}, 
+      #{type,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, 
+      #{district,jdbcType=VARCHAR}, #{blockId,jdbcType=INTEGER}, #{blockName,jdbcType=VARCHAR}, 
+      #{blockDescription,jdbcType=VARCHAR}, #{developer,jdbcType=VARCHAR}, #{developerName,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{streetNumber,jdbcType=VARCHAR}, #{street,jdbcType=VARCHAR}, 
+      #{number,jdbcType=VARCHAR}, #{landLevel,jdbcType=INTEGER}, #{attachNumber,jdbcType=VARCHAR}, 
+      #{floorArea,jdbcType=DECIMAL}, #{coverAnArea,jdbcType=DECIMAL}, #{volumetricRate,jdbcType=VARCHAR}, 
+      #{greeningRate,jdbcType=VARCHAR}, #{openTime,jdbcType=TIMESTAMP}, #{buildingNumber,jdbcType=INTEGER}, 
+      #{position,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}, #{averagePrice,jdbcType=VARCHAR}, 
+      #{priceRange,jdbcType=VARCHAR}, #{supplyHeating,jdbcType=INTEGER}, #{supplyPower,jdbcType=INTEGER}, 
+      #{supplyCommunication,jdbcType=INTEGER}, #{supplyRoad,jdbcType=INTEGER}, #{supplyWater,jdbcType=INTEGER}, 
+      #{drainWater,jdbcType=INTEGER}, #{supplyGas,jdbcType=INTEGER}, #{infrastructure,jdbcType=VARCHAR}, 
+      #{infrastructureCompleteness,jdbcType=INTEGER}, #{locationDescribe,jdbcType=VARCHAR}, 
+      #{displayCaseId,jdbcType=INTEGER}, #{mapId,jdbcType=INTEGER}, #{relevanceId,jdbcType=INTEGER}, 
+      #{version,jdbcType=INTEGER}, #{bisCase,jdbcType=BIT}, #{bisEnable,jdbcType=BIT}, 
       #{bisDelete,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
       #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
@@ -192,6 +197,9 @@
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="applyId != null" >
         apply_id,
+      </if>
+      <if test="quoteId != null" >
+        quote_id,
       </if>
       <if test="classify != null" >
         classify,
@@ -289,11 +297,11 @@
       <if test="drainWater != null" >
         drain_water,
       </if>
-      <if test="infrastructure != null" >
-        infrastructure,
-      </if>
       <if test="supplyGas != null" >
         supply_gas,
+      </if>
+      <if test="infrastructure != null" >
+        infrastructure,
       </if>
       <if test="infrastructureCompleteness != null" >
         infrastructure_completeness,
@@ -316,6 +324,9 @@
       <if test="bisCase != null" >
         bis_case,
       </if>
+      <if test="bisEnable != null" >
+        bis_enable,
+      </if>
       <if test="bisDelete != null" >
         bis_delete,
       </if>
@@ -332,6 +343,9 @@
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="applyId != null" >
         #{applyId,jdbcType=INTEGER},
+      </if>
+      <if test="quoteId != null" >
+        #{quoteId,jdbcType=INTEGER},
       </if>
       <if test="classify != null" >
         #{classify,jdbcType=INTEGER},
@@ -429,11 +443,11 @@
       <if test="drainWater != null" >
         #{drainWater,jdbcType=INTEGER},
       </if>
-      <if test="infrastructure != null" >
-        #{infrastructure,jdbcType=VARCHAR},
-      </if>
       <if test="supplyGas != null" >
         #{supplyGas,jdbcType=INTEGER},
+      </if>
+      <if test="infrastructure != null" >
+        #{infrastructure,jdbcType=VARCHAR},
       </if>
       <if test="infrastructureCompleteness != null" >
         #{infrastructureCompleteness,jdbcType=INTEGER},
@@ -455,6 +469,9 @@
       </if>
       <if test="bisCase != null" >
         #{bisCase,jdbcType=BIT},
+      </if>
+      <if test="bisEnable != null" >
+        #{bisEnable,jdbcType=BIT},
       </if>
       <if test="bisDelete != null" >
         #{bisDelete,jdbcType=BIT},
@@ -484,6 +501,9 @@
       </if>
       <if test="record.applyId != null" >
         apply_id = #{record.applyId,jdbcType=INTEGER},
+      </if>
+      <if test="record.quoteId != null" >
+        quote_id = #{record.quoteId,jdbcType=INTEGER},
       </if>
       <if test="record.classify != null" >
         classify = #{record.classify,jdbcType=INTEGER},
@@ -581,11 +601,11 @@
       <if test="record.drainWater != null" >
         drain_water = #{record.drainWater,jdbcType=INTEGER},
       </if>
-      <if test="record.infrastructure != null" >
-        infrastructure = #{record.infrastructure,jdbcType=VARCHAR},
-      </if>
       <if test="record.supplyGas != null" >
         supply_gas = #{record.supplyGas,jdbcType=INTEGER},
+      </if>
+      <if test="record.infrastructure != null" >
+        infrastructure = #{record.infrastructure,jdbcType=VARCHAR},
       </if>
       <if test="record.infrastructureCompleteness != null" >
         infrastructure_completeness = #{record.infrastructureCompleteness,jdbcType=INTEGER},
@@ -608,6 +628,9 @@
       <if test="record.bisCase != null" >
         bis_case = #{record.bisCase,jdbcType=BIT},
       </if>
+      <if test="record.bisEnable != null" >
+        bis_enable = #{record.bisEnable,jdbcType=BIT},
+      </if>
       <if test="record.bisDelete != null" >
         bis_delete = #{record.bisDelete,jdbcType=BIT},
       </if>
@@ -629,6 +652,7 @@
     update tb_basic_estate
     set id = #{record.id,jdbcType=INTEGER},
       apply_id = #{record.applyId,jdbcType=INTEGER},
+      quote_id = #{record.quoteId,jdbcType=INTEGER},
       classify = #{record.classify,jdbcType=INTEGER},
       type = #{record.type,jdbcType=INTEGER},
       province = #{record.province,jdbcType=VARCHAR},
@@ -661,8 +685,8 @@
       supply_road = #{record.supplyRoad,jdbcType=INTEGER},
       supply_water = #{record.supplyWater,jdbcType=INTEGER},
       drain_water = #{record.drainWater,jdbcType=INTEGER},
-      infrastructure = #{record.infrastructure,jdbcType=VARCHAR},
       supply_gas = #{record.supplyGas,jdbcType=INTEGER},
+      infrastructure = #{record.infrastructure,jdbcType=VARCHAR},
       infrastructure_completeness = #{record.infrastructureCompleteness,jdbcType=INTEGER},
       location_describe = #{record.locationDescribe,jdbcType=VARCHAR},
       display_case_id = #{record.displayCaseId,jdbcType=INTEGER},
@@ -670,6 +694,7 @@
       relevance_id = #{record.relevanceId,jdbcType=INTEGER},
       version = #{record.version,jdbcType=INTEGER},
       bis_case = #{record.bisCase,jdbcType=BIT},
+      bis_enable = #{record.bisEnable,jdbcType=BIT},
       bis_delete = #{record.bisDelete,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -683,6 +708,9 @@
     <set >
       <if test="applyId != null" >
         apply_id = #{applyId,jdbcType=INTEGER},
+      </if>
+      <if test="quoteId != null" >
+        quote_id = #{quoteId,jdbcType=INTEGER},
       </if>
       <if test="classify != null" >
         classify = #{classify,jdbcType=INTEGER},
@@ -780,11 +808,11 @@
       <if test="drainWater != null" >
         drain_water = #{drainWater,jdbcType=INTEGER},
       </if>
-      <if test="infrastructure != null" >
-        infrastructure = #{infrastructure,jdbcType=VARCHAR},
-      </if>
       <if test="supplyGas != null" >
         supply_gas = #{supplyGas,jdbcType=INTEGER},
+      </if>
+      <if test="infrastructure != null" >
+        infrastructure = #{infrastructure,jdbcType=VARCHAR},
       </if>
       <if test="infrastructureCompleteness != null" >
         infrastructure_completeness = #{infrastructureCompleteness,jdbcType=INTEGER},
@@ -807,6 +835,9 @@
       <if test="bisCase != null" >
         bis_case = #{bisCase,jdbcType=BIT},
       </if>
+      <if test="bisEnable != null" >
+        bis_enable = #{bisEnable,jdbcType=BIT},
+      </if>
       <if test="bisDelete != null" >
         bis_delete = #{bisDelete,jdbcType=BIT},
       </if>
@@ -825,6 +856,7 @@
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstate" >
     update tb_basic_estate
     set apply_id = #{applyId,jdbcType=INTEGER},
+      quote_id = #{quoteId,jdbcType=INTEGER},
       classify = #{classify,jdbcType=INTEGER},
       type = #{type,jdbcType=INTEGER},
       province = #{province,jdbcType=VARCHAR},
@@ -857,8 +889,8 @@
       supply_road = #{supplyRoad,jdbcType=INTEGER},
       supply_water = #{supplyWater,jdbcType=INTEGER},
       drain_water = #{drainWater,jdbcType=INTEGER},
-      infrastructure = #{infrastructure,jdbcType=VARCHAR},
       supply_gas = #{supplyGas,jdbcType=INTEGER},
+      infrastructure = #{infrastructure,jdbcType=VARCHAR},
       infrastructure_completeness = #{infrastructureCompleteness,jdbcType=INTEGER},
       location_describe = #{locationDescribe,jdbcType=VARCHAR},
       display_case_id = #{displayCaseId,jdbcType=INTEGER},
@@ -866,6 +898,7 @@
       relevance_id = #{relevanceId,jdbcType=INTEGER},
       version = #{version,jdbcType=INTEGER},
       bis_case = #{bisCase,jdbcType=BIT},
+      bis_enable = #{bisEnable,jdbcType=BIT},
       bis_delete = #{bisDelete,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},

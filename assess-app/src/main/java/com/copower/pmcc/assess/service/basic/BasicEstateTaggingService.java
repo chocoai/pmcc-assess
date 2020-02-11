@@ -6,11 +6,13 @@ import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateTaggingDao;
 import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchDetail;
 import com.copower.pmcc.assess.dal.basis.entity.BasicEstateTagging;
 import com.copower.pmcc.assess.dal.cases.entity.CaseEstateTagging;
+import com.copower.pmcc.assess.dto.input.MapDto;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateTaggingGaoDe;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateTaggingVo;
 import com.copower.pmcc.assess.service.cases.CaseEstateTaggingService;
 import com.copower.pmcc.erp.common.CommonService;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -20,7 +22,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -247,6 +251,32 @@ public class BasicEstateTaggingService {
                 addBasicEstateTagging(basicEstateTagging);
             }
         }
+    }
+
+    public List<MapDto> mapDtoList(Integer dataId, String type) throws Exception {
+        List<MapDto> mapDtoList = new ArrayList<MapDto>(10);
+        BasicEstateTagging query = new BasicEstateTagging();
+        if (dataId != null) {
+            query.setTableId(dataId);
+        }
+        if (StringUtils.isNotBlank(type)) {
+            query.setType(type);
+        }
+        List<BasicEstateTagging> taggingList = getBasicEstateTaggingList(query);
+        if (!ObjectUtils.isEmpty(taggingList)) {
+            for (BasicEstateTagging tagging : taggingList) {
+                if (!NumberUtils.isNumber(tagging.getLat()) || !NumberUtils.isNumber(tagging.getLng())) {
+                    continue;
+                }
+                MapDto mapDto = new MapDto();
+                mapDto.setLat(new BigDecimal(tagging.getLat())).setLon(new BigDecimal(tagging.getLng())).setId(tagging.getId()).setType(tagging.getType()).setDataId(tagging.getTableId());
+                if (StringUtils.isNotBlank(tagging.getName())) {
+                    mapDto.setName(tagging.getName());
+                }
+                mapDtoList.add(mapDto);
+            }
+        }
+        return mapDtoList;
     }
 
 }

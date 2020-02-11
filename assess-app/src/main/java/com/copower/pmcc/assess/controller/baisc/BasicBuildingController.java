@@ -1,9 +1,8 @@
 package com.copower.pmcc.assess.controller.baisc;
 
+import com.copower.pmcc.assess.dal.basis.custom.entity.CustomCaseEntity;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicAlternativeCaseDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDetailDao;
-import com.copower.pmcc.assess.dal.basis.entity.BasicAlternativeCase;
-import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchDetail;
 import com.copower.pmcc.assess.dal.basis.entity.BasicBuilding;
 import com.copower.pmcc.assess.service.basic.BasicBuildingService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
@@ -61,46 +60,12 @@ public class BasicBuildingController {
         }
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/getDataFromProject", name = "项目中引用数据", method = {RequestMethod.GET})
-    public HttpResult getDataFromProject(Integer applyId) {
-        try {
-            return HttpResult.newCorrectResult(basicBuildingService.getBasicBuildingFromProject(applyId));
-        } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
-            return HttpResult.newErrorResult(500, e.getMessage());
-        }
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/quoteBuildingData", name = "项目中引用数据批量", method = {RequestMethod.GET})
-    public HttpResult quoteBuildingData(Integer id, Integer tableId) {
-        try {
-            return HttpResult.newCorrectResult(basicBuildingService.quoteBuildingData(id, tableId));
-        } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
-            return HttpResult.newErrorResult(500, e.getMessage());
-        }
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/quoteFromAlternative", name = "引用项目中的数据批量时", method = {RequestMethod.GET})
-    public HttpResult quoteFromAlternative(Integer id, Integer tableId) {
-        try {
-            BasicAlternativeCase alternativeCase = basicAlternativeCaseDao.getBasicAlternativeCaseById(id);
-            BasicApplyBatchDetail batchDetail = basicApplyBatchDetailDao.getInfoById(alternativeCase.getBusinessId());
-            return HttpResult.newCorrectResult(basicBuildingService.quoteBuildingData(batchDetail.getTableId(), tableId));
-        } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
-            return HttpResult.newErrorResult(e.getMessage());
-        }
-    }
 
     @ResponseBody
     @RequestMapping(value = "/saveAndUpdateBasicBuilding", name = "新增或者修改", method = {RequestMethod.POST})
     public HttpResult saveAndUpdateBasicBuilding(BasicBuilding basicBuilding) {
         try {
-            return HttpResult.newCorrectResult(basicBuildingService.saveAndUpdateBasicBuilding(basicBuilding,true));
+            return HttpResult.newCorrectResult(basicBuildingService.saveAndUpdateBasicBuilding(basicBuilding, true));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(500, e.getMessage());
@@ -141,17 +106,6 @@ public class BasicBuildingController {
         }
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/appWriteBuilding", name = "过程数据转移", method = {RequestMethod.POST})
-    public HttpResult appWriteBuilding(Integer caseBuildingId, String buildingPartInMode, Integer applyId) {
-        try {
-            return HttpResult.newCorrectResult(basicBuildingService.appWriteBuilding(caseBuildingId, buildingPartInMode, applyId));
-        } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
-            return HttpResult.newErrorResult("过程数据转移异常");
-        }
-    }
-
     @RequestMapping(value = "/detailView", name = "详情页面 ", method = RequestMethod.GET)
     public ModelAndView detailView(Integer id) throws Exception {
         String view = "project/stageSurvey/house/detail/building";
@@ -169,5 +123,31 @@ public class BasicBuildingController {
         building.setBisCase(true);
         BootstrapTableVo vo = basicBuildingService.getBootstrapTableVo(building);
         return vo;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/autoCompleteCaseBuilding", method = {RequestMethod.GET}, name = "楼栋-- 信息自动补全")
+    public HttpResult autoCompleteCaseBuilding(String buildingNumber, Integer estateId) {
+        try {
+            List<CustomCaseEntity> caseEntities = basicBuildingService.autoCompleteCaseBuilding(buildingNumber, estateId);
+            return HttpResult.newCorrectResult(caseEntities);
+        } catch (Exception e1) {
+            return HttpResult.newErrorResult("异常");
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/quoteCaseBuilding", name = "引用案列数据", method = {RequestMethod.GET})
+    public HttpResult quoteCaseBuilding(Integer sourceId, Integer targetId) {
+        try {
+            BasicBuilding basicBuilding = basicBuildingService.copyBasicBuildingIgnore(sourceId, targetId, true,"estateId");
+            basicBuilding.setQuoteId(sourceId);
+            basicBuilding.setBisCase(false);
+            basicBuildingService.saveAndUpdateBasicBuilding(basicBuilding, false);
+            return HttpResult.newCorrectResult(basicBuilding);
+        } catch (Exception e) {
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
     }
 }

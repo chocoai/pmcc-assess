@@ -1,5 +1,7 @@
 package com.copower.pmcc.assess.dal.basis.dao.basic;
 
+import com.copower.pmcc.assess.dal.basis.custom.entity.CustomCaseEntity;
+import com.copower.pmcc.assess.dal.basis.custom.mapper.CustomCaseMapper;
 import com.copower.pmcc.assess.dal.basis.entity.BasicBuilding;
 import com.copower.pmcc.assess.dal.basis.entity.BasicBuildingExample;
 import com.copower.pmcc.assess.dal.basis.mapper.BasicBuildingMapper;
@@ -7,7 +9,6 @@ import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -20,6 +21,8 @@ public class BasicBuildingDao {
 
     @Autowired
     private BasicBuildingMapper basicBuildingMapper;
+    @Autowired
+    private CustomCaseMapper customCaseMapper;
 
     public BasicBuilding getBasicBuildingById(Integer id) {
         return basicBuildingMapper.selectByPrimaryKey(id);
@@ -56,4 +59,13 @@ public class BasicBuildingDao {
         return basicBuildingMapper.selectByExample(example);
     }
 
+    /**
+     * 获取最新版本楼栋主信息
+     *
+     * @param estateId
+     * @return
+     */
+    public List<CustomCaseEntity> getLatestVersionBuildingList(String buildingNumber, Integer estateId) {
+        return customCaseMapper.getCaseBuildingList(buildingNumber, estateId);
+    }
 }

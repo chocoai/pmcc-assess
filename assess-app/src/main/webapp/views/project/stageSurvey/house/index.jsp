@@ -29,7 +29,6 @@
                                        onclick="showProjectQuoteModal();">
                             </small>
                         </c:if>
-
                     </h2>
                 </div>
             </div>
@@ -126,28 +125,6 @@
             caseFun.caseHouse.showModel(${quoteId});
         }
     }
-
-    //引用项目时打开对应的modal
-    function showProjectQuoteModal() {
-        //打开楼盘modal
-        if ("estate" == "${tbType}") {
-            projectData.prototype.showHouseModel();
-        }
-
-        //打开楼栋modal
-        if ("building" == "${tbType}") {
-            projectBuild.prototype.showModel();
-        }
-        //打开单元modal
-        if ("unit" == "${tbType}") {
-            projectUnit.prototype.showModel();
-        }
-        //打开房屋modal
-        if ("house" == "${tbType}") {
-            projectHouse.prototype.showModel();
-        }
-
-    };
 
     //打开历史数据modal
     function showHistoryModal() {

@@ -226,6 +226,66 @@ public class BasicHouseExample {
             return (Criteria) this;
         }
 
+        public Criteria andQuoteIdIsNull() {
+            addCriterion("quote_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuoteIdIsNotNull() {
+            addCriterion("quote_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuoteIdEqualTo(Integer value) {
+            addCriterion("quote_id =", value, "quoteId");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuoteIdNotEqualTo(Integer value) {
+            addCriterion("quote_id <>", value, "quoteId");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuoteIdGreaterThan(Integer value) {
+            addCriterion("quote_id >", value, "quoteId");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuoteIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("quote_id >=", value, "quoteId");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuoteIdLessThan(Integer value) {
+            addCriterion("quote_id <", value, "quoteId");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuoteIdLessThanOrEqualTo(Integer value) {
+            addCriterion("quote_id <=", value, "quoteId");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuoteIdIn(List<Integer> values) {
+            addCriterion("quote_id in", values, "quoteId");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuoteIdNotIn(List<Integer> values) {
+            addCriterion("quote_id not in", values, "quoteId");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuoteIdBetween(Integer value1, Integer value2) {
+            addCriterion("quote_id between", value1, value2, "quoteId");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuoteIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("quote_id not between", value1, value2, "quoteId");
+            return (Criteria) this;
+        }
+
         public Criteria andEstateIdIsNull() {
             addCriterion("estate_id is null");
             return (Criteria) this;
@@ -2543,6 +2603,66 @@ public class BasicHouseExample {
 
         public Criteria andBisCaseNotBetween(Boolean value1, Boolean value2) {
             addCriterion("bis_case not between", value1, value2, "bisCase");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableIsNull() {
+            addCriterion("bis_enable is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableIsNotNull() {
+            addCriterion("bis_enable is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableEqualTo(Boolean value) {
+            addCriterion("bis_enable =", value, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableNotEqualTo(Boolean value) {
+            addCriterion("bis_enable <>", value, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableGreaterThan(Boolean value) {
+            addCriterion("bis_enable >", value, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_enable >=", value, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableLessThan(Boolean value) {
+            addCriterion("bis_enable <", value, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_enable <=", value, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableIn(List<Boolean> values) {
+            addCriterion("bis_enable in", values, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableNotIn(List<Boolean> values) {
+            addCriterion("bis_enable not in", values, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_enable between", value1, value2, "bisEnable");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisEnableNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_enable not between", value1, value2, "bisEnable");
             return (Criteria) this;
         }
 

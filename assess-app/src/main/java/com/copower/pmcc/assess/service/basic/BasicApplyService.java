@@ -10,9 +10,7 @@ import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.basic.BasicApplyVo;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
-import com.copower.pmcc.assess.service.cases.CaseEstateService;
 import com.copower.pmcc.assess.service.data.DataBlockService;
-import com.copower.pmcc.assess.service.event.basic.BasicApplyEvent;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.bpm.api.dto.ProcessUserDto;
@@ -142,40 +140,6 @@ public class BasicApplyService {
 
     public boolean updateBasicApply(BasicApply basicApply) {
         return basicApplyDao.updateBasicApply(basicApply);
-    }
-
-    /**
-     * 流程发起
-     *
-     * @param basicApply
-     * @return
-     * @throws Exception
-     */
-    public ProcessUserDto processStartSubmit(BasicApply basicApply) throws Exception {
-        ProcessUserDto processUserDto = null;
-        ProcessInfo processInfo = new ProcessInfo();
-        //流程描述
-        processInfo.setFolio(getFullName(basicApply.getEstateName(), basicApply.getBuildingNumber(), basicApply.getUnitNumber(), basicApply.getHouseNumber()));
-        final String boxName = baseParameterService.getParameterValues(BaseParameterEnum.CASE_BASE_INFO_APPLY_KEY.getParameterKey());
-        BoxReDto boxReDto = bpmRpcBoxService.getBoxReByBoxName(boxName);
-        processInfo.setTableName(FormatUtils.entityNameConvertToTableName(BasicApply.class));
-        processInfo.setBoxId(boxReDto.getId());
-        processInfo.setProcessName(boxReDto.getProcessName());
-        processInfo.setGroupName(boxReDto.getGroupName());
-        processInfo.setProcessEventExecutor(BasicApplyEvent.class);
-        processInfo.setRemarks(ProjectStatusEnum.STARTAPPLY.getKey());
-        processInfo.setProcessEventExecutorName(BasicApplyEvent.class.getSimpleName());
-        processInfo.setTableId(basicApply.getId());
-        try {
-            processUserDto = processControllerComponent.processStart(processControllerComponent.getThisUser(), processInfo, processControllerComponent.getThisUser(), false);
-            basicApply.setProcessInsId(processUserDto.getProcessInsId());
-            basicApply.setStatus(ProjectStatusEnum.RUNING.getKey());
-            this.updateBasicApply(basicApply);
-        } catch (Exception e) {
-            logger.error(String.format("流程发起失败: %s", e.getMessage()), e);
-            throw e;
-        }
-        return processUserDto;
     }
 
     /**

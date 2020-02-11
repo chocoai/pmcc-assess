@@ -8,6 +8,8 @@ public class BasicEstate {
 
     private Integer applyId;
 
+    private Integer quoteId;
+
     private Integer classify;
 
     private Integer type;
@@ -72,9 +74,9 @@ public class BasicEstate {
 
     private Integer drainWater;
 
-    private String infrastructure;
-
     private Integer supplyGas;
+
+    private String infrastructure;
 
     private Integer infrastructureCompleteness;
 
@@ -89,6 +91,8 @@ public class BasicEstate {
     private Integer version;
 
     private Boolean bisCase;
+
+    private Boolean bisEnable;
 
     private Boolean bisDelete;
 
@@ -112,6 +116,14 @@ public class BasicEstate {
 
     public void setApplyId(Integer applyId) {
         this.applyId = applyId;
+    }
+
+    public Integer getQuoteId() {
+        return quoteId;
+    }
+
+    public void setQuoteId(Integer quoteId) {
+        this.quoteId = quoteId;
     }
 
     public Integer getClassify() {
@@ -370,20 +382,20 @@ public class BasicEstate {
         this.drainWater = drainWater;
     }
 
-    public String getInfrastructure() {
-        return infrastructure;
-    }
-
-    public void setInfrastructure(String infrastructure) {
-        this.infrastructure = infrastructure == null ? null : infrastructure.trim();
-    }
-
     public Integer getSupplyGas() {
         return supplyGas;
     }
 
     public void setSupplyGas(Integer supplyGas) {
         this.supplyGas = supplyGas;
+    }
+
+    public String getInfrastructure() {
+        return infrastructure;
+    }
+
+    public void setInfrastructure(String infrastructure) {
+        this.infrastructure = infrastructure == null ? null : infrastructure.trim();
     }
 
     public Integer getInfrastructureCompleteness() {
@@ -440,6 +452,14 @@ public class BasicEstate {
 
     public void setBisCase(Boolean bisCase) {
         this.bisCase = bisCase;
+    }
+
+    public Boolean getBisEnable() {
+        return bisEnable;
+    }
+
+    public void setBisEnable(Boolean bisEnable) {
+        this.bisEnable = bisEnable;
     }
 
     public Boolean getBisDelete() {

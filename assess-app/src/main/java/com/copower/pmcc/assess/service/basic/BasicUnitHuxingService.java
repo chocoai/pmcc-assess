@@ -434,7 +434,7 @@ public class BasicUnitHuxingService {
         }
         //将标准信息代入
         if (standardsource != null) {
-            basicApplyBatchService.copyBasicHouseBasic(standardsource, basicHouse);
+            basicHouseService.copyBasicHouse(standardsource.getId(),basicHouse.getId(),true);
         }
         //房号
         if (StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(1)))) {

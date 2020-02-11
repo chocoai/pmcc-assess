@@ -8,6 +8,8 @@ public class BasicHouse {
 
     private Integer applyId;
 
+    private Integer quoteId;
+
     private Integer estateId;
 
     private Integer buildingId;
@@ -80,6 +82,8 @@ public class BasicHouse {
 
     private Boolean bisCase;
 
+    private Boolean bisEnable;
+
     private Boolean bisDelete;
 
     private String creator;
@@ -102,6 +106,14 @@ public class BasicHouse {
 
     public void setApplyId(Integer applyId) {
         this.applyId = applyId;
+    }
+
+    public Integer getQuoteId() {
+        return quoteId;
+    }
+
+    public void setQuoteId(Integer quoteId) {
+        this.quoteId = quoteId;
     }
 
     public Integer getEstateId() {
@@ -390,6 +402,14 @@ public class BasicHouse {
 
     public void setBisCase(Boolean bisCase) {
         this.bisCase = bisCase;
+    }
+
+    public Boolean getBisEnable() {
+        return bisEnable;
+    }
+
+    public void setBisEnable(Boolean bisEnable) {
+        this.bisEnable = bisEnable;
     }
 
     public Boolean getBisDelete() {

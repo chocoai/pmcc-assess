@@ -137,46 +137,6 @@
         })
     };
 
-    //项目中引用数据
-    buildingCommon.getDataFromProject = function (applyId, callback) {
-        $.ajax({
-            url: getContextPath() + '/basicBuilding/getDataFromProject',
-            type: 'get',
-            data: {applyId: applyId},
-            success: function (result) {
-                if (result.ret) {
-                    buildingCommon.showBuildingView(result.data);
-                    buildingCommon.applyId = applyId;
-                    if (callback) {
-                        callback(result.data);
-                    }
-                }
-            }
-        })
-    };
-
-    //项目中引用楼盘(批量)
-    buildingCommon.batchGetDataFromProject = function (applyId, tableId, callback) {
-        $.ajax({
-            url: getContextPath() + '/basicBuilding/batchGetDataFromProject',
-            type: 'get',
-            data: {
-                applyId: applyId,
-                tableId: tableId
-            },
-            success: function (result) {
-                if (result.ret) {
-                    buildingCommon.showBuildingView(result.data);
-                    buildingCommon.applyId = applyId;
-                    if (callback) {
-                        callback(result.data);
-                    }
-                }
-            }
-        })
-    };
-
-
     buildingCommon.detail = function (id, callback) {
         $.ajax({
             url: getContextPath() + '/basicBuilding/getBasicBuildingByApplyId',
@@ -513,24 +473,6 @@
         })
     };
 
-    buildingCommon.onSelect = function (id,name) {
-        $.ajax({
-            url: getContextPath() + '/caseBuilding/getCaseBuildingById',
-            data: {
-                caseBuildingId: id
-            },
-            type: 'get',
-            success: function (result) {
-                if (result.ret) {
-                    caseFun.caseBuild.showModel(result.data.estateId,name);
-                } else {
-                    console.log(result.errmsg);
-                    Alert("转移失败!");
-                }
-            }
-        })
-    };
-
     buildingCommon.getBasicBuildingPropertyServiceItemBootstrapTableVo = function (buildingId, selectId) {
         var cols = [];
         cols.push({checkbox: true});
@@ -672,14 +614,6 @@
             onSelect: function (id, name) {
                 buildingCommon.buildingForm.find('input[name=builder]').val(id);
                 buildingCommon.buildingForm.find('input[name=builderName]').val(name);
-            }
-        });
-        $("#txt_building_search").apBuilding({
-            caseEstateId: function () {
-                return buildingCommon.buildingForm.find('[name=estateId]').val();
-            },
-            onSelect: function (id, name) {
-                buildingCommon.onSelect(id,name);
             }
         });
     };

@@ -10,6 +10,8 @@ public class BasicBuilding {
 
     private Integer estateId;
 
+    private Integer quoteId;
+
     private Integer residenceUseYear;
 
     private Integer industryUseYear;
@@ -110,6 +112,8 @@ public class BasicBuilding {
 
     private Boolean bisCase;
 
+    private Boolean bisEnable;
+
     private Boolean bisDelete;
 
     private String creator;
@@ -140,6 +144,14 @@ public class BasicBuilding {
 
     public void setEstateId(Integer estateId) {
         this.estateId = estateId;
+    }
+
+    public Integer getQuoteId() {
+        return quoteId;
+    }
+
+    public void setQuoteId(Integer quoteId) {
+        this.quoteId = quoteId;
     }
 
     public Integer getResidenceUseYear() {
@@ -540,6 +552,14 @@ public class BasicBuilding {
 
     public void setBisCase(Boolean bisCase) {
         this.bisCase = bisCase;
+    }
+
+    public Boolean getBisEnable() {
+        return bisEnable;
+    }
+
+    public void setBisEnable(Boolean bisEnable) {
+        this.bisEnable = bisEnable;
     }
 
     public Boolean getBisDelete() {

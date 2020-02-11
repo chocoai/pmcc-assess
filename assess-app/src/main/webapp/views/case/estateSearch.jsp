@@ -282,7 +282,7 @@
         },
 
         findDataMap: function (id) {
-            var href = "${pageContext.request.contextPath}/case/estateCaseMap";
+            var href = "${pageContext.request.contextPath}/basic/estateCaseMap";
             href += "?estateId=" + id;
             window.open(href, "");
         }

@@ -6,7 +6,9 @@
     </div>
     <form class="form-horizontal" id="basicUnitFrm">
         <input type="hidden" name="id" value="${basicUnit.id}">
-        <input type="hidden" name="applyBatchId" value="${basicApplyBatch.id}">
+        <input type="hidden" name="quoteId" value="${basicUnit.quoteId}">
+        <input type="hidden" name="estateId" value="${basicUnit.estateId}">
+        <input type="hidden" name="buildingId" value="${basicUnit.buildingId}">
         <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">单元编号<span
@@ -63,6 +65,13 @@
 <script type="text/javascript">
     $(function () {
         unitCommon.initById('${basicUnit.id}');
-        unitCommon.autocompleteStart();
+        $("#txt_Unit_search").apUnit({
+            caseBuildingId: function () {
+                return '${quoteId}';
+            },
+            onSelect: function (id, name) {
+                caseFun.caseUnit.showModel('${quoteId}',name);
+            }
+        });
     })
 </script>

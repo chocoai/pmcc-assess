@@ -7,6 +7,8 @@ public class BasicUnit {
 
     private Integer applyId;
 
+    private Integer quoteId;
+
     private Integer estateId;
 
     private Integer buildingId;
@@ -26,6 +28,8 @@ public class BasicUnit {
     private Integer version;
 
     private Boolean bisCase;
+
+    private Boolean bisEnable;
 
     private Boolean bisDelete;
 
@@ -49,6 +53,14 @@ public class BasicUnit {
 
     public void setApplyId(Integer applyId) {
         this.applyId = applyId;
+    }
+
+    public Integer getQuoteId() {
+        return quoteId;
+    }
+
+    public void setQuoteId(Integer quoteId) {
+        this.quoteId = quoteId;
     }
 
     public Integer getEstateId() {
@@ -129,6 +141,14 @@ public class BasicUnit {
 
     public void setBisCase(Boolean bisCase) {
         this.bisCase = bisCase;
+    }
+
+    public Boolean getBisEnable() {
+        return bisEnable;
+    }
+
+    public void setBisEnable(Boolean bisEnable) {
+        this.bisEnable = bisEnable;
     }
 
     public Boolean getBisDelete() {

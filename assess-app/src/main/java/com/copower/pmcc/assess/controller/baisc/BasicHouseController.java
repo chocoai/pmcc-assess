@@ -1,9 +1,8 @@
 package com.copower.pmcc.assess.controller.baisc;
 
+import com.copower.pmcc.assess.dal.basis.custom.entity.CustomCaseEntity;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicAlternativeCaseDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDetailDao;
-import com.copower.pmcc.assess.dal.basis.entity.BasicAlternativeCase;
-import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchDetail;
 import com.copower.pmcc.assess.dal.basis.entity.BasicHouse;
 import com.copower.pmcc.assess.dal.basis.entity.BasicHouseTrading;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseTradingVo;
@@ -24,6 +23,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 /**
  * @Auther: zch
@@ -116,41 +117,6 @@ public class BasicHouseController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getDataFromProject", name = "项目中引用数据", method = {RequestMethod.GET})
-    public HttpResult getDataFromProject(Integer applyId) {
-        try {
-            return HttpResult.newCorrectResult(basicHouseService.getBasicHouseFromProject(applyId));
-        } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
-            return HttpResult.newErrorResult(e.getMessage());
-        }
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/quoteHouseData", name = "项目中引用数据批量", method = {RequestMethod.GET})
-    public HttpResult quoteHouseData(Integer id, Integer tableId) {
-        try {
-            return HttpResult.newCorrectResult(basicHouseService.quoteHouseData(id, tableId));
-        } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
-            return HttpResult.newErrorResult(e.getMessage());
-        }
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/quoteFromAlternative", name = "引用项目中的数据批量时", method = {RequestMethod.GET})
-    public HttpResult quoteFromAlternative(Integer id, Integer tableId) {
-        try {
-            BasicAlternativeCase alternativeCase = basicAlternativeCaseDao.getBasicAlternativeCaseById(id);
-            BasicApplyBatchDetail batchDetail = basicApplyBatchDetailDao.getInfoById(alternativeCase.getBusinessId());
-            return HttpResult.newCorrectResult(basicHouseService.quoteHouseData(batchDetail.getTableId(), tableId));
-        } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
-            return HttpResult.newErrorResult(e.getMessage());
-        }
-    }
-
-    @ResponseBody
     @RequestMapping(value = "/addHouseAndTrading", name = "添加房屋及交易信息", method = {RequestMethod.POST})
     public HttpResult addHouseAndTrading(String houseNumber, Integer applyId) {
         try {
@@ -158,17 +124,6 @@ public class BasicHouseController {
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult("添加房屋及交易信息异常");
-        }
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/appWriteHouse", name = "过程数据", method = {RequestMethod.POST})
-    public HttpResult appWriteHouse(Integer caseHouseId, String housePartInMode, Integer applyId) {
-        try {
-            return HttpResult.newCorrectResult(200, basicHouseService.appWriteHouse(caseHouseId, housePartInMode, applyId));
-        } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
-            return HttpResult.newErrorResult(500, e.getMessage());
         }
     }
 
@@ -198,6 +153,7 @@ public class BasicHouseController {
     @ResponseBody
     @RequestMapping(value = "/getCaseHouseList", method = {RequestMethod.GET}, name = "获取案例 房屋列表")
     public BootstrapTableVo getCaseHouseList(Integer unitId) {
+        if (unitId == null) return null;
         BasicHouse basicHouse = new BasicHouse();
         basicHouse.setUnitId(unitId);
         basicHouse.setBisCase(true);
@@ -206,18 +162,28 @@ public class BasicHouseController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getQuoteUnitId", name = "获取引用的单元id", method = RequestMethod.GET)
-    public HttpResult getAndEditDetail(Integer id) {
+    @RequestMapping(value = "/autoCompleteCaseHouse", method = {RequestMethod.GET}, name = "房屋-- 信息自动补全")
+    public HttpResult autoCompleteCaseHouse(String houseNumber, Integer unitId) {
         try {
-            BasicApplyBatchDetail houseDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail("tb_basic_house", id);
-            Integer quoteId = 0;
-            if (houseDetail != null && houseDetail.getPid() != null && houseDetail.getUpgradeTableId() == null) {
-                quoteId = basicApplyBatchDetailService.getDataById(houseDetail.getPid()).getQuoteId();
-            }
-            return HttpResult.newCorrectResult(200, quoteId);
+            List<CustomCaseEntity> caseEntities = basicHouseService.autoCompleteCaseHouse(houseNumber, unitId);
+            return HttpResult.newCorrectResult(caseEntities);
+        } catch (Exception e1) {
+            return HttpResult.newErrorResult("异常");
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/quoteCaseHouse", name = "引用案列数据", method = {RequestMethod.GET})
+    public HttpResult quoteCaseHouse(Integer sourceId, Integer targetId) {
+        try {
+            BasicHouse basicHouse = basicHouseService.copyBasicHouseIgnore(sourceId, targetId, true,"estateId","buildingId","unitId");
+            basicHouse.setQuoteId(sourceId);
+            basicHouse.setBisCase(false);
+            basicHouseService.saveAndUpdateBasicHouse(basicHouse, false);
+            return HttpResult.newCorrectResult(basicHouse);
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
-            return HttpResult.newErrorResult(500, e.getMessage());
+            return HttpResult.newErrorResult(e.getMessage());
         }
     }
 }

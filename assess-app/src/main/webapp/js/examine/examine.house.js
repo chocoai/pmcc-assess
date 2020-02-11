@@ -221,44 +221,6 @@
         })
     };
 
-    //项目中引用数据
-    houseCommon.getDataFromProject = function (applyId, callback) {
-        $.ajax({
-            url: getContextPath() + '/basicHouse/getDataFromProject',
-            type: 'get',
-            data: {applyId: applyId},
-            success: function (result) {
-                if (result.ret) {
-                    houseCommon.showHouseView(result.data);
-                    if (callback) {
-                        callback(result.data);
-                    }
-                }
-            }
-        })
-    };
-
-    //项目中引用楼盘(批量)
-    houseCommon.batchGetDataFromProject = function (applyId, tableId, callback) {
-        $.ajax({
-            url: getContextPath() + '/basicHouse/batchGetDataFromProject',
-            type: 'get',
-            data: {
-                applyId: applyId,
-                tableId: tableId
-            },
-            success: function (result) {
-                if (result.ret) {
-                    houseCommon.showHouseView(result.data);
-                    if (callback) {
-                        callback(result.data);
-                    }
-                }
-            }
-        })
-    };
-
-
     //房屋明细
     houseCommon.detail = function (applyId, callback) {
         $.ajax({
@@ -907,54 +869,6 @@
                 });
             });
         });
-    };
-
-    houseCommon.onSelect = function (id,name) {
-        $.ajax({
-            url: getContextPath() + '/caseHouse/getCaseHouseById',
-            data: {
-                id: id,
-            },
-            type: 'get',
-            success: function (result) {
-                if (result.ret) {
-                    caseFun.caseHouse.showModel(result.data.unitId,name);
-                } else {
-                    console.log(result.errmsg);
-                    Alert("转移失败!");
-                }
-            }
-        })
-    };
-
-    houseCommon.autocompleteStart = function () {
-        var id = houseCommon.houseForm.find('[name=id]').val();
-        $.ajax({
-            url: getContextPath() + '/basicHouse/getQuoteUnitId',
-            data: {
-                id: id,
-            },
-            type: 'get',
-            success: function (result) {
-                if (result.ret) {
-                    var caseUnitId = result.data;
-                    if ($("#txt_House_search").size() >= 1) {
-                        $("#txt_House_search").apHouse({
-                            caseUnitId: function () {
-                                return caseUnitId;
-                            },
-                            onSelect: function (id, name) {
-                                houseCommon.onSelect(id,name);
-                            }
-                        });
-                    }
-                } else {
-                    console.log(result.errmsg);
-                    Alert("转移失败!");
-                }
-            }
-        })
-
     };
 
     //计算单价

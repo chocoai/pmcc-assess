@@ -159,18 +159,6 @@ public class DataBlockController extends BaseController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/flowWrite", method = {RequestMethod.POST}, name = "写入案例")
-    public HttpResult flowWrite(String processInsId) {
-        try {
-            publicBasicService.flowWrite(processInsId);
-            return HttpResult.newCorrectResult();
-        } catch (Exception e) {
-            log.error(String.format("exception: %s", e.getMessage()), e);
-            return HttpResult.newErrorResult("写入案例异常");
-        }
-    }
-
-    @ResponseBody
     @RequestMapping(value = "/climbingOldData", method = {RequestMethod.GET}, name = "抓取两年前老数据")
     public HttpResult climbingOldData() {
         try {

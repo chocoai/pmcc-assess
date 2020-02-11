@@ -26,7 +26,7 @@
                     estateId = defaults.caseEstateId;
                 }
                 $.ajax({
-                    url: getContextPath() + "/caseBuilding/autoCompleteCaseBuilding",
+                    url: getContextPath() + "/basicBuilding/autoCompleteCaseBuilding",
                     type: "get",
                     dataType: "json",
                     data: {

@@ -929,7 +929,7 @@
                 }
             });
             $("#" + caseFun.config.father.caseEstate.table()).bootstrapTable('destroy');
-            TableInit(caseFun.config.father.caseEstate.table(), "${pageContext.request.contextPath}/caseEstate/getCaseEstateVos", cols, {
+            TableInit(caseFun.config.father.caseEstate.table(), "${pageContext.request.contextPath}/basicEstate/getCaseEstateVos", cols, {
                 name: estate.querySearch,
                 city: estate.queryCity,
                 province: estate.queryProvince
@@ -953,7 +953,7 @@
          * @date:2018-09-13
          **/
         findData: function (id) {
-            var href = "${pageContext.request.contextPath}/caseEstate/detailView";
+            var href = "${pageContext.request.contextPath}/basicEstate/detailView";
             href += "?id=" + id;
             window.open(href, "");
         },
@@ -968,10 +968,10 @@
         },
         quote: function (id) {
             $.ajax({
-                url: '${pageContext.request.contextPath}/caseEstate/quoteCaseEstateToBasic',
+                url: '${pageContext.request.contextPath}/basicEstate/quoteCaseEstate',
                 data: {
-                    id: id,
-                    tableId:${tbId}
+                    sourceId: id,
+                    targetId:${tbId}
                 },
                 type: "get",
                 success: function (result) {
@@ -991,7 +991,7 @@
 
     caseFun.caseBuild = {
         findData: function (id) {
-            var href = "${pageContext.request.contextPath}/caseBuilding/detailView";
+            var href = "${pageContext.request.contextPath}/basicBuilding/detailView";
             href += "?id=" + id;
             window.open(href, "");
         },
@@ -1011,7 +1011,7 @@
                 }
             });
             $("#" + caseFun.config.father.caseBuild.table()).bootstrapTable('destroy');
-            TableInit(caseFun.config.father.caseBuild.table(), "${pageContext.request.contextPath}/caseBuilding/getBuildingList", cols, {
+            TableInit(caseFun.config.father.caseBuild.table(), "${pageContext.request.contextPath}/basicBuilding/getCaseBuildingList", cols, {
                 estateId: estateId,
                 buildName: buildName
             }, {
@@ -1029,10 +1029,10 @@
         },
         quote: function (id) {
             $.ajax({
-                url: '${pageContext.request.contextPath}/caseBuilding/quoteCaseBuildToBasic',
+                url: '${pageContext.request.contextPath}/basicBuilding/quoteCaseBuilding',
                 data: {
-                    id: id,
-                    tableId:${tbId}
+                    sourceId: id,
+                    targetId:${tbId}
                 },
                 type: "get",
                 success: function (result) {
@@ -1052,7 +1052,7 @@
 
     caseFun.caseUnit = {
         findData: function (id) {
-            var href = "${pageContext.request.contextPath}/caseUnit/detailView";
+            var href = "${pageContext.request.contextPath}/basicUnit/detailView";
             href += "?id=" + id;
             window.open(href, "");
         },
@@ -1072,8 +1072,8 @@
                 }
             });
             $("#" + caseFun.config.father.caseUnit.table()).bootstrapTable('destroy');
-            TableInit(caseFun.config.father.caseUnit.table(), "${pageContext.request.contextPath}/caseUnit/getCaseUnitList", cols, {
-                caseBuildingId: buildingId,
+            TableInit(caseFun.config.father.caseUnit.table(), "${pageContext.request.contextPath}/basicUnit/getCaseUnitList", cols, {
+                buildingId: buildingId,
                 unitName: unitName
             }, {
                 showColumns: false,
@@ -1090,10 +1090,10 @@
         },
         quote: function (id) {
             $.ajax({
-                url: '${pageContext.request.contextPath}/caseUnit/quoteCaseUnitToBasic',
+                url: '${pageContext.request.contextPath}/basicUnit/quoteCaseUnit',
                 data: {
-                    id: id,
-                    tableId:${tbId}
+                    sourceId: id,
+                    targetId:${tbId}
                 },
                 type: "get",
                 success: function (result) {
@@ -1112,7 +1112,7 @@
 
     caseFun.caseHouse = {
         findData: function (id) {
-            var href = "${pageContext.request.contextPath}/caseHouse/detailView";
+            var href = "${pageContext.request.contextPath}/basicHouse/detailView";
             href += "?id=" + id;
             window.open(href, "");
         },
@@ -1132,7 +1132,7 @@
                 }
             });
             $("#" + caseFun.config.father.caseHouse.table()).bootstrapTable('destroy');
-            TableInit(caseFun.config.father.caseHouse.table(), "${pageContext.request.contextPath}/caseHouse/getCaseHouseList", cols, {
+            TableInit(caseFun.config.father.caseHouse.table(), "${pageContext.request.contextPath}/basicHouse/getCaseHouseList", cols, {
                 unitId: unitId,
                 houseName: houseName
             }, {
@@ -1150,10 +1150,10 @@
         },
         quote: function (id) {
             $.ajax({
-                url: '${pageContext.request.contextPath}/caseHouse/quoteCaseHouseToBasic',
+                url: '${pageContext.request.contextPath}/basicHouse/quoteCaseHouse',
                 data: {
-                    id: id,
-                    tableId:${tbId}
+                    sourceId: id,
+                    targetId:${tbId}
                 },
                 type: "get",
                 success: function (result) {

@@ -1,14 +1,14 @@
 package com.copower.pmcc.assess.dal.basis.dao.basic;
 
+import com.copower.pmcc.assess.dal.basis.custom.entity.CustomCaseEntity;
+import com.copower.pmcc.assess.dal.basis.custom.mapper.CustomCaseMapper;
 import com.copower.pmcc.assess.dal.basis.entity.BasicUnit;
 import com.copower.pmcc.assess.dal.basis.entity.BasicUnitExample;
 import com.copower.pmcc.assess.dal.basis.mapper.BasicUnitMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -21,6 +21,8 @@ public class BasicUnitDao {
 
     @Autowired
     private BasicUnitMapper basicUnitMapper;
+    @Autowired
+    private CustomCaseMapper customCaseMapper;
 
     public List<BasicUnit> getBasicUnitListByIds(List<Integer> ids){
         BasicUnitExample example = new BasicUnitExample();
@@ -59,4 +61,13 @@ public class BasicUnitDao {
         return basicUnitMapper.selectByExample(example);
     }
 
+    /**
+     * 获取最新版单元信息
+     *
+     * @param buildingId
+     * @return
+     */
+    public List<CustomCaseEntity> getLatestVersionUnitList(String unitNumber, Integer buildingId) {
+        return customCaseMapper.getCaseUnitList(unitNumber, buildingId);
+    }
 }

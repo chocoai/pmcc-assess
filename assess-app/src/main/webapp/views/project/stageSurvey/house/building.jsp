@@ -8,7 +8,8 @@
     </div>
     <form class="form-horizontal" id="basicBuildingFrm">
         <input type="hidden" name="id" value="${basicBuilding.id}">
-        <input type="hidden" name="estateId" value="${basicApplyBatch.estateId}">
+        <input type="hidden" name="quoteId" value="${basicBuilding.quoteId}">
+        <input type="hidden" name="estateId" value="${basicBuilding.estateId}">
         <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
@@ -583,6 +584,14 @@
 <script type="text/javascript">
     $(function () {
         buildingCommon.initById('${basicBuilding.id}');
+        $("#txt_building_search").apBuilding({
+            caseEstateId: function () {
+                return '${quoteId}';
+            },
+            onSelect: function (id, name) {
+                caseFun.caseBuild.showModel('${quoteId}', name);
+            }
+        });
         buildingCommon.autocompleteStart();
     })
 </script>

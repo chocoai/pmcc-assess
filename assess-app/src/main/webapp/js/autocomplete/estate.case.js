@@ -19,7 +19,7 @@
             }
             params.source = function (request, response) {
                 $.ajax({
-                    url: getContextPath() + "/caseEstate/autoCompleteCaseEstate",
+                    url: getContextPath() + "/basicEstate/autoCompleteCaseEstate",
                     type: "get",
                     dataType: "json",
                     data: {

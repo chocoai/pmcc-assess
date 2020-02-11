@@ -5,6 +5,7 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="apply_id" property="applyId" jdbcType="INTEGER" />
     <result column="estate_id" property="estateId" jdbcType="INTEGER" />
+    <result column="quote_id" property="quoteId" jdbcType="INTEGER" />
     <result column="residence_use_year" property="residenceUseYear" jdbcType="INTEGER" />
     <result column="industry_use_year" property="industryUseYear" jdbcType="INTEGER" />
     <result column="building_number" property="buildingNumber" jdbcType="VARCHAR" />
@@ -55,6 +56,7 @@
     <result column="relevance_id" property="relevanceId" jdbcType="INTEGER" />
     <result column="version" property="version" jdbcType="INTEGER" />
     <result column="bis_case" property="bisCase" jdbcType="BIT" />
+    <result column="bis_enable" property="bisEnable" jdbcType="BIT" />
     <result column="bis_delete" property="bisDelete" jdbcType="BIT" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
@@ -119,7 +121,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, apply_id, estate_id, residence_use_year, industry_use_year, building_number, 
+    id, apply_id, estate_id, quote_id, residence_use_year, industry_use_year, building_number, 
     building_name, floor_count, location, builder, builder_name, property, property_name, 
     unit_interval, property_fee, facilities_use_fee, building_height, building_area, 
     cover_an_area, property_type, property_category, open_time, room_time, completed_time_type, 
@@ -128,7 +130,7 @@
     appearance_style, appearance_new_and_old, between_distance, between_distance_description, 
     v_structura, v_specifications, v_structural_construction, v_basic_practice, v_structural_practice, 
     property_social_prestige, property_company_nature, map_id, remark, display_case_id, 
-    relevance_id, version, bis_case, bis_delete, creator, gmt_created, gmt_modified
+    relevance_id, version, bis_case, bis_enable, bis_delete, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicBuildingExample" >
     select
@@ -164,44 +166,48 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_basic_building (apply_id, estate_id, residence_use_year, 
-      industry_use_year, building_number, building_name, 
-      floor_count, location, builder, 
-      builder_name, property, property_name, 
-      unit_interval, property_fee, facilities_use_fee, 
-      building_height, building_area, cover_an_area, 
-      property_type, property_category, open_time, 
-      room_time, completed_time_type, be_completed_time, 
-      floor_height, diameter_depth, land_use_year, 
-      net_height, building_structure_type, building_structure_category, 
-      first_floor, max_floor, in_jacket_area, 
-      use_area, construction_quality, appearance_style, 
-      appearance_new_and_old, between_distance, between_distance_description, 
+    insert into tb_basic_building (apply_id, estate_id, quote_id, 
+      residence_use_year, industry_use_year, building_number, 
+      building_name, floor_count, location, 
+      builder, builder_name, property, 
+      property_name, unit_interval, property_fee, 
+      facilities_use_fee, building_height, building_area, 
+      cover_an_area, property_type, property_category, 
+      open_time, room_time, completed_time_type, 
+      be_completed_time, floor_height, diameter_depth, 
+      land_use_year, net_height, building_structure_type, 
+      building_structure_category, first_floor, 
+      max_floor, in_jacket_area, use_area, 
+      construction_quality, appearance_style, appearance_new_and_old, 
+      between_distance, between_distance_description, 
       v_structura, v_specifications, v_structural_construction, 
       v_basic_practice, v_structural_practice, property_social_prestige, 
       property_company_nature, map_id, remark, 
       display_case_id, relevance_id, version, 
-      bis_case, bis_delete, creator, 
-      gmt_created, gmt_modified)
-    values (#{applyId,jdbcType=INTEGER}, #{estateId,jdbcType=INTEGER}, #{residenceUseYear,jdbcType=INTEGER}, 
-      #{industryUseYear,jdbcType=INTEGER}, #{buildingNumber,jdbcType=VARCHAR}, #{buildingName,jdbcType=VARCHAR}, 
-      #{floorCount,jdbcType=VARCHAR}, #{location,jdbcType=VARCHAR}, #{builder,jdbcType=INTEGER}, 
-      #{builderName,jdbcType=VARCHAR}, #{property,jdbcType=INTEGER}, #{propertyName,jdbcType=VARCHAR}, 
-      #{unitInterval,jdbcType=VARCHAR}, #{propertyFee,jdbcType=DECIMAL}, #{facilitiesUseFee,jdbcType=DECIMAL}, 
-      #{buildingHeight,jdbcType=VARCHAR}, #{buildingArea,jdbcType=DECIMAL}, #{coverAnArea,jdbcType=DECIMAL}, 
-      #{propertyType,jdbcType=INTEGER}, #{propertyCategory,jdbcType=INTEGER}, #{openTime,jdbcType=TIMESTAMP}, 
-      #{roomTime,jdbcType=TIMESTAMP}, #{completedTimeType,jdbcType=INTEGER}, #{beCompletedTime,jdbcType=TIMESTAMP}, 
-      #{floorHeight,jdbcType=VARCHAR}, #{diameterDepth,jdbcType=DECIMAL}, #{landUseYear,jdbcType=DECIMAL}, 
-      #{netHeight,jdbcType=DECIMAL}, #{buildingStructureType,jdbcType=INTEGER}, #{buildingStructureCategory,jdbcType=INTEGER}, 
-      #{firstFloor,jdbcType=INTEGER}, #{maxFloor,jdbcType=INTEGER}, #{inJacketArea,jdbcType=VARCHAR}, 
-      #{useArea,jdbcType=VARCHAR}, #{constructionQuality,jdbcType=INTEGER}, #{appearanceStyle,jdbcType=INTEGER}, 
-      #{appearanceNewAndOld,jdbcType=INTEGER}, #{betweenDistance,jdbcType=INTEGER}, #{betweenDistanceDescription,jdbcType=VARCHAR}, 
+      bis_case, bis_enable, bis_delete, 
+      creator, gmt_created, gmt_modified
+      )
+    values (#{applyId,jdbcType=INTEGER}, #{estateId,jdbcType=INTEGER}, #{quoteId,jdbcType=INTEGER}, 
+      #{residenceUseYear,jdbcType=INTEGER}, #{industryUseYear,jdbcType=INTEGER}, #{buildingNumber,jdbcType=VARCHAR}, 
+      #{buildingName,jdbcType=VARCHAR}, #{floorCount,jdbcType=VARCHAR}, #{location,jdbcType=VARCHAR}, 
+      #{builder,jdbcType=INTEGER}, #{builderName,jdbcType=VARCHAR}, #{property,jdbcType=INTEGER}, 
+      #{propertyName,jdbcType=VARCHAR}, #{unitInterval,jdbcType=VARCHAR}, #{propertyFee,jdbcType=DECIMAL}, 
+      #{facilitiesUseFee,jdbcType=DECIMAL}, #{buildingHeight,jdbcType=VARCHAR}, #{buildingArea,jdbcType=DECIMAL}, 
+      #{coverAnArea,jdbcType=DECIMAL}, #{propertyType,jdbcType=INTEGER}, #{propertyCategory,jdbcType=INTEGER}, 
+      #{openTime,jdbcType=TIMESTAMP}, #{roomTime,jdbcType=TIMESTAMP}, #{completedTimeType,jdbcType=INTEGER}, 
+      #{beCompletedTime,jdbcType=TIMESTAMP}, #{floorHeight,jdbcType=VARCHAR}, #{diameterDepth,jdbcType=DECIMAL}, 
+      #{landUseYear,jdbcType=DECIMAL}, #{netHeight,jdbcType=DECIMAL}, #{buildingStructureType,jdbcType=INTEGER}, 
+      #{buildingStructureCategory,jdbcType=INTEGER}, #{firstFloor,jdbcType=INTEGER}, 
+      #{maxFloor,jdbcType=INTEGER}, #{inJacketArea,jdbcType=VARCHAR}, #{useArea,jdbcType=VARCHAR}, 
+      #{constructionQuality,jdbcType=INTEGER}, #{appearanceStyle,jdbcType=INTEGER}, #{appearanceNewAndOld,jdbcType=INTEGER}, 
+      #{betweenDistance,jdbcType=INTEGER}, #{betweenDistanceDescription,jdbcType=VARCHAR}, 
       #{vStructura,jdbcType=VARCHAR}, #{vSpecifications,jdbcType=VARCHAR}, #{vStructuralConstruction,jdbcType=VARCHAR}, 
       #{vBasicPractice,jdbcType=VARCHAR}, #{vStructuralPractice,jdbcType=VARCHAR}, #{propertySocialPrestige,jdbcType=INTEGER}, 
       #{propertyCompanyNature,jdbcType=INTEGER}, #{mapId,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, 
       #{displayCaseId,jdbcType=INTEGER}, #{relevanceId,jdbcType=INTEGER}, #{version,jdbcType=INTEGER}, 
-      #{bisCase,jdbcType=BIT}, #{bisDelete,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+      #{bisCase,jdbcType=BIT}, #{bisEnable,jdbcType=BIT}, #{bisDelete,jdbcType=BIT}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicBuilding" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -214,6 +220,9 @@
       </if>
       <if test="estateId != null" >
         estate_id,
+      </if>
+      <if test="quoteId != null" >
+        quote_id,
       </if>
       <if test="residenceUseYear != null" >
         residence_use_year,
@@ -365,6 +374,9 @@
       <if test="bisCase != null" >
         bis_case,
       </if>
+      <if test="bisEnable != null" >
+        bis_enable,
+      </if>
       <if test="bisDelete != null" >
         bis_delete,
       </if>
@@ -384,6 +396,9 @@
       </if>
       <if test="estateId != null" >
         #{estateId,jdbcType=INTEGER},
+      </if>
+      <if test="quoteId != null" >
+        #{quoteId,jdbcType=INTEGER},
       </if>
       <if test="residenceUseYear != null" >
         #{residenceUseYear,jdbcType=INTEGER},
@@ -535,6 +550,9 @@
       <if test="bisCase != null" >
         #{bisCase,jdbcType=BIT},
       </if>
+      <if test="bisEnable != null" >
+        #{bisEnable,jdbcType=BIT},
+      </if>
       <if test="bisDelete != null" >
         #{bisDelete,jdbcType=BIT},
       </if>
@@ -566,6 +584,9 @@
       </if>
       <if test="record.estateId != null" >
         estate_id = #{record.estateId,jdbcType=INTEGER},
+      </if>
+      <if test="record.quoteId != null" >
+        quote_id = #{record.quoteId,jdbcType=INTEGER},
       </if>
       <if test="record.residenceUseYear != null" >
         residence_use_year = #{record.residenceUseYear,jdbcType=INTEGER},
@@ -717,6 +738,9 @@
       <if test="record.bisCase != null" >
         bis_case = #{record.bisCase,jdbcType=BIT},
       </if>
+      <if test="record.bisEnable != null" >
+        bis_enable = #{record.bisEnable,jdbcType=BIT},
+      </if>
       <if test="record.bisDelete != null" >
         bis_delete = #{record.bisDelete,jdbcType=BIT},
       </if>
@@ -739,6 +763,7 @@
     set id = #{record.id,jdbcType=INTEGER},
       apply_id = #{record.applyId,jdbcType=INTEGER},
       estate_id = #{record.estateId,jdbcType=INTEGER},
+      quote_id = #{record.quoteId,jdbcType=INTEGER},
       residence_use_year = #{record.residenceUseYear,jdbcType=INTEGER},
       industry_use_year = #{record.industryUseYear,jdbcType=INTEGER},
       building_number = #{record.buildingNumber,jdbcType=VARCHAR},
@@ -789,6 +814,7 @@
       relevance_id = #{record.relevanceId,jdbcType=INTEGER},
       version = #{record.version,jdbcType=INTEGER},
       bis_case = #{record.bisCase,jdbcType=BIT},
+      bis_enable = #{record.bisEnable,jdbcType=BIT},
       bis_delete = #{record.bisDelete,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -805,6 +831,9 @@
       </if>
       <if test="estateId != null" >
         estate_id = #{estateId,jdbcType=INTEGER},
+      </if>
+      <if test="quoteId != null" >
+        quote_id = #{quoteId,jdbcType=INTEGER},
       </if>
       <if test="residenceUseYear != null" >
         residence_use_year = #{residenceUseYear,jdbcType=INTEGER},
@@ -956,6 +985,9 @@
       <if test="bisCase != null" >
         bis_case = #{bisCase,jdbcType=BIT},
       </if>
+      <if test="bisEnable != null" >
+        bis_enable = #{bisEnable,jdbcType=BIT},
+      </if>
       <if test="bisDelete != null" >
         bis_delete = #{bisDelete,jdbcType=BIT},
       </if>
@@ -975,6 +1007,7 @@
     update tb_basic_building
     set apply_id = #{applyId,jdbcType=INTEGER},
       estate_id = #{estateId,jdbcType=INTEGER},
+      quote_id = #{quoteId,jdbcType=INTEGER},
       residence_use_year = #{residenceUseYear,jdbcType=INTEGER},
       industry_use_year = #{industryUseYear,jdbcType=INTEGER},
       building_number = #{buildingNumber,jdbcType=VARCHAR},
@@ -1025,6 +1058,7 @@
       relevance_id = #{relevanceId,jdbcType=INTEGER},
       version = #{version,jdbcType=INTEGER},
       bis_case = #{bisCase,jdbcType=BIT},
+      bis_enable = #{bisEnable,jdbcType=BIT},
       bis_delete = #{bisDelete,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},

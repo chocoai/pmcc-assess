@@ -43,7 +43,7 @@ public class BasicApplyBatchEvent extends BaseProcessEvent {
         //更改状态
         basicApplyBatchDao.updateInfo(applyBatch);
         //拷贝到案例库
-        basicApplyBatchService.copy(applyBatch.getId());
+
     }
 
 }

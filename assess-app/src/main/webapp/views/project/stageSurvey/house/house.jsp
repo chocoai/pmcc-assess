@@ -10,7 +10,9 @@
     <form class="form-horizontal" id="basicHouseFrm">
         <input type="hidden" name="id" value="${basicHouse.id}">
         <input type="hidden" name="unitId" value="${basicHouse.unitId}">
-        <input type="hidden" name="applyBatchId" value="${basicApplyBatch.id}">
+        <input type="hidden" name="quoteId" value="${basicHouse.quoteId}">
+        <input type="hidden" name="estateId" value="${basicHouse.estateId}">
+        <input type="hidden" name="buildingId" value="${basicHouse.buildingId}">
         <div class="form-group">
             <div class="x-valid">
                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">房号<span
@@ -756,6 +758,13 @@
 <script type="text/javascript">
     $(function () {
         houseCommon.initById('${basicHouse.id}');
-        houseCommon.autocompleteStart();
+        $("#txt_House_search").apHouse({
+            caseUnitId: function () {
+                return '${quoteId}';
+            },
+            onSelect: function (id, name) {
+                caseFun.caseHouse.showModel('${quoteId}',name);
+            }
+        });
     })
 </script>

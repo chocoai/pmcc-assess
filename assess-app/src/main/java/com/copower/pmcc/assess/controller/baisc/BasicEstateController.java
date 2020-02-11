@@ -1,10 +1,9 @@
 package com.copower.pmcc.assess.controller.baisc;
 
 import com.copower.pmcc.assess.common.enums.basic.BasicApplyTypeEnum;
+import com.copower.pmcc.assess.dal.basis.custom.entity.CustomCaseEntity;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicAlternativeCaseDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDetailDao;
-import com.copower.pmcc.assess.dal.basis.entity.BasicAlternativeCase;
-import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchDetail;
 import com.copower.pmcc.assess.dal.basis.entity.BasicEstate;
 import com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandState;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateLandStateVo;
@@ -24,6 +23,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 /**
  * @Auther: zch
@@ -95,7 +96,7 @@ public class BasicEstateController {
     @RequestMapping(value = "/basicEstateList", name = "获取数据列表", method = {RequestMethod.GET})
     public HttpResult basicEstateList(BasicEstate basicEstate) {
         try {
-            return HttpResult.newCorrectResult(basicEstateService.basicEstateList(basicEstate));
+            return HttpResult.newCorrectResult(basicEstateService.getBasicEstateList(basicEstate));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(500, e.getMessage());
@@ -115,41 +116,6 @@ public class BasicEstateController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getDataFromProject", name = "引用项目中的数据", method = {RequestMethod.GET})
-    public HttpResult getDataFromProject(Integer applyId) {
-        try {
-            return HttpResult.newCorrectResult(basicEstateService.getBasicEstateMapFromProject(applyId));
-        } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
-            return HttpResult.newErrorResult(e.getMessage());
-        }
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/quoteEstateData", name = "引用项目中的数据批量时", method = {RequestMethod.GET})
-    public HttpResult quoteEstateData(Integer id, Integer tableId) {
-        try {
-            return HttpResult.newCorrectResult(basicEstateService.quoteEstateData(id, tableId));
-        } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
-            return HttpResult.newErrorResult(e.getMessage());
-        }
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/quoteFromAlternative", name = "引用项目中的数据批量时", method = {RequestMethod.GET})
-    public HttpResult quoteFromAlternative(Integer id, Integer tableId) {
-        try {
-            BasicAlternativeCase alternativeCase = basicAlternativeCaseDao.getBasicAlternativeCaseById(id);
-            BasicApplyBatchDetail batchDetail = basicApplyBatchDetailDao.getInfoById(alternativeCase.getBusinessId());
-            return HttpResult.newCorrectResult(basicEstateService.quoteEstateData(batchDetail.getTableId(), tableId));
-        } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
-            return HttpResult.newErrorResult(e.getMessage());
-        }
-    }
-
-    @ResponseBody
     @RequestMapping(value = "/addEstateAndLandstate", name = "添加楼盘及土地基本信息", method = {RequestMethod.POST})
     public HttpResult addEstateAndLandstate(String estateName, String province, String city) {
         try {
@@ -157,17 +123,6 @@ public class BasicEstateController {
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult("添加楼盘及土地基本信息异常");
-        }
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/appWriteEstate", name = "过程数据转移", method = {RequestMethod.POST})
-    public HttpResult appWriteEstate(Integer caseEstateId, String estatePartInMode, Integer applyId) {
-        try {
-            return HttpResult.newCorrectResult(basicEstateService.appWriteEstate(caseEstateId, estatePartInMode, applyId));
-        } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
-            return HttpResult.newErrorResult(e.getMessage());
         }
     }
 
@@ -199,20 +154,32 @@ public class BasicEstateController {
     @ResponseBody
     @RequestMapping(value = "/getCaseEstateVos", method = {RequestMethod.GET}, name = "获取案例 楼盘列表")
     public BootstrapTableVo getCaseEstateVos(String name, String province, String city, String district) {
-        BasicEstate basicEstate = new BasicEstate();
-        if (!StringUtils.isEmpty(name)) {
-            basicEstate.setName(name);
+        return basicEstateService.getCaseEstateList(name,province,city,district);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/autoCompleteCaseEstate", method = {RequestMethod.GET}, name = "楼盘 信息自动补全")
+    public HttpResult autoCompleteCaseEstate(String name, String province, String city) {
+        try {
+            List<CustomCaseEntity> caseEstateList = basicEstateService.autoCompleteCaseEstate(name, province, city);
+            return HttpResult.newCorrectResult(caseEstateList);
+        } catch (Exception e1) {
+            return HttpResult.newErrorResult("异常");
         }
-        if (!StringUtils.isEmpty(province)) {
-            basicEstate.setProvince(province);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/quoteCaseEstate", name = "引用案列数据", method = {RequestMethod.GET})
+    public HttpResult quoteCaseEstate(Integer sourceId, Integer targetId) {
+        try {
+            BasicEstate basicEstate = basicEstateService.copyBasicEstate(sourceId, targetId, true);
+            basicEstate.setQuoteId(sourceId);
+            basicEstate.setBisCase(false);
+            basicEstateService.saveAndUpdateBasicEstate(basicEstate,false);
+            return HttpResult.newCorrectResult(basicEstate);
+        } catch (Exception e) {
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(e.getMessage());
         }
-        if (!StringUtils.isEmpty(city)) {
-            basicEstate.setCity(city);
-        }
-        if (!StringUtils.isEmpty(district)) {
-            basicEstate.setDistrict(district);
-        }
-        basicEstate.setBisCase(true);
-        return basicEstateService.getBootstrapTableVo(basicEstate);
     }
 }

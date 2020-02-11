@@ -52,10 +52,6 @@ public class BasicApplyController extends BaseController {
     @Autowired
     private BaseDataDicService baseDataDicService;
     @Autowired
-    private BasicEstateTaggingService basicEstateTaggingService;
-    @Autowired
-    private BasicApplyTransferService basicApplyTransferService;
-    @Autowired
     private ProjectInfoService projectInfoService;
     @Autowired
     private BasicApplyBatchService basicApplyBatchService;
@@ -85,56 +81,6 @@ public class BasicApplyController extends BaseController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/basicApplyTransfer", name = "过程数据申请进入案例库", method = RequestMethod.GET)
-    public ModelAndView basicApplyTransfer(Integer planDetailsId) throws Exception {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/basic/basicApplyTransfer", "0", 0, "0", "");
-        //1.数据复制，包含各项关联表（可参考案例复制到过程表）
-        BasicApply copy = basicApplyTransferService.copy(planDetailsId);
-        //2.复制过来的数据默认为草稿数据，下次进入时默认显示草稿数据
-        this.setViewParam(copy, modelAndView);
-        return modelAndView;
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/basicApplySubmit", name = "案例数据申请 提交", method = RequestMethod.POST)
-    public HttpResult basicApplySubmit(String formData) {
-        try {
-            BasicApply basicApply = publicBasicService.saveBasicApply(formData, false);
-            //发起流程
-            basicApplyService.processStartSubmit(basicApply);
-        } catch (BusinessException e) {
-            log.error(e.getMessage(), e);
-            return HttpResult.newErrorResult(e.getMessage());
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            return HttpResult.newErrorResult("案例申请提交异常");
-        }
-        return HttpResult.newCorrectResult();
-    }
-
-    @RequestMapping(value = "/basicApplyApproval", name = "审批页面", method = RequestMethod.GET)
-    public ModelAndView basicApplyApproval(String processInsId, String taskId, Integer boxId, String agentUserAccount) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/basic/basicApplyApproval", processInsId, boxId, taskId, agentUserAccount);
-        try {
-            BasicApply basicApply = basicApplyService.getBasicApplyByProcessInsId(processInsId);
-            this.setViewParam(basicApply, modelAndView);
-        } catch (Exception e1) {
-            log.error(e1.getMessage(), e1);
-        }
-        return modelAndView;
-    }
-
-    @RequestMapping(value = "/basicApplyDetail", name = "详情页面", method = RequestMethod.GET)
-    public ModelAndView basicApplyDetail(String processInsId, String taskId, Integer boxId) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/basic/basicApplyApproval", processInsId, boxId, "-1", null);
-        try {
-            BasicApply basicApply = basicApplyService.getBasicApplyByProcessInsId(processInsId);
-            this.setViewParam(basicApply, modelAndView);
-        } catch (Exception e1) {
-            log.error(e1.getMessage(), e1);
-        }
-        return modelAndView;
-    }
 
     @ResponseBody
     @RequestMapping(value = "/basicApprovalSubmit", name = "审批页面 提交")
@@ -167,7 +113,6 @@ public class BasicApplyController extends BaseController {
     @RequestMapping(value = "/basicEditSubmit", name = "案例返回修改 提交")
     public HttpResult basicEditSubmit(ApprovalModelDto approvalModelDto, String formData) {
         try {
-            publicBasicService.saveBasicApply(formData, false);
             basicApplyService.processEditSubmit(approvalModelDto);
             return HttpResult.newCorrectResult();
         } catch (BusinessException e) {
@@ -284,11 +229,7 @@ public class BasicApplyController extends BaseController {
     @RequestMapping(value = "/saveDraft", name = "保存草稿", method = {RequestMethod.POST})
     public HttpResult saveDraft(String formData) {
         try {
-            publicBasicService.saveBasicApply(formData, true);
             return HttpResult.newCorrectResult();
-        } catch (BusinessException e) {
-            log.error(e.getMessage(), e);
-            return HttpResult.newErrorResult(e.getMessage());
         } catch (Exception e1) {
             log.error(e1.getMessage(), e1);
             return HttpResult.newErrorResult("保存草稿异常");
@@ -351,10 +292,10 @@ public class BasicApplyController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "/getCaseBasicApply", name = "获取案列或查勘对应basicApply", method = RequestMethod.GET)
-    public HttpResult getCaseBasicApplyId(Integer planDetailsId){
+    public HttpResult getCaseBasicApplyId(Integer planDetailsId) {
         try {
             return HttpResult.newCorrectResult(basicApplyService.getBasicApplyByPlanDetailsId(planDetailsId));
-        }  catch (Exception e1) {
+        } catch (Exception e1) {
             log.error(e1.getMessage(), e1);
             return HttpResult.newErrorResult("获取数据异常");
         }

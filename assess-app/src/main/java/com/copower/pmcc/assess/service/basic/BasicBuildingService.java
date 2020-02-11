@@ -1,21 +1,17 @@
 package com.copower.pmcc.assess.service.basic;
 
-import com.copower.pmcc.assess.common.enums.basic.BasicApplyPartInModeEnum;
 import com.copower.pmcc.assess.common.enums.basic.EstateTaggingTypeEnum;
 import com.copower.pmcc.assess.constant.BaseConstant;
-import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDetailDao;
+import com.copower.pmcc.assess.dal.basis.custom.entity.CustomCaseEntity;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicBuildingDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateTaggingDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
-import com.copower.pmcc.assess.dal.cases.entity.*;
 import com.copower.pmcc.assess.dto.input.SynchronousDataDto;
 import com.copower.pmcc.assess.dto.output.basic.BasicBuildingVo;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.assist.DdlMySqlAssist;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
-import com.copower.pmcc.assess.service.cases.CaseBuildingService;
-import com.copower.pmcc.assess.service.cases.CaseEstateTaggingService;
 import com.copower.pmcc.assess.service.data.DataBuilderService;
 import com.copower.pmcc.assess.service.data.DataBuildingNewRateService;
 import com.copower.pmcc.assess.service.data.DataPropertyService;
@@ -32,7 +28,6 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Maps;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -62,10 +57,6 @@ public class BasicBuildingService {
     @Autowired
     private BasicBuildingDao basicBuildingDao;
     @Autowired
-    private BasicEstateService basicEstateService;
-    @Autowired
-    private CaseBuildingService caseBuildingService;
-    @Autowired
     private PublicService publicService;
     @Autowired
     private DataBuildingNewRateService dataBuildingNewRateService;
@@ -82,36 +73,13 @@ public class BasicBuildingService {
     @Autowired
     private CrmRpcBaseDataDicService crmRpcBaseDataDicService;
     @Autowired
-    private BasicApplyBatchDetailService basicApplyBatchDetailService;
-    @Autowired
-    private BasicApplyBatchDetailDao basicApplyBatchDetailDao;
-    @Autowired
     private BasicEstateTaggingDao basicEstateTaggingDao;
-    @Autowired
-    private CaseEstateTaggingService caseEstateTaggingService;
-    @Autowired
-    private BasicApplyBatchService basicApplyBatchService;
 
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     public List<BasicBuilding> getBasicBuildingIds(List<Integer> ids) {
         return basicBuildingDao.getBasicBuildingIds(ids);
-    }
-
-    private void updateSysAttachmentDto(BasicBuilding basicBuilding, Integer id) {
-        SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
-        sysAttachmentDto.setTableId(0);
-        sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
-        List<SysAttachmentDto> sysAttachmentDtoList = baseAttachmentService.getAttachmentList(sysAttachmentDto);
-        if (!ObjectUtils.isEmpty(sysAttachmentDtoList)) {
-            for (SysAttachmentDto dto : sysAttachmentDtoList) {
-                if (org.apache.commons.lang3.StringUtils.isNotBlank(dto.getFieldsName())) {
-                    dto.setTableId(id);
-                    baseAttachmentService.updateAttachment(dto);
-                }
-            }
-        }
     }
 
     /**
@@ -137,7 +105,6 @@ public class BasicBuildingService {
         if (basicBuilding.getId() == null || basicBuilding.getId().intValue() == 0) {
             basicBuilding.setCreator(commonService.thisUserAccount());
             Integer id = basicBuildingDao.addBasicBuilding(basicBuilding);
-            this.updateSysAttachmentDto(basicBuilding, id);
             return id;
         } else {
             if (updateNull) {
@@ -145,6 +112,7 @@ public class BasicBuildingService {
                 if (building != null) {
                     basicBuilding.setCreator(building.getCreator());
                     basicBuilding.setGmtCreated(building.getGmtCreated());
+                    basicBuilding.setGmtModified(DateUtils.now());
                 }
             }
             basicBuildingDao.updateBasicBuilding(basicBuilding, updateNull);
@@ -204,6 +172,13 @@ public class BasicBuildingService {
         vo.setTotal(page.getTotal());
         vo.setRows(ObjectUtils.isEmpty(transform) ? new ArrayList<BasicBuildingVo>(10) : transform);
         return vo;
+    }
+
+    public List<CustomCaseEntity> autoCompleteCaseBuilding(String buildingNumber, Integer estateId) {
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        List<CustomCaseEntity> entities = basicBuildingDao.getLatestVersionBuildingList(buildingNumber, estateId);
+        return entities;
     }
 
     public BasicBuildingVo getBasicBuildingVo(BasicBuilding basicBuilding) {
@@ -286,42 +261,19 @@ public class BasicBuildingService {
      * @throws Exception
      */
     @Transactional(rollbackFor = Exception.class)
-    public void clearInvalidData(Integer applyId) throws Exception {
-        BasicBuilding basicBuilding = null;
-        if (applyId == null || applyId.equals(0)) {
-            BasicBuilding where = new BasicBuilding();
-            where.setApplyId(0);
-            where.setCreator(commonService.thisUserAccount());
-            List<BasicBuilding> basicBuildingList = basicBuildingDao.getBasicBuildingList(where);
-            if (CollectionUtils.isEmpty(basicBuildingList)) return;
-            basicBuilding = basicBuildingList.get(0);
-        } else {
-            BasicApply basicApply = basicApplyService.getByBasicApplyId(applyId);
-            if (basicApply != null)
-                basicBuilding = getBasicBuildingById(basicApply.getBasicBuildingId());
-        }
-        if (basicBuilding == null) return;
+    public void clearInvalidData(Integer buildingId) throws Exception {
+        if (buildingId == null) return;
+        clearInvalidChildData(buildingId);//清理从表数据
+
         //清除标记
         BasicEstateTagging where = new BasicEstateTagging();
-        where.setTableId(basicBuilding.getId());
-        where.setType("building");
+        where.setTableId(buildingId);
+        where.setType(EstateTaggingTypeEnum.BUILDING.getKey());
         basicEstateTaggingDao.removeBasicEstateTagging(where);
-        clearInvalidChildData(basicBuilding.getId());//清理从表数据
-        StringBuilder sqlBulder = new StringBuilder();
-        sqlBulder.append(String.format("update %s set bis_delete=1 where id=%s;", FormatUtils.entityNameConvertToTableName(BasicBuilding.class), basicBuilding.getId()));
-        ddlMySqlAssist.customTableDdl(sqlBulder.toString());
 
-        //清理附件
-        SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
-        sysAttachmentDto.setTableId(0);
-        sysAttachmentDto.setCreater(commonService.thisUserAccount());
-        sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
-        List<SysAttachmentDto> sysAttachmentDtos = baseAttachmentService.getAttachmentList(sysAttachmentDto);
-        if (!ObjectUtils.isEmpty(sysAttachmentDtos)) {
-            for (SysAttachmentDto oo : sysAttachmentDtos) {
-                baseAttachmentService.deleteAttachment(oo.getId());
-            }
-        }
+        StringBuilder sqlBulder = new StringBuilder();
+        sqlBulder.append(String.format("update %s set bis_delete=1 where id=%s;", FormatUtils.entityNameConvertToTableName(BasicBuilding.class), buildingId));
+        ddlMySqlAssist.customTableDdl(sqlBulder.toString());
     }
 
     /**
@@ -341,290 +293,50 @@ public class BasicBuildingService {
         ddlMySqlAssist.customTableDdl(sqlBulder.toString());
     }
 
-    /**
-     * 将CaseBuilding下的子类 转移到 BasicBuilding下的子类中去 (用做过程数据)
-     *
-     * @param caseBuildingId
-     * @throws Exception
-     */
     @Transactional(rollbackFor = Exception.class)
-    public BasicBuilding appWriteBuilding(Integer caseBuildingId, String buildingPartInMode, Integer applyId) throws Exception {
-        if (caseBuildingId == null) {
-            throw new Exception("null point");
-        }
-        applyId = applyId == null ? 0 : applyId;
-        //清理数据
-        this.clearInvalidData(applyId);
-        CaseBuilding caseBuilding = caseBuildingService.getCaseBuildingById(caseBuildingId);
-        if (caseBuilding == null) {
-            return null;
-        }
-        BasicBuilding basicBuilding = new BasicBuilding();
-        BeanUtils.copyProperties(caseBuilding, basicBuilding);
-        basicBuilding.setApplyId(applyId);
-        basicBuilding.setCreator(commonService.thisUserAccount());
-        basicBuilding.setGmtCreated(null);
-        basicBuilding.setGmtModified(null);
-        if (StringUtils.equals(buildingPartInMode, BasicApplyPartInModeEnum.REFERENCE.getKey())) {
-            basicBuilding.setBuildingNumber(null);
-            basicBuilding.setBuildingName(null);
-        }
-        basicBuildingDao.addBasicBuilding(basicBuilding);
-
-        //附件拷贝
-        SysAttachmentDto example = new SysAttachmentDto();
-        example.setTableId(caseBuilding.getId());
-        example.setTableName(FormatUtils.entityNameConvertToTableName(CaseBuilding.class));
-        SysAttachmentDto attachmentDto = new SysAttachmentDto();
-        attachmentDto.setTableId(basicBuilding.getId());
-        attachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
-        baseAttachmentService.copyFtpAttachments(example, attachmentDto);
-        //标注拷贝
-        CaseEstateTagging caseEstateTagging = new CaseEstateTagging();
-        caseEstateTagging.setTableId(caseBuildingId);
-        caseEstateTagging.setType(EstateTaggingTypeEnum.BUILDING.getKey());
-        List<CaseEstateTagging> oldCaseEstateTaggingList = caseEstateTaggingService.getCaseEstateTaggingList(caseEstateTagging);
-        if (!ObjectUtils.isEmpty(oldCaseEstateTaggingList)) {
-            BasicEstateTagging basicEstateTagging = new BasicEstateTagging();
-            BeanUtils.copyProperties(oldCaseEstateTaggingList.get(0), basicEstateTagging);
-            basicEstateTagging.setCreator(commonService.thisUserAccount());
-            basicEstateTagging.setName(null);
-            basicEstateTagging.setTableId(basicBuilding.getId());
-            basicEstateTagging.setGmtCreated(null);
-            basicEstateTagging.setGmtModified(null);
-            basicEstateTaggingService.addBasicEstateTagging(basicEstateTagging);
-        }
-
-        StringBuilder sqlBuilder = new StringBuilder();
-        SynchronousDataDto synchronousDataDto = new SynchronousDataDto();
-        HashMap<String, String> map = Maps.newHashMap();
-        map.put("building_id", String.valueOf(basicBuilding.getId()));
-        map.put("creator", commonService.thisUserAccount());
-        synchronousDataDto.setFieldDefaultValue(map);
-        synchronousDataDto.setWhereSql("building_id=" + caseBuilding.getId());
-        synchronousDataDto.setSourceDataBase(BaseConstant.DATABASE_PMCC_ASSESS_CASE);
-        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(CaseBuildingOutfit.class));
-        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicBuildingOutfit.class));
-        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//楼栋外装sql
-
-        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(CaseBuildingMaintenance.class));
-        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicBuildingMaintenance.class));
-        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//维护结构sql
-
-        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(CaseBuildingSurface.class));
-        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicBuildingSurface.class));
-        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//层面结构sql
-
-        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(CaseBuildingFunction.class));
-        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicBuildingFunction.class));
-        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//建筑功能sql
-
-        ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
-        return basicBuilding;
+    public BasicBuilding copyBasicBuilding(Integer sourceBuildingId, Integer targetBuildingId, Boolean containChild) throws Exception {
+        return copyBasicBuildingIgnore(sourceBuildingId, targetBuildingId, containChild);
     }
-
-
-    //引用项目中的数据
-    @Transactional(rollbackFor = Exception.class)
-    public BasicBuilding getBasicBuildingFromProject(Integer applyId) throws Exception {
-        if (applyId == null) {
-            throw new Exception("null point");
-        }
-        //清理数据
-        this.clearInvalidData(0);
-        BasicBuildingVo oldbasicBuilding = this.getBasicBuildingByApplyId(applyId);
-        if (oldbasicBuilding == null) {
-            return null;
-        }
-        BasicBuilding basicBuilding = new BasicBuilding();
-
-        BeanUtils.copyProperties(oldbasicBuilding, basicBuilding);
-        basicBuilding.setApplyId(0);
-        basicBuilding.setCreator(commonService.thisUserAccount());
-        basicBuilding.setGmtCreated(null);
-        basicBuilding.setGmtModified(null);
-        basicBuilding.setId(null);
-        this.saveAndUpdateBasicBuilding(basicBuilding, false);
-
-        //附件拷贝
-        SysAttachmentDto example = new SysAttachmentDto();
-        example.setTableId(oldbasicBuilding.getId());
-        example.setTableName(FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
-        SysAttachmentDto attachmentDto = new SysAttachmentDto();
-        attachmentDto.setTableId(basicBuilding.getId());
-        attachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
-        baseAttachmentService.copyFtpAttachments(example, attachmentDto);
-
-        BasicEstateTagging oldBasicEstateTagging = new BasicEstateTagging();
-        oldBasicEstateTagging.setTableId(oldbasicBuilding.getId());
-        oldBasicEstateTagging.setType(EstateTaggingTypeEnum.BUILDING.getKey());
-        List<BasicEstateTagging> oldBasicEstateTaggingList = basicEstateTaggingService.getBasicEstateTaggingList(oldBasicEstateTagging);
-        if (!ObjectUtils.isEmpty(oldBasicEstateTaggingList)) {
-            BasicEstateTagging basicEstateTagging = new BasicEstateTagging();
-            BeanUtils.copyProperties(oldBasicEstateTaggingList.get(0), basicEstateTagging);
-            basicEstateTagging.setCreator(commonService.thisUserAccount());
-            basicEstateTagging.setTableId(basicBuilding.getId());
-            basicEstateTagging.setName(null);
-            basicEstateTagging.setGmtCreated(null);
-            basicEstateTagging.setGmtModified(null);
-            basicEstateTaggingService.addBasicEstateTagging(basicEstateTagging);
-        }
-
-        StringBuilder sqlBuilder = new StringBuilder();
-        SynchronousDataDto synchronousDataDto = new SynchronousDataDto();
-        HashMap<String, String> map = Maps.newHashMap();
-        map.put("building_id", String.valueOf(basicBuilding.getId()));
-        map.put("creator", commonService.thisUserAccount());
-        synchronousDataDto.setFieldDefaultValue(map);
-        synchronousDataDto.setWhereSql("building_id=" + oldbasicBuilding.getId());
-        synchronousDataDto.setSourceDataBase(BaseConstant.DATABASE_PMCC_ASSESS);
-        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicBuildingOutfit.class));
-        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicBuildingOutfit.class));
-        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//楼栋外装sql
-
-        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicBuildingMaintenance.class));
-        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicBuildingMaintenance.class));
-        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//维护结构sql
-
-        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicBuildingSurface.class));
-        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicBuildingSurface.class));
-        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//层面结构sql
-
-        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicBuildingFunction.class));
-        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicBuildingFunction.class));
-        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//建筑功能sql
-
-        ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
-        return basicBuilding;
-    }
-
-
-    /**
-     * 引用项目中的数据
-     *
-     * @param id      老数据对应id
-     * @param tableId basicBuilding对应id
-     * @return
-     */
-    @Transactional(rollbackFor = Exception.class)
-    public BasicBuilding quoteBuildingData(Integer id, Integer tableId) throws Exception {
-        if (id == null || tableId == null) {
-            throw new Exception("null point");
-        }
-        //清理数据
-        this.clearInvalidChildData(tableId);
-
-        //更新批量申请表信息
-        BasicApplyBatchDetail batchDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail("tb_basic_building", tableId);
-        batchDetail.setQuoteId(id);
-        batchDetail.setBaseType(BaseConstant.DATABASE_PMCC_ASSESS);
-        basicApplyBatchDetailDao.updateInfo(batchDetail);
-        //Integer parentTableId = basicApplyBatchDetailService.getParentTableId(batchDetail);
-
-        BasicBuildingVo oldBasicBuilding = this.getBasicBuildingById(id);
-        if (oldBasicBuilding == null) {
-            return null;
-        }
-        BasicBuilding basicBuilding = new BasicBuilding();
-        BeanUtils.copyProperties(oldBasicBuilding, basicBuilding);
-        basicBuilding.setCreator(commonService.thisUserAccount());
-        basicBuilding.setGmtCreated(null);
-        basicBuilding.setGmtModified(null);
-        basicBuilding.setId(tableId);
-        basicBuilding.setApplyId(null);
-        //basicBuilding.setEstateId(parentTableId);
-        this.saveAndUpdateBasicBuilding(basicBuilding, false);
-
-        //删除原有的附件
-        SysAttachmentDto deleteExample = new SysAttachmentDto();
-        deleteExample.setTableId(tableId);
-        deleteExample.setTableName(FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
-        List<SysAttachmentDto> attachmentList = baseAttachmentService.getAttachmentList(deleteExample);
-        if (!org.springframework.util.CollectionUtils.isEmpty(attachmentList)) {
-            for (SysAttachmentDto item : attachmentList) {
-                baseAttachmentService.deleteAttachment(item.getId());
-            }
-        }
-
-        //附件拷贝
-        SysAttachmentDto example = new SysAttachmentDto();
-        example.setTableId(id);
-        example.setTableName(FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
-        SysAttachmentDto attachmentDto = new SysAttachmentDto();
-        attachmentDto.setTableId(tableId);
-        attachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
-        baseAttachmentService.copyFtpAttachments(example, attachmentDto);
-
-        BasicEstateTagging oldBasicEstateTagging = new BasicEstateTagging();
-        oldBasicEstateTagging.setTableId(id);
-        oldBasicEstateTagging.setType(EstateTaggingTypeEnum.BUILDING.getKey());
-        List<BasicEstateTagging> oldBasicEstateTaggingList = basicEstateTaggingService.getBasicEstateTaggingList(oldBasicEstateTagging);
-        if (!ObjectUtils.isEmpty(oldBasicEstateTaggingList)) {
-            BasicEstateTagging basicEstateTagging = new BasicEstateTagging();
-            BeanUtils.copyProperties(oldBasicEstateTaggingList.get(0), basicEstateTagging);
-            basicEstateTagging.setCreator(commonService.thisUserAccount());
-            basicEstateTagging.setApplyId(null);
-            basicEstateTagging.setTableId(tableId);
-
-            basicEstateTagging.setName(null);
-            basicEstateTagging.setGmtCreated(null);
-            basicEstateTagging.setGmtModified(null);
-            basicEstateTaggingService.addBasicEstateTagging(basicEstateTagging);
-        }
-
-        StringBuilder sqlBuilder = new StringBuilder();
-        SynchronousDataDto synchronousDataDto = new SynchronousDataDto();
-        HashMap<String, String> map = Maps.newHashMap();
-        map.put("building_id", String.valueOf(tableId));
-        map.put("creator", commonService.thisUserAccount());
-        synchronousDataDto.setFieldDefaultValue(map);
-        synchronousDataDto.setWhereSql("building_id=" + id);
-        synchronousDataDto.setSourceDataBase(BaseConstant.DATABASE_PMCC_ASSESS);
-        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicBuildingOutfit.class));
-        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicBuildingOutfit.class));
-        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//楼栋外装sql
-
-        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicBuildingMaintenance.class));
-        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicBuildingMaintenance.class));
-        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//维护结构sql
-
-        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicBuildingSurface.class));
-        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicBuildingSurface.class));
-        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//层面结构sql
-
-        synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicBuildingFunction.class));
-        synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicBuildingFunction.class));
-        sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//建筑功能sql
-
-        ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
-        return basicBuilding;
-    }
-
 
     /**
      * 拷贝查勘楼栋数据
      *
      * @param sourceBuildingId
-     * @param containChild
+     * @param targetBuildingId
+     * @param containChild     是否包含从表数据
      * @return
+     * @throws Exception
      */
     @Transactional(rollbackFor = Exception.class)
-    public BasicBuilding copyBasicBuilding(Integer sourceBuildingId, Boolean containChild) throws Exception {
+    public BasicBuilding copyBasicBuildingIgnore(Integer sourceBuildingId, Integer targetBuildingId, Boolean containChild, String... ignoreProperties) throws Exception {
         if (sourceBuildingId == null) return null;
-        BasicBuildingVo sourceBasicBuilding = getBasicBuildingById(sourceBuildingId);
+        BasicBuilding sourceBasicBuilding = getBasicBuildingById(sourceBuildingId);
         if (sourceBasicBuilding == null) return null;
-        BasicBuilding targetBasicBuilding = new BasicBuilding();
-        BeanUtils.copyProperties(sourceBasicBuilding, targetBasicBuilding);
-        targetBasicBuilding.setId(null);
-        targetBasicBuilding.setCreator(commonService.thisUserAccount());
-        targetBasicBuilding.setGmtCreated(null);
-        targetBasicBuilding.setGmtModified(null);
+        BasicBuilding targetBasicBuilding = getBasicBuildingById(targetBuildingId);
+        if (targetBasicBuilding == null) {
+            targetBasicBuilding = new BasicBuilding();
+            BeanUtils.copyProperties(sourceBasicBuilding, targetBasicBuilding, ignoreProperties);
+            targetBasicBuilding.setId(null);
+            targetBasicBuilding.setCreator(commonService.thisUserAccount());
+            targetBasicBuilding.setGmtCreated(null);
+            targetBasicBuilding.setGmtModified(null);
+        } else {
+            BeanUtils.copyProperties(sourceBasicBuilding, targetBasicBuilding, "id");
+        }
         this.saveAndUpdateBasicBuilding(targetBasicBuilding, true);
 
-        baseAttachmentService.copyFtpAttachments(sourceBuildingId, targetBasicBuilding.getId());//附件拷贝
+        if (targetBuildingId != null && targetBuildingId > 0) {//目标数据已存在，先清理目标数据的从表数据
+            clearInvalidChildData(targetBuildingId);
+
+            SysAttachmentDto where=new SysAttachmentDto();
+            where.setTableName(FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
+            where.setTableId(targetBuildingId);
+            baseAttachmentService.deleteAttachmentByDto(where);
+        }
+        baseAttachmentService.copyFtpAttachments(FormatUtils.entityNameConvertToTableName(BasicBuilding.class), sourceBuildingId, targetBasicBuilding.getId());//附件拷贝
         basicEstateTaggingService.copyTagging(EstateTaggingTypeEnum.BUILDING, sourceBuildingId, targetBasicBuilding.getId());//标记tagging
 
-        if(containChild) { //处理从表数据
+        if (containChild) { //处理从表数据
             StringBuilder sqlBuilder = new StringBuilder();
             SynchronousDataDto synchronousDataDto = new SynchronousDataDto();
             HashMap<String, String> map = Maps.newHashMap();
