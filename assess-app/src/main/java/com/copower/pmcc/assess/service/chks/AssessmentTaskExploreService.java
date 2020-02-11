@@ -135,6 +135,7 @@ public class AssessmentTaskExploreService implements AssessmentTaskInterface {
             dto.setPlanId(projectPlanDetails.getPlanId());
             dto.setPlanDetailsId(projectPlanDetails.getId());
         }
+        dto.setExaminePeople(commonService.thisUserAccount());
         dto.setCreator(commonService.thisUserAccount());
         dto.setValidScore(new BigDecimal(0));
         dto.setExamineUrl(examineUrl);

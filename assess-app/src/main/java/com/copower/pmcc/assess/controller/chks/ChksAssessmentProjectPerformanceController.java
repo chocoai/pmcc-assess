@@ -56,6 +56,16 @@ public class ChksAssessmentProjectPerformanceController {
         }
     }
 
+    @GetMapping(value = "/getAssessmentProjectPerformanceById", name = "根据id获取考核后的数据   ")
+    public HttpResult getAssessmentProjectPerformanceById(Integer id) {
+        try {
+            return HttpResult.newCorrectResult(200, chksAssessmentProjectPerformanceService.getAssessmentProjectPerformanceById(id));
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e, "获取考核后的数据   子数据");
+            return HttpResult.newErrorResult(500, e.getMessage());
+        }
+    }
+
     @GetMapping(value = "/conversionProjectPerformanceDtoMap", name = "获取考核后的数据")
     public HttpResult conversionProjectPerformanceDtoMap(AssessmentProjectPerformanceQuery query, String activityIdList) {
         try {
@@ -85,8 +95,8 @@ public class ChksAssessmentProjectPerformanceController {
         try {
             AssessmentProjectPerformanceDto assessmentProjectPerformanceDto = JSONObject.parseObject(fomData, AssessmentProjectPerformanceDto.class);
             List<AssessmentProjectPerformanceDetailDto> detailDtoList = JSONObject.parseArray(chksScore, AssessmentProjectPerformanceDetailDto.class);
-            chksAssessmentProjectPerformanceService.saveAssessmentServer(assessmentProjectPerformanceDto, detailDtoList, planDetailsId);
-            return HttpResult.newCorrectResult(200, "success");
+            Integer id = chksAssessmentProjectPerformanceService.saveAssessmentServer(assessmentProjectPerformanceDto, detailDtoList, planDetailsId);
+            return HttpResult.newCorrectResult(200, id);
         } catch (Exception e) {
             baseService.writeExceptionInfo(e, "保存抽查数据出错");
             return HttpResult.newErrorResult(500, e.getMessage());
@@ -94,10 +104,11 @@ public class ChksAssessmentProjectPerformanceController {
     }
 
     @PostMapping(value = "/updateAssessmentProjectPerformance", name = "考核主表数据修改")
-    public HttpResult updateAssessmentProjectPerformance(AssessmentProjectPerformanceDto assessmentProjectPerformanceDto, boolean updateNull) {
+    public HttpResult updateAssessmentProjectPerformance(String fomData, @RequestParam(defaultValue = "false") boolean updateNull) {
         try {
+            AssessmentProjectPerformanceDto assessmentProjectPerformanceDto = JSONObject.parseObject(fomData, AssessmentProjectPerformanceDto.class);
             chksAssessmentProjectPerformanceService.updateAssessmentProjectPerformanceDto(assessmentProjectPerformanceDto, updateNull);
-            return HttpResult.newCorrectResult(200, "成功");
+            return HttpResult.newCorrectResult(200, assessmentProjectPerformanceDto);
         } catch (Exception e) {
             baseService.writeExceptionInfo(e, "考核主表数据修改 出错");
             return HttpResult.newErrorResult(500, e.getMessage());
