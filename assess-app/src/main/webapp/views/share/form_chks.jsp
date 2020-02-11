@@ -51,9 +51,21 @@
                     json.activityIds = activityIds.join(",");
                 }
             }
-            console.log(json) ;
-            assessmentCommonHandle.getChksBootstrapTableVoBase($("#assessmentTableList"),json) ;
-        }({processInsId:'${processInsId}',boxId:'${boxReDto.id}',examinePeople:'${projectPlanDetails.executeUserAccount}'}));
+            console.log(json);
+
+            //抽查组人员  可以对任务进行抽查
+            var array = [];
+            if ('${spotUserAccounts}') {
+                var spotUserAccounts = JSON.parse('${el:toJsonString(spotUserAccounts)}');
+                $.each(spotUserAccounts, function (i, account) {
+                    if (account == '${sysUserDto.userAccount}') {
+                        array.push(assessmentCommonHandle.getSpotCol());
+                    }
+                });
+
+            }
+            assessmentCommonHandle.getChksBootstrapTableVoBase($("#assessmentTableList"), json, array);
+        }({processInsId: '${processInsId}', boxId: '${boxReDto.id}'}));
     });
 
 </script>

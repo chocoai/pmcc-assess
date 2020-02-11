@@ -22,13 +22,13 @@ import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.api.provider.*;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
+import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.SpringContextUtils;
-import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -80,12 +80,6 @@ public class ProjectTaskController extends BaseController {
     private ChksAssessmentProjectPerformanceService chksAssessmentProjectPerformanceService;
     @Autowired
     private ProcessControllerComponent processControllerComponent;
-    @Autowired
-    private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
-    @Autowired
-    private BpmRpcProcessInsManagerService bpmRpcProcessInsManagerService;
-    @Autowired
-    private ApplicationConstant applicationConstant;
 
 
     @RequestMapping(value = "/projectTaskIndex", name = "提交工作成果公共页面")
@@ -187,7 +181,9 @@ public class ProjectTaskController extends BaseController {
         modelAndView.addObject("projectId", projectPlanDetails.getProjectId());
         modelAndView.addObject("projectFlog", "1");
         if (modelAndView.getModel().containsKey(activityId)) {
-            setCheckParams(boxId, (Integer) modelAndView.getModel().get(activityId), modelAndView);
+            setCheckParams(boxId, (Integer) modelAndView.getModel().get(activityId), projectPlanDetails.getProcessInsId(), projectPlanDetails.getProjectId(), modelAndView);
+        } else {
+            setCheckParams(boxId, null, projectPlanDetails.getProcessInsId(), projectPlanDetails.getProjectId(), modelAndView);
         }
         return modelAndView;
     }
@@ -289,7 +285,9 @@ public class ProjectTaskController extends BaseController {
             }
         }
         if (modelAndView.getModel().containsKey(activityId)) {
-            setCheckParams(boxId, (Integer) modelAndView.getModel().get(activityId), modelAndView);
+            setCheckParams(boxId, (Integer) modelAndView.getModel().get(activityId), projectPlanDetails.getProcessInsId(), projectPlanDetails.getProjectId(), modelAndView);
+        } else {
+            setCheckParams(boxId, null, projectPlanDetails.getProcessInsId(), projectPlanDetails.getProjectId(), modelAndView);
         }
         return modelAndView;
     }
@@ -313,24 +311,32 @@ public class ProjectTaskController extends BaseController {
         return bootstrapTableVo;
     }
 
+
     /**
      * @param boxId
-     * @param boxReActivitiId 注意此参数可能是错误的
+     * @param boxReActivitiId
+     * @param processInsId
+     * @param projectId
      * @param modelAndView
      */
-    private void setCheckParams(Integer boxId, Integer boxReActivitiId, ModelAndView modelAndView) {
-        if (boxReActivitiId == null) {
-            return;
-        }
-        BoxReActivityDto boxReActivityDto = bpmRpcBoxService.getBoxreActivityInfoById(boxReActivitiId);
-        if (boxId == null || boxId == 0) {
-            boxId = bpmRpcBoxService.getEndActivityByBoxId(boxReActivitiId).getBoxId();
-        }
-        //巡查人或者抽查人  可以看到当前模型下 所有人的考核记录
-        boolean spotCheck = chksAssessmentProjectPerformanceService.getSpotCheck(boxId, processControllerComponent.getThisUser());
+    private void setCheckParams(Integer boxId, Integer boxReActivitiId, String processInsId, Integer projectId, ModelAndView modelAndView) {
         //当前节点  可以查看的权限节点信息列表
-        modelAndView.addObject("activityDtoList", chksAssessmentProjectPerformanceService.getAssessmentProjectPerformanceNext(boxId, boxReActivitiId, null, spotCheck));
-        modelAndView.addObject("boxReActivityDto", boxReActivityDto);//考核节点
+        modelAndView.addObject(StringUtils.uncapitalize(SysUserDto.class.getSimpleName()), processControllerComponent.getThisUserInfo());
+        BoxReActivityDto spotReActivityDto = null;
+        if (boxId == null || boxId == 0) {
+            if (boxReActivitiId != null) {
+                spotReActivityDto = chksAssessmentProjectPerformanceService.getSpotBoxReActivityDto(bpmRpcBoxService.getBoxreActivityInfoById(boxReActivitiId).getBoxId());
+            } else {
+                BoxReActivityDto boxReActivityDto = chksAssessmentProjectPerformanceService.getBoxReActivityDtoByProcessInsId(processInsId, projectId, boxId);
+                spotReActivityDto = chksAssessmentProjectPerformanceService.getSpotBoxReActivityDto(boxReActivityDto.getBoxId());
+            }
+        } else {
+            spotReActivityDto = chksAssessmentProjectPerformanceService.getSpotBoxReActivityDto(boxId);
+        }
+        modelAndView.addObject("activityDtoList", chksAssessmentProjectPerformanceService.getAssessmentProjectPerformanceNext(boxId, boxReActivitiId));
+        modelAndView.addObject("spotReActivityDto", spotReActivityDto);//抽查考核节点
+        modelAndView.addObject("spotUserAccounts", chksAssessmentProjectPerformanceService.getSpotCheckUserAccounts(spotReActivityDto.getBoxId()));//抽查考核节点账户 list
+        modelAndView.addObject("userAdmin", processControllerComponent.userIsAdmin(processControllerComponent.getThisUser()));//是否为超级管理员
     }
 
 }

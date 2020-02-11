@@ -8,7 +8,8 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">考核记录</h3>
+                <h3 class="modal-title">考核记录填写</h3>
+                <input type="hidden" name="marsterId">
             </div>
             <div class="modal-body">
                 <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
@@ -31,7 +32,7 @@
                 <button type="button" data-dismiss="modal" class="btn btn-default">
                     关闭
                 </button>
-                <button type="button" class="btn btn-primary" onclick="">
+                <button type="button" class="btn btn-primary" onclick="assessmentCommonHandle.saveChkSpotAssessment();">
                     保存
                 </button>
             </div>
@@ -82,7 +83,8 @@
 </div>
 
 
-<div id="divAssessmentProjectPerformanceBoxDetail" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+<div id="divAssessmentProjectPerformanceBoxDetail" class="modal fade bs-example-modal-lg" data-backdrop="static"
+     tabindex="-1"
      role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -181,18 +183,42 @@
         }
     };
 
-    assessmentCommonHandle.conversionProjectPerformanceDtoMap = function (query, callback) {
+    assessmentCommonHandle.saveAssessmentServer = function (data, callback) {
+        jQuery.extend(data, {planDetailsId: '${projectPlanDetails.id}'});
         $.ajax({
-            url: "${pageContext.request.contextPath}/chksAssessmentProjectPerformance/conversionProjectPerformanceDtoMap",
-            type: "get",
+            url: "${pageContext.request.contextPath}/chksAssessmentProjectPerformance/saveAssessmentServer",
+            type: "post",
             dataType: "json",
-            data: query,
+            data: data,
             success: function (result) {
                 if (result.ret) {
                     if (callback) {
                         callback(result.data);
                     }
                 } else {
+                    console.log(result);
+                    Alert("失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result.errmsg);
+            }
+        });
+    };
+
+    assessmentCommonHandle.updateAssessmentProjectPerformance = function (data, callback) {
+        $.ajax({
+            url: "${pageContext.request.contextPath}/chksAssessmentProjectPerformance/updateAssessmentProjectPerformance",
+            type: "post",
+            dataType: "json",
+            data: {fomData: JSON.stringify(data)},
+            success: function (result) {
+                if (result.ret) {
+                    if (callback) {
+                        callback(result.data);
+                    }
+                } else {
+                    console.log(result);
                     Alert("失败，失败原因:" + result.errmsg);
                 }
             },
@@ -228,7 +254,7 @@
             url: "${pageContext.request.contextPath}/chksAssessmentProjectPerformance/getAssessmentProjectPerformanceDetailByPerformanceIdList",
             type: "get",
             dataType: "json",
-            data: {performanceId:id},
+            data: {performanceId: id},
             success: function (result) {
                 if (result.ret) {
                     if (callback) {
@@ -343,6 +369,43 @@
         });
     };
 
+    assessmentCommonHandle.getAssessmentProjectPerformanceById = function (id, callback) {
+        $.ajax({
+            url: "${pageContext.request.contextPath}/chksAssessmentProjectPerformance/getAssessmentProjectPerformanceById",
+            type: "get",
+            dataType: "json",
+            data: {id: id},
+            success: function (result) {
+                if (result.ret) {
+                    if (callback) {
+                        callback(result.data);
+                    }
+                } else {
+                    Alert("失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Alert("调用服务端方法失败，失败原因:" + result.errmsg);
+            }
+        });
+    };
+
+    assessmentCommonHandle.getSpotCol = function () {
+        var col = {
+            field: 'spotId', title: '抽查考核', formatter: function (value, row, index) {
+                var str = "";
+                if (value) {
+                    //使用弹窗查看考核
+                    str += "<a onclick='assessmentCommonHandle.findAssessmentProjectPerformanceBox(" + value + ")' style='margin-left: 5px;' data-placement='top' data-original-title='考核查看' class='btn btn-xs btn-primary tooltips'  ><i class='fa fa-search fa-white'></i></a>";
+                } else {
+                    str += "<a onclick='assessmentCommonHandle.showChkSpotAssessmentParent(" + row.id + ")' style='margin-left: 5px;' data-placement='top' data-original-title='抽查考核填写' class='btn btn-xs btn-primary tooltips'  ><i class='fa fa-arrow-right fa-white'></i></a>";
+                }
+                return str;
+            }
+        };
+        return col
+    };
+
     assessmentCommonHandle.getChksBootstrapTableVoBase = function (table, query, data) {
         var cols = [];
         cols.push({field: 'activityName', title: '考核节点'});
@@ -360,28 +423,60 @@
         cols.push({
             field: 'examineStatus', title: '考核操作', formatter: function (value, row, index) {
                 var str = "";
-
+                var btnClass = 'btn-success';
+                str = "<a style='margin-left: 5px;' data-placement='top' data-original-title='无权限' class='btn btn-xs btn-primary tooltips'  ><i class='fa fa-unlock-alt fa-white'></i></a>";
                 //完成之后查看
                 if (value == 'finish') {
-                    if (row.examineUrl) {
-                        str += "<a onclick='assessmentCommonHandle.taskOpenWin(\"" + row.examineUrl + "\")' href='javascript://' style='margin-left: 5px;' data-placement='top' data-original-title='考核查看' class='btn btn-xs btn-warning tooltips'  ><i class='fa fa-search fa-white'></i></a>";
-                    } else {
-                        //使用弹窗考核
-                        str += "<a onclick='assessmentCommonHandle.findAssessmentProjectPerformanceBox(" + row.id + ")' style='margin-left: 5px;' data-placement='top' data-original-title='考核查看' class='btn btn-xs btn-primary tooltips'  ><i class='fa fa-search fa-white'></i></a>";
+
+                    //超级管理员和抽查组角色都可以查看,以及它自身查看自己
+
+                    var show = false;
+
+                    //当没有改变状态之前才能进行判断 (超级管理员情况)
+                    if (!show) {
+                        show = '${userAdmin}' == 'true';
+                    }
+
+                    //当没有改变状态之前才能进行判断 (抽查组情况)
+                    if ('${spotUserAccounts}') {
+                        var spotUserAccounts = JSON.parse('${el:toJsonString(spotUserAccounts)}');
+                        $.each(spotUserAccounts, function (i, account) {
+                            if (account == '${sysUserDto.userAccount}') {
+                                show = true;
+                            }
+                        });
+
+                    }
+
+                    //当没有改变状态之前才能进行判断 (自己)
+                    if (!show) {
+                        show = '${sysUserDto.userAccount}' == row.examinePeople;
+                    }
+
+                    if (show) {
+                        if (row.examineUrl) {
+                            //进入一个地址查看考核内容
+                            str = "<a onclick='assessmentCommonHandle.taskOpenWin(\"" + row.examineUrl + "\")' href='javascript://' style='margin-left: 5px;' data-placement='top' data-original-title='考核查看' class='btn btn-xs btn-warning tooltips'  ><i class='fa fa-search fa-white'></i></a>";
+                        } else {
+                            //使用弹窗查看考核
+                            str = "<a onclick='assessmentCommonHandle.findAssessmentProjectPerformanceBox(" + row.id + ")' style='margin-left: 5px;' data-placement='top' data-original-title='考核查看' class='btn btn-xs btn-primary tooltips'  ><i class='fa fa-search fa-white'></i></a>";
+                        }
                     }
                 }
 
                 //考核未完成
                 if (value == 'runing') {
-                    var btnClass = 'btn-success';
-                    //进入一个地址来考核
-                    if (row.examineUrl) {
-                        str += "<a onclick='assessmentCommonHandle.taskOpenWin(\"" + row.examineUrl + "\")' href='javascript://' style='margin-left: 5px;' data-placement='top' data-original-title='考核填写' class='btn btn-xs " + btnClass + " tooltips'  ><i class='fa fa-arrow-right fa-white'></i></a>";
-                    } else {
-                        //使用弹窗考核
-                        str += "<a onclick='assessmentCommonHandle.openAssessmentProjectPerformanceBox(" + row.id + ")' style='margin-left: 5px;' data-placement='top' data-original-title='考核填写' class='btn btn-xs btn-primary tooltips'  ><i class='fa fa-edit fa-white'></i></a>";
-                    }
 
+                    //考核人与当前人账户相同的时候才能考核
+                    if ('${sysUserDto.userAccount}' == row.examinePeople) {
+                        //进入一个地址来考核
+                        if (row.examineUrl) {
+                            str = "<a onclick='assessmentCommonHandle.taskOpenWin(\"" + row.examineUrl + "\")' href='javascript://' style='margin-left: 5px;' data-placement='top' data-original-title='考核填写' class='btn btn-xs " + btnClass + " tooltips'  ><i class='fa fa-arrow-right fa-white'></i></a>";
+                        } else {
+                            //使用弹窗考核
+                            str = "<a onclick='assessmentCommonHandle.openAssessmentProjectPerformanceBox(" + row.id + ")' style='margin-left: 5px;' data-placement='top' data-original-title='考核填写' class='btn btn-xs btn-primary tooltips'  ><i class='fa fa-edit fa-white'></i></a>";
+                        }
+                    }
                 }
                 return str;
             }
@@ -405,8 +500,87 @@
         TableInit(table, "${pageContext.request.contextPath}/chksAssessmentProjectPerformance/getChksBootstrapTableVo", cols, query, method);
     };
 
+    assessmentCommonHandle.saveChkSpotAssessment = function () {
+        var target = $("#tableChkSpotAssessment").find("tbody");
+        var box = $("#divChksRecordModal");
+        var table = $("#assessmentTableList");
+        if (!vaildChksData(target)) {
+            return false;
+        }
+        var data = [];
+        var filterData = [];
+        var remarks = target.find("textarea[name=remarks]").val();
+        assessmentCommonHandle.getChksSonData(target, data);
+        for (var i = 0; i < data.length; i++) {
+            if (data[i].actualScore) {
+                filterData.push(data[i]);
+            }
+        }
+        if (filterData.length == 0) {
+            toastr.warning("考核需要填写全部数据!");
+            return false;
+        }
+        var parentData = {
+            remarks: remarks,
+            examineStatus: 'finish',
+            activityId: '${spotReActivityDto.id}',
+            boxId: '${spotReActivityDto.boxId}'
+        };
+        assessmentCommonHandle.saveAssessmentServer({
+            chksScore: JSON.stringify(filterData),
+            fomData: JSON.stringify(parentData)
+        }, function (spotId) {
+            toastr.warning("考核成功!");
+            box.modal("hide");
+            var marsterId = box.find("input[name=marsterId]").val();
+            assessmentCommonHandle.getAssessmentProjectPerformanceById(marsterId, function (tempData) {
+                tempData.spotId = spotId;
+                tempData.spotActivityId = "${spotReActivityDto.id}";
+                assessmentCommonHandle.updateAssessmentProjectPerformance(tempData, function () {
+                    table.bootstrapTable('refresh');
+                });
+            });
+        });
+    };
+
+    assessmentCommonHandle.showChkSpotAssessmentParent = function (id) {
+        var box = $("#divChksRecordModal");
+        var table = $("#tableChkSpotAssessment").find("tbody");
+        box.modal("show");
+        box.find("input[name=marsterId]").val(id);
+        var query = {
+            boxReActivitiId: "${spotReActivityDto.id}",
+            boxId: "${spotReActivityDto.boxId}"
+        };
+        assessmentCommonHandle.getAssessmentItemTemplate(query, function (data) {
+            var restHtml = "";
+            $.each(data, function (i, item) {
+                var html = assessmentCommonHandle.replaceAssessmentItem($("#assessmentItemTemplateHTML").html(), {
+                    index: i + 1,
+                    contentId: item.id,
+                    id: 0,
+                    actualScore: '',
+                    remark: '',
+                    performanceId: 0,
+                    name: item.boxReActivitiNameCn,
+                    assessmentDes: item.assessmentDes,
+                    minScore: item.minScore,
+                    maxScore: item.maxScore,
+                    standardScore: item.standardScore
+                });
+                restHtml += html;
+            });
+            if (data.length >= 1) {
+                var remarksHtml = $("#assessmentItemTemplateRemarksHTML").html();
+                remarksHtml = remarksHtml.replace(/{remarks}/g, '');
+                restHtml += remarksHtml;
+            }
+            table.empty().append(restHtml);
+        });
+    };
+
     assessmentCommonHandle.taskOpenWin = function (url) {
-        url = "${pageContext.request.contextPath}"+url ;
+        url = "${pageContext.request.contextPath}" + url;
         openWin(url, function () {
             $("#assessmentTableList").bootstrapTable('refresh');
         })
@@ -453,7 +627,10 @@
         var item = target.bootstrapTable('getRowByUniqueId', id);
         box.modal("show");
         box.find("input[name=id]").val(id);
-        assessmentCommonHandle.getAssessmentItemTemplate({boxReActivitiId: item.activityId,boxId:item.boxId}, function (data) {
+        assessmentCommonHandle.getAssessmentItemTemplate({
+            boxReActivitiId: item.activityId,
+            boxId: item.boxId
+        }, function (data) {
             var restHtml = "";
             $.each(data, function (i, item) {
                 var html = assessmentCommonHandle.replaceAssessmentItem($("#assessmentItemTemplateHTML").html(), {
@@ -481,68 +658,41 @@
     };
 
     assessmentCommonHandle.findAssessmentProjectPerformanceBox = function (id) {
-        var target = $("#assessmentTableList");
         var box = $("#divAssessmentProjectPerformanceBoxDetail");
         var table = $("#tableAssessmentProjectPerformanceBoxDetail").find("tbody");
-        var obj = target.bootstrapTable('getRowByUniqueId', id);
-        box.modal("show");
-        var restHtml = "";
-        if (obj.detailList) {
-            $.each(obj.detailList, function (i, item) {
-                var htmlB = assessmentCommonHandle.replaceAssessmentItem($("#assessmentItemTemplateHTML").html(), {
-                    index: i + 1,
-                    contentId: item.contentId,
-                    id: item.id,
-                    performanceId: obj.id,
-                    name: obj.activityName,
-                    assessmentDes: item.content,
-                    actualScore: item.actualScore,
-                    minScore: item.minScore,
-                    maxScore: item.maxScore,
-                    standardScore: item.standardScore,
-                    remark: item.remark
+        assessmentCommonHandle.getAssessmentProjectPerformanceById(id, function (obj) {
+            box.modal("show");
+            var restHtml = "";
+            if (obj.detailList) {
+                $.each(obj.detailList, function (i, item) {
+                    var htmlB = assessmentCommonHandle.replaceAssessmentItem($("#assessmentItemTemplateHTML").html(), {
+                        index: i + 1,
+                        contentId: item.contentId,
+                        id: item.id,
+                        performanceId: obj.id,
+                        name: obj.activityName,
+                        assessmentDes: item.content,
+                        actualScore: item.actualScore,
+                        minScore: item.minScore,
+                        maxScore: item.maxScore,
+                        standardScore: item.standardScore,
+                        remark: item.remark
+                    });
+                    restHtml += htmlB;
                 });
-                restHtml += htmlB;
-            });
-        }
-        var remarksHtml = $("#assessmentItemTemplateRemarksHTML").html();
-        if (obj.remarks) {
-            remarksHtml = remarksHtml.replace(/{remarks}/g, obj.remarks);
-        } else {
-            remarksHtml = remarksHtml.replace(/{remarks}/g, '');
-        }
-        restHtml += remarksHtml;
-        table.empty().append(restHtml);
-        table.find("input").attr({readonly:'readonly'});
-        table.find("textarea").attr({readonly:'readonly'});
-    };
-
-
-
-    assessmentCommonHandle.saveAssessmentServer = function (data, callback) {
-        jQuery.extend(data, {planDetailsId: '${projectPlanDetails.id}'});
-        $.ajax({
-            url: "${pageContext.request.contextPath}/chksAssessmentProjectPerformance/saveAssessmentServer",
-            type: "post",
-            dataType: "json",
-            data: data,
-            success: function (result) {
-                if (result.ret) {
-                    if (callback) {
-                        callback(result.data);
-                    }
-                } else {
-                    console.log(result);
-                    Alert("失败，失败原因:" + result.errmsg);
-                }
-            },
-            error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result.errmsg);
             }
+            var remarksHtml = $("#assessmentItemTemplateRemarksHTML").html();
+            if (obj.remarks) {
+                remarksHtml = remarksHtml.replace(/{remarks}/g, obj.remarks);
+            } else {
+                remarksHtml = remarksHtml.replace(/{remarks}/g, '');
+            }
+            restHtml += remarksHtml;
+            table.empty().append(restHtml);
+            table.find("input").attr({readonly: 'readonly'});
+            table.find("textarea").attr({readonly: 'readonly'});
         });
     };
-
-
 
 
     function vaildChksData(target) {

@@ -50,6 +50,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by zch on 2019-12-16.
@@ -106,9 +107,9 @@ public class ChksAssessmentProjectPerformanceService {
      * @param assessmentProjectPerformanceDto
      * @param detailDtoList
      */
-    public void saveAssessmentServer(AssessmentProjectPerformanceDto assessmentProjectPerformanceDto, List<AssessmentProjectPerformanceDetailDto> detailDtoList, Integer planDetailsId) {
+    public Integer saveAssessmentServer(AssessmentProjectPerformanceDto assessmentProjectPerformanceDto, List<AssessmentProjectPerformanceDetailDto> detailDtoList, Integer planDetailsId) {
         if (assessmentProjectPerformanceDto.getId() != null && assessmentProjectPerformanceDto.getId() != 0) {
-            AssessmentProjectPerformanceDto target = chksRpcAssessmentService.getAssessmentProjectPerformanceById(assessmentProjectPerformanceDto.getId());
+            AssessmentProjectPerformanceDto target = getAssessmentProjectPerformanceById(assessmentProjectPerformanceDto.getId());
             String remarks = assessmentProjectPerformanceDto.getRemarks();
             String examineStatus = assessmentProjectPerformanceDto.getExamineStatus();
             String examineUrl = assessmentProjectPerformanceDto.getExamineUrl();
@@ -153,7 +154,7 @@ public class ChksAssessmentProjectPerformanceService {
                 projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
             }
         }
-        saveAssessmentProjectPerformanceBase(assessmentProjectPerformanceDto, detailDtoList, projectPlanDetails);
+        return saveAssessmentProjectPerformanceBase(assessmentProjectPerformanceDto, detailDtoList, projectPlanDetails);
     }
 
     /**
@@ -163,7 +164,7 @@ public class ChksAssessmentProjectPerformanceService {
      * @param detailDtos
      * @param projectPlanDetails
      */
-    private void saveAssessmentProjectPerformanceBase(AssessmentProjectPerformanceDto projectPerformanceDto, List<AssessmentProjectPerformanceDetailDto> detailDtos, ProjectPlanDetails projectPlanDetails) {
+    private Integer saveAssessmentProjectPerformanceBase(AssessmentProjectPerformanceDto projectPerformanceDto, List<AssessmentProjectPerformanceDetailDto> detailDtos, ProjectPlanDetails projectPlanDetails) {
         projectPerformanceDto.setCreator(processControllerComponent.getThisUser());
         projectPerformanceDto.setExaminePeople(processControllerComponent.getThisUser());
         projectPerformanceDto.setExamineDate(new Date());
@@ -234,10 +235,10 @@ public class ChksAssessmentProjectPerformanceService {
                 }
             }
         }
-        chksRpcAssessmentService.saveAssessmentProjectPerformanceBase(projectPerformanceDto, detailDtos);
+        return chksRpcAssessmentService.saveAssessmentProjectPerformanceBase(projectPerformanceDto, detailDtos);
     }
 
-    public void saveAssessmentProjectPerformance(ApprovalModelDto approvalModelDto, String chksScore, String remarks, String byExaminePeople) {
+    public Integer saveAssessmentProjectPerformance(ApprovalModelDto approvalModelDto, String chksScore, String remarks, String byExaminePeople) {
         //添加主表
         AssessmentProjectPerformanceDto dto = new AssessmentProjectPerformanceDto();
         dto.setProcessInsId(approvalModelDto.getProcessInsId());
@@ -254,7 +255,7 @@ public class ChksAssessmentProjectPerformanceService {
         if (StringUtils.isNotBlank(approvalModelDto.getProcessInsId())) {
             projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsByProcessInsId(approvalModelDto.getProcessInsId());
         }
-        saveAssessmentProjectPerformanceBase(dto, JSONObject.parseArray(chksScore, AssessmentProjectPerformanceDetailDto.class), projectPlanDetails);
+        return saveAssessmentProjectPerformanceBase(dto, JSONObject.parseArray(chksScore, AssessmentProjectPerformanceDetailDto.class), projectPlanDetails);
     }
 
     public List<BoxReActivityDto> getAssessmentProjectPerformanceNext(Integer boxId, Integer boxReActivitiId, List<BoxReActivityDto> boxReActivityDtoList, boolean spotCheck) {
@@ -297,7 +298,7 @@ public class ChksAssessmentProjectPerformanceService {
             BoxReActivityDto boxReActivityDto = boxReActivityDtos.get(0);
             boxReActivitiId = boxReActivityDto.getId();
         }
-        return getAssessmentProjectPerformanceNext(boxId,boxReActivitiId) ;
+        return getAssessmentProjectPerformanceNext(boxId, boxReActivitiId);
     }
 
     /**
@@ -305,7 +306,6 @@ public class ChksAssessmentProjectPerformanceService {
      *
      * @param boxId
      * @param boxReActivitiId
-     * @param spotCheck       是否是抽查或者巡查
      * @return
      */
     public List<BoxReActivityDto> getAssessmentProjectPerformanceNext(Integer boxId, Integer boxReActivitiId) {
@@ -358,7 +358,6 @@ public class ChksAssessmentProjectPerformanceService {
     }
 
 
-
     public List<AssessmentItemDto> getAssessmentItemTemplate(Integer boxId, Integer boxReActivitiId, String assessmentKey) {
         if (StringUtils.isBlank(assessmentKey)) {
             return bpmRpcBoxService.getAssessmentItemList(boxId, boxReActivitiId);
@@ -377,6 +376,24 @@ public class ChksAssessmentProjectPerformanceService {
             }
             return assessmentItemList;
         }
+    }
+
+    public BoxReActivityDto getBoxReActivityDtoByProcessInsId(String processInsId, Integer projectId, Integer boxId) {
+        AssessmentProjectPerformanceQuery query = new AssessmentProjectPerformanceQuery();
+        if (boxId != null && boxId != 0) {
+            query.setBoxId(boxId);
+        }
+        query.setProcessInsId(processInsId);
+        query.setProjectId(projectId);
+        query.setAppKey(applicationConstant.getAppKey());
+        List<AssessmentProjectPerformanceDto> assessmentProjectPerformanceDtoList = getAssessmentProjectPerformanceDtoList(query);
+        if (CollectionUtils.isNotEmpty(assessmentProjectPerformanceDtoList)) {
+            List<AssessmentProjectPerformanceDto> collect = assessmentProjectPerformanceDtoList.stream().filter(assessmentProjectPerformanceDto -> assessmentProjectPerformanceDto.getActivityId() != null && Objects.equal(commonService.thisUserAccount(), assessmentProjectPerformanceDto.getExaminePeople())).collect(Collectors.toList());
+            if (CollectionUtils.isNotEmpty(collect)) {
+                return bpmRpcBoxService.getBoxreActivityInfoById(collect.stream().findFirst().get().getActivityId());
+            }
+        }
+        return null;
     }
 
     /**
@@ -427,6 +444,10 @@ public class ChksAssessmentProjectPerformanceService {
 
     public List<AssessmentProjectPerformanceDetailDto> getAssessmentProjectPerformanceDetailByPerformanceIdList(Integer performanceId) {
         return chksRpcAssessmentService.getAssessmentProjectPerformanceDetailByPerformanceIdList(performanceId);
+    }
+
+    public AssessmentProjectPerformanceDto getAssessmentProjectPerformanceById(Integer id) {
+        return chksRpcAssessmentService.getAssessmentProjectPerformanceById(id);
     }
 
 
@@ -709,7 +730,7 @@ public class ChksAssessmentProjectPerformanceService {
                             chksRpcAssessmentService.deleteAssessmentProjectPerformanceByIds(LangUtils.transform(performanceDtos, o -> o.getId()));
                     }
                 }
-                Integer count = chksRpcAssessmentService.getAssessmentProjectPerformanceCount(processInsId, currentActivity.getId(), taskId);
+                Integer count = chksRpcAssessmentService.getAssessmentProjectPerformanceCount(applicationConstant.getAppKey(), projectInfo.getId(), processInsId, currentActivity.getId(), taskId);
                 if (count > 0) return;
                 String checkBean = StringUtils.uncapitalize(AssessmentTaskService.class.getSimpleName());//默认生成考核任务服务方法
                 checkBean = StringUtils.isNoneBlank(boxReDto.getCheckBean()) ? boxReDto.getCheckBean() : checkBean;
@@ -742,6 +763,7 @@ public class ChksAssessmentProjectPerformanceService {
             }
         }
     }
+
 
     public void generateAssessmentTask(String processInsId, Integer boxId, String taskId) throws BpmException {
         generateAssessmentTask(processInsId, boxId, taskId, null, null);
