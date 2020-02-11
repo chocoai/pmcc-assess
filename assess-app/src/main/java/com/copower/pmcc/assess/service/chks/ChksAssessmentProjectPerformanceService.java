@@ -115,6 +115,8 @@ public class ChksAssessmentProjectPerformanceService {
             String examineUrl = assessmentProjectPerformanceDto.getExamineUrl();
             String tableName = assessmentProjectPerformanceDto.getTableName();
             Integer tableId = assessmentProjectPerformanceDto.getTableId();
+            String byExaminePeople = assessmentProjectPerformanceDto.getByExaminePeople();
+            String examinePeople = assessmentProjectPerformanceDto.getExaminePeople();
             BeanCopyHelp.copyPropertiesIgnoreNull(target, assessmentProjectPerformanceDto);
             if (assessmentProjectPerformanceDto.getValidScore() == null) {
                 assessmentProjectPerformanceDto.setValidScore(new BigDecimal(0));
@@ -133,6 +135,12 @@ public class ChksAssessmentProjectPerformanceService {
             }
             if (StringUtils.isNotBlank(tableName)) {
                 assessmentProjectPerformanceDto.setTableName(tableName);
+            }
+            if (StringUtils.isNotBlank(examinePeople)) {
+                assessmentProjectPerformanceDto.setExaminePeople(examinePeople);
+            }
+            if (StringUtils.isNotBlank(byExaminePeople)) {
+                assessmentProjectPerformanceDto.setByExaminePeople(byExaminePeople);
             }
             if (tableId != null) {
                 assessmentProjectPerformanceDto.setTableId(tableId);
@@ -165,9 +173,15 @@ public class ChksAssessmentProjectPerformanceService {
      * @param projectPlanDetails
      */
     private Integer saveAssessmentProjectPerformanceBase(AssessmentProjectPerformanceDto projectPerformanceDto, List<AssessmentProjectPerformanceDetailDto> detailDtos, ProjectPlanDetails projectPlanDetails) {
-        projectPerformanceDto.setCreator(processControllerComponent.getThisUser());
-        projectPerformanceDto.setExaminePeople(processControllerComponent.getThisUser());
-        projectPerformanceDto.setExamineDate(new Date());
+        if (StringUtils.isBlank(projectPerformanceDto.getCreator())) {
+            projectPerformanceDto.setCreator(processControllerComponent.getThisUser());
+        }
+        if (StringUtils.isBlank(projectPerformanceDto.getExaminePeople())) {
+            projectPerformanceDto.setExaminePeople(processControllerComponent.getThisUser());
+        }
+        if (projectPerformanceDto.getExamineDate() == null) {
+            projectPerformanceDto.setExamineDate(new Date());
+        }
         projectPerformanceDto.setAppKey(applicationConstant.getAppKey());
         if (projectPerformanceDto.getSpotActivityId() == null || projectPerformanceDto.getSpotActivityId().intValue() < 0) {
             projectPerformanceDto.setSpotActivityId(0);//抽查节点id
@@ -545,33 +559,6 @@ public class ChksAssessmentProjectPerformanceService {
         return keyValueDtoListMap;
     }
 
-    /**
-     * 获取节点 id
-     *
-     * @param processInsId
-     * @return
-     */
-    public List<Integer> getBoxReActivitiId(String processInsId, String creator) {
-        List<Integer> integerList = new ArrayList<>();
-        List<BoxApprovalLogVo> boxApprovalLogVoList = getBoxApprovalLogVoList(processInsId);
-        if (CollectionUtils.isEmpty(boxApprovalLogVoList)) {
-            return null;
-        }
-        if (StringUtils.isBlank(creator)) {
-            creator = processControllerComponent.getThisUser();
-        }
-        Iterator<BoxApprovalLogVo> iterator = boxApprovalLogVoList.iterator();
-        while (iterator.hasNext()) {
-            BoxApprovalLogVo next = iterator.next();
-            if (Objects.equal(creator, next.getCreator())) {
-                if (Objects.equal(processInsId, next.getProcessInsId())) {
-                    integerList.add(next.getActivityId());
-                }
-            }
-        }
-        return integerList;
-    }
-
 
     /**
      * 获取抽查人员的考核节点
@@ -597,6 +584,8 @@ public class ChksAssessmentProjectPerformanceService {
     }
 
 
+
+
     public BoxReDto getBoxReDto(String processInsId) {
         List<BoxApprovalLogVo> boxApprovalLogVoList = getBoxApprovalLogVoList(processInsId);
         if (CollectionUtils.isNotEmpty(boxApprovalLogVoList)) {
@@ -618,59 +607,6 @@ public class ChksAssessmentProjectPerformanceService {
 
 
     /**
-     * 获取过滤后的审批日志
-     *
-     * @param processInsId
-     * @return
-     */
-    public List<BoxApprovalLogVo> getFilterBoxApprovalLogVoList(String processInsId) {
-        final List<String> filterActivityKey = Arrays.asList("edit", "start");
-        List<BoxApprovalLogVo> boxApprovalLogDtoList = getBoxApprovalLogVoList(processInsId);
-        BoxApprovalLogVo boxApprovalLogVoMax = null;
-        if (CollectionUtils.isNotEmpty(boxApprovalLogDtoList)) {
-            if (boxApprovalLogDtoList.size() != 1) {
-                Integer id = boxApprovalLogDtoList.stream().map(boxApprovalLogVo -> boxApprovalLogVo.getId()).max(Integer::compareTo).get();
-                boxApprovalLogVoMax = boxApprovalLogDtoList.stream().filter(boxApprovalLogVo -> Objects.equal(id, boxApprovalLogVo.getId())).findFirst().get();
-            }
-        }
-        if (CollectionUtils.isNotEmpty(boxApprovalLogDtoList)) {
-            Iterator<BoxApprovalLogVo> iterator = boxApprovalLogDtoList.iterator();
-            while (iterator.hasNext()) {
-                BoxApprovalLogVo boxApprovalLogVo = iterator.next();
-                if (boxApprovalLogVo.getBisApply() != null) {
-                    if (boxApprovalLogVo.getBisApply()) {
-                        iterator.remove();//删除  申请人日志
-                        if (boxApprovalLogVoMax != null) {
-                            if (Objects.equal(boxApprovalLogVo.getId(), boxApprovalLogVoMax.getId())) {//假如和我们的目标一致那么整个过滤计划马上终止
-                                break;
-                            }
-                        }
-                        continue;
-                    }
-                }
-                if (filterActivityKey.contains(boxApprovalLogVo.getActivityNameKey())) {
-                    iterator.remove();
-                    if (boxApprovalLogVoMax != null) {
-                        if (Objects.equal(boxApprovalLogVo.getId(), boxApprovalLogVoMax.getId())) {//假如和我们的目标一致那么整个过滤计划马上终止
-                            break;
-                        }
-                    }
-                    continue;
-                }
-                if (boxApprovalLogVoMax != null) {
-                    int number = boxApprovalLogVoMax.getSorting().intValue();
-                    int comparisons = boxApprovalLogVo.getSorting().intValue();
-                    if (comparisons > number) {
-                        iterator.remove();
-                        continue;
-                    }
-                }
-            }
-        }
-        return boxApprovalLogDtoList;
-    }
-
-    /**
      * 获取审批日志
      *
      * @param processInsId
@@ -689,19 +625,30 @@ public class ChksAssessmentProjectPerformanceService {
                 }
             }
         }
-        if (CollectionUtils.isNotEmpty(boxApprovalLogDtoList)) {
-            Iterator<BoxApprovalLogVo> iterator = boxApprovalLogDtoList.iterator();
+        return boxApprovalLogDtoList;
+    }
+
+
+    /**
+     * 获取最初的申请人
+     *
+     * @param processInsId
+     * @return
+     */
+    private BoxApprovalLogVo getBisApplyBoxApprovalLogVoList(String processInsId) {
+        List<BoxApprovalLogVo> boxApprovalLogVoList = getBoxApprovalLogVoList(processInsId);
+        if (CollectionUtils.isNotEmpty(boxApprovalLogVoList)) {
+            Iterator<BoxApprovalLogVo> iterator = boxApprovalLogVoList.iterator();
             while (iterator.hasNext()) {
                 BoxApprovalLogVo boxApprovalLogVo = iterator.next();
                 if (boxApprovalLogVo.getBisApply() != null) {
                     if (boxApprovalLogVo.getBisApply()) {
-                        iterator.remove();//删除  申请人日志
-                        continue;
+                        return boxApprovalLogVo;
                     }
                 }
             }
         }
-        return boxApprovalLogDtoList;
+        return null;
     }
 
     //1.当前节点任务是否已生成，已生成则不再重复生成 2.将比当前节点序号大的节点考核任务置位无效状态
@@ -709,59 +656,69 @@ public class ChksAssessmentProjectPerformanceService {
         //1.当前节点任务是否已生成，已生成则不再重复生成
         //2.将比当前节点序号大的节点考核任务置位无效状态
         BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(boxId);
-        if (boxReDto != null && boxReDto.getBisLaunchCheck() == Boolean.TRUE) {
-            if (boxReDto != null && boxReDto.getBisLaunchCheck() == Boolean.TRUE) {
-                ActivitiTaskNodeDto activitiTaskNodeDto = bpmRpcActivitiProcessManageService.queryCurrentTask(taskId, commonService.thisUserAccount());
-                BoxReActivityDto currentActivity = bpmRpcBoxService.getBoxreActivityInfoByBoxIdSorting(boxId, activitiTaskNodeDto.getCurrentStep());
-                if (currentActivity == null || currentActivity.getBisViewChk() == Boolean.FALSE) return;
-                List<AssessmentItemDto> assessmentItemList = bpmRpcBoxService.getAssessmentItemList(boxId, currentActivity.getId());
-                if (CollectionUtils.isEmpty(assessmentItemList)) return;
-                List<BoxReActivityDto> reActivityDtos = bpmRpcBoxService.getBoxReActivityByBoxId(boxId);
-                if (CollectionUtils.isNotEmpty(reActivityDtos)) {
-                    List<BoxReActivityDto> filter = LangUtils.filter(reActivityDtos, o -> {
-                        return o.getSortMultilevel() > currentActivity.getSortMultilevel();
-                    });
-                    if (CollectionUtils.isNotEmpty(filter)) {
-                        AssessmentProjectPerformanceQuery query = new AssessmentProjectPerformanceQuery();
-                        query.setProcessInsId(processInsId);
-                        query.setActivityIds(LangUtils.transform(filter, o -> o.getId()));
-                        List<AssessmentProjectPerformanceDto> performanceDtos = chksRpcAssessmentService.getAssessmentProjectPerformanceDtoList(query);
-                        if (CollectionUtils.isNotEmpty(performanceDtos))
-                            chksRpcAssessmentService.deleteAssessmentProjectPerformanceByIds(LangUtils.transform(performanceDtos, o -> o.getId()));
-                    }
-                }
-                Integer count = chksRpcAssessmentService.getAssessmentProjectPerformanceCount(applicationConstant.getAppKey(), projectInfo.getId(), processInsId, currentActivity.getId(), taskId);
-                if (count > 0) return;
-                String checkBean = StringUtils.uncapitalize(AssessmentTaskService.class.getSimpleName());//默认生成考核任务服务方法
-                checkBean = StringUtils.isNoneBlank(boxReDto.getCheckBean()) ? boxReDto.getCheckBean() : checkBean;
-                checkBean = StringUtils.isNoneBlank(currentActivity.getCheckBean()) ? currentActivity.getCheckBean() : checkBean;
-                AssessmentTaskInterface assessmentTaskBean = (AssessmentTaskInterface) SpringContextUtils.getBean(checkBean);
-                BootstrapTableVo tableVo = bpmRpcProcessInsManagerService.getApprovalLogForApp(applicationConstant.getAppKey(), processInsId, 0, 1000);
-                List<BoxApprovalLogVo> rows = tableVo.getRows();
-                assessmentTaskBean.createAssessmentTask(processInsId, currentActivity.getId(), taskId, rows.get(0).getCreator(), projectInfo, projectPlanDetails);
-                if (count > 0) {
-                    return;
-                } else {
-                    //先清理掉当前节点的任务
-                    AssessmentProjectPerformanceQuery query = new AssessmentProjectPerformanceQuery();
-                    query.setProcessInsId(processInsId);
-                    query.setActivityId(currentActivity.getId());
-                    List<AssessmentProjectPerformanceDto> performanceDtoList = chksRpcAssessmentService.getAssessmentProjectPerformanceDtoList(query);
-                    if (CollectionUtils.isNotEmpty(performanceDtoList)) {
-                        performanceDtoList.forEach(o -> chksRpcAssessmentService.deleteAssessmentProjectPerformanceByIds(LangUtils.transform(performanceDtoList, p -> p.getId())));
-                    }
-
-                    checkBean = "assessmentTaskService";//默认生成考核任务服务方法
-                    checkBean = StringUtils.isNoneBlank(boxReDto.getCheckBean()) ? boxReDto.getCheckBean() : checkBean;
-                    checkBean = StringUtils.isNoneBlank(currentActivity.getCheckBean()) ? currentActivity.getCheckBean() : checkBean;
-                    assessmentTaskBean = (AssessmentTaskInterface) SpringContextUtils.getBean(checkBean);
-                    tableVo = bpmRpcProcessInsManagerService.getApprovalLogForApp(applicationConstant.getAppKey(), processInsId, 0, 1000);
-                    rows = tableVo.getRows();
-                    assessmentTaskBean.createAssessmentTask(processInsId, currentActivity.getId(), taskId, rows.get(0).getCreator(), projectInfo, projectPlanDetails);
-                }
-
+        if (boxReDto == null) {
+            return;
+        }
+        if (boxReDto.getBisLaunchCheck() != Boolean.TRUE) {
+            return;
+        }
+        if (boxReDto.getBisLaunchCheck() != Boolean.TRUE) {
+            return;
+        }
+        BoxApprovalLogVo boxApprovalLogVo = getBisApplyBoxApprovalLogVoList(processInsId);
+        ActivitiTaskNodeDto activitiTaskNodeDto = bpmRpcActivitiProcessManageService.queryCurrentTask(taskId, commonService.thisUserAccount());
+        BoxReActivityDto currentActivity = bpmRpcBoxService.getBoxreActivityInfoByBoxIdSorting(boxId, activitiTaskNodeDto.getCurrentStep());
+        if (currentActivity == null || currentActivity.getBisViewChk() == Boolean.FALSE) {
+            return;
+        }
+        List<AssessmentItemDto> assessmentItemList = bpmRpcBoxService.getAssessmentItemList(boxId, currentActivity.getId());
+        if (CollectionUtils.isEmpty(assessmentItemList)) {
+            return;
+        }
+        List<BoxReActivityDto> reActivityDtos = bpmRpcBoxService.getBoxReActivityByBoxId(boxId);
+        if (CollectionUtils.isNotEmpty(reActivityDtos)) {
+            List<BoxReActivityDto> filter = LangUtils.filter(reActivityDtos, o -> {
+                return o.getSortMultilevel() > currentActivity.getSortMultilevel();
+            });
+            if (CollectionUtils.isNotEmpty(filter)) {
+                AssessmentProjectPerformanceQuery query = new AssessmentProjectPerformanceQuery();
+                query.setProcessInsId(processInsId);
+                query.setActivityIds(LangUtils.transform(filter, o -> o.getId()));
+                List<AssessmentProjectPerformanceDto> performanceDtos = chksRpcAssessmentService.getAssessmentProjectPerformanceDtoList(query);
+                if (CollectionUtils.isNotEmpty(performanceDtos))
+                    chksRpcAssessmentService.deleteAssessmentProjectPerformanceByIds(LangUtils.transform(performanceDtos, o -> o.getId()));
             }
         }
+
+        //第一次生成考核任务
+        Integer count = chksRpcAssessmentService.getAssessmentProjectPerformanceCount(applicationConstant.getAppKey(), projectInfo.getId(), processInsId, currentActivity.getId(), taskId);
+        if (count > 0) {
+            return;
+        }
+        String checkBean = StringUtils.uncapitalize(AssessmentTaskService.class.getSimpleName());//默认生成考核任务服务方法
+        checkBean = StringUtils.isNoneBlank(boxReDto.getCheckBean()) ? boxReDto.getCheckBean() : checkBean;
+        checkBean = StringUtils.isNoneBlank(currentActivity.getCheckBean()) ? currentActivity.getCheckBean() : checkBean;
+        AssessmentTaskInterface assessmentTaskBean = (AssessmentTaskInterface) SpringContextUtils.getBean(checkBean);
+        assessmentTaskBean.createAssessmentTask(processInsId, currentActivity.getId(), taskId, boxApprovalLogVo.getCreator(), projectInfo, projectPlanDetails);
+
+        //第二次生成考核任务
+        count = chksRpcAssessmentService.getAssessmentProjectPerformanceCount(applicationConstant.getAppKey(), projectInfo.getId(), processInsId, currentActivity.getId(), taskId);
+        if (count > 0) {
+            return;
+        }
+        //先清理掉当前节点的任务
+        AssessmentProjectPerformanceQuery query = new AssessmentProjectPerformanceQuery();
+        query.setProcessInsId(processInsId);
+        query.setActivityId(currentActivity.getId());
+        List<AssessmentProjectPerformanceDto> performanceDtoList = chksRpcAssessmentService.getAssessmentProjectPerformanceDtoList(query);
+        if (CollectionUtils.isNotEmpty(performanceDtoList)) {
+            performanceDtoList.forEach(o -> chksRpcAssessmentService.deleteAssessmentProjectPerformanceByIds(LangUtils.transform(performanceDtoList, p -> p.getId())));
+        }
+        checkBean = StringUtils.uncapitalize(AssessmentTaskService.class.getSimpleName());//默认生成考核任务服务方法
+        checkBean = StringUtils.isNoneBlank(boxReDto.getCheckBean()) ? boxReDto.getCheckBean() : checkBean;
+        checkBean = StringUtils.isNoneBlank(currentActivity.getCheckBean()) ? currentActivity.getCheckBean() : checkBean;
+        assessmentTaskBean = (AssessmentTaskInterface) SpringContextUtils.getBean(checkBean);
+        assessmentTaskBean.createAssessmentTask(processInsId, currentActivity.getId(), taskId, boxApprovalLogVo.getCreator(), projectInfo, projectPlanDetails);
     }
 
 

@@ -54,6 +54,7 @@ public class AssessmentTaskService implements AssessmentTaskInterface {
         dto.setActivityName(activityDto.getCnName());
         dto.setSorting(activityDto.getSortMultilevel());
         dto.setByExaminePeople(byExamineUser);
+        dto.setExaminePeople(commonService.thisUserAccount());
         dto.setExamineStatus(ProjectStatusEnum.RUNING.getKey());
         if(projectPlanDetails!=null){
             dto.setPlanId(projectPlanDetails.getPlanId());
