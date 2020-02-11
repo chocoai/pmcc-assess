@@ -729,7 +729,7 @@ public class BasicApplyBatchController extends BaseController {
     @RequestMapping(value = "/deepCopy", name = "深复制", method = {RequestMethod.POST})
     public HttpResult deepCopy(Integer sourceBatchDetailId,Integer planDetailsId) {
         try {
-            basicApplyBatchService.deepCopy(sourceBatchDetailId,planDetailsId);
+            basicApplyBatchService.deepCopy(sourceBatchDetailId);
             return HttpResult.newCorrectResult();
         } catch (Exception e1) {
             log.error(e1.getMessage(), e1);
