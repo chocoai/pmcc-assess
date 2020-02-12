@@ -187,22 +187,22 @@ public class BasicHouseService {
      * @return
      * @throws Exception
      */
-    public List<BasicHouse> basicHouseList(BasicHouse basicHouse) throws Exception {
-        return basicHouseDao.basicHouseList(basicHouse);
+    public List<BasicHouse> getBasicHouseList(BasicHouse basicHouse) {
+        return basicHouseDao.getBasicHouseList(basicHouse);
     }
 
-    public List<BasicHouse> getHousesByUnitId(Integer unitId) throws Exception {
+    public List<BasicHouse> getHousesByUnitId(Integer unitId) {
         if (unitId == null) return null;
         BasicHouse basicHouse = new BasicHouse();
         basicHouse.setUnitId(unitId);
-        return basicHouseDao.basicHouseList(basicHouse);
+        return basicHouseDao.getBasicHouseList(basicHouse);
     }
 
     public BootstrapTableVo getBootstrapTableVo(BasicHouse basicHouse) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<BasicHouse> basicHouseList = basicHouseDao.basicHouseList(basicHouse);
+        List<BasicHouse> basicHouseList = basicHouseDao.getBasicHouseList(basicHouse);
         List<BasicHouseVo> transform = LangUtils.transform(basicHouseList, o -> getBasicHouseVo(o));
         vo.setTotal(page.getTotal());
         vo.setRows(ObjectUtils.isEmpty(transform) ? new ArrayList<BasicHouseVo>(10) : transform);
@@ -319,7 +319,7 @@ public class BasicHouseService {
         BasicHouse where = new BasicHouse();
         where.setApplyId(applyId);
         where.setCreator(commonService.thisUserAccount());
-        List<BasicHouse> basicHouses = basicHouseDao.basicHouseList(where);
+        List<BasicHouse> basicHouses = basicHouseDao.getBasicHouseList(where);
         if (!CollectionUtils.isEmpty(basicHouses)) {
             return basicHouses.get(0);
         } else {

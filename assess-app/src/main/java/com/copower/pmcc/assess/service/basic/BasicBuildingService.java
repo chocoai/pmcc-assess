@@ -138,9 +138,10 @@ public class BasicBuildingService {
      * @return
      * @throws Exception
      */
-    public List<BasicBuilding> basicBuildingList(BasicBuilding basicBuilding) throws Exception {
+    public List<BasicBuilding> getBasicBuildingList(BasicBuilding basicBuilding) {
         return basicBuildingDao.getBasicBuildingList(basicBuilding);
     }
+
 
     /**
      * 获取数据

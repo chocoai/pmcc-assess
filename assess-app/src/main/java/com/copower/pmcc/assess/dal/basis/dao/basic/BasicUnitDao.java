@@ -53,7 +53,7 @@ public class BasicUnitDao {
         return basicUnitMapper.updateByPrimaryKeySelective(basicUnit) == 1;
     }
 
-    public List<BasicUnit> basicUnitList(BasicUnit basicUnit) {
+    public List<BasicUnit> getBasicUnitList(BasicUnit basicUnit) {
         BasicUnitExample example = new BasicUnitExample();
         BasicUnitExample.Criteria criteria = example.createCriteria();
         criteria.andBisDeleteEqualTo(false);

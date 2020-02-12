@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.controller.baisc;
 
 import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchDetail;
+import com.copower.pmcc.assess.dal.basis.entity.BasicUnit;
 import com.copower.pmcc.assess.dal.basis.entity.BasicUnitHuxing;
 import com.copower.pmcc.assess.service.basic.BasicApplyBatchDetailService;
 import com.copower.pmcc.assess.service.basic.BasicUnitHuxingService;
@@ -98,7 +99,8 @@ public class BasicUnitHuxingController {
     public HttpResult getUnitId(Integer tableId) {
         try {
             BasicApplyBatchDetail house = basicApplyBatchDetailService.getBasicApplyBatchDetail("tb_basic_house", tableId);
-            return HttpResult.newCorrectResult(basicApplyBatchDetailService.getParentTableId(house));
+            BasicUnit basicUnit = basicApplyBatchDetailService.getBasicUnitByBatchDetailId(house.getPid());
+            return HttpResult.newCorrectResult(basicUnit.getId());
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return null;

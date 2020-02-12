@@ -141,11 +141,11 @@ public class BasicUnitService {
      * @return
      * @throws Exception
      */
-    public List<BasicUnit> basicUnitList(BasicUnit basicUnit) throws Exception {
+    public List<BasicUnit> getBasicUnitList(BasicUnit basicUnit) {
         if (basicUnit == null) {
             return null;
         }
-        return basicUnitDao.basicUnitList(basicUnit);
+        return basicUnitDao.getBasicUnitList(basicUnit);
     }
 
 
@@ -153,7 +153,7 @@ public class BasicUnitService {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<BasicUnit> basicUnitList = basicUnitDao.basicUnitList(basicUnit);
+        List<BasicUnit> basicUnitList = basicUnitDao.getBasicUnitList(basicUnit);
         List<BasicUnitVo> transform = LangUtils.transform(basicUnitList, o -> getBasicUnitVo(o));
         vo.setTotal(page.getTotal());
         vo.setRows(ObjectUtils.isEmpty(transform) ? new ArrayList<BasicUnitVo>(10) : transform);
@@ -227,7 +227,7 @@ public class BasicUnitService {
         BasicUnit where = new BasicUnit();
         where.setApplyId(applyId);
         where.setCreator(commonService.thisUserAccount());
-        List<BasicUnit> basicUnits = basicUnitDao.basicUnitList(where);
+        List<BasicUnit> basicUnits = basicUnitDao.getBasicUnitList(where);
         if (!CollectionUtils.isEmpty(basicUnits)) {
             return basicUnits.get(0);
         } else {

@@ -125,7 +125,7 @@ public class BasicApplyBatchDao {
      * @param examineInfo
      * @return
      */
-    public boolean addInfo(BasicApplyBatch examineInfo) {
+    public boolean addBasicApplyBatch(BasicApplyBatch examineInfo) {
         return basicApplyBatchMapper.insertSelective(examineInfo) > 0;
     }
 

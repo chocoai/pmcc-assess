@@ -98,7 +98,7 @@ public class BasicHouseController {
     @RequestMapping(value = "/basicHouseList", name = "获取数据列表", method = {RequestMethod.GET})
     public HttpResult basicHouseList(BasicHouse basicHouse) {
         try {
-            return HttpResult.newCorrectResult(basicHouseService.basicHouseList(basicHouse));
+            return HttpResult.newCorrectResult(basicHouseService.getBasicHouseList(basicHouse));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(500, e.getMessage());

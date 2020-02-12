@@ -685,6 +685,66 @@ public class BasicApplyBatchExample {
             return (Criteria) this;
         }
 
+        public Criteria andBuildingStatusIsNull() {
+            addCriterion("building_status is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingStatusIsNotNull() {
+            addCriterion("building_status is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingStatusEqualTo(Integer value) {
+            addCriterion("building_status =", value, "buildingStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingStatusNotEqualTo(Integer value) {
+            addCriterion("building_status <>", value, "buildingStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingStatusGreaterThan(Integer value) {
+            addCriterion("building_status >", value, "buildingStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingStatusGreaterThanOrEqualTo(Integer value) {
+            addCriterion("building_status >=", value, "buildingStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingStatusLessThan(Integer value) {
+            addCriterion("building_status <", value, "buildingStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingStatusLessThanOrEqualTo(Integer value) {
+            addCriterion("building_status <=", value, "buildingStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingStatusIn(List<Integer> values) {
+            addCriterion("building_status in", values, "buildingStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingStatusNotIn(List<Integer> values) {
+            addCriterion("building_status not in", values, "buildingStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingStatusBetween(Integer value1, Integer value2) {
+            addCriterion("building_status between", value1, value2, "buildingStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingStatusNotBetween(Integer value1, Integer value2) {
+            addCriterion("building_status not between", value1, value2, "buildingStatus");
+            return (Criteria) this;
+        }
+
         public Criteria andQuoteIdIsNull() {
             addCriterion("quote_id is null");
             return (Criteria) this;
@@ -1065,6 +1125,66 @@ public class BasicApplyBatchExample {
             return (Criteria) this;
         }
 
+        public Criteria andBisCaseIsNull() {
+            addCriterion("bis_case is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisCaseIsNotNull() {
+            addCriterion("bis_case is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisCaseEqualTo(Boolean value) {
+            addCriterion("bis_case =", value, "bisCase");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisCaseNotEqualTo(Boolean value) {
+            addCriterion("bis_case <>", value, "bisCase");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisCaseGreaterThan(Boolean value) {
+            addCriterion("bis_case >", value, "bisCase");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisCaseGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_case >=", value, "bisCase");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisCaseLessThan(Boolean value) {
+            addCriterion("bis_case <", value, "bisCase");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisCaseLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_case <=", value, "bisCase");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisCaseIn(List<Boolean> values) {
+            addCriterion("bis_case in", values, "bisCase");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisCaseNotIn(List<Boolean> values) {
+            addCriterion("bis_case not in", values, "bisCase");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisCaseBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_case between", value1, value2, "bisCase");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisCaseNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_case not between", value1, value2, "bisCase");
+            return (Criteria) this;
+        }
+
         public Criteria andBisDeleteIsNull() {
             addCriterion("bis_delete is null");
             return (Criteria) this;
@@ -1312,66 +1432,6 @@ public class BasicApplyBatchExample {
 
         public Criteria andGmtModifiedNotBetween(Date value1, Date value2) {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuildingStatusIsNull() {
-            addCriterion("building_status is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuildingStatusIsNotNull() {
-            addCriterion("building_status is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuildingStatusEqualTo(Integer value) {
-            addCriterion("building_status =", value, "buildingStatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuildingStatusNotEqualTo(Integer value) {
-            addCriterion("building_status <>", value, "buildingStatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuildingStatusGreaterThan(Integer value) {
-            addCriterion("building_status >", value, "buildingStatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuildingStatusGreaterThanOrEqualTo(Integer value) {
-            addCriterion("building_status >=", value, "buildingStatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuildingStatusLessThan(Integer value) {
-            addCriterion("building_status <", value, "buildingStatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuildingStatusLessThanOrEqualTo(Integer value) {
-            addCriterion("building_status <=", value, "buildingStatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuildingStatusIn(List<Integer> values) {
-            addCriterion("building_status in", values, "buildingStatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuildingStatusNotIn(List<Integer> values) {
-            addCriterion("building_status not in", values, "buildingStatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuildingStatusBetween(Integer value1, Integer value2) {
-            addCriterion("building_status between", value1, value2, "buildingStatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuildingStatusNotBetween(Integer value1, Integer value2) {
-            addCriterion("building_status not between", value1, value2, "buildingStatus");
             return (Criteria) this;
         }
     }

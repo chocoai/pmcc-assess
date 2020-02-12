@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.common.enums.basic.EstateTaggingTypeEnum;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateTaggingDao;
 import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchDetail;
 import com.copower.pmcc.assess.dal.basis.entity.BasicEstateTagging;
+import com.copower.pmcc.assess.dal.basis.entity.BasicUnit;
 import com.copower.pmcc.assess.dal.cases.entity.CaseEstateTagging;
 import com.copower.pmcc.assess.dto.input.MapDto;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateTaggingGaoDe;
@@ -188,8 +189,8 @@ public class BasicEstateTaggingService {
      */
     public BasicEstateTagging getUnitTaggingByHouseTableId(Integer houseTableId) throws Exception {
         BasicApplyBatchDetail basicApplyBatchDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail("tb_basic_house", houseTableId);
-        Integer unitTableId = basicApplyBatchDetailService.getParentTableId(basicApplyBatchDetail);
-        List<BasicEstateTaggingVo> taggings = getApplyBatchEstateTaggingsByTableId(unitTableId, "unit");
+        BasicUnit basicUnit = basicApplyBatchDetailService.getBasicUnitByBatchDetailId(basicApplyBatchDetail.getPid());
+        List<BasicEstateTaggingVo> taggings = getApplyBatchEstateTaggingsByTableId(basicUnit.getId(), "unit");
         if(CollectionUtils.isEmpty(taggings)) return null;
         return taggings.get(0);
     }

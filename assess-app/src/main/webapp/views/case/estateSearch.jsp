@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en" class="no-js">
@@ -211,8 +210,7 @@
         }
     }
 
-    BaseViewFun.prototype.event = {
-    };
+    BaseViewFun.prototype.event = {};
     var baseFun = new BaseViewFun();
 
     baseFun.caseEstate = {
@@ -409,8 +407,14 @@
         });
         baseFun.caseEstate.loadDataList();
         $("#" + baseFun.config.father.caseEstate.frm() + " input[name='search']").apEstate({
+            getProvince: function () {
+                return $("#" + baseFun.config.father.caseEstate.frm()).find("select[name='province']").val();
+            },
+            getCity: function () {
+                return $("#" + baseFun.config.father.caseEstate.frm()).find("select[name='city']").val();
+            },
             onSelect: function (id, name) {
-                $("#" + baseFun.config.father.caseEstate.frm() + " input[name='search']").val(name) ;
+                $("#" + baseFun.config.father.caseEstate.frm() + " input[name='search']").val(name);
             }
         });
     });

@@ -7,6 +7,12 @@
                 offset: 0,
                 limit: 10,
                 autoSelect: false,
+                getProvince: function () {
+                    return null;
+                },
+                getCity: function () {
+                    return null;
+                },
                 onSelect: function (id, name) {
 
                 }
@@ -25,6 +31,8 @@
                     data: {
                         offset: defaults.offset,
                         limit: defaults.limit,
+                        province: defaults.getProvince(),
+                        city: defaults.getCity(),
                         name: $(that).val()
                     },
                     success: function (result) {

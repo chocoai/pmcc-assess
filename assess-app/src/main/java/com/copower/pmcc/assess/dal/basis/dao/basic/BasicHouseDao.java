@@ -51,7 +51,7 @@ public class BasicHouseDao {
         return basicHouseMapper.selectByExample(example);
     }
 
-    public List<BasicHouse> basicHouseList(BasicHouse basicHouse) {
+    public List<BasicHouse> getBasicHouseList(BasicHouse basicHouse) {
         BasicHouseExample example = new BasicHouseExample();
         BasicHouseExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
         MybatisUtils.convertObj2Criteria(basicHouse, criteria);

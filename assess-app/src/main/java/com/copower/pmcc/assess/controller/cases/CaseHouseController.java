@@ -101,7 +101,7 @@ public class CaseHouseController {
 
         BasicHouse house = new BasicHouse();
         house.setDisplayCaseId(id);
-        List<BasicHouse> houses = basicHouseDao.basicHouseList(house);
+        List<BasicHouse> houses = basicHouseDao.getBasicHouseList(house);
         if (CollectionUtils.isNotEmpty(houses)) {
             house = houses.get(0);
         } else {

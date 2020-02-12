@@ -555,63 +555,73 @@ public class BasicApplyBatchDetailExample {
             return (Criteria) this;
         }
 
-        public Criteria andBisStandardIsNull() {
-            addCriterion("bis_standard is null");
+        public Criteria andExecutorIsNull() {
+            addCriterion("executor is null");
             return (Criteria) this;
         }
 
-        public Criteria andBisStandardIsNotNull() {
-            addCriterion("bis_standard is not null");
+        public Criteria andExecutorIsNotNull() {
+            addCriterion("executor is not null");
             return (Criteria) this;
         }
 
-        public Criteria andBisStandardEqualTo(Boolean value) {
-            addCriterion("bis_standard =", value, "bisStandard");
+        public Criteria andExecutorEqualTo(String value) {
+            addCriterion("executor =", value, "executor");
             return (Criteria) this;
         }
 
-        public Criteria andBisStandardNotEqualTo(Boolean value) {
-            addCriterion("bis_standard <>", value, "bisStandard");
+        public Criteria andExecutorNotEqualTo(String value) {
+            addCriterion("executor <>", value, "executor");
             return (Criteria) this;
         }
 
-        public Criteria andBisStandardGreaterThan(Boolean value) {
-            addCriterion("bis_standard >", value, "bisStandard");
+        public Criteria andExecutorGreaterThan(String value) {
+            addCriterion("executor >", value, "executor");
             return (Criteria) this;
         }
 
-        public Criteria andBisStandardGreaterThanOrEqualTo(Boolean value) {
-            addCriterion("bis_standard >=", value, "bisStandard");
+        public Criteria andExecutorGreaterThanOrEqualTo(String value) {
+            addCriterion("executor >=", value, "executor");
             return (Criteria) this;
         }
 
-        public Criteria andBisStandardLessThan(Boolean value) {
-            addCriterion("bis_standard <", value, "bisStandard");
+        public Criteria andExecutorLessThan(String value) {
+            addCriterion("executor <", value, "executor");
             return (Criteria) this;
         }
 
-        public Criteria andBisStandardLessThanOrEqualTo(Boolean value) {
-            addCriterion("bis_standard <=", value, "bisStandard");
+        public Criteria andExecutorLessThanOrEqualTo(String value) {
+            addCriterion("executor <=", value, "executor");
             return (Criteria) this;
         }
 
-        public Criteria andBisStandardIn(List<Boolean> values) {
-            addCriterion("bis_standard in", values, "bisStandard");
+        public Criteria andExecutorLike(String value) {
+            addCriterion("executor like", value, "executor");
             return (Criteria) this;
         }
 
-        public Criteria andBisStandardNotIn(List<Boolean> values) {
-            addCriterion("bis_standard not in", values, "bisStandard");
+        public Criteria andExecutorNotLike(String value) {
+            addCriterion("executor not like", value, "executor");
             return (Criteria) this;
         }
 
-        public Criteria andBisStandardBetween(Boolean value1, Boolean value2) {
-            addCriterion("bis_standard between", value1, value2, "bisStandard");
+        public Criteria andExecutorIn(List<String> values) {
+            addCriterion("executor in", values, "executor");
             return (Criteria) this;
         }
 
-        public Criteria andBisStandardNotBetween(Boolean value1, Boolean value2) {
-            addCriterion("bis_standard not between", value1, value2, "bisStandard");
+        public Criteria andExecutorNotIn(List<String> values) {
+            addCriterion("executor not in", values, "executor");
+            return (Criteria) this;
+        }
+
+        public Criteria andExecutorBetween(String value1, String value2) {
+            addCriterion("executor between", value1, value2, "executor");
+            return (Criteria) this;
+        }
+
+        public Criteria andExecutorNotBetween(String value1, String value2) {
+            addCriterion("executor not between", value1, value2, "executor");
             return (Criteria) this;
         }
 
@@ -865,6 +875,246 @@ public class BasicApplyBatchDetailExample {
             return (Criteria) this;
         }
 
+        public Criteria andBisStructureIsNull() {
+            addCriterion("bis_structure is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisStructureIsNotNull() {
+            addCriterion("bis_structure is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisStructureEqualTo(Boolean value) {
+            addCriterion("bis_structure =", value, "bisStructure");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisStructureNotEqualTo(Boolean value) {
+            addCriterion("bis_structure <>", value, "bisStructure");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisStructureGreaterThan(Boolean value) {
+            addCriterion("bis_structure >", value, "bisStructure");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisStructureGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_structure >=", value, "bisStructure");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisStructureLessThan(Boolean value) {
+            addCriterion("bis_structure <", value, "bisStructure");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisStructureLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_structure <=", value, "bisStructure");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisStructureIn(List<Boolean> values) {
+            addCriterion("bis_structure in", values, "bisStructure");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisStructureNotIn(List<Boolean> values) {
+            addCriterion("bis_structure not in", values, "bisStructure");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisStructureBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_structure between", value1, value2, "bisStructure");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisStructureNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_structure not between", value1, value2, "bisStructure");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisStandardIsNull() {
+            addCriterion("bis_standard is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisStandardIsNotNull() {
+            addCriterion("bis_standard is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisStandardEqualTo(Boolean value) {
+            addCriterion("bis_standard =", value, "bisStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisStandardNotEqualTo(Boolean value) {
+            addCriterion("bis_standard <>", value, "bisStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisStandardGreaterThan(Boolean value) {
+            addCriterion("bis_standard >", value, "bisStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisStandardGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_standard >=", value, "bisStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisStandardLessThan(Boolean value) {
+            addCriterion("bis_standard <", value, "bisStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisStandardLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_standard <=", value, "bisStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisStandardIn(List<Boolean> values) {
+            addCriterion("bis_standard in", values, "bisStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisStandardNotIn(List<Boolean> values) {
+            addCriterion("bis_standard not in", values, "bisStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisStandardBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_standard between", value1, value2, "bisStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisStandardNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_standard not between", value1, value2, "bisStandard");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisUpgradeIsNull() {
+            addCriterion("bis_upgrade is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisUpgradeIsNotNull() {
+            addCriterion("bis_upgrade is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisUpgradeEqualTo(Boolean value) {
+            addCriterion("bis_upgrade =", value, "bisUpgrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisUpgradeNotEqualTo(Boolean value) {
+            addCriterion("bis_upgrade <>", value, "bisUpgrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisUpgradeGreaterThan(Boolean value) {
+            addCriterion("bis_upgrade >", value, "bisUpgrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisUpgradeGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_upgrade >=", value, "bisUpgrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisUpgradeLessThan(Boolean value) {
+            addCriterion("bis_upgrade <", value, "bisUpgrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisUpgradeLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_upgrade <=", value, "bisUpgrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisUpgradeIn(List<Boolean> values) {
+            addCriterion("bis_upgrade in", values, "bisUpgrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisUpgradeNotIn(List<Boolean> values) {
+            addCriterion("bis_upgrade not in", values, "bisUpgrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisUpgradeBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_upgrade between", value1, value2, "bisUpgrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisUpgradeNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_upgrade not between", value1, value2, "bisUpgrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteIsNull() {
+            addCriterion("bis_delete is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteIsNotNull() {
+            addCriterion("bis_delete is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteEqualTo(Boolean value) {
+            addCriterion("bis_delete =", value, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteNotEqualTo(Boolean value) {
+            addCriterion("bis_delete <>", value, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteGreaterThan(Boolean value) {
+            addCriterion("bis_delete >", value, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_delete >=", value, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteLessThan(Boolean value) {
+            addCriterion("bis_delete <", value, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_delete <=", value, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteIn(List<Boolean> values) {
+            addCriterion("bis_delete in", values, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteNotIn(List<Boolean> values) {
+            addCriterion("bis_delete not in", values, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_delete between", value1, value2, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_delete not between", value1, value2, "bisDelete");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;
@@ -932,66 +1182,6 @@ public class BasicApplyBatchDetailExample {
 
         public Criteria andCreatorNotBetween(String value1, String value2) {
             addCriterion("creator not between", value1, value2, "creator");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisDeleteIsNull() {
-            addCriterion("bis_delete is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisDeleteIsNotNull() {
-            addCriterion("bis_delete is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisDeleteEqualTo(Boolean value) {
-            addCriterion("bis_delete =", value, "bisDelete");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisDeleteNotEqualTo(Boolean value) {
-            addCriterion("bis_delete <>", value, "bisDelete");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisDeleteGreaterThan(Boolean value) {
-            addCriterion("bis_delete >", value, "bisDelete");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisDeleteGreaterThanOrEqualTo(Boolean value) {
-            addCriterion("bis_delete >=", value, "bisDelete");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisDeleteLessThan(Boolean value) {
-            addCriterion("bis_delete <", value, "bisDelete");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisDeleteLessThanOrEqualTo(Boolean value) {
-            addCriterion("bis_delete <=", value, "bisDelete");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisDeleteIn(List<Boolean> values) {
-            addCriterion("bis_delete in", values, "bisDelete");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisDeleteNotIn(List<Boolean> values) {
-            addCriterion("bis_delete not in", values, "bisDelete");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisDeleteBetween(Boolean value1, Boolean value2) {
-            addCriterion("bis_delete between", value1, value2, "bisDelete");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisDeleteNotBetween(Boolean value1, Boolean value2) {
-            addCriterion("bis_delete not between", value1, value2, "bisDelete");
             return (Criteria) this;
         }
 
@@ -1112,136 +1302,6 @@ public class BasicApplyBatchDetailExample {
 
         public Criteria andGmtModifiedNotBetween(Date value1, Date value2) {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
-            return (Criteria) this;
-        }
-
-        public Criteria andExecutorIsNull() {
-            addCriterion("executor is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andExecutorIsNotNull() {
-            addCriterion("executor is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andExecutorEqualTo(String value) {
-            addCriterion("executor =", value, "executor");
-            return (Criteria) this;
-        }
-
-        public Criteria andExecutorNotEqualTo(String value) {
-            addCriterion("executor <>", value, "executor");
-            return (Criteria) this;
-        }
-
-        public Criteria andExecutorGreaterThan(String value) {
-            addCriterion("executor >", value, "executor");
-            return (Criteria) this;
-        }
-
-        public Criteria andExecutorGreaterThanOrEqualTo(String value) {
-            addCriterion("executor >=", value, "executor");
-            return (Criteria) this;
-        }
-
-        public Criteria andExecutorLessThan(String value) {
-            addCriterion("executor <", value, "executor");
-            return (Criteria) this;
-        }
-
-        public Criteria andExecutorLessThanOrEqualTo(String value) {
-            addCriterion("executor <=", value, "executor");
-            return (Criteria) this;
-        }
-
-        public Criteria andExecutorLike(String value) {
-            addCriterion("executor like", value, "executor");
-            return (Criteria) this;
-        }
-
-        public Criteria andExecutorNotLike(String value) {
-            addCriterion("executor not like", value, "executor");
-            return (Criteria) this;
-        }
-
-        public Criteria andExecutorIn(List<String> values) {
-            addCriterion("executor in", values, "executor");
-            return (Criteria) this;
-        }
-
-        public Criteria andExecutorNotIn(List<String> values) {
-            addCriterion("executor not in", values, "executor");
-            return (Criteria) this;
-        }
-
-        public Criteria andExecutorBetween(String value1, String value2) {
-            addCriterion("executor between", value1, value2, "executor");
-            return (Criteria) this;
-        }
-
-        public Criteria andExecutorNotBetween(String value1, String value2) {
-            addCriterion("executor not between", value1, value2, "executor");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisStructureIsNull() {
-            addCriterion("bis_structure is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisStructureIsNotNull() {
-            addCriterion("bis_structure is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisStructureEqualTo(Boolean value) {
-            addCriterion("bis_structure =", value, "bisStructure");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisStructureNotEqualTo(Boolean value) {
-            addCriterion("bis_structure <>", value, "bisStructure");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisStructureGreaterThan(Boolean value) {
-            addCriterion("bis_structure >", value, "bisStructure");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisStructureGreaterThanOrEqualTo(Boolean value) {
-            addCriterion("bis_structure >=", value, "bisStructure");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisStructureLessThan(Boolean value) {
-            addCriterion("bis_structure <", value, "bisStructure");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisStructureLessThanOrEqualTo(Boolean value) {
-            addCriterion("bis_structure <=", value, "bisStructure");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisStructureIn(List<Boolean> values) {
-            addCriterion("bis_structure in", values, "bisStructure");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisStructureNotIn(List<Boolean> values) {
-            addCriterion("bis_structure not in", values, "bisStructure");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisStructureBetween(Boolean value1, Boolean value2) {
-            addCriterion("bis_structure between", value1, value2, "bisStructure");
-            return (Criteria) this;
-        }
-
-        public Criteria andBisStructureNotBetween(Boolean value1, Boolean value2) {
-            addCriterion("bis_structure not between", value1, value2, "bisStructure");
             return (Criteria) this;
         }
     }

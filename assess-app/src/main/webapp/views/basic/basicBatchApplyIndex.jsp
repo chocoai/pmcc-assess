@@ -23,8 +23,8 @@
                 </div>
                 <div class="x_content">
                     <form id="basicBatchApplyFrm" class="form-horizontal">
-                        <input type="hidden" name="id" value="${applyBatch.id}">
-                        <input type="hidden" id="estateId" name="estateId" value="${applyBatch.estateId}">
+                        <input type="hidden" name="id" value="${basicApplyBatch.id}">
+                        <input type="hidden" id="estateId" name="estateId" value="${basicApplyBatch.estateId}">
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
@@ -37,7 +37,7 @@
                                         <c:if test="${not empty formClassifyList}">
                                             <c:forEach var="item" items="${formClassifyList}">
                                                 <option value="${item.id}" data-key="${item.fieldName}"
-                                                    ${item.id eq applyBatch.classify?'selected="selected"':''}>${item.name}</option>
+                                                    ${item.id eq basicApplyBatch.classify?'selected="selected"':''}>${item.name}</option>
                                             </c:forEach>
                                         </c:if>
                                     </select>
@@ -52,7 +52,7 @@
                                         <option value="">-请选择-</option>
                                         <c:if test="${not empty examineFormTypeList}">
                                             <c:forEach var="item" items="${examineFormTypeList}">
-                                                <option value="${item.key}" ${item.key eq applyBatch.type?'selected="selected"':''}>${item.value}</option>
+                                                <option value="${item.key}" ${item.key eq basicApplyBatch.type?'selected="selected"':''}>${item.value}</option>
                                             </c:forEach>
                                         </c:if>
                                     </select>
@@ -63,7 +63,7 @@
                     <div class="col-md-3 col-lg-offset-1" style="max-height: 500px;overflow: auto;">
                         <ul id="ztree" class="ztree"></ul>
                     </div>
-                    <div class="col-md-8" id="btnGroup">
+                    <div class="col-md-4" id="btnGroup">
                         <a class="btn btn-xs btn-success baseTool" onclick="batchTreeTool.showAddModal()">
                             新增
                         </a>
@@ -82,23 +82,24 @@
                         <a class="btn btn-xs btn-primary fillInformation" onclick="batchTreeTool.fillInformation();">
                             填写信息
                         </a>
-                        <a style="display: none;" class="btn btn-xs btn-primary caseTool"
-                           onclick="batchTreeTool.caseDetailView();">
-                            查看案例
-                        </a>
-                        <a style="display: none;" class="btn btn-xs btn-primary caseTool"
-                           onclick="batchTreeTool.upgrade();">
-                            升级
-                        </a>
-
                         <a class="btn btn-xs btn-warning copy" onclick="batchTreeTool.copy();">
                             复制
                         </a>
                         <a class="btn btn-xs btn-warning paste" onclick="batchTreeTool.paste();">
                             粘贴
                         </a>
-
                     </div>
+                    <c:if test="${basicApplyBatch.caseEstateId ge 0}">
+                        <div class="col-md-3" style="max-height: 500px;overflow: auto;">
+                            <ul id="estateCaseZtree" class="ztree"></ul>
+                        </div>
+                        <div class="col-md-1" >
+                            <a class="btn btn-xs btn-success baseTool" onclick="batchTreeTool.showAddModal()">
+                                新增
+                            </a>
+                            <a class="btn btn-xs btn-primary caseTool" onclick="batchTreeTool.upgrade();">升级</a>
+                        </div>
+                    </c:if>
                     <div id="detail_modal" class="modal fade bs-example-modal-lg" data-backdrop="static"
                          aria-hidden="true"
                          role="dialog" data-keyboard="false" tabindex="1" style="display: none;">
@@ -186,11 +187,8 @@
                             </div>
                         </div>
                     </div>
-
-
                 </div>
             </div>
-
             <div class="x_panel">
                 <div class="x_content">
                     <div style="text-align: center;">
@@ -224,16 +222,12 @@
 
 <script type="text/javascript">
     $(function () {
-        if (${!empty applyBatch.estateId}) {
-            batchTreeTool.ztreeInit(${applyBatch.estateId});
-        }
-        if (${!empty applyBatch.caseEstateId}) {
-            batchTreeTool.caseEstateZtreeInit('${applyBatch.caseEstateId}');
+        batchTreeTool.ztreeInit(${basicApplyBatch.estateId});
+        if ('${basicApplyBatch.caseEstateId ge 0}' == 'true') {
+            batchTreeTool.caseEstateZtreeInit('${basicApplyBatch.caseEstateId}');
             $("#basicBatchApplyFrm").find("select[name='classify']").attr("disabled", "disabled");
             $("#basicBatchApplyFrm").find("select[name='type']").attr("disabled", "disabled");
-
         }
-
     });
 
     //申请提交
@@ -296,33 +290,6 @@
         });
     }
 
-
-    //保存草稿
-    function saveDraft() {
-        if (!$("#basicBatchApplyFrm").valid()) {
-            return false;
-        }
-
-        Loading.progressShow();
-        var formData = formParams("basicBatchApplyFrm");
-        $.ajax({
-            url: "${pageContext.request.contextPath}/basicApplyBatch/saveApplyDraftInfo",
-            type: "post",
-            dataType: "json",
-            data: formData,
-            success: function (result) {
-                Loading.progressHide();
-                if (result.ret) {
-                    Alert("保存草稿成功!", 1, null, function () {
-                        window.close();
-                    });
-                } else {
-                    Alert(result.errmsg);
-                }
-            }
-        });
-    }
-
     function getClassifyKey() {
         var dataKey = $("#basicBatchApplyFrm").find('[name=classify]').find('option:selected').attr("data-key");
         return dataKey;
@@ -338,19 +305,16 @@
             $("#btnGroup").find('.btn').show();
             $("#btnGroup").find('.btn.caseTool').hide();
         }
-        initBasicApplyBatchInfo();
+        initBasicApplyBatchCase();
     }
 
     //初始化信息
-    function initBasicApplyBatchInfo() {
+    function initBasicApplyBatchCase() {
         $.ajax({
-            url: "${pageContext.request.contextPath}/basicApplyBatch/initBasicApplyBatchInfo",
+            url: "${pageContext.request.contextPath}/basicApplyBatch/initBasicApplyBatchCase",
             type: "post",
             dataType: "json",
-            data: {
-                planDetailsId: '${projectPlanDetails.id}',
-                classify: $("#basicBatchApplyFrm").find('[name=classify]').val()
-            },
+            data: formSerializeArray($("#basicBatchApplyFrm")),
             success: function (result) {
                 if (result.ret) {
                     $("#basicBatchApplyFrm").find('[name=id]').val(result.data.id);
@@ -410,7 +374,6 @@
         if (!$("#basicBatchApplyFrm").valid()) {
             return false;
         }
-
         var formData = formParams("basicBatchApplyFrm");
         $.ajax({
             url: "${pageContext.request.contextPath}/basicApplyBatch/saveApplyInfo",
@@ -478,23 +441,21 @@
     }
 
     //有案例数据时初始化tree
-    batchTreeTool.caseEstateZtreeInit = function (caseEstateId) {
+    batchTreeTool.caseEstateZtreeInit = function (estateId) {
         $.ajax({
-            url: '${pageContext.request.contextPath}/basicApplyBatch/getCaseZtreeDto',
+            url: '${pageContext.request.contextPath}/basicApplyBatch/getCaseEstateZtreeDtos',
             data: {
-                caseEstateId: caseEstateId,
-                applyBatchId: '${applyBatch.id}'
+                estateId: estateId,
             },
             type: 'get',
             dataType: "json",
             success: function (result) {
-                zTreeObj = $.fn.zTree.init($("#ztree"), setting, result);
+                zTreeObj = $.fn.zTree.init($("#estateCaseZtree"), setting, result);
                 //展开第一级，选中根节点
                 var rootNode = zTreeObj.getNodes()[0];
                 zTreeObj.selectNode(rootNode);
                 zTreeObj.expandAll(true);
                 zTreeObj.setting.callback.onClick(null, zTreeObj.setting.treeId, rootNode);//调用事件
-
             }
         })
     }

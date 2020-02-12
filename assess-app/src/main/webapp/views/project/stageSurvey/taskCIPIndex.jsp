@@ -248,28 +248,6 @@
         }
     }
 
-    //获取标准对象数量
-    function getStandardCount() {
-        var count = 0;
-        $.ajax({
-            url: "${pageContext.request.contextPath}/basicApplyBatch/getStandardCount",
-            data: {
-                planDetailsId: '${projectPlanDetails.id}'
-            },
-            type: "post",
-            async: false,
-            dataType: "json",
-            success: function (result) {
-                count = result.data;
-            },
-            error: function (result) {
-                Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
-            }
-        });
-        return count;
-    }
-
     function getClassifyKey() {
         var dataKey = $("#basicBatchApplyFrm").find('[name=classify]').find('option:selected').attr("data-key");
         return dataKey;

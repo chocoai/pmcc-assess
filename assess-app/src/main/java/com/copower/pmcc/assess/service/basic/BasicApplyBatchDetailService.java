@@ -20,6 +20,7 @@ import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
@@ -116,120 +117,80 @@ public class BasicApplyBatchDetailService {
      */
     public BasicApplyBatchDetail addBasicApplyBatchDetail(BasicApplyBatchDetail basicApplyBatchDetail, Integer planDetailsId) throws Exception {
         basicApplyBatchDetail.setDisplayName(basicApplyBatchDetail.getName());
-        if (basicApplyBatchDetail.getId() != null && basicApplyBatchDetail.getId() > 0) {
-            BasicApplyBatchDetail oldData = getDataById(basicApplyBatchDetail.getId());
-            switch (basicApplyBatchDetail.getTableName()) {
-                case "tb_basic_building":
-                    basicApplyBatchDetail.setDisplayName(String.format("%s栋", basicApplyBatchDetail.getName()));
-                    BasicBuilding building = basicBuildingDao.getBasicBuildingById(basicApplyBatchDetail.getTableId());
-                    building.setBuildingNumber(basicApplyBatchDetail.getName());
-                    building.setBuildingName(basicApplyBatchDetail.getDisplayName());
-                    basicBuildingDao.updateBasicBuilding(building, false);
-                    //执行人发生改变，子任务发生改变
-                    if (!StringUtils.equals(oldData.getExecutor(), basicApplyBatchDetail.getExecutor())) {
-                        updateSonTask(planDetailsId, "building", basicApplyBatchDetail.getTableId(), basicApplyBatchDetail.getExecutor(), oldData.getCreator(), basicApplyBatchDetail.getApplyBatchId());
-                    }
-                    break;
-                case "tb_basic_unit":
-                    basicApplyBatchDetail.setDisplayName(String.format("%s单元", basicApplyBatchDetail.getName()));
-                    BasicUnit unit = basicUnitService.getBasicUnitById(basicApplyBatchDetail.getTableId());
-                    unit.setUnitNumber(basicApplyBatchDetail.getName());
-                    basicUnitService.saveAndUpdateBasicUnit(unit, false);
-                    //执行人发生改变，子任务发生改变
-                    if (!StringUtils.equals(oldData.getExecutor(), basicApplyBatchDetail.getExecutor())) {
-                        updateSonTask(planDetailsId, "unit", basicApplyBatchDetail.getTableId(), basicApplyBatchDetail.getExecutor(), oldData.getCreator(), basicApplyBatchDetail.getApplyBatchId());
-                    }
-                    break;
-                case "tb_basic_house":
-                    BasicHouse house = basicHouseService.getBasicHouseById(basicApplyBatchDetail.getTableId());
-                    house.setHouseNumber(basicApplyBatchDetail.getName());
-                    basicHouseService.saveAndUpdateBasicHouse(house, false);
-                    //执行人发生改变，子任务发生改变
-                    if (!StringUtils.equals(oldData.getExecutor(), basicApplyBatchDetail.getExecutor())) {
-                        updateSonTask(planDetailsId, "house", basicApplyBatchDetail.getTableId(), basicApplyBatchDetail.getExecutor(), oldData.getCreator(), basicApplyBatchDetail.getApplyBatchId());
-                    }
-                    break;
-            }
-            basicApplyBatchDetailDao.updateInfo(basicApplyBatchDetail);
-
-        } else {
-            basicApplyBatchDetail.setCreator(processControllerComponent.getThisUser());
-            switch (basicApplyBatchDetail.getTableName()) {
-                case "tb_basic_building":
-                    basicApplyBatchDetail.setDisplayName(String.format("%s栋", basicApplyBatchDetail.getName()));
-                    BasicBuilding building = new BasicBuilding();
-                    building.setBuildingNumber(basicApplyBatchDetail.getName());
-                    if (basicApplyBatchDetail.getCaseTablePid() != null) {
-                        building.setEstateId(0);
-                    } else {
-                        building.setEstateId(this.getParentTableId(basicApplyBatchDetail));
-                    }
-                    building.setBuildingName(basicApplyBatchDetail.getDisplayName());
-                    basicBuildingDao.addBasicBuilding(building);
-                    basicApplyBatchDetail.setTableId(building.getId());
-                    //当前人与执行人不一致时发起子任务
-                    if (!StringUtils.equals(basicApplyBatchDetail.getCreator(), basicApplyBatchDetail.getExecutor())) {
-                        addSonTask(planDetailsId, "building", building.getId(), basicApplyBatchDetail.getExecutor(), basicApplyBatchDetail.getApplyBatchId());
-                    }
-
-                    break;
-                case "tb_basic_unit":
-                    basicApplyBatchDetail.setDisplayName(String.format("%s单元", basicApplyBatchDetail.getName()));
-                    BasicUnit unit = new BasicUnit();
-                    unit.setUnitNumber(basicApplyBatchDetail.getName());
-                    if (basicApplyBatchDetail.getCaseTablePid() != null) {
-                        unit.setBuildingId(0);
-                    } else {
-                        unit.setBuildingId(this.getParentTableId(basicApplyBatchDetail));
-                    }
-                    basicUnitService.saveAndUpdateBasicUnit(unit, false);
-                    basicApplyBatchDetail.setTableId(unit.getId());
-                    //当前人与执行人不一致时发起子任务
-                    if (!StringUtils.equals(basicApplyBatchDetail.getCreator(), basicApplyBatchDetail.getExecutor())) {
-                        addSonTask(planDetailsId, "unit", unit.getId(), basicApplyBatchDetail.getExecutor(), basicApplyBatchDetail.getApplyBatchId());
-                    }
-                    break;
-                case "tb_basic_house":
-                    BasicHouse house = new BasicHouse();
-                    house.setHouseNumber(basicApplyBatchDetail.getName());
-                    if (basicApplyBatchDetail.getCaseTablePid() != null) {
-                        house.setUnitId(0);
-                    } else {
-                        house.setUnitId(this.getParentTableId(basicApplyBatchDetail));
-                    }
-                    //申报表代入的信息
-                    DeclareRecord declareRecord = new DeclareRecord();
-                    ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
-                    if (projectPlanDetails != null && projectPlanDetails.getDeclareRecordId() != null) {
-                        declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
-                    }
+        basicApplyBatchDetail.setCreator(processControllerComponent.getThisUser());
+        switch (basicApplyBatchDetail.getTableName()) {
+            case "tb_basic_building":
+                basicApplyBatchDetail.setDisplayName(String.format("%s栋", basicApplyBatchDetail.getName()));
+                BasicBuilding building = new BasicBuilding();
+                building.setBuildingNumber(basicApplyBatchDetail.getName());
+                BasicEstate basicEstate = getBasicEstateByBatchDetailId(basicApplyBatchDetail.getPid());
+                if (basicEstate != null)
+                    building.setEstateId(basicEstate.getId());
+                building.setBuildingName(basicApplyBatchDetail.getDisplayName());
+                basicBuildingDao.addBasicBuilding(building);
+                basicApplyBatchDetail.setTableId(building.getId());
+                //当前人与执行人不一致时发起子任务
+                if (!StringUtils.equals(basicApplyBatchDetail.getCreator(), basicApplyBatchDetail.getExecutor())) {
+                    addSonTask(planDetailsId, "building", building.getId(), basicApplyBatchDetail.getExecutor(), basicApplyBatchDetail.getApplyBatchId());
+                }
+                break;
+            case "tb_basic_unit":
+                basicApplyBatchDetail.setDisplayName(String.format("%s单元", basicApplyBatchDetail.getName()));
+                BasicUnit unit = new BasicUnit();
+                BasicBuilding basicBuilding = getBasicBuildingByBatchDetailId(basicApplyBatchDetail.getPid());
+                if(basicBuilding!=null){
+                    unit.setBuildingId(basicBuilding.getId());
+                    unit.setEstateId(basicBuilding.getEstateId());
+                }
+                unit.setUnitNumber(basicApplyBatchDetail.getName());
+                basicUnitService.saveAndUpdateBasicUnit(unit, false);
+                basicApplyBatchDetail.setTableId(unit.getId());
+                //当前人与执行人不一致时发起子任务
+                if (!StringUtils.equals(basicApplyBatchDetail.getCreator(), basicApplyBatchDetail.getExecutor())) {
+                    addSonTask(planDetailsId, "unit", unit.getId(), basicApplyBatchDetail.getExecutor(), basicApplyBatchDetail.getApplyBatchId());
+                }
+                break;
+            case "tb_basic_house":
+                BasicHouse house = new BasicHouse();
+                house.setHouseNumber(basicApplyBatchDetail.getName());
+                BasicUnit basicUnit = getBasicUnitByBatchDetailId(basicApplyBatchDetail.getPid());
+                if(basicUnit!=null){
+                    house.setUnitId(basicUnit.getId());
+                    house.setBuildingId(basicUnit.getBuildingId());
+                    house.setEstateId(basicUnit.getEstateId());
+                }
+                //申报表代入的信息
+                DeclareRecord declareRecord = null;
+                ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
+                if (projectPlanDetails != null && projectPlanDetails.getDeclareRecordId() != null) {
+                    declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
                     if (declareRecord != null) {
                         house.setCertUse(declareRecord.getCertUse());
                         house.setPracticalUse(declareRecord.getCertUse());
                     }
-                    basicHouseService.saveAndUpdateBasicHouse(house, false);
-                    basicApplyBatchDetail.setTableId(house.getId());
-                    BasicHouseTrading houseTrading = new BasicHouseTrading();
-                    houseTrading.setHouseId(house.getId());
-                    //引用一些项目信息
-                    ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
-                    if (planDetails != null) {
-                        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(planDetails.getProjectId());
-                        houseTrading.setScopeInclude(projectInfo.getScopeInclude());
-                        houseTrading.setScopeNotInclude(projectInfo.getScopeNotInclude());
-                        if (NumberUtils.isNumber(projectInfo.getPropertyScope())) {
-                            houseTrading.setScopeProperty(Integer.valueOf(projectInfo.getPropertyScope()));
-                        }
+                }
+
+                basicHouseService.saveAndUpdateBasicHouse(house, false);
+                basicApplyBatchDetail.setTableId(house.getId());
+
+                BasicHouseTrading houseTrading = new BasicHouseTrading();
+                houseTrading.setHouseId(house.getId());
+                if (projectPlanDetails != null) {
+                    ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
+                    houseTrading.setScopeInclude(projectInfo.getScopeInclude());
+                    houseTrading.setScopeNotInclude(projectInfo.getScopeNotInclude());
+                    if (NumberUtils.isNumber(projectInfo.getPropertyScope())) {
+                        houseTrading.setScopeProperty(Integer.valueOf(projectInfo.getPropertyScope()));
                     }
-                    basicHouseTradingService.saveAndUpdateBasicHouseTrading(houseTrading, false);
-                    //当前人与执行人不一致时发起子任务
-                    if (!StringUtils.equals(basicApplyBatchDetail.getCreator(), basicApplyBatchDetail.getExecutor())) {
-                        addSonTask(planDetailsId, "house", house.getId(), basicApplyBatchDetail.getExecutor(), basicApplyBatchDetail.getApplyBatchId());
-                    }
-                    break;
-            }
-            basicApplyBatchDetailDao.addInfo(basicApplyBatchDetail);
+                }
+                basicHouseTradingService.saveAndUpdateBasicHouseTrading(houseTrading, false);
+                //当前人与执行人不一致时发起子任务
+                if (!StringUtils.equals(basicApplyBatchDetail.getCreator(), basicApplyBatchDetail.getExecutor())) {
+                    addSonTask(planDetailsId, "house", house.getId(), basicApplyBatchDetail.getExecutor(), basicApplyBatchDetail.getApplyBatchId());
+                }
+                break;
         }
+        basicApplyBatchDetailDao.addInfo(basicApplyBatchDetail);
         //存入basicApply
         this.insertBasicApply(basicApplyBatchDetail, planDetailsId);
 
@@ -482,20 +443,6 @@ public class BasicApplyBatchDetailService {
         return vo;
     }
 
-    //获取上一级数据tableId
-    public Integer getParentTableId(BasicApplyBatchDetail basicApplyBatchDetail) {
-        if (basicApplyBatchDetail.getPid() != 0)
-            return this.getDataById(basicApplyBatchDetail.getPid()).getTableId();
-        return basicApplyBatchDao.getBasicApplyBatchById(basicApplyBatchDetail.getApplyBatchId()).getEstateId();
-    }
-
-    //获取上一级引用数据id
-    public Integer getParentQuoteId(BasicApplyBatchDetail basicApplyBatchDetail) {
-        if (basicApplyBatchDetail.getPid() != 0)
-            return this.getDataById(basicApplyBatchDetail.getPid()).getQuoteId();
-        return basicApplyBatchDao.getBasicApplyBatchById(basicApplyBatchDetail.getApplyBatchId()).getQuoteId();
-    }
-
     public BasicApplyBatchDetail getBasicApplyBatchDetail(Integer basicApplyBatchId, String tableName, Integer tableId) {
         BasicApplyBatchDetail where = new BasicApplyBatchDetail();
         where.setApplyBatchId(basicApplyBatchId);
@@ -556,31 +503,67 @@ public class BasicApplyBatchDetailService {
         return basicApplyBatchDetailDao.getInfoList(basicApplyBatchDetail);
     }
 
-
-    //获取房屋
-    public List<BasicHouse> getBasicHouseListByBatchId(Integer id, BasicUnit basicUnit) throws Exception {
-        List<BasicApplyBatchDetail> infoList = this.getHouseBatchDetailsByBatchId(basicUnit);
-        List<BasicHouse> basicHouses = Lists.newArrayList();
-        if (CollectionUtils.isNotEmpty(infoList))
-            for (BasicApplyBatchDetail item : infoList) {
-                basicHouses.add(basicHouseService.getBasicHouseById(item.getTableId()));
-            }
-        ;
-        return basicHouses;
-    }
-
-    public List<BasicApplyBatchDetail> getHouseBatchDetailsByBatchId(BasicUnit basicUnit) {
-        BasicApplyBatchDetail parent = getBasicApplyBatchDetail("tb_basic_unit", basicUnit.getId());
-        BasicApplyBatchDetail basicApplyBatchDetail = new BasicApplyBatchDetail();
-        basicApplyBatchDetail.setTableName("tb_basic_house");
-        basicApplyBatchDetail.setApplyBatchId(parent.getApplyBatchId());
-        basicApplyBatchDetail.setPid(parent.getId());
-        return basicApplyBatchDetailDao.getInfoList(basicApplyBatchDetail);
-    }
-
     public BasicApplyBatchDetail getSingleData(BasicApplyBatchDetail basicApplyBatchDetail) {
         List<BasicApplyBatchDetail> infoList = basicApplyBatchDetailDao.getInfoList(basicApplyBatchDetail);
         if (CollectionUtils.isNotEmpty(infoList)) return infoList.get(0);
         return null;
     }
+
+    /**
+     * 获取楼盘
+     *
+     * @param basicApplyBatchDetailId
+     * @return
+     */
+    public BasicEstate getBasicEstateByBatchDetailId(Integer basicApplyBatchDetailId) {
+        BasicApplyBatchDetail applyBatchDetail = getDataById(basicApplyBatchDetailId);
+        if (applyBatchDetail == null) return null;
+        if (FormatUtils.entityNameConvertToTableName(BasicEstate.class).equalsIgnoreCase(applyBatchDetail.getTableName())) {
+            return basicEstateService.getBasicEstateById(applyBatchDetail.getTableId());
+        } else {
+            if (applyBatchDetail.getPid() == null || applyBatchDetail.getPid() <= 0)
+                return null;
+            else
+                return getBasicEstateByBatchDetailId(applyBatchDetail.getPid());
+        }
+    }
+
+    /**
+     * 获取楼栋
+     *
+     * @param basicApplyBatchDetailId
+     * @return
+     */
+    public BasicBuilding getBasicBuildingByBatchDetailId(Integer basicApplyBatchDetailId) {
+        BasicApplyBatchDetail applyBatchDetail = getDataById(basicApplyBatchDetailId);
+        if (applyBatchDetail == null) return null;
+        if (FormatUtils.entityNameConvertToTableName(BasicBuilding.class).equalsIgnoreCase(applyBatchDetail.getTableName())) {
+            return basicBuildingService.getBasicBuildingById(applyBatchDetail.getTableId());
+        } else {
+            if (applyBatchDetail.getPid() == null || applyBatchDetail.getPid() <= 0)
+                return null;
+            else
+                return getBasicBuildingByBatchDetailId(applyBatchDetail.getPid());
+        }
+    }
+
+    /**
+     * 获取单元
+     *
+     * @param basicApplyBatchDetailId
+     * @return
+     */
+    public BasicUnit getBasicUnitByBatchDetailId(Integer basicApplyBatchDetailId) {
+        BasicApplyBatchDetail applyBatchDetail = getDataById(basicApplyBatchDetailId);
+        if (applyBatchDetail == null) return null;
+        if (FormatUtils.entityNameConvertToTableName(BasicUnit.class).equalsIgnoreCase(applyBatchDetail.getTableName())) {
+            return basicUnitService.getBasicUnitById(applyBatchDetail.getTableId());
+        } else {
+            if (applyBatchDetail.getPid() == null || applyBatchDetail.getPid() <= 0)
+                return null;
+            else
+                return getBasicUnitByBatchDetailId(applyBatchDetail.getPid());
+        }
+    }
+
 }

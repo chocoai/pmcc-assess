@@ -68,7 +68,7 @@ public class CaseUnitController {
 
         BasicUnit unit = new BasicUnit();
         unit.setDisplayCaseId(id);
-        List<BasicUnit> units = basicUnitDao.basicUnitList(unit);
+        List<BasicUnit> units = basicUnitDao.getBasicUnitList(unit);
         if (CollectionUtils.isNotEmpty(units)) {
             unit = units.get(0);
         } else {

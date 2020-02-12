@@ -11,17 +11,18 @@
     <result column="type" property="type" jdbcType="INTEGER" />
     <result column="estate_id" property="estateId" jdbcType="INTEGER" />
     <result column="estate_name" property="estateName" jdbcType="VARCHAR" />
+    <result column="building_status" property="buildingStatus" jdbcType="INTEGER" />
     <result column="quote_id" property="quoteId" jdbcType="INTEGER" />
     <result column="base_type" property="baseType" jdbcType="VARCHAR" />
     <result column="show_tab" property="showTab" jdbcType="BIT" />
     <result column="case_estate_id" property="caseEstateId" jdbcType="INTEGER" />
     <result column="status" property="status" jdbcType="VARCHAR" />
     <result column="draft_flag" property="draftFlag" jdbcType="BIT" />
+    <result column="bis_case" property="bisCase" jdbcType="BIT" />
     <result column="bis_delete" property="bisDelete" jdbcType="BIT" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
-    <result column="building_status" property="buildingStatus" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -83,8 +84,8 @@
   </sql>
   <sql id="Base_Column_List" >
     id, process_ins_id, plan_details_id, province, city, classify, type, estate_id, estate_name, 
-    quote_id, base_type, show_tab, case_estate_id, status, draft_flag, bis_delete, creator, 
-    gmt_created, gmt_modified, building_status
+    building_status, quote_id, base_type, show_tab, case_estate_id, status, draft_flag, 
+    bis_case, bis_delete, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchExample" >
     select
@@ -122,18 +123,18 @@
     </selectKey>
     insert into tb_basic_apply_batch (process_ins_id, plan_details_id, province, 
       city, classify, type, 
-      estate_id, estate_name, quote_id, 
-      base_type, show_tab, case_estate_id, 
-      status, draft_flag, bis_delete, 
-      creator, gmt_created, gmt_modified, 
-      building_status)
+      estate_id, estate_name, building_status, 
+      quote_id, base_type, show_tab, 
+      case_estate_id, status, draft_flag, 
+      bis_case, bis_delete, creator, 
+      gmt_created, gmt_modified)
     values (#{processInsId,jdbcType=VARCHAR}, #{planDetailsId,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, 
       #{city,jdbcType=VARCHAR}, #{classify,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, 
-      #{estateId,jdbcType=INTEGER}, #{estateName,jdbcType=VARCHAR}, #{quoteId,jdbcType=INTEGER}, 
-      #{baseType,jdbcType=VARCHAR}, #{showTab,jdbcType=BIT}, #{caseEstateId,jdbcType=INTEGER}, 
-      #{status,jdbcType=VARCHAR}, #{draftFlag,jdbcType=BIT}, #{bisDelete,jdbcType=BIT}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
-      #{buildingStatus,jdbcType=INTEGER})
+      #{estateId,jdbcType=INTEGER}, #{estateName,jdbcType=VARCHAR}, #{buildingStatus,jdbcType=INTEGER}, 
+      #{quoteId,jdbcType=INTEGER}, #{baseType,jdbcType=VARCHAR}, #{showTab,jdbcType=BIT}, 
+      #{caseEstateId,jdbcType=INTEGER}, #{status,jdbcType=VARCHAR}, #{draftFlag,jdbcType=BIT}, 
+      #{bisCase,jdbcType=BIT}, #{bisDelete,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatch" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -165,6 +166,9 @@
       <if test="estateName != null" >
         estate_name,
       </if>
+      <if test="buildingStatus != null" >
+        building_status,
+      </if>
       <if test="quoteId != null" >
         quote_id,
       </if>
@@ -183,6 +187,9 @@
       <if test="draftFlag != null" >
         draft_flag,
       </if>
+      <if test="bisCase != null" >
+        bis_case,
+      </if>
       <if test="bisDelete != null" >
         bis_delete,
       </if>
@@ -194,9 +201,6 @@
       </if>
       <if test="gmtModified != null" >
         gmt_modified,
-      </if>
-      <if test="buildingStatus != null" >
-        building_status,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -224,6 +228,9 @@
       <if test="estateName != null" >
         #{estateName,jdbcType=VARCHAR},
       </if>
+      <if test="buildingStatus != null" >
+        #{buildingStatus,jdbcType=INTEGER},
+      </if>
       <if test="quoteId != null" >
         #{quoteId,jdbcType=INTEGER},
       </if>
@@ -242,6 +249,9 @@
       <if test="draftFlag != null" >
         #{draftFlag,jdbcType=BIT},
       </if>
+      <if test="bisCase != null" >
+        #{bisCase,jdbcType=BIT},
+      </if>
       <if test="bisDelete != null" >
         #{bisDelete,jdbcType=BIT},
       </if>
@@ -253,9 +263,6 @@
       </if>
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="buildingStatus != null" >
-        #{buildingStatus,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -295,6 +302,9 @@
       <if test="record.estateName != null" >
         estate_name = #{record.estateName,jdbcType=VARCHAR},
       </if>
+      <if test="record.buildingStatus != null" >
+        building_status = #{record.buildingStatus,jdbcType=INTEGER},
+      </if>
       <if test="record.quoteId != null" >
         quote_id = #{record.quoteId,jdbcType=INTEGER},
       </if>
@@ -313,6 +323,9 @@
       <if test="record.draftFlag != null" >
         draft_flag = #{record.draftFlag,jdbcType=BIT},
       </if>
+      <if test="record.bisCase != null" >
+        bis_case = #{record.bisCase,jdbcType=BIT},
+      </if>
       <if test="record.bisDelete != null" >
         bis_delete = #{record.bisDelete,jdbcType=BIT},
       </if>
@@ -324,9 +337,6 @@
       </if>
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.buildingStatus != null" >
-        building_status = #{record.buildingStatus,jdbcType=INTEGER},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -344,17 +354,18 @@
       type = #{record.type,jdbcType=INTEGER},
       estate_id = #{record.estateId,jdbcType=INTEGER},
       estate_name = #{record.estateName,jdbcType=VARCHAR},
+      building_status = #{record.buildingStatus,jdbcType=INTEGER},
       quote_id = #{record.quoteId,jdbcType=INTEGER},
       base_type = #{record.baseType,jdbcType=VARCHAR},
       show_tab = #{record.showTab,jdbcType=BIT},
       case_estate_id = #{record.caseEstateId,jdbcType=INTEGER},
       status = #{record.status,jdbcType=VARCHAR},
       draft_flag = #{record.draftFlag,jdbcType=BIT},
+      bis_case = #{record.bisCase,jdbcType=BIT},
       bis_delete = #{record.bisDelete,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      building_status = #{record.buildingStatus,jdbcType=INTEGER}
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -386,6 +397,9 @@
       <if test="estateName != null" >
         estate_name = #{estateName,jdbcType=VARCHAR},
       </if>
+      <if test="buildingStatus != null" >
+        building_status = #{buildingStatus,jdbcType=INTEGER},
+      </if>
       <if test="quoteId != null" >
         quote_id = #{quoteId,jdbcType=INTEGER},
       </if>
@@ -404,6 +418,9 @@
       <if test="draftFlag != null" >
         draft_flag = #{draftFlag,jdbcType=BIT},
       </if>
+      <if test="bisCase != null" >
+        bis_case = #{bisCase,jdbcType=BIT},
+      </if>
       <if test="bisDelete != null" >
         bis_delete = #{bisDelete,jdbcType=BIT},
       </if>
@@ -415,9 +432,6 @@
       </if>
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="buildingStatus != null" >
-        building_status = #{buildingStatus,jdbcType=INTEGER},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -432,17 +446,18 @@
       type = #{type,jdbcType=INTEGER},
       estate_id = #{estateId,jdbcType=INTEGER},
       estate_name = #{estateName,jdbcType=VARCHAR},
+      building_status = #{buildingStatus,jdbcType=INTEGER},
       quote_id = #{quoteId,jdbcType=INTEGER},
       base_type = #{baseType,jdbcType=VARCHAR},
       show_tab = #{showTab,jdbcType=BIT},
       case_estate_id = #{caseEstateId,jdbcType=INTEGER},
       status = #{status,jdbcType=VARCHAR},
       draft_flag = #{draftFlag,jdbcType=BIT},
+      bis_case = #{bisCase,jdbcType=BIT},
       bis_delete = #{bisDelete,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      building_status = #{buildingStatus,jdbcType=INTEGER}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

@@ -87,7 +87,7 @@ public class BasicUnitController {
     @RequestMapping(value = "/basicUnitList", name = "获取数据列表", method = {RequestMethod.GET})
     public HttpResult basicUnitList(BasicUnit basicUnit) {
         try {
-            return HttpResult.newCorrectResult(basicUnitService.basicUnitList(basicUnit));
+            return HttpResult.newCorrectResult(basicUnitService.getBasicUnitList(basicUnit));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(500, e.getMessage());

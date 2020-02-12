@@ -21,6 +21,8 @@ public class BasicApplyBatch {
 
     private String estateName;
 
+    private Integer buildingStatus;
+
     private Integer quoteId;
 
     private String baseType;
@@ -33,6 +35,8 @@ public class BasicApplyBatch {
 
     private Boolean draftFlag;
 
+    private Boolean bisCase;
+
     private Boolean bisDelete;
 
     private String creator;
@@ -40,8 +44,6 @@ public class BasicApplyBatch {
     private Date gmtCreated;
 
     private Date gmtModified;
-
-    private Integer buildingStatus;
 
     public Integer getId() {
         return id;
@@ -115,6 +117,14 @@ public class BasicApplyBatch {
         this.estateName = estateName == null ? null : estateName.trim();
     }
 
+    public Integer getBuildingStatus() {
+        return buildingStatus;
+    }
+
+    public void setBuildingStatus(Integer buildingStatus) {
+        this.buildingStatus = buildingStatus;
+    }
+
     public Integer getQuoteId() {
         return quoteId;
     }
@@ -163,6 +173,14 @@ public class BasicApplyBatch {
         this.draftFlag = draftFlag;
     }
 
+    public Boolean getBisCase() {
+        return bisCase;
+    }
+
+    public void setBisCase(Boolean bisCase) {
+        this.bisCase = bisCase;
+    }
+
     public Boolean getBisDelete() {
         return bisDelete;
     }
@@ -193,13 +211,5 @@ public class BasicApplyBatch {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public Integer getBuildingStatus() {
-        return buildingStatus;
-    }
-
-    public void setBuildingStatus(Integer buildingStatus) {
-        this.buildingStatus = buildingStatus;
     }
 }

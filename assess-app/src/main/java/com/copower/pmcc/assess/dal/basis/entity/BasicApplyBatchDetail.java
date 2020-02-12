@@ -17,7 +17,7 @@ public class BasicApplyBatchDetail {
 
     private String displayName;
 
-    private Boolean bisStandard;
+    private String executor;
 
     private Integer quoteId;
 
@@ -27,17 +27,19 @@ public class BasicApplyBatchDetail {
 
     private Integer upgradeTableId;
 
-    private String creator;
+    private Boolean bisStructure;
+
+    private Boolean bisStandard;
+
+    private Boolean bisUpgrade;
 
     private Boolean bisDelete;
+
+    private String creator;
 
     private Date gmtCreated;
 
     private Date gmtModified;
-
-    private String executor;
-
-    private Boolean bisStructure;
 
     public Integer getId() {
         return id;
@@ -95,12 +97,12 @@ public class BasicApplyBatchDetail {
         this.displayName = displayName == null ? null : displayName.trim();
     }
 
-    public Boolean getBisStandard() {
-        return bisStandard;
+    public String getExecutor() {
+        return executor;
     }
 
-    public void setBisStandard(Boolean bisStandard) {
-        this.bisStandard = bisStandard;
+    public void setExecutor(String executor) {
+        this.executor = executor == null ? null : executor.trim();
     }
 
     public Integer getQuoteId() {
@@ -135,12 +137,28 @@ public class BasicApplyBatchDetail {
         this.upgradeTableId = upgradeTableId;
     }
 
-    public String getCreator() {
-        return creator;
+    public Boolean getBisStructure() {
+        return bisStructure;
     }
 
-    public void setCreator(String creator) {
-        this.creator = creator == null ? null : creator.trim();
+    public void setBisStructure(Boolean bisStructure) {
+        this.bisStructure = bisStructure;
+    }
+
+    public Boolean getBisStandard() {
+        return bisStandard;
+    }
+
+    public void setBisStandard(Boolean bisStandard) {
+        this.bisStandard = bisStandard;
+    }
+
+    public Boolean getBisUpgrade() {
+        return bisUpgrade;
+    }
+
+    public void setBisUpgrade(Boolean bisUpgrade) {
+        this.bisUpgrade = bisUpgrade;
     }
 
     public Boolean getBisDelete() {
@@ -149,6 +167,14 @@ public class BasicApplyBatchDetail {
 
     public void setBisDelete(Boolean bisDelete) {
         this.bisDelete = bisDelete;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator == null ? null : creator.trim();
     }
 
     public Date getGmtCreated() {
@@ -165,21 +191,5 @@ public class BasicApplyBatchDetail {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public String getExecutor() {
-        return executor;
-    }
-
-    public void setExecutor(String executor) {
-        this.executor = executor == null ? null : executor.trim();
-    }
-
-    public Boolean getBisStructure() {
-        return bisStructure;
-    }
-
-    public void setBisStructure(Boolean bisStructure) {
-        this.bisStructure = bisStructure;
     }
 }
