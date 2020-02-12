@@ -10,6 +10,7 @@ import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.chks.api.dto.AssessmentProjectPerformanceDto;
 import com.copower.pmcc.chks.api.provider.ChksRpcAssessmentService;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
+import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.google.common.base.Objects;
 import org.apache.commons.lang3.StringUtils;
@@ -52,6 +53,11 @@ public class ChksCustomerAssessmentPlanDetailController {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/chksCustomize/detail");
         params(modelAndView, id);
         return modelAndView;
+    }
+
+    @GetMapping(value = "/getBootstrapTableVo")
+    public BootstrapTableVo getBootstrapTableVo(String formData) {
+        return new BootstrapTableVo() ;
     }
 
 

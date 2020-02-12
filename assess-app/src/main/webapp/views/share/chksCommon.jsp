@@ -290,6 +290,9 @@
         });
     };
 
+    /*
+    考核收集数据
+     */
     assessmentCommonHandle.getChksSonData = function (target, data) {
         target.find("tr").each(function (i, tr) {
             var ele = $(tr);
@@ -390,6 +393,9 @@
         });
     };
 
+    /**
+     * 抽查列表 单元项
+     */
     assessmentCommonHandle.getSpotCol = function () {
         var col = {
             field: 'spotId', title: '抽查考核', formatter: function (value, row, index) {
@@ -406,6 +412,9 @@
         return col
     };
 
+    /*
+    考核列表
+     */
     assessmentCommonHandle.getChksBootstrapTableVoBase = function (table, query, data) {
         var cols = [];
         cols.push({field: 'activityName', title: '考核节点'});
@@ -420,11 +429,15 @@
                 return "";
             }
         });
+
+        //下面涉及到权限,如果要优化请慎重操作
         cols.push({
             field: 'examineStatus', title: '考核操作', formatter: function (value, row, index) {
                 var str = "";
                 var btnClass = 'btn-success';
                 str = "<a style='margin-left: 5px;' data-placement='top' data-original-title='无权限' class='btn btn-xs btn-primary tooltips'  ><i class='fa fa-unlock-alt fa-white'></i></a>";
+                //这里涉及到权限,如果要优化请慎重操作
+
                 //完成之后查看
                 if (value == 'finish') {
 
@@ -506,10 +519,10 @@
         cols.push({
             field: 'examineStatus', title: '考核状态', formatter: function (value, row, index) {
                 if (value == 'runing'){
-                    return "正在进行!" ;
+                    return "正在进行 !" ;
                 }
                 if (value == 'finish'){
-                    return "完成!" ;
+                    return "完成 !" ;
                 }
                 return "未知状态!";
             }
@@ -533,6 +546,9 @@
         TableInit(table, "${pageContext.request.contextPath}/chksAssessmentProjectPerformance/getChksBootstrapTableVo", cols, query, method);
     };
 
+    /**
+     * 抽查考核保存
+     */
     assessmentCommonHandle.saveChkSpotAssessment = function () {
         var target = $("#tableChkSpotAssessment").find("tbody");
         var box = $("#divChksRecordModal");
@@ -576,6 +592,10 @@
         });
     };
 
+    /**
+     * 抽查考核填写 弹窗方式
+     * @param id
+     */
     assessmentCommonHandle.showChkSpotAssessmentParent = function (id) {
         var box = $("#divChksRecordModal");
         var table = $("#tableChkSpotAssessment").find("tbody");
@@ -619,6 +639,9 @@
         })
     };
 
+    /**
+     * 考核保存
+     */
     assessmentCommonHandle.saveAssessmentProjectPerformanceBoxData = function () {
         var target = $("#tableAssessmentProjectPerformanceBox").find("tbody");
         var box = $("#divAssessmentProjectPerformanceBox");
@@ -653,6 +676,11 @@
         });
     };
 
+
+    /**
+     * 考核填写 弹窗方式
+     * @param id
+     */
     assessmentCommonHandle.openAssessmentProjectPerformanceBox = function (id) {
         var target = $("#assessmentTableList");
         var box = $("#divAssessmentProjectPerformanceBox");
@@ -690,6 +718,10 @@
         });
     };
 
+    /**
+     * 考核查看详情 弹窗方式
+     * @param id
+     */
     assessmentCommonHandle.findAssessmentProjectPerformanceBox = function (id) {
         var box = $("#divAssessmentProjectPerformanceBoxDetail");
         var table = $("#tableAssessmentProjectPerformanceBoxDetail").find("tbody");
@@ -728,6 +760,11 @@
     };
 
 
+    /**
+     * 考核验证
+     * @param target
+     * @returns {boolean}
+     */
     function vaildChksData(target) {
         var table = $("#chksTableList");
         if (target == null || target == undefined || target == '') {
