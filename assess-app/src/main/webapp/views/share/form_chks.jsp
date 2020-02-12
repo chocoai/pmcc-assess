@@ -51,8 +51,6 @@
                     json.activityIds = activityIds.join(",");
                 }
             }
-            console.log(json);
-
             //抽查组人员  可以对任务进行抽查
             var array = [];
             if ('${spotUserAccounts}') {

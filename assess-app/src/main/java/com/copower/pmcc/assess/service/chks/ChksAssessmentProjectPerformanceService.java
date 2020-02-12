@@ -530,34 +530,6 @@ public class ChksAssessmentProjectPerformanceService {
         }
     }
 
-    public LinkedHashMap<KeyValueDto, List<AssessmentProjectPerformanceDto>> conversionProjectPerformanceDtoMap(List<AssessmentProjectPerformanceDto> dtoList) {
-        LinkedHashMap<KeyValueDto, List<AssessmentProjectPerformanceDto>> keyValueDtoListMap = new LinkedHashMap<>();
-        LinkedHashMap<String, List<AssessmentProjectPerformanceDto>> listLinkedHashMap = new LinkedHashMap<>();
-        if (CollectionUtils.isNotEmpty(dtoList)) {
-            Iterator<AssessmentProjectPerformanceDto> iterator = dtoList.iterator();
-            while (iterator.hasNext()) {
-                AssessmentProjectPerformanceDto assessmentProjectPerformanceDto = iterator.next();
-                if (listLinkedHashMap.containsKey(assessmentProjectPerformanceDto.getActivityName())) {
-                    listLinkedHashMap.get(assessmentProjectPerformanceDto.getActivityName()).add(assessmentProjectPerformanceDto);
-                } else {
-                    List<AssessmentProjectPerformanceDto> projectPerformanceDtos = new ArrayList<>();
-                    projectPerformanceDtos.add(assessmentProjectPerformanceDto);
-                    listLinkedHashMap.put(assessmentProjectPerformanceDto.getActivityName(), projectPerformanceDtos);
-                }
-            }
-        }
-        if (!listLinkedHashMap.isEmpty()) {
-            Iterator<Map.Entry<String, List<AssessmentProjectPerformanceDto>>> entryIterator = listLinkedHashMap.entrySet().iterator();
-            while (entryIterator.hasNext()) {
-                Map.Entry<String, List<AssessmentProjectPerformanceDto>> entry = entryIterator.next();
-                AssessmentProjectPerformanceDto performanceDto = entry.getValue().get(0);
-                KeyValueDto keyValueDto = new KeyValueDto(entry.getKey(), performanceDto.getActivityId().toString());
-                keyValueDto.setExplain(performanceDto.getExaminePeople());
-                keyValueDtoListMap.put(keyValueDto, entry.getValue());
-            }
-        }
-        return keyValueDtoListMap;
-    }
 
 
     /**
@@ -691,7 +663,7 @@ public class ChksAssessmentProjectPerformanceService {
         }
 
         //第一次生成考核任务
-        Integer count = chksRpcAssessmentService.getAssessmentProjectPerformanceCount(applicationConstant.getAppKey(), projectInfo.getId(), processInsId, currentActivity.getId(), taskId);
+        int count = chksRpcAssessmentService.getAssessmentProjectPerformanceCount(applicationConstant.getAppKey(), projectInfo.getId(), processInsId, currentActivity.getId(), taskId);
         if (count > 0) {
             return;
         }

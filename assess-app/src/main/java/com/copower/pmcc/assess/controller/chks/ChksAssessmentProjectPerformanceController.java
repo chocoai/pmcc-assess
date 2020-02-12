@@ -66,18 +66,7 @@ public class ChksAssessmentProjectPerformanceController {
         }
     }
 
-    @GetMapping(value = "/conversionProjectPerformanceDtoMap", name = "获取考核后的数据")
-    public HttpResult conversionProjectPerformanceDtoMap(AssessmentProjectPerformanceQuery query, String activityIdList) {
-        try {
-            if (StringUtils.isNotBlank(activityIdList)) {
-                query.setActivityIds(FormatUtils.transformString2Integer(activityIdList));
-            }
-            return HttpResult.newCorrectResult(200, chksAssessmentProjectPerformanceService.conversionProjectPerformanceDtoMap(chksAssessmentProjectPerformanceService.getAssessmentProjectPerformanceDtoList(query)));
-        } catch (Exception e) {
-            baseService.writeExceptionInfo(e, "获取获取考核后的数据出错");
-            return HttpResult.newErrorResult(500, e.getMessage());
-        }
-    }
+
 
     @GetMapping(value = "/getAssessmentItemTemplate", name = "获取模板数据")
     public HttpResult getAssessmentItemTemplate(Integer boxId, Integer boxReActivitiId, String assessmentKey) {

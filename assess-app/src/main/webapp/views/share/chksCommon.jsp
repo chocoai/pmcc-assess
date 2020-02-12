@@ -453,6 +453,28 @@
                         show = '${sysUserDto.userAccount}' == row.examinePeople;
                     }
 
+
+                    //最后一种情况就是 自己可以看下级的详情信息 ,根据节点界别来判断
+                    if (!show) {
+                        if ('${activityDtoList}') {
+                            var activityIds = [];
+                            var data = null;
+                            try {
+                                data = JSON.parse('${el:toJsonString(activityDtoList)}');
+                            } catch (e) {
+                                console.log(e);
+                            }
+                            if (data) {
+                                $.each(data, function (i, item) {
+                                    if (item.sortMultilevel == row.Sorting){
+                                        show = true;
+                                    }
+                                });
+                            }
+                        }
+                    }
+
+
                     if (show) {
                         if (row.examineUrl) {
                             //进入一个地址查看考核内容
@@ -479,6 +501,17 @@
                     }
                 }
                 return str;
+            }
+        });
+        cols.push({
+            field: 'examineStatus', title: '考核状态', formatter: function (value, row, index) {
+                if (value == 'runing'){
+                    return "正在进行!" ;
+                }
+                if (value == 'finish'){
+                    return "完成!" ;
+                }
+                return "未知状态!";
             }
         });
         cols.push({field: 'remarks', title: '综合评价'});
