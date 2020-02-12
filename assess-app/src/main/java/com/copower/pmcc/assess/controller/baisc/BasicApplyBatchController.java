@@ -468,7 +468,6 @@ public class BasicApplyBatchController extends BaseController {
      * 考核参数
      *
      * @param modelAndView
-     * @param tbType
      * @param planDetailsId
      */
     private void chksParams(ModelAndView modelAndView, Integer planDetailsId, Integer assessmentPerformanceId) {

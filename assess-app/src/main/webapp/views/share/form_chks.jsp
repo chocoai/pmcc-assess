@@ -22,9 +22,8 @@
 
 <script type="text/javascript">
 
+    /*初始化*/
     $(document).ready(function () {
-
-
         (function (json) {
             if (!json.processInsId) {
                 if ('${projectPlanDetails.processInsId}') {
@@ -33,6 +32,9 @@
                 if ('${activityId}') {
                     json.activityId = '${activityId}';
                 }
+            }
+            if ('${boxReDto}'){
+                json.boxId = '${boxReDto.id}';
             }
             if ('${activityDtoList}') {
                 var activityIds = [];
@@ -51,8 +53,8 @@
                     json.activityIds = activityIds.join(",");
                 }
             }
-            console.log(json);
 
+            //这里涉及到权限,如果要优化请慎重操作
             //抽查组人员  可以对任务进行抽查
             var array = [];
             if ('${spotUserAccounts}') {
@@ -65,7 +67,7 @@
 
             }
             assessmentCommonHandle.getChksBootstrapTableVoBase($("#assessmentTableList"), json, array);
-        }({processInsId: '${processInsId}', boxId: '${boxReDto.id}'}));
+        }({processInsId: '${processInsId}'}));
     });
 
 </script>
