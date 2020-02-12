@@ -714,8 +714,11 @@ public class ChksAssessmentProjectPerformanceService {
                 List<AssessmentProjectPerformanceDto> performanceDtos = chksRpcAssessmentService.getAssessmentProjectPerformanceDtoList(query);
                 if (CollectionUtils.isNotEmpty(performanceDtos)) {
                     for (AssessmentProjectPerformanceDto performanceDto : performanceDtos) {
-                        performanceDto.setExaminePeople(processControllerComponent.getThisUser());
-                        performanceDto.setExaminePeopleName(processControllerComponent.getThisUserInfo().getUserName());
+                        //当考核任务已经设置了考核人时此时此刻不再设置考核人
+                        if (StringUtils.isBlank(performanceDto.getExaminePeople())){
+                            performanceDto.setExaminePeople(processControllerComponent.getThisUser());
+                            performanceDto.setExaminePeopleName(processControllerComponent.getThisUserInfo().getUserName());
+                        }
                         chksRpcAssessmentService.updateAssessmentProjectPerformanceDto(performanceDto, false);
                     }
                 }
