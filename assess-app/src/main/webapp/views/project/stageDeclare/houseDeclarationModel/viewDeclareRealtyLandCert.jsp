@@ -131,6 +131,7 @@
        onchange="assessCommonLand.landImportHandle();" multiple="multiple">
 
 
+
 <!-- 土地证信息 -->
 <div id="boxDeclareRealtyLandCert" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
@@ -175,6 +176,56 @@
                     </button>
                 </div>
             </form>
+        </div>
+    </div>
+</div>
+
+<!-- 关联房产证信息 -->
+<div id="declareRealtyLandCert_HouseCert_box" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">关联房产证信息</h3>
+            </div>
+            <form  class="form-horizontal">
+                <input type="hidden" name="id">
+                <input type="hidden" name="centerId">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                            上传房产证
+                                        </label>
+                                        <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
+                                            <input id="declareRealtyLandCert_declareRealtyLandCert_HouseCert_FileId" name="declareRealtyLandCert_declareRealtyLandCert_HouseCert_FileId"
+                                                   required="required" placeholder="上传房产证" class="form-control"
+                                                   type="file">
+                                            <div id="_declareRealtyLandCert_declareRealtyLandCert_HouseCert_FileId"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">
+                    取消
+                </button>
+                <button type="button" class="btn btn-primary"
+                        onclick="assessCommonLand.saveHouseData();">
+                    保存
+                </button>
+            </div>
         </div>
     </div>
 </div>

@@ -11,12 +11,14 @@ assessCommonLand.config = {
     box: declareCommon.config.land.box,
     fileId: declareCommon.config.land.fileId,
     newFileId: declareCommon.config.land.newFileId,
-    handleCopy:"#landHandleInputGroup",
+    houseBox: declareCommon.config.land.HouseCert.box,
+    houseFile: declareCommon.config.land.houseFileId,
+    handleCopy: "#landHandleInputGroup",
     autoPDFFileId: "landAttachmentAutomatedWarrantsPDF"
 };
 
 assessCommonLand.copyData = function () {
-    var table = $("#" + assessCommonLand.config.table) ;
+    var table = $("#" + assessCommonLand.config.table);
     var rows = table.bootstrapTable('getSelections');
     if (!rows || rows.length <= 0) {
         toastr.info("请选择要复制的数据");
@@ -33,7 +35,7 @@ assessCommonLand.copyData = function () {
 };
 
 assessCommonLand.pasteAll = function () {
-    var table = $("#" + assessCommonLand.config.table) ;
+    var table = $("#" + assessCommonLand.config.table);
     var rows = table.bootstrapTable('getSelections');
     if (!rows || rows.length <= 0) {
         toastr.info("请选择要复制的数据");
@@ -213,7 +215,7 @@ assessCommonLand.loadList = function () {
         onLoadSuccess: function () {
             $('.tooltips').tooltip();
         }
-    }, true,false);
+    }, true, false);
 };
 
 
@@ -310,9 +312,46 @@ assessCommonLand.showAddModelHouse = function (id) {
         toastr.success('不合符调整后的数据约定,请联系管理员!');
         return false;
     }
-    console.log(item) ;
+    var box = $("#" + assessCommonLand.config.houseBox);
+    var frm = box.find("form");
+    box.find("#" + commonDeclareApplyModel.config.house.handleId).remove();
+    box.find(".panel-body").prepend(commonDeclareApplyModel.house.getHtml());
+    var fileArr = [assessCommonLand.config.houseFile];
+    declareCommon.showHtmlMastInit(frm, function (area) {
+        declareCommon.getDeclareBuildCenter(item.centerId, function (centerData) {
+            if (declareCommon.isNotBlank(centerData.houseId)) {//关联情况
+                declareCommon.getHouseData(centerData.houseId, function (data) {
+                    data.centerId = centerData.id;
+                    declareCommon.initHouse(data, frm, fileArr, null, true);
+                });
+            } else {//未关联情况
+                area.centerId = centerData.id;
+                declareCommon.initHouse(area, frm, fileArr, null, true);
+            }
+        });
+    });
+    box.modal("show");
 };
 
+assessCommonLand.saveHouseData = function () {
+    var box = $("#" + assessCommonLand.config.houseBox);
+    var frm = box.find("form");
+    if (!frm.valid()) {
+        return false;
+    }
+    var data = formSerializeArray(frm);
+    data.planDetailsId = declareCommon.getPlanDetailsId();
+    data.enable = declareCommon.branchData;
+    declareCommon.saveHouseDataBase(data, true, function (houseId) {
+        if (houseId) {
+            declareCommon.declareBuildCenterSaveAndUpdate({houseId: houseId, id: data.centerId}, function () {
+                assessCommonLand.loadList();
+                toastr.success('成功!');
+            });
+        }
+        box.modal("hide");
+    });
+};
 
 
 //建设工程规划许可证
@@ -326,18 +365,18 @@ assessCommonLand.declareBuildingPermitView = function (id) {
     var frm = box.find("form");
     box.find("#" + commonDeclareApplyModel.config.buildingPermit.handleId).remove();
     box.find(".panel-body").append(commonDeclareApplyModel.buildingPermit.getHtml());
-    var arr = ["declareBuildingPermitFileId3"] ;
-    var inputArr = ["date"] ;
+    var arr = ["declareBuildingPermitFileId3"];
+    var inputArr = ["date"];
     declareCommon.showHtmlMastInit(frm, function (area) {
         box.modal("show");
         declareCommon.getDeclareBuildCenter(item.centerId, function (centerData) {
             if (centerData.buildingPermitId) {
                 declareCommon.getDeclareBuildingPermitById(centerData.buildingPermitId, function (data) {
                     data.centerId = centerData.id;
-                    declareCommon.initFormData(frm, data, arr, false, AssessDBKey.DeclareBuildingPermit,inputArr);
+                    declareCommon.initFormData(frm, data, arr, false, AssessDBKey.DeclareBuildingPermit, inputArr);
                 });
             } else {
-                declareCommon.initFormData(frm, {centerId: centerData.id}, arr, false, AssessDBKey.DeclareBuildingPermit,inputArr);
+                declareCommon.initFormData(frm, {centerId: centerData.id}, arr, false, AssessDBKey.DeclareBuildingPermit, inputArr);
             }
         });
     });
@@ -387,18 +426,18 @@ assessCommonLand.declareLandUsePermitView = function (id) {
     var frm = box.find("form");
     box.find("#" + commonDeclareApplyModel.config.landUsePermit.handleId).remove();
     box.find(".panel-body").append(commonDeclareApplyModel.landUsePermit.getHtml());
-    var arr = ["declareLandUsePermitFileId3"] ;
-    var inputArr = ["date"] ;
+    var arr = ["declareLandUsePermitFileId3"];
+    var inputArr = ["date"];
     declareCommon.showHtmlMastInit(frm, function (area) {
         box.modal("show");
         declareCommon.getDeclareBuildCenter(item.centerId, function (centerData) {
             if (centerData.landUsePermitId) {
                 declareCommon.getDeclareLandUsePermitById(centerData.landUsePermitId, function (data) {
                     data.centerId = centerData.id;
-                    declareCommon.initFormData(frm, data, arr, false, AssessDBKey.DeclareLandUsePermit,inputArr);
+                    declareCommon.initFormData(frm, data, arr, false, AssessDBKey.DeclareLandUsePermit, inputArr);
                 });
             } else {
-                declareCommon.initFormData(frm, {centerId: centerData.id}, arr, false, AssessDBKey.DeclareLandUsePermit,inputArr);
+                declareCommon.initFormData(frm, {centerId: centerData.id}, arr, false, AssessDBKey.DeclareLandUsePermit, inputArr);
             }
         });
     });
@@ -445,7 +484,7 @@ assessCommonLand.declareBuildingConstructionPermitView = function (id) {
         return false;
     }
     var arr = ["declareBuildingConstructionPermitFileId3"];
-    var inputArr = ["date","contractPeriod"] ;
+    var inputArr = ["date", "contractPeriod"];
     var box = $("#declareBuildingConstructionPermitLandBox");
     var frm = box.find("form");
     box.find("#" + commonDeclareApplyModel.config.buildingConstructionPermit.handleId).remove();
@@ -456,10 +495,10 @@ assessCommonLand.declareBuildingConstructionPermitView = function (id) {
             if (centerData.buildingConstructionPermitId) {
                 declareCommon.getDeclareBuildingConstructionPermitById(centerData.buildingConstructionPermitId, function (data) {
                     data.centerId = centerData.id;
-                    declareCommon.initFormData(frm, data, arr, false, AssessDBKey.DeclareBuildingConstructionPermit,inputArr);
+                    declareCommon.initFormData(frm, data, arr, false, AssessDBKey.DeclareBuildingConstructionPermit, inputArr);
                 });
             } else {
-                declareCommon.initFormData(frm, {centerId: centerData.id}, arr, false, AssessDBKey.DeclareBuildingConstructionPermit,inputArr);
+                declareCommon.initFormData(frm, {centerId: centerData.id}, arr, false, AssessDBKey.DeclareBuildingConstructionPermit, inputArr);
             }
         });
     });
@@ -492,7 +531,10 @@ assessCommonLand.declareBuildingConstructionPermitSaveAndUpdate = function () {
     var data = formSerializeArray(frm);
     data.planDetailsId = declareCommon.getPlanDetailsId();
     declareCommon.saveDeclareBuildingConstructionPermit(data, true, function (item) {
-        declareCommon.declareBuildCenterSaveAndUpdate({buildingConstructionPermitId: item.id, id: data.centerId}, function () {
+        declareCommon.declareBuildCenterSaveAndUpdate({
+            buildingConstructionPermitId: item.id,
+            id: data.centerId
+        }, function () {
             box.modal("hide");
         });
     });
@@ -505,7 +547,7 @@ assessCommonLand.declarePreSalePermitView = function (id) {
         return false;
     }
     var arr = ["declarePreSalePermitFileId3"];
-    var inputArr = ["date"] ;
+    var inputArr = ["date"];
     var box = $("#declarePreSalePermitLandBox");
     var frm = box.find("form");
     box.find("#" + commonDeclareApplyModel.config.preSalePermit.handleId).remove();
@@ -516,10 +558,10 @@ assessCommonLand.declarePreSalePermitView = function (id) {
             if (centerData.preSalePermitId) {
                 declareCommon.getDeclarePreSalePermitById(centerData.preSalePermitId, function (data) {
                     data.centerId = centerData.id;
-                    declareCommon.initFormData(frm, data, arr, false, AssessDBKey.DeclarePreSalePermit,inputArr);
+                    declareCommon.initFormData(frm, data, arr, false, AssessDBKey.DeclarePreSalePermit, inputArr);
                 });
             } else {
-                declareCommon.initFormData(frm, {centerId: centerData.id}, arr, false, AssessDBKey.DeclarePreSalePermit,inputArr);
+                declareCommon.initFormData(frm, {centerId: centerData.id}, arr, false, AssessDBKey.DeclarePreSalePermit, inputArr);
             }
         });
     });

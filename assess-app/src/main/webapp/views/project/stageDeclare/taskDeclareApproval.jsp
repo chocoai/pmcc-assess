@@ -187,20 +187,7 @@
             </div>
 
 
-            <!-- 考核任务 -->
-            <div class="x_panel">
-                <div class="x_content">
-                    <form class="form-horizontal">
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <table class="table table-bordered" id="tableChksCustomerAssessmentPlanDetailList">
-                                    <!-- cerare document add ajax data-->
-                                </table>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
+
 
             <%@include file="/views/share/form_approval.jsp" %>
             <%@include file="/views/share/form_log.jsp" %>
@@ -270,7 +257,9 @@
         table: declareCommon.config.land.table,
         box: declareCommon.config.land.box,
         fileId: declareCommon.config.land.fileId,
-        newFileId: declareCommon.config.land.newFileId
+        newFileId: declareCommon.config.land.newFileId,
+        houseBox: declareCommon.config.land.HouseCert.box,
+        houseFile: declareCommon.config.land.houseFileId,
     };
 
     //房产证显示
@@ -554,6 +543,8 @@
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
+                str += '<a class="btn btn-xs btn-success" href="javascript:declareApprovalFun.LandModelHouseView(' + row.id + ');" ><i class="fa fa-eye">关联的房产证</i></a>';
+
                 str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="土地证查看详情" onclick="declareApprovalFun.landFindData(' + row.id + ',\'tb_List\')">土地证<i class="fa fa-search fa-white"></i></a>';
                 str += '</div>';
                 return str;
@@ -687,38 +678,32 @@
             });
         });
     };
-
-    function loadChksCustomerAssessmentPlanDetailTable() {
-        var cols = [];
-        cols.push({field: 'activityName', title: '审批角色名称'});
-        cols.push({
-            field: 'id', title: '操作', formatter: function (value, row, index) {
-                var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-success" target="_blank" href="${pageContext.request.contextPath}' + row.url +"?id="+row.id+  '" >考核任务 <i class="fa fa-check-circle"></i></a>';
-                str += '</div>';
-                return str;
-            }
-        });
-        var query = {formData:JSON.stringify({processInsId:'${projectPlanDetails.processInsId}',creator:'${sysUserDto.userAccount}'})} ;
-        var target = $("#tableChksCustomerAssessmentPlanDetailList") ;
-        if ('${projectPlanDetails.processInsId}'){
-            if ('${sysUserDto}'){
-                target.bootstrapTable('destroy');
-                TableInit(target, "${pageContext.request.contextPath}/chksCustomerAssessmentPlanDetail/getBootstrapTableVo", cols, query, {
-                    showColumns: false,
-                    showRefresh: true,
-                    search: false,
-                    onLoadSuccess: function () {
-                        $('.tooltips').tooltip();
-                    }
-                });
-            }
+    //土地证 房产证
+    declareApprovalFun.LandModelHouseView = function (id) {
+        var item = $("#" + declareApprovalFun.landConfig.table).bootstrapTable('getRowByUniqueId', id);
+        if (!declareCommon.isNotBlank(item.centerId)) {
+            toastr.success('不合符调整后的数据约定,请联系管理员!');
+            return false;
         }
-    }
-
+        var box = $("#" + declareApprovalFun.landConfig.houseBox);
+        var frm = box.find("form");
+        box.find("#" + commonDeclareApprovalModel.config.house.handleId).remove();
+        box.find(".panel-body").prepend(commonDeclareApprovalModel.house.getHtml());
+        var fileArr = [declareApprovalFun.landConfig.houseFile];
+        declareCommon.showHtmlMastInit(frm, function (area) {
+            declareCommon.getDeclareBuildCenter(item.centerId, function (centerData) {
+                if (declareCommon.isNotBlank(centerData.houseId)) {//关联情况
+                    declareCommon.getHouseData(centerData.houseId, function (data) {
+                        declareCommon.initHouse(data, frm, fileArr, null, false);
+                        box.modal("show");
+                    });
+                }
+            });
+        });
+    };
 
     $(function () {
-        loadChksCustomerAssessmentPlanDetailTable() ;
+
         declareApprovalFun.realEstateloadList();
         declareApprovalFun.houseLoadList();
         declareApprovalFun.landLoadList();
@@ -1230,6 +1215,46 @@
     </div>
 </div>
 
+<!-- 土地证模块 关联房产证信息 -->
+<div id="declareRealtyLandCert_HouseCert_box" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">关联房产证信息</h3>
+            </div>
+            <form  class="form-horizontal">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <div class="x-valid">
+                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                            房产证附件
+                                        </label>
+                                        <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
+                                            <div id="_declareRealtyLandCert_declareRealtyLandCert_HouseCert_FileId"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">
+                    关闭
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 </html>
 
