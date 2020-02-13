@@ -176,6 +176,7 @@ assessCommonLand.loadList = function () {
     cols.push({
         field: 'id', title: '操作', formatter: function (value, row, index) {
             var str = '<div class="btn-margin">';
+            str += '<a class="btn btn-xs btn-success" href="javascript:assessCommonLand.showAddModelHouse(' + row.id + ');" ><i class="fa fa-eye">关联的房产证</i></a>';
             str += "<a class='btn btn-xs btn-success tooltips' data-placement='top' data-original-title='土地证附件' onclick='assessCommonLand.landImportEvent(" + row.id + ")'" + ">" + "<i class='fa'>" + "土地证附件" + "</a>";
             str += '</div>';
             return str;
@@ -212,7 +213,7 @@ assessCommonLand.loadList = function () {
         onLoadSuccess: function () {
             $('.tooltips').tooltip();
         }
-    }, true);
+    }, true,false);
 };
 
 
@@ -276,6 +277,40 @@ assessCommonLand.inputFile = function () {
             Alert("调用服务端方法失败，失败原因:" + result);
         }
     });
+};
+
+assessCommonLand.importDataHouse = function () {
+    $.ajaxFileUpload({
+        type: "POST",
+        url: getContextPath() + "/declareRealtyLandCert/importDataHouse",
+        data: {
+            planDetailsId: declareCommon.getPlanDetailsId()
+        },//要传到后台的参数，没有可以不写
+        secureuri: false,//是否启用安全提交，默认为false
+        fileElementId: 'ajaxFileUploadLandHouse',//文件选择框的id属性
+        dataType: 'json',//服务器返回的格式
+        async: false,
+        success: function (result) {
+            if (result.ret) {
+                assessCommonLand.loadList();
+                Alert(result.data);
+            }
+        },
+        error: function (result, status, e) {
+            console.log(result);
+            Loading.progressHide();
+            Alert("调用服务端方法失败，失败原因:" + result);
+        }
+    });
+};
+
+assessCommonLand.showAddModelHouse = function (id) {
+    var item = $("#" + assessCommonLand.config.table).bootstrapTable('getRowByUniqueId', id);
+    if (!declareCommon.isNotBlank(item.centerId)) {
+        toastr.success('不合符调整后的数据约定,请联系管理员!');
+        return false;
+    }
+    console.log(item) ;
 };
 
 

@@ -191,6 +191,7 @@ public class DeclarePublicService {
 
     /**
      * 不动产证导入
+     *
      * @param classArrayListMultimap
      * @param target
      * @param builder
@@ -209,9 +210,9 @@ public class DeclarePublicService {
         requiredList.add("useStartDate");
         //数据字典 map
         Multimap<String, List<BaseDataDic>> baseMap = ArrayListMultimap.create();
-        baseMap.put("nature",baseDataDicService.getCacheDataDicList("project.declare.room.type"));
-        baseMap.put("landRightType",baseDataDicService.getCacheDataDicList("project.declare.land.certificate.type"));
-        baseMap.put("landRightNature",baseDataDicService.getCacheDataDicList("project.declare.use.right.type"));
+        baseMap.put("nature", baseDataDicService.getCacheDataDicList("project.declare.room.type"));
+        baseMap.put("landRightType", baseDataDicService.getCacheDataDicList("project.declare.land.certificate.type"));
+        baseMap.put("landRightNature", baseDataDicService.getCacheDataDicList("project.declare.use.right.type"));
         baseMap.put("publicSituation", baseDataDicService.getCacheDataDicList("project.declare.common.situation"));
         boolean check = excelImportHelp(classArrayListMultimap, target, builder, row, baseMap, requiredList);
         //验证(区域)
@@ -462,20 +463,35 @@ public class DeclarePublicService {
         return check;
     }
 
+    private boolean excelImportHelp(Multimap<String, Map.Entry<Class<?>, Integer>> classArrayListMultimap, Object target, StringBuilder stringBuilder, Row row, Multimap<String, List<BaseDataDic>> baseMap) {
+        return excelImportHelp(classArrayListMultimap, target, stringBuilder, row, baseMap, null);
+    }
+
+    private boolean excelImportHelp(Multimap<String, Map.Entry<Class<?>, Integer>> classArrayListMultimap, Object target, StringBuilder stringBuilder, Row row, List<String> requiredList) {
+        return excelImportHelp(classArrayListMultimap, target, stringBuilder, row, null, requiredList);
+    }
+
+    private boolean excelImportHelp(Multimap<String, Map.Entry<Class<?>, Integer>> classArrayListMultimap, Object target, StringBuilder stringBuilder, Row row) {
+        return excelImportHelp(classArrayListMultimap, target, stringBuilder, row, null, null);
+    }
+
+    private boolean excelImportHelp(Multimap<String, Map.Entry<Class<?>, Integer>> classArrayListMultimap, Object target, StringBuilder stringBuilder, Row row, Multimap<String, List<BaseDataDic>> baseMap, List<String> requiredList) {
+        return excelImportHelp(classArrayListMultimap, target, stringBuilder, row, baseMap, requiredList, true);
+    }
+
     /**
      * excel模板导入辅助
      *
-     * @param classArrayListMultimap
-     * @param target
-     * @param stringBuilder
+     * @param classArrayListMultimap 核心映射对象map
+     * @param target                 对象
+     * @param stringBuilder          信息对象工具收集
+     * @param isBreak                遇到错误赋值是否立即结束 注意当这个设为false的时候这个辅助方法就不会抛出不合乎规范的错误了
      * @param row
-     * @param baseMap
-     * @param requiredList
+     * @param baseMap                数据字典map
+     * @param requiredList           必填项map
      * @return
      */
-    private boolean excelImportHelp(Multimap<String, Map.Entry<Class<?>, Integer>> classArrayListMultimap, Object target, StringBuilder stringBuilder, Row row, Multimap<String, List<BaseDataDic>> baseMap, List<String> requiredList) {
-        //规定的日期格式
-        String[] PATTERNS = new String[]{DateUtils.DATE_PATTERN, DateUtils.DATE_CHINESE_PATTERN, DateUtils.DATETIME_PATTERN, DateUtils.DATETIME_PATTERN_SHORT, DateUtils.DATE_SLASH_PATTERN, DateUtils.DATE_SHORT_PATTERN};
+    private boolean excelImportHelp(Multimap<String, Map.Entry<Class<?>, Integer>> classArrayListMultimap, Object target, StringBuilder stringBuilder, Row row, Multimap<String, List<BaseDataDic>> baseMap, List<String> requiredList, boolean isBreak) {
         Iterator<Map.Entry<String, Map.Entry<Class<?>, Integer>>> entryIterator = classArrayListMultimap.entries().iterator();
         while (entryIterator.hasNext()) {
             Map.Entry<String, Map.Entry<Class<?>, Integer>> stringEntryEntry = entryIterator.next();
@@ -488,105 +504,146 @@ public class DeclarePublicService {
                 continue;
             }
             //是否属于必填
-            boolean required = requiredList.contains(key);
+            boolean required = false;
+            if (CollectionUtils.isNotEmpty(requiredList)) {
+                required = requiredList.contains(key);
+            }
             String value = com.copower.pmcc.assess.common.PoiUtils.getCellValue(cell);
+            //当单元表格没有填写数据,并且属于必填项,那么此条数据不通过
+            if (StringUtils.isBlank(value) && required) {
+                return false;
+            }
+            //当单元表格没有填写数据,并且不属于必填项,那么此单元格数据跳过
+            if (StringUtils.isBlank(value) && !required) {
+                continue;
+            }
             //对属于数据字典的进行特殊处理
-            if (baseMap.containsKey(key)) {
-                Collection<List<BaseDataDic>> listCollection = baseMap.get(key);
-                if (CollectionUtils.isNotEmpty(listCollection)) {
-                    Iterator<List<BaseDataDic>> listIterator = listCollection.iterator();
-                    while (listIterator.hasNext()) {
-                        List<BaseDataDic> baseDataDicList = listIterator.next();
-                        BaseDataDic typeDic = baseDataDicService.getDataDicByName(baseDataDicList, value);
-                        if (typeDic != null) {
-                            value = typeDic.getId().toString();
+            if (baseMap != null && !baseMap.isEmpty()) {
+                if (baseMap.containsKey(key)) {
+                    Collection<List<BaseDataDic>> listCollection = baseMap.get(key);
+                    if (CollectionUtils.isNotEmpty(listCollection)) {
+                        Iterator<List<BaseDataDic>> listIterator = listCollection.iterator();
+                        while (listIterator.hasNext()) {
+                            List<BaseDataDic> baseDataDicList = listIterator.next();
+                            if (CollectionUtils.isNotEmpty(baseDataDicList)) {
+                                BaseDataDic typeDic = baseDataDicService.getDataDicByName(baseDataDicList, value);
+                                if (typeDic != null) {
+                                    value = typeDic.getId().toString();
+                                    break;
+                                }
+                            }
                         }
                     }
                 }
             }
             //String类型则直接赋值
             if (Objects.equal(String.class.getName(), aClass.getName())) {
-                Reflections.invokeSetter(target, key, value);
+                try {
+                    Reflections.invokeSetter(target, key, value);
+                } catch (Exception e) {
+                    excelImportWriteErrorInfo(key, row.getRowNum(), index, String.format("非法字符串 {%s} ", value), required, stringBuilder);
+                    if (isBreak) {
+                        return false;
+                    }
+                }
             }
             //整数类型处理
             if (Objects.equal(Integer.class.getName(), aClass.getName())) {
+                if (!ArithmeticUtils.isInteger(value)) {
+                    excelImportWriteErrorInfo(key, row.getRowNum(), index, String.format("非法整数数字 {%s} ", value), required, stringBuilder);
+                    if (isBreak) {
+                        return false;
+                    }
+                }
                 if (ArithmeticUtils.isInteger(value)) {
                     Reflections.invokeSetter(target, key, Integer.valueOf(value));
-                }
-                if (!ArithmeticUtils.isInteger(value)) {
-                    excelImportWriteErrorInfo(row.getRowNum(), index, "非法整数数字", required, stringBuilder);
-                    return false;
                 }
             }
             //长整数类型处理
             if (Objects.equal(Long.class.getName(), aClass.getName())) {
-                if (ArithmeticUtils.isInteger(value)) {
-                    Reflections.invokeSetter(target, key, Long.valueOf(value));
+                if (!ArithmeticUtils.isLong(value)) {
+                    excelImportWriteErrorInfo(key, row.getRowNum(), index, String.format("非法整数数字 {%s} ", value), required, stringBuilder);
+                    if (isBreak) {
+                        return false;
+                    }
                 }
-                if (!ArithmeticUtils.isInteger(value)) {
-                    excelImportWriteErrorInfo(row.getRowNum(), index, "非法整数数字", required, stringBuilder);
-                    return false;
+                if (ArithmeticUtils.isLong(value)) {
+                    Reflections.invokeSetter(target, key, Long.valueOf(value));
                 }
             }
             //高精度数字类型
             if (Objects.equal(BigDecimal.class.getName(), aClass.getName())) {
+                if (!NumberUtils.isNumber(value)) {
+                    excelImportWriteErrorInfo(key, row.getRowNum(), index, String.format("非法数字 {%s} ", value), required, stringBuilder);
+                    if (isBreak) {
+                        return false;
+                    }
+                }
                 if (NumberUtils.isNumber(value)) {
                     Reflections.invokeSetter(target, key, new BigDecimal(value));
-                }
-                if (!NumberUtils.isNumber(value)) {
-                    excelImportWriteErrorInfo(row.getRowNum(), index, "非法数字", required, stringBuilder);
-                    return false;
                 }
             }
             //双精度数字类型
             if (Objects.equal(Double.class.getName(), aClass.getName())) {
-                if (NumberUtils.isNumber(value)) {
-                    Reflections.invokeSetter(target, key, Double.valueOf(value));
+                if (!ArithmeticUtils.isDouble(value)) {
+                    excelImportWriteErrorInfo(key, row.getRowNum(), index, String.format("非法数字 {%s} ", value), required, stringBuilder);
+                    if (isBreak) {
+                        return false;
+                    }
                 }
-                if (!NumberUtils.isNumber(value)) {
-                    excelImportWriteErrorInfo(row.getRowNum(), index, "非法数字", required, stringBuilder);
-                    return false;
+                if (ArithmeticUtils.isDouble(value)) {
+                    Reflections.invokeSetter(target, key, Double.valueOf(value));
                 }
             }
             //浮点数字类型
             if (Objects.equal(Float.class.getName(), aClass.getName())) {
-                if (NumberUtils.isNumber(value)) {
-                    Reflections.invokeSetter(target, key, Float.valueOf(value));
+                if (!ArithmeticUtils.isFloat(value)) {
+                    excelImportWriteErrorInfo(key, row.getRowNum(), index, String.format("非法数字 {%s} ", value), required, stringBuilder);
+                    if (isBreak) {
+                        return false;
+                    }
                 }
-                if (!NumberUtils.isNumber(value)) {
-                    excelImportWriteErrorInfo(row.getRowNum(), index, "非法数字", required, stringBuilder);
-                    return false;
+                if (ArithmeticUtils.isFloat(value)) {
+                    Reflections.invokeSetter(target, key, Float.valueOf(value));
                 }
             }
             //布尔类型
             if (Objects.equal(Boolean.class.getName(), aClass.getName())) {
-                //暂时不处理这种类型
+                try {
+                    Reflections.invokeSetter(target, key, Boolean.valueOf(value));
+                } catch (Exception e) {
+                    excelImportWriteErrorInfo(key, row.getRowNum(), index, String.format("真假格式错误 {%s} ", value), required, stringBuilder);
+                    if (isBreak) {
+                        return false;
+                    }
+                }
             }
             //日期类型 统一处理
             if (Objects.equal(Date.class.getName(), aClass.getName())) {
-//                int k = 0;
-//                for (int j = 0; j < PATTERNS.length; j++) {
-//                    if (DateUtils.isValidDate(value, PATTERNS[j])) {
-//                        k++;
-//                    }
-//                }
-//                if (k == 0) {
-//                    excelImportWriteErrorInfo(row.getRowNum(), index, "日期格式错误", required, stringBuilder);
-//                    return false;
-//                }
-//                if (k != 0) {
-//                    Reflections.invokeSetter(target, key, DateUtils.parse(value));
-//                }
                 try {
                     Reflections.invokeSetter(target, key, DateUtils.parse(value));
                 } catch (Exception e) {
-                    excelImportWriteErrorInfo(row.getRowNum(), index, "日期格式错误", required, stringBuilder);
-                    return false;
+                    excelImportWriteErrorInfo(key, row.getRowNum(), index, String.format("日期格式错误 {%s} ", value), required, stringBuilder);
+                    if (isBreak) {
+                        return false;
+                    }
                 }
             }
 
         }
         return true;
+    }
+
+    private void excelImportWriteErrorInfo(final int rowIndex, final int colIndex, String info, boolean required, final StringBuilder stringBuilder) {
+        excelImportWriteErrorInfo(null, rowIndex, colIndex, info, required, stringBuilder);
+    }
+
+    private void excelImportWriteErrorInfo(final int rowIndex, final int colIndex, String info,final StringBuilder stringBuilder) {
+        excelImportWriteErrorInfo(null, rowIndex, colIndex, info, false, stringBuilder);
+    }
+
+    public void excelImportWriteErrorInfo(final int rowIndex,  String info, final StringBuilder stringBuilder){
+        excelImportWriteErrorInfo(null, rowIndex, 0, info, false, stringBuilder);
     }
 
     /**
@@ -596,14 +653,17 @@ public class DeclarePublicService {
      * @param required 是否必填
      * @return
      */
-    private void excelImportWriteErrorInfo(final int rowIndex, final int colIndex, String info, boolean required, final StringBuilder stringBuilder) {
+    private void excelImportWriteErrorInfo(final String key, final int rowIndex, final int colIndex, String info, boolean required, final StringBuilder stringBuilder) {
         stringBuilder.append("\n");
         stringBuilder.append("第");
         stringBuilder.append(String.valueOf(rowIndex));
         stringBuilder.append("行");
         if (colIndex != 0) {
             stringBuilder.append("第");
-            stringBuilder.append(String.valueOf(colIndex+1));
+            stringBuilder.append(String.valueOf(colIndex + 1));
+            if (StringUtils.isNotBlank(key)) {
+                stringBuilder.append(" (").append(key).append(") ");
+            }
             stringBuilder.append("列");
         }
         stringBuilder.append(StringUtils.isNotBlank(info) ? info : "校验出错");
@@ -612,6 +672,8 @@ public class DeclarePublicService {
             stringBuilder.append("(必填项)");
         }
     }
+
+
 
     /**
      * 在建工程（土建）
@@ -881,7 +943,7 @@ public class DeclarePublicService {
             DeclareRealtyRealEstateCert query = new DeclareRealtyRealEstateCert();
             query.setPlanDetailsId(automatedWarrants.getPlanDetailsId());
             query.setEnable(DeclareTypeEnum.MasterData.getKey());
-            List<DeclareRealtyRealEstateCertVo> declareRealtyRealEstateCertList = declareRealtyRealEstateCertService.landLevels(query) ;
+            List<DeclareRealtyRealEstateCertVo> declareRealtyRealEstateCertList = declareRealtyRealEstateCertService.landLevels(query);
             if (CollectionUtils.isNotEmpty(declareRealtyRealEstateCertList)) {
                 for (DeclareRealtyRealEstateCertVo realEstateCertVo : declareRealtyRealEstateCertList) {
                     linkedHashMap.put(realEstateCertVo.getAutoInitNumber(), realEstateCertVo.getId());

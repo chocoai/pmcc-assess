@@ -31,8 +31,6 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,10 +38,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileInputStream;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @Auther: zch
@@ -52,7 +47,6 @@ import java.util.Map;
  */
 @Service
 public class DeclareRealtyHouseCertService {
-    private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private DeclareRealtyHouseCertDao declareRealtyHouseCertDao;
     @Autowired
@@ -83,6 +77,10 @@ public class DeclareRealtyHouseCertService {
         declarePublicService.attachmentAutomatedWarrants(automatedWarrants);
     }
 
+    public Integer getCountByExample(String enable, Integer planDetailsId, Integer autoInitNumber) {
+        return declareRealtyHouseCertDao.getCountByExample(enable, planDetailsId, autoInitNumber);
+    }
+
     /**
      * 功能描述: 导入土地证 并且和房产证关联
      *
@@ -94,7 +92,7 @@ public class DeclareRealtyHouseCertService {
     public String importLandAndHouse(MultipartFile multipartFile, Integer planDetailsId) throws Exception {
         Workbook workbook = null;
         Row row = null;
-        StringBuilder builder = new StringBuilder();
+        StringBuilder stringBuilder = new StringBuilder();
         //1.保存文件
         String filePath = baseAttachmentService.saveUploadFile(multipartFile);
         //2.读取文件
@@ -102,7 +100,7 @@ public class DeclareRealtyHouseCertService {
             FileInputStream inputStream = new FileInputStream(filePath);
             workbook = WorkbookFactory.create(inputStream);
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            baseService.writeExceptionInfo(e);
         }
         //只取第一个sheet
         Sheet sheet = workbook.getSheetAt(0);
@@ -118,67 +116,75 @@ public class DeclareRealtyHouseCertService {
         int rowLength = sheet.getPhysicalNumberOfRows() != 0 ? sheet.getPhysicalNumberOfRows() : sheet.getLastRowNum();
         rowLength = rowLength - startRowNumber;
         if (rowLength == 0) {
-            builder.append("没有数据!");
-            return builder.toString();
+            stringBuilder.append("没有数据!");
+            return stringBuilder.toString();
         }
-        Multimap<String, Map.Entry<Class<?>, Integer>> classArrayListMultimap = declarePublicService.getMultimapByClass(DeclareRealtyLandCert.class,row) ;
+        Map<DeclareBuildEngineeringAndEquipmentCenter,DeclareRealtyHouseCert> relatedMap = Maps.newHashMap();
+        Multimap<String, Map.Entry<Class<?>, Integer>> classArrayListMultimap = declarePublicService.getMultimapByClass(DeclareRealtyLandCert.class, row);
         for (int i = startRowNumber; i < startRowNumber + rowLength; i++) {
             DeclareRealtyLandCert landCert = null;
             try {
                 landCert = new DeclareRealtyLandCert();
                 row = sheet.getRow(i);
                 if (row == null) {
-                    builder.append(String.format("\n第%s行异常：%s", i, "没有数据"));
+                    declarePublicService.excelImportWriteErrorInfo(i, "没有数据", stringBuilder);
                     continue;
                 }
-                if (!declarePublicService.land(classArrayListMultimap,landCert, builder, row)) {
+                if (!declarePublicService.land(classArrayListMultimap, landCert, stringBuilder, row)) {
                     continue;
                 }
                 landCert.setEnable(DeclareTypeEnum.BranchData.getKey());
                 landCert.setPlanDetailsId(planDetailsId);
                 landCert.setCreator(commonService.thisUserAccount());
             } catch (Exception e) {
-                builder.append(String.format("\n第%s行异常：%s", i, e.getMessage()));
+                declarePublicService.excelImportWriteErrorInfo(i, e.getMessage(), stringBuilder);
                 continue;
             }
-            List<DeclareRealtyHouseCert> declareRealtyHouseCertList = Lists.newArrayList();
-            DeclareRealtyHouseCert houseCert = new DeclareRealtyHouseCert();
-            houseCert.setPlanDetailsId(planDetailsId);
-            //  房产证座落和土地证座落匹配
-            if (CollectionUtils.isEmpty(declareRealtyHouseCertList)) {
-                if (landCert.getAutoInitNumber() != null) {
-                    houseCert.setAutoInitNumber(landCert.getAutoInitNumber());
-                    List<DeclareRealtyHouseCert> listB = declareRealtyHouseCertDao.getDeclareRealtyHouseCertList(houseCert);
-                    if (CollectionUtils.isNotEmpty(listB)) {
-                        declareRealtyHouseCertList.addAll(listB);
+            //使用 excel导入编号关联
+            //-----------------------------------start----------------------------------
+            if (landCert.getAutoInitNumber() == null){
+                declarePublicService.excelImportWriteErrorInfo(i, "编号(excel导入) 没有", stringBuilder);
+                continue;
+            }
+            DeclareRealtyHouseCert select = new DeclareRealtyHouseCert();
+            select.setPlanDetailsId(planDetailsId);
+            select.setAutoInitNumber(landCert.getAutoInitNumber());
+            List<DeclareRealtyHouseCert> houseCertList = declareRealtyHouseCertDao.getDeclareRealtyHouseCertList(select);
+            if (CollectionUtils.isNotEmpty(houseCertList)){
+                ListIterator<DeclareRealtyHouseCert> declareRealtyHouseCertListIterator = houseCertList.listIterator();
+                while (declareRealtyHouseCertListIterator.hasNext()){
+                    DeclareRealtyHouseCert declareRealtyHouseCert = declareRealtyHouseCertListIterator.next();
+                    DeclareBuildEngineeringAndEquipmentCenter query = new DeclareBuildEngineeringAndEquipmentCenter();
+                    query.setHouseId(declareRealtyHouseCert.getId());
+                    query.setPlanDetailsId(declareRealtyHouseCert.getPlanDetailsId());
+                    List<DeclareBuildEngineeringAndEquipmentCenter> centerList = declareBuildEngineeringAndEquipmentCenterService.declareBuildEngineeringAndEquipmentCenterList(query);
+                    if (CollectionUtils.isEmpty(centerList)){
+                        continue;
+                    }
+                    Iterator<DeclareBuildEngineeringAndEquipmentCenter> iterator = centerList.iterator();
+                    while (iterator.hasNext()){
+                        DeclareBuildEngineeringAndEquipmentCenter equipmentCenter = iterator.next();
+                        relatedMap.put(equipmentCenter,declareRealtyHouseCert) ;
                     }
                 }
             }
-            LinkedHashMap<DeclareRealtyHouseCert, DeclareBuildEngineeringAndEquipmentCenter> map = Maps.newLinkedHashMap();
-            if (CollectionUtils.isNotEmpty(declareRealtyHouseCertList)) {
-                for (DeclareRealtyHouseCert po : declareRealtyHouseCertList) {
-                    DeclareBuildEngineeringAndEquipmentCenter center = new DeclareBuildEngineeringAndEquipmentCenter();
-                    center.setHouseId(po.getId());
-                    center.setPlanDetailsId(po.getPlanDetailsId());
-                    List<DeclareBuildEngineeringAndEquipmentCenter> centerList = declareBuildEngineeringAndEquipmentCenterService.declareBuildEngineeringAndEquipmentCenterList(center);
-                    if (CollectionUtils.isNotEmpty(centerList)) {
-                        if (centerList.stream().anyMatch(oo -> oo.getLandId() == null)) {
-                            map.put(po, centerList.stream().filter(oo -> oo.getLandId() == null).findFirst().get());
-                        }
-                    }
-                }
+            if (relatedMap.isEmpty()){
+                declarePublicService.excelImportWriteErrorInfo(i, "未找到匹配的房产证", stringBuilder);
+                continue;
             }
             Integer id = declareRealtyLandCertDao.addDeclareRealtyLandCert(landCert);
             successCount++;
-            if (map.isEmpty()) {
-                builder.append(String.format("\n第%s行：%s", i, "未找到匹配的房产证"));
-            } else {
-                DeclareBuildEngineeringAndEquipmentCenter center = map.entrySet().stream().findFirst().get().getValue();
-                center.setLandId(id);
-                declareBuildEngineeringAndEquipmentCenterService.saveAndUpdateDeclareBuildEngineeringAndEquipmentCenter(center);
+            Iterator<Map.Entry<DeclareBuildEngineeringAndEquipmentCenter, DeclareRealtyHouseCert>> entryIterator = relatedMap.entrySet().iterator();
+            while (entryIterator.hasNext()){
+                Map.Entry<DeclareBuildEngineeringAndEquipmentCenter, DeclareRealtyHouseCert> realtyHouseCertEntry = entryIterator.next();
+                DeclareBuildEngineeringAndEquipmentCenter equipmentCenter = realtyHouseCertEntry.getKey();
+                equipmentCenter.setLandId(id);
+                declareBuildEngineeringAndEquipmentCenterService.saveAndUpdateDeclareBuildEngineeringAndEquipmentCenter(equipmentCenter);
             }
+            relatedMap.clear();
+            //-----------------------------------end----------------------------------
         }
-        return String.format("数据总条数%s，成功%s，失败%s。%s", rowLength, successCount, rowLength - successCount, builder.toString());
+        return String.format("数据总条数%s，成功%s，失败%s。%s", rowLength, successCount, rowLength - successCount, stringBuilder.toString());
     }
 
     /**
@@ -192,7 +198,7 @@ public class DeclareRealtyHouseCertService {
     public String importData(DeclareRealtyHouseCert declareRealtyHouseCert, MultipartFile multipartFile) throws Exception {
         Workbook workbook = null;
         Row row = null;
-        StringBuilder builder = new StringBuilder();
+        StringBuilder stringBuilder = new StringBuilder();
         //1.保存文件
         String filePath = baseAttachmentService.saveUploadFile(multipartFile);
         //2.读取文件
@@ -200,8 +206,9 @@ public class DeclareRealtyHouseCertService {
             FileInputStream inputStream = new FileInputStream(filePath);
             workbook = WorkbookFactory.create(inputStream);
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            baseService.writeExceptionInfo(e);
         }
+
         //只取第一个sheet
         Sheet sheet = workbook.getSheetAt(0);
         //工作表的第一行
@@ -214,39 +221,45 @@ public class DeclareRealtyHouseCertService {
         int rowLength = sheet.getPhysicalNumberOfRows() != 0 ? sheet.getPhysicalNumberOfRows() : sheet.getLastRowNum();
         rowLength = rowLength - startRowNumber;
         if (rowLength == 0) {
-            builder.append("没有数据!");
-            return builder.toString();
+            stringBuilder.append("没有数据!");
+            return stringBuilder.toString();
         }
-        Multimap<String, Map.Entry<Class<?>, Integer>> classArrayListMultimap = declarePublicService.getMultimapByClass(DeclareRealtyHouseCert.class,row) ;
+        Multimap<String, Map.Entry<Class<?>, Integer>> classArrayListMultimap = declarePublicService.getMultimapByClass(DeclareRealtyHouseCert.class, row);
         for (int i = startRowNumber; i < rowLength + startRowNumber; i++) {
-            DeclareRealtyHouseCert oo = null;
+            DeclareRealtyHouseCert realtyHouseCert = null;
             try {
                 row = sheet.getRow(i);
                 if (row == null) {
-                    builder.append(String.format("\n第%s行异常：%s", i, "没有数据"));
+                    declarePublicService.excelImportWriteErrorInfo(i, "没有数据", stringBuilder);
                     continue;
                 }
-                oo = new DeclareRealtyHouseCert();
-                BeanUtils.copyProperties(declareRealtyHouseCert, oo);
-                oo.setId(null);
+                realtyHouseCert = new DeclareRealtyHouseCert();
+                BeanUtils.copyProperties(declareRealtyHouseCert, realtyHouseCert);
+                realtyHouseCert.setId(null);
                 //excel 处理
-                if (!declarePublicService.house(classArrayListMultimap,oo, builder, row)) {
+                if (!declarePublicService.house(classArrayListMultimap, realtyHouseCert, stringBuilder, row)) {
                     continue;
                 }
-                oo.setCreator(commonService.thisUserAccount());
-                oo.setEnable(DeclareTypeEnum.MasterData.getKey());
-                declareRealtyHouseCertDao.addDeclareRealtyHouseCert(oo);
+                realtyHouseCert.setCreator(commonService.thisUserAccount());
+                realtyHouseCert.setEnable(DeclareTypeEnum.MasterData.getKey());
+
+                int count = getCountByExample(DeclareTypeEnum.MasterData.getKey(), realtyHouseCert.getPlanDetailsId(), realtyHouseCert.getAutoInitNumber());
+                if (count > 0) {
+                    declarePublicService.excelImportWriteErrorInfo(i, "编号重复", stringBuilder);
+                    continue;
+                }
+                declareRealtyHouseCertDao.addDeclareRealtyHouseCert(realtyHouseCert);
                 DeclareBuildEngineeringAndEquipmentCenter center = new DeclareBuildEngineeringAndEquipmentCenter();
-                center.setPlanDetailsId(oo.getPlanDetailsId());
-                center.setHouseId(oo.getId());
+                center.setPlanDetailsId(realtyHouseCert.getPlanDetailsId());
+                center.setHouseId(realtyHouseCert.getId());
                 center.setType(DeclareRealtyHouseCert.class.getSimpleName());
                 declareBuildEngineeringAndEquipmentCenterService.saveAndUpdateDeclareBuildEngineeringAndEquipmentCenter(center);
                 successCount++;
             } catch (Exception e) {
-                builder.append(String.format("\n第%s行异常，请检查数据格式", i));
+                declarePublicService.excelImportWriteErrorInfo(i, e.getMessage(), stringBuilder);
             }
         }
-        return String.format("数据总条数%s，成功%s，失败%s。%s", rowLength, successCount, rowLength - successCount, builder.toString());
+        return String.format("数据总条数%s，成功%s，失败%s。%s", rowLength, successCount, rowLength - successCount, stringBuilder.toString());
     }
 
 

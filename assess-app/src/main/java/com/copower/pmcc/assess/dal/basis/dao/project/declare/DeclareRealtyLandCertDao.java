@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.dal.basis.dao.project.declare;
 
-import com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyHouseCertExample;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyLandCert;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyLandCertExample;
 import com.copower.pmcc.assess.dal.basis.mapper.DeclareRealtyLandCertMapper;
@@ -20,6 +19,15 @@ import java.util.List;
 public class DeclareRealtyLandCertDao {
     @Autowired
     private DeclareRealtyLandCertMapper declareRealtyLandCertMapper;
+
+    public Integer getCountByExample(String enable,Integer planDetailsId,Integer autoInitNumber){
+        DeclareRealtyLandCertExample example = new DeclareRealtyLandCertExample();
+        DeclareRealtyLandCertExample.Criteria criteria = example.createCriteria();
+        criteria.andEnableEqualTo(enable);
+        criteria.andPlanDetailsIdEqualTo(planDetailsId);
+        criteria.andAutoInitNumberEqualTo(autoInitNumber);
+        return declareRealtyLandCertMapper.countByExample(example) ;
+    }
 
     public Integer addDeclareRealtyLandCert(DeclareRealtyLandCert declareRealtyLandCert){
         declareRealtyLandCertMapper.insertSelective(declareRealtyLandCert);

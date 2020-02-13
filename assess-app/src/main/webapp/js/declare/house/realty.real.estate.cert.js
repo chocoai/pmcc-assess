@@ -172,7 +172,7 @@ declareRealtyRealEstateCert.loadList = function () {
         onLoadSuccess: function () {
             $('.tooltips').tooltip();
         }
-    }, true);
+    }, true,false);
 };
 
 declareRealtyRealEstateCert.deleteData = function () {

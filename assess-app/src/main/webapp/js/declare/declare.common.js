@@ -230,6 +230,7 @@ declareCommon.ajaxServerMethod = function (data, url,type,callback,errorCallback
 //土地
 declareCommon.getLandColumn = function () {
     var cols = [];
+    cols.push({field: 'autoInitNumber', title: '编号(excel导入)'});
     cols.push({
         field: 'provinceName', title: '区域', formatter: function (value, row, index) {
             return AssessCommon.getAreaFullName(row.provinceName, row.cityName, row.districtName);
@@ -240,14 +241,13 @@ declareCommon.getLandColumn = function () {
     cols.push({field: 'landNumber', title: '地号'});
     cols.push({field: 'graphNumber', title: '图号'});
     cols.push({field: 'useRightArea', title: '使用权面积'});
-    cols.push({field: 'autoInitNumber', title: '编号'});
     return cols;
 };
 
 //房产
 declareCommon.getHouseColumn = function () {
     var cols = [];
-    cols.push({field: 'autoInitNumber', title: '编号'});
+    cols.push({field: 'autoInitNumber', title: '编号(excel导入)'});
     cols.push({
         field: 'provinceName', title: '区域', formatter: function (value, row, index) {
             return AssessCommon.getAreaFullName(row.provinceName, row.cityName, row.districtName);
@@ -258,13 +258,13 @@ declareCommon.getHouseColumn = function () {
     cols.push({field: 'ownership', title: '房屋所有权人'});
     cols.push({field: 'floorArea', title: '建筑面积'});
     cols.push({field: 'planningUseName', title: '规划用途'});
-    cols.push({field: 'autoInitNumber', title: '编号'});
     return cols;
 };
 
 //不动产
 declareCommon.getRealEstateColumn = function () {
     var cols = [];
+    cols.push({field: 'autoInitNumber', title: '编号(excel导入)'});
     cols.push({
         field: 'provinceName', title: '区域', formatter: function (value, row, index) {
             return AssessCommon.getAreaFullName(row.provinceName, row.cityName, row.districtName);
@@ -273,15 +273,6 @@ declareCommon.getRealEstateColumn = function () {
     cols.push({field: 'evidenceArea', title: '证载面积'});
     cols.push({field: 'certName', title: '不动产权证号'});
     cols.push({field: 'beLocated', title: '坐落'});
-    // cols.push({
-    //     field: 'bisRecord', title: '是否参与查勘任务', formatter: function (value, row, index) {
-    //         if (row.bisRecord){
-    //             return "已经参与" ;
-    //         }
-    //         return "暂时没有参与下一阶段任务";
-    //     }
-    // });
-    cols.push({field: 'autoInitNumber', title: '编号'});
     return cols;
 };
 

@@ -20,23 +20,32 @@
                             </button>
                             <div type="button" class="btn btn-primary" onclick="assessCommonLand.editLand()"> 编辑</div>
                             <div type="button" class="btn btn-primary" onclick="assessCommonLand.deleteLand()"> 删除</div>
+
+                            <a class="btn btn-primary"
+                               onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftLandOwnershipCertificate)">下载模板</a>
+
+                            <a class="btn btn-primary"
+                               onclick="$('#ajaxFileUploadLand').val('').trigger('click')">导入</a>
                         </div>
                     </div>
+
                     <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
                         <div class="btn-group">
-                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">导入土地证
+                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">导入关联的房产证
                                 <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu" role="menu">
                                 <li><a class="btn"
-                                       onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftLandOwnershipCertificate)">下载模板</a>
+                                       onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftHouseOwnershipCertificate)">下载模板</a>
                                 </li>
-                                <li><a class="btn btn-default"
-                                       onclick="$('#ajaxFileUploadLand').val('').trigger('click')">导入</a>
+                                <li>
+                                    <a class="btn btn-default"
+                                       onclick="$('#ajaxFileUploadLandHouse').val('').trigger('click')">导入</a>
                                 </li>
                             </ul>
                         </div>
                     </div>
+
                     <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
                         <div class="btn-group">
                             <div class="btn btn-primary" onclick="assessCommonLand.copyData();"> <i class="fa fa-files-o" aria-hidden="true"></i> 复制</div>
@@ -114,6 +123,9 @@
 
 <input type="file" id="ajaxFileUploadLand" name="file" style="display: none;"
        onchange="assessCommonLand.inputFile();">
+
+<input type="file" id="ajaxFileUploadLandHouse" name="file" style="display: none;"
+       onchange="assessCommonLand.importDataHouse();">
 
 <input type="file" id="declareRealtyLandCertNewFileId" name="declareRealtyLandCertNewFileId" style="display: none;"
        onchange="assessCommonLand.landImportHandle();" multiple="multiple">
