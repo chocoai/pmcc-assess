@@ -13,22 +13,18 @@
                 <div class="title_left">
                     <h2>
                         信息填写
-                        <c:if test="${not empty planDetailsId}">
-                            <small>
-                                <input type="button" class="btn btn-xs btn-primary" value="历史记录"
-                                       onclick="showHistoryModal();">
-                            </small>
-                            <small>
-                                <input type="button" class="btn btn-xs btn-primary" value="引用案例"
-                                       onclick="showCaseQuoteModal();">
-                            </small>
-                        </c:if>
-                        <c:if test="${empty planDetailsId}">
-                            <small>
-                                <input type="button" class="btn btn-xs btn-primary" value="引用项目"
-                                       onclick="showProjectQuoteModal();">
-                            </small>
-                        </c:if>
+                        <small>
+                            <input type="button" class="btn btn-xs btn-primary" value="历史记录"
+                                   onclick="showHistoryModal();">
+                        </small>
+                        <small>
+                            <input type="button" class="btn btn-xs btn-primary" value="引用案例"
+                                   onclick="showCaseQuoteModal();">
+                        </small>
+                        <small>
+                            <input type="button" class="btn btn-xs btn-primary" value="引用备选案例"
+                                   onclick="showProjectQuoteModal();">
+                        </small>
                     </h2>
                 </div>
             </div>
@@ -147,5 +143,25 @@
         }
 
     };
+
+    function showProjectQuoteModal() {
+        //打开楼盘modal
+        if ("estate" == "${tbType}") {
+            projectData.prototype.showModel();
+        }
+
+        //打开楼栋modal
+        if ("building" == "${tbType}") {
+            projectBuild.prototype.showModel();
+        }
+        //打开单元modal
+        if ("unit" == "${tbType}") {
+            projectUnit.prototype.showModel();
+        }
+        //打开房屋modal
+        if ("house" == "${tbType}") {
+            projectHouse.prototype.showModel();
+        }
+    }
 </script>
 

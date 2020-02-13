@@ -54,7 +54,7 @@ public class DataBlockController extends BaseController {
                 dataBlock = dataBlockService.getDataBlockById(id);
             }
         } catch (Exception e1) {
-            log.error(String.format("exception: %s" + e1.getMessage()), e1);
+            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
             return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
         }
         return HttpResult.newCorrectResult(dataBlock);
@@ -68,7 +68,7 @@ public class DataBlockController extends BaseController {
         try {
             vo = dataBlockService.getDataBlockListVos(province, city, district, name);
         } catch (Exception e1) {
-            log.error(String.format("exception: %s", e1.getMessage()), e1);
+            logger.error(String.format("exception: %s", e1.getMessage()), e1);
             return null;
         }
         return vo;
@@ -85,7 +85,7 @@ public class DataBlockController extends BaseController {
                 return HttpResult.newCorrectResult();
             }
         } catch (Exception e1) {
-            log.error(String.format("exception: %s" + e1.getMessage()), e1);
+            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
             return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
         }
         return null;
@@ -98,7 +98,7 @@ public class DataBlockController extends BaseController {
             dataBlockService.saveAndUpdateDataBlock(dataBlock);
             return HttpResult.newCorrectResult("保存 success!");
         } catch (Exception e) {
-            log.error(String.format("exception: %s", e.getMessage()), e);
+            logger.error(String.format("exception: %s", e.getMessage()), e);
             return HttpResult.newErrorResult("保存异常");
         }
     }
@@ -109,7 +109,7 @@ public class DataBlockController extends BaseController {
         try {
             return HttpResult.newCorrectResult(dataBlockService.getDataBlockListByArea(province, city, district));
         } catch (Exception e) {
-            log.error(String.format("exception: %s", e.getMessage()), e);
+            logger.error(String.format("exception: %s", e.getMessage()), e);
             return HttpResult.newErrorResult("获取版块信息异常");
         }
     }
@@ -130,7 +130,7 @@ public class DataBlockController extends BaseController {
             }
             return HttpResult.newCorrectResult(dataBlockService.dataBlockVos(dataBlock));
         } catch (Exception e) {
-            log.error(String.format("exception: %s", e.getMessage()), e);
+            logger.error(String.format("exception: %s", e.getMessage()), e);
             return HttpResult.newErrorResult("获取版块信息 list exception");
         }
     }
@@ -141,7 +141,7 @@ public class DataBlockController extends BaseController {
         try {
             return HttpResult.newCorrectResult(dataBlockService.isExistBlock(province, city, district, name));
         } catch (Exception e) {
-            log.error(String.format("exception: %s", e.getMessage()), e);
+            logger.error(String.format("exception: %s", e.getMessage()), e);
             return HttpResult.newErrorResult("获取版块信息异常");
         }
     }
@@ -153,7 +153,7 @@ public class DataBlockController extends BaseController {
             dataBlockService.caseAllToBasic();
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
-            log.error(String.format("exception: %s", e.getMessage()), e);
+            logger.error(String.format("exception: %s", e.getMessage()), e);
             return HttpResult.newErrorResult("案例数据迁移异常");
         }
     }
@@ -165,7 +165,7 @@ public class DataBlockController extends BaseController {
             netInfoRecordService.climbingOldData();
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
-            log.error(String.format("exception: %s", e.getMessage()), e);
+            logger.error(String.format("exception: %s", e.getMessage()), e);
             return HttpResult.newErrorResult("抓取两年前老数据异常");
         }
     }

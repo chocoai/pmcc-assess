@@ -284,7 +284,7 @@
                 if (result.ret) {
                     $("#basicBatchApplyFrm").find('[name=id]').val(result.data.id);
                     $("#basicBatchApplyFrm").find('[name=estateId]').val(result.data.estateId);
-                    batchTreeTool.ztreeInit(result.data.estateId);
+                    batchTreeTool.ztreeInit(result.data.id);
                 } else {
                     Alert(result.errmsg);
                 }
@@ -358,10 +358,10 @@
     };
 
     //初始化tree
-    batchTreeTool.ztreeInit = function (estateId) {
+    batchTreeTool.ztreeInit = function (basicApplyBatchId) {
         $.ajax({
             url: '${pageContext.request.contextPath}/basicApplyBatch/getBatchApplyTree',
-            data: {estateId: estateId},
+            data: {basicApplyBatchId: basicApplyBatchId},
             type: 'get',
             dataType: "json",
             success: function (result) {

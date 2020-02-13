@@ -26,7 +26,7 @@ public class CaseHouseDamagedDegreeController extends BaseController {
         try {
             return HttpResult.newCorrectResult(caseHouseDamagedDegreeService.getDamagedDegreeVoList(houseId));
         } catch (Exception e) {
-            log.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(e.getMessage());
         }
     }

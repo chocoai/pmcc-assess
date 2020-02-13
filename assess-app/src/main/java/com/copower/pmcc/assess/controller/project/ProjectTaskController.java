@@ -322,22 +322,26 @@ public class ProjectTaskController extends BaseController {
      */
     private void setCheckParams(Integer boxId, Integer boxReActivitiId, String processInsId, Integer projectId, ModelAndView modelAndView) {
         //当前节点  可以查看的权限节点信息列表
-        modelAndView.addObject(StringUtils.uncapitalize(SysUserDto.class.getSimpleName()), processControllerComponent.getThisUserInfo());
-        BoxReActivityDto spotReActivityDto = null;
-        if (boxId == null || boxId == 0) {
-            if (boxReActivitiId != null) {
-                spotReActivityDto = chksAssessmentProjectPerformanceService.getSpotBoxReActivityDto(bpmRpcBoxService.getBoxreActivityInfoById(boxReActivitiId).getBoxId());
+        try{
+            modelAndView.addObject(StringUtils.uncapitalize(SysUserDto.class.getSimpleName()), processControllerComponent.getThisUserInfo());
+            BoxReActivityDto spotReActivityDto = null;
+            if (boxId == null || boxId == 0) {
+                if (boxReActivitiId != null) {
+                    spotReActivityDto = chksAssessmentProjectPerformanceService.getSpotBoxReActivityDto(bpmRpcBoxService.getBoxreActivityInfoById(boxReActivitiId).getBoxId());
+                } else {
+                    BoxReActivityDto boxReActivityDto = chksAssessmentProjectPerformanceService.getBoxReActivityDtoByProcessInsId(processInsId, projectId, boxId);
+                    spotReActivityDto = chksAssessmentProjectPerformanceService.getSpotBoxReActivityDto(boxReActivityDto.getBoxId());
+                }
             } else {
-                BoxReActivityDto boxReActivityDto = chksAssessmentProjectPerformanceService.getBoxReActivityDtoByProcessInsId(processInsId, projectId, boxId);
-                spotReActivityDto = chksAssessmentProjectPerformanceService.getSpotBoxReActivityDto(boxReActivityDto.getBoxId());
+                spotReActivityDto = chksAssessmentProjectPerformanceService.getSpotBoxReActivityDto(boxId);
             }
-        } else {
-            spotReActivityDto = chksAssessmentProjectPerformanceService.getSpotBoxReActivityDto(boxId);
+            modelAndView.addObject("activityDtoList", chksAssessmentProjectPerformanceService.getAssessmentProjectPerformanceNext(boxId, boxReActivitiId));
+            modelAndView.addObject("spotReActivityDto", spotReActivityDto);//抽查考核节点
+            modelAndView.addObject("spotUserAccounts", chksAssessmentProjectPerformanceService.getSpotCheckUserAccounts(spotReActivityDto.getBoxId()));//抽查考核节点账户 list
+            modelAndView.addObject("userAdmin", processControllerComponent.userIsAdmin(processControllerComponent.getThisUser()));//是否为超级管理员
+        }catch (Exception e){
+            logger.error(e.getMessage(),e);
         }
-        modelAndView.addObject("activityDtoList", chksAssessmentProjectPerformanceService.getAssessmentProjectPerformanceNext(boxId, boxReActivitiId));
-        modelAndView.addObject("spotReActivityDto", spotReActivityDto);//抽查考核节点
-        modelAndView.addObject("spotUserAccounts", chksAssessmentProjectPerformanceService.getSpotCheckUserAccounts(spotReActivityDto.getBoxId()));//抽查考核节点账户 list
-        modelAndView.addObject("userAdmin", processControllerComponent.userIsAdmin(processControllerComponent.getThisUser()));//是否为超级管理员
     }
 
 }

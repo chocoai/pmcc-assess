@@ -9,5 +9,5 @@ import org.springframework.stereotype.Controller;
  */
 @Controller
 public class BaseController {
-    protected final Logger log = LoggerFactory.getLogger(getClass());
+    protected final Logger logger = LoggerFactory.getLogger(getClass());
 }

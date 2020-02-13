@@ -112,7 +112,7 @@ public class ProjectMemberChangeController extends BaseController {
             List<MemberChangeDto> memberList = projectMemberChangeService.buildMemberList(projectId, processInsId);
             return HttpResult.newCorrectResult(memberList);
         } catch (Exception e) {
-            log.error("获取成员列表异常", e);
+            logger.error("获取成员列表异常", e);
             return HttpResult.newErrorResult(e);
         }
     }
@@ -130,7 +130,7 @@ public class ProjectMemberChangeController extends BaseController {
 
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
-            log.error("添加项目成员异常", e);
+            logger.error("添加项目成员异常", e);
             return HttpResult.newErrorResult(e);
         }
     }
@@ -148,7 +148,7 @@ public class ProjectMemberChangeController extends BaseController {
 
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
-            log.error("移除项目成员异常", e);
+            logger.error("移除项目成员异常", e);
             return HttpResult.newErrorResult(e);
         }
     }
@@ -167,7 +167,7 @@ public class ProjectMemberChangeController extends BaseController {
 
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
-            log.error("替换项目成员异常", e);
+            logger.error("替换项目成员异常", e);
             return HttpResult.newErrorResult(e);
         }
     }
@@ -187,7 +187,7 @@ public class ProjectMemberChangeController extends BaseController {
 
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
-            log.error("替换项目经理异常", e);
+            logger.error("替换项目经理异常", e);
             return HttpResult.newErrorResult(e);
         }
     }
@@ -199,7 +199,7 @@ public class ProjectMemberChangeController extends BaseController {
             projectMemberChangeService.apply(projectId, processInsId, changeReason);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
-            log.error("成员变更申请提交异常", e);
+            logger.error("成员变更申请提交异常", e);
             return HttpResult.newErrorResult(e);
         }
     }
@@ -213,7 +213,7 @@ public class ProjectMemberChangeController extends BaseController {
             processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
             return HttpResult.newCorrectResult();
         } catch (BpmException e) {
-            log.error("提交审批失败", e);
+            logger.error("提交审批失败", e);
             return HttpResult.newErrorResult(e);
         }
     }
@@ -229,7 +229,7 @@ public class ProjectMemberChangeController extends BaseController {
 
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
-            log.error("修改失败", e);
+            logger.error("修改失败", e);
             return HttpResult.newErrorResult(e);
         }
     }

@@ -142,7 +142,7 @@
     function ztreeInit() {
         $.ajax({
             url: '${pageContext.request.contextPath}/basicApplyBatch/getBatchApplyTree',
-            data: {estateId: '${applyBatch.estateId}'},
+            data: {basicApplyBatchId: '${applyBatch.id}'},
             type: 'get',
             dataType: "json",
             success: function (result) {

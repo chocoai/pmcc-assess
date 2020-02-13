@@ -281,9 +281,7 @@
     //填充对应的数据
     function autocompleteData(data) {
         if ("estate" == "${tbType}") {
-            var basicEstate = data.basicEstate;
-            var basicEstateLandState = data.basicEstateLandState;
-            estateCommon.initForm({estate: basicEstate, land: basicEstateLandState});
+            estateCommon.initById(data.id);
         }
 
         if ("building" == "${tbType}") {
@@ -423,11 +421,11 @@
                 }
             });
         },
-        showHouseModel: function () {
-            projectData.prototype.loadHousesDataList();
+        showModel: function () {
+            projectData.prototype.loadDataList();
             $('#' + projectData.prototype.config().houseBox).modal("show");
         },
-        loadHousesDataList: function () {
+        loadDataList: function () {
             var cols = [];
             cols.push({field: 'name', title: '名称'});
             cols.push({
@@ -693,7 +691,7 @@
             <div class="modal-body">
                 <div class="row">
                     <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                        <form class="form-horizontal" id="frmCaseEstate">
+                        <form class="form-horizontal" id="frmEstateQuery">
                             <div class="form-group">
                                 <div class="x-valid">
                                     <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
@@ -844,7 +842,7 @@
         father: {
             caseEstate: {
                 frm: function () {
-                    return "frmCaseEstate";//楼盘 frm
+                    return "frmEstateQuery";//楼盘 frm
                 },
                 table: function () {
                     return "caseEstateTable";//楼盘 table

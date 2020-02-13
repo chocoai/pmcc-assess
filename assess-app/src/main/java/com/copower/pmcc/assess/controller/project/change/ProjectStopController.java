@@ -64,7 +64,7 @@ public class ProjectStopController extends BaseController {
         try {
             stateChangeService.applyCommit(costsProjectChangeLog,BaseParameterEnum.PROJECT_STOP_CHANGE_PROCESS_KEY, ProjectChangeTypeEnum.STOP_CHANGE);
         } catch (BusinessException e) {
-            log.error("修改项目信息异常", e);
+            logger.error("修改项目信息异常", e);
             e.printStackTrace();
         }
         return HttpResult.newCorrectResult();
@@ -93,7 +93,7 @@ public class ProjectStopController extends BaseController {
             stateChangeService.approvalCommit(approvalModelDto);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
-            log.error("提交失败", e);
+            logger.error("提交失败", e);
             return HttpResult.newErrorResult(e);
         }
     }
@@ -117,7 +117,7 @@ public class ProjectStopController extends BaseController {
             stateChangeService.editCommit(costsProjectChangeLog, approvalModelDto,ProjectChangeTypeEnum.STOP_CHANGE);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
-            log.error("修改失败", e);
+            logger.error("修改失败", e);
             return HttpResult.newErrorResult(e);
         }
     }

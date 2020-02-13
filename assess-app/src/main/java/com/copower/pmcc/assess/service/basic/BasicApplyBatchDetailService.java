@@ -21,7 +21,6 @@ import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -138,7 +137,7 @@ public class BasicApplyBatchDetailService {
                 basicApplyBatchDetail.setDisplayName(String.format("%s单元", basicApplyBatchDetail.getName()));
                 BasicUnit unit = new BasicUnit();
                 BasicBuilding basicBuilding = getBasicBuildingByBatchDetailId(basicApplyBatchDetail.getPid());
-                if(basicBuilding!=null){
+                if (basicBuilding != null) {
                     unit.setBuildingId(basicBuilding.getId());
                     unit.setEstateId(basicBuilding.getEstateId());
                 }
@@ -154,7 +153,7 @@ public class BasicApplyBatchDetailService {
                 BasicHouse house = new BasicHouse();
                 house.setHouseNumber(basicApplyBatchDetail.getName());
                 BasicUnit basicUnit = getBasicUnitByBatchDetailId(basicApplyBatchDetail.getPid());
-                if(basicUnit!=null){
+                if (basicUnit != null) {
                     house.setUnitId(basicUnit.getId());
                     house.setBuildingId(basicUnit.getBuildingId());
                     house.setEstateId(basicUnit.getEstateId());
@@ -213,32 +212,6 @@ public class BasicApplyBatchDetailService {
         sonDto.setBusinessId(tableId);
         sonDto.setUserAccount(executor);
         bpmRpcProjectTaskService.saveProjectTaskExtend(sonDto);
-    }
-
-    //修改子任务
-    public void updateSonTask(Integer planDetailsId, String key, Integer tableId, String executor, String creator, Integer applyBatchId) {
-        if (executor == null) return;
-        ProjectResponsibilityDto oldDto = new ProjectResponsibilityDto();
-        oldDto.setPlanDetailsId(planDetailsId);
-        oldDto.setBusinessId(tableId);
-        oldDto.setBusinessKey(key);
-        ProjectResponsibilityDto oldTask = bpmRpcProjectTaskService.getProjectTask(oldDto);
-        if (oldTask != null) {
-            //执行人变为创建人则删除子任务
-            if (StringUtils.equals(creator, executor)) {
-                bpmRpcProjectTaskService.deleteProjectTask(oldTask.getId());
-            } else {
-                ProjectResponsibilityDto newDto = new ProjectResponsibilityDto();
-                BeanUtils.copyProperties(oldTask, newDto, "userAccount", "gmtCreated", "gmtModified");
-                newDto.setUserAccount(executor);
-                bpmRpcProjectTaskService.updateProjectTask(newDto);
-            }
-        } else {
-            if (!StringUtils.equals(creator, executor)) {
-                addSonTask(planDetailsId, key, tableId, executor, applyBatchId);
-            }
-        }
-
     }
 
     //存入basicApply表单
@@ -451,58 +424,6 @@ public class BasicApplyBatchDetailService {
         return basicApplyBatchDetailDao.getBasicApplyBatchDetail(where);
     }
 
-
-    //获取楼栋
-    public List<BasicBuilding> getBuildingListByBatchId(Integer id) throws Exception {
-        List<BasicApplyBatchDetail> infoList = this.getBuildingBatchDetailsByBatchId(id);
-        List<BasicBuilding> basicBuildings = Lists.newArrayList();
-        if (CollectionUtils.isNotEmpty(infoList))
-            for (BasicApplyBatchDetail item : infoList) {
-                BasicBuilding basicBuilding = basicBuildingDao.getBasicBuildingById(item.getTableId());
-                if (basicBuilding != null) {
-                    basicBuildings.add(basicBuildingDao.getBasicBuildingById(item.getTableId()));
-                }
-            }
-        ;
-        return basicBuildings;
-    }
-
-    public List<BasicApplyBatchDetail> getBuildingBatchDetailsByBatchId(Integer id) {
-        BasicApplyBatchDetail basicApplyBatchDetail = new BasicApplyBatchDetail();
-        basicApplyBatchDetail.setTableName("tb_basic_building");
-        basicApplyBatchDetail.setApplyBatchId(id);
-        return basicApplyBatchDetailDao.getInfoList(basicApplyBatchDetail);
-    }
-
-    public List<BasicApplyBatchDetail> getBuildingBatchDetailsByBatchId2(Integer id) {
-        BasicApplyBatchDetail basicApplyBatchDetail = new BasicApplyBatchDetail();
-        basicApplyBatchDetail.setApplyBatchId(id);
-        return basicApplyBatchDetailDao.getInfoList(basicApplyBatchDetail);
-    }
-
-
-    //获取单元
-    public List<BasicUnit> getBasicUnitListByBatchId(Integer id, BasicBuilding basicBuilding) throws Exception {
-        List<BasicApplyBatchDetail> infoList = this.getUnitBatchDetailsByBatchId(basicBuilding);
-        List<BasicUnit> basicUnits = Lists.newArrayList();
-        if (CollectionUtils.isNotEmpty(infoList))
-            for (BasicApplyBatchDetail item : infoList) {
-                basicUnits.add(basicUnitService.getBasicUnitById(item.getTableId()));
-            }
-        ;
-        return basicUnits;
-    }
-
-    public List<BasicApplyBatchDetail> getUnitBatchDetailsByBatchId(BasicBuilding basicBuilding) {
-        BasicApplyBatchDetail parent = getBasicApplyBatchDetail("tb_basic_building", basicBuilding.getId());
-        if (parent == null) return null;
-        BasicApplyBatchDetail basicApplyBatchDetail = new BasicApplyBatchDetail();
-        basicApplyBatchDetail.setTableName("tb_basic_unit");
-        basicApplyBatchDetail.setApplyBatchId(parent.getApplyBatchId());
-        basicApplyBatchDetail.setPid(parent.getId());
-        return basicApplyBatchDetailDao.getInfoList(basicApplyBatchDetail);
-    }
-
     public BasicApplyBatchDetail getSingleData(BasicApplyBatchDetail basicApplyBatchDetail) {
         List<BasicApplyBatchDetail> infoList = basicApplyBatchDetailDao.getInfoList(basicApplyBatchDetail);
         if (CollectionUtils.isNotEmpty(infoList)) return infoList.get(0);
@@ -566,4 +487,18 @@ public class BasicApplyBatchDetailService {
         }
     }
 
+    /**
+     * 收集该节点的所有上级节点
+     *
+     * @param basicApplyBatchDetailId
+     * @param list
+     */
+    public void collectionParentBatchDetails(Integer basicApplyBatchDetailId, List<BasicApplyBatchDetail> list) {
+        if (list == null) return;
+        BasicApplyBatchDetail batchDetail = getDataById(basicApplyBatchDetailId);
+        if (batchDetail == null) return;
+        list.add(batchDetail);
+        if (batchDetail.getPid() != null && batchDetail.getPid() > 0)
+            collectionParentBatchDetails(batchDetail.getPid(), list);
+    }
 }

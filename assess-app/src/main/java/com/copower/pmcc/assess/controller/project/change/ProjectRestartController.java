@@ -62,7 +62,7 @@ public class ProjectRestartController  extends BaseController {
         try {
             stateChangeService.applyCommit(costsProjectChangeLog,BaseParameterEnum.PROJECT_RESTART_CHANGE_PROCESS_KEY, ProjectChangeTypeEnum.RESTART_CHANGE);
         } catch (BusinessException e) {
-            log.error("修改项目信息异常", e);
+            logger.error("修改项目信息异常", e);
             e.printStackTrace();
         }
         return HttpResult.newCorrectResult();
@@ -91,7 +91,7 @@ public class ProjectRestartController  extends BaseController {
             stateChangeService.approvalCommit(approvalModelDto);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
-            log.error("提交失败", e);
+            logger.error("提交失败", e);
             return HttpResult.newErrorResult(e);
         }
     }
@@ -115,7 +115,7 @@ public class ProjectRestartController  extends BaseController {
             stateChangeService.editCommit(costsProjectChangeLog, approvalModelDto,ProjectChangeTypeEnum.RESTART_CHANGE);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
-            log.error("修改失败", e);
+            logger.error("修改失败", e);
             return HttpResult.newErrorResult(e);
         }
     }

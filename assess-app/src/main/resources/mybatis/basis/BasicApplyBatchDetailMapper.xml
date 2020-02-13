@@ -16,7 +16,7 @@
     <result column="upgrade_table_id" property="upgradeTableId" jdbcType="INTEGER" />
     <result column="bis_structure" property="bisStructure" jdbcType="BIT" />
     <result column="bis_standard" property="bisStandard" jdbcType="BIT" />
-    <result column="bis_upgrade" property="bisUpgrade" jdbcType="BIT" />
+    <result column="bis_from_case" property="bisFromCase" jdbcType="BIT" />
     <result column="bis_delete" property="bisDelete" jdbcType="BIT" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
@@ -82,7 +82,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, pid, apply_batch_id, table_name, table_id, name, display_name, executor, quote_id, 
-    base_type, case_table_pid, upgrade_table_id, bis_structure, bis_standard, bis_upgrade, 
+    base_type, case_table_pid, upgrade_table_id, bis_structure, bis_standard, bis_from_case, 
     bis_delete, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchDetailExample" >
@@ -123,14 +123,14 @@
       table_id, name, display_name, 
       executor, quote_id, base_type, 
       case_table_pid, upgrade_table_id, bis_structure, 
-      bis_standard, bis_upgrade, bis_delete, 
+      bis_standard, bis_from_case, bis_delete, 
       creator, gmt_created, gmt_modified
       )
     values (#{pid,jdbcType=INTEGER}, #{applyBatchId,jdbcType=INTEGER}, #{tableName,jdbcType=VARCHAR}, 
       #{tableId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{displayName,jdbcType=VARCHAR}, 
       #{executor,jdbcType=VARCHAR}, #{quoteId,jdbcType=INTEGER}, #{baseType,jdbcType=VARCHAR}, 
       #{caseTablePid,jdbcType=INTEGER}, #{upgradeTableId,jdbcType=INTEGER}, #{bisStructure,jdbcType=BIT}, 
-      #{bisStandard,jdbcType=BIT}, #{bisUpgrade,jdbcType=BIT}, #{bisDelete,jdbcType=BIT}, 
+      #{bisStandard,jdbcType=BIT}, #{bisFromCase,jdbcType=BIT}, #{bisDelete,jdbcType=BIT}, 
       #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
       )
   </insert>
@@ -179,8 +179,8 @@
       <if test="bisStandard != null" >
         bis_standard,
       </if>
-      <if test="bisUpgrade != null" >
-        bis_upgrade,
+      <if test="bisFromCase != null" >
+        bis_from_case,
       </if>
       <if test="bisDelete != null" >
         bis_delete,
@@ -235,8 +235,8 @@
       <if test="bisStandard != null" >
         #{bisStandard,jdbcType=BIT},
       </if>
-      <if test="bisUpgrade != null" >
-        #{bisUpgrade,jdbcType=BIT},
+      <if test="bisFromCase != null" >
+        #{bisFromCase,jdbcType=BIT},
       </if>
       <if test="bisDelete != null" >
         #{bisDelete,jdbcType=BIT},
@@ -303,8 +303,8 @@
       <if test="record.bisStandard != null" >
         bis_standard = #{record.bisStandard,jdbcType=BIT},
       </if>
-      <if test="record.bisUpgrade != null" >
-        bis_upgrade = #{record.bisUpgrade,jdbcType=BIT},
+      <if test="record.bisFromCase != null" >
+        bis_from_case = #{record.bisFromCase,jdbcType=BIT},
       </if>
       <if test="record.bisDelete != null" >
         bis_delete = #{record.bisDelete,jdbcType=BIT},
@@ -339,7 +339,7 @@
       upgrade_table_id = #{record.upgradeTableId,jdbcType=INTEGER},
       bis_structure = #{record.bisStructure,jdbcType=BIT},
       bis_standard = #{record.bisStandard,jdbcType=BIT},
-      bis_upgrade = #{record.bisUpgrade,jdbcType=BIT},
+      bis_from_case = #{record.bisFromCase,jdbcType=BIT},
       bis_delete = #{record.bisDelete,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -390,8 +390,8 @@
       <if test="bisStandard != null" >
         bis_standard = #{bisStandard,jdbcType=BIT},
       </if>
-      <if test="bisUpgrade != null" >
-        bis_upgrade = #{bisUpgrade,jdbcType=BIT},
+      <if test="bisFromCase != null" >
+        bis_from_case = #{bisFromCase,jdbcType=BIT},
       </if>
       <if test="bisDelete != null" >
         bis_delete = #{bisDelete,jdbcType=BIT},
@@ -423,7 +423,7 @@
       upgrade_table_id = #{upgradeTableId,jdbcType=INTEGER},
       bis_structure = #{bisStructure,jdbcType=BIT},
       bis_standard = #{bisStandard,jdbcType=BIT},
-      bis_upgrade = #{bisUpgrade,jdbcType=BIT},
+      bis_from_case = #{bisFromCase,jdbcType=BIT},
       bis_delete = #{bisDelete,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},

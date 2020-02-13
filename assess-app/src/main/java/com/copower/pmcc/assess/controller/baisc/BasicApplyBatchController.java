@@ -38,7 +38,6 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
-import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -105,13 +104,13 @@ public class BasicApplyBatchController extends BaseController {
 
     //-----------------------------------------------案例批量申请
     @RequestMapping(value = "/basicBatchApplyIndex", name = "申请首页", method = RequestMethod.GET)
-    public ModelAndView basicApplyIndex(Integer estateId,String estateName) throws Exception {
+    public ModelAndView basicApplyIndex(Integer estateId, String estateName) throws Exception {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/basic/basicBatchApplyIndex", "0", 0, "0", "");
         BasicApplyBatch basicApplyBatch = new BasicApplyBatch();
         basicApplyBatch.setDraftFlag(true);
         if (estateId != null && estateId != 0) {//大类与类型可以确定
             BasicEstate basicEstate = basicEstateService.getBasicEstateById(estateId);
-            if(basicEstate!=null){
+            if (basicEstate != null) {
                 basicApplyBatch.setClassify(basicEstate.getClassify());
                 basicApplyBatch.setType(basicEstate.getType());
                 basicApplyBatch.setEstateId(basicEstate.getId());
@@ -128,7 +127,7 @@ public class BasicApplyBatchController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "/initBasicApplyBatchCase", method = RequestMethod.POST)
-    public HttpResult initBasicApplyBatchCase(BasicApplyBatch basicApplyBatch)  {
+    public HttpResult initBasicApplyBatchCase(BasicApplyBatch basicApplyBatch) {
         try {
             basicApplyBatchService.initBasicApplyBatchInfo(basicApplyBatch);
             return HttpResult.newCorrectResult(basicApplyBatch);
@@ -147,9 +146,21 @@ public class BasicApplyBatchController extends BaseController {
             modelAndView.addObject("formClassifyList", basicApplyBatchService.getFormClassifyList());
             modelAndView.addObject("examineFormTypeList", surveyCommonService.getExamineFormTypeList());
         } catch (Exception e1) {
-            log.error(e1.getMessage(), e1);
+            logger.error(e1.getMessage(), e1);
         }
         return modelAndView;
+    }
+
+    /**
+     * 新增楼盘时获取树
+     * 初始化treeByPlanDetailsId
+     *
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/getBatchApplyTree", method = RequestMethod.GET)
+    public List<ZtreeDto> getBatchApplyTree(Integer basicApplyBatchId) throws Exception {
+        return basicApplyBatchService.getZtreeDto(basicApplyBatchId);
     }
 
     /**
@@ -163,52 +174,32 @@ public class BasicApplyBatchController extends BaseController {
         return basicApplyBatchService.getCaseEstateZtreeDtos(estateId);
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/initCaseEstateZtree", name = "初始化支撑新增获取升级案例结构", method = RequestMethod.POST)
+    public HttpResult initCaseEstateZtree(Integer applyBatchId, Integer caseBatchDetailId,Boolean containThis) {
+        try {
+            BasicApplyBatchDetail batchDetail = basicApplyBatchService.initCaseEstateZtree(applyBatchId, caseBatchDetailId,containThis);
+            return HttpResult.newCorrectResult(batchDetail);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return HttpResult.newErrorResult("初始化支撑新增获取升级案例结构异常");
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/upgradeCase", name = "案例升级", method = RequestMethod.POST)
+    public HttpResult upgradeCase(Integer applyBatchId, Integer pid, Integer caseBatchDetailId) {
+        try {
+            BasicApplyBatchDetail batchDetail = basicApplyBatchService.upgradeCase(applyBatchId, pid, caseBatchDetailId);
+            return HttpResult.newCorrectResult(batchDetail);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return HttpResult.newErrorResult("案例升级异常");
+        }
+    }
+
     //-----------------------------------------------案例批量申请
 
-    /*
-    案例批量申请处理逻辑
-    1.在申请时先查看案例库中是否已有该楼盘
-    2.如果没有该楼盘，则可选择类型后添加楼盘相关数据
-    3.如果已有该楼盘，则显示出该楼盘的案例结构树，在现有案例结构树上确定是新增还是升级
-    4.提交时将流程实例id写入到主表中，根据关联的数据写入到案例库中
-    5.注意数据可保存草稿
-     */
-
-
-    /**
-     * 有案例数据申请获取树
-     *
-     * @return
-     */
-    @ResponseBody
-    @RequestMapping(value = "/getCaseZtreeDto", method = RequestMethod.GET)
-    public List<ZtreeDto> getCaseZtreeDto(Integer caseEstateId, Integer applyBatchId) throws Exception {
-        return basicApplyBatchService.getCaseApplyZtreeDto(caseEstateId, applyBatchId);
-    }
-
-    /**
-     * 有案例数据审批获取树
-     *
-     * @return
-     */
-    @ResponseBody
-    @RequestMapping(value = "/getCaseApprovalZtreeDto", method = RequestMethod.GET)
-    public List<ZtreeDto> getCaseApprovalZtreeDto(Integer applyBatchId) throws Exception {
-        return basicApplyBatchService.getCaseApprovalZtreeDto(applyBatchId);
-    }
-
-
-    /**
-     * 新增楼盘时获取树
-     * 初始化treeByPlanDetailsId
-     *
-     * @return
-     */
-    @ResponseBody
-    @RequestMapping(value = "/getBatchApplyTree", method = RequestMethod.GET)
-    public List<ZtreeDto> getZtreeDto(Integer estateId) throws Exception {
-        return basicApplyBatchService.getZtreeDto(estateId);
-    }
 
     /**
      * 初始化treeByPlanDetailsId
@@ -219,7 +210,7 @@ public class BasicApplyBatchController extends BaseController {
     @RequestMapping(value = "/getTreeByPlanDetailsId", method = RequestMethod.GET)
     public List<ZtreeDto> getTreeByPlanDetailsId(Integer planDetailsId) throws Exception {
         BasicApplyBatch applyBatch = basicApplyBatchService.getBasicApplyBatchByPlanDetailsId(planDetailsId);
-        return basicApplyBatchService.getZtreeDto(applyBatch.getEstateId());
+        return basicApplyBatchService.getZtreeDto(applyBatch.getId());
     }
 
     @ResponseBody
@@ -228,7 +219,7 @@ public class BasicApplyBatchController extends BaseController {
         try {
             return HttpResult.newCorrectResult(basicApplyBatchDetailService.getBasicApplyBatchDetailList(basicApplyBatchDetail));
         } catch (Exception e1) {
-            log.error(e1.getMessage(), e1);
+            logger.error(e1.getMessage(), e1);
             return HttpResult.newErrorResult("异常");
         }
     }
@@ -240,7 +231,7 @@ public class BasicApplyBatchController extends BaseController {
             basicApplyBatchService.saveBasicApplyBatch(basicApplyBatch);
             return HttpResult.newCorrectResult(basicApplyBatch);
         } catch (Exception e1) {
-            log.error(e1.getMessage(), e1);
+            logger.error(e1.getMessage(), e1);
             return HttpResult.newErrorResult("保存数据异常");
         }
     }
@@ -253,7 +244,7 @@ public class BasicApplyBatchController extends BaseController {
             BasicApplyBatchDetailVo basicApplyBatchDetailVo = basicApplyBatchDetailService.getBasicApplyBatchDetailVo(basicApplyBatchDetailService.addBasicApplyBatchDetail(basicApplyBatchDetail, planDetailsId));
             return HttpResult.newCorrectResult(basicApplyBatchDetailVo);
         } catch (Exception e1) {
-            log.error(e1.getMessage(), e1);
+            logger.error(e1.getMessage(), e1);
             return HttpResult.newErrorResult("保存数据异常");
         }
     }
@@ -317,11 +308,11 @@ public class BasicApplyBatchController extends BaseController {
                 break;
             case BUILDING:
                 modelAndView.addObject("basicBuilding", basicBuildingService.getBasicBuildingById(tbId));
-                BasicApplyBatch applyBatchById = basicApplyBatchService.getBasicApplyBatchById(applyBatchId);
                 BasicApplyBatchDetail batchDetailBuild = basicApplyBatchDetailService.getBasicApplyBatchDetail(applyBatchId, FormatUtils.entityNameConvertToTableName(BasicBuilding.class), tbId);
                 modelAndView.addObject("bisStructure", batchDetailBuild.getBisStructure());
-                if (applyBatchById != null) {
-                    quoteId = applyBatchById.getQuoteId();
+                basicApplyBatchDetail = basicApplyBatchDetailService.getDataById(batchDetailBuild.getPid());
+                if (basicApplyBatchDetail != null) {
+                    quoteId = basicApplyBatchDetail.getQuoteId();
                 }
                 break;
             case UNIT:
@@ -375,7 +366,6 @@ public class BasicApplyBatchController extends BaseController {
         if (applyBatchId != null) {
             BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchById(applyBatchId);
             modelAndView.addObject(StringUtils.uncapitalize(BasicApplyBatch.class.getSimpleName()), basicApplyBatch);
-            modelAndView.addObject("showTab", basicApplyBatch.getShowTab());
         }
         return modelAndView;
     }
@@ -529,10 +519,10 @@ public class BasicApplyBatchController extends BaseController {
             basicApplyBatchService.saveDraft(formData, applyBatchId, planDetailsId);
             return HttpResult.newCorrectResult();
         } catch (BusinessException e) {
-            log.error(e.getMessage(), e);
+            logger.error(e.getMessage(), e);
             return HttpResult.newErrorResult(e.getMessage());
         } catch (Exception e1) {
-            log.error(e1.getMessage(), e1);
+            logger.error(e1.getMessage(), e1);
             return HttpResult.newErrorResult("保存信息异常");
         }
     }
@@ -544,10 +534,10 @@ public class BasicApplyBatchController extends BaseController {
             //发起流程
             basicApplyBatchService.processStartSubmit(id);
         } catch (BusinessException e) {
-            log.error(e.getMessage(), e);
+            logger.error(e.getMessage(), e);
             return HttpResult.newErrorResult(e.getMessage());
         } catch (Exception e) {
-            log.error(e.getMessage(), e);
+            logger.error(e.getMessage(), e);
             return HttpResult.newErrorResult("案例申请提交异常");
         }
         return HttpResult.newCorrectResult();
@@ -562,7 +552,7 @@ public class BasicApplyBatchController extends BaseController {
             BasicApplyBatch applyBatch = basicApplyBatchService.getBasicApplyBatchByProcessInsId(processInsId);
             modelAndView.addObject("applyBatch", applyBatch);
         } catch (Exception e1) {
-            log.error(e1.getMessage(), e1);
+            logger.error(e1.getMessage(), e1);
         }
         return modelAndView;
     }
@@ -576,7 +566,7 @@ public class BasicApplyBatchController extends BaseController {
             BasicApplyBatch applyBatch = basicApplyBatchService.getBasicApplyBatchByProcessInsId(processInsId);
             modelAndView.addObject("applyBatch", applyBatch);
         } catch (Exception e1) {
-            log.error(e1.getMessage(), e1);
+            logger.error(e1.getMessage(), e1);
         }
         return modelAndView;
     }
@@ -588,7 +578,7 @@ public class BasicApplyBatchController extends BaseController {
             basicApplyBatchService.processApprovalSubmit(approvalModelDto);
             return HttpResult.newCorrectResult();
         } catch (Exception e1) {
-            log.error(e1.getMessage(), e1);
+            logger.error(e1.getMessage(), e1);
             return HttpResult.newErrorResult(e1);
         }
     }
@@ -603,7 +593,7 @@ public class BasicApplyBatchController extends BaseController {
             BasicApplyBatch applyBatch = basicApplyBatchService.getBasicApplyBatchByProcessInsId(processInsId);
             modelAndView.addObject("applyBatch", applyBatch);
         } catch (Exception e1) {
-            log.error(e1.getMessage(), e1);
+            logger.error(e1.getMessage(), e1);
         }
         return modelAndView;
     }
@@ -616,7 +606,7 @@ public class BasicApplyBatchController extends BaseController {
             basicApplyBatchService.processEditSubmit(approvalModelDto);
             return HttpResult.newCorrectResult();
         } catch (Exception e1) {
-            log.error(e1.getMessage(), e1);
+            logger.error(e1.getMessage(), e1);
             return HttpResult.newErrorResult("返回修改提交异常");
         }
     }
@@ -635,7 +625,7 @@ public class BasicApplyBatchController extends BaseController {
             basicApplyBatchService.deleteBasicBatchApply(id);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
-            log.error(e.getMessage(), e);
+            logger.error(e.getMessage(), e);
             return HttpResult.newErrorResult("删除草稿数据异常");
         }
     }
@@ -667,7 +657,7 @@ public class BasicApplyBatchController extends BaseController {
             basicApplyBatchService.saveBasicApplyBatch(basicApplyBatch);
             return HttpResult.newCorrectResult(basicApplyBatch);
         } catch (Exception e1) {
-            log.error(e1.getMessage(), e1);
+            logger.error(e1.getMessage(), e1);
             return HttpResult.newErrorResult("保存数据异常");
         }
     }
@@ -679,11 +669,10 @@ public class BasicApplyBatchController extends BaseController {
             Integer caseEstateId = basicApplyBatchService.verification(basicApplyBatch);
             return HttpResult.newCorrectResult(caseEstateId);
         } catch (Exception e1) {
-            log.error(e1.getMessage(), e1);
+            logger.error(e1.getMessage(), e1);
             return HttpResult.newErrorResult("保存数据异常");
         }
     }
-
 
 
     /**
@@ -765,7 +754,7 @@ public class BasicApplyBatchController extends BaseController {
             basicApplyBatchService.pasteExamineInfo(sourceBatchDetailId, targeBatchDetailId);
             return HttpResult.newCorrectResult();
         } catch (Exception e1) {
-            log.error(e1.getMessage(), e1);
+            logger.error(e1.getMessage(), e1);
             return HttpResult.newErrorResult("保存数据异常");
         }
     }
@@ -777,7 +766,7 @@ public class BasicApplyBatchController extends BaseController {
             basicApplyBatchService.deepCopy(sourceBatchDetailId);
             return HttpResult.newCorrectResult();
         } catch (Exception e1) {
-            log.error(e1.getMessage(), e1);
+            logger.error(e1.getMessage(), e1);
             return HttpResult.newErrorResult("保存数据异常");
         }
     }
@@ -787,10 +776,6 @@ public class BasicApplyBatchController extends BaseController {
     public HttpResult saveBasicApplyBatch(String formData) {
         try {
             BasicApplyBatch applyBatch = JSON.parseObject(formData, BasicApplyBatch.class);
-            if (applyBatch.getPlanDetailsId() == null) {
-                applyBatch.setDraftFlag(true);
-            }
-
             basicApplyBatchService.saveBasicApplyBatch(applyBatch);
             return HttpResult.newCorrectResult(applyBatch);
         } catch (Exception e) {
@@ -816,17 +801,6 @@ public class BasicApplyBatchController extends BaseController {
         }
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/upgrade", name = "升级", method = RequestMethod.POST)
-    public HttpResult upgrade(Integer sourceCaseTableId, String type, Integer applyBatchId, Integer pid) {
-        try {
-            BasicApplyBatchDetail upgrade = basicApplyBatchService.upgrade(sourceCaseTableId, type, applyBatchId, pid);
-            return HttpResult.newCorrectResult(upgrade);
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-            return HttpResult.newErrorResult("获取标准对象数量");
-        }
-    }
 
     @ResponseBody
     @RequestMapping(value = "/editBuildingStatus", method = {RequestMethod.POST}, name = "保存")

@@ -7,7 +7,6 @@ import com.copower.pmcc.assess.dal.basis.entity.DataBuildingInstallCost;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataBuildingInstallCostService;
-import com.copower.pmcc.assess.service.project.generate.GenerateMdBaseLandPriceService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -63,7 +62,7 @@ public class DataBuildingInstallCostController extends BaseController {
                 dataBuildingInstallCost = dataBuildingInstallCostService.getDataBuildingInstallCostById(id);
             }
         } catch (Exception e1) {
-            log.error(String.format("exception: %s" + e1.getMessage()), e1);
+            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
             return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
         }
         return HttpResult.newCorrectResult(dataBuildingInstallCost);
@@ -76,7 +75,7 @@ public class DataBuildingInstallCostController extends BaseController {
         try {
             vo = dataBuildingInstallCostService.getDataBuildingInstallCostListVos(province, city, district);
         } catch (Exception e1) {
-            log.error(String.format("exception: %s", e1.getMessage()), e1);
+            logger.error(String.format("exception: %s", e1.getMessage()), e1);
             return null;
         }
         return vo;
@@ -93,7 +92,7 @@ public class DataBuildingInstallCostController extends BaseController {
                 return HttpResult.newCorrectResult();
             }
         } catch (Exception e1) {
-            log.error(String.format("exception: %s" + e1.getMessage()), e1);
+            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
             return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
         }
         return null;
@@ -108,7 +107,7 @@ public class DataBuildingInstallCostController extends BaseController {
             dataBuildingInstallCostService.saveAndUpdateDataBuildingInstallCost(dataBuildingInstallCost);
             return HttpResult.newCorrectResult("保存 success!");
         } catch (Exception e) {
-            log.error(String.format("exception: %s", e.getMessage()), e);
+            logger.error(String.format("exception: %s", e.getMessage()), e);
             return HttpResult.newErrorResult("保存异常");
         }
     }
