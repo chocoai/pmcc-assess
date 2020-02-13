@@ -8,25 +8,20 @@
 <div class="container body">
     <div class="main_container">
         <div class="right_col" id="basicApplyId" role="main" style="margin-left: 0">
-
             <div class="x_content">
                 <form class="form-horizontal">
                     <div class="form-group">
                         <div class="x-valid">
-                            <c:if test="${showTab eq false}">
-                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                    <input type="button" class="btn btn-success" data-mode="reference"
-                                           onclick="fillInformation.showProjectQuoteModal();"
-                                           value="引用项目中的楼盘">
-                                </div>
-                            </c:if>
-                            <c:if test="${showTab eq true}">
-                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                    <input type="button" class="btn btn-success" data-mode="reference"
-                                           onclick="fillInformation.showCaseQuoteModal();"
-                                           value="引用案例数据">
-                                </div>
-                            </c:if>
+                            <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                <input type="button" class="btn btn-success" data-mode="reference"
+                                       onclick="fillInformation.showProjectQuoteModal();"
+                                       value="引用项目中的楼盘">
+                            </div>
+                            <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                <input type="button" class="btn btn-success" data-mode="reference"
+                                       onclick="fillInformation.showCaseQuoteModal();"
+                                       value="引用案例数据">
+                            </div>
                         </div>
                     </div>
                 </form>

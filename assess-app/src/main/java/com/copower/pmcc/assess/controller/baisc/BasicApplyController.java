@@ -67,7 +67,7 @@ public class BasicApplyController extends BaseController {
             basicHouseService.clearInvalidData(0);
             //basicEstateTaggingService.clearInvalidData(0);
         } catch (Exception e1) {
-            log.error("清除数据异常", e1);
+            logger.error("清除数据异常", e1);
         }
 
         //设置初始参数
@@ -89,7 +89,7 @@ public class BasicApplyController extends BaseController {
             basicApplyService.processApprovalSubmit(approvalModelDto, blockName, writeBackBlockFlag);
             return HttpResult.newCorrectResult();
         } catch (Exception e1) {
-            log.error(e1.getMessage(), e1);
+            logger.error(e1.getMessage(), e1);
             return HttpResult.newErrorResult(e1);
         }
     }
@@ -104,7 +104,7 @@ public class BasicApplyController extends BaseController {
             }
             this.setViewParam(basicApply, modelAndView);
         } catch (Exception e1) {
-            log.error(e1.getMessage(), e1);
+            logger.error(e1.getMessage(), e1);
         }
         return modelAndView;
     }
@@ -116,10 +116,10 @@ public class BasicApplyController extends BaseController {
             basicApplyService.processEditSubmit(approvalModelDto);
             return HttpResult.newCorrectResult();
         } catch (BusinessException e) {
-            log.error(e.getMessage(), e);
+            logger.error(e.getMessage(), e);
             return HttpResult.newErrorResult(e.getMessage());
         } catch (Exception e1) {
-            log.error(e1.getMessage(), e1);
+            logger.error(e1.getMessage(), e1);
             return HttpResult.newErrorResult("案例申请返回修改提交异常");
         }
     }
@@ -206,7 +206,7 @@ public class BasicApplyController extends BaseController {
             BasicApply basicApply = basicApplyService.getByBasicApplyId(id);
             this.setViewParam(basicApply, modelAndView);
         } catch (Exception e1) {
-            log.error(e1.getMessage(), e1);
+            logger.error(e1.getMessage(), e1);
         }
         return modelAndView;
     }
@@ -219,7 +219,7 @@ public class BasicApplyController extends BaseController {
             try {
                 this.setViewParam(basicApply, modelAndView);
             } catch (Exception e1) {
-                log.info("参数处理错误!", e1);
+                logger.info("参数处理错误!", e1);
             }
         }
         return modelAndView;
@@ -231,7 +231,7 @@ public class BasicApplyController extends BaseController {
         try {
             return HttpResult.newCorrectResult();
         } catch (Exception e1) {
-            log.error(e1.getMessage(), e1);
+            logger.error(e1.getMessage(), e1);
             return HttpResult.newErrorResult("保存草稿异常");
         }
     }
@@ -243,7 +243,7 @@ public class BasicApplyController extends BaseController {
             basicApplyService.deleteBasicApply(id);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
-            log.error(e.getMessage(), e);
+            logger.error(e.getMessage(), e);
             return HttpResult.newErrorResult("删除草稿数据异常");
         }
     }
@@ -271,7 +271,7 @@ public class BasicApplyController extends BaseController {
             }
             return HttpResult.newCorrectResult(basicApply);
         } catch (Exception e) {
-            log.error(e.getMessage(), e);
+            logger.error(e.getMessage(), e);
             return HttpResult.newErrorResult("单纯的就是修改或者添加异常");
         }
     }
@@ -296,7 +296,7 @@ public class BasicApplyController extends BaseController {
         try {
             return HttpResult.newCorrectResult(basicApplyService.getBasicApplyByPlanDetailsId(planDetailsId));
         } catch (Exception e1) {
-            log.error(e1.getMessage(), e1);
+            logger.error(e1.getMessage(), e1);
             return HttpResult.newErrorResult("获取数据异常");
         }
     }

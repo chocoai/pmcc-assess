@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.controller.baisc;
 import com.copower.pmcc.assess.dal.basis.custom.entity.CustomCaseEntity;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicAlternativeCaseDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDetailDao;
+import com.copower.pmcc.assess.dal.basis.entity.BasicAlternativeCase;
 import com.copower.pmcc.assess.dal.basis.entity.BasicHouse;
 import com.copower.pmcc.assess.dal.basis.entity.BasicHouseTrading;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseTradingVo;
@@ -110,6 +111,19 @@ public class BasicHouseController {
     public HttpResult getBasicHouseByApplyId(Integer applyId) {
         try {
             return HttpResult.newCorrectResult(basicHouseService.getBasicHouseByApplyId(applyId));
+        } catch (Exception e) {
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/quoteFromAlternative", name = "引用项目中的数据批量时", method = {RequestMethod.GET})
+    public HttpResult quoteFromAlternative(Integer id, Integer tableId) {
+        try {
+            BasicAlternativeCase alternativeCase = basicAlternativeCaseDao.getBasicAlternativeCaseById(id);
+            BasicHouse basicHouse = basicHouseService.copyBasicHouse(alternativeCase.getBusinessId(), tableId, true);
+            return HttpResult.newCorrectResult(basicHouse);
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(e.getMessage());

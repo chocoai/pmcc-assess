@@ -79,7 +79,7 @@ public class NetInfoAssignTaskController extends BaseController {
         try {
             netInfoAssignTaskService.applyCommit(id, BaseParameterEnum.NET_INFO_COMPLEMENT_PROCESS_KEY);
         } catch (BusinessException e) {
-            log.error("修改项目信息异常", e);
+            logger.error("修改项目信息异常", e);
             e.printStackTrace();
         }
         return HttpResult.newCorrectResult();
@@ -105,7 +105,7 @@ public class NetInfoAssignTaskController extends BaseController {
             netInfoAssignTaskService.approvalCommit(approvalModelDto, processInsId);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
-            log.error("提交失败", e);
+            logger.error("提交失败", e);
             return HttpResult.newErrorResult(e);
         }
     }
@@ -137,7 +137,7 @@ public class NetInfoAssignTaskController extends BaseController {
             netInfoAssignTaskService.processEditSubmit(approvalModelDto);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
-            log.error("修改失败", e);
+            logger.error("修改失败", e);
             return HttpResult.newErrorResult(e);
         }
     }
@@ -183,7 +183,7 @@ public class NetInfoAssignTaskController extends BaseController {
                 }
             }
         } catch (Exception e) {
-            log.error("任务退回失败", e);
+            logger.error("任务退回失败", e);
             return HttpResult.newErrorResult(e.getMessage());
         }
         return HttpResult.newCorrectResult();

@@ -55,7 +55,7 @@ public class DataDispatchRegisterController extends BaseController {
                 dataDispatchRegister = dataDispatchRegisterService.getDataDispatchRegisterById(id);
             }
         } catch (Exception e1) {
-            log.error(String.format("exception: %s" + e1.getMessage()), e1);
+            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
             return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
         }
         return HttpResult.newCorrectResult(dataDispatchRegister);
@@ -69,7 +69,7 @@ public class DataDispatchRegisterController extends BaseController {
         try {
             vo = dataDispatchRegisterService.getDataDispatchRegisterListVos();
         } catch (Exception e1) {
-            log.error(String.format("exception: %s", e1.getMessage()), e1);
+            logger.error(String.format("exception: %s", e1.getMessage()), e1);
             return null;
         }
         return vo;
@@ -86,7 +86,7 @@ public class DataDispatchRegisterController extends BaseController {
                 return HttpResult.newCorrectResult();
             }
         } catch (Exception e1) {
-            log.error(String.format("exception: %s" + e1.getMessage()), e1);
+            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
             return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
         }
         return null;
@@ -100,7 +100,7 @@ public class DataDispatchRegisterController extends BaseController {
             dataDispatchRegisterService.saveAndUpdateDataDispatchRegister(dataDispatchRegister);
             return HttpResult.newCorrectResult("保存 success!");
         } catch (Exception e) {
-            log.error(String.format("exception: %s", e.getMessage()), e);
+            logger.error(String.format("exception: %s", e.getMessage()), e);
             return HttpResult.newErrorResult("保存异常");
         }
     }

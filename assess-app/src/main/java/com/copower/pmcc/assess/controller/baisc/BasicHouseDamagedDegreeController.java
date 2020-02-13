@@ -27,7 +27,7 @@ public class BasicHouseDamagedDegreeController extends BaseController {
         try {
             return HttpResult.newCorrectResult(basicHouseDamagedDegreeService.getDamagedDegreeVoList(houseId));
         } catch (Exception e) {
-            log.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(e.getMessage());
         }
     }
@@ -46,7 +46,7 @@ public class BasicHouseDamagedDegreeController extends BaseController {
             basicHouseDamagedDegreeService.saveAndUpdateDamagedDegreeDetail(basicHouseDamagedDegreeDetail,true);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
-            log.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(e.getMessage());
         }
     }
@@ -58,7 +58,7 @@ public class BasicHouseDamagedDegreeController extends BaseController {
             basicHouseDamagedDegreeService.deleteDamagedDegreeDetail(id);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
-            log.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(e.getMessage());
         }
     }

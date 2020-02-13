@@ -63,12 +63,10 @@
                     <div class="col-md-3 col-lg-offset-1" style="max-height: 500px;overflow: auto;">
                         <ul id="ztree" class="ztree"></ul>
                     </div>
-                    <div class="col-md-4" id="btnGroup">
-                        <a class="btn btn-xs btn-success baseTool" onclick="batchTreeTool.showAddModal()">
+                    <div class="col-md-4">
+                        <span id="btnGroup">
+                            <a class="btn btn-xs btn-success baseTool" onclick="batchTreeTool.showAddModal()">
                             新增
-                        </a>
-                        <a class="btn btn-xs btn-primary" onclick=" batchTreeTool.getAndEditDetail();">
-                            编辑
                         </a>
                         <a class="btn btn-xs btn-warning" onclick=" batchTreeTool.deleteDetail();">
                             删除
@@ -88,16 +86,18 @@
                         <a class="btn btn-xs btn-warning paste" onclick="batchTreeTool.paste();">
                             粘贴
                         </a>
+                        </span>
                     </div>
                     <c:if test="${basicApplyBatch.caseEstateId ge 0}">
                         <div class="col-md-3" style="max-height: 500px;overflow: auto;">
                             <ul id="estateCaseZtree" class="ztree"></ul>
                         </div>
-                        <div class="col-md-1" >
-                            <a class="btn btn-xs btn-success baseTool" onclick="batchTreeTool.showAddModal()">
+                        <div class="col-md-1">
+                            <a class="btn btn-xs btn-success baseTool" onclick="batchTreeTool.addFromCase()">
                                 新增
                             </a>
-                            <a class="btn btn-xs btn-primary caseTool" onclick="batchTreeTool.upgrade();">升级</a>
+                            <a class="btn btn-xs btn-primary caseTool"
+                               onclick=" batchTreeTool.upgradeFromCase();">升级</a>
                         </div>
                     </c:if>
                     <div id="detail_modal" class="modal fade bs-example-modal-lg" data-backdrop="static"
@@ -195,9 +195,6 @@
                         <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
                             取消
                         </button>
-                        <button class="btn btn-warning" onclick="saveDraft()">
-                            保存<i style="margin-left: 10px" class="fa fa-save"></i>
-                        </button>
                         <button id="btn_submit" class="btn btn-success" onclick="submit();">
                             提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
                         </button>
@@ -222,7 +219,7 @@
 
 <script type="text/javascript">
     $(function () {
-        batchTreeTool.ztreeInit(${basicApplyBatch.estateId});
+        batchTreeTool.ztreeInit(${basicApplyBatch.id});
         if ('${basicApplyBatch.caseEstateId ge 0}' == 'true') {
             batchTreeTool.caseEstateZtreeInit('${basicApplyBatch.caseEstateId}');
             $("#basicBatchApplyFrm").find("select[name='classify']").attr("disabled", "disabled");
@@ -256,7 +253,6 @@
                         Alert("提交数据成功!", 1, null, function () {
                             window.close();
                         });
-
                     } else {
                         Alert(result.errmsg);
                     }
@@ -319,7 +315,7 @@
                 if (result.ret) {
                     $("#basicBatchApplyFrm").find('[name=id]').val(result.data.id);
                     $("#basicBatchApplyFrm").find('[name=estateId]').val(result.data.estateId);
-                    batchTreeTool.ztreeInit(result.data.estateId);
+                    batchTreeTool.ztreeInit(result.data.id);
                 } else {
                     Alert(result.errmsg);
                 }
@@ -352,54 +348,19 @@
                 return "estate";
             }
             case "tb_basic_building": {
-
                 return "building";
             }
             case "tb_basic_unit": {
-
                 return "unit";
             }
-
             case "tb_basic_house": {
                 return "house";
             }
         }
     }
 </script>
-
 <script type="text/javascript">
-
-    //添加楼栋等信息
-    function saveApplyInfo(_this) {
-        if (!$("#basicBatchApplyFrm").valid()) {
-            return false;
-        }
-        var formData = formParams("basicBatchApplyFrm");
-        $.ajax({
-            url: "${pageContext.request.contextPath}/basicApplyBatch/saveApplyInfo",
-            type: "post",
-            dataType: "json",
-            data: formData,
-            success: function (result) {
-                if (result.ret) {
-                    $(_this).hide();
-                    $("#basicBatchApplyFrm").find("input[name='id']").val(result.data.id);
-                    $("#estateId").val(result.data.estateId);
-                    $("#basicBatchApplyFrm").find("input").attr("readonly", "readonly");
-                    $("#basicBatchApplyFrm").find("select").attr("disabled", "disabled");
-
-                    batchTreeTool.ztreeInit(result.data);
-                } else {
-                    Alert(result.errmsg);
-                }
-            }
-        });
-    }
-
-
-</script>
-<script type="text/javascript">
-    var batchApply = undefined;
+    var zTreeObj, caseEstateZtreeObj;
     var setting = {
         data: {
             key: {
@@ -414,7 +375,20 @@
         },// 回调函数
         callback: {
             onClick: function (event, treeId, treeNode, clickFlag) {
-                batchTreeTool.showDetailHref();
+                batchTreeTool.showOperationBtn();
+            }
+        }
+    };
+    var caseEstateSetting = {
+        data: {
+            key: {
+                name: "displayName"
+            },
+            simpleData: {
+                enable: true,
+                idKey: "id",
+                pIdKey: "pid",
+                rootPId: 0
             }
         }
     };
@@ -423,10 +397,10 @@
     };
 
     //初始化tree
-    batchTreeTool.ztreeInit = function (estateId) {
+    batchTreeTool.ztreeInit = function (basicApplyBatchId) {
         $.ajax({
             url: '${pageContext.request.contextPath}/basicApplyBatch/getBatchApplyTree',
-            data: {estateId: estateId},
+            data: {basicApplyBatchId: basicApplyBatchId},
             type: 'get',
             dataType: "json",
             success: function (result) {
@@ -450,23 +424,20 @@
             type: 'get',
             dataType: "json",
             success: function (result) {
-                zTreeObj = $.fn.zTree.init($("#estateCaseZtree"), setting, result);
-                //展开第一级，选中根节点
-                var rootNode = zTreeObj.getNodes()[0];
-                zTreeObj.selectNode(rootNode);
-                zTreeObj.expandAll(true);
-                zTreeObj.setting.callback.onClick(null, zTreeObj.setting.treeId, rootNode);//调用事件
+                caseEstateZtreeObj = $.fn.zTree.init($("#estateCaseZtree"), caseEstateSetting, result);
+                caseEstateZtreeObj.expandAll(true);
             }
         })
     }
 
     //添加数据打开modal
-    batchTreeTool.showAddModal = function () {
-        var node = zTreeObj.getSelectedNodes()[0];
-        var level = node.level;
+    batchTreeTool.showAddModal = function (node) {
+        if (!node) {
+            node = zTreeObj.getSelectedNodes()[0];
+        }
         var html = "";
-        switch (level) {
-            case 0: {
+        switch (node.tableName) {
+            case "tb_basic_estate": {
                 $("#frm_detail").find("input[name='tableName']").val("tb_basic_building");
                 html += "<label class='col-sm-2 control-label'>";
                 html += "楼栋编号";
@@ -477,7 +448,7 @@
                 html += "</div>";
                 break;
             }
-            case 1: {
+            case "tb_basic_building": {
                 $("#frm_detail").find("input[name='tableName']").val("tb_basic_unit");
                 html += "<label class='col-sm-2 control-label'>";
                 html += "单元编号";
@@ -488,7 +459,7 @@
                 html += "</div>";
                 break;
             }
-            case 2: {
+            case "tb_basic_unit": {
                 $("#frm_detail").find("input[name='tableName']").val("tb_basic_house");
                 html += "<label class='col-sm-2 control-label'>";
                 html += "房号";
@@ -500,8 +471,7 @@
                 html += "<label class='col-sm-2 control-label'>";
                 break;
             }
-
-            case 3: {
+            case "tb_basic_house": {
                 Alert("房屋下无法继续添加节点。");
                 return false;
                 break;
@@ -509,14 +479,7 @@
         }
         $("#detailContent").empty().append(html);
         $("#frm_detail").find("input[name='applyBatchId']").val($("#basicBatchApplyFrm").find('[name=id]').val());
-
-        if (node.bisModify == false) {
-            $("#frm_detail").find("input[name='caseTablePid']").val(node.id);
-            $("#frm_detail").find("input[name='pid']").val("");
-        } else {
-            $("#frm_detail").find("input[name='caseTablePid']").val("");
-            $("#frm_detail").find("input[name='pid']").val(node.id);
-        }
+        $("#frm_detail").find("input[name='pid']").val(node.id);
         $("#detail_modal").modal();
     }
 
@@ -535,130 +498,21 @@
             success: function (result) {
                 if (result.ret) {
                     toastr.success('保存成功');
-                    var tableType = getTableType(result.data.tableName);
-                    var node = zTreeObj.getSelectedNodes()[0];
-                    if (node.bisModify == false) {
-                        zTreeObj.addNodes(node, {
-                            id: result.data.id,
-                            pid: result.data.caseTablePid,
-                            tableId: result.data.tableId,
-                            type: tableType,
-                            displayName: result.data.displayName + "(新增)"
-                        });
+                    if ('${basicApplyBatch.caseEstateId ge 0}' == 'true') {
+                        batchTreeTool.ztreeInit(${basicApplyBatch.id});
                     } else {
+                        var tableType = getTableType(result.data.tableName);
+                        var node = zTreeObj.getSelectedNodes()[0];
                         zTreeObj.addNodes(node, {
                             id: result.data.id,
                             pid: result.data.pid,
                             tableId: result.data.tableId,
+                            tableName: result.data.tableName,
                             type: tableType,
                             displayName: result.data.displayName
                         });
                     }
-
                     $('#detail_modal').modal('hide');
-                } else {
-                    Alert("保存数据失败，失败原因:" + result.errmsg);
-                }
-            }
-        });
-    }
-
-    //编辑明细
-    batchTreeTool.getAndEditDetail = function () {
-        var node = zTreeObj.getSelectedNodes()[0];
-
-        if (node.bisModify == false) {
-            Alert("案例数据无法修改。");
-            return false;
-        }
-        if (node.level == 0) {
-            Alert("楼盘信息请在【填写信息】中修改。");
-            return false;
-        }
-        $.ajax({
-            url: "${pageContext.request.contextPath}/basicApplyBatch/getAndEditDetail",
-            data: {id: node.id},
-            type: "get",
-            dataType: "json",
-            success: function (result) {
-                if (result.ret) {
-                    batchTreeTool.showEditModal(result.data);
-                }
-            }
-        })
-    }
-
-    //编辑数据打开modal
-    batchTreeTool.showEditModal = function (data) {
-        var node = zTreeObj.getSelectedNodes()[0];
-        var level = node.level;
-        var html = "";
-        switch (level) {
-            case 1: {
-                $("#frm_detail_b").find("input[name='tableName']").val("tb_basic_building");
-                html += "<label class='col-sm-2 control-label'>";
-                html += "楼栋编号";
-                html += "</label>";
-                html += " <div class='col-sm-4'>";
-                html += "<input type='text'  name='name' class='form-control' required>";
-                html += "</div>";
-                break;
-            }
-            case 2: {
-                $("#frm_detail_b").find("input[name='tableName']").val("tb_basic_unit");
-                html += "<label class='col-sm-2 control-label'>";
-                html += "单元编号";
-                html += "</label>";
-                html += " <div class='col-sm-4'>";
-                html += "<input type='text'  name='name' class='form-control' required>";
-                html += "</div>";
-                break;
-            }
-            case 3: {
-                $("#frm_detail_b").find("input[name='tableName']").val("tb_basic_house");
-                html += "<label class='col-sm-2 control-label'>";
-                html += "房号";
-                html += "</label>";
-                html += " <div class='col-sm-4'>";
-                html += "<input type='text'  name='name' class='form-control' required>";
-                html += "</div>";
-                break;
-            }
-        }
-        $("#frm_detail_b").clearAll();
-        $("#frm_detail_b").find("#detailContent_b").empty().append(html);
-        $("#frm_detail_b").initForm(data);
-        $("#bisStandard_b").val('' + data.bisStandard);
-        $("#detail_modal_b").modal();
-    }
-
-    //保存编辑明细
-    batchTreeTool.saveEditItemData = function () {
-        if (!$("#frm_detail").valid()) {
-            return false;
-        }
-        var formData = formParams("frm_detail_b");
-        $.ajax({
-            url: "${pageContext.request.contextPath}/basicApplyBatch/saveItemData",
-            type: "post",
-            dataType: "json",
-            data: {
-                formData: JSON.stringify(formData),
-                planDetailsId: '${projectPlanDetails.id}'
-            },
-            success: function (result) {
-                if (result.ret) {
-                    toastr.success('保存成功');
-                    var tableType = getTableType(result.data.tableName);
-                    var node = zTreeObj.getSelectedNodes()[0];
-                    node.id = result.data.id;
-                    node.tableId = result.data.tableId;
-                    node.name = result.data.name;
-                    node.displayName = result.data.displayName;
-                    node.pid = result.data.pid;
-                    node.type = tableType,
-                        zTreeObj.updateNode(node, false);
-                    $('#detail_modal_b').modal('hide');
                 } else {
                     Alert("保存数据失败，失败原因:" + result.errmsg);
                 }
@@ -705,15 +559,9 @@
     //进入填写信息页面
     batchTreeTool.fillInformation = function () {
         var node = zTreeObj.getSelectedNodes()[0];
-        if (node.bisModify == false) {
-            Alert("案例数据无法修改。");
-            return false;
-        }
         if (!$("#basicBatchApplyFrm").valid()) {
             return false;
         }
-        var node = zTreeObj.getSelectedNodes()[0];
-
         var classify = $("#basicBatchApplyFrm").find('[name=classify]').val();
         var formType = $("#basicBatchApplyFrm").find('[name=type]').val();
         var url = '${pageContext.request.contextPath}/basicApplyBatch/fillInfo?';
@@ -789,81 +637,72 @@
     }
 
     //查看信息链接
-    batchTreeTool.showDetailHref = function () {
+    batchTreeTool.showOperationBtn = function () {
         var node = zTreeObj.getSelectedNodes()[0];
-        if (node.bisModify == false) {
-            $("#btnGroup").find('.btn').not('.caseTool').hide();
-            $("#btnGroup").find('.btn.caseTool').show();
-            $("#btnGroup").find('.btn.baseTool').show();
+        if (node && node.tableId) {
+            $("#btnGroup").show();
         } else {
-            $("#btnGroup").find('.btn').not('.caseTool').show();
-            $("#btnGroup").find('.btn.caseTool').hide();
-            $("#btnGroup").find('.btn.baseTool').show();
+            $("#btnGroup").hide();
         }
     }
 
-    //案例信息详情
-    batchTreeTool.caseDetailView = function () {
-        var node = zTreeObj.getSelectedNodes()[0];
-        var href = "${pageContext.request.contextPath}/";
-        switch (node.type) {
-            case "estate": {
-                href += "caseEstate/detailView";
-                break;
-            }
-            case "building": {
-                href += "caseBuilding/detailView";
-                break;
-            }
-            case "unit": {
-                href += "caseUnit/detailView";
-                break;
-            }
-            case "house": {
-                href += "caseHouse/detailView";
-                break;
-            }
+    //新增
+    batchTreeTool.addFromCase = function () {
+        var node = caseEstateZtreeObj.getSelectedNodes()[0];
+        if (!node) {
+            Alert("请先选择节点");
+            return;
         }
-        href += "?id=" + node.id;
-        window.open(href, "");
-    }
-
-    //升级
-    batchTreeTool.upgrade = function () {
-        var node = zTreeObj.getSelectedNodes()[0];
         $.ajax({
-            url: "${pageContext.request.contextPath}/basicApplyBatch/upgrade",
+            url: "${pageContext.request.contextPath}/basicApplyBatch/initCaseEstateZtree",
             data: {
-                sourceCaseTableId: node.id,
-                type: node.type,
-                pid: node.pid,
-                applyBatchId: '${applyBatch.id}'
+                caseBatchDetailId: node.id,
+                containThis: true,
+                applyBatchId: '${basicApplyBatch.id}'
             },
             type: "post",
             dataType: "json",
             success: function (result) {
                 if (result.ret) {
-                    var node = zTreeObj.getSelectedNodes()[0];
-                    node.upgrade = result.data.tableId,
-                        node.displayName = node.displayName + "(升级)",
-                        zTreeObj.updateNode(node, false);
-
-                    var classify = $("#basicBatchApplyFrm").find('[name=classify]').val();
-                    var formType = $("#basicBatchApplyFrm").find('[name=type]').val();
-                    var url = '${pageContext.request.contextPath}/basicApplyBatch/fillInfo?';
-                    url += 'applyBatchId=' + $("#basicBatchApplyFrm").find('[name=id]').val();
-                    url += '&formClassify=' + classify;
-                    url += '&formType=' + formType;
-                    url += '&tbId=' + node.upgrade;
-                    url += '&tbType=' + node.type;
-                    openWin(url, function () {
-                    })
-                }
-                else {
-                    Alert("获取数据失败，失败原因:" + result.errmsg, 1, null, null);
+                    batchTreeTool.showAddModal({id: result.data.id, tableName: result.data.tableName});
                 }
             }
-        });
+        })
+    }
 
+    //升级
+    batchTreeTool.upgradeFromCase = function () {
+        var node = caseEstateZtreeObj.getSelectedNodes()[0];
+        if (!node) {
+            Alert("请先选择节点");
+            return;
+        }
+        $.ajax({
+            url: "${pageContext.request.contextPath}/basicApplyBatch/initCaseEstateZtree",
+            data: {
+                caseBatchDetailId: node.id,
+                containThis: false,
+                applyBatchId: '${basicApplyBatch.id}'
+            },
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                if (result.ret) {
+                    $.ajax({
+                        url: "${pageContext.request.contextPath}/basicApplyBatch/upgradeCase",
+                        data: {
+                            caseBatchDetailId: node.id,
+                            pid: result.data.id,
+                            applyBatchId: '${basicApplyBatch.id}'
+                        },
+                        type: "post",
+                        dataType: "json",
+                        success: function (result) {
+                            batchTreeTool.ztreeInit(${basicApplyBatch.id});
+                        }
+                    })
+                }
+            }
+        })
     }
 </script>

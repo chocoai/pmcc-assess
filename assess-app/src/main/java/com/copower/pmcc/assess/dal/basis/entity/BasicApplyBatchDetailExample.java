@@ -995,63 +995,63 @@ public class BasicApplyBatchDetailExample {
             return (Criteria) this;
         }
 
-        public Criteria andBisUpgradeIsNull() {
-            addCriterion("bis_upgrade is null");
+        public Criteria andBisFromCaseIsNull() {
+            addCriterion("bis_from_case is null");
             return (Criteria) this;
         }
 
-        public Criteria andBisUpgradeIsNotNull() {
-            addCriterion("bis_upgrade is not null");
+        public Criteria andBisFromCaseIsNotNull() {
+            addCriterion("bis_from_case is not null");
             return (Criteria) this;
         }
 
-        public Criteria andBisUpgradeEqualTo(Boolean value) {
-            addCriterion("bis_upgrade =", value, "bisUpgrade");
+        public Criteria andBisFromCaseEqualTo(Boolean value) {
+            addCriterion("bis_from_case =", value, "bisFromCase");
             return (Criteria) this;
         }
 
-        public Criteria andBisUpgradeNotEqualTo(Boolean value) {
-            addCriterion("bis_upgrade <>", value, "bisUpgrade");
+        public Criteria andBisFromCaseNotEqualTo(Boolean value) {
+            addCriterion("bis_from_case <>", value, "bisFromCase");
             return (Criteria) this;
         }
 
-        public Criteria andBisUpgradeGreaterThan(Boolean value) {
-            addCriterion("bis_upgrade >", value, "bisUpgrade");
+        public Criteria andBisFromCaseGreaterThan(Boolean value) {
+            addCriterion("bis_from_case >", value, "bisFromCase");
             return (Criteria) this;
         }
 
-        public Criteria andBisUpgradeGreaterThanOrEqualTo(Boolean value) {
-            addCriterion("bis_upgrade >=", value, "bisUpgrade");
+        public Criteria andBisFromCaseGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_from_case >=", value, "bisFromCase");
             return (Criteria) this;
         }
 
-        public Criteria andBisUpgradeLessThan(Boolean value) {
-            addCriterion("bis_upgrade <", value, "bisUpgrade");
+        public Criteria andBisFromCaseLessThan(Boolean value) {
+            addCriterion("bis_from_case <", value, "bisFromCase");
             return (Criteria) this;
         }
 
-        public Criteria andBisUpgradeLessThanOrEqualTo(Boolean value) {
-            addCriterion("bis_upgrade <=", value, "bisUpgrade");
+        public Criteria andBisFromCaseLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_from_case <=", value, "bisFromCase");
             return (Criteria) this;
         }
 
-        public Criteria andBisUpgradeIn(List<Boolean> values) {
-            addCriterion("bis_upgrade in", values, "bisUpgrade");
+        public Criteria andBisFromCaseIn(List<Boolean> values) {
+            addCriterion("bis_from_case in", values, "bisFromCase");
             return (Criteria) this;
         }
 
-        public Criteria andBisUpgradeNotIn(List<Boolean> values) {
-            addCriterion("bis_upgrade not in", values, "bisUpgrade");
+        public Criteria andBisFromCaseNotIn(List<Boolean> values) {
+            addCriterion("bis_from_case not in", values, "bisFromCase");
             return (Criteria) this;
         }
 
-        public Criteria andBisUpgradeBetween(Boolean value1, Boolean value2) {
-            addCriterion("bis_upgrade between", value1, value2, "bisUpgrade");
+        public Criteria andBisFromCaseBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_from_case between", value1, value2, "bisFromCase");
             return (Criteria) this;
         }
 
-        public Criteria andBisUpgradeNotBetween(Boolean value1, Boolean value2) {
-            addCriterion("bis_upgrade not between", value1, value2, "bisUpgrade");
+        public Criteria andBisFromCaseNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_from_case not between", value1, value2, "bisFromCase");
             return (Criteria) this;
         }
 

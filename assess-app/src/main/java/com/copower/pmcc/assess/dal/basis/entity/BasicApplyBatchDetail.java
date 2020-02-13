@@ -31,7 +31,7 @@ public class BasicApplyBatchDetail {
 
     private Boolean bisStandard;
 
-    private Boolean bisUpgrade;
+    private Boolean bisFromCase;
 
     private Boolean bisDelete;
 
@@ -153,12 +153,12 @@ public class BasicApplyBatchDetail {
         this.bisStandard = bisStandard;
     }
 
-    public Boolean getBisUpgrade() {
-        return bisUpgrade;
+    public Boolean getBisFromCase() {
+        return bisFromCase;
     }
 
-    public void setBisUpgrade(Boolean bisUpgrade) {
-        this.bisUpgrade = bisUpgrade;
+    public void setBisFromCase(Boolean bisFromCase) {
+        this.bisFromCase = bisFromCase;
     }
 
     public Boolean getBisDelete() {

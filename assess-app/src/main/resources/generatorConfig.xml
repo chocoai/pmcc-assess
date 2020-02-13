@@ -47,9 +47,6 @@
         <table tableName="tb_basic_apply_batch_detail" >
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
-        <table tableName="tb_basic_apply_batch" >
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
         <!--<table tableName="tb_md_development" domainObjectName="MdDevelopment">-->
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
             <!--<columnOverride column="head_content" jdbcType="VARCHAR"></columnOverride>-->

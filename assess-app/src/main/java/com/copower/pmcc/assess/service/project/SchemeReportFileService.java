@@ -11,7 +11,6 @@ import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeReportFileCust
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeReportFileDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeReportFileItemDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
-import com.copower.pmcc.assess.dto.output.basic.BasicEstateTaggingVo;
 import com.copower.pmcc.assess.dto.output.data.DataLocaleSurveyPictureVo;
 import com.copower.pmcc.assess.dto.output.project.scheme.SchemeReportFileItemVo;
 import com.copower.pmcc.assess.service.BaseService;
@@ -22,9 +21,7 @@ import com.copower.pmcc.assess.service.basic.*;
 import com.copower.pmcc.assess.service.data.DataLocaleSurveyPictureService;
 import com.copower.pmcc.assess.service.data.DataLocaleSurveyService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
-import com.copower.pmcc.assess.service.project.generate.GenerateBaseDataService;
 import com.copower.pmcc.assess.service.project.generate.GenerateCommonMethod;
-import com.copower.pmcc.assess.service.project.generate.GenerateReportService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryContentService;
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryService;
@@ -196,28 +193,13 @@ public class SchemeReportFileService extends BaseService {
                 baseAttachmentService.deleteAttachmentByDto(attachment);
             }
         }
-
-        Integer basicEstateId = basicApply.getBasicEstateId();
-        BasicApplyBatch applyBatch = basicApplyBatchService.getBasicApplyBatchByEstateId(basicEstateId);
-        //获取楼栋
-        List<BasicBuilding> buildingListByBatchId = basicApplyBatchDetailService.getBuildingListByBatchId(applyBatch.getId());
-        if (CollectionUtils.isNotEmpty(buildingListByBatchId)) {
-            for (BasicBuilding build : buildingListByBatchId) {
-                //获取单元
-                List<BasicUnit> unitListByBatchId = basicApplyBatchDetailService.getBasicUnitListByBatchId(applyBatch.getId(), build);
-                if (CollectionUtils.isNotEmpty(unitListByBatchId)) {
-                    for (BasicUnit unit : unitListByBatchId) {
-                        List<BasicEstateTaggingVo> taggingList = basicEstateTaggingService.getApplyBatchEstateTaggingsByTableId(unit.getId(), EstateTaggingTypeEnum.UNIT.getKey());
-                        if (CollectionUtils.isNotEmpty(taggingList)) {
-                            //生成位置图
-                            BasicEstateTagging tagging = taggingList.get(0);
-                            publicService.downLoadLocationImage(tagging.getLng(), tagging.getLat(), sysAttachmentDto);
-                        }
-                    }
-                }
-            }
+        BasicEstateTagging where = new BasicEstateTagging();
+        where.setType(EstateTaggingTypeEnum.UNIT.getKey());
+        where.setTableId(basicApply.getBasicUnitId());
+        List<BasicEstateTagging> taggings = basicEstateTaggingService.getBasicEstateTaggingList(where);
+        if (CollectionUtils.isNotEmpty(taggings)) {
+            taggings.forEach(o -> publicService.downLoadLocationImage(o.getLng(), o.getLat(), sysAttachmentDto));
         }
-
     }
 
     /**
