@@ -515,16 +515,17 @@ public class NetInfoRecordService {
             Elements provinceElements = getContent(htmlHref, "#queryloaction", "");
             Elements provinces = provinceElements.get(0).select("li a");
 
+            Integer princeId = 0;
             for (Map.Entry<String, String> entry : needContentType.entrySet()) {
-                Integer princeId = 1;
                 for (Element item : provinces) {
+                    princeId++;
                     String provinceName = item.childNodes().get(0).childNodes().get(0).toString().trim();
                     if (!provinceNames.contains(provinceName)) continue;
                     Integer startPage = 0;
                     List<String> pageHref = Lists.newArrayList();
-                    String dataHref = String.format("%s%s", typeHref, "&standardType=" + entry.getValue());
-                    Elements pageElements = getContent(String.format("%s%s%s", dataHref, "&start=" + startPage, "&province=" + princeId), "body", "");
-                    princeId++;
+                    String dataHref = String.format("%s%s%s", typeHref, "&standardType=" + entry.getValue(), "&province=" + princeId);
+                    Elements pageElements = getContent(String.format("%s%s", dataHref, "&start=" + startPage), "body", "");
+
                     if (pageElements == null) continue;
                     String data = pageElements.get(0).childNodes().get(0).toString().trim();
                     JSONObject jsonObject = JSON.parseObject(data);
