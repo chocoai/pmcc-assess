@@ -79,12 +79,9 @@
 </html>
 <script type="text/javascript">
     $(function () {
-        if (${!empty applyBatch.estateId}) {
-            ztreeInit(${applyBatch.estateId});
+        if (${!empty applyBatch}) {
+            ztreeInit(${applyBatch.id});
 
-        }
-        if (${!empty applyBatch.caseEstateId}) {
-            caseEstateZtreeInit('${applyBatch.id}');
         }
     });
     var setting = {
@@ -108,10 +105,10 @@
     };
 
     //初始化tree
-    function ztreeInit(estateId) {
+    function ztreeInit(basicApplyBatchId) {
         $.ajax({
             url: '${pageContext.request.contextPath}/basicApplyBatch/getBatchApplyTree',
-            data: {estateId: estateId},
+            data: {basicApplyBatchId: basicApplyBatchId},
             type: 'get',
             dataType: "json",
             success: function (result) {

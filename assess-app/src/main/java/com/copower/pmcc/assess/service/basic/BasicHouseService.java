@@ -3,7 +3,6 @@ package com.copower.pmcc.assess.service.basic;
 import com.copower.pmcc.assess.common.enums.basic.EstateTaggingTypeEnum;
 import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.custom.entity.CustomCaseEntity;
-import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDetailDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateTaggingDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicHouseDao;
@@ -16,7 +15,6 @@ import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.assist.DdlMySqlAssist;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
-import com.copower.pmcc.assess.service.cases.*;
 import com.copower.pmcc.assess.service.data.DataDamagedDegreeService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -29,8 +27,10 @@ import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -68,43 +68,19 @@ public class BasicHouseService {
     @Autowired
     private BasicHouseTradingService basicHouseTradingService;
     @Autowired
-    private CaseHouseRoomService caseHouseRoomService;
-    @Autowired
-    private CaseHouseCorollaryEquipmentService caseHouseCorollaryEquipmentService;
-    @Autowired
-    private CaseHouseRoomDecorateService caseHouseRoomDecorateService;
-    @Autowired
     private BasicHouseRoomDecorateService basicHouseRoomDecorateService;
-    @Autowired
-    private CaseHouseService caseHouseService;
-    @Autowired
-    private CaseHouseTradingService caseHouseTradingService;
-    @Autowired
-    private BasicEstateService basicEstateService;
     @Autowired
     private BasicHouseDamagedDegreeService basicHouseDamagedDegreeService;
     @Autowired
     private DataDamagedDegreeService dataDamagedDegreeService;
     @Autowired
-    private CaseHouseDamagedDegreeService caseHouseDamagedDegreeService;
-    @Autowired
     private DdlMySqlAssist ddlMySqlAssist;
     @Autowired
     private BasicApplyService basicApplyService;
     @Autowired
-    private BasicApplyBatchDetailService basicApplyBatchDetailService;
-    @Autowired
-    private BasicApplyBatchDetailDao basicApplyBatchDetailDao;
-    @Autowired
     private BasicEstateTaggingDao basicEstateTaggingDao;
     @Autowired
-    private CaseEstateTaggingService caseEstateTaggingService;
-    @Autowired
-    private BasicEstateTaggingService basicEstateTaggingService;
-    @Autowired
     private BasicApplyDao basicApplyDao;
-    @Autowired
-    private BasicUnitService basicUnitService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -176,7 +152,6 @@ public class BasicHouseService {
         if (basicApplyOnly != null) {
             basicApplyDao.deleteBasicApply(basicApplyOnly.getId());
         }
-
     }
 
 
@@ -210,6 +185,7 @@ public class BasicHouseService {
     }
 
     public List<CustomCaseEntity> autoCompleteCaseHouse(String houseNumber, Integer unitId) throws Exception {
+        if (StringUtils.isBlank(houseNumber) || unitId == null) return null;
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<CustomCaseEntity> houseList = basicHouseDao.getLatestVersionHouseList(houseNumber, unitId);
@@ -275,8 +251,6 @@ public class BasicHouseService {
      */
     @Transactional(rollbackFor = Exception.class)
     public void clearInvalidChildData(Integer houseId) throws Exception {
-
-
         StringBuilder sqlBulder = new StringBuilder();
         String baseSql = "update %s set bis_delete=1 where house_id=%s;";
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseTradingSell.class), houseId));
@@ -439,7 +413,7 @@ public class BasicHouseService {
 
     @Transactional(rollbackFor = Exception.class)
     public BasicHouse copyBasicHouse(Integer sourceHouseId, Integer targetHouseId, Boolean containChild) throws Exception {
-        return copyBasicHouseIgnore(sourceHouseId,targetHouseId,containChild);
+        return copyBasicHouseIgnore(sourceHouseId, targetHouseId, containChild, null);
     }
 
     /**
@@ -452,19 +426,18 @@ public class BasicHouseService {
      * @throws Exception
      */
     @Transactional(rollbackFor = Exception.class)
-    public BasicHouse copyBasicHouseIgnore(Integer sourceHouseId, Integer targetHouseId, Boolean containChild, String... ignoreProperties) throws Exception {
+    public BasicHouse copyBasicHouseIgnore(Integer sourceHouseId, Integer targetHouseId, Boolean containChild, List<String> ignoreList) throws Exception {
         BasicHouse sourceBasicHouse = getBasicHouseById(sourceHouseId);
         if (sourceBasicHouse == null) return null;
         BasicHouse targetBasicHouse = getBasicHouseById(targetHouseId);
+        if (CollectionUtils.isEmpty(ignoreList)) ignoreList = Lists.newArrayList();
+        ignoreList.addAll(BaseConstant.ASSESS_IGNORE_STRING_LIST);
         if (targetBasicHouse == null) {
             targetBasicHouse = new BasicHouse();
-            BeanUtils.copyProperties(sourceBasicHouse, targetBasicHouse,ignoreProperties);
-            targetBasicHouse.setId(null);
+            BeanUtils.copyProperties(sourceBasicHouse, targetBasicHouse, ignoreList.toArray(new String[ignoreList.size()]));
             targetBasicHouse.setCreator(commonService.thisUserAccount());
-            targetBasicHouse.setGmtCreated(null);
-            targetBasicHouse.setGmtModified(null);
         } else {
-            BeanUtils.copyProperties(sourceBasicHouse, targetBasicHouse, "id");
+            BeanUtils.copyProperties(sourceBasicHouse, targetBasicHouse, ignoreList.toArray(new String[ignoreList.size()]));
         }
         this.saveAndUpdateBasicHouse(targetBasicHouse, true);
         BasicHouseTrading sourceBasicHouseTrading = basicHouseTradingService.getTradingByHouseId(sourceHouseId);
@@ -487,7 +460,7 @@ public class BasicHouseService {
         if (targetHouseId != null && targetHouseId > 0) {//目标数据已存在，先清理目标数据的从表数据
             clearInvalidChildData(targetHouseId);
 
-            SysAttachmentDto where=new SysAttachmentDto();
+            SysAttachmentDto where = new SysAttachmentDto();
             where.setTableName(FormatUtils.entityNameConvertToTableName(BasicHouse.class));
             where.setTableId(targetHouseId);
             baseAttachmentService.deleteAttachmentByDto(where);
@@ -623,41 +596,5 @@ public class BasicHouseService {
             }
         }
         return targetBasicHouse;
-    }
-
-    /**
-     * 获取当前案例版本号
-     *
-     * @param estateId
-     * @param buildingId
-     * @param unitId
-     * @param houseNumber
-     * @return
-     */
-    public Integer getCurrVersion(Integer estateId, Integer buildingId, Integer unitId, String houseNumber) {
-        BasicHouse where = new BasicHouse();
-        where.setEstateId(estateId);
-        where.setBuildingId(buildingId);
-        where.setUnitId(unitId);
-        where.setHouseNumber(houseNumber);
-        return basicHouseDao.getCountByBasicHouse(where) + 1;
-    }
-
-    /**
-     * 数据转换为案例数据
-     *
-     * @param houseId
-     */
-    @Transactional(rollbackFor = Exception.class)
-    public void dataToCase(Integer houseId) {
-        BasicHouse basicHouse = getBasicHouseById(houseId);
-        if (basicHouse == null) return;
-        Integer currVersion = getCurrVersion(basicHouse.getEstateId(), basicHouse.getBuildingId(), basicHouse.getUnitId(), basicHouse.getHouseNumber());
-        //
-        if (currVersion > 1) {//1.将上个版本数据复制一份 2.将数据更新为最新数据 3.更新版本号
-
-        } else {//直接复制数据写入
-
-        }
     }
 }

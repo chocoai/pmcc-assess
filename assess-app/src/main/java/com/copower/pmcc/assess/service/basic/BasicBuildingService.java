@@ -27,7 +27,9 @@ import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -176,6 +178,7 @@ public class BasicBuildingService {
     }
 
     public List<CustomCaseEntity> autoCompleteCaseBuilding(String buildingNumber, Integer estateId) {
+        if (StringUtils.isBlank(buildingNumber) || estateId == null) return null;
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<CustomCaseEntity> entities = basicBuildingDao.getLatestVersionBuildingList(buildingNumber, estateId);
@@ -296,7 +299,7 @@ public class BasicBuildingService {
 
     @Transactional(rollbackFor = Exception.class)
     public BasicBuilding copyBasicBuilding(Integer sourceBuildingId, Integer targetBuildingId, Boolean containChild) throws Exception {
-        return copyBasicBuildingIgnore(sourceBuildingId, targetBuildingId, containChild);
+        return copyBasicBuildingIgnore(sourceBuildingId, targetBuildingId, containChild,null);
     }
 
     /**
@@ -309,20 +312,19 @@ public class BasicBuildingService {
      * @throws Exception
      */
     @Transactional(rollbackFor = Exception.class)
-    public BasicBuilding copyBasicBuildingIgnore(Integer sourceBuildingId, Integer targetBuildingId, Boolean containChild, String... ignoreProperties) throws Exception {
+    public BasicBuilding copyBasicBuildingIgnore(Integer sourceBuildingId, Integer targetBuildingId, Boolean containChild, List<String> ignoreList) throws Exception {
         if (sourceBuildingId == null) return null;
         BasicBuilding sourceBasicBuilding = getBasicBuildingById(sourceBuildingId);
         if (sourceBasicBuilding == null) return null;
         BasicBuilding targetBasicBuilding = getBasicBuildingById(targetBuildingId);
+        if (CollectionUtils.isEmpty(ignoreList)) ignoreList = Lists.newArrayList();
+        ignoreList.addAll(BaseConstant.ASSESS_IGNORE_STRING_LIST);
         if (targetBasicBuilding == null) {
             targetBasicBuilding = new BasicBuilding();
-            BeanUtils.copyProperties(sourceBasicBuilding, targetBasicBuilding, ignoreProperties);
-            targetBasicBuilding.setId(null);
+            BeanUtils.copyProperties(sourceBasicBuilding, targetBasicBuilding, ignoreList.toArray(new String[ignoreList.size()]));
             targetBasicBuilding.setCreator(commonService.thisUserAccount());
-            targetBasicBuilding.setGmtCreated(null);
-            targetBasicBuilding.setGmtModified(null);
         } else {
-            BeanUtils.copyProperties(sourceBasicBuilding, targetBasicBuilding, "id");
+            BeanUtils.copyProperties(sourceBasicBuilding, targetBasicBuilding, ignoreList.toArray(new String[ignoreList.size()]));
         }
         this.saveAndUpdateBasicBuilding(targetBasicBuilding, true);
 

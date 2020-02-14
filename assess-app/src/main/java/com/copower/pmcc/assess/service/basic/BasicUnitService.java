@@ -3,7 +3,6 @@ package com.copower.pmcc.assess.service.basic;
 import com.copower.pmcc.assess.common.enums.basic.EstateTaggingTypeEnum;
 import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.custom.entity.CustomCaseEntity;
-import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDetailDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateTaggingDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicUnitDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
@@ -12,9 +11,6 @@ import com.copower.pmcc.assess.dto.output.basic.BasicUnitVo;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.assist.DdlMySqlAssist;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
-import com.copower.pmcc.assess.service.cases.CaseEstateTaggingService;
-import com.copower.pmcc.assess.service.cases.CaseUnitHuxingService;
-import com.copower.pmcc.assess.service.cases.CaseUnitService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -26,14 +22,16 @@ import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
@@ -58,27 +56,13 @@ public class BasicUnitService {
     @Autowired
     private BasicUnitDao basicUnitDao;
     @Autowired
-    private CaseUnitHuxingService caseUnitHuxingService;
-    @Autowired
-    private CaseUnitService caseUnitService;
-    @Autowired
     private DdlMySqlAssist ddlMySqlAssist;
-    @Autowired
-    private BasicEstateService basicEstateService;
     @Autowired
     private BasicEstateTaggingService basicEstateTaggingService;
     @Autowired
     private BasicApplyService basicApplyService;
     @Autowired
-    private BasicApplyBatchDetailService basicApplyBatchDetailService;
-    @Autowired
-    private BasicApplyBatchDetailDao basicApplyBatchDetailDao;
-    @Autowired
     private BasicEstateTaggingDao basicEstateTaggingDao;
-    @Autowired
-    private CaseEstateTaggingService caseEstateTaggingService;
-    @Autowired
-    private BasicBuildingService basicBuildingService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -161,6 +145,7 @@ public class BasicUnitService {
     }
 
     public List<CustomCaseEntity> autoCompleteCaseUnit(String unitNumber, Integer caseBuildingId) {
+        if (StringUtils.isBlank(unitNumber) || caseBuildingId == null) return null;
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<CustomCaseEntity> caseEntityList = basicUnitDao.getLatestVersionUnitList(unitNumber, caseBuildingId);
@@ -255,7 +240,7 @@ public class BasicUnitService {
 
     @Transactional(rollbackFor = Exception.class)
     public BasicUnit copyBasicUnit(Integer sourceUnitId, Integer targetUnitId, Boolean containChild) throws Exception {
-        return copyBasicUnitIgnore(sourceUnitId, targetUnitId, containChild);
+        return copyBasicUnitIgnore(sourceUnitId, targetUnitId, containChild,null);
     }
 
     /**
@@ -268,26 +253,25 @@ public class BasicUnitService {
      * @throws Exception
      */
     @Transactional(rollbackFor = Exception.class)
-    public BasicUnit copyBasicUnitIgnore(Integer sourceUnitId, Integer targetUnitId, Boolean containChild, String... ignoreProperties) throws Exception {
+    public BasicUnit copyBasicUnitIgnore(Integer sourceUnitId, Integer targetUnitId, Boolean containChild, List<String> ignoreList) throws Exception {
         if (sourceUnitId == null) return null;
         BasicUnit sourceBasicUnit = getBasicUnitById(sourceUnitId);
         if (sourceBasicUnit == null) return null;
         BasicUnit targetBasicUnit = getBasicUnitById(targetUnitId);
+        if(CollectionUtils.isEmpty(ignoreList))ignoreList= Lists.newArrayList();
+        ignoreList.addAll(BaseConstant.ASSESS_IGNORE_STRING_LIST);
         if (targetBasicUnit == null) {
             targetBasicUnit = new BasicUnit();
-            BeanUtils.copyProperties(sourceBasicUnit, targetBasicUnit, ignoreProperties);
-            targetBasicUnit.setId(null);
+            BeanUtils.copyProperties(sourceBasicUnit, targetBasicUnit, ignoreList.toArray(new String[ignoreList.size()]));
             targetBasicUnit.setCreator(commonService.thisUserAccount());
-            targetBasicUnit.setGmtCreated(null);
-            targetBasicUnit.setGmtModified(null);
         } else {
-            BeanUtils.copyProperties(sourceBasicUnit, targetBasicUnit, "id");
+            BeanUtils.copyProperties(sourceBasicUnit, targetBasicUnit, ignoreList.toArray(new String[ignoreList.size()]));
         }
         this.saveAndUpdateBasicUnit(targetBasicUnit, true);
         if (targetUnitId != null && targetUnitId > 0) {//目标数据已存在，先清理目标数据的从表数据
             clearInvalidChildData(targetUnitId);
 
-            SysAttachmentDto where=new SysAttachmentDto();
+            SysAttachmentDto where = new SysAttachmentDto();
             where.setTableName(FormatUtils.entityNameConvertToTableName(BasicUnit.class));
             where.setTableId(targetUnitId);
             baseAttachmentService.deleteAttachmentByDto(where);

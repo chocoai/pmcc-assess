@@ -476,13 +476,15 @@ public class BasicApplyBatchService {
         basicEstateLandState.setEstateId(basicEstate.getId());
         basicEstateLandState.setCreator(commonService.thisUserAccount());
         basicEstateLandStateService.saveAndUpdateBasicEstateLandState(basicEstateLandState, false);
-        String estateName = "楼盘信息";
-        if (AssessDataDicKeyConstant.PROJECT_SURVEY_FORM_CLASSIFY_LAND.equals(classifyDataDic.getFieldName())
-                || AssessDataDicKeyConstant.PROJECT_SURVEY_FORM_CLASSIFY_LAND_ONLY.equals(classifyDataDic.getFieldName())) {
-            estateName = "地块信息";
+        if(StringUtils.isBlank(basicApplyBatch.getEstateName())){
+            String estateName = "楼盘信息";
+            if (AssessDataDicKeyConstant.PROJECT_SURVEY_FORM_CLASSIFY_LAND.equals(classifyDataDic.getFieldName())
+                    || AssessDataDicKeyConstant.PROJECT_SURVEY_FORM_CLASSIFY_LAND_ONLY.equals(classifyDataDic.getFieldName())) {
+                estateName = "地块信息";
+            }
+            basicApplyBatch.setEstateName(estateName);
         }
         basicApplyBatch.setEstateId(basicEstate.getId());
-        basicApplyBatch.setEstateName(estateName);
         saveBasicApplyBatch(basicApplyBatch);
 
         BasicApplyBatchDetail estateApplyBatchDetail = new BasicApplyBatchDetail();
@@ -491,8 +493,8 @@ public class BasicApplyBatchService {
         estateApplyBatchDetail.setApplyBatchId(basicApplyBatch.getId());
         estateApplyBatchDetail.setTableName(FormatUtils.entityNameConvertToTableName(BasicEstate.class));
         estateApplyBatchDetail.setTableId(basicEstate.getId());
-        estateApplyBatchDetail.setName(estateName);
-        estateApplyBatchDetail.setDisplayName(estateName);
+        estateApplyBatchDetail.setName(basicApplyBatch.getEstateName());
+        estateApplyBatchDetail.setDisplayName(basicApplyBatch.getEstateName());
         estateApplyBatchDetail.setExecutor(commonService.thisUserAccount());
         basicApplyBatchDetailService.saveBasicApplyBatchDetail(estateApplyBatchDetail);
 
@@ -604,7 +606,7 @@ public class BasicApplyBatchService {
     public void saveDraft(String formData, Integer applyBatchId, Integer planDetailsId) throws Exception {
         String jsonContent = null;
         JSONObject jsonObject = JSON.parseObject(formData);
-
+        BasicApplyBatch basicApplyBatch = getBasicApplyBatchById(applyBatchId);
         //楼盘过程数据
         BasicEstate basicEstate = null;
         jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_ESTATE.getVar());
@@ -620,7 +622,7 @@ public class BasicApplyBatchService {
                 basicEstate.setClassify(oldBasicEstate.getClassify());
                 basicEstate.setType(oldBasicEstate.getType());
                 basicEstateService.saveAndUpdateBasicEstate(basicEstate, true);
-                BasicApplyBatch basicApplyBatch = getBasicApplyBatchByEstateId(basicEstate.getId());
+
                 if (basicApplyBatch != null) {
                     basicApplyBatch.setEstateName(basicEstate.getName());
                     basicApplyBatchDao.updateInfo(basicApplyBatch);
@@ -641,11 +643,10 @@ public class BasicApplyBatchService {
                     estateDetail.setDisplayName(basicEstate.getName());
                     basicApplyBatchDetailDao.updateInfo(estateDetail);
                 }
-                BasicApplyBatch applyBatch = basicApplyBatchService.getBasicApplyBatchById(applyBatchId);
-                if (applyBatch != null) {
-                    applyBatch.setEstateId(basicEstate.getId());
-                    applyBatch.setEstateName(basicEstate.getName());
-                    basicApplyBatchService.saveBasicApplyBatch(applyBatch);
+                if (basicApplyBatch != null) {
+                    basicApplyBatch.setEstateId(basicEstate.getId());
+                    basicApplyBatch.setEstateName(basicEstate.getName());
+                    basicApplyBatchService.saveBasicApplyBatch(basicApplyBatch);
                 }
             }
         }
@@ -731,11 +732,6 @@ public class BasicApplyBatchService {
                         //楼盘
                         BasicApplyBatchDetail estateBatchDetail = map.get(EstateTaggingTypeEnum.ESTATE);
                         basicApply.setName(basicApplyService.getFullName(estateBatchDetail.getName(), buildBatchDetail.getName(), unitBatchDetail.getName(), houseDetail.getName()));
-                    } else {
-                        CaseUnit caseUnit = caseUnitService.getCaseUnitById(houseDetail.getCaseTablePid());
-                        CaseBuilding caseBuilding = caseBuildingService.getCaseBuildingById(caseUnit.getBuildingId());
-                        CaseEstate caseEstate = caseEstateService.getCaseEstateById(caseBuilding.getEstateId());
-                        basicApply.setName(basicApplyService.getFullName(caseEstate.getName(), caseBuilding.getBuildingNumber(), caseUnit.getUnitNumber(), houseDetail.getName()));
                     }
                     basicApplyService.saveBasicApply(basicApply);
                 }
@@ -803,7 +799,7 @@ public class BasicApplyBatchService {
         processInfo.setFolio(String.format("%s%s", "批量申请_", applyBatch.getEstateName()));
         final String boxName = baseParameterService.getParameterValues(BaseParameterEnum.CASE_BASE_INFO_BATCH_APPLY_KEY.getParameterKey());
         BoxReDto boxReDto = bpmRpcBoxService.getBoxReByBoxName(boxName);
-        processInfo.setTableName(FormatUtils.entityNameConvertToTableName(BasicApply.class));
+        processInfo.setTableName(FormatUtils.entityNameConvertToTableName(BasicApplyBatch.class));
         processInfo.setBoxId(boxReDto.getId());
         processInfo.setProcessName(boxReDto.getProcessName());
         processInfo.setGroupName(boxReDto.getGroupName());
@@ -1119,28 +1115,29 @@ public class BasicApplyBatchService {
         applyBatchDetail.setCreator(commonService.thisUserAccount());
         applyBatchDetail.setExecutor(commonService.thisUserAccount());
         BasicApplyBatchDetail batchDetail = basicApplyBatchDetailService.getDataById(caseBatchDetailId);
+        ArrayList<String> ignoreList = Lists.newArrayList("bisCase");
         if (batchDetail != null) {
             applyBatchDetail.setUpgradeTableId(batchDetail.getTableId());
             if (FormatUtils.entityNameConvertToTableName(BasicEstate.class).equalsIgnoreCase(batchDetail.getTableName())) {
-                BasicEstate basicEstate = basicEstateService.copyBasicEstateIgnore(batchDetail.getTableId(), null, true, "bisCase");
+                BasicEstate basicEstate = basicEstateService.copyBasicEstateIgnore(batchDetail.getTableId(), null, true, ignoreList);
                 applyBatchDetail.setName(basicEstate.getName());
                 applyBatchDetail.setDisplayName(basicEstate.getName());
                 applyBatchDetail.setTableName(FormatUtils.entityNameConvertToTableName(BasicEstate.class));
                 applyBatchDetail.setTableId(basicEstate.getId());
             } else if (FormatUtils.entityNameConvertToTableName(BasicBuilding.class).equalsIgnoreCase(batchDetail.getTableName())) {
-                BasicBuilding basicBuilding = basicBuildingService.copyBasicBuildingIgnore(batchDetail.getTableId(), null, true, "bisCase");
+                BasicBuilding basicBuilding = basicBuildingService.copyBasicBuildingIgnore(batchDetail.getTableId(), null, true, ignoreList);
                 applyBatchDetail.setName(basicBuilding.getBuilderName());
                 applyBatchDetail.setDisplayName(basicBuilding.getBuilderName());
                 applyBatchDetail.setTableName(FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
                 applyBatchDetail.setTableId(basicBuilding.getId());
             } else if (FormatUtils.entityNameConvertToTableName(BasicUnit.class).equalsIgnoreCase(batchDetail.getTableName())) {
-                BasicUnit basicUnit = basicUnitService.copyBasicUnitIgnore(batchDetail.getTableId(), null, true, "bisCase");
+                BasicUnit basicUnit = basicUnitService.copyBasicUnitIgnore(batchDetail.getTableId(), null, true, ignoreList);
                 applyBatchDetail.setName(basicUnit.getUnitNumber());
                 applyBatchDetail.setDisplayName(basicUnit.getUnitNumber());
                 applyBatchDetail.setTableName(FormatUtils.entityNameConvertToTableName(BasicUnit.class));
                 applyBatchDetail.setTableId(basicUnit.getId());
             } else if (FormatUtils.entityNameConvertToTableName(BasicHouse.class).equalsIgnoreCase(batchDetail.getTableName())) {
-                BasicHouse basicHouse = basicHouseService.copyBasicHouseIgnore(batchDetail.getTableId(), null, true, "bisCase");
+                BasicHouse basicHouse = basicHouseService.copyBasicHouseIgnore(batchDetail.getTableId(), null, true, ignoreList);
                 applyBatchDetail.setName(basicHouse.getHouseNumber());
                 applyBatchDetail.setDisplayName(basicHouse.getHouseNumber());
                 applyBatchDetail.setTableName(FormatUtils.entityNameConvertToTableName(BasicHouse.class));

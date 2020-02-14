@@ -223,8 +223,8 @@
 </html>
 <script type="text/javascript">
     $(function () {
-        if (${!empty applyBatch.estateId}) {
-            batchTreeTool.ztreeInit(${applyBatch.estateId});
+        if (${!empty applyBatch}) {
+            batchTreeTool.ztreeInit(${applyBatch.id});
         }
     });
 

@@ -104,8 +104,8 @@ public class BasicApplyBatchDetailService {
         }
     }
 
-    public List<BasicApplyBatchDetail> getBasicApplyBatchDetailList(BasicApplyBatchDetail examineInfo) {
-        return basicApplyBatchDetailDao.getInfoList(examineInfo);
+    public List<BasicApplyBatchDetail> getBasicApplyBatchDetailList(BasicApplyBatchDetail basicApplyBatchDetail) {
+        return basicApplyBatchDetailDao.getInfoList(basicApplyBatchDetail);
     }
 
     /**

@@ -23,8 +23,9 @@
                 </div>
                 <div class="x_content">
                     <form id="basicBatchApplyFrm" class="form-horizontal">
-                        <input type="hidden" name="id" value="${basicApplyBatch.id}">
-                        <input type="hidden" id="estateId" name="estateId" value="${basicApplyBatch.estateId}">
+                        <input type="hidden" name="id" value="${applyBatch.id}">
+                        <input type="hidden" id="estateId" name="estateId" value="${applyBatch.estateId}">
+                        <input type="hidden" id="estateName" name="estateName" value="${applyBatch.estateName}">
                         <div class="form-group">
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
@@ -37,7 +38,7 @@
                                         <c:if test="${not empty formClassifyList}">
                                             <c:forEach var="item" items="${formClassifyList}">
                                                 <option value="${item.id}" data-key="${item.fieldName}"
-                                                    ${item.id eq basicApplyBatch.classify?'selected="selected"':''}>${item.name}</option>
+                                                    ${item.id eq applyBatch.classify?'selected="selected"':''}>${item.name}</option>
                                             </c:forEach>
                                         </c:if>
                                     </select>
@@ -52,7 +53,7 @@
                                         <option value="">-请选择-</option>
                                         <c:if test="${not empty examineFormTypeList}">
                                             <c:forEach var="item" items="${examineFormTypeList}">
-                                                <option value="${item.key}" ${item.key eq basicApplyBatch.type?'selected="selected"':''}>${item.value}</option>
+                                                <option value="${item.key}" ${item.key eq applyBatch.type?'selected="selected"':''}>${item.value}</option>
                                             </c:forEach>
                                         </c:if>
                                     </select>
@@ -88,7 +89,7 @@
                         </a>
                         </span>
                     </div>
-                    <c:if test="${basicApplyBatch.caseEstateId ge 0}">
+                    <c:if test="${applyBatch.caseEstateId > 0}">
                         <div class="col-md-3" style="max-height: 500px;overflow: auto;">
                             <ul id="estateCaseZtree" class="ztree"></ul>
                         </div>
@@ -195,6 +196,9 @@
                         <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
                             取消
                         </button>
+                        <button id="btn_save" class="btn btn-warning" onclick="window.close()">
+                            保存
+                        </button>
                         <button id="btn_submit" class="btn btn-success" onclick="submit();">
                             提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
                         </button>
@@ -219,9 +223,9 @@
 
 <script type="text/javascript">
     $(function () {
-        batchTreeTool.ztreeInit(${basicApplyBatch.id});
-        if ('${basicApplyBatch.caseEstateId ge 0}' == 'true') {
-            batchTreeTool.caseEstateZtreeInit('${basicApplyBatch.caseEstateId}');
+        batchTreeTool.ztreeInit(${applyBatch.id});
+        if ('${applyBatch.caseEstateId > 0}' == 'true') {
+            batchTreeTool.caseEstateZtreeInit('${applyBatch.caseEstateId}');
             $("#basicBatchApplyFrm").find("select[name='classify']").attr("disabled", "disabled");
             $("#basicBatchApplyFrm").find("select[name='type']").attr("disabled", "disabled");
         }
@@ -498,8 +502,8 @@
             success: function (result) {
                 if (result.ret) {
                     toastr.success('保存成功');
-                    if ('${basicApplyBatch.caseEstateId ge 0}' == 'true') {
-                        batchTreeTool.ztreeInit(${basicApplyBatch.id});
+                    if ('${applyBatch.caseEstateId > 0}' == 'true') {
+                        batchTreeTool.ztreeInit(${applyBatch.id});
                     } else {
                         var tableType = getTableType(result.data.tableName);
                         var node = zTreeObj.getSelectedNodes()[0];
@@ -658,7 +662,7 @@
             data: {
                 caseBatchDetailId: node.id,
                 containThis: true,
-                applyBatchId: '${basicApplyBatch.id}'
+                applyBatchId: '${applyBatch.id}'
             },
             type: "post",
             dataType: "json",
@@ -682,7 +686,7 @@
             data: {
                 caseBatchDetailId: node.id,
                 containThis: false,
-                applyBatchId: '${basicApplyBatch.id}'
+                applyBatchId: '${applyBatch.id}'
             },
             type: "post",
             dataType: "json",
@@ -693,12 +697,12 @@
                         data: {
                             caseBatchDetailId: node.id,
                             pid: result.data.id,
-                            applyBatchId: '${basicApplyBatch.id}'
+                            applyBatchId: '${applyBatch.id}'
                         },
                         type: "post",
                         dataType: "json",
                         success: function (result) {
-                            batchTreeTool.ztreeInit(${basicApplyBatch.id});
+                            batchTreeTool.ztreeInit(${applyBatch.id});
                         }
                     })
                 }

@@ -4,12 +4,14 @@ import com.copower.pmcc.assess.dal.basis.custom.entity.CustomCaseEntity;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicAlternativeCaseDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDetailDao;
 import com.copower.pmcc.assess.dal.basis.entity.BasicAlternativeCase;
+import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchDetail;
 import com.copower.pmcc.assess.dal.basis.entity.BasicUnit;
 import com.copower.pmcc.assess.service.basic.BasicApplyBatchDetailService;
 import com.copower.pmcc.assess.service.basic.BasicUnitService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -96,19 +99,6 @@ public class BasicUnitController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/quoteFromAlternative", name = "引用项目中的数据批量时", method = {RequestMethod.GET})
-    public HttpResult quoteFromAlternative(Integer id, Integer tableId) {
-        try {
-            BasicAlternativeCase alternativeCase = basicAlternativeCaseDao.getBasicAlternativeCaseById(id);
-            BasicUnit basicUnit = basicUnitService.copyBasicUnit(alternativeCase.getBusinessId(), tableId, true);
-            return HttpResult.newCorrectResult(basicUnit);
-        } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
-            return HttpResult.newErrorResult(e.getMessage());
-        }
-    }
-
-    @ResponseBody
     @RequestMapping(value = "/getBasicUnitByApplyId", name = "获取数据", method = {RequestMethod.GET})
     public HttpResult getBasicUnitByApplyId(Integer applyId) {
         try {
@@ -153,10 +143,26 @@ public class BasicUnitController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "/quoteFromAlternative", name = "引用备选案例数据", method = {RequestMethod.GET})
+    public HttpResult quoteFromAlternative(Integer id, Integer tableId) {
+        try {
+            BasicAlternativeCase alternativeCase = basicAlternativeCaseDao.getBasicAlternativeCaseById(id);
+            BasicApplyBatchDetail applyBatchDetail = basicApplyBatchDetailDao.getInfoById(alternativeCase.getBusinessId());
+            ArrayList<String> ignoreList = Lists.newArrayList("estateId","buildingId");
+            BasicUnit basicUnit = basicUnitService.copyBasicUnitIgnore(applyBatchDetail.getTableId(), tableId, true, ignoreList);
+            return HttpResult.newCorrectResult(basicUnit);
+        } catch (Exception e) {
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/quoteCaseUnit", name = "引用案列数据", method = {RequestMethod.GET})
     public HttpResult quoteCaseUnit(Integer sourceId, Integer targetId) {
         try {
-            BasicUnit basicUnit = basicUnitService.copyBasicUnitIgnore(sourceId, targetId, true,"estateId","buildingId");
+            ArrayList<String> ignoreList = Lists.newArrayList("estateId","buildingId");
+            BasicUnit basicUnit = basicUnitService.copyBasicUnitIgnore(sourceId, targetId, true,ignoreList);
             basicUnit.setQuoteId(sourceId);
             basicUnit.setBisCase(false);
             basicUnitService.saveAndUpdateBasicUnit(basicUnit,false);
