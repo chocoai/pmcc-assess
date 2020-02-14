@@ -13,6 +13,7 @@ assessCommonLand.config = {
     newFileId: declareCommon.config.land.newFileId,
     houseBox: declareCommon.config.land.HouseCert.box,
     houseFile: declareCommon.config.land.houseFileId,
+    newHouseFileId: declareCommon.config.land.newHouseFileId,
     handleCopy: "#landHandleInputGroup",
     autoPDFFileId: "landAttachmentAutomatedWarrantsPDF"
 };
@@ -65,6 +66,60 @@ assessCommonLand.pasteAll = function () {
         });
     } else {
         toastr.info("只能选择一行数据进行复制");
+    }
+};
+
+/**
+ * 房产证附件
+ * @param flag
+ * @param id
+ * @returns {boolean}
+ */
+assessCommonLand.landImportHandleHouse = function (flag, id) {
+    var target = $("#" + assessCommonLand.config.newHouseFileId);
+    if (flag) {
+        var item = $("#" + assessCommonLand.config.table).bootstrapTable('getRowByUniqueId', id);
+        if (!declareCommon.isNotBlank(item.centerId)) {
+            toastr.success('不合符调整后的数据约定,请联系管理员!');
+            return false;
+        }
+        declareCommon.getDeclareBuildCenter(item.centerId, function (centerData) {
+            if (declareCommon.isNotBlank(centerData.houseId)) {//关联情况
+                target.attr("data-id", centerData.houseId);
+                target.trigger('click');
+            }
+        });
+    }
+    if (!flag) {
+        id = target.attr("data-id");
+        var value = target.val();
+        if (!declareCommon.isNotBlank(value)) {
+            return false;
+        }
+        $.ajaxFileUpload({
+            type: "POST",
+            url: getContextPath() + "/public/importAjaxFile",
+            data: {
+                planDetailsId: declareCommon.getPlanDetailsId(),
+                tableName: AssessDBKey.DeclareRealtyHouseCert,
+                tableId: id,
+                fieldsName: assessCommonLand.config.houseFile
+            },//要传到后台的参数，没有可以不写
+            secureuri: false,//是否启用安全提交，默认为false
+            fileElementId: target.attr("id"),//文件选择框的id属性
+            dataType: 'json',//服务器返回的格式
+            async: false,
+            success: function (result) {
+                if (result.ret) {
+                    toastr.success('成功!');
+                    assessCommonLand.loadList();
+                }
+            },
+            error: function (result, status, e) {
+                Loading.progressHide();
+                Alert("调用服务端方法失败，失败原因:" + result);
+            }
+        });
     }
 };
 
@@ -180,6 +235,7 @@ assessCommonLand.loadList = function () {
             var str = '<div class="btn-margin">';
             str += '<a class="btn btn-xs btn-success" href="javascript:assessCommonLand.showAddModelHouse(' + row.id + ');" ><i class="fa fa-eye">关联的房产证</i></a>';
             str += "<a class='btn btn-xs btn-success tooltips' data-placement='top' data-original-title='土地证附件' onclick='assessCommonLand.landImportEvent(" + row.id + ")'" + ">" + "<i class='fa'>" + "土地证附件" + "</a>";
+            str += "<a class='btn btn-xs btn-success tooltips' data-placement='top' data-original-title='房产证附件' onclick='assessCommonLand.landImportHandleHouse(" + true + "," + row.id + ")'" + ">" + "<i class='fa'>" + "房产证附件" + "</a>";
             str += '</div>';
             return str;
         }
@@ -322,11 +378,11 @@ assessCommonLand.showAddModelHouse = function (id) {
             if (declareCommon.isNotBlank(centerData.houseId)) {//关联情况
                 declareCommon.getHouseData(centerData.houseId, function (data) {
                     data.centerId = centerData.id;
-                    declareCommon.initHouse(data, frm, fileArr, null, true);
+                    declareCommon.initHouse(data, frm, fileArr, null, false);
                 });
             } else {//未关联情况
                 area.centerId = centerData.id;
-                declareCommon.initHouse(area, frm, fileArr, null, true);
+                declareCommon.initHouse(area, frm, fileArr, null, false);
             }
         });
     });
@@ -607,6 +663,7 @@ assessCommonLand.attachmentAutomatedWarrants = function (_this) {
     var startNumber = group.find("[name='startNumber']").val();
     var endNumber = group.find("[name='endNumber']").val();
     var step = group.find("[name='step']").val();
+    var isSource = group.find("[name='isSource']").val();
     if (!$.isNumeric(startNumber)) {
         toastr.warning('启始编号非数字请重新填写');
         return false;
@@ -624,10 +681,15 @@ assessCommonLand.attachmentAutomatedWarrants = function (_this) {
         startNumber: startNumber,
         endNumber: endNumber,
         step: step,
+        isSource: 'true',
         fieldsName: assessCommonLand.config.fileId,
         tableName: AssessDBKey.DeclareRealtyLandCert,
         planDetailsId: declareCommon.getPlanDetailsId()
     };
+    if (isSource != undefined && isSource != null && isSource != '') {
+        data.isSource = isSource;
+        data.fieldsName = assessCommonLand.config.houseFile;
+    }
     if (startNumber > endNumber) {
         toastr.error('截至编号 必须大于 启始编号');
         return false;

@@ -31,7 +31,8 @@
 
                     <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
                         <div class="btn-group">
-                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">导入关联的房产证
+                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                                导入关联的房产证
                                 <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu" role="menu">
@@ -48,14 +49,20 @@
 
                     <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
                         <div class="btn-group">
-                            <div class="btn btn-primary" onclick="assessCommonLand.copyData();"> <i class="fa fa-files-o" aria-hidden="true"></i> 复制</div>
-                            <div class="btn btn-primary" onclick="assessCommonLand.pasteAll();"> <i class="fa fa-clipboard" aria-hidden="true"></i>粘贴</div>
+                            <div class="btn btn-primary" onclick="assessCommonLand.copyData();"><i class="fa fa-files-o"
+                                                                                                   aria-hidden="true"></i>
+                                复制
+                            </div>
+                            <div class="btn btn-primary" onclick="assessCommonLand.pasteAll();"><i
+                                    class="fa fa-clipboard" aria-hidden="true"></i>粘贴
+                            </div>
                         </div>
                     </div>
                     <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
                         <div class="input-group" id="landHandleInputGroup">
                             <input type="hidden" name="id">
-                            <input type="text" readonly="readonly" name="name" class="form-control" placeholder="暂无复制数据">
+                            <input type="text" readonly="readonly" name="name" class="form-control"
+                                   placeholder="暂无复制数据">
                             <span class="input-group-btn">
                                 <button type="button" class="btn btn-default docs-tooltip"
                                         onclick="$(this).closest('.input-group').find('input').val('');"
@@ -70,6 +77,16 @@
                 <div class="form-group">
                     <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
                         <div class="row">
+                            <div class="x-valid">
+                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">非主数据</label>
+
+                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                    <span class="label label-info">如果关联土地证关联的房产证那么请把这个勾上</span>
+                                    <label class="radio-inline">
+                                        <input type="checkbox" name="isSource" value="false">
+                                    </label>
+                                </div>
+                            </div>
                             <div class="x-valid">
                                 <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">启始编号</label>
                                 <div class=" col-xs-1  col-sm-1  col-md-1  col-lg-1 ">
@@ -93,15 +110,18 @@
                                 </div>
                             </div>
 
-                            <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                <input id="landAttachmentAutomatedWarrantsPDF" name="landAttachmentAutomatedWarrantsPDF" placeholder="pdf自动关联权证附件" class="form-control"
+                            <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                <input id="landAttachmentAutomatedWarrantsPDF" name="landAttachmentAutomatedWarrantsPDF"
+                                       placeholder="pdf自动关联权证附件" class="form-control"
                                        type="file">
                                 <div id="_landAttachmentAutomatedWarrantsPDF"></div>
                             </div>
 
                             <div class="x-valid">
                                 <div class=" col-xs-1  col-sm-1  col-md-1  col-lg-1 ">
-                                    <button type="button" class="btn-primary btn" onclick="assessCommonLand.attachmentAutomatedWarrants(this);">关联</button>
+                                    <button type="button" class="btn-primary btn"
+                                            onclick="assessCommonLand.attachmentAutomatedWarrants(this);">关联
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -109,8 +129,6 @@
                 </div>
             </form>
         </div>
-
-
 
 
         <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
@@ -130,6 +148,9 @@
 <input type="file" id="declareRealtyLandCertNewFileId" name="declareRealtyLandCertNewFileId" style="display: none;"
        onchange="assessCommonLand.landImportHandle();" multiple="multiple">
 
+<input type="file" id="declareRealtyLandCert_declareRealtyLandCert_HouseCert_newFileId"
+       name="declareRealtyLandCert_declareRealtyLandCert_HouseCert_newFileId" style="display: none;"
+       onchange="assessCommonLand.landImportHandleHouse(false,0);" multiple="multiple">
 
 
 <!-- 土地证信息 -->
@@ -181,7 +202,8 @@
 </div>
 
 <!-- 关联房产证信息 -->
-<div id="declareRealtyLandCert_HouseCert_box" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+<div id="declareRealtyLandCert_HouseCert_box" class="modal fade bs-example-modal-lg" data-backdrop="static"
+     tabindex="-1"
      role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -191,7 +213,7 @@
                         aria-hidden="true">&times;</span></button>
                 <h3 class="modal-title">关联房产证信息</h3>
             </div>
-            <form  class="form-horizontal">
+            <form class="form-horizontal">
                 <input type="hidden" name="id">
                 <input type="hidden" name="centerId">
                 <div class="modal-body">
@@ -204,7 +226,8 @@
                                             上传房产证
                                         </label>
                                         <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
-                                            <input id="declareRealtyLandCert_declareRealtyLandCert_HouseCert_FileId" name="declareRealtyLandCert_declareRealtyLandCert_HouseCert_FileId"
+                                            <input id="declareRealtyLandCert_declareRealtyLandCert_HouseCert_FileId"
+                                                   name="declareRealtyLandCert_declareRealtyLandCert_HouseCert_FileId"
                                                    required="required" placeholder="上传房产证" class="form-control"
                                                    type="file">
                                             <div id="_declareRealtyLandCert_declareRealtyLandCert_HouseCert_FileId"></div>
@@ -243,7 +266,7 @@
                         aria-hidden="true">&times;</span></button>
                 <h3 class="modal-title">建设工程规划许可证</h3>
             </div>
-            <form  class="form-horizontal">
+            <form class="form-horizontal">
                 <input type="hidden" name="id">
                 <input type="hidden" name="centerId">
                 <div class="modal-body">
@@ -297,7 +320,7 @@
                         aria-hidden="true">&times;</span></button>
                 <h3 class="modal-title">建设用地规划许可证</h3>
             </div>
-            <form  class="form-horizontal">
+            <form class="form-horizontal">
                 <input type="hidden" name="id">
                 <input type="hidden" name="centerId">
                 <div class="modal-body">
@@ -352,7 +375,7 @@
                         aria-hidden="true">&times;</span></button>
                 <h3 class="modal-title">建筑工程施工许可证</h3>
             </div>
-            <form  class="form-horizontal">
+            <form class="form-horizontal">
                 <input type="hidden" name="id">
                 <input type="hidden" name="centerId">
                 <div class="modal-body">
@@ -384,7 +407,8 @@
                 <button type="button" data-dismiss="modal" class="btn btn-default">
                     取消
                 </button>
-                <button type="button" class="btn btn-warning" onclick="assessCommonLand.declareBuildingConstructionPermitRemove()">
+                <button type="button" class="btn btn-warning"
+                        onclick="assessCommonLand.declareBuildingConstructionPermitRemove()">
                     删除
                 </button>
                 <button type="button" class="btn btn-primary"
@@ -408,7 +432,7 @@
                         aria-hidden="true">&times;</span></button>
                 <h3 class="modal-title">商品房预售许可证</h3>
             </div>
-            <form  class="form-horizontal">
+            <form class="form-horizontal">
                 <input type="hidden" name="id">
                 <input type="hidden" name="centerId">
                 <div class="modal-body">

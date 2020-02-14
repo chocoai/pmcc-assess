@@ -73,6 +73,8 @@ public class DeclarePublicService {
     private DeclareRealtyRealEstateCertService declareRealtyRealEstateCertService;
     @Autowired
     private DeclareRealtyLandCertService declareRealtyLandCertService;
+    @Autowired
+    private DeclareBuildEngineeringAndEquipmentCenterService declareBuildEngineeringAndEquipmentCenterService;
 
     private static final String UNIT = "单元";
     private static final String FLOOR = "层";
@@ -638,11 +640,11 @@ public class DeclarePublicService {
         excelImportWriteErrorInfo(null, rowIndex, colIndex, info, required, stringBuilder);
     }
 
-    private void excelImportWriteErrorInfo(final int rowIndex, final int colIndex, String info,final StringBuilder stringBuilder) {
+    private void excelImportWriteErrorInfo(final int rowIndex, final int colIndex, String info, final StringBuilder stringBuilder) {
         excelImportWriteErrorInfo(null, rowIndex, colIndex, info, false, stringBuilder);
     }
 
-    public void excelImportWriteErrorInfo(final int rowIndex,  String info, final StringBuilder stringBuilder){
+    public void excelImportWriteErrorInfo(final int rowIndex, String info, final StringBuilder stringBuilder) {
         excelImportWriteErrorInfo(null, rowIndex, 0, info, false, stringBuilder);
     }
 
@@ -672,7 +674,6 @@ public class DeclarePublicService {
             stringBuilder.append("(必填项)");
         }
     }
-
 
 
     /**
@@ -906,6 +907,64 @@ public class DeclarePublicService {
         return declareApplyDao.getDeclareApplyByProjectId(projectId);
     }
 
+    /**
+     * 获取主数据的从数据
+     *
+     * @param tableName
+     * @param id
+     * @param planDetailsId
+     * @return
+     */
+    private Map.Entry<Integer, Integer> auxiliaryAttachmentAutomatedWarrants(String tableName, Integer id, Integer planDetailsId) {
+        Map.Entry<Integer, Integer> entry = null;
+        DeclareBuildEngineeringAndEquipmentCenter query = new DeclareBuildEngineeringAndEquipmentCenter();
+        query.setPlanDetailsId(planDetailsId);
+        if (Objects.equal(FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class), tableName)) {
+            query.setType(DeclareRealtyHouseCert.class.getSimpleName());
+            query.setHouseId(id);
+            List<DeclareBuildEngineeringAndEquipmentCenter> centers = declareBuildEngineeringAndEquipmentCenterService.declareBuildEngineeringAndEquipmentCenterList(query);
+            if (CollectionUtils.isNotEmpty(centers)) {
+                Iterator<DeclareBuildEngineeringAndEquipmentCenter> iterator = centers.iterator();
+                while (iterator.hasNext()) {
+                    DeclareBuildEngineeringAndEquipmentCenter equipmentCenter = iterator.next();
+                    if (equipmentCenter.getLandId() == null || equipmentCenter.getLandId() == 0) {
+                        continue;
+                    }
+                    DeclareRealtyLandCert landCertById = declareRealtyLandCertService.getDeclareRealtyLandCertById(equipmentCenter.getLandId());
+                    if (landCertById == null) {
+                        continue;
+                    }
+                    if (landCertById.getAutoInitNumber() == null){
+                        continue;
+                    }
+                    entry = new MyEntry<>(landCertById.getId(), landCertById.getAutoInitNumber());
+                }
+            }
+        }
+        if (Objects.equal(FormatUtils.entityNameConvertToTableName(DeclareRealtyLandCert.class), tableName)) {
+            query.setType(DeclareRealtyLandCert.class.getSimpleName());
+            query.setLandId(id);
+            List<DeclareBuildEngineeringAndEquipmentCenter> centers = declareBuildEngineeringAndEquipmentCenterService.declareBuildEngineeringAndEquipmentCenterList(query);
+            if (CollectionUtils.isNotEmpty(centers)) {
+                Iterator<DeclareBuildEngineeringAndEquipmentCenter> iterator = centers.iterator();
+                while (iterator.hasNext()) {
+                    DeclareBuildEngineeringAndEquipmentCenter equipmentCenter = iterator.next();
+                    if (equipmentCenter.getHouseId() == null || equipmentCenter.getHouseId() == 0) {
+                        continue;
+                    }
+                    DeclareRealtyHouseCert houseCertById = declareRealtyHouseCertService.getDeclareRealtyHouseCertById(equipmentCenter.getHouseId());
+                    if (houseCertById == null) {
+                        continue;
+                    }
+                    if (houseCertById.getAutoInitNumber() == null){
+                        continue;
+                    }
+                    entry = new MyEntry<>(houseCertById.getId(), houseCertById.getAutoInitNumber());
+                }
+            }
+        }
+        return entry;
+    }
 
     /**
      * 申报图片自动关联
@@ -935,10 +994,20 @@ public class DeclarePublicService {
             List<DeclareRealtyHouseCertVo> declareRealtyHouseCertVoList = declareRealtyHouseCertService.lists(query);
             if (CollectionUtils.isNotEmpty(declareRealtyHouseCertVoList)) {
                 for (DeclareRealtyHouseCertVo declareRealtyHouseCertVo : declareRealtyHouseCertVoList) {
-                    linkedHashMap.put(declareRealtyHouseCertVo.getAutoInitNumber(), declareRealtyHouseCertVo.getId());
+                    if (Objects.equal(automatedWarrants.getIsSource(), Boolean.TRUE.toString())) {
+                        linkedHashMap.put(declareRealtyHouseCertVo.getAutoInitNumber(), declareRealtyHouseCertVo.getId());
+                    }
+                    if (Objects.equal(automatedWarrants.getIsSource(), Boolean.FALSE.toString())) {
+                        Map.Entry<Integer, Integer> entry = auxiliaryAttachmentAutomatedWarrants(FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class), declareRealtyHouseCertVo.getId(), declareRealtyHouseCertVo.getPlanDetailsId());
+                        if (entry != null) {
+                            automatedWarrants.setTableName(FormatUtils.entityNameConvertToTableName(DeclareRealtyLandCert.class));
+                            linkedHashMap.put(entry.getValue(), entry.getKey());
+                        }
+                    }
                 }
             }
         }
+
         if (Objects.equal(FormatUtils.entityNameConvertToTableName(DeclareRealtyRealEstateCert.class), automatedWarrants.getTableName())) {
             DeclareRealtyRealEstateCert query = new DeclareRealtyRealEstateCert();
             query.setPlanDetailsId(automatedWarrants.getPlanDetailsId());
@@ -950,6 +1019,7 @@ public class DeclarePublicService {
                 }
             }
         }
+
         if (Objects.equal(FormatUtils.entityNameConvertToTableName(DeclareRealtyLandCert.class), automatedWarrants.getTableName())) {
             DeclareRealtyLandCert query = new DeclareRealtyLandCert();
             query.setPlanDetailsId(automatedWarrants.getPlanDetailsId());
@@ -957,7 +1027,25 @@ public class DeclarePublicService {
             List<DeclareRealtyLandCertVo> declareRealtyLandCertVoList = declareRealtyLandCertService.lists(query);
             if (CollectionUtils.isNotEmpty(declareRealtyLandCertVoList)) {
                 for (DeclareRealtyLandCertVo realtyLandCertVo : declareRealtyLandCertVoList) {
-                    linkedHashMap.put(realtyLandCertVo.getAutoInitNumber(), realtyLandCertVo.getId());
+                    if (Objects.equal(automatedWarrants.getIsSource(), Boolean.TRUE.toString())) {
+                        linkedHashMap.put(realtyLandCertVo.getAutoInitNumber(), realtyLandCertVo.getId());
+                    }
+                    if (Objects.equal(automatedWarrants.getIsSource(), Boolean.FALSE.toString())) {
+                        Map.Entry<Integer, Integer> entry = auxiliaryAttachmentAutomatedWarrants(FormatUtils.entityNameConvertToTableName(DeclareRealtyLandCert.class), realtyLandCertVo.getId(), realtyLandCertVo.getPlanDetailsId());
+                        if (entry != null){
+                            automatedWarrants.setTableName(FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class));
+                            linkedHashMap.put(entry.getValue(), entry.getKey());
+                        }
+                    }
+                }
+            }
+        }
+        if (!linkedHashMap.isEmpty()){
+            Iterator<Map.Entry<Integer, Integer>> entryIterator = linkedHashMap.entrySet().iterator();
+            while (entryIterator.hasNext()){
+                Map.Entry<Integer, Integer> integerIntegerEntry = entryIterator.next();
+                if (integerIntegerEntry.getKey() == null || integerIntegerEntry.getKey() == 0 || integerIntegerEntry.getValue() == null || integerIntegerEntry.getValue() == 0){
+                    entryIterator.remove();
                 }
             }
         }
@@ -1073,6 +1161,8 @@ public class DeclarePublicService {
         private String fieldsName;
         private Integer planDetailsId;
 
+        private String isSource;
+
         public String getPrefixNumber() {
             return prefixNumber;
         }
@@ -1135,6 +1225,14 @@ public class DeclarePublicService {
 
         public void setFieldsName(String fieldsName) {
             this.fieldsName = fieldsName;
+        }
+
+        public String getIsSource() {
+            return isSource;
+        }
+
+        public void setIsSource(String isSource) {
+            this.isSource = isSource;
         }
     }
 

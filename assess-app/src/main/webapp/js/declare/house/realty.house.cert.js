@@ -597,6 +597,7 @@ assessCommonHouse.attachmentAutomatedWarrants = function (_this) {
     var prefixNumber = group.find("[name='prefixNumber']").val();
     var startNumber = group.find("[name='startNumber']").val();
     var endNumber = group.find("[name='endNumber']").val();
+    var isSource = group.find("[name='isSource']").val();
     var step = group.find("[name='step']").val();
     if (!$.isNumeric(startNumber)) {
         toastr.warning('启始编号非数字请重新填写');
@@ -615,10 +616,15 @@ assessCommonHouse.attachmentAutomatedWarrants = function (_this) {
         startNumber: startNumber,
         endNumber: endNumber,
         step: step,
+        isSource: 'true',
         fieldsName: assessCommonHouse.config.fileId,
         tableName: AssessDBKey.DeclareRealtyHouseCert,
         planDetailsId: declareCommon.getPlanDetailsId()
     };
+    if (isSource != undefined && isSource != null && isSource != ''){
+        data.isSource = isSource;
+        data.fieldsName = assessCommonHouse.config.landFileId;
+    }
     if (startNumber > endNumber) {
         toastr.error('截至编号 必须大于 启始编号');
         return false;
