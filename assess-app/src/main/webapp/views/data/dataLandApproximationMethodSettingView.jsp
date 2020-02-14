@@ -4,93 +4,100 @@
 <head>
     <%@include file="/views/share/main_css.jsp" %>
 </head>
-<body class="nav-md footer_fixed">
-<div class="container body">
-    <div class="main_container">
-        <%@include file="/views/share/main_navigation.jsp" %>
-        <%@include file="/views/share/main_head.jsp" %>
-        <div class="right_col" role="main">
-            <div class="x_panel">
-                <div class="x_title collapse-link">
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                    </ul>
-                    <h2><i class="fa ${baseViewDto.currentMenu.icon}"></i>
-                        ${baseViewDto.currentMenu.name} <%--这是用来显示标题的，固定格式--%>
-                    </h2>
-                    <div class="clearfix"></div>
+<body>
+<div class="wrapper">
+    <%@include file="/views/share/main_navigation.jsp" %>
+    <%@include file="/views/share/main_head.jsp" %>
+    <div class="main-panel">
+        <div class="content">
+            <div class="panel-header bg-primary-gradient">
+                <div class="page-inner py-5">
                 </div>
-                <div class="x_content">
-                    <form id="frmQuery" class="form-horizontal">
-                        <div class="form-group ">
-                            <div>
-                                <label class="col-sm-1 control-label">
-                                    省
-                                </label>
-                                <div class="col-sm-1">
-                                    <select name="province" class="form-control search-select select2" >
-                                    </select>
-                                </div>
-                            </div>
-                            <div>
-                                <label class="col-sm-1 control-label">
-                                    市
-                                </label>
-                                <div class="col-sm-1">
-                                    <select name="city" class="form-control search-select select2">
-                                    </select>
-                                </div>
-                            </div>
-                            <div>
-                                <label class="col-sm-1 control-label">
-                                    区
-                                </label>
-                                <div class="col-sm-1">
-                                    <select name="district" class="form-control search-select select2">
-                                    </select>
-                                </div>
-                            </div>
-                            <div>
-                                <label class="col-sm-1 control-label">
-                                    类别
-                                </label>
-                                <div class="col-sm-2">
-                                    <select name="category"
-                                            class="form-control search-select select2" id="queryName">
-                                    </select>
-                                </div>
-                            </div>
+            </div>
+            <div class="page-inner mt--5">
+                <div class="row mt--2">
 
-                            <div class="col-sm-3">
-                                <button type="button" class="btn btn-primary"
-                                        onclick="dataObjFun.listMaster()">
-                                    查询
-                                </button>
-                                <button type="button" class="btn btn-success"
-                                        onclick="dataObjFun.initFormMaster({});" data-toggle="modal" href="#MasterBox"> 新增
-                                </button>
+                    <div class="col-md-12">
+                        <div class="card full-height">
+                            <div class="card-header">
+                                <div class="card-head-row">
+                                    <div class="card-title">${baseViewDto.currentMenu.name}</div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <form id="frmQuery" class="form-horizontal">
+                                    <div class="form-group form-inline">
+                                        <label class="col-md-1 col-form-label">省</label>
+                                        <div class="col-md-3 p-0">
+                                            <select name="province"
+                                                    class="form-control input-full search-select select2">
+                                            </select>
+                                        </div>
+                                        <label class="col-md-1 col-form-label">市</label>
+                                        <div class="col-md-3 p-0">
+                                            <select name="city" class="form-control input-full search-select select2">
+                                            </select>
+                                        </div>
+                                        <label class="col-md-1 col-form-label">区</label>
+                                        <div class="col-md-3 p-0">
+                                            <select name="district"
+                                                    class="form-control input-full search-select select2">
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group form-inline">
+                                        <label class="col-md-1 col-form-label">类别</label>
+                                        <div class="col-md-3 p-0">
+                                            <select name="category"
+                                                    class="form-control input-full search-select select2"
+                                                    id="queryName">
+                                            </select>
+                                        </div>
+
+                                        <button style="margin-left: 10px" class="btn btn-info  btn-sm" type="button"
+                                                onclick="dataObjFun.listMaster()">
+											<span class="btn-label">
+												<i class="fa fa-search"></i>
+											</span>
+                                            查询
+                                        </button>
+                                        <button style="margin-left: 5px" class="btn btn-success btn-sm" type="button"
+                                                data-toggle="modal" onclick="dataObjFun.initFormMaster({});"
+                                                href="#MasterBox">
+											<span class="btn-label">
+												<i class="fa fa-plus"></i>
+											</span>
+                                            新增
+                                        </button>
+                                    </div>
+
+
+                                </form>
+                                <table class="table table-bordered" id="MasterTable">
+                                    <!-- cerare document add ajax data-->
+                                </table>
                             </div>
                         </div>
+                    </div>
 
-                    </form>
-                    <table class="table table-bordered" id="MasterTable">
-                    </table>
                 </div>
             </div>
         </div>
+        <%@include file="/views/share/main_footer.jsp" %>
     </div>
-    <!-- end: MAIN CONTAINER -->
+
 </div>
+
 </body>
 <%@include file="/views/project/tool/residueRatio.jsp" %>
-<%@include file="/views/share/main_footer.jsp" %>
+
 <script type="text/javascript">
-    var dataObjFun = {} ;
+    var dataObjFun = {};
 
     dataObjFun.config = {
-        frm: $("#MasterFrm") ,
-        box: $("#MasterBox") ,
-        table:$("#MasterTable")
+        frm: $("#MasterFrm"),
+        box: $("#MasterBox"),
+        table: $("#MasterTable")
     };
 
     dataObjFun.initFormMaster = function (data) {
@@ -118,7 +125,7 @@
     };
 
     dataObjFun.deleteMasterById = function (id) {
-        Alert('确认要删除么？', 2, null, function () {
+        AlertConfirm("是否确认删除", "删除相应的数据后将不可恢复", function () {
             Loading.progressShow();
             $.ajax({
                 url: '${pageContext.request.contextPath}/landApproximationMethodSetting/delete/' + id,
@@ -127,10 +134,10 @@
                 success: function (result) {
                     Loading.progressHide();
                     if (result.ret) {
-                        toastr.success('删除成功');
+                        notifySuccess("成功", "删除数据成功");
                         dataObjFun.listMaster();
                     } else {
-                        Alert(result.errmsg);
+                        AlertError("删除数据失败，失败原因:" + result.errmsg);
                     }
                 }
             })
@@ -139,27 +146,29 @@
 
     dataObjFun.listMaster = function () {
         var cols = [];
-        cols.push({field: 'areaName', title: '区域'});
-        cols.push({field: 'categoryName', title: '类别'});
+        cols.push({field: 'areaName', width: '30%',title: '区域'});
+        cols.push({field: 'categoryName',width: '25%', title: '类别'});
         cols.push({
-            field: 'releaseTime', title: '发布时间', formatter: function (value, row, index) {
+            field: 'releaseTime', width: '25%',title: '发布时间', formatter: function (value, row, index) {
                 return formatDate(value);
             }
         });
         cols.push({
-            field: 'id', title: '操作', formatter: function (value, row, index) {
-                var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="dataObjFun.editMasterById(' + index + ')"><i class="fa fa-edit fa-white"></i></a>';
-                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="dataObjFun.deleteMasterById(' + row.id + ')"><i class="fa fa-minus fa-white"></i></a>';
-                str += '</div>';
+            field: 'id',width: '20%', title: '操作', formatter: function (value, row, index) {
+                var str = '<button onclick="dataObjFun.editMasterById(' + index + ')"  style="margin-left: 5px;"  class="btn btn-icon btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
+                str += '<i class="fa fa-pen"></i>';
+                str += '</button>';
+                str += '<button onclick="dataObjFun.deleteMasterById(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn btn-icon btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
+                str += '<i class="fa fa-minus"></i>';
+                str += '</button>';
                 return str;
             }
         });
         dataObjFun.config.table.bootstrapTable('destroy');
         TableInit(dataObjFun.config.table.prop("id"), "${pageContext.request.contextPath}/landApproximationMethodSetting/getBootstrapTableVo", cols, {
-            province:$("#frmQuery").find("select[name='province']").val(),
-            city:$("#frmQuery").find("select[name='city']").val(),
-            district:$("#frmQuery").find("select[name='district']").val(),
+            province: $("#frmQuery").find("select[name='province']").val(),
+            city: $("#frmQuery").find("select[name='city']").val(),
+            district: $("#frmQuery").find("select[name='district']").val(),
             category: $("#queryName").val()
         }, {
             showColumns: false,
@@ -183,11 +192,11 @@
             type: "post",
             success: function (result) {
                 if (result.ret) {
-                    toastr.success('成功');
+                    AlertSuccess("成功", "数据已成功保存到数据库");
                     dataObjFun.listMaster();
                     $(dataObjFun.config.box.selector).modal("hide");
                 } else {
-                    Alert(result.errmsg);
+                    AlertError("保存数据失败，失败原因:" + result.errmsg);
                 }
             }
         })
@@ -207,103 +216,130 @@
     });
 
 </script>
+
 <div id="MasterBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
+                <h4 class="modal-title">土地逼近法补偿配置</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">土地逼近法补偿配置</h3>
             </div>
-            <form id="MasterFrm" class="form-horizontal">
-                <input type="hidden" id="id" name="id">
-                <div class="modal-body">
+
+            <div class="modal-body">
+                <form id="MasterFrm" class="form-horizontal">
+                    <input type="hidden" id="id" name="id">
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="panel-body">
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">省
-                                            <span class="symbol required"></span></label>
-                                        <div class="col-sm-3">
-                                            <select name="province"
-                                                    class="form-control search-select select2" required="required">
-                                            </select>
+                            <div class="card-body">
+                                <div class="row form-group">
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                省<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <select name="province"
+                                                        class="form-control input-full search-select select2"
+                                                        required="required">
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">市<span class="symbol required"></span><span
-                                                class="symbol required"></span></label>
-                                        <div class="col-sm-3">
-                                            <select name="city" class="form-control search-select select2"
-                                                    required="required">
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">县</label>
-                                        <div class="col-sm-3">
-                                            <select name="district"
-                                                    class="form-control search-select select2">
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            类别
-                                        </label>
-                                        <div class="col-sm-3">
-                                            <select name="category"
-                                                    class="form-control search-select select2">
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            文号
-                                        </label>
-                                        <div class="col-sm-3">
-                                            <input type="text" class="form-control" name="symbol" placeholder="文号">
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            金额
-                                        </label>
-                                        <div class="col-sm-3">
-                                            <input type="text" data-rule-number='true' class="form-control" name="amountMoney"
-                                                   placeholder="金额">
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                市<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <select name="city" class="form-control input-full search-select select2"
+                                                        required="required">
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            发布时间
-                                        </label>
-                                        <div class="col-sm-11">
-                                            <input type="text" readonly="readonly"
-                                                   class="form-control date-picker dbdate" data-date-format="yyyy-mm-dd"
-                                                   name="releaseTime" placeholder="发布日期">
+                                <div class="row form-group">
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                县
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <select name="district"
+                                                        class="form-control input-full search-select select2">
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                类别
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <select name="category"
+                                                        class="form-control input-full search-select select2">
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                文号
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control input-full" name="symbol"
+                                                       placeholder="文号">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                金额
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input type="text" data-rule-number='true' class="form-control input-full"
+                                                       name="amountMoney"
+                                                       placeholder="金额">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                                <div class="row form-group">
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                发布时间
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input type="text" readonly="readonly"
+                                                       class="form-control input-full date-picker dbdate"
+                                                       data-date-format="yyyy-mm-dd"
+                                                       name="releaseTime" placeholder="发布日期">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-default">
-                        取消
-                    </button>
-                    <button type="button" class="btn btn-primary" onclick="dataObjFun.saveMaster()">
-                        保存
-                    </button>
-                </div>
-            </form>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="dataObjFun.saveMaster()">
+                    保存
+                </button>
+            </div>
+
         </div>
     </div>
 </div>

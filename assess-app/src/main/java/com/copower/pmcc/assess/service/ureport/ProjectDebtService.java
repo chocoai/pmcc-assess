@@ -197,24 +197,27 @@ public class ProjectDebtService {
                 }
                 //预评报告文号
                 AssessProjectTypeEnum assessProjectType = projectInfoService.getAssessProjectType(projectInfo.getProjectCategoryId());
-                List<Integer> sameGroupPreauditType = dataNumberRuleService.getSameGroupReportType(assessProjectType,preauditId);
-                List<String> preauditList = Lists.newArrayList();
-                for (Integer type : sameGroupPreauditType) {
-                    preauditList.addAll(projectNumberRecordService.getReportNumberList(projectItem.getId(),assessProjectType, type));
+                if (assessProjectType != null) {
+                    List<Integer> sameGroupPreauditType = dataNumberRuleService.getSameGroupReportType(assessProjectType, preauditId);
+                    List<String> preauditList = Lists.newArrayList();
+                    for (Integer type : sameGroupPreauditType) {
+                        preauditList.addAll(projectNumberRecordService.getReportNumberList(projectItem.getId(), assessProjectType, type));
 
-                }
-                if (CollectionUtils.isNotEmpty(preauditList)) {
-                    reportProjectDebt.setPreauditNumber(StringUtils.join(preauditList, ","));
-                }
+                    }
+                    if (CollectionUtils.isNotEmpty(preauditList)) {
+                        reportProjectDebt.setPreauditNumber(StringUtils.join(preauditList, ","));
+                    }
+
                 //结果报告文号
-                List<Integer> sameGroupResultType = dataNumberRuleService.getSameGroupReportType(assessProjectType,resultId);
+                List<Integer> sameGroupResultType = dataNumberRuleService.getSameGroupReportType(assessProjectType, resultId);
                 List<String> resultIdList = Lists.newArrayList();
                 for (Integer resultType : sameGroupResultType) {
-                    resultIdList.addAll(projectNumberRecordService.getReportNumberList(projectItem.getId(),assessProjectType, resultType));
+                    resultIdList.addAll(projectNumberRecordService.getReportNumberList(projectItem.getId(), assessProjectType, resultType));
 
                 }
                 if (CollectionUtils.isNotEmpty(resultIdList)) {
                     reportProjectDebt.setResultNumber(StringUtils.join(resultIdList, ","));
+                }
                 }
                 //项目经理
                 String projectManager = projectMemberService.getProjectManager(projectItem.getId());

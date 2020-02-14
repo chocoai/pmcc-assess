@@ -10,7 +10,8 @@
 
 </div>
 
-<script src='/assets/js/comm/erp-head.js?v=${assessVersion}'></script>
+<script src='/assets/js/atlantis/erp-head.js?v=${assessVersion}'></script>
+<script src='/assets/js/atlantis/erp-head.js'></script>
 <script type="text/javascript">
     var viewJson = '${baseViewDtoJson}';
     var sysRemindUnReadCount = '${sysRemindUnReadCount}';

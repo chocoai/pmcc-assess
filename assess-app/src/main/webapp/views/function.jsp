@@ -17,31 +17,58 @@
 </head>
 <!-- end: HEAD -->
 <!-- start: BODY -->
-<body class="nav-md">
+<body>
 <%--<%@include file="share/main_head.jsp" %>--%>
 <!-- start: MAIN CONTAINER -->
-<div class="container body">
-    <div class="main_container">
-        <%@include file="/views/share/main_navigation.jsp" %>
-        <%@include file="/views/share/main_head.jsp" %>
-        <div class="right_col" role="main">
-            <div class="row">
-                <div class="x_panel ">
-                    <div class="x_title">
-                        <h2>图片识别</h2>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div class="x_content">
-                        <input id="bom_upload" name="bom_upload" type="file" multiple="false">
-                        <div id="_bom_upload">
+<div class="wrapper">
+    <%@include file="/views/share/main_navigation.jsp" %>
+    <%@include file="/views/share/main_head.jsp" %>
+    <div class="main-panel">
+        <div class="content">
+            <div class="panel-header bg-primary-gradient">
+                <div class="page-inner py-5">
+                </div>
+            </div>
+            <div class="page-inner mt--5">
+                <div class="row mt--2">
+
+                    <div class="col-md-12">
+                        <div class="card full-height">
+                            <div class="card-header">
+                                <div class="card-head-row">
+                                    <div class="card-title">${baseViewDto.currentMenu.name}</div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <form class="form-horizontal">
+                                    <div class="form-group form-inline">
+                                        <div class="row form-group">
+                                            <div class="col-md-12">
+                                                <div class="form-inline x-valid">
+                                                    <div class="col-sm-11">
+                                                        <input id="bom_upload" name="bom_upload" type="file" multiple="false">
+                                                        <div id="_bom_upload">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+
+                            </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
         <%@include file="/views/share/main_footer.jsp" %>
     </div>
+
 </div>
+
+
 </body>
 </html>
 

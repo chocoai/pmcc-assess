@@ -51,6 +51,9 @@ public class DataInfrastructureDao {
         if (StringUtils.isNotBlank(infrastructure.getType())){
             criteria.andTypeEqualTo(infrastructure.getType());
         }
+        if (StringUtils.isNotBlank(infrastructure.getDispatchUnit())){
+            criteria.andDispatchUnitLike(String.format("%s%s%s", "%", infrastructure.getDispatchUnit(), "%"));
+        }
         return infrastructureMapper.selectByExample(example) ;
     }
 

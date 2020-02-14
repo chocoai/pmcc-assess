@@ -4,100 +4,101 @@
 <head>
     <%@include file="/views/share/main_css.jsp" %>
 </head>
-<body class="nav-md footer_fixed">
-<div class="container body">
-    <div class="main_container">
-        <%@include file="/views/share/main_navigation.jsp" %>
-        <%@include file="/views/share/main_head.jsp" %>
-        <div class="right_col" role="main">
-            <div class="x_panel">
-                <div class="x_title collapse-link">
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                    </ul>
-                    <h2><i class="fa ${baseViewDto.currentMenu.icon}"></i>
-                        ${baseViewDto.currentMenu.name} <%--这是用来显示标题的，固定格式--%>
-                    </h2>
-                    <div class="clearfix"></div>
+<body>
+<div class="wrapper">
+    <%@include file="/views/share/main_navigation.jsp" %>
+    <%@include file="/views/share/main_head.jsp" %>
+    <div class="main-panel">
+        <div class="content">
+            <div class="panel-header bg-primary-gradient">
+                <div class="page-inner py-5">
                 </div>
-                <div class="x_content">
-                    <div class="row">
-                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                            <form id="frmQuery" class="form-horizontal">
-                                <input type="hidden" name="readOnly" value="${readOnly}">
-                                <input type="hidden" name="permission" value="${permission}">
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">省</label>
-                                        <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+            </div>
+            <div class="page-inner mt--5">
+                <div class="row mt--2">
+
+                    <div class="col-md-12">
+                        <div class="card full-height">
+                            <div class="card-header">
+                                <div class="card-head-row">
+                                    <div class="card-title">${baseViewDto.currentMenu.name}</div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <form id="frmQuery" class="form-horizontal">
+                                    <input type="hidden" name="readOnly" value="${readOnly}">
+                                    <input type="hidden" name="permission" value="${permission}">
+                                    <div class="form-group form-inline">
+                                        <label class="col-md-1 col-form-label">省</label>
+                                        <div class="col-md-2 p-0">
                                             <select name="province"
-                                                    class="form-control search-select select2">
+                                                    class="form-control input-full search-select select2">
                                             </select>
                                         </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">市</label>
-                                        <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                            <select name="city" class="form-control search-select select2">
+                                        <label class="col-md-1 col-form-label">市</label>
+                                        <div class="col-md-2 p-0">
+                                            <select name="city" class="form-control input-full search-select select2">
                                             </select>
                                         </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">区县</label>
-                                        <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                        <label class="col-md-1 col-form-label">区县</label>
+                                        <div class="col-md-2 p-0">
                                             <select name="district"
-                                                    class="form-control search-select select2">
+                                                    class="form-control input-full search-select select2">
                                             </select>
                                         </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">乡镇街道</label>
-                                        <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                            <input placeholder="乡镇名称" class="form-control" name="townShipName"
+                                        <label class="col-md-1 col-form-label">乡镇街道</label>
+                                        <div class="col-md-2 p-0">
+                                            <input placeholder="乡镇名称" class="form-control input-full" name="townShipName"
                                                    type="text">
                                         </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">权利类型</label>
-                                        <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                            <select name="landRightType" class="form-control search-select select2">
+                                    <div class="form-group form-inline">
+                                        <label class="col-md-1 col-form-label">权利类型</label>
+                                        <div class="col-md-2 p-0">
+                                            <select name="landRightType" class="form-control input-full search-select select2">
                                             </select>
                                         </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">创建人</label>
-                                        <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                            <input placeholder="创建人" class="form-control" name="creator" type="text">
+                                        <label class="col-md-1 col-form-label">创建人</label>
+                                        <div class="col-md-2 p-0">
+                                            <input placeholder="创建人" class="form-control input-full" name="creator" type="text">
                                         </div>
-                                    </div>
-                                    <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                        <button type="button" class="btn btn-primary"
-                                                onclick="findQuery();">
+
+                                        <button style="margin-left: 10px" class="btn btn-info  btn-sm" type="button"
+                                                onclick="findQuery()">
+											<span class="btn-label">
+												<i class="fa fa-search"></i>
+											</span>
                                             查询
                                         </button>
-                                        <a class="btn btn-success" onclick="comeInLandLevelIndex();">新增</a>
+                                        <button style="margin-left: 5px" class="btn btn-success btn-sm" type="button"
+                                                data-toggle="modal" onclick="comeInLandLevelIndex()"
+                                                href="#divBoxFather">
+											<span class="btn-label">
+												<i class="fa fa-plus"></i>
+											</span>
+                                            新增
+                                        </button>
                                     </div>
-                                </div>
-                            </form>
-                        </div>
 
-                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                            <table class="table table-bordered" id="tb_FatherList">
-                                <!-- cerare document add ajax data-->
-                            </table>
+
+                                </form>
+                                <table class="table table-bordered" id="tb_FatherList">
+                                    <!-- cerare document add ajax data-->
+                                </table>
+                            </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
-
+        <%@include file="/views/share/main_footer.jsp" %>
     </div>
-    <!-- end: MAIN CONTAINER -->
+
 </div>
+
 </body>
-<%@include file="/views/share/main_footer.jsp" %>
+
 <%--<%@include file="/views/data/landModelDir/landModelApproval.jsp" %>--%>
 <%@include file="/views/data/landModelDir/landModel.jsp" %>
 <script type="text/javascript" src="${pageContext.request.contextPath}/views/data/landModelDir/landLevel.js?v=${assessVersion}"></script>

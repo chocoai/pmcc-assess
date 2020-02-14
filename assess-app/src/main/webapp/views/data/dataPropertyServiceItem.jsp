@@ -1,10 +1,8 @@
-<!DOCTYPE html>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html lang="en" class="no-js">
-<head>
-    <%@include file="/views/share/main_css.jsp" %>
-</head>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+<%--
 <div id="dataPropertyServiceItemModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
@@ -28,7 +26,7 @@
                                             服务类型
                                         </label>
                                         <div class="col-sm-4">
-                                            <select name="serviceType" class="form-control search-select select2 ">
+                                            <select name="serviceType" class="form-control input-full search-select select2 ">
                                                 <option value="">-请选择-</option>
                                             </select>
                                         </div>
@@ -38,7 +36,7 @@
                                             服务内容
                                         </label>
                                         <div class="col-sm-4">
-                                            <select name="serviceContent" class="form-control search-select select2 serviceContent">
+                                            <select name="serviceContent" class="form-control input-full search-select select2 serviceContent">
                                                 <option selected="selected" value="">请先选择类型</option>
                                             </select>
                                         </div>
@@ -50,7 +48,7 @@
                                             服务时间
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" class="form-control" name="serviceTime"
+                                            <input type="text" class="form-control input-full" name="serviceTime"
                                                    placeholder="服务时间" required="required">
                                         </div>
                                     </div>
@@ -59,7 +57,7 @@
                                             等级评价
                                         </label>
                                         <div class="col-sm-4">
-                                            <select name="gradeEvaluation" class="form-control search-select select2">
+                                            <select name="gradeEvaluation" class="form-control input-full search-select select2">
                                                 <option value="">-请选择-</option>
                                             </select>
                                         </div>
@@ -71,7 +69,7 @@
                                             收费标准<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="chargesNotes"
+                                            <input type="text" class="form-control input-full" name="chargesNotes"
                                                    placeholder="收费标准" required="required">
                                         </div>
                                     </div>
@@ -92,7 +90,147 @@
         </div>
     </div>
 </div>
+--%>
+<div id="startModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">服务内容</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card-body">
+                            <input type="hidden" name="masterId">
+                            <p>
+                                <button style="margin-left: 5px" class="btn btn-success btn-sm" type="button"
+                                        data-toggle="modal" onclick="dataPropertyServiceItem.prototype.showModel(this)"
+                                        href="#dataPropertyServiceItemModal">
+											<span class="btn-label">
+												<i class="fa fa-plus"></i>
+											</span>
+                                    新增
+                                </button>
+                            </p>
+                            <table class="table table-bordered" id="tb_dataServiceItemList">
+                                <!-- cerare document add ajax data-->
+                            </table>
 
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div id="dataPropertyServiceItemModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">编辑服务内容</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+
+            <div class="modal-body">
+                <form id="dataPropertyServiceItemFrm" class="form-horizontal">
+                    <input type="hidden" name="id" value="0">
+                    <input type="hidden" name="masterId">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <div class="row form-group">
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                服务类型
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <select name="serviceType" class="form-control input-full search-select select2 ">
+                                                    <option value="">-请选择-</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                服务内容
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <select name="serviceContent" class="form-control input-full search-select select2 serviceContent">
+                                                    <option selected="selected" value="">请先选择类型</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                服务时间
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control input-full" name="serviceTime"
+                                                       placeholder="服务时间" required="required">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                等级评价
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <select name="gradeEvaluation" class="form-control input-full search-select select2">
+                                                    <option value="">-请选择-</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                收费标准<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control input-full" name="chargesNotes"
+                                                       placeholder="收费标准" required="required">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="dataPropertyServiceItem.prototype.saveData(this)">
+                    保存
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
 <script type="application/javascript">
     var masterId = 0;
     var dataPropertyServiceItem = function () {
@@ -111,10 +249,12 @@
             var cols = [];
             cols.push({
                 field: 'opt', title: '操作', formatter: function (value, row, index) {
-                    var str = '<div class="btn-margin">';
-                    str += '<a class="btn btn-xs btn-success" href="javascript://;" onclick="dataPropertyServiceItem.prototype.getAndInit(' + row.id + ')" ><i class="fa fa-edit">编辑</i></a>';
-                    str += '<a class="btn btn-xs btn-warning" href="javascript://" onclick="dataPropertyServiceItem.prototype.removeData(' + row.id + ')"><i class="fa fa-trash-o"></i>删除</a>';
-                    str += '</div>';
+                    var str = '<button onclick="dataPropertyServiceItem.prototype.getAndInit(' + row.id + ')"  style="margin-left: 5px;"  class="btn btn-icon btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
+                    str += '<i class="fa fa-pen"></i>';
+                    str += '</button>';
+                    str += '<button onclick="dataPropertyServiceItem.prototype.removeData(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn btn-icon btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
+                    str += '<i class="fa fa-minus"></i>';
+                    str += '</button>';
                     return str;
                 }
             });
@@ -123,14 +263,14 @@
         removeData: function (id) {
             var data = $("#" + dataPropertyServiceItem.prototype.config().table).bootstrapTable('getRowByUniqueId',id);
             dataPropertyModelQuote.deleteDataPropertyServiceItem(id,function () {
-                toastr.success('删除成功');
+                notifySuccess("成功", "删除数据成功");
                 dataPropertyServiceItem.prototype.loadDataDicList(data.masterId);
             });
         },
         showModel: function (_this) {
             var target = $('#' + dataPropertyServiceItem.prototype.config().box) ;
             var frm = $("#" + dataPropertyServiceItem.prototype.config().frm) ;
-            var masterId = target.find("input[name='masterId']").val();
+            var masterId = $("#startModal").find("input[name='masterId']").val();
             dataPropertyModelQuote.initFormDataPropertyServiceItemModalTool(frm,{masterId:masterId}) ;
             target.modal("show");
         },
@@ -141,7 +281,7 @@
             }
             var data = formSerializeArray(target.find("form"));
             dataPropertyModelQuote.saveDataPropertyServiceItem(data,function () {
-                toastr.success('保存成功');
+                AlertSuccess("成功", "数据已成功保存到数据库");
                 target.modal('hide');
                 dataPropertyServiceItem.prototype.loadDataDicList(data.masterId);
             });
@@ -161,6 +301,9 @@
 
     }
 </script>
+
+
+<%--
 <div id="startModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -187,4 +330,4 @@
             </div>
         </div>
     </div>
-</div>
+</div>--%>

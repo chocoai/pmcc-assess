@@ -5,77 +5,90 @@
 <head>
     <%@include file="/views/share/main_css.jsp" %>
 </head>
-<body class="nav-md footer_fixed">
-<div class="container body">
-    <div class="main_container">
-        <%@include file="/views/share/main_navigation.jsp" %>
-        <%@include file="/views/share/main_head.jsp" %>
-        <div class="right_col" role="main">
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="x_panel">
-                        <div class="x_title collapse-link">
-                            <ul class="nav navbar-right panel_toolbox">
-                                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                            </ul>
-                            <h2>${baseViewDto.currentMenu.name}</h2>
-                            <div class="clearfix"></div>
-                        </div>
-                        <div class="x_content">
-                            <form class="form-horizontal">
-                                <div class="form-group ">
-                                    <div>
-                                        <label class="col-sm-1 control-label">
-                                            客户名称
-                                        </label>
-                                        <div class="col-sm-2">
+<body>
+<div class="wrapper">
+    <%@include file="/views/share/main_navigation.jsp" %>
+    <%@include file="/views/share/main_head.jsp" %>
+    <div class="main-panel">
+        <div class="content">
+            <div class="panel-header bg-primary-gradient">
+                <div class="page-inner py-5">
+                </div>
+            </div>
+            <div class="page-inner mt--5">
+                <div class="row mt--2">
+
+                    <div class="col-md-12">
+                        <div class="card full-height">
+                            <div class="card-header">
+                                <div class="card-head-row">
+                                    <div class="card-title">${baseViewDto.currentMenu.name}</div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <form id="frmQuery" class="form-horizontal">
+                                    <div class="form-group form-inline">
+                                        <label for="queryName" class="col-md-1 col-form-label">客户名称</label>
+                                        <div class="col-md-3 p-0">
                                             <input type="text" data-rule-maxlength="50"
                                                    placeholder="客户名称" id="queryName" name="queryName"
-                                                   class="form-control">
+                                                   class="form-control input-full">
                                         </div>
-                                    </div>
-                                    <div class="col-sm-3">
-                                        <button type="button" class="btn btn-primary"
+
+                                        <button style="margin-left: 10px" class="btn btn-info  btn-sm" type="button"
                                                 onclick="loadCustomerFieldList()">
+											<span class="btn-label">
+												<i class="fa fa-search"></i>
+											</span>
                                             查询
                                         </button>
-                                        <button type="button" class="btn btn-success" data-toggle="modal"
-                                                href="#modalCustomerField"
-                                                onclick="addCustomerField();"> 新增
+                                        <button style="margin-left: 5px" class="btn btn-success btn-sm" type="button"
+                                                data-toggle="modal" onclick="addCustomerField()"
+                                                href="#modalCustomerField">
+											<span class="btn-label">
+												<i class="fa fa-plus"></i>
+											</span>
+                                            新增
                                         </button>
                                     </div>
-                                </div>
-                            </form>
-                            <table id="tbList" class="table table-bordered"></table>
+
+
+                                </form>
+                                <table class="table table-bordered" id="tbList">
+                                    <!-- cerare document add ajax data-->
+                                </table>
+                            </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
+        <%@include file="/views/share/main_footer.jsp" %>
     </div>
-    <input type='hidden' id='CustomerFieldId' name='CustomerFieldId' value="0">
-    <!-- end: MAIN CONTAINER -->
+
 </div>
 
 </body>
-<%@include file="/views/share/main_footer.jsp" %>
+
 
 <!-- start: org modal -->
-<div id="modalCustomerField" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
-     role="dialog"
+<div id="modalCustomerField" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class='modal-header'>
-                <button type='button' class='close' data-dismiss='modal' aria-label='Close'><span
-                        aria-hidden='true'>&times;</span></button>
-                <h3 class='modal-title'>客户字段</h3></div>
-            <form id='frm' class='form-horizontal'>
-                <input type='hidden' id='id' name='id' value="0">
-                <div class='modal-body'>
-                    <div class='row'>
-                        <div class='col-md-12'>
-                            <div class='panel-body'>
+            <div class="modal-header">
+                <h4 class="modal-title">客户字段</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+
+            <div class="modal-body">
+                <form id='frm' class='form-horizontal'>
+                    <input type='hidden' id='id' name='id' value="0">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
                                 <div class="form-group">
                                     <div class="x-valid">
                                         <label class="col-sm-2 control-label">
@@ -162,20 +175,26 @@
                                         </div>
                                     </div>
                                 </div>
+
+
                             </div>
                         </div>
                     </div>
-                </div>
-            </form>
-            <div class='modal-footer'>
-                <button type='button' data-dismiss='modal' class='btn btn-default'>取消</button>
-                <button type='button' class='btn btn-primary save_custom_model' onclick="saveCustomerField();"
-                        id='btn_save_bid_organization_agency'>保存
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="saveCustomerField()">
+                    保存
                 </button>
             </div>
+
         </div>
     </div>
 </div>
+
 <script type="text/javascript" src="/pmcc-crm/js/crm-customer-utils.js?v=1.0"></script>
 <script type="application/javascript">
     $(function () {
@@ -190,9 +209,12 @@
         cols.push({field: 'assessType', title: '评估类型'});
         cols.push({
             field: 'opt', title: '操作', formatter: function (value, row, index) {
-                var str = "";
-                str += "<a style='margin-left: 5px;' data-placement='top' data-original-title='编辑' class='btn btn-xs btn-success tooltips' onclick='getAndInit(" + row.id + ")'   ><i class='fa fa-edit fa-white'></i></a>";
-                str += "<a style='margin-left: 5px;' data-placement='top' data-original-title='删除'  class='btn btn-xs btn-warning tooltips'  onclick='delCustomerField(" + row.id + ")'   ><i class='fa fa-minus fa-white'></i></a>";
+                var str = '<button onclick="getAndInit(' + row.id + ')"  style="margin-left: 5px;"  class="btn btn-icon btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
+                str += '<i class="fa fa-pen"></i>';
+                str += '</button>';
+                str += '<button onclick="delCustomerField(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn btn-icon btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
+                str += '<i class="fa fa-minus"></i>';
+                str += '</button>';
                 return str;
             }
         });
@@ -237,30 +259,29 @@
 
     //删除
     function delCustomerField(id) {
-        bootbox.confirm("确认要删除么？", function (result) {
-            if (result) {
-                Loading.progressShow();
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/dataCustomerField/deleteCustomerField",
-                    type: "post",
-                    dataType: "json",
-                    data: {id: id},
-                    success: function (result) {
-                        Loading.progressHide();
-                        if (result.ret) {
-                            toastr.success('删除成功');
-                            $('#tbList').bootstrapTable("refresh");
-                        }
-                        else {
-                            Alert("删除数据失败，失败原因:" + result.errmsg);
-                        }
-                    },
-                    error: function (result) {
-                        Loading.progressHide();
-                        Alert("调用服务端方法失败，失败原因:" + result);
+        AlertConfirm("是否确认删除", "删除相应的数据后将不可恢复", function () {
+            Loading.progressShow();
+            $.ajax({
+                url: "${pageContext.request.contextPath}/dataCustomerField/deleteCustomerField",
+                type: "post",
+                dataType: "json",
+                data: {id: id},
+                success: function (result) {
+                    Loading.progressHide();
+                    if (result.ret) {
+                        notifySuccess("成功", "删除数据成功");
+                        $('#tbList').bootstrapTable("refresh");
                     }
-                })
-            }
+                    else {
+                        AlertError("删除数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    Loading.progressHide();
+                    AlertError("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+
         });
     }
 
@@ -277,17 +298,17 @@
                 success: function (result) {
                     Loading.progressHide();
                     if (result.ret) {
-                        toastr.success('保存成功');
+                        AlertSuccess("成功", "数据已成功保存到数据库");
                         $('#tbList').bootstrapTable("refresh");
                         $('#modalCustomerField').modal('hide');
                     }
                     else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
                     Loading.progressHide();
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         }
@@ -358,7 +379,7 @@
                 }
             },
             error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
+                AlertError("调用服务端方法失败，失败原因:" + result);
             }
         })
     }
@@ -367,7 +388,7 @@
         //选择客户
         crmCustomer.select({
             multi: false,//是否允许多选
-            companyId:'${companyId}',
+            companyId: '${companyId}',
             onSelected: function (nodes) {
                 $(this_).closest('.input-group').find("input[name='customerId']").val(nodes[0].id);
                 $(this_).closest('.input-group').find("input[name='customerName']").val(nodes[0].name);

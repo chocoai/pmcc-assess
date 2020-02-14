@@ -19,8 +19,8 @@
 
 %>
 <div id="pmcc-footer"></div>
-<script src='/assets/js/comm/pmcc.js?v=${assessVersion}'></script>
-<script src='/assets/js/comm/erp-footer.js?v=${assessVersion}'></script>
+<script src='/assets/js/atlantis/pmcc-js.js'></script>
+<script src='/assets/js/atlantis/erp-footer.js?v=${assessVersion}'></script>
 <script type="application/javascript">
     var mainObj = {
         systemMessageWs: '<%=systemMessageWs%>',
@@ -32,6 +32,17 @@
 
     $(function () {
         $(".tooltips").tooltip();
+        $("#pmcc-footer").html(PMCC_MAIN.footer());
+        WebFont.load({
+            google: {"families": ["Lato:300,400,700,900"]},
+            custom: {
+                "families": ["Flaticon", "Font Awesome 5 Solid", "Font Awesome 5 Regular", "Font Awesome 5 Brands", "simple-line-icons"],
+                urls: ['/assets/atlantis/css/fonts.min.css']
+            },
+            active: function () {
+                sessionStorage.fonts = true;
+            }
+        });
     });
     mainObj.storeAccess = function () {
         window.sessionStorage.setItem("${requestAccessKey}", "${baseViewDto.thisUser.sessionId}");

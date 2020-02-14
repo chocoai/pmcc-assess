@@ -4,168 +4,189 @@
 <head>
     <%@include file="/views/share/main_css.jsp" %>
 </head>
-<body class="nav-md footer_fixed">
-<div class="container body">
-    <div class="main_container">
-        <%@include file="/views/share/main_navigation.jsp" %>
-        <%@include file="/views/share/main_head.jsp" %>
-        <div class="right_col" role="main">
-            <div class="x_panel">
-                <div class="x_title collapse-link">
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                    </ul>
-                    <h2><i class="fa ${baseViewDto.currentMenu.icon}"></i>
-                        ${baseViewDto.currentMenu.name} <%--这是用来显示标题的，固定格式--%>
-                    </h2>
-                    <div class="clearfix"></div>
+<body>
+<div class="wrapper">
+    <%@include file="/views/share/main_navigation.jsp" %>
+    <%@include file="/views/share/main_head.jsp" %>
+    <div class="main-panel">
+        <div class="content">
+            <div class="panel-header bg-primary-gradient">
+                <div class="page-inner py-5">
                 </div>
-                <div class="x_content">
-                    <form id="frmQuery" class="form-horizontal">
-                        <div class="form-group ">
-                            <div>
-                                <label class="col-sm-1 control-label">
-                                    名称
-                                </label>
-                                <div class="col-sm-2">
-                                    <input type="text" data-rule-maxlength="50"
-                                           placeholder="名称" id="queryName" name="queryName"
-                                           class="form-control">
+            </div>
+            <div class="page-inner mt--5">
+                <div class="row mt--2">
+
+                    <div class="col-md-12">
+                        <div class="card full-height">
+                            <div class="card-header">
+                                <div class="card-head-row">
+                                    <div class="card-title">${baseViewDto.currentMenu.name}</div>
                                 </div>
                             </div>
-                            <div>
-                                <label class="col-sm-1 control-label">
-                                    字段名称
-                                </label>
-                                <div class="col-sm-2">
-                                    <input type="text" data-rule-number="true" data-rule-maxlength="50"
-                                           placeholder="字段名称" id="queryFieldName" name="queryFieldName"
-                                           class="form-control">
-                                </div>
-                            </div>
-                            <div class="col-sm-3">
-                                <div type="button" class="btn btn-primary" onclick="reloadDamagedDegreeList()">
-                                    查询
-                                </div>
-                                <div type="button" class="btn btn-success" onclick="addDamagedDegree()"
-                                     data-toggle="modal" href="#divBox"> 新增
-                                </div>
+                            <div class="card-body">
+                                <form id="frmQuery" class="form-horizontal">
+                                    <div class="form-group form-inline">
+                                        <label for="queryName" class="col-md-1 col-form-label">名称</label>
+                                        <div class="col-md-3 p-0">
+                                            <input type="text" data-rule-maxlength="50"
+                                                   placeholder="名称" id="queryName" name="queryName"
+                                                   class="form-control input-full">
+                                        </div>
+                                        <label class="col-md-1 col-form-label">字段名称</label>
+                                        <div class="col-md-3 p-0">
+                                            <input type="text" data-rule-number="true" data-rule-maxlength="50"
+                                                   placeholder="字段名称" id="queryFieldName" name="queryFieldName"
+                                                   class="form-control input-full">
+                                        </div>
+                                        <button style="margin-left: 10px" class="btn btn-info  btn-sm" type="button"
+                                                onclick="reloadDamagedDegreeList()">
+											<span class="btn-label">
+												<i class="fa fa-search"></i>
+											</span>
+                                            查询
+                                        </button>
+                                        <button style="margin-left: 5px" class="btn btn-success btn-sm" type="button"
+                                                data-toggle="modal" onclick="addDamagedDegree()"
+                                                href="#divBox">
+											<span class="btn-label">
+												<i class="fa fa-plus"></i>
+											</span>
+                                            新增
+                                        </button>
+                                    </div>
+
+
+                                </form>
+                                <table class="table table-bordered" id="tb_List">
+                                    <!-- cerare document add ajax data-->
+                                </table>
                             </div>
                         </div>
+                    </div>
 
-                    </form>
-                    <table class="table table-bordered" id="tb_List">
-
-                    </table>
                 </div>
             </div>
         </div>
-
+        <%@include file="/views/share/main_footer.jsp" %>
     </div>
-    <!-- end: MAIN CONTAINER -->
+
 </div>
+
 </body>
 <div id="divBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
+                <h4 class="modal-title">完整度管理</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">完整度管理</h3>
             </div>
-            <form id="frm" class="form-horizontal">
-                <input type="hidden" id="id" name="id" value="0">
-                <input type="hidden" id="pid" name="pid">
-                <div class="modal-body">
+
+            <div class="modal-body">
+                <form id="frm" class="form-horizontal">
+                    <input type="hidden" id="id" name="id" value="0">
+                    <input type="hidden" id="pid" name="pid">
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="panel-body">
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            名称<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <input type="text" required data-rule-maxlength="50" placeholder="名称"
-                                                   id="name" name="name" class="form-control">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            字段名称<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <input type="text" required data-rule-maxlength="50" placeholder="字段名称"
-                                                   id="fieldName" name="fieldName" class="form-control">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            权重<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <input type="text" data-rule-maxlength="50" placeholder="权重"
-                                                   required name="weight" class="form-control x-percent">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            是否启用
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <label class="radio-inline">
-                                                <input type="checkbox" id="bisEnable" name="bisEnable" value="true"
-                                                       checked="checked">
+                            <div class="card-body">
+                                <div class="row form-group">
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                名称<span class="symbol required"></span>
                                             </label>
+                                            <div class="col-sm-10">
+                                                <input type="text" required data-rule-maxlength="50" placeholder="名称"
+                                                       id="name" name="name" class="form-control input-full">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                字段名称<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input type="text" required data-rule-maxlength="50" placeholder="字段名称"
+                                                       id="fieldName" name="fieldName" class="form-control input-full">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                权重<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input type="text" data-rule-maxlength="50" placeholder="权重"
+                                                       required name="weight" class="form-control input-full x-percent">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
 
+                                            <div class="col-sm-10">
+                                                <div class="form-check" style="justify-content:left">
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input" type="checkbox" id="bisEnable"
+                                                               name="bisEnable" value="true"
+                                                               checked="checked">
+                                                        <span class="form-check-sign">是否启用</span>
+                                                    </label>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            排序
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <input type="text" data-rule-digits="true" placeholder="排序"
-                                                   id="sorting" name="sorting" class="form-control">
+                                <div class="row form-group">
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                排序
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input type="text" data-rule-digits="true" placeholder="排序"
+                                                       id="sorting" name="sorting" class="form-control input-full">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            备注
-                                        </label>
-                                        <div class="col-sm-10">
-                                    <textarea placeholder="备注" id="remark" name="remark"
-                                              class="form-control"></textarea>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                备注
+                                            </label>
+                                            <div class="col-sm-11">
+                                            <textarea placeholder="备注" id="remark" name="remark"
+                                                      class="form-control input-full"></textarea>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-default">
-                        取消
-                    </button>
-                    <button type="button" class="btn btn-primary" onclick="saveDamagedDegree()">
-                        保存
-                    </button>
-                </div>
-            </form>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="saveDamagedDegree()">
+                    保存
+                </button>
+            </div>
+
         </div>
     </div>
 </div>
+
 
 <!--子项管理-->
 <div id="divSubDamagedDegree" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
@@ -173,176 +194,226 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
+                <h4 class="modal-title">子项数据</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title" id="titleContent">子项数据</h3>
             </div>
-            <div class="panel-body">
-                <span id="toolbarSub">
-                    <div type="button" class="btn btn-success" onclick="addSubDamagedDegree()"
-                         data-toggle="modal" href="#divSubDamagedDegreeManage"> 新增
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card-body">
+                            <P id="toolbarSub">
+                                <button style="margin-left: 5px" class="btn btn-success btn-sm" type="button"
+                                        data-toggle="modal" onclick="addSubDamagedDegree()"
+                                        href="#divSubDamagedDegreeManage">
+											<span class="btn-label">
+												<i class="fa fa-plus"></i>
+											</span>
+                                    新增
+                                </button>
+                            </P>
+                            <table class="table table-bordered" id="tbDamagedDegreeList">
+                            </table>
+
+
+                        </div>
                     </div>
-                </span>
-                <table class="table table-bordered" id="tbDamagedDegreeList">
-                </table>
+                </div>
             </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+            </div>
+
         </div>
     </div>
 </div>
+
+
 <div id="divSubDamagedDegreeManage" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
+                <h4 class="modal-title">子项管理</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">子项管理</h3>
             </div>
-            <form id="frmSub" class="form-horizontal">
-                <input type="hidden" name="id" value="0">
-                <input type="hidden" name="pid" value="0">
-                <div class="modal-body">
+
+            <div class="modal-body">
+                <form id="frmSub" class="form-horizontal">
+                    <input type="hidden" name="id" value="0">
+                    <input type="hidden" name="pid" value="0">
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="panel-body">
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            名称<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="text" required data-rule-maxlength="50" placeholder="名称"
-                                                   id="subName" name="name" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            字段名称
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="text" data-rule-maxlength="100" placeholder="字段名称"
-                                                   id="subFieldName" name="fieldName" class="form-control">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            标准得分
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="text" data-rule-maxlength="100" placeholder="标准得分"
-                                                   name="standardScore" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            权重
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="text" data-rule-maxlength="100" placeholder="权重"
-                                                   name="weight" class="form-control x-percent">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            完好标准
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <textarea name="intact" class="form-control" placeholder="完好标准"></textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            基本完好标准
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <textarea name="basicallyIntact" class="form-control"
-                                                      placeholder="基本完好标准"></textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            一般损坏标准
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <textarea name="generalDamage" class="form-control"
-                                                      placeholder="一般损坏标准"></textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            严重损坏标准
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <textarea name="seriousDamage" class="form-control"
-                                                      placeholder="严重损坏标准"></textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            是否启用<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <label class="radio-inline">
-                                                <input type="checkbox" id="subBisEnable" name="bisEnable" value="true"
-                                                       checked="checked">
+                            <div class="card-body">
+                                <div class="row form-group">
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                名称<span class="symbol required"></span>
                                             </label>
+                                            <div class="col-sm-10">
+                                                <input type="text" required data-rule-maxlength="50" placeholder="名称"
+                                                       id="subName" name="name" class="form-control input-full">
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            排序
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="text" data-rule-digits="true" placeholder="排序"
-                                                   id="subSorting" name="sorting" class="form-control">
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                字段名称
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input type="text" data-rule-maxlength="100" placeholder="字段名称"
+                                                       id="subFieldName" name="fieldName" class="form-control input-full">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            备注
-                                        </label>
-                                        <div class="col-sm-10">
-                                         <textarea placeholder="备注" id="subRemark" name="remark"
-                                                   class="form-control"></textarea>
+                                <div class="row form-group">
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                标准得分
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input type="text" data-rule-maxlength="100" placeholder="标准得分"
+                                                       name="standardScore" class="form-control input-full">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                权重
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input type="text" data-rule-maxlength="100" placeholder="权重"
+                                                       name="weight" class="form-control input-full x-percent">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                完好标准
+                                            </label>
+                                            <div class="col-sm-11">
+                                           <textarea name="intact" class="form-control input-full"
+                                                     placeholder="完好标准"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                基本完好标准
+                                            </label>
+                                            <div class="col-sm-11">
+                                               <textarea name="basicallyIntact" class="form-control input-full"
+                                                         placeholder="基本完好标准"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                一般损坏标准
+                                            </label>
+                                            <div class="col-sm-11">
+                                              <textarea name="generalDamage" class="form-control input-full"
+                                                        placeholder="一般损坏标准"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                严重损坏标准
+                                            </label>
+                                            <div class="col-sm-11">
+                                               <textarea name="seriousDamage" class="form-control input-full"
+                                                         placeholder="严重损坏标准"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+
+                                            <div class="col-sm-10">
+                                                <div class="form-check" style="justify-content:left">
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input" type="checkbox" id="subBisEnable"
+                                                               name="subBisEnable" value="true"
+                                                               checked="checked">
+                                                        <span class="form-check-sign">是否启用</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                排序
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input type="text" data-rule-digits="true" placeholder="排序"
+                                                       id="subSorting" name="sorting" class="form-control input-full">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                备注
+                                            </label>
+                                            <div class="col-sm-11">
+                                           <textarea placeholder="备注" id="subRemark" name="remark"
+                                                     class="form-control input-full"></textarea>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-default">
-                        取消
-                    </button>
-                    <button type="button" class="btn btn-primary" onclick="saveSubDamagedDegree()">
-                        保存
-                    </button>
-                </div>
-            </form>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="saveSubDamagedDegree()">
+                    保存
+                </button>
+            </div>
+
         </div>
     </div>
 </div>
-<%@include file="/views/share/main_footer.jsp" %>
+
+
 <script type="application/javascript">
     $(function () {
         loadDamagedDegreeList();
     })
+
     //加载代理数据列表
     function loadDamagedDegreeList() {
         var cols = [];
@@ -362,11 +433,15 @@
         cols.push({field: 'remark', title: '备注'});
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
-                var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-success" href="javascript:setSubDamagedDegree(' + row.id + ');" >查看子项</i></a>';
-                str += '<a class="btn btn-xs btn-success" href="javascript:editDamagedDegree(' + index + ');" >编辑</i></a>';
-                str += '<a class="btn btn-xs btn-warning" href="javascript:delDamagedDegree(' + row.id + ',\'tb_List\')">删除</a>';
-                str += '</div>';
+                var str = '<button onclick="setSubDamagedDegree(' + row.id + ')" style="margin-left: 5px;" class="btn btn-icon btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看子项">';
+                str += '<i class="fa fa-search"></i>';
+                str += '</button>';
+                str += '<button onclick="editDamagedDegree(' + index + ')"  style="margin-left: 5px;"  class="btn btn-icon btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
+                str += '<i class="fa fa-pen"></i>';
+                str += '</button>';
+                str += '<button onclick="delDamagedDegree(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn btn-icon btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
+                str += '<i class="fa fa-minus"></i>';
+                str += '</button>';
                 return str;
             }
         });
@@ -379,6 +454,7 @@
             search: false
         });
     }
+
     //刷新数据列表
     function reloadDamagedDegreeList() {
         var opt = {
@@ -404,17 +480,17 @@
                 success: function (result) {
                     Loading.progressHide();
                     if (result.ret) {
-                        toastr.success('保存成功');
+                        AlertSuccess("成功", "数据已成功保存到数据库");
                         TableReload("tb_List");
                         $('#divBox').modal('hide');
                     }
                     else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
                     Loading.progressHide();
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         }
@@ -426,6 +502,7 @@
         $("#id").val("0");
         $("#bisEnable").prop("checked", true);
     }
+
     //编辑完整度数据
     function editDamagedDegree(index) {
         var row = $("#tb_List").bootstrapTable('getData')[index];
@@ -436,9 +513,10 @@
         });
         $('#divBox').modal();
     }
+
     //删除完整度数据
     function delDamagedDegree(id, tbId) {
-        Alert("确认要删除么？", 2, null, function () {
+        AlertConfirm("是否确认删除", "删除相应的数据后将不可恢复", function () {
             Loading.progressShow();
             $.ajax({
                 url: "${pageContext.request.contextPath}/dataDamagedDegree/delDamagedDegree",
@@ -448,16 +526,16 @@
                 success: function (result) {
                     Loading.progressHide();
                     if (result.ret) {
-                        toastr.success('删除成功');
+                        notifySuccess("成功", "删除数据成功");
                         $('#' + tbId).bootstrapTable("refresh");
                     }
                     else {
-                        Alert("删除数据失败，失败原因:" + result.errmsg);
+                        AlertError("删除数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
                     Loading.progressHide();
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         })
@@ -469,6 +547,7 @@
         $("#groupKey").val("");
         $("#queryName").val("");
     }
+
     //设置子项数据
     function setSubDamagedDegree(pid) {
         $("#frmSub").find('[name=pid]').val(pid);
@@ -493,11 +572,15 @@
         cols.push({field: 'remark', title: '备注'});
         cols.push({
             field: 'id', title: '操作', width: 200, formatter: function (value, row, index) {
-                var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-success" href="javascript:setSubDamagedDegree(' + row.id + ');" ><i class="fa fa-edit">查看子项</i></a>';
-                str += '<a class="btn btn-xs btn-success" href="javascript:editSubDamagedDegree(' + row.id + ');" ><i class="fa fa-edit">编辑</i></a>';
-                str += '<a class="btn btn-xs btn-warning" href="javascript:delDamagedDegree(' + row.id + ',\'tbDamagedDegreeList\')"><i class="fa fa-trash-o"></i>删除</a>';
-                str += '</div>';
+                var str = '<button onclick="setSubDamagedDegree(' + row.id + ')" style="margin-left: 5px;" class="btn btn-icon btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看子项">';
+                str += '<i class="fa fa-search"></i>';
+                str += '</button>';
+                str += '<button onclick="editSubDamagedDegree(' + row.id + ')"  style="margin-left: 5px;"  class="btn btn-icon btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
+                str += '<i class="fa fa-pen"></i>';
+                str += '</button>';
+                str += '<button onclick="delDamagedDegree(' + row.id + ',\'tbDamagedDegreeList\')"  style="margin-left: 5px;"  class="btn btn-icon btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
+                str += '<i class="fa fa-minus"></i>';
+                str += '</button>';
                 return str;
             }
         });
@@ -514,6 +597,7 @@
                 }
             });
     }
+
     //新增子项
     function addSubDamagedDegree() {
         $("#frmSub").clearAll(["pid"]);
@@ -544,22 +628,23 @@
                 data: data,
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success('保存成功');
+                        AlertSuccess("成功", "数据已成功保存到数据库");
                         TableReload("tbDamagedDegreeList");
                         $('#divSubDamagedDegreeManage').modal('hide');
                     }
                     else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         }
     }
 
     var strLevelHtml = "";
+
     //获取完整度层级
     function getDamagedDegreeLevel(id) {
         $.ajax({
@@ -579,11 +664,11 @@
                     }
                 }
                 else {
-                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                    notifyWarning("获取失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
+                AlertError("调用服务端方法失败，失败原因:" + result);
             }
         })
     }

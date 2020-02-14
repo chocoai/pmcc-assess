@@ -19,7 +19,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta content="" name="description"/>
 <meta content="" name="author"/>
-<script src="/assets/js/comm/pmcc-css.js?v=${assessVersion}"></script>
+<script src="/assets/js/atlantis/pmcc-css.js?v=${assessVersion}"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/jquery-ui/jquery-ui.css">
 <script src='${pageContext.request.contextPath}/js/assess.key.js?v=${assessVersion}'></script>
