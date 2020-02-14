@@ -62,6 +62,14 @@
                 <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
                     <div class="row">
                         <div class="x-valid">
+                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">非主数据</label>
+                            <div class=" col-xs-1  col-sm-1  col-md-1  col-lg-1 ">
+                                <label class="radio-inline">
+                                    <input type="checkbox"  name="isSource" value="false">
+                                </label>
+                            </div>
+                        </div>
+                        <div class="x-valid">
                             <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">启始编号</label>
                             <div class=" col-xs-1  col-sm-1  col-md-1  col-lg-1 ">
                                 <input type="text"
