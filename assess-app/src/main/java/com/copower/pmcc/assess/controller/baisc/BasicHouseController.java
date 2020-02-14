@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.dal.basis.custom.entity.CustomCaseEntity;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicAlternativeCaseDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDetailDao;
 import com.copower.pmcc.assess.dal.basis.entity.BasicAlternativeCase;
+import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchDetail;
 import com.copower.pmcc.assess.dal.basis.entity.BasicHouse;
 import com.copower.pmcc.assess.dal.basis.entity.BasicHouseTrading;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseTradingVo;
@@ -15,6 +16,7 @@ import com.copower.pmcc.assess.service.basic.PublicBasicService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -118,19 +120,6 @@ public class BasicHouseController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/quoteFromAlternative", name = "引用项目中的数据批量时", method = {RequestMethod.GET})
-    public HttpResult quoteFromAlternative(Integer id, Integer tableId) {
-        try {
-            BasicAlternativeCase alternativeCase = basicAlternativeCaseDao.getBasicAlternativeCaseById(id);
-            BasicHouse basicHouse = basicHouseService.copyBasicHouse(alternativeCase.getBusinessId(), tableId, true);
-            return HttpResult.newCorrectResult(basicHouse);
-        } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
-            return HttpResult.newErrorResult(e.getMessage());
-        }
-    }
-
-    @ResponseBody
     @RequestMapping(value = "/addHouseAndTrading", name = "添加房屋及交易信息", method = {RequestMethod.POST})
     public HttpResult addHouseAndTrading(String houseNumber, Integer applyId) {
         try {
@@ -187,10 +176,26 @@ public class BasicHouseController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "/quoteFromAlternative", name = "引用备选案例数据", method = {RequestMethod.GET})
+    public HttpResult quoteFromAlternative(Integer id, Integer tableId) {
+        try {
+            BasicAlternativeCase alternativeCase = basicAlternativeCaseDao.getBasicAlternativeCaseById(id);
+            BasicApplyBatchDetail applyBatchDetail = basicApplyBatchDetailDao.getInfoById(alternativeCase.getBusinessId());
+            List<String> ignoreList= Lists.newArrayList("estateId","buildingId","unitId");
+            BasicHouse basicHouse = basicHouseService.copyBasicHouseIgnore(applyBatchDetail.getTableId(), tableId, true,ignoreList);
+            return HttpResult.newCorrectResult(basicHouse);
+        } catch (Exception e) {
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/quoteCaseHouse", name = "引用案列数据", method = {RequestMethod.GET})
     public HttpResult quoteCaseHouse(Integer sourceId, Integer targetId) {
         try {
-            BasicHouse basicHouse = basicHouseService.copyBasicHouseIgnore(sourceId, targetId, true,"estateId","buildingId","unitId");
+            List<String> ignoreList= Lists.newArrayList("estateId","buildingId","unitId");
+            BasicHouse basicHouse = basicHouseService.copyBasicHouseIgnore(sourceId, targetId, true,ignoreList);
             basicHouse.setQuoteId(sourceId);
             basicHouse.setBisCase(false);
             basicHouseService.saveAndUpdateBasicHouse(basicHouse, false);

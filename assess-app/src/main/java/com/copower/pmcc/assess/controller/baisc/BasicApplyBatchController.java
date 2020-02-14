@@ -119,9 +119,23 @@ public class BasicApplyBatchController extends BaseController {
         }
         basicApplyBatch.setEstateName(estateName);
         basicApplyBatchService.addBasicApplyBatch(basicApplyBatch);
-        modelAndView.addObject("basicApplyBatch", basicApplyBatch);
+        modelAndView.addObject("applyBatch", basicApplyBatch);
         modelAndView.addObject("formClassifyList", basicApplyBatchService.getFormClassifyList());
         modelAndView.addObject("examineFormTypeList", surveyCommonService.getExamineFormTypeList());
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/applyEdit", name = "返回修改页面", method = RequestMethod.GET)
+    public ModelAndView basicApplyEdit(String processInsId, String taskId, Integer boxId, String agentUserAccount) {
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/basic/basicBatchApplyIndex", processInsId, boxId, taskId, agentUserAccount);
+        modelAndView.addObject("formClassifyList", basicApplyBatchService.getFormClassifyList());
+        modelAndView.addObject("examineFormTypeList", surveyCommonService.getExamineFormTypeList());
+        try {
+            BasicApplyBatch applyBatch = basicApplyBatchService.getBasicApplyBatchByProcessInsId(processInsId);
+            modelAndView.addObject("applyBatch", applyBatch);
+        } catch (Exception e1) {
+            logger.error(e1.getMessage(), e1);
+        }
         return modelAndView;
     }
 
@@ -142,7 +156,7 @@ public class BasicApplyBatchController extends BaseController {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/basic/basicBatchApplyIndex", "0", 0, "0", "");
         try {
             BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchById(id);
-            modelAndView.addObject("basicApplyBatch", basicApplyBatch);
+            modelAndView.addObject("applyBatch", basicApplyBatch);
             modelAndView.addObject("formClassifyList", basicApplyBatchService.getFormClassifyList());
             modelAndView.addObject("examineFormTypeList", surveyCommonService.getExamineFormTypeList());
         } catch (Exception e1) {
@@ -197,6 +211,139 @@ public class BasicApplyBatchController extends BaseController {
             return HttpResult.newErrorResult("案例升级异常");
         }
     }
+
+
+    @ResponseBody
+    @RequestMapping(value = "/basicApplyBatchSubmit", name = "数据申请 提交", method = RequestMethod.POST)
+    public HttpResult basicApplyBatchSubmit(Integer id) {
+        try {
+            //发起流程
+            basicApplyBatchService.processStartSubmit(id);
+        } catch (BusinessException e) {
+            logger.error(e.getMessage(), e);
+            return HttpResult.newErrorResult(e.getMessage());
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return HttpResult.newErrorResult("案例申请提交异常");
+        }
+        return HttpResult.newCorrectResult();
+    }
+
+    @RequestMapping(value = "/approval", name = "审批页面", method = RequestMethod.GET)
+    public ModelAndView basicApplyApproval(String processInsId, String taskId, Integer boxId, String agentUserAccount) {
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/basic/basicBatchApplyApproval", processInsId, boxId, taskId, agentUserAccount);
+        modelAndView.addObject("formClassifyList", basicApplyBatchService.getFormClassifyList());
+        modelAndView.addObject("examineFormTypeList", surveyCommonService.getExamineFormTypeList());
+        try {
+            BasicApplyBatch applyBatch = basicApplyBatchService.getBasicApplyBatchByProcessInsId(processInsId);
+            modelAndView.addObject("applyBatch", applyBatch);
+        } catch (Exception e1) {
+            logger.error(e1.getMessage(), e1);
+        }
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/detail", name = "详情页面", method = RequestMethod.GET)
+    public ModelAndView basicApplyBatchDetail(String processInsId, Integer boxId) {
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/basic/basicBatchApplyDetail", processInsId, boxId, "-1", null);
+        modelAndView.addObject("formClassifyList", basicApplyBatchService.getFormClassifyList());
+        modelAndView.addObject("examineFormTypeList", surveyCommonService.getExamineFormTypeList());
+        try {
+            BasicApplyBatch applyBatch = basicApplyBatchService.getBasicApplyBatchByProcessInsId(processInsId);
+            modelAndView.addObject("applyBatch", applyBatch);
+        } catch (Exception e1) {
+            logger.error(e1.getMessage(), e1);
+        }
+        return modelAndView;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/basicApprovalSubmit", name = "审批页面 提交")
+    public HttpResult basicApprovalSubmit(ApprovalModelDto approvalModelDto) {
+        try {
+            basicApplyBatchService.processApprovalSubmit(approvalModelDto);
+            return HttpResult.newCorrectResult();
+        } catch (Exception e1) {
+            logger.error(e1.getMessage(), e1);
+            return HttpResult.newErrorResult(e1);
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/editSubmit", name = "返回修改 提交")
+    public HttpResult basicEditSubmit(ApprovalModelDto approvalModelDto) {
+        try {
+            basicApplyBatchService.processEditSubmit(approvalModelDto);
+            return HttpResult.newCorrectResult();
+        } catch (Exception e1) {
+            logger.error(e1.getMessage(), e1);
+            return HttpResult.newErrorResult("返回修改提交异常");
+        }
+    }
+
+    @RequestMapping(value = "/basicBatchAppDraftListView", name = "草稿页面", method = {RequestMethod.GET})
+    public ModelAndView basicAppListView() {
+        String view = "/basic/basicBatchAppDraftListView";
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
+        return modelAndView;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/deleteBasicBatchApply", name = "删除草稿数据")
+    public HttpResult deleteBasicBatchApply(Integer id) {
+        try {
+            basicApplyBatchService.deleteBasicBatchApply(id);
+            return HttpResult.newCorrectResult();
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return HttpResult.newErrorResult("删除草稿数据异常");
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getBasicAppBatchDraftList", name = "获取草稿数据列表", method = {RequestMethod.GET})
+    public BootstrapTableVo getBasicAppBatchDraftList(String estateName) throws Exception {
+        return basicApplyBatchService.getBootstrapTableVo(estateName);
+    }
+
+    @RequestMapping(value = "/draftDetail", name = "草稿详情页面", method = RequestMethod.GET)
+    public ModelAndView basicApplyBatchDetail(Integer id) {
+        String boxName = baseParameterService.getParameterValues(BaseParameterEnum.CASE_BASE_INFO_BATCH_APPLY_KEY.getParameterKey());
+        Integer boxId = bpmRpcBoxService.getBoxIdByBoxName(boxName);
+        BasicApplyBatch applyBatch = basicApplyBatchService.getBasicApplyBatchById(id);
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/basic/basicBatchApplyDetail", applyBatch.getProcessInsId(), boxId, "-1", null);
+        modelAndView.addObject("applyBatch", applyBatch);
+        modelAndView.addObject("formClassifyList", basicApplyBatchService.getFormClassifyList());
+        modelAndView.addObject("examineFormTypeList", surveyCommonService.getExamineFormTypeList());
+
+        return modelAndView;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/saveApplyDraftInfo", name = "保存", method = {RequestMethod.POST})
+    public HttpResult saveApplyDraftInfo(BasicApplyBatch basicApplyBatch) {
+        try {
+            basicApplyBatch.setDraftFlag(true);
+            basicApplyBatchService.saveBasicApplyBatch(basicApplyBatch);
+            return HttpResult.newCorrectResult(basicApplyBatch);
+        } catch (Exception e1) {
+            logger.error(e1.getMessage(), e1);
+            return HttpResult.newErrorResult("保存数据异常");
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/verification", name = "验证楼盘是否已在案列库", method = {RequestMethod.POST})
+    public HttpResult verification(BasicApplyBatch basicApplyBatch) {
+        try {
+            Integer caseEstateId = basicApplyBatchService.verification(basicApplyBatch);
+            return HttpResult.newCorrectResult(caseEstateId);
+        } catch (Exception e1) {
+            logger.error(e1.getMessage(), e1);
+            return HttpResult.newErrorResult("保存数据异常");
+        }
+    }
+
 
     //-----------------------------------------------案例批量申请
 
@@ -524,153 +671,6 @@ public class BasicApplyBatchController extends BaseController {
         } catch (Exception e1) {
             logger.error(e1.getMessage(), e1);
             return HttpResult.newErrorResult("保存信息异常");
-        }
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/basicApplyBatchSubmit", name = "数据申请 提交", method = RequestMethod.POST)
-    public HttpResult basicApplyBatchSubmit(Integer id) {
-        try {
-            //发起流程
-            basicApplyBatchService.processStartSubmit(id);
-        } catch (BusinessException e) {
-            logger.error(e.getMessage(), e);
-            return HttpResult.newErrorResult(e.getMessage());
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-            return HttpResult.newErrorResult("案例申请提交异常");
-        }
-        return HttpResult.newCorrectResult();
-    }
-
-    @RequestMapping(value = "/approval", name = "审批页面", method = RequestMethod.GET)
-    public ModelAndView basicApplyApproval(String processInsId, String taskId, Integer boxId, String agentUserAccount) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/basic/basicBatchApplyApproval", processInsId, boxId, taskId, agentUserAccount);
-        modelAndView.addObject("formClassifyList", basicApplyBatchService.getFormClassifyList());
-        modelAndView.addObject("examineFormTypeList", surveyCommonService.getExamineFormTypeList());
-        try {
-            BasicApplyBatch applyBatch = basicApplyBatchService.getBasicApplyBatchByProcessInsId(processInsId);
-            modelAndView.addObject("applyBatch", applyBatch);
-        } catch (Exception e1) {
-            logger.error(e1.getMessage(), e1);
-        }
-        return modelAndView;
-    }
-
-    @RequestMapping(value = "/detail", name = "详情页面", method = RequestMethod.GET)
-    public ModelAndView basicApplyBatchDetail(String processInsId, Integer boxId) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/basic/basicBatchApplyDetail", processInsId, boxId, "-1", null);
-        modelAndView.addObject("formClassifyList", basicApplyBatchService.getFormClassifyList());
-        modelAndView.addObject("examineFormTypeList", surveyCommonService.getExamineFormTypeList());
-        try {
-            BasicApplyBatch applyBatch = basicApplyBatchService.getBasicApplyBatchByProcessInsId(processInsId);
-            modelAndView.addObject("applyBatch", applyBatch);
-        } catch (Exception e1) {
-            logger.error(e1.getMessage(), e1);
-        }
-        return modelAndView;
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/basicApprovalSubmit", name = "审批页面 提交")
-    public HttpResult basicApprovalSubmit(ApprovalModelDto approvalModelDto) {
-        try {
-            basicApplyBatchService.processApprovalSubmit(approvalModelDto);
-            return HttpResult.newCorrectResult();
-        } catch (Exception e1) {
-            logger.error(e1.getMessage(), e1);
-            return HttpResult.newErrorResult(e1);
-        }
-    }
-
-
-    @RequestMapping(value = "/applyEdit", name = "返回修改页面", method = RequestMethod.GET)
-    public ModelAndView basicApplyEdit(String processInsId, String taskId, Integer boxId, String agentUserAccount) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/basic/basicBatchApplyIndex", processInsId, boxId, taskId, agentUserAccount);
-        modelAndView.addObject("formClassifyList", basicApplyBatchService.getFormClassifyList());
-        modelAndView.addObject("examineFormTypeList", surveyCommonService.getExamineFormTypeList());
-        try {
-            BasicApplyBatch applyBatch = basicApplyBatchService.getBasicApplyBatchByProcessInsId(processInsId);
-            modelAndView.addObject("applyBatch", applyBatch);
-        } catch (Exception e1) {
-            logger.error(e1.getMessage(), e1);
-        }
-        return modelAndView;
-    }
-
-
-    @ResponseBody
-    @RequestMapping(value = "/editSubmit", name = "返回修改 提交")
-    public HttpResult basicEditSubmit(ApprovalModelDto approvalModelDto) {
-        try {
-            basicApplyBatchService.processEditSubmit(approvalModelDto);
-            return HttpResult.newCorrectResult();
-        } catch (Exception e1) {
-            logger.error(e1.getMessage(), e1);
-            return HttpResult.newErrorResult("返回修改提交异常");
-        }
-    }
-
-    @RequestMapping(value = "/basicBatchAppDraftListView", name = "草稿页面", method = {RequestMethod.GET})
-    public ModelAndView basicAppListView() {
-        String view = "/basic/basicBatchAppDraftListView";
-        ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
-        return modelAndView;
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/deleteBasicBatchApply", name = "删除草稿数据")
-    public HttpResult deleteBasicBatchApply(Integer id) {
-        try {
-            basicApplyBatchService.deleteBasicBatchApply(id);
-            return HttpResult.newCorrectResult();
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-            return HttpResult.newErrorResult("删除草稿数据异常");
-        }
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/getBasicAppBatchDraftList", name = "获取草稿数据列表", method = {RequestMethod.GET})
-    public BootstrapTableVo getBasicAppBatchDraftList(String estateName) throws Exception {
-        return basicApplyBatchService.getBootstrapTableVo(estateName);
-    }
-
-    @RequestMapping(value = "/draftDetail", name = "草稿详情页面", method = RequestMethod.GET)
-    public ModelAndView basicApplyBatchDetail(Integer id) {
-        String boxName = baseParameterService.getParameterValues(BaseParameterEnum.CASE_BASE_INFO_BATCH_APPLY_KEY.getParameterKey());
-        Integer boxId = bpmRpcBoxService.getBoxIdByBoxName(boxName);
-        BasicApplyBatch applyBatch = basicApplyBatchService.getBasicApplyBatchById(id);
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/basic/basicBatchApplyDetail", applyBatch.getProcessInsId(), boxId, "-1", null);
-        modelAndView.addObject("applyBatch", applyBatch);
-        modelAndView.addObject("formClassifyList", basicApplyBatchService.getFormClassifyList());
-        modelAndView.addObject("examineFormTypeList", surveyCommonService.getExamineFormTypeList());
-
-        return modelAndView;
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/saveApplyDraftInfo", name = "保存", method = {RequestMethod.POST})
-    public HttpResult saveApplyDraftInfo(BasicApplyBatch basicApplyBatch) {
-        try {
-            basicApplyBatch.setDraftFlag(true);
-            basicApplyBatchService.saveBasicApplyBatch(basicApplyBatch);
-            return HttpResult.newCorrectResult(basicApplyBatch);
-        } catch (Exception e1) {
-            logger.error(e1.getMessage(), e1);
-            return HttpResult.newErrorResult("保存数据异常");
-        }
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/verification", name = "验证楼盘是否已在案列库", method = {RequestMethod.POST})
-    public HttpResult verification(BasicApplyBatch basicApplyBatch) {
-        try {
-            Integer caseEstateId = basicApplyBatchService.verification(basicApplyBatch);
-            return HttpResult.newCorrectResult(caseEstateId);
-        } catch (Exception e1) {
-            logger.error(e1.getMessage(), e1);
-            return HttpResult.newErrorResult("保存数据异常");
         }
     }
 

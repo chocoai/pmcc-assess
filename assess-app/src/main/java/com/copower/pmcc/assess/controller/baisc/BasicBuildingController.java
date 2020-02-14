@@ -4,11 +4,13 @@ import com.copower.pmcc.assess.dal.basis.custom.entity.CustomCaseEntity;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicAlternativeCaseDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDetailDao;
 import com.copower.pmcc.assess.dal.basis.entity.BasicAlternativeCase;
+import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchDetail;
 import com.copower.pmcc.assess.dal.basis.entity.BasicBuilding;
 import com.copower.pmcc.assess.service.basic.BasicBuildingService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,19 +99,6 @@ public class BasicBuildingController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/quoteFromAlternative", name = "引用项目中的数据批量时", method = {RequestMethod.GET})
-    public HttpResult quoteFromAlternative(Integer id, Integer tableId) {
-        try {
-            BasicAlternativeCase alternativeCase = basicAlternativeCaseDao.getBasicAlternativeCaseById(id);
-            BasicBuilding basicBuilding = basicBuildingService.copyBasicBuilding(alternativeCase.getBusinessId(), tableId, true);
-            return HttpResult.newCorrectResult(basicBuilding);
-        } catch (Exception e) {
-            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
-            return HttpResult.newErrorResult(e.getMessage());
-        }
-    }
-
-    @ResponseBody
     @RequestMapping(value = "/addBuilding", name = "添加楼栋信息", method = {RequestMethod.POST})
     public HttpResult addBuilding(String buildingNumber) {
         try {
@@ -151,10 +140,26 @@ public class BasicBuildingController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "/quoteFromAlternative", name = "引用备选案例数据", method = {RequestMethod.GET})
+    public HttpResult quoteFromAlternative(Integer id, Integer tableId) {
+        try {
+            BasicAlternativeCase alternativeCase = basicAlternativeCaseDao.getBasicAlternativeCaseById(id);
+            BasicApplyBatchDetail applyBatchDetail = basicApplyBatchDetailDao.getInfoById(alternativeCase.getBusinessId());
+            List<String> ignoreList= Lists.newArrayList("estateId");
+            BasicBuilding basicBuilding = basicBuildingService.copyBasicBuildingIgnore(applyBatchDetail.getTableId(), tableId, true,ignoreList);
+            return HttpResult.newCorrectResult(basicBuilding);
+        } catch (Exception e) {
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/quoteCaseBuilding", name = "引用案列数据", method = {RequestMethod.GET})
     public HttpResult quoteCaseBuilding(Integer sourceId, Integer targetId) {
         try {
-            BasicBuilding basicBuilding = basicBuildingService.copyBasicBuildingIgnore(sourceId, targetId, true,"estateId");
+            List<String> ignoreList= Lists.newArrayList("estateId");
+            BasicBuilding basicBuilding = basicBuildingService.copyBasicBuildingIgnore(sourceId, targetId, true,ignoreList);
             basicBuilding.setQuoteId(sourceId);
             basicBuilding.setBisCase(false);
             basicBuildingService.saveAndUpdateBasicBuilding(basicBuilding, false);

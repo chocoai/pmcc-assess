@@ -190,6 +190,7 @@ public class BasicEstateService {
     }
 
     public List<CustomCaseEntity> autoCompleteCaseEstate(String name, String province, String city) {
+        if (StringUtils.isBlank(name) || StringUtils.isBlank(province) || StringUtils.isBlank(city)) return null;
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<CustomCaseEntity> caseEstateList = basicEstateDao.getLatestVersionEstateList(name, province, city, null);
@@ -385,7 +386,7 @@ public class BasicEstateService {
 
     @Transactional(rollbackFor = Exception.class)
     public BasicEstate copyBasicEstate(Integer sourceEstateId, Integer targetEstateId, Boolean containChild) throws Exception {
-        return copyBasicEstateIgnore(sourceEstateId,targetEstateId,containChild);
+        return copyBasicEstateIgnore(sourceEstateId, targetEstateId, containChild,null);
     }
 
     /**
@@ -396,20 +397,19 @@ public class BasicEstateService {
      * @return
      */
     @Transactional(rollbackFor = Exception.class)
-    public BasicEstate copyBasicEstateIgnore(Integer sourceEstateId, Integer targetEstateId, Boolean containChild, String... ignoreProperties) throws Exception {
+    public BasicEstate copyBasicEstateIgnore(Integer sourceEstateId, Integer targetEstateId, Boolean containChild, List<String> ignoreList) throws Exception {
         if (sourceEstateId == null) return null;
         BasicEstate sourceBasicEstate = getBasicEstateById(sourceEstateId);
         if (sourceBasicEstate == null) return null;
         BasicEstate targetBasicEstate = getBasicEstateById(targetEstateId);
+        if (CollectionUtils.isEmpty(ignoreList)) ignoreList = Lists.newArrayList();
+        ignoreList.addAll(BaseConstant.ASSESS_IGNORE_STRING_LIST);
         if (targetBasicEstate == null) {
             targetBasicEstate = new BasicEstate();
-            BeanUtils.copyProperties(sourceBasicEstate, targetBasicEstate,ignoreProperties);
-            targetBasicEstate.setId(null);
+            BeanUtils.copyProperties(sourceBasicEstate, targetBasicEstate, ignoreList.toArray(new String[ignoreList.size()]));
             targetBasicEstate.setCreator(commonService.thisUserAccount());
-            targetBasicEstate.setGmtCreated(null);
-            targetBasicEstate.setGmtModified(null);
         } else {
-            BeanUtils.copyProperties(sourceBasicEstate, targetBasicEstate, "id");
+            BeanUtils.copyProperties(sourceBasicEstate, targetBasicEstate, ignoreList.toArray(new String[ignoreList.size()]));
         }
         this.saveAndUpdateBasicEstate(targetBasicEstate, true);
 
@@ -429,12 +429,12 @@ public class BasicEstateService {
                 BeanUtils.copyProperties(sourceEstateLandState, targeEstateLandState, "id");
                 targeEstateLandState.setEstateId(targetBasicEstate.getId());
             }
-            basicEstateLandStateService.saveAndUpdateBasicEstateLandState(targeEstateLandState,true);
+            basicEstateLandStateService.saveAndUpdateBasicEstateLandState(targeEstateLandState, true);
         }
         if (targetEstateId != null && targetEstateId > 0) {//目标数据已存在，先清理目标数据的从表数据
             clearInvalidChildData(targetEstateId);
 
-            SysAttachmentDto where=new SysAttachmentDto();
+            SysAttachmentDto where = new SysAttachmentDto();
             where.setTableName(FormatUtils.entityNameConvertToTableName(BasicEstate.class));
             where.setTableId(targetEstateId);
             baseAttachmentService.deleteAttachmentByDto(where);
@@ -514,10 +514,5 @@ public class BasicEstateService {
         }
         return targetBasicEstate;
     }
-
-    //-----------------------------------------------------------------------------------------------------------------------------------
-    //数据保存、数据清理、数据拷贝
-    //1.
-    //1.清理楼盘下的子表数据
 
 }
