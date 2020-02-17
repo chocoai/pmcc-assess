@@ -162,7 +162,8 @@ public class DataBlockController extends BaseController {
     @RequestMapping(value = "/climbingOldData", method = {RequestMethod.GET}, name = "抓取两年前老数据")
     public HttpResult climbingOldData() {
         try {
-            netInfoRecordService.climbingOldData();
+            //netInfoRecordService.getGGZYCDHtml(null,null,null);
+            netInfoRecordService.getNetInfoFromZGBD(600000000);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             logger.error(String.format("exception: %s", e.getMessage()), e);

@@ -29,7 +29,6 @@ import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
@@ -59,8 +58,8 @@ import java.util.zip.GZIPInputStream;
  * @time: 11:16
  */
 @Service
-public class NetInfoRecordService {
-    private final static Logger logger = LoggerFactory.getLogger(NetInfoRecordService.class);
+public class NetInfoRecordBakService {
+    private final static Logger logger = LoggerFactory.getLogger(NetInfoRecordBakService.class);
     @Autowired
     private NetInfoRecordDao netInfoRecordDao;
     @Autowired
@@ -815,74 +814,235 @@ public class NetInfoRecordService {
     public void getNetInfoFromGGZYCD(Integer days) {
         try {
             logger.info("----公共资源交易平台-成都(土地矿权), start---------");
-            Date date = DateUtils.addDay(DateUtils.now(), -days);//得到前1天
-            //取得页数
-            String pageHtml = getGGZYCDHtml("1");
-            Document pageDoc = Jsoup.parse(pageHtml);
-            Elements pageElements = pageDoc.select("#Pager a");
-            Integer pageValue = 0;
-            for (Element pageElement : pageElements) {
-                if ("尾页".equals(pageElement.childNodes().get(0).toString())) {
-                    String pageHref = pageElement.attributes().get("href");
-                    //包含总页码的字符串
-                    String pageTotalStr = pageHref.substring(pageHref.indexOf(","), pageHref.length() - 1);
-                    String regEx = "[^0-9]";
-                    Pattern p = Pattern.compile(regEx);
-                    Matcher m = p.matcher(pageTotalStr);
-                    String pageValueStr = m.replaceAll("").trim();
-                    if (StringUtils.isNotEmpty(pageValueStr)) {
-                        pageValue = Integer.valueOf(pageValueStr);
+            Date date = getInstanceDate(days);//得到前1天
+            //  String[] needContentType = new String[]{"拍卖公告", "结果公告"};
+            String[] needContentType = new String[]{"结果公告"};
+            List<String> needTypes = Arrays.asList(needContentType);
+
+            String urlInfo = "https://www.cdggzy.com/site/LandTrade/LandList.aspx";
+            //类型
+            Elements typeEelements = getContent(urlInfo, ".optionlist", "");
+            Elements typeDivs = typeEelements.get(0).select("div");
+            for (Element typeDiv : typeDivs) {
+                String typeName = typeDiv.childNodes().get(0).toString().trim();
+                if (needTypes.contains(typeName)) {
+                    String typeValue = typeDiv.attributes().get("data-value");
+                    //取得页数
+                    Elements pageElements = getGGZYCDHtml("#Pager a", "", typeValue);
+                    Integer pageValue = 0;
+                    for (Element pageElement : pageElements) {
+                        if ("尾页".equals(pageElement.childNodes().get(0).toString())) {
+                            String pageHref = pageElement.attributes().get("href");
+                            //包含总页码的字符串
+                            String pageTotalStr = pageHref.substring(pageHref.indexOf(","), pageHref.length() - 1);
+                            String regEx = "[^0-9]";
+                            Pattern p = Pattern.compile(regEx);
+                            Matcher m = p.matcher(pageTotalStr);
+                            String pageValueStr = m.replaceAll("").trim();
+                            if (StringUtils.isNotEmpty(pageValueStr)) {
+                                pageValue = Integer.valueOf(pageValueStr);
+                            }
+                        }
+                    }
+                    if (pageValue > 1) {
+                        circ:
+                        for (int i = 1; i <= pageValue; i++) {
+                            //内容信息
+                            Elements elements = getGGZYCDHtml(".row.contentitem", String.valueOf(i), typeValue);
+                            for (Element item : elements) {
+                                Elements publishtimeElement = item.select(".publishtime");
+                                String publishtimeStr = publishtimeElement.get(0).childNodes().get(0).toString().substring(1).trim();
+                                Date publishtime = DateUtils.parse(publishtimeStr);
+                                if (publishtime == null) continue;
+                                if (publishtime.compareTo(date) < 0) break circ;
+
+                                Elements addressElement = item.select(".col-xs-1");
+                                String address = addressElement.get(0).childNodes().get(0).toString();
+                                String titleStr = item.select("a").get(0).childNodes().get(0).toString();
+                                String link = item.select("a").get(0).attributes().get("href");
+
+                                Elements tableElementHrefs = getContent(link, "iframe", "");
+                                if (tableElementHrefs.size() <= 0) {
+                                    continue;
+                                }
+                                String s = link.substring(0, link.lastIndexOf("/") + 1);
+
+                                String iframeUrl = s + tableElementHrefs.get(0).attributes().get("src");//表格地址
+                                Elements tableElements = getContent(iframeUrl, "table", "");
+                                Elements tdElements = tableElements.select("tr");
+
+                                Integer length = tdElements.get(tdElements.size() - 1).select("td").size();
+                                //获取字段名称
+                                List<String> fieldNames = Lists.newArrayList();
+                                for (int k = 0; k < tdElements.size(); k++) {
+                                    Elements select = tdElements.get(k).select("td");
+                                    Elements one = tdElements.get(0).select("td");
+                                    if (one.size() == 0) {
+                                        one = tdElements.get(0).select("th");
+                                    }
+                                    if (select == null || select.size() == 0) {
+                                        select = tdElements.get(k).select("th");
+                                    }
+                                    Elements tow = tdElements.get(1).select("td");
+                                    if (one.size() == tow.size()) {
+                                        if (k == 0) {
+                                            for (int f = 0; f < length; f++) {
+                                                String fieldName = checkNull(select, f);
+                                                fieldNames.add(fieldName);
+                                            }
+                                            continue;
+                                        }
+                                    } else {
+                                        if (k == 0 || k == 1) {
+                                            continue;
+                                        }
+                                    }
+
+                                    List<String> fieldValues = Lists.newArrayList();
+                                    String name = "";
+                                    for (int j = 0; j < length; j++) {
+                                        name = checkNull(select, 1);
+                                        String fieldValue = checkNull(select, j);
+                                        fieldValues.add(publicService.delHtmlTags(fieldValue));
+                                    }
+                                    NetInfoRecord netInfoRecord = new NetInfoRecord();
+                                    netInfoRecord.setProvince("四川");
+                                    netInfoRecord.setCity("成都");
+                                    netInfoRecord.setType(typeName);
+                                    netInfoRecord.setSourceSiteUrl(link);
+                                    netInfoRecord.setBeginTime(publishtime);
+                                    netInfoRecord.setEndTime(publishtime);
+                                    netInfoRecord.setTitle(titleStr.replaceAll("\n", ""));
+                                    netInfoRecord.setSourceSiteName("公共资源交易平台-成都");
+                                    StringBuilder content = new StringBuilder();
+                                    if (CollectionUtils.isNotEmpty(fieldNames)) {
+                                        for (int m = 0; m < fieldNames.size(); m++) {
+                                            content.append(fieldNames.get(m) + "：" + fieldValues.get(m) + "；");
+                                        }
+                                    } else {
+                                        for (int m = 0; m < fieldValues.size(); m++) {
+                                            content.append(fieldValues.get(m) + "；");
+                                        }
+                                    }
+
+                                    //关联拍卖信息或交易信息
+                                    Elements otherInfoDiv = getContent(link, "#timershaft", "");
+                                    if (otherInfoDiv != null && otherInfoDiv.size() > 0) {
+                                        Elements a = otherInfoDiv.get(0).select("a");
+                                        String otherInfoHref = a.get(0).attributes().get("href");
+                                        Elements otherTableElementHrefs = getContent(String.format("%s%s", s, otherInfoHref), "iframe", "");
+                                        if (otherTableElementHrefs.size() > 0) {
+                                            String otherIframeUrl = s + otherTableElementHrefs.get(0).attributes().get("src");//表格地址
+                                            Elements otherTableElements = getContent(otherIframeUrl, "table", "");
+                                            Elements otherTdElements = otherTableElements.select("tr");
+                                            if (otherTdElements != null && otherTdElements.size() > 0) {
+
+                                                Integer ontherFieldsLength = otherTdElements.get(otherTdElements.size() - 1).select("td").size();
+                                                Elements otherSelectedTbs = null;
+                                                //获取字段名称
+                                                List<String> fieldTitleNames = Lists.newArrayList();
+                                                for (int k1 = 0; k1 < otherTdElements.size(); k1++) {
+                                                    Element tempTr = otherTdElements.get(k1);
+                                                    Elements tbs = tempTr.select("td");
+                                                    String otherTitle = checkNull(tbs, 1);
+                                                    if (StringUtils.equals(name, otherTitle)) {
+                                                        otherSelectedTbs = tbs;
+                                                    }
+
+
+                                                }
+                                                //表头字段
+                                                Elements otherFirst = otherTdElements.get(0).select("td");
+                                                Elements otherSecond = otherTdElements.get(1).select("td");
+                                                if (otherFirst.size() > 0) {
+                                                    if (otherFirst.size() != otherSecond.size()) {
+                                                        for (int f2 = 0; f2 < otherFirst.size(); f2++) {
+                                                            Element element = otherFirst.get(f2);
+                                                            String colspan = element.attributes().get("colspan");
+                                                            if (StringUtils.isEmpty(colspan)) {
+                                                                String fieldTitleName = checkNull(otherFirst, f2);
+                                                                fieldTitleName = publicService.delHtmlTags(fieldTitleName);
+                                                                if (StringUtils.isNotEmpty(fieldTitleName)) {
+                                                                    fieldTitleNames.add(fieldTitleName);
+                                                                }
+                                                            } else {
+                                                                for (int f3 = 0; f3 < otherSecond.size(); f3++) {
+                                                                    fieldTitleNames.add(checkNull(otherSecond, f3));
+                                                                }
+                                                            }
+
+                                                        }
+                                                    }
+                                                }
+
+
+                                                List<String> otherFieldValues = Lists.newArrayList();
+                                                for (int j = 0; j < ontherFieldsLength; j++) {
+                                                    String otherFieldValue = checkNull(otherSelectedTbs, j);
+                                                    otherFieldValues.add(publicService.delHtmlTags(otherFieldValue));
+                                                }
+
+
+                                                if (CollectionUtils.isNotEmpty(fieldTitleNames)) {
+                                                    Integer indexLength = fieldTitleNames.size();
+                                                    if (fieldTitleNames.size() >= otherFieldValues.size()) {
+                                                        indexLength = otherFieldValues.size();
+                                                    }
+                                                    for (int m = 0; m < indexLength; m++) {
+                                                        content.append(fieldTitleNames.get(m) + "：" + otherFieldValues.get(m) + "；");
+                                                    }
+                                                } else {
+                                                    for (int m = 0; m < otherFieldValues.size(); m++) {
+                                                        content.append(otherFieldValues.get(m) + "；");
+                                                    }
+                                                }
+                                            }
+
+                                        }
+
+
+                                    }
+
+
+                                    content.append("发布时间：" + publishtimeStr + "；");
+                                    content.append("地址：" + address.replaceAll("\n", "").substring(1, address.length() - 2) + "；");
+                                    netInfoRecord.setContent(content.toString());
+                                    netInfoRecordDao.addInfo(netInfoRecord);
+                                }
+
+                            }
+                        }
                     }
                 }
             }
-            if (pageValue > 1) {
-                circ:
-                for (int i = 1; i <= pageValue; i++) {
-                    //内容信息
-                    String html = getGGZYCDHtml(String.valueOf(i));
-                    Document itemDoc = Jsoup.parse(html);
-                    Elements elements = itemDoc.select(".row.contentitem");
-                    for (Element item : elements) {
-                        Elements publishtimeElement = item.select(".publishtime");
-                        String publishtimeStr = publishtimeElement.get(0).childNodes().get(0).toString().substring(1).trim();
-                        Date publishtime = DateUtils.parse(publishtimeStr);
-                        if (publishtime == null) continue;
-                        if (publishtime.compareTo(date) < 0) return;//一旦无效直接返回
-                        Elements addressElement = item.select(".col-xs-1");
-                        String address = addressElement.get(0).childNodes().get(0).toString();
-                        String titleStr = item.select("a").get(0).childNodes().get(0).toString();
-                        String link = item.select("a").get(0).attributes().get("href");
-                        String title = String.format("%s%s[%s]", address, titleStr, DateUtils.getTime(DateUtils.now())).replaceAll("\n", "");
-                        NetInfoRecord netInfoRecord = new NetInfoRecord();
-                        netInfoRecord.setProvince("四川");
-                        netInfoRecord.setCity("成都");
-                        netInfoRecord.setType("土地矿权");
-                        netInfoRecord.setSourceSiteUrl(link);
-                        netInfoRecord.setBeginTime(publishtime);
-                        netInfoRecord.setEndTime(publishtime);
-                        netInfoRecord.setTitle(title);
-                        netInfoRecord.setContent(netInfoRecord.getTitle());
-                        netInfoRecord.setSourceSiteName("公共资源交易平台-成都");
-                        netInfoRecord.setCreator("admin");
-                        netInfoRecordDao.addInfo(netInfoRecord);
-                    }
-                }
-            }
+
+            logger.info("----公共资源交易平台-成都(土地矿权), end---------");
         } catch (Exception e) {
-            logger.info("----公共资源交易平台-成都(土地矿权), error---------" + e.getMessage(), e);
+            e.printStackTrace();
         }
+
     }
 
-    public String getGGZYCDHtml(String pageValue) {
-        try {
-            URL url = new URL("https://www.cdggzy.com/site/LandTrade/LandList.aspx");// 1. 获取访问地址URL
 
-            HttpURLConnection connection = (HttpURLConnection) url // 2. 创建HttpURLConnection对象
-                    .openConnection(); /* 3. 设置请求参数等 */
-            connection.setRequestMethod("POST");// 请求方式
-            connection.setDoOutput(true);// 设置是否输出
-            connection.setDoInput(true);// 设置是否读入
-            connection.setUseCaches(false);// 设置是否使用缓存
+    public Elements getGGZYCDHtml(String element, String pageValue, String typeValue) {
+        try {
+            // 1. 获取访问地址URL
+            URL url = new URL("https://www.cdggzy.com/site/LandTrade/LandList.aspx");
+            // 2. 创建HttpURLConnection对象
+            HttpURLConnection connection = (HttpURLConnection) url
+                    .openConnection();
+            /* 3. 设置请求参数等 */
+            // 请求方式
+            connection.setRequestMethod("POST");
+            // 超时时间
+            //connection.setConnectTimeout(3000);
+            // 设置是否输出
+            connection.setDoOutput(true);
+            // 设置是否读入
+            connection.setDoInput(true);
+            // 设置是否使用缓存
+            connection.setUseCaches(false);
+            // 设置此 HttpURLConnection 实例是否应该自动执行 HTTP 重定向
             connection.setInstanceFollowRedirects(true);
             // 设置使用标准编码格式编码参数的名-值对
             connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
@@ -892,7 +1052,14 @@ public class NetInfoRecordService {
             connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.132 Safari/537.36");
             // 连接
             connection.connect();
-            String params = "ctl00%24ScriptManager1=ctl00%24ContentPlaceHolder1%24UpdatePanel1%7Cctl00%24ContentPlaceHolder1%24Pager&ctl00%24ContentPlaceHolder1%24displaytypeval=2&ctl00%24ContentPlaceHolder1%24displaystateval=0&ctl00%24ContentPlaceHolder1%24dealaddressval=0&ctl00%24ContentPlaceHolder1%24keyword=&__VIEWSTATE=%2FwEPDwULLTIwMzM1MDIzNTkPZBYCZg9kFgICAw9kFgQCAw9kFgICBw8WAh4EVGV4dAWPMTx1bCBjbGFzcz0nbmF2IG5hdi1waWxscyBuYXYtanVzdGlmaWVkJz48bGk%2BPGEgaHJlZj0nL2luZGV4LmFzcHgnPummlumhtTwvYT48c3Bhbj48L3NwYW4%2BPC9saT48bGkgIGNsYXNzPSJ1bF9tZW51Ij48YSAgaGVyZj0nIyc%2B5pS%2F5Yqh5YWs5byAPC9hPjx0YWJsZT4gPHRyPjx0ZD48ZGl2PuS4reW%2Fg%2BamguWGtTwvZGl2PjwvdGQ%2BPHRkICAgY2xhc3M9Im1ldW4taXRlbi1ib2R5Ij48ZGl2PjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vc2l0ZS9HZW5lcmFsL0luZGV4LmFzcHg%2FY2lkPTAwMDEwMDAxMDAwMTAwMDQiIHRhcmdldD0iX2JsYW5rIj7kuK3lv4PnroDku4s8L2E%2BPC9kaXY%2BPGRpdj48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvR2VuZXJhbC9JbmRleC5hc3B4P2NpZD0wMDAxMDAwMTAwMDEwMDAyIiB0YXJnZXQ9Il9ibGFuayI%2B6aKG5a%2B85YiG5belPC9hPjwvZGl2PjxkaXY%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL0dlbmVyYWwvSW5kZXguYXNweD9jaWQ9MDAwMTAwMDEwMDAxMDAwMyIgdGFyZ2V0PSJfYmxhbmsiPuiBlOezu%2BaWueW8jzwvYT48L2Rpdj48ZGl2PjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vc2l0ZS9HZW5lcmFsL0luZGV4LmFzcHg%2FY2lkPTAwMDEwMDAxMDAwMTAwMDEiIHRhcmdldD0iX2JsYW5rIj7pg6jpl6jorr7nva48L2E%2BPC9kaXY%2BPC90ZD48L3RyPiA8dHI%2BPHRkPjxkaXY%2B5paw6Ze75Yqo5oCBPC9kaXY%2BPC90ZD48dGQgICBjbGFzcz0ibWV1bi1pdGVuLWJvZHkiPjxkaXY%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL09wZW5Hb3Zlcm5tZW50L0xpc3QuYXNweD9jaWQ9MDAwMTAwMDEwMDAyMDAwMSIgdGFyZ2V0PSJfYmxhbmsiPuW3peS9nOWKqOaAgTwvYT48L2Rpdj48ZGl2PjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vc2l0ZS9PcGVuR292ZXJubWVudC9MaXN0LmFzcHg%2FY2lkPTAwMDEwMDAxMDAwMjAwMDMiIHRhcmdldD0iX2JsYW5rIj7kv6HnlKjkv6Hmga88L2E%2BPC9kaXY%2BPC90ZD48L3RyPiA8dHI%2BPHRkPjxkaXY%2B5pS%2F5Yqh5YWs5byAPC9kaXY%2BPC90ZD48dGQgICBjbGFzcz0ibWV1bi1pdGVuLWJvZHkiPjxkaXY%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL09wZW5Hb3Zlcm5tZW50L0xpc3QuYXNweD9jaWQ9MDAwMTAwMDEwMDAzMDAwMSIgdGFyZ2V0PSJfYmxhbmsiPuWFrOW8gOS%2FnemanDwvYT48L2Rpdj48ZGl2PjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vc2l0ZS9PcGVuR292ZXJubWVudC9MaXN0LmFzcHg%2FY2lkPTAwMDEwMDAxMDAwMzAwMDIiIHRhcmdldD0iX2JsYW5rIj7orqHliJLmgLvnu5M8L2E%2BPC9kaXY%2BPGRpdj48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvT3BlbkdvdmVybm1lbnQvTGlzdC5hc3B4P2NpZD0wMDAxMDAwMTAwMDMwMDAzIiB0YXJnZXQ9Il9ibGFuayI%2B5Lq65LqL5L%2Bh5oGvPC9hPjwvZGl2PjxkaXY%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL09wZW5Hb3Zlcm5tZW50L0xpc3QuYXNweD9jaWQ9MDAwMTAwMDEwMDAzMDAwNCIgdGFyZ2V0PSJfYmxhbmsiPui0ouaUv%2Bi1hOmHkTwvYT48L2Rpdj48ZGl2PjxhIGhyZWY9Imh0dHA6Ly9nay5jaGVuZ2R1Lmdvdi5jbi9vcGVuQXBwbHkvaW5kZXguYWN0aW9uP2NpZD0wMDAxMDAwMTAwMDMwMDA1IiB0YXJnZXQ9Il9ibGFuayI%2B5L6d55Sz6K%2B35YWs5byAPC9hPjwvZGl2PjxkaXY%2BPGEgaHJlZj0iaHR0cDovL2drLmNoZW5nZHUuZ292LmNuL29wZW5TdWdnZXN0aW9uQm94L2luZGV4LmFjdGlvbj9jaWQ9MDAwMTAwMDEwMDAzMDAwNiIgdGFyZ2V0PSJfYmxhbmsiPuWFrOW8gOaEj%2BingeeusTwvYT48L2Rpdj48ZGl2PjxhIGhyZWY9Imh0dHA6Ly9nay5jaGVuZ2R1Lmdvdi5jbi9nb3ZJbmZvUHViL2RlcHQuYWN0aW9uP2NsYXNzSWQ9MDcwMzY2IiB0YXJnZXQ9Il9ibGFuayI%2B5L%2Bh5oGv5YWs5byA5oyH5Y2XPC9hPjwvZGl2PjxkaXY%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL1BsdXMvQWNjZXB0RGF0YS5hc3B4P2NpZD0wMDAxMDAwMTAwMDMwMDA5IiB0YXJnZXQ9Il9ibGFuayI%2B5Yqe5LqL57uf6K6hPC9hPjwvZGl2PjxkaXY%2BPGEgaHJlZj0iaHR0cDovL3d3dy5jaGVuZ2R1Lmdvdi5jbi9jaGVuZ2R1L2NkbWRtL3htZG1faW5kZXguc2h0bWw%2FY2lkPTAwMDEwMDAxMDAwMzAwMDgiIHRhcmdldD0iX2JsYW5rIj7lhZrpo47mlL%2Fpo47ng63nur88L2E%2BPC9kaXY%2BPC90ZD48L3RyPjwvdGFibGU%2BPC9saT48bGkgIGNsYXNzPSJ1bF9tZW51Ij48YSAgaGVyZj0nIyc%2B5Lia5Yqh5Yqe55CGPC9hPjx0YWJsZT4gPHRyPjx0ZD48ZGl2PuWPl%2BeQhuS4muWKoTwvZGl2PjwvdGQ%2BPHRkICAgY2xhc3M9Im1ldW4taXRlbi1ib2R5Ij48ZGl2PjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vY2VudGVyL2luZGV4LmFzcHg%2FY2lkPTAwMDIwMDAxMDAyMDAwMSIgdGFyZ2V0PSJfYmxhbmsiPumhueebrueZu%2BiusDwvYT48L2Rpdj48ZGl2PjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vc2l0ZS9TaXRlU2VhcmNoL25ld2luZGV4LmFzcHg%2FY2lkPTAwMDIwMDAxMDAyMDAwMiIgdGFyZ2V0PSJfYmxhbmsiPuWcuuWcsOafpeivojwvYT48L2Rpdj48L3RkPjwvdHI%2BIDx0cj48dGQ%2BPGRpdj7kuqTmmJPkv6Hmga88L2Rpdj48L3RkPjx0ZCAgIGNsYXNzPSJtZXVuLWl0ZW4tYm9keSI%2BPGRpdj48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvSlNHQy9MaXN0LmFzcHgiIHRhcmdldD0iX2JsYW5rIj7lt6XnqIvlu7rorr48L2E%2BPC9kaXY%2BPGRpdj48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvTm90aWNlL1pGQ0cvTm90aWNlVmVyc2lvbk9uZUxpc3QuYXNweCIgdGFyZ2V0PSJfYmxhbmsiPuaUv%2BW6nOmHh%2Bi0rTwvYT48L2Rpdj48ZGl2PjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vc2l0ZS9MYW5kVHJhZGUvTGFuZExpc3QuYXNweCIgdGFyZ2V0PSJfYmxhbmsiPuWcn%2BWcsOefv%2BadgzwvYT48L2Rpdj48ZGl2PjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vc2l0ZS9Bc3NldFJlc291cmNlL0RlYWxOb3RpY2VMaXN0LmFzcHgiIHRhcmdldD0iX2JsYW5rIj7otYTkuqfotYTmupA8L2E%2BPC9kaXY%2BPC90ZD48L3RyPiA8dHI%2BPHRkPjxkaXY%2B5pu05aSa5Lia5YqhPC9kaXY%2BPC90ZD48dGQgICBjbGFzcz0ibWV1bi1pdGVuLWJvZHkiPjxkaXY%2BPGEgaHJlZj0iaHR0cDovL3d3dy5jZGdnenkuY29tL21hbGwvSW5kZXguYXNweD9jaWQ9MDAwMjAwMDEwMDMwMDAxIiB0YXJnZXQ9Il9ibGFuayI%2B5pS%2F5bqc6YeH6LSt55S15a2Q5ZWG5Z%2BOPC9hPjwvZGl2PjxkaXY%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9Mb2dpbi5hc3B4P2NpZD0wMDAyMDAwMTAwMzAwMDIiIHRhcmdldD0iX2JsYW5rIj7otYTkuqfotYTmupDnvZHkuIrnq57ku7c8L2E%2BPC9kaXY%2BPGRpdj48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvQmFua0JvcnJvdy9JbmRleC5hc3B4P2NpZD0wMDAyMDAwMTAwMzAwMDQiIHRhcmdldD0iX2JsYW5rIj7mlL%2Fph4fkv6HnlKjmi4Xkv53ono3otYQ8L2E%2BPC9kaXY%2BPC90ZD48L3RyPiA8dHI%2BPHRkPjxkaXY%2B5pyN5Yqh5oyH5byVPC9kaXY%2BPC90ZD48dGQgICBjbGFzcz0ibWV1bi1pdGVuLWJvZHkiPjxkaXY%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL1BsdXMvTm90aWNlTGlzdC5hc3B4P2NpZD0wMDAyMDAwMTAwNDAwMDEiIHRhcmdldD0iX2JsYW5rIj7pgJrnn6XlhazlkYo8L2E%2BPC9kaXY%2BPGRpdj48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvSW5zdHJ1Y3Rpb24vSW5kZXguYXNweD9jaWQ9MDAwMjAwMDEwMDQwMDAyIiB0YXJnZXQ9Il9ibGFuayI%2B5Yqe5LqL5oyH5Y2XPC9hPjwvZGl2PjxkaXY%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL1BvbGljaWVzYW5kcmVndWxhdGlvbnMvSW5kZXguYXNweD9jaWQ9MDAwMjAwMDEwMDQwMDAzIiB0YXJnZXQ9Il9ibGFuayI%2B5pS%2F562W5rOV6KeEPC9hPjwvZGl2PjxkaXY%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL0Nhb3p1by9pbmRleC5hc3B4P2NpZD0wMDAyMDAwMTAwNDAwMDQiIHRhcmdldD0iX2JsYW5rIj7mk43kvZzmiYvlhow8L2E%2BPC9kaXY%2BPGRpdj48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvRG93bkNlbnRlci5hc3B4P2NpZD0wMDAyMDAwMTAwNDAwMDUiIHRhcmdldD0iX2JsYW5rIj7kuIvovb3kuJPljLo8L2E%2BPC9kaXY%2BPC90ZD48L3RyPjwvdGFibGU%2BPC9saT48bGkgY2xhc3M9InVsX21lbnUiPjxhIHRhcmdldD0iX2JsYW5rIj7kupLliqjkuqTmtYE8L2E%2BPHVsPiA8bGk%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL0ludGVyYWN0aW9uL0ludGVyYWN0aW9uTGlzdE5ldzEuYXNweCIgdGFyZ2V0PSJfYmxhbmsiPuS4u%2BS7u%2BS%2FoeeusTwvYT48L2xpPiA8bGk%2BPGEgaHJlZj0iaHR0cDovLzIwMTMuY2RnZ3p5LmNvbS9hcHAxL3R3by93amRjLmpzcD9jaWQ9MDAwMTAwMDIwMDAyIiB0YXJnZXQ9Il9ibGFuayI%2B6LCD5p%2Bl5b6B6ZuGPC9hPjwvbGk%2BIDxsaT48YSBocmVmPSJodHRwOi8vd2VpYm8uY29tL3UvMzk3MzMzODgzNiMhL3UvMzk3MzMzODgzNj9pc19ob3Q9MT9jaWQ9MDAwMTAwMDIwMDAzIiB0YXJnZXQ9Il9ibGFuayI%2B5paw5rWq5b6u5Y2aPC9hPjwvbGk%2BPC91bD48L2xpPjxsaSBjbGFzcz0idWxfbWVudSI%2BPGEgdGFyZ2V0PSJfYmxhbmsiPuWIhuS4reW%2FgzwvYT48dWw%2BIDxsaT48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL2xvbmdxdWFueWk%2FY2lkPTAwMDEwMDAzMDAwMyIgdGFyZ2V0PSJfYmxhbmsiPum%2Bmeaziempv%2BWMujwvYT48L2xpPiA8bGk%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9xaW5nYmFpamlhbmc%2FY2lkPTAwMDEwMDAzMDAwMyIgdGFyZ2V0PSJfYmxhbmsiPumdkueZveaxn%2BWMujwvYT48L2xpPiA8bGk%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS94aW5kdT9jaWQ9MDAwMTAwMDMwMDAzIiB0YXJnZXQ9Il9ibGFuayI%2B5paw6YO95Yy6PC9hPjwvbGk%2BIDxsaT48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3dlbmppYW5nP2NpZD0wMDAxMDAwMzAwMDMiIHRhcmdldD0iX2JsYW5rIj7muKnmsZ%2FljLo8L2E%2BPC9saT4gPGxpPjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vc2h1YW5nbGl1P2NpZD0wMDAxMDAwMzAwMDMiIHRhcmdldD0iX2JsYW5rIj7lj4zmtYHljLo8L2E%2BPC9saT4gPGxpPjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vcGlkdT9jaWQ9MDAwMTAwMDMwMDAzIiB0YXJnZXQ9Il9ibGFuayI%2B6YOr6YO95Yy6PC9hPjwvbGk%2BIDxsaT48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL2ppYW55YW5nP2NpZD0wMDAxMDAwMzAwMDMiIHRhcmdldD0iX2JsYW5rIj7nroDpmLPluII8L2E%2BPC9saT4gPGxpPjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vZHVqaWFuZ3lhbj9jaWQ9MDAwMTAwMDMwMDAzIiB0YXJnZXQ9Il9ibGFuayI%2B6YO95rGf5aCw5biCPC9hPjwvbGk%2BIDxsaT48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3Blbmd6aG91P2NpZD0wMDAxMDAwMzAwMDMiIHRhcmdldD0iX2JsYW5rIj7lva3lt57luII8L2E%2BPC9saT4gPGxpPjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vcWlvbmdsYWk%2FY2lkPTAwMDEwMDAzMDAwMyIgdGFyZ2V0PSJfYmxhbmsiPumCm%2BW0g%2BW4gjwvYT48L2xpPiA8bGk%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9jaG9uZ3pob3U%2FY2lkPTAwMDEwMDAzMDAwMyIgdGFyZ2V0PSJfYmxhbmsiPuW0h%2BW3nuW4gjwvYT48L2xpPiA8bGk%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9qaW5ndGFuZz9jaWQ9MDAwMTAwMDMwMDAzIiB0YXJnZXQ9Il9ibGFuayI%2B6YeR5aCC5Y6%2FPC9hPjwvbGk%2BIDxsaT48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3hpbmppbj9jaWQ9MDAwMTAwMDMwMDAzIiB0YXJnZXQ9Il9ibGFuayI%2B5paw5rSl5Y6%2FPC9hPjwvbGk%2BIDxsaT48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL2RheWk%2FY2lkPTAwMDEwMDAzMDAwMyIgdGFyZ2V0PSJfYmxhbmsiPuWkp%2BmCkeWOvzwvYT48L2xpPiA8bGk%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9wdWppYW5nP2NpZD0wMDAxMDAwMzAwMDMiIHRhcmdldD0iX2JsYW5rIj7okrLmsZ%2Fljr88L2E%2BPC9saT48L3VsPjwvbGk%2BIDwvdWw%2BZAIHD2QWBmYPFgIfAAWKAemhtemdouWKoOi9veaAu%2BaXtumXtO%2B8mjkz5q%2Br56eSPGJyLz7mn6Xor6LliJfooajmgLvml7bpl7TvvJo3OOavq%2Benkjxici8%2B5p%2Bl6K%2Bi5p2h5Lu25oC75pe26Ze077yaMTXmr6vnp5I8YnIvPuacrOacuklQ77yaMTc4LjE4LjEuNzg8YnIvPmQCBQ8WAh4LXyFJdGVtQ291bnQCEBYgZg9kFgJmDxUCBjUxMDEwMQnluILmnKznuqdkAgEPZBYCZg8VAgY1MTAxMTIM6b6Z5rOJ6am%2F5Yy6ZAICD2QWAmYPFQIGNTEwMTEzDOmdkueZveaxn%2BWMumQCAw9kFgJmDxUCBjUxMDExNAnmlrDpg73ljLpkAgQPZBYCZg8VAgY1MTAxMTUJ5rip5rGf5Yy6ZAIFD2QWAmYPFQIGNTEwMTE2CeWPjOa1geWMumQCBg9kFgJmDxUCBjUxMDE4NQnnroDpmLPluIJkAgcPZBYCZg8VAgY1MTAxODEM6YO95rGf5aCw5biCZAIID2QWAmYPFQIGNTEwMTgyCeW9reW3nuW4gmQCCQ9kFgJmDxUCBjUxMDE4MwnpgpvltIPluIJkAgoPZBYCZg8VAgY1MTAxODQJ5bSH5bee5biCZAILD2QWAmYPFQIGNTEwMTI0CemDq%2BmDveWMumQCDA9kFgJmDxUCBjUxMDEyMQnph5HloILljr9kAg0PZBYCZg8VAgY1MTAxMzIJ5paw5rSl5Y6%2FZAIOD2QWAmYPFQIGNTEwMTI5CeWkp%2BmCkeWOv2QCDw9kFgJmDxUCBjUxMDEzMQnokrLmsZ%2Fljr9kAggPZBYCZg9kFgYCAw8PFgIfAAUEMi85NmRkAgkPFgIfAQIKFhZmD2QWBmYPFQEJ5rip5rGf5Yy6ZAIBDw8WAh4LTmF2aWdhdGVVcmwFYGh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vc2l0ZS9MYW5kVHJhZGUvTGFuZE5vdGljZUNvbnRlbnQuYXNweD9pZD1GN0VDMDdENTEzM0Q0MkY5QjQ4RjVBMEE5NDdGNTQxOWQWAmYPFQE%2F5oyC54mM5Lya57uT5p6c5LiA6KeI6KGoKDIwMjDlubQwMeaciDEz5pel5YiwMjAyMOW5tDAy5pyIMDPml6UpZAICDxUCCjIwMjAtMDItMDMpPGRpdiBjbGFzcz0iIGVudGVyaW5nIj4mbmJzcDsmbmJzcDs8L2Rpdj5kAgEPZBYGZg8VAQzpnZLnmb3msZ%2FljLpkAgEPDxYCHwIFYGh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vc2l0ZS9MYW5kVHJhZGUvTGFuZE5vdGljZUNvbnRlbnQuYXNweD9pZD0wREE4N0RCNjBERDA0OUYwQUM3MDg1QUVGMkFGMEQ1N2QWAmYPFQE%2F5oyC54mM5Lya57uT5p6c5LiA6KeI6KGoKDIwMjDlubQwMeaciDA55pel5YiwMjAyMOW5tDAx5pyIMjLml6UpZAICDxUCCjIwMjAtMDEtMjIpPGRpdiBjbGFzcz0iIGVudGVyaW5nIj4mbmJzcDsmbmJzcDs8L2Rpdj5kAgIPZBYGZg8VAQnluILmnKznuqdkAgEPDxYCHwIFYGh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vc2l0ZS9MYW5kVHJhZGUvTGFuZE5vdGljZUNvbnRlbnQuYXNweD9pZD1iZDY5NWIxMWRhMDY0YWQwYTlmN2U1MTgzZjk5ZGNmM2QWAmYPFQEx5ouN5Y2W5Lya5oiQ5Lqk57uT5p6c5LiA6KeI6KGoKDIwMjDlubQwMeaciDIw5pelKWQCAg8VAgoyMDIwLTAxLTIwKTxkaXYgY2xhc3M9IiBlbnRlcmluZyI%2BJm5ic3A7Jm5ic3A7PC9kaXY%2BZAIDD2QWBmYPFQEJ5biC5pys57qnZAIBDw8WAh8CBWBodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvTGFuZFRyYWRlL0xhbmROb3RpY2VDb250ZW50LmFzcHg%2FaWQ9ZDcwOGU5MDE4ZDE1NDJhMGEyNzFkYTVhZjFhMDU0N2JkFgJmDxUBP%2BaMgueJjOS8mue7k%2BaenOS4gOiniOihqCgyMDIw5bm0MDHmnIgwN%2BaXpeWIsDIwMjDlubQwMeaciDIw5pelKWQCAg8VAgoyMDIwLTAxLTIwKTxkaXYgY2xhc3M9IiBlbnRlcmluZyI%2BJm5ic3A7Jm5ic3A7PC9kaXY%2BZAIED2QWBmYPFQEJ5biC5pys57qnZAIBDw8WAh8CBWBodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvTGFuZFRyYWRlL0xhbmROb3RpY2VDb250ZW50LmFzcHg%2FaWQ9NjdlYTRmYWFkYjgyNDY0OGEwNWNkMDFmN2Y1ZjAwYzlkFgJmDxUBP%2BaMgueJjOS8mue7k%2BaenOS4gOiniOihqCgyMDIw5bm0MDHmnIgwN%2BaXpeWIsDIwMjDlubQwMeaciDIw5pelKWQCAg8VAgoyMDIwLTAxLTIwKTxkaXYgY2xhc3M9IiBlbnRlcmluZyI%2BJm5ic3A7Jm5ic3A7PC9kaXY%2BZAIFD2QWBmYPFQEJ5biC5pys57qnZAIBDw8WAh8CBWBodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvTGFuZFRyYWRlL0xhbmROb3RpY2VDb250ZW50LmFzcHg%2FaWQ9ZDM2ZjM1MTQ0ZmEyNGYxYjhjZGI3ODhhZTc1NWM5YjNkFgJmDxUBMeaLjeWNluS8muaIkOS6pOe7k%2BaenOS4gOiniOihqCgyMDIw5bm0MDHmnIgyMOaXpSlkAgIPFQIKMjAyMC0wMS0yMCk8ZGl2IGNsYXNzPSIgZW50ZXJpbmciPiZuYnNwOyZuYnNwOzwvZGl2PmQCBg9kFgZmDxUBCeeugOmYs%2BW4gmQCAQ8PFgIfAgVgaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL0xhbmRUcmFkZS9MYW5kTm90aWNlQ29udGVudC5hc3B4P2lkPThGQkI4QjVFNjIzQjQ1QURCQjQyQTJCNUIyMzkxRUNEZBYCZg8VAT%2FmjILniYzkvJrnu5PmnpzkuIDop4jooagoMjAyMOW5tDAx5pyIMDfml6XliLAyMDIw5bm0MDHmnIgyMOaXpSlkAgIPFQIKMjAyMC0wMS0yMCk8ZGl2IGNsYXNzPSIgZW50ZXJpbmciPiZuYnNwOyZuYnNwOzwvZGl2PmQCBw9kFgZmDxUBCeeugOmYs%2BW4gmQCAQ8PFgIfAgVgaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL0xhbmRUcmFkZS9MYW5kTm90aWNlQ29udGVudC5hc3B4P2lkPTNDN0U3RkYzMUZENzRDQUE4QTQyMDZCMzBGQURDOUU3ZBYCZg8VAT%2FmjILniYzkvJrnu5PmnpzkuIDop4jooagoMjAxOeW5tDEy5pyIMzDml6XliLAyMDIw5bm0MDHmnIgxNOaXpSlkAgIPFQIKMjAyMC0wMS0xNyk8ZGl2IGNsYXNzPSIgZW50ZXJpbmciPiZuYnNwOyZuYnNwOzwvZGl2PmQCCA9kFgZmDxUBCeWPjOa1geWMumQCAQ8PFgIfAgVgaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL0xhbmRUcmFkZS9MYW5kTm90aWNlQ29udGVudC5hc3B4P2lkPTlFRDFGM0YzMTAzMzRFOTc4OTJGOTgzNkUyMzE4MUEzZBYCZg8VAT%2FmjILniYzkvJrnu5PmnpzkuIDop4jooagoMjAyMOW5tDAx5pyIMDLml6XliLAyMDIw5bm0MDHmnIgxNuaXpSlkAgIPFQIKMjAyMC0wMS0xNik8ZGl2IGNsYXNzPSIgZW50ZXJpbmciPiZuYnNwOyZuYnNwOzwvZGl2PmQCCQ9kFgZmDxUBCeW4guacrOe6p2QCAQ8PFgIfAgVgaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL0xhbmRUcmFkZS9MYW5kTm90aWNlQ29udGVudC5hc3B4P2lkPWZjMGJjOTliOTEwODQwZGY5YjNhZjFlN2I1YzI3MTMwZBYCZg8VATHmi43ljZbkvJrmiJDkuqTnu5PmnpzkuIDop4jooagoMjAyMOW5tDAx5pyIMTbml6UpZAICDxUCCjIwMjAtMDEtMTYpPGRpdiBjbGFzcz0iIGVudGVyaW5nIj4mbmJzcDsmbmJzcDs8L2Rpdj5kAgoPZBYCAgEPDxYCHgdWaXNpYmxlaGRkAgsPDxYGHghQYWdlU2l6ZQIKHhBDdXJyZW50UGFnZUluZGV4AgIeC1JlY29yZGNvdW50Ar8HZGRkhPP9ly9J4XaUUQdL9mqWROm1TAk%3D&__VIEWSTATEGENERATOR=87A20B68&__EVENTTARGET=ctl00%24ContentPlaceHolder1%24Pager&__EVENTARGUMENT=" + pageValue + "&__EVENTVALIDATION=%2FwEdAAjZVw3XtydTzJfC%2BNtk26mOZXbjphD4J6Ci0P2UUXCmZQp8fmeAe3E%2BZ%2BlyrRcok%2FuMO7fmjkJSfq6Zbgk2kTWnZi7H72kkAvPqROrOG28FXID8g%2FxeCzDZJOPgpGV4zViznYSIw3B963y%2FxzaOhgoHdty0mXvz7f%2B9YtBAL8kV3dDtGgtaD%2FGMMc%2BQUEoJCgkEmkNJ&__ASYNCPOST=true&";
+            /* 4. 处理输入输出 */
+            // 写入参数到请求中
+            if (StringUtils.isEmpty(pageValue))
+                pageValue = "1";
+            if (StringUtils.isEmpty(typeValue))
+                typeValue = "";
+            String params = "ctl00%24ScriptManager1=ctl00%24ContentPlaceHolder1%24UpdatePanel1%7Cctl00%24ContentPlaceHolder1%24Pager&__EVENTTARGET=ctl00%24ContentPlaceHolder1%24Pager&__EVENTARGUMENT=" + pageValue + "&__VIEWSTATE=%2FwEPDwUKMTU3NDc4MTQ1Nw9kFgJmD2QWAgIDD2QWBAIDD2QWAgIHDxYCHgRUZXh0BY8xPHVsIGNsYXNzPSduYXYgbmF2LXBpbGxzIG5hdi1qdXN0aWZpZWQnPjxsaT48YSBocmVmPScvaW5kZXguYXNweCc%2B6aaW6aG1PC9hPjxzcGFuPjwvc3Bhbj48L2xpPjxsaSAgY2xhc3M9InVsX21lbnUiPjxhICBoZXJmPScjJz7mlL%2FliqHlhazlvIA8L2E%2BPHRhYmxlPiA8dHI%2BPHRkPjxkaXY%2B5Lit5b%2BD5qaC5Ya1PC9kaXY%2BPC90ZD48dGQgICBjbGFzcz0ibWV1bi1pdGVuLWJvZHkiPjxkaXY%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL0dlbmVyYWwvSW5kZXguYXNweD9jaWQ9MDAwMTAwMDEwMDAxMDAwNCIgdGFyZ2V0PSJfYmxhbmsiPuS4reW%2Fg%2BeugOS7izwvYT48L2Rpdj48ZGl2PjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vc2l0ZS9HZW5lcmFsL0luZGV4LmFzcHg%2FY2lkPTAwMDEwMDAxMDAwMTAwMDIiIHRhcmdldD0iX2JsYW5rIj7pooblr7zliIblt6U8L2E%2BPC9kaXY%2BPGRpdj48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvR2VuZXJhbC9JbmRleC5hc3B4P2NpZD0wMDAxMDAwMTAwMDEwMDAzIiB0YXJnZXQ9Il9ibGFuayI%2B6IGU57O75pa55byPPC9hPjwvZGl2PjxkaXY%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL0dlbmVyYWwvSW5kZXguYXNweD9jaWQ9MDAwMTAwMDEwMDAxMDAwMSIgdGFyZ2V0PSJfYmxhbmsiPumDqOmXqOiuvue9rjwvYT48L2Rpdj48L3RkPjwvdHI%2BIDx0cj48dGQ%2BPGRpdj7mlrDpl7vliqjmgIE8L2Rpdj48L3RkPjx0ZCAgIGNsYXNzPSJtZXVuLWl0ZW4tYm9keSI%2BPGRpdj48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvT3BlbkdvdmVybm1lbnQvTGlzdC5hc3B4P2NpZD0wMDAxMDAwMTAwMDIwMDAxIiB0YXJnZXQ9Il9ibGFuayI%2B5bel5L2c5Yqo5oCBPC9hPjwvZGl2PjxkaXY%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL09wZW5Hb3Zlcm5tZW50L0xpc3QuYXNweD9jaWQ9MDAwMTAwMDEwMDAyMDAwMyIgdGFyZ2V0PSJfYmxhbmsiPuS%2FoeeUqOS%2FoeaBrzwvYT48L2Rpdj48L3RkPjwvdHI%2BIDx0cj48dGQ%2BPGRpdj7mlL%2FliqHlhazlvIA8L2Rpdj48L3RkPjx0ZCAgIGNsYXNzPSJtZXVuLWl0ZW4tYm9keSI%2BPGRpdj48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvT3BlbkdvdmVybm1lbnQvTGlzdC5hc3B4P2NpZD0wMDAxMDAwMTAwMDMwMDAxIiB0YXJnZXQ9Il9ibGFuayI%2B5YWs5byA5L%2Bd6ZqcPC9hPjwvZGl2PjxkaXY%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL09wZW5Hb3Zlcm5tZW50L0xpc3QuYXNweD9jaWQ9MDAwMTAwMDEwMDAzMDAwMiIgdGFyZ2V0PSJfYmxhbmsiPuiuoeWIkuaAu%2Be7kzwvYT48L2Rpdj48ZGl2PjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vc2l0ZS9PcGVuR292ZXJubWVudC9MaXN0LmFzcHg%2FY2lkPTAwMDEwMDAxMDAwMzAwMDMiIHRhcmdldD0iX2JsYW5rIj7kurrkuovkv6Hmga88L2E%2BPC9kaXY%2BPGRpdj48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvT3BlbkdvdmVybm1lbnQvTGlzdC5hc3B4P2NpZD0wMDAxMDAwMTAwMDMwMDA0IiB0YXJnZXQ9Il9ibGFuayI%2B6LSi5pS%2F6LWE6YeRPC9hPjwvZGl2PjxkaXY%2BPGEgaHJlZj0iaHR0cDovL2drLmNoZW5nZHUuZ292LmNuL29wZW5BcHBseS9pbmRleC5hY3Rpb24%2FY2lkPTAwMDEwMDAxMDAwMzAwMDUiIHRhcmdldD0iX2JsYW5rIj7kvp3nlLPor7flhazlvIA8L2E%2BPC9kaXY%2BPGRpdj48YSBocmVmPSJodHRwOi8vZ2suY2hlbmdkdS5nb3YuY24vb3BlblN1Z2dlc3Rpb25Cb3gvaW5kZXguYWN0aW9uP2NpZD0wMDAxMDAwMTAwMDMwMDA2IiB0YXJnZXQ9Il9ibGFuayI%2B5YWs5byA5oSP6KeB566xPC9hPjwvZGl2PjxkaXY%2BPGEgaHJlZj0iaHR0cDovL2drLmNoZW5nZHUuZ292LmNuL2dvdkluZm9QdWIvZGVwdC5hY3Rpb24%2FY2xhc3NJZD0wNzAzNjYiIHRhcmdldD0iX2JsYW5rIj7kv6Hmga%2FlhazlvIDmjIfljZc8L2E%2BPC9kaXY%2BPGRpdj48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvUGx1cy9BY2NlcHREYXRhLmFzcHg%2FY2lkPTAwMDEwMDAxMDAwMzAwMDkiIHRhcmdldD0iX2JsYW5rIj7lip7kuovnu5%2ForqE8L2E%2BPC9kaXY%2BPGRpdj48YSBocmVmPSJodHRwOi8vd3d3LmNoZW5nZHUuZ292LmNuL2NoZW5nZHUvY2RtZG0veG1kbV9pbmRleC5zaHRtbD9jaWQ9MDAwMTAwMDEwMDAzMDAwOCIgdGFyZ2V0PSJfYmxhbmsiPuWFmumjjuaUv%2BmjjueDree6vzwvYT48L2Rpdj48L3RkPjwvdHI%2BPC90YWJsZT48L2xpPjxsaSAgY2xhc3M9InVsX21lbnUiPjxhICBoZXJmPScjJz7kuJrliqHlip7nkIY8L2E%2BPHRhYmxlPiA8dHI%2BPHRkPjxkaXY%2B5Y%2BX55CG5Lia5YqhPC9kaXY%2BPC90ZD48dGQgICBjbGFzcz0ibWV1bi1pdGVuLWJvZHkiPjxkaXY%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9jZW50ZXIvaW5kZXguYXNweD9jaWQ9MDAwMjAwMDEwMDIwMDAxIiB0YXJnZXQ9Il9ibGFuayI%2B6aG555uu55m76K6wPC9hPjwvZGl2PjxkaXY%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL1NpdGVTZWFyY2gvbmV3aW5kZXguYXNweD9jaWQ9MDAwMjAwMDEwMDIwMDAyIiB0YXJnZXQ9Il9ibGFuayI%2B5Zy65Zyw5p%2Bl6K%2BiPC9hPjwvZGl2PjwvdGQ%2BPC90cj4gPHRyPjx0ZD48ZGl2PuS6pOaYk%2BS%2FoeaBrzwvZGl2PjwvdGQ%2BPHRkICAgY2xhc3M9Im1ldW4taXRlbi1ib2R5Ij48ZGl2PjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vc2l0ZS9KU0dDL0xpc3QuYXNweCIgdGFyZ2V0PSJfYmxhbmsiPuW3peeoi%2BW7uuiuvjwvYT48L2Rpdj48ZGl2PjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vc2l0ZS9Ob3RpY2UvWkZDRy9Ob3RpY2VWZXJzaW9uT25lTGlzdC5hc3B4IiB0YXJnZXQ9Il9ibGFuayI%2B5pS%2F5bqc6YeH6LStPC9hPjwvZGl2PjxkaXY%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL0xhbmRUcmFkZS9MYW5kTGlzdC5hc3B4IiB0YXJnZXQ9Il9ibGFuayI%2B5Zyf5Zyw55%2B%2F5p2DPC9hPjwvZGl2PjxkaXY%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL0Fzc2V0UmVzb3VyY2UvRGVhbE5vdGljZUxpc3QuYXNweCIgdGFyZ2V0PSJfYmxhbmsiPui1hOS6p%2Bi1hOa6kDwvYT48L2Rpdj48L3RkPjwvdHI%2BIDx0cj48dGQ%2BPGRpdj7mm7TlpJrkuJrliqE8L2Rpdj48L3RkPjx0ZCAgIGNsYXNzPSJtZXVuLWl0ZW4tYm9keSI%2BPGRpdj48YSBocmVmPSJodHRwOi8vd3d3LmNkZ2d6eS5jb20vbWFsbC9JbmRleC5hc3B4P2NpZD0wMDAyMDAwMTAwMzAwMDEiIHRhcmdldD0iX2JsYW5rIj7mlL%2Flupzph4fotK3nlLXlrZDllYbln448L2E%2BPC9kaXY%2BPGRpdj48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL0xvZ2luLmFzcHg%2FY2lkPTAwMDIwMDAxMDAzMDAwMiIgdGFyZ2V0PSJfYmxhbmsiPui1hOS6p%2Bi1hOa6kOe9keS4iuernuS7tzwvYT48L2Rpdj48ZGl2PjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vc2l0ZS9CYW5rQm9ycm93L0luZGV4LmFzcHg%2FY2lkPTAwMDIwMDAxMDAzMDAwNCIgdGFyZ2V0PSJfYmxhbmsiPuaUv%2BmHh%2BS%2FoeeUqOaLheS%2Fneiejei1hDwvYT48L2Rpdj48L3RkPjwvdHI%2BIDx0cj48dGQ%2BPGRpdj7mnI3liqHmjIflvJU8L2Rpdj48L3RkPjx0ZCAgIGNsYXNzPSJtZXVuLWl0ZW4tYm9keSI%2BPGRpdj48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvUGx1cy9Ob3RpY2VMaXN0LmFzcHg%2FY2lkPTAwMDIwMDAxMDA0MDAwMSIgdGFyZ2V0PSJfYmxhbmsiPumAmuefpeWFrOWRijwvYT48L2Rpdj48ZGl2PjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vc2l0ZS9JbnN0cnVjdGlvbi9JbmRleC5hc3B4P2NpZD0wMDAyMDAwMTAwNDAwMDIiIHRhcmdldD0iX2JsYW5rIj7lip7kuovmjIfljZc8L2E%2BPC9kaXY%2BPGRpdj48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvUG9saWNpZXNhbmRyZWd1bGF0aW9ucy9JbmRleC5hc3B4P2NpZD0wMDAyMDAwMTAwNDAwMDMiIHRhcmdldD0iX2JsYW5rIj7mlL%2FnrZbms5Xop4Q8L2E%2BPC9kaXY%2BPGRpdj48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvQ2FvenVvL2luZGV4LmFzcHg%2FY2lkPTAwMDIwMDAxMDA0MDAwNCIgdGFyZ2V0PSJfYmxhbmsiPuaTjeS9nOaJi%2BWGjDwvYT48L2Rpdj48ZGl2PjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vc2l0ZS9Eb3duQ2VudGVyLmFzcHg%2FY2lkPTAwMDIwMDAxMDA0MDAwNSIgdGFyZ2V0PSJfYmxhbmsiPuS4i%2Bi9veS4k%2BWMujwvYT48L2Rpdj48L3RkPjwvdHI%2BPC90YWJsZT48L2xpPjxsaSBjbGFzcz0idWxfbWVudSI%2BPGEgdGFyZ2V0PSJfYmxhbmsiPuS6kuWKqOS6pOa1gTwvYT48dWw%2BIDxsaT48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvSW50ZXJhY3Rpb24vSW50ZXJhY3Rpb25MaXN0TmV3MS5hc3B4IiB0YXJnZXQ9Il9ibGFuayI%2B5Li75Lu75L%2Bh566xPC9hPjwvbGk%2BIDxsaT48YSBocmVmPSJodHRwOi8vMjAxMy5jZGdnenkuY29tL2FwcDEvdHdvL3dqZGMuanNwP2NpZD0wMDAxMDAwMjAwMDIiIHRhcmdldD0iX2JsYW5rIj7osIPmn6XlvoHpm4Y8L2E%2BPC9saT4gPGxpPjxhIGhyZWY9Imh0dHA6Ly93ZWliby5jb20vdS8zOTczMzM4ODM2IyEvdS8zOTczMzM4ODM2P2lzX2hvdD0xP2NpZD0wMDAxMDAwMjAwMDMiIHRhcmdldD0iX2JsYW5rIj7mlrDmtarlvq7ljZo8L2E%2BPC9saT48L3VsPjwvbGk%2BPGxpIGNsYXNzPSJ1bF9tZW51Ij48YSB0YXJnZXQ9Il9ibGFuayI%2B5YiG5Lit5b%2BDPC9hPjx1bD4gPGxpPjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vbG9uZ3F1YW55aT9jaWQ9MDAwMTAwMDMwMDAzIiB0YXJnZXQ9Il9ibGFuayI%2B6b6Z5rOJ6am%2F5Yy6PC9hPjwvbGk%2BIDxsaT48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3FpbmdiYWlqaWFuZz9jaWQ9MDAwMTAwMDMwMDAzIiB0YXJnZXQ9Il9ibGFuayI%2B6Z2S55m95rGf5Yy6PC9hPjwvbGk%2BIDxsaT48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3hpbmR1P2NpZD0wMDAxMDAwMzAwMDMiIHRhcmdldD0iX2JsYW5rIj7mlrDpg73ljLo8L2E%2BPC9saT4gPGxpPjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vd2Vuamlhbmc%2FY2lkPTAwMDEwMDAzMDAwMyIgdGFyZ2V0PSJfYmxhbmsiPua4qeaxn%2BWMujwvYT48L2xpPiA8bGk%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaHVhbmdsaXU%2FY2lkPTAwMDEwMDAzMDAwMyIgdGFyZ2V0PSJfYmxhbmsiPuWPjOa1geWMujwvYT48L2xpPiA8bGk%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9waWR1P2NpZD0wMDAxMDAwMzAwMDMiIHRhcmdldD0iX2JsYW5rIj7pg6vpg73ljLo8L2E%2BPC9saT4gPGxpPjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vamlhbnlhbmc%2FY2lkPTAwMDEwMDAzMDAwMyIgdGFyZ2V0PSJfYmxhbmsiPueugOmYs%2BW4gjwvYT48L2xpPiA8bGk%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9kdWppYW5neWFuP2NpZD0wMDAxMDAwMzAwMDMiIHRhcmdldD0iX2JsYW5rIj7pg73msZ%2FloLDluII8L2E%2BPC9saT4gPGxpPjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vcGVuZ3pob3U%2FY2lkPTAwMDEwMDAzMDAwMyIgdGFyZ2V0PSJfYmxhbmsiPuW9reW3nuW4gjwvYT48L2xpPiA8bGk%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9xaW9uZ2xhaT9jaWQ9MDAwMTAwMDMwMDAzIiB0YXJnZXQ9Il9ibGFuayI%2B6YKb5bSD5biCPC9hPjwvbGk%2BIDxsaT48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL2Nob25nemhvdT9jaWQ9MDAwMTAwMDMwMDAzIiB0YXJnZXQ9Il9ibGFuayI%2B5bSH5bee5biCPC9hPjwvbGk%2BIDxsaT48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL2ppbmd0YW5nP2NpZD0wMDAxMDAwMzAwMDMiIHRhcmdldD0iX2JsYW5rIj7ph5HloILljr88L2E%2BPC9saT4gPGxpPjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20veGluamluP2NpZD0wMDAxMDAwMzAwMDMiIHRhcmdldD0iX2JsYW5rIj7mlrDmtKXljr88L2E%2BPC9saT4gPGxpPjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vZGF5aT9jaWQ9MDAwMTAwMDMwMDAzIiB0YXJnZXQ9Il9ibGFuayI%2B5aSn6YKR5Y6%2FPC9hPjwvbGk%2BIDxsaT48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3B1amlhbmc%2FY2lkPTAwMDEwMDAzMDAwMyIgdGFyZ2V0PSJfYmxhbmsiPuiSsuaxn%2BWOvzwvYT48L2xpPjwvdWw%2BPC9saT4gPC91bD5kAgcPZBYGAgEPFgIfAAWKAemhtemdouWKoOi9veaAu%2BaXtumXtO%2B8mjkz5q%2Br56eSPGJyLz7mn6Xor6LliJfooajmgLvml7bpl7TvvJo2Muavq%2Benkjxici8%2B5p%2Bl6K%2Bi5p2h5Lu25oC75pe26Ze077yaMzHmr6vnp5I8YnIvPuacrOacuklQ77yaMTc4LjE4LjEuNzY8YnIvPmQCCw8WAh4LXyFJdGVtQ291bnQCEBYgZg9kFgJmDxUCBjUxMDEwMQnluILmnKznuqdkAgEPZBYCZg8VAgY1MTAxMTIM6b6Z5rOJ6am%2F5Yy6ZAICD2QWAmYPFQIGNTEwMTEzDOmdkueZveaxn%2BWMumQCAw9kFgJmDxUCBjUxMDExNAnmlrDpg73ljLpkAgQPZBYCZg8VAgY1MTAxMTUJ5rip5rGf5Yy6ZAIFD2QWAmYPFQIGNTEwMTE2CeWPjOa1geWMumQCBg9kFgJmDxUCBjUxMDE4NQnnroDpmLPluIJkAgcPZBYCZg8VAgY1MTAxODEM6YO95rGf5aCw5biCZAIID2QWAmYPFQIGNTEwMTgyCeW9reW3nuW4gmQCCQ9kFgJmDxUCBjUxMDE4MwnpgpvltIPluIJkAgoPZBYCZg8VAgY1MTAxODQJ5bSH5bee5biCZAILD2QWAmYPFQIGNTEwMTI0CemDq%2BmDveWMumQCDA9kFgJmDxUCBjUxMDEyMQnph5HloILljr9kAg0PZBYCZg8VAgY1MTAxMzIJ5paw5rSl5Y6%2FZAIOD2QWAmYPFQIGNTEwMTI5CeWkp%2BmCkeWOv2QCDw9kFgJmDxUCBjUxMDEzMQnokrLmsZ%2Fljr9kAhEPZBYCZg9kFgYCAw8PFgIfAAUFMS8xOTlkZAIJDxYCHwECChYUZg9kFgZmDxUBCeW4guacrOe6p2QCAQ8PFgIeC05hdmlnYXRlVXJsBWBodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvTGFuZFRyYWRlL0xhbmROb3RpY2VDb250ZW50LmFzcHg%2FaWQ9MzE2ZWM3NWJiZTEyNDNkZTg4NjkwNjgyOTFjZTYwOGNkFgJmDxUBMeaLjeWNluS8muaIkOS6pOe7k%2BaenOS4gOiniOihqCgyMDE55bm0MDjmnIgyOeaXpSlkAgIPFQIKMjAxOS0wOC0yOSk8ZGl2IGNsYXNzPSIgZW50ZXJpbmciPiZuYnNwOyZuYnNwOzwvZGl2PmQCAQ9kFgZmDxUBDOmdkueZveaxn%2BWMumQCAQ8PFgIfAgVgaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL0xhbmRUcmFkZS9MYW5kTm90aWNlQ29udGVudC5hc3B4P2lkPUEzOThCRkIzNUE5MTRDNkM5QjZDNUQwNzNDRURCRjEzZBYCZg8VAT%2FmjILniYzkvJrnu5PmnpzkuIDop4jooagoMjAxOeW5tDA45pyIMTXml6XliLAyMDE55bm0MDjmnIgyOeaXpSlkAgIPFQIKMjAxOS0wOC0yOSk8ZGl2IGNsYXNzPSIgZW50ZXJpbmciPiZuYnNwOyZuYnNwOzwvZGl2PmQCAg9kFgZmDxUBCemDq%2BmDveWMumQCAQ8PFgIfAgVgaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL0xhbmRUcmFkZS9MYW5kTm90aWNlQ29udGVudC5hc3B4P2lkPUQxMDBCMkYxRDJFQjQ3QUJCRTdFNTRCMjYwNUFBNDIxZBYCZg8VAV7pg6vpg73ljLrmjILniYzlh7rorqnlm73mnInlu7rorr7nlKjlnLDkvb%2FnlKjmnYPlhazlkYoo6YOr6YO95oiQ5YWs6LWE5Zyf572R5oyC5ZGKKDIwMTkpMDXlj7cpZAICDxUCCjIwMTktMDgtMjkiPGRpdiBjbGFzcz0iICAiPuWNs%2BWwhuaKpeWQjTwvZGl2PmQCAw9kFgZmDxUBCeW4guacrOe6p2QCAQ8PFgIfAgVgaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL0xhbmRUcmFkZS9MYW5kTm90aWNlQ29udGVudC5hc3B4P2lkPTU4NjhhODU1MzA4NDRkNDlhMWVkZWEzZjkyMGI1NmI2ZBYCZg8VAT%2FmjILniYzkvJrnu5PmnpzkuIDop4jooagoMjAxOeW5tDA45pyIMTTml6XliLAyMDE55bm0MDjmnIgyOOaXpSlkAgIPFQIKMjAxOS0wOC0yOCk8ZGl2IGNsYXNzPSIgZW50ZXJpbmciPiZuYnNwOyZuYnNwOzwvZGl2PmQCBA9kFgZmDxUBCeW4guacrOe6p2QCAQ8PFgIfAgVgaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL0xhbmRUcmFkZS9MYW5kTm90aWNlQ29udGVudC5hc3B4P2lkPTgxOTRlMTY1M2Q5NzRjODk5MjExYmFkMTcyZGFiY2JiZBYCZg8VAT%2FmjILniYzkvJrnu5PmnpzkuIDop4jooagoMjAxOeW5tDA45pyIMTTml6XliLAyMDE55bm0MDjmnIgyOOaXpSlkAgIPFQIKMjAxOS0wOC0yOCk8ZGl2IGNsYXNzPSIgZW50ZXJpbmciPiZuYnNwOyZuYnNwOzwvZGl2PmQCBQ9kFgZmDxUBCeW4guacrOe6p2QCAQ8PFgIfAgVgaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL0xhbmRUcmFkZS9MYW5kTm90aWNlQ29udGVudC5hc3B4P2lkPTA2MTIxOTRiODM4ODRmNmY5Y2ViZDcyZjQ1OTkzZWFjZBYCZg8VATHmi43ljZbkvJrmiJDkuqTnu5PmnpzkuIDop4jooagoMjAxOeW5tDA45pyIMjjml6UpZAICDxUCCjIwMTktMDgtMjgpPGRpdiBjbGFzcz0iIGVudGVyaW5nIj4mbmJzcDsmbmJzcDs8L2Rpdj5kAgYPZBYGZg8VAQzpnZLnmb3msZ%2FljLpkAgEPDxYCHwIFYGh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vc2l0ZS9MYW5kVHJhZGUvTGFuZE5vdGljZUNvbnRlbnQuYXNweD9pZD03MjJGNUY1ODU4OUU0QkJEQkYwNDhDM0U5REI4RTU1MmQWAmYPFQFq5oiQ6YO95biC6Z2S55m95rGf5Yy65oyC54mM5Ye66K6p5Zu95pyJ5bu66K6%2B55So5Zyw5L2%2F55So5p2D5YWs5ZGKKOmdkueZveaIkOWFrOi1hOWcn%2Be9keaMguWRiigyMDE5KTA55Y%2B3KWQCAg8VAgoyMDE5LTA4LTI4IjxkaXYgY2xhc3M9IiAgIj7ljbPlsIbmiqXlkI08L2Rpdj5kAgcPZBYGZg8VAQnltIflt57luIJkAgEPDxYCHwIFYGh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vc2l0ZS9MYW5kVHJhZGUvTGFuZE5vdGljZUNvbnRlbnQuYXNweD9pZD0yQTAzNjVEM0JBNEY0QThCQTlBQ0MxNzBGRTk2NkM2MmQWAmYPFQFb5oyC54mM5Ye66K6p5Zu95pyJ5bu66K6%2B55So5Zyw5L2%2F55So5p2D5pu05q2j5YWs5ZGKKOW0h%2BW3nuaIkOWFrOi1hOWcn%2Be9keaMguWRiigyMDE5KTAz5Y%2B3KWQCAg8VAgoyMDE5LTA4LTI2KTxkaXYgY2xhc3M9IiBlbnRlcmluZyI%2BJm5ic3A7Jm5ic3A7PC9kaXY%2BZAIID2QWBmYPFQEJ6JKy5rGf5Y6%2FZAIBDw8WAh8CBWBodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvTGFuZFRyYWRlL0xhbmROb3RpY2VDb250ZW50LmFzcHg%2FaWQ9ODNGNjVEN0ZCMjc3NDkwRUFCRkEwNTkzMTA2ODZCODlkFgJmDxUBP%2BaMgueJjOS8mue7k%2BaenOS4gOiniOihqCgyMDE55bm0MDjmnIgxMuaXpeWIsDIwMTnlubQwOOaciDI25pelKWQCAg8VAgoyMDE5LTA4LTI2KTxkaXYgY2xhc3M9IiBlbnRlcmluZyI%2BJm5ic3A7Jm5ic3A7PC9kaXY%2BZAIJD2QWBmYPFQEJ6YKb5bSD5biCZAIBDw8WAh8CBWBodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvTGFuZFRyYWRlL0xhbmROb3RpY2VDb250ZW50LmFzcHg%2FaWQ9RkVCMDRBNkU5Nzg2NEI1ODhCNjlERUUyRDREQkMwMTBkFgJmDxUBP%2BaMgueJjOS8mue7k%2BaenOS4gOiniOihqCgyMDE55bm0MDjmnIgxMuaXpeWIsDIwMTnlubQwOOaciDI25pelKWQCAg8VAgoyMDE5LTA4LTI2KTxkaXYgY2xhc3M9IiBlbnRlcmluZyI%2BJm5ic3A7Jm5ic3A7PC9kaXY%2BZAILDw8WBB4IUGFnZVNpemUCCh4LUmVjb3JkY291bnQCxA9kZGTv1CBLQbXMRSGjAJECk9TSeNfqzg%3D%3D&__VIEWSTATEGENERATOR=87A20B68&__EVENTVALIDATION=%2FwEdAAhZEJ%2BEThIyeDEYVfC4x1M%2BZi7H72kkAvPqROrOG28FXID8g%2FxeCzDZJOPgpGV4zViznYSIw3B963y%2FxzaOhgoHdty0mXvz7f%2B9YtBAL8kV3WV246YQ%2BCegotD9lFFwpmUKfH5ngHtxPmfpcq0XKJP7jDu35o5CUn6umW4JNpE1pw6EfP%2FV%2BB%2F5nifQQj5cjCIHDeZu&ctl00%24ContentPlaceHolder1%24displaytypeval=" + typeValue + "&ctl00%24ContentPlaceHolder1%24displaystateval=0&ctl00%24ContentPlaceHolder1%24dealaddressval=0&ctl00%24ContentPlaceHolder1%24keyword=&__ASYNCPOST=true&";
+
             OutputStream out = connection.getOutputStream();
             out.write(params.getBytes());
             out.flush();
@@ -904,14 +1071,20 @@ public class NetInfoRecordService {
                 BufferedReader reader = new BufferedReader(
                         new InputStreamReader(connection.getInputStream(), "utf-8"));
                 String line;
+
                 while ((line = reader.readLine()) != null) {
                     sb.append(line);
+                    ;
                 }
                 reader.close();
             }
-            connection.disconnect(); // 5. 断开连接
+            // 5. 断开连接
+            connection.disconnect();
+
             // 处理结果
-            return sb.toString();
+            org.jsoup.nodes.Document doc = Jsoup.parse(sb.toString());
+            Elements elements = doc.select(element);
+            return elements;
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -922,76 +1095,131 @@ public class NetInfoRecordService {
 
     //公共资源交易平台-成都（资产资源）
     public void getNetInfoFromGGZYCD2(Integer days) {
+        logger.info("----公共资源交易平台-成都(资产资源), start---------");
         try {
-            logger.info("----公共资源交易平台-成都(资产资源), start---------");
-            Date date = DateUtils.addDay(DateUtils.now(), -days);//得到前1天
-            //取得页数
-            String pageHtml = getGGZYCDHtml2("1");
-            Document pageDoc = Jsoup.parse(pageHtml);
-            Elements pageElements = pageDoc.select("#Pager a");
-            Integer pageValue = 0;
-            for (Element pageElement : pageElements) {
-                if ("尾页".equals(pageElement.childNodes().get(0).toString())) {
-                    String pageHref = pageElement.attributes().get("href");
-                    //包含总页码的字符串
-                    String pageTotalStr = pageHref.substring(pageHref.indexOf(","), pageHref.length() - 1);
-                    String regEx = "[^0-9]";
-                    Pattern p = Pattern.compile(regEx);
-                    Matcher m = p.matcher(pageTotalStr);
-                    String pageValueStr = m.replaceAll("").trim();
-                    if (StringUtils.isNotEmpty(pageValueStr)) {
-                        pageValue = Integer.valueOf(pageValueStr);
+            Date date = getInstanceDate(days);//得到前1天
+
+            String[] needContentType = new String[]{"结果公告"};
+            List<String> needTypes = Arrays.asList(needContentType);
+
+            String urlInfo = "https://www.cdggzy.com/site/AssetResource/DealNoticeList.aspx";
+            //类型
+            Elements typeEelements = getContent(urlInfo, ".optionlist", "");
+            Elements typeDivs = typeEelements.get(0).select("div");
+            for (Element typeDiv : typeDivs) {
+                String typeName = typeDiv.childNodes().get(0).toString().trim();
+                if (needTypes.contains(typeName)) {
+                    String typeValue = typeDiv.attributes().get("data-value");
+                    //取得页数
+                    Elements pageElements = getGGZYCDHtml2("#Pager a", "", typeValue);
+                    Integer pageValue = 0;
+                    for (Element pageElement : pageElements) {
+                        if ("尾页".equals(pageElement.childNodes().get(0).toString())) {
+                            String pageHref = pageElement.attributes().get("href");
+                            //包含总页码的字符串
+                            String pageTotalStr = pageHref.substring(pageHref.indexOf(","), pageHref.length() - 1);
+                            String regEx = "[^0-9]";
+                            Pattern p = Pattern.compile(regEx);
+                            Matcher m = p.matcher(pageTotalStr);
+                            String pageValueStr = m.replaceAll("").trim();
+                            if (StringUtils.isNotEmpty(pageValueStr)) {
+                                pageValue = Integer.valueOf(pageValueStr);
+                            }
+                        }
+                    }
+                    if (pageValue > 1) {
+                        circ:
+                        for (int i = 1; i <= pageValue; i++) {
+                            //内容信息
+                            Elements elements = getGGZYCDHtml2(".row.contentitem", String.valueOf(i), typeValue);
+                            for (Element item : elements) {
+                                Elements publishtimeElement = item.select(".publishtime");
+                                String publishtimeStr = publishtimeElement.get(0).childNodes().get(0).toString().substring(1).trim();
+                                Date publishtime = DateUtils.parse(publishtimeStr);
+                                if (publishtime == null) continue;
+                                if (publishtime.compareTo(date) < 0) break circ;
+
+                                Elements addressElement = item.select(".col-xs-1");
+                                String address = addressElement.get(0).childNodes().get(0).toString();
+                                String titleStr = item.select("a").get(0).childNodes().get(0).toString();
+                                String link = item.select("a").get(0).attributes().get("href");
+
+                                Elements tableElementHrefs = getContent(link, ".noticecontent", "");
+                                if (tableElementHrefs.size() <= 0) {
+                                    continue;
+                                }
+                                Elements tableElements = tableElementHrefs.select("table");
+                                if (tableElements == null || tableElements.size() == 0) continue;
+                                Elements tdElements = null;
+                                if (tableElements.size() > 1) {
+                                    tdElements = tableElements.get(1).select("tr");
+                                } else {
+                                    tdElements = tableElements.get(0).select("tr");
+                                }
+                                Integer length = tdElements.get(0).select("th").size() != 0 ? tdElements.get(0).select("th").size() : tdElements.get(0).select("tb").size();
+                                //获取字段名称
+                                for (int k = 0; k < tdElements.size(); k++) {
+                                    Elements select = tdElements.get(k).select("td");
+                                    if (select.size() == 0) continue;
+                                    List<String> fieldValues = Lists.newArrayList();
+                                    for (int j = 0; j < length; j++) {
+                                        try {
+                                            String fieldValue = checkNull(select, j);
+                                            fieldValues.add(publicService.delHtmlTags(fieldValue));
+                                        } catch (Exception e) {
+                                        }
+                                    }
+                                    NetInfoRecord netInfoRecord = new NetInfoRecord();
+                                    netInfoRecord.setProvince("四川");
+                                    netInfoRecord.setCity("成都");
+                                    netInfoRecord.setType(typeName);
+                                    netInfoRecord.setSourceSiteUrl(link);
+                                    netInfoRecord.setBeginTime(publishtime);
+                                    netInfoRecord.setEndTime(publishtime);
+                                    netInfoRecord.setTitle(titleStr.replaceAll("\n", ""));
+                                    netInfoRecord.setSourceSiteName("公共资源交易平台-成都");
+                                    StringBuilder content = new StringBuilder();
+                                    for (int m = 0; m < fieldValues.size(); m++) {
+                                        content.append(fieldValues.get(m) + "；");
+                                    }
+
+                                    content.append("发布时间：" + publishtimeStr + "；");
+                                    content.append("地址：" + address.replaceAll("\n", "").substring(1, address.length() - 2) + "；");
+                                    netInfoRecord.setContent(content.toString());
+                                    netInfoRecordDao.addInfo(netInfoRecord);
+                                }
+
+                            }
+                        }
                     }
                 }
             }
-            if (pageValue > 1) {
-                circ:
-                for (int i = 1; i <= pageValue; i++) {
-                    //内容信息
-                    String html = getGGZYCDHtml2(String.valueOf(i));
-                    Document itemDoc = Jsoup.parse(html);
-                    Elements elements = itemDoc.select(".row.contentitem");
-                    for (Element item : elements) {
-                        Elements publishtimeElement = item.select(".publishtime");
-                        String publishtimeStr = publishtimeElement.get(0).childNodes().get(0).toString().substring(1).trim();
-                        Date publishtime = DateUtils.parse(publishtimeStr);
-                        if (publishtime == null) continue;
-                        if (publishtime.compareTo(date) < 0) return;//一旦无效直接返回
-                        Elements addressElement = item.select(".col-xs-1");
-                        String address = addressElement.get(0).childNodes().get(0).toString();
-                        String titleStr = item.select("a").get(0).childNodes().get(0).toString();
-                        String link = item.select("a").get(0).attributes().get("href");
-                        String title = String.format("%s%s[%s]", address, titleStr, DateUtils.getTime(DateUtils.now())).replaceAll("\n", "");
-                        NetInfoRecord netInfoRecord = new NetInfoRecord();
-                        netInfoRecord.setProvince("四川");
-                        netInfoRecord.setCity("成都");
-                        netInfoRecord.setType("资产资源");
-                        netInfoRecord.setSourceSiteUrl(link);
-                        netInfoRecord.setBeginTime(publishtime);
-                        netInfoRecord.setEndTime(publishtime);
-                        netInfoRecord.setTitle(title);
-                        netInfoRecord.setContent(netInfoRecord.getTitle());
-                        netInfoRecord.setSourceSiteName("公共资源交易平台-成都");
-                        netInfoRecord.setCreator("admin");
-                        netInfoRecordDao.addInfo(netInfoRecord);
-                    }
-                }
-            }
+            logger.info("----公共资源交易平台-成都(资产资源), end---------");
         } catch (Exception e) {
-            logger.info("----公共资源交易平台-成都(资产资源), error---------" + e.getMessage(), e);
+            e.printStackTrace();
         }
 
     }
 
-    public String getGGZYCDHtml2(String pageValue) {
+    public Elements getGGZYCDHtml2(String element, String pageValue, String typeValue) {
         try {
-            URL url = new URL("https://www.cdggzy.com/site/AssetResource/DealNoticeList.aspx");// 1. 获取访问地址URL
-            HttpURLConnection connection = (HttpURLConnection) url // 2. 创建HttpURLConnection对象
-                    .openConnection(); /* 3. 设置请求参数等 */
-            connection.setRequestMethod("POST");// 请求方式
-            connection.setDoOutput(true);// 设置是否输出
-            connection.setDoInput(true);// 设置是否读入
-            connection.setUseCaches(false);// 设置是否使用缓存
+            // 1. 获取访问地址URL
+            URL url = new URL("https://www.cdggzy.com/site/AssetResource/DealNoticeList.aspx");
+            // 2. 创建HttpURLConnection对象
+            HttpURLConnection connection = (HttpURLConnection) url
+                    .openConnection();
+            /* 3. 设置请求参数等 */
+            // 请求方式
+            connection.setRequestMethod("POST");
+            // 超时时间
+            //connection.setConnectTimeout(3000);
+            // 设置是否输出
+            connection.setDoOutput(true);
+            // 设置是否读入
+            connection.setDoInput(true);
+            // 设置是否使用缓存
+            connection.setUseCaches(false);
+            // 设置此 HttpURLConnection 实例是否应该自动执行 HTTP 重定向
             connection.setInstanceFollowRedirects(true);
             // 设置使用标准编码格式编码参数的名-值对
             connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
@@ -1001,7 +1229,13 @@ public class NetInfoRecordService {
             connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.132 Safari/537.36");
             // 连接
             connection.connect();
-            String params = "ctl00%24ScriptManager1=ctl00%24ContentPlaceHolder1%24UpdatePanel1%7Cctl00%24ContentPlaceHolder1%24Pager&ctl00%24ContentPlaceHolder1%24displaytypeval=2&ctl00%24ContentPlaceHolder1%24displaystateval=0&ctl00%24ContentPlaceHolder1%24dealaddressval=0&ctl00%24ContentPlaceHolder1%24keyword=&__VIEWSTATE=%2FwEPDwULLTE3NDkwMTQ2NTQPZBYCZg9kFgICAw9kFgQCAw9kFgICBw8WAh4EVGV4dAWPMTx1bCBjbGFzcz0nbmF2IG5hdi1waWxscyBuYXYtanVzdGlmaWVkJz48bGk%2BPGEgaHJlZj0nL2luZGV4LmFzcHgnPummlumhtTwvYT48c3Bhbj48L3NwYW4%2BPC9saT48bGkgIGNsYXNzPSJ1bF9tZW51Ij48YSAgaGVyZj0nIyc%2B5pS%2F5Yqh5YWs5byAPC9hPjx0YWJsZT4gPHRyPjx0ZD48ZGl2PuS4reW%2Fg%2BamguWGtTwvZGl2PjwvdGQ%2BPHRkICAgY2xhc3M9Im1ldW4taXRlbi1ib2R5Ij48ZGl2PjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vc2l0ZS9HZW5lcmFsL0luZGV4LmFzcHg%2FY2lkPTAwMDEwMDAxMDAwMTAwMDQiIHRhcmdldD0iX2JsYW5rIj7kuK3lv4PnroDku4s8L2E%2BPC9kaXY%2BPGRpdj48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvR2VuZXJhbC9JbmRleC5hc3B4P2NpZD0wMDAxMDAwMTAwMDEwMDAyIiB0YXJnZXQ9Il9ibGFuayI%2B6aKG5a%2B85YiG5belPC9hPjwvZGl2PjxkaXY%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL0dlbmVyYWwvSW5kZXguYXNweD9jaWQ9MDAwMTAwMDEwMDAxMDAwMyIgdGFyZ2V0PSJfYmxhbmsiPuiBlOezu%2BaWueW8jzwvYT48L2Rpdj48ZGl2PjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vc2l0ZS9HZW5lcmFsL0luZGV4LmFzcHg%2FY2lkPTAwMDEwMDAxMDAwMTAwMDEiIHRhcmdldD0iX2JsYW5rIj7pg6jpl6jorr7nva48L2E%2BPC9kaXY%2BPC90ZD48L3RyPiA8dHI%2BPHRkPjxkaXY%2B5paw6Ze75Yqo5oCBPC9kaXY%2BPC90ZD48dGQgICBjbGFzcz0ibWV1bi1pdGVuLWJvZHkiPjxkaXY%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL09wZW5Hb3Zlcm5tZW50L0xpc3QuYXNweD9jaWQ9MDAwMTAwMDEwMDAyMDAwMSIgdGFyZ2V0PSJfYmxhbmsiPuW3peS9nOWKqOaAgTwvYT48L2Rpdj48ZGl2PjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vc2l0ZS9PcGVuR292ZXJubWVudC9MaXN0LmFzcHg%2FY2lkPTAwMDEwMDAxMDAwMjAwMDMiIHRhcmdldD0iX2JsYW5rIj7kv6HnlKjkv6Hmga88L2E%2BPC9kaXY%2BPC90ZD48L3RyPiA8dHI%2BPHRkPjxkaXY%2B5pS%2F5Yqh5YWs5byAPC9kaXY%2BPC90ZD48dGQgICBjbGFzcz0ibWV1bi1pdGVuLWJvZHkiPjxkaXY%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL09wZW5Hb3Zlcm5tZW50L0xpc3QuYXNweD9jaWQ9MDAwMTAwMDEwMDAzMDAwMSIgdGFyZ2V0PSJfYmxhbmsiPuWFrOW8gOS%2FnemanDwvYT48L2Rpdj48ZGl2PjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vc2l0ZS9PcGVuR292ZXJubWVudC9MaXN0LmFzcHg%2FY2lkPTAwMDEwMDAxMDAwMzAwMDIiIHRhcmdldD0iX2JsYW5rIj7orqHliJLmgLvnu5M8L2E%2BPC9kaXY%2BPGRpdj48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvT3BlbkdvdmVybm1lbnQvTGlzdC5hc3B4P2NpZD0wMDAxMDAwMTAwMDMwMDAzIiB0YXJnZXQ9Il9ibGFuayI%2B5Lq65LqL5L%2Bh5oGvPC9hPjwvZGl2PjxkaXY%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL09wZW5Hb3Zlcm5tZW50L0xpc3QuYXNweD9jaWQ9MDAwMTAwMDEwMDAzMDAwNCIgdGFyZ2V0PSJfYmxhbmsiPui0ouaUv%2Bi1hOmHkTwvYT48L2Rpdj48ZGl2PjxhIGhyZWY9Imh0dHA6Ly9nay5jaGVuZ2R1Lmdvdi5jbi9vcGVuQXBwbHkvaW5kZXguYWN0aW9uP2NpZD0wMDAxMDAwMTAwMDMwMDA1IiB0YXJnZXQ9Il9ibGFuayI%2B5L6d55Sz6K%2B35YWs5byAPC9hPjwvZGl2PjxkaXY%2BPGEgaHJlZj0iaHR0cDovL2drLmNoZW5nZHUuZ292LmNuL29wZW5TdWdnZXN0aW9uQm94L2luZGV4LmFjdGlvbj9jaWQ9MDAwMTAwMDEwMDAzMDAwNiIgdGFyZ2V0PSJfYmxhbmsiPuWFrOW8gOaEj%2BingeeusTwvYT48L2Rpdj48ZGl2PjxhIGhyZWY9Imh0dHA6Ly9nay5jaGVuZ2R1Lmdvdi5jbi9nb3ZJbmZvUHViL2RlcHQuYWN0aW9uP2NsYXNzSWQ9MDcwMzY2IiB0YXJnZXQ9Il9ibGFuayI%2B5L%2Bh5oGv5YWs5byA5oyH5Y2XPC9hPjwvZGl2PjxkaXY%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL1BsdXMvQWNjZXB0RGF0YS5hc3B4P2NpZD0wMDAxMDAwMTAwMDMwMDA5IiB0YXJnZXQ9Il9ibGFuayI%2B5Yqe5LqL57uf6K6hPC9hPjwvZGl2PjxkaXY%2BPGEgaHJlZj0iaHR0cDovL3d3dy5jaGVuZ2R1Lmdvdi5jbi9jaGVuZ2R1L2NkbWRtL3htZG1faW5kZXguc2h0bWw%2FY2lkPTAwMDEwMDAxMDAwMzAwMDgiIHRhcmdldD0iX2JsYW5rIj7lhZrpo47mlL%2Fpo47ng63nur88L2E%2BPC9kaXY%2BPC90ZD48L3RyPjwvdGFibGU%2BPC9saT48bGkgIGNsYXNzPSJ1bF9tZW51Ij48YSAgaGVyZj0nIyc%2B5Lia5Yqh5Yqe55CGPC9hPjx0YWJsZT4gPHRyPjx0ZD48ZGl2PuWPl%2BeQhuS4muWKoTwvZGl2PjwvdGQ%2BPHRkICAgY2xhc3M9Im1ldW4taXRlbi1ib2R5Ij48ZGl2PjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vY2VudGVyL2luZGV4LmFzcHg%2FY2lkPTAwMDIwMDAxMDAyMDAwMSIgdGFyZ2V0PSJfYmxhbmsiPumhueebrueZu%2BiusDwvYT48L2Rpdj48ZGl2PjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vc2l0ZS9TaXRlU2VhcmNoL25ld2luZGV4LmFzcHg%2FY2lkPTAwMDIwMDAxMDAyMDAwMiIgdGFyZ2V0PSJfYmxhbmsiPuWcuuWcsOafpeivojwvYT48L2Rpdj48L3RkPjwvdHI%2BIDx0cj48dGQ%2BPGRpdj7kuqTmmJPkv6Hmga88L2Rpdj48L3RkPjx0ZCAgIGNsYXNzPSJtZXVuLWl0ZW4tYm9keSI%2BPGRpdj48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvSlNHQy9MaXN0LmFzcHgiIHRhcmdldD0iX2JsYW5rIj7lt6XnqIvlu7rorr48L2E%2BPC9kaXY%2BPGRpdj48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvTm90aWNlL1pGQ0cvTm90aWNlVmVyc2lvbk9uZUxpc3QuYXNweCIgdGFyZ2V0PSJfYmxhbmsiPuaUv%2BW6nOmHh%2Bi0rTwvYT48L2Rpdj48ZGl2PjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vc2l0ZS9MYW5kVHJhZGUvTGFuZExpc3QuYXNweCIgdGFyZ2V0PSJfYmxhbmsiPuWcn%2BWcsOefv%2BadgzwvYT48L2Rpdj48ZGl2PjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vc2l0ZS9Bc3NldFJlc291cmNlL0RlYWxOb3RpY2VMaXN0LmFzcHgiIHRhcmdldD0iX2JsYW5rIj7otYTkuqfotYTmupA8L2E%2BPC9kaXY%2BPC90ZD48L3RyPiA8dHI%2BPHRkPjxkaXY%2B5pu05aSa5Lia5YqhPC9kaXY%2BPC90ZD48dGQgICBjbGFzcz0ibWV1bi1pdGVuLWJvZHkiPjxkaXY%2BPGEgaHJlZj0iaHR0cDovL3d3dy5jZGdnenkuY29tL21hbGwvSW5kZXguYXNweD9jaWQ9MDAwMjAwMDEwMDMwMDAxIiB0YXJnZXQ9Il9ibGFuayI%2B5pS%2F5bqc6YeH6LSt55S15a2Q5ZWG5Z%2BOPC9hPjwvZGl2PjxkaXY%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9Mb2dpbi5hc3B4P2NpZD0wMDAyMDAwMTAwMzAwMDIiIHRhcmdldD0iX2JsYW5rIj7otYTkuqfotYTmupDnvZHkuIrnq57ku7c8L2E%2BPC9kaXY%2BPGRpdj48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvQmFua0JvcnJvdy9JbmRleC5hc3B4P2NpZD0wMDAyMDAwMTAwMzAwMDQiIHRhcmdldD0iX2JsYW5rIj7mlL%2Fph4fkv6HnlKjmi4Xkv53ono3otYQ8L2E%2BPC9kaXY%2BPC90ZD48L3RyPiA8dHI%2BPHRkPjxkaXY%2B5pyN5Yqh5oyH5byVPC9kaXY%2BPC90ZD48dGQgICBjbGFzcz0ibWV1bi1pdGVuLWJvZHkiPjxkaXY%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL1BsdXMvTm90aWNlTGlzdC5hc3B4P2NpZD0wMDAyMDAwMTAwNDAwMDEiIHRhcmdldD0iX2JsYW5rIj7pgJrnn6XlhazlkYo8L2E%2BPC9kaXY%2BPGRpdj48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvSW5zdHJ1Y3Rpb24vSW5kZXguYXNweD9jaWQ9MDAwMjAwMDEwMDQwMDAyIiB0YXJnZXQ9Il9ibGFuayI%2B5Yqe5LqL5oyH5Y2XPC9hPjwvZGl2PjxkaXY%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL1BvbGljaWVzYW5kcmVndWxhdGlvbnMvSW5kZXguYXNweD9jaWQ9MDAwMjAwMDEwMDQwMDAzIiB0YXJnZXQ9Il9ibGFuayI%2B5pS%2F562W5rOV6KeEPC9hPjwvZGl2PjxkaXY%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL0Nhb3p1by9pbmRleC5hc3B4P2NpZD0wMDAyMDAwMTAwNDAwMDQiIHRhcmdldD0iX2JsYW5rIj7mk43kvZzmiYvlhow8L2E%2BPC9kaXY%2BPGRpdj48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvRG93bkNlbnRlci5hc3B4P2NpZD0wMDAyMDAwMTAwNDAwMDUiIHRhcmdldD0iX2JsYW5rIj7kuIvovb3kuJPljLo8L2E%2BPC9kaXY%2BPC90ZD48L3RyPjwvdGFibGU%2BPC9saT48bGkgY2xhc3M9InVsX21lbnUiPjxhIHRhcmdldD0iX2JsYW5rIj7kupLliqjkuqTmtYE8L2E%2BPHVsPiA8bGk%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL0ludGVyYWN0aW9uL0ludGVyYWN0aW9uTGlzdE5ldzEuYXNweCIgdGFyZ2V0PSJfYmxhbmsiPuS4u%2BS7u%2BS%2FoeeusTwvYT48L2xpPiA8bGk%2BPGEgaHJlZj0iaHR0cDovLzIwMTMuY2RnZ3p5LmNvbS9hcHAxL3R3by93amRjLmpzcD9jaWQ9MDAwMTAwMDIwMDAyIiB0YXJnZXQ9Il9ibGFuayI%2B6LCD5p%2Bl5b6B6ZuGPC9hPjwvbGk%2BIDxsaT48YSBocmVmPSJodHRwOi8vd2VpYm8uY29tL3UvMzk3MzMzODgzNiMhL3UvMzk3MzMzODgzNj9pc19ob3Q9MT9jaWQ9MDAwMTAwMDIwMDAzIiB0YXJnZXQ9Il9ibGFuayI%2B5paw5rWq5b6u5Y2aPC9hPjwvbGk%2BPC91bD48L2xpPjxsaSBjbGFzcz0idWxfbWVudSI%2BPGEgdGFyZ2V0PSJfYmxhbmsiPuWIhuS4reW%2FgzwvYT48dWw%2BIDxsaT48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL2xvbmdxdWFueWk%2FY2lkPTAwMDEwMDAzMDAwMyIgdGFyZ2V0PSJfYmxhbmsiPum%2Bmeaziempv%2BWMujwvYT48L2xpPiA8bGk%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9xaW5nYmFpamlhbmc%2FY2lkPTAwMDEwMDAzMDAwMyIgdGFyZ2V0PSJfYmxhbmsiPumdkueZveaxn%2BWMujwvYT48L2xpPiA8bGk%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS94aW5kdT9jaWQ9MDAwMTAwMDMwMDAzIiB0YXJnZXQ9Il9ibGFuayI%2B5paw6YO95Yy6PC9hPjwvbGk%2BIDxsaT48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3dlbmppYW5nP2NpZD0wMDAxMDAwMzAwMDMiIHRhcmdldD0iX2JsYW5rIj7muKnmsZ%2FljLo8L2E%2BPC9saT4gPGxpPjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vc2h1YW5nbGl1P2NpZD0wMDAxMDAwMzAwMDMiIHRhcmdldD0iX2JsYW5rIj7lj4zmtYHljLo8L2E%2BPC9saT4gPGxpPjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vcGlkdT9jaWQ9MDAwMTAwMDMwMDAzIiB0YXJnZXQ9Il9ibGFuayI%2B6YOr6YO95Yy6PC9hPjwvbGk%2BIDxsaT48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL2ppYW55YW5nP2NpZD0wMDAxMDAwMzAwMDMiIHRhcmdldD0iX2JsYW5rIj7nroDpmLPluII8L2E%2BPC9saT4gPGxpPjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vZHVqaWFuZ3lhbj9jaWQ9MDAwMTAwMDMwMDAzIiB0YXJnZXQ9Il9ibGFuayI%2B6YO95rGf5aCw5biCPC9hPjwvbGk%2BIDxsaT48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3Blbmd6aG91P2NpZD0wMDAxMDAwMzAwMDMiIHRhcmdldD0iX2JsYW5rIj7lva3lt57luII8L2E%2BPC9saT4gPGxpPjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vcWlvbmdsYWk%2FY2lkPTAwMDEwMDAzMDAwMyIgdGFyZ2V0PSJfYmxhbmsiPumCm%2BW0g%2BW4gjwvYT48L2xpPiA8bGk%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9jaG9uZ3pob3U%2FY2lkPTAwMDEwMDAzMDAwMyIgdGFyZ2V0PSJfYmxhbmsiPuW0h%2BW3nuW4gjwvYT48L2xpPiA8bGk%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9qaW5ndGFuZz9jaWQ9MDAwMTAwMDMwMDAzIiB0YXJnZXQ9Il9ibGFuayI%2B6YeR5aCC5Y6%2FPC9hPjwvbGk%2BIDxsaT48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3hpbmppbj9jaWQ9MDAwMTAwMDMwMDAzIiB0YXJnZXQ9Il9ibGFuayI%2B5paw5rSl5Y6%2FPC9hPjwvbGk%2BIDxsaT48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL2RheWk%2FY2lkPTAwMDEwMDAzMDAwMyIgdGFyZ2V0PSJfYmxhbmsiPuWkp%2BmCkeWOvzwvYT48L2xpPiA8bGk%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9wdWppYW5nP2NpZD0wMDAxMDAwMzAwMDMiIHRhcmdldD0iX2JsYW5rIj7okrLmsZ%2Fljr88L2E%2BPC9saT48L3VsPjwvbGk%2BIDwvdWw%2BZAIHD2QWBAIDDxYCHgtfIUl0ZW1Db3VudAIQFiBmD2QWAmYPFQIGNTEwMTAxCeW4guacrOe6p2QCAQ9kFgJmDxUCBjUxMDExMgzpvpnms4npqb%2FljLpkAgIPZBYCZg8VAgY1MTAxMTMM6Z2S55m95rGf5Yy6ZAIDD2QWAmYPFQIGNTEwMTE0CeaWsOmDveWMumQCBA9kFgJmDxUCBjUxMDExNQnmuKnmsZ%2FljLpkAgUPZBYCZg8VAgY1MTAxMTYJ5Y%2BM5rWB5Yy6ZAIGD2QWAmYPFQIGNTEwMTg1CeeugOmYs%2BW4gmQCBw9kFgJmDxUCBjUxMDE4MQzpg73msZ%2FloLDluIJkAggPZBYCZg8VAgY1MTAxODIJ5b2t5bee5biCZAIJD2QWAmYPFQIGNTEwMTgzCemCm%2BW0g%2BW4gmQCCg9kFgJmDxUCBjUxMDE4NAnltIflt57luIJkAgsPZBYCZg8VAgY1MTAxMjQJ6YOr6YO95Yy6ZAIMD2QWAmYPFQIGNTEwMTIxCemHkeWgguWOv2QCDQ9kFgJmDxUCBjUxMDEzMgnmlrDmtKXljr9kAg4PZBYCZg8VAgY1MTAxMjkJ5aSn6YKR5Y6%2FZAIPD2QWAmYPFQIGNTEwMTMxCeiSsuaxn%2BWOv2QCBg9kFgJmD2QWBgIDDw8WAh8ABQY4MC8zNTVkZAIJDxYCHwECChYWZg9kFgZmDxUBCeW0h%2BW3nuW4gmQCAQ8PFgIeC05hdmlnYXRlVXJsBWRodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvQXNzZXRSZXNvdXJjZS9EZWFsTm90aWNlQ29udGVudC5hc3B4P2lkPTJEQzNGNUZBMDEwRDQ3RkFBMEJFOTBBOTM3NjRBOEUzZBYCZg8VAmjltIflt57luILlm73mnInotYTkuqfmipXotYTnu4%2FokKXmnInpmZDotKPku7vlhazlj7jotYTkuqflh7rnp5%2FkuqTmmJPnu5PmnpzlhazlkYrvvIgyMDE55bm0MDTmnIgyNOaXpe%2B8iQBkAgIPFQIKMjAxOS0wNC0yNCg8ZGl2IGNsYXNzPSJlbnRlcmluZyI%2BJm5ic3A7Jm5ic3A7PC9kaXY%2BZAIBD2QWBmYPFQEM5aSp5bqc5paw5Yy6ZAIBDw8WAh8CBWRodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvQXNzZXRSZXNvdXJjZS9EZWFsTm90aWNlQ29udGVudC5hc3B4P2lkPTFiNmYzZGM1NTY0OTQ1ZWViY2M1NzZmY2JlMGNjMGYzZBYCZg8VAlnmiJDpg73lpKnmipXkuqfkuJrmipXotYTmnInpmZDlhazlj7jotYTkuqflh7rnp5%2Fnq57ku7fnu5PmnpzlhaznpLrvvIgyMDE55bm0MDTmnIgyM%2BaXpe%2B8iQBkAgIPFQIKMjAxOS0wNC0yMyg8ZGl2IGNsYXNzPSJlbnRlcmluZyI%2BJm5ic3A7Jm5ic3A7PC9kaXY%2BZAICD2QWBmYPFQEJ5biC5pys57qnZAIBDw8WAh8CBWRodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvQXNzZXRSZXNvdXJjZS9EZWFsTm90aWNlQ29udGVudC5hc3B4P2lkPTQ5ZDEzOTRlMjJkYTQ2ZjA4NWQwY2MxOGFkODRkMjU4ZBYCZg8VAnHmiJDpg73ln47kuaHllYbotLjnianmtYHlj5HlsZXmipXotYTvvIjpm4blm6LvvInmnInpmZDlhazlj7jotYTkuqflh7rnp5%2Fnq57ku7fnu5PmnpzlhaznpLrvvIgyMDE55bm0MDTmnIgyM%2BaXpe%2B8iQBkAgIPFQIKMjAxOS0wNC0yMyg8ZGl2IGNsYXNzPSJlbnRlcmluZyI%2BJm5ic3A7Jm5ic3A7PC9kaXY%2BZAIDD2QWBmYPFQEJ5b2t5bee5biCZAIBDw8WAh8CBWRodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvQXNzZXRSZXNvdXJjZS9EZWFsTm90aWNlQ29udGVudC5hc3B4P2lkPTcwM0IwRjg3OUQzRDQwNEJCNUUzNjhDMDQzMDJGQ0ZDZBYCZg8VAjPlva3lt57luILmiLflpJbljYHkuozlnZflub%2FlkYrkvY3mi43ljZbnu5PmnpzlhaznpLoDKDEpZAICDxUCCjIwMTktMDQtMjIoPGRpdiBjbGFzcz0iZW50ZXJpbmciPiZuYnNwOyZuYnNwOzwvZGl2PmQCBA9kFgZmDxUBCeeugOmYs%2BW4gmQCAQ8PFgIfAgVkaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL0Fzc2V0UmVzb3VyY2UvRGVhbE5vdGljZUNvbnRlbnQuYXNweD9pZD02Q0E2M0Y2OUY1ODA0RTgxOTZCOURCMTJCNzRGNEYzMmQWAmYPFQJW566A6Ziz5biC5L6b6ZSA5ZCI5L2c56S%2B6IGU5ZCI56S%2B6LWE5Lqn5Ye656ef5Lqk5piT57uT5p6c5YWs5ZGK77yIMjAxOeW5tDA05pyIMjLml6XvvIkAZAICDxUCCjIwMTktMDQtMjIoPGRpdiBjbGFzcz0iZW50ZXJpbmciPiZuYnNwOyZuYnNwOzwvZGl2PmQCBQ9kFgZmDxUBCemHkeeJm%2BWMumQCAQ8PFgIfAgVkaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL0Fzc2V0UmVzb3VyY2UvRGVhbE5vdGljZUNvbnRlbnQuYXNweD9pZD0wNzhlMzU4MmEzODQ0YTc4OGRlNjkwZjIwMmYwZDQ0OGQWAmYPFQJu5oiQ6YO95biC6YeR54mb5Zu95pyJ6LWE5Lqn5oqV6LWE57uP6JCl6ZuG5Zui5pyJ6ZmQ5YWs5Y%2B46LWE5Lqn5Ye656ef56ue5Lu357uT5p6c5YWs56S677yIMjAxOeW5tDA05pyIMjLml6XvvIkAZAICDxUCCjIwMTktMDQtMjIoPGRpdiBjbGFzcz0iZW50ZXJpbmciPiZuYnNwOyZuYnNwOzwvZGl2PmQCBg9kFgZmDxUBCemdkue%2BiuWMumQCAQ8PFgIfAgVkaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL0Fzc2V0UmVzb3VyY2UvRGVhbE5vdGljZUNvbnRlbnQuYXNweD9pZD0xMmI5MjgwNGQxZWU0ZDIyOTM4ODZiNTc5MWI1NGM1ZGQWAmYPFQJZ5oiQ6YO95biC5oi%2F5Zyw5Lqn5biC5Zy65pyN5Yqh5Lit5b%2BD6LWE5Lqn5aSE572u56ue5Lu357uT5p6c5YWs56S677yIMjAxOeW5tDA05pyIMjLml6XvvIkAZAICDxUCCjIwMTktMDQtMjIoPGRpdiBjbGFzcz0iZW50ZXJpbmciPiZuYnNwOyZuYnNwOzwvZGl2PmQCBw9kFgZmDxUBCeWPjOa1geWMumQCAQ8PFgIfAgVkaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL0Fzc2V0UmVzb3VyY2UvRGVhbE5vdGljZUNvbnRlbnQuYXNweD9pZD1GM0IzMDg1MURBRjU0NEM5OTQ3RjI1NUY4RkU0RTNENWQWAmYPFQJT5Y%2BM5rWB5Yy65YWs5YW06KGX6YGT5Yqe5LqL5aSE6LWE5Lqn5Ye656ef5Lqk5piT57uT5p6c5YWs5ZGK77yIMjAxOeW5tDA05pyIMTnml6XvvIkAZAICDxUCCjIwMTktMDQtMTkoPGRpdiBjbGFzcz0iZW50ZXJpbmciPiZuYnNwOyZuYnNwOzwvZGl2PmQCCA9kFgZmDxUBCea4qeaxn%2BWMumQCAQ8PFgIfAgVkaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL0Fzc2V0UmVzb3VyY2UvRGVhbE5vdGljZUNvbnRlbnQuYXNweD9pZD00RDQ5QjVFNzg0QUE0ODJEQjNDQTcxOEVDRkVGMTlEN2QWAmYPFQJT5oiQ6YO95Lmd6IGU5oqV6LWE5pyJ6ZmQ5YWs5Y%2B46LWE5Lqn5aSE572u5Lqk5piT57uT5p6c5YWs5ZGK77yIMjAxOeW5tDA05pyIMTnml6XvvIkAZAICDxUCCjIwMTktMDQtMTkoPGRpdiBjbGFzcz0iZW50ZXJpbmciPiZuYnNwOyZuYnNwOzwvZGl2PmQCCQ9kFgZmDxUBCemdkue%2BiuWMumQCAQ8PFgIfAgVkaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL0Fzc2V0UmVzb3VyY2UvRGVhbE5vdGljZUNvbnRlbnQuYXNweD9pZD1jY2E3Nzg1Y2M3NTY0Y2MyYjYyZmEwMjE4NmIxZjFmMGQWAmYPFQJW5oiQ6YO95biC5YWs5a6J5bGA5Lqk6YCa566h55CG5bGA6LWE5Lqn5aSE572u56ue5Lu357uT5p6c5YWs56S677yIMjAxOeW5tDA05pyIMTnml6XvvIkAZAICDxUCCjIwMTktMDQtMTkoPGRpdiBjbGFzcz0iZW50ZXJpbmciPiZuYnNwOyZuYnNwOzwvZGl2PmQCCg9kFgICAQ8PFgIeB1Zpc2libGVoZGQCCw8PFgYeCFBhZ2VTaXplAgoeEEN1cnJlbnRQYWdlSW5kZXgCUB4LUmVjb3JkY291bnQC2xtkZGS8D4BeyxFmqACvgjztSveY0OTbAg%3D%3D&__VIEWSTATEGENERATOR=78551C4F&__EVENTTARGET=ctl00%24ContentPlaceHolder1%24Pager&__EVENTARGUMENT="+pageValue+"&__EVENTVALIDATION=%2FwEdAAhXJMho3X3OoI4xem2%2BadWdZXbjphD4J6Ci0P2UUXCmZQp8fmeAe3E%2BZ%2BlyrRcok%2FuMO7fmjkJSfq6Zbgk2kTWnZi7H72kkAvPqROrOG28FXID8g%2FxeCzDZJOPgpGV4zViznYSIw3B963y%2FxzaOhgoHdty0mXvz7f%2B9YtBAL8kV3V8D0OXO11wLZLxxxFSg1CcwhJp%2B&__ASYNCPOST=true&";
+            /* 4. 处理输入输出 */
+            // 写入参数到请求中
+            if (StringUtils.isEmpty(pageValue))
+                pageValue = "1";
+            if (StringUtils.isEmpty(typeValue))
+                typeValue = "";
+            String params = "ctl00%24ScriptManager1=ctl00%24ContentPlaceHolder1%24UpdatePanel1%7Cctl00%24ContentPlaceHolder1%24Pager&ctl00%24ContentPlaceHolder1%24displaytypeval=" + typeValue + "&ctl00%24ContentPlaceHolder1%24displaystateval=0&ctl00%24ContentPlaceHolder1%24dealaddressval=0&ctl00%24ContentPlaceHolder1%24keyword=&__VIEWSTATE=%2FwEPDwUKMTE2OTUxMzc2Nw9kFgJmD2QWAgIDD2QWBAIDD2QWAgIHDxYCHgRUZXh0BY8xPHVsIGNsYXNzPSduYXYgbmF2LXBpbGxzIG5hdi1qdXN0aWZpZWQnPjxsaT48YSBocmVmPScvaW5kZXguYXNweCc%2B6aaW6aG1PC9hPjxzcGFuPjwvc3Bhbj48L2xpPjxsaSAgY2xhc3M9InVsX21lbnUiPjxhICBoZXJmPScjJz7mlL%2FliqHlhazlvIA8L2E%2BPHRhYmxlPiA8dHI%2BPHRkPjxkaXY%2B5Lit5b%2BD5qaC5Ya1PC9kaXY%2BPC90ZD48dGQgICBjbGFzcz0ibWV1bi1pdGVuLWJvZHkiPjxkaXY%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL0dlbmVyYWwvSW5kZXguYXNweD9jaWQ9MDAwMTAwMDEwMDAxMDAwNCIgdGFyZ2V0PSJfYmxhbmsiPuS4reW%2Fg%2BeugOS7izwvYT48L2Rpdj48ZGl2PjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vc2l0ZS9HZW5lcmFsL0luZGV4LmFzcHg%2FY2lkPTAwMDEwMDAxMDAwMTAwMDIiIHRhcmdldD0iX2JsYW5rIj7pooblr7zliIblt6U8L2E%2BPC9kaXY%2BPGRpdj48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvR2VuZXJhbC9JbmRleC5hc3B4P2NpZD0wMDAxMDAwMTAwMDEwMDAzIiB0YXJnZXQ9Il9ibGFuayI%2B6IGU57O75pa55byPPC9hPjwvZGl2PjxkaXY%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL0dlbmVyYWwvSW5kZXguYXNweD9jaWQ9MDAwMTAwMDEwMDAxMDAwMSIgdGFyZ2V0PSJfYmxhbmsiPumDqOmXqOiuvue9rjwvYT48L2Rpdj48L3RkPjwvdHI%2BIDx0cj48dGQ%2BPGRpdj7mlrDpl7vliqjmgIE8L2Rpdj48L3RkPjx0ZCAgIGNsYXNzPSJtZXVuLWl0ZW4tYm9keSI%2BPGRpdj48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvT3BlbkdvdmVybm1lbnQvTGlzdC5hc3B4P2NpZD0wMDAxMDAwMTAwMDIwMDAxIiB0YXJnZXQ9Il9ibGFuayI%2B5bel5L2c5Yqo5oCBPC9hPjwvZGl2PjxkaXY%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL09wZW5Hb3Zlcm5tZW50L0xpc3QuYXNweD9jaWQ9MDAwMTAwMDEwMDAyMDAwMyIgdGFyZ2V0PSJfYmxhbmsiPuS%2FoeeUqOS%2FoeaBrzwvYT48L2Rpdj48L3RkPjwvdHI%2BIDx0cj48dGQ%2BPGRpdj7mlL%2FliqHlhazlvIA8L2Rpdj48L3RkPjx0ZCAgIGNsYXNzPSJtZXVuLWl0ZW4tYm9keSI%2BPGRpdj48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvT3BlbkdvdmVybm1lbnQvTGlzdC5hc3B4P2NpZD0wMDAxMDAwMTAwMDMwMDAxIiB0YXJnZXQ9Il9ibGFuayI%2B5YWs5byA5L%2Bd6ZqcPC9hPjwvZGl2PjxkaXY%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL09wZW5Hb3Zlcm5tZW50L0xpc3QuYXNweD9jaWQ9MDAwMTAwMDEwMDAzMDAwMiIgdGFyZ2V0PSJfYmxhbmsiPuiuoeWIkuaAu%2Be7kzwvYT48L2Rpdj48ZGl2PjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vc2l0ZS9PcGVuR292ZXJubWVudC9MaXN0LmFzcHg%2FY2lkPTAwMDEwMDAxMDAwMzAwMDMiIHRhcmdldD0iX2JsYW5rIj7kurrkuovkv6Hmga88L2E%2BPC9kaXY%2BPGRpdj48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvT3BlbkdvdmVybm1lbnQvTGlzdC5hc3B4P2NpZD0wMDAxMDAwMTAwMDMwMDA0IiB0YXJnZXQ9Il9ibGFuayI%2B6LSi5pS%2F6LWE6YeRPC9hPjwvZGl2PjxkaXY%2BPGEgaHJlZj0iaHR0cDovL2drLmNoZW5nZHUuZ292LmNuL29wZW5BcHBseS9pbmRleC5hY3Rpb24%2FY2lkPTAwMDEwMDAxMDAwMzAwMDUiIHRhcmdldD0iX2JsYW5rIj7kvp3nlLPor7flhazlvIA8L2E%2BPC9kaXY%2BPGRpdj48YSBocmVmPSJodHRwOi8vZ2suY2hlbmdkdS5nb3YuY24vb3BlblN1Z2dlc3Rpb25Cb3gvaW5kZXguYWN0aW9uP2NpZD0wMDAxMDAwMTAwMDMwMDA2IiB0YXJnZXQ9Il9ibGFuayI%2B5YWs5byA5oSP6KeB566xPC9hPjwvZGl2PjxkaXY%2BPGEgaHJlZj0iaHR0cDovL2drLmNoZW5nZHUuZ292LmNuL2dvdkluZm9QdWIvZGVwdC5hY3Rpb24%2FY2xhc3NJZD0wNzAzNjYiIHRhcmdldD0iX2JsYW5rIj7kv6Hmga%2FlhazlvIDmjIfljZc8L2E%2BPC9kaXY%2BPGRpdj48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvUGx1cy9BY2NlcHREYXRhLmFzcHg%2FY2lkPTAwMDEwMDAxMDAwMzAwMDkiIHRhcmdldD0iX2JsYW5rIj7lip7kuovnu5%2ForqE8L2E%2BPC9kaXY%2BPGRpdj48YSBocmVmPSJodHRwOi8vd3d3LmNoZW5nZHUuZ292LmNuL2NoZW5nZHUvY2RtZG0veG1kbV9pbmRleC5zaHRtbD9jaWQ9MDAwMTAwMDEwMDAzMDAwOCIgdGFyZ2V0PSJfYmxhbmsiPuWFmumjjuaUv%2BmjjueDree6vzwvYT48L2Rpdj48L3RkPjwvdHI%2BPC90YWJsZT48L2xpPjxsaSAgY2xhc3M9InVsX21lbnUiPjxhICBoZXJmPScjJz7kuJrliqHlip7nkIY8L2E%2BPHRhYmxlPiA8dHI%2BPHRkPjxkaXY%2B5Y%2BX55CG5Lia5YqhPC9kaXY%2BPC90ZD48dGQgICBjbGFzcz0ibWV1bi1pdGVuLWJvZHkiPjxkaXY%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9jZW50ZXIvaW5kZXguYXNweD9jaWQ9MDAwMjAwMDEwMDIwMDAxIiB0YXJnZXQ9Il9ibGFuayI%2B6aG555uu55m76K6wPC9hPjwvZGl2PjxkaXY%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL1NpdGVTZWFyY2gvbmV3aW5kZXguYXNweD9jaWQ9MDAwMjAwMDEwMDIwMDAyIiB0YXJnZXQ9Il9ibGFuayI%2B5Zy65Zyw5p%2Bl6K%2BiPC9hPjwvZGl2PjwvdGQ%2BPC90cj4gPHRyPjx0ZD48ZGl2PuS6pOaYk%2BS%2FoeaBrzwvZGl2PjwvdGQ%2BPHRkICAgY2xhc3M9Im1ldW4taXRlbi1ib2R5Ij48ZGl2PjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vc2l0ZS9KU0dDL0xpc3QuYXNweCIgdGFyZ2V0PSJfYmxhbmsiPuW3peeoi%2BW7uuiuvjwvYT48L2Rpdj48ZGl2PjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vc2l0ZS9Ob3RpY2UvWkZDRy9Ob3RpY2VWZXJzaW9uT25lTGlzdC5hc3B4IiB0YXJnZXQ9Il9ibGFuayI%2B5pS%2F5bqc6YeH6LStPC9hPjwvZGl2PjxkaXY%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL0xhbmRUcmFkZS9MYW5kTGlzdC5hc3B4IiB0YXJnZXQ9Il9ibGFuayI%2B5Zyf5Zyw55%2B%2F5p2DPC9hPjwvZGl2PjxkaXY%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL0Fzc2V0UmVzb3VyY2UvRGVhbE5vdGljZUxpc3QuYXNweCIgdGFyZ2V0PSJfYmxhbmsiPui1hOS6p%2Bi1hOa6kDwvYT48L2Rpdj48L3RkPjwvdHI%2BIDx0cj48dGQ%2BPGRpdj7mm7TlpJrkuJrliqE8L2Rpdj48L3RkPjx0ZCAgIGNsYXNzPSJtZXVuLWl0ZW4tYm9keSI%2BPGRpdj48YSBocmVmPSJodHRwOi8vd3d3LmNkZ2d6eS5jb20vbWFsbC9JbmRleC5hc3B4P2NpZD0wMDAyMDAwMTAwMzAwMDEiIHRhcmdldD0iX2JsYW5rIj7mlL%2Flupzph4fotK3nlLXlrZDllYbln448L2E%2BPC9kaXY%2BPGRpdj48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL0xvZ2luLmFzcHg%2FY2lkPTAwMDIwMDAxMDAzMDAwMiIgdGFyZ2V0PSJfYmxhbmsiPui1hOS6p%2Bi1hOa6kOe9keS4iuernuS7tzwvYT48L2Rpdj48ZGl2PjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vc2l0ZS9CYW5rQm9ycm93L0luZGV4LmFzcHg%2FY2lkPTAwMDIwMDAxMDAzMDAwNCIgdGFyZ2V0PSJfYmxhbmsiPuaUv%2BmHh%2BS%2FoeeUqOaLheS%2Fneiejei1hDwvYT48L2Rpdj48L3RkPjwvdHI%2BIDx0cj48dGQ%2BPGRpdj7mnI3liqHmjIflvJU8L2Rpdj48L3RkPjx0ZCAgIGNsYXNzPSJtZXVuLWl0ZW4tYm9keSI%2BPGRpdj48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvUGx1cy9Ob3RpY2VMaXN0LmFzcHg%2FY2lkPTAwMDIwMDAxMDA0MDAwMSIgdGFyZ2V0PSJfYmxhbmsiPumAmuefpeWFrOWRijwvYT48L2Rpdj48ZGl2PjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vc2l0ZS9JbnN0cnVjdGlvbi9JbmRleC5hc3B4P2NpZD0wMDAyMDAwMTAwNDAwMDIiIHRhcmdldD0iX2JsYW5rIj7lip7kuovmjIfljZc8L2E%2BPC9kaXY%2BPGRpdj48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvUG9saWNpZXNhbmRyZWd1bGF0aW9ucy9JbmRleC5hc3B4P2NpZD0wMDAyMDAwMTAwNDAwMDMiIHRhcmdldD0iX2JsYW5rIj7mlL%2FnrZbms5Xop4Q8L2E%2BPC9kaXY%2BPGRpdj48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvQ2FvenVvL2luZGV4LmFzcHg%2FY2lkPTAwMDIwMDAxMDA0MDAwNCIgdGFyZ2V0PSJfYmxhbmsiPuaTjeS9nOaJi%2BWGjDwvYT48L2Rpdj48ZGl2PjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vc2l0ZS9Eb3duQ2VudGVyLmFzcHg%2FY2lkPTAwMDIwMDAxMDA0MDAwNSIgdGFyZ2V0PSJfYmxhbmsiPuS4i%2Bi9veS4k%2BWMujwvYT48L2Rpdj48L3RkPjwvdHI%2BPC90YWJsZT48L2xpPjxsaSBjbGFzcz0idWxfbWVudSI%2BPGEgdGFyZ2V0PSJfYmxhbmsiPuS6kuWKqOS6pOa1gTwvYT48dWw%2BIDxsaT48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvSW50ZXJhY3Rpb24vSW50ZXJhY3Rpb25MaXN0TmV3MS5hc3B4IiB0YXJnZXQ9Il9ibGFuayI%2B5Li75Lu75L%2Bh566xPC9hPjwvbGk%2BIDxsaT48YSBocmVmPSJodHRwOi8vMjAxMy5jZGdnenkuY29tL2FwcDEvdHdvL3dqZGMuanNwP2NpZD0wMDAxMDAwMjAwMDIiIHRhcmdldD0iX2JsYW5rIj7osIPmn6XlvoHpm4Y8L2E%2BPC9saT4gPGxpPjxhIGhyZWY9Imh0dHA6Ly93ZWliby5jb20vdS8zOTczMzM4ODM2IyEvdS8zOTczMzM4ODM2P2lzX2hvdD0xP2NpZD0wMDAxMDAwMjAwMDMiIHRhcmdldD0iX2JsYW5rIj7mlrDmtarlvq7ljZo8L2E%2BPC9saT48L3VsPjwvbGk%2BPGxpIGNsYXNzPSJ1bF9tZW51Ij48YSB0YXJnZXQ9Il9ibGFuayI%2B5YiG5Lit5b%2BDPC9hPjx1bD4gPGxpPjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vbG9uZ3F1YW55aT9jaWQ9MDAwMTAwMDMwMDAzIiB0YXJnZXQ9Il9ibGFuayI%2B6b6Z5rOJ6am%2F5Yy6PC9hPjwvbGk%2BIDxsaT48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3FpbmdiYWlqaWFuZz9jaWQ9MDAwMTAwMDMwMDAzIiB0YXJnZXQ9Il9ibGFuayI%2B6Z2S55m95rGf5Yy6PC9hPjwvbGk%2BIDxsaT48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3hpbmR1P2NpZD0wMDAxMDAwMzAwMDMiIHRhcmdldD0iX2JsYW5rIj7mlrDpg73ljLo8L2E%2BPC9saT4gPGxpPjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vd2Vuamlhbmc%2FY2lkPTAwMDEwMDAzMDAwMyIgdGFyZ2V0PSJfYmxhbmsiPua4qeaxn%2BWMujwvYT48L2xpPiA8bGk%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaHVhbmdsaXU%2FY2lkPTAwMDEwMDAzMDAwMyIgdGFyZ2V0PSJfYmxhbmsiPuWPjOa1geWMujwvYT48L2xpPiA8bGk%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9waWR1P2NpZD0wMDAxMDAwMzAwMDMiIHRhcmdldD0iX2JsYW5rIj7pg6vpg73ljLo8L2E%2BPC9saT4gPGxpPjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vamlhbnlhbmc%2FY2lkPTAwMDEwMDAzMDAwMyIgdGFyZ2V0PSJfYmxhbmsiPueugOmYs%2BW4gjwvYT48L2xpPiA8bGk%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9kdWppYW5neWFuP2NpZD0wMDAxMDAwMzAwMDMiIHRhcmdldD0iX2JsYW5rIj7pg73msZ%2FloLDluII8L2E%2BPC9saT4gPGxpPjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vcGVuZ3pob3U%2FY2lkPTAwMDEwMDAzMDAwMyIgdGFyZ2V0PSJfYmxhbmsiPuW9reW3nuW4gjwvYT48L2xpPiA8bGk%2BPGEgaHJlZj0iaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9xaW9uZ2xhaT9jaWQ9MDAwMTAwMDMwMDAzIiB0YXJnZXQ9Il9ibGFuayI%2B6YKb5bSD5biCPC9hPjwvbGk%2BIDxsaT48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL2Nob25nemhvdT9jaWQ9MDAwMTAwMDMwMDAzIiB0YXJnZXQ9Il9ibGFuayI%2B5bSH5bee5biCPC9hPjwvbGk%2BIDxsaT48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL2ppbmd0YW5nP2NpZD0wMDAxMDAwMzAwMDMiIHRhcmdldD0iX2JsYW5rIj7ph5HloILljr88L2E%2BPC9saT4gPGxpPjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20veGluamluP2NpZD0wMDAxMDAwMzAwMDMiIHRhcmdldD0iX2JsYW5rIj7mlrDmtKXljr88L2E%2BPC9saT4gPGxpPjxhIGhyZWY9Imh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vZGF5aT9jaWQ9MDAwMTAwMDMwMDAzIiB0YXJnZXQ9Il9ibGFuayI%2B5aSn6YKR5Y6%2FPC9hPjwvbGk%2BIDxsaT48YSBocmVmPSJodHRwczovL3d3dy5jZGdnenkuY29tL3B1amlhbmc%2FY2lkPTAwMDEwMDAzMDAwMyIgdGFyZ2V0PSJfYmxhbmsiPuiSsuaxn%2BWOvzwvYT48L2xpPjwvdWw%2BPC9saT4gPC91bD5kAgcPZBYEAgcPFgIeC18hSXRlbUNvdW50AhAWIGYPZBYCZg8VAgY1MTAxMDEJ5biC5pys57qnZAIBD2QWAmYPFQIGNTEwMTEyDOm%2Bmeaziempv%2BWMumQCAg9kFgJmDxUCBjUxMDExMwzpnZLnmb3msZ%2FljLpkAgMPZBYCZg8VAgY1MTAxMTQJ5paw6YO95Yy6ZAIED2QWAmYPFQIGNTEwMTE1Cea4qeaxn%2BWMumQCBQ9kFgJmDxUCBjUxMDExNgnlj4zmtYHljLpkAgYPZBYCZg8VAgY1MTAxODUJ566A6Ziz5biCZAIHD2QWAmYPFQIGNTEwMTgxDOmDveaxn%2BWgsOW4gmQCCA9kFgJmDxUCBjUxMDE4Mgnlva3lt57luIJkAgkPZBYCZg8VAgY1MTAxODMJ6YKb5bSD5biCZAIKD2QWAmYPFQIGNTEwMTg0CeW0h%2BW3nuW4gmQCCw9kFgJmDxUCBjUxMDEyNAnpg6vpg73ljLpkAgwPZBYCZg8VAgY1MTAxMjEJ6YeR5aCC5Y6%2FZAIND2QWAmYPFQIGNTEwMTMyCeaWsOa0peWOv2QCDg9kFgJmDxUCBjUxMDEyOQnlpKfpgpHljr9kAg8PZBYCZg8VAgY1MTAxMzEJ6JKy5rGf5Y6%2FZAIND2QWAmYPZBYGAgMPDxYCHwAFBTEvMzExZGQCCQ8WAh8BAgoWFGYPZBYGZg8VAQnph5HniZvljLpkAgEPDxYCHgtOYXZpZ2F0ZVVybAVkaHR0cHM6Ly93d3cuY2RnZ3p5LmNvbS9zaXRlL0Fzc2V0UmVzb3VyY2UvRGVhbE5vdGljZUNvbnRlbnQuYXNweD9pZD1lMGQ0NzcwNWQxZDg0NTUxOWQ0OWU1ZDVkNmU2YWFiNWQWAmYPFQKDAeaIkOmDveW4gumHkeeJm%2BWMuuW4guWcuuebkeedo%2BeuoeeQhuWxgO%2B8iOaIkOmDveW4gumHkeeJm%2BWMuuefpeivhuS6p%2Badg%2BWxgO%2B8iei1hOS6p%2BWkhOe9ruernuS7t%2Be7k%2BaenOWFrOekuu%2B8iDIwMTnlubQwOeaciDA05pel77yJAGQCAg8VAgoyMDE5LTA5LTA0KDxkaXYgY2xhc3M9ImVudGVyaW5nIj4mbmJzcDsmbmJzcDs8L2Rpdj5kAgEPZBYGZg8VAQnluILmnKznuqdkAgEPDxYCHwIFZGh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vc2l0ZS9Bc3NldFJlc291cmNlL0RlYWxOb3RpY2VDb250ZW50LmFzcHg%2FaWQ9OWIwMDhlNmY5OWQxNGU4Y2IxYWY3MjYzZmIyNjRiZjFkFgJmDxUCVuaIkOmDvea2pumUpuWfjuWunuS4muaciemZkOWFrOWPuOi1hOS6p%2BWHuuenn%2BernuS7t%2Be7k%2BaenOWFrOekuu%2B8iDIwMTnlubQwOeaciDA05pel77yJAGQCAg8VAgoyMDE5LTA5LTA0KDxkaXYgY2xhc3M9ImVudGVyaW5nIj4mbmJzcDsmbmJzcDs8L2Rpdj5kAgIPZBYGZg8VAQnluILmnKznuqdkAgEPDxYCHwIFZGh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vc2l0ZS9Bc3NldFJlc291cmNlL0RlYWxOb3RpY2VDb250ZW50LmFzcHg%2FaWQ9NDc1OWNhNDYzYmEwNGNlOTk2MjdjNzNlNTJhYWJkMGZkFgJmDxUCWeaIkOmDveW3peaKlei1hOS6p%2Be7j%2BiQpeaciemZkOWFrOWPuOi1hOS6p%2BWHuuenn%2BernuS7t%2Be7k%2BaenOWFrOekuu%2B8iDIwMTnlubQwOeaciDA05pel77yJAGQCAg8VAgoyMDE5LTA5LTA0KDxkaXYgY2xhc3M9ImVudGVyaW5nIj4mbmJzcDsmbmJzcDs8L2Rpdj5kAgMPZBYGZg8VAQzpvpnms4npqb%2FljLpkAgEPDxYCHwIFZGh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vc2l0ZS9Bc3NldFJlc291cmNlL0RlYWxOb3RpY2VDb250ZW50LmFzcHg%2FaWQ9REVDQzNFNjQ3QkM2NEM1NkJEMzIwNzU3OUU1NzBDNDNkFgJmDxUCaOaIkOmDvee7j%2Ba1juaKgOacr%2BW8gOWPkeWMuuW7uuiuvuWPkeWxleaciemZkOWFrOWPuOi1hOS6p%2BWHuuenn%2BS6pOaYk%2Be7k%2BaenOWFrOWRiu%2B8iDIwMTnlubQwOeaciDA05pel77yJAGQCAg8VAgoyMDE5LTA5LTA0KDxkaXYgY2xhc3M9ImVudGVyaW5nIj4mbmJzcDsmbmJzcDs8L2Rpdj5kAgQPZBYGZg8VAQzpnZLnmb3msZ%2FljLpkAgEPDxYCHwIFZGh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vc2l0ZS9Bc3NldFJlc291cmNlL0RlYWxOb3RpY2VDb250ZW50LmFzcHg%2FaWQ9MzYwMUNEQ0NGNzc3NDdGOTgxRjRBQ0FEMTcyRDI2QUZkFgJmDxUCceaIkOmDveW4gumdkueZveaxn%2BWMuuaWh%2BWMluS9k%2BiCsuWSjOaXhea4uOWxgOi1hOS6p%2BWkhOe9ru%2B8iOesrOS6jOasoe%2B8ieS6pOaYk%2Be7k%2BaenOWFrOWRiu%2B8iDIwMTnlubQwOeaciDA05pel77yJAGQCAg8VAgoyMDE5LTA5LTA0KDxkaXYgY2xhc3M9ImVudGVyaW5nIj4mbmJzcDsmbmJzcDs8L2Rpdj5kAgUPZBYGZg8VAQzpg73msZ%2FloLDluIJkAgEPDxYCHwIFZGh0dHBzOi8vd3d3LmNkZ2d6eS5jb20vc2l0ZS9Bc3NldFJlc291cmNlL0RlYWxOb3RpY2VDb250ZW50LmFzcHg%2FaWQ9MzA0RDAwNENBRDhBNDEwQkI1RkUxRkMxNTQ0REFEOUFkFgJmDxUCcumDveaxn%2BWgsOW4guWcn%2BWcsOWCqOWkh%2BS4reW%2Fg%2BmdkuWfjuWbvemZhemFkuW6l%2BmFjeWll%2BiuvuaWveWPiumFjeWll%2BeUqOaIv%2Bi1hOS6p%2Bi9rOiuqeWFrOW8gOaLjeWNlueahOe7k%2BaenOWFrOWRiioo6YO95rGf5aCw5biC5YWs6LWE5ouN5ZGK44CUMjAxOeOAlTAwMuWPtylkAgIPFQIKMjAxOS0wOS0wMyg8ZGl2IGNsYXNzPSJlbnRlcmluZyI%2BJm5ic3A7Jm5ic3A7PC9kaXY%2BZAIGD2QWBmYPFQEJ6auY5paw5Yy6ZAIBDw8WAh8CBWRodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvQXNzZXRSZXNvdXJjZS9EZWFsTm90aWNlQ29udGVudC5hc3B4P2lkPWRmNmIzOGU0MWY2YzQ4OWViMGRlNjMxMzk1ZTFlNTJlZBYCZg8VAmvmiJDpg73pq5jmlrDmioDmnK%2FkuqfkuJrlvIDlj5HljLrmoYLmuqrooZfpgZPlip7kuovlpITotYTkuqflh7rnp5%2Fnq57ku7fnu5PmnpzlhaznpLrvvIgyMDE55bm0MDnmnIgwM%2BaXpe%2B8iQBkAgIPFQIKMjAxOS0wOS0wMyg8ZGl2IGNsYXNzPSJlbnRlcmluZyI%2BJm5ic3A7Jm5ic3A7PC9kaXY%2BZAIHD2QWBmYPFQEJ6ZSm5rGf5Yy6ZAIBDw8WAh8CBWRodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvQXNzZXRSZXNvdXJjZS9EZWFsTm90aWNlQ29udGVudC5hc3B4P2lkPTE0Njg5YTM3MGI4NDQwNjc5MjNjOGU4MGM2MWQ5M2QzZBYCZg8VAmvmiJDpg73luILplKbmsZ%2FljLrkurrmsJHmlL%2FlupznnaPpmaLooZfooZfpgZPlip7kuovlpITotYTkuqflh7rnp5%2Fnq57ku7fnu5PmnpzlhaznpLrvvIgyMDE55bm0MDnmnIgwM%2BaXpe%2B8iQBkAgIPFQIKMjAxOS0wOS0wMyg8ZGl2IGNsYXNzPSJlbnRlcmluZyI%2BJm5ic3A7Jm5ic3A7PC9kaXY%2BZAIID2QWBmYPFQEM6Z2S55m95rGf5Yy6ZAIBDw8WAh8CBWRodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvQXNzZXRSZXNvdXJjZS9EZWFsTm90aWNlQ29udGVudC5hc3B4P2lkPTIwQkQwRTlCQ0NDMTQ2OTVBQUY5MkUxQ0VDQjgxQzdFZBYCZg8VAnTmiJDpg73luILpnZLnmb3msZ%2FljLrop4TliJLlkozoh6rnhLbotYTmupDlsYDotYTkuqfvvIjmiqXlup%2FnlLXmoq%2FvvInlpITnva7kuqTmmJPnu5PmnpzlhazlkYrvvIgyMDE55bm0MDnmnIgwM%2BaXpe%2B8iQBkAgIPFQIKMjAxOS0wOS0wMyg8ZGl2IGNsYXNzPSJlbnRlcmluZyI%2BJm5ic3A7Jm5ic3A7PC9kaXY%2BZAIJD2QWBmYPFQEJ5oiQ5Y2O5Yy6ZAIBDw8WAh8CBWRodHRwczovL3d3dy5jZGdnenkuY29tL3NpdGUvQXNzZXRSZXNvdXJjZS9EZWFsTm90aWNlQ29udGVudC5hc3B4P2lkPTA3OWY4ZWU0MGIwZjQwYjM4MTUzYWExMmUxMzAxNDFlZBYCZg8VAl%2FmiJDpg73plKbln47ljY7liJvnva7kuJrmnInpmZDotKPku7vlhazlj7jotYTkuqflh7rnp5%2Fnq57ku7fnu5PmnpzlhaznpLrvvIgyMDE55bm0MDnmnIgwMuaXpe%2B8iQBkAgIPFQIKMjAxOS0wOS0wMig8ZGl2IGNsYXNzPSJlbnRlcmluZyI%2BJm5ic3A7Jm5ic3A7PC9kaXY%2BZAILDw8WBB4IUGFnZVNpemUCCh4LUmVjb3JkY291bnQCoxhkZGToQIM0jGXbRunG4oQvUHqnRvBRwA%3D%3D&__VIEWSTATEGENERATOR=78551C4F&__EVENTTARGET=ctl00%24ContentPlaceHolder1%24Pager&__EVENTARGUMENT=" + pageValue + "&__EVENTVALIDATION=%2FwEdAAhVqX2pcQlTUmDpEA4oDqT2ZXbjphD4J6Ci0P2UUXCmZQp8fmeAe3E%2BZ%2BlyrRcok%2FuMO7fmjkJSfq6Zbgk2kTWnZi7H72kkAvPqROrOG28FXID8g%2FxeCzDZJOPgpGV4zViznYSIw3B963y%2FxzaOhgoHdty0mXvz7f%2B9YtBAL8kV3R34bUsJ2ZRENSCc%2Ba1xvhmnz5L6&__ASYNCPOST=true&";
             OutputStream out = connection.getOutputStream();
             out.write(params.getBytes());
             out.flush();
@@ -1013,14 +1247,20 @@ public class NetInfoRecordService {
                 BufferedReader reader = new BufferedReader(
                         new InputStreamReader(connection.getInputStream(), "utf-8"));
                 String line;
+
                 while ((line = reader.readLine()) != null) {
                     sb.append(line);
+                    ;
                 }
                 reader.close();
             }
-            connection.disconnect(); // 5. 断开连接
+            // 5. 断开连接
+            connection.disconnect();
+
             // 处理结果
-            return sb.toString();
+            org.jsoup.nodes.Document doc = Jsoup.parse(sb.toString());
+            Elements elements = doc.select(element);
+            return elements;
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -1028,6 +1268,7 @@ public class NetInfoRecordService {
         }
         return null;
     }
+
 
     //公共资源交易平台-凉山州（交易公告）
     public void getNetInfoFromGGZYLSZ(Integer days) {
@@ -1420,7 +1661,7 @@ public class NetInfoRecordService {
         return string;
     }
 
-    private String getContentHtml(String urlInfo, String element, String encoding) {
+    private Elements getContent(String urlInfo, String element, String encoding) {
         try {
             URL url = new URL(urlInfo);
             HttpURLConnection httpUrl = (HttpURLConnection) url.openConnection();
@@ -1447,17 +1688,13 @@ public class NetInfoRecordService {
             }
             is.close();
             br.close();
-            return sb.toString();
+            org.jsoup.nodes.Document doc = Jsoup.parse(sb.toString());
+            Elements elements = doc.select(element);
+            return elements;
         } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
-    }
-
-    private Elements getContent(String urlInfo, String element, String encoding) {
-        org.jsoup.nodes.Document doc = Jsoup.parse(getContentHtml(urlInfo, element, encoding));
-        Elements elements = doc.select(element);
-        return elements;
     }
 
     /**
