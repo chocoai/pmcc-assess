@@ -6,51 +6,65 @@
 </head>
 
 
-<body class="nav-md footer_fixed">
-<%--<%@include file="share/main_head.jsp" %>--%>
-<!-- start: MAIN CONTAINER -->
-<div class="container body">
-    <div class="main_container">
-        <%@include file="/views/share/main_navigation.jsp" %>
-        <%@include file="/views/share/main_head.jsp" %>
-        <div class="right_col" role="main">
+<body>
 
-            <div class="page-title">
-                <div class="title_left">
-                    <h2><i class="fa ${baseViewDto.currentMenu.icon}"></i>
-                        ${baseViewDto.currentMenu.name} <%--这是用来显示标题的，固定格式--%>
-                    </h2>
+<div class="wrapper">
+    <%@include file="/views/share/main_navigation.jsp" %>
+    <%@include file="/views/share/main_head.jsp" %>
+    <div class="main-panel">
+        <div class="content">
+            <div class="panel-header bg-primary-gradient">
+                <div class="page-inner py-5">
                 </div>
-                <div class="title_right">
-                    <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
-                        <div class="input-group">
-                            <input type="text" id="txt_house_search" class="form-control" placeholder="案例查询">
-                            <span class="input-group-btn">
+            </div>
+            <div class="page-inner mt--5">
+                <div class="row mt--2">
+
+                    <div class="col-md-12">
+                        <div class="card full-height">
+                            <div class="card-header">
+                                <div class="card-head-row">
+                                    <div class="card-title">${baseViewDto.currentMenu.name}</div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group form-inline">
+                                    <label class="col-md-1 col-form-label"></label>
+                                    <div class="col-md-3 p-0">
+                                        <div class="input-group">
+                                            <input type="text" id="txt_house_search" class="form-control"
+                                                   placeholder="案例查询">
+                                            <span class="input-group-btn">
                                 <button class="btn btn-default" type="button" onclick="loadHouseListAjax(1)">
                                     <i class="fa fa-search"></i>
                                 </button>
                             </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="clearfix"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group form-inline">
+                                    <p id="toolbar">
+                                        <button id="btn_update_house" style="margin-left: 10px"
+                                                class="btn btn-info  btn-sm" type="button"
+                                                onclick="updateFuni()">
+                                            更新楼盘
+                                        </button>
+                                        <button  style="margin-left: 5px"
+                                                class="btn btn-success btn-sm" type="button"
+                                                data-toggle="modal" onclick="addHouse()"
+                                                href="#model_house">
+											<span class="btn-label">
+												<i class="fa fa-plus"></i>
+											</span>
+                                            新增
+                                        </button>
+                                    </p>
+                                    共有
+                                    <label class="label label-warning" id="lab_total"></label>
+                                    个案例
+                                </div>
 
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="x_panel">
-                        <div class="x_content">
-                            <p id="toolbar">
-                                <a id="btn_update_house" class="btn btn-info" onclick="updateFuni()">
-                                    <i class="fa fa-refresh"></i>
-                                    更新楼盘
-                                </a>
-                                <a class="btn btn-success" onclick="addHouse()">
-                                    <i class="fa fa-plus"></i>
-                                    新增楼盘
-                                </a>
-                                共有<label class="label label-warning" id="lab_total"></label>个案例
-                            </p>
+                            </div>
                             <div id="div_house_list" class="row">
 
                             </div>
@@ -60,79 +74,91 @@
                         </div>
                     </div>
                 </div>
+
             </div>
-
         </div>
-
     </div>
-    <!-- end: MAIN CONTAINER -->
+    <%@include file="/views/share/main_footer.jsp" %>
+</div>
+
 </div>
 
 
-<div id="model_house" class="modal fade bs-example-modal-sm" data-backdrop="static" aria-hidden="true"
-     role="dialog" data-keyboard="false" tabindex="1" style="display: none;">
+<div id="model_house" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">新增楼盘</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
             </div>
+
             <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="x_content">
-                            <form id="frm_house" class="form-horizontal" onsubmit="return false;">
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            楼盘名称
-                                        </label>
-                                        <div class="col-sm-9">
-                                            <input type="text" placeholder="楼盘名称" name="lpmc" class="form-control"
-                                                   maxlength="200">
+                <form id="frm_house" class="form-horizontal">
+                    <input type="hidden" id="id" name="id">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <div class="row form-group">
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                楼盘名称
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input type="text" placeholder="楼盘名称" name="lpmc" class="form-control"
+                                                       maxlength="200">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                区域
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input type="text" placeholder="区域" name="lpdz" class="form-control"
+                                                       maxlength="200">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            区域
-                                        </label>
-                                        <div class="col-sm-9">
-                                            <input type="text" placeholder="区域" name="lpdz" class="form-control"
-                                                   maxlength="200">
+                                <div class="row form-group">
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                楼盘地址
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input type="text" placeholder="楼盘地址" name="xmdz" class="form-control"
+                                                       maxlength="200">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            楼盘地址
-                                        </label>
-                                        <div class="col-sm-9">
-                                            <input type="text" placeholder="楼盘地址" name="xmdz" class="form-control"
-                                                   maxlength="200">
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
+
+                            </div>
                         </div>
                     </div>
-                </div>
+                </form>
             </div>
             <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">
-                    取消
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
                 </button>
-                <button type="button" onclick="saveHouse()" class="btn btn-primary">
+                <button type="button" class="btn btn-primary btn-sm" onclick="saveHouse()">
                     保存
                 </button>
             </div>
+
         </div>
     </div>
 </div>
 
+
 </body>
-<%@include file="/views/share/main_footer.jsp" %>
+
 <link href="${pageContext.request.contextPath}/assets/x-editable/css/bootstrap-editable.css" rel="stylesheet"/>
 <script src="${pageContext.request.contextPath}/assets/x-editable/js/bootstrap-editable.min.js?v=${assessVersion}"></script>
 <script src="/assets/plugins/bootstrap-paginator/src/bootstrap-paginator.js?v=${assessVersion}"></script>
@@ -218,13 +244,14 @@
             },
             error: function (result) {
                 Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + result);
+                AlertError("调用服务端方法失败，失败原因:" + result);
             }
         })
     }
+
     //保存数据
     function updateFuni() {
-        Alert("根据楼盘将花费较长时间，确认要现在更新么？", 2, null, function () {
+        AlertConfirm("根据楼盘将花费较长时间，确认要现在更新么？", function () {
             $("#btn_update_house").hide();
             Loading.progressShow();
             $.ajax({
@@ -237,19 +264,20 @@
                 success: function (result) {
                     Loading.progressHide();
                     if (result.ret) {
-                        toastr.success('保存成功');
+                        notifySuccess("成功", "删除数据成功");
                     }
                     else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("刷新数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
                     Loading.progressHide();
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         });
     }
+
     function addHouse() {
         $("#frm_house").clearAll();
         $('#model_house').modal({backdrop: 'static', keyboard: false});
@@ -266,16 +294,16 @@
                 Loading.progressHide();
                 if (result.ret) {
                     $('#model_house').modal('hide');
-                    toastr.success('保存成功');
+                    AlertSuccess("成功", "数据已成功保存到数据库");
                     loadHouseListAjax(1);
                 }
                 else {
-                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                    AlertError("保存数据失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
                 Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + result);
+                AlertError("调用服务端方法失败，失败原因:" + result);
             }
         })
     }

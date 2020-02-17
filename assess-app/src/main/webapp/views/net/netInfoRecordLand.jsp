@@ -5,85 +5,89 @@
     <%@include file="/views/share/main_css.jsp" %>
 </head>
 
-<body class="nav-md footer_fixed">
-<div class="container body">
-    <div class="main_container">
-        <%@include file="/views/share/main_navigation.jsp" %>
-        <%@include file="/views/share/main_head.jsp" %>
-        <div class="right_col" role="main">
-            <div class="x_panel">
-                <div class="x_title collapse-link">
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                    </ul>
-                    <h2><i class="fa ${baseViewDto.currentMenu.icon}"></i>
-                        ${baseViewDto.currentMenu.name} <%--这是用来显示标题的，固定格式--%>
-                    </h2>
-                    <div class="clearfix"></div>
+<body>
+<div class="wrapper">
+    <%@include file="/views/share/main_navigation.jsp" %>
+    <%@include file="/views/share/main_head.jsp" %>
+    <div class="main-panel">
+        <div class="content">
+            <div class="panel-header bg-primary-gradient">
+                <div class="page-inner py-5">
                 </div>
-                <div class="x_content">
-                    <form id="frmQuery" class="form-horizontal">
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">省</label>
-                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                    <select name="province"
-                                            class="form-control search-select select2">
-                                    </select>
+            </div>
+            <div class="page-inner mt--5">
+                <div class="row mt--2">
+
+                    <div class="col-md-12">
+                        <div class="card full-height">
+                            <div class="card-header">
+                                <div class="card-head-row">
+                                    <div class="card-title">${baseViewDto.currentMenu.name}</div>
                                 </div>
                             </div>
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">市</label>
-                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                    <select name="city" class="form-control search-select select2">
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">区县</label>
-                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                    <select name="district"
-                                            class="form-control search-select select2">
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">街道</label>
-                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                    <input type="text" class="form-control" name="street">
-                                </div>
+                            <div class="card-body">
+                                <form id="frmQuery" class="form-horizontal">
+                                    <div class="form-group form-inline">
+                                        <label class="col-md-1 col-form-label">省</label>
+                                        <div class="col-md-3 p-0">
+                                            <select name="province"
+                                                    class="form-control input-full search-select select2">
+                                            </select>
+                                        </div>
+                                        <label class="col-md-1 col-form-label">市</label>
+                                        <div class="col-md-3 p-0">
+                                            <select name="city" class="form-control input-full search-select select2">
+                                            </select>
+                                        </div>
+                                        <label class="col-md-1 col-form-label">区县</label>
+                                        <div class="col-md-3 p-0">
+                                            <select name="district"
+                                                    class="form-control input-full search-select select2">
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group form-inline">
+                                        <label class="col-md-1 col-form-label">街道</label>
+                                        <div class="col-md-3 p-0">
+                                            <input type="text" class="form-control input-full" name="street">
+                                        </div>
+                                        <label class="col-md-1 col-form-label">地块名称</label>
+                                        <div class="col-md-3 p-0">
+                                            <input type="text" class="form-control input-full" name="name">
+                                        </div>
+
+                                        <button style="margin-left: 10px" class="btn btn-info  btn-sm" type="button"
+                                                onclick="detailInfo.prototype.loadDataInfoList()">
+											<span class="btn-label">
+												<i class="fa fa-search"></i>
+											</span>
+                                            查询
+                                        </button>
+
+                                    </div>
+
+
+                                </form>
+                                <input type="hidden" id="selectIds">
+                                <table class="table table-bordered" id="transaction_List">
+                                    <!-- cerare document add ajax data-->
+                                </table>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">地块名称</label>
-                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                    <input type="text" class="form-control" name="name">
-                                </div>
-                            </div>
-                            <div class="x-valid">
-                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                    <label class="btn btn-primary" onclick="detailInfo.prototype.loadDataInfoList();">
-                                        查询
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                    <input type="hidden" id="selectIds">
-                    <table class="table table-bordered" id="transaction_List">
-                        <!-- cerare document add ajax data-->
-                    </table>
+                    </div>
+
                 </div>
             </div>
         </div>
-
+        <%@include file="/views/share/main_footer.jsp" %>
     </div>
-    <!-- end: MAIN CONTAINER -->
+
 </div>
+
+
 </body>
 
-<%@include file="/views/share/main_footer.jsp" %>
+
 <script type="text/javascript">
     $(function () {
         detailInfo.prototype.loadDataInfoList();
