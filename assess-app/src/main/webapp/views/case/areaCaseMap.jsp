@@ -7,8 +7,53 @@
     <script src='${pageContext.request.contextPath}/assets/jquery-ui/jquery-ui.js?v=${assessVersion}'></script>
     <script src='${pageContext.request.contextPath}/js/autocomplete/estate.case.js?v=${assessVersion}'></script>
 </head>
-<body class="nav-md footer_fixed">
-<div class="container body">
+<body>
+<div class="wrapper">
+    <%@include file="/views/share/main_navigation.jsp" %>
+    <%@include file="/views/share/main_head.jsp" %>
+    <div class="main-panel">
+        <div class="content">
+            <div class="panel-header bg-primary-gradient">
+                <div class="page-inner py-5">
+                </div>
+            </div>
+            <div class="page-inner mt--5">
+                <div class="row mt--2">
+
+                    <div class="col-md-12">
+                        <div class="card full-height">
+                            <div class="card-header">
+                                <div class="card-head-row">
+                                    <div class="card-title">${baseViewDto.currentMenu.name}</div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <form id="frmCaseBaseHouse" class="form-horizontal">
+                                    <div class="form-group form-inline">
+                                        <div class="col-md-3 p-0">
+                                            <input type="text" id="txt_estate_search" class="form-control" placeholder="楼盘查询....">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12" style="margin-top:10px;height: 700px;" id="container">
+
+                                    </div>
+                                </form>
+                                <table class="table table-bordered" id="tb_FatherList">
+                                    <!-- cerare document add ajax data-->
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <%@include file="/views/share/main_footer.jsp" %>
+    </div>
+
+</div>
+<%--<div class="container body">
     <div class="main_container">
         <%@include file="/views/share/main_navigation.jsp" %>
         <%@include file="/views/share/main_head.jsp" %>
@@ -46,9 +91,9 @@
         </div>
     </div>
     <!-- end: MAIN CONTAINER -->
-</div>
+</div>--%>
 </body>
-<%@include file="/views/share/main_footer.jsp" %>
+
 <script src='${pageContext.request.contextPath}/js/autocomplete/estate.case.js?v=${assessVersion}'></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/map.position.js?v=${assessVersion}"></script>
 </html>
