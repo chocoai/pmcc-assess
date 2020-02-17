@@ -896,12 +896,7 @@
         var options = {
             onSelected: function (nodes) {
                 $(this_).closest('.input-group').find("input[name='departmentId']").val(nodes[0].id);
-                if (nodes[0].text){
-                    $(this_).closest('.input-group').find("input[name='departmentName']").val(nodes[0].text);
-                }
-                if (nodes[0].name){
-                    $(this_).closest('.input-group').find("input[name='departmentName']").val(nodes[0].name);
-                }
+                $(this_).closest('.input-group').find("input[name='departmentName']").val(nodes[0].name);
             }
         };
         if ("${departmentAssess.id}".length > 0) {

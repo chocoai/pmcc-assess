@@ -4,69 +4,74 @@
 <head>
     <%@include file="/views/share/main_css.jsp" %>
 </head>
-<body class="nav-md footer_fixed">
-<div class="container body">
-    <div class="main_container">
-        <%@include file="/views/share/main_navigation.jsp" %>
-        <%@include file="/views/share/main_head.jsp" %>
-        <div class="right_col" role="main">
-            <div class="row">
-                <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                    <div class="x_panel">
-                        <div class="x_title collapse-link">
-                            <h2>
-                                我的立项
-                            </h2>
-                            <div class="clearfix"></div>
-                        </div>
-                        <div class="x_content">
-                            <form id="frmQuery" class="form-horizontal">
-                                <div class="form-group ">
-                                    <div>
-                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                            项目名称
-                                        </label>
-                                        <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+<body>
+<div class="wrapper">
+    <%@include file="/views/share/main_navigation.jsp" %>
+    <%@include file="/views/share/main_head.jsp" %>
+    <div class="main-panel">
+        <div class="content">
+            <div class="panel-header bg-primary-gradient">
+                <div class="page-inner py-5">
+                </div>
+            </div>
+            <div class="page-inner mt--5">
+                <div class="row mt--2">
+
+                    <div class="col-md-12">
+                        <div class="card full-height">
+                            <div class="card-header">
+                                <div class="card-head-row">
+                                    <div class="card-title">${baseViewDto.currentMenu.name}</div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <form id="frmQuery" class="form-horizontal">
+                                    <div class="form-group form-inline">
+                                        <label for="queryName" class="col-md-1 col-form-label">项目名称</label>
+                                        <div class="col-md-3 p-0">
                                             <input type="text" data-rule-maxlength="50"
                                                    placeholder="项目名称" id="queryName" name="queryName"
-                                                   class="form-control">
+                                                   class="form-control input-full">
                                         </div>
-                                    </div>
-                                    <div>
-                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                            状态
-                                        </label>
-                                        <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                            <select id="status" class="form-control">
+
+                                        <label for="queryName" class="col-md-1 col-form-label">状态</label>
+                                        <div class="col-md-3 p-0">
+                                            <select id="status" class="form-control input-full">
                                                 <option value="">--请选择--</option>
                                                 <c:forEach var="item" items="${statusEnumList}">
                                                     <option value="${item.key}">${item.value}</option>
                                                 </c:forEach>
                                             </select>
                                         </div>
-                                    </div>
 
-                                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                        <button type="button" class="btn btn-primary"
+                                        <button style="margin-left: 10px" class="btn btn-info  btn-sm" type="button"
                                                 onclick="loadProjectList()">
+											<span class="btn-label">
+												<i class="fa fa-search"></i>
+											</span>
                                             查询
                                         </button>
                                     </div>
-                                </div>
 
-                            </form>
-                            <table id="tb_myProject" class="table table-bordered">
-                            </table>
+
+                                </form>
+                                <table class="table table-bordered" id="tb_myProject">
+                                    <!-- cerare document add ajax data-->
+                                </table>
+                            </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
+        <%@include file="/views/share/main_footer.jsp" %>
     </div>
-    <!-- end: MAIN CONTAINER -->
+
 </div>
+
 </body>
-<%@include file="/views/share/main_footer.jsp" %>
+
 <script type="application/javascript">
     $(function () {
         loadProjectList();
@@ -122,12 +127,28 @@
                 var str = "";
                 if (row.projectStatus) {
                     if (row.projectStatus == '草稿') {
-                        str = "<a target='_blank' href='${pageContext.request.contextPath}/projectInfo/projectInfoEdit?projectId=" + row.id + "' style='margin-left: 5px;' data-placement='top' data-original-title='重新申请' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-pencil-square-o'></i></a>";
+                        str += '<button onclick="editHref(' + index + ')"  style="margin-left: 5px;"  class="btn btn-icon btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="重新申请">';
+                        str += '<i class="fa fa-pen"></i>';
+                        str += '</button>';
                     } else {
-                        str += "<a target='_blank' href='${pageContext.request.contextPath}/projectCenter/projectInfo?projectId=" + row.id + "' style='margin-left: 5px;' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-success tooltips' ><i class='fa fa-search fa-white'></i></a>";
+                        str += '<button onclick="checkDetail(' + row.id + ')" style="margin-left: 5px;" class="btn btn-icon btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看详情">';
+                        str += '<i class="fa fa-search"></i>';
+                        str += '</button>';
                     }
                 }
                 return str;
+
+                var str = '<button onclick="dataObjFun.showDataHousePriceIndexDetail(' + row.id + ')" style="margin-left: 5px;" class="btn btn-icon btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看">';
+                str += '<i class="fa fa-search"></i>';
+                str += '</button>';
+                str += '<button onclick="dataObjFun.editMasterById(' + index + ')"  style="margin-left: 5px;"  class="btn btn-icon btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
+                str += '<i class="fa fa-pen"></i>';
+                str += '</button>';
+                str += '<button onclick="dataObjFun.deleteMasterById(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn btn-icon btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
+                str += '<i class="fa fa-minus"></i>';
+                str += '</button>';
+                return str;
+
             }
         });
         $("#tb_myProject").bootstrapTable('destroy');
@@ -144,6 +165,17 @@
         });
     }
 
+    function checkDetail(id) {
+        var href = "${pageContext.request.contextPath}/projectCenter/projectInfo";
+        href += "?projectId=" + id;
+        window.open(href, "");
+    }
+
+    function editHref(id) {
+        var href = "${pageContext.request.contextPath}/projectInfo/projectInfoEdit";
+        href += "?projectId=" + id;
+        window.open(href, "");
+    }
 </script>
 </body>
 </html>

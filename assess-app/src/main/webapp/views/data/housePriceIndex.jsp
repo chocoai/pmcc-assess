@@ -4,60 +4,72 @@
 <head>
     <%@include file="/views/share/main_css.jsp" %>
 </head>
-<body class="nav-md footer_fixed">
-<div class="container body">
-    <div class="main_container">
-        <%@include file="/views/share/main_navigation.jsp" %>
-        <%@include file="/views/share/main_head.jsp" %>
-        <div class="right_col" role="main">
-            <div class="x_panel">
-                <div class="x_title collapse-link">
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                    </ul>
-                    <h2><i class="fa ${baseViewDto.currentMenu.icon}"></i>
-                        ${baseViewDto.currentMenu.name} <%--这是用来显示标题的，固定格式--%>
-                    </h2>
-                    <div class="clearfix"></div>
+<body>
+<div class="wrapper">
+    <%@include file="/views/share/main_navigation.jsp" %>
+    <%@include file="/views/share/main_head.jsp" %>
+    <div class="main-panel">
+        <div class="content">
+            <div class="panel-header bg-primary-gradient">
+                <div class="page-inner py-5">
                 </div>
-                <div class="x_content">
-                    <form id="frmQuery" class="form-horizontal">
-                        <div class="form-group ">
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">类别</label>
-                                <div class="col-sm-7">
-                                    <select name="type"
-                                            class="form-control search-select select2" id="queryType">
-                                    </select>
+            </div>
+            <div class="page-inner mt--5">
+                <div class="row mt--2">
+
+                    <div class="col-md-12">
+                        <div class="card full-height">
+                            <div class="card-header">
+                                <div class="card-head-row">
+                                    <div class="card-title">${baseViewDto.currentMenu.name}</div>
                                 </div>
                             </div>
-                            <div class="col-sm-4">
-                                <button type="button" class="btn btn-primary"
-                                        onclick="dataObjFun.listMaster()">
-                                    查询
-                                </button>
+                            <div class="card-body">
+                                <form id="frmQuery" class="form-horizontal">
+                                    <div class="form-group form-inline">
+                                        <label for="queryType" class="col-md-1 col-form-label">类别</label>
+                                        <div class="col-md-3 p-0">
+                                            <select name="type"
+                                                    class="form-control search-select select2 input-full" id="queryType">
+                                            </select>
+                                        </div>
 
-                                <button type="button" class="btn btn-success"
-                                        onclick="dataObjFun.initFormMaster({})"
-                                        data-toggle="modal" href="#divBoxFather"> 新增
-                                </button>
+                                        <button style="margin-left: 10px" class="btn btn-info  btn-sm" type="button"
+                                                onclick="dataObjFun.listMaster()">
+											<span class="btn-label">
+												<i class="fa fa-search"></i>
+											</span>
+                                            查询
+                                        </button>
+                                        <button style="margin-left: 5px" class="btn btn-success btn-sm" type="button"
+                                                data-toggle="modal" onclick="dataObjFun.initFormMaster({})" href="#divBoxFather">
+											<span class="btn-label">
+												<i class="fa fa-plus"></i>
+											</span>
+                                            新增
+                                        </button>
+
+                                    </div>
+
+
+                                </form>
+                                <table class="table table-bordered" id="tb_FatherList">
+                                    <!-- cerare document add ajax data-->
+                                </table>
                             </div>
                         </div>
+                    </div>
 
-                    </form>
-                    <table class="table table-bordered" id="tb_FatherList">
-                        <!-- cerare document add ajax data-->
-                    </table>
                 </div>
             </div>
         </div>
-
+        <%@include file="/views/share/main_footer.jsp" %>
     </div>
-    <!-- end: MAIN CONTAINER -->
+
 </div>
+
 </body>
 
-<%@include file="/views/share/main_footer.jsp" %>
 <script type="text/javascript">
     var dataObjFun = {};
 
@@ -126,7 +138,7 @@
     };
 
     dataObjFun.deleteMasterById = function (id) {
-        Alert('确认要删除么？', 2, null, function () {
+        AlertConfirm("是否确认删除", "删除相应的数据后将不可恢复", function () {
             Loading.progressShow();
             $.ajax({
                 url: '${pageContext.request.contextPath}/housePriceIndex/delete/' + id,
@@ -135,10 +147,10 @@
                 success: function (result) {
                     Loading.progressHide();
                     if (result.ret) {
-                        toastr.success('删除成功');
+                        notifySuccess("成功","删除数据成功");
                         dataObjFun.listMaster();
                     } else {
-                        Alert(result.errmsg);
+                        AlertError("删除数据失败", result.errmsg);
                     }
                 }
             })
@@ -162,11 +174,15 @@
         });
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
-                var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="dataObjFun.editMasterById(' + index + ')"><i class="fa fa-edit fa-white"></i></a>';
-                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="dataObjFun.deleteMasterById(' + row.id + ')"><i class="fa fa-minus fa-white"></i></a>';
-                str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="查看" onclick="dataObjFun.showDataHousePriceIndexDetail(' + row.id + ')"><i class="fa fa-th-list fa-white"></i></a>';
-                str += '</div>';
+                var str = '<button onclick="dataObjFun.showDataHousePriceIndexDetail(' + row.id + ')" style="margin-left: 5px;" class="btn btn-icon btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看">';
+                str += '<i class="fa fa-search"></i>';
+                str += '</button>';
+                str += '<button onclick="dataObjFun.editMasterById(' + index + ')"  style="margin-left: 5px;"  class="btn btn-icon btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
+                str += '<i class="fa fa-pen"></i>';
+                str += '</button>';
+                str += '<button onclick="dataObjFun.deleteMasterById(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn btn-icon btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
+                str += '<i class="fa fa-minus"></i>';
+                str += '</button>';
                 return str;
             }
         });
@@ -204,11 +220,11 @@
             type: "post",
             success: function (result) {
                 if (result.ret) {
-                    toastr.success('成功');
+                    AlertSuccess("成功", "数据已成功保存到数据库");
                     dataObjFun.listMaster();
                     $(dataObjFun.config.box).modal("hide");
                 } else {
-                    Alert(result.errmsg);
+                    AlertError("错误", "保存数据失败");
                 }
             }
         })
@@ -228,7 +244,7 @@
 
     dataObjFun.deleteDataHousePriceIndexDetail = function (index) {
         var row = $(dataObjFun.config.indexDetailTable).bootstrapTable('getData')[index];
-        Alert('确认要删除么？', 2, null, function () {
+        AlertConfirm("是否确认删除", "删除相应的数据后将不可恢复", function () {
             Loading.progressShow();
             $.ajax({
                 url: '${pageContext.request.contextPath}/dataHousePriceIndexDetail/delete/' + row.id,
@@ -237,10 +253,10 @@
                 success: function (result) {
                     Loading.progressHide();
                     if (result.ret) {
-                        toastr.success('删除成功');
+                        notifySuccess("成功","删除数据成功");
                         dataObjFun.showDataHousePriceIndexDetailList(row.housePriceId);
                     } else {
-                        Alert(result.errmsg);
+                        AlertError("删除数据失败", result.errmsg);
                     }
                 }
             })
@@ -267,11 +283,11 @@
             type: "post",
             success: function (result) {
                 if (result.ret) {
-                    toastr.success('成功');
+                    AlertSuccess("成功", "数据已成功保存到数据库");
                     dataObjFun.showDataHousePriceIndexDetailList(data.housePriceId);
                     $(dataObjFun.config.indexDetailBox).modal("hide");
                 } else {
-                    Alert(result.errmsg);
+                    AlertError("错误", "保存数据失败")
                 }
             }
         })
@@ -292,10 +308,12 @@
         cols.push({field: 'indexNumber', title: '指数'});
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
-                var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="dataObjFun.editDataHousePriceIndexDetail(' + index + ')"><i class="fa fa-edit fa-white"></i></a>';
-                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="dataObjFun.deleteDataHousePriceIndexDetail(' + row.id + ')"><i class="fa fa-minus fa-white"></i></a>';
-                str += '</div>';
+                var str = '<button onclick="dataObjFun.editDataHousePriceIndexDetail(' + index + ')"  style="margin-left: 5px;"  class="btn btn-icon btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
+                str += '<i class="fa fa-pen"></i>';
+                str += '</button>';
+                str += '<button onclick="dataObjFun.deleteDataHousePriceIndexDetail(' + index + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn btn-icon btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
+                str += '<i class="fa fa-minus"></i>';
+                str += '</button>';
                 return str;
             }
         });
@@ -330,135 +348,172 @@
 
 </script>
 
+
 <div id="divBoxFather" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
+                <h4 class="modal-title">指数</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">指数</h3>
             </div>
-            <form id="frmFather" class="form-horizontal">
-                <input type="hidden" name="id">
-                <div class="modal-body">
+
+            <div class="modal-body">
+                <form id="frmFather" class="form-horizontal">
+                    <input type="hidden" id="templateId" name="id" required>
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="panel-body">
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">省
-                                            <span class="symbol required"></span></label>
-                                        <div class="col-sm-10">
-                                            <select name="province"
-                                                    class="form-control search-select select2"
-                                                    required="required">
-                                            </select>
+                            <div class="card-body">
+                                <div class="row form-group">
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                省<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <select name="province"
+                                                        class="form-control search-select select2 input-full"
+                                                        required="required">
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                市<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <select name="city" class="form-control search-select select2 input-full"
+                                                        required="required">
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">市<span
-                                                class="symbol required"></span></label>
-                                        <div class="col-sm-10">
-                                            <select name="city" class="form-control search-select select2"
-                                                    required="required">
-                                            </select>
+
+                                <div class="row form-group">
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                县
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <select name="district"
+                                                        class="form-control search-select select2 input-full">
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                类别<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <select name="type" required="required"
+                                                        class="form-control search-select select2 input-full">
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">县</label>
-                                        <div class="col-sm-10">
-                                            <select name="district"
-                                                    class="form-control search-select select2">
-                                            </select>
+
+                                <div class="row form-group">
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                用途
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <select name="purpose"
+                                                        class="form-control search-select select2 input-full">
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                发布时间
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input type="text" readonly="readonly"
+                                                       class="form-control input-full date-picker dbdate" data-date-format="yyyy-mm-dd"
+                                                       name="releaseDate" placeholder="发布日期">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">类别<span
-                                                class="symbol required"></span></label>
-                                        <div class="col-sm-10">
-                                            <select name="type" required="required"
-                                                    class="form-control search-select select2">
-                                            </select>
+                                <div class="row form-group">
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                估价期
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input type="text" readonly="readonly"
+                                                       class="form-control input-full date-picker dbdate" data-date-format="yyyy-mm-dd"
+                                                       name="evaluationDate" placeholder="估价期">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">用途</label>
-                                        <div class="col-sm-10">
-                                            <select name="purpose"
-                                                    class="form-control search-select select2">
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            发布时间
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <input type="text" readonly="readonly"
-                                                   class="form-control date-picker dbdate" data-date-format="yyyy-mm-dd"
-                                                   name="releaseDate" placeholder="发布日期">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            估价期
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <input type="text" readonly="readonly"
-                                                   class="form-control date-picker dbdate" data-date-format="yyyy-mm-dd"
-                                                   name="evaluationDate" placeholder="估价期">
-                                        </div>
-                                    </div>
-                                </div>
+
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-default">
-                        取消
-                    </button>
-                    <button type="button" class="btn btn-primary" onclick="dataObjFun.saveMaster()">
-                        保存
-                    </button>
-                </div>
-            </form>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="dataObjFun.saveMaster()">
+                    保存
+                </button>
+            </div>
+
         </div>
     </div>
 </div>
 
-<div id="indexDetailTableBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
-     role="dialog"
+<div id="indexDetailTableBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
+                <h4 class="modal-title">指数详情</h4>
+                <input type="hidden" name="housePriceId">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">指数详情</h3>
-                <input type="hidden" name="housePriceId">
             </div>
             <div class="modal-body">
-                <div type="button" class="btn btn-success"
-                     onclick="dataObjFun.showDataHousePriceIndexDetailBox()"
-                     data-toggle="modal" href="#indexDetailBox"> 新增
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card-body">
+                            <p>
+                                <button style="margin-left: 5px" class="btn btn-success btn-sm" type="button"
+                                        data-toggle="modal" onclick="dataObjFun.showDataHousePriceIndexDetailBox({})" href="#indexDetailBox">
+											<span class="btn-label">
+												<i class="fa fa-plus"></i>
+											</span>
+                                    新增
+                                </button>
+                            </p>
+                            <table class="table table-bordered" id="indexDetailTable">
+                            </table>
+                        </div>
+                    </div>
                 </div>
-                <table class="table table-bordered" id="indexDetailTable">
-                </table>
             </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+            </div>
+
         </div>
     </div>
 </div>
@@ -468,66 +523,72 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
+                <h4 class="modal-title">房价指数</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">房价指数</h3>
             </div>
-            <form id="indexDetailFrm" class="form-horizontal">
-                <input type="hidden" name="id">
-                <input type="hidden" name="housePriceId">
-                <div class="modal-body">
+
+            <div class="modal-body">
+                <form id="indexDetailFrm" class="form-horizontal">
+                    <input type="hidden" name="id">
+                    <input type="hidden" name="housePriceId">
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="panel-body">
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            开始月份<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <input type="text" readonly="readonly" required
-                                                   class="form-control date-picker dbdate" data-date-format="yyyy-mm-dd"
-                                                   name="startDate" placeholder="开始月份">
+                            <div class="card-body">
+                                <div class="row form-group">
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                开始月份<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input type="text" readonly="readonly" required
+                                                       class="form-control input-full date-picker dbdate" data-date-format="yyyy-mm-dd"
+                                                       name="startDate" placeholder="开始月份">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                结束月份<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input type="text" readonly="readonly" required
+                                                       class="form-control input-full date-picker dbdate" data-date-format="yyyy-mm-dd"
+                                                       name="endDate" placeholder="结束月份">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            结束月份<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <input type="text" readonly="readonly" required
-                                                   class="form-control date-picker dbdate" data-date-format="yyyy-mm-dd"
-                                                   name="endDate" placeholder="结束月份">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            指数<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <input type="text" required
-                                                   class="form-control"
-                                                   name="indexNumber" placeholder="指数">
+                                <div class="row form-group">
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                指数<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input type="text" required
+                                                       class="form-control input-full"
+                                                       name="indexNumber" placeholder="指数">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-default">
-                        取消
-                    </button>
-                    <button type="button" class="btn btn-primary" onclick="dataObjFun.saveDataHousePriceIndexDetail()">
-                        保存
-                    </button>
-                </div>
-            </form>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="dataObjFun.saveDataHousePriceIndexDetail()">
+                    保存
+                </button>
+            </div>
+
         </div>
     </div>
 </div>

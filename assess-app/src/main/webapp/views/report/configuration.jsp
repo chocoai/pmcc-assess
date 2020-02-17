@@ -5,40 +5,53 @@
     <%@include file="/views/share/main_css.jsp" %>
 </head>
 
-<body class="nav-md">
+<body>
 <%--<%@include file="share/main_head.jsp" %>--%>
 <!-- start: MAIN CONTAINER -->
-<div class="container body">
-    <div class="main_container">
-        <%@include file="/views/share/main_navigation.jsp" %>
-        <%@include file="/views/share/main_head.jsp" %>
-        <div class="right_col" role="main">
-            <%@include file="/views/share/navigation/systemSetup.jsp" %>
-            <div class="col-xs-12  col-sm-12  col-md-10  col-lg-10 ">
-                <div class="x_panel">
-                    <div class="x_title collapse-link">
-                        <ul class="nav navbar-right panel_toolbox">
-                            <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                        </ul>
-                        <h2><i class="fa ${baseViewDto.currentMenu.icon}"></i>
-                            ${baseViewDto.currentMenu.name} <%--这是用来显示标题的，固定格式--%>
-                        </h2>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div class="x_content">
-                        <a type="button" class="btn btn-success" target="_blank" href="${pageContext.request.contextPath}/ureport/designer"><i class="fa fa-plus-circle"></i>新加报表</a>
-                        <table id="report_list" class="table table-striped jambo_table bulk_action table-bordered">
+<div class="wrapper">
+    <%@include file="/views/share/main_navigation.jsp" %>
+    <%@include file="/views/share/main_head.jsp" %>
+    <div class="main-panel">
+        <div class="content">
+            <div class="panel-header bg-primary-gradient">
+                <div class="page-inner py-5">
+                </div>
+            </div>
+            <div class="page-inner mt--5">
+                <div class="row mt--2">
+                    <div class="col-md-12">
+                        <div class="card full-height">
+                            <div class="card-header">
+                                <div class="card-head-row">
+                                    <div class="card-title">${baseViewDto.currentMenu.name}</div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <button style="margin-left: 5px" class="btn btn-success btn-sm" type="button"
+                                        data-toggle="modal" onclick="addReport()">
+											<span class="btn-label">
+												<i class="fa fa-plus"></i>
+											</span>
+                                    新加报表
+                                </button>
+                                <table id="report_list" class="table table-striped jambo_table bulk_action table-bordered">
 
-                        </table>
+                                </table>
+
+                            </div>
+                        </div>
                     </div>
+
                 </div>
             </div>
         </div>
+        <%@include file="/views/share/main_footer.jsp" %>
     </div>
-    <!-- end: MAIN CONTAINER -->
+
 </div>
+
 </body>
-<%@include file="/views/share/main_footer.jsp" %>
+
 <script type="application/javascript">
     var reportDesignerObj = {
         report_list: $("#report_list"),
@@ -57,18 +70,21 @@
             cols.push({
                 title: '操作',
                 formatter: function (value, row, index) {
-                    var str = '<div class="btn-margin">';
-                    str += String.format('<a id="item_design" target="_blank" class="re btn btn-xs btn-primary" href="${pageContext.request.contextPath}/ureport/designer?_u={0}{1}"><i class="fa fa-edit"></i>设计报表</a>', 'erp:', row.reportName);
-                    str += '<a id="item_del" class="btn btn-xs btn-warning" href="javascript:void(0)" >删除</a>';
-                    str += '</div>';
+                    <%--return str;--%>
+                    var str = '<button onclick="editReport(' + index + ')"  style="margin-left: 5px;"  class="btn btn-icon btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
+                    str += '<i class="fa fa-pen"></i>';
+                    str += '</button>';
+                    str += '<button onclick="reportDesignerObj.deleteReport(' + index + ')"  style="margin-left: 5px;"  class="btn btn-icon btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
+                    str += '<i class="fa fa-minus"></i>';
+                    str += '</button>';
                     return str;
                 },
-                events: {
-                    'click #item_del': function (e, value, row, index) {
-                        //删除
-                        reportDesignerObj.deleteReport(row.reportName);
-                    }
-                }
+                // events: {
+                //     'click #item_del': function (e, value, row, index) {
+                //         //删除
+                //         reportDesignerObj.deleteReport(row.reportName);
+                //     }
+                // }
             });
 
             TableClient(reportDesignerObj.report_list, cols, data, {
@@ -79,23 +95,23 @@
 
 
         fetchReportProvider: function () {
-            Loading.progressShow("正在加载数据...");
+
             $.ajax({
                 url: "${pageContext.request.contextPath}/assessReport/fetchReportProvider",
                 type: "get",
                 dataType: "json",
                 success: function (result) {
-                    Loading.progressHide();
+
                     if (result.ret) {
                         reportDesignerObj.reportData = result.data;
                         reportDesignerObj.renderReportTable(result.data);
                     } else {
-                        Alert("获取数据失败:" + result.errmsg);
+                        AlertError("获取数据失败:" + result.errmsg);
                     }
                 },
                 error: function (e) {
-                    Loading.progressHide();
-                    console.log("调用服务失败，失败原因:" + e);
+
+                    lertError("调用服务端方法失败，失败原因:" + result);
                 }
             });
         },
@@ -117,32 +133,42 @@
                 reportDesignerObj.renderReportTable(tableData);
             }
         },
-        deleteReport:function (name) {
-            Alert("确认要删除么？", 2, null, function () {
-                Loading.progressShow("正在删除...");
+        deleteReport:function (index) {
+            AlertConfirm("是否确认删除", "删除相应的数据后将不可恢复", function () {
+                var row = $(reportDesignerObj.report_list).bootstrapTable('getData')[index];
+                Loading.progressShow();
                 $.ajax({
                     url: "${pageContext.request.contextPath}/assessReport/deleteReport",
                     type: "get",
                     dataType: "json",
-                    data: {reportName: name},
+                    data: {reportName: row.reportName},
                     success: function (result) {
                         Loading.progressHide();
                         if (result.ret) {
                             reportDesignerObj.report_list.bootstrapTable('refresh');
                         }
                         else {
-                            Alert("删除数据失败，失败原因:" + result.errmsg);
+                            AlertError("删除数据失败，失败原因:" + result.errmsg);
                         }
                     },
                     error: function (result) {
                         Loading.progressHide();
-                        Alert("调用服务端方法失败，失败原因:" + result);
+                        AlertError("调用服务端方法失败，失败原因:" + result);
                     }
                 })
             })
         }
     };
-
+    function addReport() {
+        var href = "${pageContext.request.contextPath}/ureport/designer";
+        window.open(href, "");
+    }
+    function editReport(index) {
+        var row = $(reportDesignerObj.report_list).bootstrapTable('getData')[index];
+        var href = "${pageContext.request.contextPath}/ureport/designer?_u=";
+        href += "erp:" + row.reportName;
+        window.open(href, "");
+    }
 
     // document init
     $(function () {

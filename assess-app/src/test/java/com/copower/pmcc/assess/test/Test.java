@@ -9,6 +9,7 @@ import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordDao;
 import com.copower.pmcc.assess.dal.basis.dao.net.NetLandTransactionDao;
 import com.copower.pmcc.assess.dal.basis.dao.net.NetResultAnnouncementDao;
 import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecord;
+import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordContent;
 import com.copower.pmcc.assess.dto.input.net.JDSFDto;
 import com.copower.pmcc.assess.dto.input.net.JDZCDto;
 import com.copower.pmcc.assess.dto.input.net.TBSFDto;
@@ -39,6 +40,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.sql.*;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.Date;
@@ -974,15 +976,16 @@ public class Test {
     public void getNetInfoFromZGBD() {
         try {
             Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.DATE, -730); //得到前1天
+            calendar.add(Calendar.DATE, -732); //得到前1天
             Date date = calendar.getTime();
             Map<String, String> needContentType = Maps.newHashMap();
             needContentType.put("房产", "6");
             needContentType.put("土地", "7");
-            needContentType.put("股权债权", "8");
-            needContentType.put("无形资产", "18");
-            needContentType.put("其他财产", "255");
-
+//            needContentType.put("股权债权", "8");
+//            needContentType.put("无形资产", "18");
+//            needContentType.put("其他财产", "255");
+            String[] needProvinceNames = new String[]{"四川省", "重庆市", "贵州省", "云南省", "海南省"};
+            List<String> provinceNames = Arrays.asList(needProvinceNames);
             Map<String, List<String>> strHrefs = Maps.newHashMap();
             String typeHref = "https://paimai.caa123.org.cn/wt-web-ws/ws/0.1/lots?sortname=&sortorder=&count=12&status=3";
 
@@ -990,47 +993,49 @@ public class Test {
             Elements provinceElements = getContent(htmlHref, "#queryloaction", "");
             Elements provinces = provinceElements.get(0).select("li a");
 
-//            for (Map.Entry<String, String> entry : needContentType.entrySet()) {
-//                Integer princeId = 1;
-//                for (Element item : provinces) {
-//                    String provinceName = item.childNodes().get(0).childNodes().get(0).toString().trim();
-//                    Integer startPage = 0;
-//                    List<String> pageHref = Lists.newArrayList();
-//                    String dataHref = String.format("%s%s", typeHref, "&standardType=" + entry.getValue());
-//                    Elements pageElements = getContent(String.format("%s%s%s", dataHref, "&start=" + startPage, "&province=" + princeId), "body", "");
-//                    princeId++;
-//                    if (pageElements == null) continue;
-//                    String data = pageElements.get(0).childNodes().get(0).toString().trim();
-//                    JSONObject jsonObject = JSON.parseObject(data);
-//                    Integer totalCount = JSON.parseObject(jsonObject.getString("totalCount"), Integer.class);
-//                    if (totalCount == 0) continue;
-//                    Integer totalPages = JSON.parseObject(jsonObject.getString("totalPages"), Integer.class);
-//                    for (int i = 0; i < totalPages; i++) {
-//                        String dataPageHref = String.format("%s%s", dataHref, "&start=" + i);
-//                        pageHref.add(dataPageHref);
-//                    }
-//                    strHrefs.put(String.format("%s_%s", entry.getKey(), provinceName), pageHref);
-//                }
-//            }
+            Integer princeId = 0;
+            for (Map.Entry<String, String> entry : needContentType.entrySet()) {
+                for (Element item : provinces) {
+                    princeId++;
+                    String provinceName = item.childNodes().get(0).childNodes().get(0).toString().trim();
+                    if (!provinceNames.contains(provinceName)) continue;
+                    Integer startPage = 0;
+                    List<String> pageHref = Lists.newArrayList();
+                    String dataHref = String.format("%s%s%s", typeHref, "&standardType=" + entry.getValue(), "&province=" + princeId);
+                    Elements pageElements = getContent(String.format("%s%s", dataHref, "&start=" + startPage), "body", "");
+
+                    if (pageElements == null) continue;
+                    String data = pageElements.get(0).childNodes().get(0).toString().trim();
+                    JSONObject jsonObject = JSON.parseObject(data);
+                    Integer totalCount = JSON.parseObject(jsonObject.getString("totalCount"), Integer.class);
+                    if (totalCount == 0) continue;
+                    Integer totalPages = JSON.parseObject(jsonObject.getString("totalPages"), Integer.class);
+                    for (int i = 0; i < totalPages; i++) {
+                        String dataPageHref = String.format("%s%s", dataHref, "&start=" + i);
+                        pageHref.add(dataPageHref);
+                    }
+                    strHrefs.put(String.format("%s_%s", entry.getKey(), provinceName), pageHref);
+                }
+            }
 
             //只取四川的
-            for (Map.Entry<String, String> entry : needContentType.entrySet()) {
-                Integer startPage = 0;
-                List<String> pageHref = Lists.newArrayList();
-                String dataHref = String.format("%s%s%s", typeHref, "&standardType=" + entry.getValue(), "&province=" + 23);
-                Elements pageElements = getContent(String.format("%s%s", dataHref, "&start=" + startPage), "body", "");
-                if (pageElements == null) continue;
-                String data = pageElements.get(0).childNodes().get(0).toString().trim();
-                JSONObject jsonObject = JSON.parseObject(data);
-                Integer totalCount = JSON.parseObject(jsonObject.getString("totalCount"), Integer.class);
-                if (totalCount == 0) continue;
-                Integer totalPages = JSON.parseObject(jsonObject.getString("totalPages"), Integer.class);
-                for (int i = 0; i < totalPages; i++) {
-                    String dataPageHref = String.format("%s%s", dataHref, "&start=" + i);
-                    pageHref.add(dataPageHref);
-                }
-                strHrefs.put(String.format("%s_%s", entry.getKey(), "四川"), pageHref);
-            }
+//            for (Map.Entry<String, String> entry : needContentType.entrySet()) {
+//                Integer startPage = 0;
+//                List<String> pageHref = Lists.newArrayList();
+//                String dataHref = String.format("%s%s%s", typeHref, "&standardType=" + entry.getValue(), "&province=" + 23);
+//                Elements pageElements = getContent(String.format("%s%s", dataHref, "&start=" + startPage), "body", "");
+//                if (pageElements == null) continue;
+//                String data = pageElements.get(0).childNodes().get(0).toString().trim();
+//                JSONObject jsonObject = JSON.parseObject(data);
+//                Integer totalCount = JSON.parseObject(jsonObject.getString("totalCount"), Integer.class);
+//                if (totalCount == 0) continue;
+//                Integer totalPages = JSON.parseObject(jsonObject.getString("totalPages"), Integer.class);
+//                for (int i = 0; i < totalPages; i++) {
+//                    String dataPageHref = String.format("%s%s", dataHref, "&start=" + i);
+//                    pageHref.add(dataPageHref);
+//                }
+//                strHrefs.put(String.format("%s_%s", entry.getKey(), "四川"), pageHref);
+//            }
 
             for (Map.Entry<String, List<String>> entry : strHrefs.entrySet()) {
                 List<String> pageHref = entry.getValue();
@@ -1045,16 +1050,37 @@ public class Test {
                     for (String dataStr : dataList) {
                         ZGSFDto zgsfDto = JSON.parseObject(dataStr, ZGSFDto.class);
                         String itemHref = String.format("%s%s%s", itemHrefStr, "lotId=" + zgsfDto.getId(), "&meetId=" + zgsfDto.getMeetId());
-                        if (zgsfDto.getEndTime().compareTo(date) < 1) break circ;
+                        if (zgsfDto.getEndTime().compareTo(date) < 0) break circ;
                         NetInfoRecord netInfoRecord = new NetInfoRecord();
                         netInfoRecord.setSourceSiteUrl(itemHref);
                         netInfoRecord.setTitle(zgsfDto.getName());
                         netInfoRecord.setProvince(entry.getKey().substring(entry.getKey().indexOf("_") + 1));
+                        netInfoRecord.setBeginTime(zgsfDto.getStartTime());
+                        netInfoRecord.setEndTime(zgsfDto.getEndTime());
+                        netInfoRecord.setType(entry.getKey().substring(0, entry.getKey().indexOf("_")));
+                        netInfoRecord.setCurrentPrice(getRealMoney(zgsfDto.getNowPrice()));
+                        netInfoRecord.setConsultPrice(getRealMoney(zgsfDto.getAssessPrice()));
+                        netInfoRecord.setInitPrice(getRealMoney(zgsfDto.getStartPrice()));
+                        //netInfoRecord.setLiquidRatios(getLiquidRatios(zgsfDto.getNowPrice(), zgsfDto.getAssessPrice()));
                         String content = getContent(zgsfDto.getName(), entry.getKey().substring(0, entry.getKey().indexOf("_")), zgsfDto.getNowPrice(), zgsfDto.getAssessPrice(), zgsfDto.getStartPrice()
                                 , DateUtils.format(zgsfDto.getEndTime(), DateUtils.DATE_CHINESE_PATTERN), DateUtils.format(zgsfDto.getStartTime(), DateUtils.DATE_CHINESE_PATTERN));
                         netInfoRecord.setContent(content);
                         netInfoRecord.setSourceSiteName("中国拍卖行业协会网-标的");
                         netInfoRecordDao.addInfo(netInfoRecord);
+
+//                        String contentHref = itemHref.replace("pages/lots/profession.html?lotId=", "wt-web-ws/ws/0.1/lot/");
+//                        contentHref = contentHref.replace(String.format("%s%s", "&meetId=", zgsfDto.getMeetId()), "/introduction");
+//                        Elements contentBody = getContent(contentHref, "body", "");
+//                        if (contentBody.size() != 0 && contentBody != null) {
+//                            NetInfoRecordContent netInfoRecordContent = new NetInfoRecordContent();
+//                            netInfoRecordContent.setRecordId(netInfoRecord.getId());
+//                            if (contentBody.html().length() > 30000) {
+//                                netInfoRecordContent.setFullDescription(contentBody.html().substring(0, 30000));
+//                            } else {
+//                                netInfoRecordContent.setFullDescription(contentBody.html());
+//                            }
+//                            netInfoRecordContentDao.addInfo(netInfoRecordContent);
+//                        }
                     }
                 }
             }
@@ -1064,7 +1090,14 @@ public class Test {
         }
 
     }
-
+    public String getRealMoney(String price) throws Exception {
+        NumberFormat format = NumberFormat.getInstance();
+        if (StringUtil.isNotEmpty(price)) {
+            return new BigDecimal(format.parse(price).doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+        } else {
+            return "";
+        }
+    }
 
     //来源公拍网
     @org.junit.Test
@@ -1421,6 +1454,51 @@ public class Test {
     }
 
 
+    /**
+     *  文档转图片
+     * [url=home.php?mod=space&uid=952169]@Param[/url] inPath 传入文档地址
+     */
+    @org.junit.Test
+    public void doc2Img(){
+        try {
+//            if (!getLicense()) {
+//                throw new Exception("com.aspose.words lic ERROR!");
+//            }
 
+            long old = System.currentTimeMillis();
+            // word文档
+            Document doc = new Document("D:\\员工健康情况申报卡.doc");
+            // 支持RTF HTML,OpenDocument, PDF,EPUB, XPS转换
+            ImageSaveOptions options = new ImageSaveOptions(SaveFormat.PNG);
+            int pageCount = doc.getPageCount();
+            for (int i = 0; i < pageCount; i++) {
+                File file = new File("D:\\员工健康情况申报卡"+i+".png");
 
+                FileOutputStream os = new FileOutputStream(file);
+                options.setPageIndex(i);
+                doc.save(os, options);
+                os.close();
+            }
+            long now = System.currentTimeMillis();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static boolean getLicense() throws Exception {
+        boolean result = false;
+        try {
+            InputStream is = com.aspose.words.Document.class
+                    .getResourceAsStream("/com.aspose.words.lic_2999.xml");
+            License aposeLic = new License();
+            aposeLic.setLicense(is);
+            result = true;
+            is.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+        return result;
+    }
 }

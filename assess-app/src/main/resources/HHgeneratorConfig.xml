@@ -16,6 +16,7 @@
                         userId="root" password="123456">
             <property name="useInformationSchema" value="true"></property>
             <property name="remarks" value="true"></property>
+            <property name="nullCatalogMeansCurrent" value="true"/>
         </jdbcConnection>
 
         <javaTypeResolver>
@@ -41,7 +42,12 @@
         </javaClientGenerator>
 
         <!-- 具体表 -->
-        <table tableName="tb_basic_estate_land_state" domainObjectName="BasicEstateLandState">
+
+        <!--<table tableName="tb_basic_building" domainObjectName="BasicBuilding">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+            <!--<columnOverride column="json_content" jdbcType="VARCHAR"></columnOverride>-->
+        <!--</table>-->
+        <table tableName="tb_net_info_record" domainObjectName="NetInfoRecord">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
     </context>

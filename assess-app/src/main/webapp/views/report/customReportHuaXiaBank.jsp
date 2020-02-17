@@ -5,140 +5,127 @@
     <%@include file="/views/share/main_css.jsp" %>
 </head>
 
-<body class="nav-md footer_fixed">
-<div class="container body">
-    <div class="main_container">
-        <%@include file="/views/share/main_navigation.jsp" %>
-        <%@include file="/views/share/main_head.jsp" %>
-        <div class="right_col" role="main">
-            <div class="x_panel">
-                <div class="x_title collapse-link">
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                    </ul>
-                    <h2><i class="fa ${baseViewDto.currentMenu.icon}"></i>
-                        ${baseViewDto.currentMenu.name} <%--这是用来显示标题的，固定格式--%>
-                    </h2>
-                    <div class="clearfix"></div>
+<body>
+<div class="wrapper">
+    <%@include file="/views/share/main_navigation.jsp" %>
+    <%@include file="/views/share/main_head.jsp" %>
+    <div class="main-panel">
+        <div class="content">
+            <div class="panel-header bg-primary-gradient">
+                <div class="page-inner py-5">
                 </div>
-                <div class="x_content">
-                    <form id="frmQuery" class="form-horizontal">
-                        <div>
-                            <label class="col-sm-1 control-label">
-                                报告类型
-                            </label>
-                            <div class="col-sm-2">
-                                <select name="queryReportType" id="queryReportType" class="form-control"
-                                        onchange="ReportHuaXiaBank.prototype.showBtn()">
-                                    <option value="">--请选择--</option>
-                                    <c:forEach var="item" items="${reportTypeList}">
-                                        <option value="${item.id}">${item.name}</option>
-                                    </c:forEach>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group ">
-                            <div>
-                                <label class="col-sm-1 control-label">
-                                    文号
-                                </label>
-                                <div class="col-sm-2">
-                                    <input type="text" data-rule-maxlength="50"
-                                           placeholder="文号" id="queryNumberValue" name="queryNumberValue"
-                                           class="form-control">
-                                </div>
-                            </div>
-                            <div>
-                                <label class="col-sm-1 control-label">
-                                    报告使用单位
-                                </label>
-                                <div class="col-sm-2">
-                                    <input type="text" data-rule-maxlength="50"
-                                           placeholder="报告使用单位" id="queryUnitName" name="queryUnitName"
-                                           class="form-control">
-                                </div>
-                            </div>
-                        </div>
-                            <div class="form-group ">
-                                <div id="queryPreauditBtn" style="display: none">
-                                    <div class="x-valid">
-                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                            开始时间
-                                        </label>
-                                        <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                            <input id="queryPreviewsStartDate" name="queryPreviewsStartDate"
-                                                   class="form-control date-picker dbdate"
-                                                   data-date-format="yyyy-mm-dd" placeholder="开始时间"/>
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                            结束时间
-                                        </label>
-                                        <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                            <input id="queryPreviewsEndDate" name="queryPreviewsEndDate"
-                                                   class="form-control date-picker dbdate"
-                                                   data-date-format="yyyy-mm-dd" placeholder="结束时间"/>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="queryResultBtn" style="display: none">
-                                    <div class="x-valid">
-                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                            开始时间
-                                        </label>
-                                        <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                            <input id="queryResultStartDate" name="queryResultStartDate"
-                                                   class="form-control date-picker dbdate"
-                                                   data-date-format="yyyy-mm-dd" placeholder="开始时间"/>
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                            结束时间
-                                        </label>
-                                        <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                            <input id="queryResultEndDate" name="queryResultEndDate"
-                                                   class="form-control date-picker dbdate"
-                                                   data-date-format="yyyy-mm-dd" placeholder="结束时间"/>
-                                        </div>
-                                    </div>
-                                </div>
-                            <div class="col-sm-3">
-                                <button type="button" class="btn btn-success" onclick="$('#frmQuery').clearAll()">
-                                    重置
-                                </button>
-                                <button type="button" class="btn btn-primary"
-                                        onclick="ReportHuaXiaBank.prototype.loadDataDicList()">
-                                    查询
-                                </button>
-                                <button type="button" class="btn btn-success"
-                                        onclick="ReportHuaXiaBank.prototype.showModel()"
-                                        data-toggle="modal" href="#divBox">
-                                    上传附件
-                                </button>
-                                <button type="button" class="btn btn-info"
-                                        onclick="ReportHuaXiaBank.prototype.exportData()">
-                                    导出
-                                </button>
-                            </div>
-                        </div>
+            </div>
+            <div class="page-inner mt--5">
+                <div class="row mt--2">
 
-                    </form>
-                    <table class="table table-bordered" id="tb_FatherList">
-                        <!-- cerare document add ajax data-->
-                    </table>
+                    <div class="col-md-12">
+                        <div class="card full-height">
+                            <div class="card-header">
+                                <div class="card-head-row">
+                                    <div class="card-title">${baseViewDto.currentMenu.name}</div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <form id="frmQuery" class="form-horizontal">
+                                    <div class="form-group form-inline">
+                                        <label class="col-md-1 col-form-label">报告类型</label>
+                                        <div class="col-md-2 p-0">
+                                            <select name="queryReportType" id="queryReportType" class="form-control input-full"
+                                                    onchange="ReportHuaXiaBank.prototype.showBtn()">
+                                                <option value="">--请选择--</option>
+                                                <c:forEach var="item" items="${reportTypeList}">
+                                                    <option value="${item.id}">${item.name}</option>
+                                                </c:forEach>
+                                            </select></div>
+                                        <label class="col-md-1 col-form-label">文号</label>
+                                        <div class="col-md-2 p-0">
+                                            <input type="text" data-rule-maxlength="50"
+                                                   placeholder="文号" id="queryNumberValue" name="queryNumberValue"
+                                                   class="form-control input-full">
+                                        </div>
+                                        <label class="col-md-1 col-form-label">报告使用单位</label>
+                                        <div class="col-md-2 p-0">
+                                            <input type="text" data-rule-maxlength="50"
+                                                   placeholder="报告使用单位" id="queryUnitName" name="queryUnitName"
+                                                   class="form-control input-full">
+                                        </div>
+                                    </div>
+                                    <div class="form-group form-inline" style="display: none" id="queryPreauditBtn">
+
+                                        <label class="col-md-1 col-form-label">开始时间</label>
+                                        <div class="col-md-2 p-0">
+                                            <input id="queryPreviewsStartDate" name="queryPreviewsStartDate"
+                                                   class="form-control input-full date-picker dbdate"
+                                                   data-date-format="yyyy-mm-dd" placeholder="开始时间"/>
+                                        </div>
+                                        <label class="col-md-1 col-form-label">结束时间</label>
+                                        <div class="col-md-2 p-0">
+                                            <input id="queryPreviewsEndDate" name="queryPreviewsEndDate"
+                                                   class="form-control input-full date-picker dbdate"
+                                                   data-date-format="yyyy-mm-dd" placeholder="结束时间"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group form-inline" style="display: none" id="queryResultBtn">
+
+                                        <label class="col-md-1 col-form-label">开始时间</label>
+                                        <div class="col-md-2 p-0">
+                                            <input id="queryResultStartDate" name="queryResultStartDate"
+                                                   class="form-control input-full date-picker dbdate"
+                                                   data-date-format="yyyy-mm-dd" placeholder="开始时间"/>
+                                        </div>
+                                        <label class="col-md-1 col-form-label">结束时间</label>
+                                        <div class="col-md-2 p-0">
+                                            <input id="queryResultEndDate" name="queryResultEndDate"
+                                                   class="form-control input-full date-picker dbdate"
+                                                   data-date-format="yyyy-mm-dd" placeholder="结束时间"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group form-inline">
+                                        <button style="margin-left: 10px" class="btn btn-info  btn-sm" type="button"
+                                                onclick="ReportHuaXiaBank.prototype.loadDataDicList()">
+											<span class="btn-label">
+												<i class="fa fa-search"></i>
+											</span>
+                                            查询
+                                        </button>
+                                        <button type="button" class="btn btn-success btn-sm" onclick="$('#frmQuery').clearAll()">
+                                            重置
+                                        </button>
+                                        <button type="button" class="btn btn-info btn-sm"
+                                                onclick="ReportHuaXiaBank.prototype.showModel()"
+                                                data-toggle="modal" href="#divBox">
+                                            <span class="btn-label">
+												<i class="fa fa-cloud-upload-alt"></i>
+											</span>
+                                            上传附件
+                                        </button>
+                                        <button type="button" class="btn btn-success btn-sm"
+                                                onclick="ReportHuaXiaBank.prototype.exportData()">
+                                            <span class="btn-label">
+												<i class="fa fa-cloud-download-alt"></i>
+											</span>
+                                            导出
+                                        </button>
+                                    </div>
+                                </form>
+                                <table class="table table-bordered" id="tb_FatherList">
+                                    <!-- cerare document add ajax data-->
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
-
+        <%@include file="/views/share/main_footer.jsp" %>
     </div>
-    <!-- end: MAIN CONTAINER -->
+
 </div>
+
 </body>
-<%@include file="/views/data/dataPropertyServiceItem.jsp" %>
-<%@include file="/views/data/dataPropertyModelQuote.jsp" %>
-<%@include file="/views/share/main_footer.jsp" %>
+
+
 <script type="text/javascript">
     $(function () {
         ReportHuaXiaBank.prototype.loadDataDicList();
@@ -159,28 +146,28 @@
 
         loadDataDicList: function () {
             var cols = [];
-            cols.push({field: 'unitName', title: '支行'});
-            cols.push({field: 'consignor', title: '委托企业名称'});
-            cols.push({field: 'projectCategoryName', title: '评估标的'});
-            cols.push({field: 'seat', title: '项目具体地址及位置'});
-            cols.push({field: 'pledger', title: '抵押人名称'});
-            cols.push({field: 'acquirePrice', title: '抵押人取得项目所有权时支付的价格'});
+            cols.push({field: 'unitName',width: '5%', title: '支行'});
+            cols.push({field: 'consignor',width: '5%', title: '委托企业名称'});
+            cols.push({field: 'projectCategoryName',width: '5%', title: '评估标的'});
+            cols.push({field: 'seat', width: '10%',title: '项目具体地址及位置'});
+            cols.push({field: 'pledger', width: '5%',title: '抵押人名称'});
+            cols.push({field: 'acquirePrice', width: '5%',title: '抵押人取得项目所有权时支付的价格'});
             cols.push({
-                field: 'acquireTieme', title: '抵押人取得项目所有权时间', formatter: function (value, row, index) {
+                field: 'acquireTieme', width: '5%',title: '抵押人取得项目所有权时间', formatter: function (value, row, index) {
                     return formatDate(row.acquireTieme, false);
                 }
             });
-            cols.push({field: 'assessTotal', title: '评估价值'});
-            cols.push({field: 'hasPreviews', title: '是否出具预评估报告'});
-            cols.push({field: 'previewsNumber', title: '预评报告文号'});
-            cols.push({field: 'hasResult', title: '是否出具正式报告'});
-            cols.push({field: 'resultNumber', title: '正式报告编号'});
+            cols.push({field: 'assessTotal', width: '5%',title: '评估价值'});
+            cols.push({field: 'hasPreviews',width: '5%', title: '是否出具预评估报告'});
+            cols.push({field: 'previewsNumber', width: '7%',title: '预评报告文号'});
+            cols.push({field: 'hasResult', width: '5%',title: '是否出具正式报告'});
+            cols.push({field: 'resultNumber',width: '7%', title: '正式报告编号'});
 
-            cols.push({field: 'contractPrice', title: '实际收费金额'});
-            cols.push({field: 'standardPrice', title: '标准收费金额'});
-            cols.push({field: 'discount', title: '实际收费折扣'});
-            cols.push({field: 'reason', title: '未出具正式评估报告的详细原因'});
-            cols.push({field: 'remark', title: '备注'});
+            cols.push({field: 'contractPrice',width: '5%', title: '实际收费金额'});
+            cols.push({field: 'standardPrice',width: '5%', title: '标准收费金额'});
+            cols.push({field: 'discount', width: '5%',title: '实际收费折扣'});
+            cols.push({field: 'reason', width: '5%',title: '未出具正式评估报告的详细原因'});
+            cols.push({field: 'remark', width: '5%',title: '备注'});
 
             $("#" + ReportHuaXiaBank.prototype.config().table).bootstrapTable('destroy');
             TableInit(ReportHuaXiaBank.prototype.config().table, "${pageContext.request.contextPath}/customReportHuaXiaBank/getCustomReportHuaXiaBankList", cols, {
