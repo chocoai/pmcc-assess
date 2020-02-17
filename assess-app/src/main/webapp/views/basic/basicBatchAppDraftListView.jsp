@@ -3,6 +3,11 @@
 <html lang="en" class="no-js">
 <head>
     <%@include file="/views/share/main_css.jsp" %>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/jquery-ui/jquery-ui.css">
+    <script src='${pageContext.request.contextPath}/assets/jquery-ui/jquery-ui.js?v=${assessVersion}'></script>
+    <style>
+        .ui-autocomplete { z-index: 215000000 !important; }
+    </style>
 </head>
 
 <body>
@@ -143,10 +148,21 @@
     </div>
 </div>
 
-
+<script src='${pageContext.request.contextPath}/js/autocomplete/estate.case.js?v=${assessVersion}'></script>
 <script type="text/javascript">
     $(function () {
         dataObjFun.loadDataList();
+        $("#" + dataObjFun.config.father.frm() + " input[name='estateName']").apEstate({
+            getProvince: function () {
+                return $("#" + dataObjFun.config.father.frm()).find("select[name='province']").val();
+            },
+            getCity: function () {
+                return $("#" + dataObjFun.config.father.frm()).find("select[name='city']").val();
+            },
+            onSelect: function (id, name) {
+                $(this).val(name);
+            }
+        });
     });
     var DataObjFun = function () {
 
@@ -215,7 +231,7 @@
             success: function (result) {
                 if (result.ret) {
                     $('#' + dataObjFun.config.father.box()).modal('hide');
-                    dataObjFun.applyIndex(result.data);
+                    dataObjFun.applyIndex(result.data,data.estateName);
                 }
                 else {
                     notifyWarning("验证失败，失败原因:" + result.errmsg);
@@ -229,9 +245,9 @@
 
 
     //jin申请
-    dataObjFun.applyIndex = function (caseEstateId) {
-        var id = caseEstateId ? caseEstateId : 0;
-        var href = "${pageContext.request.contextPath}/basicApplyBatch/basicBatchApplyIndex?caseEstateId=" + id;
+    dataObjFun.applyIndex = function (estateId,estateName) {
+        var id = estateId ? estateId : 0;
+        var href = "${pageContext.request.contextPath}/basicApplyBatch/basicBatchApplyIndex?estateId=" + id+"&estateName="+encodeURI(estateName);
         window.open(href, "");
     };
 
