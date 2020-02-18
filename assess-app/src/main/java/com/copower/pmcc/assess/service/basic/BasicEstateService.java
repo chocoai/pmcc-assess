@@ -1,10 +1,12 @@
 package com.copower.pmcc.assess.service.basic;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.BeanCopyHelp;
-import com.copower.pmcc.assess.common.enums.basic.EstateTaggingTypeEnum;
+import com.copower.pmcc.assess.common.enums.basic.BasicApplyFormNameEnum;
+import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
 import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.custom.entity.CustomCaseEntity;
-import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateLandStateDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateTaggingDao;
@@ -12,15 +14,12 @@ import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.SynchronousDataDto;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateLandStateVo;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateVo;
+import com.copower.pmcc.assess.proxy.face.BasicEntityAbstract;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.assist.DdlMySqlAssist;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
-import com.copower.pmcc.assess.service.cases.CaseEstateLandStateService;
-import com.copower.pmcc.assess.service.cases.CaseEstateParkingService;
-import com.copower.pmcc.assess.service.cases.CaseEstateService;
-import com.copower.pmcc.assess.service.cases.CaseEstateTaggingService;
 import com.copower.pmcc.assess.service.data.DataBlockService;
 import com.copower.pmcc.assess.service.data.DataDeveloperService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
@@ -58,7 +57,7 @@ import java.util.Map;
  * @Description:案例基础数据
  */
 @Service
-public class BasicEstateService {
+public class BasicEstateService extends BasicEntityAbstract {
     @Autowired
     private PublicService publicService;
     @Autowired
@@ -80,12 +79,6 @@ public class BasicEstateService {
     @Autowired
     private BasicEstateTaggingService basicEstateTaggingService;
     @Autowired
-    private CaseEstateParkingService caseEstateParkingService;
-    @Autowired
-    private CaseEstateService caseEstateService;
-    @Autowired
-    private CaseEstateLandStateService caseEstateLandStateService;
-    @Autowired
     private BasicEstateLandStateService basicEstateLandStateService;
     @Autowired
     private DdlMySqlAssist ddlMySqlAssist;
@@ -94,13 +87,9 @@ public class BasicEstateService {
     @Autowired
     private BasicApplyService basicApplyService;
     @Autowired
-    private BasicApplyBatchDetailService basicApplyBatchDetailService;
-    @Autowired
-    private BasicApplyBatchDao basicApplyBatchDao;
-    @Autowired
     private BasicEstateTaggingDao basicEstateTaggingDao;
     @Autowired
-    private CaseEstateTaggingService caseEstateTaggingService;
+    private BasicApplyBatchDetailService basicApplyBatchDetailService;
     @Autowired
     private BasicApplyBatchService basicApplyBatchService;
 
@@ -117,33 +106,6 @@ public class BasicEstateService {
     public BasicEstate getBasicEstateById(Integer id) {
         return basicEstateDao.getBasicEstateById(id);
     }
-
-    /**
-     * 新增或者修改
-     *
-     * @param basicEstate
-     * @return
-     * @throws Exception
-     */
-    public Integer saveAndUpdateBasicEstate(BasicEstate basicEstate, boolean updateNull) throws Exception {
-        if (basicEstate.getId() == null || basicEstate.getId().intValue() == 0) {
-            basicEstate.setCreator(commonService.thisUserAccount());
-            Integer id = basicEstateDao.addBasicEstate(basicEstate);
-            return id;
-        } else {
-            if (updateNull) {
-                BasicEstate estate = basicEstateDao.getBasicEstateById(basicEstate.getId());
-                if (estate != null) {
-                    basicEstate.setCreator(estate.getCreator());
-                    basicEstate.setGmtCreated(estate.getGmtCreated());
-                    basicEstate.setGmtModified(DateUtils.now());
-                }
-            }
-            basicEstateDao.updateBasicEstate(basicEstate, updateNull);
-            return basicEstate.getId();
-        }
-    }
-
 
     /**
      * 删除数据
@@ -259,6 +221,7 @@ public class BasicEstateService {
      * @throws Exception
      */
     @Transactional(rollbackFor = Exception.class)
+    @Override
     public void clearInvalidData(Integer estateId) throws Exception {
         if (estateId == null) return;
         clearInvalidChildData(estateId);
@@ -266,7 +229,7 @@ public class BasicEstateService {
         //清除标记
         BasicEstateTagging where = new BasicEstateTagging();
         where.setTableId(estateId);
-        where.setType(EstateTaggingTypeEnum.ESTATE.getKey());
+        where.setType(BasicFormClassifyEnum.ESTATE.getKey());
         basicEstateTaggingDao.removeBasicEstateTagging(where);
 
         StringBuilder sqlBulder = new StringBuilder();
@@ -278,6 +241,7 @@ public class BasicEstateService {
 
 
     @Transactional(rollbackFor = Exception.class)
+    @Override
     public void clearInvalidChildData(Integer estateId) throws Exception {
         StringBuilder sqlBulder = new StringBuilder();
         String baseSql = "update %s set bis_delete=1 where estate_id=%s;";
@@ -384,26 +348,92 @@ public class BasicEstateService {
         return objectMap;
     }
 
-    @Transactional(rollbackFor = Exception.class)
-    public BasicEstate copyBasicEstate(Integer sourceEstateId, Integer targetEstateId, Boolean containChild) throws Exception {
-        return copyBasicEstateIgnore(sourceEstateId, targetEstateId, containChild,null);
+    @Override
+    public Integer saveAndUpdate(Object o, Boolean updateNull) {
+        if (o == null) return null;
+        BasicEstate basicEstate = (BasicEstate) o;
+        if (basicEstate.getId() == null || basicEstate.getId().intValue() == 0) {
+            basicEstate.setCreator(commonService.thisUserAccount());
+            Integer id = basicEstateDao.addBasicEstate(basicEstate);
+            return id;
+        } else {
+            if (updateNull) {
+                BasicEstate estate = basicEstateDao.getBasicEstateById(basicEstate.getId());
+                if (estate != null) {
+                    basicEstate.setBisDelete(estate.getBisDelete());
+                    basicEstate.setCreator(estate.getCreator());
+                    basicEstate.setGmtCreated(estate.getGmtCreated());
+                    basicEstate.setGmtModified(DateUtils.now());
+                }
+            }
+            basicEstateDao.updateBasicEstate(basicEstate, updateNull);
+            return basicEstate.getId();
+        }
     }
 
-    /**
-     * 拷贝查勘楼盘数据
-     *
-     * @param sourceEstateId
-     * @param containChild
-     * @return
-     */
+    @Override
+    public Integer saveAndUpdateByFormData(String formData, Integer planDetailsId) throws Exception {
+        if (StringUtils.isBlank(formData)) return null;
+        JSONObject jsonObject = JSON.parseObject(formData);
+        String jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_ESTATE.getVar());
+        BasicEstate basicEstate = JSONObject.parseObject(jsonContent, BasicEstate.class);
+        //原来数据做记录,将老数据复制一条
+        BasicEstate oldBasicEstate = (BasicEstate) getBasicEntityById(basicEstate.getId());
+        BasicEstate version = (BasicEstate) copyBasicEntity(oldBasicEstate.getId(), null, false);
+        version.setRelevanceId(oldBasicEstate.getId());
+        saveAndUpdate(version, false);
+
+        if (basicEstate != null) {
+            basicEstate.setClassify(oldBasicEstate.getClassify());
+            basicEstate.setType(oldBasicEstate.getType());
+            saveAndUpdate(basicEstate, true);
+
+            if (basicEstate.getId() != null) {
+                BasicEstateLandState basicEstateLandState = null;
+                String string = jsonObject.getString(BasicApplyFormNameEnum.BASIC_ESTATELAND_STATE.getVar());
+                basicEstateLandState = JSONObject.parseObject(string, BasicEstateLandState.class);
+                if (basicEstateLandState != null) {
+                    basicEstateLandState.setLandLevelContent(org.apache.commons.lang.StringUtils.isNotEmpty(basicEstateLandState.getLandLevelContent()) ? basicEstateLandState.getLandLevelContent() : null);
+                    basicEstateLandState.setEstateId(basicEstate.getId());
+                    basicEstateLandStateService.saveAndUpdateBasicEstateLandState(basicEstateLandState, true);
+                }
+            }
+            BasicApplyBatchDetail estateDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(FormatUtils.entityNameConvertToTableName(BasicEstate.class), basicEstate.getId());
+            if (estateDetail != null) {
+                estateDetail.setName(basicEstate.getName());
+                estateDetail.setDisplayName(basicEstate.getName());
+                basicApplyBatchDetailService.saveBasicApplyBatchDetail(estateDetail);
+
+                BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchById(estateDetail.getApplyBatchId());
+                if (basicApplyBatch != null) {
+                    basicApplyBatch.setEstateId(basicEstate.getId());
+                    basicApplyBatch.setEstateName(basicEstate.getName());
+                    basicApplyBatchService.saveBasicApplyBatch(basicApplyBatch);
+                }
+            }
+        }
+        return basicEstate.getId();
+    }
+
+    @Override
+    public Object getBasicEntityById(Integer id) {
+        return basicEstateDao.getBasicEstateById(id);
+    }
+
+    @Override
+    public Object copyBasicEntity(Integer sourceId, Integer targetId, Boolean containChild) throws Exception {
+        return copyBasicEntityIgnore(sourceId, targetId, containChild, null);
+    }
+
+    @Override
     @Transactional(rollbackFor = Exception.class)
-    public BasicEstate copyBasicEstateIgnore(Integer sourceEstateId, Integer targetEstateId, Boolean containChild, List<String> ignoreList) throws Exception {
-        if (sourceEstateId == null) return null;
-        BasicEstate sourceBasicEstate = getBasicEstateById(sourceEstateId);
+    public Object copyBasicEntityIgnore(Integer sourceId, Integer targetId, Boolean containChild, List<String> ignoreList) throws Exception {
+        if (sourceId == null) return null;
+        BasicEstate sourceBasicEstate = getBasicEstateById(sourceId);
         if (sourceBasicEstate == null) return null;
-        BasicEstate targetBasicEstate = getBasicEstateById(targetEstateId);
+        BasicEstate targetBasicEstate = getBasicEstateById(targetId);
         if (CollectionUtils.isEmpty(ignoreList)) ignoreList = Lists.newArrayList();
-        ignoreList.addAll(BaseConstant.ASSESS_IGNORE_STRING_LIST);
+        ignoreList.addAll(Lists.newArrayList(BaseConstant.ASSESS_IGNORE_ARRAY));
         if (targetBasicEstate == null) {
             targetBasicEstate = new BasicEstate();
             BeanUtils.copyProperties(sourceBasicEstate, targetBasicEstate, ignoreList.toArray(new String[ignoreList.size()]));
@@ -411,10 +441,10 @@ public class BasicEstateService {
         } else {
             BeanUtils.copyProperties(sourceBasicEstate, targetBasicEstate, ignoreList.toArray(new String[ignoreList.size()]));
         }
-        this.saveAndUpdateBasicEstate(targetBasicEstate, true);
+        this.saveAndUpdate(targetBasicEstate, true);
 
         //土地信息
-        BasicEstateLandState sourceEstateLandState = basicEstateLandStateService.getLandStateByEstateId(sourceEstateId);
+        BasicEstateLandState sourceEstateLandState = basicEstateLandStateService.getLandStateByEstateId(sourceId);
         if (sourceEstateLandState != null) {
             BasicEstateLandState targeEstateLandState = basicEstateLandStateService.getLandStateByEstateId(targetBasicEstate.getId());
             if (targeEstateLandState == null) {
@@ -431,22 +461,22 @@ public class BasicEstateService {
             }
             basicEstateLandStateService.saveAndUpdateBasicEstateLandState(targeEstateLandState, true);
         }
-        if (targetEstateId != null && targetEstateId > 0) {//目标数据已存在，先清理目标数据的从表数据
-            clearInvalidChildData(targetEstateId);
+        if (targetId != null && targetId > 0) {//目标数据已存在，先清理目标数据的从表数据
+            clearInvalidChildData(targetId);
 
             SysAttachmentDto where = new SysAttachmentDto();
             where.setTableName(FormatUtils.entityNameConvertToTableName(BasicEstate.class));
-            where.setTableId(targetEstateId);
+            where.setTableId(targetId);
             baseAttachmentService.deleteAttachmentByDto(where);
         }
         //附件拷贝
-        baseAttachmentService.copyFtpAttachments(FormatUtils.entityNameConvertToTableName(BasicEstate.class), sourceEstateId, targetBasicEstate.getId());
+        baseAttachmentService.copyFtpAttachments(FormatUtils.entityNameConvertToTableName(BasicEstate.class), sourceId, targetBasicEstate.getId());
         //标记tagging
-        basicEstateTaggingService.copyTagging(EstateTaggingTypeEnum.ESTATE, sourceEstateId, targetBasicEstate.getId());
+        basicEstateTaggingService.copyTagging(BasicFormClassifyEnum.ESTATE, sourceId, targetBasicEstate.getId());
         if (containChild) { //处理从表数据
             try {  //停车场数据
                 BasicEstateParking estateParking = new BasicEstateParking();
-                estateParking.setEstateId(sourceEstateId);
+                estateParking.setEstateId(sourceId);
                 List<BasicEstateParking> oldBasicEstateParkings = basicEstateParkingService.basicEstateParkingList(estateParking);
                 if (!ObjectUtils.isEmpty(oldBasicEstateParkings)) {
                     for (BasicEstateParking oldBasicEstateParking : oldBasicEstateParkings) {
@@ -473,7 +503,7 @@ public class BasicEstateService {
             map.put("creator", commonService.thisUserAccount());
             synchronousDataDto.setFieldDefaultValue(map);
             synchronousDataDto.setSourceDataBase(BaseConstant.DATABASE_PMCC_ASSESS);
-            synchronousDataDto.setWhereSql("estate_id=" + sourceEstateId);
+            synchronousDataDto.setWhereSql("estate_id=" + sourceId);
             synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicEstateNetwork.class));
             synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicEstateNetwork.class));
             sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//通信网络sql
@@ -514,5 +544,4 @@ public class BasicEstateService {
         }
         return targetBasicEstate;
     }
-
 }

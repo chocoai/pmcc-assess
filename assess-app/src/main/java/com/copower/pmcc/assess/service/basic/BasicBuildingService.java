@@ -1,6 +1,9 @@
 package com.copower.pmcc.assess.service.basic;
 
-import com.copower.pmcc.assess.common.enums.basic.EstateTaggingTypeEnum;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.copower.pmcc.assess.common.enums.basic.BasicApplyFormNameEnum;
+import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
 import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.custom.entity.CustomCaseEntity;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicBuildingDao;
@@ -8,6 +11,7 @@ import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateTaggingDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.SynchronousDataDto;
 import com.copower.pmcc.assess.dto.output.basic.BasicBuildingVo;
+import com.copower.pmcc.assess.proxy.face.BasicEntityAbstract;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.assist.DdlMySqlAssist;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
@@ -49,7 +53,7 @@ import java.util.List;
  * @Description:案例基础数据
  */
 @Service
-public class BasicBuildingService {
+public class BasicBuildingService extends BasicEntityAbstract {
     @Autowired
     private CommonService commonService;
     @Autowired
@@ -76,6 +80,8 @@ public class BasicBuildingService {
     private CrmRpcBaseDataDicService crmRpcBaseDataDicService;
     @Autowired
     private BasicEstateTaggingDao basicEstateTaggingDao;
+    @Autowired
+    private BasicApplyBatchDetailService basicApplyBatchDetailService;
 
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -94,32 +100,6 @@ public class BasicBuildingService {
     public BasicBuildingVo getBasicBuildingById(Integer id) {
         BasicBuilding basicBuilding = basicBuildingDao.getBasicBuildingById(id);
         return getBasicBuildingVo(basicBuilding);
-    }
-
-    /**
-     * 新增或者修改
-     *
-     * @param basicBuilding
-     * @return
-     * @throws Exception
-     */
-    public Integer saveAndUpdateBasicBuilding(BasicBuilding basicBuilding, boolean updateNull) throws Exception {
-        if (basicBuilding.getId() == null || basicBuilding.getId().intValue() == 0) {
-            basicBuilding.setCreator(commonService.thisUserAccount());
-            Integer id = basicBuildingDao.addBasicBuilding(basicBuilding);
-            return id;
-        } else {
-            if (updateNull) {
-                BasicBuilding building = basicBuildingDao.getBasicBuildingById(basicBuilding.getId());
-                if (building != null) {
-                    basicBuilding.setCreator(building.getCreator());
-                    basicBuilding.setGmtCreated(building.getGmtCreated());
-                    basicBuilding.setGmtModified(DateUtils.now());
-                }
-            }
-            basicBuildingDao.updateBasicBuilding(basicBuilding, updateNull);
-            return basicBuilding.getId();
-        }
     }
 
     /**
@@ -265,6 +245,7 @@ public class BasicBuildingService {
      * @throws Exception
      */
     @Transactional(rollbackFor = Exception.class)
+    @Override
     public void clearInvalidData(Integer buildingId) throws Exception {
         if (buildingId == null) return;
         clearInvalidChildData(buildingId);//清理从表数据
@@ -272,7 +253,7 @@ public class BasicBuildingService {
         //清除标记
         BasicEstateTagging where = new BasicEstateTagging();
         where.setTableId(buildingId);
-        where.setType(EstateTaggingTypeEnum.BUILDING.getKey());
+        where.setType(BasicFormClassifyEnum.BUILDING.getKey());
         basicEstateTaggingDao.removeBasicEstateTagging(where);
 
         StringBuilder sqlBulder = new StringBuilder();
@@ -287,6 +268,7 @@ public class BasicBuildingService {
      * @throws Exception
      */
     @Transactional(rollbackFor = Exception.class)
+    @Override
     public void clearInvalidChildData(Integer buildingId) throws Exception {
         StringBuilder sqlBulder = new StringBuilder();
         String baseSql = "update %s set bis_delete=1 where building_id=%s;";
@@ -297,28 +279,76 @@ public class BasicBuildingService {
         ddlMySqlAssist.customTableDdl(sqlBulder.toString());
     }
 
-    @Transactional(rollbackFor = Exception.class)
-    public BasicBuilding copyBasicBuilding(Integer sourceBuildingId, Integer targetBuildingId, Boolean containChild) throws Exception {
-        return copyBasicBuildingIgnore(sourceBuildingId, targetBuildingId, containChild,null);
+    @Override
+    public Integer saveAndUpdate(Object o, Boolean updateNull) {
+        if (o == null) return null;
+        BasicBuilding basicBuilding = (BasicBuilding) o;
+        if (basicBuilding.getId() == null || basicBuilding.getId().intValue() == 0) {
+            basicBuilding.setCreator(commonService.thisUserAccount());
+            Integer id = basicBuildingDao.addBasicBuilding(basicBuilding);
+            return id;
+        } else {
+            if (updateNull) {
+                BasicBuilding building = basicBuildingDao.getBasicBuildingById(basicBuilding.getId());
+                if (building != null) {
+                    basicBuilding.setCreator(building.getCreator());
+                    basicBuilding.setGmtCreated(building.getGmtCreated());
+                    basicBuilding.setGmtModified(DateUtils.now());
+                }
+            }
+            basicBuildingDao.updateBasicBuilding(basicBuilding, updateNull);
+            return basicBuilding.getId();
+        }
     }
 
-    /**
-     * 拷贝查勘楼栋数据
-     *
-     * @param sourceBuildingId
-     * @param targetBuildingId
-     * @param containChild     是否包含从表数据
-     * @return
-     * @throws Exception
-     */
+    @Override
+    public Integer saveAndUpdateByFormData(String formData, Integer planDetailsId) throws Exception {
+        if (StringUtils.isBlank(formData)) return null;
+        JSONObject jsonObject = JSON.parseObject(formData);
+        BasicBuilding basicBuilding = null;
+        String jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_BUILDING.getVar());
+        if (StringUtils.isNotBlank(jsonContent)) {
+            basicBuilding = JSONObject.parseObject(jsonContent, BasicBuilding.class);
+            //原来数据做记录,将老数据复制一条
+            BasicBuilding oldBasicBuilding = getBasicBuildingById(basicBuilding.getId());
+            BasicBuilding version = (BasicBuilding) copyBasicEntity(oldBasicBuilding.getId(), null, false);
+            version.setRelevanceId(oldBasicBuilding.getId());
+            version.setEstateId(0);
+            saveAndUpdate(version, false);
+
+            if (basicBuilding != null) {
+                saveAndUpdate(basicBuilding, true);
+                BasicApplyBatchDetail buildingDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(FormatUtils.entityNameConvertToTableName(BasicBuilding.class), basicBuilding.getId());
+                if (buildingDetail != null) {
+                    buildingDetail.setName(basicBuilding.getBuildingNumber());
+                    buildingDetail.setDisplayName(basicBuilding.getBuildingName());
+                    basicApplyBatchDetailService.saveBasicApplyBatchDetail(buildingDetail);
+                }
+                return basicBuilding.getId();
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Object getBasicEntityById(Integer id) {
+        return getBasicBuildingById(id);
+    }
+
+    @Override
+    public Object copyBasicEntity(Integer sourceId, Integer targetId, Boolean containChild) throws Exception {
+        return copyBasicEntityIgnore(sourceId, targetId, containChild, null);
+    }
+
+    @Override
     @Transactional(rollbackFor = Exception.class)
-    public BasicBuilding copyBasicBuildingIgnore(Integer sourceBuildingId, Integer targetBuildingId, Boolean containChild, List<String> ignoreList) throws Exception {
-        if (sourceBuildingId == null) return null;
-        BasicBuilding sourceBasicBuilding = getBasicBuildingById(sourceBuildingId);
+    public Object copyBasicEntityIgnore(Integer sourceId, Integer targetId, Boolean containChild, List<String> ignoreList) throws Exception {
+        if (sourceId == null) return null;
+        BasicBuilding sourceBasicBuilding = getBasicBuildingById(sourceId);
         if (sourceBasicBuilding == null) return null;
-        BasicBuilding targetBasicBuilding = getBasicBuildingById(targetBuildingId);
+        BasicBuilding targetBasicBuilding = getBasicBuildingById(targetId);
         if (CollectionUtils.isEmpty(ignoreList)) ignoreList = Lists.newArrayList();
-        ignoreList.addAll(BaseConstant.ASSESS_IGNORE_STRING_LIST);
+        ignoreList.addAll(Lists.newArrayList(BaseConstant.ASSESS_IGNORE_ARRAY));
         if (targetBasicBuilding == null) {
             targetBasicBuilding = new BasicBuilding();
             BeanUtils.copyProperties(sourceBasicBuilding, targetBasicBuilding, ignoreList.toArray(new String[ignoreList.size()]));
@@ -326,18 +356,18 @@ public class BasicBuildingService {
         } else {
             BeanUtils.copyProperties(sourceBasicBuilding, targetBasicBuilding, ignoreList.toArray(new String[ignoreList.size()]));
         }
-        this.saveAndUpdateBasicBuilding(targetBasicBuilding, true);
+        this.saveAndUpdate(targetBasicBuilding, true);
 
-        if (targetBuildingId != null && targetBuildingId > 0) {//目标数据已存在，先清理目标数据的从表数据
-            clearInvalidChildData(targetBuildingId);
+        if (targetId != null && targetId > 0) {//目标数据已存在，先清理目标数据的从表数据
+            clearInvalidChildData(targetId);
 
-            SysAttachmentDto where=new SysAttachmentDto();
+            SysAttachmentDto where = new SysAttachmentDto();
             where.setTableName(FormatUtils.entityNameConvertToTableName(BasicBuilding.class));
-            where.setTableId(targetBuildingId);
+            where.setTableId(targetId);
             baseAttachmentService.deleteAttachmentByDto(where);
         }
-        baseAttachmentService.copyFtpAttachments(FormatUtils.entityNameConvertToTableName(BasicBuilding.class), sourceBuildingId, targetBasicBuilding.getId());//附件拷贝
-        basicEstateTaggingService.copyTagging(EstateTaggingTypeEnum.BUILDING, sourceBuildingId, targetBasicBuilding.getId());//标记tagging
+        baseAttachmentService.copyFtpAttachments(FormatUtils.entityNameConvertToTableName(BasicBuilding.class), sourceId, targetBasicBuilding.getId());//附件拷贝
+        basicEstateTaggingService.copyTagging(BasicFormClassifyEnum.BUILDING, sourceId, targetBasicBuilding.getId());//标记tagging
 
         if (containChild) { //处理从表数据
             StringBuilder sqlBuilder = new StringBuilder();
@@ -346,7 +376,7 @@ public class BasicBuildingService {
             map.put("building_id", String.valueOf(targetBasicBuilding.getId()));
             map.put("creator", commonService.thisUserAccount());
             synchronousDataDto.setFieldDefaultValue(map);
-            synchronousDataDto.setWhereSql("building_id=" + sourceBuildingId);
+            synchronousDataDto.setWhereSql("building_id=" + sourceId);
             synchronousDataDto.setSourceDataBase(BaseConstant.DATABASE_PMCC_ASSESS);
             synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicBuildingOutfit.class));
             synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicBuildingOutfit.class));

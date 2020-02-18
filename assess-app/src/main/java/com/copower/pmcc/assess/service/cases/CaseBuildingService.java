@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.service.cases;
 
-import com.copower.pmcc.assess.common.enums.basic.EstateTaggingTypeEnum;
+import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
 import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDetailDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
@@ -292,7 +292,7 @@ public class CaseBuildingService {
         basicBuilding.setEstateId(null);
         basicBuilding.setEstateId(oldBasicBuilding.getEstateId());
 
-        basicBuildingService.saveAndUpdateBasicBuilding(basicBuilding, false);
+        basicBuildingService.saveAndUpdate(basicBuilding, false);
 
         //删除原有的附件
         SysAttachmentDto deleteExample = new SysAttachmentDto();
@@ -316,7 +316,7 @@ public class CaseBuildingService {
 
         CaseEstateTagging oldCaseEstateTagging = new CaseEstateTagging();
         oldCaseEstateTagging.setTableId(id);
-        oldCaseEstateTagging.setType(EstateTaggingTypeEnum.BUILDING.getKey());
+        oldCaseEstateTagging.setType(BasicFormClassifyEnum.BUILDING.getKey());
         List<CaseEstateTagging> oldCaseEstateTaggingList = caseEstateTaggingService.getCaseEstateTaggingList(oldCaseEstateTagging);
         if (!ObjectUtils.isEmpty(oldCaseEstateTaggingList)) {
             BasicEstateTagging basicEstateTagging = new BasicEstateTagging();

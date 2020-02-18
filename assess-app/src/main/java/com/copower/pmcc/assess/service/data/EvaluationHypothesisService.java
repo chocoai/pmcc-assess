@@ -18,6 +18,7 @@ import com.copower.pmcc.assess.service.basic.BasicBuildingService;
 import com.copower.pmcc.assess.service.basic.BasicHouseService;
 import com.copower.pmcc.assess.service.project.generate.GenerateCommonMethod;
 import com.copower.pmcc.assess.service.project.generate.GenerateReportInfoService;
+import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryContentService;
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryService;
@@ -88,6 +89,8 @@ public class EvaluationHypothesisService {
     private SurveyAssetRightGroupService surveyAssetRightGroupService;
     @Autowired
     private PublicService publicService;
+    @Autowired
+    private SchemeAreaGroupService schemeAreaGroupService;
 
 
     /**
@@ -197,6 +200,8 @@ public class EvaluationHypothesisService {
         StringBuilder stringBuilder = new StringBuilder();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
         SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy年MM月dd日");
+        SchemeAreaGroup schemeAreaGroup = schemeAreaGroupService.getSchemeAreaGroup(areaGroupId);
+
         //对应委估对象
         List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaGroupId);
         Integer order = 0;
@@ -368,7 +373,7 @@ public class EvaluationHypothesisService {
             //背离事实假设
             if (AssessReportFieldConstant.HYPOTHESIS_DEPART_FROM_FACT.equals(basis.getFieldName())) {
                 //评估基准日
-                Date valuationDate = projectInfo.getValuationDate();
+                Date valuationDate = schemeAreaGroup.getValueTimePoint();
                 //查勘结束日期
                 GenerateReportInfo generateReportInfo = new GenerateReportInfo();
                 generateReportInfo.setProjectId(projectInfo.getId());

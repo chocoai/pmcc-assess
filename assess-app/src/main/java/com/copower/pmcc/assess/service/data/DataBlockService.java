@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.service.data;
 
-import com.copower.pmcc.assess.common.enums.basic.EstateTaggingTypeEnum;
+import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
 import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateLandStateDao;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataBlockDao;
@@ -239,7 +239,7 @@ public class DataBlockService {
                 BeanUtils.copyProperties(caseEstate, basicEstate);
                 basicEstate.setId(null);
                 basicEstate.setBisCase(true);
-                basicEstateService.saveAndUpdateBasicEstate(basicEstate,false);
+                basicEstateService.saveAndUpdate(basicEstate,false);
 
                 //附件拷贝
                 SysAttachmentDto example = new SysAttachmentDto();
@@ -263,7 +263,7 @@ public class DataBlockService {
 
                 CaseEstateTagging oldCaseEstateTagging = new CaseEstateTagging();
                 oldCaseEstateTagging.setTableId(caseEstate.getId());
-                oldCaseEstateTagging.setType(EstateTaggingTypeEnum.ESTATE.getKey());
+                oldCaseEstateTagging.setType(BasicFormClassifyEnum.ESTATE.getKey());
                 List<CaseEstateTagging> oldCaseEstateTaggingList = caseEstateTaggingService.getCaseEstateTaggingList(oldCaseEstateTagging);
                 if (!ObjectUtils.isEmpty(oldCaseEstateTaggingList)) {
                     BasicEstateTagging basicEstateTagging = new BasicEstateTagging();
@@ -355,11 +355,11 @@ public class DataBlockService {
                         basicBuilding.setId(null);
                         basicBuilding.setEstateId(basicEstate.getId());
                         basicBuilding.setBisCase(true);
-                        basicBuildingService.saveAndUpdateBasicBuilding(basicBuilding, false);
+                        basicBuildingService.saveAndUpdate(basicBuilding, false);
 
                         oldCaseEstateTagging = new CaseEstateTagging();
                         oldCaseEstateTagging.setTableId(caseBuilding.getId());
-                        oldCaseEstateTagging.setType(EstateTaggingTypeEnum.BUILDING.getKey());
+                        oldCaseEstateTagging.setType(BasicFormClassifyEnum.BUILDING.getKey());
                         oldCaseEstateTaggingList = caseEstateTaggingService.getCaseEstateTaggingList(oldCaseEstateTagging);
                         if (!ObjectUtils.isEmpty(oldCaseEstateTaggingList)) {
                             BasicEstateTagging basicEstateTagging = new BasicEstateTagging();
@@ -407,7 +407,7 @@ public class DataBlockService {
                                 basicUnit.setEstateId(basicEstate.getId());
                                 basicUnit.setBuildingId(basicBuilding.getId());
                                 basicUnit.setBisCase(true);
-                                basicUnitService.saveAndUpdateBasicUnit(basicUnit, false);
+                                basicUnitService.saveAndUpdate(basicUnit, false);
 
                                 //附件拷贝
                                 example = new SysAttachmentDto();
@@ -420,7 +420,7 @@ public class DataBlockService {
 
                                 oldCaseEstateTagging = new CaseEstateTagging();
                                 oldCaseEstateTagging.setTableId(caseUnit.getId());
-                                oldCaseEstateTagging.setType(EstateTaggingTypeEnum.UNIT.getKey());
+                                oldCaseEstateTagging.setType(BasicFormClassifyEnum.UNIT.getKey());
                                 List<CaseEstateTagging> oldCaseUnitTaggingList = caseEstateTaggingService.getCaseEstateTaggingList(oldCaseEstateTagging);
                                 if (!ObjectUtils.isEmpty(oldCaseUnitTaggingList)) {
                                     BasicEstateTagging basicEstateTagging = new BasicEstateTagging();
@@ -487,7 +487,7 @@ public class DataBlockService {
                                         basicHouse.setBuildingId(basicBuilding.getId());
                                         basicHouse.setUnitId(basicUnit.getId());
                                         basicHouse.setBisCase(true);
-                                        basicHouseService.saveAndUpdateBasicHouse(basicHouse, false);
+                                        basicHouseService.saveAndUpdate(basicHouse, false);
 
                                         CaseHouseTrading queryTrading = new CaseHouseTrading();
                                         queryTrading.setHouseId(caseHouse.getId());

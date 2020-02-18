@@ -79,7 +79,7 @@ public class BasicHouseController {
     @RequestMapping(value = "/saveAndUpdateBasicHouse", name = "新增或者修改", method = {RequestMethod.POST})
     public HttpResult saveAndUpdateBasicHouse(BasicHouse basicHouse) {
         try {
-            return HttpResult.newCorrectResult(basicHouseService.saveAndUpdateBasicHouse(basicHouse, true));
+            return HttpResult.newCorrectResult(basicHouseService.saveAndUpdate(basicHouse, true));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(500, e.getMessage());
@@ -182,7 +182,7 @@ public class BasicHouseController {
             BasicAlternativeCase alternativeCase = basicAlternativeCaseDao.getBasicAlternativeCaseById(id);
             BasicApplyBatchDetail applyBatchDetail = basicApplyBatchDetailDao.getInfoById(alternativeCase.getBusinessId());
             List<String> ignoreList= Lists.newArrayList("estateId","buildingId","unitId");
-            BasicHouse basicHouse = basicHouseService.copyBasicHouseIgnore(applyBatchDetail.getTableId(), tableId, true,ignoreList);
+            BasicHouse basicHouse = (BasicHouse)basicHouseService.copyBasicEntityIgnore(applyBatchDetail.getTableId(), tableId, true,ignoreList);
             return HttpResult.newCorrectResult(basicHouse);
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
@@ -195,10 +195,10 @@ public class BasicHouseController {
     public HttpResult quoteCaseHouse(Integer sourceId, Integer targetId) {
         try {
             List<String> ignoreList= Lists.newArrayList("estateId","buildingId","unitId");
-            BasicHouse basicHouse = basicHouseService.copyBasicHouseIgnore(sourceId, targetId, true,ignoreList);
+            BasicHouse basicHouse = (BasicHouse)basicHouseService.copyBasicEntityIgnore(sourceId, targetId, true,ignoreList);
             basicHouse.setQuoteId(sourceId);
             basicHouse.setBisCase(false);
-            basicHouseService.saveAndUpdateBasicHouse(basicHouse, false);
+            basicHouseService.saveAndUpdate(basicHouse, false);
             return HttpResult.newCorrectResult(basicHouse);
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);

@@ -69,7 +69,7 @@ public class BasicUnitController {
     @RequestMapping(value = "/saveAndUpdateBasicUnit", name = "新增或者修改", method = {RequestMethod.POST})
     public HttpResult saveAndUpdateBasicUnit(BasicUnit basicUnit) {
         try {
-            return HttpResult.newCorrectResult(basicUnitService.saveAndUpdateBasicUnit(basicUnit, true));
+            return HttpResult.newCorrectResult(basicUnitService.saveAndUpdate(basicUnit, true));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(500, e.getMessage());
@@ -148,8 +148,8 @@ public class BasicUnitController {
         try {
             BasicAlternativeCase alternativeCase = basicAlternativeCaseDao.getBasicAlternativeCaseById(id);
             BasicApplyBatchDetail applyBatchDetail = basicApplyBatchDetailDao.getInfoById(alternativeCase.getBusinessId());
-            ArrayList<String> ignoreList = Lists.newArrayList("estateId","buildingId");
-            BasicUnit basicUnit = basicUnitService.copyBasicUnitIgnore(applyBatchDetail.getTableId(), tableId, true, ignoreList);
+            ArrayList<String> ignoreList = Lists.newArrayList("estateId", "buildingId");
+            BasicUnit basicUnit = (BasicUnit) basicUnitService.copyBasicEntityIgnore(applyBatchDetail.getTableId(), tableId, true, ignoreList);
             return HttpResult.newCorrectResult(basicUnit);
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
@@ -161,11 +161,11 @@ public class BasicUnitController {
     @RequestMapping(value = "/quoteCaseUnit", name = "引用案列数据", method = {RequestMethod.GET})
     public HttpResult quoteCaseUnit(Integer sourceId, Integer targetId) {
         try {
-            ArrayList<String> ignoreList = Lists.newArrayList("estateId","buildingId");
-            BasicUnit basicUnit = basicUnitService.copyBasicUnitIgnore(sourceId, targetId, true,ignoreList);
+            ArrayList<String> ignoreList = Lists.newArrayList("estateId", "buildingId");
+            BasicUnit basicUnit = (BasicUnit) basicUnitService.copyBasicEntityIgnore(sourceId, targetId, true, ignoreList);
             basicUnit.setQuoteId(sourceId);
             basicUnit.setBisCase(false);
-            basicUnitService.saveAndUpdateBasicUnit(basicUnit,false);
+            basicUnitService.saveAndUpdate(basicUnit, false);
             return HttpResult.newCorrectResult(basicUnit);
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);

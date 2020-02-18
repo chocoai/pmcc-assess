@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.service.basic;
 
 import com.alibaba.fastjson.JSON;
-import com.copower.pmcc.assess.common.enums.basic.EstateTaggingTypeEnum;
+import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateTaggingDao;
 import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchDetail;
 import com.copower.pmcc.assess.dal.basis.entity.BasicEstateTagging;
@@ -147,7 +147,7 @@ public class BasicEstateTaggingService {
         basicEstateTaggingDao.removeBasicEstateTagging(basicEstateTagging);
     }
 
-    public Boolean hasBasicEstateTagging(Integer tableId, EstateTaggingTypeEnum estateTaggingTypeEnum) {
+    public Boolean hasBasicEstateTagging(Integer tableId, BasicFormClassifyEnum estateTaggingTypeEnum) {
         BasicEstateTagging basicEstateTagging = new BasicEstateTagging();
         basicEstateTagging.setTableId(tableId);
         basicEstateTagging.setType(estateTaggingTypeEnum.getKey());
@@ -165,13 +165,13 @@ public class BasicEstateTaggingService {
     public BasicEstateTagging getUnitTagging(String unitPartInMode, Integer tableId, Integer caseUnitId) throws Exception {
         BasicEstateTagging tagging = new BasicEstateTagging();
         if (StringUtils.isBlank(unitPartInMode)) {
-            CaseEstateTagging caseEstateTagging = caseEstateTaggingService.getCaseEstateTagging(caseUnitId, EstateTaggingTypeEnum.UNIT.getKey());
+            CaseEstateTagging caseEstateTagging = caseEstateTaggingService.getCaseEstateTagging(caseUnitId, BasicFormClassifyEnum.UNIT.getKey());
             if (caseEstateTagging == null) return null;
             BeanUtils.copyProperties(caseEstateTagging, tagging);
         } else {
             BasicEstateTagging where = new BasicEstateTagging();
             where.setTableId(tableId);
-            where.setType(EstateTaggingTypeEnum.UNIT.getKey());
+            where.setType(BasicFormClassifyEnum.UNIT.getKey());
 
             List<BasicEstateTagging> taggingList = basicEstateTaggingDao.getBasicEstateTaggingList(where);
             if (!CollectionUtils.isEmpty(taggingList))
@@ -203,7 +203,7 @@ public class BasicEstateTaggingService {
     public void deleteHouseTagging(Integer tableId) throws SQLException {
         BasicEstateTagging where = new BasicEstateTagging();
         where.setTableId(tableId);
-        where.setType(EstateTaggingTypeEnum.HOUSE.getKey());
+        where.setType(BasicFormClassifyEnum.HOUSE.getKey());
 
         List<BasicEstateTagging> taggingList = basicEstateTaggingDao.getBasicEstateTaggingList(where);
         if (CollectionUtils.isEmpty(taggingList)) return;
@@ -235,7 +235,7 @@ public class BasicEstateTaggingService {
      * @param targetId
      * @throws Exception
      */
-    public void copyTagging(EstateTaggingTypeEnum taggingTypeEnum,Integer sourceId,Integer targetId) throws Exception {
+    public void copyTagging(BasicFormClassifyEnum taggingTypeEnum, Integer sourceId, Integer targetId) throws Exception {
         BasicEstateTagging oldBasicEstateTagging = new BasicEstateTagging();
         oldBasicEstateTagging.setTableId(sourceId);
         oldBasicEstateTagging.setType(taggingTypeEnum.getKey());

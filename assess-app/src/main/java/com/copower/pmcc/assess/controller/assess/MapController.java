@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.controller.assess;
 
 import com.alibaba.fastjson.JSONObject;
-import com.copower.pmcc.assess.common.enums.basic.EstateTaggingTypeEnum;
+import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
 import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatch;
 import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchDetail;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateTaggingVo;
@@ -14,8 +14,6 @@ import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.google.common.base.Objects;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -57,7 +55,7 @@ public class MapController {
     @RequestMapping(value = "/landTagging", name = "土地标注画区块", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView landTagging(String readonly, Integer applyId) {
         ModelAndView modelAndView = new ModelAndView("base/landTaggingView");
-        List<BasicEstateTaggingVo> taggingVoList = basicEstateTaggingService.getEstateTaggingList(applyId, EstateTaggingTypeEnum.ESTATE.getKey());
+        List<BasicEstateTaggingVo> taggingVoList = basicEstateTaggingService.getEstateTaggingList(applyId, BasicFormClassifyEnum.ESTATE.getKey());
         if (CollectionUtils.isNotEmpty(taggingVoList)) {
             if (StringUtils.isNotEmpty(taggingVoList.stream().findFirst().get().getPathArray())) {
                 modelAndView.addObject("pathArray", taggingVoList.stream().findFirst().get().getPathArray());

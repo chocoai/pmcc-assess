@@ -9,13 +9,13 @@ import com.copower.pmcc.assess.service.NetInfoRecordHouseService;
 import com.copower.pmcc.assess.service.NetInfoRecordLandService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.basic.BasicHouseCaseSummaryService;
+import com.copower.pmcc.assess.service.basic.PublicBasicService;
 import com.copower.pmcc.assess.service.event.BaseProcessEvent;
 import com.copower.pmcc.bpm.api.dto.model.ProcessExecution;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -40,6 +40,8 @@ public class NetInfoAssignTaskEvent extends BaseProcessEvent {
     private BasicHouseCaseSummaryService basicHouseCaseSummaryService;
     @Autowired
     private BaseAttachmentService baseAttachmentService;
+    @Autowired
+    private PublicBasicService publicBasicService;
 
     @Override
     public void processFinishExecute(ProcessExecution processExecution) throws Exception {
@@ -63,14 +65,14 @@ public class NetInfoAssignTaskEvent extends BaseProcessEvent {
                 o.setStatus(1);
                 netInfoRecordHouseDao.updateNetInfoRecordHouse(o, true);
                 //验证后写入到标准表中
-                String fullName = getFullName(o.getName(), o.getBuildingNumber(), o.getUnitNumber(), o.getHouseNumber());
+                String fullName = publicBasicService.getFullName(o.getName(), o.getBuildingNumber(), o.getUnitNumber(), o.getHouseNumber());
                 if (basicHouseCaseSummaryService.getCountByFullName(fullName) <= 0) {
                     BasicHouseCaseSummary basicHouseCaseSummary = new BasicHouseCaseSummary();
                     basicHouseCaseSummary.setCaseHouseId(o.getId());
                     basicHouseCaseSummary.setProvince(o.getProvince());
                     basicHouseCaseSummary.setCity(o.getCity());
                     basicHouseCaseSummary.setDistrict(o.getDistrict());
-                    basicHouseCaseSummary.setFullName(getFullName(o.getName(), o.getBuildingNumber(), o.getUnitNumber(), o.getHouseNumber()));
+                    basicHouseCaseSummary.setFullName(publicBasicService.getFullName(o.getName(), o.getBuildingNumber(), o.getUnitNumber(), o.getHouseNumber()));
                     basicHouseCaseSummary.setStreet(o.getStreet());
                     basicHouseCaseSummary.setTradingTime(o.getNegotiatedDate());
                     basicHouseCaseSummary.setTradingUnitPrice(o.getUnitPrice());
@@ -110,18 +112,5 @@ public class NetInfoAssignTaskEvent extends BaseProcessEvent {
                 netInfoRecordLandDao.updateNetInfoRecordLand(o, true);
             });
         }
-    }
-
-    private String getFullName(String estateName, String buildingNumber, String unitNumber, String houseNumber) {
-        StringBuilder stringBuilder = new StringBuilder();
-        if (StringUtils.isNotBlank(estateName))
-            stringBuilder.append(estateName);
-        if (StringUtils.isNotBlank(buildingNumber))
-            stringBuilder.append(buildingNumber).append("栋");
-        if (StringUtils.isNotBlank(unitNumber))
-            stringBuilder.append(unitNumber).append("单元");
-        if (StringUtils.isNotBlank(houseNumber))
-            stringBuilder.append(houseNumber).append("号");
-        return stringBuilder.toString().replaceAll("号+?", "号");
     }
 }

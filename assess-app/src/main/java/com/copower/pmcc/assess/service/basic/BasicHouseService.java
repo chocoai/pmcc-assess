@@ -1,6 +1,9 @@
 package com.copower.pmcc.assess.service.basic;
 
-import com.copower.pmcc.assess.common.enums.basic.EstateTaggingTypeEnum;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.copower.pmcc.assess.common.enums.basic.BasicApplyFormNameEnum;
+import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
 import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.custom.entity.CustomCaseEntity;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyDao;
@@ -11,8 +14,10 @@ import com.copower.pmcc.assess.dto.input.SynchronousDataDto;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseDamagedDegreeVo;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseTradingVo;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseVo;
+import com.copower.pmcc.assess.proxy.face.BasicEntityAbstract;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.assist.DdlMySqlAssist;
+import com.copower.pmcc.assess.service.assist.ResidueRatioService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataDamagedDegreeService;
@@ -50,7 +55,7 @@ import java.util.Map;
  * @Description:案例基础数据
  */
 @Service
-public class BasicHouseService {
+public class BasicHouseService extends BasicEntityAbstract {
     @Autowired
     private BaseDataDicService baseDataDicService;
     @Autowired
@@ -81,6 +86,10 @@ public class BasicHouseService {
     private BasicEstateTaggingDao basicEstateTaggingDao;
     @Autowired
     private BasicApplyDao basicApplyDao;
+    @Autowired
+    private BasicApplyBatchDetailService basicApplyBatchDetailService;
+    @Autowired
+    private ResidueRatioService residueRatioService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -100,31 +109,6 @@ public class BasicHouseService {
     }
 
     /**
-     * 新增或者修改
-     *
-     * @param basicHouse
-     * @return
-     * @throws Exception
-     */
-    public Integer saveAndUpdateBasicHouse(BasicHouse basicHouse, boolean updateNull) throws Exception {
-        if (basicHouse.getId() == null || basicHouse.getId() == 0) {
-            basicHouse.setCreator(commonService.thisUserAccount());
-            return basicHouseDao.addBasicHouse(basicHouse);
-        } else {
-            if (updateNull) {
-                BasicHouse house = basicHouseDao.getBasicHouseById(basicHouse.getId());
-                if (house != null) {
-                    basicHouse.setCreator(house.getCreator());
-                    basicHouse.setGmtCreated(house.getGmtCreated());
-                    basicHouse.setGmtModified(DateUtils.now());
-                }
-            }
-            basicHouseDao.updateBasicHouse(basicHouse, updateNull);
-            return basicHouse.getId();
-        }
-    }
-
-    /**
      * 删除数据
      *
      * @param id
@@ -136,7 +120,7 @@ public class BasicHouseService {
     }
 
     /**
-     * 删除同一单元下的房屋数据
+     * 删除房屋数据
      *
      * @param houseId
      * @return
@@ -227,6 +211,7 @@ public class BasicHouseService {
      * @throws Exception
      */
     @Transactional(rollbackFor = Exception.class)
+    @Override
     public void clearInvalidData(Integer houseId) throws Exception {
         if (houseId == null) return;
         clearInvalidChildData(houseId);//清理从表数据
@@ -234,7 +219,7 @@ public class BasicHouseService {
         //清除标记
         BasicEstateTagging where = new BasicEstateTagging();
         where.setTableId(houseId);
-        where.setType(EstateTaggingTypeEnum.HOUSE.getKey());
+        where.setType(BasicFormClassifyEnum.HOUSE.getKey());
         basicEstateTaggingDao.removeBasicEstateTagging(where);
 
         StringBuilder sqlBulder = new StringBuilder();
@@ -250,6 +235,7 @@ public class BasicHouseService {
      * @throws Exception
      */
     @Transactional(rollbackFor = Exception.class)
+    @Override
     public void clearInvalidChildData(Integer houseId) throws Exception {
         StringBuilder sqlBulder = new StringBuilder();
         String baseSql = "update %s set bis_delete=1 where house_id=%s;";
@@ -411,27 +397,112 @@ public class BasicHouseService {
         return objectMap;
     }
 
-    @Transactional(rollbackFor = Exception.class)
-    public BasicHouse copyBasicHouse(Integer sourceHouseId, Integer targetHouseId, Boolean containChild) throws Exception {
-        return copyBasicHouseIgnore(sourceHouseId, targetHouseId, containChild, null);
+    @Override
+    public Integer saveAndUpdate(Object o, Boolean updateNull) {
+        if (o == null) return null;
+        BasicHouse basicHouse = (BasicHouse) o;
+        if (basicHouse.getId() == null || basicHouse.getId() == 0) {
+            basicHouse.setCreator(commonService.thisUserAccount());
+            return basicHouseDao.addBasicHouse(basicHouse);
+        } else {
+            if (updateNull) {
+                BasicHouse house = basicHouseDao.getBasicHouseById(basicHouse.getId());
+                if (house != null) {
+                    basicHouse.setCreator(house.getCreator());
+                    basicHouse.setGmtCreated(house.getGmtCreated());
+                    basicHouse.setGmtModified(DateUtils.now());
+                }
+            }
+            basicHouseDao.updateBasicHouse(basicHouse, updateNull);
+            return basicHouse.getId();
+        }
     }
 
-    /**
-     * 拷贝房屋数据
-     *
-     * @param sourceHouseId 源数据Id
-     * @param targetHouseId 目标数据Id
-     * @param containChild  是否拷贝从表数据
-     * @return
-     * @throws Exception
-     */
-    @Transactional(rollbackFor = Exception.class)
-    public BasicHouse copyBasicHouseIgnore(Integer sourceHouseId, Integer targetHouseId, Boolean containChild, List<String> ignoreList) throws Exception {
-        BasicHouse sourceBasicHouse = getBasicHouseById(sourceHouseId);
+    @Override
+    public Integer saveAndUpdateByFormData(String formData, Integer planDetailsId) throws Exception {
+        if (StringUtils.isBlank(formData)) return null;
+        JSONObject jsonObject = JSON.parseObject(formData);
+        BasicHouse basicHouse = null;
+        String jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_HOUSE.getVar());
+        if (StringUtils.isNotEmpty(jsonContent)) {
+            basicHouse = JSONObject.parseObject(jsonContent, BasicHouse.class);
+            //原来数据做记录,将老数据复制一条
+            BasicHouse oldBasicHouse = basicHouseDao.getBasicHouseById(basicHouse.getId());
+            BasicHouse version = (BasicHouse) copyBasicEntity(oldBasicHouse.getId(), null, false);
+            version.setRelevanceId(oldBasicHouse.getId());
+            version.setEstateId(0);
+            version.setBuildingId(0);
+            version.setUnitId(0);
+            saveAndUpdate(version, false);
+            if (basicHouse != null) {
+                Integer houseId = saveAndUpdate(basicHouse, true);
+                BasicApplyBatchDetail houseDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(FormatUtils.entityNameConvertToTableName(BasicHouse.class), basicHouse.getId());
+                if (houseDetail != null) {
+                    houseDetail.setName(basicHouse.getHouseNumber());
+                    houseDetail.setDisplayName(basicHouse.getHouseNumber());
+                    basicApplyBatchDetailService.saveBasicApplyBatchDetail(houseDetail);
+
+                    BasicApply where = new BasicApply();
+                    where.setPlanDetailsId(planDetailsId);
+                    where.setBasicHouseId(houseDetail.getTableId());
+                    BasicApply basicApply = basicApplyService.getBasicApply(where);
+                    Map<BasicFormClassifyEnum, BasicApplyBatchDetail> map = basicApplyBatchDetailService.getApplyBatchDetailMap(houseDetail);
+                    basicApply.setArea(basicHouse.getArea());
+                    BasicApplyBatchDetail unitBatchDetail = map.get(BasicFormClassifyEnum.UNIT);//单元
+                    BasicApplyBatchDetail buildBatchDetail = map.get(BasicFormClassifyEnum.BUILDING); //楼栋
+                    BasicApplyBatchDetail estateBatchDetail = map.get(BasicFormClassifyEnum.ESTATE);//楼盘
+                    basicApply.setName(basicApplyService.getFullName(estateBatchDetail.getName(), buildBatchDetail.getName(), unitBatchDetail.getName(), houseDetail.getName()));
+                    basicApplyService.saveBasicApply(basicApply);
+                }
+                //交易信息
+                jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_TRADING.getVar());
+                BasicHouseTrading basicTrading = JSONObject.parseObject(jsonContent, BasicHouseTrading.class);
+                if (basicTrading != null) {
+                    BasicHouseTrading houseTradingOld = basicHouseTradingService.getTradingByHouseId(basicHouse.getId());
+                    basicTrading.setId(houseTradingOld.getId());
+                    basicTrading.setHouseId(houseId);
+                    basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicTrading, true);
+                }
+                //完损度
+                jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_DAMAGED_DEGREE.getVar());
+                List<BasicHouseDamagedDegree> damagedDegreeList = JSONObject.parseArray(jsonContent, BasicHouseDamagedDegree.class);
+                if (!CollectionUtils.isEmpty(damagedDegreeList)) {
+                    for (BasicHouseDamagedDegree degree : damagedDegreeList) {
+                        Integer category = degree.getCategory();
+                        BasicHouseDamagedDegree damagedDegree = basicHouseDamagedDegreeService.getDamagedDegreeByHouseIdAndCategory(houseId, category);
+                        damagedDegree.setEntityCondition(degree.getEntityCondition());
+                        damagedDegree.setEntityConditionContent(degree.getEntityConditionContent());
+                        damagedDegree.setScore(degree.getScore());
+                        basicHouseDamagedDegreeService.saveAndUpdateDamagedDegree(damagedDegree, false);
+                    }
+                    //写入成新率
+                    String newDegree = residueRatioService.getObservationalRatio(basicHouse.getId());
+                    basicHouse.setNewDegree(newDegree);
+                    saveAndUpdate(basicHouse, false);
+                }
+                return basicHouse.getId();
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Object getBasicEntityById(Integer id) {
+        return getBasicHouseById(id);
+    }
+
+    @Override
+    public Object copyBasicEntity(Integer sourceId, Integer targetId, Boolean containChild) throws Exception {
+        return copyBasicEntityIgnore(sourceId, targetId, containChild, null);
+    }
+
+    @Override
+    public Object copyBasicEntityIgnore(Integer sourceId, Integer targetId, Boolean containChild, List<String> ignoreList) throws Exception {
+        BasicHouse sourceBasicHouse = getBasicHouseById(sourceId);
         if (sourceBasicHouse == null) return null;
-        BasicHouse targetBasicHouse = getBasicHouseById(targetHouseId);
+        BasicHouse targetBasicHouse = getBasicHouseById(targetId);
         if (CollectionUtils.isEmpty(ignoreList)) ignoreList = Lists.newArrayList();
-        ignoreList.addAll(BaseConstant.ASSESS_IGNORE_STRING_LIST);
+        ignoreList.addAll(Lists.newArrayList(BaseConstant.ASSESS_IGNORE_ARRAY));
         if (targetBasicHouse == null) {
             targetBasicHouse = new BasicHouse();
             BeanUtils.copyProperties(sourceBasicHouse, targetBasicHouse, ignoreList.toArray(new String[ignoreList.size()]));
@@ -439,10 +510,10 @@ public class BasicHouseService {
         } else {
             BeanUtils.copyProperties(sourceBasicHouse, targetBasicHouse, ignoreList.toArray(new String[ignoreList.size()]));
         }
-        this.saveAndUpdateBasicHouse(targetBasicHouse, true);
-        BasicHouseTrading sourceBasicHouseTrading = basicHouseTradingService.getTradingByHouseId(sourceHouseId);
+        this.saveAndUpdate(targetBasicHouse, true);
+        BasicHouseTrading sourceBasicHouseTrading = basicHouseTradingService.getTradingByHouseId(sourceId);
         if (sourceBasicHouseTrading != null) {
-            BasicHouseTrading targetBasicHouseTrading = basicHouseTradingService.getTradingByHouseId(targetHouseId);
+            BasicHouseTrading targetBasicHouseTrading = basicHouseTradingService.getTradingByHouseId(targetId);
             if (targetBasicHouseTrading == null) {
                 targetBasicHouseTrading = new BasicHouseTrading();
                 BeanUtils.copyProperties(sourceBasicHouseTrading, targetBasicHouseTrading);
@@ -457,15 +528,15 @@ public class BasicHouseService {
             }
             basicHouseTradingService.saveAndUpdateBasicHouseTrading(targetBasicHouseTrading, true);
         }
-        if (targetHouseId != null && targetHouseId > 0) {//目标数据已存在，先清理目标数据的从表数据
-            clearInvalidChildData(targetHouseId);
+        if (targetId != null && targetId > 0) {//目标数据已存在，先清理目标数据的从表数据
+            clearInvalidChildData(targetId);
 
             SysAttachmentDto where = new SysAttachmentDto();
             where.setTableName(FormatUtils.entityNameConvertToTableName(BasicHouse.class));
-            where.setTableId(targetHouseId);
+            where.setTableId(targetId);
             baseAttachmentService.deleteAttachmentByDto(where);
         }
-        baseAttachmentService.copyFtpAttachments(FormatUtils.entityNameConvertToTableName(BasicHouse.class), sourceHouseId, targetBasicHouse.getId());
+        baseAttachmentService.copyFtpAttachments(FormatUtils.entityNameConvertToTableName(BasicHouse.class), sourceId, targetBasicHouse.getId());
         if (containChild) {
             StringBuilder sqlBuilder = new StringBuilder();
             SynchronousDataDto synchronousDataDto = new SynchronousDataDto();
@@ -473,7 +544,7 @@ public class BasicHouseService {
             map.put("house_id", String.valueOf(targetBasicHouse.getId()));
             map.put("creator", commonService.thisUserAccount());
             synchronousDataDto.setFieldDefaultValue(map);
-            synchronousDataDto.setWhereSql("house_id=" + sourceHouseId);
+            synchronousDataDto.setWhereSql("house_id=" + sourceId);
             synchronousDataDto.setSourceDataBase(BaseConstant.DATABASE_PMCC_ASSESS);
             synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicHouseTradingSell.class));
             synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicHouseTradingSell.class));
@@ -506,12 +577,12 @@ public class BasicHouseService {
             ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
 
             BasicHouseRoom basicHouseRoom = new BasicHouseRoom();
-            basicHouseRoom.setHouseId(sourceHouseId);
+            basicHouseRoom.setHouseId(sourceId);
             BasicHouseCorollaryEquipment caseHouseCorollaryEquipment = new BasicHouseCorollaryEquipment();
-            caseHouseCorollaryEquipment.setHouseId(sourceHouseId);
+            caseHouseCorollaryEquipment.setHouseId(sourceId);
             List<BasicHouseRoom> basicHouseRooms = basicHouseRoomService.basicHouseRoomList(basicHouseRoom);
             List<BasicHouseCorollaryEquipment> caseHouseCorollaryEquipments = basicHouseCorollaryEquipmentService.basicHouseCorollaryEquipmentList(caseHouseCorollaryEquipment);
-            List<BasicHouseDamagedDegree> damagedDegreeList = basicHouseDamagedDegreeService.getDamagedDegreeList(sourceHouseId);
+            List<BasicHouseDamagedDegree> damagedDegreeList = basicHouseDamagedDegreeService.getDamagedDegreeList(sourceId);
 
 
             if (!ObjectUtils.isEmpty(basicHouseRooms)) {

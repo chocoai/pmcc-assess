@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 
 @Component
-public class ProjectTaskCIPEven extends ProjectTaskEvent {
+public class ProjectTaskCIPEvent extends ProjectTaskEvent {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private SurveyCommonService surveyCommonService;

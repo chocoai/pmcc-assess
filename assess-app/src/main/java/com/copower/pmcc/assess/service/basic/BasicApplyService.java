@@ -163,7 +163,7 @@ public class BasicApplyService {
                         throw new BusinessException("该版块名称基础数据中已存在");
                 }
                 basicEstate.setBlockName(blockName);
-                basicEstateService.saveAndUpdateBasicEstate(basicEstate, false);
+                basicEstateService.saveAndUpdate(basicEstate, false);
 
                 basicApply.setWriteBackBlockFlag(writeBackBlockFlag);
                 updateBasicApply(basicApply);

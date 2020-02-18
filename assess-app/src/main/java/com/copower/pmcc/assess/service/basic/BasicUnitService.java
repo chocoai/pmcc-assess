@@ -1,6 +1,9 @@
 package com.copower.pmcc.assess.service.basic;
 
-import com.copower.pmcc.assess.common.enums.basic.EstateTaggingTypeEnum;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.copower.pmcc.assess.common.enums.basic.BasicApplyFormNameEnum;
+import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
 import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.custom.entity.CustomCaseEntity;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateTaggingDao;
@@ -8,6 +11,7 @@ import com.copower.pmcc.assess.dal.basis.dao.basic.BasicUnitDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.SynchronousDataDto;
 import com.copower.pmcc.assess.dto.output.basic.BasicUnitVo;
+import com.copower.pmcc.assess.proxy.face.BasicEntityAbstract;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.assist.DdlMySqlAssist;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
@@ -44,7 +48,7 @@ import java.util.List;
  * @Description:案例基础数据
  */
 @Service
-public class BasicUnitService {
+public class BasicUnitService extends BasicEntityAbstract {
     @Autowired
     private BaseAttachmentService baseAttachmentService;
     @Autowired
@@ -63,6 +67,8 @@ public class BasicUnitService {
     private BasicApplyService basicApplyService;
     @Autowired
     private BasicEstateTaggingDao basicEstateTaggingDao;
+    @Autowired
+    private BasicApplyBatchDetailService basicApplyBatchDetailService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -79,32 +85,6 @@ public class BasicUnitService {
 
     public List<BasicUnit> getBasicUnitListByIds(List<Integer> ids) {
         return basicUnitDao.getBasicUnitListByIds(ids);
-    }
-
-    /**
-     * 新增或者修改
-     *
-     * @param basicUnit
-     * @return
-     * @throws Exception
-     */
-    public Integer saveAndUpdateBasicUnit(BasicUnit basicUnit, boolean updateNull) throws Exception {
-        if (basicUnit.getId() == null || basicUnit.getId().intValue() == 0) {
-            basicUnit.setCreator(commonService.thisUserAccount());
-            Integer id = basicUnitDao.addBasicUnit(basicUnit);
-            return id;
-        } else {
-            if (updateNull) {
-                BasicUnit unit = basicUnitDao.getBasicUnitById(basicUnit.getId());
-                if (unit != null) {
-                    basicUnit.setCreator(unit.getCreator());
-                    basicUnit.setGmtCreated(unit.getGmtCreated());
-                    basicUnit.setGmtModified(DateUtils.now());
-                }
-            }
-            basicUnitDao.updateBasicUnit(basicUnit, updateNull);
-            return basicUnit.getId();
-        }
     }
 
     /**
@@ -169,6 +149,7 @@ public class BasicUnitService {
      * @throws Exception
      */
     @Transactional(rollbackFor = Exception.class)
+    @Override
     public void clearInvalidData(Integer unitId) throws Exception {
         if (unitId == null) return;
         clearInvalidChildData(unitId);
@@ -176,7 +157,7 @@ public class BasicUnitService {
         //清除标记
         BasicEstateTagging where = new BasicEstateTagging();
         where.setTableId(unitId);
-        where.setType(EstateTaggingTypeEnum.UNIT.getKey());
+        where.setType(BasicFormClassifyEnum.UNIT.getKey());
         basicEstateTaggingDao.removeBasicEstateTagging(where);
 
         StringBuilder sqlBulder = new StringBuilder();
@@ -190,6 +171,7 @@ public class BasicUnitService {
      * @throws Exception
      */
     @Transactional(rollbackFor = Exception.class)
+    @Override
     public void clearInvalidChildData(Integer unitId) throws Exception {
         StringBuilder sqlBulder = new StringBuilder();
         String baseSql = "update %s set bis_delete=1 where unit_id=%s;";
@@ -222,7 +204,7 @@ public class BasicUnitService {
     }
 
     /**
-     * 添加楼盘及土地基本信息
+     * 添加信息
      *
      * @return
      * @throws Exception
@@ -238,28 +220,75 @@ public class BasicUnitService {
         return basicUnit;
     }
 
-    @Transactional(rollbackFor = Exception.class)
-    public BasicUnit copyBasicUnit(Integer sourceUnitId, Integer targetUnitId, Boolean containChild) throws Exception {
-        return copyBasicUnitIgnore(sourceUnitId, targetUnitId, containChild,null);
+    @Override
+    public Integer saveAndUpdate(Object o, Boolean updateNull) {
+        if (o == null) return null;
+        BasicUnit basicUnit = (BasicUnit) o;
+        if (basicUnit.getId() == null || basicUnit.getId().intValue() == 0) {
+            basicUnit.setCreator(commonService.thisUserAccount());
+            Integer id = basicUnitDao.addBasicUnit(basicUnit);
+            return id;
+        } else {
+            if (updateNull) {
+                BasicUnit unit = basicUnitDao.getBasicUnitById(basicUnit.getId());
+                if (unit != null) {
+                    basicUnit.setCreator(unit.getCreator());
+                    basicUnit.setGmtCreated(unit.getGmtCreated());
+                    basicUnit.setGmtModified(DateUtils.now());
+                }
+            }
+            basicUnitDao.updateBasicUnit(basicUnit, updateNull);
+            return basicUnit.getId();
+        }
     }
 
-    /**
-     * 拷贝查勘楼栋数据
-     *
-     * @param sourceUnitId
-     * @param targetUnitId
-     * @param containChild 是否包含从表数据
-     * @return
-     * @throws Exception
-     */
-    @Transactional(rollbackFor = Exception.class)
-    public BasicUnit copyBasicUnitIgnore(Integer sourceUnitId, Integer targetUnitId, Boolean containChild, List<String> ignoreList) throws Exception {
-        if (sourceUnitId == null) return null;
-        BasicUnit sourceBasicUnit = getBasicUnitById(sourceUnitId);
+    @Override
+    public Integer saveAndUpdateByFormData(String formData, Integer planDetailsId) throws Exception {
+        if (StringUtils.isBlank(formData)) return null;
+        JSONObject jsonObject = JSON.parseObject(formData);
+        BasicUnit basicUnit = null;
+        String jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_UNIT.getVar());
+        if (StringUtils.isNotEmpty(jsonContent)) {
+            basicUnit = JSONObject.parseObject(jsonContent, BasicUnit.class);
+            //原来数据做记录,将老数据复制一条
+            BasicUnit oldBasicUnit = getBasicUnitById(basicUnit.getId());
+            BasicUnit version = (BasicUnit) copyBasicEntity(oldBasicUnit.getId(), null, false);
+            version.setRelevanceId(oldBasicUnit.getId());
+            version.setEstateId(0);
+            version.setBuildingId(0);
+            saveAndUpdate(version, false);
+            if (basicUnit != null) {
+                saveAndUpdate(basicUnit, true);
+                BasicApplyBatchDetail unitDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(FormatUtils.entityNameConvertToTableName(BasicUnit.class), basicUnit.getId());
+                if (unitDetail != null) {
+                    unitDetail.setName(basicUnit.getUnitNumber());
+                    unitDetail.setDisplayName(String.format("%s%s", basicUnit.getUnitNumber(), "单元"));
+                    basicApplyBatchDetailService.saveBasicApplyBatchDetail(unitDetail);
+                }
+                return basicUnit.getId();
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Object getBasicEntityById(Integer id) {
+        return getBasicUnitById(id);
+    }
+
+    @Override
+    public Object copyBasicEntity(Integer sourceId, Integer targetId, Boolean containChild) throws Exception {
+        return copyBasicEntityIgnore(sourceId, targetId, containChild, null);
+    }
+
+    @Override
+    public Object copyBasicEntityIgnore(Integer sourceId, Integer targetId, Boolean containChild, List<String> ignoreList) throws Exception {
+        if (sourceId == null) return null;
+        BasicUnit sourceBasicUnit = getBasicUnitById(sourceId);
         if (sourceBasicUnit == null) return null;
-        BasicUnit targetBasicUnit = getBasicUnitById(targetUnitId);
-        if(CollectionUtils.isEmpty(ignoreList))ignoreList= Lists.newArrayList();
-        ignoreList.addAll(BaseConstant.ASSESS_IGNORE_STRING_LIST);
+        BasicUnit targetBasicUnit = getBasicUnitById(targetId);
+        if (CollectionUtils.isEmpty(ignoreList)) ignoreList = Lists.newArrayList();
+        ignoreList.addAll(Lists.newArrayList(BaseConstant.ASSESS_IGNORE_ARRAY));
         if (targetBasicUnit == null) {
             targetBasicUnit = new BasicUnit();
             BeanUtils.copyProperties(sourceBasicUnit, targetBasicUnit, ignoreList.toArray(new String[ignoreList.size()]));
@@ -267,23 +296,23 @@ public class BasicUnitService {
         } else {
             BeanUtils.copyProperties(sourceBasicUnit, targetBasicUnit, ignoreList.toArray(new String[ignoreList.size()]));
         }
-        this.saveAndUpdateBasicUnit(targetBasicUnit, true);
-        if (targetUnitId != null && targetUnitId > 0) {//目标数据已存在，先清理目标数据的从表数据
-            clearInvalidChildData(targetUnitId);
+        this.saveAndUpdate(targetBasicUnit, true);
+        if (targetId != null && targetId > 0) {//目标数据已存在，先清理目标数据的从表数据
+            clearInvalidChildData(targetId);
 
             SysAttachmentDto where = new SysAttachmentDto();
             where.setTableName(FormatUtils.entityNameConvertToTableName(BasicUnit.class));
-            where.setTableId(targetUnitId);
+            where.setTableId(targetId);
             baseAttachmentService.deleteAttachmentByDto(where);
         }
         //附件拷贝
-        baseAttachmentService.copyFtpAttachments(FormatUtils.entityNameConvertToTableName(BasicUnit.class), sourceUnitId, targetBasicUnit.getId());//附件拷贝
-        basicEstateTaggingService.copyTagging(EstateTaggingTypeEnum.UNIT, sourceUnitId, targetBasicUnit.getId());
+        baseAttachmentService.copyFtpAttachments(FormatUtils.entityNameConvertToTableName(BasicUnit.class), sourceId, targetBasicUnit.getId());//附件拷贝
+        basicEstateTaggingService.copyTagging(BasicFormClassifyEnum.UNIT, sourceId, targetBasicUnit.getId());
         if (containChild) {
             try {
                 List<BasicUnitHuxing> oldBasicUnitHuxingList = null;
                 BasicUnitHuxing query = new BasicUnitHuxing();
-                query.setUnitId(sourceUnitId);
+                query.setUnitId(sourceId);
                 oldBasicUnitHuxingList = basicUnitHuxingService.basicUnitHuxingList(query);
                 if (!ObjectUtils.isEmpty(oldBasicUnitHuxingList)) {
                     for (BasicUnitHuxing oldBasicUnitHuxing : oldBasicUnitHuxingList) {
@@ -307,7 +336,7 @@ public class BasicUnitService {
             map.put("unit_id", String.valueOf(targetBasicUnit.getId()));
             map.put("creator", commonService.thisUserAccount());
             synchronousDataDto.setFieldDefaultValue(map);
-            synchronousDataDto.setWhereSql("unit_id=" + sourceUnitId);
+            synchronousDataDto.setWhereSql("unit_id=" + sourceId);
             synchronousDataDto.setSourceDataBase(BaseConstant.DATABASE_PMCC_ASSESS);
             synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicUnitDecorate.class));
             synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicUnitDecorate.class));
@@ -321,5 +350,4 @@ public class BasicUnitService {
         }
         return targetBasicUnit;
     }
-
 }

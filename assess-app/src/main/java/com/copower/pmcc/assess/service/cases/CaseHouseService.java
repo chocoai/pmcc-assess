@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.service.cases;
 
-import com.copower.pmcc.assess.common.enums.basic.EstateTaggingTypeEnum;
+import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
 import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDetailDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
@@ -315,7 +315,7 @@ public class CaseHouseService {
     public CaseEstateTagging getCaseEstateTaggingByUnitId(Integer houseId) throws Exception {
         CaseEstateTagging query = new CaseEstateTagging();
         query.setTableId(houseId);
-        query.setType(EstateTaggingTypeEnum.HOUSE.getKey());
+        query.setType(BasicFormClassifyEnum.HOUSE.getKey());
         List<CaseEstateTagging> caseEstateTaggingList = caseEstateTaggingService.getCaseEstateTaggingList(query);
         if (!ObjectUtils.isEmpty(caseEstateTaggingList)) {
             return caseEstateTaggingList.get(0);
@@ -346,7 +346,7 @@ public class CaseHouseService {
         BasicHouse basicHouse = basicHouseService.getBasicHouseById(tableId);
         CaseHouse oldCaseHouse = this.getCaseHouseById(id);
         BeanUtils.copyProperties(oldCaseHouse, basicHouse, "id","unitId","creator","gmtCreated","gmtModified");
-        basicHouseService.saveAndUpdateBasicHouse(basicHouse, false);
+        basicHouseService.saveAndUpdate(basicHouse, false);
 
         CaseHouseTrading queryTrading = new CaseHouseTrading();
         queryTrading.setHouseId(id);

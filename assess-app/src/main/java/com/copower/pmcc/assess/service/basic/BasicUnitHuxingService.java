@@ -434,7 +434,7 @@ public class BasicUnitHuxingService {
         }
         //将标准信息代入
         if (standardsource != null) {
-            basicHouseService.copyBasicHouse(standardsource.getId(),basicHouse.getId(),true);
+            basicHouseService.copyBasicEntity(standardsource.getId(),basicHouse.getId(),true);
         }
         //房号
         if (StringUtils.isNotBlank(PoiUtils.getCellValue(row.getCell(1)))) {
@@ -453,7 +453,7 @@ public class BasicUnitHuxingService {
                 return false;
             }
         }
-        basicHouseService.saveAndUpdateBasicHouse(basicHouse, false);
+        basicHouseService.saveAndUpdate(basicHouse, false);
         //删除复制来的房间数据
         List<BasicHouseRoom> basicHouseRoomList = basicHouseRoomService.getBasicHouseRoomList(basicHouse.getId());
         if (CollectionUtils.isNotEmpty(basicHouseRoomList)) {

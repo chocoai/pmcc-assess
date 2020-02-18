@@ -1,23 +1,24 @@
 package com.copower.pmcc.assess.service.basic;
 
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
+import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.basic.*;
-import com.copower.pmcc.assess.service.assist.ResidueRatioService;
+import com.copower.pmcc.assess.proxy.face.BasicEntityAbstract;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.copower.pmcc.erp.common.utils.SpringContextUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.ObjectUtils;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  * @Auther: zch
@@ -31,15 +32,9 @@ public class PublicBasicService {
     @Autowired
     private BasicEstateLandStateService basicEstateLandStateService;
     @Autowired
-    private BasicEstateTaggingService basicEstateTaggingService;
-    @Autowired
     private BasicApplyService basicApplyService;
     @Autowired
     private CommonService commonService;
-    @Autowired
-    private BasicHouseDamagedDegreeService basicHouseDamagedDegreeService;
-    @Autowired
-    private ResidueRatioService residueRatioService;
     @Autowired
     private BasicApplyBatchService basicApplyBatchService;
     @Autowired
@@ -52,7 +47,6 @@ public class PublicBasicService {
     private BasicUnitService basicUnitService;
     @Autowired
     private BasicHouseService basicHouseService;
-
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -91,10 +85,10 @@ public class PublicBasicService {
         BasicUnit basicUnitSource = getBasicUnitByAppId(sourceBasicApply);
         BasicHouse basicHouseSource = getBasicHouseVoByAppId(sourceBasicApply);
 
-        BasicEstate basicEstateNew = basicEstateService.copyBasicEstate(basicEstateSource.getId(),null, true);//处理楼盘
-        BasicBuilding basicBuilding = basicBuildingService.copyBasicBuilding(basicBuildingSource.getId(),null, true);//处理楼栋
-        BasicUnit basicUnit = basicUnitService.copyBasicUnit(basicUnitSource.getId(),null, true);//处理单元
-        BasicHouse basicHouse = basicHouseService.copyBasicHouse(basicHouseSource.getId(),null, true);//处理房屋
+        BasicEstate basicEstateNew = (BasicEstate)basicEstateService.copyBasicEntity(basicEstateSource.getId(),null, true);//处理楼盘
+        BasicBuilding basicBuilding = (BasicBuilding)basicBuildingService.copyBasicEntity(basicBuildingSource.getId(),null, true);//处理楼栋
+        BasicUnit basicUnit = (BasicUnit)basicUnitService.copyBasicEntity(basicUnitSource.getId(),null, true);//处理单元
+        BasicHouse basicHouse = (BasicHouse)basicHouseService.copyBasicEntity(basicHouseSource.getId(),null, true);//处理房屋
         targetBasicApply.setBasicEstateId(basicEstateNew.getId());
         targetBasicApply.setBasicBuildingId(basicBuilding.getId());
         targetBasicApply.setBasicUnitId(basicUnit.getId());
@@ -173,17 +167,6 @@ public class PublicBasicService {
         return basicEstateLandStateService.getBasicEstateLandStateVo(basicEstateLandState);
     }
 
-    public BasicEstateLandStateVo getEstateLandStateByEstateId(Integer estateId) throws Exception {
-        BasicEstateLandState basicEstateLandState = new BasicEstateLandState();
-        basicEstateLandState.setEstateId(estateId);
-        List<BasicEstateLandState> basicEstateLandStateList = basicEstateLandStateService.basicEstateLandStateList(basicEstateLandState);
-        if (!ObjectUtils.isEmpty(basicEstateLandStateList)) {
-            return basicEstateLandStateService.getBasicEstateLandStateVo(basicEstateLandStateList.get(0));
-        } else {
-            return null;
-        }
-    }
-
     public BasicBuildingVo getBasicBuildingByAppId(BasicApply basicApply) throws Exception {
         return basicBuildingService.getBasicBuildingByApplyId(basicApply.getId());
     }
@@ -220,4 +203,36 @@ public class PublicBasicService {
         return basicHouseService.getBasicHouseVo(basicHouseService.getBasicHouseById(id));
     }
 
+    /**
+     * 根据TableName获取对应ServerBean
+     * @param tableName
+     * @return
+     */
+    public BasicEntityAbstract getServiceBeanByTableName(String tableName){
+        if(StringUtils.isBlank(tableName)) return null;
+        BasicFormClassifyEnum formClassifyEnum = BasicFormClassifyEnum.getEnumByTableName(tableName);
+        return (BasicEntityAbstract) SpringContextUtils.getBean(formClassifyEnum.getServiceName());
+    }
+
+    /**
+     * 获取申请完整名称
+     *
+     * @param estateName
+     * @param buildingNumber
+     * @param unitNumber
+     * @param houseNumber
+     * @return
+     */
+    public String getFullName(String estateName, String buildingNumber, String unitNumber, String houseNumber) {
+        StringBuilder stringBuilder = new StringBuilder();
+        if (StringUtils.isNotBlank(estateName))
+            stringBuilder.append(estateName);
+        if (StringUtils.isNotBlank(buildingNumber))
+            stringBuilder.append(buildingNumber).append("栋");
+        if (StringUtils.isNotBlank(unitNumber))
+            stringBuilder.append(unitNumber).append("单元");
+        if (StringUtils.isNotBlank(houseNumber))
+            stringBuilder.append(houseNumber).append("号");
+        return stringBuilder.toString().replaceAll("号+?","号");
+    }
 }

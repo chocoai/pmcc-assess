@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.controller.baisc;
 
 import com.alibaba.fastjson.JSON;
-import com.copower.pmcc.assess.common.enums.basic.EstateTaggingTypeEnum;
+import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
 import com.copower.pmcc.assess.dal.basis.entity.BasicHouseCaseSummary;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseCaseSummaryVo;
 import com.copower.pmcc.assess.service.basic.BasicEstateService;
@@ -45,7 +45,7 @@ public class BasicController {
         String view = "/case/areaCaseMap";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
         try {
-            modelAndView.addObject("mapList", JSON.toJSONString(basicEstateTaggingService.mapDtoList(null, EstateTaggingTypeEnum.ESTATE.getKey())));
+            modelAndView.addObject("mapList", JSON.toJSONString(basicEstateTaggingService.mapDtoList(null, BasicFormClassifyEnum.ESTATE.getKey())));
         } catch (Exception e1) {
             logger.error("区域楼盘案例获取经度和纬度出错!", e1);
         }

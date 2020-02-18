@@ -1,7 +1,7 @@
 package com.copower.pmcc.assess.controller.cases;
 
 import com.alibaba.fastjson.JSON;
-import com.copower.pmcc.assess.common.enums.basic.EstateTaggingTypeEnum;
+import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
 import com.copower.pmcc.assess.dal.cases.entity.CaseBaseHouse;
 import com.copower.pmcc.assess.dto.input.cases.CaseEstateTaggingDto;
 import com.copower.pmcc.assess.dto.output.cases.CaseBaseHouseVo;
@@ -48,7 +48,7 @@ public class CaseController {
         String view = "/case/areaCaseMap";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
         try {
-            modelAndView.addObject("mapList", JSON.toJSONString(caseEstateTaggingService.mapDtoList(null, EstateTaggingTypeEnum.ESTATE.getKey())));
+            modelAndView.addObject("mapList", JSON.toJSONString(caseEstateTaggingService.mapDtoList(null, BasicFormClassifyEnum.ESTATE.getKey())));
         } catch (Exception e1) {
             logger.error("区域楼盘案例获取经度和纬度出错!", e1);
         }
@@ -61,9 +61,9 @@ public class CaseController {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
         try {
             if (estateId != null) {
-                CaseEstateTaggingDto dto = caseEstateTaggingService.getCaseEstateTagging(estateId, EstateTaggingTypeEnum.ESTATE.getKey());
+                CaseEstateTaggingDto dto = caseEstateTaggingService.getCaseEstateTagging(estateId, BasicFormClassifyEnum.ESTATE.getKey());
                 if (dto != null) {
-                    List<CaseEstateTaggingDto> list = caseEstateTaggingService.queryCaseEstateTagging(dto.getTableId(), EstateTaggingTypeEnum.ESTATE.getKey());
+                    List<CaseEstateTaggingDto> list = caseEstateTaggingService.queryCaseEstateTagging(dto.getTableId(), BasicFormClassifyEnum.ESTATE.getKey());
                     if (!ObjectUtils.isEmpty(list)) {
                         for (CaseEstateTaggingDto caseEstateTaggingDto : list) {
                             dto.getChildren().add(caseEstateTaggingDto);

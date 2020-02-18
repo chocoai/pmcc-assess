@@ -127,7 +127,7 @@ public class BasicHousePrintController {
             String jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_HOUSE.getVar());
             BasicHouse basicHouse = JSONObject.parseObject(jsonContent, BasicHouse.class);
             if (basicHouse != null) {
-                basicHouseService.saveAndUpdateBasicHouse(basicHouse,true);
+                basicHouseService.saveAndUpdate(basicHouse,true);
                 jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_DAMAGED_DEGREE.getVar());
                 List<BasicHouseDamagedDegree> damagedDegreeList = JSONObject.parseArray(jsonContent, BasicHouseDamagedDegree.class);
                 if (!CollectionUtils.isEmpty(damagedDegreeList)) {

@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.service.cases;
 
-import com.copower.pmcc.assess.common.enums.basic.EstateTaggingTypeEnum;
+import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
 import com.copower.pmcc.assess.dal.basis.custom.mapper.CustomCaseMapper;
 import com.copower.pmcc.assess.dal.cases.dao.CaseEstateTaggingDao;
 import com.copower.pmcc.assess.dal.cases.entity.*;
@@ -39,22 +39,22 @@ public class CaseEstateTaggingService {
 
     public List<CaseEstateTaggingDto> queryCaseEstateTagging(Integer dataId, String type) throws Exception {
         List<CaseEstateTaggingDto> caseEstateTaggingDtos = new ArrayList<CaseEstateTaggingDto>(10);
-        if (Objects.equal(type, EstateTaggingTypeEnum.ESTATE.getKey())) {
+        if (Objects.equal(type, BasicFormClassifyEnum.ESTATE.getKey())) {
             List<CaseBuilding> caseBuildingList = customCaseMapper.screenBuildList(dataId);
             if (!ObjectUtils.isEmpty(caseBuildingList)) {
                 for (CaseBuilding main : caseBuildingList) {
-                    CaseEstateTaggingDto dto = getCaseEstateTagging(main.getId(), EstateTaggingTypeEnum.BUILDING.getKey());
+                    CaseEstateTaggingDto dto = getCaseEstateTagging(main.getId(), BasicFormClassifyEnum.BUILDING.getKey());
                     if (dto != null) {
                         caseEstateTaggingDtos.add(dto);
                     }
                 }
             }
         }
-        if (Objects.equal(type, EstateTaggingTypeEnum.UNIT.getKey())) {
+        if (Objects.equal(type, BasicFormClassifyEnum.UNIT.getKey())) {
             List<CaseHouse> caseHouseList = customCaseMapper.screenHouseList(dataId);
             if (!ObjectUtils.isEmpty(caseHouseList)) {
                 for (CaseHouse caseHouse : caseHouseList) {
-                    CaseEstateTaggingDto dto = getCaseEstateTagging(caseHouse.getId(), EstateTaggingTypeEnum.HOUSE.getKey());
+                    CaseEstateTaggingDto dto = getCaseEstateTagging(caseHouse.getId(), BasicFormClassifyEnum.HOUSE.getKey());
                     if (dto != null) {
                         //必要的 (处理为本地图片地址否则无法识别)
                         if (dto.getAttachmentId() != null) {
@@ -68,11 +68,11 @@ public class CaseEstateTaggingService {
                 }
             }
         }
-        if (Objects.equal(type, EstateTaggingTypeEnum.BUILDING.getKey())) {
+        if (Objects.equal(type, BasicFormClassifyEnum.BUILDING.getKey())) {
             List<CaseUnit> caseUnitList = customCaseMapper.screenUnitList(dataId);
             if (!ObjectUtils.isEmpty(caseUnitList)) {
                 for (CaseUnit caseUnit : caseUnitList) {
-                    CaseEstateTaggingDto dto = getCaseEstateTagging(caseUnit.getId(), EstateTaggingTypeEnum.UNIT.getKey());
+                    CaseEstateTaggingDto dto = getCaseEstateTagging(caseUnit.getId(), BasicFormClassifyEnum.UNIT.getKey());
                     if (dto != null) {
                         caseEstateTaggingDtos.add(dto);
                     }

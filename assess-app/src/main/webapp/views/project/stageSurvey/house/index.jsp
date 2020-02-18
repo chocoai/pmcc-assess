@@ -88,6 +88,7 @@
             async: false,
             data: {
                 formData: formData,
+                formClassify:'${tbType}',
                 planDetailsId: '${planDetailsId}'
             },
             success: function (result) {

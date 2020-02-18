@@ -4,7 +4,7 @@ import com.aspose.words.*;
 import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.FileUtils;
 import com.copower.pmcc.assess.common.enums.AssessUploadEnum;
-import com.copower.pmcc.assess.common.enums.basic.EstateTaggingTypeEnum;
+import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareBuildEngineeringAndEquipmentCenterDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeReportFileCustomDao;
@@ -194,7 +194,7 @@ public class SchemeReportFileService extends BaseService {
             }
         }
         BasicEstateTagging where = new BasicEstateTagging();
-        where.setType(EstateTaggingTypeEnum.UNIT.getKey());
+        where.setType(BasicFormClassifyEnum.UNIT.getKey());
         where.setTableId(basicApply.getBasicUnitId());
         List<BasicEstateTagging> taggings = basicEstateTaggingService.getBasicEstateTaggingList(where);
         if (CollectionUtils.isNotEmpty(taggings)) {

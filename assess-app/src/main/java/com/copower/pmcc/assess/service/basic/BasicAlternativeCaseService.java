@@ -1,6 +1,6 @@
 package com.copower.pmcc.assess.service.basic;
 
-import com.copower.pmcc.assess.common.enums.basic.EstateTaggingTypeEnum;
+import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicAlternativeCaseDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDetailDao;
@@ -51,20 +51,20 @@ public class BasicAlternativeCaseService {
             }
 
             BasicApplyBatchDetail basicApplyBatchDetail = basicApplyBatchDetailDao.getInfoById(basicAlternativeCase.getBusinessId());
-            if (StringUtils.equals(basicAlternativeCase.getBusinessKey(), EstateTaggingTypeEnum.ESTATE.getKey())) {
+            if (StringUtils.equals(basicAlternativeCase.getBusinessKey(), BasicFormClassifyEnum.ESTATE.getKey())) {
                 basicAlternativeCase.setName(basicApplyBatchDetail.getDisplayName());
             }
-            if (StringUtils.equals(basicAlternativeCase.getBusinessKey(), EstateTaggingTypeEnum.BUILDING.getKey())) {
+            if (StringUtils.equals(basicAlternativeCase.getBusinessKey(), BasicFormClassifyEnum.BUILDING.getKey())) {
                 BasicApplyBatchDetail estate = basicApplyBatchDetailDao.getInfoById(basicApplyBatchDetail.getPid());
                 basicAlternativeCase.setName(String.format("%s%s", estate.getDisplayName(), basicApplyBatchDetail.getDisplayName()));
             }
-            if (StringUtils.equals(basicAlternativeCase.getBusinessKey(), EstateTaggingTypeEnum.UNIT.getKey())) {
+            if (StringUtils.equals(basicAlternativeCase.getBusinessKey(), BasicFormClassifyEnum.UNIT.getKey())) {
                 BasicApplyBatchDetail building = basicApplyBatchDetailDao.getInfoById(basicApplyBatchDetail.getPid());
                 BasicApplyBatchDetail estate = basicApplyBatchDetailDao.getInfoById(building.getPid());
                 basicAlternativeCase.setName(String.format("%s%s%s", estate.getDisplayName(), building.getDisplayName(), basicApplyBatchDetail.getDisplayName()));
 
             }
-            if (StringUtils.equals(basicAlternativeCase.getBusinessKey(), EstateTaggingTypeEnum.HOUSE.getKey())) {
+            if (StringUtils.equals(basicAlternativeCase.getBusinessKey(), BasicFormClassifyEnum.HOUSE.getKey())) {
                 BasicApplyBatchDetail unit = basicApplyBatchDetailDao.getInfoById(basicApplyBatchDetail.getPid());
                 BasicApplyBatchDetail building = basicApplyBatchDetailDao.getInfoById(unit.getPid());
                 BasicApplyBatchDetail estate = basicApplyBatchDetailDao.getInfoById(building.getPid());

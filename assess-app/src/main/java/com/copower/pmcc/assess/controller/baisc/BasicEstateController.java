@@ -65,7 +65,7 @@ public class BasicEstateController {
     @RequestMapping(value = "/saveAndUpdateBasicEstate", name = "新增或者修改", method = {RequestMethod.POST})
     public HttpResult saveAndUpdateBasicEstate(BasicEstate basicEstate) {
         try {
-            return HttpResult.newCorrectResult(basicEstateService.saveAndUpdateBasicEstate(basicEstate, true));
+            return HttpResult.newCorrectResult(basicEstateService.saveAndUpdate(basicEstate, true));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(500, e.getMessage());
@@ -156,7 +156,7 @@ public class BasicEstateController {
     @ResponseBody
     @RequestMapping(value = "/getCaseEstateVos", method = {RequestMethod.GET}, name = "获取案例 楼盘列表")
     public BootstrapTableVo getCaseEstateVos(String name, String province, String city, String district) {
-        return basicEstateService.getCaseEstateList(name,province,city,district);
+        return basicEstateService.getCaseEstateList(name, province, city, district);
     }
 
     @ResponseBody
@@ -176,7 +176,7 @@ public class BasicEstateController {
         try {
             BasicAlternativeCase alternativeCase = basicAlternativeCaseDao.getBasicAlternativeCaseById(id);
             BasicApplyBatchDetail applyBatchDetail = basicApplyBatchDetailDao.getInfoById(alternativeCase.getBusinessId());
-            BasicEstate basicEstate = basicEstateService.copyBasicEstate(applyBatchDetail.getTableId(), tableId, true);
+            BasicEstate basicEstate = (BasicEstate) basicEstateService.copyBasicEntity(applyBatchDetail.getTableId(), tableId, true);
             return HttpResult.newCorrectResult(basicEstate);
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
@@ -188,10 +188,10 @@ public class BasicEstateController {
     @RequestMapping(value = "/quoteCaseEstate", name = "引用案列数据", method = {RequestMethod.GET})
     public HttpResult quoteCaseEstate(Integer sourceId, Integer targetId) {
         try {
-            BasicEstate basicEstate = basicEstateService.copyBasicEstate(sourceId, targetId, true);
+            BasicEstate basicEstate = (BasicEstate) basicEstateService.copyBasicEntity(sourceId, targetId, true);
             basicEstate.setQuoteId(sourceId);
             basicEstate.setBisCase(false);
-            basicEstateService.saveAndUpdateBasicEstate(basicEstate,false);
+            basicEstateService.saveAndUpdate(basicEstate, false);
             return HttpResult.newCorrectResult(basicEstate);
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
