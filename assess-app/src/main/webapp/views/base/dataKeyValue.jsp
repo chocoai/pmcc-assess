@@ -1,6 +1,58 @@
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
+<div id="keyValueBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">key-value管理</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+
+            <div class="modal-body">
+                <form id="keyValueFrm" class="form-horizontal">
+                    <input type="hidden" id="id" name="id">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <div class="row form-group">
+                                    <div class="col-md-6">
+                                        <label class="col-sm-2 control-label">
+                                            添加key-value
+                                        </label>
+                                        <div class="col-sm-3">
+                                            <div class="btn btn-xs btn-success"
+                                                 onclick="appendHTML(this)">
+                                                <i class="fa fa-plus"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="keyValue">
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="keyValueManage.saveData()">
+                    保存
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<%--
 <div id="keyValueBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -46,6 +98,7 @@
         </div>
     </div>
 </div>
+--%>
 
 <script type="application/javascript">
     var keyValueManage ={};
@@ -77,16 +130,16 @@
                 success: function (result) {
                     Loading.progressHide();
                     if (result.ret) {
-                        toastr.success('保存成功');
+                        AlertSuccess("成功", "数据已成功保存到数据库");
                         $('#keyValueBox').modal('hide');
                     }
                     else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
                     Loading.progressHide();
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         }
@@ -111,12 +164,12 @@
                     $('#keyValueBox').modal();
                 }
                 else {
-                    Alert("获取数据失败，失败原因:" + result.errmsg);
+                    AlertError("获取数据失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
                 Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + result);
+                AlertError("调用服务端方法失败，失败原因:" + result);
             }
         })
     };
@@ -124,29 +177,46 @@
     var num = 0;
 
     function appendHTML(this_) {
-        var html = "<div class='form-group' >";
-        html += "<div class='x-valid'>";
+        var html = '<div class="row form-group">';
 
+        html += '<div class="col-md-3">';
+        html += '<div class="form-inline x-valid">';
         html += "<label class='col-sm-1 control-label'>" + "key" + "</label>";
-        html += "<div class='col-sm-2'>";
-        html += "<input type='text' required class='form-control' name='key'+ '" + num + "'>";
+        html += "<div class='col-sm-10'>";
+        html += "<input type='text' required class='form-control input-full' name='key'+ '" + num + "'>";
+        html += "</div>";
+        html += "</div>";
         html += "</div>";
 
+        html += '<div class="col-md-3">';
+        html += '<div class="form-inline x-valid">';
         html += "<label class='col-sm-1 control-label'>" + "value" + "</label>";
-        html += "<div class='col-sm-2'>";
-        html += "<input type='text' required class='form-control' name='value'+ '" + num + "'>";
+        html += "<div class='col-sm-10'>";
+        html += "<input type='text' required class='form-control input-full' name='value'+ '" + num + "'>";
+        html += "</div>";
+        html += "</div>";
         html += "</div>";
 
+        html += '<div class="col-md-3">';
+        html += '<div class="form-inline x-valid">';
         html += "<label class='col-sm-1 control-label'>" + "说明" + "</label>";
-        html += "<div class='col-sm-2'>";
-        html += "<input type='text' required class='form-control' name='explain'+ '" + num + "'>";
+        html += "<div class='col-sm-10'>";
+        html += "<input type='text' required class='form-control input-full' name='explain'+ '" + num + "'>";
         html += "</div>";
+        html += "</div>";
+        html += "</div>";
+
 
         html += " <div class='col-sm-2'>";
-        html += "<input class='btn btn-warning' type='button' value='X' onclick='cleanHTMLData(this)'>" + "</span>";
+        html += '<div class="form-inline x-valid">';
+        html += "<label class='col-sm-1 control-label'>" + "取消" + "</label>";
+        html += "<div class='col-sm-10'>";
+        html += "<input class='btn btn-warning btn-sm' type='button' value='X' onclick='cleanHTMLData(this)'>" + "</span>";
+        html += "</div>";
+        html += "</div>";
         html += "</div>";
 
-        html += "</div>";
+
         html += "</div>";
 
         num++;
@@ -155,7 +225,7 @@
 
     function cleanHTMLData(item) {
         var value = "";
-        $(item).parent().parent().parent().remove();
+        $(item).parent().parent().parent().parent().remove();
     }
 
     function writeHTMLData(json) {
@@ -163,29 +233,44 @@
         if(json) {
             var jsonarray = eval(json);
             $.each(jsonarray, function (i, n) {
-                var html = "<div class='form-group' >";
-                html += "<div class='x-valid'>";
+                var html = '<div class="row form-group">';
 
+                html += '<div class="col-md-3">';
+                html += '<div class="form-inline x-valid">';
                 html += "<label class='col-sm-1 control-label'>" + "key" + "</label>";
-                html += "<div class='col-sm-2'>";
-                html += "<input type='text' required class='form-control' name='key'+'" + i + "' value='" + n['key'] + "'>";
+                html += "<div class='col-sm-10'>";
+                html += "<input type='text' required class='form-control input-full' name='key'+'" + i + "' value='" + n['key'] + "'>";
+                html += "</div>";
+                html += "</div>";
                 html += "</div>";
 
+                html += '<div class="col-md-3">';
+                html += '<div class="form-inline x-valid">';
                 html += "<label class='col-sm-1 control-label'>" + "value" + "</label>";
-                html += "<div class='col-sm-2'>";
-                html += "<input type='text' required class='form-control' name='value'+'" + i + "' value='" + n['value'] + "'>";
+                html += "<div class='col-sm-10'>";
+                html += "<input type='text' required class='form-control input-full' name='value'+'" + i + "' value='" + n['value'] + "'>";
+                html += "</div>";
+                html += "</div>";
                 html += "</div>";
 
+                html += '<div class="col-md-3">';
+                html += '<div class="form-inline x-valid">';
                 html += "<label class='col-sm-1 control-label'>" + "说明" + "</label>";
-                html += "<div class='col-sm-2'>";
-                html += "<input type='text' required class='form-control' name='explain'+ '" + i + "' value='" + n['explain'] + "'>";
+                html += "<div class='col-sm-10'>";
+                html += "<input type='text' required class='form-control input-full' name='explain'+ '" + i + "' value='" + n['explain'] + "'>";
+                html += "</div>";
+                html += "</div>";
                 html += "</div>";
 
                 html += " <div class='col-sm-2'>";
-                html += "<input class='btn btn-warning' type='button' value='X' onclick='cleanHTMLData(this)'>" + "</span>";
+                html += '<div class="form-inline x-valid">';
+                html += "<label class='col-sm-1 control-label'>" + "取消" + "</label>";
+                html += "<div class='col-sm-10'>";
+                html += "<input class='btn btn-warning btn-sm' type='button' value='X' onclick='cleanHTMLData(this)'>" + "</span>";
+                html += "</div>";
+                html += "</div>";
                 html += "</div>";
 
-                html += "</div>";
                 html += "</div>";
                 $(".keyValue").append(html);
             })

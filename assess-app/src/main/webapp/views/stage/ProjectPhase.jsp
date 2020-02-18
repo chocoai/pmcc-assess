@@ -6,8 +6,89 @@
     <%@include file="/views/share/main_css.jsp" %>
 </head>
 
-<body class="nav-md footer_fixed">
-<div class="container body">
+<body>
+<div class="wrapper">
+    <%@include file="/views/share/main_navigation.jsp" %>
+    <%@include file="/views/share/main_head.jsp" %>
+    <div class="main-panel">
+        <div class="content">
+            <div class="panel-header bg-primary-gradient">
+                <div class="page-inner py-5">
+                </div>
+            </div>
+            <div class="page-inner mt--5">
+                <div class="row mt--2">
+
+                    <div class="col-md-12">
+                        <%@include file="/views/share/navigation/systemSetup.jsp" %>
+                        <div class="card full-height">
+                            <div class="card-header">
+                                <div class="card-head-row">
+                                    <div class="card-title">${baseViewDto.currentMenu.name}</div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <form id="frmQuery" class="form-horizontal">
+                                    <div class="form-group form-inline">
+                                        <label class="col-md-1 col-form-label">项目大类:</label>
+                                        <div class="col-md-3 p-0">
+                                            <select name="classId" id="classId" class="form-control input-full">
+                                                <option value="">-请选择-</option>
+                                                <c:forEach var="item" items="${projectClassList}">
+                                                    <option value="${item.id}">${item.name}</option>
+                                                </c:forEach>
+                                            </select>
+                                        </div>
+                                        <label class="col-md-1 col-form-label">项目类型:</label>
+                                        <div class="col-md-3 p-0">
+                                            <select name="typeId" id="typeId" class="form-control input-full">
+                                                <option value="" selected="selected">-请选择-</option>
+                                            </select>
+                                        </div>
+                                        <label class="col-md-1 col-form-label">项目类别:</label>
+                                        <div class="col-md-3 p-0">
+                                            <select name="categoryId" id="categoryId" class="form-control input-full">
+                                                <option value="" selected="selected">-请选择-</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group form-inline">
+                                        <p id="modelListToolbar">
+                                            <button style="margin-left: 10px" class="btn btn-success btn-sm" type="button" id="create_work_stage"
+                                                    data-toggle="modal">
+											<span class="btn-label">
+												<i class="fa fa-plus"></i>
+											</span>
+                                                新增项目阶段
+                                            </button>
+                                            <button style="margin-left: 5px" class="btn btn-success btn-sm" type="button" id="create_project_phase"
+                                                    data-toggle="modal">
+											<span class="btn-label">
+												<i class="fa fa-plus"></i>
+											</span>
+                                                新增工作事项
+                                            </button>
+                                        </p>
+
+                                    </div>
+
+
+                                </form>
+                                <table class="table table-bordered" id="project_phase_list_table">
+                                    <!-- cerare document add ajax data-->
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <%@include file="/views/share/main_footer.jsp" %>
+    </div>
+
+</div>
+<%--<div class="container body">
     <div class="main_container">
         <%@include file="/views/share/main_navigation.jsp" %>
         <%@include file="/views/share/main_head.jsp" %>
@@ -35,7 +116,7 @@
                                                 项目大类:
                                             </label>
                                             <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                                <select name="classId" id="classId" class="form-control">
+                                                <select name="classId" id="classId" class="form-control input-full">
                                                     <option value="">-请选择-</option>
                                                     <c:forEach var="item" items="${projectClassList}">
                                                         <option value="${item.id}">${item.name}</option>
@@ -48,7 +129,7 @@
                                                 项目类型:
                                             </label>
                                             <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                                <select name="typeId" id="typeId" class="form-control">
+                                                <select name="typeId" id="typeId" class="form-control input-full">
                                                     <option value="" selected="selected">-请选择-</option>
                                                 </select>
                                             </div>
@@ -58,7 +139,7 @@
                                                 项目类别:
                                             </label>
                                             <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                                <select name="categoryId" id="categoryId" class="form-control">
+                                                <select name="categoryId" id="categoryId" class="form-control input-full">
                                                     <option value="" selected="selected">-请选择-</option>
                                                 </select>
                                             </div>
@@ -87,7 +168,7 @@
 
         </div>
     </div>
-</div>
+</div>--%>
 </body>
 
 
@@ -99,7 +180,6 @@
 <%@include file="/views/stage/share/workPhaseEdit.jsp" %>
 <!-- end: 编辑工作事项 -->
 
-<%@include file="/views/share/main_footer.jsp" %>
 <script type="text/javascript" src="/pmcc-bpm/js/bpm-approval-role-utils.js?v=${assessVersion}"></script>
 <script type="text/javascript" src="/pmcc-bpm/js/bpm-box-utils.js?v=${assessVersion}"></script>
 <script type="application/javascript">

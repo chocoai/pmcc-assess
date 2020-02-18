@@ -6,320 +6,400 @@
     <%@include file="/views/share/main_css.jsp" %>
 </head>
 
-<body class="nav-md footer_fixed">
-<%--<%@include file="share/main_head.jsp" %>--%>
-<!-- start: MAIN CONTAINER -->
-<div class="container body">
-    <div class="main_container">
-        <%@include file="/views/share/main_navigation.jsp" %>
-        <%@include file="/views/share/main_head.jsp" %>
-        <div class="right_col" role="main">
-            <%@include file="/views/share/navigation/systemSetup.jsp" %>
-            <div class="col-xs-12  col-sm-12  col-md-10  col-lg-10 ">
-                <div class="x_panel">
-                    <div class="x_title collapse-link">
-                        <ul class="nav navbar-right panel_toolbox">
-                            <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                        </ul>
-                        <h2><i class="fa ${baseViewDto.currentMenu.icon}"></i>
-                            查勘内容
-                        </h2>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div class="x_content">
-                        <form id="frmQuery" class="form-horizontal">
-                            <div class="form-group ">
-                                <div>
-                                    <label class="col-sm-1 control-label">
-                                        名称
-                                    </label>
-                                    <div class="col-sm-2">
-                                        <input type="text" data-rule-maxlength="50"
-                                               placeholder="名称" id="queryName" name="queryName"
-                                               class="form-control">
-                                    </div>
-                                </div>
-                                <div>
-                                    <label class="col-sm-1 control-label">
-                                        字段名称
-                                    </label>
-                                    <div class="col-sm-2">
-                                        <input type="text" data-rule-number="true" data-rule-maxlength="50"
-                                               placeholder="字段名称" id="queryFieldName" name="queryFieldName"
-                                               class="form-control">
-                                    </div>
-                                </div>
-                                <div class="col-sm-3">
-                                    <button type="button" class="btn btn-primary" onclick="reloadDataExamineTaskList()">
-                                        查询
-                                    </button>
-                                    <button type="button" class="btn btn-success" onclick="addDataExamineTask()"
-                                            data-toggle="modal" href="#divBox"> 新增
-                                    </button>
+<body>
+<div class="wrapper">
+    <%@include file="/views/share/main_navigation.jsp" %>
+    <%@include file="/views/share/main_head.jsp" %>
+    <div class="main-panel">
+        <div class="content">
+            <div class="panel-header bg-primary-gradient">
+                <div class="page-inner py-5">
+                </div>
+            </div>
+            <div class="page-inner mt--5">
+                <div class="row mt--2">
+
+                    <div class="col-md-12">
+                        <%@include file="/views/share/navigation/systemSetup.jsp" %>
+                        <div class="card full-height">
+                            <div class="card-header">
+                                <div class="card-head-row">
+                                    <div class="card-title">${baseViewDto.currentMenu.name}</div>
                                 </div>
                             </div>
+                            <div class="card-body">
+                                <form id="frmQuery" class="form-horizontal">
+                                    <div class="form-group form-inline">
+                                        <label class="col-md-1 col-form-label">名称</label>
+                                        <div class="col-md-3 p-0">
+                                            <input type="text" data-rule-maxlength="50"
+                                                   placeholder="名称" id="queryName" name="queryName"
+                                                   class="form-control input-full">
+                                        </div>
+                                        <label class="col-md-1 col-form-label">字段名称</label>
+                                        <div class="col-md-3 p-0">
+                                            <input type="text" data-rule-number="true" data-rule-maxlength="50"
+                                                   placeholder="字段名称" id="queryFieldName" name="queryFieldName"
+                                                   class="form-control input-full">
+                                        </div>
+                                        <button style="margin-left: 10px" class="btn btn-info  btn-sm" type="button"
+                                                onclick="reloadDataExamineTaskList()">
+											<span class="btn-label">
+												<i class="fa fa-search"></i>
+											</span>
+                                            查询
+                                        </button>
+                                        <button style="margin-left: 5px" class="btn btn-success btn-sm" type="button"
+                                                data-toggle="modal" onclick="addDataExamineTask()"
+                                                href="#divBox">
+											<span class="btn-label">
+												<i class="fa fa-plus"></i>
+											</span>
+                                            新增
+                                        </button>
+                                    </div>
 
-                        </form>
-                        <table class="table table-bordered" id="tb_List">
 
-                        </table>
+                                </form>
+                                <table class="table table-bordered" id="tb_List">
+                                    <!-- cerare document add ajax data-->
+                                </table>
+                            </div>
+                        </div>
                     </div>
+
                 </div>
             </div>
         </div>
+        <%@include file="/views/share/main_footer.jsp" %>
     </div>
-    <!-- end: MAIN CONTAINER -->
+
 </div>
+<%--<%@include file="share/main_head.jsp" %>--%>
+<!-- start: MAIN CONTAINER -->
+
 </body>
 <div id="divBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
+                <h4 class="modal-title">查勘内容</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">项目类型</h3>
             </div>
-            <form id="frm" class="form-horizontal">
-                <input type="hidden" id="id" name="id" value="0">
-                <input type="hidden" id="pid" name="pid">
-                <div class="modal-body">
+
+            <div class="modal-body">
+                <form id="frm" class="form-horizontal">
+                    <input type="hidden" id="id" name="id" value="0">
+                    <input type="hidden" id="pid" name="pid">
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="panel-body">
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            名称<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <input type="text" required data-rule-maxlength="50" placeholder="名称"
-                                                   id="name" name="name" class="form-control">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            字段名称<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <input type="text" required data-rule-maxlength="50" placeholder="字段名称"
-                                                   id="fieldName" name="fieldName" class="form-control">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            是否启用
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <label class="radio-inline">
-                                                <input type="checkbox" id="bisEnable" name="bisEnable" value="true"
-                                                       checked="checked">
+                            <div class="card-body">
+                                <div class="row form-group">
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                名称<span class="symbol required"></span>
                                             </label>
+                                            <div class="col-sm-10">
+                                                <input type="text" required data-rule-maxlength="50" placeholder="名称"
+                                                       id="name" name="name" class="form-control input-full">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                字段名称<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input type="text" required data-rule-maxlength="50" placeholder="字段名称"
+                                                       id="fieldName" name="fieldName" class="form-control input-full">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            排序
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <input type="text" data-rule-digits="true" placeholder="排序"
-                                                   id="sorting" name="sorting" class="form-control">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            备注
-                                        </label>
-                                        <div class="col-sm-10">
-                                    <textarea placeholder="备注" id="remark" name="remark"
-                                              class="form-control"></textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-default">
-                        取消
-                    </button>
-                    <button type="button" class="btn btn-primary" onclick="saveDataExamineTask()">
-                        保存
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
 
-<!--子项管理-->
-<div id="divSubDataExamineTask" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
-     role="dialog"
-     aria-hidden="true" data-height="350" style="overflow: auto;">
-    <div class="modal-dialog modal-lg" style="width: 1200px">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title" id="titleContent">子项数据</h3>
-            </div>
-            <div class="panel-body">
-        <span id="toolbarSub">
-            <button type="button" class="btn btn-success" onclick="addSubDataExamineTask()"
-                    data-toggle="modal" href="#divSubDataExamineTaskManage"> 新增
-            </button>
-        </span>
-                <table class="table table-bordered" id="tbDataExamineTaskList">
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
-<input type="hidden" id="mainId" name="mainId" value="0">
-<div id="divSubDataExamineTaskManage" class="modal fade bs-example-modal-lg"
-     data-backdrop="static" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">子项管理</h3>
-            </div>
-            <div class="modal-body">
-                <form id="frmSub" class="form-horizontal">
-                    <input type="hidden" id="subId" name="id" value="0">
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                名称<span class="symbol required"></span>
-                            </label>
-                            <div class="col-sm-4">
-                                <input type="text" required data-rule-maxlength="50" placeholder="名称"
-                                       id="subName" name="name" class="form-control">
-                            </div>
-                        </div>
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                字段名称
-                            </label>
-                            <div class="col-sm-4">
-                                <input type="text" data-rule-maxlength="100" placeholder="字段名称"
-                                       id="subFieldName" name="fieldName" class="form-control">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                申请url
-                            </label>
-                            <div class="col-sm-4">
-                                <input type="text" data-rule-maxlength="100" placeholder="申请url"
-                                       id="applyUrl" name="applyUrl" class="form-control">
-                            </div>
-                        </div>
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                详情url
-                            </label>
-                            <div class="col-sm-4">
-                                <input type="text" data-rule-maxlength="100" placeholder="详情url"
-                                       id="detailUrl" name="detailUrl" class="form-control">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                排序
-                            </label>
-                            <div class="col-sm-4">
-                                <input type="text" data-rule-digits="true" placeholder="排序"
-                                       id="subSorting" name="sorting" class="form-control">
-                            </div>
-                        </div>
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                是否启用
-                            </label>
-                            <div class="col-sm-4">
-                                <label class="radio-inline">
-                                    <input type="checkbox" id="subBisEnable" name="bisEnable" value="true"
-                                           checked="checked">
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                是否必填项
-                            </label>
-                            <div class="col-sm-2">
-                                <label class="radio-inline">
-                                    <input type="checkbox" id="subBisMust" name="bisMust" value="true"
-                                           checked="checked">
-                                </label>
-                            </div>
-                        </div>
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                是否重复表
-                            </label>
-                            <div class="col-sm-2">
-                                <label class="radio-inline">
-                                    <input type="checkbox" id="subBisRepeat" name="bisRepeat" value="true"
-                                           checked="checked">
-                                </label>
-                            </div>
-                        </div>
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                是否需传附件
-                            </label>
-                            <div class="col-sm-2">
-                                <label class="radio-inline">
-                                    <input type="checkbox" id="subBisUpload" name="bisUpload" value="true"
-                                           checked="checked">
-                                </label>
-                            </div>
-                        </div>
-                    </div>
+                                <div class="row form-group">
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
 
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                备注
-                            </label>
-                            <div class="col-sm-10">
-                                    <textarea placeholder="备注" id="subRemark" name="remark"
-                                              class="form-control"></textarea>
+                                            <div class="col-sm-10">
+                                                <div class="form-check" style="justify-content:left">
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input" type="checkbox" id="bisEnable"
+                                                               name="bisEnable" value="true"
+                                                               checked="checked">
+                                                        <span class="form-check-sign">是否启用</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                排序
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input type="text" data-rule-digits="true" placeholder="排序"
+                                                       id="sorting" name="sorting" class="form-control input-full">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                备注
+                                            </label>
+                                            <div class="col-sm-11">
+                                            <textarea placeholder="备注" id="remark" name="remark"
+                                                      class="form-control input-full"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+
                             </div>
                         </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">
-                    取消
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
                 </button>
-                <button type="button" class="btn btn-primary" onclick="saveSubDataExamineTask()">
+                <button type="button" class="btn btn-primary btn-sm" onclick="saveDataExamineTask()">
                     保存
                 </button>
             </div>
+
         </div>
     </div>
 </div>
-<%@include file="/views/share/main_footer.jsp" %>
+
+
+<!--子项管理-->
+<div id="divSubDataExamineTask" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">子项数据</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card-body">
+                            <p id="toolbarSub">
+                                <button style="margin-left: 5px" class="btn btn-success btn-sm" type="button"
+                                        data-toggle="modal" onclick="addSubDataExamineTask()"
+                                        href="#divSubDataExamineTaskManage">
+											<span class="btn-label">
+												<i class="fa fa-plus"></i>
+											</span>
+                                    新增
+                                </button>
+                            </p>
+                            <table id="tbDataExamineTaskList" class="table table-bordered"></table>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<input type="hidden" id="mainId" name="mainId" value="0">
+
+<div id="divSubDataExamineTaskManage" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">子项管理</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+
+            <div class="modal-body">
+                <form id="frmSub" class="form-horizontal">
+                    <input type="hidden" id="subId" name="id" value="0">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <div class="row form-group">
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                名称<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input type="text" required data-rule-maxlength="50" placeholder="名称"
+                                                       id="subName" name="name" class="form-control input-full">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                字段名称
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input type="text" data-rule-maxlength="100" placeholder="字段名称"
+                                                       id="subFieldName" name="fieldName" class="form-control input-full">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                申请url
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input type="text" data-rule-maxlength="100" placeholder="申请url"
+                                                       id="applyUrl" name="applyUrl" class="form-control input-full">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                详情url
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input type="text" data-rule-maxlength="100" placeholder="详情url"
+                                                       id="detailUrl" name="detailUrl" class="form-control input-full">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                排序
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input type="text" data-rule-digits="true" placeholder="排序"
+                                                       id="subSorting" name="sorting" class="form-control input-full">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+
+                                            <div class="col-sm-10">
+                                                <div class="form-check" style="justify-content:left">
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input" type="checkbox" id="subBisEnable"
+                                                               name="bisEnable" value="true"
+                                                               checked="checked">
+                                                        <span class="form-check-sign">是否启用</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row form-group">
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+
+                                            <div class="col-sm-10">
+                                                <div class="form-check" style="justify-content:left">
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input" type="checkbox" id="subBisMust"
+                                                               name="bisMust" value="true"
+                                                               checked="checked">
+                                                        <span class="form-check-sign">是否必填项</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+
+                                            <div class="col-sm-10">
+                                                <div class="form-check" style="justify-content:left">
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input" type="checkbox" id="subBisRepeat"
+                                                               name="bisRepeat" value="true"
+                                                               checked="checked">
+                                                        <span class="form-check-sign">是否重复表</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <div class="col-sm-10">
+                                                <div class="form-check" style="justify-content:left">
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input" type="checkbox" id="subBisUpload"
+                                                               name="bisUpload" value="true"
+                                                               checked="checked">
+                                                        <span class="form-check-sign">是否需传附件</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                备注
+                                            </label>
+                                            <div class="col-sm-11">
+                                             <textarea placeholder="备注" id="subRemark" name="remark"
+                                                       class="form-control input-full"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="saveSubDataExamineTask()">
+                    保存
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
 <script type="application/javascript">
     $(function () {
         loadDataExamineTaskList();
@@ -338,11 +418,15 @@
         cols.push({field: 'remark', title: '备注'});
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
-                var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-success" href="javascript:setSubDataExamineTask(' + row.id + ');" >查看子项</i></a>';
-                str += '<a class="btn btn-xs btn-success" href="javascript:editDataExamineTask(' + row.id + ');" >编辑</i></a>';
-                str += '<a class="btn btn-xs btn-warning" href="javascript:delDataExamineTask(' + row.id + ',\'tb_List\')">删除</a>';
-                str += '</div>';
+                var str = '<button onclick="setSubDataExamineTask(' + row.id + ')" style="margin-left: 5px;" class="btn btn-icon btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看子项">';
+                str += '<i class="fa fa-search"></i>';
+                str += '</button>';
+                str += '<button onclick="editDataExamineTask(' + row.id + ')"  style="margin-left: 5px;"  class="btn btn-icon btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
+                str += '<i class="fa fa-pen"></i>';
+                str += '</button>';
+                str += '<button onclick="delDataExamineTask(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn btn-icon btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
+                str += '<i class="fa fa-minus"></i>';
+                str += '</button>';
                 return str;
             }
         });
@@ -380,17 +464,17 @@
                 success: function (result) {
                     Loading.progressHide();
                     if (result.ret) {
-                        toastr.success('保存成功');
+                        AlertSuccess("成功", "数据已成功保存到数据库");
                         TableReload("tb_List");
                         $('#divBox').modal('hide');
                     }
                     else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
                     Loading.progressHide();
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         }
@@ -419,18 +503,18 @@
                     $('#divBox').modal();
                 }
                 else {
-                    Alert("获取数据失败，失败原因:" + result.errmsg);
+                    AlertError("获取数据失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
                 Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + result);
+                AlertError("调用服务端方法失败，失败原因:" + result);
             }
         })
     }
     //删除字典数据
     function delDataExamineTask(id, tbId) {
-        Alert("确认要删除么？", 2, null, function () {
+        AlertConfirm("是否确认删除", "删除相应的数据后将不可恢复", function () {
             Loading.progressShow();
             $.ajax({
                 url: "${pageContext.request.contextPath}/dataExamineTask/delDataExamineTask",
@@ -440,16 +524,16 @@
                 success: function (result) {
                     Loading.progressHide();
                     if (result.ret) {
-                        toastr.success('删除成功');
+                        notifySuccess("成功", "删除数据成功");
                         $('#' + tbId).bootstrapTable("refresh");
                     }
                     else {
-                        Alert("删除数据失败，失败原因:" + result.errmsg);
+                        AlertError("删除数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
                     Loading.progressHide();
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         })
@@ -493,11 +577,15 @@
         cols.push({field: 'remark', title: '备注'});
         cols.push({
             field: 'id', title: '操作', width: 200, formatter: function (value, row, index) {
-                var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-success" href="javascript:setSubDataExamineTask(' + row.id + ');" ><i class="fa fa-edit">查看子项</i></a>';
-                str += '<a class="btn btn-xs btn-success" href="javascript:editSubDataExamineTask(' + row.id + ');" ><i class="fa fa-edit">编辑</i></a>';
-                str += '<a class="btn btn-xs btn-warning" href="javascript:delDataExamineTask(' + row.id + ',\'tbDataExamineTaskList\')"><i class="fa fa-trash-o"></i>删除</a>';
-                str += '</div>';
+                var str = '<button onclick="setSubDataExamineTask(' + row.id + ')" style="margin-left: 5px;" class="btn btn-icon btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看子项">';
+                str += '<i class="fa fa-search"></i>';
+                str += '</button>';
+                str += '<button onclick="editSubDataExamineTask(' + row.id + ')"  style="margin-left: 5px;"  class="btn btn-icon btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
+                str += '<i class="fa fa-pen"></i>';
+                str += '</button>';
+                str += '<button onclick="delDataExamineTask(' + row.id + ',\'tbDataExamineTaskList\')"  style="margin-left: 5px;"  class="btn btn-icon btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
+                str += '<i class="fa fa-minus"></i>';
+                str += '</button>';
                 return str;
             }
         });
@@ -553,16 +641,16 @@
                 data: data,
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success('保存成功');
+                        AlertSuccess("成功", "数据已成功保存到数据库");
                         TableReload("tbDataExamineTaskList");
                         $('#divSubDataExamineTaskManage').modal('hide');
                     }
                     else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         }
@@ -587,11 +675,11 @@
                     }
                 }
                 else {
-                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                    notifyWarning("保存数据失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
+                notifyWarning("调用服务端方法失败，失败原因:" + result);
             }
         })
     }

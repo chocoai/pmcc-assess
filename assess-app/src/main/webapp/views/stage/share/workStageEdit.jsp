@@ -6,7 +6,223 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<div id="work_stage_modal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">项目阶段编辑</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
 
+            <div class="modal-body">
+                <form id="modify_work_stage_form" class="form-horizontal">
+                    <input type="hidden" id="workStageIdKey" name="id">
+                    <input type="hidden" id="workStageProjectClassId" name="projectClassId">
+                    <input type="hidden" id="workStageProjectTypeId" name="projectTypeId">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <div class="row form-group">
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                阶段名称<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input class="form-control input-full" id="workStageName" name="workStageName" required
+                                                       data-rule-maxlength="255" placeholder="项目阶段名称">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                自定义服务
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <select id="stageForm" name="stageForm"
+                                                        class="form-control input-full">
+                                                    <option value="">-选择-</option>
+                                                    <c:forEach var="item" items="${sysBaseFormListStage}">
+                                                        <option value="${item.assistName}">${item.name}</option>
+                                                    </c:forEach>
+
+                                                    <c:forEach var="item" items="${sysBaseFormListStageAuto}">
+                                                        <option value="${item.assistName}">${item.name}</option>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row form-group">
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                计划模型
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input class="form-control input-full" name="boxName"
+                                                       data-rule-maxlength="255" placeholder="模型">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                复核模型
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input class="form-control input-full" name="reviewBoxName"
+                                                       data-rule-maxlength="255" placeholder="复核模型">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row form-group">
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                角色类型
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <select name="boxRoleType" id="boxRoleType" class="form-control input-full">
+                                                    <option value="">-选择-</option>
+                                                    <option value="1">部门角色</option>
+                                                    <option value="2">公有角色</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6"  id="div_roleId" style="display: none">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                部门角色
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input type="hidden" id="boxRoleId" name="boxRoleId">
+                                                <input data-rule-maxlength="200" placeholder="选择公用角色则部门可不填"
+                                                       onfocus="workStageObj.selApprovalRole()" id="boxRoleName"
+                                                       name="boxRoleName"
+                                                       class="form-control input-full">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" id="div_roleKey" style="display: none">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                公有角色
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <select name="boxRoleKey" id="boxRoleKey"
+                                                        class="form-control input-full search-select select2">
+                                                    <option value="">-选择-</option>
+                                                    <c:forEach var="item" items="${publicRole}">
+                                                        <option value="${item.name}">${item.cnName}</option>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row form-group">
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                执行顺序<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <div class="input-group">
+                                                    <input class="form-control input-full" id="workStageSort" name="stageSort" required
+                                                           data-rule-digits="true" placeholder="用于显示排序">
+                                                    <span class="input-group-addon"> <i class="fa fa-sort-numeric-asc"></i> </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                比重<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input class="form-control input-full" id="specificGravity" name="specificGravity"
+                                                       required
+                                                       data-rule-number="true" placeholder="比重、权重">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row form-group">
+                                    <div class="col-md-4">
+                                        <div class="form-inline x-valid">
+                                            <div class="col-sm-10">
+                                                <div class="form-check" style="justify-content:left">
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input" type="checkbox" id="workStageAllowIssued"
+                                                               name="allowIssued" value="true"
+                                                               checked="checked">
+                                                        <span class="form-check-sign">允许下发</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-inline x-valid">
+                                            <div class="col-sm-10">
+                                                <div class="form-check" style="justify-content:left">
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input" type="checkbox" id="workStagebisEnable"
+                                                               name="bisEnable" value="true"
+                                                               checked="checked">
+                                                        <span class="form-check-sign">是否可用</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-inline x-valid">
+                                            <div class="col-sm-10">
+                                                <div class="form-check" style="justify-content:left">
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input" type="checkbox" id="workStagebisLoadDefalut"
+                                                               name="bisLoadDefalut" value="true"
+                                                               checked="checked">
+                                                        <span class="form-check-sign">是否加载默认项</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+                <button id="save_work_stage" type="button" class="btn btn-primary btn-sm">
+                    提交
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<%--
 <div id="work_stage_modal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -35,7 +251,7 @@
                                             阶段名称<span class="symbol required"></span>
                                         </label>
                                         <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
-                                            <input class="form-control" id="workStageName" name="workStageName" required
+                                            <input class="form-control input-full" id="workStageName" name="workStageName" required
                                                    data-rule-maxlength="255" placeholder="项目阶段名称">
                                         </div>
                                     </div>
@@ -47,7 +263,7 @@
                                         </label>
                                         <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
                                             <select id="stageForm" name="stageForm"
-                                                    class="form-control">
+                                                    class="form-control input-full">
                                                 <option value="">-选择-</option>
                                                 <c:forEach var="item" items="${sysBaseFormListStage}">
                                                     <option value="${item.assistName}">${item.name}</option>
@@ -67,7 +283,7 @@
                                             计划模型
                                         </label>
                                         <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
-                                            <input class="form-control" name="boxName"
+                                            <input class="form-control input-full" name="boxName"
                                                    data-rule-maxlength="255" placeholder="模型">
                                         </div>
                                     </div>
@@ -80,7 +296,7 @@
                                             复核模型
                                         </label>
                                         <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
-                                            <input class="form-control" name="reviewBoxName"
+                                            <input class="form-control input-full" name="reviewBoxName"
                                                    data-rule-maxlength="255" placeholder="复核模型">
                                         </div>
                                     </div>
@@ -92,7 +308,7 @@
                                             角色类型
                                         </label>
                                         <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
-                                            <select name="boxRoleType" id="boxRoleType" class="form-control">
+                                            <select name="boxRoleType" id="boxRoleType" class="form-control input-full">
                                                 <option value="">-选择-</option>
                                                 <option value="1">部门角色</option>
                                                 <option value="2">公有角色</option>
@@ -108,7 +324,7 @@
                                             <input data-rule-maxlength="200" placeholder="选择公用角色则部门可不填"
                                                    onfocus="workStageObj.selApprovalRole()" id="boxRoleName"
                                                    name="boxRoleName"
-                                                   class="form-control">
+                                                   class="form-control input-full">
                                         </div>
                                     </div>
                                     <div class="x-valid" id="div_roleKey" style="display: none">
@@ -117,7 +333,7 @@
                                         </label>
                                         <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                             <select name="boxRoleKey" id="boxRoleKey"
-                                                    class="form-control search-select select2">
+                                                    class="form-control input-full search-select select2">
                                                 <option value="">-选择-</option>
                                                 <c:forEach var="item" items="${publicRole}">
                                                     <option value="${item.name}">${item.cnName}</option>
@@ -134,7 +350,7 @@
                                         </label>
                                         <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                             <div class="input-group">
-                                                <input class="form-control" id="workStageSort" name="stageSort" required
+                                                <input class="form-control input-full" id="workStageSort" name="stageSort" required
                                                        data-rule-digits="true" placeholder="用于显示排序">
                                                 <span class="input-group-addon"> <i class="fa fa-sort-numeric-asc"></i> </span>
                                             </div>
@@ -146,7 +362,7 @@
                                             比重<span class="symbol required"></span>
                                         </label>
                                         <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
-                                            <input class="form-control" id="specificGravity" name="specificGravity"
+                                            <input class="form-control input-full" id="specificGravity" name="specificGravity"
                                                    required
                                                    data-rule-number="true" placeholder="比重、权重">
                                         </div>
@@ -209,6 +425,7 @@
         </div>
     </div>
 </div>
+--%>
 
 <script type="application/javascript">
 
@@ -267,7 +484,7 @@
             $('#create_project_phase').removeAttr('disabled');
         } else {
             var typeName = $("#typeId option:selected").text();
-            Alert("【" + typeName + "】类型还没有配置项目阶段，请点击'新增项目阶段'来添加项目阶段.");
+            AlertError("【" + typeName + "】类型还没有配置项目阶段，请点击'新增项目阶段'来添加项目阶段.");
         }
     };
 
@@ -360,7 +577,7 @@
                 $('#workStageBox_assessment').attr('disabled', "true");
                 $('#reviewBox_assessment').attr('disabled', "true");
             } else {
-                Alert("新增项目阶段时必须选择具体的类型");
+                AlertError("新增项目阶段时必须选择具体的类型");
             }
         }
         $("#boxRoleType").change();
@@ -377,12 +594,12 @@
 
         var data = formSerializeArray(workStageObj.formWorkStage);
         if (!data) {
-            Alert("没有需要保存的数据");
+            AlertError("没有需要保存的数据");
             return false;
         }
         //保存项目如果禁用了则提示一下
         if (!data.bisEnable) {
-            Alert("您在编辑项目阶段时选择了禁用此阶段，您确认要这么做(如果这么做页面上将不会显示此阶段的相关数据)？", 2, function () {
+            AlertError("您在编辑项目阶段时选择了禁用此阶段，您确认要这么做(如果这么做页面上将不会显示此阶段的相关数据)？", 2, function () {
                 data.bisEnable = true;
             }, function () {
                 data.bisEnable = false;
@@ -398,18 +615,18 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    toastr.success('操作成功');
+                    AlertSuccess("成功", "数据已成功保存到数据库");
                     workStageObj.modalWorkStage.modal('hide');
                     if (typeof successFn === "function") {
                         successFn();
                     }
                 } else {
-                    Alert("操作失败:" + result.errmsg);
+                    AlertError("操作失败:" + result.errmsg);
                 }
             },
             error: function (e) {
                 Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + e);
+                AlertError("调用服务端方法失败，失败原因:" + e);
             }
         });
     };

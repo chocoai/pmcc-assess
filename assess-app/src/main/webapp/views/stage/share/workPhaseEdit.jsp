@@ -6,7 +6,232 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<div id="project_phase_modal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">工作事项编辑</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
 
+            <div class="modal-body">
+                <form id="modify_project_phase_form" class="form-horizontal">
+                    <input type="hidden" id="id" name="id">
+                    <input type="hidden" id="projectClassId" name="projectClassId">
+                    <input type="hidden" id="projectTypeId" name="projectTypeId">
+                    <input type="hidden" id="projectCategoryId" name="projectCategoryId">
+                    <input id="workTemplate" name="workTemplate" type="hidden">
+                    <input id="workProcessTemplate" name="workProcessTemplate" type="hidden">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <div class="row form-group">
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                工作事项<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input class="form-control input-full" id="projectPhaseName"
+                                                       name="projectPhaseName"
+                                                       required
+                                                       data-rule-maxlength="255" placeholder="工作事项名称">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                自定义服务
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <select id="phaseForm" name="phaseForm"
+                                                        class="form-control input-full search-select select2">
+                                                    <option value="">-选择-</option>
+                                                    <c:forEach var="item" items="${sysBaseFormListMatter}">
+                                                        <option value="${item.assistName}">${item.name}</option>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                所属阶段<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <select class="form-control input-full" id="workStageId" name="workStageId"
+                                                        required>
+                                                    <option value="">-选择-</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                模型
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input class="form-control input-full" name="boxName"
+                                                       data-rule-maxlength="255" placeholder="模型">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                计划工时<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <div class="input-group">
+                                                    <input class="form-control input-full" id="phaseTime" name="phaseTime" required
+                                                           data-rule-number placeholder="计划耗费的工时">
+                                                    <span class="input-group-addon"> <i
+                                                            class="fa fa-clock-o"></i> </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                序号<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <div class="input-group">
+                                                    <input class="form-control input-full" id="phaseSort" name="phaseSort" required
+                                                           data-rule-digits="true" placeholder="用于显示排序">
+                                                    <span class="input-group-addon"> <i
+                                                            class="fa fa-sort-numeric-asc"></i> </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                自定义附件模板
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <select name="assetsSettingId" class="form-control input-full">
+                                                    <c:forEach items="${dataAssetsAppraisalDicList}" var="item">
+                                                        <option value="${item.id}">${item.name}</option>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+
+                                            <div class="col-sm-10">
+                                                <div class="form-check" style="justify-content:left">
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input" type="checkbox" id="bisWait"
+                                                               name="bisWait" value="true"
+                                                               checked="checked">
+                                                        <span class="form-check-sign">允许挂起</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row form-group">
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+
+                                            <div class="col-sm-10">
+                                                <div class="form-check" style="justify-content:left">
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input" type="checkbox" id="bisUseBox"
+                                                               name="bisUseBox" value="true"
+                                                               checked="checked">
+                                                        <span class="form-check-sign">默认使用流程</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+
+                                            <div class="col-sm-10">
+                                                <div class="form-check" style="justify-content:left">
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input" type="checkbox"
+                                                               id="bisCanReturn"
+                                                               name="bisCanReturn" value="true"
+                                                               checked="checked">
+                                                        <span class="form-check-sign">允许重启</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                工作模板
+                                            </label>
+                                            <div class="col-sm-11" id="workTemplate_file_co">
+                                                <input id="workTemplate_file" name="workTemplate_file" type="file"
+                                                       multiple="false">
+                                                <div id="_workTemplate_file"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                流程模板
+                                            </label>
+                                            <div class="col-sm-11" id="workProcessTemplate_file_co">
+                                                <input id="workProcessTemplate_file" name="workProcessTemplate_file"
+                                                       type="file"
+                                                       multiple="false">
+                                                <div id="_workProcessTemplate_file"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+                <button id="save_project_phase" type="button" class="btn btn-primary btn-sm">
+                    提交
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<%--
 <div id="project_phase_modal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -33,21 +258,23 @@
 
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label" for="projectPhaseName">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label"
+                                               for="projectPhaseName">
                                             工作事项<span class="symbol required"></span>
                                         </label>
                                         <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
-                                            <input class="form-control" id="projectPhaseName" name="projectPhaseName"
+                                            <input class="form-control input-full" id="projectPhaseName" name="projectPhaseName"
                                                    required
                                                    data-rule-maxlength="255" placeholder="工作事项名称">
                                         </div>
                                         <div class="x-valid">
-                                            <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label" for="phaseForm">
+                                            <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label"
+                                                   for="phaseForm">
                                                 自定义服务
                                             </label>
                                             <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                                 <select id="phaseForm" name="phaseForm"
-                                                        class="form-control search-select select2">
+                                                        class="form-control input-full search-select select2">
                                                     <option value="">-选择-</option>
                                                     <c:forEach var="item" items="${sysBaseFormListMatter}">
                                                         <option value="${item.assistName}">${item.name}</option>
@@ -60,11 +287,12 @@
 
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label" for="workStageId">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label"
+                                               for="workStageId">
                                             所属阶段<span class="symbol required"></span>
                                         </label>
                                         <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4  ">
-                                            <select class="form-control" id="workStageId" name="workStageId" required>
+                                            <select class="form-control input-full" id="workStageId" name="workStageId" required>
                                                 <option value="">-选择-</option>
                                             </select>
                                         </div>
@@ -72,31 +300,33 @@
                                             模型
                                         </label>
                                         <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
-                                            <input class="form-control" name="boxName"
+                                            <input class="form-control input-full" name="boxName"
                                                    data-rule-maxlength="255" placeholder="模型">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label" for="phaseTime">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label"
+                                               for="phaseTime">
                                             计划工时<span class="symbol required"></span>
                                         </label>
                                         <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                             <div class="input-group">
-                                                <input class="form-control" id="phaseTime" name="phaseTime" required
+                                                <input class="form-control input-full" id="phaseTime" name="phaseTime" required
                                                        data-rule-number placeholder="计划耗费的工时">
                                                 <span class="input-group-addon"> <i class="fa fa-clock-o"></i> </span>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="x-valid">
-                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label" for="phaseSort">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label"
+                                               for="phaseSort">
                                             序号<span class="symbol required"></span>
                                         </label>
                                         <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                             <div class="input-group">
-                                                <input class="form-control" id="phaseSort" name="phaseSort" required
+                                                <input class="form-control input-full" id="phaseSort" name="phaseSort" required
                                                        data-rule-digits="true" placeholder="用于显示排序">
                                                 <span class="input-group-addon"> <i class="fa fa-sort-numeric-asc"></i> </span>
                                             </div>
@@ -105,11 +335,12 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label" for="phaseSort">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label"
+                                               for="phaseSort">
                                             自定义附件模板
                                         </label>
                                         <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
-                                            <select name="assetsSettingId" class="form-control">
+                                            <select name="assetsSettingId" class="form-control input-full">
                                                 <c:forEach items="${dataAssetsAppraisalDicList}" var="item">
                                                     <option value="${item.id}">${item.name}</option>
                                                 </c:forEach>
@@ -129,7 +360,8 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label" for="phaseTime">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label"
+                                               for="phaseTime">
                                             默认使用流程
                                         </label>
                                         <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
@@ -139,7 +371,8 @@
                                         </div>
                                     </div>
                                     <div class="x-valid">
-                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label" for="phaseSort">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label"
+                                               for="phaseSort">
                                             允许重启
                                         </label>
                                         <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
@@ -152,7 +385,8 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label" for="workTemplate">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label"
+                                               for="workTemplate">
                                             工作模板
                                         </label>
                                         <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 " id="workTemplate_file_co">
@@ -162,10 +396,12 @@
                                         </div>
                                     </div>
                                     <div class="x-valid">
-                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label" for="workProcessTemplate">
+                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label"
+                                               for="workProcessTemplate">
                                             流程模板
                                         </label>
-                                        <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 " id="workProcessTemplate_file_co">
+                                        <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 "
+                                             id="workProcessTemplate_file_co">
                                             <input id="workProcessTemplate_file" name="workProcessTemplate_file"
                                                    type="file"
                                                    multiple="false">
@@ -190,6 +426,7 @@
         </div>
     </div>
 </div>
+--%>
 
 
 <script type="application/javascript">
@@ -269,8 +506,15 @@
 //                    return str;
 
 
-                    var str = "<a id='item_edit' style='margin-left: 5px;' data-toggle='tooltip' data-placement='top' data-original-title='编辑' class='btn btn-xs btn-success tooltips'  ><i class='fa fa-edit fa-white'></i></a>";
-                    str += "<a id='item_disable' style='margin-left: 5px;' data-toggle='tooltip' data-placement='top' data-original-title='删除'  class='btn btn-xs btn-warning tooltips' ><i class='fa fa-minus fa-white'></i></a>";
+                    // var str = "<a id='item_edit' style='margin-left: 5px;' data-toggle='tooltip' data-placement='top' data-original-title='编辑' class='btn btn-xs btn-success tooltips'  ><i class='fa fa-edit fa-white'></i></a>";
+                    // str += "<a id='item_disable' style='margin-left: 5px;' data-toggle='tooltip' data-placement='top' data-original-title='删除'  class='btn btn-xs btn-warning tooltips' ><i class='fa fa-minus fa-white'></i></a>";
+                    // return str;
+                    var str = '<button id="item_edit" style="margin-left: 5px;"  class="btn btn-icon btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
+                    str += '<i class="fa fa-pen"></i>';
+                    str += '</button>';
+                    str += '<button id="item_disable" style="margin-left: 5px;"  class="btn btn-icon btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
+                    str += '<i class="fa fa-minus"></i>';
+                    str += '</button>';
                     return str;
                 }
 
@@ -307,7 +551,7 @@
                     },
                     'click #item_assessment': function (e, value, row, index) {
                         if (!row.boxName) {
-                            Alert("当前工作事项还没有配置模型,不能配置考核数据");
+                            AlertError("当前工作事项还没有配置模型,不能配置考核数据");
                             return false;
                         }
                         boxDetailItemObj.renderBoxDetailItemTableForWorkPhase(row.boxName, row.workStageId, 0, "project");
@@ -403,7 +647,7 @@
 
             workStageObj.renderWorkStageDropList(workStage, typeId);
         } else {
-            Alert("新增项目阶段时必须选择具体的类型->类别.");
+            AlertError("新增项目阶段时必须选择具体的类型->类别.");
         }
         $("#phaseForm").select2();
         $("#workPhaseBoxName").select2();
@@ -424,17 +668,17 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    toastr.success('操作成功');
+                    notifySuccess("操作成功");
                     if (typeof successFn === "function") {
                         successFn();
                     }
                 } else {
-                    Alert("操作失败:" + result.errmsg);
+                    AlertError("操作失败:" + result.errmsg);
                 }
             },
             error: function (e) {
                 Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + e);
+                AlertError("调用服务端方法失败，失败原因:" + e);
             }
         });
     };
@@ -446,7 +690,7 @@
         if (!workPhaseObj.formWorkPhase.valid()) return false;
         var data = formSerializeArray(workPhaseObj.formWorkPhase);
         if (!data) {
-            Alert("没有需要保存的数据");
+            AlertError("没有需要保存的数据");
             return;
         }
         data.bisWait = $('#bisWait').prop('checked');
@@ -461,22 +705,21 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    toastr.success('操作成功');
+                    AlertSuccess("成功", "数据已成功保存到数据库");
                     $('#project_phase_modal').modal('hide');
                     if (typeof successFn === "function") {
                         successFn();
                     }
                 } else {
-                    Alert("操作失败:" + result.errmsg);
+                    AlertError("操作失败:" + result.errmsg);
                 }
             },
             error: function (e) {
                 Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + e);
+                AlertError("调用服务端方法失败，失败原因:" + e);
             }
         });
     };
-
 
 
     workPhaseObj.uploadFile = function (el, id, fieldName) {

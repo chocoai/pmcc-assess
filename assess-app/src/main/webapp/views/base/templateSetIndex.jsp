@@ -14,8 +14,91 @@
     <%@include file="/views/share/main_css.jsp" %>
 </head>
 
-<body class="nav-md footer_fixed">
-<div class="container body">
+<body>
+<div class="wrapper">
+    <%@include file="/views/share/main_navigation.jsp" %>
+    <%@include file="/views/share/main_head.jsp" %>
+    <div class="main-panel">
+        <div class="content">
+            <div class="panel-header bg-primary-gradient">
+                <div class="page-inner py-5">
+                </div>
+            </div>
+            <div class="page-inner mt--5">
+                <%@include file="/views/share/navigation/reportSetup.jsp" %>
+                <div class="row mt--2">
+                    <div class="col-md-3">
+                        <div class="card full-height">
+                            <div class="card-header">
+                                <div class="card-head-row">
+                                    <div class="card-title">${baseViewDto.currentMenu.name}</div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div id="tree" class="col-md-3">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="card full-height">
+                            <div class="card-header">
+                                <div class="card-head-row">
+                                    <div class="card-title">${baseViewDto.currentMenu.name}</div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <input type="hidden" id="tree_value" value="0">
+
+                                <div class="form-group form-inline">
+                                    <div class="col-md-3 p-0">
+                                        <select id='projectType' class='form-control input-full search-select select2'
+                                                onchange="getProjectClassify()">
+                                            <option value="">-请选择-</option>
+                                            <c:forEach var="item" items="${projectTypeList}">
+                                                <option value="${item.id}">${item.name}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3 p-0">
+                                        <select id='projectCategory' class='form-control input-full  search-select select2'
+                                                onchange="loadTemplateTableList()">
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3 p-0">
+                                        <select id='reportType'
+                                                class='form-control input-full  search-select select2'
+                                                onchange="loadTemplateTableList()">
+                                            <c:forEach var="item" items="${reportType}">
+                                                <option value="${item.id}">${item.name}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+
+                                    <button style="margin-left: 10px" class="btn btn-success btn-sm" type="button"
+                                            data-toggle="modal" onclick="addReportTemplate()"
+                                            href="#modalTemplate">
+											<span class="btn-label">
+												<i class="fa fa-plus"></i>
+											</span>
+                                        新增
+                                    </button>
+                                </div>
+
+                                <table id="tb_files_list" class="table table-bordered"></table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <%@include file="/views/share/main_footer.jsp" %>
+    </div>
+
+</div>
+
+<%--<div class="container body">
     <div class="main_container">
         <%@include file="/views/share/main_navigation.jsp" %>
         <%@include file="/views/share/main_head.jsp" %>
@@ -42,7 +125,7 @@
                                     <input type="hidden" id="tree_value" value="0">
                                     <div class="row">
                                         <div class="col-xs-3">
-                                            <select id='projectType' class='form-control search-select select2'
+                                            <select id='projectType' class='form-control input-full search-select select2'
                                                     onchange="getProjectClassify()">
                                                 <option value="">-请选择-</option>
                                                 <c:forEach var="item" items="${projectTypeList}">
@@ -51,13 +134,13 @@
                                             </select>
                                         </div>
                                         <div class="col-xs-3">
-                                            <select id='projectCategory' class='form-control  search-select select2'
+                                            <select id='projectCategory' class='form-control input-full  search-select select2'
                                                     onchange="loadTemplateTableList()">
                                             </select>
                                         </div>
                                         <div class="col-xs-3">
                                             <select id='reportType'
-                                                    class='form-control  search-select select2'
+                                                    class='form-control input-full  search-select select2'
                                                     onchange="loadTemplateTableList()">
                                                 <c:forEach var="item" items="${reportType}">
                                                     <option value="${item.id}">${item.name}</option>
@@ -81,10 +164,110 @@
             </div>
         </div>
     </div>
-</div>
+</div>--%>
 </body>
 
-<div id="modalTemplate" class="modal fade bs-example-modal-lg"
+<div id="modalTemplate" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">模板设置</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+
+            <div class="modal-body">
+                <form id='frm_files' class='form-horizontal'>
+                    <input type='hidden' id="files_id" name='id' value="0">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <div class="row form-group">
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                模板名称<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input name='name' class='form-control input-full' required
+                                                       maxlength="200">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                委托目的<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-10" id="entrustmentPurpose">
+                                                <c:forEach items="${entrustPurposeList}" var="item">
+                                                <span class="checkbox-inline">
+                                                <input type="checkbox" required id="entrustmentPurpose${item.id}"
+                                                       name="entrustPurpose" value="${item.id}"
+                                                       class="form-inline">
+                                                    <label for="entrustmentPurpose${item.id}">${item.name}</label>
+                                                </span>
+                                                </c:forEach>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row form-group">
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                贷款类型
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <select name='loanType' class='form-control input-full  search-select select2'>
+                                                    <option value="0">-请选择-</option>
+                                                    <c:forEach var="item" items="${loanTypeList}">
+                                                        <option value="${item.id}">${item.name}</option>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                报告模板
+                                            </label>
+                                            <div class="col-sm-11">
+                                                <input id="uploadFile" name="uploadFile"
+                                                       type="file" multiple="false">
+                                                <div id="_uploadFile">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="saveTemplate()">
+                    保存
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<%--<div id="modalTemplate" class="modal fade bs-example-modal-lg"
      data-backdrop="static" tabindex="1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -102,7 +285,7 @@
                                             模板名称<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <input name='name' class='form-control' required
+                                            <input name='name' class='form-control input-full' required
                                                    maxlength="200">
                                         </div>
                                     </div>
@@ -130,7 +313,7 @@
                                             贷款类型
                                         </label>
                                         <div class="col-sm-10">
-                                            <select name='loanType' class='form-control  search-select select2'>
+                                            <select name='loanType' class='form-control input-full  search-select select2'>
                                                 <option value="0">-请选择-</option>
                                                 <c:forEach var="item" items="${loanTypeList}">
                                                     <option value="${item.id}">${item.name}</option>
@@ -162,8 +345,8 @@
             </div>
         </div>
     </div>
-</div>
-<%@include file="/views/share/main_footer.jsp" %>
+</div>--%>
+
 </html>
 
 <script type="text/javascript">
@@ -232,12 +415,21 @@
         });
         cols.push({
             field: 'opation', title: '操作', width: '15%', formatter: function (value, row, index) {
-                var s = "<a href='javascript:;' class='btn btn-xs btn-success tooltips'  data-toggle='tooltip' data-original-title='编辑'  data-toggle='modal' onclick='editTemplate(" + row.id + ")' style='margin-left: 5px'><i  class='fa fa-edit fa-white' title='编辑'></i></a>";
+                //var s = "<a href='javascript:;' class='btn btn-xs btn-success tooltips'  data-toggle='tooltip' data-original-title='编辑'  data-toggle='modal' onclick='editTemplate(" + row.id + ")' style='margin-left: 5px'><i  class='fa fa-edit fa-white' title='编辑'></i></a>";
+                var s = '<button onclick="editTemplate(' + row.id + ')"  style="margin-left: 5px;"  class="btn btn-icon btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
+                s += '<i class="fa fa-pen"></i>';
+                s += '</button>';
                 if (row.bisEnable) {
-                    s += "<a href='javascript:;' class='btn btn-xs btn-warning tooltips'  data-toggle='tooltip' data-original-title='停用' onclick='stop(" + row.id + ")' style='margin-left: 5px'><i class='fa fa-stop fa-white'></i></a>";
+                    //s += "<a href='javascript:;' class='btn btn-xs btn-warning tooltips'  data-toggle='tooltip' data-original-title='停用' onclick='stop(" + row.id + ")' style='margin-left: 5px'><i class='fa fa-stop fa-white'></i></a>";
+                    s += '<button onclick="stop(' + row.id + ')"  style="margin-left: 5px;"  class="btn btn-icon btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="停用">';
+                    s += '<i class="fa fa-stop"></i>';
+                    s += '</button>';
                 }
                 else {
-                    s += "<a href='javascript:;' class='btn btn-xs btn-info tooltips'  data-toggle='tooltip' data-original-title='启用' onclick='satrt(" + row.id + ")' style='margin-left: 5px'><i class='fa fa-play fa-white'></i></a>";
+                    //s += "<a href='javascript:;' class='btn btn-xs btn-info tooltips'  data-toggle='tooltip' data-original-title='启用' onclick='satrt(" + row.id + ")' style='margin-left: 5px'><i class='fa fa-play fa-white'></i></a>";
+                    s += '<button onclick="satrt(' + row.id + ')"  style="margin-left: 5px;"  class="btn btn-icon btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="启用">';
+                    s += '<i class="fa fa-play"></i>';
+                    s += '</button>';
                 }
                 return s;
             }
@@ -293,17 +485,17 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    toastr.success("保存成功");
+                    AlertSuccess("成功", "数据已成功保存到数据库");
                     loadTemplateTableList();
                     $('#modalTemplate').modal('hide');
                 }
                 else {
-                    Alert("保存数据失败，失败原因：" + result.errmsg, 1, null, null);
+                    AlertError("保存数据失败，失败原因：" + result.errmsg, 1, null, null);
                 }
             },
             error: function (result) {
                 Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+                AlertError("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
             }
         });
     }
@@ -322,12 +514,12 @@
                     loadTemplateTableList();
                 }
                 else {
-                    Alert("保存数据失败，失败原因：" + result.errmsg, 1, null, null);
+                    AlertError("暂停失败，失败原因：" + result.errmsg, 1, null, null);
                 }
             },
             error: function (result) {
                 Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+                AlertError("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
             }
         });
     }
@@ -346,12 +538,12 @@
                     loadTemplateTableList();
                 }
                 else {
-                    Alert("保存数据失败，失败原因：" + result.errmsg, 1, null, null);
+                    AlertError("启动失败，失败原因：" + result.errmsg, 1, null, null);
                 }
             },
             error: function (result) {
                 Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+                AlertError("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
             }
         });
     }
@@ -377,12 +569,12 @@
                     $("#projectCategory").html(ativityHtml).trigger('change');
                 }
                 else {
-                    Alert("保存数据失败，失败原因：" + result.errmsg, 1, null, null);
+                    notifyWarning("获取数据失败，失败原因：" + result.errmsg, 1, null, null);
                 }
             },
             error: function (result) {
                 Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+                notifyWarning("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
             }
         });
     }
