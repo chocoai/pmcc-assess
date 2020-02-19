@@ -4,7 +4,7 @@ import com.copower.pmcc.assess.controller.BaseController;
 import com.copower.pmcc.assess.dal.basis.entity.DataBlock;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.NetInfoRecordService;
-import com.copower.pmcc.assess.service.basic.PublicBasicService;
+import com.copower.pmcc.assess.service.NetUrlConfigService;
 import com.copower.pmcc.assess.service.data.DataBlockService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -31,7 +31,7 @@ public class DataBlockController extends BaseController {
     @Autowired
     private ErpAreaService erpAreaService;
     @Autowired
-    private PublicBasicService publicBasicService;
+    private NetUrlConfigService netUrlConfigService;
     @Autowired
     private NetInfoRecordService netInfoRecordService;
 
@@ -160,10 +160,9 @@ public class DataBlockController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "/climbingOldData", method = {RequestMethod.GET}, name = "抓取两年前老数据")
-    public HttpResult climbingOldData() {
+    public HttpResult climbingOldData(Integer id) {
         try {
-            //netInfoRecordService.getGGZYCDHtml(null,null,null);
-            netInfoRecordService.getNetInfoFromZGBD(600000000);
+            netUrlConfigService.climbingDataById(id);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             logger.error(String.format("exception: %s", e.getMessage()), e);

@@ -852,7 +852,7 @@ public class NetInfoRecordService {
                         String address = addressElement.get(0).childNodes().get(0).toString();
                         String titleStr = item.select("a").get(0).childNodes().get(0).toString();
                         String link = item.select("a").get(0).attributes().get("href");
-                        String title = String.format("%s%s[%s]", address, titleStr, DateUtils.getTime(DateUtils.now())).replaceAll("\n", "");
+                        String title = String.format("%s%s", address, titleStr).replaceAll("\n", "");
                         NetInfoRecord netInfoRecord = new NetInfoRecord();
                         netInfoRecord.setProvince("四川");
                         netInfoRecord.setCity("成都");
@@ -961,7 +961,7 @@ public class NetInfoRecordService {
                         String address = addressElement.get(0).childNodes().get(0).toString();
                         String titleStr = item.select("a").get(0).childNodes().get(0).toString();
                         String link = item.select("a").get(0).attributes().get("href");
-                        String title = String.format("%s%s[%s]", address, titleStr, DateUtils.getTime(DateUtils.now())).replaceAll("\n", "");
+                        String title = String.format("%s%s", address, titleStr).replaceAll("\n", "");
                         NetInfoRecord netInfoRecord = new NetInfoRecord();
                         netInfoRecord.setProvince("四川");
                         netInfoRecord.setCity("成都");
@@ -1454,7 +1454,7 @@ public class NetInfoRecordService {
         return null;
     }
 
-    private Elements getContent(String urlInfo, String element, String encoding) {
+    public Elements getContent(String urlInfo, String element, String encoding) {
         org.jsoup.nodes.Document doc = Jsoup.parse(getContentHtml(urlInfo, element, encoding));
         Elements elements = doc.select(element);
         return elements;

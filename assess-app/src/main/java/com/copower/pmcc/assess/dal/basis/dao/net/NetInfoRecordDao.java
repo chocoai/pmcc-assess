@@ -105,18 +105,19 @@ public class NetInfoRecordDao {
     /**
      * 新增
      *
-     * @param examineInfo
+     * @param netInfoRecord
      * @return
      */
-    public boolean addInfo(NetInfoRecord examineInfo) {
+    public boolean addInfo(NetInfoRecord netInfoRecord) {
         //验证重复 重复数据自动设置为删除状态
         NetInfoRecordExample example = new NetInfoRecordExample();
         NetInfoRecordExample.Criteria criteria = example.createCriteria();
-        criteria.andProvinceEqualTo(examineInfo.getProvince()).andTitleEqualTo(examineInfo.getTitle());
-        if (netInfoRecordMapper.countByExample(example) > 0) {
-            examineInfo.setBisDelete(true);
+        criteria.andProvinceEqualTo(netInfoRecord.getProvince())
+                .andTitleEqualTo(netInfoRecord.getTitle()).andSourceSiteUrlEqualTo(netInfoRecord.getSourceSiteUrl());
+        if (netInfoRecordMapper.countByExample(example) <= 0) {
+            return netInfoRecordMapper.insertSelective(netInfoRecord) > 0;
         }
-        return netInfoRecordMapper.insertSelective(examineInfo) > 0;
+        return true;
     }
 
     /**
