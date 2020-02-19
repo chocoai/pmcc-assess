@@ -27,7 +27,7 @@
     <result column="land_realization_ratios" property="landRealizationRatios" jdbcType="DECIMAL" />
     <result column="realization_cycle" property="realizationCycle" jdbcType="VARCHAR" />
     <result column="land_area" property="landArea" jdbcType="DECIMAL" />
-    <result column="plot_ratio" property="plotRatio" jdbcType="INTEGER" />
+    <result column="plot_ratio" property="plotRatio" jdbcType="DECIMAL" />
     <result column="plot_ratio_remark" property="plotRatioRemark" jdbcType="VARCHAR" />
     <result column="greening_rate" property="greeningRate" jdbcType="DECIMAL" />
     <result column="greening_rate_remark" property="greeningRateRemark" jdbcType="VARCHAR" />
@@ -167,7 +167,7 @@
       #{currentPrice,jdbcType=DECIMAL}, #{negotiatedDate,jdbcType=TIMESTAMP}, #{consultPrice,jdbcType=DECIMAL}, 
       #{assessStandardDate,jdbcType=TIMESTAMP}, #{unitPrice,jdbcType=DECIMAL}, #{floorPrice,jdbcType=DECIMAL}, 
       #{landRealizationRatios,jdbcType=DECIMAL}, #{realizationCycle,jdbcType=VARCHAR}, 
-      #{landArea,jdbcType=DECIMAL}, #{plotRatio,jdbcType=INTEGER}, #{plotRatioRemark,jdbcType=VARCHAR}, 
+      #{landArea,jdbcType=DECIMAL}, #{plotRatio,jdbcType=DECIMAL}, #{plotRatioRemark,jdbcType=VARCHAR}, 
       #{greeningRate,jdbcType=DECIMAL}, #{greeningRateRemark,jdbcType=VARCHAR}, #{buildDensity,jdbcType=DECIMAL}, 
       #{buildDensityRemark,jdbcType=VARCHAR}, #{buildHeight,jdbcType=DECIMAL}, #{buildHeightRemark,jdbcType=VARCHAR}, 
       #{indexAmount,jdbcType=DECIMAL}, #{indexAmountRemark,jdbcType=VARCHAR}, #{dealPartInfo,jdbcType=VARCHAR}, 
@@ -375,7 +375,7 @@
         #{landArea,jdbcType=DECIMAL},
       </if>
       <if test="plotRatio != null" >
-        #{plotRatio,jdbcType=INTEGER},
+        #{plotRatio,jdbcType=DECIMAL},
       </if>
       <if test="plotRatioRemark != null" >
         #{plotRatioRemark,jdbcType=VARCHAR},
@@ -509,7 +509,7 @@
         land_area = #{record.landArea,jdbcType=DECIMAL},
       </if>
       <if test="record.plotRatio != null" >
-        plot_ratio = #{record.plotRatio,jdbcType=INTEGER},
+        plot_ratio = #{record.plotRatio,jdbcType=DECIMAL},
       </if>
       <if test="record.plotRatioRemark != null" >
         plot_ratio_remark = #{record.plotRatioRemark,jdbcType=VARCHAR},
@@ -588,7 +588,7 @@
       land_realization_ratios = #{record.landRealizationRatios,jdbcType=DECIMAL},
       realization_cycle = #{record.realizationCycle,jdbcType=VARCHAR},
       land_area = #{record.landArea,jdbcType=DECIMAL},
-      plot_ratio = #{record.plotRatio,jdbcType=INTEGER},
+      plot_ratio = #{record.plotRatio,jdbcType=DECIMAL},
       plot_ratio_remark = #{record.plotRatioRemark,jdbcType=VARCHAR},
       greening_rate = #{record.greeningRate,jdbcType=DECIMAL},
       greening_rate_remark = #{record.greeningRateRemark,jdbcType=VARCHAR},
@@ -684,7 +684,7 @@
         land_area = #{landArea,jdbcType=DECIMAL},
       </if>
       <if test="plotRatio != null" >
-        plot_ratio = #{plotRatio,jdbcType=INTEGER},
+        plot_ratio = #{plotRatio,jdbcType=DECIMAL},
       </if>
       <if test="plotRatioRemark != null" >
         plot_ratio_remark = #{plotRatioRemark,jdbcType=VARCHAR},
@@ -760,7 +760,7 @@
       land_realization_ratios = #{landRealizationRatios,jdbcType=DECIMAL},
       realization_cycle = #{realizationCycle,jdbcType=VARCHAR},
       land_area = #{landArea,jdbcType=DECIMAL},
-      plot_ratio = #{plotRatio,jdbcType=INTEGER},
+      plot_ratio = #{plotRatio,jdbcType=DECIMAL},
       plot_ratio_remark = #{plotRatioRemark,jdbcType=VARCHAR},
       greening_rate = #{greeningRate,jdbcType=DECIMAL},
       greening_rate_remark = #{greeningRateRemark,jdbcType=VARCHAR},

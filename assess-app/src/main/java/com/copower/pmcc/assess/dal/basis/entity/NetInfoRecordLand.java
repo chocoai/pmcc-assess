@@ -54,7 +54,7 @@ public class NetInfoRecordLand {
 
     private BigDecimal landArea;
 
-    private Integer plotRatio;
+    private BigDecimal plotRatio;
 
     private String plotRatioRemark;
 
@@ -286,11 +286,11 @@ public class NetInfoRecordLand {
         this.landArea = landArea;
     }
 
-    public Integer getPlotRatio() {
+    public BigDecimal getPlotRatio() {
         return plotRatio;
     }
 
-    public void setPlotRatio(Integer plotRatio) {
+    public void setPlotRatio(BigDecimal plotRatio) {
         this.plotRatio = plotRatio;
     }
 

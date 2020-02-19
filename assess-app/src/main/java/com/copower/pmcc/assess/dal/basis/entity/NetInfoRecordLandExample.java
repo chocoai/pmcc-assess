@@ -1746,52 +1746,52 @@ public class NetInfoRecordLandExample {
             return (Criteria) this;
         }
 
-        public Criteria andPlotRatioEqualTo(Integer value) {
+        public Criteria andPlotRatioEqualTo(BigDecimal value) {
             addCriterion("plot_ratio =", value, "plotRatio");
             return (Criteria) this;
         }
 
-        public Criteria andPlotRatioNotEqualTo(Integer value) {
+        public Criteria andPlotRatioNotEqualTo(BigDecimal value) {
             addCriterion("plot_ratio <>", value, "plotRatio");
             return (Criteria) this;
         }
 
-        public Criteria andPlotRatioGreaterThan(Integer value) {
+        public Criteria andPlotRatioGreaterThan(BigDecimal value) {
             addCriterion("plot_ratio >", value, "plotRatio");
             return (Criteria) this;
         }
 
-        public Criteria andPlotRatioGreaterThanOrEqualTo(Integer value) {
+        public Criteria andPlotRatioGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("plot_ratio >=", value, "plotRatio");
             return (Criteria) this;
         }
 
-        public Criteria andPlotRatioLessThan(Integer value) {
+        public Criteria andPlotRatioLessThan(BigDecimal value) {
             addCriterion("plot_ratio <", value, "plotRatio");
             return (Criteria) this;
         }
 
-        public Criteria andPlotRatioLessThanOrEqualTo(Integer value) {
+        public Criteria andPlotRatioLessThanOrEqualTo(BigDecimal value) {
             addCriterion("plot_ratio <=", value, "plotRatio");
             return (Criteria) this;
         }
 
-        public Criteria andPlotRatioIn(List<Integer> values) {
+        public Criteria andPlotRatioIn(List<BigDecimal> values) {
             addCriterion("plot_ratio in", values, "plotRatio");
             return (Criteria) this;
         }
 
-        public Criteria andPlotRatioNotIn(List<Integer> values) {
+        public Criteria andPlotRatioNotIn(List<BigDecimal> values) {
             addCriterion("plot_ratio not in", values, "plotRatio");
             return (Criteria) this;
         }
 
-        public Criteria andPlotRatioBetween(Integer value1, Integer value2) {
+        public Criteria andPlotRatioBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("plot_ratio between", value1, value2, "plotRatio");
             return (Criteria) this;
         }
 
-        public Criteria andPlotRatioNotBetween(Integer value1, Integer value2) {
+        public Criteria andPlotRatioNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("plot_ratio not between", value1, value2, "plotRatio");
             return (Criteria) this;
         }
