@@ -1,6 +1,52 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
+<div id="divChksRecordModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">考核记录填写</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
 
+            <div class="modal-body">
+                    <input type="hidden" name="marsterId">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <table class="table-striped table" id="tableChkSpotAssessment">
+                                    <thead>
+                                    <tr>
+                                        <th width="3%">序号</th>
+                                        <th width="7%">节点名称</th>
+                                        <th width="50%">考核标准</th>
+                                        <th width="10%">打分(分值)</th>
+                                        <th width="10%">说明</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="assessmentCommonHandle.saveChkSpotAssessment();">
+                    保存
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<%--
 <div id="divChksRecordModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -39,8 +85,55 @@
         </div>
     </div>
 </div>
+--%>
+
+<div id="divAssessmentProjectPerformanceBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">考核记录填写</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+
+            <div class="modal-body">
+                <input type="hidden" name="id">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card-body">
+                            <table class="table-striped table" id="tableAssessmentProjectPerformanceBox">
+                                <thead>
+                                <tr>
+                                    <th width="3%">序号</th>
+                                    <th width="7%">节点名称</th>
+                                    <th width="50%">考核标准</th>
+                                    <th width="10%">打分(分值)</th>
+                                    <th width="10%">说明</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="assessmentCommonHandle.saveAssessmentProjectPerformanceBoxData();">
+                    保存
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
 
 
+<%--
 <div id="divAssessmentProjectPerformanceBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
@@ -81,8 +174,51 @@
         </div>
     </div>
 </div>
+--%>
+
+<div id="divAssessmentProjectPerformanceBoxDetail" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">考核详情记录</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card-body">
+                            <table class="table-striped table" id="tableAssessmentProjectPerformanceBoxDetail">
+                                <thead>
+                                <tr>
+                                    <th width="3%">序号</th>
+                                    <th width="7%">节点名称</th>
+                                    <th width="50%">考核标准</th>
+                                    <th width="10%">打分(分值)</th>
+                                    <th width="10%">说明</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
 
 
+<%--
 <div id="divAssessmentProjectPerformanceBoxDetail" class="modal fade bs-example-modal-lg" data-backdrop="static"
      tabindex="-1"
      role="dialog"
@@ -119,6 +255,7 @@
         </div>
     </div>
 </div>
+--%>
 
 <script type="text/html" id="assessmentItemTemplateHTML">
     <tr>
@@ -134,11 +271,11 @@
                    data-name="actualScore"
                    data-minScore="{minScore}"
                    data-maxScore="{maxScore}"
-                   class="form-control" name="actualScore{id}"
+                   class="form-control input-full" name="actualScore{id}"
                    placeholder="(请输入数字)" value="{actualScore}"
                    onblur="assessmentCommonHandle.chksVerification(this);">
         </td>
-        <td><input type="text" data-name="remark" class="form-control"
+        <td><input type="text" data-name="remark" class="form-control input-full"
                    name="remark{id}" value="{remark}"
                    placeholder="说明"></td>
     </tr>
@@ -146,7 +283,7 @@
 
 <script type="text/html" id="assessmentItemTemplateRemarksHTML">
     <tr>
-        <td colspan="5"><textarea class="form-control" name="remarks" placeholder="考核综合说明">{remarks}</textarea></td>
+        <td colspan="5"><textarea class="form-control input-full" name="remarks" placeholder="考核综合说明">{remarks}</textarea></td>
     </tr>
 </script>
 

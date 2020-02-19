@@ -6,10 +6,252 @@
 
     <%@include file="/views/share/main_css.jsp" %>
 </head>
-<body class="nav-md">
+<body>
+<div class="wrapper">
+    <div class="main-panel" style="width: 100%">
+        <div class="content" style="margin-top: 0px;">
+            <%@include file="/views/share/form_head.jsp" %>
+            <div class="page-inner mt--5">
+                <div class="row mt--2">
+                    <%--项目基本信息--%>
+                    <%@include file="/views/share/project/projectInfoSimple.jsp" %>
+
+                    <c:forEach items="${areaGroups}" var="item">
+                        <div class="col-md-12 area_panel">
+                            <input type="hidden" name="areaGroupId" value="${item.id}">
+                            <input type="hidden" name="areaName" value="${item.areaName}">
+                            <div class="card full-height">
+                                <div class="card-header collapse-link">
+                                    <div class="card-head-row">
+                                        <div class="card-title">
+                                                ${item.areaName}
+                                        </div>
+                                        <div class="card-tools">
+                                            <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                                                    class="fa fa-angle-down"></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <form id="frmJudgeObject${item.id}" class="form-horizontal">
+                                        <div class="row form-group">
+                                            <div class="col-md-4">
+                                                <div class="form-inline x-valid">
+                                                    <label class="col-sm-2 control-label">
+                                                        评估基准日<span class="symbol required"></span>
+                                                    </label>
+                                                    <div class="col-sm-10">
+                                                        <input type="text" name="valueTimePoint" required="required"
+                                                               placeholder="评估基准日"
+                                                               data-date-format="yyyy-mm-dd"
+                                                               class="form-control input-full date-picker dbdate"
+                                                               readonly="readonly" pattern='yyyy-MM-dd'
+                                                               value="<fmt:formatDate value="${empty item.valueTimePoint?projectInfo.valuationDate:item.valueTimePoint}"
+                                   pattern="yyyy-MM-dd"/>">
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-inline x-valid">
+                                                    <label class="col-sm-2 control-label">
+                                                        基准日说明<span class="symbol required"></span>
+                                                    </label>
+                                                    <div class="col-sm-10">
+                                                        <input type="text" name="timePointExplain" required="required"
+                                                               placeholder="基准日说明" class="form-control input-full"
+                                                               value="${empty item.timePointExplain?valueDateExplain:item.timePointExplain}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-inline x-valid">
+                                                    <label class="col-sm-2 control-label">
+                                                        委托目的<span class="symbol required"></span>
+                                                    </label>
+                                                    <div class="col-sm-10">
+                                                        <select name="entrustPurpose" class="form-control input-full" required>
+                                                            <option value="">-请选择-</option>
+                                                            <c:forEach items="${entrustmentPurposes}" var="entrustmentPurpose">
+                                                                <c:choose>
+                                                                    <c:when test="${entrustmentPurpose.id eq item.entrustPurpose}">
+                                                                        <option value="${entrustmentPurpose.id}"
+                                                                                selected="selected">${entrustmentPurpose.name}</option>
+                                                                    </c:when>
+                                                                    <c:otherwise>
+                                                                        <c:if test="${entrustmentPurpose.id eq projectInfo.entrustPurpose}">
+                                                                            <option value="${entrustmentPurpose.id}"
+                                                                                    selected="selected">${entrustmentPurpose.name}</option>
+                                                                        </c:if>
+                                                                        <c:if test="${entrustmentPurpose.id ne projectInfo.entrustPurpose}">
+                                                                            <option value="${entrustmentPurpose.id}">${entrustmentPurpose.name}</option>
+                                                                        </c:if>
+                                                                    </c:otherwise>
+                                                                </c:choose>
+                                                            </c:forEach>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col-md-4">
+                                                <div class="form-inline x-valid">
+                                                    <label class="col-sm-2 control-label">
+                                                        委托目的描述<span class="symbol required"></span>
+                                                    </label>
+                                                    <div class="col-sm-10">
+                                                        <input type="text" name="remarkEntrustPurpose" required="required"
+                                                               placeholder="委托目的描述" class="form-control input-full"
+                                                               value="${empty item.remarkEntrustPurpose?projectInfo.remarkEntrustPurpose:item.remarkEntrustPurpose}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-inline x-valid">
+                                                    <label class="col-sm-2 control-label">
+                                                        价值类型<span class="symbol required"></span>
+                                                    </label>
+                                                    <div class="col-sm-10">
+                                                        <select name="valueDefinition" class="form-control input-full" required>
+                                                            <option value="">-请选择-</option>
+                                                            <c:forEach items="${valueTypes}" var="valueDefinition">
+                                                                <c:choose>
+                                                                    <c:when test="${valueDefinition.id eq item.valueDefinition}">
+                                                                        <option value="${valueDefinition.id}"
+                                                                                selected="selected">${valueDefinition.name}</option>
+                                                                    </c:when>
+                                                                    <c:otherwise>
+                                                                        <c:if test="${valueDefinition.id eq projectInfo.valueType}">
+                                                                            <option value="${valueDefinition.id}"
+                                                                                    selected="selected">${valueDefinition.name}</option>
+                                                                        </c:if>
+                                                                        <c:if test="${valueDefinition.id ne projectInfo.valueType}">
+                                                                            <option value="${valueDefinition.id}">${valueDefinition.name}</option>
+                                                                        </c:if>
+                                                                    </c:otherwise>
+                                                                </c:choose>
+                                                            </c:forEach>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-inline x-valid">
+                                                    <label class="col-sm-2 control-label">
+                                                        财产范围<span class="symbol required"></span>
+                                                    </label>
+                                                    <div class="col-sm-10">
+                                                        <select class="form-control input-full" name="propertyScope" required></select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row form-group">
+                                            <div class="col-md-4">
+                                                <div class="form-inline x-valid">
+                                                    <label class="col-sm-2 control-label">
+                                                        财产包括<span class="symbol required"></span>
+                                                    </label>
+                                                    <div class="col-sm-10">
+                                                        <input type="text" class="form-control input-full" name="scopeInclude"
+                                                               placeholder="财产包括" value="${item.scopeInclude}" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-inline x-valid">
+                                                    <label class="col-sm-2 control-label">
+                                                        财产不包括<span class="symbol required"></span>
+                                                    </label>
+                                                    <div class="col-sm-10">
+                                                        <input type="text" class="form-control input-full" name="scopeNotInclude"
+                                                               placeholder="财产不包括" value="${item.scopeNotInclude}" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <script type="text/javascript">
+                                        $(function () {
+                                            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseScopeProperty, '${item.propertyScope}', function (html, data) {
+                                                $("#frmJudgeObject${item.id}").find("[name=propertyScope]").empty().html(html);
+                                            });
+                                        })
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+                    </c:forEach>
+                    <div class="col-md-12">
+                        <div class="card full-height">
+                            <div class="card-header collapse-link">
+                                <div class="card-head-row">
+                                    <div class="card-title">
+                                        变更原因
+                                    </div>
+                                    <div class="card-tools">
+                                        <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                                                class="fa fa-angle-down"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <form class="form-horizontal">
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1 control-label">
+                                                    方案信息变更原因
+                                                </label>
+                                                <div class="col-sm-11">
+                                          <textarea class="form-control input-full" id="changeReason" name="changeReason"
+                                                    rows="4" required data-rule-maxlength="255"
+                                                    placeholder="方案信息变更原因">${costsProjectChangeLog.changeReason}</textarea>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
 
 
-<div class="container body">
+                    <div class="col-md-12" style="text-align: center;padding-bottom: 1.25rem">
+
+                        <div class="card-body">
+                            <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
+                                取消<i style="margin-left: 10px" class="fa fa-times-circle"></i>
+                            </button>
+
+                            <button id="commit_btn" class="btn btn-primary" onclick="masterObj.submit();">
+                                提交<i style="margin-left: 10px" class="fa fa-check-circle"></i>
+                            </button>
+
+                        </div>
+                    </div>
+
+
+                    <c:if test="${processInsId ne '0'}">
+                        <%@include file="/views/share/form_log.jsp" %>
+                        <form id="frm_approval">
+                            <%@include file="/views/share/ApprovalVariable.jsp" %>
+                        </form>
+                    </c:if>
+                </div>
+            </div>
+        </div>
+        <%@include file="/views/share/main_footer.jsp" %>
+    </div>
+
+</div>
+
+<%--<div class="container body">
     <div class="main_container">
         <div class="right_col" role="main" style="margin-left: 0px">
             <!-- 公共模块引用 -->
@@ -41,7 +283,7 @@
                                         <input type="text" name="valueTimePoint" required="required"
                                                placeholder="评估基准日"
                                                data-date-format="yyyy-mm-dd"
-                                               class="form-control date-picker dbdate"
+                                               class="form-control input-full date-picker dbdate"
                                                readonly="readonly" pattern='yyyy-MM-dd'
                                                value="<fmt:formatDate value="${empty item.valueTimePoint?projectInfo.valuationDate:item.valueTimePoint}"
                                    pattern="yyyy-MM-dd"/>">
@@ -53,7 +295,7 @@
                                     </label>
                                     <div class="col-sm-2">
                                         <input type="text" name="timePointExplain" required="required"
-                                               placeholder="基准日说明" class="form-control"
+                                               placeholder="基准日说明" class="form-control input-full"
                                                value="${empty item.timePointExplain?valueDateExplain:item.timePointExplain}">
                                     </div>
                                 </div>
@@ -62,7 +304,7 @@
                                         委托目的<span class="symbol required"></span>
                                     </label>
                                     <div class="col-sm-2">
-                                        <select name="entrustPurpose" class="form-control" required>
+                                        <select name="entrustPurpose" class="form-control input-full" required>
                                             <option value="">-请选择-</option>
                                             <c:forEach items="${entrustmentPurposes}" var="entrustmentPurpose">
                                                 <c:choose>
@@ -90,7 +332,7 @@
                                     </label>
                                     <div class="col-sm-2">
                                         <input type="text" name="remarkEntrustPurpose" required="required"
-                                               placeholder="委托目的描述" class="form-control"
+                                               placeholder="委托目的描述" class="form-control input-full"
                                                value="${empty item.remarkEntrustPurpose?projectInfo.remarkEntrustPurpose:item.remarkEntrustPurpose}">
                                     </div>
                                 </div>
@@ -102,7 +344,7 @@
                                         价值类型<span class="symbol required"></span>
                                     </label>
                                     <div class="col-sm-2">
-                                        <select name="valueDefinition" class="form-control" required>
+                                        <select name="valueDefinition" class="form-control input-full" required>
                                             <option value="">-请选择-</option>
                                             <c:forEach items="${valueTypes}" var="valueDefinition">
                                                 <c:choose>
@@ -129,7 +371,7 @@
                                         财产范围<span class="symbol required"></span>
                                     </label>
                                     <div class="col-sm-2">
-                                        <select class="form-control" name="propertyScope" required></select>
+                                        <select class="form-control input-full" name="propertyScope" required></select>
 
                                     </div>
                                 </div>
@@ -138,7 +380,7 @@
                                         财产包括<span class="symbol required"></span>
                                     </label>
                                     <div class="col-sm-2">
-                                        <input type="text" class="form-control" name="scopeInclude"
+                                        <input type="text" class="form-control input-full" name="scopeInclude"
                                                placeholder="财产包括" value="${item.scopeInclude}" required>
                                     </div>
                                 </div>
@@ -147,7 +389,7 @@
                                         财产不包括
                                     </label>
                                     <div class="col-sm-2">
-                                        <input type="text" class="form-control" name="scopeNotInclude"
+                                        <input type="text" class="form-control input-full" name="scopeNotInclude"
                                                placeholder="财产不包括" value="${item.scopeNotInclude}" required>
                                     </div>
                                 </div>
@@ -182,7 +424,7 @@
                                             方案信息变更原因
                                         </label>
                                         <div class="col-md-11 col-sm-11 col-xs-12">
-                                            <textarea class="form-control" id="changeReason" name="changeReason"
+                                            <textarea class="form-control input-full" id="changeReason" name="changeReason"
                                                       rows="4" required data-rule-maxlength="255"
                                                       placeholder="方案信息变更原因">${costsProjectChangeLog.changeReason}</textarea>
                                         </div>
@@ -219,7 +461,7 @@
     </div>
 
 
-    <%@include file="/views/share/main_footer.jsp" %>
+    <%@include file="/views/share/main_footer.jsp" %>--%>
 </body>
 </html>
 

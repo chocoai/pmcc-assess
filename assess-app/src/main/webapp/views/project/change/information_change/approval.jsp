@@ -13,10 +13,28 @@
 
     <%@include file="/views/share/main_css.jsp" %>
 </head>
-<body class="nav-md">
+<body>
 
+<div class="wrapper">
+    <div class="main-panel" style="width: 100%">
+        <div class="content" style="margin-top: 0px;">
+            <%@include file="/views/share/form_head.jsp" %>
+            <div class="page-inner mt--5">
+                <div class="row mt--2">
+                    <%@include file="/views/share/project/projectInfo.jsp" %>
+                    <%@include file="approval/project_info_approval.jsp" %>
+                    <!-- 公共尾部模块引用 -->
+                    <%@include file="/views/share/form_approval.jsp" %>
+                    <%@include file="/views/share/form_log.jsp" %>
+                </div>
+            </div>
+        </div>
+        <%@include file="/views/share/main_footer.jsp" %>
+    </div>
 
-<div class="container body">
+</div>
+
+<%--<div class="container body">
     <div class="main_container">
         <div class="right_col" role="main" style="margin-left: 0px">
             <!-- 公共模块引用 -->
@@ -29,11 +47,9 @@
             <%@include file="/views/share/form_log.jsp" %>
         </div>
     </div>
-</div>
+</div>--%>
 
 
-
-<%@include file="/views/share/main_footer.jsp" %>
 </body>
 </html>
 <script type="text/javascript">

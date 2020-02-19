@@ -6,64 +6,73 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<div class="x_panel">
-
-    <div class="x_title collapse-link">
-        <ul class="nav navbar-right panel_toolbox">
-            <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-        </ul>
-        <h3>项目终止变更
-        </h3>
-        <div class="clearfix"></div>
-    </div>
-    <div class="x_content">
-        <div class="row">
-            <div class="panel-body">
+<div class="col-md-12">
+    <div class="card full-height">
+        <div class="card-header collapse-link">
+            <div class="card-head-row">
+                <div class="card-title">
+                    项目终止变更
+                </div>
+                <div class="card-tools">
+                    <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                            class="fa fa-angle-down"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
                 <form id="project_stop_form" class="form-horizontal">
                     <input type="hidden" name="id">
-                    <div class="form-group">
-                        <div>
-                            <label class="col-md-1 col-sm-1 col-xs-12 control-label">
-                                关闭时间<span class="symbol required"></span>
-                            </label>
-                            <div class="col-md-3 col-sm-3 col-xs-12">
-                                <label name="stopTime" class="form-control"></label>
+                    <div class="row form-group">
+                        <div class="col-md-4">
+                            <div class="form-inline x-valid">
+                                <label class="col-sm-2 col-form-label">
+                                    关闭时间
+                                </label>
+                                <div class="col-sm-10">
+                                    <label name="stopTime" class="form-control input-full"></label>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <div class="form-inline x-valid">
+                                <label class="col-sm-1 control-label">
+                                    关闭原因
+                                </label>
+                                <div class="col-sm-11">
+                                    <label name="changeReason" class="form-control input-full"></label>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class="col-md-1 col-sm-1 col-xs-12 control-label">
-                                关闭原因
-                            </label>
-                            <div class="col-md-11 col-sm-11 col-xs-12">
-                                <label name="changeReason" class="form-control"></label>
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <div class="form-inline x-valid">
+                                <label class="col-sm-1 control-label">
+                                    可能影响
+                                </label>
+                                <div class="col-sm-11">
+                                    <label name="influence" class="form-control input-full"></label>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class="col-md-1 col-sm-1 col-xs-12 control-label">
-                                可能影响
-                            </label>
-                            <div class="col-md-11 col-sm-11 col-xs-12">
-                                <label name="influence" class="form-control"></label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class="col-md-1 col-sm-1 col-xs-12 control-label">
-                                附件
-                            </label>
-                            <div class="col-md-3 col-sm-3 col-xs-12">
-                                <div id="_uploadFile"></div>
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <div class="form-inline x-valid">
+                                <label class="col-sm-1 control-label">
+                                    附件
+                                </label>
+                                <div class="col-sm-11">
+                                    <div id="_uploadFile"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </form>
-            </div>
-
         </div>
     </div>
 </div>

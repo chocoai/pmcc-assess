@@ -4,8 +4,184 @@
 <head>
     <%@include file="/views/share/main_css.jsp" %>
 </head>
-<body class="nav-md footer_fixed">
-<div class="container body">
+<body>
+
+<div class="wrapper">
+    <div class="main-panel" style="width: 100%">
+        <div class="content" style="margin-top: 0px;">
+            <%@include file="projectNavigation.jsp" %>
+            <div class="page-inner mt--5">
+                <div class="row mt--2">
+                    <%@include file="/views/share/project/projectInfoSimple.jsp" %>
+                    <div class="col-md-12">
+                        <div class="card full-height">
+
+                                <div class="card-head-row">
+                                    <div class="card-title">
+                                        项目管理
+                                        <small><div class="btn-group">
+                                            <a class="btn btn-xs btn-danger" href="javascript://"
+                                               onclick="projectDetails.finishProject()"><i class="fa fa-check">&nbsp;</i>完成</a>
+                                            <c:if test="${projectStatusEnum ne 'close' and projectStatusEnum ne 'finish'}">
+                                                <a class="btn btn-xs btn-primary" href="javascript://"
+                                                   onclick="projectDetails.stopProject()"><i class="fa fa-stop">&nbsp;</i>终止</a>
+                                            </c:if>
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-xs btn-primary">
+                                                    项目变更
+                                                </button>
+                                                <button type="button" class="btn btn-xs btn-primary dropdown-toggle"
+                                                        data-toggle="dropdown">
+                                                    <span class="caret"></span>
+                                                </button>
+                                                <ul class="dropdown-menu" role="menu">
+                                                    <li>
+                                                        <a href="${pageContext.request.contextPath}/member.change/applyView?projectId=${projectInfo.id}"
+                                                           target="_blank">成员变更</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="${pageContext.request.contextPath}/project.information.change/applyView?projectId=${projectInfo.id}"
+                                                           target="_blank">信息变更</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="${pageContext.request.contextPath}/project.scheme.change/applyView?projectId=${projectInfo.id}"
+                                                           target="_blank">方案变更</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-xs btn-primary">
+                                                    公司盖章发文
+                                                </button>
+                                                <button type="button" class="btn btn-xs btn-primary dropdown-toggle"
+                                                        data-toggle="dropdown">
+                                                    <span class="caret"></span>
+                                                </button>
+                                                <ul class="dropdown-menu" role="menu">
+                                                    <c:forEach var="item" items="${documentTemplateList}">
+                                                        <li>
+                                                            <a href="${pageContext.request.contextPath}/documentSend/applyIndex/${item.id}&${projectInfo.id}"
+                                                               target="_blank">${item.templateName}</a>
+                                                        </li>
+                                                    </c:forEach>
+                                                </ul>
+                                            </div>
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-xs btn-primary">
+                                                    委托方盖章模板
+                                                </button>
+                                                <button type="button" class="btn btn-xs btn-primary dropdown-toggle"
+                                                        data-toggle="dropdown">
+                                                    <span class="caret"></span>
+                                                </button>
+                                                <ul class="dropdown-menu" role="menu">
+                                                    <c:forEach var="item" items="${documentClientTemplateList}">
+                                                        <li>
+                                                            <a href="${pageContext.request.contextPath}/documentSend/applyClientIndex/${item.id}&${projectInfo.id}"
+                                                               target="_blank">${item.templateName}</a>
+                                                        </li>
+                                                    </c:forEach>
+                                                </ul>
+                                            </div>
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-xs btn-primary">
+                                                    报告签收单
+                                                </button>
+                                                <button type="button" class="btn btn-xs btn-primary dropdown-toggle"
+                                                        data-toggle="dropdown">
+                                                    <span class="caret"></span>
+                                                </button>
+                                                <ul class="dropdown-menu" role="menu">
+                                                    <c:forEach var="item" items="${signBill}">
+                                                        <li>
+                                                            <a href="${pageContext.request.contextPath}/documentSend/applySignBillIndex/${item.id}&${projectInfo.id}"
+                                                               target="_blank">${item.templateName}</a>
+                                                        </li>
+                                                    </c:forEach>
+                                                </ul>
+                                            </div>
+                                            <a class="btn btn-xs btn-primary" href="javascript://"
+                                               onclick="projectDetails.projectSubsequent()">后续事项</a>
+                                            <a class="btn btn-xs btn-primary" href="javascript://"
+                                               onclick="projectDetails.projectTakeNumber()">项目拿号</a>
+                                        </div>
+                                        </small>
+                                    </div>
+
+                                </div>
+
+                            <div class="card-body">
+                                <div class="col-md-12">
+                                    <div class="list-group table-list-nav">
+                                        <a onclick="projectDetails.loadDocumentSend(this);" data-table-id="tb_documentSendList"
+                                           class="list-group-item">发文信息
+                                            <i class="fa fa-bookmark"></i>
+                                        </a>
+                                        <a onclick="projectDetails.loadDocumentOpinion(this)" data-table-id="tb_documentOpinionList"
+                                           class="list-group-item">意见稿信息
+                                            <i class="fa fa-cloud-download"></i>
+                                        </a>
+                                        <a onclick="projectDetails.loadSubsequent(this)" data-table-id="tb_subsequentList" class="list-group-item">后续事项信息
+                                            <i class="fa fa-spinner"></i>
+                                        </a>
+                                        <a onclick="projectDetails.loadTakeNumber(this)" data-table-id="tb_takeNumber" class="list-group-item">拿号信息
+                                            <i class="fa fa-magic"></i>
+                                        </a>
+                                        <a onclick="projectDetails.loadProjectLog(this)" data-table-id="tb_projectLogList" class="list-group-item">日志信息
+                                            <i class="fa fa-flag-checkered"></i>
+                                        </a>
+                                        <a onclick="projectDetails.loadProjectLegwork(this)" data-table-id="tb_projectLegWorkList" class="list-group-item">外勤信息
+                                            <i class="fa fa-coffee"></i>
+                                        </a>
+                                        <a onclick="projectDetails.loadProjectBill(this)" data-table-id="tb_projectBillList" class="list-group-item">开票信息
+                                            <i class="fa fa-barcode"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="bootstrap-table-list">
+                                        <table title="发文信息" class="table table-bordered" id="tb_documentSendList">
+                                        </table>
+                                    </div>
+                                    <div class="bootstrap-table-list">
+                                        <table title="意见稿信息" class="table table-bordered" id="tb_documentOpinionList">
+                                        </table>
+                                    </div>
+                                    <div class="bootstrap-table-list">
+                                        <table title="后续事项信息" class="table table-bordered" id="tb_subsequentList">
+                                        </table>
+                                    </div>
+                                    <div class="bootstrap-table-list">
+                                        <table title="拿号信息" class="table table-bordered" id="tb_takeNumber">
+                                        </table>
+                                    </div>
+                                    <div class="bootstrap-table-list">
+                                        <table title="日志信息" class="table table-bordered" id="tb_projectLogList">
+                                        </table>
+                                    </div>
+                                    <div class="bootstrap-table-list">
+                                        <table title="外勤信息" class="table table-bordered" id="tb_projectLegWorkList">
+                                        </table>
+                                    </div>
+                                    <div class="bootstrap-table-list">
+                                        <table title="开票信息" class="table table-bordered" id="tb_projectBillList">
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <%@include file="/views/share/form_details.jsp" %>
+                    <%@include file="/views/share/form_log.jsp" %>
+                </div>
+            </div>
+        </div>
+        <%@include file="/views/share/main_footer.jsp" %>
+    </div>
+
+</div>
+
+<%--<div class="container body">
     <div class="main_container">
         <%@include file="projectNavigation.jsp" %>
         <div class="right_col" role="main">
@@ -168,9 +344,9 @@
             <%@include file="/views/share/form_log.jsp" %>
         </div>
     </div>
-</div>
+</div>--%>
 </body>
-<%@include file="/views/share/main_footer.jsp" %>
+
 </html>
 <script type="text/javascript">
     $(function () {
@@ -202,12 +378,12 @@
                         window.open(url, '_blank');
                     }
                     else {
-                        Alert("变更失败，失败原因：" + result.errmsg, 1, null, null);
+                        AlertError("变更失败，失败原因：" + result.errmsg, 1, null, null);
                     }
                 },
                 error: function (result) {
                     Loading.progressHide();
-                    Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+                    AlertError("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
                 }
             });
         },
@@ -222,15 +398,15 @@
                 dataType: "json",
                 success: function (result) {
                     if (result.ret) {
-                        Alert("操作成功，项目正常完成");
+                        AlertSuccess("操作成功", "项目正常完成");
                     }
                     else {
-                        Alert(result.errmsg);
+                        AlertError("操作失败,失败原因:"+result.errmsg);
                     }
                 },
                 error: function (result) {
                     Loading.progressHide();
-                    Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+                    AlertError("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
                 }
             });
         },

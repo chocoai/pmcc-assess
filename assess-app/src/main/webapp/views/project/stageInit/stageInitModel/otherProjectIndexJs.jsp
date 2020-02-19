@@ -112,11 +112,11 @@
 
                 }
                 else {
-                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                    AlertError("保存数据失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
+                AlertError("调用服务端方法失败，失败原因:" + result);
             }
         })
 
@@ -183,7 +183,7 @@
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -199,7 +199,7 @@
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -216,7 +216,7 @@
             });
         },
         delete: function (id, callback) {
-            Alert("确认删除", 2, null, function () {
+            AlertConfirm("是否确认删除", "删除相应的数据后将不可恢复", function () {
                 $.ajax({
                     url: "${pageContext.request.contextPath}/initiateContacts/delete",
                     type: "post",
@@ -228,7 +228,7 @@
                         }
                     },
                     error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result);
+                        AlertError("调用服务端方法失败，失败原因:" + result);
                     }
                 })
             });
@@ -246,7 +246,7 @@
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -262,7 +262,7 @@
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -285,7 +285,7 @@
                     search: false
                 });
             } else {
-                Alert("未选择单元");
+                AlertError("未选择单元");
             }
         },
         findCRMContactShow: function () {
@@ -294,7 +294,7 @@
                 $('#divBoxCRMContacts').modal("show");
                 objProject.commonContacts.findCRMContacts($("#divBoxCRMContacts").find("input[name='name']")[0]);
             } else {
-                Alert("还未选择报告使用单位");
+                AlertError("还未选择报告使用单位");
             }
         },
         selectCRMContacts: function () {
@@ -345,7 +345,7 @@
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         }
@@ -430,7 +430,7 @@
                             }
                         },
                         error: function (result) {
-                            Alert("调用服务端方法失败，失败原因:" + result);
+                            AlertError("调用服务端方法失败，失败原因:" + result);
                         }
                     })
 
@@ -489,7 +489,7 @@
                             }
                         },
                         error: function (result) {
-                            Alert("调用服务端方法失败，失败原因:" + result);
+                            AlertError("调用服务端方法失败，失败原因:" + result);
                         }
                     })
 
@@ -519,7 +519,7 @@
                             }
                         },
                         error: function (result) {
-                            Alert("调用服务端方法失败，失败原因:" + result);
+                            AlertError("调用服务端方法失败，失败原因:" + result);
                         }
                     })
 
@@ -641,10 +641,12 @@
             var col = "";
             col = {
                 field: 'id', title: '操作', formatter: function (value, row, index) {
-                    var str = '<div class="btn-margin">';
-                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="objProject.consignor.getContact(' + row.id + ')"><i class="fa fa-edit fa-white"></i></a>';
-                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="删除" onclick="objProject.consignor.deleteContact(' + row.id + ')"><i class="fa fa-minus fa-white"></i></a>';
-                    str += '</div>';
+                    var str = '<button onclick="objProject.consignor.getContact(' + row.id + ')"  style="margin-left: 5px;"  class="btn btn-icon btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
+                    str += '<i class="fa fa-pen"></i>';
+                    str += '</button>';
+                    str += '<button onclick="objProject.consignor.deleteContact(' + row.id + ')"  style="margin-left: 5px;"  class="btn btn-icon btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
+                    str += '<i class="fa fa-minus"></i>';
+                    str += '</button>';
                     return str;
                 }
             };
@@ -739,10 +741,12 @@
             var col = "";
             col = {
                 field: 'id', title: '操作', formatter: function (value, row, index) {
-                    var str = '<div class="btn-margin">';
-                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="objProject.possessor.getContact(' + row.id + ')"><i class="fa fa-edit fa-white"></i></a>';
-                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="删除" onclick="objProject.possessor.deleteContact(' + row.id + ')"><i class="fa fa-minus fa-white"></i></a>';
-                    str += '</div>';
+                    var str = '<button onclick="objProject.possessor.getContact(' + row.id + ')"  style="margin-left: 5px;"  class="btn btn-icon btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
+                    str += '<i class="fa fa-pen"></i>';
+                    str += '</button>';
+                    str += '<button onclick="objProject.possessor.deleteContact(' + row.id + ')"  style="margin-left: 5px;"  class="btn btn-icon btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
+                    str += '<i class="fa fa-minus"></i>';
+                    str += '</button>';
                     return str;
                 }
             };
@@ -877,10 +881,12 @@
             var col = "";
             col = {
                 field: 'id', title: '操作', formatter: function (value, row, index) {
-                    var str = '<div class="btn-margin">';
-                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="objProject.unit_information.getContact(' + row.id + ')"><i class="fa fa-edit fa-white"></i></a>';
-                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="删除" onclick="objProject.unit_information.deleteContact(' + row.id + ')"><i class="fa fa-minus fa-white"></i></a>';
-                    str += '</div>';
+                    var str = '<button onclick="objProject.unit_information.getContact(' + row.id + ')"  style="margin-left: 5px;"  class="btn btn-icon btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
+                    str += '<i class="fa fa-pen"></i>';
+                    str += '</button>';
+                    str += '<button onclick="objProject.unit_information.deleteContact(' + row.id + ')"  style="margin-left: 5px;"  class="btn btn-icon btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
+                    str += '<i class="fa fa-minus"></i>';
+                    str += '</button>';
                     return str;
                 }
             };
@@ -896,10 +902,10 @@
         var options = {
             onSelected: function (nodes) {
                 $(this_).closest('.input-group').find("input[name='departmentId']").val(nodes[0].id);
-                if (nodes[0].text){
+                if (nodes[0].text) {
                     $(this_).closest('.input-group').find("input[name='departmentName']").val(nodes[0].text);
                 }
-                if (nodes[0].name){
+                if (nodes[0].name) {
                     $(this_).closest('.input-group').find("input[name='departmentName']").val(nodes[0].name);
                 }
             }
@@ -950,7 +956,7 @@
                     }
                 });
                 if (uuids.length == 0) {
-                    Alert('有效合同为0');
+                    AlertError('有效合同为0');
                     return false;
                 }
                 if (uuids.length >= 1) {
@@ -1081,15 +1087,15 @@
         }
         //联系人校验
         if (!this.hasLinkman(this.config.consignor.table)) {
-            Alert('还未填写委托人联系人信息');
+            notifyWarning('还未填写委托人联系人信息');
             return false;
         }
         if (!this.hasLinkman(this.config.possessor.table)) {
-            Alert('还未填写占有人联系人信息');
+            notifyWarning('还未填写占有人联系人信息');
             return false;
         }
         if (!this.hasLinkman(this.config.unit_information.table)) {
-            Alert('还未填写报告使用单位联系人信息');
+            notifyWarning('还未填写报告使用单位联系人信息');
             return false;
         }
         return true;
@@ -1130,7 +1136,7 @@
                 try {
                     data = JSON.parse(str);
                 } catch (e) {
-                    console.log(str) ;
+                    console.log(str);
                     console.log(e);
                 }
 
@@ -1142,30 +1148,30 @@
                         $("#" + objProject.config.info.frm).find("input[name='scopeNotInclude']").val(data.scopeNotInclude);
                         $("#" + objProject.config.info.frm).find("input[name='remarkEntrustPurpose']").val(data.remarkEntrustPurpose);
                     }, 2000);
-                }else {
-                    var item = formParams(objProject.config.info.frm) ;
-                    objProject.info.loadInit({id:item.id});
+                } else {
+                    var item = formParams(objProject.config.info.frm);
+                    objProject.info.loadInit({id: item.id});
                 }
 
-                if (objProject.isNotBlank(data.consignorVo)){
+                if (objProject.isNotBlank(data.consignorVo)) {
                     objProject.consignor.loadInit(data.consignorVo);
-                }else {
-                    var item = formParams(objProject.config.consignor.frm) ;
-                    objProject.consignor.loadInit({id:item.id});
+                } else {
+                    var item = formParams(objProject.config.consignor.frm);
+                    objProject.consignor.loadInit({id: item.id});
                 }
 
-                if (objProject.isNotBlank(data.possessorVo)){
+                if (objProject.isNotBlank(data.possessorVo)) {
                     objProject.possessor.loadInit(data.possessorVo);
-                }else {
-                    var item = formParams(objProject.config.possessor.frm) ;
-                    objProject.possessor.loadInit({id:item.id});
+                } else {
+                    var item = formParams(objProject.config.possessor.frm);
+                    objProject.possessor.loadInit({id: item.id});
                 }
 
-                if (objProject.isNotBlank(data.unitInformationVo)){
+                if (objProject.isNotBlank(data.unitInformationVo)) {
                     objProject.unit_information.loadInit(data.unitInformationVo);
-                }else {
-                    var item = formParams(objProject.config.unit_information.frm) ;
-                    objProject.unit_information.loadInit({id:item.id});
+                } else {
+                    var item = formParams(objProject.config.unit_information.frm);
+                    objProject.unit_information.loadInit({id: item.id});
                 }
             }
         });
@@ -1173,8 +1179,67 @@
 
 
 </script>
-
 <div id="divBoxCRMContacts" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">客户经理</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+
+            <div class="modal-body">
+                <form id="frmFather" class="form-horizontal">
+                    <input type="hidden" id="id" name="id">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <div class="row form-group">
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input type="text" name="name" placeholder="客户经理名字、电话"
+                                                       class="form-control input-full">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div>
+                                            <button style="margin-left: 10px" class="btn btn-info  btn-sm" type="button"
+                                                    onclick="objProject.commonContacts.findCRMContacts(this)">
+											<span class="btn-label">
+												<i class="fa fa-search"></i>
+											</span>
+                                                查询
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <table class="table table-bordered" id="tb_ListCRMContacts">
+                                    <!-- cerare document add ajax data-->
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="objProject.commonContacts.selectCRMContacts(this)">
+                    确定
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<%--<div id="divBoxCRMContacts" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -1192,7 +1257,7 @@
                                     <div class="x-valid">
                                         <div class=" col-xs-6  col-sm-6  col-md-6  col-lg-6 ">
                                             <input type="text" name="name" placeholder="客户经理名字、电话"
-                                                   class="form-control">
+                                                   class="form-control input-full">
                                         </div>
                                     </div>
                                     <div class="x-valid">
@@ -1224,59 +1289,65 @@
             </form>
         </div>
     </div>
-</div>
+</div>--%>
+
 
 <script type="text/html" id="contactModelHTML">
     <div class="modal-body">
         <input type="hidden" name="id">
         <div class="row">
-            <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                <div class="panel-body">
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
-                                姓名<span class="symbol required"></span>
-                            </label>
-                            <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
-                                <input type="text" name="cName" placeholder="姓名"
-                                       class="form-control" required="required">
+            <div class="col-md-12">
+                <div class="card-body">
+                    <div class="row form-group">
+                        <div class="col-md-6">
+                            <div class="form-inline x-valid">
+                                <label class="col-sm-2 col-form-label">
+                                    姓名<span class="symbol required"></span>
+                                </label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="cName" placeholder="姓名"
+                                           class="form-control input-full" required="required">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-inline x-valid">
+                                <label class="col-sm-2 col-form-label">
+                                    部门<span class="symbol required"></span>
+                                </label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="cDept" placeholder="部门"
+                                           class="form-control input-full" required="required">
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
-                                部门
-                            </label>
-                            <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
-                                <input type="text" name="cDept" placeholder="部门"
-                                       class="form-control" required="required">
+                    <div class="row form-group">
+                        <div class="col-md-6">
+                            <div class="form-inline x-valid">
+                                <label class="col-sm-2 col-form-label">
+                                    电话号码<span class="symbol required"></span>
+                                </label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="cPhone" data-rule-number='true' name="number"
+                                           placeholder="号码（请输入数字）"
+                                           class="form-control input-full" required="required">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-inline x-valid">
+                                <label class="col-sm-2 col-form-label">
+                                    邮箱
+                                </label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="cEmail" placeholder="邮箱"
+                                           class="form-control input-full">
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
-                                电话号码<span class="symbol required"></span>
-                            </label>
-                            <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
-                                <input type="text" name="cPhone" data-rule-number='true' name="number"
-                                       placeholder="号码（请输入数字）"
-                                       class="form-control" required="required">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
-                                邮箱
-                            </label>
-                            <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
-                                <input type="text" name="cEmail" placeholder="邮箱"
-                                       class="form-control">
-                            </div>
-                        </div>
-                    </div>
+
                 </div>
             </div>
         </div>

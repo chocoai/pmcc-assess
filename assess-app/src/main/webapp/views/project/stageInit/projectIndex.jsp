@@ -5,8 +5,129 @@
     <%@include file="/views/share/main_css.jsp" %>
     <%@include file="/views/project/stageInit/stageInitModel/otherProjectIndexJs.jsp" %>
 </head>
-<body class="nav-md footer_fixed">
-<div class="container body">
+<body>
+<div class="wrapper">
+    <div class="main-panel" style="width: 100%">
+        <div class="content" style="margin-top: 0px;">
+            <%@include file="/views/share/form_head.jsp" %>
+            <div class="page-inner mt--5">
+                <div class="row mt--2">
+                    <%--项目基本信息--%>
+                    <div class="col-md-12">
+                        <div class="card full-height">
+                            <div class="card-header collapse-link">
+                                <div class="card-head-row">
+                                    <div class="card-title">
+                                        <input type="hidden" name="projectInfoVoJson" id="projectInfoVoJson"
+                                               value='${projectInfoVoJson}'>
+                                        项目信息
+                                        <small>${projectInfo.projectCategoryName}</small>
+                                    </div>
+                                    <div class="card-tools">
+                                        <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                                                class="fa fa-angle-down"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <%@include file="/views/project/stageInit/stageInitModel/projectInfo.jsp" %>
+                        </div>
+                    </div>
+                    <!-- 委托人 start -->
+                    <div class="col-md-12">
+                        <div class="card full-height">
+                            <div class="card-header collapse-link">
+                                <div class="card-head-row">
+                                    <div class="card-title">
+                                        委托人
+                                    </div>
+                                    <div class="card-tools">
+                                        <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                                                class="fa fa-angle-down"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                                <%@include file="/views/project/stageInit/stageInitModel/projectConsignor.jsp" %>
+                        </div>
+                    </div>
+                    <!-- 占有人 start -->
+                    <div class="col-md-12">
+                        <div class="card full-height">
+                            <div class="card-header collapse-link">
+                                <div class="card-head-row">
+                                    <div class="card-title">
+                                        占有人
+                                    </div>
+                                    <div class="card-tools">
+                                        <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                                                class="fa fa-angle-down"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                                <%@include file="/views/project/stageInit/stageInitModel/projectPossessor.jsp" %>
+                        </div>
+                    </div>
+                    <!-- 报告使用单位 start -->
+                    <div class="col-md-12">
+                        <div class="card full-height">
+                            <div class="card-header collapse-link">
+                                <div class="card-head-row">
+                                    <div class="card-title">
+                                        报告使用单位
+                                    </div>
+                                    <div class="card-tools">
+                                        <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                                                class="fa fa-angle-down"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                                <%@include file="/views/project/stageInit/stageInitModel/projectUnit_information.jsp" %>
+
+                        </div>
+                    </div>
+                    <div class="col-md-12" style="text-align: center;padding-bottom: 1.25rem">
+
+                        <div class="card-body">
+                            <button id="cancel_btn" class="btn btn-default btn-sm" onclick="window.close()">
+                                取消
+                            </button>
+                            <button id="draft_btn" class="btn btn-warning btn-sm" onclick="projectApplyDraft();">
+                                保存草稿<i style="margin-left: 10px" class="fa fa-save"></i>
+                            </button>
+                            <button id="commit_btn" class="btn btn-success btn-sm" onclick="projectApply(false);">
+                                直接提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
+                            </button>
+                            <c:if test="${processInsId == '0' || processInsId == null || processInsId == 0}">
+                                <button id="approval_btn" class="btn btn-primary btn-sm" onclick="projectApply(true);">
+                                    提交审批<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
+                                </button>
+                            </c:if>
+
+                        </div>
+                    </div>
+
+
+                    <c:if test="${processInsId ne '0'}">
+                        <%@include file="/views/share/form_log.jsp" %>
+                        <form id="frm_approval">
+                            <%@include file="/views/share/ApprovalVariable.jsp" %>
+                        </form>
+                    </c:if>
+                </div>
+            </div>
+        </div>
+        <%@include file="/views/share/main_footer.jsp" %>
+    </div>
+
+</div>
+
+
+<%--<div class="container body">
     <div class="main_container">
         <div class="right_col" role="main" style="margin-left: 0">
             <%@include file="/views/share/form_head.jsp" %>
@@ -99,8 +220,8 @@
             </c:if>
         </div>
     </div>
-</div>
-<%@include file="/views/share/main_footer.jsp" %>
+</div>--%>
+<%--<%@include file="/views/share/main_footer.jsp" %>--%>
 </body>
 </html>
 
@@ -143,16 +264,16 @@
             success: function (result) {
                 if (result.ret) {
                     //保存完后其他动作
-                    Alert("保存成功!", 1, null, function () {
+                    AlertSuccess("成功", "数据已成功保存到数据库",function(){
                         window.close();
                     });
                 } else {
-                    Alert("保存失败:" + result.errmsg);
+                    AlertError("保存失败:" + result.errmsg);
                 }
             },
             error: function (e) {
                 Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + e);
+                AlertError("调用服务端方法失败，失败原因:" + e);
             }
         });
     }
@@ -180,16 +301,16 @@
             success: function (result) {
                 if (result.ret) {
                     //保存完后其他动作
-                    Alert("提交数据成功!", 1, null, function () {
+                    AlertSuccess("提交成功", "数据已成功保存到数据库",function(){
                         window.close();
                     });
                 } else {
-                    Alert("保存失败:" + result.errmsg);
+                    AlertError("保存失败:" + result.errmsg);
                 }
             },
             error: function (e) {
                 Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + e);
+                AlertError("调用服务端方法失败，失败原因:" + e);
             }
         });
     }

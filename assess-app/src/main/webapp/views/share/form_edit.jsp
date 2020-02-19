@@ -21,6 +21,13 @@
 <input type="hidden" name="activityId" value="${activityId}">
 <input type="hidden" name="lastNodes" value="${lastNodes}">
 <input type="hidden" name="agentUserAccount" value="${agentUserAccount}">
-<input type="hidden" name="projectId" value="${projectId}">
+<c:choose>
+    <c:when test="${projectInfo != null}">
+        <input type="hidden" name="projectId" value="${projectInfo.id}">
+    </c:when>
+    <c:otherwise>
+        <input type="hidden" name="projectId" value="${projectId}">
+    </c:otherwise>
+</c:choose>
 <input type="hidden" name="viewUrl" value="${viewUrl}">
 <input type="hidden" name="conclusion" value="approval">

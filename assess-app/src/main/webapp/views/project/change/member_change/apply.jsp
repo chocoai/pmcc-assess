@@ -13,10 +13,87 @@
 
     <%@include file="/views/share/main_css.jsp" %>
 </head>
-<body class="nav-md">
+<body>
+<div class="wrapper">
+    <div class="main-panel" style="width: 100%">
+        <div class="content" style="margin-top: 0px;">
+            <%@include file="/views/share/form_head.jsp" %>
+            <div class="page-inner mt--5">
+                <div class="row mt--2">
+                    <%@include file="/views/share/project/projectInfoSimple.jsp" %>
+                    <!-- 公共模块end -->
 
+                    <div class="col-md-12">
+                        <div class="card full-height">
+                            <div class="card-header collapse-link">
+                                <div class="card-head-row">
+                                    <div class="card-title">
+                                        项目成员变更
+                                    </div>
+                                    <div class="card-tools">
+                                        <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                                                class="fa fa-angle-down"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <p id="change_tool">
+                                    <button type="button" class="btn btn-success btn-sm" onclick="memberChangeObj.addMember();">新增成员</button>
+                                </p>
+                                <table class="table table-striped jambo_table bulk_action table-bordered" id="member_change_table"></table>
 
-<div class="container body">
+                                <hr/>
+                                <form class="form-horizontal" id="member_change_form">
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1 control-label">
+                                                    变更原因
+                                                </label>
+                                                <div class="col-sm-11">
+                                                    <textarea class="form-control input-full" id="changeReason" name="changeReason" required>${costsProjectChangeLog.changeReason}</textarea>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    
+
+                    <!-- 公共尾部模块引用 -->
+                    <div class="col-md-12" style="text-align: center;padding-bottom: 1.25rem">
+
+                        <div class="card-body">
+                            <button id="cancel_btn" class="btn btn-default" onclick="window.close();">
+                                取消
+                            </button>
+                            <button id="commit_btn" class="btn btn-success" onclick="memberChangeObj.submit();" onsubmit="return false;">
+                                提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
+                            </button>
+
+                        </div>
+                    </div>
+                    <%--返回修改--%>
+                    <c:if test="${processInsId != 0}">
+                        <%@include file="/views/share/form_log.jsp" %>
+                        <form id="process_variable_form">
+                            <%@include file="/views/share/form_edit.jsp" %>
+                        </form>
+                    </c:if>
+                </div>
+            </div>
+        </div>
+        <%@include file="/views/share/main_footer.jsp" %>
+    </div>
+
+</div>
+
+<%--<div class="container body">
     <div class="main_container">
         <div class="right_col" role="main" style="margin-left: 0px">
             <!-- 公共模块引用 -->
@@ -48,7 +125,7 @@
                                         变更原因
                                     </label>
                                     <div class="col-md-11 col-sm-11 col-xs-12">
-                                        <textarea class="form-control" id="changeReason" name="changeReason" required>${costsProjectChangeLog.changeReason}</textarea>
+                                        <textarea class="form-control input-full" id="changeReason" name="changeReason" required>${costsProjectChangeLog.changeReason}</textarea>
                                     </div>
                                 </div>
                             </div>
@@ -86,10 +163,10 @@
 
     </div>
 
-</div>
+</div>--%>
 
 
-<%@include file="/views/share/main_footer.jsp" %>
+
 </body>
 </html>
 

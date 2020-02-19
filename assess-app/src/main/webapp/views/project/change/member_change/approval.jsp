@@ -13,10 +13,71 @@
 
     <%@include file="/views/share/main_css.jsp" %>
 </head>
-<body class="nav-md">
+<body>
+<div class="wrapper">
+    <div class="main-panel" style="width: 100%">
+        <div class="content" style="margin-top: 0px;">
+            <%@include file="/views/share/form_head.jsp" %>
+            <div class="page-inner mt--5">
+                <div class="row mt--2">
+                    <%@include file="/views/share/project/projectInfoSimple.jsp" %>
+                    <!-- 公共模块end -->
+
+                    <div class="col-md-12">
+                        <div class="card full-height">
+                            <div class="card-header collapse-link">
+                                <div class="card-head-row">
+                                    <div class="card-title">
+                                        项目成员变更
+                                    </div>
+                                    <div class="card-tools">
+                                        <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                                                class="fa fa-angle-down"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-striped jambo_table bulk_action table-bordered" id="member_change_table"></table>
 
 
-<div class="container body">
+                                <form class="form-horizontal" id="member_change_form">
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1 control-label">
+                                                    变更原因
+                                                </label>
+                                                <div class="col-sm-11">
+                                                    <label class="form-control input-full" id="changeReason" name="changeReason">${costsProjectChangeLog.changeReason}</label>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- 公共尾部模块引用 -->
+                    <!-- 审批用 -->
+                    <%@include file="/views/share/form_approval.jsp" %>
+
+                    <%@include file="/views/share/form_log.jsp" %>
+                    <!-- 尾部end -->
+
+                </div>
+            </div>
+        </div>
+        <%@include file="/views/share/main_footer.jsp" %>
+    </div>
+
+</div>
+
+<%--<div class="container body">
     <div class="main_container">
         <div class="right_col" role="main" style="margin-left: 0px">
             <!-- 公共模块引用 -->
@@ -45,7 +106,7 @@
                                         变更原因
                                     </label>
                                     <div class="col-md-11 col-sm-11 col-xs-12">
-                                        <label class="form-control" id="changeReason" name="changeReason">${costsProjectChangeLog.changeReason}</label>
+                                        <label class="form-control input-full" id="changeReason" name="changeReason">${costsProjectChangeLog.changeReason}</label>
                                     </div>
                                 </div>
                             </div>
@@ -66,10 +127,10 @@
 
     </div>
 
-</div>
+</div>--%>
 
 
-<%@include file="/views/share/main_footer.jsp" %>
+
 </body>
 </html>
 

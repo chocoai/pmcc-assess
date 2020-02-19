@@ -3,7 +3,28 @@
 
 <%@include file="/views/share/chksCommon.jsp" %>
 
-<div class="x_panel">
+<div class="col-md-12">
+    <div class="card full-height">
+        <div class="card-header collapse-link">
+            <div class="card-head-row">
+                <div class="card-title">
+                    考核信息
+                </div>
+                <div class="card-tools">
+                    <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                            class="fa fa-angle-down"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <table class="table" id="assessmentTableList">
+            </table>
+        </div>
+    </div>
+</div>
+
+<%--<div class="x_panel">
     <div class="x_title collapse-link">
         <ul class="nav navbar-right panel_toolbox">
             <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
@@ -17,7 +38,7 @@
             </table>
         </div>
     </div>
-</div>
+</div>--%>
 
 
 <script type="text/javascript">

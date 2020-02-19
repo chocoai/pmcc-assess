@@ -13,10 +13,180 @@
 
     <%@include file="/views/share/main_css.jsp" %>
 </head>
-<body class="nav-md">
+<body>
+<div class="wrapper">
+    <div class="main-panel" style="width: 100%">
+        <div class="content" style="margin-top: 0px;">
+            <%@include file="/views/share/form_head.jsp" %>
+            <div class="page-inner mt--5">
+                <div class="row mt--2">
+                    <%--项目基本信息--%>
+                    <%@include file="/views/share/project/projectInfoSimple.jsp" %>
+
+                    <c:forEach items="${areaGroups}" var="item">
+                        <div class="col-md-12 area_panel">
+                            <input type="hidden" name="areaGroupId" value="${item.id}">
+                            <input type="hidden" name="areaName" value="${item.areaName}">
+                            <div class="card full-height">
+                                <div class="card-header collapse-link">
+                                    <div class="card-head-row">
+                                        <div class="card-title">
+                                                ${item.areaName}
+                                        </div>
+                                        <div class="card-tools">
+                                            <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                                                    class="fa fa-angle-down"></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <form id="frmJudgeObject${item.id}" class="form-horizontal">
+                                        <div class="row form-group">
+                                            <div class="col-md-4">
+                                                <div class="form-inline x-valid">
+                                                    <label class="col-sm-2 control-label">
+                                                        评估基准日<span class="symbol required"></span>
+                                                    </label>
+                                                    <div class="col-sm-10">
+                                                        <label class="form-control input-full">
+                                                            <fmt:formatDate value="${item.valueTimePoint}" pattern="yyyy-MM-dd"/>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-inline x-valid">
+                                                    <label class="col-sm-2 control-label">
+                                                        基准日说明<span class="symbol required"></span>
+                                                    </label>
+                                                    <div class="col-sm-10">
+                                                        <label class="form-control input-full">${item.timePointExplain}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-inline x-valid">
+                                                    <label class="col-sm-2 control-label">
+                                                        委托目的<span class="symbol required"></span>
+                                                    </label>
+                                                    <div class="col-sm-10">
+                                                        <label class="form-control input-full">${item.entrustPurposeName}</label>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row form-group">
+                                            <div class="col-md-4">
+                                                <div class="form-inline x-valid">
+                                                    <label class="col-sm-2 control-label">
+                                                        委托目的描述<span class="symbol required"></span>
+                                                    </label>
+                                                    <div class="col-sm-10">
+                                                        <label class="form-control input-full">${item.remarkEntrustPurpose}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-inline x-valid">
+                                                    <label class="col-sm-2 control-label">
+                                                        价值类型<span class="symbol required"></span>
+                                                    </label>
+                                                    <div class="col-sm-10">
+                                                        <label class="form-control input-full">${item.valueDefinitionName}</label>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-inline x-valid">
+                                                    <label class="col-sm-2 control-label">
+                                                        财产范围<span class="symbol required"></span>
+                                                    </label>
+                                                    <div class="col-sm-10">
+                                                        <label class="form-control input-full">${item.propertyScopeName}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row form-group">
+                                            <div class="col-md-4">
+                                                <div class="form-inline x-valid">
+                                                    <label class="col-sm-2 control-label">
+                                                        财产包括<span class="symbol required"></span>
+                                                    </label>
+                                                    <div class="col-sm-10">
+                                                        <label class="form-control input-full">${item.scopeInclude}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-inline x-valid">
+                                                    <label class="col-sm-2 control-label">
+                                                        财产不包括<span class="symbol required"></span>
+                                                    </label>
+                                                    <div class="col-sm-10">
+                                                        <label class="form-control input-full">${item.scopeNotInclude}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+                    </c:forEach>
+                    <div class="col-md-12">
+                        <div class="card full-height">
+                            <div class="card-header collapse-link">
+                                <div class="card-head-row">
+                                    <div class="card-title">
+                                       变更原因
+                                    </div>
+                                    <div class="card-tools">
+                                        <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                                                class="fa fa-angle-down"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <form class="form-horizontal">
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1 control-label">
+                                                    方案信息变更原因
+                                                </label>
+                                                <div class="col-sm-11">
+                                                    <label class="form-control input-full">${costsProjectChangeLog.changeReason}</label>                                        </div>
+
+                                            </div>
+                                            </div>
+                                        </div>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
 
 
-<div class="container body">
+                        <!-- 公共尾部模块引用 -->
+                        <%@include file="/views/share/form_approval.jsp" %>
+                        <%@include file="/views/share/form_log.jsp" %>
+                </div>
+            </div>
+        </div>
+        <%@include file="/views/share/main_footer.jsp" %>
+    </div>
+
+</div>
+
+<%--<div class="container body">
     <div class="main_container">
         <div class="right_col" role="main" style="margin-left: 0px">
             <!-- 公共模块引用 -->
@@ -43,7 +213,7 @@
                                         评估基准日
                                     </label>
                                     <div class="col-sm-2">
-                                        <label class="form-control">
+                                        <label class="form-control input-full">
                                             <fmt:formatDate value="${item.valueTimePoint}" pattern="yyyy-MM-dd"/>
                                         </label>
                                     </div>
@@ -53,7 +223,7 @@
                                         基准日说明
                                     </label>
                                     <div class="col-sm-2">
-                                        <label class="form-control">${item.timePointExplain}</label>
+                                        <label class="form-control input-full">${item.timePointExplain}</label>
                                     </div>
                                 </div>
                                 <div class="x-valid">
@@ -61,7 +231,7 @@
                                         委托目的
                                     </label>
                                     <div class="col-sm-2">
-                                        <label class="form-control">${item.entrustPurposeName}</label>
+                                        <label class="form-control input-full">${item.entrustPurposeName}</label>
                                     </div>
                                 </div>
                                 <div class="x-valid">
@@ -69,7 +239,7 @@
                                         委托目的描述
                                     </label>
                                     <div class="col-sm-2">
-                                        <label class="form-control">${item.remarkEntrustPurpose}</label>
+                                        <label class="form-control input-full">${item.remarkEntrustPurpose}</label>
                                     </div>
                                 </div>
                             </div>
@@ -79,7 +249,7 @@
                                         价值类型
                                     </label>
                                     <div class="col-sm-2">
-                                        <label class="form-control">${item.valueDefinitionName}</label>
+                                        <label class="form-control input-full">${item.valueDefinitionName}</label>
                                     </div>
                                 </div>
                                 <div class="x-valid">
@@ -87,7 +257,7 @@
                                         财产范围
                                     </label>
                                     <div class="col-sm-2">
-                                        <label class="form-control">${item.propertyScopeName}</label>
+                                        <label class="form-control input-full">${item.propertyScopeName}</label>
                                     </div>
                                 </div>
                                 <div class="x-valid">
@@ -95,7 +265,7 @@
                                         财产包括
                                     </label>
                                     <div class="col-sm-2">
-                                        <label class="form-control">${item.scopeInclude}</label>
+                                        <label class="form-control input-full">${item.scopeInclude}</label>
                                     </div>
                                 </div>
                                 <div class="x-valid">
@@ -103,7 +273,7 @@
                                         财产不包括
                                     </label>
                                     <div class="col-sm-2">
-                                        <label class="form-control">${item.scopeNotInclude}</label>
+                                        <label class="form-control input-full">${item.scopeNotInclude}</label>
                                     </div>
                                 </div>
                             </div>
@@ -129,7 +299,7 @@
                                             方案信息变更原因
                                         </label>
                                         <div class="col-md-11 col-sm-11 col-xs-12">
-                                            <label class="form-control">${costsProjectChangeLog.changeReason}</label>                                        </div>
+                                            <label class="form-control input-full">${costsProjectChangeLog.changeReason}</label>                                        </div>
                                     </div>
                                 </div>
                             </form>
@@ -142,11 +312,11 @@
             <%@include file="/views/share/form_log.jsp" %>
         </div>
     </div>
-</div>
+</div>--%>
 
 
 
-<%@include file="/views/share/main_footer.jsp" %>
+
 </body>
 </html>
 <script type="text/javascript">
