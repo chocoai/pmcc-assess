@@ -42,4 +42,12 @@ public class NetUrlConfigDao {
         List<NetUrlConfig> netUrlConfigs = netUrlConfigMapper.selectByExample(example);
         return netUrlConfigs;
     }
+
+    public NetUrlConfig getNetUrlConfigByUrl(String url) {
+        NetUrlConfigExample example = new NetUrlConfigExample();
+        example.createCriteria().andBisEnableEqualTo(true).andUrlEqualTo(url);
+        List<NetUrlConfig> netUrlConfigs = netUrlConfigMapper.selectByExample(example);
+        if(CollectionUtils.isEmpty(netUrlConfigs)) return null;
+        return netUrlConfigs.get(0);
+    }
 }

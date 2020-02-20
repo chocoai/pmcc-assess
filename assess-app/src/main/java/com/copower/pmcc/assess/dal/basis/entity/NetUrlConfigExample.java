@@ -445,6 +445,76 @@ public class NetUrlConfigExample {
             return (Criteria) this;
         }
 
+        public Criteria andRequestMethodIsNull() {
+            addCriterion("request_method is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRequestMethodIsNotNull() {
+            addCriterion("request_method is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRequestMethodEqualTo(String value) {
+            addCriterion("request_method =", value, "requestMethod");
+            return (Criteria) this;
+        }
+
+        public Criteria andRequestMethodNotEqualTo(String value) {
+            addCriterion("request_method <>", value, "requestMethod");
+            return (Criteria) this;
+        }
+
+        public Criteria andRequestMethodGreaterThan(String value) {
+            addCriterion("request_method >", value, "requestMethod");
+            return (Criteria) this;
+        }
+
+        public Criteria andRequestMethodGreaterThanOrEqualTo(String value) {
+            addCriterion("request_method >=", value, "requestMethod");
+            return (Criteria) this;
+        }
+
+        public Criteria andRequestMethodLessThan(String value) {
+            addCriterion("request_method <", value, "requestMethod");
+            return (Criteria) this;
+        }
+
+        public Criteria andRequestMethodLessThanOrEqualTo(String value) {
+            addCriterion("request_method <=", value, "requestMethod");
+            return (Criteria) this;
+        }
+
+        public Criteria andRequestMethodLike(String value) {
+            addCriterion("request_method like", value, "requestMethod");
+            return (Criteria) this;
+        }
+
+        public Criteria andRequestMethodNotLike(String value) {
+            addCriterion("request_method not like", value, "requestMethod");
+            return (Criteria) this;
+        }
+
+        public Criteria andRequestMethodIn(List<String> values) {
+            addCriterion("request_method in", values, "requestMethod");
+            return (Criteria) this;
+        }
+
+        public Criteria andRequestMethodNotIn(List<String> values) {
+            addCriterion("request_method not in", values, "requestMethod");
+            return (Criteria) this;
+        }
+
+        public Criteria andRequestMethodBetween(String value1, String value2) {
+            addCriterion("request_method between", value1, value2, "requestMethod");
+            return (Criteria) this;
+        }
+
+        public Criteria andRequestMethodNotBetween(String value1, String value2) {
+            addCriterion("request_method not between", value1, value2, "requestMethod");
+            return (Criteria) this;
+        }
+
         public Criteria andItemListIsNull() {
             addCriterion("item_list is null");
             return (Criteria) this;
@@ -722,6 +792,66 @@ public class NetUrlConfigExample {
 
         public Criteria andItemDateNotBetween(String value1, String value2) {
             addCriterion("item_date not between", value1, value2, "itemDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andStartPageIndexIsNull() {
+            addCriterion("start_page_index is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStartPageIndexIsNotNull() {
+            addCriterion("start_page_index is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStartPageIndexEqualTo(Integer value) {
+            addCriterion("start_page_index =", value, "startPageIndex");
+            return (Criteria) this;
+        }
+
+        public Criteria andStartPageIndexNotEqualTo(Integer value) {
+            addCriterion("start_page_index <>", value, "startPageIndex");
+            return (Criteria) this;
+        }
+
+        public Criteria andStartPageIndexGreaterThan(Integer value) {
+            addCriterion("start_page_index >", value, "startPageIndex");
+            return (Criteria) this;
+        }
+
+        public Criteria andStartPageIndexGreaterThanOrEqualTo(Integer value) {
+            addCriterion("start_page_index >=", value, "startPageIndex");
+            return (Criteria) this;
+        }
+
+        public Criteria andStartPageIndexLessThan(Integer value) {
+            addCriterion("start_page_index <", value, "startPageIndex");
+            return (Criteria) this;
+        }
+
+        public Criteria andStartPageIndexLessThanOrEqualTo(Integer value) {
+            addCriterion("start_page_index <=", value, "startPageIndex");
+            return (Criteria) this;
+        }
+
+        public Criteria andStartPageIndexIn(List<Integer> values) {
+            addCriterion("start_page_index in", values, "startPageIndex");
+            return (Criteria) this;
+        }
+
+        public Criteria andStartPageIndexNotIn(List<Integer> values) {
+            addCriterion("start_page_index not in", values, "startPageIndex");
+            return (Criteria) this;
+        }
+
+        public Criteria andStartPageIndexBetween(Integer value1, Integer value2) {
+            addCriterion("start_page_index between", value1, value2, "startPageIndex");
+            return (Criteria) this;
+        }
+
+        public Criteria andStartPageIndexNotBetween(Integer value1, Integer value2) {
+            addCriterion("start_page_index not between", value1, value2, "startPageIndex");
             return (Criteria) this;
         }
 

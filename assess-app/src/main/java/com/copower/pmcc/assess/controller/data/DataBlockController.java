@@ -162,7 +162,12 @@ public class DataBlockController extends BaseController {
     @RequestMapping(value = "/climbingOldData", method = {RequestMethod.GET}, name = "抓取两年前老数据")
     public HttpResult climbingOldData(Integer id) {
         try {
-            netUrlConfigService.climbingDataById(id);
+            netUrlConfigService.climbingAll();
+            netUrlConfigService.getBaZhongTradingCenter(22);
+            netUrlConfigService.getLuZhouTradingCenter(11);
+            netUrlConfigService.getZiGongTradingCenter(42);
+            netUrlConfigService.getYiBinTradingCenter(15,"land");
+            netUrlConfigService.getYiBinTradingCenter(2,"asset");
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             logger.error(String.format("exception: %s", e.getMessage()), e);
