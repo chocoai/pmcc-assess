@@ -6,59 +6,62 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<div class="x_panel">
+<div class="col-md-12">
+    <div class="card full-height">
+        <div class="card-header collapse-link">
+            <div class="card-head-row">
+                <div class="card-title">
+                    项目拿号
+                </div>
+                <div class="card-tools">
+                    <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                            class="fa fa-angle-down"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <form id="project_takeNumber_form" class="form-horizontal">
+                <input type="hidden" name="id" value="${projectTakeNumber.id}">
 
-    <div class="x_title collapse-link">
-        <ul class="nav navbar-right panel_toolbox">
-            <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-        </ul>
-        <h3>项目拿号
-        </h3>
-        <div class="clearfix"></div>
-    </div>
-    <div class="x_content">
-        <div class="row">
-            <div class="panel-body">
-                <form id="project_takeNumber_form" class="form-horizontal">
-                    <input type="hidden" name="id" value="${projectTakeNumber.id}">
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class="col-md-1 col-sm-1 col-xs-12 control-label">
+                <div class="row form-group">
+                    <div class="col-md-4">
+                        <div class="form-inline x-valid">
+                            <label class="col-sm-2 col-form-label">
                                 报告类型<span class="symbol required"></span>
                             </label>
-                            <div class="col-md-3 col-sm-3 col-xs-12">
-                                <select name="reportType" class="form-control search-select select2" required>
+                            <div class="col-sm-10">
+                                <select name="reportType" class="form-control input-full search-select select2" required>
                                 </select>
                             </div>
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class="col-md-1 col-sm-1 col-xs-12 control-label">
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-12">
+                        <div class="form-inline x-valid">
+                            <label class="col-sm-1 control-label">
                                 说明<span class="symbol required"></span>
                             </label>
-                            <div class="col-md-11 col-sm-11 col-xs-12">
-                                <textarea class="form-control" id="remark" name="remark" rows="4" required
-                                          data-rule-maxlength="255" placeholder=""></textarea>
+                            <div class="col-sm-11">
+                                    <textarea class="form-control input-full" id="remark" name="remark" rows="4" required
+                                              data-rule-maxlength="255" placeholder=""></textarea>
                             </div>
                         </div>
                     </div>
-                </form>
-
-            </div>
+                </div>
+            </form>
 
         </div>
     </div>
 </div>
 <script type="application/javascript">
-    var projectTakeNumber = {
-       
-    };
+    var projectTakeNumber = {};
 
     //申请提交
     projectTakeNumber.commit = function () {
-        if(!$("#project_takeNumber_form").valid()){
+        if (!$("#project_takeNumber_form").valid()) {
             return false;
         }
         var data = formParams("project_takeNumber_form");
@@ -71,16 +74,16 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    Alert("提交数据成功!", 1, null, function () {
+                    AlertSuccess("成功", "提交数据成功",function(){
                         window.close();
                     });
                 }
                 else {
-                    Alert("提交数据失败，失败原因:" + result.errmsg);
+                    AlertError("提交数据失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
+                AlertError("调用服务端方法失败，失败原因:" + result);
             }
         });
     };
@@ -100,23 +103,23 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    Alert("提交数据成功!", 1, null, function () {
+                    AlertSuccess("成功", "提交数据成功",function(){
                         window.close();
                     });
                 }
                 else {
-                    Alert("提交数据失败，失败原因:" + result.errmsg);
+                    AlertError("提交数据失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
+                AlertError("调用服务端方法失败，失败原因:" + result);
             }
         });
     };
 
 
     $(function () {
-        if("${projectTakeNumber}"){
+        if ("${projectTakeNumber}") {
             $("#remark").text("${projectTakeNumber.remark}")
         }
         AssessCommon.loadDataDicByKey(AssessDicKey.REPORT_TYPE, '${projectTakeNumber.reportType}', function (html, data) {

@@ -336,7 +336,8 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    Alert("提交数据成功!", 1, null, function () {
+
+                    AlertSuccess("成功", "提交数据成功",function(){
                         window.close();
                     });
                 }
