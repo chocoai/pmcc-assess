@@ -4,8 +4,226 @@
 <head>
     <%@include file="/views/share/main_css.jsp" %>
 </head>
-<body class="nav-md footer_fixed">
-<div class="container body">
+<body>
+<div class="wrapper">
+    <div class="main-panel" style="width: 100%">
+        <div class="content" style="margin-top: 0px;">
+            <div class="page-inner mt--5">
+                <div class="row mt--2">
+                    <%--项目基本信息--%>
+                    <%@include file="/views/share/project/projectInfoSimple.jsp" %>
+                    <!-- 估价委托书 start -->
+                    <div class="col-md-12">
+                        <div class="card full-height">
+                            <div class="card-header collapse-link">
+                                <div class="card-head-row">
+                                    <div class="card-title">
+                                        估价委托书
+                                    </div>
+                                    <div class="card-tools">
+                                        <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                                                class="fa fa-angle-down"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <form class="form-horizontal">
+                                    <div class="row form-group">
+                                        <div class="col-md-4">
+                                            <input id="project_proxy" name="project_proxy" type="file" multiple="false">
+                                            <div id="_project_proxy"></div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 估价委托书及相关证明 start -->
+                    <div class="col-md-12">
+                        <div class="card full-height">
+                            <div class="card-header collapse-link">
+                                <div class="card-head-row">
+                                    <div class="card-title">
+                                        估价委托书及相关证明
+                                    </div>
+                                    <div class="card-tools">
+                                        <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                                                class="fa fa-angle-down"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <form class="form-horizontal">
+                                    <div class="row form-group">
+                                        <div class="col-md-3">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-2 col-form-label">
+                                                    省
+                                                </label>
+                                                <div class="col-sm-10">
+                                                    <select id="queryProvince" class="form-control input-full">
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-2 control-label">
+                                                    市
+                                                </label>
+                                                <div class="col-sm-10">
+                                                    <select id="queryCity" class="form-control input-full">
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-2 control-label">
+                                                    区
+                                                </label>
+                                                <div class="col-sm-10">
+                                                    <select id="queryDistrict" class="form-control input-full">
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-2 control-label">
+                                                    名称
+                                                </label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" class="form-control input-full" id="queryName"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-3">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-2 col-form-label">
+                                                    坐落
+                                                </label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" class="form-control input-full" id="querySeat"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button style="margin-left: 10px" class="btn btn-info  btn-sm" type="button"
+                                                onclick="reloadDeclareList()">
+											<span class="btn-label">
+												<i class="fa fa-search"></i>
+											</span>
+                                            查询
+                                        </button>
+                                    </div>
+                                    <table class="table table-bordered" id="declareTable">
+                                        <!-- cerare document add ajax data-->
+                                    </table>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 位置示意图 start -->
+                    <div class="col-md-12">
+                        <div class="card full-height">
+                            <div class="card-header collapse-link">
+                                <div class="card-head-row">
+                                    <div class="card-title">
+                                        位置示意图
+                                    </div>
+                                    <div class="card-tools">
+                                        <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                                                class="fa fa-angle-down"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card-body">
+                                <form class="form-horizontal">
+                                    <table class="table table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th width='40%'>权证对象</th>
+                                            <th width='60%'>位置图</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="positionTbody">
+                                        </tbody>
+                                    </table>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 估价中引用的专用文件资料 start -->
+                    <div class="col-md-12">
+                        <div class="card full-height">
+                            <div class="card-header collapse-link">
+                                <div class="card-head-row">
+                                    <div class="card-title">
+                                        估价中引用的专用文件资料
+                                    </div>
+                                    <div class="card-tools">
+                                        <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                                                class="fa fa-angle-down"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card-body" id="ReportFileCustom">
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 实况照片 start -->
+                    <div class="col-md-12">
+                        <div class="card full-height">
+                            <div class="card-header collapse-link">
+                                <div class="card-head-row">
+                                    <div class="card-title">
+                                        实况照片
+                                    </div>
+                                    <div class="card-tools">
+                                        <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                                                class="fa fa-angle-down"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card-body" id="liveSituationHtml">
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12" style="text-align: center;padding-bottom: 1.25rem">
+                        <button id="cancel_btn btn-sm" class="btn btn-default" onclick="window.close()">
+                            取消
+                        </button>
+                        <button id="btn_submit btn-sm" class="btn btn-warning" onclick="submit()">
+                            保存<i style="margin-left: 10px" class="fa fa-save"></i>
+                        </button>
+
+                    </div>
+                        <%@include file="/views/share/form_log.jsp" %>
+                </div>
+            </div>
+        </div>
+        <%@include file="/views/share/main_footer.jsp" %>
+    </div>
+
+</div>
+
+<%--<div class="container body">
     <div class="main_container">
         <div class="right_col" role="main" style="margin-left: 0">
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
@@ -35,7 +253,7 @@
                                         省
                                     </label>
                                     <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                        <select id="queryProvince" class="form-control">
+                                        <select id="queryProvince" class="form-control input-full">
                                         </select>
                                     </div>
                                 </div>
@@ -44,7 +262,7 @@
                                         市
                                     </label>
                                     <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                        <select id="queryCity" class="form-control">
+                                        <select id="queryCity" class="form-control input-full">
                                         </select>
                                     </div>
                                 </div>
@@ -53,14 +271,14 @@
                                         区
                                     </label>
                                     <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                        <select id="queryDistrict" class="form-control">
+                                        <select id="queryDistrict" class="form-control input-full">
                                         </select>
                                     </div>
                                 </div>
                                 <div class="x-valid">
                                     <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">名称</label>
                                     <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                        <input type="text" class="form-control" id="queryName"/>
+                                        <input type="text" class="form-control input-full" id="queryName"/>
                                     </div>
                                 </div>
                             </div>
@@ -68,7 +286,7 @@
                                 <div class="x-valid">
                                     <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">坐落</label>
                                     <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                        <input type="text" class="form-control" id="querySeat"/>
+                                        <input type="text" class="form-control input-full" id="querySeat"/>
                                     </div>
                                 </div>
                                 <div class="x-valid">
@@ -105,25 +323,25 @@
                                 </div>
                             </div>
                         </div>
-                        <%--<div class="x_panel">--%>
-                        <%--<div class="x_title collapse-link">--%>
-                        <%--<h4>权属证明复印件</h4>--%>
-                        <%--<div class="clearfix"></div>--%>
-                        <%--</div>--%>
-                        <%--<div class="x_content" id="ownershipCertHtml">--%>
-                        <%--</div>--%>
-                        <%--</div>--%>
-                        <%--<div class="x_panel">--%>
-                        <%--<div class="x_title collapse-link">--%>
-                        <%--<ul class="nav navbar-right panel_toolbox">--%>
-                        <%--<li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>--%>
-                        <%--</ul>--%>
-                        <%--<h4>关联土地证附件</h4>--%>
-                        <%--<div class="clearfix"></div>--%>
-                        <%--</div>--%>
-                        <%--<div class="x_content collapse" id="landFileHtml">--%>
-                        <%--</div>--%>
-                        <%--</div>--%>
+                        &lt;%&ndash;<div class="x_panel">&ndash;%&gt;
+                        &lt;%&ndash;<div class="x_title collapse-link">&ndash;%&gt;
+                        &lt;%&ndash;<h4>权属证明复印件</h4>&ndash;%&gt;
+                        &lt;%&ndash;<div class="clearfix"></div>&ndash;%&gt;
+                        &lt;%&ndash;</div>&ndash;%&gt;
+                        &lt;%&ndash;<div class="x_content" id="ownershipCertHtml">&ndash;%&gt;
+                        &lt;%&ndash;</div>&ndash;%&gt;
+                        &lt;%&ndash;</div>&ndash;%&gt;
+                        &lt;%&ndash;<div class="x_panel">&ndash;%&gt;
+                        &lt;%&ndash;<div class="x_title collapse-link">&ndash;%&gt;
+                        &lt;%&ndash;<ul class="nav navbar-right panel_toolbox">&ndash;%&gt;
+                        &lt;%&ndash;<li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>&ndash;%&gt;
+                        &lt;%&ndash;</ul>&ndash;%&gt;
+                        &lt;%&ndash;<h4>关联土地证附件</h4>&ndash;%&gt;
+                        &lt;%&ndash;<div class="clearfix"></div>&ndash;%&gt;
+                        &lt;%&ndash;</div>&ndash;%&gt;
+                        &lt;%&ndash;<div class="x_content collapse" id="landFileHtml">&ndash;%&gt;
+                        &lt;%&ndash;</div>&ndash;%&gt;
+                        &lt;%&ndash;</div>&ndash;%&gt;
                         <div class="x_panel">
                             <div class="x_title">
                                 <h4>
@@ -164,11 +382,423 @@
             <%@include file="/views/share/form_log.jsp" %>
         </div>
     </div>
-</div>
+</div>--%>
 </body>
-<%@include file="/views/share/main_footer.jsp" %>
+<div id="addItemModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">添加照片</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
 
-<div id="addItemModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+            <div class="modal-body">
+                <form id="frmItemFile" class="form-horizontal">
+                    <input type="hidden" name="declareRecordId">
+                    <input type="hidden" name="id">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <div class="row form-group">
+                                    <div class="col-md-4">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                名称<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control input-full" required
+                                                       name="fileName" placeholder="名称">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                排序<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control input-full" required
+                                                       name="sorting" placeholder="排序">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-inline x-valid">
+
+                                            <div class="col-sm-10">
+                                                <div class="form-check" style="justify-content:left">
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input" type="checkbox" id="bisEnable"
+                                                               name="bisEnable" value="true"
+                                                               checked="checked">
+                                                        <span class="form-check-sign">是否上报告</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-4">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                对应查勘部位<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <select name="certifyPart"
+                                                        class="form-control input-full search-select certifyPart select2"
+                                                        required>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                附件类别<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <select name="certifyPartCategory"
+                                                        class="form-control input-full search-select certifyPartCategory select2"
+                                                        required>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <small><input type="button" value="选择查勘照片"
+                                                      onclick="getLiveSituationByCertifyPart()"
+                                                      class="btn btn-success btn-xs"></small>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                备注
+                                            </label>
+                                            <div class="col-sm-11">
+                                              <textarea placeholder="备注" name="remark"
+                                                        class="form-control input-full"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                附件
+                                            </label>
+                                            <div class="col-sm-11">
+                                                <input id="uploadSupplementFile" placeholder="上传附件"
+                                                       class="form-control input-full"
+                                                       type="file">
+                                                <div id="_uploadSupplementFile"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="saveItemFileData()">
+                    保存
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div id="examineFileModalByCertifyPart" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">查勘照片</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+
+            <div class="modal-body">
+                <form id="examineFileFrmByCertifyPart" class="form-horizontal">
+                    <input type="hidden" name="id">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>序号</th>
+                                        <th>文件名称</th>
+                                        <th>附件</th>
+                                        <th>操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody data-id="certifyPart_file">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div id="selectPictureTypeModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">模板类型</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+
+            <div class="modal-body">
+                <form id="frmPictureType" class="form-horizontal">
+                    <input type="hidden" name="declareRecordId">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <div class="row form-group">
+                                    <div class="col-md-4">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                类型<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <select id='type' name='type'
+                                                        class='form-control input-full search-select select2'
+                                                        onchange="typeOnchange(this)">
+                                                    <option value="-1">-请选择-</option>
+                                                    <option value="0">系统</option>
+                                                    <option value="1">个人</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <table class="table table-bordered" id="dataLocaleSurveyList">
+                                    <!-- cerare document add ajax data-->
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div id="addPictureModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">添加照片</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+
+            <div class="modal-body">
+                <form id="frmPicture" class="form-horizontal">
+                    <input type="hidden" name="declareRecordId">
+                    <input type="hidden" name="certifyPartCategory">
+                    <input type="hidden" name="id">
+                    <input type="hidden" name="bisEnable">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <input type="button" class="btn btn-primary btn-xs"
+                                       onclick="correspondingSitePic()"
+                                       value="选择对应位置查勘图片">
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                附件
+                                            </label>
+                                            <div class="col-sm-11">
+                                                <input id="uploadPicture" placeholder="上传附件" class="form-control input-full"
+                                                       type="file">
+                                                <div id="_uploadPicture"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="savePicture()">
+                    保存
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div id="divBoxTemplateDetail" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">明细</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+
+            <div class="modal-body">
+                <form id="frmMaster" class="form-horizontal">
+                    <input type="hidden" id="masterId">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <P>
+                                    <button style="margin-left: 5px" class="btn btn-success btn-sm" type="button"
+                                            data-toggle="modal" onclick="dataLocaleSurveyPicture.prototype.showModel()">
+											<span class="btn-label">
+												<i class="fa fa-plus"></i>
+											</span>
+                                        新增
+                                    </button>
+                                </P>
+                                <table class="table table-bordered" id="dataLocaleSurveyPictureList">
+                                    <!-- cerare document add ajax data-->
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div id="divBoxSaveTemplate" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">保存到模板</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+
+            <div class="modal-body">
+                <form id="frmTemplateMaster" class="form-horizontal">
+                    <input type="hidden" name="declareRecordId">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <div class="row form-group">
+                                    <div class="col-md-4">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                名称<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input type="text" data-rule-maxlength="50"
+                                                       placeholder="名称" id="name" class="form-control input-full">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="saveToTemplate()">
+                    保存
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div id="allExamineFileModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">查勘照片</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+
+            <div class="modal-body">
+                <form id="allExamineFileFrm" class="form-horizontal">
+                    <input type="hidden" name="id">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>序号</th>
+                                        <th>文件名称</th>
+                                        <th>附件</th>
+                                        <th>操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody data-id="all_live_situation">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<%--<div id="addItemModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -190,7 +820,7 @@
                                         <label class="col-sm-1 control-label">名称<span
                                                 class="symbol required"></span></label>
                                         <div class="col-sm-3">
-                                            <input type="text" class="form-control" required
+                                            <input type="text" class="form-control input-full" required
                                                    name="fileName" placeholder="名称">
                                         </div>
                                     </div>
@@ -198,7 +828,7 @@
                                         <label class="col-sm-1 control-label">排序<span
                                                 class="symbol required"></span></label>
                                         <div class="col-sm-3">
-                                            <input type="text" class="form-control" required
+                                            <input type="text" class="form-control input-full" required
                                                    name="sorting" placeholder="排序">
                                         </div>
                                     </div>
@@ -220,7 +850,8 @@
                                                 class="symbol required"></span></label>
                                         <div class="col-sm-3">
                                             <select name="certifyPart"
-                                                    class="form-control search-select certifyPart select2" required>
+                                                    class="form-control input-full search-select certifyPart select2"
+                                                    required>
                                             </select>
                                         </div>
                                     </div>
@@ -228,7 +859,7 @@
                                         <label class="col-sm-1 control-label">附件类别<span class="symbol required"></span></label>
                                         <div class="col-sm-3">
                                             <select name="certifyPartCategory"
-                                                    class="form-control search-select certifyPartCategory select2"
+                                                    class="form-control input-full search-select certifyPartCategory select2"
                                                     required>
                                             </select>
                                         </div>
@@ -246,7 +877,7 @@
                                         <label class="col-sm-1 control-label">备注</label>
                                         <div class="col-sm-10">
                                     <textarea placeholder="备注" name="remark"
-                                              class="form-control"></textarea>
+                                              class="form-control input-full"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -254,7 +885,8 @@
                                     <div class="x-valid">
                                         <label class="col-sm-1 control-label">附件</label>
                                         <div class="col-sm-10">
-                                            <input id="uploadSupplementFile" placeholder="上传附件" class="form-control"
+                                            <input id="uploadSupplementFile" placeholder="上传附件"
+                                                   class="form-control input-full"
                                                    type="file">
                                             <div id="_uploadSupplementFile"></div>
                                         </div>
@@ -275,7 +907,8 @@
             </form>
         </div>
     </div>
-</div>
+</div>--%>
+<%--
 <div id="allExamineFileModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
@@ -319,6 +952,8 @@
         </div>
     </div>
 </div>
+--%>
+<%--
 <div id="examineFileModalByCertifyPart" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
@@ -362,6 +997,8 @@
         </div>
     </div>
 </div>
+--%>
+<%--
 <div id="selectPictureTypeModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
@@ -383,7 +1020,8 @@
                                         <label class="col-sm-1 control-label">类型<span
                                                 class="symbol required"></span></label>
                                         <div class="col-sm-3">
-                                            <select id='type' name='type' class='form-control search-select select2'
+                                            <select id='type' name='type'
+                                                    class='form-control input-full search-select select2'
                                                     onchange="typeOnchange(this)">
                                                 <option value="-1">-请选择-</option>
                                                 <option value="0">系统</option>
@@ -408,6 +1046,8 @@
         </div>
     </div>
 </div>
+--%>
+<%--
 <div id="addPictureModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
@@ -434,7 +1074,7 @@
                                     <div class="x-valid">
                                         <label class="col-sm-1 control-label">附件</label>
                                         <div class="col-sm-10">
-                                            <input id="uploadPicture" placeholder="上传附件" class="form-control"
+                                            <input id="uploadPicture" placeholder="上传附件" class="form-control input-full"
                                                    type="file">
                                             <div id="_uploadPicture"></div>
                                         </div>
@@ -456,6 +1096,8 @@
         </div>
     </div>
 </div>
+--%>
+<%--
 <div id="divBoxTemplateDetail" class="modal fade bs-example-modal-lg" data-backdrop="static"
      tabindex="-1"
      role="dialog"
@@ -492,6 +1134,8 @@
         </div>
     </div>
 </div>
+--%>
+<%--
 <div id="divBoxSaveTemplate" class="modal fade bs-example-modal-lg" data-backdrop="static"
      tabindex="-1"
      role="dialog"
@@ -514,7 +1158,7 @@
                                 </label>
                                 <div class="col-sm-3">
                                     <input type="text" data-rule-maxlength="50"
-                                           placeholder="名称" id="name" class="form-control">
+                                           placeholder="名称" id="name" class="form-control input-full">
                                 </div>
                             </div>
                         </div>
@@ -532,6 +1176,9 @@
         </div>
     </div>
 </div>
+--%>
+
+<%@include file="/views/data/dataLocaleSurveyPictureView.jsp" %>
 <script type="text/html" id="reportFileCustomHtml">
     <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
         <div class="x_panel">
@@ -635,7 +1282,7 @@
                         getLandFileAll(tbody, result.data);
                     }
                 } else {
-                    Alert(result.errmsg);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             }
         })
@@ -654,7 +1301,7 @@
                         var html = '';
                         html += '<label class="col-sm-1 control-label">附件</label>';
                         html += '<div class="col-sm-10">';
-                        html += '<input id="uploadlandFile' + declareRecordId + '" class="form-control"type="file">';
+                        html += '<input id="uploadlandFile' + declareRecordId + '" class="form-control input-full"type="file">';
                         html += '<div id="uploadlandFile' + declareRecordId + '">';
                         html += '</div>';
                         html += '</div>';
@@ -680,7 +1327,7 @@
                         $('div[data-id=' + declareRecordId + '][data-name=land_file_btn]').empty().append(html);
                     }
                 } else {
-                    Alert(result.errmsg);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             }
         })
@@ -708,7 +1355,7 @@
                         tbody.empty().append(html);
                     }
                 } else {
-                    Alert(result.errmsg);
+                    AlertError("加载失败，失败原因:" + result);
                 }
             }
         })
@@ -752,7 +1399,7 @@
                         tbody.empty().append(html);
                     }
                 } else {
-                    Alert(result.errmsg);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             }
         })
@@ -760,7 +1407,7 @@
 
     //移除复印件片
     function removeOwnershipCertFile(id, _this) {
-        Alert("确认删除", 2, null, function () {
+        AlertConfirm("是否确认删除", "删除相应的数据后将不可恢复", function () {
             $.ajax({
                 url: '${pageContext.request.contextPath}/projectReportFile/removeOwnershipCertFile',
                 data: {
@@ -770,7 +1417,7 @@
                     if (result.ret) {
                         $(_this).closest('tr').remove();
                     } else {
-                        Alert(result.errmsg);
+                        AlertError("删除数据失败，失败原因:" + result.errmsg);
                     }
                 }
             })
@@ -791,7 +1438,7 @@
                         appendCustomHtml(item.id, item.name, declareRecordId);
                     })
                 } else {
-                    Alert(result.errmsg);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             }
         })
@@ -820,7 +1467,7 @@
                         appendCustomHtml(result.data.id, result.data.name, declareRecordId);
                         layer.close(index);
                     } else {
-                        Alert(result.errmsg);
+                        AlertError("调用服务端方法失败，失败原因:" + result);
                     }
                 }
             })
@@ -838,7 +1485,7 @@
                 if (result.ret) {
                     $(_this).closest('.x_panel').parent().remove();
                 } else {
-                    Alert(result.errmsg);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             }
         })
@@ -860,11 +1507,11 @@
             data: {formData: JSON.stringify(data)},
             success: function (result) {
                 if (result.ret) {
-                    Alert("保存成功", 1, null, function () {
+                    AlertSuccess("成功", "保存成功",function(){
                         window.close();
-                    })
+                    });
                 } else {
-                    Alert(result.errmsg);
+                    AlertError("保存失败，失败原因:" + result);
                 }
             }
         })
@@ -890,7 +1537,7 @@
                     })
                     tbody.empty().append(html);
                 } else {
-                    Alert(result.errmsg);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             }
         })
@@ -898,7 +1545,7 @@
 
     //移除实况照片
     function removeLiveSituation(id, _this) {
-        Alert("确认删除", 2, null, function () {
+        AlertConfirm("是否确认删除", "删除相应的数据后将不可恢复", function () {
             $.ajax({
                 url: '${pageContext.request.contextPath}/scheme/removeLiveSituation',
                 data: {
@@ -908,7 +1555,7 @@
                     if (result.ret) {
                         $(_this).closest('tr').remove();
                     } else {
-                        Alert(result.errmsg);
+                        AlertError("删除数据失败，失败原因:" + result.errmsg);
                     }
                 }
             })
@@ -952,7 +1599,7 @@
                     }
                     $("#allExamineFileModal").modal("show");
                 } else {
-                    Alert(result.errmsg);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             }
         })
@@ -970,11 +1617,11 @@
                 Loading.progressHide();
                 if (result.ret) {
                     if (result.data) {
-                        FileUtils.showAttachment(result.data.id,result.data.fileExtension);
+                        FileUtils.showAttachment(result.data.id, result.data.fileExtension);
                     }
 
                 } else {
-                    Alert(result.errmsg);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             }
         })
@@ -984,7 +1631,7 @@
     function getLiveSituationByCertifyPart() {
         var declareRecordId = $("#frmItemFile").find("input[name='declareRecordId']").val();
         var certifyPart = $("#frmItemFile").find("select[name='certifyPart']").val();
-        if(!certifyPart){
+        if (!certifyPart) {
             alert("先选择查勘部位");
             return;
         }
@@ -1008,7 +1655,7 @@
                     }
                     $("#examineFileModalByCertifyPart").modal("show");
                 } else {
-                    Alert(result.errmsg);
+                    notifyWarning("获取数据失败，失败原因:" + result);
                 }
             }
         })
@@ -1026,8 +1673,9 @@
             },
             success: function (result) {
                 Loading.progressHide();
-                Alert("选择图片成功!", 1, null, function () {
+                AlertSuccess("成功", "选择图片成功",function(){
                     loadLiveSituation($('tbody[data-id=' + declareRecordId + '][data-name=live_situation_select]'), declareRecordId);
+
                 });
             }
         })
@@ -1046,13 +1694,13 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    toastr.success('选择成功');
+                    notifySuccess("成功", "选择成功");
                     $("#examineFileModalByCertifyPart").modal("hide");
                     loadUploadFiles(AssessDBKey.DeclareRecord, reportFileItemId, "live_situation_select_supplement", "uploadSupplementFile");
                 }
             },
             error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
+                AlertError("调用服务端方法失败，失败原因:" + result);
             }
         })
     }
@@ -1081,7 +1729,7 @@
                 }
             },
             error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
+                AlertError("调用服务端方法失败，失败原因:" + result);
             }
         })
     }
@@ -1099,16 +1747,16 @@
             data: data,
             success: function (result) {
                 if (result.ret) {
-                    toastr.success('保存成功');
+                    notifySuccess("成功", "保存成功");
                     $('#addItemModal').modal('hide');
                     loadLiveSituation($('tbody[data-id="' + data.declareRecordId + '"][data-name=live_situation_select]'), data.declareRecordId);
                 }
                 else {
-                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                    AlertError("保存数据失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
+                AlertError("调用服务端方法失败，失败原因:" + result);
             }
         })
     }
@@ -1128,7 +1776,7 @@
                 if (result.ret) {
                     loadLiveSituation($('tbody[data-id=' + declareRecordId + '][data-name=live_situation_select]'), declareRecordId);
                 } else {
-                    Alert(result.errmsg);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             }
         })
@@ -1194,11 +1842,11 @@
 
                 }
                 else {
-                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                    AlertError("保存数据失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
+                AlertError("调用服务端方法失败，失败原因:" + result);
             }
         })
 
@@ -1229,16 +1877,16 @@
             },
             success: function (result) {
                 if (result.ret) {
-                    toastr.success('模板添加成功');
+                    notifySuccess("成功", "模板添加成功");
                     $('#selectPictureTypeModal').modal('hide');
                     loadLiveSituation($('tbody[data-id="' + declareRecordId + '"][data-name=live_situation_select]'), declareRecordId);
                 }
                 else {
-                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                    AlertError("保存数据失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
+                AlertError("调用服务端方法失败，失败原因:" + result);
             }
         })
     }
@@ -1260,7 +1908,7 @@
                 }
             },
             error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
+                AlertError("调用服务端方法失败，失败原因:" + result);
             }
         })
     }
@@ -1275,16 +1923,16 @@
             data: data,
             success: function (result) {
                 if (result.ret) {
-                    toastr.success('保存成功');
+                    notifySuccess("成功", "保存成功");
                     $('#addPictureModal').modal('hide');
                     loadLiveSituation($('tbody[data-id="' + data.declareRecordId + '"][data-name=live_situation_select]'), data.declareRecordId);
                 }
                 else {
-                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                    AlertError("保存数据失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
+                AlertError("调用服务端方法失败，失败原因:" + result);
             }
         })
     }
@@ -1316,7 +1964,7 @@
                         }
                         $("#allExamineFileModal").modal("show");
                     } else {
-                        Alert(result.errmsg);
+                        notifyWarning("加载失败","失败原因:"+result.errmsg);
                     }
                 }
             })
@@ -1337,13 +1985,13 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    toastr.success('选择成功');
+                    notifySuccess("成功", "选择成功");
                     $("#allExamineFileModal").modal("hide");
                     loadUploadFiles(AssessDBKey.DeclareRecord, reportFileItemId, "live_situation_select_supplement", "uploadPicture");
                 }
             },
             error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
+                AlertError("调用服务端方法失败，失败原因:" + result);
             }
         })
     }
@@ -1410,7 +2058,7 @@
                 }
             },
             error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
+                AlertError("调用服务端方法失败，失败原因:" + result);
             }
         })
     }
@@ -1469,16 +2117,16 @@
                 success: function (result) {
                     Loading.progressHide();
                     if (result.ret) {
-                        toastr.success('保存成功');
+                        notifySuccess("成功", "保存成功");
                         $('#divBoxSaveTemplate').modal('hide');
                     }
                     else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
                     Loading.progressHide();
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         }
@@ -1496,7 +2144,7 @@
         html += '<div class="x-valid">';
         html += '<label class="col-sm-1 control-label">复印件</label>';
         html += '<div class="col-sm-10">';
-        html += '<input id="uploadOwnershipCertFile' + declareRecord.id + '" class="form-control" type="file">';
+        html += '<input id="uploadOwnershipCertFile' + declareRecord.id + '" class="form-control input-full" type="file">';
         html += '<div id="_uploadOwnershipCertFile' + declareRecord.id + '"></div>';
         html += '</div></div></div></div>';
 
@@ -1550,12 +2198,12 @@
                                 html += '</td></tr></tbody></table></div></div>';
                             })
                         }
-                        html += '<input type="button" class="btn btn-success" value="自定义添加"onclick="addReportFileCustom(' + declareRecord.id + ');">';
+                        html += '<input type="button" class="btn btn-success btn-sm" value="自定义添加"onclick="addReportFileCustom(' + declareRecord.id + ');">';
                         html += '<div class="row report-file-custom' + declareRecord.id + '"></div></div></div></div>';
                         $("#ReportFileCustom").empty().append(html);
                         loadReportFileCustomList(declareRecord.id);
                     } else {
-                        Alert(result.errmsg);
+                        AlertError("调用服务端方法失败，失败原因:" + result);
                     }
                 }
             })

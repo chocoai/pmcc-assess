@@ -10,7 +10,113 @@
             width: 200px;
         }
     </style>
-    <div class="row">
+    <div class="col-md-12">
+        <div class="card full-height">
+            <div class="card-header collapse-link">
+                <div class="card-head-row">
+                    <div class="card-title">
+                            ${projectPlan.planName}
+                        <small>
+                            <a target="_blank" class="btn btn-xs btn-primary"
+                               href="${pageContext.request.contextPath}/projectReportFile/index?projectId=${projectInfo.id}">估价委托书及相关证明</a>
+                            <input type="button" class="btn btn-xs btn-primary"
+                                   onclick="projectDetailsEnterNextStage();"
+                                   value="进入下阶段">
+                            <span id="workStageCustomBtn">
+                        </span>
+                        </small>
+                    </div>
+                    <div class="card-tools">
+                        <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                                class="fa fa-angle-down"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <form class="form-horizontal" id="project_stage_query">
+                    <div class="row form-group">
+                        <div class="col-md-3">
+                        <div class="form-inline x-valid">
+                            <label class="col-sm-2 col-form-label">
+                                任务状态
+                            </label>
+                            <div class="col-sm-10">
+                                <select class="form-control input-full" name="status">
+                                    <option value="">-请选择-</option>
+                                    <option value="wait">等待发起</option>
+                                    <option value="runing">进行中</option>
+                                    <option value="finish">完成</option>
+                                </select>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="col-md-3">
+                        <div class="form-inline x-valid">
+                            <label class="col-sm-2 col-form-label">
+                                责任人
+                            </label>
+                            <div class="col-sm-10">
+                                <input type="hidden" name="executeUserAccount">
+                                <input type="text" readonly="readonly"
+                                       onclick="projectStagePlan.selectProjectPhaseExecuteUserAccount(this);"
+                                       placeholder="责任人" name="executeUserAccountName" class="form-control input-full">
+                            </div>
+                        </div>
+                        </div>
+                        <div class="col-md-3">
+                        <div class="form-inline x-valid">
+                            <label class="col-sm-2 col-form-label">
+                                开始时间
+                            </label>
+                            <div class="col-sm-10">
+                                <input type="text" placeholder="开始时间" data-date-format="yyyy-mm-dd"
+                                       name="planStartDate"
+                                       class="form-control input-full dbdate" readonly="readonly">
+                            </div>
+                        </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-inline x-valid">
+                                <label class=" col-sm-2 col-form-label">
+                                    结束时间
+                                </label>
+                                <div class="col-sm-10">
+                                    <input type="text" placeholder="结束时间" data-date-format="yyyy-mm-dd"
+                                           name="planEndDate"
+                                           class="form-control input-full dbdate" readonly="readonly">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+
+                        <div class="col-md-3">
+                        <div class="form-inline x-valid">
+                            <label class="col-sm-2 col-form-label">
+                                名称
+                            </label>
+                            <div class="col-sm-10">
+                                <input type="text" placeholder="名称" name="projectPhaseName" class="form-control input-full">
+                            </div>
+                        </div>
+                        </div>
+
+                        <bu class="btn btn-primary btn-sm" onclick="projectStagePlan.loadProjectTaskList();">查询</bu>
+                        <a class="btn btn-info btn-sm" onclick="projectStagePlan.createTask()">添加任务</a>
+                        <a class="btn btn-danger btn-sm" onclick="projectStagePlan.deletePlanDetailsByIds()">删除任务</a>
+                        <a class="btn btn-primary btn-sm"
+                                   onclick="projectStagePlan.setExecuteUserAccount();">设置责任人</a>
+
+                    </div>
+                </form>
+                <table id="tb_project_stage" class="table table-bordered">
+                </table>
+            </div>
+        </div>
+    </div>
+</c:if>
+<%--    <div class="row">
         <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
             <div class="x_panel">
                 <div class="x_title">
@@ -35,7 +141,7 @@
                                     任务状态
                                 </label>
                                 <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                    <select class="form-control" name="status">
+                                    <select class="form-control input-full" name="status">
                                         <option value="">-请选择-</option>
                                         <option value="wait">等待发起</option>
                                         <option value="runing">进行中</option>
@@ -51,7 +157,7 @@
                                     <input type="hidden" name="executeUserAccount">
                                     <input type="text" readonly="readonly"
                                            onclick="projectStagePlan.selectProjectPhaseExecuteUserAccount(this);"
-                                           placeholder="责任人" name="executeUserAccountName" class="form-control">
+                                           placeholder="责任人" name="executeUserAccountName" class="form-control input-full">
                                 </div>
                             </div>
                             <div class="x-valid">
@@ -61,7 +167,7 @@
                                 <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
                                     <input type="text" placeholder="开始时间" data-date-format="yyyy-mm-dd"
                                            name="planStartDate"
-                                           class="form-control dbdate" readonly="readonly">
+                                           class="form-control input-full dbdate" readonly="readonly">
                                 </div>
                             </div>
                             <div class="x-valid">
@@ -71,7 +177,7 @@
                                 <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
                                     <input type="text" placeholder="结束时间" data-date-format="yyyy-mm-dd"
                                            name="planEndDate"
-                                           class="form-control dbdate" readonly="readonly">
+                                           class="form-control input-full dbdate" readonly="readonly">
                                 </div>
                             </div>
                         </div>
@@ -81,7 +187,7 @@
                                     名称
                                 </label>
                                 <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                    <input type="text" placeholder="名称" name="projectPhaseName" class="form-control">
+                                    <input type="text" placeholder="名称" name="projectPhaseName" class="form-control input-full">
                                 </div>
                             </div>
                             <div class="x-valid">
@@ -100,10 +206,130 @@
                 </div>
             </div>
         </div>
+    </div>--%>
+
+<div id="div_plan" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">计划编辑</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <div class="row form-group">
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                工作事项<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <select required="required" name="projectPhaseId"
+                                                        onchange="projectStagePlan.setPhaseNameDefault(this)"
+                                                        class="form-control input-full search-select select2">
+                                                    <option value="">-选择-</option>
+                                                    <c:forEach var="item" items="${projectPhaseVoList}">
+                                                        <option value="${item.id}">${item.projectPhaseName}</option>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                任务名称<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input type="hidden" name="id"/>
+                                                <input type="text" placeholder="任务名称" required="required" maxlength="100"
+                                                       name="projectPhaseName"
+                                                       class="form-control input-full">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                开始时间<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input required type="text" placeholder="开始时间" data-date-format='yyyy-mm-dd'
+                                                       name="planStartDate"
+                                                       class="form-control input-full dbdate">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                结束时间<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input required type="text" placeholder="结束时间" data-date-format='yyyy-mm-dd'
+                                                       name="planEndDate"
+                                                       class="form-control input-full dbdate">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                责任人 <span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input type="hidden" name="executeUserAccount">
+                                                <input readonly="readonly"
+                                                       onclick="projectStagePlan.selectProjectPhaseExecuteUserAccount(this)"
+                                                       class="form-control input-full" placeholder="点击选择责任人" type="text"
+                                                       required="required" name="executeUserName"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                说明
+                                            </label>
+                                            <div class="col-sm-11">
+                                            <textarea class="form-control input-full" name="planRemarks"
+                                                      placeholder="说明"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="projectStagePlan.saveStagePlan(this);">
+                    保存
+                </button>
+            </div>
+
+        </div>
     </div>
-</c:if>
+</div>
 
 
+<%--
 <div id="div_plan" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -124,7 +350,7 @@
                                         <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
                                             <select required="required" name="projectPhaseId"
                                                     onchange="projectStagePlan.setPhaseNameDefault(this)"
-                                                    class="form-control search-select select2">
+                                                    class="form-control input-full search-select select2">
                                                 <option value="">-选择-</option>
                                                 <c:forEach var="item" items="${projectPhaseVoList}">
                                                     <option value="${item.id}">${item.projectPhaseName}</option>
@@ -142,7 +368,7 @@
                                             <input type="hidden" name="id"/>
                                             <input type="text" placeholder="任务名称" required="required" maxlength="100"
                                                    name="projectPhaseName"
-                                                   class="form-control">
+                                                   class="form-control input-full">
                                         </div>
                                         <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
                                             <input type="button" class="btn btn-xs btn-success" value="＋"
@@ -158,7 +384,7 @@
                                         <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                             <input required type="text" placeholder="开始时间" data-date-format='yyyy-mm-dd'
                                                    name="planStartDate"
-                                                   class="form-control dbdate">
+                                                   class="form-control input-full dbdate">
                                         </div>
                                     </div>
                                     <div class="x-valid">
@@ -168,7 +394,7 @@
                                         <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
                                             <input required type="text" placeholder="结束时间" data-date-format='yyyy-mm-dd'
                                                    name="planEndDate"
-                                                   class="form-control dbdate">
+                                                   class="form-control input-full dbdate">
                                         </div>
                                     </div>
                                 </div>
@@ -180,7 +406,7 @@
                                         <input type="hidden" name="executeUserAccount">
                                         <input readonly="readonly"
                                                onclick="projectStagePlan.selectProjectPhaseExecuteUserAccount(this)"
-                                               class="form-control" placeholder="点击选择责任人" type="text"
+                                               class="form-control input-full" placeholder="点击选择责任人" type="text"
                                                required="required" name="executeUserName"/>
                                     </div>
                                 </div>
@@ -189,7 +415,7 @@
                                         说明
                                     </label>
                                     <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
-                                        <textarea class="form-control" name="planRemarks"
+                                        <textarea class="form-control input-full" name="planRemarks"
                                                   placeholder="说明"></textarea>
                                     </div>
                                 </div>
@@ -210,8 +436,72 @@
         </div>
     </div>
 </div>
+--%>
 
-<div id="replyTaskBox" class="modal fade bs-example-modal-lg"
+<div id="replyTaskBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">重启任务</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <input type="hidden" name="planDetailsId">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                重启原因<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-11">
+                                             <textarea placeholder="重启原因" name="reason"
+                                                       class="form-control input-full" required></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                附件
+                                            </label>
+                                            <div class="col-sm-11">
+                                                <input id="returnUploadFile" type="file" multiple="false">
+                                                <div id="_returnUploadFile"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="projectStagePlan.replyTaskBtn();">
+                    保存
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<%--<div id="replyTaskBox" class="modal fade bs-example-modal-lg"
      data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -233,7 +523,7 @@
                                         </label>
                                         <div class="col-xs-10  col-sm-10  col-md-10  col-lg-10">
                                             <textarea placeholder="重启原因" name="reason"
-                                                      class="form-control" required></textarea>
+                                                      class="form-control input-full" required></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -263,7 +553,7 @@
             </div>
         </div>
     </div>
-</div>
+</div>--%>
 <script type="text/html" id="phaseNameHtml">
     <div class="form-group append-phase-name">
         <div class="x-valid">
@@ -274,7 +564,7 @@
                 <input type="hidden" name="id"/>
                 <input type="text" placeholder="任务名称" required="required" maxlength="100"
                        name="projectPhaseName"
-                       class="form-control">
+                       class="form-control input-full">
             </div>
             <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
                 <input type="button" class="btn btn-xs btn-warning" value="－"
@@ -293,14 +583,14 @@
             },
             success: function (result) {
                 if (result.ret) {
-                    toastr.success('操作成功');
+                    AlertSuccess("操作成功", "提交数据成功")
                     try {
                         projectStagePlan.stageTable.bootstrapTable('refresh');
                     } catch (e) {
                         console.log(e);
                     }
                 } else {
-                    Alert(result.errmsg);
+                    AlertError(result.errmsg);
                 }
             }
         });
@@ -453,11 +743,11 @@
                 success: function (result) {
                     if (result.ret) {
                         box.modal("hide");
-                        toastr.success('任务重启成功');
+                        notifySuccess("成功", "任务重启成功");
                         projectStagePlan.stageTable.bootstrapTable('refresh');
 
                     } else {
-                        toastr.info(result.errmsg);
+                        notifyWarning("失败","失败原因:"+result.errmsg);
                     }
                 }
             })
@@ -512,12 +802,12 @@
     /*执行人员安排*/
     projectStagePlan.setExecuteUserAccount = function () {
         if ('${projectInfo.projectMemberVo.userAccountManager}' != '${sysUserDto.userAccount}') {
-            toastr.info("只有项目经理才能安排任务的执行人员");
+            notifyInfo("只有项目经理才能安排任务的执行人员");
             return false;
         }
         var rows = projectStagePlan.stageTable.bootstrapTable('getSelections');
         if (!rows || rows.length <= 0) {
-            toastr.info("还未选择相关任务");
+            notifyInfo("还未选择相关任务");
         }
         var idArray = [];
         $.each(rows, function (i, item) {
@@ -533,15 +823,15 @@
                     },
                     success: function (result) {
                         if (result.ret) {
-                            toastr.success('责任人调整成功');
+                            notifySuccess("成功", "责任人调整成功");
                             projectStagePlan.stageTable.bootstrapTable('refresh');
                         } else {
-                            Alert(result.errmsg);
+                            AlertError(result.errmsg);
                         }
                     }
                 });
             } else {
-                Alert("还未选择任何人员");
+                AlertError("还未选择任何人员");
             }
         });
 
@@ -569,7 +859,7 @@
                 $(_this).val(data.name);
                 $(_this).closest("form").find("[name='executeUserAccount']").val(data.account);
             } else {
-                Alert("还未选择任何人员");
+                notifyWarning("还未选择任何人员");
             }
         });
     };
@@ -608,11 +898,11 @@
                     box.modal("hide");
                     projectStagePlan.stageTable.bootstrapTable('refresh');
                 } else {
-                    Alert("保存失败:" + result.errmsg);
+                    AlertError("保存失败:" + result.errmsg);
                 }
             },
             error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+                AlertError("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
             }
         });
     };
@@ -623,12 +913,12 @@
      */
     projectStagePlan.deletePlanDetailsByIds = function () {
         if ('${projectInfo.projectMemberVo.userAccountManager}' != '${sysUserDto.userAccount}') {
-            toastr.info("只有项目经理才能安排任务的执行人员");
+            notifyInfo("只有项目经理才能安排任务的执行人员");
             return false;
         }
         var rows = projectStagePlan.stageTable.bootstrapTable('getSelections');
         if (!rows || rows.length <= 0) {
-            toastr.info("还未选择相关任务");
+            notifyInfo("还未选择相关任务");
             return false;
         }
         var idArray = [];
@@ -636,7 +926,7 @@
             idArray.push(item.id);
         });
 
-        Alert("删除后数据将无法恢复，确定要删除么？", 2, null, function () {
+        AlertConfirm("是否确认删除", "删除相应的数据后将不可恢复", function () {
             $.ajax({
                 url: "${pageContext.request.contextPath}/projectPlanDetails/deletePlanDetailsByIds",
                 data: {
@@ -646,14 +936,14 @@
                 dataType: "json",
                 success: function (result) {
                     if (result.ret) {
-                        toastr.info("任务已经删除!");
+                        notifySuccess("成功", "任务已经删除");
                         projectStagePlan.loadProjectTaskList();
                     } else {
-                        Alert(result.errmsg);
+                        AlertError(result.errmsg);
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+                    AlertError("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
                 }
             });
 
@@ -672,11 +962,11 @@
     //工作事项粘贴
     projectStagePlan.taskPaste = function (_this, id) {
         if (!copyPlanDetailsTempId) {
-            Alert('请选择复制对象');
+            notifyInfo('请选择复制对象');
             return false;
         }
         if (id == copyPlanDetailsTempId) {
-            Alert('无法粘贴自己');
+            notifyInfo('无法粘贴自己');
             return false;
         }
         Loading.progressShow();
@@ -689,9 +979,9 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    toastr.success("粘贴完成");
+                    notifySuccess("成功", "粘贴完成");
                 } else {
-                    Alert(result.errmsg);
+                    AlertError("复制失败，失败原因:" + result);
                 }
             }
         })

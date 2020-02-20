@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<script type="text/html" id="other_EnclosureModel">
+<%--<script type="text/html" id="other_EnclosureModel">
     <div class="form-group">
         <div class="x-valid">
             <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
@@ -26,6 +26,34 @@
                                                  onclick="declareApplyExtensionCumstom.cleanItemHTML(this)"></span>
         </div>
     </div>
+</script>--%>
+<script type="text/html" id="other_EnclosureModel">
+    <div class="row form-group">
+        <div class="col-md-4">
+            <div class="form-inline x-valid">
+                <label class="col-sm-2 col-form-label">
+                    自定义名称<span class="symbol required"></span>
+                </label>
+                <div class="col-sm-10">
+                    <input name="name" class="form-control input-full" placeholder="自定义名称" value="${itemData.name}" onblur="declareApplyExtensionCumstom.targetSave(this);" />
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-inline x-valid">
+                <label class="col-sm-2 col-form-label">
+                    附件
+                </label>
+                <div class="col-sm-10">
+                    <input id="other_Enclosure{id}" name="other_Enclosure{id}" type="file" multiple="false">
+                    <div id="_other_Enclosure{id}"></div>
+                </div>
+            </div>
+        </div>
+<div class="col-md-4">
+    <span class="input-group-btn"><input class="btn btn-warning btn-sm" type="button" value="X" onclick="declareApplyExtensionCumstom.cleanItemHTML(this)"></span>
+</div>
+</div>
 </script>
 
 
@@ -79,7 +107,7 @@
             }
         }) ;
         if (count != number){
-            toastr.success('自定义字段必须填写完整!       (假如不需要那么 多自定义字段那么请点击清除按钮)');
+            notifyInfo('自定义字段必须填写完整!       (假如不需要那么 多自定义字段那么请点击清除按钮)');
             return false;
         }
         return true;
@@ -104,11 +132,11 @@
                         callback(result.data);
                     }
                 } else {
-                    Alert("获取数据失败，失败原因:" + result.errmsg);
+                    AlertError("获取数据失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result.errmsg);
+                AlertError("调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     };
@@ -141,11 +169,11 @@
                         callback(result.data);
                     }
                 } else {
-                    Alert("获取数据失败，失败原因:" + result.errmsg);
+                    AlertError("获取数据失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result.errmsg);
+                AlertError("调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     };
@@ -163,11 +191,11 @@
                         callback(result.data);
                     }
                 } else {
-                    Alert("获取数据失败，失败原因:" + result.errmsg);
+                    AlertError("获取数据失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result.errmsg);
+                AlertError("调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     };
