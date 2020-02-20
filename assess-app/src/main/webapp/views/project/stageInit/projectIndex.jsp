@@ -264,7 +264,7 @@
             success: function (result) {
                 if (result.ret) {
                     //保存完后其他动作
-                    AlertSuccess("成功", "数据已成功保存到数据库",function(){
+                    AlertSuccess("成功", "提交数据成功",function(){
                         window.close();
                     });
                 } else {

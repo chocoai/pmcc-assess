@@ -655,7 +655,7 @@
                     }
                 });
                 if (uuids.length == 0) {
-                    Alert('有效合同为0');
+                    AlertError('有效合同为0');
                     return false;
                 }
                 $.ajax({
@@ -669,7 +669,7 @@
                         }
                     },
                     error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result);
+                        AlertError("调用服务端方法失败，失败原因:" + result);
                     }
                 })
             }
@@ -772,7 +772,7 @@
                 callback();
             }
         } else {
-            Alert("未选择单元");
+            AlertError("未选择单元");
         }
     }
 

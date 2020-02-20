@@ -156,11 +156,11 @@
                 if (result.ret) {
                     memberChangeObj.renderMemberChangeTable(result.data);
                 } else {
-                    Alert("获取项目成员列表失败，失败原因:" + result.errmsg, 1, null, null);
+                    AlertError("获取项目成员列表失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+                AlertError("调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     };
@@ -245,17 +245,17 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    Alert("提交数据成功!", 1, null, function () {
+                    AlertSuccess("成功", "提交数据成功",function(){
                         window.close();
                     });
                 }
                 else {
-                    Alert("保存数据失败，失败原因:" + result.errmsg, 1, null, null);
+                    AlertError("保存数据失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
                 Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+                AlertError("调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     }

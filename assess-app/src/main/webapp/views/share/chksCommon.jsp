@@ -306,7 +306,7 @@
         }
         if (!$.isNumeric(value)) {
             target.val('');
-            toastr.warning("请输入数字!");
+            notifyInfo("请输入数字!");
             return false;
         }
         var minScore = target.attr("data-minScore");
@@ -315,7 +315,7 @@
         minScore = Number(minScore);
         maxScore = Number(maxScore);
         if (value > maxScore || value < minScore) {
-            toastr.warning("请在考核范围内打分");
+            notifyInfo("请在考核范围内打分");
             target.val('');
         }
     };
@@ -334,11 +334,11 @@
                     }
                 } else {
                     console.log(result);
-                    Alert("失败，失败原因:" + result.errmsg);
+                    AlertError("失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result.errmsg);
+                AlertError("调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     };
@@ -356,11 +356,11 @@
                     }
                 } else {
                     console.log(result);
-                    Alert("失败，失败原因:" + result.errmsg);
+                    AlertError("失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result.errmsg);
+                AlertError("调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     };
@@ -377,11 +377,11 @@
                         callback(result.data);
                     }
                 } else {
-                    Alert("失败，失败原因:" + result.errmsg);
+                    AlertError("失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result.errmsg);
+                AlertError("调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     };
@@ -398,11 +398,11 @@
                         callback(result.data);
                     }
                 } else {
-                    Alert("失败，失败原因:" + result.errmsg);
+                    AlertError("失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result.errmsg);
+                AlertError("调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     };
@@ -415,14 +415,14 @@
             data: {id: id},
             success: function (result) {
                 if (result.ret) {
-                    toastr.warning("任务删除成功!");
+                    notifySuccess("成功", "任务删除成功");
                     window.close();
                 } else {
-                    Alert("失败，失败原因:" + result.errmsg);
+                    AlertError("失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result.errmsg);
+                AlertError("调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     };
@@ -479,11 +479,11 @@
                         callback(result.data);
                     }
                 } else {
-                    Alert("失败，失败原因:" + result.errmsg);
+                    AlertError("失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result.errmsg);
+                AlertError("调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     };
@@ -500,11 +500,11 @@
                         callback(result.data);
                     }
                 } else {
-                    Alert("失败，失败原因:" + result.errmsg);
+                    AlertError("失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result.errmsg);
+                AlertError("调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     };
@@ -521,11 +521,11 @@
                         callback(result.data);
                     }
                 } else {
-                    Alert("失败，失败原因:" + result.errmsg);
+                    AlertError("失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result.errmsg);
+                AlertError("调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     };
@@ -703,7 +703,7 @@
             }
         }
         if (filterData.length == 0) {
-            toastr.warning("考核需要填写全部数据!");
+            notifyWarning("考核需要填写全部数据!");
             return false;
         }
         var parentData = {
@@ -716,7 +716,7 @@
             chksScore: JSON.stringify(filterData),
             fomData: JSON.stringify(parentData)
         }, function (spotId) {
-            toastr.warning("考核成功!");
+            notifySuccess("考核成功!");
             box.modal("hide");
             var marsterId = box.find("input[name=marsterId]").val();
             assessmentCommonHandle.getAssessmentProjectPerformanceById(marsterId, function (tempData) {
@@ -795,7 +795,7 @@
             }
         }
         if (filterData.length == 0) {
-            toastr.warning("考核需要填写全部数据!");
+            notifyWarning("考核需要填写全部数据!");
             return false;
         }
         var parentData = {
@@ -807,7 +807,7 @@
             chksScore: JSON.stringify(filterData),
             fomData: JSON.stringify(parentData)
         }, function (data) {
-            toastr.warning("考核成功!");
+            notifySuccess("考核成功!");
             box.modal("hide");
             $("#assessmentTableList").bootstrapTable('refresh');
         });
@@ -917,7 +917,7 @@
         var filterData = [];
         assessmentCommonHandle.getChksSonData(target, data);
         if (data.length == 0) {
-            toastr.warning("请确定考核数据填写情况!或者咨询管理员配置考核数据模板!");
+            notifyWarning("请确定考核数据填写情况!或者咨询管理员配置考核数据模板!");
             return false;
         }
         for (var i = 0; i < data.length; i++) {
@@ -928,18 +928,18 @@
         //当填写 了说明，却又不填写考核分值 是不允许的
         if (remarks) {
             if (filterData.length == 0) {
-                Alert("当填写了考核综合说明,那么就必须对考核子项进行打分，或者不填考核说明。");
+                AlertError("当填写了考核综合说明,那么就必须对考核子项进行打分，或者不填考核说明。");
                 return false;
             }
 
         }
         if (filterData.length != 0) {
             if (data.length != filterData.length) {
-                Alert("请填写完整!");
+                AlertError("请填写完整!");
                 return false;
             }
             if (!remarks) {
-                Alert("请填写考核说明!");
+                AlertError("请填写考核说明!");
                 return false;
             }
         }

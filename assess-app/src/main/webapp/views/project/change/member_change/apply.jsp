@@ -192,11 +192,11 @@
                 if (result.ret) {
                     memberChangeObj.renderMemberChangeTable(result.data);
                 } else {
-                    Alert("获取项目成员列表失败，失败原因:" + result.errmsg, 1, null, null);
+                    AlertError("获取项目成员列表失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+                AlertError("调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     };
@@ -263,9 +263,9 @@
                         memberChangeObj.replaceMember(row);
                     },
                     'click #item_delete': function (e, value, row, index) {
-                        Alert(String.format("确定要移除成员【{0}】?", row.newMemberName), 2, null, function () {
+                        AlertConfirm("是否确认删除",String.format("确定要移除成员【{0}】?", row.newMemberName), function () {
                             memberChangeObj.removeMember(row);
-                        });
+                        })
                     }
                 }
             }]
@@ -316,15 +316,15 @@
                             if (result.ret) {
                                 memberChangeObj.getMemberList();
                             } else {
-                                Alert("添加成员失败，失败原因:" + result.errmsg, 1, null, null);
+                                AlertError("添加成员失败，失败原因:" + result.errmsg);
                             }
                         },
                         error: function (result) {
-                            Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+                            AlertError("调用服务端方法失败，失败原因:" + result.errmsg);
                         }
                     });
                 } else {
-                    Alert("未选择成员!");
+                    AlertError("未选择成员!");
                 }
             }
         });
@@ -347,12 +347,12 @@
                 if (result.ret) {
                     memberChangeObj.getMemberList();
                 } else {
-                    Alert("移除成员失败，失败原因:" + result.errmsg, 1, null, null);
+                    AlertError("移除成员失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
                 Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+                AlertError("调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     };
@@ -381,15 +381,15 @@
                             if (result.ret) {
                                 memberChangeObj.getMemberList();
                             } else {
-                                Alert("替换成员失败，失败原因:" + result.errmsg, 1, null, null);
+                                AlertError("替换成员失败，失败原因:" + result.errmsg);
                             }
                         },
                         error: function (result) {
-                            Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+                            AlertError("调用服务端方法失败，失败原因:" + result.errmsg);
                         }
                     });
                 } else {
-                    Alert("未选择成员!");
+                    AlertError("未选择成员!");
                 }
             }
         });
@@ -408,7 +408,7 @@
                     var selectUser = data.account;
                     memberChangeObj.replaceManageAccount(oldManagerAccount,selectUser);
                 } else {
-                    Alert("未选择成员!");
+                    AlertError("未选择成员!");
                 }
             }
         });
@@ -429,11 +429,11 @@
                 if (result.ret) {
                     memberChangeObj.getMemberList();
                 } else {
-                    Alert("替换项目经理失败，失败原因:" + result.errmsg, 1, null, null);
+                    AlertError("替换项目经理失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+                AlertError("调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     };
@@ -474,16 +474,16 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    Alert("变更申请提交成功。", 1, null, function () {
+                    AlertSuccess("成功", "变更申请提交成功",function(){
                         window.close();
                     });
                 } else {
-                    Alert("提交数据失败:" + result.errmsg);
+                    AlertError("提交数据失败:" + result.errmsg);
                 }
             },
             error: function (e) {
                 Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + e);
+                AlertError("调用服务端方法失败，失败原因:" + e);
             }
         });
     };
@@ -506,16 +506,16 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    Alert("提交成功。", 1, null, function () {
+                    AlertSuccess("成功", "提交数据成功",function(){
                         window.close();
                     });
                 } else {
-                    Alert("提交数据失败:" + result.errmsg);
+                    AlertError("提交数据失败:" + result.errmsg);
                 }
             },
             error: function (e) {
                 Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + e);
+                AlertError("调用服务端方法失败，失败原因:" + e);
             }
         });
     };
