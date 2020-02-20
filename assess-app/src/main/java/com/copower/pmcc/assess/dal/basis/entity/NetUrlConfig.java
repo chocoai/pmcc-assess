@@ -13,6 +13,8 @@ public class NetUrlConfig {
 
     private String url;
 
+    private String requestMethod;
+
     private String itemList;
 
     private String itemTitle;
@@ -20,6 +22,8 @@ public class NetUrlConfig {
     private String itemUrl;
 
     private String itemDate;
+
+    private Integer startPageIndex;
 
     private Integer pageCount;
 
@@ -83,6 +87,14 @@ public class NetUrlConfig {
         this.url = url == null ? null : url.trim();
     }
 
+    public String getRequestMethod() {
+        return requestMethod;
+    }
+
+    public void setRequestMethod(String requestMethod) {
+        this.requestMethod = requestMethod == null ? null : requestMethod.trim();
+    }
+
     public String getItemList() {
         return itemList;
     }
@@ -113,6 +125,14 @@ public class NetUrlConfig {
 
     public void setItemDate(String itemDate) {
         this.itemDate = itemDate == null ? null : itemDate.trim();
+    }
+
+    public Integer getStartPageIndex() {
+        return startPageIndex;
+    }
+
+    public void setStartPageIndex(Integer startPageIndex) {
+        this.startPageIndex = startPageIndex;
     }
 
     public Integer getPageCount() {

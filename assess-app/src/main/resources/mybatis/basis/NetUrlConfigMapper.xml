@@ -7,10 +7,12 @@
     <result column="domain_name" property="domainName" jdbcType="VARCHAR" />
     <result column="index_url" property="indexUrl" jdbcType="VARCHAR" />
     <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="request_method" property="requestMethod" jdbcType="VARCHAR" />
     <result column="item_list" property="itemList" jdbcType="VARCHAR" />
     <result column="item_title" property="itemTitle" jdbcType="VARCHAR" />
     <result column="item_url" property="itemUrl" jdbcType="VARCHAR" />
     <result column="item_date" property="itemDate" jdbcType="VARCHAR" />
+    <result column="start_page_index" property="startPageIndex" jdbcType="INTEGER" />
     <result column="page_count" property="pageCount" jdbcType="INTEGER" />
     <result column="page_size" property="pageSize" jdbcType="INTEGER" />
     <result column="province" property="province" jdbcType="VARCHAR" />
@@ -82,9 +84,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, name, domain_name, index_url, url, item_list, item_title, item_url, item_date, 
-    page_count, page_size, province, city, encoding, remark, bis_validate_date, bis_enable, 
-    creator, gmt_created, gmt_modified
+    id, name, domain_name, index_url, url, request_method, item_list, item_title, item_url, 
+    item_date, start_page_index, page_count, page_size, province, city, encoding, remark, 
+    bis_validate_date, bis_enable, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.NetUrlConfigExample" >
     select
@@ -121,19 +123,21 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_net_url_config (name, domain_name, index_url, 
-      url, item_list, item_title, 
-      item_url, item_date, page_count, 
-      page_size, province, city, 
-      encoding, remark, bis_validate_date, 
-      bis_enable, creator, gmt_created, 
-      gmt_modified)
+      url, request_method, item_list, 
+      item_title, item_url, item_date, 
+      start_page_index, page_count, page_size, 
+      province, city, encoding, 
+      remark, bis_validate_date, bis_enable, 
+      creator, gmt_created, gmt_modified
+      )
     values (#{name,jdbcType=VARCHAR}, #{domainName,jdbcType=VARCHAR}, #{indexUrl,jdbcType=VARCHAR}, 
-      #{url,jdbcType=VARCHAR}, #{itemList,jdbcType=VARCHAR}, #{itemTitle,jdbcType=VARCHAR}, 
-      #{itemUrl,jdbcType=VARCHAR}, #{itemDate,jdbcType=VARCHAR}, #{pageCount,jdbcType=INTEGER}, 
-      #{pageSize,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, 
-      #{encoding,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{bisValidateDate,jdbcType=BIT}, 
-      #{bisEnable,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{url,jdbcType=VARCHAR}, #{requestMethod,jdbcType=VARCHAR}, #{itemList,jdbcType=VARCHAR}, 
+      #{itemTitle,jdbcType=VARCHAR}, #{itemUrl,jdbcType=VARCHAR}, #{itemDate,jdbcType=VARCHAR}, 
+      #{startPageIndex,jdbcType=INTEGER}, #{pageCount,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}, 
+      #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{encoding,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{bisValidateDate,jdbcType=BIT}, #{bisEnable,jdbcType=BIT}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.NetUrlConfig" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -153,6 +157,9 @@
       <if test="url != null" >
         url,
       </if>
+      <if test="requestMethod != null" >
+        request_method,
+      </if>
       <if test="itemList != null" >
         item_list,
       </if>
@@ -164,6 +171,9 @@
       </if>
       <if test="itemDate != null" >
         item_date,
+      </if>
+      <if test="startPageIndex != null" >
+        start_page_index,
       </if>
       <if test="pageCount != null" >
         page_count,
@@ -212,6 +222,9 @@
       <if test="url != null" >
         #{url,jdbcType=VARCHAR},
       </if>
+      <if test="requestMethod != null" >
+        #{requestMethod,jdbcType=VARCHAR},
+      </if>
       <if test="itemList != null" >
         #{itemList,jdbcType=VARCHAR},
       </if>
@@ -223,6 +236,9 @@
       </if>
       <if test="itemDate != null" >
         #{itemDate,jdbcType=VARCHAR},
+      </if>
+      <if test="startPageIndex != null" >
+        #{startPageIndex,jdbcType=INTEGER},
       </if>
       <if test="pageCount != null" >
         #{pageCount,jdbcType=INTEGER},
@@ -283,6 +299,9 @@
       <if test="record.url != null" >
         url = #{record.url,jdbcType=VARCHAR},
       </if>
+      <if test="record.requestMethod != null" >
+        request_method = #{record.requestMethod,jdbcType=VARCHAR},
+      </if>
       <if test="record.itemList != null" >
         item_list = #{record.itemList,jdbcType=VARCHAR},
       </if>
@@ -294,6 +313,9 @@
       </if>
       <if test="record.itemDate != null" >
         item_date = #{record.itemDate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.startPageIndex != null" >
+        start_page_index = #{record.startPageIndex,jdbcType=INTEGER},
       </if>
       <if test="record.pageCount != null" >
         page_count = #{record.pageCount,jdbcType=INTEGER},
@@ -340,10 +362,12 @@
       domain_name = #{record.domainName,jdbcType=VARCHAR},
       index_url = #{record.indexUrl,jdbcType=VARCHAR},
       url = #{record.url,jdbcType=VARCHAR},
+      request_method = #{record.requestMethod,jdbcType=VARCHAR},
       item_list = #{record.itemList,jdbcType=VARCHAR},
       item_title = #{record.itemTitle,jdbcType=VARCHAR},
       item_url = #{record.itemUrl,jdbcType=VARCHAR},
       item_date = #{record.itemDate,jdbcType=VARCHAR},
+      start_page_index = #{record.startPageIndex,jdbcType=INTEGER},
       page_count = #{record.pageCount,jdbcType=INTEGER},
       page_size = #{record.pageSize,jdbcType=INTEGER},
       province = #{record.province,jdbcType=VARCHAR},
@@ -374,6 +398,9 @@
       <if test="url != null" >
         url = #{url,jdbcType=VARCHAR},
       </if>
+      <if test="requestMethod != null" >
+        request_method = #{requestMethod,jdbcType=VARCHAR},
+      </if>
       <if test="itemList != null" >
         item_list = #{itemList,jdbcType=VARCHAR},
       </if>
@@ -385,6 +412,9 @@
       </if>
       <if test="itemDate != null" >
         item_date = #{itemDate,jdbcType=VARCHAR},
+      </if>
+      <if test="startPageIndex != null" >
+        start_page_index = #{startPageIndex,jdbcType=INTEGER},
       </if>
       <if test="pageCount != null" >
         page_count = #{pageCount,jdbcType=INTEGER},
@@ -428,10 +458,12 @@
       domain_name = #{domainName,jdbcType=VARCHAR},
       index_url = #{indexUrl,jdbcType=VARCHAR},
       url = #{url,jdbcType=VARCHAR},
+      request_method = #{requestMethod,jdbcType=VARCHAR},
       item_list = #{itemList,jdbcType=VARCHAR},
       item_title = #{itemTitle,jdbcType=VARCHAR},
       item_url = #{itemUrl,jdbcType=VARCHAR},
       item_date = #{itemDate,jdbcType=VARCHAR},
+      start_page_index = #{startPageIndex,jdbcType=INTEGER},
       page_count = #{pageCount,jdbcType=INTEGER},
       page_size = #{pageSize,jdbcType=INTEGER},
       province = #{province,jdbcType=VARCHAR},
