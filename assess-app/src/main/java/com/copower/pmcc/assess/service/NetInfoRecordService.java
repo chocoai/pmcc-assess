@@ -7,6 +7,7 @@ import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordContentDao;
 import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordDao;
 import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecord;
 import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordContent;
+import com.copower.pmcc.assess.dal.basis.entity.NetUrlConfig;
 import com.copower.pmcc.assess.dto.input.net.JDSFDto;
 import com.copower.pmcc.assess.dto.input.net.JDZCDto;
 import com.copower.pmcc.assess.dto.input.net.TBSFDto;
@@ -77,9 +78,7 @@ public class NetInfoRecordService {
     @Autowired
     private GenerateCommonMethod generateCommonMethod;
     @Autowired
-    private ApplicationConstant applicationConstant;
-    @Autowired
-    private CommonService commonService;
+    private NetUrlConfigService netUrlConfigService;
 
 
     //抓取数据
@@ -94,22 +93,23 @@ public class NetInfoRecordService {
         this.getNetInfoFromZGBD(1);
         //来源公拍网
         this.getNetInfoFromGPW(1);
-        //公共资源交易平台-雅安
-        this.getNetInfoFromGGZYYA(1);
         //公共资源交易平台-成都(土地矿权)
         this.getNetInfoFromGGZYCD(1);
         //公共资源交易平台-成都（资产资源）
         this.getNetInfoFromGGZYCD2(1);
-        ////公共资源交易平台-凉山州（交易公告）
-        this.getNetInfoFromGGZYLSZ(1);
-        ////公共资源交易平台-攀枝花（交易信息）
-        this.getNetInfoFromGGZYPZH(1);
         ////土流网
         this.getNetInfoFromTDJY(1);
         //农村产权交易中心
         this.getNetInfoFromNCJY(1);
         //来源淘宝网
         this.getNetInfoFromTB(1);
+
+        netUrlConfigService.climbingAll();
+        netUrlConfigService.getBaZhongTradingCenter(1);
+        netUrlConfigService.getLuZhouTradingCenter(1);
+        netUrlConfigService.getZiGongTradingCenter(1);
+        netUrlConfigService.getYiBinTradingCenter(1,"land");
+        netUrlConfigService.getYiBinTradingCenter(1,"asset");
     }
 
     //来源淘宝网
@@ -747,75 +747,6 @@ public class NetInfoRecordService {
 
     }
 
-    //公共资源交易平台-雅安
-    public void getNetInfoFromGGZYYA(Integer days) {
-        try {
-            Date date = getInstanceDate(days);//得到前1天
-
-            String urlInfo = "http://www.yaggzy.org.cn/jyxx/tdsyq/cjqr";
-
-            Elements pageElements = getContent(urlInfo, ".mmggxlh", "");
-            Elements a = pageElements.get(0).select("a");
-            Integer page = a.size() - 2;
-            List<String> pageHrefs = Lists.newArrayList();
-            for (int i = 1; i <= page; i++) {
-                pageHrefs.add(String.format("%s%s", urlInfo, "?currentPage=" + i));
-            }
-
-            circ:
-            for (String pageHref : pageHrefs) {
-                Elements itemContent = getContent(pageHref, "tbody tr", "");
-                for (int i = 1; i < itemContent.size(); i++) {
-                    String publishtimeStr = itemContent.get(i).childNodes().get(7).childNodes().get(0).toString().trim();
-                    Date publishtime = DateUtils.parse(publishtimeStr);
-                    if (publishtime == null) continue;
-                    if (publishtime.compareTo(date) < 0) break circ;
-                    String detailHref = itemContent.get(i).childNodes().get(5).childNodes().get(1).attributes().get("href");
-                    Elements tdElements = getContent(String.format("%s%s", "http://www.yaggzy.org.cn", detailHref), "tr", "");
-                    Integer length = tdElements.get(1).select("td").size();
-                    //获取字段名称
-                    List<String> fieldNames = Lists.newArrayList();
-                    for (int k = 0; k < tdElements.size(); k++) {
-                        Elements select = tdElements.get(k).select("td");
-                        if (select.size() != tdElements.get(0).select("td").size()) continue;
-                        if (k == 0) {
-                            for (int f = 0; f < length; f++) {
-                                String fieldName = checkNull(select, f);
-                                fieldNames.add(fieldName);
-                            }
-                            continue;
-                        }
-                        List<String> fieldValues = Lists.newArrayList();
-                        for (int j = 0; j < length; j++) {
-                            String fieldValue = checkNull(select, j);
-                            fieldValues.add(publicService.delHtmlTags(fieldValue));
-                        }
-                        NetInfoRecord netInfoRecord = new NetInfoRecord();
-                        String title = itemContent.get(i).childNodes().get(3).childNodes().get(0).toString();
-                        netInfoRecord.setTitle(title);
-                        netInfoRecord.setSourceSiteUrl(String.format("%s%s", "http://www.yaggzy.org.cn", detailHref));
-                        netInfoRecord.setProvince("四川");
-                        netInfoRecord.setCity("雅安");
-                        netInfoRecord.setSourceSiteName("公共资源交易平台-雅安");
-                        netInfoRecord.setBeginTime(publishtime);
-                        netInfoRecord.setEndTime(publishtime);
-                        StringBuilder content = new StringBuilder();
-                        for (int m = 0; m < fieldNames.size(); m++) {
-                            content.append(fieldNames.get(m) + "：" + fieldValues.get(m) + "；");
-                        }
-                        netInfoRecord.setContent(content.toString());
-                        netInfoRecordDao.addInfo(netInfoRecord);
-                    }
-                }
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
-
-
     //公共资源交易平台-成都(土地矿权)
     public void getNetInfoFromGGZYCD(Integer days) {
         try {
@@ -1026,175 +957,6 @@ public class NetInfoRecordService {
             connection.disconnect(); // 5. 断开连接
             // 处理结果
             return sb.toString();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    //公共资源交易平台-凉山州（交易公告）
-    public void getNetInfoFromGGZYLSZ(Integer days) {
-        try {
-            Date date = getInstanceDate(days);//得到前1天
-            String urlInfo = "http://ggzyjy.lsz.gov.cn/TPFront/jyxx/005004/005004001/";
-            //取得页数
-            Elements pageElements = getContent(urlInfo, ".huifont", "");
-            String pageStr = pageElements.get(0).childNodes().get(0).toString();
-            List<String> strings = Arrays.asList(pageStr.split("/"));
-            Integer pageValue = Integer.valueOf(strings.get(1));
-
-            circ:
-            for (int i = 1; i <= pageValue; i++) {
-                //列表信息
-                Elements elements = getContent("http://ggzyjy.lsz.gov.cn/TPFront/jyxx/005004/005004001/?Paging=" + i, ".morecontent li", "GBK");
-                for (Element item : elements) {
-                    Elements publishtimeElement = item.select(".ewb-date");
-                    String publishtimeStr = publishtimeElement.get(0).childNodes().get(0).toString().trim();
-                    Date publishtime = DateUtils.parse(publishtimeStr);
-                    if (publishtime == null) continue;
-                    if (publishtime.compareTo(date) < 0) break circ;
-
-                    String link = item.select("a").get(0).attributes().get("href");
-                    String titleStr = item.select("a").get(0).childNodes().get(0).toString();
-
-                    Elements tableElementHrefs = getContent(String.format("%s%s", "http://ggzyjy.lsz.gov.cn", link), "#mainContent", "GBK");
-                    if (tableElementHrefs.size() <= 0) {
-                        continue;
-                    }
-                    String content = publicService.delHtmlTags(tableElementHrefs.get(0).text());
-                    if (content.length() > 500) {
-                        content = content.substring(0, 500);
-                    }
-                    NetInfoRecord netInfoRecord = new NetInfoRecord();
-                    netInfoRecord.setProvince("四川");
-                    netInfoRecord.setCity("凉山");
-                    netInfoRecord.setType("交易公告");
-                    netInfoRecord.setSourceSiteUrl(String.format("%s%s", "http://ggzyjy.lsz.gov.cn", link));
-                    netInfoRecord.setBeginTime(publishtime);
-                    netInfoRecord.setEndTime(publishtime);
-                    netInfoRecord.setTitle(titleStr.replaceAll("\n", ""));
-                    netInfoRecord.setSourceSiteName("公共资源交易平台-凉山州");
-                    netInfoRecord.setContent(String.format("%s%s", content, "..."));
-                    netInfoRecordDao.addInfo(netInfoRecord);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    //公共资源交易平台-攀枝花（交易信息）
-    public void getNetInfoFromGGZYPZH(Integer days) {
-        try {
-            Date date = getInstanceDate(days);//得到前1天
-            String urlInfo = "http://ggzy.panzhihua.gov.cn/jyxx/tdsyq/cjqr";
-            //取得页数
-            Elements pageElements = getContent(urlInfo, ".mmggxlh a", "");
-            String pageStr = pageElements.get(pageElements.size() - 2).childNodes().get(0).toString();
-            Integer pageValue = Integer.valueOf(pageStr);
-
-            circ:
-            for (int i = 1; i <= pageValue; i++) {
-                //列表信息
-                Elements elements = getGGZYPZHHtml("#p2 tr", String.valueOf(i));
-                for (Element item : elements) {
-                    Elements tbElements = item.select("td");
-                    if (tbElements.size() == 0 || tbElements == null) continue;
-                    String publishTimeStr = tbElements.get(3).childNodes().get(0).toString().trim();
-                    Date publishTime = DateUtils.parse(publishTimeStr);
-                    if (publishTime == null) continue;
-                    if (publishTime.compareTo(date) < 0) break circ;
-                    String titleStr = tbElements.get(1).childNodes().get(0).toString();
-                    String link = item.select("a").get(0).attributes().get("href");
-
-                    Elements tableElementHrefs = getContent(String.format("%s%s", "http://ggzy.panzhihua.gov.cn", link), ".content_all_nr.editor_content", "");
-                    if (tableElementHrefs.size() <= 0) {
-                        continue;
-                    }
-                    String content = null;
-                    content = publicService.delHtmlTags(tableElementHrefs.get(0).text());
-                    if (content.length() > 500) {
-                        content = content.substring(0, 500);
-                    }
-                    NetInfoRecord netInfoRecord = new NetInfoRecord();
-                    netInfoRecord.setProvince("四川");
-                    netInfoRecord.setCity("攀枝花");
-                    netInfoRecord.setType("交易信息");
-                    netInfoRecord.setSourceSiteUrl(String.format("%s%s", "http://ggzy.panzhihua.gov.cn", link));
-                    netInfoRecord.setBeginTime(publishTime);
-                    netInfoRecord.setEndTime(publishTime);
-                    netInfoRecord.setTitle(titleStr.replaceAll("\n", ""));
-                    netInfoRecord.setSourceSiteName("公共资源交易平台-攀枝花");
-                    netInfoRecord.setContent(String.format("%s%s", content, "..."));
-                    netInfoRecordDao.addInfo(netInfoRecord);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    public Elements getGGZYPZHHtml(String element, String pageValue) {
-        try {
-            // 1. 获取访问地址URL
-            URL url = new URL("http://ggzy.panzhihua.gov.cn/jyxx/tdsyq/cjqr");
-            // 2. 创建HttpURLConnection对象
-            HttpURLConnection connection = (HttpURLConnection) url
-                    .openConnection();
-            /* 3. 设置请求参数等 */
-            // 请求方式
-            connection.setRequestMethod("POST");
-            // 超时时间
-            //connection.setConnectTimeout(3000);
-            // 设置是否输出
-            connection.setDoOutput(true);
-            // 设置是否读入
-            connection.setDoInput(true);
-            // 设置是否使用缓存
-            connection.setUseCaches(false);
-            // 设置此 HttpURLConnection 实例是否应该自动执行 HTTP 重定向
-            connection.setInstanceFollowRedirects(true);
-            // 设置使用标准编码格式编码参数的名-值对
-            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            connection.setRequestProperty("Host", "ggzy.panzhihua.gov.cn");
-            connection.setRequestProperty("Origin", "http://ggzy.panzhihua.gov.cn");
-            connection.setRequestProperty("Referer", "http://ggzy.panzhihua.gov.cn/jyxx/tdsyq/crgg");
-            connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36");
-            // 连接
-            connection.connect();
-            /* 4. 处理输入输出 */
-            // 写入参数到请求中
-            String params = "currentPage=" + pageValue + "&area=004&secondArea=000";
-
-            OutputStream out = connection.getOutputStream();
-            out.write(params.getBytes());
-            out.flush();
-            out.close();
-            // 从连接中读取响应信息
-            StringBuilder sb = new StringBuilder();
-            int code = connection.getResponseCode();
-            if (code == 200) {
-                BufferedReader reader = new BufferedReader(
-                        new InputStreamReader(connection.getInputStream(), "utf-8"));
-                String line;
-
-                while ((line = reader.readLine()) != null) {
-                    sb.append(line);
-                    ;
-                }
-                reader.close();
-            }
-            // 5. 断开连接
-            connection.disconnect();
-
-            // 处理结果
-            org.jsoup.nodes.Document doc = Jsoup.parse(sb.toString());
-            Elements elements = doc.select(element);
-            return elements;
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {

@@ -9,6 +9,7 @@ import com.copower.pmcc.assess.dal.basis.dao.net.NetUrlConfigDao;
 import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecord;
 import com.copower.pmcc.assess.dal.basis.entity.NetUrlConfig;
 import com.copower.pmcc.erp.common.utils.DateUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -26,6 +27,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.MessageFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by wangpc on 2020/2/19.
@@ -41,7 +43,9 @@ public class NetUrlConfigService {
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
     public void climbingAll() {
-
+        List<NetUrlConfig> configList = netUrlConfigDao.getEnableNetUrlConfigList();
+        if (CollectionUtils.isNotEmpty(configList))
+            configList.forEach(o -> climbingDataByConfig(o));
     }
 
     public void climbingDataById(Integer id) {
@@ -60,10 +64,11 @@ public class NetUrlConfigService {
             for (int i = config.getStartPageIndex(); i <= pages; i++) {
                 try {
                     Elements elements = null;
+                    Integer pageIndex = i;
                     if (config.getPageSize() != null && config.getPageSize() > 0) {
-                        i = i * config.getPageSize();
+                        pageIndex = i * config.getPageSize();
                     }
-                    String urlInfo = config.getUrl().replace("{pages}", String.valueOf(i));
+                    String urlInfo = config.getUrl().replace("{pages}", String.valueOf(pageIndex));
                     if (i == config.getStartPageIndex() && StringUtils.isNotBlank(config.getIndexUrl()))
                         urlInfo = config.getIndexUrl();
                     elements = netInfoRecordService.getContent(urlInfo, config.getItemList(), config.getEncoding(), config.getRequestMethod());
@@ -143,7 +148,7 @@ public class NetUrlConfigService {
             JSONArray jsonArray = jsonObject.getJSONObject("data").getJSONArray("content");
             for (Object o : jsonArray) {
                 JSONObject object = (JSONObject) o;
-                String url = "http://117.172.156.43:82/pub/BZ_indexContent_" + object.getString("id")+".html";
+                String url = "http://117.172.156.43:82/pub/BZ_indexContent_" + object.getString("id") + ".html";
                 String date = object.getString("mckeys");
                 String title = object.getString("mctype");
                 NetInfoRecord netInfoRecord = new NetInfoRecord();
@@ -179,8 +184,8 @@ public class NetUrlConfigService {
                 JSONObject object = (JSONObject) o;
                 String date = object.getString("infodate");
                 String title = object.getString("title");
-                Date publishDate=DateUtils.convertDate(date);
-                String url =String.format("https://www.lzsggzy.com/tdkq/006001/006001004/%s/%s.html",DateUtils.format(publishDate,DateUtils.DATE_SHORT_PATTERN),object.getString("infoid"));
+                Date publishDate = DateUtils.convertDate(date);
+                String url = String.format("https://www.lzsggzy.com/tdkq/006001/006001004/%s/%s.html", DateUtils.format(publishDate, DateUtils.DATE_SHORT_PATTERN), object.getString("infoid"));
                 NetInfoRecord netInfoRecord = new NetInfoRecord();
                 netInfoRecord.setProvince("四川");
                 netInfoRecord.setCity("泸州");
@@ -214,8 +219,8 @@ public class NetUrlConfigService {
                 JSONObject object = (JSONObject) o;
                 String date = object.getString("infodate");
                 String title = object.getString("title");
-                Date publishDate=DateUtils.convertDate(date);
-                String url =String.format("http://jyxxw.zg.gov.cn//tiaozhuan.html?infoid=%s&amp;categorynum=%s",object.getString("infoid"),object.getString("categorynum"));
+                Date publishDate = DateUtils.convertDate(date);
+                String url = String.format("http://jyxxw.zg.gov.cn//tiaozhuan.html?infoid=%s&amp;categorynum=%s", object.getString("infoid"), object.getString("categorynum"));
                 NetInfoRecord netInfoRecord = new NetInfoRecord();
                 netInfoRecord.setProvince("四川");
                 netInfoRecord.setCity("自贡");
@@ -236,17 +241,17 @@ public class NetUrlConfigService {
      *
      * @param pageCount
      */
-    public void getYiBinTradingCenter(Integer pageCount,String type) {
+    public void getYiBinTradingCenter(Integer pageCount, String type) {
         String baseUrl = "https://ggzy.yibin.gov.cn/TrueLoreAjax/TrueLore.Web.WebUI.AjaxHelper,TrueLore.Web.WebUI.ashx";
-        String postContent="[\"TrueLore.Web.WebUI.WebAjaxService\",\"GetPageTDJYXTXXFB\",[{pages},15,\"-1\",\"3\",\"400\",\"XMMC\",\"\",\"Fbqssj DESC\"],null,null]1582195024720";
-        if("asset".equals(type)){
-            postContent="[\"TrueLore.Web.WebUI.WebAjaxService\",\"GetPageGYJYXTXXFB\",[{pages},15,\"-1\",\"4\",\"450\",\"XMMC\",\"\",\"Fbqssj DESC\"],null,null]1582204091607";
+        String postContent = "[\"TrueLore.Web.WebUI.WebAjaxService\",\"GetPageTDJYXTXXFB\",[{pages},15,\"-1\",\"3\",\"400\",\"XMMC\",\"\",\"Fbqssj DESC\"],null,null]1582195024720";
+        if ("asset".equals(type)) {
+            postContent = "[\"TrueLore.Web.WebUI.WebAjaxService\",\"GetPageGYJYXTXXFB\",[{pages},15,\"-1\",\"4\",\"450\",\"XMMC\",\"\",\"Fbqssj DESC\"],null,null]1582204091607";
         }
         for (Integer i = 0; i < pageCount; i++) {
 
-            String currPostBody = postContent.replace("{pages}", String.valueOf(i*15));
+            String currPostBody = postContent.replace("{pages}", String.valueOf(i * 15));
             try {
-                SSLContext sslcontext = SSLContext.getInstance("SSL","SunJSSE");
+                SSLContext sslcontext = SSLContext.getInstance("SSL", "SunJSSE");
                 sslcontext.init(null, new TrustManager[]{new MyX509TrustManager()}, new java.security.SecureRandom());
                 HostnameVerifier ignoreHostnameVerifier = new HostnameVerifier() {
                     public boolean verify(String s, SSLSession sslsession) {
@@ -266,8 +271,8 @@ public class NetUrlConfigService {
                 httpUrl.setReadTimeout(6000);
                 httpUrl.setUseCaches(false);
                 httpUrl.setDoOutput(true);
-                httpUrl.addRequestProperty("Content-Type","text/plain; charset=UTF-8");
-                httpUrl.addRequestProperty("Ajax-method","AjaxMethodFactory");
+                httpUrl.addRequestProperty("Content-Type", "text/plain; charset=UTF-8");
+                httpUrl.addRequestProperty("Ajax-method", "AjaxMethodFactory");
                 httpUrl.setRequestMethod("POST");
                 DataOutputStream out = new DataOutputStream(httpUrl.getOutputStream());
                 out.writeBytes(currPostBody);
@@ -283,20 +288,20 @@ public class NetUrlConfigService {
                 }
                 is.close();
                 br.close();
-                String json=sb.toString();
+                String json = sb.toString();
                 if (StringUtils.isBlank(json)) continue;
                 JSONArray jsonArray = JSON.parseArray(json);
                 for (Object o : jsonArray) {
                     JSONObject object = (JSONObject) o;
                     String date = object.getString("Fbqssj");
                     String title = object.getString("GCMC");
-                    Date publishDate=DateUtils.convertDate(date);
-                    String siteUrl =String.format("https://ggzy.yibin.gov.cn/TD/WSJM/TDJYJGGSView.aspx?type=510&subtype=%s&ID=%s",object.getString("XXLB"),object.getString("ID"));
+                    Date publishDate = DateUtils.convertDate(date);
+                    String siteUrl = String.format("https://ggzy.yibin.gov.cn/TD/WSJM/TDJYJGGSView.aspx?type=510&subtype=%s&ID=%s", object.getString("XXLB"), object.getString("ID"));
                     NetInfoRecord netInfoRecord = new NetInfoRecord();
                     netInfoRecord.setProvince("四川");
                     netInfoRecord.setCity("宜宾");
                     netInfoRecord.setSourceSiteName("宜宾公共资源交易中心");
-                    netInfoRecord.setType("asset".equals(type)?"国有资产":"土地矿权");
+                    netInfoRecord.setType("asset".equals(type) ? "国有资产" : "土地矿权");
                     netInfoRecord.setSourceSiteUrl(siteUrl);
                     netInfoRecord.setTitle(StringUtils.trim(title));
                     netInfoRecord.setContent(netInfoRecord.getTitle());
