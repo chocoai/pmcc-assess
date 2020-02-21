@@ -10,15 +10,13 @@
 
 </div>
 
-<script src='/assets/js/atlantis/erp-head.js?v=${assessVersion}'></script>
 <script src='/assets/js/atlantis/erp-head.js'></script>
 <script type="text/javascript">
     var viewJson = '${baseViewDtoJson}';
-    var sysRemindUnReadCount = '${sysRemindUnReadCount}';
-    var sysRemindUnRead = '${sysRemindUnRead}';
-    $("#pmcc_head").html(PMCC_MAIN.head(viewJson, sysRemindUnReadCount, sysRemindUnRead));
+    var systemInfoJson = '${systemInfoJson}';
+    $("#pmcc_head").html(PMCC_MAIN.head(viewJson,systemInfoJson));
     $("#mainHeadProcessMap").click(function (e) {
         e.stopPropagation();
     });
-
 </script>
+

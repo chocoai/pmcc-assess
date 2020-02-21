@@ -11,15 +11,15 @@
 <%@ taglib prefix="el" uri="assess.pmcc.com/el-common" %>
 <title>${thisTitle}</title>
 <meta charset="utf-8"/>
-<!--[if IE]>
-<meta http-equiv='X-UA-Compatible' content="IE=edge,IE=9,IE=8,chrome=1"/><![endif]-->
 <meta name="viewport"
       content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta content="" name="description"/>
 <meta content="" name="author"/>
-<script src="/assets/js/atlantis/pmcc-css.js?v=${assessVersion}"></script>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport'/>
+<script src="/assets/js/atlantis/pmcc-css.js?v=1.1"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/jquery-ui/jquery-ui.css">
 <script src='${pageContext.request.contextPath}/js/assess.key.js?v=${assessVersion}'></script>
