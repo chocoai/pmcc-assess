@@ -6,54 +6,65 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<div class="x_panel">
-    <div class="x_title collapse-link" onclick="loadReturnRecordList();">
-        <ul class="nav navbar-right panel_toolbox">
-            <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-        </ul>
-        <h3> ${projectPlanDetails.projectPhaseName}-工作内容</h3>
-        <div class="clearfix"></div>
-    </div>
-    <div class="x_content collapse">
-        <div class="form-horizontal">
-            <div class="form-group">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                    开始时间
-                </label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <label class="form-control"><fmt:formatDate value="${projectPlanDetails.planStartDate}"
-                                                                pattern="yyyy-MM-dd"/></label>
+<div class="col-md-12">
+    <div class="card full-height">
+        <div class="card-header collapse-link" onclick="loadReturnRecordList();">
+            <div class="card-head-row">
+                <div class="card-title">
+                    ${projectPlanDetails.projectPhaseName}-工作内容
                 </div>
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                    结束时间
-                </label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <label class="form-control"><fmt:formatDate value="${projectPlanDetails.planEndDate}"
-                                                                pattern="yyyy-MM-dd"/> </label>
-                </div>
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                    计划工时(小时)
-                </label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <label class="form-control">${projectPlanDetails.planHours}</label>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                    工作程序模板
-                </label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <div id="_projectPhaseWorkTemp"></div>
+                <div class="card-tools">
+                    <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                            class="fa fa-angle-down"></span>
+                    </button>
                 </div>
             </div>
         </div>
-        <div class="x_title">
-            <h4>
-                重启记录
-            </h4>
+        <div class="card-body ">
+            <div class="form-horizontal">
+                <div class="row form-group">
+                    <div class="col-md-12">
+                        <div class="form-inline">
+                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                开始时间
+                            </label>
+                            <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                <label class="form-control input-full"><fmt:formatDate value="${projectPlanDetails.planStartDate}"
+                                                                            pattern="yyyy-MM-dd"/></label>
+                            </div>
+                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                结束时间
+                            </label>
+                            <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                <label class="form-control input-full"><fmt:formatDate value="${projectPlanDetails.planEndDate}"
+                                                                            pattern="yyyy-MM-dd"/> </label>
+                            </div>
+                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                计划工时(小时)
+                            </label>
+                            <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                <label class="form-control input-full">${projectPlanDetails.planHours}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-12">
+                        <div class="form-inline">
+                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                工作程序模板
+                            </label>
+                            <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                <div id="_projectPhaseWorkTemp"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <table class="table table-bordered" id="tb_returnRecordList">
+                </table>
+            </div>
         </div>
-        <table class="table table-bordered" id="tb_returnRecordList">
-        </table>
+
     </div>
 </div>
 <script type="application/javascript">
@@ -162,8 +173,8 @@
         data["formData"] = formData;
         data = $.extend({}, data, approvalData);
 
-        if ("${bisCheck}"=="1") {
-            if (!vaildChksData()){
+        if ("${bisCheck}" == "1") {
+            if (!vaildChksData()) {
                 return false;
             }
             var itemObj = getChksData();

@@ -13,316 +13,335 @@
     <link rel="stylesheet"
           href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/panel.css">
 </head>
-<body class="nav-md footer_fixed">
-<div class="container body">
-    <div class="main_container">
-        <div class="right_col" role="main" style="margin-left: 0">
+<body>
+<div class="wrapper">
+    <div class="main-panel" style="width: 100%">
+        <div class="content" style="margin-top: 0px;">
             <%@include file="/views/share/form_head.jsp" %>
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
 
-            <!-- 引入评估方案编制模块 -->
-            <div class="x_panel">
-                <div class="x_title collapse-link">
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
-                    </ul>
-                    <h3>权证信息</h3>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="x_content ${empty areaGroups?'':'collapse'}">
-                    <form id="declare_record_form" class="form-horizontal">
-                        <div class="form-group">
-                            <label class="col-sm-1 control-label">
-                                权证号
-                            </label>
-                            <div class="col-sm-2">
-                                <input type="text" data-rule-maxlength="50" placeholder="权证号" name="name"
-                                       class="form-control">
+            <div class="col-md-12">
+                <div class="card full-height">
+                    <div class="card-header collapse-link">
+                        <div class="card-head-row">
+                            <div class="card-title">
+                                权证信息
                             </div>
-                            <label class="col-sm-1 control-label">
-                                坐落
-                            </label>
-                            <div class="col-sm-2">
-                                <input type="text" data-rule-maxlength="50" placeholder="坐落" name="seat"
-                                       class="form-control">
-                            </div>
-                            <label class="col-sm-1 control-label">
-                                是否上报告
-                            </label>
-                            <div class="col-sm-2">
-                                <select class="form-control" name="bisPartIn">
-                                    <option value="">-请选择-</option>
-                                    <option value="1">是</option>
-                                    <option value="0">否</option>
-                                </select>
-                            </div>
-                            <div class="col-sm-3">
-                                <button type="button" class="btn btn-primary"
-                                        onclick="programme.loadDeclareRecordList();">
-                                    查询
-                                </button>
-                                <button type="button" class="btn btn-primary"
-                                        onclick="programme.generatorAreaGroup();">
-                                    生成方案数据
+                            <div class="card-tools">
+                                <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                                        class="fa fa-angle-down"></span>
                                 </button>
                             </div>
                         </div>
-                    </form>
-                    <table class="table table-bordered" id="tb_declare_record_list"></table>
+                    </div>
+                    <div class="card-body" style="display: ${empty areaGroups?'block':'none'}">
+                        <div class="form-horizontal">
+                            <input type="hidden" id="projectId" name="id" value="${projectInfo.id}">
+                            <div class="row form-group">
+                                <div class="col-md-12">
+                                    <div class="form-inline">
+                                        <label class="col-sm-1 control-label">
+                                            权证号
+                                        </label>
+                                        <div class="col-sm-2">
+                                            <input type="text" data-rule-maxlength="50" placeholder="权证号" name="name"
+                                                   class="form-control input-full">
+                                        </div>
+                                        <label class="col-sm-1 control-label">
+                                            坐落
+                                        </label>
+                                        <div class="col-sm-2">
+                                            <input type="text" data-rule-maxlength="50" placeholder="坐落" name="seat"
+                                                   class="form-control input-full">
+                                        </div>
+                                        <label class="col-sm-1 control-label">
+                                            是否上报告
+                                        </label>
+                                        <div class="col-sm-2">
+                                            <select class="form-control input-full" name="bisPartIn">
+                                                <option value="">-请选择-</option>
+                                                <option value="1">是</option>
+                                                <option value="0">否</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <button type="button" class="btn btn-primary"
+                                                    onclick="programme.loadDeclareRecordList();">
+                                                查询
+                                            </button>
+                                            <button type="button" class="btn btn-primary"
+                                                    onclick="programme.generatorAreaGroup();">
+                                                生成方案数据
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <table class="table table-bordered" id="tb_declare_record_list"></table>
+                        </div>
+                    </div>
                 </div>
             </div>
-
             <c:forEach items="${areaGroups}" var="item">
-                <div class="x_panel area_panel">
-                    <c:if test="${fn:length(areaGroups)<3}">
-                        <script type="text/javascript">
-                            $(function () {
-                                programme.loadJudgeObjectList($('[name=areaGroupId][value=${item.id}]'));
-                            })
-                        </script>
-                    </c:if>
-                    <input type="hidden" name="areaGroupId" value="${item.id}">
-                    <div class="x_title collapse-link" onclick="programme.loadJudgeObjectList(this);">
-                        <ul class="nav navbar-right panel_toolbox">
-                            <li><a class="collapse-link"><i
-                                    class="fa fa-chevron-${fn:length(areaGroups)<3?'down':'up'}"></i></a></li>
-                        </ul>
-                        <h3>
-                            <label>${item.areaName}</label>
-                            <small>
-                                <c:if test="${item.bisMerge eq true}">
-                                    <button class="btn btn-xs btn-warning btn-area-merge-cancel">
-                                        取消合并
-                                    </button>
-                                </c:if>
-                                <c:if test="${item.bisMerge ne true}">
-                                    <button class="btn btn-xs btn-warning btn-area-merge">
-                                        合并
-                                    </button>
-                                    <c:if test="${item.bisSplit ne true}">
-                                        <button class="btn btn-xs btn-success btn-area-split">
-                                            拆分
+                <div class="col-md-12">
+                    <div class="card area_panel">
+                        <c:if test="${fn:length(areaGroups)<3}">
+                            <script type="text/javascript">
+                                $(function () {
+                                    programme.loadJudgeObjectList($('[name=areaGroupId][value=${item.id}]'));
+                                })
+                            </script>
+                        </c:if>
+                        <input type="hidden" name="areaGroupId" value="${item.id}">
+                        <div class="card-header  collapse-link" onclick="programme.loadJudgeObjectList(this);">
+                            <div class="card-head-row">
+                                <div class="card-title">
+                                        ${item.areaName}
+                                    <c:if test="${item.bisMerge eq true}">
+                                        <button class="btn btn-xs btn-warning btn-area-merge-cancel">
+                                            取消合并
                                         </button>
                                     </c:if>
-                                </c:if>
-                                <c:if test="${item.bisSplit eq true}">
-                                    <button class="btn btn-xs btn-warning btn-area-split-remove">
-                                        移除
-                                    </button>
-                                </c:if>
-                            </small>
-                        </h3>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div class="x_content ${fn:length(areaGroups)<3?'':'collapse'} ">
-                        <form id="frmJudgeObject${item.id}" class="form-horizontal">
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
-                                        委托目的<span class="symbol required"></span>
-                                    </label>
-                                    <div class="col-sm-2">
-                                        <c:if test="${!empty item.entrustAimType}">
-                                            <script>
-                                                $(document).ready(function () {
-                                                    var frmJudgeObjectA = $("#frmJudgeObject${item.id}");
-                                                    programme.changeEntrustmentPurpose(frmJudgeObjectA.find("select[name='entrustmentPurpose']"), '${item.entrustAimType}');
-                                                });
-                                            </script>
+                                    <c:if test="${item.bisMerge ne true}">
+                                        <button class="btn btn-xs btn-warning btn-area-merge">
+                                            合并
+                                        </button>
+                                        <c:if test="${item.bisSplit ne true}">
+                                            <button class="btn btn-xs btn-success btn-area-split">
+                                                拆分
+                                            </button>
                                         </c:if>
-                                        <select name="entrustmentPurpose" class="form-control" required="required"
-                                                onchange="programme.changeEntrustmentPurpose(this,null);">
-                                            <option value="">-请选择-</option>
-                                            <c:forEach items="${entrustmentPurposes}" var="entrustmentPurpose">
-                                                <c:choose>
-                                                    <c:when test="${entrustmentPurpose.id eq item.entrustPurpose}">
-                                                        <option value="${entrustmentPurpose.id}"
-                                                                selected="selected">${entrustmentPurpose.name}</option>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <c:if test="${entrustmentPurpose.id eq projectInfo.entrustPurpose}">
-                                                            <option value="${entrustmentPurpose.id}"
-                                                                    selected="selected">${entrustmentPurpose.name}</option>
-                                                        </c:if>
-                                                        <c:if test="${entrustmentPurpose.id ne projectInfo.entrustPurpose}">
-                                                            <option value="${entrustmentPurpose.id}">${entrustmentPurpose.name}</option>
-                                                        </c:if>
-                                                    </c:otherwise>
-                                                </c:choose>
-                                            </c:forEach>
-                                        </select>
-                                    </div>
+                                    </c:if>
+                                    <c:if test="${item.bisSplit eq true}">
+                                        <button class="btn btn-xs btn-warning btn-area-split-remove">
+                                            移除
+                                        </button>
+                                    </c:if>
                                 </div>
-
-                                <div class="x-valid">
-                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">委托目的类别</label>
-                                    <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                        <select name="entrustAimType" class="form-control"
-                                                onchange="programme.changeEntrustAimType(this);">
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
-                                        委托目的描述<span class="symbol required"></span>
-                                    </label>
-                                    <div class="col-sm-2">
-                                        <input type="text" name="remarkEntrustPurpose" required="required"
-                                               placeholder="委托目的描述" class="form-control"
-                                               value="${empty item.remarkEntrustPurpose?projectInfo.remarkEntrustPurpose:item.remarkEntrustPurpose}">
-                                    </div>
-                                </div>
-
-                                <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
-                                        财产范围<span class="symbol required"></span>
-                                    </label>
-                                    <div class="col-sm-2">
-                                        <select class="form-control" name="propertyScope" required></select>
-                                    </div>
+                                <div class="card-tools">
+                                    <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                                            class="fa fa-angle-${fn:length(areaGroups)<3?'down':'up'}"></span>
+                                    </button>
                                 </div>
                             </div>
+                        </div>
+                        <div class="card-body " style="display: ${fn:length(areaGroups)<3?'block':'none'}">
+                            <form id="frmJudgeObject${item.id}" class="form-horizontal">
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline">
+                                            <label class="col-sm-1 control-label">
+                                                委托目的<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-2 x-valid">
+                                                <c:if test="${!empty item.entrustAimType}">
+                                                    <script>
+                                                        $(document).ready(function () {
+                                                            var frmJudgeObjectA = $("#frmJudgeObject${item.id}");
+                                                            programme.changeEntrustmentPurpose(frmJudgeObjectA.find("select[name='entrustmentPurpose']"), '${item.entrustAimType}');
+                                                        });
+                                                    </script>
+                                                </c:if>
+                                                <select name="entrustmentPurpose" class="form-control input-full"
+                                                        required="required"
+                                                        onchange="programme.changeEntrustmentPurpose(this,null);">
+                                                    <option value="">-请选择-</option>
+                                                    <c:forEach items="${entrustmentPurposes}" var="entrustmentPurpose">
+                                                        <c:choose>
+                                                            <c:when test="${entrustmentPurpose.id eq item.entrustPurpose}">
+                                                                <option value="${entrustmentPurpose.id}"
+                                                                        selected="selected">${entrustmentPurpose.name}</option>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <c:if test="${entrustmentPurpose.id eq projectInfo.entrustPurpose}">
+                                                                    <option value="${entrustmentPurpose.id}"
+                                                                            selected="selected">${entrustmentPurpose.name}</option>
+                                                                </c:if>
+                                                                <c:if test="${entrustmentPurpose.id ne projectInfo.entrustPurpose}">
+                                                                    <option value="${entrustmentPurpose.id}">${entrustmentPurpose.name}</option>
+                                                                </c:if>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
+                                            <label class="col-sm-1 control-label">委托目的类别</label>
+                                            <div class="x-valid col-sm-2 ">
+                                                <select name="entrustAimType" class="form-control input-full"
+                                                        onchange="programme.changeEntrustAimType(this);">
+                                                </select>
+                                            </div>
+                                            <label class="col-sm-1 control-label">
+                                                委托目的描述<span class="symbol required"></span>
+                                            </label>
+                                            <div class="x-valid col-sm-2">
+                                                <input type="text" name="remarkEntrustPurpose" required="required"
+                                                       placeholder="委托目的描述" class="form-control input-full"
+                                                       value="${empty item.remarkEntrustPurpose?projectInfo.remarkEntrustPurpose:item.remarkEntrustPurpose}">
+                                            </div>
+                                            <label class="col-sm-1 control-label">
+                                                财产范围<span class="symbol required"></span>
+                                            </label>
+                                            <div class="x-valid col-sm-2">
+                                                <select class="form-control input-full" name="propertyScope"
+                                                        required></select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
-                                        评估基准日<span class="symbol required"></span>
-                                    </label>
-                                    <div class="col-sm-2">
-                                        <input type="text" name="valueTimePoint" required="required" placeholder="评估基准日"
-                                               data-date-format="yyyy-mm-dd" class="form-control date-picker dbdate"
-                                               readonly="readonly" pattern='yyyy-MM-dd'
-                                               value="<fmt:formatDate value="${empty item.valueTimePoint?projectInfo.valuationDate:item.valueTimePoint}"
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline">
+                                            <label class="col-sm-1 control-label">
+                                                评估基准日<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-2 x-valid">
+                                                <input type="text" name="valueTimePoint" required="required"
+                                                       placeholder="评估基准日"
+                                                       data-date-format="yyyy-mm-dd"
+                                                       class="form-control input-full date-picker dbdate"
+                                                       readonly="readonly" pattern='yyyy-MM-dd'
+                                                       value="<fmt:formatDate value="${empty item.valueTimePoint?projectInfo.valuationDate:item.valueTimePoint}"
                                    pattern="yyyy-MM-dd"/>">
-                                    </div>
-                                </div>
-                                <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
-                                        基准日说明<span class="symbol required"></span>
-                                    </label>
-                                    <div class="col-sm-2">
-                                        <input type="text" name="timePointExplain" required="required"
-                                               placeholder="基准日说明" class="form-control"
-                                               value="${empty item.timePointExplain?valueDateExplain:item.timePointExplain}">
-                                    </div>
-                                </div>
+                                            </div>
 
-                                <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
-                                        价值类型<span class="symbol required"></span>
-                                    </label>
-                                    <div class="col-sm-2">
-                                        <select name="valueDefinition" class="form-control" required>
-                                            <option value="">-请选择-</option>
-                                            <c:forEach items="${valueTypes}" var="valueDefinition">
-                                                <c:choose>
-                                                    <c:when test="${valueDefinition.id eq item.valueDefinition}">
-                                                        <option value="${valueDefinition.id}"
-                                                                selected="selected">${valueDefinition.name}</option>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <c:if test="${valueDefinition.id eq projectInfo.valueType}">
-                                                            <option value="${valueDefinition.id}"
-                                                                    selected="selected">${valueDefinition.name}</option>
-                                                        </c:if>
-                                                        <c:if test="${valueDefinition.id ne projectInfo.valueType}">
-                                                            <option value="${valueDefinition.id}">${valueDefinition.name}</option>
-                                                        </c:if>
-                                                    </c:otherwise>
-                                                </c:choose>
-                                            </c:forEach>
-                                        </select>
+                                            <label class="col-sm-1 control-label">
+                                                基准日说明<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-2 x-valid">
+                                                <input type="text" name="timePointExplain" required="required"
+                                                       placeholder="基准日说明" class="form-control input-full"
+                                                       value="${empty item.timePointExplain?valueDateExplain:item.timePointExplain}">
+                                            </div>
+                                            <label class="col-sm-1 control-label">
+                                                价值类型<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-2 x-valid">
+                                                <select name="valueDefinition" class="form-control input-full" required>
+                                                    <option value="">-请选择-</option>
+                                                    <c:forEach items="${valueTypes}" var="valueDefinition">
+                                                        <c:choose>
+                                                            <c:when test="${valueDefinition.id eq item.valueDefinition}">
+                                                                <option value="${valueDefinition.id}"
+                                                                        selected="selected">${valueDefinition.name}</option>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <c:if test="${valueDefinition.id eq projectInfo.valueType}">
+                                                                    <option value="${valueDefinition.id}"
+                                                                            selected="selected">${valueDefinition.name}</option>
+                                                                </c:if>
+                                                                <c:if test="${valueDefinition.id ne projectInfo.valueType}">
+                                                                    <option value="${valueDefinition.id}">${valueDefinition.name}</option>
+                                                                </c:if>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
-                                        财产包括<span class="symbol required"></span>
-                                    </label>
-                                    <div class="col-sm-11">
-                                        <textarea class="form-control" name="scopeInclude" placeholder="财产包括"
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline">
+                                            <label class="col-sm-1 control-label">
+                                                财产包括<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-11 x-valid">
+                                        <textarea class="form-control input-full" name="scopeInclude" placeholder="财产包括"
                                                   required>${item.scopeInclude}</textarea>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
-                                        财产不包括<span class="symbol required"></span>
-                                    </label>
-                                    <div class="col-sm-11">
-                                        <textarea class="form-control" name="scopeNotInclude" placeholder="财产不包括"
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline">
+                                            <label class="col-sm-1 control-label">
+                                                财产不包括<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-11 x-valid">
+                                        <textarea class="form-control input-full" name="scopeNotInclude"
+                                                  placeholder="财产不包括"
                                                   required>${item.scopeNotInclude}</textarea>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="x_title">
-                                <h4>估价对象查询</h4>
-                                <div class="clearfix"></div>
-                            </div>
-                            <div class="judge-object-query">
-                                <div class="form-group">
-                                    <label class="col-sm-1 control-label">
-                                        估价对象号
-                                    </label>
-                                    <div class="col-sm-2">
-                                        <input type="text" data-rule-maxlength="100" placeholder="估价对象号" name="number"
-                                               class="form-control">
-                                    </div>
-                                    <label class="col-sm-1 control-label">
-                                        所有权人
-                                    </label>
-                                    <div class="col-sm-2">
-                                        <input type="text" data-rule-maxlength="100" placeholder="所有权人" name="ownership"
-                                               class="form-control">
-                                    </div>
-                                    <label class="col-sm-1 control-label">
-                                        坐落
-                                    </label>
-                                    <div class="col-sm-2">
-                                        <input type="text" data-rule-maxlength="100" placeholder="坐落" name="seat"
-                                               class="form-control">
-                                    </div>
-                                    <div class="col-sm-3">
-                                        <button type="button" class="btn btn-primary"
-                                                onclick="programme.loadJudgeObjectList(this);">查询
-                                        </button>
-                                        <button type="button" class="btn btn-primary"
-                                                onclick="programme.batchMerge(this);">批量合并
-                                        </button>
-                                        <button type="button" class="btn btn-primary"
-                                                onclick="programme.selectAll(this);">全选
-                                        </button>
-                                        <button type="button" class="btn btn-primary"
-                                                onclick="programme.selectInvert(this);">反选
-                                        </button>
-                                        <button type="button" class="btn btn-primary"
-                                                onclick="programme.collectJudge(this);">收起
-                                        </button>
-                                        <button type="button" class="btn btn-primary"
-                                                onclick="programme.expandJudge(this);">展开
-                                        </button>
+                                <div class="x_title">
+                                    <h4>估价对象查询</h4>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="judge-object-query">
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline">
+                                                <label class="col-sm-1 control-label">
+                                                    估价对象号
+                                                </label>
+                                                <div class="col-sm-2">
+                                                    <input type="text" data-rule-maxlength="100" placeholder="估价对象号"
+                                                           name="number"
+                                                           class="form-control input-full">
+                                                </div>
+                                                <label class="col-sm-1 control-label">
+                                                    所有权人
+                                                </label>
+                                                <div class="col-sm-2">
+                                                    <input type="text" data-rule-maxlength="100" placeholder="所有权人"
+                                                           name="ownership"
+                                                           class="form-control input-full">
+                                                </div>
+                                                <label class="col-sm-1 control-label">
+                                                    坐落
+                                                </label>
+                                                <div class="col-sm-2">
+                                                    <input type="text" data-rule-maxlength="100" placeholder="坐落"
+                                                           name="seat"
+                                                           class="form-control input-full">
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <button type="button" class="btn btn-primary"
+                                                            onclick="programme.loadJudgeObjectList(this);">查询
+                                                    </button>
+                                                    <button type="button" class="btn btn-primary"
+                                                            onclick="programme.batchMerge(this);">批量合并
+                                                    </button>
+                                                    <button type="button" class="btn btn-primary"
+                                                            onclick="programme.selectAll(this);">全选
+                                                    </button>
+                                                    <button type="button" class="btn btn-primary"
+                                                            onclick="programme.selectInvert(this);">反选
+                                                    </button>
+                                                    <button type="button" class="btn btn-primary"
+                                                            onclick="programme.collectJudge(this);">收起
+                                                    </button>
+                                                    <button type="button" class="btn btn-primary"
+                                                            onclick="programme.expandJudge(this);">展开
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="judge-object-content"></div>
-                        </form>
-                        <script type="text/javascript">
-                            $(function () {
-                                programme.setValueConnotation(${item.id}, '${item.valueConnotation}');
-                                AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseScopeProperty, '${item.propertyScope}', function (html, data) {
-                                    $("#frmJudgeObject${item.id}").find("[name=propertyScope]").empty().html(html);
-                                });
-                            })
-                        </script>
+                                <div class="judge-object-content"></div>
+                            </form>
+                            <script type="text/javascript">
+                                $(function () {
+                                    programme.setValueConnotation(${item.id}, '${item.valueConnotation}');
+                                    AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseScopeProperty, '${item.propertyScope}', function (html, data) {
+                                        $("#frmJudgeObject${item.id}").find("[name=propertyScope]").empty().html(html);
+                                    });
+                                })
+                            </script>
+                        </div>
                     </div>
                 </div>
             </c:forEach>
-            <div class="x_panel">
-                <div class="x_content">
+            <div class="card x_panel">
+                <div class="card-body x_content">
                     <div class="col-sm-4 col-sm-offset-5">
                         <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
                             取消
@@ -350,10 +369,9 @@
             </div>
             <%@include file="/views/share/form_log.jsp" %>
         </div>
+        <%@include file="/views/share/main_footer.jsp" %>
     </div>
 </div>
-
-
 <!-- -->
 <div id="modal_method_info" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
@@ -517,173 +535,171 @@
 </div>
 <!--评估对象-->
 <script type="text/html" id="judgeObjectHtml">
-    <div class="x_panel">
-        <div class="x_title">
-            <ul class="nav navbar-right panel_toolbox">
-                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-            </ul>
-            <h3>
-                <input type="checkbox">
-                <label style="word-break: break-all">{mergeNumber}</label>
-                <small>
-                    <a href="javascript://" onclick="programme.splitJudge(this);"
-                       class="btn btn-xs btn-success judge-split tooltips">拆分</a>
-                    <a href="javascript://" onclick="programme.delSplitJudge(this);"
-                       class="btn btn-xs btn-warning judge-remove tooltips">移除</a>
-                    <a href="javascript://" onclick="programme.mergeJudge(this);"
-                       class="btn btn-xs btn-warning judge-merge tooltips">合并</a>
-                    <a href="javascript://" onclick="programme.mergeJudgeCancel(this);"
-                       class="btn btn-xs btn-warning judge-merge-cancel tooltips">取消合并</a>
-                    <a href="javascript://" onclick="programme.mergeJudgeAdjustView(this);"
-                       class="btn btn-xs btn-warning judge-merge-cancel tooltips">调整合并</a>
-                    <a href="javascript://" onclick="programme.loadSceneExploreBasicApplyList('{declareId}','{id}');"
-                       class="btn btn-xs btn-success judge-relation-object tooltips">关联查勘</a>
-                    <a href="javascript://" onclick="programmeMethod.setMethod(this);"
-                       class="btn btn-xs btn-success judge-method tooltips">评估方法</a>
-                </small>
-            </h3>
-            <div class="clearfix"></div>
-        </div>
-        <div class="x_content">
-            <input type="hidden" data-name="id" value="{id}">
-            <input type="hidden" data-name="bisSplit" value="{bisSplit}">
-            <input type="hidden" data-name="bisMerge" value="{bisMerge}">
-            <input type="hidden" data-name="number" value="{number}">
-            <input type="hidden" data-name="splitNumber" value="{splitNumber}">
-            <input type="hidden" data-name="declareId" value="{declareId}">
-            <input type="hidden" data-name="rentalPossessionDesc" value="{rentalPossessionDesc}">
-            <input type="hidden" data-name="mergeNumber" value="{mergeNumber}">
-            <div class="form-group">
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">
-                        所有权人
-                    </label>
-                    <div class="col-sm-2">
-                        <label class="form-control" data-name="ownership">{ownership}
-                            <a href="javascript://" onclick="programme.viewJudgeInfo(this);"
-                               class="btn btn-xs btn-success tooltips"><i class="fa fa-white fa-search"></i></a>
-                        </label>
+    <div class="col-md-12">
+        <div class="card full-height">
+            <div class="card x_panel">
+                <div class="card-header collapse-link">
+                    <div class="card-head-row">
+                        <div class="card-title">
+                            <input type="checkbox">
+                            <label style="word-break: break-all">{mergeNumber}</label>
+                            <a href="javascript://" onclick="programme.splitJudge(this);"
+                               class="btn btn-xs btn-success judge-split tooltips">拆分</a>
+                            <a href="javascript://" onclick="programme.delSplitJudge(this);"
+                               class="btn btn-xs btn-warning judge-remove tooltips">移除</a>
+                            <a href="javascript://" onclick="programme.mergeJudge(this);"
+                               class="btn btn-xs btn-warning judge-merge tooltips">合并</a>
+                            <a href="javascript://" onclick="programme.mergeJudgeCancel(this);"
+                               class="btn btn-xs btn-warning judge-merge-cancel tooltips">取消合并</a>
+                            <a href="javascript://" onclick="programme.mergeJudgeAdjustView(this);"
+                               class="btn btn-xs btn-warning judge-merge-cancel tooltips">调整合并</a>
+                            <a href="javascript://"
+                               onclick="programme.loadSceneExploreBasicApplyList('{declareId}','{id}');"
+                               class="btn btn-xs btn-success judge-relation-object tooltips">关联查勘</a>
+                            <a href="javascript://" onclick="programmeMethod.setMethod(this);"
+                               class="btn btn-xs btn-success judge-method tooltips">评估方法</a>
+                        </div>
+                        <div class="card-tools">
+                            <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                                    class="fa fa-angle-down"></span>
+                            </button>
+                        </div>
                     </div>
                 </div>
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">
-                        坐落
-                    </label>
-                    <div class="col-sm-2">
-                        <label class="form-control" data-name="seat"><span>{seat}</span></label>
-                    </div>
-                </div>
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">
-                        终止日期
-                    </label>
-                    <div class="col-sm-2">
-                        <label class="form-control" data-name="landUseEndDate"><span>{landUseEndDate}</span></label>
-                    </div>
-                </div>
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">
-                        剩余年限
-                    </label>
-                    <div class="col-sm-2">
-                        <label class="form-control"
-                               data-name="landRemainingYear"><span>{landRemainingYear}</span></label>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">
-                        证载用途
-                    </label>
-                    <div class="col-sm-2">
-                        <label class="form-control" data-name="certUse">{certUse}</label>
-                    </div>
-                </div>
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">
-                        实际用途
-                    </label>
-                    <div class="col-sm-2">
-                        <label class="form-control" data-name="practicalUse">{practicalUse}</label>
-                    </div>
-                </div>
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">
-                        设定用途
-                    </label>
-                    <div class="col-sm-2">
-                        <select class="form-control" required data-name="setUse" name="setUse{id}"
-                                onchange="programme.saveProgrammeJudge(this);">
-                            <option value="">--请选择--</option>
-                            <c:forEach items="${setUseList}" var="setUse">
-                                <option value="${setUse.id}">${setUse.name}</option>
-                            </c:forEach>
-                        </select>
-                    </div>
-                </div>
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">
-                        最佳利用方式
-                    </label>
-                    <div class="col-sm-2">
-                        <select class="form-control" required data-name="bestUse" name="bestUse{id}"
-                                onchange="programme.saveProgrammeJudge(this);">
-                            <c:forEach items="${bestUseList}" var="bestUse">
-                                <option value="${bestUse.id}">${bestUse.name}</option>
-                            </c:forEach>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">
-                        证载面积
-                    </label>
-                    <div class="col-sm-2">
-                        <label class="form-control">{floorArea}</label>
-                    </div>
-                </div>
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">
-                        评估面积
-                    </label>
-                    <div class="col-sm-2">
-                        <input class="form-control" type="text" required data-rule-number="true"
-                               data-rule-range="[1,{floorArea}]" onblur="programme.saveProgrammeJudge(this);"
-                               name="evaluationArea{id}" data-name="evaluationArea"
-                               placeholder="评估面积" value="{evaluationArea}">
-                    </div>
-                </div>
-                <div class="x-valid" data-name="mergeExplainContainer{id}" style="display: none;">
-                    <label class="col-sm-1 control-label">
-                        合并对象说明
-                    </label>
-                    <div class="col-sm-2">
-                        <input class="form-control" type="text" required name="mergeExplain{id}"
-                               onblur="programme.saveProgrammeJudge(this);"
-                               data-name="mergeExplain" placeholder="合并对象说明" value="{mergeExplain}">
-                    </div>
-                </div>
-                <div class="x-valid" data-name="splitExplainContainer{id}" style="display: none;">
-                    <label class="col-sm-1 control-label">
-                        拆分对象说明
-                    </label>
-                    <div class="col-sm-2">
-                        <input class="form-control" type="text" required name="splitExplain{id}"
-                               onblur="programme.saveProgrammeJudge(this);"
-                               data-name="splitExplain" placeholder="拆分对象说明" value="{splitExplain}">
+                <div class="card-body x_content">
+                    <div class="form-horizontal">
+                        <input type="hidden" data-name="id" value="{id}">
+                        <input type="hidden" data-name="bisSplit" value="{bisSplit}">
+                        <input type="hidden" data-name="bisMerge" value="{bisMerge}">
+                        <input type="hidden" data-name="number" value="{number}">
+                        <input type="hidden" data-name="splitNumber" value="{splitNumber}">
+                        <input type="hidden" data-name="declareId" value="{declareId}">
+                        <input type="hidden" data-name="rentalPossessionDesc" value="{rentalPossessionDesc}">
+                        <input type="hidden" data-name="mergeNumber" value="{mergeNumber}">
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                <div class="form-inline">
+                                    <label class="col-sm-1 control-label">
+                                        所有权人
+                                    </label>
+                                    <div class="col-sm-2">
+                                        <label class="form-control input-full" data-name="ownership">{ownership}
+                                            <a href="javascript://" onclick="programme.viewJudgeInfo(this);"
+                                               class="btn btn-xs btn-success tooltips"><i class="fa fa-white fa-search"></i></a>
+                                        </label>
+                                    </div>
+                                    <label class="col-sm-1 control-label">
+                                        坐落
+                                    </label>
+                                    <div class="col-sm-2">
+                                        <label class="form-control input-full" data-name="seat"><span>{seat}</span></label>
+                                    </div>
+                                    <label class="col-sm-1 control-label">
+                                        终止日期
+                                    </label>
+                                    <div class="col-sm-2">
+                                        <label class="form-control input-full"
+                                               data-name="landUseEndDate"><span>{landUseEndDate}</span></label>
+                                    </div>
+                                    <label class="col-sm-1 control-label">
+                                        剩余年限
+                                    </label>
+                                    <div class="col-sm-2">
+                                        <label class="form-control input-full"
+                                               data-name="landRemainingYear"><span>{landRemainingYear}</span></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                <div class="form-inline">
+                                    <label class="col-sm-1 control-label">
+                                        证载用途
+                                    </label>
+                                    <div class="col-sm-2 x-valid">
+                                        <label class="form-control input-full" data-name="certUse">{certUse}</label>
+                                    </div>
+                                    <label class="col-sm-1 control-label">
+                                        实际用途
+                                    </label>
+                                    <div class="col-sm-2 x-valid">
+                                        <label class="form-control input-full" data-name="practicalUse">{practicalUse}</label>
+                                    </div>
+                                    <label class="col-sm-1 control-label">
+                                        设定用途
+                                    </label>
+                                    <div class="col-sm-2 x-valid">
+                                        <select class="form-control input-full" required data-name="setUse" name="setUse{id}"
+                                                onchange="programme.saveProgrammeJudge(this);">
+                                            <option value="">--请选择--</option>
+                                            <c:forEach items="${setUseList}" var="setUse">
+                                                <option value="${setUse.id}">${setUse.name}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                    <label class="col-sm-1 control-label">
+                                        最佳利用方式
+                                    </label>
+                                    <div class="col-sm-2 x-valid">
+                                        <select class="form-control input-full" required data-name="bestUse" name="bestUse{id}"
+                                                onchange="programme.saveProgrammeJudge(this);">
+                                            <c:forEach items="${bestUseList}" var="bestUse">
+                                                <option value="${bestUse.id}">${bestUse.name}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <div class="form-inline">
+                                    <label class="col-sm-1 control-label">
+                                        证载面积
+                                    </label>
+                                    <div class="col-sm-2">
+                                        <label class="form-control input-full">{floorArea}</label>
+                                    </div>
+                                    <label class="col-sm-1 control-label">
+                                        评估面积
+                                    </label>
+                                    <div class="col-sm-2 x-valid">
+                                        <input class="form-control input-full" type="text" required data-rule-number="true"
+                                               data-rule-range="[1,{floorArea}]" onblur="programme.saveProgrammeJudge(this);"
+                                               name="evaluationArea{id}" data-name="evaluationArea"
+                                               placeholder="评估面积" value="{evaluationArea}">
+                                    </div>
+                                    <div data-name="mergeExplainContainer{id}" style="display: none;">
+                                        <label class="col-sm-1 control-label">
+                                            合并对象说明
+                                        </label>
+                                        <div class="col-sm-2 x-valid">
+                                            <input class="form-control input-full" type="text" required name="mergeExplain{id}"
+                                                   onblur="programme.saveProgrammeJudge(this);"
+                                                   data-name="mergeExplain" placeholder="合并对象说明" value="{mergeExplain}">
+                                        </div>
+                                    </div>
+                                    <div class="x-valid" data-name="splitExplainContainer{id}" style="display: none;">
+                                        <label class="col-sm-1 control-label">
+                                            拆分对象说明
+                                        </label>
+                                        <div class="col-sm-2 x-valid">
+                                            <input class="form-control input-full" type="text" required name="splitExplain{id}"
+                                                   onblur="programme.saveProgrammeJudge(this);"
+                                                   data-name="splitExplain" placeholder="拆分对象说明" value="{splitExplain}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </script>
-
-
 </body>
-<%@include file="/views/share/main_footer.jsp" %>
 <script src="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/jquery.easyui.min.js?v=${assessVersion}"></script>
 
 <script type="text/javascript">
@@ -1731,8 +1747,8 @@
         var methodType = $(_this).attr('data-method-type');
         var methodName = $(_this).attr('data-method-name');
         var htmlTemplate = '<tr data-method-type="{methodType}">' +
-            '<td>{methodName}</td><td> <select class="form-control" onchange="programmeMethod.methodTempChange(this);"></select></td>' +
-            '<td><div class="x-valid"> <textarea class="form-control" name="{reasonName}{methodType}" required></textarea></div></td></tr>';
+            '<td>{methodName}</td><td> <select class="form-control input-full" onchange="programmeMethod.methodTempChange(this);"></select></td>' +
+            '<td><div class="x-valid"> <textarea class="form-control input-full" name="{reasonName}{methodType}" required></textarea></div></td></tr>';
 
         if (useFlag == 'false') {
             var trHtml = new String(htmlTemplate);

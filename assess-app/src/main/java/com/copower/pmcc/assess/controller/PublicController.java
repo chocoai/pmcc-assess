@@ -273,22 +273,24 @@ public class PublicController {
     @RequestMapping(value = "/getApprovalLog", name = "获取流程审批日志", method = RequestMethod.GET)
     public BootstrapTableVo getApprovalLog(String processInsId) {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
-        BootstrapTableVo approvalLog = bpmRpcProcessInsManagerService.getApprovalLog(processInsId, requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        BootstrapTableVo approvalLog = bpmRpcProcessInsManagerService.getApprovalLogForApp(applicationConstant.getAppKey(),processInsId, requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<BoxApprovalLogVo> rows = (List<BoxApprovalLogVo>) approvalLog.getRows();
         List<String> transform = LangUtils.transform(rows, o -> o.getProcessTaskId());
-        List<SysAttachmentDto> approvalLogList = baseAttachmentService.getApprovalLogList(processInsId, transform);
-        if (CollectionUtils.isNotEmpty(approvalLogList)) {
-            for (BoxApprovalLogVo item : rows) {
-                List<SysAttachmentDto> filter = LangUtils.filter(approvalLogList, o -> {
-                    return o.getProcessTaskId().equals(item.getProcessTaskId());
-                });
-                if (CollectionUtils.isNotEmpty(filter)) {
-                    List<AttachmentVo> attachmentVos = getAttachmentVos(filter);
-                    item.setAttachmentVos(attachmentVos);
+        if(StringUtils.isNotBlank(processInsId)&&!"0".equals(processInsId)){
+            List<SysAttachmentDto> approvalLogList = baseAttachmentService.getApprovalLogList(processInsId, transform);
+            if (CollectionUtils.isNotEmpty(approvalLogList)) {
+                for (BoxApprovalLogVo item : rows) {
+                    List<SysAttachmentDto> filter = LangUtils.filter(approvalLogList, o -> {
+                        return o.getProcessTaskId().equals(item.getProcessTaskId());
+                    });
+                    if (CollectionUtils.isNotEmpty(filter)) {
+                        List<AttachmentVo> attachmentVos = getAttachmentVos(filter);
+                        item.setAttachmentVos(attachmentVos);
+                    }
                 }
             }
-            approvalLog.setRows(rows);
         }
+        approvalLog.setRows(rows);
         return approvalLog;
     }
 
