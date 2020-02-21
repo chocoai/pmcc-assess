@@ -5,8 +5,191 @@
     <%@include file="/views/share/main_css.jsp" %>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/tree-grid/css/jquery.treegrid.css">
 </head>
-<body class="nav-md footer_fixed">
-<div class="container body">
+<body>
+<div class="wrapper">
+    <div class="main-panel" style="width: 100%">
+        <div class="content" style="margin-top: 0px;">
+            <%@include file="/views/share/form_head.jsp" %>
+            <div class="page-inner mt--5">
+                <div class="row mt--2">
+                    <%@include file="/views/share/project/projectInfoSimple.jsp" %>
+                    <%@include file="/views/share/project/projectPlanDetails.jsp" %>
+                    <!-- 申报各种类型的html视图 -->
+                    <%@include file="/views/project/stageDeclare/declareApplyModel.jsp" %>
+
+                    <!-- 房产证 -->
+                    <%@include file="/views/project/stageDeclare/houseDeclarationModel/viewDeclareRealtyHouseCert.jsp" %>
+
+                    <!-- 土地证 -->
+                    <%@include file="/views/project/stageDeclare/houseDeclarationModel/viewDeclareRealtyLandCert.jsp" %>
+
+                    <!-- 不动产证 -->
+                    <%@include file="/views/project/stageDeclare/houseDeclarationModel/viewDeclareRealtyRealEstateCert.jsp" %>
+            
+                    <div class="col-md-12">
+                        <div class="card full-height">
+                            <div class="card-body">
+                                <form class="form-horizontal" id="declareApplyForm">
+                                    <input type="hidden" name="id" value="${declare.id}">
+                                    <input type="hidden" name="planDetailsId" value="${projectPlanDetails.id}">
+                                    <input type="hidden" name="projectId" value="${projectPlanDetails.projectId}">
+                                    <div class="row form-group">
+                                        <div class="col-md-4">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-2 col-form-label">
+                                                    估价委托书
+                                                </label>
+                                                <div class="col-sm-10">
+                                                    <input id="project_proxy" name="project_proxy" type="file" multiple="false">
+                                                    <div id="_project_proxy"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-2 col-form-label">
+                                                    上次评估报告
+                                                </label>
+                                                <div class="col-sm-10">
+                                                    <input id="assess_report_enclosure" name="assess_report_enclosure" type="file" multiple="false">
+                                                    <div id="_assess_report_enclosure"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-4">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-2 col-form-label">
+                                                    上次评估面积
+                                                </label>
+                                                <div class="col-sm-10">
+                                                    <input name="assessArea" class="form-control input-full" placeholder="上次评估面积" value='${declare.assessArea}'/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-2 col-form-label">
+                                                    上次评估金额
+                                                </label>
+                                                <div class="col-sm-10">
+                                                    <input name="assessMoney" class="form-control input-full" placeholder="上次评估金额" value='${declare.assessMoney}'/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-2 col-form-label">
+                                                    上次评估基准日
+                                                </label>
+                                                <div class="col-sm-10">
+                                                    <input placeholder="上次评估基准日" id="dateLimit"
+                                                           name="dateLimit" data-date-format="yyyy-mm-dd"
+                                                           class="form-control input-full date-picker dbdate" readonly="readonly"
+                                                           value="<fmt:formatDate value='${declare.dateLimit}' pattern='yyyy-MM-dd'/>">                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-4">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-2 col-form-label">
+                                                    上次委托单位
+                                                </label>
+                                                <div class="col-sm-10">
+                                                    <input name="client" class="form-control input-full" placeholder="上次委托单位" value='${declare.client}'/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-2 col-form-label">
+                                                    上次评估机构
+                                                </label>
+                                                <div class="col-sm-10">
+                                                    <input name="assessOrganization" class="form-control input-full" placeholder="上次评估机构" value='${declare.assessOrganization}'/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-2 col-form-label">
+                                                    备注
+                                                </label>
+                                                <div class="col-sm-10">
+                                                    <input name="remark" class="form-control input-full" placeholder="备注" value='${declare.remark}'/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <form class="form-horizontal">
+                                    <div class="row form-group">
+                                        <div class="col-md-4">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-2 col-form-label">
+                                                    自定义附件
+                                                </label>
+                                                <div class="col-sm-10">
+                                                    <div class="btn  btn-success" onclick="declareApplyExtensionCumstom.appendHTML('${declare.id}','${projectPlanDetails.projectId}',this)"><i class="fa fa-plus"></i></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <c:forEach items="${declareApplyExtensionList}" var="itemData">
+                                        <div class="row form-group">
+                                            <div class="col-md-4">
+                                                <div class="form-inline x-valid">
+                                                    <label class="col-sm-2 col-form-label">
+                                                        自定义名称<span class="symbol required"></span>
+                                                    </label>
+                                                    <div class="col-sm-10">
+                                                        <input name="name" class="form-control input-full" placeholder="自定义名称" value="${itemData.name}" onblur="declareApplyExtensionCumstom.targetSave(this);" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-inline x-valid">
+                                                    <label class="col-sm-2 col-form-label">
+                                                        附件
+                                                    </label>
+                                                    <div class="col-sm-10">
+                                                        <input id="other_Enclosure${itemData.id}" name="other_Enclosure${itemData.id}" type="file" multiple="false">
+                                                        <div id="_other_Enclosure${itemData.id}"></div>                                                    </div>
+                                                </div>
+                                            </div>
+                                            <script>
+                                                $(function () {
+                                                    var fileId = 'other_Enclosure${itemData.id}' ;
+                                                    declareCommon.showFile(fileId, AssessDBKey.DeclareApplyExtension, "${itemData.id}", true, fileId);
+                                                    declareCommon.fileUpload(fileId, AssessDBKey.DeclareApplyExtension, "${itemData.id}", true, fileId);
+                                                });
+                                            </script>
+                                            <div class="col-md-4">
+                                                <span class="input-group-btn"><input class="btn btn-warning btn-sm" type="button" value="X" onclick="declareApplyExtensionCumstom.cleanItemHTML(this)"></span>
+                                            </div>
+                                        </div>
+                                    </c:forEach>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <%@include file="/views/share/form_apply.jsp" %>
+                    <%@include file="/views/method/module/economicIndicators.jsp" %>
+                    <%@include file="/views/project/tool/declareApplyExtensionCumstomModelView.jsp" %>
+
+                </div>
+            </div>
+        </div>
+        <%@include file="/views/share/main_footer.jsp" %>
+    </div>
+
+</div>
+
+<%--<div class="container body">
     <div class="main_container">
         <div class="right_col" role="main" style="margin-left: 0">
             <%@include file="/views/share/form_head.jsp" %>
@@ -56,7 +239,7 @@
                                     上次评估面积
                                 </label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <input name="assessArea" class="form-control" placeholder="上次评估面积" value='${declare.assessArea}'/>
+                                    <input name="assessArea" class="form-control input-full" placeholder="上次评估面积" value='${declare.assessArea}'/>
                                 </div>
                             </div>
                             <div class="x-valid">
@@ -64,7 +247,7 @@
                                     上次评估金额
                                 </label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <input name="assessMoney" class="form-control" placeholder="上次评估金额" value='${declare.assessMoney}'/>
+                                    <input name="assessMoney" class="form-control input-full" placeholder="上次评估金额" value='${declare.assessMoney}'/>
                                 </div>
                             </div>
                             <div class="x-valid">
@@ -74,7 +257,7 @@
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                     <input placeholder="上次评估基准日" id="dateLimit"
                                            name="dateLimit" data-date-format="yyyy-mm-dd"
-                                           class="form-control date-picker dbdate" readonly="readonly"
+                                           class="form-control input-full date-picker dbdate" readonly="readonly"
                                            value="<fmt:formatDate value='${declare.dateLimit}' pattern='yyyy-MM-dd'/>">
                                 </div>
                             </div>
@@ -85,7 +268,7 @@
                                     上次委托单位
                                 </label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <input name="client" class="form-control" placeholder="上次委托单位" value='${declare.client}'/>
+                                    <input name="client" class="form-control input-full" placeholder="上次委托单位" value='${declare.client}'/>
                                 </div>
                             </div>
                             <div class="x-valid">
@@ -93,7 +276,7 @@
                                     上次评估机构
                                 </label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <input name="assessOrganization" class="form-control" placeholder="上次评估机构" value='${declare.assessOrganization}'/>
+                                    <input name="assessOrganization" class="form-control input-full" placeholder="上次评估机构" value='${declare.assessOrganization}'/>
                                 </div>
                             </div>
                             <div class="x-valid">
@@ -101,7 +284,7 @@
                                     备注
                                 </label>
                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <input name="remark" class="form-control" placeholder="备注" value='${declare.remark}'/>
+                                    <input name="remark" class="form-control input-full" placeholder="备注" value='${declare.remark}'/>
                                 </div>
                             </div>
                         </div>
@@ -128,7 +311,7 @@
                                     </label>
                                     <input type="hidden" name="id" value="${itemData.id}">
                                     <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                        <input name="name" class="form-control" placeholder="自定义名称" value="${itemData.name}" onblur="declareApplyExtensionCumstom.targetSave(this);" />
+                                        <input name="name" class="form-control input-full" placeholder="自定义名称" value="${itemData.name}" onblur="declareApplyExtensionCumstom.targetSave(this);" />
                                     </div>
                                 </div>
                                 <div class="x-valid">
@@ -161,9 +344,9 @@
             <%@include file="/views/share/form_log.jsp" %>
         </div>
     </div>
-</div>
+</div>--%>
 </body>
-<%@include file="/views/share/main_footer.jsp" %>
+
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js?v=${assessVersion}"></script>
 
