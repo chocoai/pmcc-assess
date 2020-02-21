@@ -10,7 +10,9 @@
                 <h3 style="color: #ffffff">
                     <a class="tooltips" data-placement="bottom" data-original-title="返回系统首页"
                        href="${pageContext.request.contextPath}/home/main"><i class="fas fa-home"></i></a>
-                    <span class="label label-warning">${projectInfo.projectStatus}</span>${projectInfo.projectName}</h3>
+                    <span class="label label-warning">${projectInfo.projectStatus}</span>
+                    <span style="cursor: pointer;" onclick="window.location.href='${pageContext.request.contextPath}/projectCenter/projectInfo?projectId=${projectInfo.id}'">${projectInfo.projectName}</span>
+                </h3>
             </div>
         </div>
     </nav>

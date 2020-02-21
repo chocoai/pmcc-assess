@@ -115,19 +115,19 @@
                             <input type="text" class="form-control" readonly="readonly" name="userAccountManagerName"
                                    required onclick="objProject.selectUserAccountManager(this);"
                                    value="${projectInfo.projectMemberVo.userAccountManagerName}">
-                            <span class="input-group-btn">
-                        <button type="button" class="btn btn-default docs-tooltip"
-                                data-toggle="tooltip"
-                                data-original-title="选择"
-                                onclick="objProject.selectUserAccountManager(this);">
-                        <i class="fa fa-search"></i>
-                        </button>
-                        <button type="button" class="btn btn-default docs-tooltip"
-                                onclick="$(this).closest('.input-group').find('input').val('');"
-                                data-toggle="tooltip" data-original-title="清除">
-                        <i class="fa fa-trash-o"></i>
-                        </button>
-                        </span>
+                            <div class="input-group-prepend">
+                                <button class="btn btn-warning btn-sm "
+                                        style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                        type="button" onclick="$(this).closest('.input-group').find('input').val('');">
+                                    清空
+                                </button>
+                            </div>
+                            <div class="input-group-prepend">
+                                <button class="btn btn-primary btn-sm "
+                                        style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                        type="button" onclick="objProject.selectUserAccountManager(this);">选择
+                                </button>
+                            </div>
                         </div>
                     </div>
 
@@ -141,52 +141,49 @@
                             <input type="text" class="form-control" readonly="readonly" name="userAccountMemberName"
                                    onclick="objProject.selectUserAccountMember(this);"
                                    value="${projectInfo.projectMemberVo.userAccountMemberName}">
-                            <span class="input-group-btn">
-                        <button type="button" class="btn btn-default docs-tooltip"
-                                data-toggle="tooltip"
-                                data-original-title="选择"
-                                onclick="objProject.selectUserAccountMember(this);">
-                        <i class="fa fa-search"></i>
-                        </button>
-                        <button type="button" class="btn btn-default docs-tooltip"
-                                onclick="$(this).closest('.input-group').find('input').val('');"
-                                data-toggle="tooltip" data-original-title="清除">
-                        <i class="fa fa-trash-o"></i>
-                        </button>
-                        </span>
+                            <div class="input-group-prepend">
+                                <button class="btn btn-warning btn-sm "
+                                        style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                        type="button" onclick="$(this).closest('.input-group').find('input').val('');">清空
+                                </button>
+                            </div>
+                            <div class="input-group-prepend">
+                                <button class="btn btn-primary btn-sm "
+                                        style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                        type="button" onclick="objProject.selectUserAccountMember(this);">选择
+                                </button>
+                            </div>
                         </div>
+                    </div>
 
-                        <label class="col-sm-1 col-form-label">
-                            执业部门
-                        </label>
-                        <div class="col-sm-3">
-                            <div class="input-group">
-                                <input type="hidden" name="departmentId"
-                                       value="${projectInfo.departmentId}">
-                                <input class='form-control' name="departmentName" required
-                                       readonly="readonly" onclick="objProject.selectDepartment(this);"
-                                       value="${projectInfo.departmentName}">
-                                <span class="input-group-btn">
-                        <button type="button" class="btn btn-default docs-tooltip"
-                                onclick="objProject.selectDepartment(this);"
-                                data-toggle="tooltip"
-                                data-original-title="选择">
-                            <i class="fa fa-search"></i>
-                        </button>
-                         <button type="button" class="btn btn-default docs-tooltip"
-                                 onclick="$(this).closest('.input-group').find('input').val('');"
-                                 data-toggle="tooltip" data-original-title="清除">
-                            <i class="fa fa-trash-o"></i>
-                        </button>
-                        </span>
+                    <label class="col-sm-1 col-form-label">
+                        执业部门
+                    </label>
+                    <div class="col-sm-3">
+                        <div class="input-group">
+                            <input type="hidden" name="departmentId"
+                                   value="${projectInfo.departmentId}">
+                            <input class='form-control' name="departmentName" required
+                                   readonly="readonly" onclick="objProject.selectDepartment(this);"
+                                   value="${projectInfo.departmentName}">
+                            <div class="input-group-prepend">
+                                <button class="btn btn-warning btn-sm "
+                                        style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                        type="button" onclick="$(this).closest('.input-group').find('input').val('');">
+                                    清空
+                                </button>
+                            </div>
+                            <div class="input-group-prepend">
+                                <button class="btn btn-primary btn-sm "
+                                        style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                        type="button" onclick="objProject.selectDepartment(this);">选择
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
-
         <div class="row form-group">
             <div class="col-md-12">
                 <div class="form-inline x-valid">
@@ -199,22 +196,21 @@
                             <input type="text" class="form-control" readonly="readonly" name="contractName"
                                    onclick="objProject.selectContract(this);"
                                    value="${projectInfo.contractName}">
-                            <span class="input-group-btn">
-                        <button type="button" class="btn btn-default docs-tooltip"
-                                data-toggle="tooltip"
-                                data-original-title="选择"
-                                onclick="objProject.selectContract(this);">
-                        <i class="fa fa-search"></i>
-                        </button>
-                        <button type="button" class="btn btn-default docs-tooltip"
-                                onclick="$(this).closest('.input-group').find('input').val('');"
-                                data-toggle="tooltip" data-original-title="清除">
-                        <i class="fa fa-trash-o"></i>
-                        </button>
-                        </span>
+                            <div class="input-group-prepend">
+                                <button class="btn btn-warning btn-sm "
+                                        style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                        type="button" onclick="$(this).closest('.input-group').find('input').val('');">
+                                    清空
+                                </button>
+                            </div>
+                            <div class="input-group-prepend">
+                                <button class="btn btn-primary btn-sm "
+                                        style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                        type="button" onclick="objProject.selectContract(this);">选择
+                                </button>
+                            </div>
                         </div>
                     </div>
-
                     <label class="col-sm-1 col-form-label">
                         合同金额（单位/元）
                     </label>
@@ -273,10 +269,8 @@
                         项目说明
                     </label>
                     <div class="col-sm-11">
-                                           <textarea name="remarks"
-                                                     class="form-control input-full"
-                                                     placeholder="项目说明">${projectInfo.remarks}</textarea>
-
+                        <textarea name="remarks" class="form-control input-full"
+                                  placeholder="项目说明">${projectInfo.remarks}</textarea>
                     </div>
                 </div>
             </div>

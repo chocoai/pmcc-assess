@@ -7,10 +7,10 @@
 </head>
 <body>
 <div class="wrapper">
-    <div class="main-panel" style="width: 100%">
-        <div class="content" style="margin-top: 0px;">
-            <%@include file="./projectNavigation.jsp" %>
-            <div class="page-inner mt--5">
+    <%@include file="./projectNavigation.jsp" %>
+    <div class="main-panel">
+        <div class="content">
+            <div class="page-inner">
                 <div class="row mt--2">
                     <%@include file="/views/share/project/projectInfoSimple.jsp" %>
                     <%@include file="./projectStagePlan.jsp" %>

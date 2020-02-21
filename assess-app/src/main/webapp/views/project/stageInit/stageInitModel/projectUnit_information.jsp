@@ -17,12 +17,14 @@
                                 <input type="text" required="required"
                                        placeholder="单位" class="form-control" name="uUseUnitName"
                                        value="${projectInfo.unitInformationVo.uUseUnitName}">
-                                <span class="input-group-btn">
-                                <div class="btn btn-primary" onclick="objProject.selectCustomer(this)">选择</div>
-                            </span>
-                                <span class="input-group-addon">
-                                <input type="checkbox" name="infoWrite" value="true">回写
-                            </span>
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-warning btn-sm " style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;" type="button" onclick="$(this).closest('.input-group').find('input').val('');">清空
+                                    </button>
+                                </div>
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-primary btn-sm " style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;" type="button" onclick="objProject.selectCustomer(this);">选择
+                                    </button>
+                                </div>
                             </div>
                         </div>
                         <label class="col-sm-1 col-form-label">
@@ -115,6 +117,22 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-12">
+                    <div class="form-inline x-valid">
+                        <label class="col-sm-1 col-form-label"></label>
+                        <div class="col-sm-11">
+                            <div class="form-check" style="justify-content:left">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" name="infoWrite" value="true">
+                                    <span class="form-check-sign">回写客户系统</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </form>
