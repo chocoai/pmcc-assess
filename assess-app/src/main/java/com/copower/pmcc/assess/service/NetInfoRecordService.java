@@ -7,7 +7,6 @@ import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordContentDao;
 import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordDao;
 import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecord;
 import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordContent;
-import com.copower.pmcc.assess.dal.basis.entity.NetUrlConfig;
 import com.copower.pmcc.assess.dto.input.net.JDSFDto;
 import com.copower.pmcc.assess.dto.input.net.JDZCDto;
 import com.copower.pmcc.assess.dto.input.net.TBSFDto;
@@ -15,13 +14,11 @@ import com.copower.pmcc.assess.dto.input.net.ZGSFDto;
 import com.copower.pmcc.assess.dto.output.net.NetInfoRecordVo;
 import com.copower.pmcc.assess.service.project.generate.GenerateCommonMethod;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
-import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
-import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -1388,16 +1385,10 @@ public class NetInfoRecordService {
         this.getNetInfoFromZGBD(732);
         //来源公拍网
         this.getNetInfoFromGPW(732);
-        //公共资源交易平台-雅安
-        this.getNetInfoFromGGZYYA(732);
         //公共资源交易平台-成都(土地矿权)
         this.getNetInfoFromGGZYCD(732);
         //公共资源交易平台-成都（资产资源）
         this.getNetInfoFromGGZYCD2(732);
-        ////公共资源交易平台-凉山州（交易公告）
-        this.getNetInfoFromGGZYLSZ(732);
-        ////公共资源交易平台-攀枝花（交易信息）
-        this.getNetInfoFromGGZYPZH(732);
         ////土流网
         this.getNetInfoFromTDJY(732);
         //农村产权交易中心

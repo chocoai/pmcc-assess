@@ -105,13 +105,8 @@
         cols.push({field: 'loanTypeName', title: '贷款类型',width:'5%'});
         cols.push({
             field: 'finishPre', title: '项目进度',width:'10%', formatter: function (value, row, index) {
-                var s = "<div class='progress progress_sm' style='margin-bottom: 0px;'>";
-                if (value == "100") {
-                    s += "<div class='progress-bar progress-bar-success' role='progressbar'  style='width: " + value + "%;'></div>";
-                }
-                else {
-                    s += "<div class='progress-bar progress-bar-warning' role='progressbar'  style='width: " + value + "%;'></div>";
-                }
+                var s = "<div class='progress progress-sm' style='margin-bottom: 0px;'>";
+                s += "<div class='progress-bar bg-success' role='progressbar'  style='width: " + value + "%;'></div>";
                 s += "</div>";
                 s += "<small>完成" + value + "%</small>";
                 return s;

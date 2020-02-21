@@ -4,24 +4,21 @@
     <form id="frm_project_info" class="form-horizontal" enctype="multipart/form-data">
         <input type="hidden" name="id" value="${projectInfo.id}">
         <div class="row form-group">
-            <div class="col-md-8">
+            <div class="col-md-12">
                 <div class="form-inline x-valid">
-                    <label class="col-sm-2 col-form-label">
+                    <label class="col-sm-1 col-form-label">
                         项目名称<span class="symbol required"></span>
                     </label>
-                    <div class="col-sm-10">
+                    <div class="col-sm-7">
                         <input required placeholder="项目名称" name="projectName"
                                value="${projectInfo.projectName}" class="form-control input-full">
                     </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-inline x-valid">
-                    <label class="col-sm-2 col-form-label">
+                    <label class="col-sm-1 col-form-label">
                         紧急程度<span class="symbol required"></span>
                     </label>
-                    <div class="col-sm-10">
-                        <select name="urgency" class="form-control input-full search-select select2 urgency" required="required">
+                    <div class="col-sm-3">
+                        <select name="urgency" class="form-control input-full search-select select2 urgency"
+                                required="required">
                         </select>
                     </div>
                 </div>
@@ -29,89 +26,74 @@
         </div>
 
         <div class="row form-group">
-            <div class="col-md-4">
+            <div class="col-md-12">
                 <div class="form-inline x-valid">
-                    <label class="col-sm-2 col-form-label">
+                    <label class="col-sm-1 col-form-label">
                     </label>
-                    <div class="col-sm-10">
+                    <div class="col-sm-3">
                         <div id="_projectPhaseWorkTemp"></div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="row form-group">
-            <div class="col-md-4">
+            <div class="col-md-12">
                 <div class="form-inline x-valid">
-                    <label class="col-sm-2 col-form-label">
+                    <label class="col-sm-1 col-form-label">
                         委托目的<span class="symbol required"></span>
                     </label>
-                    <div class="col-sm-10">
-                        <select name="entrustPurpose" class="form-control input-full search-select select2 entrustPurpose"
-                                required="required" onchange="$(this).closest('.form-group').find('[name=entrustPurposeName]').val($(this).find('option:selected').text())">
+                    <div class="col-sm-3">
+                        <select name="entrustPurpose"
+                                class="form-control input-full search-select select2 entrustPurpose"
+                                required="required"
+                                onchange="$(this).closest('.form-group').find('[name=entrustPurposeName]').val($(this).find('option:selected').text())">
                         </select>
-
                         <input type="hidden" name="entrustPurposeName">
                     </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-inline x-valid">
-                    <label class="col-sm-2 col-form-label">
+                    <label class="col-sm-1 col-form-label">
                         委托目的类别
                     </label>
-                    <div class="col-sm-10">
-                        <select name="entrustAimType" class="form-control input-full search-select select2 entrustAimType_p">
+                    <div class="col-sm-3">
+                        <select name="entrustAimType"
+                                class="form-control input-full search-select select2 entrustAimType_p">
                         </select>
                     </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-inline x-valid">
-                    <label class="col-sm-2 col-form-label">
+                    <label class="col-sm-1 col-form-label">
                         委托目的描述
                     </label>
-                    <div class="col-sm-10">
+                    <div class="col-sm-3">
                         <input name="remarkEntrustPurpose"
                                class="form-control input-full"
                                placeholder="委托目的描述" value="${projectInfo.remarkEntrustPurpose}"/>
                     </div>
                 </div>
             </div>
-
         </div>
-
         <div class="row form-group">
-            <div class="col-md-4">
+            <div class="col-md-12">
                 <div class="form-inline x-valid">
-                    <label class="col-sm-2 col-form-label">
+                    <label class="col-sm-1 col-form-label">
                         评估范围
                     </label>
-                    <div class="col-sm-10">
-                        <select name="propertyScope" class="form-control input-full search-select select2 propertyScope" onchange="$(this).closest('.form-group').find('[name=propertyScopeName]').val($(this).find('option:selected').text())">
+                    <div class="col-sm-3">
+                        <select name="propertyScope" class="form-control input-full search-select select2 propertyScope"
+                                onchange="$(this).closest('.form-group').find('[name=propertyScopeName]').val($(this).find('option:selected').text())">
                         </select>
 
-                        <input type="hidden" name="propertyScopeName" >
+                        <input type="hidden" name="propertyScopeName">
                     </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-inline x-valid">
-                    <label class="col-sm-2 col-form-label">
+                    <label class="col-sm-1 col-form-label">
                         评估包括
                     </label>
-                    <div class="col-sm-10">
+                    <div class="col-sm-3">
                         <input name="scopeInclude"
                                class="form-control input-full"
                                placeholder="评估包括" value="${projectInfo.scopeInclude}"/>
                     </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-inline x-valid">
-                    <label class="col-sm-2 col-form-label">
+                    <label class="col-sm-1 col-form-label">
                         评估不包括
                     </label>
-                    <div class="col-sm-10">
+                    <div class="col-sm-3">
                         <input name="scopeNotInclude"
                                class="form-control input-full"
                                placeholder="评估不包括" value="${projectInfo.scopeNotInclude}"/>
@@ -121,12 +103,12 @@
         </div>
 
         <div class="row form-group">
-            <div class="col-md-4">
+            <div class="col-md-12">
                 <div class="form-inline x-valid">
-                    <label class="col-sm-2 col-form-label">
+                    <label class="col-sm-1 col-form-label">
                         项目经理<span class="symbol required"></span></label>
                     </label>
-                    <div class="col-sm-10">
+                    <div class="col-sm-3">
                         <div class="input-group">
                             <input type="hidden" name="userAccountManager"
                                    value="${projectInfo.projectMemberVo.userAccountManager}">
@@ -148,14 +130,11 @@
                         </span>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-inline x-valid">
-                    <label class="col-sm-2 col-form-label">
+
+                    <label class="col-sm-1 col-form-label">
                         项目成员
                     </label>
-                    <div class="col-sm-10">
+                    <div class="col-sm-3">
                         <div class="input-group">
                             <input type="hidden" name="userAccountMember"
                                    value="${projectInfo.projectMemberVo.userAccountMember}">
@@ -176,22 +155,18 @@
                         </button>
                         </span>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-inline x-valid">
-                    <label class="col-sm-2 col-form-label">
-                        执业部门
-                    </label>
-                    <div class="col-sm-10">
-                        <div class="input-group">
-                            <input type="hidden" name="departmentId"
-                                   value="${projectInfo.departmentId}">
-                            <input class='form-control' name="departmentName" required
-                                   readonly="readonly" onclick="objProject.selectDepartment(this);"
-                                   value="${projectInfo.departmentName}">
-                            <span class="input-group-btn">
+
+                        <label class="col-sm-1 col-form-label">
+                            执业部门
+                        </label>
+                        <div class="col-sm-3">
+                            <div class="input-group">
+                                <input type="hidden" name="departmentId"
+                                       value="${projectInfo.departmentId}">
+                                <input class='form-control' name="departmentName" required
+                                       readonly="readonly" onclick="objProject.selectDepartment(this);"
+                                       value="${projectInfo.departmentName}">
+                                <span class="input-group-btn">
                         <button type="button" class="btn btn-default docs-tooltip"
                                 onclick="objProject.selectDepartment(this);"
                                 data-toggle="tooltip"
@@ -204,21 +179,21 @@
                             <i class="fa fa-trash-o"></i>
                         </button>
                         </span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-
         </div>
 
 
         <div class="row form-group">
-            <div class="col-md-4">
+            <div class="col-md-12">
                 <div class="form-inline x-valid">
-                    <label class="col-sm-2 col-form-label">
+                    <label class="col-sm-1 col-form-label">
                         项目合同
                     </label>
-                    <div class="col-sm-10">
+                    <div class="col-sm-3">
                         <div class="input-group">
                             <input type="hidden" name="contractId" value="${projectInfo.contractId}">
                             <input type="text" class="form-control" readonly="readonly" name="contractName"
@@ -239,25 +214,20 @@
                         </span>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-inline x-valid">
-                    <label class="col-sm-2 col-form-label">
+
+                    <label class="col-sm-1 col-form-label">
                         合同金额（单位/元）
                     </label>
-                    <div class="col-sm-10">
-                        <input name="contractPrice" data-rule-number="true" class="form-control input-full" placeholder="合同金额"
+                    <div class="col-sm-3">
+                        <input name="contractPrice" data-rule-number="true" class="form-control input-full"
+                               placeholder="合同金额"
                                value="${projectInfo.contractPrice}"/>
                     </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-inline x-valid">
-                    <label class="col-sm-2 col-form-label">
+
+                    <label class="col-sm-1 col-form-label">
                         评估基准日
                     </label>
-                    <div class="col-sm-10">
+                    <div class="col-sm-3">
                         <input placeholder="评估基准日"
                                name="valuationDate" data-date-format="yyyy-mm-dd"
                                class="form-control input-full date-picker dbdate" readonly="readonly"
@@ -265,44 +235,35 @@
                     </div>
                 </div>
             </div>
-
         </div>
 
         <div class="row form-group">
-            <div class="col-md-4">
+            <div class="col-md-12">
                 <div class="form-inline x-valid">
-                    <label class="col-sm-2 col-form-label">
+                    <label class="col-sm-1 col-form-label">
                         业务来源
                     </label>
-                    <div class="col-sm-10">
-                        <select name="serviceComeFrom" class="form-control input-full search-select select2" required="required">
+                    <div class="col-sm-3">
+                        <select name="serviceComeFrom" class="form-control input-full search-select select2"
+                                required="required">
                         </select>
                     </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-inline x-valid">
-                    <label class="col-sm-2 col-form-label">
+                    <label class="col-sm-1 col-form-label">
                         业务来源说明
                     </label>
-                    <div class="col-sm-10">
-                        <input name="serviceComeFromExplain" class="form-control input-full" placeholder="业务来源说明" value="${projectInfo.serviceComeFromExplain}"/>
+                    <div class="col-sm-3">
+                        <input name="serviceComeFromExplain" class="form-control input-full" placeholder="业务来源说明"
+                               value="${projectInfo.serviceComeFromExplain}"/>
                     </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-inline x-valid">
-                    <label class="col-sm-2 col-form-label">
+                    <label class="col-sm-1 col-form-label">
                         贷款类型
                     </label>
-                    <div class="col-sm-10">
+                    <div class="col-sm-3">
                         <select name="loanType" class="form-control input-full search-select select2 loanType">
                         </select>
                     </div>
                 </div>
             </div>
-
-
         </div>
 
         <div class="row form-group">
@@ -313,19 +274,20 @@
                     </label>
                     <div class="col-sm-11">
                                            <textarea name="remarks"
-                                                     class="form-control input-full" placeholder="项目说明">${projectInfo.remarks}</textarea>
+                                                     class="form-control input-full"
+                                                     placeholder="项目说明">${projectInfo.remarks}</textarea>
 
                     </div>
                 </div>
             </div>
         </div>
         <div class="row form-group">
-            <div class="col-md-4">
+            <div class="col-md-12">
                 <div class="form-inline x-valid">
                     <label class="col-sm-1 control-label">
                         附件
                     </label>
-                    <div class="col-sm-10">
+                    <div class="col-sm-3">
                         <input id="attachmentProjectInfoId" name="attachmentProjectInfoId"
                                placeholder="上传附件" class="form-control input-full" type="file">
                         <div id="_attachmentProjectInfoId"></div>

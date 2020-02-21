@@ -22,20 +22,8 @@
         </div>
         <%@include file="/views/share/main_footer.jsp" %>
     </div>
-
 </div>
 </body>
-
-<%--<div class="container body">
-    <div class="main_container">
-        <div class="right_col" role="main" style="margin-left: 0">
-            <%@include file="/views/share/form_head.jsp" %>
-            <%@include file="/views/share/project/projectInfo.jsp" %>
-            <%@include file="/views/share/form_approval.jsp" %>
-            <%@include file="/views/share/form_log.jsp" %>
-        </div>
-    </div>
-</div>--%>
 </body>
 
 <script type="application/javascript">

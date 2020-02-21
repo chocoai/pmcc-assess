@@ -23,62 +23,32 @@
             <div class="form-horizontal">
                 <input type="hidden" id="projectId" name="id" value="${projectInfo.id}">
                 <div class="row form-group">
-                    <div class="col-md-8">
+                    <div class="col-md-12">
                         <div class="form-inline x-valid">
-                            <label class="col-sm-2 col-form-label">项目名称</label>
-                            <div class="col-sm-10">
+                            <label class="col-sm-1 col-form-label">项目名称</label>
+                            <div class="col-sm-7">
                                 <label class="form-control input-full">${projectInfo.projectName}</label>
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-inline x-valid">
-                            <label class="col-sm-2 col-form-label">紧急程度</label>
-                            <div class="col-sm-10">
+                            <label class="col-sm-1 col-form-label">紧急程度</label>
+                            <div class="col-sm-3">
                                 <label class="form-control input-full">${projectInfo.urgencyName}</label>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="row form-group">
-                    <div class="col-md-4">
+                    <div class="col-md-12">
                         <div class="form-inline x-valid">
-                            <label class="col-sm-2 col-form-label">委托目的</label>
-                            <div class="col-sm-10">
+                            <label class="col-sm-1 col-form-label">委托目的</label>
+                            <div class="col-sm-3">
                                 <label class="form-control input-full">${projectInfo.entrustPurposeName}</label>
                             </div>
-                        </div>
-                    </div>
-                    <%--<div class="form-inline x-valid">--%>
-                    <%--<label class="col-sm-2 col-form-label">委托目的类别</label>--%>
-                    <%--<div class="col-sm-10">--%>
-                    <%--<label class="form-control input-full">${projectInfo.entrustAimTypeName}</label>--%>
-                    <%--</div>--%>
-                    <%--</div>--%>
-                    <%--<div class="form-inline x-valid">--%>
-                    <%--<label class="col-sm-2 col-form-label">委托目的描述</label>--%>
-                    <%--<div class="col-sm-10">--%>
-                    <%--<label class="form-control input-full">${projectInfo.remarkEntrustPurpose}</label></div>--%>
-                    <%--</div>--%>
-                    <%--</div>--%>
-                    <%--<div class="row form-group">--%>
-                    <%--<div class="form-inline x-valid">--%>
-                    <%--<label class="col-sm-2 col-form-label">价值类型</label>--%>
-                    <%--<div class="col-sm-10">--%>
-                    <%--<label class="form-control input-full">${projectInfo.valueTypeName}</label>--%>
-                    <%--</div>--%>
-                    <%--</div>--%>
-                    <div class="col-md-4">
-                        <div class="form-inline x-valid">
-                            <label class="col-sm-2 col-form-label">评估基准日</label>
-                            <div class="col-sm-10">
-                                <label class="form-control input-full"><fmt:formatDate value='${projectInfo.valuationDate}'
-                                                                            pattern='yyyy-MM-dd'/></label>
+                            <label class="col-sm-1 col-form-label">评估基准日</label>
+                            <div class="col-sm-3">
+                                <label class="form-control input-full"><fmt:formatDate
+                                        value='${projectInfo.valuationDate}'
+                                        pattern='yyyy-MM-dd'/></label>
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-inline x-valid">
                             <label class="col-sm-2 col-form-label">执业部门</label>
                             <div class="col-sm-10">
                                 <label class="form-control input-full">${projectInfo.departmentName}</label>
@@ -87,62 +57,46 @@
                     </div>
                 </div>
                 <div class="row form-group">
-                    <div class="col-md-4">
+                    <div class="col-md-12">
                         <div class="form-inline x-valid">
-                            <label class="col-sm-2 col-form-label">评估范围</label>
-                            <div class="col-sm-10">
+                            <label class="col-sm-1 col-form-label">评估范围</label>
+                            <div class="col-sm-3">
                                 <label class="form-control input-full">${projectInfo.propertyScopeName}</label></div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-inline x-valid">
-                            <label class="col-sm-2 col-form-label">评估包括</label>
-                            <div class="col-sm-10">
+                            <label class="col-sm-1 col-form-label">评估包括</label>
+                            <div class="col-sm-3">
                                 <label class="form-control input-full">${projectInfo.scopeInclude}</label></div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-inline x-valid">
-                            <label class="col-sm-2 col-form-label">评估不包括</label>
-                            <div class="col-sm-10">
+                            <label class="col-sm-1 col-form-label">评估不包括</label>
+                            <div class="col-sm-3">
                                 <label class="form-control input-full">${projectInfo.scopeNotInclude}</label></div>
                         </div>
                     </div>
                 </div>
                 <div class="row form-group">
-                    <div class="col-md-4">
+                    <div class="col-md-12">
                         <div class="form-inline x-valid">
-                            <label class="col-sm-2 col-form-label">项目经理</label>
-                            <div class="col-sm-10">
+                            <label class="col-sm-1 col-form-label">项目经理</label>
+                            <div class="col-sm-3">
                                 <label class="form-control input-full">${projectInfo.projectMemberVo.userAccountManagerName}</label>
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-inline x-valid">
-                            <label class="col-sm-2 col-form-label">项目成员</label>
-                            <div class="col-sm-10">
+                            <label class="col-sm-1 col-form-label">项目成员</label>
+                            <div class="col-sm-3">
                                 <label class="form-control input-full">${projectInfo.projectMemberVo.userAccountMemberName}</label>
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-inline x-valid">
-                            <label class="col-sm-2 col-form-label">贷款类型</label>
-                            <div class="col-sm-10">
+                            <label class="col-sm-1 col-form-label">贷款类型</label>
+                            <div class="col-sm-3">
                                 <label class="form-control input-full">${projectInfo.loanTypeName}</label>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="row form-group">
-                    <div class="col-md-4">
+                    <div class="col-md-12">
                         <div class="form-inline x-valid">
-                            <label class="col-sm-2 col-form-label">项目合同</label>
+                            <label class="col-sm-1 col-form-label">项目合同</label>
 
                             <c:if test="${!empty projectInfo.contractId}">
                                 <c:forEach var="item" items="${projectInfo.contractList}">
-                                    <div class="col-sm-10">
+                                    <div class="col-sm-3">
                                         <label class="form-control input-full">
                                             <a href="${sysUrl}/pmcc-contract/contractCurrency/details/${item.key}"
                                                target="_blank">${item.value}</a>
@@ -151,7 +105,7 @@
                                 </c:forEach>
                             </c:if>
                             <c:if test="${empty projectInfo.contractId}">
-                                <div class="col-sm-10">
+                                <div class="col-sm-3">
                                     <div class="input-group">
                                         <input type="hidden" name="contractId" value="${projectInfo.contractId}">
                                         <input type="text" class="form-control" readonly="readonly" name="contractName"
@@ -175,28 +129,20 @@
                             </c:if>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="form-inline x-valid">
-                            <label class="col-sm-2 col-form-label">合同金额</label>
-                            <div class="col-sm-10">
-                                <label class="form-control input-full">${projectInfo.contractPrice}</label>
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 <div class="row form-group">
-                    <div class="col-md-4">
+                    <div class="col-md-12">
                         <div class="form-inline x-valid">
-                            <label class="col-sm-2 col-form-label">业务来源</label>
-                            <div class="col-sm-10">
+                            <label class="col-sm-1 col-form-label">合同金额</label>
+                            <div class="col-sm-3">
+                                <label class="form-control input-full">${projectInfo.contractPrice}</label>
+                            </div>
+                            <label class="col-sm-1 col-form-label">业务来源</label>
+                            <div class="col-sm-3">
                                 <label class="form-control input-full">${projectInfo.serviceComeFromName}</label>
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-inline x-valid">
-                            <label class="col-sm-2 col-form-label">业务来源说明</label>
-                            <div class="col-sm-10">
+                            <label class="col-sm-1 col-form-label">业务来源说明</label>
+                            <div class="col-sm-3">
                                 <label class="form-control input-full">${projectInfo.serviceComeFromExplain}</label>
                             </div>
                         </div>
@@ -213,10 +159,10 @@
                     </div>
                 </div>
                 <div class="row form-group">
-                    <div class="col-md-4">
+                    <div class="col-md-12">
                         <div class="form-inline x-valid">
-                            <label class="col-sm-2 col-form-label">附件</label>
-                            <div class="col-md-10">
+                            <label class="col-sm-1 col-form-label">附件</label>
+                            <div class="col-md-3">
                                 <div id="_attachmentProjectInfoId"></div>
                             </div>
                         </div>
@@ -240,125 +186,106 @@
                 </div>
             </div>
         </div>
-    <div class="card-body">
-        <form class="form-horizontal">
+        <div class="card-body">
+            <form class="form-horizontal">
                 <c:choose>
                     <c:when test="${projectInfo.consignorVo.csType eq 1}">
                         <div class="row form-group">
-                            <div class="col-md-4">
-                            <div class="form-inline x-valid">
-                                <label class="col-sm-2 col-form-label">
-                                    委托单位
-                                </label>
-                                <div class="col-sm-10">
-                                    <label class="form-control input-full">${projectInfo.consignorVo.csEntrustmentUnit}</label>
+                            <div class="col-md-12">
+                                <div class="form-inline x-valid">
+                                    <label class="col-sm-1 col-form-label">
+                                        委托单位
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <label class="form-control input-full">${projectInfo.consignorVo.csEntrustmentUnit}</label>
+                                    </div>
+                                    <label class="col-sm-1 col-form-label">
+                                        法定代表
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <label class="form-control input-full">${projectInfo.consignorVo.csLegalRepresentative}</label>
+                                    </div>
+                                    <label class="col-sm-1 col-form-label">
+                                        社会统一信用代码
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <label class="form-control input-full">${projectInfo.consignorVo.csSociologyCode}</label>
+                                    </div>
                                 </div>
-                            </div>
-                            </div>
-                            <div class="col-md-4">
-                            <div class="form-inline x-valid">
-                                <label class="col-sm-2 col-form-label">
-                                    法定代表
-                                </label>
-                                <div class="col-sm-10">
-                                    <label class="form-control input-full">${projectInfo.consignorVo.csLegalRepresentative}</label>
-                                </div>
-                            </div>
-                            </div>
-                            <div class="col-md-4">
-                            <div class="form-inline x-valid">
-                                <label class="col-sm-2 col-form-label">
-                                    社会统一信用代码
-                                </label>
-                                <div class="col-sm-10">
-                                    <label class="form-control input-full">${projectInfo.consignorVo.csSociologyCode}</label></div>
-                            </div>
                             </div>
                         </div>
                         <div class="row form-group">
-                            <div class="col-md-4">
-                            <div class="form-inline x-valid">
-                                <label class="col-sm-2 col-form-label">
-                                    经营范围
-                                </label>
-                                <div class="col-sm-10">
-                                    <label class="form-control input-full">${projectInfo.consignorVo.csScopeOperation}</label>
+                            <div class="col-md-12">
+                                <div class="form-inline x-valid">
+                                    <label class="col-sm-1 col-form-label">
+                                        经营范围
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <label class="form-control input-full">${projectInfo.consignorVo.csScopeOperation}</label>
+                                    </div>
+                                    <label class="col-sm-1 col-form-label">
+                                        单位地址
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <label class="form-control input-full">${projectInfo.consignorVo.csAddress}</label>
+                                    </div>
+                                    <label class="col-sm-1 col-form-label">
+                                        单位性质
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <label class="form-control input-full">${projectInfo.consignorVo.csUnitPropertiesName}</label>
+                                    </div>
                                 </div>
-                            </div>
-                            </div>
-                            <div class="col-md-4">
-                            <div class="form-inline x-valid">
-                                <label class="col-sm-2 col-form-label">
-                                    单位地址
-                                </label>
-                                <div class="col-sm-10">
-                                    <label class="form-control input-full">${projectInfo.consignorVo.csAddress}</label></div>
-                            </div>
-                            </div>
-                            <div class="col-md-4">
-                            <div class="form-inline x-valid">
-                                <label class="col-sm-2 col-form-label">
-                                    单位性质
-                                </label>
-                                <div class="col-sm-10">
-                                    <label class="form-control input-full">${projectInfo.consignorVo.csUnitPropertiesName}</label>
-                                </div>
-                            </div>
                             </div>
                         </div>
                     </c:when>
                     <c:otherwise>
                         <div class="row form-group">
-                            <div class="col-md-4">
-                            <div class="form-inline x-valid">
-                                <label class="col-sm-2 col-form-label">
-                                    委托姓名
-                                </label>
-                                <div class="col-sm-10">
-                                    <label class="form-control input-full">${projectInfo.consignorVo.csName}</label></div>
-                            </div>
-                            </div>
-                            <div class="col-md-4">
-                            <div class="form-inline x-valid">
-                                <label class="col-sm-2 col-form-label">
-                                    身份证号
-                                </label>
-                                <div class="col-sm-10">
-                                    <label class="form-control input-full">${projectInfo.consignorVo.csIdcard}</label></div>
-                            </div>
-                            </div>
-                            <div class="col-md-4">
-                            <div class="form-inline x-valid">
-                                <label class="col-sm-2 col-form-label">
-                                    委托住址
-                                </label>
-                                <div class="col-sm-10">
-                                    <label class="form-control input-full">${projectInfo.consignorVo.csAddress}</label></div>
-                            </div>
+                            <div class="col-md-12">
+                                <div class="form-inline x-valid">
+                                    <label class="col-sm-1 col-form-label">
+                                        委托姓名
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <label class="form-control input-full">${projectInfo.consignorVo.csName}</label>
+                                    </div>
+                                    <label class="col-sm-1 col-form-label">
+                                        身份证号
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <label class="form-control input-full">${projectInfo.consignorVo.csIdcard}</label>
+                                    </div>
+                                    <label class="col-sm-1 col-form-label">
+                                        委托住址
+                                    </label>
+                                    <div class="col-sm-3">
+                                        <label class="form-control input-full">${projectInfo.consignorVo.csAddress}</label>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </c:otherwise>
                 </c:choose>
                 <div class="row form-group">
-                    <div class="col-md-4">
-                    <div class="form-inline x-valid">
-                        <label class="col-sm-2 col-form-label">
-                            附件
-                        </label>
-                        <div class="col-sm-10">
-                            <div id="_csAttachmentProjectEnclosureId"></div>
+                    <div class="col-md-12">
+                        <div class="form-inline x-valid">
+                            <label class="col-sm-1 col-form-label">
+                                附件
+                            </label>
+                            <div class="col-sm-3">
+                                <div id="_csAttachmentProjectEnclosureId"></div>
+                            </div>
                         </div>
-                    </div>
                     </div>
                 </div>
 
-        </form>
-        <div class="x_title">
-            <h3>联系人</h3>
+            </form>
+            <div class="x_title">
+                <h3>联系人</h3>
+            </div>
+            <table class="table table-bordered" id="CONSIGNOR_TableList">
+            </table>
         </div>
-        <table class="table table-bordered" id="CONSIGNOR_TableList">
-        </table>
-    </div>
     </div>
 </div>
 <div class="col-md-12">
@@ -375,133 +302,108 @@
                 </div>
             </div>
         </div>
-    <div class="card-body">
-        <form class="form-horizontal">
-            <div class="panel-body">
-                <c:choose>
-                    <c:when test="${projectInfo.possessorVo.pType eq 1}">
-                        <div class="row form-group">
-                            <div class="col-md-4">
-                            <div class="form-inline x-valid">
-                                <label class="col-sm-2 col-form-label">
-                                    占有单位
-                                </label>
-                                <div class="col-sm-10">
-                                    <label class="form-control input-full">${projectInfo.possessorVo.pEntrustmentUnit}</label>
+        <div class="card-body">
+            <form class="form-horizontal">
+                <div class="panel-body">
+                    <c:choose>
+                        <c:when test="${projectInfo.possessorVo.pType eq 1}">
+                            <div class="row form-group">
+                                <div class="col-md-12">
+                                    <div class="form-inline x-valid">
+                                        <label class="col-sm-1 col-form-label">
+                                            占有单位
+                                        </label>
+                                        <div class="col-sm-3">
+                                            <label class="form-control input-full">${projectInfo.possessorVo.pEntrustmentUnit}</label>
+                                        </div>
+                                        <label class="col-sm-1 col-form-label">
+                                            占有单位法定代表
+                                        </label>
+                                        <div class="col-sm-3">
+                                            <label class="form-control input-full">${projectInfo.possessorVo.pLegalRepresentative}</label>
+                                        </div>
+                                        <label class="col-sm-1 col-form-label">
+                                            社会统一信用代码
+                                        </label>
+                                        <div class="col-sm-3">
+                                            <label class="form-control input-full">${projectInfo.possessorVo.pSociologyCode}</label>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            </div>
-                            <div class="col-md-4">
-                            <div class="form-inline x-valid">
-                                <label class="col-sm-2 col-form-label">
-                                    占有单位法定代表
-                                </label>
-                                <div class="col-sm-10">
-                                    <label class="form-control input-full">${projectInfo.possessorVo.pLegalRepresentative}</label>
+                            <div class="row form-group">
+                                <div class="col-md-12">
+                                    <div class="form-inline x-valid">
+                                        <label class="col-sm-1 col-form-label">
+                                            经营范围
+                                        </label>
+                                        <div class="col-sm-3">
+                                            <label class="form-control input-full">${projectInfo.possessorVo.pScopeOperation}</label>
+                                        </div>
+                                        <label class="col-sm-1 col-form-label">
+                                            占有单位地址
+                                        </label>
+                                        <div class="col-sm-3">
+                                            <label class="form-control input-full">${projectInfo.possessorVo.pAddress}</label>
+                                        </div>
+                                        <label class="col-sm-1 col-form-label">
+                                            单位性质
+                                        </label>
+                                        <div class="col-sm-3">
+                                            <label class="form-control input-full">${projectInfo.possessorVo.pUnitPropertiesName}</label>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            </div>
-                            <div class="col-md-4">
-                            <div class="form-inline x-valid">
-                                <label class="col-sm-2 col-form-label">
-                                    社会统一信用代码
-                                </label>
-                                <div class="col-sm-10">
-                                    <label class="form-control input-full">${projectInfo.possessorVo.pSociologyCode}</label>
+                        </c:when>
+                        <c:otherwise>
+                            <div class="row form-group">
+                                <div class="col-md-12">
+                                    <div class="form-inline x-valid">
+                                        <label class="col-sm-1 col-form-label">
+                                            占有人姓名
+                                        </label>
+                                        <div class="col-sm-3">
+                                            <label class="form-control input-full">${projectInfo.possessorVo.pName}</label>
+                                        </div>
+                                        <label class="col-sm-1 col-form-label">
+                                            身份证号
+                                        </label>
+                                        <div class="col-sm-3">
+                                            <label class="form-control input-full">${projectInfo.possessorVo.pIdcard}</label>
+                                        </div>
+                                        <label class="col-sm-1 col-form-label">
+                                            占有人住址
+                                        </label>
+                                        <div class="col-sm-3">
+                                            <label class="form-control input-full">${projectInfo.possessorVo.pAddress}</label>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            </div>
-                        </div>
-                        <div class="row form-group">
-                            <div class="col-md-4">
-                            <div class="form-inline x-valid">
-                                <label class="col-sm-2 col-form-label">
-                                    经营范围
-                                </label>
-                                <div class="col-sm-10">
-                                    <label class="form-control input-full">${projectInfo.possessorVo.pScopeOperation}</label>
-                                </div>
-                            </div>
-                            </div>
-                            <div class="col-md-4">
-                            <div class="form-inline x-valid">
-                                <label class="col-sm-2 col-form-label">
-                                    占有单位地址
-                                </label>
-                                <div class="col-sm-10">
-                                    <label class="form-control input-full">${projectInfo.possessorVo.pAddress}</label>
-                                </div>
-                            </div>
-                            </div>
-                            <div class="col-md-4">
-                            <div class="form-inline x-valid">
-                                <label class="col-sm-2 col-form-label">
-                                    单位性质
-                                </label>
-                                <div class="col-sm-10">
-                                    <label class="form-control input-full">${projectInfo.possessorVo.pUnitPropertiesName}</label>
-                                </div>
-                            </div>
-                            </div>
-                        </div>
-                    </c:when>
-                    <c:otherwise>
-                        <div class="row form-group">
-                            <div class="col-md-4">
-                            <div class="form-inline x-valid">
-                                <label class="col-sm-2 col-form-label">
-                                    占有人姓名
-                                </label>
-                                <div class="col-sm-10">
-                                    <label class="form-control input-full">${projectInfo.possessorVo.pName}</label>
-                                </div>
-                            </div>
-                            </div>
-                            <div class="col-md-4">
-                            <div class="form-inline x-valid">
-                                <label class="col-sm-2 col-form-label">
-                                    身份证号
-                                </label>
-                                <div class="col-sm-10">
-                                    <label class="form-control input-full">${projectInfo.possessorVo.pIdcard}</label>
-                                </div>
-                            </div>
-                            </div>
-                            <div class="col-md-4">
-                            <div class="form-inline x-valid">
-                                <label class="col-sm-2 col-form-label">
-                                    占有人住址
-                                </label>
-                                <div class="col-sm-10">
-                                    <label class="form-control input-full">${projectInfo.possessorVo.pAddress}</label>
-                                </div>
-                            </div>
-                            </div>
-                        </div>
-                    </c:otherwise>
-                </c:choose>
+                        </c:otherwise>
+                    </c:choose>
 
-                <div class="row form-group">
-                    <div class="col-md-4">
-                    <div class="form-inline x-valid">
-                        <label class="col-sm-2 col-form-label">
-                            附件
-                        </label>
-                        <div class="col-sm-10">
-                            <div id="_pAttachmentProjectEnclosureId"></div>
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <div class="form-inline x-valid">
+                                <label class="col-sm-1 col-form-label">
+                                    附件
+                                </label>
+                                <div class="col-sm-3">
+                                    <div id="_pAttachmentProjectEnclosureId"></div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
                     </div>
                 </div>
-
+            </form>
+            <div class="x_title">
+                <h3>联系人</h3>
             </div>
-        </form>
-        <div class="x_title">
-            <h3>联系人</h3>
+            <table class="table table-bordered" id="POSSESSOR_TableList">
+            </table>
         </div>
-        <table class="table table-bordered" id="POSSESSOR_TableList">
-        </table>
-    </div>
     </div>
 </div>
 <div class="col-md-12">
@@ -518,121 +420,97 @@
                 </div>
             </div>
         </div>
-    <div class="card-body">
-        <form class="form-horizontal">
-            <div>
-                <div class="row form-group">
-                    <div class="col-md-4">
-                    <div class="form-inline x-valid">
-                        <label class="col-sm-2 col-form-label">
-                            报告使用单位
-                        </label>
-                        <div class="col-sm-10">
-                            <c:choose>
-                                <c:when test="${projectInfo.unitInformationVo.uUseUnitName != null}">
-                                    <label class="form-control input-full">${projectInfo.unitInformationVo.uUseUnitName}</label>
-                                </c:when>
-                                <c:otherwise>
-                                    <label class="form-control input-full">${projectInfo.unitInformationVo.uUseUnit}</label>
-                                </c:otherwise>
-                            </c:choose>
+        <div class="card-body">
+            <form class="form-horizontal">
+                <div>
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <div class="form-inline x-valid">
+                                <label class="col-sm-1 col-form-label">
+                                    报告使用单位
+                                </label>
+                                <div class="col-sm-3">
+                                    <c:choose>
+                                        <c:when test="${projectInfo.unitInformationVo.uUseUnitName != null}">
+                                            <label class="form-control input-full">${projectInfo.unitInformationVo.uUseUnitName}</label>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <label class="form-control input-full">${projectInfo.unitInformationVo.uUseUnit}</label>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </div>
+                                <label class="col-sm-1 col-form-label">
+                                    法定代表人
+                                </label>
+                                <div class="col-sm-3">
+                                    <label class="form-control input-full">${projectInfo.unitInformationVo.uLegalRepresentative}</label>
+                                </div>
+                                <label class="col-sm-1 col-form-label">
+                                    证照号
+                                </label>
+                                <div class="col-sm-3">
+                                    <label class="form-control input-full">${projectInfo.unitInformationVo.uCertificateNumber}</label>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    </div>
-                    <div class="col-md-4">
-                    <div class="form-inline x-valid">
-                        <label class="col-sm-2 col-form-label">
-                            法定代表人
-                        </label>
-                        <div class="col-sm-10">
-                            <label class="form-control input-full">${projectInfo.unitInformationVo.uLegalRepresentative}</label>
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <div class="form-inline x-valid">
+                                <label class="col-sm-1 col-form-label">
+                                    单位性质
+                                </label>
+                                <div class="col-sm-3">
+                                    <label class="form-control input-full">${projectInfo.unitInformationVo.uUnitPropertiesName}</label>
+                                </div>
+                                <label class="col-sm-1 col-form-label">
+                                    经营范围
+                                </label>
+                                <div class="col-sm-3">
+                                    <label class="form-control input-full">${projectInfo.unitInformationVo.uScopeOperation}</label>
+                                </div>
+                                <label class="col-sm-1 col-form-label">
+                                    地址
+                                </label>
+                                <div class="col-sm-3">
+                                    <label class="form-control input-full">${projectInfo.unitInformationVo.uAddress}</label>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    </div>
-                    <div class="col-md-4">
-                    <div class="form-inline x-valid">
-                        <label class="col-sm-2 col-form-label">
-                            证照号
-                        </label>
-                        <div class="col-sm-10">
-                            <label class="form-control input-full">${projectInfo.unitInformationVo.uCertificateNumber}</label>
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <div class="form-inline x-valid" style="display: ${empty projectInfo.unitInformationVo.businessType?'none':'block'}">
+                                <label class="col-sm-1 col-form-label">
+                                    业务类型
+                                </label>
+                                <div class="col-sm-3">
+                                    <label class="form-control input-full">${projectInfo.unitInformationVo.businessType}</label>
+                                </div>
+                            </div>
+                            <label class="col-sm-1 col-form-label">
+                                评估类型
+                            </label>
+                            <div class="col-sm-3">
+                                <label class="form-control input-full">${projectInfo.unitInformationVo.assessType}</label>
+                            </div>
                         </div>
-                    </div>
                     </div>
                 </div>
-
-                <div class="row form-group">
-                    <div class="col-md-4">
-                    <div class="form-inline x-valid">
-                        <label class="col-sm-2 col-form-label">
-                            单位性质
-                        </label>
-                        <div class="col-sm-10">
-                            <label class="form-control input-full">${projectInfo.unitInformationVo.uUnitPropertiesName}</label>
-                        </div>
-                    </div>
-                    </div>
-                    <div class="col-md-4">
-                    <div class="form-inline x-valid">
-                        <label class="col-sm-2 col-form-label">
-                            经营范围
-                        </label>
-                        <div class="col-sm-10">
-                            <label class="form-control input-full">${projectInfo.unitInformationVo.uScopeOperation}</label>
-                        </div>
-                    </div>
-                    </div>
-                    <div class="col-md-4">
-                    <div class="form-inline x-valid">
-                        <label class="col-sm-2 col-form-label">
-                            地址
-                        </label>
-                        <div class="col-sm-10">
-                            <label class="form-control input-full">${projectInfo.unitInformationVo.uAddress}</label>
-                        </div>
-                    </div>
-                    </div>
-                </div>
-
-                <div class="row form-group">
-                    <div class="col-md-4">
-                    <div class="x-valid"
-                         style="display: ${empty projectInfo.unitInformationVo.businessType?'none':'block'}">
-                        <label class="col-sm-2 col-form-label">
-                            业务类型
-                        </label>
-                        <div class="col-sm-10">
-                            <label class="form-control input-full">${projectInfo.unitInformationVo.businessType}</label>
-                        </div>
-                    </div>
-                    </div>
-                    <div class="col-md-4">
-                    <div class="x-valid"
-                         style="display: ${empty projectInfo.unitInformationVo.assessType?'none':'block'}">
-                        <label class="col-sm-2 col-form-label">
-                            评估类型
-                        </label>
-                        <div class="col-sm-10">
-                            <label class="form-control input-full">${projectInfo.unitInformationVo.assessType}</label>
-                        </div>
-                    </div>
-                    </div>
-                </div>
+            </form>
+            <div class="x_title">
+                <h3>联系人
+                    <small>
+                        <button type="button" class="btn btn-xs btn-primary docs-tooltip btn-sm"
+                                onclick="showModelCrmContacts()">
+                            <i class="fa fa-search"></i>查询更多
+                        </button>
+                    </small>
+                </h3>
             </div>
-        </form>
-        <div class="x_title">
-            <h3>联系人
-                <small>
-                    <button type="button" class="btn btn-xs btn-primary docs-tooltip btn-sm"
-                            onclick="showModelCrmContacts()">
-                        <i class="fa fa-search"></i>查询更多
-                    </button>
-                </small>
-            </h3>
+            <table class="table table-bordered" id="UNIT_INFORMATION_TableList">
+            </table>
         </div>
-        <table class="table table-bordered" id="UNIT_INFORMATION_TableList">
-        </table>
-    </div>
     </div>
 </div>
 <script src="/pmcc-contract/js/cms_contract_utils.js?v=${assessVersion}"></script>
@@ -814,10 +692,10 @@
                                     <div class="col-md-4">
 
                                         <div class="form-inline x-valid">
-                                                <button type="button" onclick="findCRMContacts(this)"
-                                                       class="btn btn-success btn-sm" value="查询">
-                                                    查询
-                                                </button>
+                                            <button type="button" onclick="findCRMContacts(this)"
+                                                    class="btn btn-success btn-sm" value="查询">
+                                                查询
+                                            </button>
                                         </div>
 
                                     </div>

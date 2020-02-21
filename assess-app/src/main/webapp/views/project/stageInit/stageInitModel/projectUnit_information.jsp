@@ -5,12 +5,12 @@
         <input type="hidden" name="id" value="${projectInfo.unitInformationVo.id}">
         <div>
             <div class="row form-group">
-                <div class="col-md-4">
+                <div class="col-md-12">
                     <div class="form-inline x-valid">
-                        <label class="col-sm-2 col-form-label">
+                        <label class="col-sm-1 col-form-label">
                             单位<span class="symbol required"></span>
                         </label>
-                        <div class="col-sm-10">
+                        <div class="col-sm-3">
                             <div class="input-group">
                                 <input type="hidden" name="uUseUnit"
                                        value="${projectInfo.unitInformationVo.uUseUnit}">
@@ -25,26 +25,18 @@
                             </span>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-inline x-valid">
-                        <label class="col-sm-2 col-form-label">
+                        <label class="col-sm-1 col-form-label">
                             法定代表人<span class="symbol required"></span>
                         </label>
-                        <div class="col-sm-10">
+                        <div class="col-sm-3">
                             <input type="text" name="uLegalRepresentative"
                                    value="${projectInfo.unitInformationVo.uLegalRepresentative}"
                                    class="form-control input-full" required="required">
                         </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-inline x-valid">
-                        <label class="col-sm-2 col-form-label">
+                        <label class="col-sm-1 col-form-label">
                             证照号<span class="symbol required"></span>
                         </label>
-                        <div class="col-sm-10">
+                        <div class="col-sm-3">
                             <input type="text" name="uCertificateNumber"
                                    value="${projectInfo.unitInformationVo.uCertificateNumber}"
                                    class="form-control input-full" required="required">
@@ -54,12 +46,12 @@
             </div>
 
             <div class="row form-group">
-                <div class="col-md-4">
+                <div class="col-md-12">
                     <div class="form-inline x-valid">
-                        <label class="col-sm-2 col-form-label">
+                        <label class="col-sm-1 col-form-label">
                             单位性质<span class="symbol required"></span>
                         </label>
-                        <div class="col-sm-10">
+                        <div class="col-sm-3">
                             <select name="uUnitProperties" class="form-control input-full"
                                     required>
                                 <c:forEach items="${ProjectAFFILIATED}" var="item">
@@ -75,26 +67,18 @@
                                 </c:forEach>
                             </select>
                         </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-inline x-valid">
-                        <label class="col-sm-2 col-form-label">
+                        <label class="col-sm-1 col-form-label">
                             经营范围<span class="symbol required"></span>
                         </label>
-                        <div class="col-sm-10">
+                        <div class="col-sm-3">
                             <input type="text" name="uScopeOperation"
                                    value="${projectInfo.unitInformationVo.uScopeOperation}"
                                    class="form-control input-full" required="required">
                         </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-inline x-valid">
-                        <label class="col-sm-2 col-form-label">
+                        <label class="col-sm-1 col-form-label">
                             地址<span class="symbol required"></span>
                         </label>
-                        <div class="col-sm-10">
+                        <div class="col-sm-3">
                             <input type="text" name="uAddress"
                                    value="${projectInfo.unitInformationVo.uAddress}"
                                    class="form-control input-full" required="required">
@@ -104,13 +88,13 @@
             </div>
 
             <div class="row form-group">
-                <div class="col-md-4" id="businessType"
+                <div class="col-md-12" id="businessType"
                      style="display: ${empty projectInfo.unitInformationVo.businessType?'none':'block'}">
                     <div class="form-inline x-valid">
-                        <label class="col-sm-2 col-form-label">
+                        <label class="col-sm-1 col-form-label">
                             业务类型<span class="symbol required"></span>
                         </label>
-                        <div class="col-sm-10">
+                        <div class="col-sm-3">
                             <select name="businessType" required="required" class="form-control input-full businessType">
                                 <c:if test="${projectInfo.unitInformationVo.businessType != null}">
                                     <option value="${projectInfo.unitInformationVo.businessType}"
@@ -118,15 +102,10 @@
                                 </c:if>
                             </select>
                         </div>
-                    </div>
-                </div>
-                <div class="col-md-4" id="assessType"
-                     style="display: ${empty projectInfo.unitInformationVo.assessType?'none':'block'}">
-                    <div class="form-inline x-valid">
-                        <label class="col-sm-2 col-form-label">
+                        <label class="col-sm-1 col-form-label">
                             评估类型<span class="symbol required"></span>
                         </label>
-                        <div class="col-sm-10">
+                        <div class="col-sm-3">
                             <select name="assessType" required="required" class="form-control input-full  assessType">
                                 <c:if test="${projectInfo.unitInformationVo.assessType != null}">
                                     <option value="${projectInfo.unitInformationVo.assessType}"
@@ -136,7 +115,6 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </form>
@@ -201,31 +179,3 @@
         </div>
     </div>
 </div>
-
-
-<%--
-<div id="divBoxUNIT_INFORMATIONContacts" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
-     role="dialog"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">客户经理</h3>
-            </div>
-            <form id="frmUNIT_INFORMATIONContacts" class="form-horizontal">
-                <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-default">
-                        取消
-                    </button>
-                    <button type="button" class="btn btn-primary"
-                            onclick="objProject.unit_information.saveContact()">
-                        保存
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
---%>

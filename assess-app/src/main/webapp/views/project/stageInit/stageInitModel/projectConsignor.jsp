@@ -6,7 +6,7 @@
     <form id="frm_consignor" class="form-horizontal" enctype="multipart/form-data">
         <input type="hidden" name="id" value="${projectInfo.consignorVo.id}">
         <div class="row form-group">
-            <div class="col-md-6">
+            <div class="col-md-12">
 
                 <div class="col-sm-10">
                         <span class="radio-inline">
@@ -26,36 +26,28 @@
 
         <div id="consignor_tab_unit">
             <div class="row form-group">
-                <div class="col-md-4">
+                <div class="col-md-12">
                     <div class="form-inline x-valid">
-                        <label class="col-sm-2 col-form-label">
+                        <label class="col-sm-1 col-form-label">
                             单位<span class="symbol required"></span>
                         </label>
-                        <div class="col-sm-10">
+                        <div class="col-sm-3">
                             <input type="text" name="csEntrustmentUnit"
                                    placeholder="单位" class="form-control input-full" required="required"
                                    value="${projectInfo.consignorVo.csEntrustmentUnit}">
                         </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-inline x-valid">
-                        <label class="col-sm-2 col-form-label">
+                        <label class="col-sm-1 col-form-label">
                             法定代表<span class="symbol required"></span>
                         </label>
-                        <div class="col-sm-10">
+                        <div class="col-sm-3">
                             <input type="text" name="csLegalRepresentative" placeholder="法定代表人"
                                    class="form-control input-full" required="required"
                                    value="${projectInfo.consignorVo.csLegalRepresentative}">
                         </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-inline x-valid">
-                        <label class="col-sm-2 col-form-label">
+                        <label class="col-sm-1 col-form-label">
                             社会统一信用代码<span class="symbol required"></span>
                         </label>
-                        <div class="col-sm-10">
+                        <div class="col-sm-3">
                             <input type="text" name="csSociologyCode"
                                    value="${projectInfo.consignorVo.csSociologyCode}"
                                    placeholder="社会统一信用代码" class="form-control input-full" name="number"
@@ -63,39 +55,30 @@
                         </div>
                     </div>
                 </div>
-
             </div>
             <div class="row form-group">
-                <div class="col-md-4">
+                <div class="col-md-12">
                     <div class="form-inline x-valid">
-                        <label class="col-sm-2 col-form-label">
+                        <label class="col-sm-1 col-form-label">
                             经营范围<span class="symbol required"></span>
                         </label>
-                        <div class="col-sm-10">
+                        <div class="col-sm-3">
                             <input type="text" name="csScopeOperation"
                                    placeholder="经营范围" class="form-control input-full" required="required"
                                    value="${projectInfo.consignorVo.csScopeOperation}">
                         </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-inline x-valid">
-                        <label class="col-sm-2 col-form-label">
+                        <label class="col-sm-1 col-form-label">
                             单位地址<span class="symbol required"></span>
                         </label>
-                        <div class="col-sm-10">
+                        <div class="col-sm-3">
                             <input type="text" name="csAddress" placeholder="单位地址"
                                    class="form-control input-full" required="required"
                                    value="${projectInfo.consignorVo.csAddress}">
                         </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-inline x-valid">
-                        <label class="col-sm-2 col-form-label">
+                        <label class="col-sm-1 col-form-label">
                             单位性质<span class="symbol required"></span>
                         </label>
-                        <div class="col-sm-10">
+                        <div class="col-sm-3">
                             <select class="form-control input-full" name="csUnitProperties"
                                     required>
                                 <c:forEach items="${ProjectAFFILIATED}" var="item">
@@ -113,41 +96,32 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
         <div id="consignor_tab" style="display: none;">
             <div class="row form-group">
-                <div class="col-md-4">
+                <div class="col-md-12">
                     <div class="form-inline x-valid">
-                        <label class="col-sm-2 col-form-label">
+                        <label class="col-sm-1 col-form-label">
                             姓名<span class="symbol required"></span>
                         </label>
-                        <div class="col-sm-10">
+                        <div class="col-sm-3">
                             <input type="text" name="csName" placeholder="姓名"
                                    value="${projectInfo.consignorVo.csName}" class="form-control input-full"
                                    required="required">
                         </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-inline x-valid">
-                        <label class="col-sm-2 col-form-label">
+                        <label class="col-sm-1 col-form-label">
                             身份证号<span class="symbol required"></span>
                         </label>
-                        <div class="col-sm-10">
+                        <div class="col-sm-3">
                             <input type="text" name="csIdcard" placeholder="身份证号"
                                    value="${projectInfo.consignorVo.csIdcard}" class="form-control input-full"
                                    required="required">
                         </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-inline x-valid">
-                        <label class="col-sm-2 col-form-label">
+                        <label class="col-sm-1 col-form-label">
                             住址<span class="symbol required"></span>
                         </label>
-                        <div class="col-sm-10">
+                        <div class="col-sm-3">
                             <input type="text" name="csAddress"
                                    value="${projectInfo.consignorVo.csAddress}" class="form-control input-full">
                         </div>
@@ -157,12 +131,12 @@
 
         </div>
         <div class="row form-group">
-            <div class="col-md-4">
+            <div class="col-md-12">
                 <div class="form-inline x-valid">
-                    <label class="col-sm-2 col-form-label">
+                    <label class="col-sm-1 col-form-label">
                         附件
                     </label>
-                    <div class="col-sm-4">
+                    <div class="col-sm-3">
                         <input type="file" name="csAttachmentProjectEnclosureId"
                                id="csAttachmentProjectEnclosureId" placeholder="上传附件"
                                class="form-control input-full" required="required">
@@ -203,12 +177,8 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
             </div>
-
-
             <form name="frmConsignorContacts" id="frmConsignorContacts" class="form-horizontal">
-
             </form>
-
             <div class="modal-footer">
                 <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
                     关闭
@@ -221,29 +191,3 @@
         </div>
     </div>
 </div>
-
-<%--
-<div id="divBoxConsignorContacts" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
-     role="dialog"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">联系人</h3>
-            </div>
-            <form name="frmConsignorContacts" id="frmConsignorContacts" class="form-horizontal">
-                <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-default">
-                        取消
-                    </button>
-                    <button type="button" class="btn btn-primary" onclick="objProject.consignor.saveContact()">
-                        保存
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
---%>

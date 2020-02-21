@@ -1,18 +1,29 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<div class="col-md-3 left_col">
-    <div class="left_col scroll-view">
-        <div class="navbar nav_title" style="border: 0;">
-            <span class="site_title" onclick="openProjectInfoUrl();" style="cursor: pointer">
-                项目阶段
-            </span>
+<div class="main-header">
+
+
+    <!-- Navbar Header -->
+    <nav class="navbar navbar-header navbar-expand-lg" data-background-color="blue2">
+
+        <div class="container-fluid">
+            <div class="collapse" id="search-nav">
+                <h3 style="color: #ffffff">
+                    <a class="tooltips" data-placement="bottom" data-original-title="返回系统首页"
+                       href="${pageContext.request.contextPath}/home/main"><i class="fas fa-home"></i></a>
+                    <span class="label label-warning">${projectInfo.projectStatus}</span>${projectInfo.projectName}</h3>
+            </div>
         </div>
-        <div class="clearfix"></div>
-        <br>
-        <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
-            <div class="menu_section">
-                <ul class="nav side-menu">
+    </nav>
+    <!-- End Navbar -->
+</div>
+<div class="sidebar sidebar-style-2">
+    <div class="scroll-wrapper sidebar-wrapper scrollbar scrollbar-inner" style="position: relative;">
+        <div class="sidebar-wrapper scrollbar scrollbar-inner scroll-content"
+             style="height: 2813px; margin-bottom: 0px; margin-right: 0px; max-height: none;">
+            <div class="sidebar-content">
+                <ul class="nav nav-primary">
                     <c:forEach items="${projectPlanList}" var="projectPlan">
-                        <li>
+                        <li class="nav-item">
                             <a href="${pageContext.request.contextPath}/projectCenter/projectStageInfo/${projectInfo.id}/${projectPlan.workStageId}">
                                 <c:choose>
                                     <c:when test="${projectPlan.projectStatus eq 'finish'}">
@@ -32,27 +43,20 @@
                 </ul>
             </div>
         </div>
+        <div class="scroll-element scroll-x">
+            <div class="scroll-element_outer">
+                <div class="scroll-element_size"></div>
+                <div class="scroll-element_track"></div>
+                <div class="scroll-bar ui-draggable ui-draggable-handle" style="width: 100px;"></div>
+            </div>
+        </div>
+        <div class="scroll-element scroll-y">
+            <div class="scroll-element_outer">
+                <div class="scroll-element_size"></div>
+                <div class="scroll-element_track"></div>
+                <div class="scroll-bar ui-draggable ui-draggable-handle" style="height: 100px;"></div>
+            </div>
+        </div>
     </div>
 </div>
-<div class="top_nav" id="pmcc_head">
-    <div class="nav_menu">
-        <nav>
-            <div class="nav toggle">
-                <h3><a id="menu_toggle"><i class="fa fa-bars"></i></a>
-                    <strong onclick="openProjectInfoUrl();" style="cursor: pointer">${projectInfo.projectName}</strong>
-                    <span class="label label-info">${projectInfo.projectStatus}</span>
-                </h3></div>
-            <ul class="nav navbar-nav navbar-right">
-                <li>
-                    <a class="dropdown-toggle" href="${pageContext.request.contextPath}/home/main"><i class="fa fa-home tooltips " style="font-size: 26px" data-placement="bottom" data-original-title="首页"></i>${sysUserDto.userName}</a>
-                </li>
-            </ul>
-        </nav>
-    </div>
-</div>
-<script type="text/javascript">
-    function openProjectInfoUrl() {
-        window.location.href = '${pageContext.request.contextPath}/projectCenter/projectInfo?projectId=${projectInfo.id}';
-    }
-</script>
 

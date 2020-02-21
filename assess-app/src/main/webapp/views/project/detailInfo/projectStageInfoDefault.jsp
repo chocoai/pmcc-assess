@@ -22,17 +22,6 @@
     </div>
 
 </div>
-
-<%--<div class="container body">
-    <div class="main_container">
-        <%@include file="./projectNavigation.jsp" %>
-        <div class="right_col" role="main">
-            <%@include file="/views/share/project/projectInfoSimple.jsp" %>
-            <%@include file="./projectStagePlan.jsp" %>
-            <%@include file="/views/share/form_details.jsp" %>
-        </div>
-    </div>
-</div>--%>
 </body>
 
 </html>

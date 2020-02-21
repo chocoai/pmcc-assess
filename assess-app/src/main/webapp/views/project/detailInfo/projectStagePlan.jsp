@@ -5,7 +5,6 @@
         .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
             word-break: break-all;
         }
-
         .table > thead > tr > th:nth-child(4) {
             width: 200px;
         }

@@ -96,14 +96,15 @@
                                                     onclick="selectDepartment(this)" readonly="readonly"/>
                                         </div>
                                         <label class="col-md-1 col-form-label">委托人</label>
-                                        <div class="col-md-2 p-0">
-                                            <div class="input-group">
-                                                <span class="input-group-addon">
-                                                    <input type="radio"  name="queryConsignorType" value="0">自然人
-                                                    <input type="radio" checked="checked" name="queryConsignorType" value="1">法人
-                                                </span>
-                                                <input type="text"  placeholder="委托人" class="form-control input-full" name="queryConsignor">
-                                            </div>
+                                        <div class="col-md-1 p-0">
+                                            <select name="queryConsignorType" class="form-control input-full">
+                                                <option value="">--请选择--</option>
+                                                <option value="0">自然人</option>
+                                                <option value="1">法人</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-1 p-0">
+                                            <input type="text"  placeholder="委托人" class="form-control input-full" name="queryConsignor">
                                         </div>
                                         <button style="margin-left: 10px" class="btn btn-info  btn-sm" type="button"
                                                 onclick="loadParticipationList()">
@@ -174,13 +175,8 @@
         cols.push({field: 'loanTypeName', title: '贷款类型',width:'5%'});
         cols.push({
             field: 'finishPre', title: '项目进度',width:'10%', formatter: function (value, row, index) {
-                var s = "<div class='progress progress_sm' style='margin-bottom: 0px;'>";
-                if (value == "100") {
-                    s += "<div class='progress-bar progress-bar-success' role='progressbar'  style='width: " + value + "%;'></div>";
-                }
-                else {
-                    s += "<div class='progress-bar progress-bar-warning' role='progressbar'  style='width: " + value + "%;'></div>";
-                }
+                var s = "<div class='progress progress-sm' style='margin-bottom: 0px;'>";
+                s += "<div class='progress-bar bg-success' role='progressbar'  style='width: " + value + "%;'></div>";
                 s += "</div>";
                 s += "<small>完成" + value + "%</small>";
                 return s;
