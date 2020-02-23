@@ -757,7 +757,7 @@
                                                 <button type="button" class="btn btn-default docs-tooltip"
                                                         onclick="$(this).closest('.input-group').find('input').val('');"
                                                         data-toggle="tooltip" data-original-title="清除">
-                                                <i class="fa fa-trash-o"></i>
+                                                <i class="fa fa-minus"></i>
                                                 </button>
                                             </span>
                                                 </div>
@@ -869,7 +869,7 @@
                                                 <button type="button" class="btn btn-default docs-tooltip"
                                                         onclick="$(this).closest('.input-group').find('input').val('');"
                                                         data-toggle="tooltip" data-original-title="清除">
-                                                <i class="fa fa-trash-o"></i>
+                                                <i class="fa fa-minus"></i>
                                                 </button>
                                             </span>
                                             </div>

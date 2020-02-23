@@ -5,43 +5,62 @@
     <%@include file="/views/share/main_css.jsp" %>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/tree-grid/css/jquery.treegrid.css">
 </head>
-<body class="nav-md footer_fixed">
-<div class="container body">
-    <div class="main_container">
-        <div class="right_col" role="main" style="margin-left: 0">
+<body>
+<div class="wrapper">
+    <div class="main-panel" style="width: 100%">
+        <div class="content" style="margin-top: 0px;">
             <%@include file="/views/share/form_head.jsp" %>
-            <%@include file="/views/share/project/projectInfoSimple.jsp" %>
-            <%@include file="/views/share/project/projectPlanDetails.jsp" %>
+            <div class="page-inner mt--5">
+                <div class="row mt--2">
+                    <%@include file="/views/share/project/projectInfoSimple.jsp" %>
+                    <%@include file="/views/share/project/projectPlanDetails.jsp" %>
 
 
+                    <div class="col-md-12">
+                        <div class="card full-height">
+                            <div class="card-header collapse-link">
+                                <div class="card-head-row">
+                                    <div class="card-title">
+                                        申报分组
+                                    </div>
+                                    <div class="card-tools">
+                                        <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                                                class="fa fa-angle-down"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <form id="declareApplyForm">
 
-            <div class="x_panel">
-                <div class="x_content form-horizontal">
-                    <form class="form-horizontal" id="declareApplyForm">
+                                    <input type="hidden" name="id" value="${declare.id}">
+                                    <input type="hidden" name="planDetailsId" value="${projectPlanDetails.id}">
+                                    <input type="hidden" name="projectId" value="${projectPlanDetails.projectId}">
 
-                        <input type="hidden" name="id" value="${declare.id}">
-                        <input type="hidden" name="planDetailsId" value="${projectPlanDetails.id}">
-                        <input type="hidden" name="projectId" value="${projectPlanDetails.projectId}">
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <table id="tb_project_declare_group_table" class="table table-bordered">
+                                            </table>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
 
-                    </form>
+                    <%@include file="/views/share/form_approval.jsp" %>
+                    <%@include file="/views/share/form_log.jsp" %>
                 </div>
             </div>
-
-
-            <div class="x_panel">
-                <div class="x_content">
-                    <table id="tb_project_declare_group_table" class="table table-bordered">
-                    </table>
-                </div>
-            </div>
-            <%@include file="/views/share/form_approval.jsp" %>
-            <%@include file="/views/share/form_log.jsp" %>
         </div>
+        <%@include file="/views/share/main_footer.jsp" %>
     </div>
+
 </div>
+
+
 </body>
 
-<%@include file="/views/share/main_footer.jsp" %>
 <script>
 
 

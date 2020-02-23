@@ -13,6 +13,94 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
+                <h4 class="modal-title">权证选择控件</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+
+            <div class="modal-body">
+                <form id="frmFather" class="form-horizontal">
+                    <input type="hidden" id="id" name="id">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1 control-label">坐落</label>
+                                            <div class="col-sm-3">
+                                                <input class="form-control input-full" type="text" name="seat"
+                                                       placeholder="坐落">
+                                            </div>
+                                            <label class="col-sm-1 control-label">楼栋号</label>
+                                            <div class="col-sm-3">
+                                                <input class="form-control input-full" type="text" name="buildingNumber"
+                                                       placeholder="楼栋号">
+                                            </div>
+                                            <label class="col-sm-1 control-label">单元号</label>
+                                            <div class="col-sm-3">
+                                                <input class="form-control input-full" type="text" name="unit"
+                                                       placeholder="单元号">
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1 control-label">权证号</label>
+                                            <div class="col-sm-3">
+                                                <input class="form-control input-full" type="text" name="name"
+                                                       placeholder="权证号">
+                                            </div>
+                                            <button style="margin-left: 10px" class="btn btn-info  btn-sm" type="button"
+                                                    onclick="declareRecordModeObj.searchData(this)">
+											<span class="btn-label">
+												<i class="fa fa-search"></i>
+											</span>
+                                                搜索
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="col-sm-12">
+                                            <table class="table table-bordered" id="boxDeclareRecordModeObjList">
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="declareRecordModeObj.select()">
+                    确定
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<%--
+<div id="boxDeclareRecordModeObj" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
                 <h3 class="modal-title">权证选择控件</h3>
@@ -24,23 +112,23 @@
                             <div class="form-horizontal">
                                 <div class="form-group">
                                     <div class="x-valid">
-                                        <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">坐落</label>
-                                        <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                                            <input class="form-control" type="text" name="seat"
+                                        <label class="col-sm-1 control-label">坐落</label>
+                                        <div class="col-sm-2">
+                                            <input class="form-control input-full" type="text" name="seat"
                                                    placeholder="坐落">
                                         </div>
                                     </div>
                                     <div class="x-valid">
-                                        <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">楼栋号</label>
-                                        <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                                            <input class="form-control" type="text" name="buildingNumber"
+                                        <label class="col-sm-1 control-label">楼栋号</label>
+                                        <div class="col-sm-2">
+                                            <input class="form-control input-full" type="text" name="buildingNumber"
                                                    placeholder="楼栋号">
                                         </div>
                                     </div>
                                     <div class="x-valid">
-                                        <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">单元号</label>
-                                        <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                                            <input class="form-control" type="text" name="unit"
+                                        <label class="col-sm-1 control-label">单元号</label>
+                                        <div class="col-sm-2">
+                                            <input class="form-control input-full" type="text" name="unit"
                                                    placeholder="单元号">
                                         </div>
                                     </div>
@@ -48,7 +136,7 @@
                                         <div class="x-valid">
                                             <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                                                 <div class="input-group">
-                                                    <input class="form-control" type="text" name="name"
+                                                    <input class="form-control input-full" type="text" name="name"
                                                            placeholder="权证号">
                                                     <span class="input-group-addon"
                                                           onclick="declareRecordModeObj.searchData(this);">搜索<i
@@ -80,6 +168,7 @@
         </div>
     </div>
 </div>
+--%>
 
 <script type="text/javascript">
 
@@ -154,12 +243,12 @@
                 box.modal('hide');
             }
         } else {
-            Alert("至少选择一个");
+            notifyInfo("至少选择一个");
         }
     };
 
     declareRecordModeObj.searchData = function (_this) {
-        var group = $(_this).closest(".form-group");
+        var group = $(_this).closest(".card-body");
 //        var province = group.find("select[name='province']").val();
 //        var city = group.find("select[name='city']").val();
 //        var district = group.find("select[name='district']").val();

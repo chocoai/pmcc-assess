@@ -13,41 +13,44 @@
         <input type="hidden" name="quoteId" value="${basicHouse.quoteId}">
         <input type="hidden" name="estateId" value="${basicHouse.estateId}">
         <input type="hidden" name="buildingId" value="${basicHouse.buildingId}">
-        <div class="form-group">
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">房号<span
-                        class="symbol required"></span></label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text" required placeholder="房号" name="houseNumber"
-                           class="form-control" value="${basicHouse.houseNumber}" id="txt_House_search">
-                </div>
-            </div>
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">所在楼层<span
-                        class="symbol required"></span></label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text" placeholder="所在楼层" name="floor" required
-                           class="form-control" value="${basicHouse.floor}">
-                </div>
-            </div>
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">楼层描述</label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text" class="form-control" name="floorDesc" value="${basicHouse.floorDesc}">
-                </div>
-            </div>
-        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card-body">
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                        <div class="form-inline x-valid">
+                            <label class="col-sm-1">房号<span
+                                    class="symbol required"></span></label>
+                            <div class="col-sm-3">
+                                <input type="text" required placeholder="房号" name="houseNumber"
+                                       class="form-control input-full" value="${basicHouse.houseNumber}" id="txt_House_search">
+                            </div>
+                            <label class="col-sm-1">所在楼层<span
+                                    class="symbol required"></span></label>
+                            <div class="col-sm-3">
+                                <input type="text" placeholder="所在楼层" name="floor" required
+                                       class="form-control input-full" value="${basicHouse.floor}">
+                            </div>
+                            <label class="col-sm-1">楼层描述</label>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control input-full" name="floorDesc"
+                                       value="${basicHouse.floorDesc}">
+                            </div>
+                        </div>
+                        </div>
+                    </div>
 
-        <div class="form-group">
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">户型(开发商)</label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <div class="input-group">
-                        <input type="hidden" name="huxingId" value="${basicHouse.huxingId}">
-                        <input type="text" readonly="readonly" onclick="houseCommon.selectHuxing(this);"
-                               placeholder="户型" class="form-control" name="huxingName"
-                               value="${basicHouse.huxingName}">
-                        <span class="input-group-btn">
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                        <div class="form-inline x-valid">
+                            <label class="col-sm-1">户型(开发商)</label>
+                            <div class="col-sm-3">
+                                <div class="input-group">
+                                    <input type="hidden" name="huxingId" value="${basicHouse.huxingId}">
+                                    <input type="text" readonly="readonly" onclick="houseCommon.selectHuxing(this);"
+                                           placeholder="户型" class="form-control" name="huxingName"
+                                           value="${basicHouse.huxingName}">
+                                    <span class="input-group-btn">
                         <button type="button" class="btn btn-default docs-tooltip"
                                 data-toggle="tooltip"
                                 data-original-title="选择"
@@ -57,31 +60,29 @@
                         <button type="button" class="btn btn-default docs-tooltip"
                                 onclick="$(this).closest('.input-group').find('input').val('');"
                                 data-toggle="tooltip" data-original-title="清除">
-                        <i class="fa fa-trash-o"></i>
+                        <i class="fa fa-minus"></i>
                         </button>
                         </span>
+                                </div>
+                            </div>
+                            <label class="col-sm-1">户型图(开发商)</label>
+                            <div class="col-sm-3">
+                                <div id="_house_huxing_plan"></div>
+                            </div>
+                        </div>
+
+                        </div>
                     </div>
-                </div>
-            </div>
-
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">户型图(开发商)</label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <div id="_house_huxing_plan"></div>
-                </div>
-            </div>
-
-
-        </div>
-        <div class="form-group">
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">户型(装修)</label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                <div class="input-group">
-                    <input type="hidden"  name="huxingData" value="${basicHouse.huxingData}">
-                    <input type="text" placeholder="户型(装修)" name="newHuxingName"
-                           class="form-control" value="${basicHouse.newHuxingName}">
-                    <span class="input-group-btn">
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                        <div class="form-inline x-valid">
+                            <label class="col-sm-1">户型(装修)</label>
+                            <div class="col-sm-3">
+                                <div class="input-group">
+                                    <input type="hidden" name="huxingData" value="${basicHouse.huxingData}">
+                                    <input type="text" placeholder="户型(装修)" name="newHuxingName"
+                                           class="form-control" value="${basicHouse.newHuxingName}">
+                                    <span class="input-group-btn">
                         <button type="button" class="btn btn-default docs-tooltip"
                                 data-toggle="tooltip"
                                 data-original-title="编辑"
@@ -89,152 +90,149 @@
                              <i class="fa fa-edit"></i>
                         </button>
                         </span>
-                </div>
-                </div>
-            </div>
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">户型图(装修)</label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input id="house_new_huxing_plan" placeholder="上传附件" class="form-control" type="file">
-                    <div id="_house_new_huxing_plan"></div>
-                </div>
-            </div>
-            <div class="x-valid">
-                <div class=" col-xs-31  col-sm-31  col-md-31  col-lg-31  col-sm-offset-1">
-                    <input type="hidden" name="mapId" value="${basicHouse.mapId}">
-                    <div class="btn btn-success" onclick="houseCommon.orientationFun(false)">户型图朝向</div>
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">面积</label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text" placeholder="面积" name="area" data-rule-number="true"
-                           class="form-control" value="${basicHouse.area}">
-                </div>
-            </div>
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">面积描述</label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text" data-rule-maxlength="255" placeholder="面积描述"
-                           name="areaDesc" class="form-control" value="${basicHouse.areaDesc}">
-                </div>
-            </div>
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">调查方式<span
-                        class="symbol required"></span></label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <select class="form-control search-select select2 researchType" name="researchType" required>
-                    </select>
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                    证载用途<span class="symbol required"></span>
-                </label>
-                <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                    <div class="input-group">
-                        <input type="text" name="certUse" list="certUseList" value="${basicHouse.certUse}"
-                               class="form-control">
-                        <datalist id="certUseList">
+                                </div>
+                            </div>
+                            <label class="col-sm-1">户型图(装修)</label>
+                            <div class="col-sm-3">
+                                <input id="house_new_huxing_plan" placeholder="上传附件" class="form-control input-full" type="file">
+                                <div id="_house_new_huxing_plan"></div>
+                            </div>
+                            <div class=" col-xs-31  col-sm-31  col-md-31  col-lg-31  col-sm-offset-1">
+                                <input type="hidden" name="mapId" value="${basicHouse.mapId}">
+                                <div class="btn btn-success btn-sm" onclick="houseCommon.orientationFun(false)">户型图朝向</div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                        <div class="form-inline x-valid">
+                            <label class="col-sm-1">面积</label>
+                            <div class="col-sm-3">
+                                <input type="text" placeholder="面积" name="area" data-rule-number="true"
+                                       class="form-control input-full" value="${basicHouse.area}">
+                            </div>
+                            <label class="col-sm-1">面积描述</label>
+                            <div class="col-sm-3">
+                                <input type="text" data-rule-maxlength="255" placeholder="面积描述"
+                                       name="areaDesc" class="form-control input-full" value="${basicHouse.areaDesc}">
+                            </div>
+                            <label class="col-sm-1">调查方式<span
+                                    class="symbol required"></span></label>
+                            <div class="col-sm-3">
+                                <select class="form-control input-full search-select select2 researchType" name="researchType"
+                                        required>
+                                </select>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                        <div class="form-inline x-valid">
+                            <label class="col-sm-1">
+                                证载用途<span class="symbol required"></span>
+                            </label>
+                            <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                                <div class="input-group">
+                                    <input type="text" name="certUse" list="certUseList" value="${basicHouse.certUse}"
+                                           class="form-control">
+                                    <datalist id="certUseList">
 
-                        </datalist>
-                        <span class="input-group-btn">
+                                    </datalist>
+                                    <span class="input-group-btn">
                                                 <button type="button" class="btn btn-default docs-tooltip"
                                                         onclick="$(this).closest('.input-group').find('input').val('');"
                                                         data-toggle="tooltip" data-original-title="清除">
-                                                <i class="fa fa-trash-o"></i>
+                                                <i class="fa fa-minus"></i>
                                                 </button>
                                             </span>
-                    </div>
-                </div>
-            </div>
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                    实际用途<span class="symbol required"></span>
-                </label>
-                <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                    <div class="input-group">
-                        <input type="text" required name="practicalUse" list="practicalUseList"
-                               value="${basicHouse.practicalUse}"
-                               class="form-control">
-                        <datalist id="practicalUseList">
+                                </div>
+                            </div>
+                            <label class="col-sm-1">
+                                实际用途<span class="symbol required"></span>
+                            </label>
+                            <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                                <div class="input-group">
+                                    <input type="text" required name="practicalUse" list="practicalUseList"
+                                           value="${basicHouse.practicalUse}"
+                                           class="form-control">
+                                    <datalist id="practicalUseList">
 
-                        </datalist>
-                        <span class="input-group-btn">
+                                    </datalist>
+                                    <span class="input-group-btn">
                                                 <button type="button" class="btn btn-default docs-tooltip"
                                                         onclick="$(this).closest('.input-group').find('input').val('');"
                                                         data-toggle="tooltip" data-original-title="清除">
-                                                <i class="fa fa-trash-o"></i>
+                                                <i class="fa fa-minus"></i>
                                                 </button>
                                             </span>
+                                </div>
+                            </div>
+                            <label class="col-sm-1">装修情况<span
+                                    class="symbol required"></span></label>
+                            <div class="col-sm-3">
+                                <select class="form-control input-full 	decorateSituation" name="decorateSituation" required>
+                                </select>
+                            </div>
+                        </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">装修情况<span
-                        class="symbol required"></span></label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <select class="form-control 	decorateSituation" name="decorateSituation" required>
-                    </select>
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">装修情况描述<span
-                        class="symbol required"></span></label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text" data-rule-maxlength="255" placeholder="装修情况描述" required
-                           name="decorateSituationDescription"
-                           class="form-control" value="${basicHouse.decorateSituationDescription}">
-                </div>
-            </div>
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">使用情况<span
-                        class="symbol required"></span></label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <select class="form-control useCondition" name="useCondition" required>
-                    </select>
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="x-valid" style="display: none;">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">使用情况描述<span
-                        class="symbol required"></span></label>
-                <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
-                    <textarea class="form-control" required
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                        <div class="form-inline x-valid">
+                            <label class="col-sm-1">装修情况描述<span
+                                    class="symbol required"></span></label>
+                            <div class="col-sm-3">
+                                <input type="text" data-rule-maxlength="255" placeholder="装修情况描述" required
+                                       name="decorateSituationDescription"
+                                       class="form-control input-full" value="${basicHouse.decorateSituationDescription}">
+                            </div>
+                            <label class="col-sm-1">使用情况<span
+                                    class="symbol required"></span></label>
+                            <div class="col-sm-3">
+                                <select class="form-control input-full useCondition" name="useCondition" required>
+                                </select>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                        <div class="form-inline x-valid" style="display: none;">
+                            <label class="col-sm-1">使用情况描述<span
+                                    class="symbol required"></span></label>
+                            <div class="col-sm-11">
+                    <textarea class="form-control input-full" required
                               name="useConditionDescription"
                               id="useConditionDescription">${basicHouse.useConditionDescription}</textarea>
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">房屋平面图</label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input id="house_img_plan" placeholder="上传附件" class="form-control" type="file">
-                    <div id="_house_img_plan"></div>
-                </div>
-            </div>
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">房屋装饰图</label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input id="house_decorate" placeholder="上传附件" class="form-control" type="file">
-                    <div id="_house_decorate"></div>
-                </div>
-            </div>
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                    附件
-                </label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input id="house_file" placeholder="上传附件" class="form-control" type="file">
-                    <div id="_house_file"></div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                        <div class="form-inline x-valid">
+                            <label class="col-sm-1">房屋平面图</label>
+                            <div class="col-sm-3">
+                                <input id="house_img_plan" placeholder="上传附件" class="form-control input-full" type="file">
+                                <div id="_house_img_plan"></div>
+                            </div>
+                            <label class="col-sm-1">房屋装饰图</label>
+                            <div class="col-sm-3">
+                                <input id="house_decorate" placeholder="上传附件" class="form-control input-full" type="file">
+                                <div id="_house_decorate"></div>
+                            </div>
+                            <label class="col-sm-1">
+                                附件
+                            </label>
+                            <div class="col-sm-3">
+                                <input id="house_file" placeholder="上传附件" class="form-control input-full" type="file">
+                                <div id="_house_file"></div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -249,483 +247,512 @@
     </div>
     <form class="form-horizontal" id="basicTradingFrm">
         <input type="hidden" name="id" value="${basicHouseTrading.id}">
-        <div class="form-group">
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">财产范围<span
+        <div class="row form-group">
+            <div class="col-md-12">
+            <div class="form-inline x-valid">
+                <label class="col-sm-1">财产范围<span
                         class="symbol required"></span></label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <select class="form-control search-select select2 scopeProperty" name="scopeProperty" required>
+                <div class="col-sm-3">
+                    <select class="form-control input-full search-select select2 scopeProperty" name="scopeProperty" required>
                     </select>
                 </div>
-            </div>
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">范围包括<span
+                <label class="col-sm-1">范围包括<span
                         class="symbol required"></span></label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text" placeholder="范围包含" name="scopeInclude" class="form-control" required
+                <div class="col-sm-3">
+                    <input type="text" placeholder="范围包含" name="scopeInclude" class="form-control input-full" required
                            value="${basicHouseTrading.scopeInclude}">
                 </div>
-            </div>
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">范围不包括<span
+                <label class="col-sm-1">范围不包括<span
                         class="symbol required"></span></label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text" placeholder="范围不包含" name="scopeNotInclude" class="form-control" required
+                <div class="col-sm-3">
+                    <input type="text" placeholder="范围不包含" name="scopeNotInclude" class="form-control input-full" required
                            value="${basicHouseTrading.scopeNotInclude}">
                 </div>
             </div>
-        </div>
-        <div class="form-group">
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">税费负担<span
-                        class="symbol required"></span></label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <select class="form-control search-select select2 taxBurden" name="taxBurden" required>
-                    </select>
-                </div>
-            </div>
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">交易情况<span
-                        class="symbol required"></span></label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <select class="form-control transactionSituation" name="transactionSituation" required>
-                    </select>
-                </div>
-            </div>
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">价格类型<span
-                        class="symbol required"></span></label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <select class="form-control " name="priceType" required>
-                    </select>
-                </div>
             </div>
         </div>
-        <div class="form-group">
-            <div id="abnormalTransaction" style="display: none;">
-                <div class="x-valid">
-                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">说明事项类型</label>
-                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                        <select class="form-control descriptionType" name="descriptionType">
+        <div class="row form-group">
+            <div class="col-md-12">
+            <div class="form-inline x-valid">
+                <label class="col-sm-1">税费负担<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <select class="form-control input-full search-select select2 taxBurden" name="taxBurden" required>
+                    </select>
+                </div>
+                <label class="col-sm-1">交易情况<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <select class="form-control input-full transactionSituation" name="transactionSituation" required>
+                    </select>
+                </div>
+                <label class="col-sm-1">价格类型<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <select class="form-control input-full " name="priceType" required>
+                    </select>
+                </div>
+            </div>
+            </div>
+        </div>
+        <div class="row form-group">
+                <div class="col-md-12">
+                <div class="form-inline x-valid" id="abnormalTransaction"  style="display: none;">
+                    <label class="col-sm-1">说明事项类型</label>
+                    <div class="col-sm-3">
+                        <select class="form-control input-full descriptionType" name="descriptionType">
                         </select>
                     </div>
-                </div>
-                <div class="x-valid">
-                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">说明事项内容</label>
-                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                        <input type="text" placeholder="说明事项内容" name="descriptionContent" class="form-control"
+                    <label class="col-sm-1">说明事项内容</label>
+                    <div class="col-sm-3">
+                        <input type="text" placeholder="说明事项内容" name="descriptionContent" class="form-control input-full"
                                value="${basicHouseTrading.descriptionContent}">
                     </div>
                 </div>
-            </div>
+                </div>
         </div>
-        <div class="form-group">
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">交易类型<span
+        <div class="row form-group">
+            <div class="col-md-12">
+            <div class="form-inline x-valid">
+                <label class="col-sm-1">交易类型<span
                         class="symbol required"></span></label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <select class="form-control tradingType" name="tradingType"
+                <div class="col-sm-3">
+                    <select class="form-control input-full tradingType" name="tradingType"
                             required="required">
                     </select>
                 </div>
-            </div>
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">付款方式<span
+                <label class="col-sm-1">付款方式<span
                         class="symbol required"></span></label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <select class="form-control paymentMethod" name="paymentMethod" required>
+                <div class="col-sm-3">
+                    <select class="form-control input-full paymentMethod" name="paymentMethod" required>
                     </select>
                 </div>
             </div>
-            <div class="x-valid" style="display: none;">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">分期支付利率</label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+            <div class="" style="display: none;">
+                <label class="col-sm-1">分期支付利率</label>
+                <div class="col-sm-3">
                     <input type="text" placeholder="分期支付利率"
-                           name="installmentInterestRate" class="form-control"
+                           name="installmentInterestRate" class="form-control input-full"
                            value="${basicHouseTrading.installmentInterestRate}">
                 </div>
             </div>
+            </div>
         </div>
-        <div class="form-group tradingCondition">
-            <div class="x_title">融资条件</div>
-            <div class="form-group">
-                <div class="x-valid">
-                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">首付款比例<span
+
+            <div class="x_title tradingCondition">融资条件</div>
+            <div class="row form-group tradingCondition">
+                <div class="col-md-12">
+                <div class="form-inline x-valid">
+                    <label class="col-sm-1">首付款比例<span
                             class="symbol required"></span></label>
-                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                        <input type="text" class="form-control" name="downPaymentRatio" placeholder="首付款比例" required>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control input-full" name="downPaymentRatio" placeholder="首付款比例" required>
                     </div>
-                </div>
-                <div class="x-valid">
-                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">贷款利率<span
+                    <label class="col-sm-1">贷款利率<span
                             class="symbol required"></span></label>
-                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                        <input type="text" class="form-control" name="lendingRate" placeholder="贷款利率" required>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control input-full" name="lendingRate" placeholder="贷款利率" required>
                     </div>
-                </div>
-                <div class="x-valid">
-                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">贷款期限<span
+                    <label class="col-sm-1">贷款期限<span
                             class="symbol required"></span></label>
-                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                        <input type="text" class="form-control" data-rule-digits="true" name="loanPeriod"
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control input-full" data-rule-digits="true" name="loanPeriod"
                                placeholder="贷款期限"
                                required>
                     </div>
+                </div>
                 </div>
             </div>
             <div class="x_title">
                 <div class="clearfix"></div>
             </div>
-        </div>
 
-        <div class="form-group ExamineHouseTradingSell" style="display: none">
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">买方额外支付的税</label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+
+        <div class="row form-group ExamineHouseTradingSell" style="display: none">
+            <div class="col-md-12">
+            <div class="form-inline x-valid">
+                <label class="col-sm-1">买方额外支付的税</label>
+                <div class="col-sm-3">
                     <input type="text" placeholder="买方额外支付的税"
-                           name="buyerExtraTax" class="form-control" value="${basicHouseTrading.buyerExtraTax}">
+                           name="buyerExtraTax" class="form-control input-full" value="${basicHouseTrading.buyerExtraTax}">
+                </div>
+                <label class="col-sm-1">买方额外支付的费</label>
+                <div class="col-sm-3">
+                    <input type="text" placeholder="买方额外支付的费"
+                           name="buyerExtraFee" class="form-control input-full" value="${basicHouseTrading.buyerExtraFee}">
                 </div>
             </div>
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">买方额外支付的费</label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text" placeholder="买方额外支付的费"
-                           name="buyerExtraFee" class="form-control" value="${basicHouseTrading.buyerExtraFee}">
-                </div>
             </div>
         </div>
 
-        <div class="form-group ExamineHouseTradingLease" style="display: none">
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">承租方额外支付的税</label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+        <div class="row form-group ExamineHouseTradingLease" style="display: none">
+            <div class="col-md-12">
+            <div class="form-inline x-valid">
+                <label class="col-sm-1">承租方额外支付的税</label>
+                <div class="col-sm-3">
                     <input type="text" placeholder="承租方额外支付的税" name="rentingExtraTax"
                            value="${basicHouseTrading.rentingExtraTax}"
-                           class="form-control">
+                           class="form-control input-full">
                 </div>
-            </div>
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">承租方额外支付的费</label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                <label class="col-sm-1">承租方额外支付的费</label>
+                <div class="col-sm-3">
                     <input type="text" placeholder="承租方额外支付的费" name="rentingExtraFee"
                            value="${basicHouseTrading.rentingExtraFee}"
-                           class="form-control">
+                           class="form-control input-full">
                 </div>
-            </div>
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">押金（元）</label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text" placeholder="押金（元）" class="form-control" name="deposit"
+                <label class="col-sm-1">押金（元）</label>
+                <div class="col-sm-3">
+                    <input type="text" placeholder="押金（元）" class="form-control input-full" name="deposit"
                            value="${basicHouseTrading.deposit}">
                 </div>
             </div>
+            </div>
         </div>
 
-        <div class="form-group ExamineHouseTradingSell" style="display: none">
-            <div class="x-valid">
-                <div class=" col-xs-1  col-sm-1  col-md-1  col-lg-1 " style="text-align: right;">
-                    <button type="button" class="btn btn-success" data-toggle="modal"
+        <div class="row form-group ExamineHouseTradingSell" style="display: none">
+            <div class="col-md-12">
+            <div class="form-inline x-valid">
+                <div class="col-sm-1" style="text-align: right;">
+                    <button type="button" class="btn btn-success btn-sm" data-toggle="modal"
                             onclick="houseCommon.addTradingSellAndLease()"> 新增
                     </button>
                 </div>
-                <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
+                <div class="col-sm-11">
                     <table class="table table-bordered" id="tableTradingSell"></table>
                 </div>
             </div>
+            </div>
         </div>
-        <div class="form-group ExamineHouseTradingLease" style="display: none">
-            <div class="x-valid">
-                <div class=" col-xs-1  col-sm-1  col-md-1  col-lg-1 " style="text-align: right;">
+        <div class="row form-group ExamineHouseTradingLease" style="display: none">
+            <div class="col-md-12">
+            <div class="form-inline x-valid">
+                <div class="col-sm-1" style="text-align: right;">
                     <button type="button" class="btn btn-success" data-toggle="modal"
                             onclick="houseCommon.addTradingSellAndLease()"> 新增
                     </button>
                 </div>
-                <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
+                <div class="col-sm-11">
                     <table class="table table-bordered" id="tableTradingLease"></table>
                 </div>
             </div>
+            </div>
         </div>
-        <div class="form-group">
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">交易时间<span
+        <div class="row form-group">
+            <div class="col-md-12">
+            <div class="form-inline x-valid">
+                <label class="col-sm-1">交易时间<span
                         class="symbol required"></span></label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                <div class="col-sm-3">
                     <input placeholder="交易时间" required="required"
                            name="tradingTime" data-date-format="yyyy-mm-dd"
-                           class="form-control date-picker dbdate tradingTime"
+                           class="form-control input-full date-picker dbdate tradingTime"
                            value="<fmt:formatDate value='${basicHouseTrading.tradingTime}' pattern='yyyy-MM-dd'/>">
                 </div>
-            </div>
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">交易总价（元）<span class="symbol required"></span> </label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text" placeholder="交易总价（元）" class="form-control" name="tradingTotalPrice" required
+                <label class="col-sm-1">交易总价（元）<span
+                        class="symbol required"></span> </label>
+                <div class="col-sm-3">
+                    <input type="text" placeholder="交易总价（元）" class="form-control input-full" name="tradingTotalPrice" required
                            onblur="houseCommon.computeUnitPrice();" value="${basicHouseTrading.tradingTotalPrice}">
                 </div>
             </div>
-        </div>
-        <div class="form-group">
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">交易单价（元）<span class="symbol required"></span> </label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text" placeholder="交易单价（元）" class="form-control" name="tradingUnitPrice" required value="${basicHouseTrading.tradingUnitPrice}">
-                </div>
             </div>
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">单价内涵<span
+        </div>
+        <div class="row form-group">
+            <div class="col-md-12">
+            <div class="form-inline x-valid">
+                <label class="col-sm-1">交易单价（元）<span
+                        class="symbol required"></span> </label>
+                <div class="col-sm-3">
+                    <input type="text" placeholder="交易单价（元）" class="form-control input-full" name="tradingUnitPrice" required
+                           value="${basicHouseTrading.tradingUnitPrice}">
+                </div>
+                <label class="col-sm-1">单价内涵<span
                         class="symbol required"></span></label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <select class="form-control priceConnotation" name="priceConnotation"
+                <div class="col-sm-3">
+                    <select class="form-control input-full priceConnotation" name="priceConnotation"
                             required>
                     </select>
                 </div>
             </div>
-            <div class="x-valid" style="display: none">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">单价单位<span class="symbol required"></span></label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text" placeholder="单价单位(元/㎡|元/个)" class="form-control" name="priceConnotationUnit" id="priceConnotationUnit" required value="${basicHouseTrading.priceConnotationUnit}">
+            <div style="display: none">
+                <label class="col-sm-1">单价单位<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <input type="text" placeholder="单价单位(元/㎡|元/个)" class="form-control input-full" name="priceConnotationUnit"
+                           id="priceConnotationUnit" required value="${basicHouseTrading.priceConnotationUnit}">
                 </div>
+            </div>
             </div>
         </div>
-        <div class="form-group">
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">信息来源<span class="symbol required"></span></label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <select class="form-control search-select select2 informationType" name="informationType">
-                    </select>
-                </div>
-            </div>
-            <div class="x-valid infomationTypeOpen" style="display: none;">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">信息来源类别</label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <select class="form-control search-select select2 informationCategory" name="informationCategory">
-                    </select>
-                </div>
-            </div>
-            <div class="x-valid infomationTypeOther" style="display: none;">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">姓名<span
+        <div class="row form-group">
+            <div class="col-md-12">
+            <div class="form-inline x-valid">
+                <label class="col-sm-1">信息来源<span
                         class="symbol required"></span></label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text" placeholder="姓名" class="form-control" name="name" required
+                <div class="col-sm-3">
+                    <select class="form-control input-full search-select select2 informationType" name="informationType">
+                    </select>
+                </div>
+                <label class="col-sm-1 infomationTypeOpen" style="display: none;">信息来源类别</label>
+                <div class="col-sm-3 infomationTypeOpen" style="display: none;">
+                    <select class="form-control input-full search-select select2 informationCategory" name="informationCategory">
+                    </select>
+                </div>
+
+
+                <label class="col-sm-1 infomationTypeOther" style="display: none;">姓名<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3 infomationTypeOther" style="display: none;">
+                    <input type="text" placeholder="姓名" class="form-control input-full" name="name" required
                            value="${basicHouseTrading.name}">
                 </div>
-            </div>
-            <div class="x-valid infomationTypeOther" style="display: none;">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">电话<span
+
+
+                <label class="col-sm-1 infomationTypeOther" style="display: none;">电话<span
                         class="symbol required"></span></label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                    <input type="text" placeholder="电话" class="form-control" name="phone" required
+                <div class="col-sm-3 infomationTypeOther" style="display: none;">
+                    <input type="text" placeholder="电话" class="form-control input-full" name="phone" required
                            value="${basicHouseTrading.phone}">
                 </div>
             </div>
+
+
+
+            </div>
         </div>
-        <div class="form-group">
-            <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+        <div class="row form-group">
+            <div class="col-md-12">
+            <div class="form-inline x-valid">
+                <label class="col-sm-1">
                     交易附件
                 </label>
-                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                <div class="col-sm-3">
                     <input id="house_trading_file_f" type="file" multiple="false">
                     <div id="_house_trading_file_f"></div>
                 </div>
             </div>
+            </div>
         </div>
     </form>
 </div>
-<div id="divBoxTradingLeaseAndSell" class="modal fade bs-example-modal-lg" data-backdrop="static"
-     tabindex="-1"
-     role="dialog"
+<div id="divBoxTradingLeaseAndSell" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
+                <h4 class="modal-title">&times;</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title"></h3>
             </div>
-            <form id="frmTradingLeaseAndSell" class="form-horizontal">
-                <input type="hidden" name="id">
-                <input type="hidden" name="type" class="type">
-                <div class="modal-body">
+
+            <div class="modal-body">
+                <form id="frmTradingLeaseAndSell" class="form-horizontal">
+                    <input type="hidden" name="id">
+                    <input type="hidden" name="type" class="type">
                     <div class="row">
-                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                            <!--lease -->
-                            <div class="panel-body lease">
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
-                                            租金支付时间起<span class="symbol required"></span>
-                                        </label>
-                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
-                                            <input required="required" placeholder="租金支付时间起"
-                                                   name="rentPaymentTimeStart" data-date-format="yyyy-mm-dd"
-                                                   class="form-control date-picker dbdate">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <!--lease -->
+                                <div class="lease">
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1">
+                                                租金支付时间起<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-5">
+                                                <input required="required" placeholder="租金支付时间起"
+                                                       name="rentPaymentTimeStart" data-date-format="yyyy-mm-dd"
+                                                       class="form-control input-full date-picker dbdate">
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1">
+                                                租金支付时间止<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-5">
+                                                <input required="required" placeholder="租金支付时间起"
+                                                       name="rentPaymentTimeEnd" data-date-format="yyyy-mm-dd"
+                                                       class="form-control input-full date-picker dbdate">
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1">
+                                                租金增长比率<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-5">
+                                                <input type="text" data-rule-number='true' class="form-control input-full"
+                                                       name="rentGrowthRate"
+                                                       placeholder="租金增长比率(请输入数字)" required="required">
+                                            </div>
+                                        </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
-                                            租金支付时间止<span class="symbol required"></span>
-                                        </label>
-                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
-                                            <input required="required" placeholder="租金支付时间起"
-                                                   name="rentPaymentTimeEnd" data-date-format="yyyy-mm-dd"
-                                                   class="form-control date-picker dbdate">
+                                <!--sell -->
+                                <div class="sell">
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1">
+                                                分期支付时间起<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-5">
+                                                <input required="required" placeholder="分期支付时间起"
+                                                       name="instalmentPeriodStart" data-date-format="yyyy-mm-dd"
+                                                       class="form-control input-full date-picker dbdate">
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1">
+                                                分期支付时间起止<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-5">
+                                                <input required="required" placeholder="分期支付时间起止"
+                                                       name="instalmentPeriodEnd" data-date-format="yyyy-mm-dd"
+                                                       class="form-control input-full date-picker dbdate">
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1">
+                                                分期支付利息<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-5">
+                                                <input type="text" data-rule-number='true' class="form-control input-full"
+                                                       name="instalmentInterest"
+                                                       placeholder="分期支付利息(请输入数字)" required="required">
+                                            </div>
+                                        </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
-                                            租金增长比率<span class="symbol required"></span>
-                                        </label>
-                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
-                                            <input type="text" data-rule-number='true' class="form-control"
-                                                   name="rentGrowthRate"
-                                                   placeholder="租金增长比率(请输入数字)" required="required">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--sell -->
-                            <div class="panel-body sell">
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
-                                            分期支付时间起<span class="symbol required"></span>
-                                        </label>
-                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
-                                            <input required="required" placeholder="分期支付时间起"
-                                                   name="instalmentPeriodStart" data-date-format="yyyy-mm-dd"
-                                                   class="form-control date-picker dbdate">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
-                                            分期支付时间起止<span class="symbol required"></span>
-                                        </label>
-                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
-                                            <input required="required" placeholder="分期支付时间起止"
-                                                   name="instalmentPeriodEnd" data-date-format="yyyy-mm-dd"
-                                                   class="form-control date-picker dbdate">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
-                                            分期支付利息<span class="symbol required"></span>
-                                        </label>
-                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
-                                            <input type="text" data-rule-number='true' class="form-control"
-                                                   name="instalmentInterest"
-                                                   placeholder="分期支付利息(请输入数字)" required="required">
-                                        </div>
-                                    </div>
-                                </div>
+
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-default">
-                        取消
-                    </button>
-                    <button type="button" class="btn btn-primary" onclick="houseCommon.saveTradingSellAndLease()">
-                        保存
-                    </button>
-                </div>
-            </form>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="houseCommon.saveTradingSellAndLease()">
+                    保存
+                </button>
+            </div>
+
         </div>
     </div>
 </div>
+
 <div id="divBoxHuxing" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
+                <h4 class="modal-title">户型</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">户型</h3>
             </div>
-            <form id="frmHuxing" class="form-horizontal">
-                <div class="modal-body">
-                    <div>
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    卧室
-                                </label>
-                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <input type="text" placeholder="个数" name="house" data-rule-number='true'
-                                           class="form-control">
+
+            <div class="modal-body">
+                <form id="frmHuxing" class="form-horizontal">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                    <div class="form-inline x-valid">
+                                        <label class="col-sm-1">
+                                            卧室
+                                        </label>
+                                        <div class="col-sm-3">
+                                            <input type="text" placeholder="个数" name="house" data-rule-number='true'
+                                                   class="form-control input-full">
+                                        </div>
+                                        <label class="col-sm-1">
+                                            客厅
+                                        </label>
+                                        <div class="col-sm-3">
+                                            <input type="text" placeholder="个数" name="saloon" data-rule-number='true'
+                                                   class="form-control input-full">
+                                        </div>
+                                        <label class="col-sm-1">
+                                            厨房
+                                        </label>
+                                        <div class="col-sm-3">
+                                            <input type="text" placeholder="个数" name="kitchen" data-rule-number='true'
+                                                   class="form-control input-full">
+                                        </div>
+                                    </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    客厅
-                                </label>
-                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <input type="text" placeholder="个数" name="saloon" data-rule-number='true'
-                                           class="form-control">
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                    <div class="form-inline x-valid">
+                                        <label class="col-sm-1">
+                                            卫生间
+                                        </label>
+                                        <div class="col-sm-3">
+                                            <input type="text" placeholder="个数" name="toilet" data-rule-number='true'
+                                                   class="form-control input-full">
+                                        </div>
+                                        <label class="col-sm-1">
+                                            花园
+                                        </label>
+                                        <div class="col-sm-3">
+                                            <input type="text" placeholder="个数" name="garden" data-rule-number='true'
+                                                   class="form-control input-full">
+                                        </div>
+                                        <label class="col-sm-1">
+                                            阳台
+                                        </label>
+                                        <div class="col-sm-3">
+                                            <input type="text" placeholder="个数" name="balcony" data-rule-number='true'
+                                                   class="form-control input-full">
+                                        </div>
+                                    </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    厨房
-                                </label>
-                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <input type="text" placeholder="个数" name="kitchen" data-rule-number='true'
-                                           class="form-control">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    卫生间
-                                </label>
-                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <input type="text" placeholder="个数" name="toilet" data-rule-number='true'
-                                           class="form-control">
-                                </div>
-                            </div>
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    花园
-                                </label>
-                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <input type="text" placeholder="个数" name="garden" data-rule-number='true'
-                                           class="form-control">
-                                </div>
-                            </div>
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    阳台
-                                </label>
-                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <input type="text" placeholder="个数" name="balcony" data-rule-number='true'
-                                           class="form-control">
-                                </div>
+
+
+
                             </div>
                         </div>
                     </div>
-                </div>
-            </form>
+                </form>
+            </div>
             <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">
-                    取消
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
                 </button>
-                <button type="button" class="btn btn-primary" onclick="houseCommon.spliceHuxing()">
+                <button type="button" class="btn btn-primary btn-sm" onclick="houseCommon.spliceHuxing()">
                     保存
                 </button>
             </div>
+
         </div>
     </div>
 </div>
+
+
 
 <div class="x_content">
     <%@include file="/views/project/stageSurvey/common/houseFaceStreet.jsp" %>
@@ -763,7 +790,7 @@
                 return '${quoteId}';
             },
             onSelect: function (id, name) {
-                caseFun.caseHouse.showModel('${quoteId}',name);
+                caseFun.caseHouse.showModel('${quoteId}', name);
             }
         });
     })

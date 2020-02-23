@@ -8,58 +8,100 @@
 </head>
 
 <script type="text/html" id="taskRightAssistDiv">
-    <div class="x_panel">
-        <div class="x_title">
-            <h3>他权分组（0{index}）
-            </h3>
-        </div>
-        <div class="x_content">
-            <div class="form-horizontal">
-                <div class="form-group">
-                    <div class="x-valid">
-                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">权证信息<span
-                                class="symbol required"></span></label>
-                        <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
-                            <table class="table table-bordered" id="tb_List_recordTable_number">
-                                <!-- cerare document add ajax data-->
-                            </table>
-                        </div>
+    <div class="col-md-12">
+        <div class="card full-height">
+            <div class="card-header collapse-link">
+                <div class="card-head-row">
+                    <div class="card-title">
+                        他权分组（0{index}）
+                    </div>
+                    <div class="card-tools">
+                        <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                                class="fa fa-angle-down"></span>
+                        </button>
                     </div>
                 </div>
-                <div class="form-group">
-                    <div class="x-valid">
-                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">他权明细<span
-                                class="symbol required"></span></label>
-                        <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
-                            <table class="table table-bordered" id="tb_List_number">
-                                <!-- cerare document add ajax data-->
-                            </table>
+            </div>
+            <div class="card-body">
+                <form class="form-horizontal">
+
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <div class="form-inline x-valid">
+                                <label class="col-sm-1 control-label">权证信息<span
+                                        class="symbol required"></span></label>
+                                <div class="col-sm-11">
+                                    <table class="table table-bordered" id="tb_List_recordTable_number">
+                                        <!-- cerare document add ajax data-->
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
+
+                    <div class="row form-group">
+                        <div class="col-sm-12">
+                            <div class="form-inline x-valid">
+                                <label class="col-sm-1 control-label">他权明细<span
+                                        class="symbol required"></span></label>
+                                <div class="col-sm-11">
+                                    <table class="table table-bordered" id="tb_List_number">
+                                        <!-- cerare document add ajax data-->
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 </script>
-<body class="nav-md footer_fixed">
-<div class="container body">
-    <div class="main_container">
-        <div class="right_col" role="main" style="margin-left: 0">
+
+<body>
+
+<div class="wrapper">
+    <div class="main-panel" style="width: 100%">
+        <div class="content" style="margin-top: 0px;">
             <%@include file="/views/share/form_head.jsp" %>
-            <%@include file="/views/share/project/projectInfoSimple.jsp" %>
-            <%@include file="/views/share/project/projectPlanDetails.jsp" %>
-            <!--填写表单-->
+            <div class="page-inner mt--5">
+                <div class="row mt--2">
+                    <%@include file="/views/share/project/projectInfoSimple.jsp" %>
+                    <%@include file="/views/share/project/projectPlanDetails.jsp" %>
 
-            <div id="taskRightAssistAppend"></div>
+                    <div class="col-md-12">
+                        <div class="card full-height">
+                            <div class="card-header collapse-link">
+                                <div class="card-head-row">
+                                    <div class="card-title">
+                                        他项权利
+                                    </div>
+                                    <div class="card-tools">
+                                        <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                                                class="fa fa-angle-down"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
 
+                            <div class="card-body">
+                                <div id="taskRightAssistAppend"></div>
+                            </div>
+                        </div>
+                    </div>
 
-            <%@include file="/views/share/form_approval.jsp" %>
-            <%@include file="/views/share/form_log.jsp" %>
+                    <%@include file="/views/share/form_approval.jsp" %>
+           <%--         <%@include file="/views/share/form_log.jsp" %>--%>
+                </div>
+            </div>
         </div>
+        <%@include file="/views/share/main_footer.jsp" %>
     </div>
+
 </div>
+
 </body>
-<%@include file="/views/share/main_footer.jsp" %>
+
 <script type="text/javascript">
 
     var commonField = {

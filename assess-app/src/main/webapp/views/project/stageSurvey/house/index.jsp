@@ -5,7 +5,81 @@
     <title>信息填写</title>
     <%@include file="/views/share/main_css.jsp" %>
 </head>
-<body class="nav-md footer_fixed">
+<body>
+<div class="wrapper">
+    <div class="main-panel" style="width: 100%">
+        <div class="content" style="margin-top: 0px;">
+            <div class="page-inner mt--5">
+                <div class="row mt--2">
+
+                    <!-- 填写表单 start -->
+                    <div class="col-md-12">
+                        <div class="card full-height">
+                            <div class="card-header collapse-link">
+                                <div class="card-head-row">
+                                    <div class="card-title">
+                                        信息填写
+                                        <small>
+                                            <input type="button" class="btn btn-xs btn-primary" value="历史记录"
+                                                   onclick="showHistoryModal();">
+                                        </small>
+                                        <small>
+                                            <input type="button" class="btn btn-xs btn-primary" value="引用案例"
+                                                   onclick="showCaseQuoteModal();">
+                                        </small>
+                                        <small>
+                                            <input type="button" class="btn btn-xs btn-primary" value="引用备选案例"
+                                                   onclick="showProjectQuoteModal();">
+                                        </small>
+                                    </div>
+                                    <div class="card-tools">
+                                        <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                                                class="fa fa-angle-down"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <c:if test="${tbType eq 'estate'}">
+                                    <%@include file="/views/project/stageSurvey/house/estate.jsp" %>
+                                </c:if>
+                                <c:if test="${tbType eq 'building' && bisStructure==false}">
+                                    <%@include file="/views/project/stageSurvey/house/building.jsp" %>
+                                </c:if>
+                                <c:if test="${tbType eq 'building' && bisStructure==true}">
+                                    <%@include file="/views/project/stageSurvey/examine/residence/apply/structuresProspect.jsp" %>                </c:if>
+                                <c:if test="${tbType eq 'unit'}">
+                                    <%@include file="/views/project/stageSurvey/house/unit.jsp" %>
+                                </c:if>
+                                <c:if test="${tbType eq 'house'}">
+                                    <%@include file="/views/project/stageSurvey/house/house.jsp" %>
+                                </c:if>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12" style="text-align: center;padding-bottom: 1.25rem">
+
+                        <div class="card-body">
+                            <button id="cancel_btn btn-sm" class="btn btn-default" onclick="window.close()">
+                                关闭
+                            </button>
+                            <button class="btn btn-warning" onclick="saveDataInfo();">
+                                保存<i style="margin-left: 10px" class="fa fa-save"></i>
+                            </button>
+
+                        </div>
+                    </div>
+
+                    <%--<%@include file="/views/share/form_log.jsp" %>--%>
+                </div>
+            </div>
+        </div>
+        <%@include file="/views/share/main_footer.jsp" %>
+    </div>
+
+</div>
+<%--
 <div class="container body">
     <div class="main_container">
         <div class="right_col" role="main" style="margin-left: 0">
@@ -58,9 +132,9 @@
             </div>
         </div>
     </div>
-</div>
+</div>--%>
 </body>
-<%@include file="/views/share/main_footer.jsp" %>
+
 <%@include file="/views/project/stageSurvey/common/applyInfoHistory.jsp" %>
 <%@include file="/views/project/stageSurvey/common/applyInfoQuote.jsp" %>
 <script type="text/javascript"
@@ -94,11 +168,11 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    Alert("保存数据成功!", 1, null, function () {
+                    AlertSuccess("成功", "保存数据成功",function(){
                         window.close();
                     });
                 } else {
-                    Alert(result.errmsg);
+                    AlertError("保存失败,失败原因:"+result.errmsg);
                 }
             }
         });

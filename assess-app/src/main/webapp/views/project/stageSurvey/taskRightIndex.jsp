@@ -5,6 +5,201 @@
     <%@include file="/views/share/main_css.jsp" %>
 </head>
 
+<div id="divBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">他项权利</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <input type="hidden" name="projectId">
+                    <input type="hidden" name="planDetailsId">
+                    <input type="hidden" name="groupId">
+                    <input type="hidden" name="id" value="0">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                类别<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-11">
+                                                <select class="form-control input-full" required name="category"
+                                                        onchange="changeRemark(this)">
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1 control-label">他项权力描述<span
+                                                    class="symbol required"></span></label>
+                                            <div class="col-sm-11">
+                                                <textarea class="form-control input-full" required="required"
+                                                          name="remark"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <c:if test="${projectInfo.entrustPurpose == pledgeId}">
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1 control-label">对变现能力的影响<span
+                                                        class="symbol required"></span></label>
+                                                <div class="col-sm-11">
+                                            <textarea class="form-control input-full" required="required"
+                                                      name="influence"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </c:if>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                他权证编号
+                                            </label>
+                                            <div class="col-sm-5">
+                                                <input type="text" placeholder="他权证编号" name="number"
+                                                       class="form-control input-full">
+                                            </div>
+                                            <label class="col-sm-1 control-label">登记日期</label>
+                                            <div class="col-sm-5">
+                                                <input placeholder="登记日期" name="registerDate"
+                                                       data-date-format="yyyy-mm-dd"
+                                                       class="form-control input-full date-picker dbdate"
+                                                       readonly="readonly">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                义务人
+                                            </label>
+                                            <div class="col-sm-5">
+                                                <input type="text" placeholder="义务人" name="obligor"
+                                                       class="form-control input-full">
+                                            </div>
+                                            <label class="col-sm-1 control-label">
+                                                权利人
+                                            </label>
+                                            <div class="col-sm-5">
+                                                <input type="text" placeholder="权利人" name="obligee"
+                                                       class="form-control input-full">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                登记金额
+                                            </label>
+                                            <div class="col-sm-5">
+                                                <input type="text" placeholder="登记金额" data-rule-number='true'
+                                                       name="registerAmount" class="form-control input-full">
+                                            </div>
+                                            <label class="col-sm-1 control-label">
+                                                行权金额
+                                            </label>
+                                            <div class="col-sm-5">
+                                                <input type="text" placeholder="行权金额" data-rule-number='true'
+                                                       name="actualAmount" class="form-control input-full">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                登记面积
+                                            </label>
+                                            <div class="col-sm-5">
+                                                <input type="text" placeholder="登记面积" data-rule-number='true'
+                                                       name="registerArea" class="form-control input-full">
+                                            </div>
+                                            <label class="col-sm-1 control-label">
+                                                他权级次
+                                            </label>
+                                            <div class="col-sm-5">
+                                                <input type="text" placeholder="他权级次"
+                                                       name="rightRank" class="form-control input-full">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1 control-label">开始日期</label>
+                                            <div class="col-sm-5">
+                                                <input placeholder="开始日期"
+                                                       name="beginDate" data-date-format="yyyy-mm-dd"
+                                                       class="form-control input-full date-picker dbdate"
+                                                       readonly="readonly">
+                                            </div>
+                                            <label class="col-sm-1 control-label">结束日期</label>
+                                            <div class="col-sm-5">
+                                                <input placeholder="结束日期"
+                                                       name="endDate" data-date-format="yyyy-mm-dd"
+                                                       class="form-control input-full date-picker dbdate"
+                                                       readonly="readonly">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                附件
+                                            </label>
+                                            <div class="col-sm-11">
+                                                <input id="inventoryRightFile" type="file" multiple="false">
+                                                <div id="_inventoryRightFile"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="saveData(this)">
+                    保存
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<%--
 <div id="divBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
@@ -21,140 +216,140 @@
                     <input type="hidden" name="planDetailsId">
                     <input type="hidden" name="groupId">
                     <input type="hidden" name="id" value="0">
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
+                    <div class="row form-group">
+                        <div class="form-inline x-valid">
+                            <label class="col-sm-1 control-label">
                                 类别<span class="symbol required"></span>
                             </label>
-                            <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
-                                <select class="form-control" required name="category"
+                            <div class="col-sm-5">
+                                <select class="form-control input-full" required name="category"
                                         onchange="changeRemark(this)">
                                 </select>
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">他项权力描述<span
+                    <div class="row form-group">
+                        <div class="form-inline x-valid">
+                            <label class="col-sm-1 control-label">他项权力描述<span
                                     class="symbol required"></span></label>
-                            <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
-                                <textarea class="form-control" required="required" name="remark"></textarea>
+                            <div class="col-sm-5">
+                                <textarea class="form-control input-full" required="required" name="remark"></textarea>
                             </div>
                         </div>
                     </div>
                     <c:if test="${projectInfo.entrustPurpose == pledgeId}">
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">对变现能力的影响<span
+                        <div class="row form-group">
+                            <div class="form-inline x-valid">
+                                <label class="col-sm-1 control-label">对变现能力的影响<span
                                         class="symbol required"></span></label>
-                                <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
-                                            <textarea class="form-control" required="required"
+                                <div class="col-sm-5">
+                                            <textarea class="form-control input-full" required="required"
                                                       name="influence"></textarea>
                                 </div>
                             </div>
                         </div>
                     </c:if>
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
+                    <div class="row form-group">
+                        <div class="form-inline x-valid">
+                            <label class="col-sm-1 control-label">
                                 他权证编号
                             </label>
-                            <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
-                                <input type="text" placeholder="他权证编号" name="number" class="form-control">
+                            <div class="col-sm-5">
+                                <input type="text" placeholder="他权证编号" name="number" class="form-control input-full">
                             </div>
                         </div>
-                        <div class="x-valid">
-                            <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">登记日期</label>
-                            <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
+                        <div class="form-inline x-valid">
+                            <label class="col-sm-1 control-label">登记日期</label>
+                            <div class="col-sm-5">
                                 <input placeholder="登记日期" name="registerDate"
                                        data-date-format="yyyy-mm-dd"
-                                       class="form-control date-picker dbdate" readonly="readonly">
+                                       class="form-control input-full date-picker dbdate" readonly="readonly">
                             </div>
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
+                    <div class="row form-group">
+                        <div class="form-inline x-valid">
+                            <label class="col-sm-1 control-label">
                                 义务人
                             </label>
-                            <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
-                                <input type="text" placeholder="义务人" name="obligor" class="form-control">
+                            <div class="col-sm-5">
+                                <input type="text" placeholder="义务人" name="obligor" class="form-control input-full">
                             </div>
                         </div>
-                        <div class="x-valid">
-                            <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
+                        <div class="form-inline x-valid">
+                            <label class="col-sm-1 control-label">
                                 权利人
                             </label>
-                            <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
-                                <input type="text" placeholder="权利人" name="obligee" class="form-control">
+                            <div class="col-sm-5">
+                                <input type="text" placeholder="权利人" name="obligee" class="form-control input-full">
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
+                    <div class="row form-group">
+                        <div class="form-inline x-valid">
+                            <label class="col-sm-1 control-label">
                                 登记金额
                             </label>
-                            <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
+                            <div class="col-sm-5">
                                 <input type="text" placeholder="登记金额" data-rule-number='true'
-                                       name="registerAmount" class="form-control">
+                                       name="registerAmount" class="form-control input-full">
                             </div>
                         </div>
-                        <div class="x-valid">
-                            <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
+                        <div class="form-inline x-valid">
+                            <label class="col-sm-1 control-label">
                                 行权金额
                             </label>
-                            <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
+                            <div class="col-sm-5">
                                 <input type="text" placeholder="行权金额" data-rule-number='true'
-                                       name="actualAmount" class="form-control">
+                                       name="actualAmount" class="form-control input-full">
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
+                    <div class="row form-group">
+                        <div class="form-inline x-valid">
+                            <label class="col-sm-1 control-label">
                                 登记面积
                             </label>
-                            <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
+                            <div class="col-sm-5">
                                 <input type="text" placeholder="登记面积" data-rule-number='true'
-                                       name="registerArea" class="form-control">
+                                       name="registerArea" class="form-control input-full">
                             </div>
                         </div>
-                        <div class="x-valid">
-                            <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
+                        <div class="form-inline x-valid">
+                            <label class="col-sm-1 control-label">
                                 他权级次
                             </label>
-                            <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
+                            <div class="col-sm-5">
                                 <input type="text" placeholder="他权级次"
-                                       name="rightRank" class="form-control">
+                                       name="rightRank" class="form-control input-full">
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">开始日期</label>
-                            <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
+                    <div class="row form-group">
+                        <div class="form-inline x-valid">
+                            <label class="col-sm-1 control-label">开始日期</label>
+                            <div class="col-sm-5">
                                 <input placeholder="开始日期"
                                        name="beginDate" data-date-format="yyyy-mm-dd"
-                                       class="form-control date-picker dbdate" readonly="readonly">
+                                       class="form-control input-full date-picker dbdate" readonly="readonly">
                             </div>
                         </div>
-                        <div class="x-valid">
-                            <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">结束日期</label>
-                            <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
+                        <div class="form-inline x-valid">
+                            <label class="col-sm-1 control-label">结束日期</label>
+                            <div class="col-sm-5">
                                 <input placeholder="结束日期"
                                        name="endDate" data-date-format="yyyy-mm-dd"
-                                       class="form-control date-picker dbdate" readonly="readonly">
+                                       class="form-control input-full date-picker dbdate" readonly="readonly">
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
+                    <div class="row form-group">
+                        <div class="form-inline x-valid">
+                            <label class="col-sm-1 control-label">
                                 附件
                             </label>
-                            <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
+                            <div class="col-sm-5">
                                 <input id="inventoryRightFile" type="file" multiple="false">
                                 <div id="_inventoryRightFile"></div>
                             </div>
@@ -173,8 +368,155 @@
         </div>
     </div>
 </div>
-
+--%>
 <script type="text/html" id="taskRightAssistDiv">
+    <div class="col-md-12">
+        <div class="card full-height">
+            <div class="card-header collapse-link">
+                <div class="card-head-row">
+                    <div class="card-title">
+                        他权分组（0{index}）
+                        <small>
+                            <a href="javascript://;" class="btn btn-xs btn-warning"
+                               onclick="cleanHTMLData(this,'_number')">移除</a>
+                        </small>
+                    </div>
+                    <div class="card-tools">
+                        <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                                class="fa fa-angle-down"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <form class="form-horizontal">
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <div class="form-inline">
+                                <div class="btn-group">
+                                    <input type="hidden" name="groupId" value="_number">
+                                    <button class="btn-primary btn btn-sm" type="button"
+                                            onclick="declareRecordModeObj.init({callback:selectRecord,this_:this});">
+                                        选择权证
+                                    </button>
+                                </div>
+                                <label class="col-sm-1 control-label">权证名称</label>
+                                <div class="col-sm-1">
+                                    <input type="text" placeholder="权证名称" name="declareName"
+                                           class="form-control input-full">
+                                </div>
+                                <label class="col-sm-1 control-label">
+                                    楼栋号
+                                </label>
+                                <div class="col-sm-1">
+                                    <input type="text" placeholder="楼栋号" name="buildingNumber"
+                                           class="form-control input-full">
+                                </div>
+                                <label class="col-sm-1 control-label">
+                                    单元号
+                                </label>
+                                <div class="col-sm-1">
+                                    <input type="text" placeholder="单元号" name="unitNumber"
+                                           class="form-control input-full">
+                                </div>
+
+                                <label class="col-sm-1 control-label">
+                                    坐落
+                                </label>
+                                <div class="col-sm-1">
+                                    <input type="text" placeholder="坐落" name="seat" class="form-control input-full">
+                                </div>
+                                <button style="margin-left: 10px" class="btn btn-info  btn-sm" type="button"
+                                        onclick="queryDeclareRecordTable(this,true);">
+											<span class="btn-label">
+												<i class="fa fa-search"></i>
+											</span>
+                                    查询
+                                </button>
+
+                                <button type="button" class="btn btn-primary btn-sm"
+                                        onclick="queryDeclareRecordTable(this,false);" aria-expanded="false">
+                                    重置 <i class="fa fa-paper-plane"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <div class="form-inline x-valid">
+                                <label class="col-sm-1 control-label">权证信息<span
+                                        class="symbol required"></span></label>
+                                <div class="col-sm-11">
+                                    <table class="table table-bordered" id="tb_List_recordTable_number">
+                                        <!-- cerare document add ajax data-->
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                        <div class="row form-group">
+                            <div class="col-sm-12">
+                                <button style="margin-left: 5px" class="btn btn-success btn-sm" type="button"
+                                        data-toggle="modal" onclick="addData(this,'_number')">
+											<span class="btn-label">
+												<i class="fa fa-plus"></i>
+											</span>
+                                    新增
+                                </button>
+                                <button type="button" class="btn btn-primary btn-sm"
+                                        onclick="editData(this,'_number')" aria-expanded="false">
+                            <span class="btn-label">
+												<i class="fa fa-pen"></i>
+											</span>
+                                    编辑
+                                </button>
+                                <button type="button" class="btn btn-warning btn-sm"
+                                        onclick="delData(this,'_number')" aria-expanded="false">
+                            <span class="btn-label">
+												<i class="fa fa-minus"></i>
+											</span>删除
+                                </button>
+                                <button type="button" class="btn btn-success btn-sm"
+                                        onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftAssetInventoryRight)"
+                                        aria-expanded="false">
+                            <span class="btn-label">
+												<i class="fa fa-cloud-download-alt"></i>
+											</span>
+                                    下载模板
+                                </button>
+                                <button type="button" class="btn btn-primary btn-sm"
+                                        onclick="$('#ajaxFileUpload_number').val('').trigger('click')">
+                             <span class="btn-label">
+												<i class="fa fa-cloud-upload-alt"></i>
+											</span>导入
+                                </button>
+                            </div>
+                        </div>
+                            <div class="row form-group">
+                                <div class="col-sm-12">
+                                    <div class="form-inline x-valid">
+                                        <label class="col-sm-1 control-label">他权明细<span
+                                                class="symbol required"></span></label>
+                                        <div class="col-sm-11">
+                                            <table class="table table-bordered" id="tb_List_number">
+                                                <!-- cerare document add ajax data-->
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        <input type="file" id="ajaxFileUpload_number" name="file"
+                               onchange="importRightData('_number');" style="display: none;">
+                </form>
+            </div>
+        </div>
+    </div>
+</script>
+
+<%--<script type="text/html" id="taskRightAssistDiv">
     <div class="x_panel">
         <div class="x_title">
             <h3>他权分组（0{index}）
@@ -186,7 +528,7 @@
         </div>
         <div class="x_content">
             <div class="form-horizontal">
-                <div class="form-group">
+                <div class="row form-group">
                     <div class="col-sm-offset-1  col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
                         <div class="row">
                             <div class="col-xs-1  col-sm-1  col-md-1  col-lg-1">
@@ -203,25 +545,27 @@
                                 权证名称
                             </label>
                             <div class="col-xs-1  col-sm-1  col-md-1  col-lg-1 ">
-                                <input type="text" placeholder="权证名称" name="declareName" class="form-control">
+                                <input type="text" placeholder="权证名称" name="declareName"
+                                       class="form-control input-full">
                             </div>
                             <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                 楼栋号
                             </label>
                             <div class="col-xs-1  col-sm-1  col-md-1  col-lg-1 ">
-                                <input type="text" placeholder="楼栋号" name="buildingNumber" class="form-control">
+                                <input type="text" placeholder="楼栋号" name="buildingNumber"
+                                       class="form-control input-full">
                             </div>
                             <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                 单元号
                             </label>
                             <div class="col-xs-1  col-sm-1  col-md-1  col-lg-1 ">
-                                <input type="text" placeholder="单元号" name="unitNumber" class="form-control">
+                                <input type="text" placeholder="单元号" name="unitNumber" class="form-control input-full">
                             </div>
                             <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
                                 坐落
                             </label>
                             <div class="col-xs-1  col-sm-1  col-md-1  col-lg-1 ">
-                                <input type="text" placeholder="坐落" name="seat" class="form-control">
+                                <input type="text" placeholder="坐落" name="seat" class="form-control input-full">
                             </div>
 
                             <div class="col-xs-1  col-sm-1  col-md-1  col-lg-1 ">
@@ -241,8 +585,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <div class="x-valid">
+                <div class="row form-group">
+                    <div class="form-inline x-valid">
                         <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">权证信息<span
                                 class="symbol required"></span></label>
                         <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
@@ -252,7 +596,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="row form-group">
                     <div class="col-sm-offset-1  col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
                         <div class="btn-group">
                             <button type="button" class="btn btn-success" onclick="addData(this,'_number')"> 新增
@@ -284,8 +628,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <div class="x-valid">
+                <div class="row form-group">
+                    <div class="form-inline x-valid">
                         <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">他权明细<span
                                 class="symbol required"></span></label>
                         <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
@@ -300,10 +644,57 @@
                    onchange="importRightData('_number');" style="display: none;">
         </div>
     </div>
-</script>
+</script>--%>
 
-<body class="nav-md footer_fixed">
-<div class="container body">
+<body>
+<div class="wrapper">
+    <div class="main-panel" style="width: 100%">
+        <div class="content" style="margin-top: 0px;">
+            <%@include file="/views/share/form_head.jsp" %>
+            <div class="page-inner mt--5">
+                <div class="row mt--2">
+                    <%@include file="/views/share/project/projectInfoSimple.jsp" %>
+                    <%@include file="/views/share/project/projectPlanDetails.jsp" %>
+
+                    <div class="col-md-12">
+                        <div class="card full-height">
+                            <div class="card-header collapse-link">
+                                <div class="card-head-row">
+                                    <div class="card-title">
+                                        他项权利
+                                        <small>
+                                            <a href="javascript://;" class="btn btn-xs btn-success"
+                                               onclick="appendHtml(false)">添加分组<i
+                                                    class="fa fa-plus"></i>
+                                            </a>
+                                        </small>
+                                    </div>
+                                    <div class="card-tools">
+                                        <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                                                class="fa fa-angle-down"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card-body">
+                                <div id="taskRightAssistAppend"></div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <%@include file="/views/share/form_apply.jsp" %>
+                    <%--<%@include file="/views/share/form_log.jsp" %>--%>
+                </div>
+            </div>
+        </div>
+        <%@include file="/views/share/main_footer.jsp" %>
+    </div>
+
+</div>
+
+<%--<div class="container body">
     <div class="main_container">
         <div class="right_col" role="main" style="margin-left: 0">
             <%@include file="/views/share/form_head.jsp" %>
@@ -323,13 +714,13 @@
             </div>
             <div id="taskRightAssistAppend"></div>
             <%@include file="/views/share/form_apply.jsp" %>
-            <%@include file="/views/share/form_log.jsp" %>
+            &lt;%&ndash;<%@include file="/views/share/form_log.jsp" %>&ndash;%&gt;
         </div>
     </div>
-</div>
+</div>--%>
 
 </body>
-<%@include file="/views/share/main_footer.jsp" %>
+
 <%@include file="/views/project/tool/declareRecordModeView.jsp" %>
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/js/ajaxfileupload.js?v=${assessVersion}"></script>
@@ -392,11 +783,11 @@
                         callback(result.data);
                     }
                 } else {
-                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                    AlertError("保存数据失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
+                AlertError("调用服务端方法失败，失败原因:" + result);
             }
         });
     }
@@ -415,11 +806,11 @@
                 } else {
                     console.log(data);
                     console.log(result.errmsg);
-                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                    AlertError("保存数据失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result.errmsg);
+                AlertError("调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     }
@@ -436,11 +827,11 @@
                         callback(result.data);
                     }
                 } else {
-                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                    AlertError("保存数据失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
+                AlertError("调用服务端方法失败，失败原因:" + result);
             }
         });
     }
@@ -458,11 +849,11 @@
                         callback(result.data);
                     }
                 } else {
-                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                    AlertError("保存数据失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
+                AlertError("调用服务端方法失败，失败原因:" + result);
             }
         });
     }
@@ -479,11 +870,11 @@
                         callback(result.data);
                     }
                 } else {
-                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                    AlertError("保存数据失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
+                AlertError("调用服务端方法失败，失败原因:" + result);
             }
         });
     }
@@ -500,11 +891,11 @@
                         callback(result.data);
                     }
                 } else {
-                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                    AlertError("保存数据失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
+                AlertError("调用服务端方法失败，失败原因:" + result);
             }
         });
     }
@@ -521,11 +912,11 @@
                         callback(result.data);
                     }
                 } else {
-                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                    AlertError("保存数据失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
+                AlertError("调用服务端方法失败，失败原因:" + result);
             }
         });
     }
@@ -557,11 +948,11 @@
                         });
                     }
                 } else {
-                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                    AlertError("保存数据失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
+                AlertError("调用服务端方法失败，失败原因:" + result);
             }
         });
     }
@@ -582,9 +973,9 @@
         cols.push({field: 'seat', title: '坐落', width: "29%"});
         cols.push({
             field: 'id', title: '操作', width: 200, formatter: function (value, row, index) {
-                var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-success" data-title="删除" href="javascript:removeDataDeclareRecord(' + row.id + ",'" + row.groupId + "'" + ');" ><i class="fa fa-remove">删除</i></a>';
-                str += '</div>';
+                var str = '<button onclick="removeDataDeclareRecord(' + row.id + ",'" + row.groupId + "'" + ')"  style="margin-left: 5px;"  class="btn btn-icon btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
+                str += '<i class="fa fa-minus"></i>';
+                str += '</button>';
                 return str;
             }
         });
@@ -605,14 +996,17 @@
 
     function loadDeclareRecordTable(groupId) {
         loadDeclareRecordTable2(groupId, {
-            groupId: groupId,planDetailsId:'${projectPlanDetails.id}'
+            groupId: groupId, planDetailsId: '${projectPlanDetails.id}'
         });
     }
 
-    function queryDeclareRecordTable(_this,flag) {
+    function queryDeclareRecordTable(_this, flag) {
         var group = $(_this).closest(".form-group");
-        if (flag){
-            var select = {groupId:group.find("input[name='groupId']").val(),planDetailsId:'${projectPlanDetails.id}'};
+        if (flag) {
+            var select = {
+                groupId: group.find("input[name='groupId']").val(),
+                planDetailsId: '${projectPlanDetails.id}'
+            };
             var declareName = group.find("input[name='declareName']").val();
             if (declareName) {
                 select.declareName = declareName;
@@ -629,8 +1023,8 @@
             if (seat) {
                 select.seat = seat;
             }
-            loadDeclareRecordTable2(select.groupId,select) ;
-        }else {
+            loadDeclareRecordTable2(select.groupId, select);
+        } else {
             group.find("input[name='declareName']").val('');
             group.find("input[name='buildingNumber']").val('');
             group.find("input[name='unitNumber']").val('');
@@ -748,12 +1142,12 @@
         var box = $("#" + commonField.divBox);
         var rows = $("#" + commonField.tbList + value).bootstrapTable('getSelections');
         if (!rows || rows.length <= 0) {
-            toastr.info("请选择要编辑的数据");
+            notifyInfo("请选择要编辑的数据");
         } else if (rows.length == 1) {
             box.modal("show");
             initForm(data = rows[0], box.find("form"));
         } else {
-            toastr.info("只能选择一行数据进行编辑");
+            notifyInfo("只能选择一行数据进行编辑");
         }
     }
 
@@ -776,9 +1170,9 @@
             $.each(rows, function (i, item) {
                 idArray.push(item.id);
             });
-            Alert("确认要删除么？", 2, null, function () {
+            AlertConfirm("是否确认删除", "删除相应的数据后将不可恢复", function () {
                 deleteSurveyAssetRightItemById(idArray.join(","), function () {
-                    toastr.success('删除成功');
+                    notifySuccess("成功", "删除数据成功");
                     loadAssetRightList(value);
                 });
             })
@@ -836,15 +1230,15 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    Alert(result.data);
+                    notifyInfo(result.data);
                     loadAssetRightList(groupId);
                 } else {
-                    Alert("导入数据失败，失败原因:" + result.errmsg);
+                    AlertError("导入数据失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result, status, e) {
                 Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + result);
+                AlertError("调用服务端方法失败，失败原因:" + result);
             }
         });
     }

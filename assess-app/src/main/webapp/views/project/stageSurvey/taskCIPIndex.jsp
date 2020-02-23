@@ -5,7 +5,253 @@
     <%@include file="/views/share/main_css.jsp" %>
 </head>
 
-<body class="nav-md footer_fixed">
+<body>
+<div class="wrapper">
+    <div class="main-panel" style="width: 100%">
+        <div class="content" style="margin-top: 0px;">
+            <%@include file="/views/share/form_head.jsp" %>
+            <div class="page-inner mt--5">
+                <div class="row mt--2">
+                    <%@include file="/views/share/project/projectInfoSimple.jsp" %>
+                    <%@include file="/views/share/project/projectPlanDetails.jsp" %>
+
+                    <!-- 填写表单 start -->
+                    <div class="col-md-12">
+                        <div class="card full-height">
+                            <div class="card-header collapse-link">
+                                <div class="card-head-row">
+                                    <div class="card-title">
+                                        ${projectPlanDetails.projectPhaseName}
+                                        <small>${declareRecord.name}</small>
+                                    </div>
+                                    <div class="card-tools">
+                                        <button class="btn btn-icon btn-link btn-primary btn-sm"><span
+                                                class="fa fa-angle-down"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <form id="basicBatchApplyFrm" class="form-horizontal">
+                                    <input type="hidden" name="id" value="${applyBatch.id}">
+                                    <input type="hidden" name="planDetailsId" value="${projectPlanDetails.id}">
+                                    <input type="hidden" id="estateId" name="estateId" value="${applyBatch.estateId}">
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+
+                                                <label class="col-sm-1">
+                                                    大类<span class="symbol required"></span>
+                                                </label>
+                                                <div class="col-sm-2">
+                                                    <select class="form-control input-full" name="classify"
+                                                            onchange="formClassifyChange();"
+                                                            required>
+                                                        <option value="">-请选择-</option>
+                                                        <c:if test="${not empty formClassifyList}">
+                                                            <c:forEach var="item" items="${formClassifyList}">
+                                                                <option value="${item.id}"
+                                                                        data-key="${item.fieldName}"
+                                                                    ${item.id eq applyBatch.classify?'selected="selected"':''}>${item.name}</option>
+                                                            </c:forEach>
+                                                        </c:if>
+                                                    </select>
+                                                </div>
+                                                <label class="col-sm-1">
+                                                    类型<span class="symbol required"></span>
+                                                </label>
+                                                <div class="col-sm-2">
+                                                    <select class="form-control input-full" name="type"
+                                                            onchange="saveBasicApplyBatch();" required>
+                                                        <option value="">-请选择-</option>
+                                                        <c:if test="${not empty examineFormTypeList}">
+                                                            <c:forEach var="item" items="${examineFormTypeList}">
+                                                                <option value="${item.key}" ${item.key eq applyBatch.type?'selected="selected"':''}>${item.value}</option>
+                                                            </c:forEach>
+                                                        </c:if>
+                                                    </select>
+                                                </div>
+
+                                                <c:if test="${not empty declareRecord}">
+                                                    <label class="col-sm-1">
+                                                        建筑状态<span class="symbol required"></span>
+                                                    </label>
+                                                    <div class="col-sm-2">
+                                                        <select class="form-control input-full" name="buildingStatus"
+                                                                onchange="editBuildingStatus();" required>
+                                                            <option value="">-请选择-</option>
+                                                            <c:if test="${not empty buildingStatusList}">
+                                                                <c:forEach var="item" items="${buildingStatusList}">
+                                                                    <option value="${item.id}" ${item.id eq applyBatch.buildingStatus?'selected="selected"':''}>${item.name}</option>
+                                                                </c:forEach>
+                                                            </c:if>
+                                                        </select>
+                                                    </div>
+                                                </c:if>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <div class="col-md-3" style="max-height: 500px;overflow: auto;">
+                                                <ul id="ztree" class="ztree"></ul>
+                                            </div>
+                                            <div class="col-md-8" id="btnGroup">
+                                                <button class="btn btn-sm btn-success deserveTool"
+                                                   onclick="batchTreeTool.showAddModal()">
+                                                    新增
+                                                </button>
+                                                <button class="btn btn-sm btn-primary masterTool"
+                                                   onclick=" batchTreeTool.getAndEditDetail();">
+                                                    编辑
+                                                </button>
+                                                <button class="btn btn-sm btn-warning deleteTool"
+                                                   onclick=" batchTreeTool.deleteDetail();">
+                                                    删除
+                                                </button>
+                                                <button class="btn btn-sm btn-primary"
+                                                   onclick=" batchTreeTool.expandAll(true);">
+                                                    全部展开
+                                                </button>
+                                                <button class="btn btn-sm btn-primary"
+                                                   onclick=" batchTreeTool.expandAll(false);">
+                                                    全部收起
+                                                </button>
+                                                <button class="btn btn-sm btn-primary fillInformation deserveTool"
+                                                   onclick="batchTreeTool.fillInformation();">
+                                                    填写信息
+                                                </button>
+                                                <button style="display: none"
+                                                   class="btn btn-sm btn-primary fillInformation limitTool"
+                                                   onclick="batchTreeTool.checkInfo();">
+                                                    查看信息
+                                                </button>
+                                                <button class="btn btn-sm btn-warning copy" onclick="batchTreeTool.copy();">
+                                                    复制
+                                                </button>
+                                                <button class="btn btn-sm btn-warning paste deserveTool"
+                                                   onclick="batchTreeTool.paste();">
+                                                    粘贴
+                                                </button>
+                                                <button class="btn btn-sm btn-warning paste masterTool"
+                                                   onclick="batchTreeTool.deepCopy();">
+                                                    深复制
+                                                </button>
+                                                <c:if test="${not empty declareRecord}">
+                                                    <button class="btn btn-sm btn-warning paste alternativeCase"
+                                                       style="display: none"
+                                                       onclick="batchTreeTool.addToAlternative();">
+                                                        添加到备选案例
+                                                    </button>
+                                                </c:if>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <%@include file="/views/share/form_apply.jsp" %>
+                    <%--<%@include file="/views/share/form_log.jsp" %>--%>
+                </div>
+            </div>
+        </div>
+        <%@include file="/views/share/main_footer.jsp" %>
+    </div>
+
+</div>
+<div id="detail_modal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">添加</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+
+            <div class="modal-body">
+                <form id="frm_detail" class="form-horizontal">
+                    <input type="hidden" name="id" value="0">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <input type="hidden" name="pid">
+                                <input type="hidden" name="applyBatchId">
+                                <input type="hidden" name="tableName">
+                                <input type="hidden" name="tableId">
+                                <div id="detailContent">
+                                </div>
+
+                            </div>
+
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="batchTreeTool.saveItemData()">
+                    确定
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div id="detail_modal_b" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">添加</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+
+            <div class="modal-body">
+                <form id="frm_detail_b" class="form-horizontal">
+                    <input type="hidden" name="id" value="0">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <input type="hidden" name="pid">
+                                <input type="hidden" name="applyBatchId">
+                                <input type="hidden" name="tableName">
+                                <input type="hidden" name="tableId">
+                                <div id="detailContent_b">
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="batchTreeTool.saveItemData()">
+                    确定
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+<%--
 <div class="container body">
     <div class="main_container">
         <div class="right_col" role="main" style="margin-left: 0">
@@ -35,7 +281,7 @@
                                     大类<span class="symbol required"></span>
                                 </label>
                                 <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                                    <select class="form-control" name="classify" onchange="formClassifyChange();"
+                                    <select class="form-control input-full" name="classify" onchange="formClassifyChange();"
                                             required>
                                         <option value="">-请选择-</option>
                                         <c:if test="${not empty formClassifyList}">
@@ -52,7 +298,7 @@
                                     类型<span class="symbol required"></span>
                                 </label>
                                 <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                                    <select class="form-control" name="type" onchange="saveBasicApplyBatch();" required>
+                                    <select class="form-control input-full" name="type" onchange="saveBasicApplyBatch();" required>
                                         <option value="">-请选择-</option>
                                         <c:if test="${not empty examineFormTypeList}">
                                             <c:forEach var="item" items="${examineFormTypeList}">
@@ -68,7 +314,7 @@
                                         建筑状态<span class="symbol required"></span>
                                     </label>
                                     <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                                        <select class="form-control" name="buildingStatus"
+                                        <select class="form-control input-full" name="buildingStatus"
                                                 onchange="editBuildingStatus();" required>
                                             <option value="">-请选择-</option>
                                             <c:if test="${not empty buildingStatusList}">
@@ -86,40 +332,40 @@
                         <ul id="ztree" class="ztree"></ul>
                     </div>
                     <div class="col-md-8" id="btnGroup">
-                        <a class="btn btn-xs btn-success deserveTool" onclick="batchTreeTool.showAddModal()">
+                        <a class="btn btn-sm btn-success deserveTool" onclick="batchTreeTool.showAddModal()">
                             新增
                         </a>
-                        <a class="btn btn-xs btn-primary masterTool" onclick=" batchTreeTool.getAndEditDetail();">
+                        <a class="btn btn-sm btn-primary masterTool" onclick=" batchTreeTool.getAndEditDetail();">
                             编辑
                         </a>
-                        <a class="btn btn-xs btn-warning deleteTool" onclick=" batchTreeTool.deleteDetail();">
+                        <a class="btn btn-sm btn-warning deleteTool" onclick=" batchTreeTool.deleteDetail();">
                             删除
                         </a>
-                        <a class="btn btn-xs btn-primary" onclick=" batchTreeTool.expandAll(true);">
+                        <a class="btn btn-sm btn-primary" onclick=" batchTreeTool.expandAll(true);">
                             全部展开
                         </a>
-                        <a class="btn btn-xs btn-primary" onclick=" batchTreeTool.expandAll(false);">
+                        <a class="btn btn-sm btn-primary" onclick=" batchTreeTool.expandAll(false);">
                             全部收起
                         </a>
-                        <a class="btn btn-xs btn-primary fillInformation deserveTool"
+                        <a class="btn btn-sm btn-primary fillInformation deserveTool"
                            onclick="batchTreeTool.fillInformation();">
                             填写信息
                         </a>
-                        <a style="display: none" class="btn btn-xs btn-primary fillInformation limitTool"
+                        <a style="display: none" class="btn btn-sm btn-primary fillInformation limitTool"
                            onclick="batchTreeTool.checkInfo();">
                             查看信息
                         </a>
-                        <a class="btn btn-xs btn-warning copy" onclick="batchTreeTool.copy();">
+                        <a class="btn btn-sm btn-warning copy" onclick="batchTreeTool.copy();">
                             复制
                         </a>
-                        <a class="btn btn-xs btn-warning paste deserveTool" onclick="batchTreeTool.paste();">
+                        <a class="btn btn-sm btn-warning paste deserveTool" onclick="batchTreeTool.paste();">
                             粘贴
                         </a>
-                        <a class="btn btn-xs btn-warning paste masterTool" onclick="batchTreeTool.deepCopy();">
+                        <a class="btn btn-sm btn-warning paste masterTool" onclick="batchTreeTool.deepCopy();">
                             深复制
                         </a>
                         <c:if test="${not empty declareRecord}">
-                            <a class="btn btn-xs btn-warning paste alternativeCase" style="display: none"
+                            <a class="btn btn-sm btn-warning paste alternativeCase" style="display: none"
                                onclick="batchTreeTool.addToAlternative();">
                                 添加到备选案例
                             </a>
@@ -218,8 +464,9 @@
         </div>
     </div>
 </div>
+--%>
 </body>
-<%@include file="/views/share/main_footer.jsp" %>
+
 </html>
 <script type="text/javascript">
     $(function () {
@@ -286,7 +533,7 @@
                     $("#basicBatchApplyFrm").find('[name=estateId]').val(result.data.estateId);
                     batchTreeTool.ztreeInit(result.data.id);
                 } else {
-                    Alert(result.errmsg);
+                    AlertError("初始化失败，失败原因:"+result.errmsg);
                 }
             }
         });
@@ -305,7 +552,7 @@
                 if (result.ret) {
                     $("#basicBatchApplyFrm").find('[name=id]').val(result.data.id);
                 } else {
-                    Alert(result.errmsg);
+                    AlertError("保存失败,失败原因:"+result.errmsg);
                 }
             }
         });
@@ -324,7 +571,7 @@
                 if (result.ret) {
 
                 } else {
-                    Alert(result.errmsg);
+                    AlertError("失败,失败原因:"+result.errmsg);
                 }
             }
         });
@@ -399,82 +646,103 @@
         var level = node.level;
         console.log(node.bisStructure + "=====bisStructure")
         if (node.bisStructure) {
-            Alert("构筑物下无法继续添加节点。");
+            notifyInfo("构筑物下无法继续添加节点。");
             return false;
         }
         var html = "";
         switch (level) {
             case 0: {
                 $("#frm_detail").find("input[name='tableName']").val("tb_basic_building");
-                html += "<label class='col-sm-2 control-label'>";
+                html += '<div class="row form-group">';
+                html += '<div class="col-md-12">';
+                html += '<div class="form-inline x-valid">';
+                html += "<label class='col-sm-1 control-label'>";
                 html += "楼栋编号";
                 html += "<span class='symbol required'></span>";
                 html += "</label>";
-                html += " <div class='col-sm-2'>";
-                html += "<input type='text'  name='name' class='form-control' required value=''>";
+                html += " <div class='col-sm-3'>";
+                html += "<input type='text'  name='name' class='form-control input-full' required value=''>";
                 html += "</div>";
-                html += "<label class='col-sm-2 control-label'>";
+                html += "<label class='col-sm-1 control-label'>";
                 html += "构筑物";
                 html += "<span class='symbol required'></span>";
                 html += "</label>";
-                html += " <div class='col-sm-2'>";
-                html += "<select id='bisStructure' name='bisStructure' required class='form-control'>";
+                html += " <div class='col-sm-3'>";
+                html += "<select id='bisStructure' name='bisStructure' required class='form-control input-full'>";
                 html += "<option value=''>--请选择--</option>";
                 html += "<option value='true'>是</option>";
                 html += "<option value='false'>否</option>";
                 html += "</select>";
                 html += "</div>";
-                html += "<label class='col-sm-2 control-label'>";
+                html += "<label class='col-sm-1 control-label'>";
                 html += "执行人";
                 html += "<span class='symbol required'></span>";
                 html += "</label>";
-                html += " <div class='col-sm-2'>";
+                html += " <div class='col-sm-3'>";
                 html += " <input type='hidden' id='executor' name='executor'>";
-                html += "<input type='text' name='executorName' id='executorName' data-rule-maxlength='50' readonly class='form-control' onclick='personSelect()'>";
+                html += "<input type='text' name='executorName' id='executorName' data-rule-maxlength='50' readonly class='form-control input-full' onclick='personSelect()'>";
+                html += "</div>";
+                html += "</div>";
+                html += "</div>";
                 html += "</div>";
                 break;
             }
             case 1: {
                 $("#frm_detail").find("input[name='tableName']").val("tb_basic_unit");
-                html += "<label class='col-sm-2 control-label'>";
+                html += '<div class="row form-group">';
+                html += '<div class="col-md-12">';
+                html += '<div class="form-inline x-valid">';
+                html += "<label class='col-sm-1 control-label'>";
                 html += "单元编号";
                 html += "<span class='symbol required'></span>";
                 html += "</label>";
-                html += " <div class='col-sm-4'>";
-                html += "<input type='text'  name='name' class='form-control' required value=''>";
+                html += " <div class='col-sm-3'>";
+                html += "<input type='text'  name='name' class='form-control input-full' required value=''>";
                 html += "</div>";
-                html += "<label class='col-sm-2 control-label'>";
+                html += "<label class='col-sm-1 control-label'>";
                 html += "执行人";
                 html += "<span class='symbol required'></span>";
                 html += "</label>";
-                html += " <div class='col-sm-4'>";
+                html += " <div class='col-sm-3'>";
                 html += " <input type='hidden' id='executor' name='executor'>";
-                html += "<input type='text' name='executorName' id='executorName' data-rule-maxlength='50' readonly class='form-control' onclick='personSelect()'>";
+                html += "<input type='text' name='executorName' id='executorName' data-rule-maxlength='50' readonly class='form-control input-full' onclick='personSelect()'>";
+                html += "</div>";
+
+                html += "</div>";
+                html += "</div>";
                 html += "</div>";
                 break;
             }
             case 2: {
                 $("#frm_detail").find("input[name='tableName']").val("tb_basic_house");
-                html += "<label class='col-sm-2 control-label'>";
+                html += '<div class="row form-group">';
+                html += '<div class="col-md-12">';
+                html += '<div class="form-inline x-valid">';
+
+                html += "<label class='col-sm-1 control-label'>";
                 html += "房号";
                 html += "<span class='symbol required'></span>";
                 html += "</label>";
-                html += " <div class='col-sm-4'>";
-                html += "<input type='text'  name='name' class='form-control' required value=''>";
+                html += " <div class='col-sm-3'>";
+                html += "<input type='text'  name='name' class='form-control input-full' required value=''>";
                 html += "</div>";
-                html += "<label class='col-sm-2 control-label'>";
+                html += "<label class='col-sm-1 control-label'>";
                 html += "执行人";
                 html += "<span class='symbol required'></span>";
                 html += "</label>";
-                html += " <div class='col-sm-4'>";
+                html += " <div class='col-sm-3'>";
                 html += " <input type='hidden' id='executor' name='executor'>";
-                html += "<input type='text' name='executorName' id='executorName' data-rule-maxlength='50' readonly class='form-control' onclick='personSelect()'>";
+                html += "<input type='text' name='executorName' id='executorName' data-rule-maxlength='50' readonly class='form-control input-full' onclick='personSelect()'>";
+                html += "</div>";
+
+                html += "</div>";
+                html += "</div>";
                 html += "</div>";
                 break;
             }
 
             case 3: {
-                Alert("房屋下无法继续添加节点。");
+                notifyInfo("房屋下无法继续添加节点。");
                 return false;
                 break;
             }
@@ -520,7 +788,7 @@
 
                     $('#detail_modal').modal('hide');
                 } else {
-                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                    AlertError("保存数据失败，失败原因:" + result.errmsg);
                 }
             }
         });
@@ -530,7 +798,7 @@
     batchTreeTool.getAndEditDetail = function () {
         var node = zTreeObj.getSelectedNodes()[0];
         if (node.level == 0) {
-            Alert("楼盘信息请在【填写信息】中修改。");
+            notifyInfo("楼盘信息请在【填写信息】中修改。");
             return false;
         }
         $.ajax({
@@ -554,66 +822,87 @@
         switch (level) {
             case 1: {
                 $("#frm_detail_b").find("input[name='tableName']").val("tb_basic_building");
-                html += "<label class='col-sm-2 control-label'>";
+                html += '<div class="row form-group">';
+                html += '<div class="col-md-12">';
+                html += '<div class="form-inline x-valid">';
+
+                html += "<label class='col-sm-1 control-label'>";
                 html += "楼栋编号";
                 html += "</label>";
-                html += " <div class='col-sm-2'>";
-                html += "<input type='text'  name='name' class='form-control' required>";
+                html += " <div class='col-sm-3'>";
+                html += "<input type='text'  name='name' class='form-control input-full' required>";
                 html += "</div>";
-                html += "<label class='col-sm-2 control-label'>";
+                html += "<label class='col-sm-1 control-label'>";
                 html += "构筑物";
                 html += "<span class='symbol required'></span>";
                 html += "</label>";
-                html += " <div class='col-sm-2'>";
-                html += "<select id='bisStructure_b' name='bisStructure' required class='form-control'>";
+                html += " <div class='col-sm-3'>";
+                html += "<select id='bisStructure_b' name='bisStructure' required class='form-control input-full'>";
                 html += "<option value=''>--请选择--</option>";
                 html += "<option value='true'>是</option>";
                 html += "<option value='false'>否</option>";
                 html += "</select>";
                 html += "</div>";
-                html += "<label class='col-sm-2 control-label'>";
+                html += "<label class='col-sm-1 control-label'>";
                 html += "执行人";
                 html += "<span class='symbol required'></span>";
                 html += "</label>";
-                html += " <div class='col-sm-2'>";
+                html += " <div class='col-sm-3'>";
                 html += " <input type='hidden' id='executor' name='executor'>";
-                html += "<input type='text' name='executorName' id='executorName' data-rule-maxlength='50' readonly class='form-control' onclick='personSelect()'>";
+                html += "<input type='text' name='executorName' id='executorName' data-rule-maxlength='50' readonly class='form-control input-full' onclick='personSelect()'>";
+                html += "</div>";
+
+                html += "</div>";
+                html += "</div>";
                 html += "</div>";
                 break;
             }
             case 2: {
                 $("#frm_detail_b").find("input[name='tableName']").val("tb_basic_unit");
-                html += "<label class='col-sm-2 control-label'>";
+                html += '<div class="row form-group">';
+                html += '<div class="col-md-12">';
+                html += '<div class="form-inline x-valid">';
+
+                html += "<label class='col-sm-1 control-label'>";
                 html += "单元编号";
                 html += "</label>";
-                html += " <div class='col-sm-4'>";
-                html += "<input type='text'  name='name' class='form-control' required>";
+                html += " <div class='col-sm-3'>";
+                html += "<input type='text'  name='name' class='form-control input-full' required>";
                 html += "</div>";
-                html += "<label class='col-sm-2 control-label'>";
+                html += "<label class='col-sm-1 control-label'>";
                 html += "执行人";
                 html += "<span class='symbol required'></span>";
                 html += "</label>";
-                html += " <div class='col-sm-4'>";
+                html += " <div class='col-sm-3'>";
                 html += " <input type='hidden' id='executor' name='executor'>";
-                html += "<input type='text' name='executorName' id='executorName' data-rule-maxlength='50' readonly class='form-control' onclick='personSelect()'>";
+                html += "<input type='text' name='executorName' id='executorName' data-rule-maxlength='50' readonly class='form-control input-full' onclick='personSelect()'>";
+                html += "</div>";
+                html += "</div>";
+                html += "</div>";
                 html += "</div>";
                 break;
             }
             case 3: {
                 $("#frm_detail_b").find("input[name='tableName']").val("tb_basic_house");
-                html += "<label class='col-sm-2 control-label'>";
+                html += '<div class="row form-group">';
+                html += '<div class="col-md-12">';
+                html += '<div class="form-inline x-valid">';
+                html += "<label class='col-sm-1 control-label'>";
                 html += "房号";
                 html += "</label>";
-                html += " <div class='col-sm-4'>";
-                html += "<input type='text'  name='name' class='form-control' required>";
+                html += " <div class='col-sm-3'>";
+                html += "<input type='text'  name='name' class='form-control input-full' required>";
                 html += "</div>";
-                html += "<label class='col-sm-2 control-label'>";
+                html += "<label class='col-sm-1 control-label'>";
                 html += "执行人";
                 html += "<span class='symbol required'></span>";
                 html += "</label>";
-                html += " <div class='col-sm-4'>";
+                html += " <div class='col-sm-3'>";
                 html += " <input type='hidden' id='executor' name='executor'>";
-                html += "<input type='text' name='executorName' id='executorName' data-rule-maxlength='50' readonly class='form-control' onclick='personSelect()'>";
+                html += "<input type='text' name='executorName' id='executorName' data-rule-maxlength='50' readonly class='form-control input-full' onclick='personSelect()'>";
+                html += "</div>";
+                html += "</div>";
+                html += "</div>";
                 html += "</div>";
                 break;
             }
@@ -655,7 +944,7 @@
                     zTreeObj.updateNode(node, false);
                     $('#detail_modal_b').modal('hide');
                 } else {
-                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                    AlertError("保存数据失败，失败原因:" + result.errmsg);
                 }
             }
         });
@@ -663,11 +952,11 @@
 
     //删除明细
     batchTreeTool.deleteDetail = function () {
-        bootbox.confirm("确认要删除么？", function (result) {
+        AlertConfirm("是否确认删除", "删除相应的数据后将不可恢复", function () {
             if (result) {
                 var node = zTreeObj.getSelectedNodes()[0];
                 if (node.id == 0) {
-                    Alert("无法删除，请重新选择。");
+                    notifyInfo("无法删除，请重新选择。");
                     return false;
                 }
                 $.ajax({
@@ -684,7 +973,7 @@
                                 zTreeObj.selectNode(parentNode);
                             }
                         } else {
-                            Alert("删除失败：" + result.errmsg);
+                            AlertError("删除失败：" + result.errmsg);
                         }
                     }
                 })
@@ -720,7 +1009,7 @@
         //显示出粘贴按钮
         var node = zTreeObj.getSelectedNodes()[0];
         if (node.level == 0) {
-            Alert("不能复制楼盘，重新选择");
+            notifyInfo("不能复制楼盘，重新选择");
             return false;
         }
         batchTreeTool.beCopyObject = {};
@@ -733,16 +1022,16 @@
     //调整因素粘贴
     batchTreeTool.paste = function () {
         if (!batchTreeTool.beCopyObject) {
-            Alert('请选择被复制对象');
+            notifyInfo('请选择被复制对象');
             return false;
         }
         var node = zTreeObj.getSelectedNodes()[0];
         if (node.id == batchTreeTool.beCopyObject.id) {
-            Alert('不能复制粘贴自身');
+            notifyInfo('不能复制粘贴自身');
             return false;
         }
         if (node.level != batchTreeTool.beCopyObject.level) {
-            Alert('请选择相应节点进行粘贴');
+            notifyInfo('请选择相应节点进行粘贴');
             return false;
         }
         bootbox.confirm("将覆盖原来数据，确认要粘贴么？", function (result) {
@@ -758,10 +1047,10 @@
                 success: function (result) {
                     Loading.progressHide();
                     if (result.ret) {
-                        toastr.success("粘贴成功");
+                        notifySuccess("粘贴成功");
                     }
                     else {
-                        Alert("获取数据失败，失败原因:" + result.errmsg, 1, null, null);
+                        AlertError("获取数据失败，失败原因:" + result.errmsg, 1, null, null);
                     }
                 }
             });
@@ -772,7 +1061,7 @@
     batchTreeTool.deepCopy = function () {
         var node = zTreeObj.getSelectedNodes()[0];
         if (node.level == 0) {
-            Alert("不能复制楼盘，重新选择")
+            notifyInfo("不能复制楼盘，重新选择")
             return false;
         }
         Loading.progressShow();
@@ -791,7 +1080,7 @@
                     batchTreeTool.ztreeInitByPlanDetailsId('${projectPlanDetails.id}');
                 }
                 else {
-                    Alert("获取数据失败，失败原因:" + result.errmsg, 1, null, null);
+                    AlertError("获取数据失败，失败原因:" + result.errmsg);
                 }
             }
         });
@@ -814,10 +1103,10 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    toastr.success("添加成功");
+                    notifySuccess("成功,添加成功");
                 }
                 else {
-                    Alert("添加失败，失败原因:" + result.errmsg, 1, null, null);
+                    AlertError("添加失败，失败原因:" + result.errmsg);
                 }
             }
         });
