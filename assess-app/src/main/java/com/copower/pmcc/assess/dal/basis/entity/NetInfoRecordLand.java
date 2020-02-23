@@ -42,9 +42,13 @@ public class NetInfoRecordLand {
 
     private BigDecimal consultPrice;
 
+    private BigDecimal consultPriceMu;
+
     private Date assessStandardDate;
 
     private BigDecimal unitPrice;
+
+    private BigDecimal unitPriceMu;
 
     private BigDecimal floorPrice;
 
@@ -54,6 +58,8 @@ public class NetInfoRecordLand {
 
     private BigDecimal landArea;
 
+    private String landAreaUnit;
+
     private BigDecimal plotRatio;
 
     private String plotRatioRemark;
@@ -62,7 +68,7 @@ public class NetInfoRecordLand {
 
     private String greeningRateRemark;
 
-    private BigDecimal buildDensity;
+    private String buildDensity;
 
     private String buildDensityRemark;
 
@@ -78,13 +84,13 @@ public class NetInfoRecordLand {
 
     private Integer status;
 
+    private String approver;
+
     private String creator;
 
     private Date gmtCreated;
 
     private Date gmtModified;
-
-    private String approver;
 
     public Integer getId() {
         return id;
@@ -238,6 +244,14 @@ public class NetInfoRecordLand {
         this.consultPrice = consultPrice;
     }
 
+    public BigDecimal getConsultPriceMu() {
+        return consultPriceMu;
+    }
+
+    public void setConsultPriceMu(BigDecimal consultPriceMu) {
+        this.consultPriceMu = consultPriceMu;
+    }
+
     public Date getAssessStandardDate() {
         return assessStandardDate;
     }
@@ -252,6 +266,14 @@ public class NetInfoRecordLand {
 
     public void setUnitPrice(BigDecimal unitPrice) {
         this.unitPrice = unitPrice;
+    }
+
+    public BigDecimal getUnitPriceMu() {
+        return unitPriceMu;
+    }
+
+    public void setUnitPriceMu(BigDecimal unitPriceMu) {
+        this.unitPriceMu = unitPriceMu;
     }
 
     public BigDecimal getFloorPrice() {
@@ -286,6 +308,14 @@ public class NetInfoRecordLand {
         this.landArea = landArea;
     }
 
+    public String getLandAreaUnit() {
+        return landAreaUnit;
+    }
+
+    public void setLandAreaUnit(String landAreaUnit) {
+        this.landAreaUnit = landAreaUnit == null ? null : landAreaUnit.trim();
+    }
+
     public BigDecimal getPlotRatio() {
         return plotRatio;
     }
@@ -318,12 +348,12 @@ public class NetInfoRecordLand {
         this.greeningRateRemark = greeningRateRemark == null ? null : greeningRateRemark.trim();
     }
 
-    public BigDecimal getBuildDensity() {
+    public String getBuildDensity() {
         return buildDensity;
     }
 
-    public void setBuildDensity(BigDecimal buildDensity) {
-        this.buildDensity = buildDensity;
+    public void setBuildDensity(String buildDensity) {
+        this.buildDensity = buildDensity == null ? null : buildDensity.trim();
     }
 
     public String getBuildDensityRemark() {
@@ -382,6 +412,14 @@ public class NetInfoRecordLand {
         this.status = status;
     }
 
+    public String getApprover() {
+        return approver;
+    }
+
+    public void setApprover(String approver) {
+        this.approver = approver == null ? null : approver.trim();
+    }
+
     public String getCreator() {
         return creator;
     }
@@ -404,13 +442,5 @@ public class NetInfoRecordLand {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public String getApprover() {
-        return approver;
-    }
-
-    public void setApprover(String approver) {
-        this.approver = approver == null ? null : approver.trim();
     }
 }

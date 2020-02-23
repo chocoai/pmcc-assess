@@ -2551,8 +2551,12 @@
                     }
                 })
             });
-
-
+        },
+        getMuPrict:function(_this,targeName){
+            var val = $(_this).val();
+            if(val&&AssessCommon.isNumber(val)){
+                $(_this).closest('.form-group').find('[name='+targeName+']').val(parseFloat(val)*666.67/10000).toFixed(4);
+            }
         }
     }
 

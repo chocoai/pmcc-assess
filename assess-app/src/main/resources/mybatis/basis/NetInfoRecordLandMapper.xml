@@ -21,17 +21,20 @@
     <result column="current_price" property="currentPrice" jdbcType="DECIMAL" />
     <result column="negotiated_date" property="negotiatedDate" jdbcType="TIMESTAMP" />
     <result column="consult_price" property="consultPrice" jdbcType="DECIMAL" />
+    <result column="consult_price_mu" property="consultPriceMu" jdbcType="DECIMAL" />
     <result column="assess_standard_date" property="assessStandardDate" jdbcType="TIMESTAMP" />
     <result column="unit_price" property="unitPrice" jdbcType="DECIMAL" />
+    <result column="unit_price_mu" property="unitPriceMu" jdbcType="DECIMAL" />
     <result column="floor_price" property="floorPrice" jdbcType="DECIMAL" />
     <result column="land_realization_ratios" property="landRealizationRatios" jdbcType="DECIMAL" />
     <result column="realization_cycle" property="realizationCycle" jdbcType="VARCHAR" />
     <result column="land_area" property="landArea" jdbcType="DECIMAL" />
+    <result column="land_area_unit" property="landAreaUnit" jdbcType="VARCHAR" />
     <result column="plot_ratio" property="plotRatio" jdbcType="DECIMAL" />
     <result column="plot_ratio_remark" property="plotRatioRemark" jdbcType="VARCHAR" />
     <result column="greening_rate" property="greeningRate" jdbcType="DECIMAL" />
     <result column="greening_rate_remark" property="greeningRateRemark" jdbcType="VARCHAR" />
-    <result column="build_density" property="buildDensity" jdbcType="DECIMAL" />
+    <result column="build_density" property="buildDensity" jdbcType="VARCHAR" />
     <result column="build_density_remark" property="buildDensityRemark" jdbcType="VARCHAR" />
     <result column="build_height" property="buildHeight" jdbcType="DECIMAL" />
     <result column="build_height_remark" property="buildHeightRemark" jdbcType="VARCHAR" />
@@ -39,10 +42,10 @@
     <result column="index_amount_remark" property="indexAmountRemark" jdbcType="VARCHAR" />
     <result column="deal_part_info" property="dealPartInfo" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="approver" property="approver" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
-    <result column="approver" property="approver" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -105,11 +108,11 @@
   <sql id="Base_Column_List" >
     id, master_id, type, province, city, district, belong_type, belong_category, land_purpose, 
     street, area, area_unit, name, parcel_number, parcel_site, deal_type, current_price, 
-    negotiated_date, consult_price, assess_standard_date, unit_price, floor_price, land_realization_ratios, 
-    realization_cycle, land_area, plot_ratio, plot_ratio_remark, greening_rate, greening_rate_remark, 
+    negotiated_date, consult_price, consult_price_mu, assess_standard_date, unit_price, 
+    unit_price_mu, floor_price, land_realization_ratios, realization_cycle, land_area, 
+    land_area_unit, plot_ratio, plot_ratio_remark, greening_rate, greening_rate_remark, 
     build_density, build_density_remark, build_height, build_height_remark, index_amount, 
-    index_amount_remark, deal_part_info, status, creator, gmt_created, gmt_modified, 
-    approver
+    index_amount_remark, deal_part_info, status, approver, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordLandExample" >
     select
@@ -151,28 +154,30 @@
       area, area_unit, name, 
       parcel_number, parcel_site, deal_type, 
       current_price, negotiated_date, consult_price, 
-      assess_standard_date, unit_price, floor_price, 
-      land_realization_ratios, realization_cycle, 
-      land_area, plot_ratio, plot_ratio_remark, 
-      greening_rate, greening_rate_remark, build_density, 
-      build_density_remark, build_height, build_height_remark, 
-      index_amount, index_amount_remark, deal_part_info, 
-      status, creator, gmt_created, 
-      gmt_modified, approver)
+      consult_price_mu, assess_standard_date, unit_price, 
+      unit_price_mu, floor_price, land_realization_ratios, 
+      realization_cycle, land_area, land_area_unit, 
+      plot_ratio, plot_ratio_remark, greening_rate, 
+      greening_rate_remark, build_density, build_density_remark, 
+      build_height, build_height_remark, index_amount, 
+      index_amount_remark, deal_part_info, status, 
+      approver, creator, gmt_created, 
+      gmt_modified)
     values (#{masterId,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, 
       #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, #{belongType,jdbcType=VARCHAR}, 
       #{belongCategory,jdbcType=VARCHAR}, #{landPurpose,jdbcType=VARCHAR}, #{street,jdbcType=VARCHAR}, 
       #{area,jdbcType=DECIMAL}, #{areaUnit,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
       #{parcelNumber,jdbcType=VARCHAR}, #{parcelSite,jdbcType=VARCHAR}, #{dealType,jdbcType=INTEGER}, 
       #{currentPrice,jdbcType=DECIMAL}, #{negotiatedDate,jdbcType=TIMESTAMP}, #{consultPrice,jdbcType=DECIMAL}, 
-      #{assessStandardDate,jdbcType=TIMESTAMP}, #{unitPrice,jdbcType=DECIMAL}, #{floorPrice,jdbcType=DECIMAL}, 
-      #{landRealizationRatios,jdbcType=DECIMAL}, #{realizationCycle,jdbcType=VARCHAR}, 
-      #{landArea,jdbcType=DECIMAL}, #{plotRatio,jdbcType=DECIMAL}, #{plotRatioRemark,jdbcType=VARCHAR}, 
-      #{greeningRate,jdbcType=DECIMAL}, #{greeningRateRemark,jdbcType=VARCHAR}, #{buildDensity,jdbcType=DECIMAL}, 
-      #{buildDensityRemark,jdbcType=VARCHAR}, #{buildHeight,jdbcType=DECIMAL}, #{buildHeightRemark,jdbcType=VARCHAR}, 
-      #{indexAmount,jdbcType=DECIMAL}, #{indexAmountRemark,jdbcType=VARCHAR}, #{dealPartInfo,jdbcType=VARCHAR}, 
-      #{status,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP}, #{approver,jdbcType=VARCHAR})
+      #{consultPriceMu,jdbcType=DECIMAL}, #{assessStandardDate,jdbcType=TIMESTAMP}, #{unitPrice,jdbcType=DECIMAL}, 
+      #{unitPriceMu,jdbcType=DECIMAL}, #{floorPrice,jdbcType=DECIMAL}, #{landRealizationRatios,jdbcType=DECIMAL}, 
+      #{realizationCycle,jdbcType=VARCHAR}, #{landArea,jdbcType=DECIMAL}, #{landAreaUnit,jdbcType=VARCHAR}, 
+      #{plotRatio,jdbcType=DECIMAL}, #{plotRatioRemark,jdbcType=VARCHAR}, #{greeningRate,jdbcType=DECIMAL}, 
+      #{greeningRateRemark,jdbcType=VARCHAR}, #{buildDensity,jdbcType=VARCHAR}, #{buildDensityRemark,jdbcType=VARCHAR}, 
+      #{buildHeight,jdbcType=DECIMAL}, #{buildHeightRemark,jdbcType=VARCHAR}, #{indexAmount,jdbcType=DECIMAL}, 
+      #{indexAmountRemark,jdbcType=VARCHAR}, #{dealPartInfo,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+      #{approver,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordLand" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -234,11 +239,17 @@
       <if test="consultPrice != null" >
         consult_price,
       </if>
+      <if test="consultPriceMu != null" >
+        consult_price_mu,
+      </if>
       <if test="assessStandardDate != null" >
         assess_standard_date,
       </if>
       <if test="unitPrice != null" >
         unit_price,
+      </if>
+      <if test="unitPriceMu != null" >
+        unit_price_mu,
       </if>
       <if test="floorPrice != null" >
         floor_price,
@@ -251,6 +262,9 @@
       </if>
       <if test="landArea != null" >
         land_area,
+      </if>
+      <if test="landAreaUnit != null" >
+        land_area_unit,
       </if>
       <if test="plotRatio != null" >
         plot_ratio,
@@ -288,6 +302,9 @@
       <if test="status != null" >
         status,
       </if>
+      <if test="approver != null" >
+        approver,
+      </if>
       <if test="creator != null" >
         creator,
       </if>
@@ -296,9 +313,6 @@
       </if>
       <if test="gmtModified != null" >
         gmt_modified,
-      </if>
-      <if test="approver != null" >
-        approver,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -356,11 +370,17 @@
       <if test="consultPrice != null" >
         #{consultPrice,jdbcType=DECIMAL},
       </if>
+      <if test="consultPriceMu != null" >
+        #{consultPriceMu,jdbcType=DECIMAL},
+      </if>
       <if test="assessStandardDate != null" >
         #{assessStandardDate,jdbcType=TIMESTAMP},
       </if>
       <if test="unitPrice != null" >
         #{unitPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="unitPriceMu != null" >
+        #{unitPriceMu,jdbcType=DECIMAL},
       </if>
       <if test="floorPrice != null" >
         #{floorPrice,jdbcType=DECIMAL},
@@ -373,6 +393,9 @@
       </if>
       <if test="landArea != null" >
         #{landArea,jdbcType=DECIMAL},
+      </if>
+      <if test="landAreaUnit != null" >
+        #{landAreaUnit,jdbcType=VARCHAR},
       </if>
       <if test="plotRatio != null" >
         #{plotRatio,jdbcType=DECIMAL},
@@ -387,7 +410,7 @@
         #{greeningRateRemark,jdbcType=VARCHAR},
       </if>
       <if test="buildDensity != null" >
-        #{buildDensity,jdbcType=DECIMAL},
+        #{buildDensity,jdbcType=VARCHAR},
       </if>
       <if test="buildDensityRemark != null" >
         #{buildDensityRemark,jdbcType=VARCHAR},
@@ -410,6 +433,9 @@
       <if test="status != null" >
         #{status,jdbcType=INTEGER},
       </if>
+      <if test="approver != null" >
+        #{approver,jdbcType=VARCHAR},
+      </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
       </if>
@@ -418,9 +444,6 @@
       </if>
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="approver != null" >
-        #{approver,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -490,11 +513,17 @@
       <if test="record.consultPrice != null" >
         consult_price = #{record.consultPrice,jdbcType=DECIMAL},
       </if>
+      <if test="record.consultPriceMu != null" >
+        consult_price_mu = #{record.consultPriceMu,jdbcType=DECIMAL},
+      </if>
       <if test="record.assessStandardDate != null" >
         assess_standard_date = #{record.assessStandardDate,jdbcType=TIMESTAMP},
       </if>
       <if test="record.unitPrice != null" >
         unit_price = #{record.unitPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.unitPriceMu != null" >
+        unit_price_mu = #{record.unitPriceMu,jdbcType=DECIMAL},
       </if>
       <if test="record.floorPrice != null" >
         floor_price = #{record.floorPrice,jdbcType=DECIMAL},
@@ -507,6 +536,9 @@
       </if>
       <if test="record.landArea != null" >
         land_area = #{record.landArea,jdbcType=DECIMAL},
+      </if>
+      <if test="record.landAreaUnit != null" >
+        land_area_unit = #{record.landAreaUnit,jdbcType=VARCHAR},
       </if>
       <if test="record.plotRatio != null" >
         plot_ratio = #{record.plotRatio,jdbcType=DECIMAL},
@@ -521,7 +553,7 @@
         greening_rate_remark = #{record.greeningRateRemark,jdbcType=VARCHAR},
       </if>
       <if test="record.buildDensity != null" >
-        build_density = #{record.buildDensity,jdbcType=DECIMAL},
+        build_density = #{record.buildDensity,jdbcType=VARCHAR},
       </if>
       <if test="record.buildDensityRemark != null" >
         build_density_remark = #{record.buildDensityRemark,jdbcType=VARCHAR},
@@ -544,6 +576,9 @@
       <if test="record.status != null" >
         status = #{record.status,jdbcType=INTEGER},
       </if>
+      <if test="record.approver != null" >
+        approver = #{record.approver,jdbcType=VARCHAR},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -552,9 +587,6 @@
       </if>
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.approver != null" >
-        approver = #{record.approver,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -582,17 +614,20 @@
       current_price = #{record.currentPrice,jdbcType=DECIMAL},
       negotiated_date = #{record.negotiatedDate,jdbcType=TIMESTAMP},
       consult_price = #{record.consultPrice,jdbcType=DECIMAL},
+      consult_price_mu = #{record.consultPriceMu,jdbcType=DECIMAL},
       assess_standard_date = #{record.assessStandardDate,jdbcType=TIMESTAMP},
       unit_price = #{record.unitPrice,jdbcType=DECIMAL},
+      unit_price_mu = #{record.unitPriceMu,jdbcType=DECIMAL},
       floor_price = #{record.floorPrice,jdbcType=DECIMAL},
       land_realization_ratios = #{record.landRealizationRatios,jdbcType=DECIMAL},
       realization_cycle = #{record.realizationCycle,jdbcType=VARCHAR},
       land_area = #{record.landArea,jdbcType=DECIMAL},
+      land_area_unit = #{record.landAreaUnit,jdbcType=VARCHAR},
       plot_ratio = #{record.plotRatio,jdbcType=DECIMAL},
       plot_ratio_remark = #{record.plotRatioRemark,jdbcType=VARCHAR},
       greening_rate = #{record.greeningRate,jdbcType=DECIMAL},
       greening_rate_remark = #{record.greeningRateRemark,jdbcType=VARCHAR},
-      build_density = #{record.buildDensity,jdbcType=DECIMAL},
+      build_density = #{record.buildDensity,jdbcType=VARCHAR},
       build_density_remark = #{record.buildDensityRemark,jdbcType=VARCHAR},
       build_height = #{record.buildHeight,jdbcType=DECIMAL},
       build_height_remark = #{record.buildHeightRemark,jdbcType=VARCHAR},
@@ -600,10 +635,10 @@
       index_amount_remark = #{record.indexAmountRemark,jdbcType=VARCHAR},
       deal_part_info = #{record.dealPartInfo,jdbcType=VARCHAR},
       status = #{record.status,jdbcType=INTEGER},
+      approver = #{record.approver,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      approver = #{record.approver,jdbcType=VARCHAR}
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -665,11 +700,17 @@
       <if test="consultPrice != null" >
         consult_price = #{consultPrice,jdbcType=DECIMAL},
       </if>
+      <if test="consultPriceMu != null" >
+        consult_price_mu = #{consultPriceMu,jdbcType=DECIMAL},
+      </if>
       <if test="assessStandardDate != null" >
         assess_standard_date = #{assessStandardDate,jdbcType=TIMESTAMP},
       </if>
       <if test="unitPrice != null" >
         unit_price = #{unitPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="unitPriceMu != null" >
+        unit_price_mu = #{unitPriceMu,jdbcType=DECIMAL},
       </if>
       <if test="floorPrice != null" >
         floor_price = #{floorPrice,jdbcType=DECIMAL},
@@ -682,6 +723,9 @@
       </if>
       <if test="landArea != null" >
         land_area = #{landArea,jdbcType=DECIMAL},
+      </if>
+      <if test="landAreaUnit != null" >
+        land_area_unit = #{landAreaUnit,jdbcType=VARCHAR},
       </if>
       <if test="plotRatio != null" >
         plot_ratio = #{plotRatio,jdbcType=DECIMAL},
@@ -696,7 +740,7 @@
         greening_rate_remark = #{greeningRateRemark,jdbcType=VARCHAR},
       </if>
       <if test="buildDensity != null" >
-        build_density = #{buildDensity,jdbcType=DECIMAL},
+        build_density = #{buildDensity,jdbcType=VARCHAR},
       </if>
       <if test="buildDensityRemark != null" >
         build_density_remark = #{buildDensityRemark,jdbcType=VARCHAR},
@@ -719,6 +763,9 @@
       <if test="status != null" >
         status = #{status,jdbcType=INTEGER},
       </if>
+      <if test="approver != null" >
+        approver = #{approver,jdbcType=VARCHAR},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -727,9 +774,6 @@
       </if>
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="approver != null" >
-        approver = #{approver,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -754,17 +798,20 @@
       current_price = #{currentPrice,jdbcType=DECIMAL},
       negotiated_date = #{negotiatedDate,jdbcType=TIMESTAMP},
       consult_price = #{consultPrice,jdbcType=DECIMAL},
+      consult_price_mu = #{consultPriceMu,jdbcType=DECIMAL},
       assess_standard_date = #{assessStandardDate,jdbcType=TIMESTAMP},
       unit_price = #{unitPrice,jdbcType=DECIMAL},
+      unit_price_mu = #{unitPriceMu,jdbcType=DECIMAL},
       floor_price = #{floorPrice,jdbcType=DECIMAL},
       land_realization_ratios = #{landRealizationRatios,jdbcType=DECIMAL},
       realization_cycle = #{realizationCycle,jdbcType=VARCHAR},
       land_area = #{landArea,jdbcType=DECIMAL},
+      land_area_unit = #{landAreaUnit,jdbcType=VARCHAR},
       plot_ratio = #{plotRatio,jdbcType=DECIMAL},
       plot_ratio_remark = #{plotRatioRemark,jdbcType=VARCHAR},
       greening_rate = #{greeningRate,jdbcType=DECIMAL},
       greening_rate_remark = #{greeningRateRemark,jdbcType=VARCHAR},
-      build_density = #{buildDensity,jdbcType=DECIMAL},
+      build_density = #{buildDensity,jdbcType=VARCHAR},
       build_density_remark = #{buildDensityRemark,jdbcType=VARCHAR},
       build_height = #{buildHeight,jdbcType=DECIMAL},
       build_height_remark = #{buildHeightRemark,jdbcType=VARCHAR},
@@ -772,10 +819,10 @@
       index_amount_remark = #{indexAmountRemark,jdbcType=VARCHAR},
       deal_part_info = #{dealPartInfo,jdbcType=VARCHAR},
       status = #{status,jdbcType=INTEGER},
+      approver = #{approver,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      approver = #{approver,jdbcType=VARCHAR}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

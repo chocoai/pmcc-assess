@@ -1366,6 +1366,66 @@ public class NetInfoRecordLandExample {
             return (Criteria) this;
         }
 
+        public Criteria andConsultPriceMuIsNull() {
+            addCriterion("consult_price_mu is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andConsultPriceMuIsNotNull() {
+            addCriterion("consult_price_mu is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andConsultPriceMuEqualTo(BigDecimal value) {
+            addCriterion("consult_price_mu =", value, "consultPriceMu");
+            return (Criteria) this;
+        }
+
+        public Criteria andConsultPriceMuNotEqualTo(BigDecimal value) {
+            addCriterion("consult_price_mu <>", value, "consultPriceMu");
+            return (Criteria) this;
+        }
+
+        public Criteria andConsultPriceMuGreaterThan(BigDecimal value) {
+            addCriterion("consult_price_mu >", value, "consultPriceMu");
+            return (Criteria) this;
+        }
+
+        public Criteria andConsultPriceMuGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("consult_price_mu >=", value, "consultPriceMu");
+            return (Criteria) this;
+        }
+
+        public Criteria andConsultPriceMuLessThan(BigDecimal value) {
+            addCriterion("consult_price_mu <", value, "consultPriceMu");
+            return (Criteria) this;
+        }
+
+        public Criteria andConsultPriceMuLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("consult_price_mu <=", value, "consultPriceMu");
+            return (Criteria) this;
+        }
+
+        public Criteria andConsultPriceMuIn(List<BigDecimal> values) {
+            addCriterion("consult_price_mu in", values, "consultPriceMu");
+            return (Criteria) this;
+        }
+
+        public Criteria andConsultPriceMuNotIn(List<BigDecimal> values) {
+            addCriterion("consult_price_mu not in", values, "consultPriceMu");
+            return (Criteria) this;
+        }
+
+        public Criteria andConsultPriceMuBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("consult_price_mu between", value1, value2, "consultPriceMu");
+            return (Criteria) this;
+        }
+
+        public Criteria andConsultPriceMuNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("consult_price_mu not between", value1, value2, "consultPriceMu");
+            return (Criteria) this;
+        }
+
         public Criteria andAssessStandardDateIsNull() {
             addCriterion("assess_standard_date is null");
             return (Criteria) this;
@@ -1483,6 +1543,66 @@ public class NetInfoRecordLandExample {
 
         public Criteria andUnitPriceNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("unit_price not between", value1, value2, "unitPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitPriceMuIsNull() {
+            addCriterion("unit_price_mu is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitPriceMuIsNotNull() {
+            addCriterion("unit_price_mu is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitPriceMuEqualTo(BigDecimal value) {
+            addCriterion("unit_price_mu =", value, "unitPriceMu");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitPriceMuNotEqualTo(BigDecimal value) {
+            addCriterion("unit_price_mu <>", value, "unitPriceMu");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitPriceMuGreaterThan(BigDecimal value) {
+            addCriterion("unit_price_mu >", value, "unitPriceMu");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitPriceMuGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("unit_price_mu >=", value, "unitPriceMu");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitPriceMuLessThan(BigDecimal value) {
+            addCriterion("unit_price_mu <", value, "unitPriceMu");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitPriceMuLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("unit_price_mu <=", value, "unitPriceMu");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitPriceMuIn(List<BigDecimal> values) {
+            addCriterion("unit_price_mu in", values, "unitPriceMu");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitPriceMuNotIn(List<BigDecimal> values) {
+            addCriterion("unit_price_mu not in", values, "unitPriceMu");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitPriceMuBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("unit_price_mu between", value1, value2, "unitPriceMu");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitPriceMuNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("unit_price_mu not between", value1, value2, "unitPriceMu");
             return (Criteria) this;
         }
 
@@ -1733,6 +1853,76 @@ public class NetInfoRecordLandExample {
 
         public Criteria andLandAreaNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("land_area not between", value1, value2, "landArea");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAreaUnitIsNull() {
+            addCriterion("land_area_unit is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAreaUnitIsNotNull() {
+            addCriterion("land_area_unit is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAreaUnitEqualTo(String value) {
+            addCriterion("land_area_unit =", value, "landAreaUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAreaUnitNotEqualTo(String value) {
+            addCriterion("land_area_unit <>", value, "landAreaUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAreaUnitGreaterThan(String value) {
+            addCriterion("land_area_unit >", value, "landAreaUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAreaUnitGreaterThanOrEqualTo(String value) {
+            addCriterion("land_area_unit >=", value, "landAreaUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAreaUnitLessThan(String value) {
+            addCriterion("land_area_unit <", value, "landAreaUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAreaUnitLessThanOrEqualTo(String value) {
+            addCriterion("land_area_unit <=", value, "landAreaUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAreaUnitLike(String value) {
+            addCriterion("land_area_unit like", value, "landAreaUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAreaUnitNotLike(String value) {
+            addCriterion("land_area_unit not like", value, "landAreaUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAreaUnitIn(List<String> values) {
+            addCriterion("land_area_unit in", values, "landAreaUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAreaUnitNotIn(List<String> values) {
+            addCriterion("land_area_unit not in", values, "landAreaUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAreaUnitBetween(String value1, String value2) {
+            addCriterion("land_area_unit between", value1, value2, "landAreaUnit");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAreaUnitNotBetween(String value1, String value2) {
+            addCriterion("land_area_unit not between", value1, value2, "landAreaUnit");
             return (Criteria) this;
         }
 
@@ -2006,52 +2196,62 @@ public class NetInfoRecordLandExample {
             return (Criteria) this;
         }
 
-        public Criteria andBuildDensityEqualTo(BigDecimal value) {
+        public Criteria andBuildDensityEqualTo(String value) {
             addCriterion("build_density =", value, "buildDensity");
             return (Criteria) this;
         }
 
-        public Criteria andBuildDensityNotEqualTo(BigDecimal value) {
+        public Criteria andBuildDensityNotEqualTo(String value) {
             addCriterion("build_density <>", value, "buildDensity");
             return (Criteria) this;
         }
 
-        public Criteria andBuildDensityGreaterThan(BigDecimal value) {
+        public Criteria andBuildDensityGreaterThan(String value) {
             addCriterion("build_density >", value, "buildDensity");
             return (Criteria) this;
         }
 
-        public Criteria andBuildDensityGreaterThanOrEqualTo(BigDecimal value) {
+        public Criteria andBuildDensityGreaterThanOrEqualTo(String value) {
             addCriterion("build_density >=", value, "buildDensity");
             return (Criteria) this;
         }
 
-        public Criteria andBuildDensityLessThan(BigDecimal value) {
+        public Criteria andBuildDensityLessThan(String value) {
             addCriterion("build_density <", value, "buildDensity");
             return (Criteria) this;
         }
 
-        public Criteria andBuildDensityLessThanOrEqualTo(BigDecimal value) {
+        public Criteria andBuildDensityLessThanOrEqualTo(String value) {
             addCriterion("build_density <=", value, "buildDensity");
             return (Criteria) this;
         }
 
-        public Criteria andBuildDensityIn(List<BigDecimal> values) {
+        public Criteria andBuildDensityLike(String value) {
+            addCriterion("build_density like", value, "buildDensity");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildDensityNotLike(String value) {
+            addCriterion("build_density not like", value, "buildDensity");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildDensityIn(List<String> values) {
             addCriterion("build_density in", values, "buildDensity");
             return (Criteria) this;
         }
 
-        public Criteria andBuildDensityNotIn(List<BigDecimal> values) {
+        public Criteria andBuildDensityNotIn(List<String> values) {
             addCriterion("build_density not in", values, "buildDensity");
             return (Criteria) this;
         }
 
-        public Criteria andBuildDensityBetween(BigDecimal value1, BigDecimal value2) {
+        public Criteria andBuildDensityBetween(String value1, String value2) {
             addCriterion("build_density between", value1, value2, "buildDensity");
             return (Criteria) this;
         }
 
-        public Criteria andBuildDensityNotBetween(BigDecimal value1, BigDecimal value2) {
+        public Criteria andBuildDensityNotBetween(String value1, String value2) {
             addCriterion("build_density not between", value1, value2, "buildDensity");
             return (Criteria) this;
         }
@@ -2516,6 +2716,76 @@ public class NetInfoRecordLandExample {
             return (Criteria) this;
         }
 
+        public Criteria andApproverIsNull() {
+            addCriterion("approver is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andApproverIsNotNull() {
+            addCriterion("approver is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andApproverEqualTo(String value) {
+            addCriterion("approver =", value, "approver");
+            return (Criteria) this;
+        }
+
+        public Criteria andApproverNotEqualTo(String value) {
+            addCriterion("approver <>", value, "approver");
+            return (Criteria) this;
+        }
+
+        public Criteria andApproverGreaterThan(String value) {
+            addCriterion("approver >", value, "approver");
+            return (Criteria) this;
+        }
+
+        public Criteria andApproverGreaterThanOrEqualTo(String value) {
+            addCriterion("approver >=", value, "approver");
+            return (Criteria) this;
+        }
+
+        public Criteria andApproverLessThan(String value) {
+            addCriterion("approver <", value, "approver");
+            return (Criteria) this;
+        }
+
+        public Criteria andApproverLessThanOrEqualTo(String value) {
+            addCriterion("approver <=", value, "approver");
+            return (Criteria) this;
+        }
+
+        public Criteria andApproverLike(String value) {
+            addCriterion("approver like", value, "approver");
+            return (Criteria) this;
+        }
+
+        public Criteria andApproverNotLike(String value) {
+            addCriterion("approver not like", value, "approver");
+            return (Criteria) this;
+        }
+
+        public Criteria andApproverIn(List<String> values) {
+            addCriterion("approver in", values, "approver");
+            return (Criteria) this;
+        }
+
+        public Criteria andApproverNotIn(List<String> values) {
+            addCriterion("approver not in", values, "approver");
+            return (Criteria) this;
+        }
+
+        public Criteria andApproverBetween(String value1, String value2) {
+            addCriterion("approver between", value1, value2, "approver");
+            return (Criteria) this;
+        }
+
+        public Criteria andApproverNotBetween(String value1, String value2) {
+            addCriterion("approver not between", value1, value2, "approver");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;
@@ -2703,76 +2973,6 @@ public class NetInfoRecordLandExample {
 
         public Criteria andGmtModifiedNotBetween(Date value1, Date value2) {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
-            return (Criteria) this;
-        }
-
-        public Criteria andApproverIsNull() {
-            addCriterion("approver is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andApproverIsNotNull() {
-            addCriterion("approver is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andApproverEqualTo(String value) {
-            addCriterion("approver =", value, "approver");
-            return (Criteria) this;
-        }
-
-        public Criteria andApproverNotEqualTo(String value) {
-            addCriterion("approver <>", value, "approver");
-            return (Criteria) this;
-        }
-
-        public Criteria andApproverGreaterThan(String value) {
-            addCriterion("approver >", value, "approver");
-            return (Criteria) this;
-        }
-
-        public Criteria andApproverGreaterThanOrEqualTo(String value) {
-            addCriterion("approver >=", value, "approver");
-            return (Criteria) this;
-        }
-
-        public Criteria andApproverLessThan(String value) {
-            addCriterion("approver <", value, "approver");
-            return (Criteria) this;
-        }
-
-        public Criteria andApproverLessThanOrEqualTo(String value) {
-            addCriterion("approver <=", value, "approver");
-            return (Criteria) this;
-        }
-
-        public Criteria andApproverLike(String value) {
-            addCriterion("approver like", value, "approver");
-            return (Criteria) this;
-        }
-
-        public Criteria andApproverNotLike(String value) {
-            addCriterion("approver not like", value, "approver");
-            return (Criteria) this;
-        }
-
-        public Criteria andApproverIn(List<String> values) {
-            addCriterion("approver in", values, "approver");
-            return (Criteria) this;
-        }
-
-        public Criteria andApproverNotIn(List<String> values) {
-            addCriterion("approver not in", values, "approver");
-            return (Criteria) this;
-        }
-
-        public Criteria andApproverBetween(String value1, String value2) {
-            addCriterion("approver between", value1, value2, "approver");
-            return (Criteria) this;
-        }
-
-        public Criteria andApproverNotBetween(String value1, String value2) {
-            addCriterion("approver not between", value1, value2, "approver");
             return (Criteria) this;
         }
     }
