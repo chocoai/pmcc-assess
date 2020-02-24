@@ -3,37 +3,60 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<div class="x_panel">
-    <div class="x_title collapse-link">
-        <ul class="nav navbar-right panel_toolbox">
-            <li><a class="collapse-link"><i
-                    class="fa fa-chevron-up"></i></a></li>
-        </ul>
-        <h4>交通枢纽信息</h4>
-        <div class="clearfix"></div>
-    </div>
-    <div class="x_content collapse">
-        <form class="form-horizontal">
-            <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                <button type="button" class="btn btn-success" onclick="matchingTrafficHub.prototype.showModel()"
-                        data-toggle="modal" href="#divBox"> 新增
-                </button>
-                <button type="button" class="btn btn-warning" onclick="matchingTrafficHub.prototype.clear()">
-                    删除
-                </button>
-            </div>
-            <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                <input type="text" placeholder="距离(单位/m)" class="form-control" name="distance" value="3000">
-            </div>
-            <div class=" col-xs-1  col-sm-1  col-md-1  col-lg-1 ">
-                <div type="button" class="btn btn-default docs-tooltip"
-                     onclick="assessMatchingTrafficHub.select(this);">
-                    <i class="fa fa-search"></i>搜索
+<div class="col-md-12">
+    <div class="card full-height">
+        <div class="card-header collapse-link">
+            <div class="card-head-row">
+                <div class="card-title">
+                    交通枢纽信息
+                </div>
+                <div class="card-tools">
+                    <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                            class="fa fa-angle-down"></span>
+                    </button>
                 </div>
             </div>
-            <table class="table table-bordered" id="MatchingTrafficHubList">
-            </table>
-        </form>
+        </div>
+        <div class="card-body">
+            <form class="form-horizontal">
+                <div class="row row row row form-group form-inline">
+                    <button style="margin-left: 5px" class="btn btn-success btn-sm" type="button"
+                            data-toggle="modal" onclick="matchingTrafficHub.prototype.showModel()"
+                            href="#divBoxMatchingTrafficHub">
+											<span class="btn-label">
+												<i class="fa fa-plus"></i>
+											</span>
+                        新增
+                    </button>
+                    <button type="button" class="btn btn-warning btn-sm" onclick="matchingTrafficHub.prototype.clear()"> 
+                        	<span class="btn-label">
+												<i class="fa fa-minus"></i>
+											</span>
+                        删除
+                    </button>
+
+                    <label class="col-sm-1 control-label">
+                        餐饮类别
+                    </label>
+                    <div class="col-sm-2">
+                        <select name="category" class="form-control input-full input-full category">
+                        </select>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" placeholder="距离(单位/m)" class="form-control input-full input-full" name="distance"
+                               value="3000">
+                    </div>
+
+                    <button type="button" class="btn btn-info btn-sm" onclick="assessMatchingTrafficHub.select(this)">
+                        <i class="fa fa-search"></i>搜索
+                    </button>
+
+                </div>
+                <table class="table table-bordered" id="MatchingTrafficHubList">
+                    <!-- cerare document add ajax data-->
+                </table>
+            </form>
+        </div>
     </div>
 </div>
 
@@ -43,77 +66,88 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
+                <h4 class="modal-title">交通枢纽</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">交通枢纽</h3>
             </div>
-            <form id="frmMatchingTrafficHub" class="form-horizontal">
-                <input type="hidden" name="id">
-                <input type="hidden" name="type" class="type">
-                <div class="modal-body">
+
+            <div class="modal-body">
+                <form id="frmMatchingTrafficHub" class="form-horizontal">
+                    <input type="hidden" name="id">
+                    <input type="hidden" name="type" class="type">
                     <div class="row">
-                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                            <div class="panel-body">
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                    <div class="form-inline x-valid">
+                                        <label class="col-sm-2 control-label">
                                             名称<span class="symbol required"></span>
                                         </label>
-                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
-                                            <input type="text" class="form-control" name="name"
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control input-full" name="name"
                                                    placeholder="名称" required="required">
                                         </div>
                                     </div>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                    <div class="form-inline x-valid">
+                                        <label class="col-sm-2 control-label">
                                             收费标准
                                         </label>
-                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
-                                            <input type="text" class="form-control" name="costStandard"
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control input-full" name="costStandard"
                                                    placeholder="收费标准">
                                         </div>
                                     </div>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                    <div class="form-inline x-valid">
+                                        <label class="col-sm-2 control-label">
                                             性质<span class="symbol required"></span>
                                         </label>
-                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
+                                        <div class="col-sm-10">
                                             <select required="required" name="nature"
-                                                    class="form-control search-select select2 nature">
+                                                    class="form-control input-full search-select select2 nature">
                                             </select>
                                         </div>
                                     </div>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                    <div class="form-inline x-valid">
+                                        <label class="col-sm-2 control-label">
                                             距离<span class="symbol required"></span>
                                         </label>
-                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
+                                        <div class="col-sm-10">
                                             <select required="required" name="distance"
-                                                    class="form-control search-select select2 distance">
+                                                    class="form-control input-full search-select select2 distance">
                                             </select>
                                         </div>
                                     </div>
+                                    </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
-                </div>
-            </form>
+                </form>
+            </div>
             <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">
-                    取消
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
                 </button>
-                <button type="button" class="btn btn-primary" onclick="matchingTrafficHub.prototype.saveData()">
+                <button type="button" class="btn btn-primary btn-sm" onclick="matchingTrafficHub.prototype.saveData()">
                     保存
                 </button>
             </div>
+
         </div>
     </div>
 </div>
+
+

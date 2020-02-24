@@ -516,13 +516,13 @@
                 // str += '<a class="btn btn-xs btn-warning" href="javascript:delDataDic(' + row.id + ',\'tb_List\')">删除</a>';
                 // str += '</div>';
                 // return str;
-                var str = '<button onclick="setSubDataDic(' + row.id + ')" style="margin-left: 5px;" class="btn btn-icon btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看子项">';
+                var str = '<button onclick="setSubDataDic(' + row.id + ')" style="margin-left: 5px;" class="btn   btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看子项">';
                 str += '<i class="fa fa-search"></i>';
                 str += '</button>';
-                str += '<button onclick="editDataDic(' + row.id + ')"  style="margin-left: 5px;"  class="btn btn-icon btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
+                str += '<button onclick="editDataDic(' + row.id + ')"  style="margin-left: 5px;"  class="btn   btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
                 str += '<i class="fa fa-pen"></i>';
                 str += '</button>';
-                str += '<button onclick="delDataDic(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn btn-icon btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
+                str += '<button onclick="delDataDic(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn   btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
                 str += '<i class="fa fa-minus"></i>';
                 str += '</button>';
                 return str;
@@ -671,10 +671,21 @@
         cols.push({
             field: 'id', title: '操作', width: 200, formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-success" href="javascript:setSubDataDic(' + row.id + ');" ><i class="fa fa-edit">查看子项</i></a>';
-                str += '<a class="btn btn-xs btn-success" href="javascript:editSubDataDic(' + row.id + ');" ><i class="fa fa-edit">编辑</i></a>';
-                str += '<a class="btn btn-xs btn-warning" href="javascript:delDataDic(' + row.id + ',\'tbDataDicList\')"><i class="fa fa-trash-o"></i>删除</a>';
-                str += '<a class="btn btn-xs btn-success" href="javascript:addKeyValue(' + row.id + ');" ><i class="fa fa-edit">keyValue</i></a>';
+                // str += '<a class="btn btn-xs btn-success" href="javascript:setSubDataDic(' + row.id + ');" ><i class="fa fa-edit">查看子项</i></a>';
+                str += '<button onclick="setSubDataDic(' + row.id + ')"  style="margin-left: 5px;"  class="btn   btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看子项">';
+                str += '<i class="fa fa-search"></i>';
+                str += '</button>';
+                // str += '<a class="btn btn-xs btn-success" href="javascript:editSubDataDic(' + row.id + ');" ><i class="fa fa-edit">编辑</i></a>';
+                str += '<button onclick="editSubDataDic(' + row.id + ')"  style="margin-left: 5px;"  class="btn   btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
+                str += '<i class="fa fa-pen"></i>';
+                str += '</button>';
+                // str += '<a class="btn btn-xs btn-warning" href="javascript:delDataDic(' + row.id + ',\'tbDataDicList\')"><i class="fa fa-trash-o"></i>删除</a>';
+                str += '<button onclick="delDataDic(' + row.id + ')"  style="margin-left: 5px;"  class="btn   btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
+                str += '<i class="fa fa-minus"></i>';
+                str += '</button>';
+                // str += '<a class="btn btn-xs btn-success" href="javascript:addKeyValue(' + row.id + ');" ><i class="fa fa-edit">keyValue</i></a>';
+                str += '<button onclick="addKeyValue(' + row.id + ')"  style="margin-left: 5px;"  class="btn   btn-primary  btn-xs tooltips"  data-placement="bottom">keyValue';
+                str += '</button>';
                 str += '</div>';
                 return str;
             }

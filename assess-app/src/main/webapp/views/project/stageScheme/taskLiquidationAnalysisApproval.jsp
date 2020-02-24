@@ -6,170 +6,183 @@
 </head>
 
 <script type="text/html" id="taskLiquidationAnalysisDiv">
-    <div class="x_panel">
-        <div class="x_title">
-            <h3>变现分析税费（{index}）
-            </h3>
-        </div>
-        <div class="x_content">
-            <form class="form-horizontal" id="taskLiquidationAnalysisFrm_number">
-                <input type="hidden" name="id">
-                <%--<div class="form-group">--%>
-                    <%--<div class="x-valid">--%>
-                        <%--<label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">估价对象信息<span--%>
-                                <%--class="symbol required"></span></label>--%>
-                        <%--<div class=" col-xs-560  col-sm-560  col-md-560  col-lg-560 "--%>
-                             <%--style="overflow:auto;height:60px;">--%>
 
-                            <%--<label class="form-control" name="recordNames"></label>--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
-                    <%----%>
-                <%--</div>--%>
-                <div class="form-group">
-                    <div class="x-valid">
-                        <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">估价对象名称</label>
-                        <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                            <input class="form-control" type="text" name="name"
-                                   placeholder="估价对象名称">
-                        </div>
+
+    <div class="col-md-12">
+        <div class="card full-height">
+            <div class="card-header collapse-link">
+                <div class="card-head-row">
+                    <div class="card-title">
+                        变现分析税费（{index}）
                     </div>
-                    <div class="x-valid">
-                        <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">权证名称</label>
-                        <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                            <input class="form-control" type="text" name="certName"
-                                   placeholder="权证名称">
-                        </div>
+                    <div class="card-tools">
+                        <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                                class="fa fa-angle-down"></span>
+                        </button>
                     </div>
-                    <div class="x-valid">
-                        <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">所有权人</label>
-                        <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                            <input class="form-control" type="text" name="ownership"
-                                   placeholder="所有权人">
-                        </div>
-                    </div>
-                    <div class="x-valid">
-                        <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                            <div class="input-group">
-                                <input class="form-control" type="text" name="seat"
-                                       placeholder="坐落">
-                                <span class="input-group-addon"
-                                      onclick="searchLiquidationJudgeData(this);">搜索<i
-                                        class="fa fa-search"></i> </span>
+                </div>
+            </div>
+            <div class="card-body">
+                <form class="form-horizontal" id="taskLiquidationAnalysisFrm_number">
+                    <input type="hidden" name="id">
+
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <div class="form-inline x-valid">
+                                <label class="col-sm-1 control-label">估价对象名称</label>
+                                <div class="col-sm-2">
+                                    <input class="form-control input-full" type="text" name="name"
+                                           placeholder="估价对象名称">
+                                </div>
+
+                                <label class="col-sm-1 control-label">权证名称</label>
+                                <div class="col-sm-2">
+                                    <input class="form-control input-full" type="text" name="certName"
+                                           placeholder="权证名称">
+                                </div>
+
+                                <label class="col-sm-1 control-label">所有权人</label>
+                                <div class="col-sm-2">
+                                    <input class="form-control input-full" type="text" name="ownership"
+                                           placeholder="所有权人">
+                                </div>
+
+                                <div class="col-sm-2">
+                                    <input class="form-control input-full" type="text" name="seat"
+                                           placeholder="坐落">
+                                </div>
+                                <button class="btn btn-info btn-sm"
+                                        onclick="searchLiquidationJudgeData(this);"><span class="btn-label">
+												<i class="fa fa-search"></i>
+											</span>搜索
+                                </button>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                        <table class="table table-bordered" id="schemeLiquidationJudgeList_number">
-                        </table>
+                    <div class="row form-group">
+                        <div class="col-sm-12">
+                            <table class="table table-bordered" id="schemeLiquidationJudgeList_number">
+                            </table>
+                        </div>
                     </div>
-                </div>
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th class="hidden-xs">物业类型</th>
-                        <th class="hidden-xs">税率</th>
+                    <div class="row form-group">
+                        <div class="col-sm-12">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th class="hidden-xs">物业类型</th>
+                                    <th class="hidden-xs">税率</th>
 
-                        <th class="hidden-xs">计算基数</th>
-                        <th class="hidden-xs">计算公式</th>
-                        <th class="hidden-xs">税费负担方</th>
+                                    <th class="hidden-xs">计算基数</th>
+                                    <th class="hidden-xs">计算公式</th>
+                                    <th class="hidden-xs">税费负担方</th>
 
-                        <th class="hidden-xs">备注</th>
-                        <th class="hidden-xs">单位（面积/m² 金额/元）</th>
-                        <th class="hidden-xs">操作</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td class="hidden-xs">面积(平方米)</td>
-                        <td class="hidden-xs">/</td>
-                        <td class="hidden-xs">/</td>
-                        <td class="hidden-xs">/</td>
-                        <td class="hidden-xs">/</td>
-                        <td class="hidden-xs">/</td>
-                        <td class="hidden-xs" name="evaluationArea">0
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="hidden-xs">评估价(元)</td>
-                        <td class="hidden-xs">/</td>
-                        <td class="hidden-xs">/</td>
-                        <td class="hidden-xs">/</td>
-                        <td class="hidden-xs">/</td>
-                        <td class="hidden-xs">/</td>
-                        <td class="hidden-xs" name="evaluationPrice">0
-                        </td>
-                    </tr>
-                    </tbody>
-                    <tbody name="tbody_data_section">
+                                    <th class="hidden-xs">备注</th>
+                                    <th class="hidden-xs">单位（面积/m² 金额/元）</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td class="hidden-xs">面积(平方米)</td>
+                                    <td class="hidden-xs">/</td>
+                                    <td class="hidden-xs">/</td>
+                                    <td class="hidden-xs">/</td>
+                                    <td class="hidden-xs">/</td>
+                                    <td class="hidden-xs">/</td>
+                                    <td class="hidden-xs" name="evaluationArea">0
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="hidden-xs">评估价(元)</td>
+                                    <td class="hidden-xs">/</td>
+                                    <td class="hidden-xs">/</td>
+                                    <td class="hidden-xs">/</td>
+                                    <td class="hidden-xs">/</td>
+                                    <td class="hidden-xs">/</td>
+                                    <td class="hidden-xs" name="evaluationPrice">0
+                                    </td>
+                                </tr>
+                                </tbody>
+                                <tbody name="tbody_data_section">
 
-                    </tbody>
-                    <tbody>
-                    <tr>
-                        <td class='hidden-xs' colspan='6' style='text-align:center;'>合计费用</td>
-                        <td class='hidden-xs' name="total">
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </form>
+                                </tbody>
+                                <tbody>
+                                <tr>
+                                    <td class='hidden-xs' colspan='6' style='text-align:center;'>合计费用</td>
+                                    <td class='hidden-xs' name="total">
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
 
     </div>
 </script>
-<body class="nav-md footer_fixed">
-<div class="container body">
-    <div class="main_container">
-        <div class="right_col" role="main" style="margin-left: 0">
+<body>
+<div class="wrapper">
+    <div class="main-panel" style="width: 100%">
+        <div class="content" style="margin-top: 0px;">
             <%@include file="/views/share/form_head.jsp" %>
-            <%@include file="/views/share/project/projectInfoSimple.jsp" %>
-            <%@include file="/views/share/project/projectPlanDetails.jsp" %>
-            <!--填写表单-->
-            <div class="x_panel">
-                <div class="x_title collapse-link">
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                    </ul>
-                    <h3>
-                        ${projectPlanDetails.projectPhaseName}
-                        <small>${areaGroup.areaName}</small>
-                    </h3>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="x_content">
-                    <form class="form-horizontal" id="master">
-                        <input type="hidden" name="id" value="${master.id}">
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">变现比率</label>
-                                <div class="col-sm-3">
-                                    <label class="form-control">${master.liquidRatios}</label>
+            <div class="page-inner mt--5">
+                <div class="row mt--2">
+                    <%@include file="/views/share/project/projectInfoSimple.jsp" %>
+                    <%@include file="/views/share/project/projectPlanDetails.jsp" %>
+
+                    <!-- 填写表单 start -->
+                    <div class="col-md-12">
+                        <div class="card full-height">
+                            <div class="card-header collapse-link">
+                                <div class="card-head-row">
+                                    <div class="card-title">
+                                        ${projectPlanDetails.projectPhaseName}
+                                        <small>${areaGroup.areaName}</small>
+                                    </div>
+                                    <div class="card-tools">
+                                        <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                                                class="fa fa-angle-down"></span>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">变现时间</label>
-                                <div class="col-sm-3">
-                                    <label class="form-control">${master.liquidTime}</label>
-                                </div>
+                            <div class="card-body">
+                                <form id="master" class="form-horizontal">
+                                    <input type="hidden" name="id" value="${master.id}">
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1 control-label">变现比率</label>
+                                                <div class="col-sm-3">
+                                                    <label class="form-control input-full">${master.liquidRatios}</label>
+                                                </div>
+                                                <label class="col-sm-1 control-label">变现时间</label>
+                                                <div class="col-sm-3">
+                                                    <label class="form-control input-full">${master.liquidTime}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </form>
                             </div>
                         </div>
-                    </form>
+                    </div>
+                    <div id="taskLiquidationAnalysisAppend"></div>
+                    <%@include file="/views/share/form_approval.jsp" %>
+                    <%@include file="/views/share/form_log.jsp" %>
                 </div>
             </div>
-
-            <div id="taskLiquidationAnalysisAppend">
-
-            </div>
-            <%@include file="/views/share/form_approval.jsp" %>
-            <%@include file="/views/share/form_log.jsp" %>
         </div>
+        <%@include file="/views/share/main_footer.jsp" %>
     </div>
 </div>
+
+
 </body>
 
-<%@include file="/views/share/main_footer.jsp" %>
 <script type="application/javascript">
     var commonFieldApproval = {
         taskLiquidationAnalysisFrm: "taskLiquidationAnalysisFrm",
@@ -215,7 +228,7 @@
                                 if (item.recordNames) {
                                     $("#" + commonFieldApproval.taskLiquidationAnalysisFrm + number).find('[name=recordNames]').text(item.recordNames);
                                 }
-                                loadSchemeLiquidationJudgeTable(item.id,{groupId: item.id});
+                                loadSchemeLiquidationJudgeTable(item.id, {groupId: item.id});
                                 getGroupAndPrice(item.id, commonFieldApproval.taskLiquidationAnalysisFrm + number);
                                 getAnalysisItemList(number);
                                 setTimeout(function () {
@@ -233,7 +246,7 @@
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             });
         }
@@ -254,7 +267,7 @@
                 }
             },
             error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
+                AlertError("调用服务端方法失败，失败原因:" + result);
             }
         });
 
@@ -328,7 +341,7 @@
     }
 
     //已选择估价对象
-    function loadSchemeLiquidationJudgeTable(groupId,options) {
+    function loadSchemeLiquidationJudgeTable(groupId, options) {
         var cols = [];
         cols.push({field: 'name', title: '估价对象名称', width: "22%"});
         cols.push({field: 'certName', title: '权证名称', width: "22%"});
@@ -342,8 +355,8 @@
                 $('.tooltips').tooltip();
             }
         };
-        $("#schemeLiquidationJudgeList"+groupId).bootstrapTable('destroy');
-        TableInit("schemeLiquidationJudgeList"+groupId, "${pageContext.request.contextPath}/schemeLiquidationAnalysis/getSchemeLiquidationJudgeList", cols,options, method);
+        $("#schemeLiquidationJudgeList" + groupId).bootstrapTable('destroy');
+        TableInit("schemeLiquidationJudgeList" + groupId, "${pageContext.request.contextPath}/schemeLiquidationAnalysis/getSchemeLiquidationJudgeList", cols, options, method);
     };
 
     //查询已选择估价对象
@@ -369,7 +382,7 @@
             data.seat = seat;
         }
 
-        loadSchemeLiquidationJudgeTable(groupId,data);
+        loadSchemeLiquidationJudgeTable(groupId, data);
     };
 </script>
 </body>

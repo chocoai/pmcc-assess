@@ -1,5 +1,90 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<div id="tool_select_land_level_modal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="max-width: 70%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">基准地价</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
 
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class=" col-sm-1">省</label>
+                                            <div class=" col-sm-3">
+                                                <select name="province"
+                                                        class="form-control input-full search-select select2">
+                                                </select>
+                                            </div>
+                                            <label class=" col-sm-1">市</label>
+                                            <div class=" col-sm-3">
+                                                <select name="city" class="form-control input-full search-select select2">
+                                                </select>
+                                            </div>
+                                            <label class=" col-sm-1">县</label>
+                                            <div class=" col-sm-3">
+                                                <select name="district"
+                                                        class="form-control input-full search-select select2">
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class=" col-sm-1">乡镇/街道</label>
+                                            <div class=" col-sm-3">
+                                                <input placeholder="乡镇/街道" class="form-control input-full" name="townShipName"
+                                                       type="text">
+                                            </div>
+                                            <button type="button" class="btn btn-success btn-sm"
+                                                    onclick="assessLandLevelTool.loadLandLevelList(null);">
+                                                查询 <i class="fa fa-search" aria-hidden="true"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                        <div class="col-sm-8 pull-left">
+                                            <table class="table table-bordered" id="tool_select_land_level_list">
+                                                <!-- cerare document add ajax data-->
+                                            </table>
+                                        </div>
+
+                                        <div class="col-sm-4 pull-right">
+                                            <ul id="tool_select_land_level_list_tree" class="ztree"></ul>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<%--
 <div id="tool_select_land_level_modal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg" style="width:1000px;height:650px;">
@@ -19,25 +104,25 @@
                                     <div class="row">
                                         <form class="form-horizontal">
                                             <div class="x-valid">
-                                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">省</label>
-                                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                                <label class=" col-sm-1">省</label>
+                                                <div class=" col-sm-2">
                                                     <select name="province"
-                                                            class="form-control search-select select2">
+                                                            class="form-control input-full search-select select2">
                                                     </select>
                                                 </div>
                                             </div>
                                             <div class="x-valid">
-                                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">市</label>
-                                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                                    <select name="city" class="form-control search-select select2">
+                                                <label class=" col-sm-1">市</label>
+                                                <div class=" col-sm-2">
+                                                    <select name="city" class="form-control input-full search-select select2">
                                                     </select>
                                                 </div>
                                             </div>
                                             <div class="x-valid">
-                                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">县</label>
-                                                <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
+                                                <label class=" col-sm-1">县</label>
+                                                <div class=" col-sm-2">
                                                     <select name="district"
-                                                            class="form-control search-select select2">
+                                                            class="form-control input-full search-select select2">
                                                     </select>
                                                 </div>
                                             </div>
@@ -45,7 +130,7 @@
                                                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                                                     <div class="input-group">
                                                     <span class="input-group-btn">
-                                                    <input placeholder="乡镇/街道" class="form-control" name="townShipName"
+                                                    <input placeholder="乡镇/街道" class="form-control input-full" name="townShipName"
                                                            type="text">
                                                     </span>
                                                         <span class="input-group-btn">
@@ -81,6 +166,7 @@
         </div>
     </div>
 </div>
+--%>
 <script>
     /**
      * Created by kings on 2018-4-18.
