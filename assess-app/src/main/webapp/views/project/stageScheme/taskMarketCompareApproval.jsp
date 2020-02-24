@@ -6,10 +6,10 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/tree-grid/css/jquery.treegrid.css">
 </head>
 
-<body class="nav-md footer_fixed">
-<div class="container body">
-    <div class="main_container">
-        <div class="right_col" role="main" style="margin-left: 0">
+<body>
+<div class="wrapper">
+    <div class="main-panel" style="width: 100%">
+        <div class="content" style="margin-top: 0px;">
             <%@include file="/views/share/form_head.jsp" %>
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
@@ -18,11 +18,12 @@
             <%@include file="/views/share/form_approval.jsp" %>
             <%@include file="/views/share/form_log.jsp" %>
         </div>
+        <%@include file="/views/share/main_footer.jsp" %>
     </div>
 </div>
 </body>
 
-<%@include file="/views/share/main_footer.jsp" %>
+
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js?v=${assessVersion}"></script>
 <input type="hidden" id="marketCompareJSON" value='${marketCompareJSON}'>
 <input type="hidden" id="fieldsJSON" value='${fieldsJSON}'>

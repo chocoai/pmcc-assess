@@ -12,7 +12,7 @@
     <link rel="stylesheet"
           href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/panel.css">
 </head>
-<body class="nav-md footer_fixed">
+<body>
 <div class="wrapper">
     <div class="main-panel" style="width: 100%">
         <div class="content" style="margin-top: 0px;">
@@ -21,127 +21,109 @@
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
 
             <c:forEach items="${areaGroups}" var="item">
-                <div class="x_panel area_panel">
-                    <input type="hidden" name="areaGroupId" value="${item.id}">
-                    <div class="x_title collapse-link" onclick="programme.loadJudgeObjectList(this);">
-                        <ul class="nav navbar-right panel_toolbox">
-                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
-                        </ul>
-                        <h3>
-                            <label>${item.areaName}</label>
-                        </h3>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div class="x_content collapse">
-                        <form id="frmJudgeObject${item.id}" class="form-horizontal">
-                            <div class="form-group">
-                                <div class="x-valid">
+                <div class="col-md-12">
+                    <div class="x_panel card area_panel">
+                        <input type="hidden" name="areaGroupId" value="${item.id}">
+                        <div class="x_title card-header collapse-link" onclick="programme.loadJudgeObjectList(this);">
+                            <div class="card-head-row">
+                                <div class="card-title">${item.areaName}</div>
+                                <div class="card-tools">
+                                    <button class="btn btn-icon btn-link btn-primary btn-xs"><span class="fa fa-angle-down"></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="x_content card-body collapse">
+                            <form id="frmJudgeObject${item.id}" class="form-horizontal">
+                                <div class="row form-group form-inline">
                                     <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
                                         评估基准日
                                     </label>
                                     <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                                        <label class="form-control">
+                                        <label class="form-control input-full">
                                             <fmt:formatDate value="${item.valueTimePoint}" pattern="yyyy-MM-dd"/>
                                         </label>
                                     </div>
-                                </div>
-                                <div class="x-valid">
                                     <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
                                         基准日说明
                                     </label>
                                     <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                                        <label class="form-control">${item.timePointExplain}</label>
+                                        <label class="form-control input-full">${item.timePointExplain}</label>
                                     </div>
-                                </div>
-
-                                <div class="x-valid">
                                     <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
                                         价值类型
                                     </label>
                                     <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                                        <label class="form-control">${item.valueDefinitionName}</label>
+                                        <label class="form-control input-full">${item.valueDefinitionName}</label>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="form-group">
-                                <div class="x-valid">
+                                <div class="row form-group form-inline">
                                     <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
                                         委托目的
                                     </label>
                                     <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                                        <label class="form-control">${item.entrustPurposeName}</label>
+                                        <label class="form-control input-full">${item.entrustPurposeName}</label>
                                     </div>
-                                </div>
-                                <div class="x-valid">
                                     <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
                                         委托目的类别
                                     </label>
                                     <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                                        <label class="form-control">${item.entrustAimTypeName}</label>
+                                        <label class="form-control input-full">${item.entrustAimTypeName}</label>
                                     </div>
-                                </div>
-                                <div class="x-valid">
                                     <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
                                         委托目的描述
                                     </label>
                                     <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                                        <label class="form-control">${item.remarkEntrustPurpose}</label>
+                                        <label class="form-control input-full">${item.remarkEntrustPurpose}</label>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="form-group">
-
-                                <div class="x-valid">
+                                <div class="row form-group form-inline">
                                     <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
                                         财产范围
                                     </label>
                                     <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                                        <label class="form-control">${item.propertyScopeName}</label>
+                                        <label class="form-control input-full">${item.propertyScopeName}</label>
                                     </div>
-                                </div>
-                                <div class="x-valid">
                                     <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
                                         财产包括
                                     </label>
                                     <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                                        <label class="form-control">${item.scopeInclude}</label>
+                                        <label class="form-control input-full">${item.scopeInclude}</label>
                                     </div>
-                                </div>
-                                <div class="x-valid">
                                     <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
                                         财产不包括
                                     </label>
                                     <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                                        <label class="form-control">${item.scopeNotInclude}</label>
+                                        <label class="form-control input-full">${item.scopeNotInclude}</label>
                                     </div>
                                 </div>
-                            </div>
 
 
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <th style="width: 30%;word-break: break-all;">编号</th>
-                                        <%--<th style="width: 10%">权证号</th>--%>
-                                    <th style="width: 5%">所有权人</th>
-                                    <th style="width: 15%">坐落</th>
-                                    <th style="width: 6%">终止日期</th>
-                                    <th style="width: 6%">剩余年限</th>
-                                    <th style="width: 6%">证载用途</th>
-                                    <th style="width: 6%">实际用途</th>
-                                    <th style="width: 6%">设定用途</th>
-                                    <th style="width: 10%">最佳利用方式</th>
-                                    <th style="width: 5%">证载面积</th>
-                                    <th style="width: 5%">评估面积</th>
-                                    <th style="width: 10%">操作</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
-                        </form>
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th style="width: 30%;word-break: break-all;">编号</th>
+                                            <%--<th style="width: 10%">权证号</th>--%>
+                                        <th style="width: 5%">所有权人</th>
+                                        <th style="width: 15%">坐落</th>
+                                        <th style="width: 6%">终止日期</th>
+                                        <th style="width: 6%">剩余年限</th>
+                                        <th style="width: 6%">证载用途</th>
+                                        <th style="width: 6%">实际用途</th>
+                                        <th style="width: 6%">设定用途</th>
+                                        <th style="width: 10%">最佳利用方式</th>
+                                        <th style="width: 5%">证载面积</th>
+                                        <th style="width: 5%">评估面积</th>
+                                        <th style="width: 10%">操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </c:forEach>
@@ -149,6 +131,7 @@
             <%@include file="/views/share/form_approval.jsp" %>
             <%@include file="/views/share/form_log.jsp" %>
         </div>
+        <%@include file="/views/share/main_footer.jsp" %>
     </div>
 </div>
 </body>
@@ -158,9 +141,9 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
+                <div class="modal-title"><h4>评估方法</h4></div>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">评估方法</h3>
             </div>
             <div class="modal-body">
                 <div class="" role="tabpanel" data-example-id="togglable-tabs">
@@ -272,7 +255,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
                     取消
                 </button>
             </div>
@@ -290,7 +273,7 @@
                 <h3 class="modal-title"></h3>
             </div>
             <div class="modal-body">
-                <div class="x_content">
+                <div class="x_content card-body">
 
                 </div>
             </div>
@@ -325,9 +308,9 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
+                <div class="modal-title"><h4>评估方法</h4></div>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">评估方法</h3>
             </div>
             <div class="modal-body">
                 <form id="frm_method_info" class="form-horizontal">
@@ -337,8 +320,8 @@
                             <table class="table">
                                 <thead>
                                 <tr>
-                                    <th width="20%">适用方法</th>
-                                    <th width="60%">适用原因</th>
+                                    <th width="30%">适用方法</th>
+                                    <th width="70%">适用原因</th>
                                 </tr>
                                 </thead>
                                 <tbody id="applicableTbody">
@@ -361,7 +344,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
                     取消
                 </button>
             </div>
@@ -401,14 +384,14 @@
     </tr>
 </script>
 
-<%@include file="/views/share/main_footer.jsp" %>
+
 <script src="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/jquery.easyui.min.js?v=${assessVersion}"></script>
 <script src="${pageContext.request.contextPath}/assets/layer/layer.js?v=${assessVersion}"></script>
 
 <script type="text/javascript">
 
     $(function () {
-        $(".area_panel .x_title").each(function () {
+        $(".area_panel .card-header").each(function () {
             $(this).trigger('click');
         })
         programme.loadInventoryRightList();
