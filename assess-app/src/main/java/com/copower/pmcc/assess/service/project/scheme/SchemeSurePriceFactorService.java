@@ -52,18 +52,21 @@ public class SchemeSurePriceFactorService {
         //先删除
         schemeSurePriceFactorDao.deleteSurePriceFactorByJudgeObjectId(schemeJudgeObject.getId());
         //再添加
+        StringBuilder factorBuilder=new StringBuilder();
         for (SchemeSurePriceFactor factor : factors) {
             if (factor.getType().equals(ComputeDataTypeEnum.ABSOLUTE.getId())) {
                 resultPrice = resultPrice.add(factor.getCoefficient());
             } else {
                 resultPrice = resultPrice.multiply(factor.getCoefficient().add(new BigDecimal("1")));
             }
+            factorBuilder.append(factor.getFactor()).append(":").append(factor.getCoefficient()).append(";");
             factor.setJudgeObjectId(schemeJudgeObject.getId());
             factor.setCreator(commonService.thisUserAccount());
             schemeSurePriceFactorDao.addSurePriceFactor(factor);
         }
         //更新调整后的价格
         schemeJudgeObject.setPrice(resultPrice);
+        schemeJudgeObject.setFactor(factorBuilder.toString());
         schemeJudgeObjectService.updateSchemeJudgeObject(schemeJudgeObject);
 
         SchemeJudgeObjectVo schemeJudgeObjectVo = new SchemeJudgeObjectVo();

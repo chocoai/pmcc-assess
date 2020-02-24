@@ -58,6 +58,8 @@ public class SchemeJudgeObject {
 
     private BigDecimal price;
 
+    private String factor;
+
     private BigDecimal originalPrice;
 
     private BigDecimal setPlotRatio;
@@ -310,6 +312,14 @@ public class SchemeJudgeObject {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public String getFactor() {
+        return factor;
+    }
+
+    public void setFactor(String factor) {
+        this.factor = factor == null ? null : factor.trim();
     }
 
     public BigDecimal getOriginalPrice() {

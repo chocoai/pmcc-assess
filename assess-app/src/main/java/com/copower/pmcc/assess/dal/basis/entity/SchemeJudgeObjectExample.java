@@ -1826,6 +1826,76 @@ public class SchemeJudgeObjectExample {
             return (Criteria) this;
         }
 
+        public Criteria andFactorIsNull() {
+            addCriterion("factor is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFactorIsNotNull() {
+            addCriterion("factor is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFactorEqualTo(String value) {
+            addCriterion("factor =", value, "factor");
+            return (Criteria) this;
+        }
+
+        public Criteria andFactorNotEqualTo(String value) {
+            addCriterion("factor <>", value, "factor");
+            return (Criteria) this;
+        }
+
+        public Criteria andFactorGreaterThan(String value) {
+            addCriterion("factor >", value, "factor");
+            return (Criteria) this;
+        }
+
+        public Criteria andFactorGreaterThanOrEqualTo(String value) {
+            addCriterion("factor >=", value, "factor");
+            return (Criteria) this;
+        }
+
+        public Criteria andFactorLessThan(String value) {
+            addCriterion("factor <", value, "factor");
+            return (Criteria) this;
+        }
+
+        public Criteria andFactorLessThanOrEqualTo(String value) {
+            addCriterion("factor <=", value, "factor");
+            return (Criteria) this;
+        }
+
+        public Criteria andFactorLike(String value) {
+            addCriterion("factor like", value, "factor");
+            return (Criteria) this;
+        }
+
+        public Criteria andFactorNotLike(String value) {
+            addCriterion("factor not like", value, "factor");
+            return (Criteria) this;
+        }
+
+        public Criteria andFactorIn(List<String> values) {
+            addCriterion("factor in", values, "factor");
+            return (Criteria) this;
+        }
+
+        public Criteria andFactorNotIn(List<String> values) {
+            addCriterion("factor not in", values, "factor");
+            return (Criteria) this;
+        }
+
+        public Criteria andFactorBetween(String value1, String value2) {
+            addCriterion("factor between", value1, value2, "factor");
+            return (Criteria) this;
+        }
+
+        public Criteria andFactorNotBetween(String value1, String value2) {
+            addCriterion("factor not between", value1, value2, "factor");
+            return (Criteria) this;
+        }
+
         public Criteria andOriginalPriceIsNull() {
             addCriterion("original_price is null");
             return (Criteria) this;
