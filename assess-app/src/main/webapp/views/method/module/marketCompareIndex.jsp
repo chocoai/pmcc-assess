@@ -1,49 +1,47 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
-<div class="x_panel">
-    <div class="x_title ">
-        <ul class="nav navbar-right panel_toolbox">
-            <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-        </ul>
-        <h3 style="word-break: break-all">
-            ${judgeObject.name}
-            <small>(${judgeObject.evaluationArea}㎡)</small>
-            <small id="small_select_evaluation">
-                <input type="button" class="btn btn-primary btn-xs" value="选择估价对象"
-                       onclick="marketCompare.loadStandardJudges();">
-            </small>
-            <small id="small_select_case">
-                <input type="button" class="btn btn-primary btn-xs" value="选择案例"
-                       onclick="marketCompare.loadCaseAll();">
-                <input type="button" class="btn btn-primary btn-xs" value="刷新"
-                       onclick="marketCompare.refreshData();">
-            </small>
-        </h3>
-        <div class="clearfix"></div>
-    </div>
-    <div class="x_content">
-        <div class="col-sm-12 form-group">
+<div class="col-md-12">
+    <div class="x_panel card">
+        <div class="x_title card-header ">
+            <div class="card-head-row">
+                <div class="card-title" style="word-break: break-all">
+                    ${judgeObject.name}(${judgeObject.evaluationArea}㎡)
+                    <span id="small_select_evaluation">
+                    <input type="button" class="btn btn-primary btn-xs" value="选择估价对象"
+                           onclick="marketCompare.loadStandardJudges();">
+                    </span>
+                    <span id="small_select_case">
+                    <input type="button" class="btn btn-primary btn-xs" value="选择案例"
+                           onclick="marketCompare.loadCaseAll();">
+                    <input type="button" class="btn btn-primary btn-xs" value="刷新"
+                           onclick="marketCompare.refreshData();">
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="x_content card-body">
+            <div class="col-sm-12 form-group">
             <span class="col-sm-1 col-sm-offset-1 checkbox-inline">
                 <input id="cbxText" type="checkbox" checked="checked" value="text"
                        onclick="marketCompare.toggle(this);">
                 <label for="cbxText">关系值</label>
             </span>
-            <span class="col-sm-1  checkbox-inline">
+                <span class="col-sm-1  checkbox-inline">
                 <input id="cbxScore" type="checkbox" checked="checked" value="score"
                        onclick="marketCompare.toggle(this);">
                 <label for="cbxScore">修正指数</label>
             </span>
-            <span class="col-sm-1  checkbox-inline">
+                <span class="col-sm-1  checkbox-inline">
                 <input id="cbxRatio" type="checkbox" checked="checked" value="ratio"
                        onclick="marketCompare.toggle(this);">
                 <label for="cbxRatio">测算值</label>
             </span>
-        </div>
-        <div>
-            <input type="hidden" id="marketCompareId">
-            <table id="tb_md_mc_item_list" class="table  tree">
+            </div>
+            <div>
+                <input type="hidden" id="marketCompareId">
+                <table id="tb_md_mc_item_list" class="table  tree">
 
-            </table>
+                </table>
+            </div>
         </div>
     </div>
 </div>
@@ -55,31 +53,31 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
+                <div class="modal-title"><h4>选择案例</h4></div>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">选择案例</h3>
             </div>
             <div class="modal-body">
                 <div class="form-horizontal">
-                    <div class="form-group">
-                        <label class="col-sm-1 control-label">
+                    <div class="row form-group form-inline col-md-12">
+                        <label class="col-sm-1 col-control-label">
                             名称
                         </label>
                         <div class="col-sm-3">
                             <input type="text" placeholder="名称" class="form-control" name="projectPhaseName">
                         </div>
                         <div class="col-sm-3">
-                            <input type="button" class="btn btn-primary" value="查询" onclick="marketCompare.loadCaseAll();">
+                            <button style="margin-left: 10px" class="btn btn-info  btn-sm" type="button" onclick="marketCompare.loadCaseAll();"><span class="btn-label"><i class="fa fa-search"></i></span>查询</button>
                         </div>
                     </div>
                 </div>
                 <table class="table table-bordered" id="select_case_list"></table>
             </div>
             <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
                     取消
                 </button>
-                <button type="button" class="btn btn-primary"
+                <button type="button" class="btn btn-primary btn-sm"
                         onclick="marketCompare.selectCase();">
                     保存
                 </button>
@@ -93,9 +91,9 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
+                <div class="modal-title"><h4>选择估价对象</h4></div>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">选择估价对象</h3>
             </div>
             <div class="modal-body">
                 <table class="table table-striped">
@@ -110,7 +108,7 @@
                 </table>
             </div>
             <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
                     取消
                 </button>
             </div>
@@ -167,81 +165,77 @@
 
         //设置元素可编辑
         function setElementEditable() {
-            $(".p_text").find('a').each(function () {
-                if ($(this).text()) {
-                    $(this).editable({
-                        validate: function (value) { //字段验证
-                            if (!$.trim(value)) {
-                                return '不能为空';
-                            }
-                        }
-                    });
-                }
-            })
+            $(".p_text").find('a').click(function () {
+                var that=$(this);
+                AssessCommon.prompt(that.text(),function (value) {
+                    that.text(value);
+                })
+            });
 
-            $(".p_score").find('a').editable({
-                validate: function (value) { //字段验证
-                    if (!$.trim(value)) {
-                        return '不能为空';
-                    }
+            $(".p_score").find('a').click(function () {
+                var that=$(this);
+                AssessCommon.prompt(that.text(),function (value) {
                     if (!/^\d+(?=\.{0,1}\d+$|$)/.test(value)) {
-                        return '只能填数字';
+                        notifyInfo('只能填数字');
+                        return;
                     }
                     value = parseInt(value);
                     if (value < 80 || value > 120) {
-                        return '分值只能在80至120之间';
+                        notifyInfo('分值只能在80至120之间');
+                        return;
                     }
                     //验证是否必须调整交易价格
                     //1.检查是否必须调整2.取得初始成交价 3.取得当前成交价价
-                    var itemId = $(this).closest('td').attr('data-item-id');
-                    var thead = $(this).closest('table').find('thead');
+                    var itemId = that.closest('td').attr('data-item-id');
+                    var thead = that.closest('table').find('thead');
                     var initialPrice = thead.find('[name=initialPrice]').val();//初始成交价
                     var mustAdjustPrice = thead.find('[name=mustAdjustPrice]').val();//是否必须调整
                     if (mustAdjustPrice == 'true') {
-                        var currPrice = $(this).closest('table').find('tbody').find('[data-bisprice="true"]').find('td[data-item-id=' + itemId + ']').text();
+                        var currPrice = that.closest('table').find('tbody').find('[data-bisprice="true"]').find('td[data-item-id=' + itemId + ']').text();
                         if (AssessCommon.isNumber(initialPrice) && AssessCommon.isNumber(currPrice)) {
                             if (parseFloat(initialPrice) == parseFloat(currPrice)) {
-                                return '请先调整该案例的交易价格';
+                                notifyInfo('请先调整该案例的交易价格');
+                                return;
                             }
                         }
                     }
-                },
-                url: function (params) {
-                    var currScore = params.value;//修改后的值
-                    var evaluationScore = $(this).closest('tr').find('[data-type="evaluation"]').text();
-                    var group = $(this).closest('tr').attr('data-group');
-                    var itemId = $(this).closest('td').attr('data-item-id');
-                    var ratioEle = $(this).closest('tbody').find('tr[data-group="' + group + '"][data-name="ratio"]').find('td[data-item-id=' + itemId + ']');
+
+                    var currScore = value;//修改后的值
+                    var evaluationScore = that.closest('tr').find('[data-type="evaluation"]').text();
+                    var group = that.closest('tr').attr('data-group');
+                    var itemId = that.closest('td').attr('data-item-id');
+                    var ratioEle = that.closest('tbody').find('tr[data-group="' + group + '"][data-name="ratio"]').find('td[data-item-id=' + itemId + ']');
                     if (evaluationScore && currScore) {
                         evaluationScore = parseFloat(evaluationScore);
                         currScore = parseFloat(currScore);
-                        $(this).removeClass('bg-green').removeClass('bg-red');
+                        that.removeClass('bg-green').removeClass('bg-red');
                         if (evaluationScore > currScore)
-                            $(this).addClass('bg-green');
+                            that.addClass('bg-green');
                         if (evaluationScore < currScore)
-                            $(this).addClass('bg-red');
+                            that.addClass('bg-red');
                         ratioEle.text(iTofixed(evaluationScore / currScore, 4));
                     }
                     marketCompare.calculation();
-                }
+                })
             });
 
-            $(".p_weight").find('a').editable({
-                validate: function (value) { //字段验证
+            $(".p_weight").find('a').click(function () {
+                var that=$(this);
+                AssessCommon.prompt(that.text(),function (value) {
                     if (value && !/^(0.\d{1,2})$/.test(value)) {
-                        return '权重只能在0至1之间的小数，小数位数最多两位';
+                        notifyInfo('权重只能在0至1之间的小数，小数位数最多两位');
+                        return;
                     }
-                },
-                url: function (params) {
-                    $(this).editable('setValue', params.value);//先将新值设置给元素
+                    that.text(value);
                     marketCompare.calculation();
-                }
+                })
             });
 
-            $(".p_weightDesc").find('a').editable({
-                validate: function (value) { //字段验证
-
-                }
+            $(".p_weightDesc").find('a').click(function () {
+                var that=$(this);
+                AssessCommon.prompt(that.text(),function (value) {
+                    that.text(value);
+                })
             });
         }
 
@@ -273,17 +267,17 @@
             defaluts = $.extend({}, defaluts, options);
             //验证
             if (!defaluts.marketCompare) {
-                Alert("主信息为空！");
+                AlertInfo("主信息为空！");
                 return;
             }
             $("#marketCompareId").val(defaluts.marketCompare.id);
             if (!defaluts.fields) {
-                Alert("字段为空！");
+                AlertInfo("字段为空！");
                 return;
             }
             marketCompare.fields = defaluts.fields;
             if (!defaluts.evaluation) {
-                Alert("委估对象为空！");
+                AlertInfo("委估对象为空！");
                 return;
             }
             marketCompare.projectId = defaluts.projectId;
@@ -910,7 +904,7 @@
             //如果案例的面积超过估价对象面积3倍则必须为面积添加说明
             var rows = $("#select_case_list").bootstrapTable('getSelections');
             if (rows.length <= 0) {
-                Alert("还未选择任何案例");
+                AlertInfo("还未选择任何案例");
                 return false;
             }
             var planDetailsIdArray = [];
@@ -946,7 +940,7 @@
                             cases: result.data.cases
                         });
                     } else {
-                        Alert('选择案例异常，' + result.errmsg);
+                        AlertInfo('选择案例异常，' + result.errmsg);
                     }
                 }
             })
@@ -1106,7 +1100,7 @@
                         marketCompare.calculation();
                         marketCompare.save();
                     } else {
-                        Alert('刷新异常，' + result.errmsg);
+                        AlertInfo('刷新异常，' + result.errmsg);
                     }
                 }
             })
@@ -1157,7 +1151,7 @@
                             cases: result.data.cases
                         });
                     } else {
-                        Alert('选择异常，' + result.errmsg);
+                        AlertInfo('选择异常，' + result.errmsg);
                     }
                 }
             })

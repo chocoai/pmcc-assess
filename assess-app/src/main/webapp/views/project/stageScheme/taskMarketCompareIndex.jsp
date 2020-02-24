@@ -6,35 +6,37 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/tree-grid/css/jquery.treegrid.css">
 </head>
 
-<body class="nav-md footer_fixed">
-<div class="container body">
-    <div class="main_container">
-        <div class="right_col" role="main" style="margin-left: 0">
+<body>
+<div class="wrapper">
+    <div class="main-panel" style="width: 100%">
+        <div class="content" style="margin-top: 0px;">
             <%@include file="/views/share/form_head.jsp" %>
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
             <jsp:include page="/views/method/module/marketCompareIndex.jsp"></jsp:include>
-            <div class="x_panel">
-                <div class="x_content">
-                    <div class="col-sm-4 col-sm-offset-5">
-                        <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
-                            取消
-                        </button>
-                        <button id="btn_save" class="btn btn-warning" onclick="save();">
-                            保存<i style="margin-left: 10px" class="fa fa-save"></i>
-                        </button>
-                        <button id="btn_submit" class="btn btn-success" onclick="submit();">
-                            提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
-                        </button>
+            <div class="col-md-12">
+                <div class="x_panel card">
+                    <div class="x_content card-body">
+                        <div style="text-align: center;">
+                            <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
+                                取消
+                            </button>
+                            <button id="btn_save" class="btn btn-warning" onclick="save();">
+                                保存<i style="margin-left: 10px" class="fa fa-save"></i>
+                            </button>
+                            <button id="btn_submit" class="btn btn-success" onclick="submit();">
+                                提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
             <%@include file="/views/share/form_log.jsp" %>
         </div>
+        <%@include file="/views/share/main_footer.jsp" %>
     </div>
 </div>
 </body>
-<%@include file="/views/share/main_footer.jsp" %>
 <link href="${pageContext.request.contextPath}/assets/x-editable/css/bootstrap-editable.css" rel="stylesheet"/>
 <script src="${pageContext.request.contextPath}/assets/x-editable/js/bootstrap-editable.min.js?v=${assessVersion}"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js?v=${assessVersion}"></script>
@@ -79,7 +81,7 @@
     //保存
     function save() {
         marketCompare.save(function () {
-            Alert('保存成功');
+            notifySuccess('保存成功');
         });
     }
 

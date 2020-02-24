@@ -37,64 +37,54 @@
 
                 <div class="col-md-12" id="residue_ratio_part1">
                     <div class="x_title">年限法</div>
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                残值率
-                            </label>
-                            <div class="col-sm-2">
-                                <input type="text" class="form-control x-percent" name="residualRatio" id="residue_residual_ratio"
-                                       required="required"
-                                       placeholder="残值率" onblur="residueRatio.getAgeLimitCxl()">
-                            </div>
+                    <div class="row form-inline form-group">
+                        <label class="col-sm-2 control-label">
+                            残值率
+                        </label>
+                        <div class="col-sm-2  x-valid">
+                            <input type="text" class="form-control x-percent" name="residualRatio" id="residue_residual_ratio"
+                                   required="required"
+                                   placeholder="残值率" onblur="residueRatio.getAgeLimitCxl()">
                         </div>
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                已使用年限
-                            </label>
-                            <div class="col-sm-2">
-                                <input type="text" class="form-control" name="usedYear" id="residue_ratio_usedYear"
-                                       data-rule-number='true' required="required"
-                                       placeholder="已使用年限" onblur="residueRatio.getAgeLimitCxl()">
-                            </div>
+                        <label class="col-sm-2 control-label">
+                            已使用年限
+                        </label>
+                        <div class="col-sm-2  x-valid">
+                            <input type="text" class="form-control" name="usedYear" id="residue_ratio_usedYear"
+                                   data-rule-number='true' required="required"
+                                   placeholder="已使用年限" onblur="residueRatio.getAgeLimitCxl()">
                         </div>
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                可用年限
-                            </label>
-                            <div class="col-sm-2">
-                                <input type="text" class="form-control" name="usableYear" id="residue_ratio_usableYear"
-                                       data-rule-number='true' required="required"
-                                       placeholder="可用年限" onblur="residueRatio.getAgeLimitCxl()">
-                            </div>
+                        <label class="col-sm-2 control-label">
+                            可用年限
+                        </label>
+                        <div class="col-sm-2  x-valid">
+                            <input type="text" class="form-control" name="usableYear" id="residue_ratio_usableYear"
+                                   data-rule-number='true' required="required"
+                                   placeholder="可用年限" onblur="residueRatio.getAgeLimitCxl()">
                         </div>
                     </div>
 
-                    <div class="form-group" style="display: none;" id="residue_ratio_weight1">
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                权重
-                            </label>
-                            <div class="col-sm-2">
-                                <input type="text" class="form-control" id="residue_ratio_ageRate"
-                                       name="ageRate" data-rule-number='true' required="required"
-                                       placeholder="权重" onblur="residueRatio.changeRate()">
-                            </div>
+                    <div class="row form-inline form-group" style="display: none;" id="residue_ratio_weight1">
+                        <label class="col-sm-2 control-label">
+                            权重
+                        </label>
+                        <div class="col-sm-2  x-valid">
+                            <input type="text" class="form-control" id="residue_ratio_ageRate"
+                                   name="ageRate" data-rule-number='true' required="required"
+                                   placeholder="权重" onblur="residueRatio.changeRate()">
                         </div>
                     </div>
                 </div>
 
                 <div class="col-md-12" id="residue_ratio_part2" style="display: none;">
                     <div class="x_title">观察法</div>
-                    <div class="form-group" style="display: none;" id="residue_ratio_weight2">
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                权重
-                            </label>
-                            <div class="col-sm-2">
-                                <input type="text" class="form-control" id="residue_ratio_observeRate" readonly
-                                       name="observeRate" data-rule-number='true' placeholder="权重">
-                            </div>
+                    <div class="row form-inline form-group" style="display: none;" id="residue_ratio_weight2">
+                        <label class="col-sm-2 control-label">
+                            权重
+                        </label>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control" id="residue_ratio_observeRate" readonly
+                                   name="observeRate" data-rule-number='true' placeholder="权重">
                         </div>
                     </div>
                     <h4>结构完损部分</h4>
@@ -138,7 +128,7 @@
         var index = layer.open({
             type: 1,
             title: '成新率',
-            area: ['1220px', '640px'],
+            area: ['1220px', '540px'],
             offset: 't',
             btn: ['保存'],
             yes: function (index) {
