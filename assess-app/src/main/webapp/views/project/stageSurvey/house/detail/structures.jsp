@@ -6,27 +6,34 @@
     <title>构筑物</title>
     <%@include file="/views/share/main_css.jsp" %>
 </head>
-<body class="nav-md footer_fixed">
-<div class="container body">
-    <div class="main_container">
-        <div class="right_col" role="main" style="margin-left: 0">
-            <div class="x_panel">
-                <%@include file="/views/project/stageSurvey/examine/residence/detail/structuresProspect.jsp" %>
-            </div>
-            <div class="x_panel">
-                <div class="x_content">
-                    <div style="text-align: center;">
-                        <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
-                            关闭
-                        </button>
+<body>
+<div class="wrapper">
+    <div class="main-panel" style="width: 100%">
+        <div class="content" style="margin-top: 0px;">
+            <div class="page-inner mt--5">
+                <div class="row mt--2">
+                    <%@include file="/views/project/stageSurvey/examine/residence/detail/structuresProspect.jsp" %>
+
+
+                    <div class="col-md-12" style="text-align: center;padding-bottom: 1.25rem">
+
+                        <div class="card-body">
+                            <button id="cancel_btn" class="btn btn-default btn-sm" onclick="window.close()">
+                                关闭
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+        <%@include file="/views/share/main_footer.jsp" %>
     </div>
+
 </div>
+
+
 </body>
-<%@include file="/views/share/main_footer.jsp" %>
+
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/js/examine/examine.common.js?v=${assessVersion}"></script>
 <script type="text/javascript"
