@@ -4,256 +4,507 @@
 <head>
     <%@include file="/views/share/main_css.jsp" %>
 </head>
-<body class="nav-md footer_fixed">
-<div class="container body">
-    <div class="main_container">
-        <div class="right_col" role="main" style="margin-left: 0">
+<body>
+<div class="wrapper">
+    <div class="main-panel" style="width: 100%">
+        <div class="content" style="margin-top: 0px;">
             <%@include file="/views/share/form_head.jsp" %>
-            <%@include file="/views/share/project/projectInfoSimple.jsp" %>
-            <%@include file="/views/share/project/projectPlanDetails.jsp" %>
-            <!--填写表单-->
-            <c:forEach items="${generationVos}" var="generationVo">
-                <div class="x_panel area_panel">
-                    <div class="x_title collapse-link">
-                        <ul class="nav navbar-right panel_toolbox">
-                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
-                        </ul>
-                        <h3>${generationVo.areaGroupName}</h3>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div class="x_content">
-                        <form class="form-horizontal" id="groupForm${generationVo.areaGroupId}"
-                              enctype="multipart/form-data">
-                            <input type="hidden" id="areaGroupId" name="areaGroupId"
-                                   value="${generationVo.areaGroupId}">
-                            <input type="hidden" name="id" value="${generationVo.id}">
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
-                                        报告出具日期<span class="symbol required"></span>
-                                    </label>
-                                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                                        <input type="text" name="reportIssuanceDate" placeholder="报告出具日期"
-                                               class="form-control date-picker dbdate" pattern='yyyy-MM-dd'
-                                               data-date-format="yyyy-mm-dd" required
-                                               value="<fmt:formatDate value='${generationVo.reportIssuanceDate}' pattern='yyyy-MM-dd'/>">
-                                    </div>
-                                </div>
-                                <div class="x-valid">
-                                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
-                                        作业结束时间<span class="symbol required"></span>
-                                    </label>
-                                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                                        <input type="text" name="homeWorkEndTime" placeholder="作业结束时间"
-                                               class="form-control date-picker dbdate"
-                                               data-date-format="yyyy-mm-dd"
-                                               pattern='yyyy-MM-dd' required
-                                               value="<fmt:formatDate value='${generationVo.homeWorkEndTime}' pattern='yyyy-MM-dd'/>">
-                                    </div>
-                                </div>
-                                <div class="x-valid">
-                                    <div>
-                                        <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
-                                            资质类型<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                                            <select class="form-control" name="qualificationType"
-                                                    onchange="onChange(this)" required>
-                                                <option value="">--请选择--</option>
-                                                <c:if test="${not empty qualificationTypes}">
-                                                    <c:forEach items="${qualificationTypes}" var="itemA">
-                                                        <c:if test="${generationVo.qualificationType eq itemA.key}">
-                                                            <option selected="selected"
-                                                                    value="${itemA.key}">${itemA.value}</option>
-                                                        </c:if>
-                                                        <c:if test="${generationVo.qualificationType ne itemA.key}">
-                                                            <option value="${itemA.key}">${itemA.value}</option>
-                                                        </c:if>
-                                                    </c:forEach>
-                                                </c:if>
-                                            </select>
+            <div class="page-inner mt--5">
+                <div class="row mt--2">
+                    <%@include file="/views/share/project/projectInfoSimple.jsp" %>
+                    <%@include file="/views/share/project/projectPlanDetails.jsp" %>
+
+                    <!-- 填写表单 start -->
+                    <c:forEach items="${generationVos}" var="generationVo">
+                        <div class="col-md-12">
+                            <div class="card full-height">
+                                <div class="card-header collapse-link">
+                                    <div class="card-head-row">
+                                        <div class="card-title">
+                                                ${generationVo.areaGroupName}
+                                        </div>
+                                        <div class="card-tools">
+                                            <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                                                    class="fa fa-angle-down"></span>
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
-                                        现场查勘开始日期<span class="symbol required"></span>
-                                    </label>
-                                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                                        <input type="text" required name="investigationsStartDate"
-                                               placeholder="现场查勘开始日期"
-                                               class="form-control date-picker dbdate"
-                                               data-date-format="yyyy-mm-dd"
-                                               pattern='yyyy-MM-dd'
-                                               value="<fmt:formatDate value='${generationVo.investigationsStartDate}' pattern='yyyy-MM-dd'/>">
-                                    </div>
-                                </div>
-                                <div class="x-valid">
-                                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
-                                        现场查勘结束日期<span class="symbol required"></span>
-                                    </label>
-                                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                                        <input type="text" required name="investigationsEndDate" placeholder="现场查勘结束日期"
-                                               class="form-control date-picker dbdate"
-                                               data-date-format="yyyy-mm-dd"
-                                               pattern='yyyy-MM-dd'
-                                               value="<fmt:formatDate value='${generationVo.investigationsEndDate}' pattern='yyyy-MM-dd'/>">
-                                    </div>
-                                </div>
-                                <div class="x-valid">
-                                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">估价师<span
-                                            class="symbol required"></span></label>
-                                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                                        <select name="realEstateAppraiser" multiple="multiple"
-                                                class="form-control search-select select2"
-                                                required="required">
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
-                                        备案日期
-                                    </label>
-                                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                                        <input type="text" name="recordDate" placeholder="备案日期"
-                                               class="form-control date-picker dbdate"
-                                               data-date-format="yyyy-mm-dd"
-                                               pattern='yyyy-MM-dd'
-                                               value="<fmt:formatDate value='${generationVo.recordDate}' pattern='yyyy-MM-dd'/>">
-                                    </div>
-                                </div>
+                                <div class="card-body">
+                                    <form class="form-horizontal" id="groupForm${generationVo.areaGroupId}"
+                                          enctype="multipart/form-data">
+                                        <input type="hidden" id="areaGroupId" name="areaGroupId"
+                                               value="${generationVo.areaGroupId}">
+                                        <input type="hidden" name="id" value="${generationVo.id}">
+                                        <div class="row form-group">
+                                            <div class="col-md-12">
+                                                <div class="form-inline x-valid">
+                                                    <label class="col-sm-1 control-label">
+                                                        报告出具日期<span class="symbol required"></span>
+                                                    </label>
+                                                    <div class="col-sm-3">
+                                                        <input type="text" name="reportIssuanceDate"
+                                                               placeholder="报告出具日期"
+                                                               class="form-control input-full date-picker dbdate"
+                                                               pattern='yyyy-MM-dd'
+                                                               data-date-format="yyyy-mm-dd" required
+                                                               value="<fmt:formatDate value='${generationVo.reportIssuanceDate}' pattern='yyyy-MM-dd'/>">
+                                                    </div>
+                                                    <label class="col-sm-1 control-label">
+                                                        作业结束时间<span class="symbol required"></span>
+                                                    </label>
+                                                    <div class="col-sm-3">
+                                                        <input type="text" name="homeWorkEndTime" placeholder="作业结束时间"
+                                                               class="form-control input-full date-picker dbdate"
+                                                               data-date-format="yyyy-mm-dd"
+                                                               pattern='yyyy-MM-dd' required
+                                                               value="<fmt:formatDate value='${generationVo.homeWorkEndTime}' pattern='yyyy-MM-dd'/>">
+                                                    </div>
 
-                                <div class="x-valid">
-                                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">查询码</label>
-                                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                                        <input type="text" name="queryCode" class="form-control" placeholder="查询码">
-                                    </div>
-                                </div>
+                                                    <label class="col-sm-1 control-label">
+                                                        资质类型<span class="symbol required"></span>
+                                                    </label>
+                                                    <div class="col-sm-3">
+                                                        <select class="form-control input-full" name="qualificationType"
+                                                                onchange="onChange(this)" required>
+                                                            <option value="">--请选择--</option>
+                                                            <c:if test="${not empty qualificationTypes}">
+                                                                <c:forEach items="${qualificationTypes}" var="itemA">
+                                                                    <c:if test="${generationVo.qualificationType eq itemA.key}">
+                                                                        <option selected="selected"
+                                                                                value="${itemA.key}">${itemA.value}</option>
+                                                                    </c:if>
+                                                                    <c:if test="${generationVo.qualificationType ne itemA.key}">
+                                                                        <option value="${itemA.key}">${itemA.value}</option>
+                                                                    </c:if>
+                                                                </c:forEach>
+                                                            </c:if>
+                                                        </select>
+                                                    </div>
 
-                                <div class="x-valid">
-                                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">备案号</label>
-                                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                                        <input type="text" name="recordNo" class="form-control" placeholder="备案号">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">评估类型(增加封面)</label>
-                                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                                        <select name="assessCategory" class="form-control search-select select2">
-                                            <option>请选择</option>
-                                            <c:forEach items="${projectCategoryKeyValueDtoList}"
-                                                       var="projectCategoryKey">
-                                                <option value="${projectCategoryKey.key}">${projectCategoryKey.value}</option>
-                                            </c:forEach>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <c:forEach items="${reportTypeList}" var="reportType" varStatus="status">
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <div class="col-xs-1  col-sm-1  col-md-1  col-lg-1">
-                                            <a class="btn-primary btn "
-                                               onclick="reGetDocumentNumber('${generationVo.areaGroupId}','${reportType.id}',this)">重新拿号<i
-                                                    class="fa fa-undo"></i></a>
-                                        </div>
-
-                                        <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1">
-                                            <!-- 报告附件方法 -->
-                                            <a class="btn-dark btn "
-                                               onclick="generateReport('${generationVo.areaGroupId}','${reportType.id}',this)">生成${reportType.name}
-                                                <i class="fa fa-file-word-o"></i></a>
-                                        </label>
-
-                                        <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                                            <!-- 报告附件id -->
-                                            <div id="_${reportType.fieldName}${generationVo.areaGroupId}"></div>
-                                        </div>
-                                    </div>
-
-                                    <div class="x-valid">
-                                        <div class="col-xs-1  col-sm-1  col-md-1  col-lg-1">
-                                            <div class="btn-group">
-                                                <button type="button" class="btn btn-primary">
-                                                    意见稿
-                                                </button>
-                                                <button type="button" class="btn btn-primary dropdown-toggle"
-                                                        data-toggle="dropdown">
-                                                    <span class="caret"></span>
-                                                </button>
-                                                <ul class="dropdown-menu" role="menu">
-                                                    <c:forEach var="item" items="${documentTemplateList}">
-                                                        <li>
-                                                            <a href="${pageContext.request.contextPath}/documentOpinion/applyIndex/${item.id}&${projectInfo.id}&${reportType.fieldName}&${generationVo.areaGroupId}&${reportType.id}&${generationVo.id}"
-                                                               target="_blank">${item.templateName}</a>
-                                                        </li>
-                                                    </c:forEach>
-                                                </ul>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="col-xs-1  col-sm-1  col-md-1  col-lg-1">
-                                            <c:if test="${generationVo != null}">
-                                                <c:if test="${generationVo.id != null}">
-                                                    <input id="GGGGGG${reportType.fieldName}${generationVo.areaGroupId}"
-                                                           name="file" type="file" style="display: none"
-                                                           onchange="upFileLoadReport(this,'${reportType.fieldName}${generationVo.areaGroupId}' ,'${generationVo.id}' ,'${generationVo.areaGroupId}' )">
-                                                    <div class="btn btn-primary"
-                                                         onclick="$(this).prev().trigger('click')">上传报告
+                                        <div class="row form-group">
+                                            <div class="col-md-12">
+                                                <div class="form-inline x-valid">
+                                                    <label class="col-sm-1 control-label">
+                                                        现场查勘开始日期<span class="symbol required"></span>
+                                                    </label>
+                                                    <div class="col-sm-3">
+                                                        <input type="text" required name="investigationsStartDate"
+                                                               placeholder="现场查勘开始日期"
+                                                               class="form-control input-full date-picker dbdate"
+                                                               data-date-format="yyyy-mm-dd"
+                                                               pattern='yyyy-MM-dd'
+                                                               value="<fmt:formatDate value='${generationVo.investigationsStartDate}' pattern='yyyy-MM-dd'/>">
                                                     </div>
-                                                </c:if>
-                                            </c:if>
+                                                    <label class="col-sm-1 control-label">
+                                                        现场查勘结束日期<span class="symbol required"></span>
+                                                    </label>
+                                                    <div class="col-sm-3">
+                                                        <input type="text" required name="investigationsEndDate"
+                                                               placeholder="现场查勘结束日期"
+                                                               class="form-control input-full date-picker dbdate"
+                                                               data-date-format="yyyy-mm-dd"
+                                                               pattern='yyyy-MM-dd'
+                                                               value="<fmt:formatDate value='${generationVo.investigationsEndDate}' pattern='yyyy-MM-dd'/>">
+                                                    </div>
+                                                    <label class="col-sm-1 control-label">估价师<span
+                                                            class="symbol required"></span></label>
+                                                    <div class="col-sm-3">
+                                                        <select name="realEstateAppraiser" multiple="multiple"
+                                                                class="form-control input-full search-select select2"
+                                                                required="required">
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
+                                        <div class="row form-group">
+                                            <div class="col-md-12">
+                                                <div class="form-inline x-valid">
+                                                    <label class="col-sm-1 control-label">
+                                                        备案日期
+                                                    </label>
+                                                    <div class="col-sm-3">
+                                                        <input type="text" name="recordDate" placeholder="备案日期"
+                                                               class="form-control input-full date-picker dbdate"
+                                                               data-date-format="yyyy-mm-dd"
+                                                               pattern='yyyy-MM-dd'
+                                                               value="<fmt:formatDate value='${generationVo.recordDate}' pattern='yyyy-MM-dd'/>">
+                                                    </div>
+                                                    <label class="col-sm-1 control-label">查询码</label>
+                                                    <div class="col-sm-3">
+                                                        <input type="text" name="queryCode"
+                                                               class="form-control input-full" placeholder="查询码">
+                                                    </div>
+                                                    <label class="col-sm-1 control-label">备案号</label>
+                                                    <div class="col-sm-3">
+                                                        <input type="text" name="recordNo"
+                                                               class="form-control input-full" placeholder="备案号">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col-md-12">
+                                                <div class="form-inline x-valid">
+                                                    <label class="col-sm-1 control-label">评估类型(增加封面)</label>
+                                                    <div class="col-sm-3">
+                                                        <select name="assessCategory"
+                                                                class="form-control input-full search-select select2">
+                                                            <option>请选择</option>
+                                                            <c:forEach items="${projectCategoryKeyValueDtoList}"
+                                                                       var="projectCategoryKey">
+                                                                <option value="${projectCategoryKey.key}">${projectCategoryKey.value}</option>
+                                                            </c:forEach>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <c:forEach items="${reportTypeList}" var="reportType" varStatus="status">
+                                            <div class="row form-group">
+                                                <div class="col-md-12">
+                                                    <div class="form-inline x-valid">
+                                                        <div class="col-sm-1">
+                                                            <a class="btn-primary btn btn-sm"
+                                                               onclick="reGetDocumentNumber('${generationVo.areaGroupId}','${reportType.id}',this)">重新拿号<i
+                                                                    class="fa fa-undo"></i></a>
+                                                        </div>
 
-                                    <div class="x-valid">
-                                        <div class="col-xs-1  col-sm-1  col-md-1  col-lg-1">
-                                            <a class="btn-primary btn "
-                                               onclick="getReportNumber('${generationVo.areaGroupId}','${reportType.id}',this)">拿号<i
-                                                    class="fa fa-dot-circle-o"></i></a>
-                                        </div>
-                                    </div>
+                                                        <label class="col-sm-1">
+                                                            <!-- 报告附件方法 -->
+                                                            <a class="btn-dark btn btn-sm"
+                                                               onclick="generateReport('${generationVo.areaGroupId}','${reportType.id}',this)">生成${reportType.name}
+                                                                <i class="fa fa-file-word-o"></i></a>
+                                                        </label>
 
-                                    <div class="x-valid">
-                                        <!-- 结果表附件 方法 -->
-                                        <div class="col-xs-1  col-sm-1  col-md-1  col-lg-1">
-                                            <a class="btn-primary btn "
-                                               onclick="resultSheetReport('${generationVo.areaGroupId}','${reportType.id}',this)">结果表附件<i
-                                                    class="fa fa-file-word-o"></i></a>
-                                        </div>
-                                        <!-- 结果表附件id -->
-                                        <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                                            <div id="_${reportType.id}result_sheet_one${generationVo.areaGroupId}"></div>
-                                        </div>
-                                    </div>
+                                                        <div class="col-sm-3">
+                                                            <!-- 报告附件id -->
+                                                            <div id="_${reportType.fieldName}${generationVo.areaGroupId}"></div>
+                                                        </div>
+
+                                                        <div class="col-sm-1">
+                                                            <div class="btn-group">
+                                                                <button type="button" class="btn btn-primary btn-sm">
+                                                                    意见稿
+                                                                </button>
+                                                                <button type="button"
+                                                                        class="btn btn-primary dropdown-toggle btn-sm"
+                                                                        data-toggle="dropdown">
+                                                                    <span class="caret"></span>
+                                                                </button>
+                                                                <ul class="dropdown-menu" role="menu">
+                                                                    <c:forEach var="item"
+                                                                               items="${documentTemplateList}">
+                                                                        <li>
+                                                                            <a href="${pageContext.request.contextPath}/documentOpinion/applyIndex/${item.id}&${projectInfo.id}&${reportType.fieldName}&${generationVo.areaGroupId}&${reportType.id}&${generationVo.id}"
+                                                                               target="_blank">${item.templateName}</a>
+                                                                        </li>
+                                                                    </c:forEach>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-1">
+                                                            <c:if test="${generationVo != null}">
+                                                                <c:if test="${generationVo.id != null}">
+                                                                    <input id="GGGGGG${reportType.fieldName}${generationVo.areaGroupId}"
+                                                                           name="file" type="file" style="display: none"
+                                                                           onchange="upFileLoadReport(this,'${reportType.fieldName}${generationVo.areaGroupId}' ,'${generationVo.id}' ,'${generationVo.areaGroupId}' )">
+                                                                    <div class="btn btn-primary btn-sm"
+                                                                         onclick="$(this).prev().trigger('click')">上传报告
+                                                                    </div>
+                                                                </c:if>
+                                                            </c:if>
+                                                        </div>
+
+                                                        <div class="col-sm-1">
+                                                            <a class="btn-primary btn btn-sm"
+                                                               onclick="getReportNumber('${generationVo.areaGroupId}','${reportType.id}',this)">拿号<i
+                                                                    class="fa fa-dot-circle-o"></i></a>
+                                                        </div>
+
+                                                        <!-- 结果表附件 方法 -->
+                                                        <div class="col-sm-1">
+                                                            <a class="btn-primary btn btn-sm"
+                                                               onclick="resultSheetReport('${generationVo.areaGroupId}','${reportType.id}',this)">结果表附件<i
+                                                                    class="fa fa-file-word-o"></i></a>
+                                                        </div>
+                                                        <!-- 结果表附件id -->
+                                                        <div class="col-sm-2">
+                                                            <div id="_${reportType.id}result_sheet_one${generationVo.areaGroupId}"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </c:forEach>
+                                    </form>
                                 </div>
-                            </c:forEach>
-                        </form>
-                    </div>
+                            </div>
+                        </div>
+                        <script type="text/javascript">
+                            $(function () {
+                                getSchemeReportGeneration({
+                                    projectPlanId: '${projectPlan.id}',
+                                    areaGroupId: '${generationVo.areaGroupId}'
+                                }, function (info) {
+                                    initFormSchemeReportGeneration(info, $('#groupForm${generationVo.areaGroupId}'), '${generationVo.areaGroupId}');
+                                });
+                            })
+                        </script>
+                    </c:forEach>
+
+                    <%--                    <c:forEach items="${generationVos}" var="generationVo">
+                                            <div class="x_panel area_panel">
+                                                <div class="x_title collapse-link">
+                                                    <ul class="nav navbar-right panel_toolbox">
+                                                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                                                    </ul>
+                                                    <h3>${generationVo.areaGroupName}</h3>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                                <div class="x_content">
+                                                    <form class="form-horizontal" id="groupForm${generationVo.areaGroupId}"
+                                                          enctype="multipart/form-data">
+                                                        <input type="hidden" id="areaGroupId" name="areaGroupId"
+                                                               value="${generationVo.areaGroupId}">
+                                                        <input type="hidden" name="id" value="${generationVo.id}">
+                                                        <div class="row form-group">
+                                                            <div class="form-inline x-valid">
+                                                                <label class="col-sm-1 control-label">
+                                                                    报告出具日期<span class="symbol required"></span>
+                                                                </label>
+                                                                <div class="col-sm-3">
+                                                                    <input type="text" name="reportIssuanceDate" placeholder="报告出具日期"
+                                                                           class="form-control input-full date-picker dbdate" pattern='yyyy-MM-dd'
+                                                                           data-date-format="yyyy-mm-dd" required
+                                                                           value="<fmt:formatDate value='${generationVo.reportIssuanceDate}' pattern='yyyy-MM-dd'/>">
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-inline x-valid">
+                                                                <label class="col-sm-1 control-label">
+                                                                    作业结束时间<span class="symbol required"></span>
+                                                                </label>
+                                                                <div class="col-sm-3">
+                                                                    <input type="text" name="homeWorkEndTime" placeholder="作业结束时间"
+                                                                           class="form-control input-full date-picker dbdate"
+                                                                           data-date-format="yyyy-mm-dd"
+                                                                           pattern='yyyy-MM-dd' required
+                                                                           value="<fmt:formatDate value='${generationVo.homeWorkEndTime}' pattern='yyyy-MM-dd'/>">
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-inline x-valid">
+                                                                <div>
+                                                                    <label class="col-sm-1 control-label">
+                                                                        资质类型<span class="symbol required"></span>
+                                                                    </label>
+                                                                    <div class="col-sm-3">
+                                                                        <select class="form-control input-full" name="qualificationType"
+                                                                                onchange="onChange(this)" required>
+                                                                            <option value="">--请选择--</option>
+                                                                            <c:if test="${not empty qualificationTypes}">
+                                                                                <c:forEach items="${qualificationTypes}" var="itemA">
+                                                                                    <c:if test="${generationVo.qualificationType eq itemA.key}">
+                                                                                        <option selected="selected"
+                                                                                                value="${itemA.key}">${itemA.value}</option>
+                                                                                    </c:if>
+                                                                                    <c:if test="${generationVo.qualificationType ne itemA.key}">
+                                                                                        <option value="${itemA.key}">${itemA.value}</option>
+                                                                                    </c:if>
+                                                                                </c:forEach>
+                                                                            </c:if>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row form-group">
+                                                            <div class="form-inline x-valid">
+                                                                <label class="col-sm-1 control-label">
+                                                                    现场查勘开始日期<span class="symbol required"></span>
+                                                                </label>
+                                                                <div class="col-sm-3">
+                                                                    <input type="text" required name="investigationsStartDate"
+                                                                           placeholder="现场查勘开始日期"
+                                                                           class="form-control input-full date-picker dbdate"
+                                                                           data-date-format="yyyy-mm-dd"
+                                                                           pattern='yyyy-MM-dd'
+                                                                           value="<fmt:formatDate value='${generationVo.investigationsStartDate}' pattern='yyyy-MM-dd'/>">
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-inline x-valid">
+                                                                <label class="col-sm-1 control-label">
+                                                                    现场查勘结束日期<span class="symbol required"></span>
+                                                                </label>
+                                                                <div class="col-sm-3">
+                                                                    <input type="text" required name="investigationsEndDate" placeholder="现场查勘结束日期"
+                                                                           class="form-control input-full date-picker dbdate"
+                                                                           data-date-format="yyyy-mm-dd"
+                                                                           pattern='yyyy-MM-dd'
+                                                                           value="<fmt:formatDate value='${generationVo.investigationsEndDate}' pattern='yyyy-MM-dd'/>">
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-inline x-valid">
+                                                                <label class="col-sm-1 control-label">估价师<span
+                                                                        class="symbol required"></span></label>
+                                                                <div class="col-sm-3">
+                                                                    <select name="realEstateAppraiser" multiple="multiple"
+                                                                            class="form-control input-full search-select select2"
+                                                                            required="required">
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row form-group">
+                                                            <div class="form-inline x-valid">
+                                                                <label class="col-sm-1 control-label">
+                                                                    备案日期
+                                                                </label>
+                                                                <div class="col-sm-3">
+                                                                    <input type="text" name="recordDate" placeholder="备案日期"
+                                                                           class="form-control input-full date-picker dbdate"
+                                                                           data-date-format="yyyy-mm-dd"
+                                                                           pattern='yyyy-MM-dd'
+                                                                           value="<fmt:formatDate value='${generationVo.recordDate}' pattern='yyyy-MM-dd'/>">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-inline x-valid">
+                                                                <label class="col-sm-1 control-label">查询码</label>
+                                                                <div class="col-sm-3">
+                                                                    <input type="text" name="queryCode" class="form-control input-full" placeholder="查询码">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-inline x-valid">
+                                                                <label class="col-sm-1 control-label">备案号</label>
+                                                                <div class="col-sm-3">
+                                                                    <input type="text" name="recordNo" class="form-control input-full" placeholder="备案号">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row form-group">
+                                                            <div class="form-inline x-valid">
+                                                                <label class="col-sm-1 control-label">评估类型(增加封面)</label>
+                                                                <div class="col-sm-3">
+                                                                    <select name="assessCategory" class="form-control input-full search-select select2">
+                                                                        <option>请选择</option>
+                                                                        <c:forEach items="${projectCategoryKeyValueDtoList}"
+                                                                                   var="projectCategoryKey">
+                                                                            <option value="${projectCategoryKey.key}">${projectCategoryKey.value}</option>
+                                                                        </c:forEach>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <c:forEach items="${reportTypeList}" var="reportType" varStatus="status">
+                                                            <div class="row form-group">
+                                                                <div class="form-inline x-valid">
+                                                                    <div class="col-sm-1">
+                                                                        <a class="btn-primary btn "
+                                                                           onclick="reGetDocumentNumber('${generationVo.areaGroupId}','${reportType.id}',this)">重新拿号<i
+                                                                                class="fa fa-undo"></i></a>
+                                                                    </div>
+
+                                                                    <label class="col-sm-1">
+                                                                        <!-- 报告附件方法 -->
+                                                                        <a class="btn-dark btn "
+                                                                           onclick="generateReport('${generationVo.areaGroupId}','${reportType.id}',this)">生成${reportType.name}
+                                                                            <i class="fa fa-file-word-o"></i></a>
+                                                                    </label>
+
+                                                                    <div class="col-sm-3">
+                                                                        <!-- 报告附件id -->
+                                                                        <div id="_${reportType.fieldName}${generationVo.areaGroupId}"></div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-inline x-valid">
+                                                                    <div class="col-sm-1">
+                                                                        <div class="btn-group">
+                                                                            <button type="button" class="btn btn-primary">
+                                                                                意见稿
+                                                                            </button>
+                                                                            <button type="button" class="btn btn-primary dropdown-toggle"
+                                                                                    data-toggle="dropdown">
+                                                                                <span class="caret"></span>
+                                                                            </button>
+                                                                            <ul class="dropdown-menu" role="menu">
+                                                                                <c:forEach var="item" items="${documentTemplateList}">
+                                                                                    <li>
+                                                                                        <a href="${pageContext.request.contextPath}/documentOpinion/applyIndex/${item.id}&${projectInfo.id}&${reportType.fieldName}&${generationVo.areaGroupId}&${reportType.id}&${generationVo.id}"
+                                                                                           target="_blank">${item.templateName}</a>
+                                                                                    </li>
+                                                                                </c:forEach>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-sm-1">
+                                                                        <c:if test="${generationVo != null}">
+                                                                            <c:if test="${generationVo.id != null}">
+                                                                                <input id="GGGGGG${reportType.fieldName}${generationVo.areaGroupId}"
+                                                                                       name="file" type="file" style="display: none"
+                                                                                       onchange="upFileLoadReport(this,'${reportType.fieldName}${generationVo.areaGroupId}' ,'${generationVo.id}' ,'${generationVo.areaGroupId}' )">
+                                                                                <div class="btn btn-primary"
+                                                                                     onclick="$(this).prev().trigger('click')">上传报告
+                                                                                </div>
+                                                                            </c:if>
+                                                                        </c:if>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-inline x-valid">
+                                                                    <div class="col-sm-1">
+                                                                        <a class="btn-primary btn "
+                                                                           onclick="getReportNumber('${generationVo.areaGroupId}','${reportType.id}',this)">拿号<i
+                                                                                class="fa fa-dot-circle-o"></i></a>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-inline x-valid">
+                                                                    <!-- 结果表附件 方法 -->
+                                                                    <div class="col-sm-1">
+                                                                        <a class="btn-primary btn "
+                                                                           onclick="resultSheetReport('${generationVo.areaGroupId}','${reportType.id}',this)">结果表附件<i
+                                                                                class="fa fa-file-word-o"></i></a>
+                                                                    </div>
+                                                                    <!-- 结果表附件id -->
+                                                                    <div class="col-sm-2">
+                                                                        <div id="_${reportType.id}result_sheet_one${generationVo.areaGroupId}"></div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </c:forEach>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                            <script type="text/javascript">
+                                                $(function () {
+                                                    getSchemeReportGeneration({
+                                                        projectPlanId: '${projectPlan.id}',
+                                                        areaGroupId: '${generationVo.areaGroupId}'
+                                                    }, function (info) {
+                                                        initFormSchemeReportGeneration(info, $('#groupForm${generationVo.areaGroupId}'), '${generationVo.areaGroupId}');
+                                                    });
+                                                })
+                                            </script>
+                                        </c:forEach>--%>
+
+
+                    <%@include file="/views/share/form_apply.jsp" %>
+                    <%@include file="/views/share/form_log.jsp" %>
                 </div>
-                <script type="text/javascript">
-                    $(function () {
-                        getSchemeReportGeneration({
-                            projectPlanId: '${projectPlan.id}',
-                            areaGroupId: '${generationVo.areaGroupId}'
-                        }, function (info) {
-                            initFormSchemeReportGeneration(info, $('#groupForm${generationVo.areaGroupId}'), '${generationVo.areaGroupId}');
-                        });
-                    })
-                </script>
-            </c:forEach>
-            <%@include file="/views/share/form_apply.jsp" %>
-            <%@include file="/views/share/form_log.jsp" %>
+            </div>
         </div>
+        <%@include file="/views/share/main_footer.jsp" %>
     </div>
 </div>
+
+
 </body>
-<%@include file="/views/share/main_footer.jsp" %>
+
 </html>
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/js/ajaxfileupload.js?v=${assessVersion}"></script>
@@ -276,11 +527,11 @@
                 if (result.ret && result.data) {
                     callback(result.data);
                 } else {
-                    Alert("异常");
+                    notifyWarning("异常，原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                alert("调用服务端方法失败，失败原因:" + result);
+                AlertError("调用服务端方法失败，失败原因:" + result);
             }
         });
     }
@@ -307,7 +558,7 @@
             },
             error: function (result, status, e) {
                 Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + result);
+                AlertError("调用服务端方法失败，失败原因:" + result);
             }
         });
     }
@@ -418,7 +669,7 @@
                 }
             },
             error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
+                AlertError("调用服务端方法失败，失败原因:" + result);
             }
         });
     }
@@ -434,11 +685,12 @@
         if (!AssessCommon.isNumber(data.assessCategory)) {
             data.assessCategory = null;
         }
-        Alert("请注意报告二维码无法自动替换,假如要替换类似于报告二维码这样的数据请在页面上上删除报告二维码,然后用\\${报告二维码}这样的文本放置在删除的位置", 2, null, function () {
+        AlertConfirm("是否确认", "请注意报告二维码无法自动替换,假如要替换类似于报告二维码这样的数据请在页面上上删除报告二维码,然后用\\${报告二维码}这样的文本放置在删除的位置", function () {
             generateReportHandle(data, reportType, form, areaId, function () {
-                toastr.success('重新拿号成功!');
+                notifySuccess('重新拿号成功!');
             });
-        });
+        })
+
     }
 
     //拿号 并替换文号
@@ -453,7 +705,7 @@
             data.assessCategory = null;
         }
         generateReportHandle(data, reportType, form, areaId, function () {
-            toastr.success('拿号成功!');
+            notifySuccess('拿号成功!');
         });
     }
 
@@ -467,6 +719,7 @@
         if (!AssessCommon.isNumber(data.assessCategory)) {
             data.assessCategory = null;
         }
+        Loading.progressShow();
         $.ajax({
             url: "${pageContext.request.contextPath}/generateReport/resultSheetReport",
             data: {fomData: JSON.stringify(data), reportType: reportType},
@@ -475,16 +728,16 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    toastr.success('生成结果集附件成功!');
+                    notifySuccess('生成结果集附件成功!');
                     getSchemeReportGeneration(data, function (info) {
                         initFormSchemeReportGeneration(info, form, areaId);
                     });
                 } else {
-                    Alert(result.errmsg);
+                    AlertError("生成失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                alert("调用服务端方法失败，失败原因:" + result);
+                AlertError("调用服务端方法失败，失败原因:" + result);
             }
         });
     }
@@ -499,7 +752,7 @@
         if (data.realEstateAppraiser) {
 
         } else {
-            toastr.success('估价师必须选择');
+            notifyInfo('估价师必须选择');
             return false;
         }
         data.areaGroupId = areaId;
@@ -510,7 +763,7 @@
             data.assessCategory = null;
         }
         generateReportHandle(data, reportType, form, areaId, function () {
-            toastr.success('报告生成成功!');
+            notifySuccess('报告生成成功!');
         });
     }
 
@@ -533,11 +786,11 @@
                         Loading.progressHide();
                     });
                 } else {
-                    Alert(result.errmsg);
+                    AlertError("替换失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                alert("调用服务端方法失败，失败原因:" + result);
+                AlertError("调用服务端方法失败，失败原因:" + result);
             }
         });
     }
@@ -559,11 +812,11 @@
                         callback();
                     }
                 } else {
-                    Alert(result.errmsg);
+                    AlertError("失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                alert("调用服务端方法失败，失败原因:" + result);
+                AlertError("调用服务端方法失败，失败原因:" + result);
             }
         });
     }
@@ -617,11 +870,11 @@
                 data: data,
                 success: function (result) {
                     if (result.ret) {
-                        Alert('提交成功', 1, null, function () {
-                            closeWindow();
+                        AlertSuccess("成功", "提交成功", function () {
+                            window.close();
                         });
                     } else {
-                        Alert(result.errmsg);
+                        AlertError(result.errmsg);
                     }
                 }
             })

@@ -12,16 +12,21 @@
 </div>
 <div class="x_content">
     <div class="form-horizontal">
-        <div class="form-group ">
-            <label class="col-sm-1 control-label">
-                范围
-            </label>
-            <div class="col-sm-2">
-                <select class="form-control" onchange="selfSupportForecast.loadHistoryList(1,$(this).val())">
-                    <option value="">全部</option>
-                    <option value="1">预测</option>
-                    <option value="0">非预测</option>
-                </select>
+        <div class="row form-group ">
+            <div class="col-md-12">
+                <div class="form-inline x-valid">
+                    <label class="col-sm-1 control-label">
+                        范围
+                    </label>
+                    <div class="col-sm-2">
+                        <select class="form-control input-full"
+                                onchange="selfSupportForecast.loadHistoryList(1,$(this).val())">
+                            <option value="">全部</option>
+                            <option value="1">预测</option>
+                            <option value="0">非预测</option>
+                        </select>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

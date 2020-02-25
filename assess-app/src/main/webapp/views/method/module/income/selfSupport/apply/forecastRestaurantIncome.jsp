@@ -11,69 +11,74 @@
 </div>
 <div class="x_content">
     <div class="form-horizontal">
-        <div class="form-group ">
-            <label class="col-sm-1 control-label">
-                范围
-            </label>
-            <div class="col-sm-1">
-                <select class="form-control" name="bisForecast">
-                    <option value="">全部</option>
-                    <option value="1">预测</option>
-                    <option value="0">非预测</option>
-                </select>
-            </div>
-            <label class="col-sm-1 control-label">
-                二级编号
-            </label>
-            <div class="col-sm-1">
-                <input type="text" name="secondLevelNumber" class="form-control">
-            </div>
-            <div class="col-sm-6">
-                <div class="btn-group">
-                    <button class="btn btn-primary" onclick="forecastRestaurant.loadHistoryList(0,this);">
-                        查询
-                    </button>
-                    <button class="btn btn-success" data-toggle="modal"
-                            onclick="forecastRestaurant.addHistory(0);">
-                        新增
-                    </button>
-                </div>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
-                            aria-expanded="false">
-                        导入数据
-                        <span class="caret"></span>
-                        <span class="sr-only">Toggle Dropdown</span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="javascript://"
-                               onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftMethodIncomeHistoryRestaurant);">下载模板</a>
-                        </li>
-                        <li><a href="javascript://;"
-                               onclick="$('#ajaxFileUpload').val('').attr('data-type',0).trigger('click');">导入数据</a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
-                            aria-expanded="false">
-                        添加到预测
-                        <span class="caret"></span>
-                        <span class="sr-only">Toggle Dropdown</span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu" id="ulForecastRestaurantAnalyseIncome"></ul>
-                </div>
-                <div class="btn-group">
-                    <button class="btn btn-primary" data-toggle="modal"
-                            onclick="forecastRestaurant.forecastToHistory(0);">
-                        取消预测
-                    </button>
-                </div>
-                <div class="btn-group">
-                    <button class="btn btn-primary" data-toggle="modal"
-                            onclick="forecastRestaurant.startAnalyse(0);">
-                        开始分析
-                    </button>
+        <div class="row form-group ">
+            <div class="col-md-12">
+                <div class="form-inline x-valid">
+                    <label class="col-sm-1 control-label">
+                        范围
+                    </label>
+                    <div class="col-sm-1">
+                        <select class="form-control input-full" name="bisForecast">
+                            <option value="">全部</option>
+                            <option value="1">预测</option>
+                            <option value="0">非预测</option>
+                        </select>
+                    </div>
+                    <label class="col-sm-1 control-label">
+                        二级编号
+                    </label>
+                    <div class="col-sm-1">
+                        <input type="text" name="secondLevelNumber" class="form-control input-full">
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="btn-group">
+                            <button class="btn btn-primary btn-sm"
+                                    onclick="forecastRestaurant.loadHistoryList(0,this);">
+                                查询
+                            </button>
+                            <button class="btn btn-success btn-sm" data-toggle="modal"
+                                    onclick="forecastRestaurant.addHistory(0);">
+                                新增
+                            </button>
+                        </div>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-primary dropdown-toggle btn-sm" data-toggle="dropdown"
+                                    aria-expanded="false">
+                                导入数据
+                                <span class="caret"></span>
+                                <span class="sr-only">Toggle Dropdown</span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="javascript://"
+                                       onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftMethodIncomeHistoryRestaurant);">下载模板</a>
+                                </li>
+                                <li><a href="javascript://;"
+                                       onclick="$('#ajaxFileUpload').val('').attr('data-type',0).trigger('click');">导入数据</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-primary dropdown-toggle btn-sm" data-toggle="dropdown"
+                                    aria-expanded="false">
+                                添加到预测
+                                <span class="caret"></span>
+                                <span class="sr-only">Toggle Dropdown</span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu" id="ulForecastRestaurantAnalyseIncome"></ul>
+                        </div>
+                        <div class="btn-group">
+                            <button class="btn btn-primary btn-sm" data-toggle="modal"
+                                    onclick="forecastRestaurant.forecastToHistory(0);">
+                                取消预测
+                            </button>
+                        </div>
+                        <div class="btn-group">
+                            <button class="btn btn-primary btn-sm" data-toggle="modal"
+                                    onclick="forecastRestaurant.startAnalyse(0);">
+                                开始分析
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -89,232 +94,261 @@
     </table>
 </div>
 
-<div id="modal_history_restaurant" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
-     role="dialog"
+<div id="modal_history_restaurant" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
+                <h4 class="modal-title">历史或调查数据</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">历史或调查数据</h3>
             </div>
-            <form id="frm_history_restaurant" class="form-horizontal">
-                <input type="hidden" name="id">
-                <input type="hidden" name="type">
-                <div class="modal-body">
+
+            <div class="modal-body">
+                <form id="frm_history_restaurant" class="form-horizontal">
+                    <input type="hidden" name="id">
+                    <input type="hidden" name="type">
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="panel-body">
-                                <div class="form-group">
-                                    <div class="x-valid">
+                            <div class="card-body">
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                    <div class="form-inline x-valid">
                                         <label class="col-sm-2 control-label">
                                             类型<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-4">
-                                            <select name="sourceType" class="form-control" required>
+                                            <select name="sourceType" class="form-control input-full" required>
                                                 <option value="历史">历史</option>
                                                 <option value="调查">调查</option>
                                             </select>
                                         </div>
-                                    </div>
-                                    <div class="x-valid">
                                         <label class="col-sm-2 control-label">
                                             会计科目<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-4">
-                                            <select name="accountingSubject" class="form-control"
+                                            <select name="accountingSubject" class="form-control input-full"
                                                     required="required"></select>
                                         </div>
                                     </div>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                    <div class="form-inline x-valid">
                                         <label class="col-sm-2 control-label">
                                             一级编号
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" name="firstLevelNumber" placeholder="一级编号" class="form-control" >
+                                            <input type="text" name="firstLevelNumber" placeholder="一级编号"
+                                                   class="form-control input-full">
                                         </div>
-                                    </div>
-                                    <div class="x-valid">
                                         <label class="col-sm-2 control-label">
                                             二级编号
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" name="secondLevelNumber" placeholder="二级编号" class="form-control">
+                                            <input type="text" name="secondLevelNumber" placeholder="二级编号"
+                                                   class="form-control input-full">
                                         </div>
                                     </div>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                    <div class="form-inline x-valid">
                                         <label class="col-sm-2 control-label">
                                             开始时间<span class="symbol required"></span>
                                         </label>
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" name="beginDate" data-date-format='yyyy-mm-dd' placeholder="开始时间" class="form-control dbdate" required>
+                                            <input type="text" name="beginDate" data-date-format='yyyy-mm-dd'
+                                                   placeholder="开始时间" class="form-control input-full dbdate" required>
                                         </div>
-                                    </div>
-                                    <div class="x-valid">
                                         <label class="col-sm-2 control-label">
                                             结束时间<span class="symbol required"></span>
                                         </label>
                                         </label>
                                         <div class="col-sm-4">
                                             <input type="text" name="endDate" data-date-format='yyyy-mm-dd' required
-                                                   placeholder="结束时间" class="form-control dbdate">
+                                                   placeholder="结束时间" class="form-control input-full dbdate">
                                         </div>
                                     </div>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                    <div class="form-inline x-valid">
                                         <label class="col-sm-2 control-label">
                                             单位
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" name="unit" placeholder="单位" class="form-control">
+                                            <input type="text" name="unit" placeholder="单位"
+                                                   class="form-control input-full">
                                         </div>
-                                    </div>
-                                    <div class="x-valid">
                                         <label class="col-sm-2 control-label">
                                             数量
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" name="number" placeholder="数量" onblur="forecastRestaurant.computeMoney();" data-rule-digits="true" class="form-control">
+                                            <input type="text" name="number" placeholder="数量"
+                                                   onblur="forecastRestaurant.computeMoney();" data-rule-digits="true"
+                                                   class="form-control input-full">
                                         </div>
                                     </div>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                    <div class="form-inline x-valid">
                                         <label class="col-sm-2 control-label">
                                             利用率
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" name="utilizationRatio" placeholder="利用率" onblur="forecastRestaurant.computeMoney();" class="form-control x-percent">
+                                            <input type="text" name="utilizationRatio" placeholder="利用率"
+                                                   onblur="forecastRestaurant.computeMoney();"
+                                                   class="form-control input-full x-percent">
                                         </div>
-                                    </div>
-                                    <div class="x-valid">
                                         <label class="col-sm-2 control-label">
                                             利用率说明
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" name="utilizationRatioExplain" placeholder="利用率说明" class="form-control">
+                                            <input type="text" name="utilizationRatioExplain" placeholder="利用率说明"
+                                                   class="form-control input-full">
                                         </div>
                                     </div>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                    <div class="form-inline x-valid">
                                         <label class="col-sm-2 control-label">
                                             标价
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" name="makePrice" placeholder="标价" onblur="forecastRestaurant.computeUnitPrice();" data-rule-number="true" class="form-control">
+                                            <input type="text" name="makePrice" placeholder="标价"
+                                                   onblur="forecastRestaurant.computeUnitPrice();"
+                                                   data-rule-number="true" class="form-control input-full">
                                         </div>
-                                    </div>
-                                    <div class="x-valid">
                                         <label class="col-sm-2 control-label">
                                             标价说明
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" name="makePriceExplain" placeholder="标价说明" class="form-control">
+                                            <input type="text" name="makePriceExplain" placeholder="标价说明"
+                                                   class="form-control input-full">
                                         </div>
                                     </div>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                    <div class="form-inline x-valid">
                                         <label class="col-sm-2 control-label">
                                             折扣率
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" name="discountRate" placeholder="折扣率" onblur="forecastRestaurant.computeUnitPrice();" class="form-control x-percent">
+                                            <input type="text" name="discountRate" placeholder="折扣率"
+                                                   onblur="forecastRestaurant.computeUnitPrice();"
+                                                   class="form-control input-full x-percent">
                                         </div>
-                                    </div>
-                                    <div class="x-valid">
                                         <label class="col-sm-2 control-label">
                                             折扣率说明
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" name="discountRateExplain" placeholder="折扣率说明" class="form-control">
+                                            <input type="text" name="discountRateExplain" placeholder="折扣率说明"
+                                                   class="form-control input-full">
                                         </div>
                                     </div>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                    <div class="form-inline x-valid">
                                         <label class="col-sm-2 control-label">
                                             执行价
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" name="unitPrice" placeholder="执行价" onblur="forecastRestaurant.computeMoney();" data-rule-number="true" class="form-control">
+                                            <input type="text" name="unitPrice" placeholder="执行价"
+                                                   onblur="forecastRestaurant.computeMoney();" data-rule-number="true"
+                                                   class="form-control input-full">
                                         </div>
-                                    </div>
-                                    <div class="x-valid">
                                         <label class="col-sm-2 control-label">
                                             金额<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-4">
                                             <input type="text" name="amountMoney" placeholder="金额"
-                                                   data-rule-number="true" class="form-control" required="required">
+                                                   data-rule-number="true" class="form-control input-full"
+                                                   required="required">
                                         </div>
                                     </div>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                    <div class="form-inline x-valid">
                                         <label class="col-sm-2 control-label">
                                             房屋折旧与使用费
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" name="deprecitionRoyalty" placeholder="房屋折旧与使用费" class="form-control">
+                                            <input type="text" name="deprecitionRoyalty" placeholder="房屋折旧与使用费"
+                                                   class="form-control input-full">
                                         </div>
                                     </div>
+                                    </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-default">
-                        取消
-                    </button>
-                    <button type="button" class="btn btn-primary"
-                            onclick="forecastRestaurant.saveHistory();">
-                        保存
-                    </button>
-                </div>
-            </form>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="forecastRestaurant.saveHistory()()">
+                    保存
+                </button>
+            </div>
+
         </div>
     </div>
 </div>
 
-<div id="divBoxAnalyseItemData" class="modal fade bs-example-modal-lg" data-backdrop="static"
-     tabindex="-1"
-     role="dialog"
+<div id="divBoxAnalyseItemData" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
+                <h4 class="modal-title">明细</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">明细</h3>
             </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                        <table class="table table-bordered" id="analyseItemList">
-                            <!-- cerare document add ajax data-->
-                        </table>
 
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <div class="col-md-12">
+                                    <table class="table table-bordered" id="analyseItemList">
+                                        <!-- cerare document add ajax data-->
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
             <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
                     关闭
                 </button>
             </div>
+
         </div>
     </div>
 </div>
+
+
 <script type="text/javascript">
     var forecastRestaurant = {};
     forecastRestaurant.YEAR_DAYS = 365;//一年默认天数
@@ -363,8 +397,8 @@
         })
         $form.find('[name=beginDate]').val(formatDate(row.beginDate));
         $form.find('[name=endDate]').val(formatDate(row.endDate));
-        AssessCommon.elementParsePercent($form.find('[name=utilizationRatio]').attr('data-value',row.utilizationRatio));
-        AssessCommon.elementParsePercent($form.find('[name=discountRate]').attr('data-value',row.discountRate));
+        AssessCommon.elementParsePercent($form.find('[name=utilizationRatio]').attr('data-value', row.utilizationRatio));
+        AssessCommon.elementParsePercent($form.find('[name=discountRate]').attr('data-value', row.discountRate));
         $('#modal_history_restaurant').modal();
     }
 
@@ -430,8 +464,14 @@
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-success tooltips" data-placement="top" data-original-title="编辑" onclick="forecastRestaurant.editHistory(' + index + ',' + type + ');" ><i class="fa fa-edit fa-white"></i></a>';
-                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="forecastRestaurant.delHistory(' + row.id + ',' + type + ')"><i class="fa fa-minus fa-white"></i></a>';
+                //str += '<a class="btn btn-xs btn-success tooltips" data-placement="top" data-original-title="编辑" onclick="forecastRestaurant.editHistory(' + index + ',' + type + ');" ><i class="fa fa-edit fa-white"></i></a>';
+                //str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="forecastRestaurant.delHistory(' + row.id + ',' + type + ')"><i class="fa fa-minus fa-white"></i></a>';
+                str += '<button onclick="forecastRestaurant.editHistory(' + index + ',' + type + ');"  style="margin-left: 5px;"  class="btn   btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
+                str += '<i class="fa fa-pen"></i>';
+                str += '</button>';
+                str += '<button onclick="forecastRestaurant.delHistory(' + row.id + ',' + type + ')"  style="margin-left: 5px;"  class="btn   btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
+                str += '<i class="fa fa-minus"></i>';
+                str += '</button>';
                 str += '</div>';
                 return str;
             }
@@ -441,8 +481,8 @@
             type: type,
             formType: incomeIndex.getFormType(),
             incomeId: incomeIndex.getInComeId(),
-            bisForecast:$(_this).closest('.form-horizontal').find('[name=bisForecast]').val(),
-            secondLevelNumber:$(_this).closest('.form-horizontal').find('[name=secondLevelNumber]').val()
+            bisForecast: $(_this).closest('.form-horizontal').find('[name=bisForecast]').val(),
+            secondLevelNumber: $(_this).closest('.form-horizontal').find('[name=secondLevelNumber]').val()
         };
         $("#" + forecastRestaurant.getHistoryListId(type)).bootstrapTable('destroy');
         TableInit(forecastRestaurant.getHistoryListId(type), "${pageContext.request.contextPath}/income/getHistoryList", cols, queryParam, {
@@ -476,7 +516,7 @@
 
     //删除历史信息
     forecastRestaurant.delHistory = function (ids, type) {
-        Alert("确认要删除么？", 2, null, function () {
+        AlertConfirm("是否确认删除", "删除相应的数据后将不可恢复", function () {
             Loading.progressShow();
             $.ajax({
                 url: "${pageContext.request.contextPath}/income/deleteHistory",
@@ -486,16 +526,16 @@
                 success: function (result) {
                     Loading.progressHide();
                     if (result.ret) {
-                        toastr.success('删除成功');
+                        notifySuccess('删除成功');
                         forecastRestaurant.loadHistoryList(type);
                     }
                     else {
-                        Alert("删除数据失败，失败原因:" + result.errmsg);
+                        AlertError("删除数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
                     Loading.progressHide();
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         })
@@ -518,18 +558,18 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    toastr.success('保存成功');
+                    notifySuccess('保存成功');
                     var type = $("#frm_history_restaurant").find('[name=type]').val();
                     forecastRestaurant.loadHistoryList(type);
                     $('#modal_history_restaurant').modal('hide');
                 }
                 else {
-                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                    AlertError("保存数据失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
                 Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + result);
+                AlertError("调用服务端方法失败，失败原因:" + result);
             }
         })
     }
@@ -552,15 +592,15 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    Alert(result.data.replace(/\n/g, '<br/>'));
+                    notifySuccess(result.data.replace(/\n/g, '<br/>'));
                     forecastRestaurant.loadHistoryList(type);
                 } else {
-                    Alert("导入数据失败，失败原因:" + result.errmsg);
+                    AlertError("导入数据失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result, status, e) {
                 Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + result);
+                AlertError("调用服务端方法失败，失败原因:" + result);
             }
         });
     }
@@ -582,14 +622,14 @@
                 },
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success("添加成功");
+                        notifySuccess("添加成功");
                         $('#' + forecastRestaurant.getHistoryListId(type)).bootstrapTable('refresh');
                         $('#' + forecastRestaurant.getForecastAnalyseListId(type)).bootstrapTable('refresh');
                     }
                 }
             })
         } else {
-            toastr.info('请选择要添加的数据');
+            notifyInfo('请选择要添加的数据');
         }
     }
 
@@ -610,14 +650,14 @@
                     type: type
                 }, success: function (result) {
                     if (result.ret) {
-                        toastr.success("取消成功");
+                        notifySuccess("取消成功");
                         $('#' + forecastRestaurant.getHistoryListId(type)).bootstrapTable('refresh');
                         $('#' + forecastRestaurant.getForecastAnalyseListId(type)).bootstrapTable('refresh');
                     }
                 }
             })
         } else {
-            toastr.info('请选择要取消的数据');
+            notifyInfo('请选择要取消的数据');
         }
     }
 
@@ -634,7 +674,7 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    toastr.success('分析成功');
+                    notifySuccess('分析成功');
                     $("#" + forecastRestaurant.getForecastAnalyseListId(type)).bootstrapTable('refresh');
                 }
             }
@@ -649,9 +689,12 @@
         cols.push({field: 'amountMoney', title: '金额'});
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
-                if(row.amountMoney != null){
+                if (row.amountMoney != null) {
                     var str = '<div class="btn-margin">';
-                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="查看明细" onclick="forecastRestaurant.showItemData(' + row.id  + ')">查看明细</a>';
+                   // str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="查看明细" onclick="forecastRestaurant.showItemData(' + row.id + ')">查看明细</a>';
+                    str += '<button onclick="forecastRestaurant.showItemData(' + row.id  + ')" style="margin-left: 5px;" class="btn   btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看明细">';
+                    str += '<i class="fa fa-search"></i>';
+                    str += '</button>';
                     str += '</div>';
                     return str;
                 }

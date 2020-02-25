@@ -12,12 +12,14 @@
 </div>
 <div class="x_content">
     <div class="form-horizontal">
-        <div class="form-group ">
+        <div class="row form-group ">
+            <div class="col-md-12">
+                <div class="form-inline x-valid">
             <label class="col-sm-1 control-label">
                 范围
             </label>
             <div class="col-sm-1">
-                <select class="form-control" name="bisForecast">
+                <select class="form-control input-full" name="bisForecast">
                     <option value="">全部</option>
                     <option value="1">预测</option>
                     <option value="0">非预测</option>
@@ -27,19 +29,19 @@
                 二级编号
             </label>
             <div class="col-sm-1">
-                <input type="text" name="secondLevelNumber" class="form-control">
+                <input type="text" name="secondLevelNumber" class="form-control input-full">
             </div>
             <div class="col-sm-6">
                 <div class="btn-group">
-                    <button class="btn btn-primary" onclick="forecastRestaurant.loadHistoryList(1,this);">
+                    <button class="btn btn-primary btn-sm" onclick="forecastRestaurant.loadHistoryList(1,this);">
                         查询
                     </button>
-                    <button class="btn btn-success" data-toggle="modal" onclick="forecastRestaurant.addHistory(1);">
+                    <button class="btn btn-success btn-sm" data-toggle="modal" onclick="forecastRestaurant.addHistory(1);">
                         新增
                     </button>
                 </div>
                 <div class="btn-group">
-                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+                    <button type="button" class="btn btn-primary dropdown-toggle btn-sm" data-toggle="dropdown"
                             aria-expanded="false">
                         导入数据
                         <span class="caret"></span>
@@ -55,7 +57,7 @@
                     </ul>
                 </div>
                 <div class="btn-group">
-                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+                    <button type="button" class="btn btn-primary dropdown-toggle btn-sm" data-toggle="dropdown"
                             aria-expanded="false">
                         添加到预测
                         <span class="caret"></span>
@@ -66,19 +68,20 @@
                     </ul>
                 </div>
                 <div class="btn-group">
-                    <button class="btn btn-primary" data-toggle="modal"
+                    <button class="btn btn-primary btn-sm" data-toggle="modal"
                             onclick="forecastRestaurant.forecastToHistory(1);">
                         取消预测
                     </button>
                 </div>
                 <div class="btn-group">
-                    <button class="btn btn-primary" data-toggle="modal"
+                    <button class="btn btn-primary btn-sm" data-toggle="modal"
                             onclick="forecastRestaurant.startAnalyse(1);">
                         开始分析
                     </button>
                 </div>
             </div>
-
+                </div>
+            </div>
         </div>
     </div>
     <table class="table table-bordered" id="tb_history_restaurant_cost_list">

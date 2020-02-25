@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<div class="compileInfoContent">
+<div class="col-md-12 compileInfoContent">
 
 </div>
 <script type="text/javascript">
@@ -38,15 +38,20 @@
                     if(item.jsonContent){
                         var fieldArray = JSON.parse(item.jsonContent);
                         if (fieldArray && fieldArray.length > 0) {
-                            wellFields = "<div class='form-group'>";
+                            wellFields = "<div class='row form-group'>";
+                            wellFields += "<div class='col-md-12'>";
+                            wellFields += '<div class="form-inline x-valid">';
+
                             for (var j = 0; j < fieldArray.length; j++) {
                                 if (j > 0 && j % 3 == 0) {
-                                    wellFields += '</div><div class="form-group">';
+                                    wellFields += '</div></div></div><div class="row form-group"><div class="col-md-12"><div class="form-inline x-valid">';
                                 }
                                 var compileInfoFieldHtml = $("#compileInfoField").html();
                                 compileInfoFieldHtml = compileInfoFieldHtml.replace(/{key}/g, fieldArray[j].key).replace(/{value}/g, fieldArray[j].value);
                                 wellFields += compileInfoFieldHtml;
                             }
+                            wellFields += "</div>";
+                            wellFields += "</div>";
                             wellFields += "</div>";
                         }
                     }
@@ -105,34 +110,51 @@
     }
 </script>
 
-<script type="text/html" id="compileInfoPanel">
-    <div class="x_panel">
-        <div class="x_title collapse-link">
-            <h3>{reportAnalysisTypeName}</h3>
-        </div>
-        <form id="frm_compile_type_{reportAnalysisType}" class="form-horizontal">
-            <div class="x_content">
 
+<script type="text/html" id="compileInfoPanel">
+
+    <div class="card full-height">
+        <div class="card-header collapse-link">
+            <div class="card-head-row">
+                <div class="card-title">
+                    {reportAnalysisTypeName}
+                </div>
+                <div class="card-tools">
+                    <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                            class="fa fa-angle-down"></span>
+                    </button>
+                </div>
             </div>
-        </form>
+        </div>
+        <div class="card-body">
+            <form id="frm_compile_type_{reportAnalysisType}" class="form-horizontal">
+                <div class="x_content">
+
+                </div>
+            </form>
+        </div>
     </div>
+
 </script>
+
 
 <script type="text/html" id="compileInfoWell">
     <div class="well">
         <input type="hidden" name="id" value="{id}">
-        <div class="form-group" {templateDisplay}>
-            <label class="col-sm-1 control-label">模板</label>
-            <div class="col-sm-11"><label class="form-control template">{template}</label></div>
+        <div class="row form-group" {templateDisplay}>
+            <label class="col-sm-2 control-label">模板</label>
+            <div class="col-sm-10 "><label class="form-control input-full template">{template}</label></div>
         </div>
-        <div class="form-group">
-            <div class="x-valid">
-                <label class="col-sm-1 control-label">
+        <div class="row form-group">
+            <div class="col-md-12">
+            <div class="form-inline x-valid">
+                <label class="col-sm-2 control-label">
                     {name}<span class="symbol required"></span>
                 </label>
-                <div class="col-sm-11">
-                    <textarea placeholder="内容" class="form-control" name="content_{id}" data-name="content" required>{content}</textarea>
+                <div class="col-sm-10 ">
+                    <textarea placeholder="内容" class="form-control input-full" name="content_{id}" data-name="content" required>{content}</textarea>
                 </div>
+            </div>
             </div>
         </div>
         <div class="content-field">
@@ -143,11 +165,13 @@
 
 <script type="text/html" id="compileInfoWellView">
     <div class="well">
-        <div class="form-group">
-            <div class="x-valid"><label class="col-sm-1 control-label">{name}</label>
-                <div class="col-sm-11">
-                    <label class="form-control">{content}</label>
+        <div class="row form-group">
+            <div class="col-md-12">
+            <div class="form-inline x-valid"><label class="col-sm-2 control-label">{name}</label>
+                <div class="col-sm-10 ">
+                    <label class="form-control input-full">{content}</label>
                 </div>
+            </div>
             </div>
         </div>
     </div>
@@ -155,13 +179,13 @@
 
 <!--动态字段-->
 <script type="text/html" id="compileInfoField">
-    <div class="x-valid">
-        <label class="col-sm-1 control-label">
+
+        <label class="col-sm-2 control-label">
             {key}
         </label>
         <div class="col-sm-3">
-            <input type="text" class="form-control" data-name="{key}" value="{value}"
+            <input type="text" class="form-control input-full" data-name="{key}" value="{value}"
                    onkeyup="compileInfoModule.fieldReplace(this);">
         </div>
-    </div>
+
 </script>

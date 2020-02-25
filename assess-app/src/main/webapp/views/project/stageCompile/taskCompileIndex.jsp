@@ -6,8 +6,30 @@
 </head>
 
 
-<body class="nav-md footer_fixed">
-<div class="container body">
+<body>
+<div class="wrapper">
+    <div class="main-panel" style="width: 100%">
+        <div class="content" style="margin-top: 0px;">
+            <%@include file="/views/share/form_head.jsp" %>
+            <div class="page-inner mt--5">
+                <div class="row mt--2">
+                    <%@include file="/views/share/project/projectInfoSimple.jsp" %>
+                    <%@include file="/views/share/project/projectPlanDetails.jsp" %>
+
+                    <!-- 填写表单 start -->
+                    <jsp:include page="/views/project/stageCompile/module/compileInfoModule.jsp"></jsp:include>
+
+                    <%@include file="/views/share/form_apply.jsp" %>
+                    <%@include file="/views/share/form_log.jsp" %>
+                </div>
+            </div>
+        </div>
+        <%@include file="/views/share/main_footer.jsp" %>
+    </div>
+</div>
+
+
+<%--<div class="container body">
     <div class="main_container">
         <div class="right_col" role="main" style="margin-left: 0">
             <%@include file="/views/share/form_head.jsp" %>
@@ -18,11 +40,11 @@
             <%@include file="/views/share/form_log.jsp" %>
         </div>
     </div>
-</div>
+</div>--%>
 </body>
 
 <input type="hidden" id="compileReportDetailsJSON" value='${compileReportDetailsJSON}'>
-<%@include file="/views/share/main_footer.jsp" %>
+
 <script type="text/javascript">
     $(function () {
         //初始化

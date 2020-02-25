@@ -1,15 +1,21 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<div id="self_support_info" style="display: none;">
-    <div class="x_panel">
-        <div class="x_title collapse-link">
-            <ul class="nav navbar-right panel_toolbox">
-                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-            </ul>
-            <h3>收入类</h3>
-            <div class="clearfix"></div>
+
+<div class="col-md-12 self_support_info" style="display: none;">
+    <div class="card full-height">
+        <div class="card-header collapse-link">
+            <div class="card-head-row">
+                <div class="card-title">
+                    收入类
+                </div>
+                <div class="card-tools">
+                    <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                            class="fa fa-angle-down"></span>
+                    </button>
+                </div>
+            </div>
         </div>
-        <div class="x_content">
+        <div class="card-body">
             <div id="ref_forecastIncome">
                 <jsp:include page="forecastIncome.jsp"></jsp:include>
             </div>
@@ -26,37 +32,58 @@
             </div>
         </div>
     </div>
+</div>
 
-    <div class="x_panel">
-        <div class="x_title collapse-link">
-            <ul class="nav navbar-right panel_toolbox">
-                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-            </ul>
-            <h3>商品价格调查</h3>
-            <div class="clearfix"></div>
+
+<div class="col-md-12 self_support_info" style="display: none;">
+    <div class="card full-height">
+        <div class="card-header collapse-link">
+            <div class="card-head-row">
+                <div class="card-title">
+                    商品价格调查
+                </div>
+                <div class="card-tools">
+                    <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                            class="fa fa-angle-down"></span>
+                    </button>
+                </div>
+            </div>
         </div>
-        <div class="x_content">
+        <div class="card-body">
             <form class="form-horizontal">
-                <button type="button" class="btn btn-success"
-                        onclick="priceInvestigation.prototype.showModel()"
-                        data-toggle="modal" href="#divBox"> 新增
-                </button>
+                <P>
+                    <button type="button" class="btn btn-success btn-sm"
+                            onclick="priceInvestigation.prototype.showModel()"
+                            data-toggle="modal" href="#modal_price_investigation">
+                        <span class="btn-label">
+												<i class="fa fa-plus"></i>
+											</span>新增
+                    </button>
+                </P>
+                <table class="table table-bordered" id="tb_price_investigation_list">
+                    <!-- cerare document add ajax data-->
+                </table>
             </form>
-            <table class="table table-bordered" id="tb_price_investigation_list">
-                <!-- cerare document add ajax data-->
-            </table>
         </div>
     </div>
+</div>
 
-    <div class="x_panel">
-        <div class="x_title collapse-link">
-            <ul class="nav navbar-right panel_toolbox">
-                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-            </ul>
-            <h3>成本类</h3>
-            <div class="clearfix"></div>
+
+<div class="col-md-12 self_support_info" style="display: none;">
+    <div class="card full-height">
+        <div class="card-header collapse-link">
+            <div class="card-head-row">
+                <div class="card-title">
+                    成本类
+                </div>
+                <div class="card-tools">
+                    <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                            class="fa fa-angle-down"></span>
+                    </button>
+                </div>
+            </div>
         </div>
-        <div class="x_content">
+        <div class="card-body">
             <div id="ref_forecastCost">
                 <jsp:include page="forecastCost.jsp"></jsp:include>
             </div>
@@ -67,113 +94,147 @@
             <div class="x_title">
                 年运营费
             </div>
-            <div class="x_content">
+            <form class="form-horizontal">
                 <table class="table table-bordered" id="tb_forecast_cost_list">
                 </table>
-            </div>
+            </form>
         </div>
     </div>
+</div>
 
-    <div class="x_panel">
-        <div class="x_title collapse-link">
-            <ul class="nav navbar-right panel_toolbox">
-                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-            </ul>
-            <h3>参数</h3>
-            <div class="clearfix"></div>
+
+<div class="col-md-12 self_support_info" style="display: none;">
+    <div class="card full-height">
+        <div class="card-header collapse-link">
+            <div class="card-head-row">
+                <div class="card-title">
+                    参数
+                </div>
+                <div class="card-tools">
+                    <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                            class="fa fa-angle-down"></span>
+                    </button>
+                </div>
+            </div>
         </div>
-        <div class="x_content">
+        <div class="card-body">
             <form id="frm_self_support" class="form-horizontal" enctype="multipart/form-data">
-                <div class="form-group">
-                    <div class="x-valid">
-                        <label class="col-sm-1 control-label" title="报酬率">
-                            报酬率<span class="symbol required"></span>
-                        </label>
-                        <div class="col-sm-3">
-                            <div class="input-group">
-                                <input type="text" required class="form-control x-percent" name="rewardRate"
-                                       placeholder="报酬率"
-                                       data-value="${mdIncome.rewardRate}" onblur="selfSupport.computePrice();">
-                                <span class="input-group-btn">
+                <div class="row form-group">
+                    <div class="col-md-12">
+                        <div class="form-inline x-valid">
+                            <label class="col-sm-1 control-label" title="报酬率">
+                                报酬率<span class="symbol required"></span>
+                            </label>
+                            <div class="col-sm-3">
+                                <div class="input-group">
+                                    <input type="text" required class="form-control x-percent" name="rewardRate"
+                                           placeholder="报酬率"
+                                           data-value="${mdIncome.rewardRate}" onblur="selfSupport.computePrice();">
+                                    <span class="input-group-btn">
                               <input type="button" class="btn btn-primary" value="报酬率测算"
                                      onclick="selfSupport.getRewardRate(this);"/>
                             </span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <div class="x-valid">
-                        <label class="col-sm-1 control-label" title="行业经营平均利润率">
-                            利润率<span class="symbol required"></span>
-                        </label>
-                        <div class="col-sm-3">
-                            <input type="text" name="averageProfitRate" placeholder="行业经营平均利润率"
-                                   data-value="${mdIncome.averageProfitRate}" class="form-control x-percent"
-                                   onblur="selfSupport.computeOperatingProfit();" required="required">
+                <div class="row form-group">
+                    <div class="col-md-12">
+                        <div class="form-inline x-valid">
+                            <label class="col-sm-1 control-label" title="行业经营平均利润率">
+                                利润率<span class="symbol required"></span>
+                            </label>
+                            <div class="col-sm-3">
+                                <input type="text" name="averageProfitRate" placeholder="行业经营平均利润率"
+                                       data-value="${mdIncome.averageProfitRate}"
+                                       class="form-control input-full x-percent"
+                                       onblur="selfSupport.computeOperatingProfit();" required="required">
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <div class="x-valid">
-                        <label class="col-sm-1 control-label" title="行业经营平均利润率取数说明">
-                            取数说明
-                        </label>
-                        <div class="col-sm-11">
-                            <textarea name="averageProfitRateRemark" class="form-control"
+                <div class="row form-group">
+                    <div class="col-md-12">
+                        <div class="form-inline x-valid">
+                            <label class="col-sm-1 control-label" title="行业经营平均利润率取数说明">
+                                取数说明
+                            </label>
+                            <div class="col-sm-11">
+                            <textarea name="averageProfitRateRemark" class="form-control input-full"
                                       placeholder="行业经营平均利润率取数说明">${mdIncome.averageProfitRateRemark}</textarea>
+                            </div>
                         </div>
                     </div>
                 </div>
             </form>
         </div>
     </div>
+</div>
 
-    <div class="x_panel">
-        <div class="x_title collapse-link">
-            <ul class="nav navbar-right panel_toolbox">
-                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-            </ul>
-            <h3>测算结果</h3>
-            <div class="clearfix"></div>
-        </div>
-        <div class="x_content form-horizontal" id="selfSupportResult">
-            <div class="form-group">
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">
-                        估价对象面积
-                    </label>
-                    <div class="col-sm-3">
-                        <label class="form-control" data-name="area">${judgeObject.evaluationArea}</label>
-                    </div>
+
+<div class="col-md-12 self_support_info" style="display: none;">
+    <div class="card full-height">
+        <div class="card-header collapse-link">
+            <div class="card-head-row">
+                <div class="card-title">
+                    测算结果
                 </div>
-                <div class="x-valid">
-                    <label class="col-sm-1 control-label">
-                        估价对象的价格
-                    </label>
-                    <div class="col-sm-3">
-                        <label class="form-control" data-name="price">${mdIncome.price}</label>
-                    </div>
+                <div class="card-tools">
+                    <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                            class="fa fa-angle-down"></span>
+                    </button>
                 </div>
             </div>
-            <table class="table">
-                <thead>
-                <tr>
-                    <th>开始时间</th>
-                    <th>结束时间</th>
-                    <th>收益期限(n)</th>
-                    <th>收入</th>
-                    <th>成本</th>
-                    <th>经营利润</th>
-                    <th>房地产年净收益</th>
-                    <th>房地产收益价格</th>
-                </tr>
-                </thead>
-                <tbody id="selfSupportResultBody"></tbody>
-            </table>
+        </div>
+        <div class="card-body">
+            <form id="selfSupportResult" class="form-horizontal">
+                <div class="row form-group">
+                    <div class="col-md-12">
+                        <div class="form-inline x-valid">
+                            <label class="col-sm-1 control-label">
+                                估价对象面积
+                            </label>
+                            <div class="col-sm-3">
+                                <label class="form-control input-full"
+                                       data-name="area">${judgeObject.evaluationArea}</label>
+                            </div>
+                            <label class="col-sm-1 control-label">
+                                估价对象的价格
+                            </label>
+                            <div class="col-sm-3">
+                                <label class="form-control input-full" data-name="price">${mdIncome.price}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-12">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>开始时间</th>
+                                <th>结束时间</th>
+                                <th>收益期限(n)</th>
+                                <th>收入</th>
+                                <th>成本</th>
+                                <th>经营利润</th>
+                                <th>房地产年净收益</th>
+                                <th>房地产收益价格</th>
+                            </tr>
+                            </thead>
+                            <tbody id="selfSupportResultBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>
+
+
+</div>
+
 
 <%--收入预测--%>
 <div id="modal_forecast_income" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
@@ -182,31 +243,42 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
+                <h4 class="modal-title">收入预测</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">收入预测</h3>
             </div>
+
             <div class="modal-body">
                 <form id="frm_forecast_income" class="form-horizontal">
-                    <input type="hidden" name="incomeForecastId">
-                    <div class="col-sm-3">
-                        <button type="button" class="btn btn-success"
-                                onclick="selfSupport.showForecastIncomeItemModel()"
-                                data-toggle="modal" href="#divBox"> 新增
-                        </button>
-                        <button type="button" class="btn btn-primary"
-                                onclick="selfSupport.forecastIncomeItemQuoteData()"> 引用数据
-                        </button>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <input type="hidden" name="incomeForecastId">
+                                <div class="row form-group">
+                                    <div class="col-sm-12">
+                                        <div class="form-inline x-valid">
+                                            <button type="button" class="btn btn-success btn-sm"
+                                                    onclick="selfSupport.showForecastIncomeItemModel()"
+                                                    data-toggle="modal" href="#divBox"> 新增
+                                            </button>
+                                            <button type="button" class="btn btn-primary btn-sm"
+                                                    onclick="selfSupport.forecastIncomeItemQuoteData()"> 引用数据
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <table class="table table-bordered" id="tb_md_income_forecast_analyse_item_list">
+                                </table>
+                            </div>
+                        </div>
                     </div>
-                    <table class="table table-bordered" id="tb_md_income_forecast_analyse_item_list">
-                    </table>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">
-                    取消
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
                 </button>
-                <button type="button" class="btn btn-primary" onclick="selfSupport.createForecastIncomeYear();">
+                <button type="button" class="btn btn-primary btn-sm" onclick="selfSupport.createForecastIncomeYear()">
                     保存
                 </button>
             </div>
@@ -221,276 +293,313 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
+                <h4 class="modal-title">收入预测明细</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">收入预测明细</h3>
             </div>
+
             <div class="modal-body">
                 <form id="frm_forecast_income_item" class="form-horizontal">
-                    <input type="hidden" name="id">
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                会计科目<span class="symbol required"></span>
-                            </label>
-                            <div class="col-sm-4">
-                                <select name="accountingSubject" class="form-control" required="required"></select>
-                            </div>
-                        </div>
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                一级编号
-                            </label>
-                            <div class="col-sm-4">
-                                <input type="text" name="firstLevelNumber" placeholder="一级编号" class="form-control">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                二级编号
-                            </label>
-                            <div class="col-sm-4">
-                                <input type="text" name="secondLevelNumber" placeholder="二级编号" class="form-control">
-                            </div>
-                        </div>
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                金额<span class="symbol required"></span>
-                            </label>
-                            <div class="col-sm-4">
-                                <input type="text" name="amountMoney" placeholder="金额" data-rule-number="true"
-                                       class="form-control" required="required">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                增长率<span class="symbol required"></span>
-                            </label>
-                            <div class="col-sm-4">
-                                <input type="text" name="rateIncrease" placeholder="增长率" class="form-control x-percent"
-                                       required="required">
-                            </div>
-                        </div>
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                增长率说明
-                            </label>
-                            <div class="col-sm-4">
-                                <input type="text" name="rateIncreaseExplain" placeholder="增长率说明" class="form-control">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <input type="hidden" name="id">
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                会计科目<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <select name="accountingSubject" class="form-control input-full"
+                                                        required="required"></select>
+                                            </div>
+                                            <label class="col-sm-2 control-label">
+                                                一级编号
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" name="firstLevelNumber" placeholder="一级编号"
+                                                       class="form-control input-full">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                二级编号
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" name="secondLevelNumber" placeholder="二级编号"
+                                                       class="form-control input-full">
+                                            </div>
+                                            <label class="col-sm-2 control-label">
+                                                金额<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" name="amountMoney" placeholder="金额"
+                                                       data-rule-number="true"
+                                                       class="form-control input-full" required="required">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                增长率<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" name="rateIncrease" placeholder="增长率"
+                                                       class="form-control input-full x-percent"
+                                                       required="required">
+                                            </div>
+                                            <label class="col-sm-2 control-label">
+                                                增长率说明
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" name="rateIncreaseExplain" placeholder="增长率说明"
+                                                       class="form-control input-full">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">
-                    取消
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
                 </button>
-                <button type="button" class="btn btn-primary" onclick="selfSupport.saveForecastIncomeItem();">
+                <button type="button" class="btn btn-primary btn-sm" onclick="selfSupport.saveForecastIncomeItem()">
                     保存
                 </button>
             </div>
+
         </div>
     </div>
 </div>
 
-<div id="modal_same_name_item" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
-     role="dialog"
+<div id="modal_same_name_item" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
+                <h4 class="modal-title">同类历史数据</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">同类历史数据</h3>
             </div>
+
             <div class="modal-body">
                 <form id="frm_same_name" class="form-horizontal">
-                    <input type="hidden" name="historyId">
-                    <table class="table table-bordered" id="tb_md_same_name_item_list">
-                    </table>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <input type="hidden" name="historyId">
+                                <table class="table table-bordered" id="tb_md_same_name_item_list">
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">
-                    取消
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
                 </button>
-                <button type="button" class="btn btn-primary" onclick="selfSupport.affirmQuoteMoney();">
-                    确认
+                <button type="button" class="btn btn-primary btn-sm" onclick="selfSupport.affirmQuoteMoney()">
+                    保存
                 </button>
             </div>
+
         </div>
     </div>
 </div>
+
+
 <%--成本预测数据--%>
-<div id="modal_forecast_cost" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
-     role="dialog"
+<div id="modal_forecast_cost" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
+                <h4 class="modal-title">运营费</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">运营费</h3>
             </div>
-            <form id="frm_forecast_cost" class="form-horizontal">
-                <input type="hidden" name="id">
-                <input type="hidden" name="type">
-                <input type="hidden" name="sectionId">
-                <input type="hidden" name="incomeTotal">
-                <input type="hidden" name="initialAmount">
-                <input type="hidden" name="operatingCost">
-                <input type="hidden" name="operatingExpenses">
-                <input type="hidden" name="operatingTax">
-                <input type="hidden" name="managementCost">
-                <input type="hidden" name="financialCost">
-                <input type="hidden" name="operatingProfit">
-                <input type="hidden" name="excessProfit">
-                <div class="modal-body">
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                经营成本比率<span class="symbol required"></span>
-                            </label>
-                            <div class="col-sm-4">
-                                <div class="input-group">
-                                    <input type="text" name="operatingCostRatio" placeholder="经营成本比率"
-                                           onblur="selfSupport.computeInitialAmount(this);"
-                                           class="form-control x-percent">
-                                    <span class="input-group-btn">
+
+            <div class="modal-body">
+                <form id="frm_forecast_cost" class="form-horizontal">
+                    <input type="hidden" name="id">
+                    <input type="hidden" name="type">
+                    <input type="hidden" name="sectionId">
+                    <input type="hidden" name="incomeTotal">
+                    <input type="hidden" name="initialAmount">
+                    <input type="hidden" name="operatingCost">
+                    <input type="hidden" name="operatingExpenses">
+                    <input type="hidden" name="operatingTax">
+                    <input type="hidden" name="managementCost">
+                    <input type="hidden" name="financialCost">
+                    <input type="hidden" name="operatingProfit">
+                    <input type="hidden" name="excessProfit">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                经营成本比率<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <div class="input-group">
+                                                    <input type="text" name="operatingCostRatio" placeholder="经营成本比率"
+                                                           onblur="selfSupport.computeInitialAmount(this);"
+                                                           class="form-control x-percent">
+                                                    <span class="input-group-btn">
                                             <button type="button" class="btn btn-default docs-tooltip"
                                                     onclick="selfSupport.operatingCostItem()"
                                                     data-toggle="tooltip" data-original-title="明细">
                                             <i class="fa fa-edit"></i>
                                             </button>
                                     </span>
+                                                </div>
+                                            </div>
+                                            <label class="col-sm-2 control-label">
+                                                经营成本说明
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" name="operatingCostRemark" placeholder="经营成本说明"
+                                                       class="form-control input-full" required="required">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                经营费用比率<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" name="operatingExpensesRatio" placeholder="经营费用比率"
+                                                       onblur="selfSupport.computeInitialAmount(this);"
+                                                       class="form-control input-full x-percent">
+                                            </div>
+                                            <label class="col-sm-2 control-label">
+                                                经营费用说明
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" name="operatingExpensesRemark" placeholder="经营费用"
+                                                       class="form-control input-full" required="required">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                经营税金及附加比率<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" name="operatingTaxRatio" placeholder="经营税金及附加比率"
+                                                       onblur="selfSupport.computeInitialAmount(this);"
+                                                       class="form-control input-full x-percent">
+                                            </div>
+                                            <label class="col-sm-2 control-label">
+                                                经营税金及附加说明
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" name="operatingTaxRemark" placeholder="经营税金及附加说明"
+                                                       class="form-control input-full" required="required">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                管理费用比率<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" name="managementCostRatio" placeholder="管理费用比率"
+                                                       onblur="selfSupport.computeInitialAmount(this);"
+                                                       class="form-control input-full x-percent">
+                                            </div>
+                                            <label class="col-sm-2 control-label">
+                                                管理费用说明
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" name="managementCostRemark" placeholder="管理费用说明"
+                                                       class="form-control input-full" required="required">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                财务费用比率<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" name="financialCostRatio" placeholder="财务费用比率"
+                                                       onblur="selfSupport.computeInitialAmount(this);"
+                                                       class="form-control input-full x-percent">
+                                            </div>
+                                            <label class="col-sm-2 control-label">
+                                                财务费用说明
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" name="financialCostRemark" placeholder="财务费用说明"
+                                                       class="form-control input-full" required="required">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                特许权超额利润比率<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" name="excessProfitRatio" placeholder="特许权超额利润比率"
+                                                       onblur="selfSupport.computeInitialAmount(this);"
+                                                       class="form-control input-full x-percent">
+                                            </div>
+                                            <label class="col-sm-2 control-label">
+                                                特许权超额利润说明
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" name="excessProfitRemark" placeholder="特许权超额利润说明"
+                                                       class="form-control input-full" required="required">
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                经营成本说明
-                            </label>
-                            <div class="col-sm-4">
-                                <input type="text" name="operatingCostRemark" placeholder="经营成本说明"
-                                       class="form-control" required="required">
-                            </div>
-                        </div>
                     </div>
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                经营费用比率<span class="symbol required"></span>
-                            </label>
-                            <div class="col-sm-4">
-                                <input type="text" name="operatingExpensesRatio" placeholder="经营费用比率"
-                                       onblur="selfSupport.computeInitialAmount(this);" class="form-control x-percent">
-                            </div>
-                        </div>
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                经营费用说明
-                            </label>
-                            <div class="col-sm-4">
-                                <input type="text" name="operatingExpensesRemark" placeholder="经营费用"
-                                       class="form-control" required="required">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                经营税金及附加比率<span class="symbol required"></span>
-                            </label>
-                            <div class="col-sm-4">
-                                <input type="text" name="operatingTaxRatio" placeholder="经营税金及附加比率"
-                                       onblur="selfSupport.computeInitialAmount(this);" class="form-control x-percent">
-                            </div>
-                        </div>
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                经营税金及附加说明
-                            </label>
-                            <div class="col-sm-4">
-                                <input type="text" name="operatingTaxRemark" placeholder="经营税金及附加说明"
-                                       class="form-control" required="required">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                管理费用比率<span class="symbol required"></span>
-                            </label>
-                            <div class="col-sm-4">
-                                <input type="text" name="managementCostRatio" placeholder="管理费用比率"
-                                       onblur="selfSupport.computeInitialAmount(this);" class="form-control x-percent">
-                            </div>
-                        </div>
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                管理费用说明
-                            </label>
-                            <div class="col-sm-4">
-                                <input type="text" name="managementCostRemark" placeholder="管理费用说明"
-                                       class="form-control" required="required">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                财务费用比率<span class="symbol required"></span>
-                            </label>
-                            <div class="col-sm-4">
-                                <input type="text" name="financialCostRatio" placeholder="财务费用比率"
-                                       onblur="selfSupport.computeInitialAmount(this);" class="form-control x-percent">
-                            </div>
-                        </div>
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                财务费用说明
-                            </label>
-                            <div class="col-sm-4">
-                                <input type="text" name="financialCostRemark" placeholder="财务费用说明"
-                                       class="form-control" required="required">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                特许权超额利润比率<span class="symbol required"></span>
-                            </label>
-                            <div class="col-sm-4">
-                                <input type="text" name="excessProfitRatio" placeholder="特许权超额利润比率"
-                                       onblur="selfSupport.computeInitialAmount(this);" class="form-control x-percent">
-                            </div>
-                        </div>
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                特许权超额利润说明
-                            </label>
-                            <div class="col-sm-4">
-                                <input type="text" name="excessProfitRemark" placeholder="特许权超额利润说明"
-                                       class="form-control" required="required">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-default">
-                        取消
-                    </button>
-                    <button type="button" class="btn btn-primary" onclick="selfSupport.saveForecastCost();">
-                        保存
-                    </button>
-                </div>
-            </form>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="selfSupport.saveForecastCost()">
+                    保存
+                </button>
+            </div>
+
         </div>
     </div>
 </div>
@@ -501,14 +610,33 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
+                <h4 class="modal-title">预测年度信息</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">预测年度信息</h3>
             </div>
+
             <div class="modal-body">
-                <table class="table table-bordered" id="tb_forecast_year_list">
-                </table>
+                <form class="form-horizontal">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <table class="table table-bordered" id="tb_forecast_year_list">
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+            </div>
+
         </div>
     </div>
 </div>
@@ -519,120 +647,153 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
+                <h4 class="modal-title">预测月度信息</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">预测月度信息</h3>
             </div>
-            <div class="modal-body">
-                <input type="hidden" id="yearId">
-                <input type="hidden" id="yearType">
-                <button class="btn btn-success" data-toggle="modal"
-                        onclick="selfSupport.addHistory($('#yearType').val(),'frm_forecast_month','modal_forecast_month');">
-                    新增
-                </button>
-                <table class="table table-bordered" id="tb_forecast_month_list">
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
 
-<div id="modal_forecast_month" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
-     role="dialog"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">月度信息</h3>
-            </div>
             <div class="modal-body">
-                <form id="frm_forecast_month" class="form-horizontal">
-                    <input type="hidden" name="id">
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                会计科目<span class="symbol required"></span>
-                            </label>
-                            <div class="col-sm-4">
-                                <select name="accountingSubject" class="form-control" required="required"></select>
-                            </div>
-                        </div>
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                一级编号<span class="symbol required"></span>
-                            </label>
-                            <div class="col-sm-4">
-                                <input type="text" name="firstLevelNumber" placeholder="一级编号" class="form-control"
-                                       required="required">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                二级编号<span class="symbol required"></span>
-                            </label>
-                            <div class="col-sm-4">
-                                <input type="text" name="secondLevelNumber" placeholder="一级编号" class="form-control"
-                                       required="required">
-                            </div>
-                        </div>
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                月度<span class="symbol required"></span>
-                            </label>
-                            <div class="col-sm-4">
-                                <input type="text" name="month" placeholder="月度"
-                                       class="form-control" required="required">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                单价<span class="symbol required"></span>
-                            </label>
-                            <div class="col-sm-4">
-                                <input type="text" name="unitPrice" placeholder="单价"
-                                       onblur="selfSupport.computeMoney('frm_forecast_month');"
-                                       data-rule-number="true" class="form-control" required="required">
-                            </div>
-                        </div>
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                数量<span class="symbol required"></span>
-                            </label>
-                            <div class="col-sm-4">
-                                <input type="text" name="number" placeholder="数量"
-                                       onblur="selfSupport.computeMoney('frm_forecast_month');"
-                                       data-rule-digits="true" class="form-control" required="required">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class="col-sm-2 control-label">
-                                金额<span class="symbol required"></span>
-                            </label>
-                            <div class="col-sm-4">
-                                <input type="text" name="amountMoney" placeholder="金额"
-                                       data-rule-number="true" class="form-control" required="required">
+                <form class="form-horizontal">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <input type="hidden" id="yearId">
+                                <input type="hidden" id="yearType">
+                                <p>
+                                    <button class="btn btn-success" data-toggle="modal"
+                                            onclick="selfSupport.addHistory($('#yearType').val(),'frm_forecast_month','modal_forecast_month');">
+                                        新增
+                                    </button>
+                                </p>
+                                <table class="table table-bordered" id="tb_forecast_month_list">
+                                </table>
+
                             </div>
                         </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">
-                    取消
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
                 </button>
-                <button type="button" class="btn btn-primary"
-                        onclick="selfSupport.saveForecastMonth();">
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div id="modal_forecast_month" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">月度信息</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+
+            <div class="modal-body">
+                <form id="frm_forecast_month" class="form-horizontal">
+                    <input type="hidden" name="id">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                会计科目<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <select name="accountingSubject" class="form-control input-full"
+                                                        required="required"></select>
+                                            </div>
+                                            <label class="col-sm-2 control-label">
+                                                一级编号<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" name="firstLevelNumber" placeholder="一级编号"
+                                                       class="form-control input-full"
+                                                       required="required">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                二级编号<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" name="secondLevelNumber" placeholder="一级编号"
+                                                       class="form-control input-full"
+                                                       required="required">
+                                            </div>
+                                            <label class="col-sm-2 control-label">
+                                                月度<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" name="month" placeholder="月度"
+                                                       class="form-control input-full" required="required">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                单价<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" name="unitPrice" placeholder="单价"
+                                                       onblur="selfSupport.computeMoney('frm_forecast_month');"
+                                                       data-rule-number="true" class="form-control input-full"
+                                                       required="required">
+                                            </div>
+                                            <label class="col-sm-2 control-label">
+                                                数量<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" name="number" placeholder="数量"
+                                                       onblur="selfSupport.computeMoney('frm_forecast_month');"
+                                                       data-rule-digits="true" class="form-control input-full"
+                                                       required="required">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                金额<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" name="amountMoney" placeholder="金额"
+                                                       data-rule-number="true" class="form-control input-full"
+                                                       required="required">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="selfSupport.saveForecastMonth()">
                     保存
                 </button>
             </div>
+
         </div>
     </div>
 </div>
@@ -643,48 +804,53 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
+                <h4 class="modal-title">商品调查价格</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">商品调查价格</h3>
             </div>
-            <form id="frm_price_investigation" class="form-horizontal">
-                <input type="hidden" id="id" name="id">
-                <div class="modal-body">
+
+            <div class="modal-body">
+                <form id="frm_price_investigation" class="form-horizontal">
+                    <input type="hidden" id="id" name="id">
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="panel-body">
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            商品名称<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="text" name="name" class="form-control" required="required">
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            价格<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="text" name="price" class="form-control" data-rule-number="true"
-                                                   required="required">
+                            <div class="card-body">
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                商品名称<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" name="name" class="form-control input-full"
+                                                       required="required">
+                                            </div>
+                                            <label class="col-sm-2 control-label">
+                                                价格<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" name="price" class="form-control input-full"
+                                                       data-rule-number="true"
+                                                       required="required">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-default">
-                        取消
-                    </button>
-                    <button type="button" class="btn btn-primary" onclick="priceInvestigation.prototype.saveData()">
-                        保存
-                    </button>
-                </div>
-            </form>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="priceInvestigation.prototype.saveData()">
+                    保存
+                </button>
+            </div>
+
         </div>
     </div>
 </div>
@@ -694,47 +860,38 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
+                <h4 class="modal-title">经营成本比率明细</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">经营成本比率明细</h3>
             </div>
-            <form id="frmCostItem" class="form-horizontal">
-                <input type="hidden" name="id">
-                <div class="modal-body">
+
+            <div class="modal-body">
+                <form id="frmCostItem" class="form-horizontal">
+                    <input type="hidden" name="id">
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="panel-body">
-                                <%--<div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            添加明细<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <div class="btn btn-xs btn-success"
-                                                 onclick="selfSupport.appendHTML('',this)"><i
-                                                    class="fa fa-plus"></i></div>
-                                        </div>
-                                    </div>
-                                </div>--%>
+                            <div class="card-body">
                                 <div style="margin-bottom: 8px;" class="system">
 
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-default">
-                        取消
-                    </button>
-                    <button type="button" class="btn btn-primary" onclick="selfSupport.saveCostItem()">
-                        保存
-                    </button>
-                </div>
-            </form>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="selfSupport.saveCostItem()">
+                    保存
+                </button>
+            </div>
+
         </div>
     </div>
 </div>
+
 
 <input type="file" id="ajaxFileUpload" name="file" style="display: none;" data-type="0"
        onchange="selfSupport.importHistory(this);">
@@ -781,8 +938,14 @@
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-success tooltips" data-placement="top" data-original-title="编辑" onclick="selfSupport.editForecastIncomeItem(' + index + ');" ><i class="fa fa-edit fa-white"></i></a>';
-                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="selfSupport.deleteForecastIncomeItem(' + row.id + ')"><i class="fa fa-minus fa-white"></i></a>';
+                //str += '<a class="btn btn-xs btn-success tooltips" data-placement="top" data-original-title="编辑" onclick="selfSupport.editForecastIncomeItem(' + index + ');" ><i class="fa fa-edit fa-white"></i></a>';
+                str += '<a onclick="selfSupport.editForecastIncomeItem(' + index + ')"  style="margin-left: 5px;"  class="btn   btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
+                str += '<i class="fa fa-pen"></i>';
+                str += '</a>';
+                str += '<a onclick="selfSupport.deleteForecastIncomeItem(' + row.id + ')"  style="margin-left: 5px;"  class="btn   btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
+                str += '<i class="fa fa-minus"></i>';
+                str += '</a>';
+                //str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="selfSupport.deleteForecastIncomeItem(' + row.id + ')"><i class="fa fa-minus fa-white"></i></a>';
                 // str += '<a class="btn btn-xs btn-primary tooltips" data-placement="top" data-original-title="引用历史金额" onclick="selfSupport.showSameNameItemModel(' + row.id + ')">引用历史金额</a>';
                 str += '</div>';
                 return str;
@@ -825,17 +988,17 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    toastr.success('保存成功');
+                    notifySuccess('保存成功');
                     selfSupport.loadIncomeForecastItemList();
                     $('#modal_forecast_income_item').modal('hide');
                 }
                 else {
-                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                    AlertError("保存数据失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
                 Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + result);
+                AlertError("调用服务端方法失败，失败原因:" + result);
             }
         })
     }
@@ -853,7 +1016,7 @@
     }
     //删除收入预测明细
     selfSupport.deleteForecastIncomeItem = function (id) {
-        Alert("确认要删除么？", 2, null, function () {
+        AlertConfirm("是否确认删除", "删除相应的数据后将不可恢复", function () {
             Loading.progressShow();
             $.ajax({
                 url: "${pageContext.request.contextPath}/income/deleteForecastIncomeItem",
@@ -863,16 +1026,16 @@
                 success: function (result) {
                     Loading.progressHide();
                     if (result.ret) {
-                        toastr.success('删除成功');
+                        notifySuccess('删除成功');
                         selfSupport.loadIncomeForecastItemList();
                     }
                     else {
-                        Alert("删除数据失败，失败原因:" + result.errmsg);
+                        AlertError("删除数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
                     Loading.progressHide();
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         })
@@ -892,16 +1055,16 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    toastr.success('引用数据成功');
+                    notifySuccess('引用数据成功');
                     selfSupport.loadIncomeForecastItemList();
                 }
                 else {
-                    Alert("删除数据失败，失败原因:" + result.errmsg);
+                    AlertError("删除数据失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
                 Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + result);
+                AlertError("调用服务端方法失败，失败原因:" + result);
             }
         })
     }
@@ -992,12 +1155,12 @@
                         selfSupport.loadIncomeForecastItemList();
                     }
                     else {
-                        Alert("删除数据失败，失败原因:" + result.errmsg);
+                        AlertError("删除数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
                     Loading.progressHide();
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         }
@@ -1040,18 +1203,18 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    toastr.success('保存成功');
+                    notifySuccess('保存成功');
                     selfSupport.loadForecastIncomeList();
                     selfSupport.loadCalculationResult();
                     $('#modal_forecast_income').modal('hide');
                 }
                 else {
-                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                    AlertError("保存数据失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
                 Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + result);
+                AlertError("调用服务端方法失败，失败原因:" + result);
             }
         })
     }
@@ -1071,18 +1234,18 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    toastr.success('保存成功');
+                    notifySuccess('保存成功');
                     selfSupport.loadForecastCostList();
                     selfSupport.loadCalculationResult();
                     $('#modal_forecast_cost').modal('hide');
                 }
                 else {
-                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                    AlertError("保存数据失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
                 Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + result);
+                AlertError("调用服务端方法失败，失败原因:" + result);
             }
         })
     }
@@ -1109,8 +1272,14 @@
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-success tooltips" data-placement="top" data-original-title="编辑" onclick="selfSupport.editForecastIncome(' + row.id + ');" ><i class="fa fa-edit fa-white"></i></a>';
-                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="查看" onclick="selfSupport.viewForecastYear(' + row.id + ');" ><i class="fa fa-search fa-white"></i></a>';
+                //str += '<a class="btn btn-xs btn-success tooltips" data-placement="top" data-original-title="编辑" onclick="selfSupport.editForecastIncome(' + row.id + ');" ><i class="fa fa-edit fa-white"></i></a>';
+                str += '<button onclick="selfSupport.editForecastIncome(' + row.id + ');"  style="margin-left: 5px;"  class="btn   btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
+                str += '<i class="fa fa-pen"></i>';
+                str += '</button>';
+                str += '<button onclick="selfSupport.viewForecastYear(' + row.id + ')" style="margin-left: 5px;" class="btn   btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看">';
+                str += '<i class="fa fa-search"></i>';
+                str += '</button>';
+                //str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="查看" onclick="selfSupport.viewForecastYear(' + row.id + ');" ><i class="fa fa-search fa-white"></i></a>';
                 str += '</div>';
                 return str;
             }
@@ -1177,7 +1346,10 @@
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-success tooltips" data-placement="top" data-original-title="编辑" onclick="selfSupport.editForecastCost(' + index + ');" ><i class="fa fa-edit fa-white"></i></a>';
+                //str += '<a class="btn btn-xs btn-success tooltips" data-placement="top" data-original-title="编辑" onclick="selfSupport.editForecastCost(' + index + ');" ><i class="fa fa-edit fa-white"></i></a>';
+                str += '<a onclick="selfSupport.editForecastCost(' + index + ')"  style="margin-left: 5px;"  class="btn   btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
+                str += '<i class="fa fa-pen"></i>';
+                str += '</a>';
                 str += '</div>';
                 return str;
             }
@@ -1241,7 +1413,7 @@
 
     //删除月度预测信息
     selfSupport.delForecastMonth = function (id) {
-        Alert("确认要删除么？", 2, null, function () {
+        AlertConfirm("是否确认删除", "删除相应的数据后将不可恢复", function () {
             Loading.progressShow();
             $.ajax({
                 url: "${pageContext.request.contextPath}/income/deleteForecastMonth",
@@ -1251,16 +1423,16 @@
                 success: function (result) {
                     Loading.progressHide();
                     if (result.ret) {
-                        toastr.success('删除成功');
+                        notifySuccess('删除成功');
                         selfSupport.loadForecastMonthList($("#yearType").val(), $("#yearId").val());
                     }
                     else {
-                        Alert("删除数据失败，失败原因:" + result.errmsg);
+                        AlertError("删除数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
                     Loading.progressHide();
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         })
@@ -1299,17 +1471,17 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    toastr.success('保存成功');
+                    notifySuccess('保存成功');
                     selfSupport.loadForecastMonthList(data.type, data.yearId);
                     $('#modal_forecast_month').modal('hide');
                 }
                 else {
-                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                    AlertError("保存数据失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
                 Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + result);
+                AlertError("调用服务端方法失败，失败原因:" + result);
             }
         })
     }
@@ -1327,8 +1499,14 @@
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-success tooltips" data-placement="top" data-original-title="编辑" onclick="selfSupport.editForecastMonth(' + index + ',' + type + ');" ><i class="fa fa-edit fa-white"></i></a>';
-                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="selfSupport.delForecastMonth(' + row.id + ')"><i class="fa fa-minus fa-white"></i></a>';
+                //str += '<a class="btn btn-xs btn-success tooltips" data-placement="top" data-original-title="编辑" onclick="selfSupport.editForecastMonth(' + index + ',' + type + ');" ><i class="fa fa-edit fa-white"></i></a>';
+                str += '<button onclick="selfSupport.editForecastMonth(' + index + ',' + type + ')"  style="margin-left: 5px;"  class="btn   btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
+                str += '<i class="fa fa-pen"></i>';
+                str += '</button>';
+                str += '<button onclick="selfSupport.delForecastMonth(' + row.id + ')"  style="margin-left: 5px;"  class="btn   btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
+                str += '<i class="fa fa-minus"></i>';
+                str += '</button>';
+                //str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="selfSupport.delForecastMonth(' + row.id + ')"><i class="fa fa-minus fa-white"></i></a>';
                 str += '</div>';
                 return str;
             }
@@ -1400,7 +1578,7 @@
             },
             error: function (result) {
                 Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + result);
+                AlertError("调用服务端方法失败，失败原因:" + result);
             }
         })
     }
@@ -1498,46 +1676,43 @@
                     }
                 }
                 else {
-                    Alert("获取数据失败，失败原因:" + result.errmsg);
+                    AlertError("获取数据失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
                 Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + result);
+                AlertError("调用服务端方法失败，失败原因:" + result);
             }
         })
         $('#costItemBox').modal();
     }
 
     selfSupport.appendHTML = function () {
-        var html = "<div class='form-group' >";
-        html += "<div class='x-valid'>";
+        var html = "<div class='row form-group' >";
+        html += ' <div class="col-md-12">';
+        html += "<div class='form-inline x-valid'>";
+
         html += "<label class='col-sm-1 control-label'>" + "一级编号" + "</label>";
         html += "<div class='col-sm-2'>";
-        html += "<input type='text' required class='form-control' name='firstLevelNumber'>";
-        html += "</div>";
+        html += "<input type='text' required class='form-control input-full' name='firstLevelNumber'>";
         html += "</div>";
 
-        html += "<div class='x-valid'>";
         html += "<label class='col-sm-1 control-label'>" + "二级编号" + "</label>";
         html += "<div class='col-sm-2'>";
-        html += "<input type='text' required class='form-control' name='secondLevelNumber'>";
-        html += "</div>";
+        html += "<input type='text' required class='form-control input-full' name='secondLevelNumber'>";
         html += "</div>";
 
-        html += "<div class='x-valid'>";
         html += "<label class='col-sm-1 control-label'>" + "比率" + "</label>";
         html += "<div class='col-sm-2'>";
-        html += "<input type='text' required class='form-control x-percent' name='ratio'>";
-        html += "</div>";
+        html += "<input type='text' required class='form-control input-full x-percent' name='ratio'>";
         html += "</div>";
 
-        html += "<div class='x-valid'>";
         html += " <div class='col-sm-2'>";
-        html += "<input class='btn btn-warning' type='button' value='X' onclick='selfSupport.cleanHTMLData(this)'>" + "</span>";
-        html += "</div>";
+        html += "<input class='btn btn-warning btn-sm' type='button' value='X' onclick='selfSupport.cleanHTMLData(this)'>" + "</span>";
         html += "</div>";
 
+        html += "</div>";
+        html += "</div>";
         html += "</div>";
 
         $(".system").append(html);
@@ -1555,7 +1730,7 @@
         //var data = formParams("frmCostItem");
         var id = $("#frmCostItem").find("input[name='id']").val();
         var operatingCostItem = [];
-        $("#frmCostItem").find('.system').find('.form-group').each(function () {
+        $("#frmCostItem").find('.system').find('.row form-group').each(function () {
             var item = {};
             var amountMoney = $(this).find('[name^=amountMoney]').val();
             var total = $(this).find('[name^=total]').val();
@@ -1598,12 +1773,12 @@
                     $('#costItemBox').modal('hide');
                 }
                 else {
-                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                    AlertError("保存数据失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
                 Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + result);
+                AlertError("调用服务端方法失败，失败原因:" + result);
             }
         })
     }
@@ -1611,28 +1786,28 @@
     selfSupport.writeHTMLData = function (json) {
         var jsonarray = eval(json);
         $.each(jsonarray, function (i, n) {
-            var html = "<div class='form-group' >";
+            var html = "<div class='row form-group' >";
+            html += ' <div class="col-md-12">'
+
             html += "<input type='hidden'  name='amountMoney'  value='" + n.amountMoney + "'>";
             html += "<input type='hidden'  name='total'  value='" + n.total + "'>";
             html += "<input type='hidden'  name='name'  value='" + n.name + "'>";
-            html += "<div class='x-valid'>";
+            html += "<div class='form-inline x-valid'>";
+
             html += "<div class='col-sm-5'>";
             html += n.name;
             html += "</div>";
-            html += "</div>";
 
-
-            html += "<div class='x-valid'>";
             html += "<label class='col-sm-1 control-label'>" + "比率" + "</label>";
             html += "<div class='col-sm-2'>";
             if (n.ratio) {
-                html += "<input type='text' required class='form-control x-percent' name='ratio' value='" + AssessCommon.pointToPercent(n.ratio) + "'>";
+                html += "<input type='text' required class='form-control input-full x-percent' name='ratio' value='" + AssessCommon.pointToPercent(n.ratio) + "'>";
             } else {
-                html += "<input type='text' required class='form-control x-percent' name='ratio' value=''>";
+                html += "<input type='text' required class='form-control input-full x-percent' name='ratio' value=''>";
             }
             html += "</div>";
-            html += "</div>";
 
+            html += "</div>";
             html += "</div>";
             $(".system").append(html);
         })
@@ -1685,7 +1860,7 @@
             if (n <= 1) {
                 incomePrice = (netProfit * (1 + g) / Math.pow((1 + Y), t)).toFixed(2);
             } else {
-                incomePrice=(netProfit*Math.pow((1+Y),-(t-n+1))*(1-Math.pow(((1+g)/(1+Y)),n))/(1-(1+g)/(1+Y))).toFixed(2);
+                incomePrice = (netProfit * Math.pow((1 + Y), -(t - n + 1)) * (1 - Math.pow(((1 + g) / (1 + Y)), n)) / (1 - (1 + g) / (1 + Y))).toFixed(2);
             }
 
             incomePriceTotal = incomePriceTotal + parseFloat(incomePrice);
@@ -1723,8 +1898,14 @@
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
-                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="priceInvestigation.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
-                    str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="priceInvestigation.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
+                    //str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="priceInvestigation.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
+                    str += '<a onclick="priceInvestigation.prototype.getAndInit(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn   btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
+                    str += '<i class="fa fa-pen"></i>';
+                    str += '</a>';
+                    str += '<a onclick="priceInvestigation.prototype.removeData(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn   btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
+                    str += '<i class="fa fa-minus"></i>';
+                    str += '</a>';
+                    //str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="priceInvestigation.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
                     str += '</div>';
                     return str;
                 }
@@ -1750,15 +1931,15 @@
                     data: {id: id},
                     success: function (result) {
                         if (result.ret) {
-                            toastr.success('删除成功');
+                            notifySuccess('删除成功');
                             priceInvestigation.prototype.loadDataList(incomeIndex.getInComeId());
                         }
                         else {
-                            Alert("保存数据失败，失败原因:" + result.errmsg);
+                            AlertError("保存数据失败，失败原因:" + result.errmsg);
                         }
                     },
                     error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result);
+                        AlertError("调用服务端方法失败，失败原因:" + result);
                     }
                 })
             });
@@ -1780,16 +1961,16 @@
                 data: data,
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success('保存成功');
+                        notifySuccess('保存成功');
                         $('#' + priceInvestigation.prototype.config().box).modal('hide');
                         priceInvestigation.prototype.loadDataList(incomeIndex.getInComeId());
                     }
                     else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -1807,7 +1988,7 @@
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         }

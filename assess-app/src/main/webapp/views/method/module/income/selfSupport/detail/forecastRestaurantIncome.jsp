@@ -11,16 +11,21 @@
 </div>
 <div class="x_content">
     <div class="form-horizontal">
-        <div class="form-group ">
-            <label class="col-sm-1 control-label">
-                范围
-            </label>
-            <div class="col-sm-2">
-                <select class="form-control" onchange="forecastRestaurant.loadHistoryList(0,$(this).val())">
-                    <option value="">全部</option>
-                    <option value="1">预测</option>
-                    <option value="0">非预测</option>
-                </select>
+        <div class="row form-group">
+            <div class="col-md-12">
+                <div class="form-inline x-valid">
+                    <label class="col-sm-1 control-label">
+                        范围
+                    </label>
+                    <div class="col-sm-2">
+                        <select class="form-control input-full"
+                                onchange="forecastRestaurant.loadHistoryList(0,$(this).val())">
+                            <option value="">全部</option>
+                            <option value="1">预测</option>
+                            <option value="0">非预测</option>
+                        </select>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -34,32 +39,31 @@
     <table class="table table-bordered" id="tb_forecast_restaurant_income_analyse_list">
     </table>
 </div>
-<div id="divBoxAnalyseItemData" class="modal fade bs-example-modal-lg" data-backdrop="static"
-     tabindex="-1"
+
+<div id="divBoxAnalyseItemData" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
+                <h4 class="modal-title">明细</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">明细</h3>
             </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                        <table class="table table-bordered" id="analyseItemList">
-                            <!-- cerare document add ajax data-->
-                        </table>
 
-                    </div>
-                </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <table class="table table-bordered" id="analyseItemList">
+                        <!-- cerare document add ajax data-->
+                    </table>
+                </form>
             </div>
             <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
                     关闭
                 </button>
             </div>
+
         </div>
     </div>
 </div>
@@ -147,9 +151,9 @@
         cols.push({field: 'amountMoney', title: '金额'});
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
-                if(row.amountMoney != null){
+                if (row.amountMoney != null) {
                     var str = '<div class="btn-margin">';
-                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="查看明细" onclick="forecastRestaurant.showItemData(' + row.id  + ')">查看明细</a>';
+                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="查看明细" onclick="forecastRestaurant.showItemData(' + row.id + ')"><i class="fa fa-search"></i></a>';
                     str += '</div>';
                     return str;
                 }
