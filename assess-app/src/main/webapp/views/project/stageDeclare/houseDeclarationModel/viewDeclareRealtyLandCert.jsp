@@ -317,8 +317,7 @@
                 <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
                     关闭
                 </button>
-                <%--<input type="button" class="btn btn-warning btn-sm" value="删除"--%>
-                       <%--onclick="">--%>
+
                 <button type="button" class="btn btn-primary btn-sm"
                         onclick="assessCommonLand.saveHouseData();">
                     保存
@@ -329,224 +328,234 @@
 </div>
 
 
-
 <!-- 建设工程规划许可证 -->
-<div id="declareBuildingPermitLandBox" class="modal fade bs-example-modal-lg" data-backdrop="static"
-     tabindex="-1"
+<div id="declareBuildingPermitLandBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg" style="width:1000px;">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
+                <h4 class="modal-title">建设工程规划许可证</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">建设工程规划许可证</h3>
             </div>
-            <form class="form-horizontal">
-                <input type="hidden" name="id">
-                <input type="hidden" name="centerId">
-                <div class="modal-body">
+            <div class="modal-body">
+                <form  class="form-horizontal">
+                    <input type="hidden" name="id">
+                    <input type="hidden" name="centerId">
                     <div class="row">
                         <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                            <div class="panel-body">
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                            附件<span class="symbol required"></span>
-                                        </label>
-                                        <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
-                                            <input id="declareBuildingPermitFileId3"
-                                                   name="declareBuildingPermitFileId3"
-                                                   required="required" placeholder="附件" class="form-control"
-                                                   type="file">
-                                            <div id="_declareBuildingPermitFileId3"></div>
+                            <div class="card-body">
+                                <div class="row form-group">
+                                    <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
+                                                附件
+                                            </label>
+                                            <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
+                                                <input id="declareBuildingPermitFileId3"
+                                                       name="declareBuildingPermitFileId3"
+                                                       required="required" placeholder="附件"
+                                                       class="form-control input-full"
+                                                       type="file">
+                                                <div id="_declareBuildingPermitFileId3"></div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </form>
+                </form>
+            </div>
+
             <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">
-                    取消
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
                 </button>
-                <button type="button" class="btn btn-warning" onclick="assessCommonLand.declareBuildingPermitRemove()">
+                <button type="button" class="btn btn-warning btn-sm" onclick="assessCommonLand.declareBuildingPermitRemove()">
                     删除
                 </button>
-                <button type="button" class="btn btn-primary"
-                        onclick="assessCommonLand.declareBuildingPermitSaveAndUpdate()">
+                <button type="button" class="btn btn-primary btn-sm"
+                        onclick="assessCommonLand.declareBuildingPermitSaveAndUpdate();">
                     保存
                 </button>
             </div>
         </div>
     </div>
 </div>
+
 
 <!-- 建设用地规划许可证 -->
-<div id="declareLandUsePermitLandBox" class="modal fade bs-example-modal-lg" data-backdrop="static"
-     tabindex="-1"
+<div id="declareLandUsePermitLandBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg" style="width:1000px;">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
+                <h4 class="modal-title">建设用地规划许可证</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">建设用地规划许可证</h3>
             </div>
-            <form class="form-horizontal">
-                <input type="hidden" name="id">
-                <input type="hidden" name="centerId">
-                <div class="modal-body">
+            <div class="modal-body">
+                <form  class="form-horizontal">
+                    <input type="hidden" name="id">
+                    <input type="hidden" name="centerId">
                     <div class="row">
                         <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                            <div class="panel-body">
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                            附件<span class="symbol required"></span>
-                                        </label>
-                                        <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
-                                            <input id="declareLandUsePermitFileId3"
-                                                   name="declareLandUsePermitFileId3"
-                                                   required="required" placeholder="附件" class="form-control"
-                                                   type="file">
-                                            <div id="_declareLandUsePermitFileId3"></div>
+                            <div class="card-body">
+                                <div class="row form-group">
+                                    <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
+                                                附件
+                                            </label>
+                                            <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
+                                                <input id="declareLandUsePermitFileId3"
+                                                       name="declareLandUsePermitFileId3"
+                                                       required="required" placeholder="附件"
+                                                       class="form-control input-full"
+                                                       type="file">
+                                                <div id="_declareLandUsePermitFileId3"></div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </form>
+                </form>
+            </div>
 
             <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">
-                    取消
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
                 </button>
-                <button type="button" class="btn btn-warning" onclick="assessCommonLand.declareLandUsePermitRemove()">
+                <button type="button" class="btn btn-warning btn-sm" onclick="assessCommonLand.declareLandUsePermitRemove()">
                     删除
                 </button>
-                <button type="button" class="btn btn-primary"
-                        onclick="assessCommonLand.declareLandUsePermitSaveAndUpdate()">
+                <button type="button" class="btn btn-primary btn-sm"
+                        onclick="assessCommonLand.declareLandUsePermitSaveAndUpdate();">
                     保存
                 </button>
             </div>
         </div>
     </div>
 </div>
+
 
 <!-- 建筑工程施工许可证 -->
-<div id="declareBuildingConstructionPermitLandBox" class="modal fade bs-example-modal-lg" data-backdrop="static"
-     tabindex="-1"
+<div id="declareBuildingConstructionPermitLandBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg" style="width:1000px;">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
+                <h4 class="modal-title">建筑工程施工许可证</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">建筑工程施工许可证</h3>
             </div>
-            <form class="form-horizontal">
-                <input type="hidden" name="id">
-                <input type="hidden" name="centerId">
-                <div class="modal-body">
+            <div class="modal-body">
+                <form  class="form-horizontal">
+                    <input type="hidden" name="id">
+                    <input type="hidden" name="centerId">
                     <div class="row">
                         <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                            <div class="panel-body">
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                            附件<span class="symbol required"></span>
-                                        </label>
-                                        <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
-                                            <input id="declareBuildingConstructionPermitFileId3"
-                                                   name="declareBuildingConstructionPermitFileId3"
-                                                   required="required" placeholder="附件" class="form-control"
-                                                   type="file">
-                                            <div id="_declareBuildingConstructionPermitFileId3"></div>
+                            <div class="card-body">
+                                <div class="row form-group">
+                                    <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
+                                                附件
+                                            </label>
+                                            <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
+                                                <input id="declareBuildingConstructionPermitFileId3"
+                                                       name="declareBuildingConstructionPermitFileId3"
+                                                       required="required" placeholder="附件"
+                                                       class="form-control input-full"
+                                                       type="file">
+                                                <div id="_declareBuildingConstructionPermitFileId3"></div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
-                </div>
-            </form>
+                </form>
+            </div>
 
             <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">
-                    取消
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
                 </button>
-                <button type="button" class="btn btn-warning"
-                        onclick="assessCommonLand.declareBuildingConstructionPermitRemove()">
+                <button type="button" class="btn btn-warning btn-sm" onclick="assessCommonLand.declareBuildingConstructionPermitRemove()">
                     删除
                 </button>
-                <button type="button" class="btn btn-primary"
-                        onclick="assessCommonLand.declareBuildingConstructionPermitSaveAndUpdate()">
+                <button type="button" class="btn btn-primary btn-sm"
+                        onclick="assessCommonLand.declareBuildingConstructionPermitSaveAndUpdate();">
                     保存
                 </button>
             </div>
         </div>
     </div>
 </div>
+
 
 <!-- 商品房预售许可证 -->
-<div id="declarePreSalePermitLandBox" class="modal fade bs-example-modal-lg" data-backdrop="static"
-     tabindex="-1"
+<div id="declarePreSalePermitLandBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg" style="width:1000px;">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
+                <h4 class="modal-title">商品房预售许可证</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">商品房预售许可证</h3>
             </div>
-            <form class="form-horizontal">
-                <input type="hidden" name="id">
-                <input type="hidden" name="centerId">
-                <div class="modal-body">
+            <div class="modal-body">
+                <form  class="form-horizontal">
+                    <input type="hidden" name="id">
+                    <input type="hidden" name="centerId">
                     <div class="row">
                         <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                            <div class="panel-body">
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                            附件<span class="symbol required"></span>
-                                        </label>
-                                        <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
-                                            <input id="declarePreSalePermitFileId3"
-                                                   name="declarePreSalePermitFileId3"
-                                                   required="required" placeholder="附件" class="form-control"
-                                                   type="file">
-                                            <div id="_declarePreSalePermitFileId3"></div>
+                            <div class="card-body">
+                                <div class="row form-group">
+                                    <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
+                                                附件
+                                            </label>
+                                            <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
+                                                <input id="declarePreSalePermitFileId3"
+                                                       name="declarePreSalePermitFileId3"
+                                                       required="required" placeholder="附件"
+                                                       class="form-control input-full"
+                                                       type="file">
+                                                <div id="_declarePreSalePermitFileId3"></div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </form>
+                </form>
+            </div>
 
             <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">
-                    取消
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
                 </button>
-                <button type="button" class="btn btn-warning" onclick="assessCommonLand.declarePreSalePermitRemove()">
+                <button type="button" class="btn btn-warning btn-sm" onclick="assessCommonLand.declarePreSalePermitRemove()">
                     删除
                 </button>
-                <button type="button" class="btn btn-primary"
-                        onclick="assessCommonLand.declarePreSalePermitSaveAndUpdate()">
+                <button type="button" class="btn btn-primary btn-sm"
+                        onclick="assessCommonLand.declarePreSalePermitSaveAndUpdate();">
                     保存
                 </button>
             </div>
         </div>
     </div>
 </div>
+

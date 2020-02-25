@@ -31,7 +31,7 @@ declareRealtyRealEstateCert.init = function (item) {
 
 declareRealtyRealEstateCert.showAddModel = function () {
     $('#' + declareRealtyRealEstateCert.config.box).find("#" + commonDeclareApplyModel.config.realEstateCert.handleId).remove();
-    $('#' + declareRealtyRealEstateCert.config.box).find(".panel-body").prepend(commonDeclareApplyModel.realEstateCert.getHtml());
+    $('#' + declareRealtyRealEstateCert.config.box).find(".card-body").prepend(commonDeclareApplyModel.realEstateCert.getHtml());
     declareCommon.showHtmlMastInit($("#" + declareRealtyRealEstateCert.config.frm), function (area) {
         declareRealtyRealEstateCert.init(area);
         $('#' + declareRealtyRealEstateCert.config.box).modal("show");
@@ -42,14 +42,16 @@ declareRealtyRealEstateCert.showAddModel = function () {
 declareRealtyRealEstateCert.editData = function () {
     var rows = $("#" + declareRealtyRealEstateCert.config.table).bootstrapTable('getSelections');
     if (!rows || rows.length <= 0) {
-        toastr.info("请选择要编辑的数据");
+        notifyWarning("警告", "请选择要编辑的数据!");
     } else if (rows.length == 1) {
         declareRealtyRealEstateCert.showAddModel();
         declareRealtyRealEstateCert.init(rows[0]);
         $('#' + declareRealtyRealEstateCert.config.box).modal("show");
         $("#" + declareRealtyRealEstateCert.config.frm).validate();
+        $("#" + declareRealtyRealEstateCert.config.table).bootstrapTable('uncheckAll');
     } else {
-        toastr.info("只能选择一行数据进行编辑");
+        notifyWarning("警告", "只能选择一行数据进行编辑!");
+
     }
 };
 //上传附件到服务端
@@ -76,7 +78,7 @@ declareRealtyRealEstateCert.enclosureFun = function () {
         success: function (result) {
             if (result.ret) {
                 declareCommon.getDeclareRealtyData(id, function (row) {
-                    toastr.success('成功 !');
+                    notifyInfo("成功", "操作成功!");
                     $("#" + declareRealtyRealEstateCert.config.table).bootstrapTable('updateByUniqueId', {
                         id: id,
                         row: row
@@ -86,7 +88,7 @@ declareRealtyRealEstateCert.enclosureFun = function () {
         },
         error: function (result, status, e) {
             Loading.progressHide();
-            Alert("调用服务端方法失败，失败原因:" + result);
+            AlertError("错误", "调用服务端方法失败，失败原因:" + result);
         }
     });
 };
@@ -119,12 +121,13 @@ declareRealtyRealEstateCert.inputFile = function () {
         success: function (result) {
             if (result.ret) {
                 declareRealtyRealEstateCert.loadList();
-                Alert(result.data);
+                AlertConfirm("导入消息", result.data, function () {
+                });
             }
         },
         error: function (result, status, e) {
             Loading.progressHide();
-            Alert("调用服务端方法失败，失败原因:" + result);
+            AlertError("错误", "调用服务端方法失败，失败原因:" + result);
         }
     });
 };
@@ -133,15 +136,25 @@ declareRealtyRealEstateCert.inputFile = function () {
 declareRealtyRealEstateCert.loadList = function () {
     var cols = declareCommon.getRealEstateColumn();
     cols.push({field: 'fileViewName', title: '不动产附件'});
+
+
     cols.push({
-        field: 'id', title: '操作', formatter: function (value, row, index) {
-            var str = '<div class="btn-margin">';
-            str += '<a class="btn btn-xs btn-success" href="javascript:declareRealtyRealEstateCert.showAddModelDeclareEconomicIndicators(' + row.id + ');" ><i class="fa fa-themeisle">经济指标</i></a>';
-            str += "<a class='btn btn-xs btn-success tooltips' data-placement='top' data-original-title='不动产附件' onclick='declareRealtyRealEstateCert.enclosure(" + row.id + ")'" + ">" + "<i class='fa'>" + "不动产附件" + "</a>";
-            str += '</div>';
+        field: 'id', title: '操作', width: "20%", formatter: function (value, row, index) {
+            var str = "";
+
+            str += '<button type="button" onclick="declareRealtyRealEstateCert.showAddModelDeclareEconomicIndicators(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-success  btn-xs tooltips"  data-placement="bottom" data-original-title="经济指标">';
+            str += '经济指标 <i class="fa fa-adjust"></i>';
+            str += '</button>';
+
+            str += '<button type="button" onclick="declareRealtyRealEstateCert.enclosure(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn  btn-success  btn-xs tooltips"  data-placement="bottom" data-original-title="不动产附件">';
+            str += '不动产附件 <i class="fa fa-file"></i>';
+            str += '</button>';
+
+
             return str;
         }
     });
+
     cols.push({
         field: 'creator', title: '许可证信息', formatter: function (value, row, index) {
             var str = '<div class="dropdown">';
@@ -172,7 +185,7 @@ declareRealtyRealEstateCert.loadList = function () {
         onLoadSuccess: function () {
             $('.tooltips').tooltip();
         }
-    }, true,false);
+    }, true, false);
 };
 
 declareRealtyRealEstateCert.deleteData = function () {
@@ -193,43 +206,42 @@ declareRealtyRealEstateCert.deleteData = function () {
             }
         });
         if (bisRecord != 0) {
-            toastr.info("其中包括了已经参与查勘任务的权证,请重新选择");
+            notifyWarning("警告", "其中包括了已经参与查勘任务的权证,请重新选择!");
             $("#" + declareRealtyRealEstateCert.config.table).bootstrapTable('uncheckAll');
             return false;
         }
-        Alert("是否删除", 2, null,
-            function () {
-                declareCommon.deleteDeclareRealtyData(arr.join(","), function () {
-                    declareRealtyRealEstateCert.loadList();
-                    toastr.success('成功!');
-                });
-            }
-        );
+
+        AlertConfirm("是否删除", "", function () {
+            declareCommon.deleteDeclareRealtyData(arr.join(","), function () {
+                declareRealtyRealEstateCert.loadList();
+                notifySuccess("成功", "删除数据成功!");
+            });
+        });
     } else {
-        Alert("至少选择一个");
+        notifyWarning("警告", "至少选择一个!");
     }
 };
 
 declareRealtyRealEstateCert.copyData = function () {
     var rows = $("#" + declareRealtyRealEstateCert.config.table).bootstrapTable('getSelections');
     if (!rows || rows.length <= 0) {
-        toastr.info("请选择要复制的数据");
+        notifyInfo("没有勾选", "请选择要复制的数据!");
     } else if (rows.length == 1) {
-        Alert("确认要复制？", 2, null, function () {
+        AlertConfirm("是否确认要复制", "", function () {
             $(declareRealtyRealEstateCert.config.handleCopy).find("input[name='name']").val(rows[0].certName);
             $(declareRealtyRealEstateCert.config.handleCopy).find("input[name='id']").val(rows[0].centerId);
-            toastr.info("复制从数据成功!");
+            notifySuccess("成功", "复制从数据成功!");
             $("#" + declareRealtyRealEstateCert.config.table).bootstrapTable('uncheckAll');
         });
     } else {
-        toastr.info("只能选择一行数据进行复制");
+        notifyWarning("警告", "只能选择一行数据进行复制!");
     }
 };
 
 declareRealtyRealEstateCert.pasteAll = function () {
     var rows = $("#" + declareRealtyRealEstateCert.config.table).bootstrapTable('getSelections');
     if (!rows || rows.length <= 0) {
-        toastr.info("请选择要复制的数据");
+        notifyWarning("警告", "请选择要复制的数据!");
     } else if (rows.length >= 1) {
         var copyId = $(declareRealtyRealEstateCert.config.handleCopy).find("input[name='id']").val();
         var idArray = [];
@@ -242,20 +254,21 @@ declareRealtyRealEstateCert.pasteAll = function () {
         });
         //判断
         if (filtered.length == 1) {
-            toastr.info("需要粘贴的从数据包含了自身,这样情况是不被允许的");
+            notifyWarning("警告", "需要粘贴的从数据包含了自身,这样情况是不被允许的!");
             $("#" + declareRealtyRealEstateCert.config.table).bootstrapTable('uncheckAll');
             return false;
         }
-        Alert("确认要粘贴？", 2, null, function () {
+
+        AlertConfirm("确认要粘贴", "", function () {
             declareCommon.copyDeclareBuildCenter(copyId, idArray.join(","), function () {
-                toastr.info("粘贴从数据成功!");
+                notifySuccess("成功", "粘贴从数据成功!");
                 $("#" + declareRealtyRealEstateCert.config.table).bootstrapTable('uncheckAll');
                 $(declareRealtyRealEstateCert.config.handleCopy).find("input").val('');
                 declareRealtyRealEstateCert.loadList();
             });
         });
     } else {
-        toastr.info("只能选择一行数据进行复制");
+        notifyWarning("警告", "只能选择一行数据进行复制!");
     }
 };
 
@@ -263,25 +276,25 @@ declareRealtyRealEstateCert.pasteAll = function () {
 declareRealtyRealEstateCert.declareBuildingPermitView = function (id) {
     var item = $("#" + declareRealtyRealEstateCert.config.table).bootstrapTable('getRowByUniqueId', id);
     if (!declareCommon.isNotBlank(item.centerId)) {
-        toastr.success('不合符调整后的数据约定,请联系管理员!');
+        notifyWarning("警告", "不合符调整后的数据约定,请联系管理员!");
         return false;
     }
     var box = $("#declareBuildingPermitRealtyRealBox");
     var frm = box.find("form");
     box.find("#" + commonDeclareApplyModel.config.buildingPermit.handleId).remove();
-    box.find(".panel-body").append(commonDeclareApplyModel.buildingPermit.getHtml());
-    var arr = ["declareBuildingPermitFileId2"] ;
-    var inputArr = ["date"] ;
+    box.find(".card-body").append(commonDeclareApplyModel.buildingPermit.getHtml());
+    var arr = ["declareBuildingPermitFileId2"];
+    var inputArr = ["date"];
     declareCommon.showHtmlMastInit(frm, function (area) {
         box.modal("show");
         declareCommon.getDeclareBuildCenter(item.centerId, function (centerData) {
             if (centerData.buildingPermitId) {
                 declareCommon.getDeclareBuildingPermitById(centerData.buildingPermitId, function (data) {
                     data.centerId = centerData.id;
-                    declareCommon.initFormData(frm, data, arr, false, AssessDBKey.DeclareBuildingPermit,inputArr);
+                    declareCommon.initFormData(frm, data, arr, false, AssessDBKey.DeclareBuildingPermit, inputArr);
                 });
             } else {
-                declareCommon.initFormData(frm, {centerId: centerData.id}, arr, false, AssessDBKey.DeclareBuildingPermit,inputArr);
+                declareCommon.initFormData(frm, {centerId: centerData.id}, arr, false, AssessDBKey.DeclareBuildingPermit, inputArr);
             }
         });
     });
@@ -298,6 +311,7 @@ declareRealtyRealEstateCert.declareBuildingPermitSaveAndUpdate = function () {
     declareCommon.saveDeclareBuildingPermit(data, true, function (item) {
         declareCommon.declareBuildCenterSaveAndUpdate({buildingPermitId: item.id, id: data.centerId}, function () {
             box.modal("hide");
+            notifySuccess("成功", "保存成功!");
         });
     });
 };
@@ -311,10 +325,10 @@ declareRealtyRealEstateCert.declareBuildingPermitRemove = function () {
             if (declareCommon.isNotBlank(centerData.buildingPermitId)) {
                 declareCommon.deleteByDeclareBuildCenterType(data.centerId, declareCommon.declareCenterData.buildingPermitId.type, function () {
                     box.modal("hide");
-                    toastr.success('已经删除!');
+                    notifyInfo("成功", "删除成功!");
                 });
             } else {
-                toastr.success('未添加数据!');
+                notifyWarning("警告", "未添加数据!");
             }
         });
     }
@@ -324,25 +338,25 @@ declareRealtyRealEstateCert.declareBuildingPermitRemove = function () {
 declareRealtyRealEstateCert.declareLandUsePermitView = function (id) {
     var item = $("#" + declareRealtyRealEstateCert.config.table).bootstrapTable('getRowByUniqueId', id);
     if (!declareCommon.isNotBlank(item.centerId)) {
-        toastr.success('不合符调整后的数据约定,请联系管理员!');
+        notifyWarning("警告", "不合符调整后的数据约定,请联系管理员!");
         return false;
     }
     var box = $("#declareLandUsePermitRealtyRealBox");
     var frm = box.find("form");
     box.find("#" + commonDeclareApplyModel.config.landUsePermit.handleId).remove();
-    box.find(".panel-body").append(commonDeclareApplyModel.landUsePermit.getHtml());
-    var arr = ["declareLandUsePermitFileId2"] ;
-    var inputArr = ["date"] ;
+    box.find(".card-body").append(commonDeclareApplyModel.landUsePermit.getHtml());
+    var arr = ["declareLandUsePermitFileId2"];
+    var inputArr = ["date"];
     declareCommon.showHtmlMastInit(frm, function (area) {
         box.modal("show");
         declareCommon.getDeclareBuildCenter(item.centerId, function (centerData) {
             if (centerData.landUsePermitId) {
                 declareCommon.getDeclareLandUsePermitById(centerData.landUsePermitId, function (data) {
                     data.centerId = centerData.id;
-                    declareCommon.initFormData(frm, data, arr, false, AssessDBKey.DeclareLandUsePermit,inputArr);
+                    declareCommon.initFormData(frm, data, arr, false, AssessDBKey.DeclareLandUsePermit, inputArr);
                 });
             } else {
-                declareCommon.initFormData(frm, {centerId: centerData.id}, arr, false, AssessDBKey.DeclareLandUsePermit,inputArr);
+                declareCommon.initFormData(frm, {centerId: centerData.id}, arr, false, AssessDBKey.DeclareLandUsePermit, inputArr);
             }
         });
     });
@@ -359,6 +373,7 @@ declareRealtyRealEstateCert.declareLandUsePermitSaveAndUpdate = function () {
     declareCommon.saveDeclareLandUsePermit(data, true, function (item) {
         declareCommon.declareBuildCenterSaveAndUpdate({landUsePermitId: item.id, id: data.centerId}, function () {
             box.modal("hide");
+            notifySuccess("成功", "保存成功!");
         });
     });
 };
@@ -372,10 +387,10 @@ declareRealtyRealEstateCert.declareLandUsePermitRemove = function () {
             if (declareCommon.isNotBlank(centerData.landUsePermitId)) {
                 declareCommon.deleteByDeclareBuildCenterType(data.centerId, declareCommon.declareCenterData.landUsePermitId.type, function () {
                     box.modal("hide");
-                    toastr.success('已经删除!');
+                    notifyInfo("成功", "删除成功!");
                 });
             } else {
-                toastr.success('未添加数据!');
+                notifyWarning("警告", "未添加数据!");
             }
         });
     }
@@ -385,25 +400,25 @@ declareRealtyRealEstateCert.declareLandUsePermitRemove = function () {
 declareRealtyRealEstateCert.declareBuildingConstructionPermitView = function (id) {
     var item = $("#" + declareRealtyRealEstateCert.config.table).bootstrapTable('getRowByUniqueId', id);
     if (!declareCommon.isNotBlank(item.centerId)) {
-        toastr.success('不合符调整后的数据约定,请联系管理员!');
+        notifyWarning("警告", "不合符调整后的数据约定,请联系管理员!");
         return false;
     }
     var arr = ["declareBuildingConstructionPermitFileId2"];
-    var inputArr = ["date","contractPeriod"] ;
+    var inputArr = ["date", "contractPeriod"];
     var box = $("#declareBuildingConstructionPermitRealtyRealBox");
     var frm = box.find("form");
     box.find("#" + commonDeclareApplyModel.config.buildingConstructionPermit.handleId).remove();
-    box.find(".panel-body").append(commonDeclareApplyModel.buildingConstructionPermit.getHtml());
+    box.find(".card-body").append(commonDeclareApplyModel.buildingConstructionPermit.getHtml());
     declareCommon.showHtmlMastInit(frm, function (area) {
         box.modal("show");
         declareCommon.getDeclareBuildCenter(item.centerId, function (centerData) {
             if (centerData.buildingConstructionPermitId) {
                 declareCommon.getDeclareBuildingConstructionPermitById(centerData.buildingConstructionPermitId, function (data) {
                     data.centerId = centerData.id;
-                    declareCommon.initFormData(frm, data, arr, false, AssessDBKey.DeclareBuildingConstructionPermit,inputArr);
+                    declareCommon.initFormData(frm, data, arr, false, AssessDBKey.DeclareBuildingConstructionPermit, inputArr);
                 });
             } else {
-                declareCommon.initFormData(frm, {centerId: centerData.id}, arr, false, AssessDBKey.DeclareBuildingConstructionPermit,inputArr);
+                declareCommon.initFormData(frm, {centerId: centerData.id}, arr, false, AssessDBKey.DeclareBuildingConstructionPermit, inputArr);
             }
         });
     });
@@ -418,14 +433,15 @@ declareRealtyRealEstateCert.declareBuildingConstructionPermitRemove = function (
             if (declareCommon.isNotBlank(centerData.buildingConstructionPermitId)) {
                 declareCommon.deleteByDeclareBuildCenterType(data.centerId, declareCommon.declareCenterData.buildingConstructionPermitId.type, function () {
                     box.modal("hide");
-                    toastr.success('已经删除!');
+                    notifyInfo("成功", "删除成功!");
                 });
             } else {
-                toastr.success('未添加数据!');
+                notifyWarning("警告", "未添加数据!");
             }
         });
     }
 };
+
 //建筑工程施工许可证
 declareRealtyRealEstateCert.declareBuildingConstructionPermitSaveAndUpdate = function () {
     var box = $("#declareBuildingConstructionPermitRealtyRealBox");
@@ -436,34 +452,40 @@ declareRealtyRealEstateCert.declareBuildingConstructionPermitSaveAndUpdate = fun
     var data = formSerializeArray(frm);
     data.planDetailsId = declareCommon.getPlanDetailsId();
     declareCommon.saveDeclareBuildingConstructionPermit(data, true, function (item) {
-        declareCommon.declareBuildCenterSaveAndUpdate({buildingConstructionPermitId: item.id, id: data.centerId}, function () {
+        declareCommon.declareBuildCenterSaveAndUpdate({
+            buildingConstructionPermitId: item.id,
+            id: data.centerId
+        }, function () {
             box.modal("hide");
+            notifySuccess("成功", "保存成功!");
         });
     });
 };
+
 //商品房预售许可证
 declareRealtyRealEstateCert.declarePreSalePermitView = function (id) {
     var item = $("#" + declareRealtyRealEstateCert.config.table).bootstrapTable('getRowByUniqueId', id);
     if (!declareCommon.isNotBlank(item.centerId)) {
-        toastr.success('不合符调整后的数据约定,请联系管理员!');
+        notifyWarning("警告", "不合符调整后的数据约定,请联系管理员!");
+
         return false;
     }
     var arr = ["declarePreSalePermitFileId2"];
-    var inputArr = ["date"] ;
+    var inputArr = ["date"];
     var box = $("#declarePreSalePermitRealtyRealBox");
     var frm = box.find("form");
     box.find("#" + commonDeclareApplyModel.config.preSalePermit.handleId).remove();
-    box.find(".panel-body").append(commonDeclareApplyModel.preSalePermit.getHtml());
+    box.find(".card-body").append(commonDeclareApplyModel.preSalePermit.getHtml());
     declareCommon.showHtmlMastInit(frm, function (area) {
         box.modal("show");
         declareCommon.getDeclareBuildCenter(item.centerId, function (centerData) {
             if (centerData.preSalePermitId) {
                 declareCommon.getDeclarePreSalePermitById(centerData.preSalePermitId, function (data) {
                     data.centerId = centerData.id;
-                    declareCommon.initFormData(frm, data, arr, false, AssessDBKey.DeclarePreSalePermit,inputArr);
+                    declareCommon.initFormData(frm, data, arr, false, AssessDBKey.DeclarePreSalePermit, inputArr);
                 });
             } else {
-                declareCommon.initFormData(frm, {centerId: centerData.id}, arr, false, AssessDBKey.DeclarePreSalePermit,inputArr);
+                declareCommon.initFormData(frm, {centerId: centerData.id}, arr, false, AssessDBKey.DeclarePreSalePermit, inputArr);
             }
         });
     });
@@ -478,10 +500,10 @@ declareRealtyRealEstateCert.declarePreSalePermitRemove = function () {
             if (declareCommon.isNotBlank(centerData.preSalePermitId)) {
                 declareCommon.deleteByDeclareBuildCenterType(data.centerId, declareCommon.declareCenterData.preSalePermitId.type, function () {
                     box.modal("hide");
-                    toastr.success('已经删除!');
+                    notifyInfo("成功", "删除成功!");
                 });
             } else {
-                toastr.success('未添加数据!');
+                notifyWarning("警告", "未添加数据!");
             }
         });
     }
@@ -498,6 +520,7 @@ declareRealtyRealEstateCert.declarePreSalePermitSaveAndUpdate = function () {
     declareCommon.saveDeclarePreSalePermit(data, true, function (item) {
         declareCommon.declareBuildCenterSaveAndUpdate({preSalePermitId: item.id, id: data.centerId}, function () {
             box.modal("hide");
+            notifySuccess("成功", "保存成功!");
         });
     });
 };
@@ -506,7 +529,7 @@ declareRealtyRealEstateCert.declarePreSalePermitSaveAndUpdate = function () {
 declareRealtyRealEstateCert.showAddModelDeclareEconomicIndicators = function (id) {
     var item = $("#" + declareRealtyRealEstateCert.config.table).bootstrapTable('getRowByUniqueId', id);
     if (!declareCommon.isNotBlank(item.centerId)) {
-        toastr.success('不合符调整后的数据约定,请联系管理员!');
+        notifyWarning("警告", "不合符调整后的数据约定,请联系管理员!");
         return false;
     }
     var showDelHtml = "";
@@ -544,12 +567,15 @@ declareRealtyRealEstateCert.deleteDeclareEconomicIndicatorsCenter = function (fr
             if (declareCommon.isNotBlank(centerData.indicatorId)) {//关联情况
                 declareCommon.deleteByDeclareBuildCenterType(data.centerId, declareCommon.declareCenterData.indicatorId.type, function () {
                     $('#' + box).modal("hide");
-                    toastr.success('已经删除!');
+                    notifyInfo("成功", "删除成功!");
+
+
                     economicIndicators.autoSummary(true);
                     declareRealtyRealEstateCert.loadList();
                 });
             } else {
-                toastr.success('未添加数据!');
+                notifyWarning("警告", "未添加数据!");
+
             }
         });
     }
@@ -597,7 +623,8 @@ declareRealtyRealEstateCert.saveAndUpdateData = function () {
                 declareRealtyRealEstateCert.loadList();
             });
         }
-        toastr.success('成功!');
+        notifySuccess("成功", "保存操作成功!");
+
         $('#' + declareRealtyRealEstateCert.config.box).modal("hide");
         declareRealtyRealEstateCert.loadList();
     });
@@ -611,15 +638,15 @@ declareRealtyRealEstateCert.attachmentAutomatedWarrants = function (_this) {
     var endNumber = group.find("[name='endNumber']").val();
     var step = group.find("[name='step']").val();
     if (!$.isNumeric(startNumber)) {
-        toastr.warning('启始编号非数字请重新填写');
+        notifyWarning("警告", "启始编号非数字请重新填写!");
         return false;
     }
     if (!$.isNumeric(endNumber)) {
-        toastr.warning('截至编号非数字请重新填写');
+        notifyWarning("警告", "截至编号非数字请重新填写!");
         return false;
     }
     if (!$.isNumeric(step)) {
-        toastr.warning('步长非数字请重新填写');
+        notifyWarning("警告", "步长非数字请重新填写!");
         return false;
     }
     var data = {
@@ -632,7 +659,7 @@ declareRealtyRealEstateCert.attachmentAutomatedWarrants = function (_this) {
         planDetailsId: declareCommon.getPlanDetailsId()
     };
     if (startNumber > endNumber) {
-        toastr.error('截至编号 必须大于 启始编号');
+        notifyWarning("警告", "截至编号 必须大于 启始编号!");
         return false;
     }
     var query = {
@@ -642,7 +669,7 @@ declareRealtyRealEstateCert.attachmentAutomatedWarrants = function (_this) {
     };
     AssessCommon.getSysAttachmentDtoList(query, function (array) {
         if (!array) {
-            toastr.warning('请上传pdf或者word');
+            notifyWarning("警告", "请上传pdf或者word 附件!");
             return false;
         }
         if (array.length == 1) {
@@ -655,13 +682,13 @@ declareRealtyRealEstateCert.attachmentAutomatedWarrants = function (_this) {
                     declareCommon.showFile(FileId, tableName, id, true);
                 }(query.tableId, query.fieldsName, query.tableName));
                 declareRealtyRealEstateCert.loadList();
-                toastr.success('成功 !');
+                notifyInfo("成功", "操作成功!");
             }, function (message) {
                 Loading.progressHide();
-                toastr.error(message);
+                AlertError("错误", "调用服务端方法失败，失败原因:" + message);
             });
         } else {
-            toastr.info('请上传pdf或者word一个');
+            notifyWarning("警告", "请上传pdf或者word一个!");
             return false;
         }
     });
@@ -671,7 +698,6 @@ $(function () {
 
 
     declareRealtyRealEstateCert.loadList();
-
 
 
     //pdf 附件
