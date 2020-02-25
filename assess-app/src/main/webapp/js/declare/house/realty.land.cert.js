@@ -253,16 +253,16 @@ assessCommonLand.loadList = function () {
 
     cols.push({
         field: 'id', title: '操作', width:"20%",formatter: function (value, row, index) {
-            var str = '<button onclick="assessCommonLand.showAddModelHouse(' + row.id + ')" style="margin-left: 5px;" class="btn  btn-success  btn-xs tooltips"  data-placement="bottom" data-original-title="关联的房产证">';
+            var str = '<button type="button" onclick="assessCommonLand.showAddModelHouse(' + row.id + ')" style="margin-left: 5px;" class="btn  btn-success  btn-xs tooltips"  data-placement="bottom" data-original-title="关联的房产证">';
             str += '关联的房产证 <i class="fa fa-eye"></i>';
             str += '</button>';
 
-            str += '<button onclick="assessCommonLand.landImportHandleHouse(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn  btn-success  btn-xs tooltips"  data-placement="bottom" data-original-title="房产证附件">';
+            str += '<button type="button" onclick="assessCommonLand.landImportHandleHouse(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn  btn-success  btn-xs tooltips"  data-placement="bottom" data-original-title="房产证附件">';
             str += '房产证附件 <i class="fa fa-file"></i>';
             str += '</button>';
 
 
-            str += '<button onclick="assessCommonLand.landImportEvent(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn  btn-success  btn-xs tooltips"  data-placement="bottom" data-original-title="土地证附件">';
+            str += '<button type="button" onclick="assessCommonLand.landImportEvent(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn  btn-success  btn-xs tooltips"  data-placement="bottom" data-original-title="土地证附件">';
             str += '土地证附件 <i class="fa fa-file"></i>';
             str += '</button>';
 

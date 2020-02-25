@@ -142,11 +142,11 @@ declareRealtyRealEstateCert.loadList = function () {
         field: 'id', title: '操作', width: "20%", formatter: function (value, row, index) {
             var str = "";
 
-            str += '<button onclick="declareRealtyRealEstateCert.showAddModelDeclareEconomicIndicators(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-success  btn-xs tooltips"  data-placement="bottom" data-original-title="经济指标">';
+            str += '<button type="button" onclick="declareRealtyRealEstateCert.showAddModelDeclareEconomicIndicators(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-success  btn-xs tooltips"  data-placement="bottom" data-original-title="经济指标">';
             str += '经济指标 <i class="fa fa-adjust"></i>';
             str += '</button>';
 
-            str += '<button onclick="declareRealtyRealEstateCert.enclosure(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn  btn-success  btn-xs tooltips"  data-placement="bottom" data-original-title="不动产附件">';
+            str += '<button type="button" onclick="declareRealtyRealEstateCert.enclosure(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn  btn-success  btn-xs tooltips"  data-placement="bottom" data-original-title="不动产附件">';
             str += '不动产附件 <i class="fa fa-file"></i>';
             str += '</button>';
 
