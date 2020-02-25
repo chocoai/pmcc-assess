@@ -498,12 +498,12 @@
                                 <div class="col-sm-3">
                                     <label class="form-control input-full">${projectInfo.unitInformationVo.businessType}</label>
                                 </div>
-                            </div>
-                            <label class="col-sm-1 col-form-label">
-                                评估类型
-                            </label>
-                            <div class="col-sm-3">
-                                <label class="form-control input-full">${projectInfo.unitInformationVo.assessType}</label>
+                                <label class="col-sm-1 col-form-label">
+                                    评估类型
+                                </label>
+                                <div class="col-sm-3">
+                                    <label class="form-control input-full">${projectInfo.unitInformationVo.assessType}</label>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -511,12 +511,10 @@
             </form>
             <div class="x_title">
                 <h3>联系人
-                    <small>
-                        <button type="button" class="btn btn-xs btn-primary docs-tooltip btn-sm"
-                                onclick="showModelCrmContacts()">
-                            <i class="fa fa-search"></i>查询更多
-                        </button>
-                    </small>
+                    <button type="button" class="btn btn-xs btn-info btn-sm"
+                            onclick="showModelCrmContacts()">
+                        <i class="fa fa-search"></i>查询更多
+                    </button>
                 </h3>
             </div>
             <table class="table table-bordered" id="UNIT_INFORMATION_TableList">

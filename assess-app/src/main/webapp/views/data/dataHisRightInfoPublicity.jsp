@@ -28,13 +28,6 @@
                             <div class="card-body">
                                 <form id="frmQuery" class="form-horizontal">
                                     <div class="form-group form-inline">
-                                        <%--<button style="margin-left: 10px" class="btn btn-info  btn-sm" type="button"--%>
-                                                <%--onclick="dataHisRightInfoPublicity.prototype.loadDataDicList()">--%>
-											<%--<span class="btn-label">--%>
-												<%--<i class="fa fa-search"></i>--%>
-											<%--</span>--%>
-                                            <%--查询--%>
-                                        <%--</button>--%>
                                         <button style="margin-left: 5px" class="btn btn-success btn-sm" type="button"
                                                 data-toggle="modal" onclick="dataHisRightInfoPublicity.prototype.showModel()"
                                                 href="#divBoxFather">
@@ -44,8 +37,6 @@
                                             新增
                                         </button>
                                     </div>
-
-
                                 </form>
                                 <table class="table table-bordered" id="tb_FatherList">
                                     <!-- cerare document add ajax data-->
@@ -224,7 +215,6 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
             </div>
-
             <div class="modal-body">
                 <form id="frmFather" class="form-horizontal">
                     <input type="hidden" id="id" name="id">
@@ -286,6 +276,7 @@
                             </div>
                         </div>
                     </div>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -296,7 +287,6 @@
                     保存
                 </button>
             </div>
-
         </div>
     </div>
 </div>

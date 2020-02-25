@@ -26,20 +26,20 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <form id="frmQuery" class="form-horizontal">
-                                    <div class="form-group form-inline">
-                                        <button style="margin-left: 5px" class="btn btn-success btn-sm" type="button"
-                                                data-toggle="modal" onclick="dataContractCalculateTool.prototype.showModel()"
-                                                href="#divBoxFather">
+                                <c:if test="${readonly ne true}">
+                                    <form id="frmQuery" class="form-horizontal">
+                                        <div class="form-group form-inline">
+                                            <button style="margin-left: 5px" class="btn btn-success btn-sm" type="button"
+                                                    data-toggle="modal" onclick="dataContractCalculateTool.prototype.showModel()"
+                                                    href="#divBoxFather">
 											<span class="btn-label">
 												<i class="fa fa-plus"></i>
 											</span>
-                                            新增
-                                        </button>
-                                    </div>
-
-
-                                </form>
+                                                新增
+                                            </button>
+                                        </div>
+                                    </form>
+                                </c:if>
                                 <table class="table table-bordered" id="tb_FatherList">
                                     <!-- cerare document add ajax data-->
                                 </table>
@@ -241,9 +241,9 @@
                                     </div>
                                 </div>
                                 <div class="row form-group">
-                                    <div class="col-md-11">
+                                    <div class="col-md-12">
                                         <div class="form-inline x-valid">
-                                            <label class="col-sm-2 col-form-label">
+                                            <label class="col-sm-1 col-form-label">
                                                 附件
                                             </label>
                                             <div class="col-sm-10">

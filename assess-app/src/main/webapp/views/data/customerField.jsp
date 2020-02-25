@@ -17,7 +17,6 @@
             </div>
             <div class="page-inner mt--5">
                 <div class="row mt--2">
-
                     <div class="col-md-12">
                         <div class="card full-height">
                             <div class="card-header">
@@ -34,7 +33,6 @@
                                                    placeholder="客户名称" id="queryName" name="queryName"
                                                    class="form-control input-full">
                                         </div>
-
                                         <button style="margin-left: 10px" class="btn btn-info  btn-sm" type="button"
                                                 onclick="loadCustomerFieldList()">
 											<span class="btn-label">
@@ -51,8 +49,6 @@
                                             新增
                                         </button>
                                     </div>
-
-
                                 </form>
                                 <table class="table table-bordered" id="tbList">
                                     <!-- cerare document add ajax data-->
@@ -60,18 +56,13 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
         <%@include file="/views/share/main_footer.jsp" %>
     </div>
-
 </div>
-
 </body>
-
-
 <!-- start: org modal -->
 <div id="modalCustomerField" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
@@ -82,7 +73,6 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
             </div>
-
             <div class="modal-body">
                 <form id='frm' class='form-horizontal'>
                     <input type='hidden' id='id' name='id' value="0">
@@ -94,9 +84,6 @@
                                         <label class="col-sm-2 control-label">
                                             客户名称<span class="symbol required"></span>
                                         </label>
-                                        <%--<div class="col-md-10 col-sm-10 col-xs-12 input-group">
-                                            <input name='customerName' required class='form-control' required>
-                                        </div>--%>
                                         <div class="col-md-10 col-sm-10 col-xs-12 input-group">
                                             <div class="input-group">
                                                 <input type="hidden" name="customerId">
@@ -104,13 +91,13 @@
                                                        placeholder="单位" class="form-control" name="customerName"
                                                        onclick="selectCustomer(this)">
                                                 <span class="input-group-btn">
-                                <button type="button" class="btn btn-default docs-tooltip"
-                                        data-toggle="tooltip"
-                                        data-original-title="选择"
-                                        onclick="selectCustomer(this)">
-                                <i class="fa fa-search"></i>
-                                </button>
-                            </span>
+                                                    <button type="button" class="btn btn-info docs-tooltip"
+                                                                    data-toggle="tooltip"
+                                                                    data-original-title="选择"
+                                                                    onclick="selectCustomer(this)">
+                                                         <i class="fa fa-search"></i>
+                                                    </button>
+                                                </span>
                                             </div>
                                         </div>
                                     </div>

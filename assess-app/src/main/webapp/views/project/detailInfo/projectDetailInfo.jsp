@@ -111,7 +111,7 @@
                                                 </div>
                                                 <div class="input-group-append">
                                                     <button class="btn btn-info btn-sm" type="button"
-                                                            onclick="projectDetails.projectSubsequent()">
+                                                            onclick="projectDetails.projectTakeNumber()">
                                                         项目拿号
                                                     </button>
                                                 </div>

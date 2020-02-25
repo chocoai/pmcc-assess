@@ -18,9 +18,7 @@
             </div>
             <div class="page-inner mt--5">
                 <div class="row mt--2">
-
                     <div class="col-md-12">
-                        <%@include file="/views/share/navigation/systemSetup.jsp" %>
                         <div class="card full-height">
                             <div class="card-header">
                                 <div class="card-head-row">
@@ -28,42 +26,49 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <form id="frmQuery" class="form-horizontal">
-                                    <div class="form-group form-inline">
-                                        <label class="col-md-1 col-form-label">名称</label>
-                                        <div class="col-md-3 p-0">
-                                            <input type="text" data-rule-maxlength="50"
-                                                   placeholder="名称" id="queryName" name="queryName"
-                                                   class="form-control input-full">
-                                        </div>
-                                        <label class="col-md-1 col-form-label">备注</label>
-                                        <div class="col-md-3 p-0">
-                                            <input type="text" data-rule-maxlength="50"
-                                                   placeholder="备注" id="queryRemark" name="queryRemark"
-                                                   class="form-control input-full">
-                                        </div>
-                                        <button style="margin-left: 10px" class="btn btn-info  btn-sm" type="button"
-                                                onclick="loadDataList()">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <%@include file="/views/share/navigation/systemSetup.jsp" %>
+                                    </div>
+                                    <div class="col-md-10">
+                                        <form id="frmQuery" class="form-horizontal">
+                                            <div class="form-group form-inline">
+                                                <label class="col-md-1 col-form-label">名称</label>
+                                                <div class="col-md-3 p-0">
+                                                    <input type="text" data-rule-maxlength="50"
+                                                           placeholder="名称" id="queryName" name="queryName"
+                                                           class="form-control input-full">
+                                                </div>
+                                                <label class="col-md-1 col-form-label">备注</label>
+                                                <div class="col-md-3 p-0">
+                                                    <input type="text" data-rule-maxlength="50"
+                                                           placeholder="备注" id="queryRemark" name="queryRemark"
+                                                           class="form-control input-full">
+                                                </div>
+                                                <button style="margin-left: 10px" class="btn btn-info  btn-sm" type="button"
+                                                        onclick="loadDataList()">
 											<span class="btn-label">
 												<i class="fa fa-search"></i>
 											</span>
-                                            查询
-                                        </button>
-                                        <button style="margin-left: 5px" class="btn btn-success btn-sm" type="button"
-                                                data-toggle="modal" onclick="addData()"
-                                                href="#divBox">
+                                                    查询
+                                                </button>
+                                                <button style="margin-left: 5px" class="btn btn-success btn-sm" type="button"
+                                                        data-toggle="modal" onclick="addData()"
+                                                        href="#divBox">
 											<span class="btn-label">
 												<i class="fa fa-plus"></i>
 											</span>
-                                            新增
-                                        </button>
+                                                    新增
+                                                </button>
+                                            </div>
+
+
+                                        </form>
+                                        <table class="table table-bordered" id="tb_List">
+                                            <!-- cerare document add ajax data-->
+                                        </table>
                                     </div>
-
-
-                                </form>
-                                <table class="table table-bordered" id="tb_List">
-                                    <!-- cerare document add ajax data-->
-                                </table>
+                                </div>
                             </div>
                         </div>
                     </div>

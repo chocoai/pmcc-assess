@@ -66,11 +66,8 @@
         </div>
         <%@include file="/views/share/main_footer.jsp" %>
     </div>
-
 </div>
-
 </body>
-
 <div id="divBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -80,7 +77,6 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
             </div>
-
             <div class="modal-body">
                 <form id="frm" class="form-horizontal">
                     <input type="hidden" id="id" name="id" value="0">
@@ -139,18 +135,14 @@
                                                         class="form-control input-full search-select select2 type0">
                                                 </select>
                                             </div>
-
-
                                             <label class="col-sm-2 control-label">
                                                 项目类别
                                             </label>
-
                                             <div class="col-sm-3">
                                                 <select name="category"
                                                         class="form-control input-full search-select select2 category0">
                                                     <option selected="selected" value="">请先选择类型</option>
                                                 </select>
-
                                             </div>
                                             <div class="col-sm-2">
                                                 <input type="button" class="btn btn-warning" value="X"
@@ -159,7 +151,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="row form-group">
                                     <div class="col-md-6">
                                         <div class="form-inline x-valid">
@@ -206,7 +197,6 @@
                                                         required="required"
                                                         onkeyup="extractNotApplicableField();"></textarea>
                                                 <div class="not-applicableReason-field">
-
                                                 </div>
                                             </div>
                                         </div>
@@ -225,7 +215,6 @@
                     保存
                 </button>
             </div>
-
         </div>
     </div>
 </div>
@@ -267,13 +256,13 @@
     //加载 评估技术方法 数据列表
     function loadMethodList() {
         var cols = [];
-        cols.push({field: 'name', width: '5%',title: '名称'});
-        cols.push({field: 'typeName',  width: '5%',title: '类型'});
-        cols.push({field: 'methodStr',  width: '5%',title: '评估方法'});
-        cols.push({field: 'applicableReason', title: '适用原因模板', width: '40%'});
-        cols.push({field: 'notApplicableReason', title: '不适用原因模板', width: '40%'});
+        cols.push({field: 'name', width: '10%',title: '名称'});
+        cols.push({field: 'typeName',  width: '10%',title: '类型'});
+        cols.push({field: 'methodStr',  width: '10%',title: '评估方法'});
+        cols.push({field: 'applicableReason', title: '适用原因模板', width: '30%'});
+        cols.push({field: 'notApplicableReason', title: '不适用原因模板', width: '30%'});
         cols.push({
-            field: 'id',  width: '5%',title: '操作', formatter: function (value, row, index) {
+            field: 'id',  width: '10%',title: '操作', formatter: function (value, row, index) {
                 var str = '<button onclick="editMethod(' + index + ')"  style="margin-left: 5px;"  class="btn btn-icon btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
                 str += '<i class="fa fa-pen"></i>';
                 str += '</button>';

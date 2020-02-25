@@ -89,7 +89,6 @@
                     </c:if>
                     <c:if test="${approvalReview==1}">
                         <c:forEach var="item" items="${boxReviewTemplate}">
-
                             <div class="row form-group">
                                 <div class="col-md-12">
                                     <label class="col-sm-1 col-form-label">
@@ -244,7 +243,7 @@
             $("#opinions").attr("required", false);//审批意见不必填
         }
         FileUtils.uploadFiles({
-            target: "file_upload",
+            target: "file_approval_upload",
             disabledTarget: "btn_submit",
             formData: {
                 tableName: AssessDBKey.BoxApprovalLog,
@@ -258,7 +257,7 @@
         });
 
         FileUtils.getFileShows({
-            target: "file_upload",
+            target: "file_approval_upload",
             formData: {
                 tableName: AssessDBKey.BoxApprovalLog,
                 processInsId: "${processInsId}",
