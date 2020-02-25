@@ -175,6 +175,24 @@ declareCommon.showHtmlMastInit = function (target, callback) {
     }
 };
 
+declareCommon.removeStyleFun = function (target) {
+    var card = target.find(".card-body") ;
+    if (card.size() == 0){
+        return false ;
+    }
+    var nodes = card.children(".form-group") ;
+    if (nodes.size() == 0){
+        return false ;
+    }
+    $.each(nodes,function (i,node) {
+        var element = $(node).find("input[type=file]") ;
+        var size = element.size() ;
+        if (size == 0){
+            $(node).remove() ;
+        }
+    }) ;
+};
+
 
 
 //公共  赋值 方法

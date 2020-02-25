@@ -175,10 +175,12 @@ assessCommonLand.init = function (item) {
  * 土地证显示
  */
 assessCommonLand.showAddModelLand = function () {
-    $('#' + assessCommonLand.config.box).find("#" + commonDeclareApplyModel.config.land.handleId).remove();
-    $('#' + assessCommonLand.config.box).find(".panel-body").prepend(commonDeclareApplyModel.land.getHtml());
-    $('#' + assessCommonLand.config.box).modal("show");
-    declareCommon.showHtmlMastInit($("#" + assessCommonLand.config.frm), function (area) {
+    var target = $('#' + assessCommonLand.config.box) ;
+    var frm = target.find("form") ;
+    target.find("#" + commonDeclareApplyModel.config.land.handleId).remove();
+    target.find(".card-body").prepend(commonDeclareApplyModel.land.getHtml());
+    target.modal("show");
+    declareCommon.showHtmlMastInit(frm, function (area) {
         assessCommonLand.init(area);
     });
 };
@@ -211,7 +213,8 @@ assessCommonLand.getLand = function (id, callback) {
  * 土地证编辑
  */
 assessCommonLand.editLand = function () {
-    var rows = $("#" + assessCommonLand.config.table).bootstrapTable('getSelections');
+    var table = $("#" + assessCommonLand.config.table);
+    var rows = table.bootstrapTable('getSelections');
     if (!rows || rows.length <= 0) {
         toastr.info("请选择要编辑的数据");
     } else if (rows.length == 1) {
@@ -219,6 +222,7 @@ assessCommonLand.editLand = function () {
         assessCommonLand.init(rows[0]);
         $("#" + assessCommonLand.config.frm).validate();
         $('#' + assessCommonLand.config.box).modal("show");
+        table.bootstrapTable('uncheckAll');
     } else {
         toastr.info("只能选择一行数据进行编辑");
     }
@@ -402,7 +406,8 @@ assessCommonLand.saveHouseData = function () {
         if (houseId) {
             declareCommon.declareBuildCenterSaveAndUpdate({houseId: houseId, id: data.centerId}, function () {
                 assessCommonLand.loadList();
-                toastr.success('成功!');
+                notifySuccess("成功","操作成功!");
+
             });
         }
         box.modal("hide");
@@ -665,15 +670,15 @@ assessCommonLand.attachmentAutomatedWarrants = function (_this) {
     var step = group.find("[name='step']").val();
     var isSource = group.find("[name='isSource']").val();
     if (!$.isNumeric(startNumber)) {
-        toastr.warning('启始编号非数字请重新填写');
+        notifyWarning("警告", "启始编号非数字请重新填写!");
         return false;
     }
     if (!$.isNumeric(endNumber)) {
-        toastr.warning('截至编号非数字请重新填写');
+        notifyWarning("警告", "截至编号非数字请重新填写!");
         return false;
     }
     if (!$.isNumeric(step)) {
-        toastr.warning('步长非数字请重新填写');
+        notifyWarning("警告", "步长非数字请重新填写!");
         return false;
     }
     var data = {
@@ -691,7 +696,7 @@ assessCommonLand.attachmentAutomatedWarrants = function (_this) {
         data.fieldsName = assessCommonLand.config.houseFile;
     }
     if (startNumber > endNumber) {
-        toastr.error('截至编号 必须大于 启始编号');
+        notifyWarning("警告", "截至编号 必须大于 启始编号!");
         return false;
     }
     var query = {
@@ -701,7 +706,7 @@ assessCommonLand.attachmentAutomatedWarrants = function (_this) {
     };
     AssessCommon.getSysAttachmentDtoList(query, function (array) {
         if (!array) {
-            toastr.warning('请上传pdf或者word');
+            notifyWarning("警告", "请上传pdf或者word 附件!");
             return false;
         }
         if (array.length == 1) {
@@ -714,13 +719,13 @@ assessCommonLand.attachmentAutomatedWarrants = function (_this) {
                     declareCommon.showFile(FileId, tableName, id, true);
                 }(query.tableId, query.fieldsName, query.tableName));
                 assessCommonLand.loadList();
-                toastr.success('成功 !');
+                notifyInfo("成功", "操作成功!");
             }, function (message) {
                 Loading.progressHide();
-                toastr.error(message);
+                AlertError("错误", "调用服务端方法失败，失败原因:" + message);
             });
         } else {
-            toastr.info('请上传pdf或者word一个');
+            notifyWarning("警告", "请上传pdf或者word一个!");
             return false;
         }
     });
