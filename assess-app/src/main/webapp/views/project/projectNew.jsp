@@ -25,26 +25,29 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <c:forEach var="classItem" items="${keyValueDtoList}">
-                                    <c:forEach var="typeItem" items="${classItem.keyValueDtos}">
-                                        <c:if test="${not empty typeItem.keyValueDtos}">
-                                            <c:forEach var="categoryItem" items="${typeItem.keyValueDtos}">
-                                                <a target="_blank"
-                                                   href="${pageContext.request.contextPath}/${categoryItem.explain}?projectClassId=${classItem.key}&projectTypeId=${typeItem.key}&projectCategoryId=${categoryItem.key}">
-                                                    <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                                                        <div class="tile-stats">
-                                                            <div class="icon"><i class="fa fa-bank"></i>
+                                <div class="row">
+                                    <c:forEach var="classItem" items="${keyValueDtoList}">
+                                        <c:forEach var="typeItem" items="${classItem.keyValueDtos}">
+                                            <c:if test="${not empty typeItem.keyValueDtos}">
+                                                <c:forEach var="categoryItem" items="${typeItem.keyValueDtos}">
+                                                    <div class="col-sm-6 col-lg-3">
+                                                        <div class="card p-3">
+                                                            <div class="d-flex align-items-center">
+									                            <span class="stamp stamp-md bg-success mr-3">
+										                            <i class="fas fa-gem"></i>
+                                                                </span>
+                                                                <div>
+                                                                    <h5 class="mb-1"><b><a target="_blank"
+                                                                                           href="${pageContext.request.contextPath}/${categoryItem.explain}?projectClassId=${classItem.key}&projectTypeId=${typeItem.key}&projectCategoryId=${categoryItem.key}">${categoryItem.value}</a></b></h5>
+                                                                </div>
                                                             </div>
-                                                            <div class="count">${categoryItem.value}</div>
-                                                                <%--<h3>${typeItem.value}</h3>--%>
-                                                                <%--<p>${classItem.value}</p>--%>
                                                         </div>
                                                     </div>
-                                                </a>
-                                            </c:forEach>
-                                        </c:if>
+                                                </c:forEach>
+                                            </c:if>
+                                        </c:forEach>
                                     </c:forEach>
-                                </c:forEach>
+                                </div>
                             </div>
                         </div>
                     </div>

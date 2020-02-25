@@ -137,7 +137,7 @@ var houseHeating;
     }
 
     //绑定事件
-    $('#' + houseHeating.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
+    $('#' + houseHeating.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
         houseHeating.prototype.loadDataDicList();
     })
 })();
@@ -277,7 +277,7 @@ var houseAirConditioner;
     }
 
     //绑定事件
-    $('#' + houseAirConditioner.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
+    $('#' + houseAirConditioner.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
         houseAirConditioner.prototype.loadDataDicList();
     })
 })();
@@ -417,7 +417,7 @@ var houseNewWind;
 
 
     //绑定事件
-    $('#' + houseNewWind.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
+    $('#' + houseNewWind.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
         houseNewWind.prototype.loadDataDicList();
     })
 })();
@@ -577,7 +577,7 @@ var houseCorollaryEquipment;
     }
 
     //绑定事件
-    $('#' + houseCorollaryEquipment.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
+    $('#' + houseCorollaryEquipment.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
         houseCorollaryEquipment.prototype.loadDataDicList();
     })
 })();
@@ -648,11 +648,19 @@ var houseFaceStreet;
             houseFaceStreet.prototype.init({});
             $("#" + houseFaceStreet.prototype.config().frm + " .name").empty();
             var lableValue = "街道（道路）名称";
-            var html = "<div class='form-group' style='margin-top:8px;'>";
-            html += "<label class='col-md-2 col-sm-2 col-xs-12 control-label'>" + lableValue + "</label>";
-            html += "<div class='col-md-10 col-sm-10 col-xs-12 input-group'>";
-            html += "<input type='text' required class='form-control'" + "name='" + 'streetName' + "'" + ">";
-            html += "<span class='input-group-btn'>" + "<input class='btn btn-warning' type='button' value='X' onclick='matchingRecreation.prototype.cleanHTMLData(this)'>" + "</span>";
+            var html = "<div class='row form-group' style='margin-top:8px;'>";
+            html += '<div class="col-sm-12">';
+            html += '<div class="form-inline x-valid">';
+            html += "<label class='col-sm-2 control-label'>" + lableValue + "</label>";
+            html += "<div class='col-sm-9'>";
+            html += "<input type='text' required class='form-control input-full'" + "name='" + 'streetName' + "'" + ">";
+            html += "</div>";
+
+            html += "<div class='col-sm-1'>";
+            html += "<span class='input-group-btn'>" + "<input class='btn btn-warning btn-sm' type='button' value='X' onclick='houseFaceStreet.prototype.cleanHTMLData(this)'>" + "</span>";
+            html += "</div>";
+
+            html += "</div>";
             html += "</div>";
             html += "</div>";
             $("#" + houseFaceStreet.prototype.config().frm + " .name").append(html);
@@ -726,17 +734,25 @@ var houseFaceStreet;
         },
         appendHTML: function (item, this_) {
             var lableValue = "街道（道路）名称";
-            var html = "<div class='form-group' style='margin-top:8px;'>";
-            html += "<label class='col-md-2 col-sm-2 col-xs-12 control-label'>" + lableValue + "</label>";
-            html += "<div class='col-md-10 col-sm-10 col-xs-12 input-group'>";
-            html += "<input type='text' required class='form-control'" + "name='" + item + "'" + ">";
-            html += "<span class='input-group-btn'>" + "<input class='btn btn-warning' type='button' value='X' onclick='houseFaceStreet.prototype.cleanHTMLData(this)'>" + "</span>";
+            var html = "<div class='row form-group' style='margin-top:8px;'>";
+            html += '<div class="col-sm-12">';
+            html += '<div class="form-inline x-valid">';
+            html += "<label class='col-sm-2 control-label'>" + lableValue + "</label>";
+            html += "<div class='col-sm-9'>";
+            html += "<input type='text' required class='form-control input-full'" + "name='" + item + "'" + ">";
+            html += "</div>";
+
+            html += "<div class='col-sm-1'>";
+            html += "<span class='input-group-btn'>" + "<input class='btn btn-warning btn-sm' type='button' value='X' onclick='houseFaceStreet.prototype.cleanHTMLData(this)'>" + "</span>";
+            html += "</div>";
+
+            html += "</div>";
             html += "</div>";
             html += "</div>";
             $("#" + houseFaceStreet.prototype.config().frm + " .name").append(html);
         },
         cleanHTMLData: function (item) {
-            $(item).parent().prev().parent().parent().empty();
+            $(this_).closest('.form-group').remove();
         },
         writeHTMLData: function (str) {
             $("#" + houseFaceStreet.prototype.config().frm + " .name").empty();
@@ -746,11 +762,19 @@ var houseFaceStreet;
             var item = "streetName";
             for (var i = 0; i < length; i++) {
                 console.log("i:" + i);
-                var html = "<div class='form-group' style='margin-top:8px;'>";
-                html += "<label class='col-md-2 col-sm-2 col-xs-12 control-label'>" + lableValue + "</label>";
-                html += "<div class='col-md-10 col-sm-10 col-xs-12 input-group'>";
-                html += "<input type='text' required class='form-control'" + "name='" + item + "' value='" + strs[i] + "'>";
-                html += "<span class='input-group-btn'>" + "<input class='btn btn-warning' type='button' value='X' onclick='houseFaceStreet.prototype.cleanHTMLData(this)'>" + "</span>";
+                var html = "<div class='row form-group' style='margin-top:8px;'>";
+                html += '<div class="col-sm-12">';
+                html += '<div class="form-inline x-valid">';
+                html += "<label class='col-sm-2 control-label'>" + lableValue + "</label>";
+                html += "<div class='col-sm-9'>";
+                html += "<input type='text' required class='form-control input-full'" + "name='" + item + "' value='" + strs[i] + "'>";
+                html += "</div>";
+
+                html += "<div class='col-sm-1'>";
+                html += "<span class='input-group-btn'>" + "<input class='btn btn-warning btn-sm' type='button' value='X' onclick='houseFaceStreet.prototype.cleanHTMLData(this)'>" + "</span>";
+                html += "</div>";
+
+                html += "</div>";
                 html += "</div>";
                 html += "</div>";
                 $("#" + houseFaceStreet.prototype.config().frm + " .name").append(html);
@@ -759,7 +783,7 @@ var houseFaceStreet;
     }
 
     //绑定事件
-    $('#' + houseFaceStreet.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
+    $('#' + houseFaceStreet.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
         houseFaceStreet.prototype.loadDataDicList();
     })
 })();
@@ -980,22 +1004,28 @@ var houseIntelligent;
             });
         },
         createHTML: function (intelligentSystem, layingMethod, intelligenceGrade) {
-            var html = "<div class='form-group' style='margin-top:8px;'>";
-            html += "<label class='col-md-2 col-sm-2  control-label'>" + '智能系统' + "</label>";
-            html += "<div class='col-sm-2'>";
-            html += "<select required='required' name='" + intelligentSystem + "' class='form-control search-select select2 " + intelligentSystem + "'>" + "</select>";
+            var html = "<div class='row form-group' style='margin-top:8px;'>";
+            html += '<div class="col-md-12">';
+            html += ' <div class="form-inline x-valid">';
+
+            html += "<label class='col-sm-2  control-label'>" + '智能系统' + "</label>";
+            html += "<div class='col-sm-3'>";
+            html += "<select required='required' name='" + intelligentSystem + "' class='form-control input-full search-select select2 " + intelligentSystem + "'>" + "</select>";
             html += "</div>";
 
-            html += "<div class='col-sm-2'>";
-            html += "<select required='required' name='" + layingMethod + "' class='form-control search-select select2 " + layingMethod + "'>" + "</select>";
+            html += "<div class='col-sm-3'>";
+            html += "<select required='required' name='" + layingMethod + "' class='form-control input-full search-select select2 " + layingMethod + "'>" + "</select>";
             html += "</div>";
 
-            html += "<div class='col-sm-2'>";
-            html += "<select required='required' name='" + intelligenceGrade + "' class='form-control search-select select2 " + intelligenceGrade + "'>" + "</select>";
+            html += "<div class='col-sm-3'>";
+            html += "<select required='required' name='" + intelligenceGrade + "' class='form-control input-full search-select select2 " + intelligenceGrade + "'>" + "</select>";
             html += "</div>";
 
-            html += "<div class='col-sm-4'>";
-            html += "<input class='btn btn-warning' type='button' value='X' onclick='houseIntelligent.prototype.cleanHTMLData(this)'>";
+            html += "<div class='col-sm-1'>";
+            html += "<input class='btn btn-warning btn-sm' type='button' value='X' onclick='houseIntelligent.prototype.cleanHTMLData(this)'>";
+            html += "</div>";
+
+            html += "</div>";
             html += "</div>";
             html += "</div>";
             return html;
@@ -1082,7 +1112,7 @@ var houseIntelligent;
 
 
     //绑定事件
-    $('#' + houseIntelligent.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
+    $('#' + houseIntelligent.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
         houseIntelligent.prototype.loadDataDicList();
     })
 })();
@@ -1232,7 +1262,7 @@ var houseWater;
     }
 
     //绑定事件
-    $('#' + houseWater.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
+    $('#' + houseWater.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
         houseWater.prototype.loadDataDicList();
     })
 })();
@@ -1362,7 +1392,7 @@ houseWaterDrain.saveData = function () {
 };
 (function () {
     //绑定事件
-    $('#' + houseWaterDrain.config.table).closest('.x_panel').find('.x_title').bind('click', function () {
+    $('#' + houseWaterDrain.config.table).closest('.full-height').find('.card-header').bind('click', function () {
         houseWaterDrain.loadDataDicList();
     })
 })();
@@ -1672,7 +1702,7 @@ var houseRoom;
     }
 
     //绑定事件
-    $('#' + houseRoom.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
+    $('#' + houseRoom.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
         houseRoom.prototype.loadDataDicList();
     })
 })();

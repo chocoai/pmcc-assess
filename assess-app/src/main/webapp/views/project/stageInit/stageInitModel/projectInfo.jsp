@@ -9,14 +9,14 @@
                     <label class="col-sm-1 col-form-label">
                         项目名称<span class="symbol required"></span>
                     </label>
-                    <div class="col-sm-7">
+                    <div class="col-sm-7 ">
                         <input required placeholder="项目名称" name="projectName"
                                value="${projectInfo.projectName}" class="form-control input-full">
                     </div>
                     <label class="col-sm-1 col-form-label">
                         紧急程度<span class="symbol required"></span>
                     </label>
-                    <div class="col-sm-3">
+                    <div class="col-sm-3 ">
                         <select name="urgency" class="form-control input-full search-select select2 urgency"
                                 required="required">
                         </select>
@@ -24,7 +24,6 @@
                 </div>
             </div>
         </div>
-
         <div class="row form-group">
             <div class="col-md-12">
                 <div class="form-inline x-valid">
@@ -38,11 +37,11 @@
         </div>
         <div class="row form-group">
             <div class="col-md-12">
-                <div class="form-inline x-valid">
+                <div class="form-inline">
                     <label class="col-sm-1 col-form-label">
                         委托目的<span class="symbol required"></span>
                     </label>
-                    <div class="col-sm-3">
+                    <div class="col-sm-3 x-valid">
                         <select name="entrustPurpose"
                                 class="form-control input-full search-select select2 entrustPurpose"
                                 required="required"
@@ -53,7 +52,7 @@
                     <label class="col-sm-1 col-form-label">
                         委托目的类别
                     </label>
-                    <div class="col-sm-3">
+                    <div class="col-sm-3 x-valid">
                         <select name="entrustAimType"
                                 class="form-control input-full search-select select2 entrustAimType_p">
                         </select>
@@ -104,11 +103,11 @@
 
         <div class="row form-group">
             <div class="col-md-12">
-                <div class="form-inline x-valid">
+                <div class="form-inline">
                     <label class="col-sm-1 col-form-label">
                         项目经理<span class="symbol required"></span></label>
                     </label>
-                    <div class="col-sm-3">
+                    <div class="col-sm-3 x-valid">
                         <div class="input-group">
                             <input type="hidden" name="userAccountManager"
                                    value="${projectInfo.projectMemberVo.userAccountManager}">
@@ -144,7 +143,8 @@
                             <div class="input-group-prepend">
                                 <button class="btn btn-warning btn-sm "
                                         style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                        type="button" onclick="$(this).closest('.input-group').find('input').val('');">清空
+                                        type="button" onclick="$(this).closest('.input-group').find('input').val('');">
+                                    清空
                                 </button>
                             </div>
                             <div class="input-group-prepend">
@@ -159,7 +159,7 @@
                     <label class="col-sm-1 col-form-label">
                         执业部门
                     </label>
-                    <div class="col-sm-3">
+                    <div class="col-sm-3 x-valid">
                         <div class="input-group">
                             <input type="hidden" name="departmentId"
                                    value="${projectInfo.departmentId}">
@@ -190,7 +190,7 @@
                     <label class="col-sm-1 col-form-label">
                         项目合同
                     </label>
-                    <div class="col-sm-3">
+                    <div class="col-sm-11">
                         <div class="input-group">
                             <input type="hidden" name="contractId" value="${projectInfo.contractId}">
                             <input type="text" class="form-control" readonly="readonly" name="contractName"
@@ -211,6 +211,13 @@
                             </div>
                         </div>
                     </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-12">
+                <div class="form-inline x-valid">
                     <label class="col-sm-1 col-form-label">
                         合同金额（单位/元）
                     </label>
@@ -219,7 +226,6 @@
                                placeholder="合同金额"
                                value="${projectInfo.contractPrice}"/>
                     </div>
-
                     <label class="col-sm-1 col-form-label">
                         评估基准日
                     </label>
@@ -228,28 +234,6 @@
                                name="valuationDate" data-date-format="yyyy-mm-dd"
                                class="form-control input-full date-picker dbdate" readonly="readonly"
                                value="<fmt:formatDate value='${projectInfo.valuationDate}' pattern='yyyy-MM-dd'/>">
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row form-group">
-            <div class="col-md-12">
-                <div class="form-inline x-valid">
-                    <label class="col-sm-1 col-form-label">
-                        业务来源
-                    </label>
-                    <div class="col-sm-3">
-                        <select name="serviceComeFrom" class="form-control input-full search-select select2"
-                                required="required">
-                        </select>
-                    </div>
-                    <label class="col-sm-1 col-form-label">
-                        业务来源说明
-                    </label>
-                    <div class="col-sm-3">
-                        <input name="serviceComeFromExplain" class="form-control input-full" placeholder="业务来源说明"
-                               value="${projectInfo.serviceComeFromExplain}"/>
                     </div>
                     <label class="col-sm-1 col-form-label">
                         贷款类型
@@ -261,7 +245,27 @@
                 </div>
             </div>
         </div>
-
+        <div class="row form-group">
+            <div class="col-md-12">
+                <div class="form-inline">
+                    <label class="col-sm-1 col-form-label">
+                        业务来源
+                    </label>
+                    <div class="col-sm-3 x-valid">
+                        <select name="serviceComeFrom" class="form-control input-full search-select select2"
+                                required="required">
+                        </select>
+                    </div>
+                    <label class="col-sm-1 col-form-label">
+                        业务来源说明
+                    </label>
+                    <div class="col-sm-3">
+                        <input name="serviceComeFromExplain" class="form-control input-full" placeholder="业务来源说明"
+                               value="${projectInfo.serviceComeFromExplain}"/>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="row form-group">
             <div class="col-md-12">
                 <div class="form-inline x-valid">
@@ -289,7 +293,6 @@
                 </div>
             </div>
         </div>
-
     </form>
 </div>
 <script src="/pmcc-contract/js/cms_contract_utils.js?v=${assessVersion}"></script>

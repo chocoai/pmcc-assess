@@ -6,64 +6,121 @@
 </head>
 
 
-<body class="nav-md footer_fixed">
-<div class="container body">
-    <div class="main_container">
-        <div class="right_col" role="main" style="margin-left: 0">
+<body>
+<div class="wrapper">
+    <div class="main-panel" style="width: 100%">
+        <div class="content" style="margin-top: 0px;">
             <%@include file="/views/share/form_head.jsp" %>
-            <%@include file="/views/share/project/projectInfoSimple.jsp" %>
-            <%@include file="/views/share/project/projectPlanDetails.jsp" %>
-            <!--填写表单-->
-            <div class="x_panel">
-                <div class="x_title collapse-link">
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                    </ul>
-                    <h3>
-                        ${projectPlanDetails.projectPhaseName}
-                        <small>${areaGroup.areaName}</small>
-                    </h3>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="x_content">
-                    <form id="master" class="form-horizontal">
-                        <table class="table">
-                            <thead>
-                            <tr>
-                                <th class="hidden-xs">估价对象</th>
-                                <th class="hidden-xs">已抵押担保的债权数额总价(元)</th>
-                                <th class="hidden-xs">拖欠的建设工程价款总价(元)</th>
-                                <th class="hidden-xs">其它法定优先受偿款总价(元)</th>
-                                <th class="hidden-xs">估价师知悉的法定优先受偿款总价(元)</th>
-                                <th class="hidden-xs">他权明细</th>
-                            </tr>
-                            </thead>
-                            <tbody id="tbody_data_section">
+            <div class="page-inner mt--5">
+                <div class="row mt--2">
+                    <%@include file="/views/share/project/projectInfoSimple.jsp" %>
+                    <%@include file="/views/share/project/projectPlanDetails.jsp" %>
 
-                            </tbody>
-                        </table>
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class="col-md-1 col-sm-1 col-xs-12 control-label">
-                                    附件
-                                </label>
-                                <div class="col-md-11 col-sm-11 col-xs-12">
-                                    <input id="apply_file" type="file" multiple="false">
-                                    <div id="_apply_file">
+                    <!-- 填写表单 start -->
+                    <div class="col-md-12">
+                        <div class="card full-height">
+                            <div class="card-header collapse-link">
+                                <div class="card-head-row">
+                                    <div class="card-title">
+                                        ${projectPlanDetails.projectPhaseName}
+                                        <small>${areaGroup.areaName}</small>
+                                    </div>
+                                    <div class="card-tools">
+                                        <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                                                class="fa fa-angle-down"></span>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
+                            <div class="card-body">
+                                <form id="master" class="form-horizontal">
+                                    <input type="hidden" name="id" value="${master.id}">
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <table class="table">
+                                                <thead>
+                                                <tr>
+                                                    <th class="hidden-xs">估价对象</th>
+                                                    <th class="hidden-xs">已抵押担保的债权数额总价(元)</th>
+                                                    <th class="hidden-xs">拖欠的建设工程价款总价(元)</th>
+                                                    <th class="hidden-xs">其它法定优先受偿款总价(元)</th>
+                                                    <th class="hidden-xs">估价师知悉的法定优先受偿款总价(元)</th>
+                                                    <th class="hidden-xs">他权明细</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="tbody_data_section">
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-md-1 control-label">
+                                                    附件
+                                                </label>
+                                                <div class="col-md-11">
+                                                    <input id="apply_file" type="file" multiple="false">
+                                                    <div id="_apply_file">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </form>
+                            </div>
                         </div>
-                            <input type="hidden" name="id" value="${master.id}">
-                    </form>
+                    </div>
+
+                    <%@include file="/views/share/form_apply.jsp" %>
+                    <%@include file="/views/share/form_log.jsp" %>
                 </div>
             </div>
-            <%@include file="/views/share/form_apply.jsp" %>
-            <%@include file="/views/share/form_log.jsp" %>
+        </div>
+        <%@include file="/views/share/main_footer.jsp" %>
+    </div>
+</div>
+
+</body>
+<div id="divBoxRightItem" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">他权信息</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <table class="table table-bordered" id="RightItemList">
+                                    <!-- cerare document add ajax data-->
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+            </div>
+
         </div>
     </div>
 </div>
-</body>
+
+
+<%--
 <div id="divBoxRightItem" class="modal fade bs-example-modal-lg" data-backdrop="static"
      tabindex="-1"
      role="dialog"
@@ -95,7 +152,7 @@
         </div>
     </div>
 </div>
-<%@include file="/views/share/main_footer.jsp" %>
+--%>
 <script type="application/javascript">
     $(function () {
         getItemHtml();
@@ -127,7 +184,7 @@
         if (!$("#master").valid()) {
             return false;
         }
-        var formData = getFormData() ;
+        var formData = getFormData();
 
         if ("${processInsId}" != "0") {
             submitEditToServer(JSON.stringify(formData));
@@ -138,19 +195,19 @@
     }
 
     function getTotal(id) {
-        var mortgagedTotalPriceEle = "mortgagedTotalPrice_"+id;
-        var owedTotalPriceEle = "owedTotalPrice_"+id;
-        var otherTotalPriceEle = "otherTotalPrice_"+id;
-        var knowTotalPriceEle = "knowTotalPrice_"+id;
+        var mortgagedTotalPriceEle = "mortgagedTotalPrice_" + id;
+        var owedTotalPriceEle = "owedTotalPrice_" + id;
+        var otherTotalPriceEle = "otherTotalPrice_" + id;
+        var knowTotalPriceEle = "knowTotalPrice_" + id;
 
 
-        var mortgagedTotalPrice = $("#master").find('[name="'+ mortgagedTotalPriceEle +'"]').val();
-        var owedTotalPrice = $("#master").find('[name="'+ owedTotalPriceEle +'"]').val();
-        var otherTotalPrice = $("#master").find('[name="'+ otherTotalPriceEle +'"]').val();
+        var mortgagedTotalPrice = $("#master").find('[name="' + mortgagedTotalPriceEle + '"]').val();
+        var owedTotalPrice = $("#master").find('[name="' + owedTotalPriceEle + '"]').val();
+        var otherTotalPrice = $("#master").find('[name="' + otherTotalPriceEle + '"]').val();
         var knowTotalPrice = 0;
         if (mortgagedTotalPrice && owedTotalPrice && otherTotalPrice) {
             knowTotalPrice = Number(mortgagedTotalPrice) + Number(owedTotalPrice) + Number(otherTotalPrice);
-            $("#master").find('[name="'+ knowTotalPriceEle +'"]').val(Number(knowTotalPrice).toFixed(2));
+            $("#master").find('[name="' + knowTotalPriceEle + '"]').val(Number(knowTotalPrice).toFixed(2));
         }
 
     }
@@ -176,13 +233,13 @@
                         html += item.name;
                         html += "</td>";
                         html += "<td class='hidden-xs'>";
-                        html += "<input type='text' onblur='getTotal("+item.id+");' name='mortgagedTotalPrice_" + item.id + "' value='" + Number(item.mortgagedTotalPrice).toFixed(2) + "' class='form-control'>";
+                        html += "<input type='text' onblur='getTotal(" + item.id + ");' name='mortgagedTotalPrice_" + item.id + "' value='" + Number(item.mortgagedTotalPrice).toFixed(2) + "' class='form-control'>";
                         html += "</td>";
                         html += "<td class='hidden-xs'>";
-                        html += "<input type='text' onblur='getTotal("+item.id+");' name='owedTotalPrice_" + item.id + "' value='" + Number(item.owedTotalPrice).toFixed(2) + "' class='form-control'>";
+                        html += "<input type='text' onblur='getTotal(" + item.id + ");' name='owedTotalPrice_" + item.id + "' value='" + Number(item.owedTotalPrice).toFixed(2) + "' class='form-control'>";
                         html += "</td>";
                         html += "<td class='hidden-xs'>";
-                        html += "<input type='text' onblur='getTotal("+item.id+");'  name='otherTotalPrice_" + item.id + "' value='" + Number(item.otherTotalPrice).toFixed(2) + "' class='form-control'>";
+                        html += "<input type='text' onblur='getTotal(" + item.id + ");'  name='otherTotalPrice_" + item.id + "' value='" + Number(item.otherTotalPrice).toFixed(2) + "' class='form-control'>";
                         html += "</td>";
 
                         html += "<td class='hidden-xs'>";
@@ -190,7 +247,7 @@
                         html += "</td>";
 
                         html += "<td class='hidden-xs'>";
-                        html += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="查看" onclick="checkRightItem('+item.inventoryRightRecordId+')"><i class="fa fa-search fa-white"></i></a>';
+                        html += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="查看" onclick="checkRightItem(' + item.inventoryRightRecordId + ')"><i class="fa fa-search fa-white"></i></a>';
                         html += "</td>";
 
                         html += "</tr>";
@@ -202,7 +259,7 @@
     }
 
     function checkRightItem(groupId) {
-        if(!groupId){
+        if (!groupId) {
             alert("未关联他权")
             return;
         }

@@ -129,7 +129,7 @@ var matchingMainConversion;
     }
 
     //绑定事件
-    $('#' + matchingMainConversion.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
+    $('#' + matchingMainConversion.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
         matchingMainConversion.prototype.loadDataDicList();
     })
 })();
@@ -279,15 +279,15 @@ var matchingMainRoad;
         showLimit:function (that) {
             var item = $(that);
             if (item.val() == 'true'){
-                $(that).parent().parent().parent().next().show();
+                $(that).parent().parent().parent().parent().parent().next().show();
             }else {
-                $(that).parent().parent().parent().next().hide();
+                $(that).parent().parent().parent().parent().parent().next().hide();
             }
         }
     }
 
     //绑定事件
-    $('#' + matchingMainRoad.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
+    $('#' + matchingMainRoad.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
         matchingMainRoad.prototype.loadDataDicList();
     })
 })();
@@ -388,11 +388,19 @@ var matchingMetro;
             $("#" + matchingMetro.prototype.config().frm + " .type").val(matchingMetro.prototype.config().type);
             $("#" + matchingMetro.prototype.config().frm + " .theLine").empty();
             var lableValue = "所在线路";
-            var html = "<div class='form-group' style='margin-top:8px;'>";
-            html += "<label class='col-md-2 col-sm-2 col-xs-12 control-label'>" + lableValue + "</label>";
-            html += "<div class='col-md-10 col-sm-10 col-xs-12 input-group'>";
-            html += "<input type='text' required class='form-control'" + "name='" + 'theLine' + "'" + ">";
-            html += "<span class='input-group-btn'>" + "<input class='btn btn-warning' type='button' value='X' onclick='matchingMetro.prototype.cleanHTMLData(this)'>" + "</span>";
+            var html = "<div class='row form-group' style='margin-top:8px;'>";
+            html += '<div class="col-sm-12">';
+            html += '<div class="form-inline x-valid">';
+            html += "<label class='col-sm-2 control-label'>" + lableValue + "</label>";
+            html += "<div class='col-sm-8'>";
+            html += "<input type='text' required class='form-control input-full'" + "name='" + 'theLine' + "'" + ">";
+            html += "</div>";
+
+            html += "<div class='col-sm-2'>";
+            html += "<span class='input-group-btn'>" + "<input class='btn btn-warning btn-sm' type='button' value='X' onclick='matchingMetro.prototype.cleanHTMLData(this)'>" + "</span>";
+            html += "</div>";
+
+            html += "</div>";
             html += "</div>";
             html += "</div>";
             $("#" + matchingMetro.prototype.config().frm + " .theLine").append(html);
@@ -447,18 +455,26 @@ var matchingMetro;
         },
         appendHTML: function (item, this_) {
             var lableValue = "所在线路";
-            var html = "<div class='form-group' style='margin-top:8px;'>";
-            html += "<label class='col-md-2 col-sm-2 col-xs-12 control-label'>" + lableValue + "</label>";
-            html += "<div class='col-md-10 col-sm-10 col-xs-12 input-group'>";
-            html += "<input type='text' required class='form-control'" + "name='" + item + "'" + ">";
-            html += "<span class='input-group-btn'>" + "<input class='btn btn-warning' type='button' value='X' onclick='matchingMetro.prototype.cleanHTMLData(this)'>" + "</span>";
+            var html = "<div class='row form-group' style='margin-top:8px;'>";
+            html += '<div class="col-sm-12">';
+            html += '<div class="form-inline x-valid">';
+            html += "<label class='col-sm-2 control-label'>" + lableValue + "</label>";
+            html += "<div class='col-sm-8'>";
+            html += "<input type='text' required class='form-control input-full'" + "name='" + item + "'" + ">";
+            html += "</div>";
+
+            html += "<div class='col-sm-2'>";
+            html += "<span class='input-group-btn'>" + "<input class='btn btn-warning btn-sm' type='button' value='X' onclick='matchingMetro.prototype.cleanHTMLData(this)'>" + "</span>";
+            html += "</div>";
+
+            html += "</div>";
             html += "</div>";
             html += "</div>";
             $("#" + matchingMetro.prototype.config().frm + " .theLine").append(html);
         },
         cleanHTMLData: function (item) {
             var value = "";
-            $(item).parent().prev().parent().parent().empty();
+            $(item).closest('.form-group').remove();
         },
         writeHTMLData: function (str) {
             $("#" + matchingMetro.prototype.config().frm + " .theLine").empty();
@@ -468,11 +484,19 @@ var matchingMetro;
             var item = "theLine";
             for (var i = 0; i < length; i++) {
                 console.log("i:" + i);
-                var html = "<div class='form-group' style='margin-top:8px;'>";
-                html += "<label class='col-md-2 col-sm-2 col-xs-12 control-label'>" + lableValue + "</label>";
-                html += "<div class='col-md-10 col-sm-10 col-xs-12 input-group'>";
-                html += "<input type='text' required class='form-control'" + "name='" + item + "' value='" + strs[i] + "'>";
-                html += "<span class='input-group-btn'>" + "<input class='btn btn-warning' type='button' value='X' onclick='matchingMetro.prototype.cleanHTMLData(this)'>" + "</span>";
+                var html = "<div class='row form-group' style='margin-top:8px;'>";
+                html += '<div class="col-sm-12">';
+                html += '<div class="form-inline x-valid">';
+                html += "<label class='col-sm-2 control-label'>" + lableValue + "</label>";
+                html += "<div class='col-sm-8'>";
+                html += "<input type='text' required class='form-control input-full'" + "name='" + item + "' value='" + strs[i] + "'>";
+                html += "</div>";
+
+                html += "<div class='col-sm-2'>";
+                html += "<span class='input-group-btn'>" + "<input class='btn btn-warning btn-sm' type='button' value='X' onclick='matchingMetro.prototype.cleanHTMLData(this)'>" + "</span>";
+                html += "</div>";
+
+                html += "</div>";
                 html += "</div>";
                 html += "</div>";
                 $("#" + matchingMetro.prototype.config().frm + " .theLine").append(html);
@@ -491,7 +515,7 @@ var matchingMetro;
     }
 
     //绑定事件
-    $('#' + matchingMetro.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
+    $('#' + matchingMetro.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
         matchingMetro.prototype.loadDataDicList();
     })
 })();
@@ -652,7 +676,7 @@ var matchingTrafficHub;//交通枢纽信息
     }
 
     //绑定事件
-    $('#' + matchingTrafficHub.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
+    $('#' + matchingTrafficHub.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
         matchingTrafficHub.prototype.loadDataDicList();
     })
 })();
@@ -754,11 +778,19 @@ var matchingTransit;
             $("#" + matchingTransit.prototype.config().frm + " .type").val(matchingTransit.prototype.config().type);
             $("#" + matchingTransit.prototype.config().frm + " .theLine").empty();
             var lableValue = "所在线路";
-            var html = "<div class='form-group' style='margin-top:8px;'>";
-            html += "<label class='col-md-2 col-sm-2 col-xs-12 control-label'>" + lableValue + "</label>";
-            html += "<div class='col-md-10 col-sm-10 col-xs-12 input-group'>";
-            html += "<input type='text' required class='form-control'" + "name='" + 'theLine' + "'" + ">";
-            html += "<span class='input-group-btn'>" + "<input class='btn btn-warning' type='button' value='X' onclick='matchingTransit.prototype.cleanHTMLData(this)'>" + "</span>";
+            var html = "<div class='row form-group' style='margin-top:8px;'>";
+            html += '<div class="col-sm-12">';
+            html += '<div class="form-inline x-valid">';
+            html += "<label class='col-sm-2 control-label'>" + lableValue + "</label>";
+            html += "<div class='col-sm-8'>";
+            html += "<input type='text' required class='form-control input-full'" + "name='" + 'theLine' + "'" + ">";
+            html += "</div>";
+
+            html += "<div class='col-sm-2'>";
+            html += "<span class='input-group-btn'>" + "<input class='btn btn-warning btn-sm' type='button' value='X' onclick='matchingTransit.prototype.cleanHTMLData(this)'>" + "</span>";
+            html += "</div>";
+
+            html += "</div>";
             html += "</div>";
             html += "</div>";
             $("#" + matchingTransit.prototype.config().frm + " .theLine").append(html);
@@ -813,18 +845,26 @@ var matchingTransit;
         },
         appendHTML: function (item, this_) {
             var lableValue = "所在线路";
-            var html = "<div class='form-group' style='margin-top:8px;'>";
-            html += "<label class='col-md-2 col-sm-2 col-xs-12 control-label'>" + lableValue + "</label>";
-            html += "<div class='col-md-10 col-sm-10 col-xs-12 input-group'>";
-            html += "<input type='text' required class='form-control'" + "name='" + item + "'" + ">";
-            html += "<span class='input-group-btn'>" + "<input class='btn btn-warning' type='button' value='X' onclick='matchingTransit.prototype.cleanHTMLData(this)'>" + "</span>";
+            var html = "<div class='row form-group' style='margin-top:8px;'>";
+            html += '<div class="col-sm-12">';
+            html += '<div class="form-inline x-valid">';
+            html += "<label class='col-sm-2 control-label'>" + lableValue + "</label>";
+            html += "<div class='col-sm-8'>";
+            html += "<input type='text' required class='form-control input-full'" + "name='" + item + "'" + ">";
+            html += "</div>";
+
+            html += "<div class='col-sm-2'>";
+            html += "<span class='input-group-btn'>" + "<input class='btn btn-warning btn-sm' type='button' value='X' onclick='matchingTransit.prototype.cleanHTMLData(this)'>" + "</span>";
+            html += "</div>";
+
+            html += "</div>";
             html += "</div>";
             html += "</div>";
             $("#" + matchingTransit.prototype.config().frm + " .theLine").append(html);
         },
         cleanHTMLData: function (item) {
             var value = "";
-            $(item).parent().prev().parent().parent().empty();
+            $(item).closest('.form-group').remove();
         },
         writeHTMLData: function (str) {
             $("#" + matchingTransit.prototype.config().frm + " .theLine").empty();
@@ -834,11 +874,19 @@ var matchingTransit;
             var item = "theLine";
             for (var i = 0; i < length; i++) {
                 console.log("i:" + i);
-                var html = "<div class='form-group' style='margin-top:8px;'>";
-                html += "<label class='col-md-2 col-sm-2 col-xs-12 control-label'>" + lableValue + "</label>";
-                html += "<div class='col-md-10 col-sm-10 col-xs-12 input-group'>";
-                html += "<input type='text' required class='form-control'" + "name='" + item + "' value='" + strs[i] + "'>";
-                html += "<span class='input-group-btn'>" + "<input class='btn btn-warning' type='button' value='X' onclick='matchingTransit.prototype.cleanHTMLData(this)'>" + "</span>";
+                var html = "<div class='row form-group' style='margin-top:8px;'>";
+                html += '<div class="col-sm-12">';
+                html += '<div class="form-inline x-valid">';
+                html += "<label class='col-sm-2 control-label'>" + lableValue + "</label>";
+                html += "<div class='col-sm-8'>";
+                html += "<input type='text' required class='form-control input-full'" + "name='" + item + "' value='" + strs[i] + "'>";
+                html += "</div>";
+
+                html += "<div class='col-sm-2'>";
+                html += "<span class='input-group-btn'>" + "<input class='btn btn-warning btn-sm' type='button' value='X' onclick='matchingTransit.prototype.cleanHTMLData(this)'>" + "</span>";
+                html += "</div>";
+
+                html += "</div>";
                 html += "</div>";
                 html += "</div>";
                 $("#" + matchingTransit.prototype.config().frm + " .theLine").append(html);
@@ -857,7 +905,7 @@ var matchingTransit;
     }
 
     //绑定事件
-    $('#' + matchingTransit.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
+    $('#' + matchingTransit.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
         matchingTransit.prototype.loadDataDicList();
     })
 })();
@@ -1020,7 +1068,7 @@ var matchingMedical;//医疗
     }
 
     //绑定事件
-    $('#' + matchingMedical.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
+    $('#' + matchingMedical.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
         matchingMedical.prototype.loadDataDicList();
     })
 })();
@@ -1155,7 +1203,7 @@ var matchingMaterial;
     }
 
     //绑定事件
-    $('#' + matchingMaterial.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
+    $('#' + matchingMaterial.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
         matchingMaterial.prototype.loadDataDicList();
     })
 })();
@@ -1257,11 +1305,19 @@ var matchingMarket; //商场
             $("#" + matchingMarket.prototype.config().frm + " .type").val(matchingMarket.prototype.config().type);
             $("#" + matchingMarket.prototype.config().frm + " .name").empty();
             var lableValue = "购物商场名称";
-            var html = "<div class='form-group' style='margin-top:8px;'>";
-            html += "<label class='col-md-2 col-sm-2 col-xs-12 control-label'>" + lableValue + "</label>";
-            html += "<div class='col-md-10 col-sm-10 col-xs-12 input-group'>";
-            html += "<input type='text' required class='form-control'" + "name='" + 'name' + "'" + ">";
-            html += "<span class='input-group-btn'>" + "<input class='btn btn-warning' type='button' value='X' onclick='matchingMarket.prototype.cleanHTMLData(this)'>" + "</span>";
+            var html = "<div class='row form-group' style='margin-top:8px;'>";
+            html += '<div class="col-sm-12">';
+            html += '<div class="form-inline x-valid">';
+            html += "<label class='col-sm-2 control-label'>" + lableValue + "</label>";
+            html += "<div class='col-sm-8'>";
+            html += "<input type='text' required class='form-control input-full'" + "name='" + 'name' + "'" + ">";
+            html += "</div>";
+
+            html += "<div class='col-sm-2'>";
+            html += "<span class='input-group-btn'>" + "<input class='btn btn-warning btn-sm' type='button' value='X' onclick='matchingRestaurant.prototype.cleanHTMLData(this)'>" + "</span>";
+            html += "</div>";
+
+            html += "</div>";
             html += "</div>";
             html += "</div>";
             $("#" + matchingMarket.prototype.config().frm + " .name").append(html);
@@ -1333,18 +1389,26 @@ var matchingMarket; //商场
         },
         appendHTML: function (item, this_) {
             var lableValue = "购物商场名称";
-            var html = "<div class='form-group' style='margin-top:8px;'>";
-            html += "<label class='col-md-2 col-sm-2 col-xs-12 control-label'>" + lableValue + "</label>";
-            html += "<div class='col-md-10 col-sm-10 col-xs-12 input-group'>";
-            html += "<input type='text' required class='form-control'" + "name='" + item + "'" + ">";
-            html += "<span class='input-group-btn'>" + "<input class='btn btn-warning' type='button' value='X' onclick='matchingMarket.prototype.cleanHTMLData(this)'>" + "</span>";
+            var html = "<div class='row form-group' style='margin-top:8px;'>";
+            html += '<div class="col-sm-12">';
+            html += '<div class="form-inline x-valid">';
+            html += "<label class='col-sm-2 control-label'>" + lableValue + "</label>";
+            html += "<div class='col-sm-8'>";
+            html += "<input type='text' required class='form-control input-full'" + "name='" + item + "'" + ">";
+            html += "</div>";
+
+            html += "<div class='col-sm-2'>";
+            html += "<span class='input-group-btn'>" + "<input class='btn btn-warning btn-sm' type='button' value='X' onclick='matchingRestaurant.prototype.cleanHTMLData(this)'>" + "</span>";
+            html += "</div>";
+
+            html += "</div>";
             html += "</div>";
             html += "</div>";
             $("#" + matchingMarket.prototype.config().frm + " .name").append(html);
         },
         cleanHTMLData: function (item) {
             var value = "";
-            $(item).parent().prev().parent().parent().empty();
+            $(item).closest('.form-group').remove();
         },
         writeHTMLData: function (str) {
             $("#" + matchingMarket.prototype.config().frm + " .name").empty();
@@ -1354,11 +1418,19 @@ var matchingMarket; //商场
             var item = "name";
             for (var i = 0; i < length; i++) {
                 console.log("i:" + i);
-                var html = "<div class='form-group' style='margin-top:8px;'>";
-                html += "<label class='col-md-2 col-sm-2 col-xs-12 control-label'>" + lableValue + "</label>";
-                html += "<div class='col-md-10 col-sm-10 col-xs-12 input-group'>";
-                html += "<input type='text' required class='form-control'" + "name='" + item + "' value='" + strs[i] + "'>";
-                html += "<span class='input-group-btn'>" + "<input class='btn btn-warning' type='button' value='X' onclick='matchingMarket.prototype.cleanHTMLData(this)'>" + "</span>";
+                var html = "<div class='row form-group' style='margin-top:8px;'>";
+                html += '<div class="col-sm-12">';
+                html += '<div class="form-inline x-valid">';
+                html += "<label class='col-sm-2 control-label'>" + lableValue + "</label>";
+                html += "<div class='col-sm-8'>";
+                html += "<input type='text' required class='form-control input-full'" + "name='" + item + "' value='" + strs[i] + "'>";
+                html += "</div>";
+
+                html += "<div class='col-sm-2'>";
+                html += "<span class='input-group-btn'>" + "<input class='btn btn-warning btn-sm' type='button' value='X' onclick='matchingRestaurant.prototype.cleanHTMLData(this)'>" + "</span>";
+                html += "</div>";
+
+                html += "</div>";
                 html += "</div>";
                 html += "</div>";
                 $("#" + matchingMarket.prototype.config().frm + " .name").append(html);
@@ -1367,7 +1439,7 @@ var matchingMarket; //商场
     }
 
     //绑定事件
-    $('#' + matchingMarket.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
+    $('#' + matchingMarket.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
         matchingMarket.prototype.loadDataDicList();
         //用做高德地图抓取数据type
         AssessCommon.loadDataDicByKey(AssessDicKey.estate_shop_category, null, function (html, data) {
@@ -1472,11 +1544,19 @@ var matchingRestaurant;//餐饮
             $("#" + matchingRestaurant.prototype.config().frm + " .type").val(matchingRestaurant.prototype.config().type);
             $("#" + matchingRestaurant.prototype.config().frm + " .name").empty();
             var lableValue = "餐饮名称";
-            var html = "<div class='form-group' style='margin-top:8px;'>";
-            html += "<label class='col-md-2 col-sm-2 col-xs-12 control-label'>" + lableValue + "</label>";
-            html += "<div class='col-md-10 col-sm-10 col-xs-12 input-group'>";
-            html += "<input type='text' required class='form-control'" + "name='" + 'name' + "'" + ">";
-            html += "<span class='input-group-btn'>" + "<input class='btn btn-warning' type='button' value='X' onclick='matchingRestaurant.prototype.cleanHTMLData(this)'>" + "</span>";
+            var html = "<div class='row form-group' style='margin-top:8px;'>";
+            html += '<div class="col-sm-12">';
+            html += '<div class="form-inline x-valid">';
+            html += "<label class='col-sm-2 control-label'>" + lableValue + "</label>";
+            html += "<div class='col-sm-8'>";
+            html += "<input type='text' required class='form-control input-full'" + "name='" + 'name' + "'" + ">";
+            html += "</div>";
+
+            html += "<div class='col-sm-2'>";
+            html += "<span class='input-group-btn'>" + "<input class='btn btn-warning btn-sm' type='button' value='X' onclick='matchingRestaurant.prototype.cleanHTMLData(this)'>" + "</span>";
+            html += "</div>";
+
+            html += "</div>";
             html += "</div>";
             html += "</div>";
             $("#" + matchingRestaurant.prototype.config().frm + " .name").append(html);
@@ -1548,18 +1628,26 @@ var matchingRestaurant;//餐饮
         },
         appendHTML: function (item, this_) {
             var lableValue = "餐饮名称";
-            var html = "<div class='form-group' style='margin-top:8px;'>";
-            html += "<label class='col-md-2 col-sm-2 col-xs-12 control-label'>" + lableValue + "</label>";
-            html += "<div class='col-md-10 col-sm-10 col-xs-12 input-group'>";
-            html += "<input type='text' required class='form-control'" + "name='" + item + "'" + ">";
-            html += "<span class='input-group-btn'>" + "<input class='btn btn-warning' type='button' value='X' onclick='matchingRestaurant.prototype.cleanHTMLData(this)'>" + "</span>";
+            var html = "<div class='row form-group' style='margin-top:8px;'>";
+            html += '<div class="col-sm-12">';
+            html += '<div class="form-inline x-valid">';
+            html += "<label class='col-sm-2 control-label'>" + lableValue + "</label>";
+            html += "<div class='col-sm-8'>";
+            html += "<input type='text' required class='form-control input-full'" + "name='" + item + "'" + ">";
+            html += "</div>";
+
+            html += "<div class='col-sm-2'>";
+            html += "<span class='input-group-btn'>" + "<input class='btn btn-warning btn-sm' type='button' value='X' onclick='matchingRestaurant.prototype.cleanHTMLData(this)'>" + "</span>";
+            html += "</div>";
+
+            html += "</div>";
             html += "</div>";
             html += "</div>";
             $("#" + matchingRestaurant.prototype.config().frm + " .name").append(html);
         },
         cleanHTMLData: function (item) {
             var value = "";
-            $(item).parent().prev().parent().parent().empty();
+            $(item).closest('.form-group').remove();
         },
         writeHTMLData: function (str) {
             $("#" + matchingRestaurant.prototype.config().frm + " .name").empty();
@@ -1569,11 +1657,19 @@ var matchingRestaurant;//餐饮
             var item = "name";
             for (var i = 0; i < length; i++) {
                 console.log("i:" + i);
-                var html = "<div class='form-group' style='margin-top:8px;'>";
-                html += "<label class='col-md-2 col-sm-2 col-xs-12 control-label'>" + lableValue + "</label>";
-                html += "<div class='col-md-10 col-sm-10 col-xs-12 input-group'>";
-                html += "<input type='text' required class='form-control'" + "name='" + item + "' value='" + strs[i] + "'>";
-                html += "<span class='input-group-btn'>" + "<input class='btn btn-warning' type='button' value='X' onclick='matchingRestaurant.prototype.cleanHTMLData(this)'>" + "</span>";
+                var html = "<div class='row form-group' style='margin-top:8px;'>";
+                html += '<div class="col-sm-12">';
+                html += '<div class="form-inline x-valid">';
+                html += "<label class='col-sm-2 control-label'>" + lableValue + "</label>";
+                html += "<div class='col-sm-8'>";
+                html += "<input type='text' required class='form-control input-full'" + "name='" + item + "' value='" + strs[i] + "'>";
+                html += "</div>";
+
+                html += "<div class='col-sm-2'>";
+                html += "<span class='input-group-btn'>" + "<input class='btn btn-warning btn-sm' type='button' value='X' onclick='matchingRestaurant.prototype.cleanHTMLData(this)'>" + "</span>";
+                html += "</div>";
+
+                html += "</div>";
                 html += "</div>";
                 html += "</div>";
                 $("#" + matchingRestaurant.prototype.config().frm + " .name").append(html);
@@ -1582,7 +1678,7 @@ var matchingRestaurant;//餐饮
     }
 
     //绑定事件
-    $('#' + matchingRestaurant.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
+    $('#' + matchingRestaurant.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
         matchingRestaurant.prototype.loadDataDicList();
         //用做高德地图抓取数据type
         AssessCommon.loadDataDicByKey(AssessDicKey.estate_dining_category, null, function (html, data) {
@@ -1687,11 +1783,20 @@ var matchingRecreation;//娱乐
             $("#" + matchingRecreation.prototype.config().frm + " .type").val(matchingRecreation.prototype.config().type);
             $("#" + matchingRecreation.prototype.config().frm + " .name").empty();
             var lableValue = "休闲娱乐名称";
-            var html = "<div class='form-group' style='margin-top:8px;'>";
-            html += "<label class='col-md-2 col-sm-2 col-xs-12 control-label'>" + lableValue + "</label>";
-            html += "<div class='col-md-10 col-sm-10 col-xs-12 input-group'>";
-            html += "<input type='text' required class='form-control'" + "name='" + 'name' + "'" + ">";
-            html += "<span class='input-group-btn'>" + "<input class='btn btn-warning' type='button' value='X' onclick='matchingRecreation.prototype.cleanHTMLData(this)'>" + "</span>";
+            var html = "<div class='row form-group' style='margin-top:8px;'>";
+            html += '<div class="col-sm-12">';
+            html += '<div class="form-inline x-valid">'
+            ;
+            html += "<label class='col-sm-2 control-label'>" + lableValue + "</label>";
+            html += "<div class='col-sm-8'>";
+            html += "<input type='text' required class='form-control input-full'" + "name='" + 'name' + "'" + ">";
+            html += "</div>";
+
+            html += "<div class='col-sm-2'>";
+            html += "<span class='input-group-btn'>" + "<input class='btn btn-warning btn-sm' type='button' value='X' onclick='matchingRecreation.prototype.cleanHTMLData(this)'>" + "</span>";
+            html += "</div>";
+
+            html += "</div>";
             html += "</div>";
             html += "</div>";
             $("#" + matchingRecreation.prototype.config().frm + " .name").append(html);
@@ -1760,18 +1865,27 @@ var matchingRecreation;//娱乐
         },
         appendHTML: function (item, this_) {
             var lableValue = "休闲娱乐名称";
-            var html = "<div class='form-group' style='margin-top:8px;'>";
-            html += "<label class='col-md-2 col-sm-2 col-xs-12 control-label'>" + lableValue + "</label>";
-            html += "<div class='col-md-10 col-sm-10 col-xs-12 input-group'>";
-            html += "<input type='text' required class='form-control'" + "name='" + item + "'" + ">";
-            html += "<span class='input-group-btn'>" + "<input class='btn btn-warning' type='button' value='X' onclick='matchingRecreation.prototype.cleanHTMLData(this)'>" + "</span>";
+            var html = "<div class='row form-group' style='margin-top:8px;'>";
+            html += '<div class="col-sm-12">';
+            html += '<div class="form-inline x-valid">'
+            ;
+            html += "<label class='col-sm-2 control-label'>" + lableValue + "</label>";
+            html += "<div class='col-sm-8'>";
+            html += "<input type='text' required class='form-control input-full'" + "name='" + item + "'" + ">";
+            html += "</div>";
+
+            html += "<div class='col-sm-2'>";
+            html += "<span class='input-group-btn'>" + "<input class='btn btn-warning btn-sm' type='button' value='X' onclick='matchingRecreation.prototype.cleanHTMLData(this)'>" + "</span>";
+            html += "</div>";
+
+            html += "</div>";
             html += "</div>";
             html += "</div>";
             $("#" + matchingRecreation.prototype.config().frm + " .name").append(html);
         },
         cleanHTMLData: function (item) {
             var value = "";
-            $(item).parent().prev().parent().parent().empty();
+            $(item).closest('.form-group').remove();
         },
         writeHTMLData: function (str) {
             $("#" + matchingRecreation.prototype.config().frm + " .name").empty();
@@ -1781,11 +1895,19 @@ var matchingRecreation;//娱乐
             var item = "name";
             for (var i = 0; i < length; i++) {
                 console.log("i:" + i);
-                var html = "<div class='form-group' style='margin-top:8px;'>";
-                html += "<label class='col-md-2 col-sm-2 col-xs-12 control-label'>" + lableValue + "</label>";
-                html += "<div class='col-md-10 col-sm-10 col-xs-12 input-group'>";
-                html += "<input type='text' required class='form-control'" + "name='" + item + "' value='" + strs[i] + "'>";
-                html += "<span class='input-group-btn'>" + "<input class='btn btn-warning' type='button' value='X' onclick='matchingRecreation.prototype.cleanHTMLData(this)'>" + "</span>";
+                var html = "<div class='row form-group' style='margin-top:8px;'>";
+                html += '<div class="col-sm-12">';
+                html += '<div class="form-inline x-valid">';
+                html += "<label class='col-sm-2 control-label'>" + lableValue + "</label>";
+                html += "<div class='col-sm-8'>";
+                html += "<input type='text' required class='form-control input-full'" + "name='" + item + "' value='" + strs[i] + "'>";
+                html += "</div>";
+
+                html += "<div class='col-sm-2'>";
+                html += "<span class='input-group-btn'>" + "<input class='btn btn-warning btn-sm' type='button' value='X' onclick='matchingRecreation.prototype.cleanHTMLData(this)'>" + "</span>";
+                html += "</div>";
+
+                html += "</div>";
                 html += "</div>";
                 html += "</div>";
                 $("#" + matchingRecreation.prototype.config().frm + " .name").append(html);
@@ -1794,7 +1916,7 @@ var matchingRecreation;//娱乐
     }
 
     //绑定事件
-    $('#' + matchingRecreation.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
+    $('#' + matchingRecreation.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
         matchingRecreation.prototype.loadDataDicList();
         //用做高德地图抓取数据type
         AssessCommon.loadDataDicByKey(AssessDicKey.estate_entertainment_category, null, function (html, data) {
@@ -1963,7 +2085,7 @@ var matchingFinance;
     };
 
     //绑定事件
-    $('#' + matchingFinance.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
+    $('#' + matchingFinance.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
         //用做高德地图抓取数据type
         AssessCommon.loadDataDicByKey(AssessDicKey.estate_finance_category, null, function (html, data) {
             $("#" + matchingFinance.prototype.config().table).closest("form").find('select.category').empty().html(html).trigger('change');
@@ -2153,7 +2275,7 @@ var matchingEnvironment;
     }
 
     //绑定事件
-    $('#' + matchingEnvironment.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
+    $('#' + matchingEnvironment.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
 
         matchingEnvironment.prototype.loadDataDicList();
     })
@@ -2319,7 +2441,7 @@ var matchingEducation;
     };
 
     //绑定事件
-    $('#' + matchingEducation.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
+    $('#' + matchingEducation.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
         matchingEducation.prototype.loadDataDicList();
         //用做高德地图抓取数据type
         AssessCommon.loadDataDicByKey(AssessDicKey.estate_school_gradation, null, function (html, data) {
@@ -2452,7 +2574,7 @@ var estateNetwork;
     }
 
     //绑定事件
-    $('#' + estateNetwork.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
+    $('#' + estateNetwork.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
         estateNetwork.prototype.loadDataDicList();
     })
 })();
@@ -2610,7 +2732,7 @@ var estateParking;
     }
 
     //绑定事件
-    $('#' + estateParking.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
+    $('#' + estateParking.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
         estateParking.prototype.loadDataDicList();
     })
 })();
@@ -2749,7 +2871,7 @@ var estateSupplyWater;
     }
 
     //绑定事件
-    $('#' + estateSupplyWater.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
+    $('#' + estateSupplyWater.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
         estateSupplyWater.prototype.loadDataDicList();
     })
 })();
@@ -2887,7 +3009,7 @@ var estateDrainWater;
     }
 
     //绑定事件
-    $('#' + estateDrainWater.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
+    $('#' + estateDrainWater.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
         estateDrainWater.prototype.loadDataDicList();
     })
 })();
@@ -3025,7 +3147,7 @@ var estateSupplyPower;
     }
 
     //绑定事件
-    $('#' + estateSupplyPower.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
+    $('#' + estateSupplyPower.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
         estateSupplyPower.prototype.loadDataDicList();
     })
 })();
@@ -3162,7 +3284,7 @@ var estateSupplyHeating;
     }
 
     //绑定事件
-    $('#' + estateSupplyHeating.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
+    $('#' + estateSupplyHeating.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
         estateSupplyHeating.prototype.loadDataDicList();
     })
 })();
@@ -3299,7 +3421,7 @@ var estateSupplyGas;
     }
 
     //绑定事件
-    $('#' + estateSupplyGas.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
+    $('#' + estateSupplyGas.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
         estateSupplyGas.prototype.loadDataDicList();
     })
 })();
@@ -3455,7 +3577,7 @@ var estateInvestigation;
     }
 
     //绑定事件
-    $('#' + estateInvestigation.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
+    $('#' + estateInvestigation.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
         estateInvestigation.prototype.loadDataDicList();
     })
 

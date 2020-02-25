@@ -3,137 +3,168 @@
 --%>
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
-<div class="x_panel">
-    <div class="x_title collapse-link">
-        <ul class="nav navbar-right panel_toolbox">
-            <li><a class="collapse-link"><i
-                    class="fa fa-chevron-up"></i></a></li>
-        </ul>
-        <h4>配备电梯</h4>
-    </div>
-    <div class="x_content collapse">
-        <button type="button" class="btn btn-success" onclick="unitElevator.prototype.showModel()"
-                data-toggle="modal" href="#divBox"> 新增
-        </button>
-        <table class="table table-bordered" id="ExamineUnitElevatorList">
-            <!-- cerare document add ajax data-->
-        </table>
+<div class="col-md-12">
+    <div class="card full-height">
+        <div class="card-header collapse-link">
+            <div class="card-head-row">
+                <div class="card-title">
+                    配备电梯
+                </div>
+                <div class="card-tools">
+                    <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                            class="fa fa-angle-down"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <form class="form-horizontal">
+                <p>
+                    <button style="margin-left: 5px" class="btn btn-success btn-sm" type="button"
+                            data-toggle="modal" onclick="unitElevator.prototype.showModel()"
+                            href="#divBoxExamineUnitElevator">
+											<span class="btn-label">
+												<i class="fa fa-plus"></i>
+											</span>
+                        新增
+                    </button>
+                </p>
+                <table class="table table-bordered" id="ExamineUnitElevatorList">
+                    <!-- cerare document add ajax data-->
+                </table>
+            </form>
+        </div>
     </div>
 </div>
-
 <div id="divBoxExamineUnitElevator" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
+                <h4 class="modal-title">配备电梯</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">配备电梯</h3>
             </div>
-            <form id="frmExamineUnitElevator" class="form-horizontal">
-                <input type="hidden" name="id">
-                <div class="modal-body">
+
+            <div class="modal-body">
+                <form id="frmExamineUnitElevator" class="form-horizontal">
+                    <input type="hidden" name="id">
                     <div class="row">
-                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                            <div class="panel-body">
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                    <div class="form-inline x-valid">
+                                        <label class="col-sm-2 control-label">
                                             电梯维护情况<span class="symbol required"></span>
                                         </label>
-                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
+                                        <div class="col-sm-10">
                                             <select required="required" name="maintenance"
-                                                    class="form-control search-select select2 maintenance">
+                                                    class="form-control input-full search-select select2 maintenance">
                                             </select>
                                         </div>
                                     </div>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                    <div class="form-inline x-valid">
+                                        <label class="col-sm-2 control-label">
                                             电梯类型<span class="symbol required"></span>
                                         </label>
-                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
+                                        <div class="col-sm-10">
                                             <select required="required" name="type"
-                                                    class="form-control search-select select2 type">
+                                                    class="form-control input-full search-select select2 type">
                                             </select>
                                         </div>
                                     </div>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                    <div class="form-inline x-valid">
+                                        <label class="col-sm-2 control-label">
                                             电梯品牌<span class="symbol required"></span>
                                         </label>
-                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
-                                            <input type="text" class="form-control" name="brand"
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control input-full" name="brand"
                                                    placeholder="电梯品牌" required="required">
                                         </div>
                                     </div>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                    <div class="form-inline x-valid">
+                                        <label class="col-sm-2 control-label">
                                             电梯数量<span class="symbol required"></span>
                                         </label>
-                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
+                                        <div class="col-sm-10">
                                             <input type="text" placeholder="电梯数量(数字)" data-rule-number='true'
-                                                   name="number" class="form-control" required="required">
+                                                   name="number" class="form-control input-full" required="required">
                                         </div>
                                     </div>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                    <div class="form-inline x-valid">
+                                        <label class="col-sm-2 control-label">
                                             准载人数
                                         </label>
-                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
+                                        <div class="col-sm-10">
                                             <input type="text" placeholder="准载人数(数字)" data-rule-number='true'
-                                                   name="quasiLoadNumber" class="form-control" >
+                                                   name="quasiLoadNumber" class="form-control input-full" >
                                         </div>
                                     </div>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                    <div class="form-inline x-valid">
+                                        <label class="col-sm-2 control-label">
                                             准载重量
                                         </label>
-                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
+                                        <div class="col-sm-10">
                                             <input type="text" placeholder="准载重量(数字)" data-rule-number='true'
-                                                   name="quasiLoadWeight" class="form-control" >
+                                                   name="quasiLoadWeight" class="form-control input-full" >
                                         </div>
                                     </div>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                    <div class="form-inline x-valid">
+                                        <label class="col-sm-2 control-label">
                                             运行速度
                                         </label>
-                                        <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
-                                            <input type="text" class="form-control" name="runningSpeed"
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control input-full" name="runningSpeed"
                                                    placeholder="运行速度" >
                                         </div>
                                     </div>
+                                    </div>
                                 </div>
+                                
+                                
                             </div>
                         </div>
                     </div>
-                </div>
-            </form>
+                </form>
+            </div>
             <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">
-                    取消
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
                 </button>
-                <button type="button" class="btn btn-primary" onclick="unitElevator.prototype.saveData()">
+                <button type="button" class="btn btn-primary btn-sm" onclick="unitElevator.prototype.saveData()">
                     保存
                 </button>
             </div>
+
         </div>
     </div>
 </div>
-
 
 
 </html>

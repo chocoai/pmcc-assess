@@ -162,6 +162,9 @@ public class ProjectInfoService {
             if (!init) {
                 projectInfo.setStatus(ProjectStatusEnum.DRAFT.getKey());
                 projectInfo.setProjectStatus(ProjectStatusEnum.DRAFT.getKey());
+            }else {
+                projectInfo.setStatus(ProjectStatusEnum.RUNING.getKey());
+                projectInfo.setProjectStatus(ProjectStatusEnum.RUNING.getKey());
             }
             int projectId = saveProjectInfo(projectInfo);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(ProjectInfo.class), projectId);

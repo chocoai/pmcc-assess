@@ -270,11 +270,14 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-sm-6"
-                             id="industrySupplyInfoContainer">
 
                         </div>
-                        </div>
+                    </div>
+                    <div class="row form-group">
+                    <div class="col-sm-6"
+                         id="industrySupplyInfoContainer">
+
+                    </div>
                     </div>
                 </div>
             </div>
