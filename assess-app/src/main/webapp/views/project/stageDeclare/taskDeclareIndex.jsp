@@ -209,6 +209,7 @@
 
 
                     <%@include file="/views/share/form_log.jsp" %>
+
                     <%@include file="/views/method/module/economicIndicators.jsp" %>
                     <%@include file="/views/project/tool/declareApplyExtensionCumstomModelView.jsp" %>
 

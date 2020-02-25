@@ -688,17 +688,32 @@ assessCommonHouse.attachmentAutomatedWarrants = function (_this) {
 assessCommonHouse.loadList = function () {
     var cols = declareCommon.getHouseColumn();
     cols.push({field: 'fileViewName', title: '附件'});
+
+
     cols.push({
-        field: 'id', title: '操作', formatter: function (value, row, index) {
-            var str = '<div class="btn-margin">';
-            str += '<a class="btn btn-xs btn-success" href="javascript:assessCommonHouse.showAddModelLand(' + row.id + ');" ><i class="fa fa-eye">土地证</i></a>';
-            str += '<a class="btn btn-xs btn-success" href="javascript:assessCommonHouse.showAddModelDeclareEconomicIndicators(' + row.id + ');" ><i class="fa fa-themeisle">经济指标</i></a>';
-            str += "<a class='btn btn-xs btn-success tooltips' data-placement='top' data-original-title='房产证附件' onclick='assessCommonHouse.houseImportEvent(" + row.id + ")'" + ">" + "<i class='fa'>" + "房产证附件" + "</a>";
-            str += "<a class='btn btn-xs btn-success tooltips' data-placement='top' data-original-title='土地证附件' onclick='assessCommonHouse.landImportEvent(" + row.id + ")'" + ">" + "<i class='fa'>" + "土地证附件" + "</a>";
-            str += '</div>';
+        field: 'id', title: '操作', width:"20%",formatter: function (value, row, index) {
+            var str = '<button onclick="assessCommonHouse.showAddModelLand(' + row.id + ')" style="margin-left: 5px;" class="btn  btn-success  btn-xs tooltips"  data-placement="bottom" data-original-title="土地证">';
+            str += '土地证 <i class="fa fa-eye"></i>';
+            str += '</button>';
+
+            str += '<button onclick="assessCommonHouse.showAddModelDeclareEconomicIndicators(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-success  btn-xs tooltips"  data-placement="bottom" data-original-title="经济指标">';
+            str += '经济指标 <i class="fa fa-adjust"></i>';
+            str += '</button>';
+
+            str += '<button onclick="assessCommonHouse.houseImportEvent(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn  btn-success  btn-xs tooltips"  data-placement="bottom" data-original-title="房产证附件">';
+            str += '房产证附件 <i class="fa fa-file"></i>';
+            str += '</button>';
+
+
+            str += '<button onclick="assessCommonHouse.landImportEvent(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn  btn-success  btn-xs tooltips"  data-placement="bottom" data-original-title="土地证附件">';
+            str += '土地证附件 <i class="fa fa-file"></i>';
+            str += '</button>';
+
+
             return str;
         }
     });
+
     $("#" + assessCommonHouse.config.table).bootstrapTable('destroy');
     TableInit(assessCommonHouse.config.table, getContextPath() + "/declareRealtyHouseCert/getDeclareRealtyHouseCertList", cols, {
         planDetailsId: declareCommon.getPlanDetailsId(),
