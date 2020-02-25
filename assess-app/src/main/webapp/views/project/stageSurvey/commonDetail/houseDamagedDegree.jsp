@@ -1,43 +1,69 @@
 
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
-<div class="x_panel">
-    <div class="x_title collapse-link" onclick="damagedDegree.loadDamagedDegreeList();">
-        <ul class="nav navbar-right panel_toolbox">
-            <li><a class="collapse-link"><i
-                    class="fa fa-chevron-up"></i></a></li>
-        </ul>
-        <h4>房屋完损度</h4>
-        <div class="clearfix"></div>
-    </div>
-    <div class="x_content collapse">
-        <div class="" role="tabpanel" data-example-id="togglable-tabs">
-            <ul id="damagedDegreeTab" class="nav nav-tabs bar_tabs" role="tablist">
-            </ul>
-            <div id="damagedDegreeTabContent" class="tab-content">
+<div class="col-md-12">
+    <div class="card full-height">
+        <div class="card-header collapse-link" onclick="damagedDegree.loadDamagedDegreeList();">
+            <div class="card-head-row">
+                <div class="card-title">
+                    房屋完损度
+                </div>
+                <div class="card-tools">
+                    <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                            class="fa fa-angle-down"></span>
+                    </button>
+                </div>
             </div>
+        </div>
+        <div class="card-body" style="display: none">
+            <form class="form-horizontal">
+                <ul id="damagedDegreeTab" class="nav nav-tabs bar_tabs" role="tablist">
+                </ul>
+                <div id="damagedDegreeTabContent" class="tab-content">
+                </div>
+            </form>
         </div>
     </div>
 </div>
 
+
+
 <!--明细项-->
-<div id="damagedDegreeDetailListModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
-     role="dialog" aria-hidden="true">
+<div id="damagedDegreeDetailListModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
+                <h4 class="modal-title">明细数据列表</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title" id="titleContent">明细数据列表</h3>
             </div>
-            <div class="panel-body">
-                <table class="table table-bordered" id="damagedDegreeDetailList">
-                </table>
+
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <div class="col-md-12">
+                                    <table class="table table-bordered" id="damagedDegreeDetailList">
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+            </div>
+
         </div>
     </div>
 </div>
+
+
 
 <script type="text/html" id="damagedDegreeTabContentHtml">
     <div role="tabpanel" class="tab-pane fade" id="tab_content_{type}" aria-labelledby="profile-tab">

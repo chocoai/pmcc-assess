@@ -3,33 +3,42 @@
 --%>
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
-<div id="divBoxUnitHuxingPriceTable" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
-     role="dialog"
+<div id="divBoxUnitHuxingPriceTable" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
+                <h4 class="modal-title">调查信息</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">调查信息</h3>
             </div>
-            <form id="frmUnitHuxingPriceTable" class="form-horizontal">
-                <input type="hidden" name="unitHuxingId">
-                <div class="modal-body">
-                    <table class="table table-bordered" id="UnitHuxingPriceList">
-                        <!-- cerare document add ajax data-->
-                    </table>
-                </div>
-            </form>
+
+            <div class="modal-body">
+                <form id="frmUnitHuxingPriceTable" class="form-horizontal">
+                    <input type="hidden" name="unitHuxingId">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <div class="col-md-12">
+                                    <table class="table table-bordered" id="UnitHuxingPriceList">
+                                        <!-- cerare document add ajax data-->
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
             <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
                     关闭
                 </button>
             </div>
+
         </div>
     </div>
 </div>
+
 
 <script>
     var unitHuxingPriceDetail;

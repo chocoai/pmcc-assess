@@ -16,7 +16,7 @@
                 </div>
             </div>
         </div>
-        <div class="card-body">
+        <div class="card-body " style="display: none">
             <form class="form-horizontal">
                 <div class="row row row row row form-group form-inline">
                     <button style="margin-left: 5px" class="btn btn-success btn-sm" type="button"

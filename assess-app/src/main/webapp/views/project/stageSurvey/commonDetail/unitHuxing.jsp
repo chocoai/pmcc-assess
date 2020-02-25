@@ -2,20 +2,27 @@
  户型
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
-
-<div class="x_panel">
-    <div class="x_title collapse-link">
-        <ul class="nav navbar-right panel_toolbox">
-            <li><a class="collapse-link"><i
-                    class="fa fa-chevron-up"></i></a></li>
-        </ul>
-        <h4>户型</h4>
-    </div>
-    <div class="x_content collapse">
-        <table class="table table-bordered" id="UnitHuxingListDetail">
-            <!-- cerare document add ajax data-->
-        </table>
+<div class="col-md-12">
+    <div class="card full-height">
+        <div class="card-header collapse-link">
+            <div class="card-head-row">
+                <div class="card-title">
+                    户型
+                </div>
+                <div class="card-tools">
+                    <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                            class="fa fa-angle-down"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="card-body" style="display: none">
+            <form class="form-horizontal">
+                <table class="table table-bordered" id="UnitHuxingListDetail">
+                    <!-- cerare document add ajax data-->
+                </table>
+            </form>
+        </div>
     </div>
 </div>
 
@@ -67,7 +74,7 @@
         }
 
         //绑定事件
-        $('#' + unitHuxingDetail.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
+        $('#' + unitHuxingDetail.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
             unitHuxingDetail.prototype.loadDataDicList();
         })
     })();

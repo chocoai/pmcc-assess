@@ -2,7 +2,7 @@
  房间
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<div class="col-md-12">
+<div class="col-md-12" >
     <div class="card full-height">
         <div class="card-header collapse-link">
             <div class="card-head-row">
@@ -16,7 +16,7 @@
                 </div>
             </div>
         </div>
-        <div class="card-body">
+        <div class="card-body" style="display: none">
             <form class="form-horizontal">
                 <p>
                     <button style="margin-left: 5px" class="btn btn-success btn-sm" type="button"
