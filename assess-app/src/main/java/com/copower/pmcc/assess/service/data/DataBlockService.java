@@ -108,6 +108,10 @@ public class DataBlockService {
     private BasicHouseDamagedDegreeService basicHouseDamagedDegreeService;
     @Autowired
     private BasicHouseCaseSummaryService basicHouseCaseSummaryService;
+    @Autowired
+    private CaseEstateService caseEstateService;
+    @Autowired
+    private CaseEstateLandStateService caseEstateLandStateService;
 
 
     private final Logger logger = LoggerFactory.getLogger(getClass());

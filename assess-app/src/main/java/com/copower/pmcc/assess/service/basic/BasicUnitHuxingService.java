@@ -222,19 +222,6 @@ public class BasicUnitHuxingService {
                     list.add(unitHuxingVo);
                 }
             }
-
-        } else if (caseUnitId != null) {
-            CaseUnitHuxing caseUnitHuxing = new CaseUnitHuxing();
-            caseUnitHuxing.setUnitId(caseUnitId);
-            List<CaseUnitHuxingVo> huxingList = caseUnitHuxingService.getCaseUnitHuxingList(caseUnitHuxing);
-            if (!CollectionUtils.isEmpty(huxingList)) {
-                for (CaseUnitHuxingVo huxing : huxingList) {
-                    BasicUnitHuxingVo basicUnitHuxingVo = new BasicUnitHuxingVo();
-                    BeanUtils.copyProperties(huxing, basicUnitHuxingVo);
-                    basicUnitHuxingVo.setTableName(FormatUtils.entityNameConvertToTableName(CaseUnitHuxing.class));
-                    list.add(basicUnitHuxingVo);
-                }
-            }
         }
         vo.setRows(ObjectUtils.isEmpty(list) ? Lists.newArrayList() : list);
         vo.setTotal(page.getTotal());
