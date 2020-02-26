@@ -119,7 +119,7 @@
                     <div class="col-md-12">
                         <div class="form-inline x-valid">
                             <label class="col-sm-1 col-form-label">
-                                合同金额（单位/元）
+                                合同金额（元）
                             </label>
                             <div class="col-sm-3">
                                 <label class="form-control input-full">${projectInfo.contractPrice}</label>

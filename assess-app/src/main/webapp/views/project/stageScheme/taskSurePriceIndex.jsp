@@ -321,7 +321,7 @@
             schemeSurePriceItem.weight = $(this).find('[name=weight]').attr('data-value');
             surePriceApply.surePriceItemList.push(schemeSurePriceItem);
         });
-        Alert("确认更新", 2, null, function () {
+        AlertConfirm("确认更新么", "将同步更新与标准估价对象关联的其他对象的初始单价", function () {
             $.ajax({
                 url: "${pageContext.request.contextPath}/schemeSurePrice/updateCalculationSchemeSurePrice",
                 data: {
@@ -335,7 +335,7 @@
                         surePrice.surePrice('${projectPlanDetails.judgeObjectId}', false);
                         surePrice.loadAdjustJudgeObject('${projectPlanDetails.judgeObjectId}');
                     } else {
-                        Alert("失败，失败原因:" + result.errmsg, 1, null, null);
+                        AlertError("失败，失败原因:" + result.errmsg, 1, null, null);
                     }
                 }
             });
@@ -407,7 +407,7 @@
                         ele.append(html);
                     });
                 } else {
-                    Alert("获取数据失败，失败原因:" + result.errmsg, 1, null, null);
+                    AlertError("获取数据失败，失败原因:" + result.errmsg, 1, null, null);
                 }
             }
         });
@@ -442,7 +442,7 @@
                     surePrice.computePrice($("#tbody_data_section").find(':text[name=weight]:first'));
                 }
                 else {
-                    Alert("获取数据失败，失败原因:" + result.errmsg, 1, null, null);
+                    AlertError("获取数据失败，失败原因:" + result.errmsg, 1, null, null);
                 }
             }
         });
@@ -517,12 +517,12 @@
                     })
                 }
                 else {
-                    Alert("获取数据失败，失败原因:" + result.errmsg, 1, null, null);
+                    AlertError("获取数据失败，失败原因:" + result.errmsg, 1, null, null);
                 }
             },
             error: function (result) {
                 Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+                AlertError("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
             }
         });
         $("#modal_factor").find('[name=judgeObjectId]').val(judgeObjectId);
@@ -578,19 +578,19 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    toastr.success("保存成功");
+                    notifySuccess("保存成功");
                     var tr = $('#adjust_factor_table').find('[data-id=' + judgeObjectId + ']');
                     tr.find('[data-name=price]').text(result.data.price);
                     tr.find('[data-name=coefficient]').text(result.data.coefficient);
                     $("#modal_factor").modal('hide');
                 }
                 else {
-                    Alert("获取数据失败，失败原因:" + result.errmsg, 1, null, null);
+                    AlertError("获取数据失败，失败原因:" + result.errmsg, 1, null, null);
                 }
             },
             error: function (result) {
                 Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+                AlertError("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
             }
         });
     }
@@ -640,7 +640,7 @@
     //调整因素粘贴
     surePrice.paste = function (_this) {
         if (!surePrice.beCopyJudgeObject) {
-            Alert('请选择被复制对象');
+            notifyInfo('请选择被复制对象');
             return false;
         }
         var judgeObjectId = $(_this).closest('tr').attr('data-id');
@@ -656,13 +656,13 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    toastr.success("保存成功");
+                    notifySuccess("保存成功");
                     //更新元素信息
                     $(_this).closest('tr').find('[data-name=price]').text(surePrice.beCopyJudgeObject.price);
                     $(_this).closest('tr').find('[data-name=coefficient]').text(surePrice.beCopyJudgeObject.coefficient);
                 }
                 else {
-                    Alert("获取数据失败，失败原因:" + result.errmsg, 1, null, null);
+                    AlertError("获取数据失败，失败原因:" + result.errmsg, 1, null, null);
                 }
             }
         });
@@ -671,7 +671,7 @@
     //调整因素批量粘贴
     surePrice.pasteBatch = function () {
         if (!surePrice.beCopyJudgeObject) {
-            Alert('请选择被复制对象');
+            notifyInfo('请选择被复制对象');
             return false;
         }
         var judgeObjectIdArray = [];
@@ -682,7 +682,7 @@
             }
         })
         if (judgeObjectIdArray.length <= 0) {
-            Alert('请选择勾选参与复制对象');
+            notifyInfo('请选择勾选参与复制对象');
             return false;
         }
         Loading.progressShow();
@@ -697,7 +697,7 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    toastr.success("保存成功");
+                    notifySuccess("保存成功");
                     //更新元素信息
                     $("#adjust_factor_table tbody").find(':checkbox:checked').each(function () {
                         $(this).closest('tr').find('[data-name=price]').text(surePrice.beCopyJudgeObject.price);
@@ -705,7 +705,7 @@
                     })
                 }
                 else {
-                    Alert("获取数据失败，失败原因:" + result.errmsg, 1, null, null);
+                    AlertError("获取数据失败，失败原因:" + result.errmsg, 1, null, null);
                 }
             }
         });
@@ -735,13 +735,13 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    Alert(result.data);
+                    notifySuccess(result.data);
                     surePrice.loadAdjustJudgeObject('${projectPlanDetails.judgeObjectId}');
                 }
             },
             error: function (result, status, e) {
                 Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + result);
+                AlertError("调用服务端方法失败，失败原因:" + result);
             }
         });
     }

@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Calvin
-  Date: 2019-05-31
-  Time: 10:47
-  To change this template use File | Settings | File Templates.
---%>
 
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -15,8 +8,6 @@
     <%@include file="/views/share/main_css.jsp" %>
 </head>
 <body>
-<%--<%@include file="share/main_head.jsp" %>--%>
-<!-- start: MAIN CONTAINER -->
 <div class="wrapper">
     <div class="main-panel" style="width: 100%">
         <div class="content" style="margin-top: 0px;">
@@ -63,9 +54,12 @@
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
                                                 <label class="col-sm-1 control-label">
-                                                    <a class="btn btn-success btn-sm" onclick="previewContract()">
+                                                    <button type="button" class="btn btn-primary btn-sm" onclick="previewContract()" data-placement="bottom" data-original-title="生成文件">
+                                                         <span class="btn-label">
+                                                            <i class="fa fa-file-invoice"></i>
+                                                         </span>
                                                         生成文件
-                                                    </a>
+                                                    </button>
                                                 </label>
                                                 <div class="col-sm-11">
                                                     <div id="_file_upload">
@@ -76,10 +70,9 @@
                                     </div>
                                     <div class="row form-group">
                                         <div class="col-md-4">
-
                                                 <label class="col-sm-1 control-label">
                                                     <input id="file_upload" name="file_upload" type="file"
-                                                           multiple="false">
+                                                         class="uploadifive-button"  multiple="false">
                                                 </label>
                                            
                                         </div>
@@ -88,61 +81,14 @@
                             </div>
                         </div>
                     </div>
-                    <%--        <div class="x_panel">
-                                <div class="x_title">
-                                    <h2>发文信息</h2>
-                                    <div class="clearfix"></div>
-                                </div>
-                                <div class="x_content">
-                                    <input type="hidden" id="id" name="id" value="${documentSend.id}">
-                                    <input type="hidden" id="contractType" name="contractType" value="${documentSend.contractType}">
-                                    <input type="hidden" id="projectId" name="projectId" value="${documentSend.projectId}">
-
-                                    <form id="cmsContractInfo" class="form-horizontal">
-                                        <div class="form-group">
-                                            <div class='x-valid'>
-                                                <label class='col-sm-1 control-label'>
-                                                    发文标题<span class="symbol required"></span>
-                                                </label>
-                                                <div class='col-sm-11'>
-                                                    <input type="text" id="title" name="title" value="${documentSend.title}"
-                                                           required class='form-control input-full'>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        ${fieldsHtml}
-                                        <div class="form-group">
-                                            <div class="x-valid">
-                                                <label class="col-sm-1 control-label">
-                                                    <a class="btn btn-success" onclick="previewContract()">生成文件</a>
-                                                </label>
-                                                <div class="col-sm-11">
-
-                                                    <div id="_file_upload">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <div class="x-valid">
-                                                <label class="col-sm-1 control-label">
-                                                    <input id="file_upload" name="file_upload" type="file" multiple="false">
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>--%>
                     <div class="col-md-12" style="text-align: center;padding-bottom: 1.25rem">
-
                         <div class="card-body">
                             <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
                                 取消
                             </button>
-                            <button id="btn_submit" class="btn btn-success" onclick="submit();">
-                                提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
+                            <button id="btn_submit" class="btn btn-primary" style="margin-left: 10px;" onclick="submit();">
+                                提交
                             </button>
-
                         </div>
                     </div>
                     <c:if test="${bisEdit==1}">

@@ -10,7 +10,6 @@ import com.copower.pmcc.assess.dal.cases.entity.CaseEstateTagging;
 import com.copower.pmcc.assess.dto.input.MapDto;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateTaggingGaoDe;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateTaggingVo;
-import com.copower.pmcc.assess.service.cases.CaseEstateTaggingService;
 import com.copower.pmcc.erp.common.CommonService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;

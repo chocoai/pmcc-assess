@@ -12,7 +12,6 @@ import com.copower.pmcc.assess.dto.output.cases.CaseUnitHuxingVo;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
-import com.copower.pmcc.assess.service.cases.CaseUnitHuxingService;
 import com.copower.pmcc.assess.service.project.generate.GenerateCommonMethod;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -61,8 +60,6 @@ public class BasicUnitHuxingService {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private CommonService commonService;
-    @Autowired
-    private CaseUnitHuxingService caseUnitHuxingService;
     @Autowired
     private BasicUnitService basicUnitService;
     @Autowired

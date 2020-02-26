@@ -105,7 +105,9 @@ public class BasicApplyBatchController extends BaseController {
     //-----------------------------------------------案例批量申请
     @RequestMapping(value = "/basicBatchApplyIndex", name = "申请首页", method = RequestMethod.GET)
     public ModelAndView basicApplyIndex(Integer estateId, String estateName) throws Exception {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/basic/basicBatchApplyIndex", "0", 0, "0", "");
+        final String boxName = baseParameterService.getParameterValues(BaseParameterEnum.CASE_BASE_INFO_BATCH_APPLY_KEY.getParameterKey());
+        Integer boxId = bpmRpcBoxService.getBoxIdByBoxName(boxName);
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/basic/basicBatchApplyIndex", "0", boxId, "0", "");
         BasicApplyBatch basicApplyBatch = new BasicApplyBatch();
         basicApplyBatch.setDraftFlag(true);
         if (estateId != null && estateId != 0) {//大类与类型可以确定

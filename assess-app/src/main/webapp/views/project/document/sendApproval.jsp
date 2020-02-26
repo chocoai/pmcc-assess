@@ -74,49 +74,6 @@
         <%@include file="/views/share/main_footer.jsp" %>
     </div>
 </div>
-
-
-<%--<div class="container body">
-    <div class="main_container">
-        <div class="right_col" role="main" style="margin-left: 0">
-            <%@include file="/views/share/form_head.jsp" %>
-            <div class="row">
-                <div class="x_panel">
-                    <div class="x_title">
-                        <h2>发文信息</h2>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div class="x_content">
-                        <div class="form-horizontal">
-                            <div class="form-group">
-                                <div class='x-valid'>
-                                    <label class='col-sm-1 control-label'>
-                                        发文标题<span class="symbol required"></span>
-                                    </label>
-                                    <div class='col-sm-11'>
-                                        <label class="form-control">${documentSend.title}</label>
-                                    </div>
-                                </div>
-                            </div>
-                            ${fieldsHtml}
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <div class="col-sm-11">
-
-                                        <div id="_file_upload">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <%@include file="/views/share/form_approval.jsp" %>
-                <%@include file="/views/share/form_log.jsp" %>
-            </div>
-        </div>
-    </div>
-</div>--%>
 </body>
 
 <script type="text/javascript">
@@ -147,17 +104,17 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    Alert("提交数据成功!", 1, null, function () {
+                    AlertSuccess("成功","提交数据成功", function () {
                         window.close();
                     });
                 }
                 else {
-                    Alert(result.errmsg);
+                    AlertError(result.errmsg);
                 }
             },
             error: function (result) {
                 Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+                AlertError("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
             }
         })
     }

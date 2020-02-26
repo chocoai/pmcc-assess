@@ -1,224 +1,225 @@
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html lang="en" class="no-js">
 <head>
     <%@include file="/views/share/main_css.jsp" %>
 </head>
-<body class="nav-md footer_fixed">
-<div class="container body">
-    <div class="main_container">
-        <div class="right_col" id="basicApplyId" role="main" style="margin-left: 0">
+<body>
+<div class="wrapper">
+    <div class="main-panel" style="width: 100%">
+        <div class="content" style="margin-top: 0px;">
             <%@include file="/views/share/form_head.jsp" %>
-
-            <div class="x_panel">
-                <div class="x_title collapse-link">
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i
-                                class="fa fa-chevron-up"></i></a></li>
-                    </ul>
-                    <h3>
-                        楼盘信息
-                    </h3>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="x_content">
-                    <form id="basicBatchApplyFrm" class="form-horizontal">
-                        <input type="hidden" name="id" value="${applyBatch.id}">
-                        <input type="hidden" id="estateId" name="estateId" value="${applyBatch.estateId}">
-                        <input type="hidden" id="estateName" name="estateName" value="${applyBatch.estateName}">
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    大类<span class="symbol required"></span>
-                                </label>
-                                <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                                    <select class="form-control" name="classify" onchange="formClassifyChange();"
-                                            required>
-                                        <option value="">-请选择-</option>
-                                        <c:if test="${not empty formClassifyList}">
-                                            <c:forEach var="item" items="${formClassifyList}">
-                                                <option value="${item.id}" data-key="${item.fieldName}"
-                                                    ${item.id eq applyBatch.classify?'selected="selected"':''}>${item.name}</option>
-                                            </c:forEach>
-                                        </c:if>
-                                    </select>
+            <div class="page-inner mt--5">
+                <div class="row mt--2">
+                    <div class="col-md-12">
+                        <div class=" card">
+                            <div class="card-header collapse-link">
+                                <div class="card-head-row">
+                                    <div class="card-title">
+                                        楼盘信息
+                                    </div>
+                                    <div class="card-tools">
+                                        <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                                                class="fa fa-angle-down"></span>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    类型<span class="symbol required"></span>
-                                </label>
-                                <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                                    <select class="form-control" name="type" onchange="saveBasicApplyBatch();" required>
-                                        <option value="">-请选择-</option>
-                                        <c:if test="${not empty examineFormTypeList}">
-                                            <c:forEach var="item" items="${examineFormTypeList}">
-                                                <option value="${item.key}" ${item.key eq applyBatch.type?'selected="selected"':''}>${item.value}</option>
-                                            </c:forEach>
-                                        </c:if>
-                                    </select>
+                            <div class=" card-body">
+                                <form id="basicBatchApplyFrm" class="form-horizontal">
+                                    <input type="hidden" name="id" value="${applyBatch.id}">
+                                    <input type="hidden" id="estateId" name="estateId" value="${applyBatch.estateId}">
+                                    <input type="hidden" id="estateName" name="estateName"
+                                           value="${applyBatch.estateName}">
+                                    <div class="row form-group">
+                                        <div class="col-md-12 form-inline">
+                                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                                大类<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
+                                                <select class="form-control input-full" name="classify"
+                                                        onchange="formClassifyChange();"
+                                                        required>
+                                                    <option value="">-请选择-</option>
+                                                    <c:if test="${not empty formClassifyList}">
+                                                        <c:forEach var="item" items="${formClassifyList}">
+                                                            <option value="${item.id}" data-key="${item.fieldName}"
+                                                                ${item.id eq applyBatch.classify?'selected="selected"':''}>${item.name}</option>
+                                                        </c:forEach>
+                                                    </c:if>
+                                                </select>
+                                            </div>
+                                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                                类型<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
+                                                <select class="form-control input-full" name="type"
+                                                        onchange="saveBasicApplyBatch();" required>
+                                                    <option value="">-请选择-</option>
+                                                    <c:if test="${not empty examineFormTypeList}">
+                                                        <c:forEach var="item" items="${examineFormTypeList}">
+                                                            <option value="${item.key}" ${item.key eq applyBatch.type?'selected="selected"':''}>${item.value}</option>
+                                                        </c:forEach>
+                                                    </c:if>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="row">
+                                    <div class="col-md-3 col-lg-offset-1" style="max-height: 500px;overflow: auto;">
+                                        <ul id="ztree" class="ztree"></ul>
+                                    </div>
+                                    <div class="col-md-4">
+                                         <span id="btnGroup" style="display: none;">
+                                             <a class="btn btn-xs btn-success baseTool"
+                                                onclick="batchTreeTool.showAddModal()">新增</a>
+                                             <a class="btn btn-xs btn-warning" onclick=" batchTreeTool.deleteDetail();">删除</a>
+                                             <a class="btn btn-xs btn-primary baseTool"
+                                                onclick=" batchTreeTool.expandAll(true);">全部展开</a>
+                                             <a class="btn btn-xs btn-primary baseTool"
+                                                onclick=" batchTreeTool.expandAll(false);">全部收起</a>
+                                             <a class="btn btn-xs btn-primary fillInformation"
+                                                onclick="batchTreeTool.fillInformation();">填写信息</a>
+                                             <a class="btn btn-xs btn-warning copy"
+                                                onclick="batchTreeTool.copy();">复制</a>
+                                             <a class="btn btn-xs btn-warning paste"
+                                                onclick="batchTreeTool.paste();">粘贴</a>
+                                        </span>
+                                    </div>
+                                    <c:if test="${applyBatch.caseEstateId > 0}">
+                                        <div class="col-md-3" style="max-height: 500px;overflow: auto;">
+                                            <ul id="estateCaseZtree" class="ztree"></ul>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <a class="btn btn-xs btn-success baseTool"
+                                               onclick="batchTreeTool.addFromCase()">
+                                                新增
+                                            </a>
+                                            <a class="btn btn-xs btn-primary caseTool"
+                                               onclick=" batchTreeTool.upgradeFromCase();">升级</a>
+                                        </div>
+                                    </c:if>
+                                </div>
+                                <div id="detail_modal" class="modal fade bs-example-modal-lg" data-backdrop="static"
+                                     aria-hidden="true"
+                                     role="dialog" data-keyboard="false" tabindex="1" style="display: none;">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <div class="modal-title"><h4>添加</h4></div>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close"><span
+                                                        aria-hidden="true">&times;</span></button>
+                                            </div>
+                                            <form id="frm_detail" class="form-horizontal">
+                                                <input type="hidden" name="id" value="0">
+                                                <div class="modal-body" style="overflow: auto; ">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="card-body">
+                                                                <input type="hidden" name="pid">
+                                                                <input type="hidden" name="applyBatchId">
+                                                                <input type="hidden" name="tableName">
+                                                                <input type="hidden" name="tableId">
+                                                                <input type="hidden" name="caseTablePid">
+                                                                <div class="row form-group">
+                                                                    <div id="detailContent" class="form-inline">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" data-dismiss="modal" class="btn btn-default">
+                                                        取消
+                                                    </button>
+                                                    <button type="button" id="btnSave" class="btn btn-primary"
+                                                            onclick="batchTreeTool.saveItemData()">
+                                                        保存
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="detail_modal_b" class="modal fade bs-example-modal-lg" data-backdrop="static"
+                                     aria-hidden="true"
+                                     role="dialog" data-keyboard="false" tabindex="1" style="display: none;">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title">编辑</h4>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close"><span
+                                                        aria-hidden="true">&times;</span></button>
+                                            </div>
+                                            <form id="frm_detail_b" class="form-horizontal">
+                                                <input type="hidden" name="id" value="0">
+                                                <div class="modal-body" style="overflow: auto; ">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="card-body">
+                                                                <input type="hidden" name="pid">
+                                                                <input type="hidden" name="applyBatchId">
+                                                                <input type="hidden" name="tableName">
+                                                                <input type="hidden" name="tableId">
+                                                                <div class="row form-group">
+                                                                    <div id="detailContent_b" class="form-inline">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                                                        取消
+                                                    </button>
+                                                    <button type="button" class="btn btn-primary btn-sm"
+                                                            onclick="batchTreeTool.saveEditItemData()">
+                                                        保存
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </form>
-                    <div class="col-md-3 col-lg-offset-1" style="max-height: 500px;overflow: auto;">
-                        <ul id="ztree" class="ztree"></ul>
                     </div>
-                    <div class="col-md-4">
-                        <span id="btnGroup">
-                            <a class="btn btn-xs btn-success baseTool" onclick="batchTreeTool.showAddModal()">
-                            新增
-                        </a>
-                        <a class="btn btn-xs btn-warning" onclick=" batchTreeTool.deleteDetail();">
-                            删除
-                        </a>
-                        <a class="btn btn-xs btn-primary baseTool" onclick=" batchTreeTool.expandAll(true);">
-                            全部展开
-                        </a>
-                        <a class="btn btn-xs btn-primary baseTool" onclick=" batchTreeTool.expandAll(false);">
-                            全部收起
-                        </a>
-                        <a class="btn btn-xs btn-primary fillInformation" onclick="batchTreeTool.fillInformation();">
-                            填写信息
-                        </a>
-                        <a class="btn btn-xs btn-warning copy" onclick="batchTreeTool.copy();">
-                            复制
-                        </a>
-                        <a class="btn btn-xs btn-warning paste" onclick="batchTreeTool.paste();">
-                            粘贴
-                        </a>
-                        </span>
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class=" card-body">
+                                <div style="text-align: center;">
+                                    <button id="cancel_btn" class="btn btn-default" onclick="window.close()">取消</button>
+                                    <button id="btn_save" class="btn btn-warning" style="margin-left: 10px;"
+                                            onclick="window.close()">保存
+                                    </button>
+                                    <button id="btn_submit" class="btn btn-primary" style="margin-left: 10px;"
+                                            onclick="submit();">提交
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <c:if test="${applyBatch.caseEstateId > 0}">
-                        <div class="col-md-3" style="max-height: 500px;overflow: auto;">
-                            <ul id="estateCaseZtree" class="ztree"></ul>
-                        </div>
-                        <div class="col-md-1">
-                            <a class="btn btn-xs btn-success baseTool" onclick="batchTreeTool.addFromCase()">
-                                新增
-                            </a>
-                            <a class="btn btn-xs btn-primary caseTool"
-                               onclick=" batchTreeTool.upgradeFromCase();">升级</a>
-                        </div>
+                    <c:if test="${processInsId ne '0'}">
+                        <%@include file="/views/share/form_log.jsp" %>
+                        <form id="frm_approval">
+                            <%@include file="/views/share/ApprovalVariable.jsp" %>
+                        </form>
                     </c:if>
-                    <div id="detail_modal" class="modal fade bs-example-modal-lg" data-backdrop="static"
-                         aria-hidden="true"
-                         role="dialog" data-keyboard="false" tabindex="1" style="display: none;">
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                            aria-hidden="true">&times;</span></button>
-                                    <h3 class="modal-title">添加</h3>
-                                </div>
-                                <form id="frm_detail" class="form-horizontal">
-                                    <input type="hidden" name="id" value="0">
-                                    <div class="modal-body" style="overflow: auto; ">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="x_content">
-                                                    <input type="hidden" name="pid">
-                                                    <input type="hidden" name="applyBatchId">
-                                                    <input type="hidden" name="tableName">
-                                                    <input type="hidden" name="tableId">
-                                                    <input type="hidden" name="caseTablePid">
-                                                    <div class="form-group">
-                                                        <div class="x-valid">
-                                                            <div id="detailContent">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" data-dismiss="modal" class="btn btn-default">
-                                            取消
-                                        </button>
-                                        <button type="button" id="btnSave" class="btn btn-primary"
-                                                onclick="batchTreeTool.saveItemData()">
-                                            保存
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="detail_modal_b" class="modal fade bs-example-modal-lg" data-backdrop="static"
-                         aria-hidden="true"
-                         role="dialog" data-keyboard="false" tabindex="1" style="display: none;">
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                            aria-hidden="true">&times;</span></button>
-                                    <h4 class="modal-title">编辑</h4>
-                                </div>
-                                <form id="frm_detail_b" class="form-horizontal">
-                                    <input type="hidden" name="id" value="0">
-                                    <div class="modal-body" style="overflow: auto; ">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="x_content">
-                                                    <input type="hidden" name="pid">
-                                                    <input type="hidden" name="applyBatchId">
-                                                    <input type="hidden" name="tableName">
-                                                    <input type="hidden" name="tableId">
-                                                    <div class="form-group">
-                                                        <div class="x-valid">
-                                                            <div id="detailContent_b">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" data-dismiss="modal" class="btn btn-default">
-                                            取消
-                                        </button>
-                                        <button type="button" class="btn btn-primary"
-                                                onclick="batchTreeTool.saveEditItemData()">
-                                            保存
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
-            <div class="x_panel">
-                <div class="x_content">
-                    <div style="text-align: center;">
-                        <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
-                            取消
-                        </button>
-                        <button id="btn_save" class="btn btn-warning" onclick="window.close()">
-                            保存
-                        </button>
-                        <button id="btn_submit" class="btn btn-success" onclick="submit();">
-                            提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <c:if test="${processInsId ne '0'}">
-                <%@include file="/views/share/form_log.jsp" %>
-                <form id="frm_approval">
-                    <%@include file="/views/share/ApprovalVariable.jsp" %>
-                </form>
-            </c:if>
         </div>
+        <%@include file="/views/share/main_footer.jsp" %>
     </div>
-    <!-- end: MAIN CONTAINER -->
 </div>
 </body>
-
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/map.position.js?v=${assessVersion}"></script>
-<%@include file="/views/share/main_footer.jsp" %>
 </html>
 
 <script type="text/javascript">
@@ -241,7 +242,7 @@
             }
             var id = $("#basicBatchApplyFrm").find("input[name='id']").val();
             if (!id) {
-                Alert("请先添加楼盘的信息");
+                notifyInfo("请先添加楼盘的信息");
                 return false;
             }
             Loading.progressShow();
@@ -254,11 +255,11 @@
                 success: function (result) {
                     Loading.progressHide();
                     if (result.ret) {
-                        Alert("提交数据成功!", 1, null, function () {
+                        AlertSuccess("成功", "提交数据成功", function () {
                             window.close();
                         });
                     } else {
-                        Alert(result.errmsg);
+                        AlertError(result.errmsg);
                     }
                 }
             });
@@ -280,11 +281,11 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    Alert("提交数据成功!", 1, null, function () {
+                    AlertSuccess("成功", "提交数据成功", function () {
                         window.close();
                     });
                 } else {
-                    Alert(result.errmsg);
+                    AlertError(result.errmsg);
                 }
             }
         });
@@ -321,7 +322,7 @@
                     $("#basicBatchApplyFrm").find('[name=estateId]').val(result.data.estateId);
                     batchTreeTool.ztreeInit(result.data.id);
                 } else {
-                    Alert(result.errmsg);
+                    AlertError(result.errmsg);
                 }
             }
         });
@@ -340,7 +341,7 @@
                 if (result.ret) {
                     $("#basicBatchApplyFrm").find('[name=id]').val(result.data.id);
                 } else {
-                    Alert(result.errmsg);
+                    AlertError(result.errmsg);
                 }
             }
         });
@@ -476,7 +477,7 @@
                 break;
             }
             case "tb_basic_house": {
-                Alert("房屋下无法继续添加节点。");
+                notifyInfo("房屋下无法继续添加节点。");
                 return false;
                 break;
             }
@@ -501,7 +502,7 @@
             },
             success: function (result) {
                 if (result.ret) {
-                    toastr.success('保存成功');
+                    notifySuccess('保存成功');
                     if ('${applyBatch.caseEstateId > 0}' == 'true') {
                         batchTreeTool.ztreeInit(${applyBatch.id});
                     } else {
@@ -518,7 +519,7 @@
                     }
                     $('#detail_modal').modal('hide');
                 } else {
-                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                    AlertError("保存数据失败，失败原因:" + result.errmsg);
                 }
             }
         });
@@ -528,14 +529,14 @@
     batchTreeTool.deleteDetail = function () {
         var node = zTreeObj.getSelectedNodes()[0];
         if (node.bisModify == false) {
-            Alert("案例数据无法删除。");
+            notifyInfo("案例数据无法删除。");
             return false;
         }
         bootbox.confirm("确认要删除么？", function (result) {
             if (result) {
                 var node = zTreeObj.getSelectedNodes()[0];
                 if (node.id == 0) {
-                    Alert("无法删除，请重新选择。");
+                    notifyInfo("无法删除，请重新选择。");
                     return false;
                 }
                 $.ajax({
@@ -552,7 +553,7 @@
                                 zTreeObj.selectNode(parentNode);
                             }
                         } else {
-                            Alert("删除失败：" + result.errmsg);
+                            AlertError("删除失败：" + result.errmsg);
                         }
                     }
                 })
@@ -587,32 +588,32 @@
         //显示出粘贴按钮
         var node = zTreeObj.getSelectedNodes()[0];
         if (node.level == 0) {
-            Alert("不能复制楼盘，重新选择")
+            notifyInfo("不能复制楼盘，重新选择")
             return false;
         }
         batchTreeTool.beCopyObject = {};
         batchTreeTool.beCopyObject.id = node.id;
         batchTreeTool.beCopyObject.level = node.level;
-        toastr.success("复制成功");
+        notifySuccess("复制成功");
         $("#btnGroup").find('.paste').show();
     }
 
     //调整因素粘贴
     batchTreeTool.paste = function () {
         if (!batchTreeTool.beCopyObject) {
-            Alert('请选择被复制对象');
+            notifyInfo('请选择被复制对象');
             return false;
         }
         var node = zTreeObj.getSelectedNodes()[0];
         if (node.id == batchTreeTool.beCopyObject.id) {
-            Alert('不能复制粘贴自身');
+            notifyInfo('不能复制粘贴自身');
             return false;
         }
         if (node.level != batchTreeTool.beCopyObject.level) {
-            Alert('请选择相应节点进行粘贴');
+            notifyInfo('请选择相应节点进行粘贴');
             return false;
         }
-        bootbox.confirm("将覆盖原来数据，确认要粘贴么？", function (result) {
+        AlertConfirm("确认要粘贴么","将覆盖原来数据", function (result) {
             Loading.progressShow();
             $.ajax({
                 url: "${pageContext.request.contextPath}/basicApplyBatch/paste",
@@ -625,10 +626,10 @@
                 success: function (result) {
                     Loading.progressHide();
                     if (result.ret) {
-                        toastr.success("粘贴成功");
+                        notifySuccess("粘贴成功");
                     }
                     else {
-                        Alert("获取数据失败，失败原因:" + result.errmsg, 1, null, null);
+                        AlertError("获取数据失败，失败原因:" + result.errmsg, 1, null, null);
                     }
                 }
             });
@@ -654,7 +655,7 @@
     batchTreeTool.addFromCase = function () {
         var node = caseEstateZtreeObj.getSelectedNodes()[0];
         if (!node) {
-            Alert("请先选择节点");
+            notifyInfo("请先选择节点");
             return;
         }
         $.ajax({
@@ -678,7 +679,7 @@
     batchTreeTool.upgradeFromCase = function () {
         var node = caseEstateZtreeObj.getSelectedNodes()[0];
         if (!node) {
-            Alert("请先选择节点");
+            notifyInfo("请先选择节点");
             return;
         }
         $.ajax({

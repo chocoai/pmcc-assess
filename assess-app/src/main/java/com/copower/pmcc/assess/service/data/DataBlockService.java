@@ -53,15 +53,11 @@ public class DataBlockService {
     @Autowired
     private ErpAreaService erpAreaService;
     @Autowired
-    private CaseEstateService caseEstateService;
-    @Autowired
     private BasicEstateService basicEstateService;
     @Autowired
     private PublicService publicService;
     @Autowired
     private BaseAttachmentService baseAttachmentService;
-    @Autowired
-    private CaseEstateLandStateService caseEstateLandStateService;
     @Autowired
     private BasicEstateLandStateDao basicEstateLandStateDao;
     @Autowired

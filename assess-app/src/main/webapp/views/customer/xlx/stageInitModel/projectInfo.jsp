@@ -214,7 +214,7 @@
                 </div>
             </div>
             <div class="x-valid">
-                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">合同金额（单位/元）</label>
+                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">合同金额（元）</label>
                 <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
                     <input name="contractPrice" data-rule-number="true" class="form-control" placeholder="合同金额"
                            value="${projectInfo.contractPrice}"/>

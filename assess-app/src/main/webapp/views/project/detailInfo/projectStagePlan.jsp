@@ -368,19 +368,15 @@
                     var str = "";
                     switch (value) {
                         case "runing": {
-                            str = "<label class='label label-info'>" + "进行中" + "</label>";
+                            str = "<span class='label label-info'>" + "进行中" + "</span>";
                             break;
                         }
                         case "finish": {
-                            str = "<label class='label label-success'>" + "已完成" + "</label>";
-                            break;
-                        }
-                        case "wait": {
-                            str = "<label class='label label-warning'>" + "等待发起" + "</label>";
+                            str = "<span class='label label-success'>" + "已完成" + "</span>";
                             break;
                         }
                         case "none": {
-                            str = "<label class='label label-default'>" + row.projectPhaseName + "</label>";
+                            str = "<span class='label label-default'>" + row.projectPhaseName + "</span>";
                             break;
                         }
                     }

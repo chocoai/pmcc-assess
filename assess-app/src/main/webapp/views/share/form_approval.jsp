@@ -49,7 +49,7 @@
                                             <div class="form-check">
                                                 <label class="form-check-label">
                                                     <input id="chk_bisNext" name="chk_bisNext"
-                                                           onclick="chkbisNextClick()" class="form-check-input"
+                                                           onclick="formApproval.chkbisNextClick()" class="form-check-input"
                                                            type="checkbox" value="">
                                                     <span class="form-check-sign">跳过多级审批</span>
                                                 </label>

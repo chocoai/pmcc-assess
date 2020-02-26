@@ -4,8 +4,6 @@
 <head>
     <%@include file="/views/share/main_css.jsp" %>
 </head>
-
-
 <body class="nav-md footer_fixed">
 <div class="container body">
     <div class="main_container">
@@ -187,12 +185,12 @@
                     $("#judgeObjectId").val(judgeObjectId);
                 }
                 else {
-                    Alert("获取数据失败，失败原因:" + result.errmsg, 1, null, null);
+                    AlertError("获取数据失败，失败原因:" + result.errmsg, 1, null, null);
                 }
             },
             error: function (result) {
                 Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+                AlertError("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
             }
         });
         $("#modal_factor").modal();
