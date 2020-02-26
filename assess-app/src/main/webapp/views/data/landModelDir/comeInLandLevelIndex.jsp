@@ -4,102 +4,137 @@
 <head>
     <%@include file="/views/share/main_css.jsp" %>
 </head>
-<body class="nav-md footer_fixed">
-<div class="container body">
-    <div class="main_container">
-        <div class="right_col" role="main" style="margin-left: 0">
+<body>
+<div class="wrapper">
+    <div class="main-panel" style="width: 100%">
+        <div class="content" style="margin-top: 0px;">
             <%@include file="/views/share/form_head.jsp" %>
-            <div class="x_panel">
-                <div class="x_title">
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
-                    </ul>
-                    <h2>
-                        <small>基准地价</small>
-                    </h2>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="x_content">
-                    <div class="row">
-                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                            <form id="frmQuery" class="form-horizontal">
-                                <input type="hidden" name="readOnly" value="${readOnly}">
-                                <input type="hidden" name="status" value="draft">
-                                <input type="hidden" name="processInsId" value="${processInsId}">
-                                <input type="hidden" name="creator"  value="${sysUserDto.userAccount}">
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">省</label>
-                                        <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                            <select name="province"
-                                                    class="form-control search-select select2">
-                                            </select>
-                                        </div>
+            <div class="page-inner mt--5">
+                <div class="row mt--2">
+
+                    <div class="col-md-12">
+                        <div class="card full-height">
+                            <div class="card-header collapse-link">
+                                <div class="card-head-row">
+                                    <div class="card-title">
+                                        基准地价
                                     </div>
-                                    <div class="x-valid">
-                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">市</label>
-                                        <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                            <select name="city" class="form-control search-select select2">
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">区县</label>
-                                        <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                            <select name="district"
-                                                    class="form-control search-select select2">
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">乡镇街道</label>
-                                        <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                            <input placeholder="乡镇名称" class="form-control" name="townShipName"
-                                                   type="text">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">权利类型</label>
-                                        <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                            <select name="landRightType" class="form-control search-select select2">
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                        <button type="button" class="btn btn-primary"
-                                                onclick="findQuery();">
-                                            查询
-                                        </button>
-                                        <a class="btn btn-primary" onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftpLandLevelAreaBaseTemplate);">下载模板</a>
-                                        <a class="btn btn-primary" onclick="$('#ajaxFileUploadDataLand').val('').trigger('click');">上传</a>
-                                        <button type="button" class="btn btn-success"
-                                                onclick="landLevel.initDataForm({})"
-                                                data-toggle="modal" href="#divBoxFather"> 新增
+                                    <div class="card-tools">
+                                        <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                                                class="fa fa-angle-down"></span>
                                         </button>
                                     </div>
                                 </div>
-                            </form>
-                        </div>
-                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                            <table class="table table-bordered" id="tb_FatherList">
-                            </table>
-                        </div>
-                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                            <input type="file" id="ajaxFileUploadDataLand" name="file" style="display: none;" onchange="landLevel.importDataLand();">
-                            <input type="file" id="ajaxFileUploadLandLevelDetail" name="file" style="display: none;" onchange="landLevel.importLandLevelDetail(false);">
-                            <input type="file" id="ajaxFileUploadLandLevelDetailAchievement" name="file" style="display: none;" onchange="landLevel.importDataLandDetailAchievement(false);">
-                            <input type="file" id="ajaxFileUploadLandLevelDetailCoefficientVolumeRatio" name="file" style="display: none;" onchange="landLevel.importDataAllocationCorrectionCoefficientVolumeRatio(false);">
+                            </div>
+                            <div class="card-body">
+                                <form id="frmQuery" class="form-horizontal">
+                                    <input type="hidden" name="readOnly" value="${readOnly}">
+                                    <input type="hidden" name="status" value="draft">
+                                    <input type="hidden" name="processInsId" value="${processInsId}">
+                                    <input type="hidden" name="creator" value="${sysUserDto.userAccount}">
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1 control-label">省</label>
+                                                <div class="col-sm-2">
+                                                    <select name="province"
+                                                            class="form-control input-full search-select select2">
+                                                    </select>
+                                                </div>
+                                                <label class="col-sm-1 control-label">市</label>
+                                                <div class="col-sm-2">
+                                                    <select name="city"
+                                                            class="form-control input-full search-select select2">
+                                                    </select>
+                                                </div>
+                                                <label class="col-sm-1 control-label">区县</label>
+                                                <div class="col-sm-2">
+                                                    <select name="district"
+                                                            class="form-control input-full search-select select2">
+                                                    </select>
+                                                </div>
+                                                <label class="col-sm-1 control-label">乡镇街道</label>
+                                                <div class="col-sm-2">
+                                                    <input placeholder="乡镇名称" class="form-control input-full"
+                                                           name="townShipName"
+                                                           type="text">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1 control-label">权利类型</label>
+                                                <div class="col-sm-2">
+                                                    <select name="landRightType"
+                                                            class="form-control input-full search-select select2">
+                                                    </select>
+                                                </div>
+
+                                                <button type="button" class="btn btn-info btn-sm"
+                                                        onclick="findQuery();">
+                                                    <span class="btn-label">
+												<i class="fa fa-search"></i>
+											</span>
+                                                    查询
+                                                </button>
+                                                <button type="button" class="btn btn-success btn-sm"
+                                                        onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftpLandLevelAreaBaseTemplate);">
+                                                     <span class="btn-label">
+												<i class="fa fa-cloud-download"></i>
+											</span>下载模板
+                                                </button>
+                                                <button type="button" class="btn btn-info btn-sm"
+                                                        onclick="$('#ajaxFileUploadDataLand').val('').trigger('click');">
+                                                    <span class="btn-label">
+												<i class="fa fa-cloud-upload-alt"></i>
+											</span>上传
+                                                </button>
+                                                <button type="button" class="btn btn-success btn-sm"
+                                                        onclick="landLevel.initDataForm({})"
+                                                        data-toggle="modal" href="#divBoxFather">
+                                                        <span class="btn-label">
+												<i class="fa fa-plus"></i>
+											</span>新增
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class=" col-sm-12">
+                                            <table class="table table-bordered" id="tb_FatherList">
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class=" col-sm-12">
+                                            <input type="file" id="ajaxFileUploadDataLand" name="file"
+                                                   style="display: none;" onchange="landLevel.importDataLand();">
+                                            <input type="file" id="ajaxFileUploadLandLevelDetail" name="file"
+                                                   style="display: none;"
+                                                   onchange="landLevel.importLandLevelDetail(false);">
+                                            <input type="file" id="ajaxFileUploadLandLevelDetailAchievement"
+                                                   name="file"
+                                                   style="display: none;"
+                                                   onchange="landLevel.importDataLandDetailAchievement(false);">
+                                            <input type="file"
+                                                   id="ajaxFileUploadLandLevelDetailCoefficientVolumeRatio"
+                                                   name="file" style="display: none;"
+                                                   onchange="landLevel.importDataAllocationCorrectionCoefficientVolumeRatio(false);">
+                                        </div>
+                                    </div>
+
+                                </form>
+
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
 
-            <div class="x_panel">
-                <div class="x_content">
-                    <div class="form-group">
-                        <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4   col-xs-offset-5 col-sm-offset-5 col-md-offset-5 col-lg-offset-5">
+
+                    <div class="col-md-12" style="text-align: center;padding-bottom: 1.25rem">
+
+                        <div class="card-body">
                             <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
                                 取消
                             </button>
@@ -109,24 +144,26 @@
                             </button>
                         </div>
                     </div>
+                    <c:if test="${processInsId ne '0'}">
+                        <%@include file="/views/share/form_log.jsp" %>
+                        <form id="frm_approval">
+                            <%@include file="/views/share/ApprovalVariable.jsp" %>
+                        </form>
+                    </c:if>
                 </div>
             </div>
-
-            <c:if test="${processInsId ne '0'}">
-                <%@include file="/views/share/form_log.jsp" %>
-                <form id="frm_approval">
-                    <%@include file="/views/share/ApprovalVariable.jsp" %>
-                </form>
-            </c:if>
-
         </div>
+        <%@include file="/views/share/main_footer.jsp" %>
     </div>
 </div>
-<%@include file="/views/share/main_footer.jsp" %>
+
+
 <%@include file="/views/data/landModelDir/landModel.jsp" %>
 <input type="file" id="ajaxFileUpload" name="file" style="display: none;">
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/ajaxfileupload.js?v=${assessVersion}"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/views/data/landModelDir/landLevel.js?v=${assessVersion}"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/ajaxfileupload.js?v=${assessVersion}"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/views/data/landModelDir/landLevel.js?v=${assessVersion}"></script>
 <script type="text/javascript">
     $(document).ready(function () {
         findQuery();
@@ -171,16 +208,17 @@
             success: function (result) {
                 if (result.ret) {
                     //保存完后其他动作
-                    Alert("提交数据成功!", 1, null, function () {
+                    AlertSuccess("成功", "提交数据成功", function () {
                         window.open('javascript:window.open("", "_self", "");window.close();', '_self');
+
                     });
                 }
                 else {
-                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                    AlertError("保存数据失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
+                AlertError("调用服务端方法失败，失败原因:" + result);
             }
         })
     }

@@ -24,12 +24,12 @@
             <form id="project_stop_form" class="form-horizontal">
                 <input type="hidden" name="id">
                 <div class="row form-group">
-                    <div class="col-md-4">
+                    <div class="col-md-12">
                         <div class="form-inline x-valid">
-                            <label class="col-sm-2 col-form-label">
+                            <label class="col-sm-1 col-form-label">
                                 关闭时间
                             </label>
-                            <div class="col-sm-10">
+                            <div class="col-sm-3">
                                 <input placeholder="选择时间" id="stopTime" name="stopTime"
                                        data-date-format="yyyy-mm-dd" class="form-control input-full date-picker dbdate"
                                        readonly="readonly">

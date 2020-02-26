@@ -74,62 +74,7 @@
     </div>
 
 </div>
-<%--<%@include file="share/main_head.jsp" %>--%>
-<!-- start: MAIN CONTAINER -->
-<%--<div class="container body">
-    <div class="main_container">
-        <%@include file="/views/share/main_navigation.jsp" %>
-        <%@include file="/views/share/main_head.jsp" %>
-        <div class="right_col" role="main">
-            <%@include file="/views/share/navigation/reportSetup.jsp" %>
-            <div class="col-xs-12  col-sm-12  col-md-10  col-lg-10 ">
-                <div class="x_panel">
-                    <div class="x_title collapse-link">
-                        <ul class="nav navbar-right panel_toolbox">
-                            <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                        </ul>
-                        <h2><i class="fa ${baseViewDto.currentMenu.icon}"></i>
-                            最佳利用方式
-                        </h2>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div class="x_content">
-                        <form id="frmQuery" class="form-horizontal">
-                            <div class="form-group ">
-                                <div>
-                                    <label class="col-sm-1 control-label">
-                                        最佳利用名称
-                                    </label>
-                                    <div class="col-sm-2">
-                                        <input type="text" data-rule-maxlength="50"
-                                               placeholder="最佳利用名称" id="queryName" name="queryName"
-                                               class="form-control">
-                                    </div>
-                                </div>
 
-                                <div class="col-sm-3">
-                                    <button type="button" class="btn btn-primary" onclick="loadDataDicList()">
-                                        查询
-                                    </button>
-
-                                    <button type="button" class="btn btn-success" onclick="addDataDic()"
-                                            data-toggle="modal" href="#divBox"> 新增
-                                    </button>
-                                </div>
-                            </div>
-
-                        </form>
-                        <table class="table table-bordered" id="tb_List">
-                            <!-- cerare document add ajax data-->
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
-    <!-- end: MAIN CONTAINER -->
-</div>--%>
 </body>
 <div id="divBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
@@ -148,21 +93,17 @@
                         <div class="col-md-12">
                             <div class="card-body">
                                 <div class="row form-group">
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-2 col-form-label">
                                                 名称<span class="symbol required"></span>
                                             </label>
-                                            <div class="col-sm-10">
+                                            <div class="col-sm-3">
                                                 <input type="text" name="name" id="name" class="form-control input-full"
                                                        placeholder="名称" required="required">
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-inline x-valid">
 
-                                            <div class="col-sm-10">
+                                            <div class="col-sm-4">
                                                 <div class="form-check" style="justify-content:left">
                                                     <label class="form-check-label">
                                                         <input class="form-check-input" type="checkbox" id="bisEnable"
@@ -176,20 +117,20 @@
                                     </div>
                                 </div>
                                 <div class="row form-group">
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-2 col-form-label">
                                                 项目类型类别<span class="symbol required"></span>
                                             </label>
-                                            <div class="col-sm-10">
-                                                <div class="btn btn-xs btn-success"
+
+                                            <div class="btn btn-xs btn-success"
                                                      onclick="appendHTML('',this)"><i
                                                         class="fa fa-plus"></i></div>
-                                            </div>
+
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row form-group system">
+                                <div class="system">
                                     <div class="col-md-4">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-2 col-form-label">
@@ -230,10 +171,10 @@
                                 <div class="row form-group">
                                     <div class="col-md-12">
                                         <div class="form-inline x-valid">
-                                            <label class="col-sm-1 control-label">
+                                            <label class="col-sm-2 control-label">
                                                 描述
                                             </label>
-                                            <div class="col-sm-11">
+                                            <div class="col-sm-10">
                                                 <div style="width:99%;height:200px;" id="description"></div>
                                             </div>
                                         </div>
@@ -593,38 +534,34 @@
 
     function createHTML(projectType, projectCategory) {
         var html = '<div class="row form-group">';
-
-        html += '<div class="col-md-4">';
+        html += '<div class="col-md-12">';
         html += '<div class="form-inline x-valid">';
+
+
         html += '<label class="col-sm-2 col-form-label">' + '项目类型' + '</label>';
-        html += '<div class="col-sm-10">';
+        html += '<div class="col-sm-3 ">';
         html += "<select  name='type' id='" + projectType + "' onchange='typeChange(this)' class='form-control input-full search-select select2 " + projectType + "'>";
         html += "<option selected='selected' value=''>" + '请选择' + "</option>";
         html += "</select>";
         html += "</div>";
-        html += "</div>";
-        html += "</div>";
 
-        html += '<div class="col-md-4">';
-        html += '<div class="form-inline x-valid">';
+
         html += '<label class="col-sm-2 col-form-label">' + '项目类别' + '</label>';
-        html += '<div class="col-sm-10">';
+        html += '<div class="col-sm-3 ">';
         html += "<select  name='category' id='" + projectCategory + "'  class='form-control input-full search-select select2 " + projectCategory + "'>";
         html += "<option selected='selected' value=''>" + '请先选择类型' + "</option>";
         html += "</select>";
         html += "</div>";
-        html += "</div>";
+
+
+        html += '<label class="col-sm-1 col-form-label">' + '取消' + '</label>';
+        html += '<div class="col-sm-1">';
+        html += "<input type='button' class='btn btn-warning btn-sm' type='button' value='X' onclick='cleanHTMLData(this)'>";
         html += "</div>";
 
-        html += '<div class="col-md-4">';
-        html += '<div class="form-inline x-valid">';
-        html += '<label class="col-sm-2 col-form-label">' + '取消' + '</label>';
-        html += '<div class="col-sm-10">';
-        html += "<input class='btn btn-warning btn-sm' type='button' value='X' onclick='cleanHTMLData(this)'>";
-        html += "</div>";
-        html += "</div>";
-        html += "</div>";
 
+        html += "</div>";
+        html += "</div>";
         html += "</div>";
         return html;
     }
@@ -643,38 +580,31 @@
     function reload(typeValue, categoryValue) {
         $("#frm").find(".system").empty();
         var html = '<div class="row form-group">';
-
-        html += '<div class="col-md-4">';
+        html += '<div class="col-md-12">';
         html += '<div class="form-inline x-valid">';
+
         html += '<label class="col-sm-2 col-form-label">' + '项目类型' + '</label>';
-        html += '<div class="col-sm-10">';
+        html += '<div class="col-sm-3">';
         html += "<select  name='type' id='type0' onchange='typeChange(this)' class='form-control input-full search-select select2 type0'>";
         html += "<option selected='selected' value=''>" + '请选择' + "</option>";
         html += "</select>";
         html += "</div>";
-        html += "</div>";
-        html += "</div>";
 
-        html += '<div class="col-md-4">';
-        html += '<div class="form-inline x-valid">';
         html += '<label class="col-sm-2 col-form-label">' + '项目类别' + '</label>';
-        html += '<div class="col-sm-10">';
+        html += '<div class="col-sm-3">';
         html += "<select  name='category' class='form-control input-full search-select select2 category0'>";
         html += "<option selected='selected' value=''>" + '请先选择类型' + "</option>";
         html += "</select>";
         html += "</div>";
-        html += "</div>";
+
+
+        html += '<label class="col-sm-1 col-form-label">' + '取消' + '</label>';
+        html += '<div class="col-sm-1">';
+        html += "<input type='button' class='btn btn-warning btn-sm' type='button' value='X' onclick='cleanHTMLData(this)'>";
         html += "</div>";
 
-        html += '<div class="col-md-4">';
-        html += '<div class="form-inline x-valid">';
-        html += '<label class="col-sm-2 col-form-label">' + '取消' + '</label>';
-        html += '<div class="col-sm-10">';
-        html += "<input class='btn btn-warning btn-sm' type='button' value='X' onclick='cleanHTMLData(this)'>";
         html += "</div>";
         html += "</div>";
-        html += "</div>";
-
         html += "</div>";
         $("#frm").find(".system").append(html);
         getType(0, typeValue);
