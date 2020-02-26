@@ -1,4 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<style type="text/css">
+    .bg-red{background-color: #f6caca;}
+    .bg-green{background-color: #95d995;}
+</style>
 <div class="col-md-12">
     <div class="x_panel card">
         <div class="x_title card-header ">
@@ -184,6 +188,7 @@
                         notifyInfo('分值只能在80至120之间');
                         return;
                     }
+
                     //验证是否必须调整交易价格
                     //1.检查是否必须调整2.取得初始成交价 3.取得当前成交价价
                     var itemId = that.closest('td').attr('data-item-id');
@@ -199,6 +204,7 @@
                             }
                         }
                     }
+                    that.text(value);
 
                     var currScore = value;//修改后的值
                     var evaluationScore = that.closest('tr').find('[data-type="evaluation"]').text();
