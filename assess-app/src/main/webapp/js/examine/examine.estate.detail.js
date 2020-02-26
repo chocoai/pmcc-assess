@@ -39,7 +39,7 @@ var estateNetwork;
     };
 
     //绑定事件
-    $('#' + estateNetwork.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
+    $('#' + estateNetwork.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
         estateNetwork.prototype.loadDataDicList();
     })
 })();
@@ -82,7 +82,7 @@ var estateParking;
     }
 
     //绑定事件
-    $('#' + estateParking.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
+    $('#' + estateParking.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
         estateParking.prototype.loadDataDicList();
     })
 })();
@@ -125,7 +125,7 @@ var matchingEnvironment;
     }
 
     //绑定事件
-    $('#' + matchingEnvironment.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
+    $('#' + matchingEnvironment.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
         matchingEnvironment.prototype.loadDataDicList();
     })
 })();
@@ -167,7 +167,7 @@ var matchingFinance;
     }
 
     //绑定事件
-    $('#' + matchingFinance.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
+    $('#' + matchingFinance.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
         matchingFinance.prototype.loadDataDicList();
     })
 })();
@@ -210,7 +210,7 @@ var matchingEducation;
     }
 
     //绑定事件
-    $('#' + matchingEducation.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
+    $('#' + matchingEducation.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
         matchingEducation.prototype.loadDataDicList();
     })
 })();
@@ -254,7 +254,7 @@ var matchingRecreation;
     }
 
     //绑定事件
-    $('#' + matchingRecreation.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
+    $('#' + matchingRecreation.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
         matchingRecreation.prototype.loadDataDicList();
     })
 })();
@@ -298,7 +298,7 @@ var matchingRestaurant;
     }
 
     //绑定事件
-    $('#' + matchingRestaurant.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
+    $('#' + matchingRestaurant.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
         matchingRestaurant.prototype.loadDataDicList();
     })
 })();
@@ -342,7 +342,7 @@ var matchingMarket;
     }
 
     //绑定事件
-    $('#' + matchingMarket.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
+    $('#' + matchingMarket.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
         matchingMarket.prototype.loadDataDicList();
     })
 })();
@@ -385,7 +385,7 @@ var matchingMedical;
     }
 
     //绑定事件
-    $('#' + matchingMedical.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
+    $('#' + matchingMedical.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
         matchingMedical.prototype.loadDataDicList();
     })
 })();
@@ -429,7 +429,7 @@ var matchingTransit;
     }
 
     //绑定事件
-    $('#' + matchingTransit.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
+    $('#' + matchingTransit.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
         matchingTransit.prototype.loadDataDicList();
     })
 })();
@@ -473,7 +473,7 @@ var matchingTrafficHub;
     }
 
     //绑定事件
-    $('#' + matchingTrafficHub.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
+    $('#' + matchingTrafficHub.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
         matchingTrafficHub.prototype.loadDataDicList();
     })
 })();
@@ -517,7 +517,7 @@ var matchingMetro;
     }
 
     //绑定事件
-    $('#' + matchingMetro.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
+    $('#' + matchingMetro.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
         matchingMetro.prototype.loadDataDicList();
     })
 })();
@@ -561,7 +561,7 @@ var matchingMainRoad;
     }
 
     //绑定事件
-    $('#' + matchingMainRoad.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
+    $('#' + matchingMainRoad.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
         matchingMainRoad.prototype.loadDataDicList();
     })
 })();
@@ -605,7 +605,7 @@ var matchingMainConversion;
     }
 
     //绑定事件
-    $('#' + matchingMainConversion.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
+    $('#' + matchingMainConversion.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
         matchingMainConversion.prototype.loadDataDicList();
     })
 })();
@@ -649,7 +649,7 @@ var estateSupplyWater;
     }
 
     //绑定事件
-    $('#' + estateSupplyWater.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
+    $('#' + estateSupplyWater.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
         estateSupplyWater.prototype.loadDataDicList();
     })
 })();
@@ -693,7 +693,7 @@ var estateDrainWater;
     }
 
     //绑定事件
-    $('#' + estateDrainWater.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
+    $('#' + estateDrainWater.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
         estateDrainWater.prototype.loadDataDicList();
     })
 })();
@@ -737,7 +737,7 @@ var estateSupplyPower;
     }
 
     //绑定事件
-    $('#' + estateSupplyPower.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
+    $('#' + estateSupplyPower.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
         estateSupplyPower.prototype.loadDataDicList();
     })
 })();
@@ -780,7 +780,7 @@ var estateSupplyHeating;
     }
 
     //绑定事件
-    $('#' + estateSupplyHeating.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
+    $('#' + estateSupplyHeating.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
         estateSupplyHeating.prototype.loadDataDicList();
     })
 })();
@@ -823,7 +823,7 @@ var estateSupplyGas;
     }
 
     //绑定事件
-    $('#' + estateSupplyGas.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
+    $('#' + estateSupplyGas.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
         estateSupplyGas.prototype.loadDataDicList();
     })
 })();
@@ -866,7 +866,7 @@ var matchingMaterial;
     }
 
     //绑定事件
-    $('#' + matchingMaterial.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
+    $('#' + matchingMaterial.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
         matchingMaterial.prototype.loadDataDicList();
     })
 })();
@@ -906,7 +906,7 @@ var estateInvestigation;
     }
 
     //绑定事件
-    $('#' + estateInvestigation.prototype.config().table).closest('.x_panel').find('.x_title').bind('click', function () {
+    $('#' + estateInvestigation.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
         estateInvestigation.prototype.loadDataDicList();
     })
 

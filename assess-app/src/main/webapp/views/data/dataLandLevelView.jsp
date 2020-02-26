@@ -70,14 +70,13 @@
 											</span>
                                             查询
                                         </button>
-                                        <button style="margin-left: 5px" class="btn btn-success btn-sm" type="button"
-                                                data-toggle="modal" onclick="comeInLandLevelIndex()"
-                                                href="#divBoxFather">
+                                        <a style="margin-left: 5px" class="btn btn-success btn-sm" type="button"
+                                                data-toggle="modal" onclick="comeInLandLevelIndex()">
 											<span class="btn-label">
 												<i class="fa fa-plus"></i>
 											</span>
                                             新增
-                                        </button>
+                                        </a>
                                     </div>
 
 
@@ -118,14 +117,12 @@
         var href = "${pageContext.request.contextPath}/dataLandLevel/comeInLandLevelIndex";
         if (data.length != 0) {
             href += "?id=" + data.join(",");
-            Alert(
-                "确认将勾选的数据修改",
-                2,
-                function () {
-                    landLevel.config.table.bootstrapTable('uncheckAll');
-                }, function () {
-                    window.open(href);
-                });
+
+            AlertSuccess("成功", "提交成功",function(){
+                landLevel.config.table.bootstrapTable('uncheckAll');
+            }, function () {
+                window.open(href);
+            });
         } else {
             window.open(href);
         }

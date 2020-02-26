@@ -14,8 +14,8 @@
                 </div>
             </div>
         </div>
-        <div class="card-body">
-            <form class="form-horizontal">
+        <div class="card-body" style="display: none">
+            <form class="form-horizontal" >
                 <p>
                     <button style="margin-left: 5px" class="btn btn-success btn-sm" type="button"
                             data-toggle="modal" onclick="buildingModelView.prototype.sonModelMethod.buildingSurface.showModel()"

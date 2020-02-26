@@ -25,9 +25,8 @@
                 </div>
             </div>
             <div class="page-inner mt--5">
-                <%@include file="/views/share/navigation/reportSetup.jsp" %>
                 <div class="row mt--2">
-                    <div class="col-md-3">
+                    <div class="col-md-12">
                         <div class="card full-height">
                             <div class="card-header">
                                 <div class="card-head-row">
@@ -35,58 +34,54 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <div id="tree" class="col-md-3">
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-9">
-                        <div class="card full-height">
-                            <div class="card-header">
-                                <div class="card-head-row">
-                                    <div class="card-title">${baseViewDto.currentMenu.name}</div>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <input type="hidden" id="tree_value" value="0">
-
-                                <div class="form-group form-inline">
-                                    <div class="col-md-3 p-0">
-                                        <select id='projectType' class='form-control input-full search-select select2'
-                                                onchange="getProjectClassify()">
-                                            <option value="">-请选择-</option>
-                                            <c:forEach var="item" items="${projectTypeList}">
-                                                <option value="${item.id}">${item.name}</option>
-                                            </c:forEach>
-                                        </select>
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <%@include file="/views/share/navigation/reportSetup.jsp" %>
                                     </div>
-                                    <div class="col-md-3 p-0">
-                                        <select id='projectCategory' class='form-control input-full  search-select select2'
-                                                onchange="loadTemplateTableList()">
-                                        </select>
-                                    </div>
-                                    <div class="col-md-3 p-0">
-                                        <select id='reportType'
-                                                class='form-control input-full  search-select select2'
-                                                onchange="loadTemplateTableList()">
-                                            <c:forEach var="item" items="${reportType}">
-                                                <option value="${item.id}">${item.name}</option>
-                                            </c:forEach>
-                                        </select>
-                                    </div>
+                                    <div id="tree" class="col-md-3">
 
-                                    <button style="margin-left: 10px" class="btn btn-success btn-sm" type="button"
-                                            data-toggle="modal" onclick="addReportTemplate()"
-                                            href="#modalTemplate">
+                                    </div>
+                                    <div class="col-md-7">
+                                        <input type="hidden" id="tree_value" value="0">
+
+                                        <div class="form-group form-inline">
+                                            <div class="col-md-3 p-0">
+                                                <select id='projectType' class='form-control input-full search-select select2'
+                                                        onchange="getProjectClassify()">
+                                                    <option value="">-请选择-</option>
+                                                    <c:forEach var="item" items="${projectTypeList}">
+                                                        <option value="${item.id}">${item.name}</option>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3 p-0">
+                                                <select id='projectCategory' class='form-control input-full  search-select select2'
+                                                        onchange="loadTemplateTableList()">
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3 p-0">
+                                                <select id='reportType'
+                                                        class='form-control input-full  search-select select2'
+                                                        onchange="loadTemplateTableList()">
+                                                    <c:forEach var="item" items="${reportType}">
+                                                        <option value="${item.id}">${item.name}</option>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
+
+                                            <button style="margin-left: 10px" class="btn btn-success btn-sm" type="button"
+                                                    data-toggle="modal" onclick="addReportTemplate()"
+                                                    href="#modalTemplate">
 											<span class="btn-label">
 												<i class="fa fa-plus"></i>
 											</span>
-                                        新增
-                                    </button>
-                                </div>
+                                                新增
+                                            </button>
+                                        </div>
 
-                                <table id="tb_files_list" class="table table-bordered"></table>
+                                        <table id="tb_files_list" class="table table-bordered"></table>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -97,74 +92,6 @@
     </div>
 
 </div>
-
-<%--<div class="container body">
-    <div class="main_container">
-        <%@include file="/views/share/main_navigation.jsp" %>
-        <%@include file="/views/share/main_head.jsp" %>
-        <div class="right_col" role="main">
-            <%@include file="/views/share/navigation/reportSetup.jsp" %>
-            <div class="col-xs-12  col-sm-12  col-md-10  col-lg-10 ">
-                <div class="row">
-                    <div class="col-xs-12">
-                        <div class="x_panel">
-                            <div class="x_title collapse-link">
-                                <ul class="nav navbar-right panel_toolbox">
-                                    <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                                </ul>
-                                <h2>
-                                    <i class="fa ${baseViewDto.currentMenu.icon}"></i>
-                                    基础报告模板
-                                </h2>
-                                <div class="clearfix"></div>
-                            </div>
-                            <div class="x_content">
-                                <div id="tree" class="col-md-3">
-                                </div>
-                                <div class="col-md-9">
-                                    <input type="hidden" id="tree_value" value="0">
-                                    <div class="row">
-                                        <div class="col-xs-3">
-                                            <select id='projectType' class='form-control input-full search-select select2'
-                                                    onchange="getProjectClassify()">
-                                                <option value="">-请选择-</option>
-                                                <c:forEach var="item" items="${projectTypeList}">
-                                                    <option value="${item.id}">${item.name}</option>
-                                                </c:forEach>
-                                            </select>
-                                        </div>
-                                        <div class="col-xs-3">
-                                            <select id='projectCategory' class='form-control input-full  search-select select2'
-                                                    onchange="loadTemplateTableList()">
-                                            </select>
-                                        </div>
-                                        <div class="col-xs-3">
-                                            <select id='reportType'
-                                                    class='form-control input-full  search-select select2'
-                                                    onchange="loadTemplateTableList()">
-                                                <c:forEach var="item" items="${reportType}">
-                                                    <option value="${item.id}">${item.name}</option>
-                                                </c:forEach>
-                                            </select>
-                                        </div>
-                                        <div class="col-xs-3">
-                                            <a class="btn btn-success" onclick="addReportTemplate()">
-                                                新增模板
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="tab-content">
-                                        <table id="tb_files_list" class="table table-bordered"></table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>--%>
 </body>
 
 <div id="modalTemplate" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"

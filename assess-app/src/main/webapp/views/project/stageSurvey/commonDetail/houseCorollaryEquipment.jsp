@@ -2,18 +2,27 @@
   房屋配套设备设施
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<div class="x_panel" id="industryCorollaryEquipment">
-    <div class="x_title collapse-link">
-        <ul class="nav navbar-right panel_toolbox">
-            <li><a class="collapse-link"><i
-                    class="fa fa-chevron-up"></i></a></li>
-        </ul>
-        <h4>房屋配套设备设施信息</h4>
-    </div>
-    <div class="x_content collapse">
-        <table class="table table-bordered" id="HouseCorollaryEquipmentList">
-            <!-- cerare document add ajax data-->
-        </table>
+<div class="col-md-12">
+    <div class="card full-height">
+        <div class="card-header collapse-link">
+            <div class="card-head-row">
+                <div class="card-title">
+                    房屋配套设备设施信息
+                </div>
+                <div class="card-tools">
+                    <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                            class="fa fa-angle-down"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="card-body" style="display: none">
+            <form class="form-horizontal">
+                <table class="table table-bordered" id="HouseCorollaryEquipmentList">
+                    <!-- cerare document add ajax data-->
+                </table>
+            </form>
+        </div>
     </div>
 </div>
 

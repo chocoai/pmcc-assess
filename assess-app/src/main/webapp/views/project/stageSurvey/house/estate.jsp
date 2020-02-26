@@ -63,13 +63,13 @@
                                        placeholder="基础版块" class="form-control" name="blockName"
                                        value="${basicEstate.blockName}">
                                 <span class="input-group-btn">
-                        <button type="button" class="btn btn-default docs-tooltip"
+                                <button type="button" class="btn btn-primary docs-tooltip"
                                 data-toggle="tooltip"
                                 data-original-title="选择"
                                 onclick="examineCommon.blockSelect(this)">
-                        <i class="fa fa-search"></i>
+                                 <i class="fa fa-search"></i>
                         </button>
-                        <button type="button" class="btn btn-default docs-tooltip"
+                        <button type="button" class="btn btn-warning docs-tooltip"
                                 onclick="$(this).closest('.input-group').find('input').val('');"
                                 data-toggle="tooltip" data-original-title="清除">
                         <i class="fa fa-minus"></i>
@@ -102,7 +102,7 @@
                                    placeholder="街道号" name="streetNumber" class="form-control input-full"
                                    value="${basicEstate.streetNumber}">
                         </div>
-                    
+
                         <label class="col-sm-1">附号</label>
                         <div class="col-sm-3">
                             <input type="text" data-rule-maxlength="100" data-rule-number='true'
@@ -127,7 +127,7 @@
                                    placeholder="容积率" name="volumetricRate" class="form-control input-full"
                                    value="${basicEstate.volumetricRate}">
                         </div>
-             
+
                         <label class="col-sm-1">绿化率</label>
                         <div class="col-sm-3">
                             <input type="text"
@@ -313,7 +313,7 @@
 
                         </datalist>
                         <span class="input-group-btn">
-                                                <button type="button" class="btn btn-default docs-tooltip"
+                                                <button type="button" class="btn btn-warning docs-tooltip"
                                                         onclick="$(this).closest('.input-group').find('input').val('');"
                                                         data-toggle="tooltip" data-original-title="清除">
                                                 <i class="fa fa-minus"></i>
@@ -333,7 +333,7 @@
 
                         </datalist>
                         <span class="input-group-btn">
-                                                <button type="button" class="btn btn-default docs-tooltip"
+                                                <button type="button" class="btn btn-warning docs-tooltip"
                                                         onclick="$(this).closest('.input-group').find('input').val('');"
                                                         data-toggle="tooltip" data-original-title="清除">
                                                 <i class="fa fa-minus"></i>
@@ -414,18 +414,18 @@
                                placeholder="土地级别" class="form-control" name="landLevelName" required
                                value="${basicEstateLandState.landLevelName}">
                         <span class="input-group-btn">
-                        <button type="button" class="btn btn-default docs-tooltip"
+                        <button type="button" class="btn btn-primary docs-tooltip"
                                 data-toggle="tooltip"
                                 data-original-title="选择"
                                 onclick="examineCommon.landLevelSelect(this);">
                         <i class="fa fa-search"></i>
                         </button>
-                        <button type="button" class="btn btn-default docs-tooltip"
+                        <button type="button" class="btn btn-warning docs-tooltip"
                                 onclick="$(this).closest('.input-group').find('input').val('');"
                                 data-toggle="tooltip" data-original-title="清除">
                         <i class="fa fa-minus"></i>
                         </button>
-                            <button type="button" class="btn btn-default docs-tooltip"
+                            <button type="button" class="btn btn-info docs-tooltip"
                                     onclick="estateCommon.openLevelDetailModal(this);"
                                     data-toggle="tooltip" data-original-title="土地因素">
                         <i class="fa fa-magic"></i>

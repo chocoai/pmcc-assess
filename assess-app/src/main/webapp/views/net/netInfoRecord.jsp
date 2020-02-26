@@ -468,7 +468,7 @@
                 success: function (result) {
                     Loading.progressHide();
                     if (result.ret) {
-                        notifySuccess("分派成功");
+                        notifySuccess("成功","分派成功");
                         detailInfo.prototype.loadDataDicList();
                     }
                     else {

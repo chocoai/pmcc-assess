@@ -5,7 +5,6 @@
     <%@include file="/views/share/main_css.jsp" %>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/tree-grid/css/jquery.treegrid.css">
 </head>
-
 <body>
 <div class="wrapper">
     <div class="main-panel" style="width: 100%">
@@ -16,14 +15,11 @@
             <!--填写表单-->
             <jsp:include page="/views/method/module/marketCompareIndex.jsp"></jsp:include>
             <%@include file="/views/share/form_approval.jsp" %>
-            <%@include file="/views/share/form_log.jsp" %>
         </div>
         <%@include file="/views/share/main_footer.jsp" %>
     </div>
 </div>
 </body>
-
-
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js?v=${assessVersion}"></script>
 <input type="hidden" id="marketCompareJSON" value='${marketCompareJSON}'>
 <input type="hidden" id="fieldsJSON" value='${fieldsJSON}'>

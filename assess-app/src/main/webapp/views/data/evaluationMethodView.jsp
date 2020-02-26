@@ -66,11 +66,8 @@
         </div>
         <%@include file="/views/share/main_footer.jsp" %>
     </div>
-
 </div>
-
 </body>
-
 <div id="divBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -80,7 +77,6 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
             </div>
-
             <div class="modal-body">
                 <form id="frm" class="form-horizontal">
                     <input type="hidden" id="id" name="id" value="0">
@@ -88,20 +84,16 @@
                         <div class="col-md-12">
                             <div class="card-body">
                                 <div class="row form-group">
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-2 col-form-label">
                                                 名称<span class="symbol required"></span>
                                             </label>
-                                            <div class="col-sm-10">
+                                            <div class="col-sm-3">
                                                 <input type="text" required data-rule-maxlength="50" placeholder="名称"
                                                        id="name" name="name" class="form-control input-full">
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-inline x-valid">
-                                            <div class="col-sm-10">
+                                            <div class="col-sm-4">
                                                 <div class="form-check" style="justify-content:left">
                                                     <label class="form-check-label">
                                                         <input class="form-check-input" type="checkbox" id="bisEnable"
@@ -115,20 +107,18 @@
                                     </div>
                                 </div>
                                 <div class="row form-group">
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-2 col-form-label">
                                                 项目类型类别
                                             </label>
-                                            <div class="col-sm-10">
-                                                <div class="btn btn-xs btn-success"
+                                                <div class="btn btn-xs btn-success btn-sm"
                                                      onclick="appendHTML('',this)"><i
                                                         class="fa fa-plus"></i></div>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div style="margin-bottom: 8px;" class="system">
+                                <div class="system">
                                     <div class="row form-group">
                                     <div class="form-inline x-valid">
                                             <label class="col-sm-2 control-label">
@@ -139,18 +129,14 @@
                                                         class="form-control input-full search-select select2 type0">
                                                 </select>
                                             </div>
-
-
                                             <label class="col-sm-2 control-label">
                                                 项目类别
                                             </label>
-
                                             <div class="col-sm-3">
                                                 <select name="category"
                                                         class="form-control input-full search-select select2 category0">
                                                     <option selected="selected" value="">请先选择类型</option>
                                                 </select>
-
                                             </div>
                                             <div class="col-sm-2">
                                                 <input type="button" class="btn btn-warning" value="X"
@@ -159,9 +145,8 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="row form-group">
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-2 col-form-label">
                                                 评估方法<span class="symbol required"></span>
@@ -180,10 +165,10 @@
                                 <div class="row form-group">
                                     <div class="col-md-12">
                                         <div class="form-inline x-valid">
-                                            <label class="col-sm-1 control-label">
+                                            <label class="col-sm-2 control-label">
                                                 适用原因模板<span class="symbol required"></span>
                                             </label>
-                                            <div class="col-sm-11">
+                                            <div class="col-sm-10">
                                               <textarea required="required" placeholder="请填写适用原因" class="form-control input-full"
                                                         id="applicableReason" name="applicableReason"
                                                         onkeyup="extractApplicableField();"></textarea>
@@ -197,16 +182,15 @@
                                 <div class="row form-group">
                                     <div class="col-md-12">
                                         <div class="form-inline x-valid">
-                                            <label class="col-sm-1 control-label">
+                                            <label class="col-sm-2 control-label">
                                                 不适用原因模板<span class="symbol required"></span>
                                             </label>
-                                            <div class="col-sm-11">
+                                            <div class="col-sm-10">
                                               <textarea placeholder="请填写不适用原因" class="form-control input-full"
                                                         id="notApplicableReason" name="notApplicableReason"
                                                         required="required"
                                                         onkeyup="extractNotApplicableField();"></textarea>
                                                 <div class="not-applicableReason-field">
-
                                                 </div>
                                             </div>
                                         </div>
@@ -225,7 +209,6 @@
                     保存
                 </button>
             </div>
-
         </div>
     </div>
 </div>
@@ -267,13 +250,13 @@
     //加载 评估技术方法 数据列表
     function loadMethodList() {
         var cols = [];
-        cols.push({field: 'name', width: '5%',title: '名称'});
-        cols.push({field: 'typeName',  width: '5%',title: '类型'});
-        cols.push({field: 'methodStr',  width: '5%',title: '评估方法'});
-        cols.push({field: 'applicableReason', title: '适用原因模板', width: '40%'});
-        cols.push({field: 'notApplicableReason', title: '不适用原因模板', width: '40%'});
+        cols.push({field: 'name', width: '10%',title: '名称'});
+        cols.push({field: 'typeName',  width: '10%',title: '类型'});
+        cols.push({field: 'methodStr',  width: '10%',title: '评估方法'});
+        cols.push({field: 'applicableReason', title: '适用原因模板', width: '30%'});
+        cols.push({field: 'notApplicableReason', title: '不适用原因模板', width: '30%'});
         cols.push({
-            field: 'id',  width: '5%',title: '操作', formatter: function (value, row, index) {
+            field: 'id',  width: '10%',title: '操作', formatter: function (value, row, index) {
                 var str = '<button onclick="editMethod(' + index + ')"  style="margin-left: 5px;"  class="btn btn-icon btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
                 str += '<i class="fa fa-pen"></i>';
                 str += '</button>';
@@ -493,24 +476,36 @@
         getCategory(null, categoryValue);
     }
 
+
     function createHTML(projectType, projectCategory) {
-        var html = "<div class='row form-group' style='margin-top:8px;'>";
-        html += "<label class='col-md-2 col-form-label'>" + '项目类型' + "</label>";
-        html += "<div class='col-sm-3'>";
+        var html = '<div class="row form-group">';
+        html += '<div class="col-md-12">';
+        html += '<div class="form-inline x-valid">';
+
+
+        html += '<label class="col-sm-2 col-form-label">' + '项目类型' + '</label>';
+        html += '<div class="col-sm-3 ">';
         html += "<select  name='type' id='" + projectType + "' onchange='typeChange(this)' class='form-control input-full search-select select2 " + projectType + "'>";
         html += "<option selected='selected' value=''>" + '请选择' + "</option>";
         html += "</select>";
         html += "</div>";
 
-        html += "<label class='col-md-2 col-form-label'>" + '项目类别' + "</label>";
-        html += "<div class='col-sm-3'>";
+
+        html += '<label class="col-sm-2 col-form-label">' + '项目类别' + '</label>';
+        html += '<div class="col-sm-3 ">';
         html += "<select  name='category' id='" + projectCategory + "'  class='form-control input-full search-select select2 " + projectCategory + "'>";
         html += "<option selected='selected' value=''>" + '请先选择类型' + "</option>";
         html += "</select>";
         html += "</div>";
 
-        html += "<div class='col-sm-2'>";
-        html += "<input class='btn btn-warning' type='button' value='X' onclick='cleanHTMLData(this)'>";
+
+        html += '<label class="col-sm-1 col-form-label">' + '取消' + '</label>';
+        html += '<div class="col-sm-1">';
+        html += "<input type='button' class='btn btn-warning btn-sm' type='button' value='X' onclick='cleanHTMLData(this)'>";
+        html += "</div>";
+
+
+        html += "</div>";
         html += "</div>";
         html += "</div>";
         return html;
@@ -528,23 +523,31 @@
 
     function reload(typeValue, categoryValue) {
         $("#frm").find(".system").empty();
-        var html = "<div class='row form-group' style='margin-top:8px;'>";
-        html += "<label class='col-md-2 col-form-label'>" + '项目类型' + "</label>";
-        html += "<div class='col-sm-3'>";
+        var html = '<div class="row form-group">';
+        html += '<div class="col-md-12">';
+        html += '<div class="form-inline x-valid">';
+
+        html += '<label class="col-sm-2 col-form-label">' + '项目类型' + '</label>';
+        html += '<div class="col-sm-3">';
         html += "<select  name='type' id='type0' onchange='typeChange(this)' class='form-control input-full search-select select2 type0'>";
         html += "<option selected='selected' value=''>" + '请选择' + "</option>";
         html += "</select>";
         html += "</div>";
 
-        html += "<label class='col-md-2 col-form-label'>" + '项目类别' + "</label>";
-        html += "<div class='col-sm-3'>";
+        html += '<label class="col-sm-2 col-form-label">' + '项目类别' + '</label>';
+        html += '<div class="col-sm-3">';
         html += "<select  name='category' class='form-control input-full search-select select2 category0'>";
         html += "<option selected='selected' value=''>" + '请先选择类型' + "</option>";
         html += "</select>";
         html += "</div>";
 
-        html += "<div class='col-sm-2'>";
-        html += "<input class='btn btn-warning' type='button' value='X' onclick='cleanHTMLData(this)'>";
+
+        html += '<label class="col-sm-1 col-form-label">' + '取消' + '</label>';
+        html += '<div class="col-sm-1">';
+        html += "<input type='button' class='btn btn-warning btn-sm' type='button' value='X' onclick='cleanHTMLData(this)'>";
+        html += "</div>";
+
+        html += "</div>";
         html += "</div>";
         html += "</div>";
         $("#frm").find(".system").append(html);
@@ -554,7 +557,6 @@
         $("#frm").find(".category0").select2();
 
     }
-
 
 </script>
 

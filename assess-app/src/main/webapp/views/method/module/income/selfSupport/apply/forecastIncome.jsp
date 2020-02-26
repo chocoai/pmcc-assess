@@ -12,12 +12,14 @@
 </div>
 <div class="x_content">
     <div class="form-horizontal">
-        <div class="form-group ">
+        <div class="row form-group ">
+            <div class="col-md-12">
+            <div class="form-inline x-valid">
             <label class="col-sm-1 control-label">
                 范围
             </label>
             <div class="col-sm-1">
-                <select class="form-control" name="bisForecast">
+                <select class="form-control input-full" name="bisForecast">
                     <option value="">全部</option>
                     <option value="1">预测</option>
                     <option value="0">非预测</option>
@@ -27,29 +29,29 @@
                 年度
             </label>
             <div class="col-sm-1">
-                <input type="text" name="year" class="form-control">
+                <input type="text" name="year" class="form-control input-full">
             </div>
             <label class="col-sm-1 control-label">
                 二级编号
             </label>
             <div class="col-sm-1">
-                <input type="text" name="secondLevelNumber" class="form-control">
+                <input type="text" name="secondLevelNumber" class="form-control input-full">
             </div>
             <div class="col-sm-6">
                 <div class="btn-group">
-                    <button class="btn btn-primary" onclick="selfSupportForecast.loadHistoryList(0,this);">
+                    <button class="btn btn-primary btn-sm" onclick="selfSupportForecast.loadHistoryList(0,this);">
                         查询
                     </button>
-                    <button class="btn btn-success" data-toggle="modal"
+                    <button class="btn btn-success btn-sm" data-toggle="modal"
                             onclick="selfSupportForecast.addHistory(0);">
                         新增
                     </button>
-                    <button class="btn btn-warning" onclick="selfSupportForecast.delHistoryBatch(0);">
+                    <button class="btn btn-warning btn-sm" onclick="selfSupportForecast.delHistoryBatch(0);">
                         删除
                     </button>
                 </div>
                 <div class="btn-group">
-                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+                    <button type="button" class="btn btn-primary dropdown-toggle btn-sm" data-toggle="dropdown"
                             aria-expanded="false">
                         导入数据
                         <span class="caret"></span>
@@ -65,7 +67,7 @@
                     </ul>
                 </div>
                 <div class="btn-group">
-                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+                    <button type="button" class="btn btn-primary dropdown-toggle btn-sm" data-toggle="dropdown"
                             aria-expanded="false">
                         添加到预测
                         <span class="caret"></span>
@@ -74,17 +76,19 @@
                     <ul class="dropdown-menu" role="menu" id="ulForecastAnalyseIncome"></ul>
                 </div>
                 <div class="btn-group">
-                    <button class="btn btn-primary" data-toggle="modal"
+                    <button class="btn btn-primary btn-sm" data-toggle="modal"
                             onclick="selfSupportForecast.forecastToHistory(0);">
                         取消预测
                     </button>
                 </div>
                 <div class="btn-group">
-                    <button class="btn btn-primary" data-toggle="modal"
+                    <button class="btn btn-primary btn-sm" data-toggle="modal"
                             onclick="selfSupportForecast.startAnalyse(0);">
                         开始分析
                     </button>
                 </div>
+            </div>
+            </div>
             </div>
         </div>
     </div>
@@ -99,177 +103,187 @@
     </table>
 </div>
 
-<div id="modal_history" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
-     role="dialog"
+<div id="modal_history" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
+                <h4 class="modal-title">历史或调查数据</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">历史或调查数据</h3>
             </div>
-            <form id="frm_history" class="form-horizontal">
-                <input type="hidden" name="id">
-                <input type="hidden" name="type">
-                <div class="modal-body">
+
+            <div class="modal-body">
+                <form id="frm_history" class="form-horizontal">
+                    <input type="hidden" name="id">
+                    <input type="hidden" name="type">
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="panel-body">
-                                <div class="form-group">
-                                    <div class="x-valid">
+                            <div class="card-body">
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                    <div class="form-inline x-valid">
                                         <label class="col-sm-2 control-label">
                                             类型<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-4">
-                                            <select name="sourceType" class="form-control" required>
+                                            <select name="sourceType" class="form-control input-full" required>
                                                 <option value="历史">历史</option>
                                                 <option value="调查">调查</option>
                                             </select>
                                         </div>
-                                    </div>
-                                    <div class="x-valid">
                                         <label class="col-sm-2 control-label">
                                             会计科目<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-4">
-                                            <select name="accountingSubject" class="form-control"
+                                            <select name="accountingSubject" class="form-control input-full"
                                                     required="required"></select>
                                         </div>
                                     </div>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                    <div class="form-inline x-valid">
                                         <label class="col-sm-2 control-label">
                                             年度<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-4">
                                             <input type="text" name="year" placeholder="年度"
-                                                   data-rule-digits="true" class="form-control date-year"
+                                                   data-rule-digits="true" class="form-control input-full date-year"
                                                    required="required">
                                         </div>
-                                    </div>
-                                    <div class="x-valid">
                                         <label class="col-sm-2 control-label">
                                             月度
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" name="month" placeholder="月度" class="form-control" >
+                                            <input type="text" name="month" placeholder="月度" class="form-control input-full" >
                                         </div>
                                     </div>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                    <div class="form-inline x-valid">
                                         <label class="col-sm-2 control-label">
                                             一级编号
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" name="firstLevelNumber" placeholder="一级编号" class="form-control" >
+                                            <input type="text" name="firstLevelNumber" placeholder="一级编号" class="form-control input-full" >
                                         </div>
-                                    </div>
-                                    <div class="x-valid">
                                         <label class="col-sm-2 control-label">
                                             二级编号
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" name="secondLevelNumber" placeholder="二级编号" class="form-control" >
+                                            <input type="text" name="secondLevelNumber" placeholder="二级编号" class="form-control input-full" >
                                         </div>
                                     </div>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                    <div class="form-inline x-valid">
                                         <label class="col-sm-2 control-label">
                                             单位
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" name="unit" placeholder="单位" class="form-control">
+                                            <input type="text" name="unit" placeholder="单位" class="form-control input-full">
                                         </div>
-                                    </div>
-                                    <div class="x-valid">
                                         <label class="col-sm-2 control-label">
                                             单价
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" name="unitPrice" placeholder="单价" onblur="selfSupportForecast.computeMoney();" data-rule-number="true" class="form-control" >
+                                            <input type="text" name="unitPrice" placeholder="单价" onblur="selfSupportForecast.computeMoney();" data-rule-number="true" class="form-control input-full" >
                                         </div>
                                     </div>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                    <div class="form-inline x-valid">
                                         <label class="col-sm-2 control-label">
                                             数量
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" name="number" placeholder="数量" onblur="selfSupportForecast.computeMoney();" data-rule-digits="true" class="form-control" >
+                                            <input type="text" name="number" placeholder="数量" onblur="selfSupportForecast.computeMoney();" data-rule-digits="true" class="form-control input-full" >
                                         </div>
-                                    </div>
-                                    <div class="x-valid">
                                         <label class="col-sm-2 control-label">
                                             金额<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-4">
                                             <input type="text" name="amountMoney" placeholder="金额"
-                                                   data-rule-number="true" class="form-control" required="required">
+                                                   data-rule-number="true" class="form-control input-full" required="required">
                                         </div>
                                     </div>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                    <div class="form-inline x-valid">
                                         <label class="col-sm-2 control-label">
                                             房屋折旧与使用费
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" name="deprecitionRoyalty" placeholder="房屋折旧与使用费" class="form-control">
+                                            <input type="text" name="deprecitionRoyalty" placeholder="房屋折旧与使用费" class="form-control input-full">
                                         </div>
                                     </div>
+                                    </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-default">
-                        取消
-                    </button>
-                    <button type="button" class="btn btn-primary"
-                            onclick="selfSupportForecast.saveHistory();">
-                        保存
-                    </button>
-                </div>
-            </form>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="selfSupportForecast.saveHistory()">
+                    保存
+                </button>
+            </div>
+
         </div>
     </div>
 </div>
 
-<div id="divBoxAnalyseItemData" class="modal fade bs-example-modal-lg" data-backdrop="static"
-     tabindex="-1"
-     role="dialog"
+<div id="divBoxAnalyseItemData" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
+                <h4 class="modal-title">明细</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">明细</h3>
             </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                        <table class="table table-bordered" id="analyseItemList">
-                            <!-- cerare document add ajax data-->
-                        </table>
 
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <div class="col-md-12">
+                                        <table class="table table-bordered" id="analyseItemList">
+                                            <!-- cerare document add ajax data-->
+                                        </table>
+                                    </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
             <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
                     关闭
                 </button>
             </div>
+
         </div>
     </div>
 </div>
+
+
 
 <script type="text/javascript">
     $(function () {
@@ -376,8 +390,14 @@
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-success tooltips" data-placement="top" data-original-title="编辑" onclick="selfSupportForecast.editHistory(' + index + ',' + type + ');" ><i class="fa fa-edit fa-white"></i></a>';
-                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="selfSupportForecast.delHistory(' + row.id + ',' + type + ')"><i class="fa fa-minus fa-white"></i></a>';
+                //str += '<a class="btn btn-xs btn-success tooltips" data-placement="top" data-original-title="编辑" onclick="selfSupportForecast.editHistory(' + index + ',' + type + ');" ><i class="fa fa-edit fa-white"></i></a>';
+                str += '<button onclick="selfSupportForecast.editHistory(' + index + ',' + type + ');"  style="margin-left: 5px;"  class="btn   btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
+                str += '<i class="fa fa-pen"></i>';
+                str += '</button>';
+                str += '<button onclick="selfSupportForecast.delHistory(' + row.id + ',' + type + ')"  style="margin-left: 5px;"  class="btn   btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
+                str += '<i class="fa fa-minus"></i>';
+                str += '</button>';
+                //str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="selfSupportForecast.delHistory(' + row.id + ',' + type + ')"><i class="fa fa-minus fa-white"></i></a>';
                 str += '</div>';
                 return str;
             }
@@ -422,7 +442,7 @@
 
     //删除历史信息
     selfSupportForecast.delHistoryBatch = function (type) {
-        Alert("确认要删除么？", 2, null, function () {
+        AlertConfirm("是否确认删除", "删除相应的数据后将不可恢复", function () {
             var rows = $("#" + selfSupportForecast.getHistoryListId(type)).bootstrapTable('getSelections');
             if (rows && rows.length > 0) {
                 var arrayId = [];
@@ -431,7 +451,7 @@
                 })
                 selfSupportForecast.delHistory(arrayId.join(),type);
             } else {
-                Alert("请选择需删除的数据");
+                notifyInfo("请选择需删除的数据");
             }
         })
     }
@@ -447,16 +467,16 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    toastr.success('删除成功');
+                    notifySuccess('删除成功');
                     selfSupportForecast.loadHistoryList(type);
                 }
                 else {
-                    Alert("删除数据失败，失败原因:" + result.errmsg);
+                    AlertError("删除数据失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
                 Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + result);
+                AlertError("调用服务端方法失败，失败原因:" + result);
             }
         })
     }
@@ -478,18 +498,18 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    toastr.success('保存成功');
+                    notifySuccess('保存成功');
                     var type = $("#frm_history").find('[name=type]').val();
                     selfSupportForecast.loadHistoryList(type);
                     $('#modal_history').modal('hide');
                 }
                 else {
-                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                    AlertError("保存数据失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
                 Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + result);
+                AlertError("调用服务端方法失败，失败原因:" + result);
             }
         })
     }
@@ -512,15 +532,15 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    Alert(result.data.replace(/\n/g, '<br/>'));
+                    notifySuccess(result.data.replace(/\n/g, '<br/>'));
                     selfSupportForecast.loadHistoryList(type);
                 } else {
-                    Alert("导入数据失败，失败原因:" + result.errmsg);
+                    AlertError("导入数据失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result, status, e) {
                 Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + result);
+                AlertError("调用服务端方法失败，失败原因:" + result);
             }
         });
     }
@@ -542,14 +562,14 @@
                 },
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success("添加成功");
+                        notifySuccess("添加成功");
                         $('#' + selfSupportForecast.getHistoryListId(type)).bootstrapTable('refresh');
                         $('#' + selfSupportForecast.getForecastAnalyseListId(type)).bootstrapTable('refresh');
                     }
                 }
             })
         } else {
-            toastr.info('请选择要添加的数据');
+            notifyInfo('请选择要添加的数据');
         }
     }
 
@@ -570,14 +590,14 @@
                     type: type
                 }, success: function (result) {
                     if (result.ret) {
-                        toastr.success("取消成功");
+                        notifySuccess("取消成功");
                         $('#' + selfSupportForecast.getHistoryListId(type)).bootstrapTable('refresh');
                         $('#' + selfSupportForecast.getForecastAnalyseListId(type)).bootstrapTable('refresh');
                     }
                 }
             })
         } else {
-            toastr.info('请选择要取消的数据');
+            notifyInfo('请选择要取消的数据');
         }
     }
 
@@ -594,7 +614,7 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    toastr.success('分析成功');
+                    notifySuccess('分析成功');
                     $("#" + selfSupportForecast.getForecastAnalyseListId(type)).bootstrapTable('refresh');
                 }
             }
@@ -611,7 +631,10 @@
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 if(row.amountMoney != null){
                     var str = '<div class="btn-margin">';
-                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="查看明细" onclick="selfSupportForecast.showItemData(' + row.id  + ')">查看明细</a>';
+                    //str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="查看明细" onclick="selfSupportForecast.showItemData(' + row.id  + ')">查看明细</a>';
+                    str += '<button onclick="selfSupportForecast.showItemData(' + row.id  + ')" style="margin-left: 5px;" class="btn   btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看明细">';
+                    str += '<i class="fa fa-search"></i>';
+                    str += '</button>';
                     str += '</div>';
                     return str;
                 }

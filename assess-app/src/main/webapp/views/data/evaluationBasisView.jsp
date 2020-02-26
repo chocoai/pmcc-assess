@@ -18,9 +18,7 @@
             </div>
             <div class="page-inner mt--5">
                 <div class="row mt--2">
-
                     <div class="col-md-12">
-                        <%@include file="/views/share/navigation/reportSetup.jsp" %>
                         <div class="card full-height">
                             <div class="card-header">
                                 <div class="card-head-row">
@@ -28,36 +26,45 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <form id="frmQuery" class="form-horizontal">
-                                    <div class="form-group form-inline">
-                                        <label for="queryName" class="col-md-1 col-form-label">名称</label>
-                                        <div class="col-md-3 p-0">
-                                            <input type="text" data-rule-maxlength="50"
-                                                   placeholder="名称" id="queryName" name="queryName"
-                                                   class="form-control input-full">
-                                        </div>
-                                        <button style="margin-left: 10px" class="btn btn-info  btn-sm" type="button"
-                                                onclick="loadBasisList()">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <%@include file="/views/share/navigation/reportSetup.jsp" %>
+                                    </div>
+                                    <div class="col-md-10">
+                                        <form id="frmQuery" class="form-horizontal">
+                                            <div class="form-group form-inline">
+                                                <label for="queryName" class="col-md-1 col-form-label">名称</label>
+                                                <div class="col-md-3 p-0">
+                                                    <input type="text" data-rule-maxlength="50"
+                                                           placeholder="名称" id="queryName" name="queryName"
+                                                           class="form-control input-full">
+                                                </div>
+                                                <button style="margin-left: 10px" class="btn btn-info  btn-sm"
+                                                        type="button"
+                                                        onclick="loadBasisList()">
 											<span class="btn-label">
 												<i class="fa fa-search"></i>
 											</span>
-                                            查询
-                                        </button>
-                                        <button style="margin-left: 5px" class="btn btn-success btn-sm" type="button"
-                                                data-toggle="modal" onclick="addBasis()"
-                                                href="#divBox">
+                                                    查询
+                                                </button>
+                                                <button style="margin-left: 5px" class="btn btn-success btn-sm"
+                                                        type="button"
+                                                        data-toggle="modal" onclick="addBasis()"
+                                                        href="#divBox">
 											<span class="btn-label">
 												<i class="fa fa-plus"></i>
 											</span>
-                                            新增
-                                        </button>
+                                                    新增
+                                                </button>
+                                            </div>
+
+
+                                        </form>
+                                        <table class="table table-bordered" id="tb_List">
+                                            <!-- cerare document add ajax data-->
+                                        </table>
                                     </div>
-
-
-                                </form>
-                                <table class="table table-bordered" id="tb_List">
-                                    <!-- cerare document add ajax data-->
-                                </table>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -88,21 +95,16 @@
                         <div class="col-md-12">
                             <div class="card-body">
                                 <div class="row form-group">
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-2 col-form-label">
                                                 名称<span class="symbol required"></span>
                                             </label>
-                                            <div class="col-sm-10">
+                                            <div class="col-sm-3">
                                                 <input type="text" name="name" id="name" class="form-control input-full"
                                                        placeholder="名称" required="required">
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-inline x-valid">
-
-                                            <div class="col-sm-10">
+                                            <div class="col-sm-4">
                                                 <div class="form-check" style="justify-content:left">
                                                     <label class="form-check-label">
                                                         <input class="form-check-input" type="checkbox" id="bisEnable"
@@ -116,20 +118,20 @@
                                     </div>
                                 </div>
                                 <div class="row form-group">
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-2 col-form-label">
                                                 项目类型类别<span class="symbol required"></span>
                                             </label>
-                                            <div class="col-sm-10">
-                                                <div class="btn btn-xs btn-success"
-                                                     onclick="appendHTML('',this)"><i
-                                                        class="fa fa-plus"></i></div>
-                                            </div>
+
+                                            <div class="btn btn-xs btn-success"
+                                                 onclick="appendHTML('',this)"><i
+                                                    class="fa fa-plus"></i></div>
+
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row form-group system">
+                                <div class="system">
                                     <div class="col-md-4">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-2 col-form-label">
@@ -168,7 +170,7 @@
                                     </div>
                                 </div>
                                 <div class="row form-group">
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-2 col-form-label">
                                                 委托目的<span class="symbol required"></span>
@@ -187,24 +189,23 @@
                                     </div>
                                 </div>
                                 <div class="row form-group">
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-2 col-form-label">
                                                 key值
                                             </label>
-                                            <div class="col-sm-10">
-                                                <input type="text" class="form-control input-full" name="fieldName" placeholder="key值">
+                                            <div class="col-sm-3">
+                                                <input type="text" class="form-control input-full" name="fieldName"
+                                                       placeholder="key值">
 
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-inline x-valid">
+
                                             <label class="col-sm-2 col-form-label">
                                                 排序
                                             </label>
-                                            <div class="col-sm-10">
-                                                <input type="text" class="form-control input-full" name="sorting" placeholder="排序"
+                                            <div class="col-sm-3">
+                                                <input type="text" class="form-control input-full" name="sorting"
+                                                       placeholder="排序"
                                                        required="required" data-rule-number='true'>
                                             </div>
                                         </div>
@@ -213,22 +214,22 @@
                                 <div class="row form-group">
                                     <div class="col-md-12">
                                         <div class="form-inline x-valid">
-                                            <label class="col-sm-1 control-label">
+                                            <label class="col-sm-2 control-label">
                                                 模板<span class="symbol required"></span>
                                             </label>
-                                            <div class="col-sm-11">
+                                            <div class="col-sm-10">
                                                 <div style="width:99%;height:200px;" id="template"></div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row form-group">
-                                    <div class="col-md-6">
-                                        <div class="form-inline x-valid">
-                                            <button type="button" class="btn btn-success btn-sm"
-                                                    onclick="showItemable()" data-toggle="modal"> 管理子模板
-                                            </button>
-                                        </div>
+                                    <div class="col-md-12">
+
+                                        <button type="button" class="btn btn-success btn-sm"
+                                                onclick="showItemable()" data-toggle="modal"> 管理子模板
+                                        </button>
+
                                     </div>
 
                                 </div>
@@ -402,7 +403,7 @@
     var type = "basis";
     var ue = UE.getEditor('template', {
         toolbars: [
-            ['source','autotypeset','bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc']
+            ['source', 'autotypeset', 'bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc']
         ],
         zIndex: 11009,
         initialFrameHeight: 220,
@@ -569,7 +570,7 @@
 
     function showItemable() {
         var id = $("#id").val();
-        if(!id){
+        if (!id) {
             id = 0;
         }
         dataReportTemplateItem.prototype.showStartModel(id, type);
@@ -664,40 +665,37 @@
         getCategory(null, categoryValue);
     }
 
+
     function createHTML(projectType, projectCategory) {
         var html = '<div class="row form-group">';
-
-        html += '<div class="col-md-4">';
+        html += '<div class="col-md-12">';
         html += '<div class="form-inline x-valid">';
+
+
         html += '<label class="col-sm-2 col-form-label">' + '项目类型' + '</label>';
-        html += '<div class="col-sm-10">';
+        html += '<div class="col-sm-3 ">';
         html += "<select  name='type' id='" + projectType + "' onchange='typeChange(this)' class='form-control input-full search-select select2 " + projectType + "'>";
         html += "<option selected='selected' value=''>" + '请选择' + "</option>";
         html += "</select>";
         html += "</div>";
-        html += "</div>";
-        html += "</div>";
 
-        html += '<div class="col-md-4">';
-        html += '<div class="form-inline x-valid">';
+
         html += '<label class="col-sm-2 col-form-label">' + '项目类别' + '</label>';
-        html += '<div class="col-sm-10">';
+        html += '<div class="col-sm-3 ">';
         html += "<select  name='category' id='" + projectCategory + "'  class='form-control input-full search-select select2 " + projectCategory + "'>";
         html += "<option selected='selected' value=''>" + '请先选择类型' + "</option>";
         html += "</select>";
         html += "</div>";
-        html += "</div>";
+
+
+        html += '<label class="col-sm-1 col-form-label">' + '取消' + '</label>';
+        html += '<div class="col-sm-1">';
+        html += "<input type='button' class='btn btn-warning btn-sm' type='button' value='X' onclick='cleanHTMLData(this)'>";
         html += "</div>";
 
-        html += '<div class="col-md-4">';
-        html += '<div class="form-inline x-valid">';
-        html += '<label class="col-sm-2 col-form-label">' + '取消' + '</label>';
-        html += '<div class="col-sm-10">';
-        html += "<input class='btn btn-warning btn-sm' type='button' value='X' onclick='cleanHTMLData(this)'>";
-        html += "</div>";
-        html += "</div>";
-        html += "</div>";
 
+        html += "</div>";
+        html += "</div>";
         html += "</div>";
         return html;
     }
@@ -715,38 +713,31 @@
     function reload(typeValue, categoryValue) {
         $("#frm").find(".system").empty();
         var html = '<div class="row form-group">';
-
-        html += '<div class="col-md-4">';
+        html += '<div class="col-md-12">';
         html += '<div class="form-inline x-valid">';
+
         html += '<label class="col-sm-2 col-form-label">' + '项目类型' + '</label>';
-        html += '<div class="col-sm-10">';
+        html += '<div class="col-sm-3">';
         html += "<select  name='type' id='type0' onchange='typeChange(this)' class='form-control input-full search-select select2 type0'>";
         html += "<option selected='selected' value=''>" + '请选择' + "</option>";
         html += "</select>";
         html += "</div>";
-        html += "</div>";
-        html += "</div>";
 
-        html += '<div class="col-md-4">';
-        html += '<div class="form-inline x-valid">';
         html += '<label class="col-sm-2 col-form-label">' + '项目类别' + '</label>';
-        html += '<div class="col-sm-10">';
+        html += '<div class="col-sm-3">';
         html += "<select  name='category' class='form-control input-full search-select select2 category0'>";
         html += "<option selected='selected' value=''>" + '请先选择类型' + "</option>";
         html += "</select>";
         html += "</div>";
-        html += "</div>";
+
+
+        html += '<label class="col-sm-1 col-form-label">' + '取消' + '</label>';
+        html += '<div class="col-sm-1">';
+        html += "<input type='button' class='btn btn-warning btn-sm' type='button' value='X' onclick='cleanHTMLData(this)'>";
         html += "</div>";
 
-        html += '<div class="col-md-4">';
-        html += '<div class="form-inline x-valid">';
-        html += '<label class="col-sm-2 col-form-label">' + '取消' + '</label>';
-        html += '<div class="col-sm-10">';
-        html += "<input class='btn btn-warning btn-sm' type='button' value='X' onclick='cleanHTMLData(this)'>";
         html += "</div>";
         html += "</div>";
-        html += "</div>";
-
         html += "</div>";
         $("#frm").find(".system").append(html);
         getType(0, typeValue);

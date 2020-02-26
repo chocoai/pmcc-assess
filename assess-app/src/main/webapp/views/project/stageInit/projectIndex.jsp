@@ -48,7 +48,7 @@
                                     </div>
                                 </div>
                             </div>
-                                <%@include file="/views/project/stageInit/stageInitModel/projectConsignor.jsp" %>
+                            <%@include file="/views/project/stageInit/stageInitModel/projectConsignor.jsp" %>
                         </div>
                     </div>
                     <!-- 占有人 start -->
@@ -67,7 +67,7 @@
                                 </div>
                             </div>
 
-                                <%@include file="/views/project/stageInit/stageInitModel/projectPossessor.jsp" %>
+                            <%@include file="/views/project/stageInit/stageInitModel/projectPossessor.jsp" %>
                         </div>
                     </div>
                     <!-- 报告使用单位 start -->
@@ -86,7 +86,7 @@
                                 </div>
                             </div>
 
-                                <%@include file="/views/project/stageInit/stageInitModel/projectUnit_information.jsp" %>
+                            <%@include file="/views/project/stageInit/stageInitModel/projectUnit_information.jsp" %>
 
                         </div>
                     </div>
@@ -96,17 +96,24 @@
                             <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
                                 取消
                             </button>
-                            <button id="draft_btn" class="btn btn-warning" onclick="projectApplyDraft();">
-                                保存草稿<i style="margin-left: 10px" class="fa fa-save"></i>
-                            </button>
-                            <button id="commit_btn" class="btn btn-success" onclick="projectApply(false);">
-                                直接提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
-                            </button>
-                            <c:if test="${processInsId == '0' || processInsId == null || processInsId == 0}">
-                                <button id="approval_btn" class="btn btn-primary" onclick="projectApply(true);">
-                                    提交审批<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
-                                </button>
-                            </c:if>
+                            <c:choose>
+                                <c:when test="${processInsId == '0' || processInsId == null || processInsId == 0}">
+                                    <button id="draft_btn" class="btn btn-warning" onclick="projectApplyDraft();">
+                                        保存草稿<i style="margin-left: 10px" class="fa fa-save"></i>
+                                    </button>
+                                    <button id="commit_btn" class="btn btn-success" onclick="projectApply(false);">
+                                        直接提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
+                                    </button>
+                                    <button id="approval_btn" class="btn btn-primary" onclick="projectApply(true);">
+                                        提交审批<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
+                                    </button>
+                                </c:when>
+                                <c:otherwise>
+                                    <button class="btn btn-primary" onclick="projectApply(true);">
+                                        提交审批<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
+                                    </button>
+                                </c:otherwise>
+                            </c:choose>
                         </div>
                     </div>
                     <c:if test="${processInsId ne '0'}">
@@ -163,7 +170,7 @@
             success: function (result) {
                 if (result.ret) {
                     //保存完后其他动作
-                    AlertSuccess("成功", "提交数据成功",function(){
+                    AlertSuccess("成功", "提交数据成功", function () {
                         window.close();
                     });
                 } else {
@@ -200,7 +207,7 @@
             success: function (result) {
                 if (result.ret) {
                     //保存完后其他动作
-                    AlertSuccess("提交成功", "数据已成功保存到数据库",function(){
+                    AlertSuccess("提交成功", "数据已成功保存到数据库", function () {
                         window.close();
                     });
                 } else {

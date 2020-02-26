@@ -50,7 +50,6 @@
                                                    placeholder="名称" id="queryName" name="queryName"
                                                    class="form-control input-full">
                                         </div>
-                                        <p id="toolbar">
                                         <button style="margin-left: 10px" class="btn btn-info  btn-sm" type="button"
                                                 onclick="dataProperty.prototype.findList()">
 											<span class="btn-label">
@@ -66,10 +65,7 @@
 											</span>
                                             新增
                                         </button>
-                                        </p>
                                     </div>
-
-
                                 </form>
                                 <table class="table table-bordered" id="tb_FatherList">
                                     <!-- cerare document add ajax data-->
@@ -138,7 +134,6 @@
             }, {
                 showColumns: false,
                 showRefresh: false,
-                toolbar: '#toolBtn',
                 search: false,
                 onLoadSuccess: function () {
                     $('.tooltips').tooltip();

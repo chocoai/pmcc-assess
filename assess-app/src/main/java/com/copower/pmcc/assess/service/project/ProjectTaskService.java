@@ -117,7 +117,7 @@ public class ProjectTaskService {
         ProcessUserDto processUserDto = new ProcessUserDto();
         ProcessInfo processInfo = new ProcessInfo();
         String boxName = projectPhase.getBoxName();
-        if (projectPhase.getBisUseBox() || projectTaskDto.getMustUseBox()) {
+        if (projectPhase.getBisUseBox() == Boolean.TRUE || projectTaskDto.getMustUseBox() == Boolean.TRUE) {
             //发起相应的流程
             String folio = projectPlanDetails.getProjectPhaseName() + "【成果提交】" + projectInfo.getProjectName();
             Integer boxIdByBoxName = bpmRpcBoxService.getBoxIdByBoxName(boxName);
@@ -220,19 +220,19 @@ public class ProjectTaskService {
         ProjectPlanDetails projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsItemByProcessInsId(approvalModelDto.getProcessInsId());
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(approvalModelDto.getProjectId());
         ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlanDetails.getProjectWorkStageId());
-        ProjectPhase projectPhase=projectPhaseService.getCacheProjectPhaseById(projectPlanDetails.getProjectPhaseId());
+        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseById(projectPlanDetails.getProjectPhaseId());
         ProjectTaskInterface bean = (ProjectTaskInterface) SpringContextUtils.getBean(approvalModelDto.getViewUrl());
         bean.approvalCommit(projectPlanDetails, approvalModelDto.getProcessInsId(), formData);
-        if(projectWorkStage!=null){
+        if (projectWorkStage != null) {
             approvalModelDto.setWorkStageId(projectWorkStage.getId());
             approvalModelDto.setWorkStage(projectWorkStage.getWorkStageName());
         }
-        if(projectPhase!=null){
+        if (projectPhase != null) {
             approvalModelDto.setWorkPhaseId(projectPhase.getId());
             approvalModelDto.setWorkPhase(projectPhase.getProjectPhaseName());
         }
         //创建考核ProjectTask任务
-        chksAssessmentProjectPerformanceService.createAssessmentProjectTask(approvalModelDto,projectInfo,projectPlanDetails);
+        chksAssessmentProjectPerformanceService.createAssessmentProjectTask(approvalModelDto, projectInfo, projectPlanDetails);
 
         try {
             processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);

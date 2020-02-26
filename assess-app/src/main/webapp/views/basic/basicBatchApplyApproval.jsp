@@ -4,78 +4,79 @@
 <head>
     <%@include file="/views/share/main_css.jsp" %>
 </head>
-<body class="nav-md footer_fixed">
-<div class="container body">
-    <div class="main_container">
-        <div class="right_col" role="main" style="margin-left: 0">
+<body>
+<div class="wrapper">
+    <div class="main-panel" style="width: 100%">
+        <div class="content" style="margin-top: 0px;">
             <%@include file="/views/share/form_head.jsp" %>
-            <div class="x_panel">
-                <div class="x_title collapse-link">
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                    </ul>
-                    <h3>楼盘信息</h3>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="x_content">
-                    <form id="basicBatchApplyDetialFrm" class="form-horizontal">
-                        <!-- formClassify 大类 , formType 类型-->
-                        <input type="hidden" name="formClassify" value="${applyBatch.classify}">
-                        <input type="hidden" name="formType" value="${applyBatch.type}">
-                        <input type="hidden" name="planDetailsId" value="${applyBatch.planDetailsId}">
-                        <input type="hidden" name="applyBatchId" value="${applyBatch.id}">
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    大类
-                                </label>
-                                <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                                    <c:if test="${not empty formClassifyList}">
-                                        <c:forEach var="item" items="${formClassifyList}">
-                                            <c:if test="${applyBatch.classify == item.id}">
-                                                <label class="form-control">${item.name}</label>
-                                            </c:if>
-                                        </c:forEach>
-                                    </c:if>
-                                </div>
+            <div class="col-md-12">
+                <div class="x_panel card">
+                    <div class="card-header collapse-link">
+                        <div class="card-head-row">
+                            <div class="card-title">
+                                楼盘信息
                             </div>
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    类型
-                                </label>
-                                <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                                    <c:if test="${not empty examineFormTypeList}">
-                                        <c:forEach var="item" items="${examineFormTypeList}">
-                                            <c:if test="${applyBatch.type == item.key}">
-                                                <label class="form-control">${item.value}</label>
-                                            </c:if>
-                                        </c:forEach>
-                                    </c:if>
-                                </div>
+                            <div class="card-tools">
+                                <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                                        class="fa fa-angle-down"></span>
+                                </button>
                             </div>
                         </div>
-
-                    </form>
-                    <div class="form-horizontal">
-                        <div class="form-group">
-                            <div class="col-xs-3  col-sm-3  col-md-3  col-xs-3 col-lg-offset-1 col-sm-offset-1 col-xs-offset-1 col-md-offset-1">
-                                <ul id="ztree" class="ztree"></ul>
+                    </div>
+                    <div class="x_content card-body">
+                        <form id="basicBatchApplyDetialFrm" class="form-horizontal">
+                            <!-- formClassify 大类 , formType 类型-->
+                            <input type="hidden" name="formClassify" value="${applyBatch.classify}">
+                            <input type="hidden" name="formType" value="${applyBatch.type}">
+                            <input type="hidden" name="planDetailsId" value="${applyBatch.planDetailsId}">
+                            <input type="hidden" name="applyBatchId" value="${applyBatch.id}">
+                            <div class="row form-group">
+                                <div class="col-md-12 form-inline">
+                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                        大类
+                                    </label>
+                                    <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
+                                        <c:if test="${not empty formClassifyList}">
+                                            <c:forEach var="item" items="${formClassifyList}">
+                                                <c:if test="${applyBatch.classify == item.id}">
+                                                    <label class="form-control input-full">${item.name}</label>
+                                                </c:if>
+                                            </c:forEach>
+                                        </c:if>
+                                    </div>
+                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                        类型
+                                    </label>
+                                    <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
+                                        <c:if test="${not empty examineFormTypeList}">
+                                            <c:forEach var="item" items="${examineFormTypeList}">
+                                                <c:if test="${applyBatch.type == item.key}">
+                                                    <label class="form-control input-full">${item.value}</label>
+                                                </c:if>
+                                            </c:forEach>
+                                        </c:if>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-xs-8  col-sm-8  col-md-8  col-lg-8">
+                        </form>
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <div class="col-xs-3  col-sm-3  col-md-3  col-xs-3 col-lg-offset-1 col-sm-offset-1 col-xs-offset-1 col-md-offset-1">
+                                    <ul id="ztree" class="ztree"></ul>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
             <%@include file="/views/share/form_approval.jsp" %>
             <%@include file="/views/share/form_log.jsp" %>
         </div>
+        <%@include file="/views/share/main_footer.jsp" %>
     </div>
-    <!-- end: MAIN CONTAINER -->
 </div>
 </body>
-<%@include file="/views/share/main_footer.jsp" %>
+
 </html>
 <script type="text/javascript">
     $(function () {
@@ -177,17 +178,17 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    Alert("提交数据成功!", 1, null, function () {
+                    AlertSuccess("成功", "提交数据成功", function () {
                         window.close();
                     });
                 }
                 else {
-                    Alert(result.errmsg);
+                    AlertError(result.errmsg);
                 }
             },
             error: function (result) {
                 Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+                AlertError("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
             }
         })
     }

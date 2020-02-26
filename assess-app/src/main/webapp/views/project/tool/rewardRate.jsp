@@ -1,108 +1,121 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 
-<div id="modal_reward_rate" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
-     role="dialog"
+<div id="modal_reward_rate" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg" style="width: 800px">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
-                </button>
-                <h3 class="modal-title">报酬率</h3>
+                <h4 class="modal-title">报酬率</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
             </div>
+
             <div class="modal-body">
                 <form id="frm_reward_rate" class="form-horizontal">
-                    <table class="table tree">
-                        <tr class="treegrid-1">
-                            <td>机会成本</td>
-                            <td>
-                                <input type="hidden" name="name" value="opportunityCost">
-                                <input placeholder='百分比' type='text' class='x-percent' name='ratio'>
-                            </td>
-                            <td>
-                                <input placeholder='备注' type='text' name='remark'>
-                            </td>
-                        </tr>
-                        <tr class="treegrid-2">
-                            <td>风险补偿率</td>
-                            <td></td>
-                        </tr>
-                        <tr class="treegrid-2-1 treegrid-parent-2">
-                            <td>投资风险补偿</td>
-                            <td>
-                                <input type="hidden" name="name" value="riskCompensation">
-                                <input placeholder='百分比' type='text' class='x-percent' name='ratio'>
-                            </td>
-                            <td>
-                                <input placeholder='备注' type='text' name='remark'>
-                            </td>
-                        </tr>
-                        <tr class="treegrid-2-2 treegrid-parent-2">
-                            <td>管理负担补偿</td>
-                            <td>
-                                <input type="hidden" name="name" value="manageCompensation">
-                                <input placeholder='百分比' type='text' class='x-percent' name='ratio'>
-                            </td>
-                            <td>
-                                <input placeholder='备注' type='text' name='remark'>
-                            </td>
-                        </tr>
-                        <tr class="treegrid-2-3 treegrid-parent-2">
-                            <td>缺乏流动性补偿</td>
-                            <td>
-                                <input type="hidden" name="name" value="liquidCompensation">
-                                <input placeholder='百分比' type='text' class='x-percent' name='ratio'>
-                            </td>
-                            <td>
-                                <input placeholder='备注' type='text' name='remark'>
-                            </td>
-                        </tr>
-                        <tr class="treegrid-2-4 treegrid-parent-2">
-                            <td>投资带来的优惠</td>
-                            <td data-type="minus"></td>
-                        </tr>
-                        <tr class="treegrid-2-4-1 treegrid-parent-2-4">
-                            <td>易与获得融资的好处</td>
-                            <td>
-                                <input type="hidden" name="name" value="financingAdvantage">
-                                <input placeholder='百分比' type='text' data-type="minus" class='x-percent' name='ratio'>
-                            </td>
-                            <td>
-                                <input placeholder='备注' type='text' name='remark'>
-                            </td>
-                        </tr>
-                        <tr class="treegrid-2-4-2 treegrid-parent-2-4">
-                            <td>所得税抵扣的好处</td>
-                            <td>
-                                <input type="hidden" name="name" value="taxDeductionAdvantage">
-                                <input placeholder='百分比' type='text'  class='x-percent' name='ratio'>
-                            </td>
-                            <td>
-                                <input placeholder='备注' type='text' name='remark'>
-                            </td>
-                        </tr>
-                        <tr class="treegrid-3">
-                            <td>合计</td>
-                            <td>
-                                <label name="resultValue"></label>
-                            </td>
-                        </tr>
-                    </table>
+                    <input type="hidden" name="id">
+                    <input type="hidden" name="type">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <table class="table tree">
+                                            <tr class="treegrid-1">
+                                                <td>机会成本</td>
+                                                <td>
+                                                    <input type="hidden" name="name" value="opportunityCost">
+                                                    <input placeholder='百分比' type='text' class='x-percent' name='ratio'>
+                                                </td>
+                                                <td>
+                                                    <input placeholder='备注' type='text' name='remark'>
+                                                </td>
+                                            </tr>
+                                            <tr class="treegrid-2">
+                                                <td>风险补偿率</td>
+                                                <td></td>
+                                            </tr>
+                                            <tr class="treegrid-2-1 treegrid-parent-2">
+                                                <td>投资风险补偿</td>
+                                                <td>
+                                                    <input type="hidden" name="name" value="riskCompensation">
+                                                    <input placeholder='百分比' type='text' class='x-percent' name='ratio'>
+                                                </td>
+                                                <td>
+                                                    <input placeholder='备注' type='text' name='remark'>
+                                                </td>
+                                            </tr>
+                                            <tr class="treegrid-2-2 treegrid-parent-2">
+                                                <td>管理负担补偿</td>
+                                                <td>
+                                                    <input type="hidden" name="name" value="manageCompensation">
+                                                    <input placeholder='百分比' type='text' class='x-percent' name='ratio'>
+                                                </td>
+                                                <td>
+                                                    <input placeholder='备注' type='text' name='remark'>
+                                                </td>
+                                            </tr>
+                                            <tr class="treegrid-2-3 treegrid-parent-2">
+                                                <td>缺乏流动性补偿</td>
+                                                <td>
+                                                    <input type="hidden" name="name" value="liquidCompensation">
+                                                    <input placeholder='百分比' type='text' class='x-percent' name='ratio'>
+                                                </td>
+                                                <td>
+                                                    <input placeholder='备注' type='text' name='remark'>
+                                                </td>
+                                            </tr>
+                                            <tr class="treegrid-2-4 treegrid-parent-2">
+                                                <td>投资带来的优惠</td>
+                                                <td data-type="minus"></td>
+                                            </tr>
+                                            <tr class="treegrid-2-4-1 treegrid-parent-2-4">
+                                                <td>易与获得融资的好处</td>
+                                                <td>
+                                                    <input type="hidden" name="name" value="financingAdvantage">
+                                                    <input placeholder='百分比' type='text' data-type="minus" class='x-percent' name='ratio'>
+                                                </td>
+                                                <td>
+                                                    <input placeholder='备注' type='text' name='remark'>
+                                                </td>
+                                            </tr>
+                                            <tr class="treegrid-2-4-2 treegrid-parent-2-4">
+                                                <td>所得税抵扣的好处</td>
+                                                <td>
+                                                    <input type="hidden" name="name" value="taxDeductionAdvantage">
+                                                    <input placeholder='百分比' type='text'  class='x-percent' name='ratio'>
+                                                </td>
+                                                <td>
+                                                    <input placeholder='备注' type='text' name='remark'>
+                                                </td>
+                                            </tr>
+                                            <tr class="treegrid-3">
+                                                <td>合计</td>
+                                                <td>
+                                                    <label name="resultValue"></label>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">
-                    取消
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
                 </button>
-                <button type="button" class="btn btn-primary"
-                        onclick="rewardRateFunc.success(rewardRateFunc.rewardRateId);">
+                <button type="button" class="btn btn-primary btn-sm" onclick="rewardRateFunc.success(rewardRateFunc.rewardRateId);">
                     保存
                 </button>
             </div>
+
         </div>
     </div>
 </div>
+
 
 <script type="text/javascript">
     $(function () {
@@ -144,7 +157,7 @@
             }
         });
        if (checkData.length != frm.find("input[name='ratio']").size()){
-           toastr.warning('每一项报酬率都要填写!');
+           notifyInfo('每一项报酬率都要填写!');
            return false;
        }
         Loading.progressShow();
@@ -158,18 +171,18 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    toastr.success('保存成功');
+                    notifySuccess('保存成功');
                     $("#modal_reward_rate").modal('hide');
                     if (rewardRateFunc.onSuccess) {
                         rewardRateFunc.onSuccess(result.data);
                     }
                 }
                 else {
-                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                    AlertError("保存数据失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
+                AlertError("调用服务端方法失败，失败原因:" + result);
             }
         })
 
@@ -208,11 +221,11 @@
                         });
                     }
                     else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         }

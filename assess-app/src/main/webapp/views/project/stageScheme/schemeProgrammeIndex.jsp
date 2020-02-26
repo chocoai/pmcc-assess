@@ -1355,7 +1355,7 @@
                     if (callback) {
                         callback();
                     } else {
-                        notifySuccess('保存成功');
+                        notifySuccess("成功",'保存成功');
                     }
                 } else {
                     AlertError("保存成功失败:" + result.errmsg);
@@ -1547,7 +1547,7 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    notifySuccess('操作成功');
+                    notifySuccess('成功',"操作成功");
                     programme.loadDeclareRecordList();
                 }
                 else {
@@ -1671,7 +1671,7 @@
             success: function (result) {
                 if (result.ret) {
                     $(document).find('[name=evaluationArea' + judgeId + ']').val(area);
-                    notifySuccess('关联成功');
+                    notifySuccess("成功",'关联成功');
                     $('#loadSceneExploreBasicApplyModal').modal('hide');
                 }
                 else {
@@ -1849,7 +1849,7 @@
             },
             success: function (result) {
                 if (result.ret) {
-                    notifySuccess('保存成功');
+                    notifySuccess("成功",'保存成功');
                     Loading.progressHide();
                     $("#modal_method_info").modal('hide');
                 } else {

@@ -20,7 +20,6 @@
                 <div class="row mt--2">
 
                     <div class="col-md-12">
-                        <%@include file="/views/share/navigation/systemSetup.jsp" %>
                         <div class="card full-height">
                             <div class="card-header">
                                 <div class="card-head-row">
@@ -28,55 +27,84 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <form id="frmQuery" class="form-horizontal">
-                                    <div class="form-group form-inline">
-                                        <label class="col-md-1 col-form-label">项目大类:</label>
-                                        <div class="col-md-3 p-0">
-                                            <select name="classId" id="classId" class="form-control input-full">
-                                                <option value="">-请选择-</option>
-                                                <c:forEach var="item" items="${projectClassList}">
-                                                    <option value="${item.id}">${item.name}</option>
-                                                </c:forEach>
-                                            </select>
-                                        </div>
-                                        <label class="col-md-1 col-form-label">项目类型:</label>
-                                        <div class="col-md-3 p-0">
-                                            <select name="typeId" id="typeId" class="form-control input-full">
-                                                <option value="" selected="selected">-请选择-</option>
-                                            </select>
-                                        </div>
-                                        <label class="col-md-1 col-form-label">项目类别:</label>
-                                        <div class="col-md-3 p-0">
-                                            <select name="categoryId" id="categoryId" class="form-control input-full">
-                                                <option value="" selected="selected">-请选择-</option>
-                                            </select>
-                                        </div>
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <%@include file="/views/share/navigation/systemSetup.jsp" %>
                                     </div>
-                                    <div class="form-group form-inline">
-                                        <p id="modelListToolbar">
-                                            <button style="margin-left: 10px" class="btn btn-success btn-sm" type="button" id="create_work_stage"
-                                                    data-toggle="modal">
+                                    <div class="col-md-10">
+                                        <form id="frmQuery" class="form-horizontal">
+                                            <div class="row form-group">
+                                                <div class="col-md-12">
+                                                    <div class="form-group form-inline">
+                                                        <label class="col-md-1 col-form-label">项目大类:</label>
+                                                        <div class="col-sm-3">
+                                                            <select name="classId" id="classId"
+                                                                    class="form-control input-full">
+                                                                <option value="">-请选择-</option>
+                                                                <c:forEach var="item" items="${projectClassList}">
+                                                                    <option value="${item.id}">${item.name}</option>
+                                                                </c:forEach>
+                                                            </select>
+                                                        </div>
+                                                        <label class="col-md-1 col-form-label">项目类型:</label>
+                                                        <div class="col-sm-3">
+                                                            <select name="typeId" id="typeId"
+                                                                    class="form-control input-full">
+                                                                <option value="" selected="selected">-请选择-</option>
+                                                            </select>
+                                                        </div>
+                                                        <label class="col-md-1 col-form-label">项目类别:</label>
+                                                        <div class="col-sm-3">
+                                                            <select name="categoryId" id="categoryId"
+                                                                    class="form-control input-full">
+                                                                <option value="" selected="selected">-请选择-</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div id="work_stage_wizard"
+                                                 class="form_wizard wizard_horizontal"></div>
+                                            <div class="row form-group">
+                                                <div class="col-md-12">
+                                                    <div class="form-group form-inline">
+                                                        <p id="modelListToolbar">
+                                                            <button style="margin-left: 10px"
+                                                                    class="btn btn-success btn-sm" type="button"
+                                                                    id="create_work_stage"
+                                                                    data-toggle="modal">
 											<span class="btn-label">
 												<i class="fa fa-plus"></i>
 											</span>
-                                                新增项目阶段
-                                            </button>
-                                            <button style="margin-left: 5px" class="btn btn-success btn-sm" type="button" id="create_project_phase"
-                                                    data-toggle="modal">
+                                                                新增项目阶段
+                                                            </button>
+                                                            <button style="margin-left: 5px"
+                                                                    class="btn btn-success btn-sm" type="button"
+                                                                    id="create_project_phase"
+                                                                    data-toggle="modal">
 											<span class="btn-label">
 												<i class="fa fa-plus"></i>
 											</span>
-                                                新增工作事项
-                                            </button>
-                                        </p>
+                                                                新增工作事项
+                                                            </button>
+                                                        </p>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="row form-group">
+                                                <div class="col-md-12">
+                                                    <table class="table table-bordered" id="project_phase_list_table">
+                                                        <!-- cerare document add ajax data-->
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </form>
 
                                     </div>
-
-
-                                </form>
-                                <table class="table table-bordered" id="project_phase_list_table">
-                                    <!-- cerare document add ajax data-->
-                                </table>
+                                </div>
                             </div>
                         </div>
                     </div>

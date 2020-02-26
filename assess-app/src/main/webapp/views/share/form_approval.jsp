@@ -49,7 +49,7 @@
                                             <div class="form-check">
                                                 <label class="form-check-label">
                                                     <input id="chk_bisNext" name="chk_bisNext"
-                                                           onclick="chkbisNextClick()" class="form-check-input"
+                                                           onclick="formApproval.chkbisNextClick()" class="form-check-input"
                                                            type="checkbox" value="">
                                                     <span class="form-check-sign">跳过多级审批</span>
                                                 </label>
@@ -89,7 +89,6 @@
                     </c:if>
                     <c:if test="${approvalReview==1}">
                         <c:forEach var="item" items="${boxReviewTemplate}">
-
                             <div class="row form-group">
                                 <div class="col-md-12">
                                     <label class="col-sm-1 col-form-label">
@@ -165,6 +164,7 @@
     </c:if>
     <%@include file="/views/share/form_details.jsp" %>
 </c:if>
+<%@include file="/views/share/form_log.jsp" %>
 <script type="application/javascript">
     var formApproval = {
         valid: function () {
@@ -244,7 +244,7 @@
             $("#opinions").attr("required", false);//审批意见不必填
         }
         FileUtils.uploadFiles({
-            target: "file_upload",
+            target: "file_approval_upload",
             disabledTarget: "btn_submit",
             formData: {
                 tableName: AssessDBKey.BoxApprovalLog,
@@ -258,7 +258,7 @@
         });
 
         FileUtils.getFileShows({
-            target: "file_upload",
+            target: "file_approval_upload",
             formData: {
                 tableName: AssessDBKey.BoxApprovalLog,
                 processInsId: "${processInsId}",

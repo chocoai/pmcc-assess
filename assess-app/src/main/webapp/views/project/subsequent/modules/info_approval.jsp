@@ -24,12 +24,12 @@
             <form id="project_subsequent_form" class="form-horizontal">
                 <input type="hidden" name="id" value="${projectSubsequent.id}">
                 <div class="row form-group">
-                    <div class="col-md-4">
+                    <div class="col-md-12">
                         <div class="form-inline x-valid">
-                            <label class="col-sm-2 col-form-label">
+                            <label class="col-sm-1 col-form-label">
                                 标题
                             </label>
-                            <div class="col-sm-10">
+                            <div class="col-sm-3">
                                 <label class="form-control input-full">${projectSubsequent.title}</label>
                             </div>
                         </div>
