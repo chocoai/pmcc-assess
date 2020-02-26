@@ -501,7 +501,7 @@
                     retHtml += 'title="点击我可编辑" onclick="workStageObj.editWorkStage(' + item.id + ')"';
                     retHtml += '>';
                     retHtml += '<div class="step_no">' + step + '</div>';
-                    retHtml += '<span class="step_descr"><small>' + item.workStageName + '(' + item.stageSort + ')</small></span>';
+                retHtml += '<span class="step_descr"><small style="color: #575962 !important">' + item.workStageName + '(' + item.stageSort + ')</small></span>';
                     retHtml += '</a>';
                     //+ '<button class="btn btn-xs btn-default" onclick="disableWorkStage(' + item.id + ')" title="禁用当前阶段"><li class="fa fa-times"></li></button>'
                     retHtml += '</li>';

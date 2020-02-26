@@ -74,7 +74,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">评估方法</h4>
+                <h4 class="modal-title">评估思路</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
             </div>
@@ -86,20 +86,17 @@
                         <div class="col-md-12">
                             <div class="card-body">
                                 <div class="row form-group">
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-2 col-form-label">
                                                 名称<span class="symbol required"></span>
                                             </label>
-                                            <div class="col-sm-10">
+                                            <div class="col-sm-3">
                                                 <input type="text" required data-rule-maxlength="50" placeholder="名称"
                                                        id="name" name="name" class="form-control input-full">
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-inline x-valid">
-                                            <div class="col-sm-10">
+
+                                            <div class="col-sm-4">
                                                 <div class="form-check" style="justify-content:left">
                                                     <label class="form-check-label">
                                                         <input class="form-check-input" type="checkbox" id="bisEnable"
@@ -113,20 +110,20 @@
                                     </div>
                                 </div>
                                 <div class="row form-group">
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-2 col-form-label">
                                                 项目类型类别
                                             </label>
-                                            <div class="col-sm-10">
-                                                <div class="btn btn-xs btn-success"
-                                                     onclick="appendHTML('',this)"><i
-                                                        class="fa fa-plus"></i></div>
-                                            </div>
+
+                                            <div class="btn btn-xs btn-success btn-sm"
+                                                 onclick="appendHTML('',this)"><i
+                                                    class="fa fa-plus"></i></div>
+
                                         </div>
                                     </div>
                                 </div>
-                                <div style="margin-bottom: 8px;" class="system">
+                                <div class="system">
                                     <div class="row form-group">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-2 control-label">
@@ -159,7 +156,7 @@
                                 </div>
 
                                 <div class="row form-group">
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-2 col-form-label">
                                                 评估方法<span class="symbol required"></span>
@@ -179,11 +176,12 @@
                                 <div class="row form-group">
                                     <div class="col-md-12">
                                         <div class="form-inline x-valid">
-                                            <label class="col-sm-1 control-label">
+                                            <label class="col-sm-2 control-label">
                                                 模板内容<span class="symbol required"></span>
                                             </label>
-                                            <div class="col-sm-11">
-                                              <textarea placeholder="模板内容" class="form-control input-full" id="templateContent"
+                                            <div class="col-sm-10">
+                                              <textarea placeholder="模板内容" class="form-control input-full"
+                                                        id="templateContent"
                                                         name="templateContent" required="required"
                                                         onkeyup="extractTemplateContentField();">
                                             </textarea>
@@ -275,7 +273,7 @@
                 success: function (result) {
                     Loading.progressHide();
                     if (result.ret) {
-                        notifySuccess("成功","删除数据成功");
+                        notifySuccess("成功", "删除数据成功");
                         loadThinkingList();//重载 (刷新)
                     }
                     else {
@@ -296,6 +294,7 @@
         extractTemplateContentField();
         reload();
     }
+
     //新增 评估技术思路 数据
     function saveThinking() {
         var data = formParams("frm");
@@ -324,6 +323,7 @@
             })
         }
     }
+
     //评估技术思路 修改
     function editThinking(index) {
         var row = $("#tb_List").bootstrapTable('getData')[index];
@@ -338,15 +338,15 @@
                     $("#frm").clearAll();
                     $("#frm").clearAll().initForm(result.data);
                     var type = result.data.type;
-                    var types = type.substring(1,type.length-1).split(',');
+                    var types = type.substring(1, type.length - 1).split(',');
                     var category = result.data.category;
-                    var categorys = category.substring(1,category.length-1).split(',');
-                    reload(types[0],categorys[0]);
-                    for (var i = 0; i < types.length-1; i++) {
-                        appendHTML(types[i+1],categorys[i+1]);
+                    var categorys = category.substring(1, category.length - 1).split(',');
+                    reload(types[0], categorys[0]);
+                    for (var i = 0; i < types.length - 1; i++) {
+                        appendHTML(types[i + 1], categorys[i + 1]);
                     }
-                     AssessCommon.checkboxToChecked($("#frm").find(":checkbox[name='method']"), row.method.split(','));
-                     extractTemplateContentField();
+                    AssessCommon.checkboxToChecked($("#frm").find(":checkbox[name='method']"), row.method.split(','));
+                    extractTemplateContentField();
                     $('#divBox').modal();
                 }
             },
@@ -359,7 +359,7 @@
     var num = 0;
 
     //类型
-    function getType(number,typeValue) {
+    function getType(number, typeValue) {
         if (!number && number != 0) {
             number = num
         }
@@ -377,7 +377,7 @@
                             option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                         }
                         $("#frm").find('select.type' + number).html(option);
-                        if(typeValue) {
+                        if (typeValue) {
                             $("#frm").find('select.type' + number).val([typeValue]).trigger('change');
                         }
                     }
@@ -393,7 +393,7 @@
     }
 
     //类别
-    function getCategory(number,categoryValue) {
+    function getCategory(number, categoryValue) {
         if (!number && number != 0) {
             number = num;
         }
@@ -417,7 +417,7 @@
                                 option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                             }
                             $("#frm").find('select.category' + number).html(option);
-                            if(categoryValue) {
+                            if (categoryValue) {
                                 $("#frm").find('select.category' + number).val([categoryValue]).trigger('change');
                             }
                         }
@@ -433,7 +433,7 @@
         });
     }
 
-    function appendHTML(typeValue,categoryValue) {
+    function appendHTML(typeValue, categoryValue) {
         num++;
         var projectType = "type" + num;
         var projectCategory = "category" + num;
@@ -441,28 +441,39 @@
         $("#frm").find(".system").append(html);
         $("#frm").find("." + projectType).select2();
         $("#frm").find("." + projectCategory).select2();
-        getType(null,typeValue);
-        getCategory(null,categoryValue);
+        getType(null, typeValue);
+        getCategory(null, categoryValue);
     }
 
     function createHTML(projectType, projectCategory) {
-        var html = "<div class='row form-group' style='margin-top:8px;'>";
-        html += "<label class='col-md-2 col-form-label'>" + '项目类型' + "</label>";
-        html += "<div class='col-sm-3'>";
+        var html = '<div class="row form-group">';
+        html += '<div class="col-md-12">';
+        html += '<div class="form-inline x-valid">';
+
+
+        html += '<label class="col-sm-2 col-form-label">' + '项目类型' + '</label>';
+        html += '<div class="col-sm-3 ">';
         html += "<select  name='type' id='" + projectType + "' onchange='typeChange(this)' class='form-control input-full search-select select2 " + projectType + "'>";
         html += "<option selected='selected' value=''>" + '请选择' + "</option>";
         html += "</select>";
         html += "</div>";
 
-        html += "<label class='col-md-2 col-form-label'>" + '项目类别' + "</label>";
-        html += "<div class='col-sm-3'>";
+
+        html += '<label class="col-sm-2 col-form-label">' + '项目类别' + '</label>';
+        html += '<div class="col-sm-3 ">';
         html += "<select  name='category' id='" + projectCategory + "'  class='form-control input-full search-select select2 " + projectCategory + "'>";
         html += "<option selected='selected' value=''>" + '请先选择类型' + "</option>";
         html += "</select>";
         html += "</div>";
 
-        html += "<div class='col-sm-2'>";
-        html += "<input class='btn btn-warning' type='button' value='X' onclick='cleanHTMLData(this)'>";
+
+        html += '<label class="col-sm-1 col-form-label">' + '取消' + '</label>';
+        html += '<div class="col-sm-1">';
+        html += "<input type='button' class='btn btn-warning btn-sm' type='button' value='X' onclick='cleanHTMLData(this)'>";
+        html += "</div>";
+
+
+        html += "</div>";
         html += "</div>";
         html += "</div>";
         return html;
@@ -478,32 +489,41 @@
         getCategory(number);
     }
 
-    function reload(typeValue,categoryValue) {
+    function reload(typeValue, categoryValue) {
         $("#frm").find(".system").empty();
-        var html = "<div class='row form-group' style='margin-top:8px;'>";
-        html += "<label class='col-md-2 col-form-label'>" + '项目类型' + "</label>";
-        html += "<div class='col-sm-3'>";
+        var html = '<div class="row form-group">';
+        html += '<div class="col-md-12">';
+        html += '<div class="form-inline x-valid">';
+
+        html += '<label class="col-sm-2 col-form-label">' + '项目类型' + '</label>';
+        html += '<div class="col-sm-3">';
         html += "<select  name='type' id='type0' onchange='typeChange(this)' class='form-control input-full search-select select2 type0'>";
         html += "<option selected='selected' value=''>" + '请选择' + "</option>";
         html += "</select>";
         html += "</div>";
 
-        html += "<label class='col-md-2 col-form-label'>" + '项目类别' + "</label>";
-        html += "<div class='col-sm-3'>";
+        html += '<label class="col-sm-2 col-form-label">' + '项目类别' + '</label>';
+        html += '<div class="col-sm-3">';
         html += "<select  name='category' class='form-control input-full search-select select2 category0'>";
         html += "<option selected='selected' value=''>" + '请先选择类型' + "</option>";
         html += "</select>";
         html += "</div>";
 
-        html += "<div class='col-sm-2'>";
-        html += "<input class='btn btn-warning' type='button' value='X' onclick='cleanHTMLData(this)'>";
+
+        html += '<label class="col-sm-1 col-form-label">' + '取消' + '</label>';
+        html += '<div class="col-sm-1">';
+        html += "<input type='button' class='btn btn-warning btn-sm' type='button' value='X' onclick='cleanHTMLData(this)'>";
+        html += "</div>";
+
+        html += "</div>";
         html += "</div>";
         html += "</div>";
         $("#frm").find(".system").append(html);
-        getType(0,typeValue);
-        getCategory(0,categoryValue);
+        getType(0, typeValue);
+        getCategory(0, categoryValue);
         $("#frm").find(".type0").select2();
         $("#frm").find(".category0").select2();
+
     }
 
 </script>

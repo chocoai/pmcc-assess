@@ -39,9 +39,14 @@
                             </div>
                             <div class="card-body">
                                 <p id="change_tool">
-                                    <button type="button" class="btn btn-success btn-sm" onclick="memberChangeObj.addMember();">新增成员</button>
+                                    <button type="button" class="btn btn-success btn-sm"
+                                            onclick="memberChangeObj.addMember();"><span class="btn-label">
+												<i class="fa fa-plus"></i>
+											</span>新增成员
+                                    </button>
                                 </p>
-                                <table class="table table-striped jambo_table bulk_action table-bordered" id="member_change_table"></table>
+                                <table class="table table-striped jambo_table bulk_action table-bordered"
+                                       id="member_change_table"></table>
 
                                 <hr/>
                                 <form class="form-horizontal" id="member_change_form">
@@ -52,18 +57,20 @@
                                                     变更原因
                                                 </label>
                                                 <div class="col-sm-11">
-                                                    <textarea class="form-control input-full" id="changeReason" name="changeReason" required>${costsProjectChangeLog.changeReason}</textarea>
+                                                    <textarea class="form-control input-full" id="changeReason"
+                                                              name="changeReason"
+                                                              required>${costsProjectChangeLog.changeReason}</textarea>
 
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </form>
-                                
+
                             </div>
                         </div>
                     </div>
-                    
+
 
                     <!-- 公共尾部模块引用 -->
                     <div class="col-md-12" style="text-align: center;padding-bottom: 1.25rem">
@@ -72,7 +79,8 @@
                             <button id="cancel_btn" class="btn btn-default" onclick="window.close();">
                                 取消
                             </button>
-                            <button id="commit_btn" class="btn btn-success" onclick="memberChangeObj.submit();" onsubmit="return false;">
+                            <button id="commit_btn" class="btn btn-success" onclick="memberChangeObj.submit();"
+                                    onsubmit="return false;">
                                 提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
                             </button>
 
@@ -166,14 +174,13 @@
 </div>--%>
 
 
-
 </body>
 </html>
 
 <script type="text/javascript">
     var memberChangeObj = {
         projectId: "${projectInfo.id}",
-        processInsId: "${processInsId}"==null?"0":"${processInsId}",
+        processInsId: "${processInsId}" == null ? "0" : "${processInsId}",
         member_change_table: $("#member_change_table"),
         member_change_form: $("#member_change_form")
     };
@@ -227,7 +234,7 @@
                 title: '项目经理',
                 align: 'center',
                 formatter: function (value, row, index) {
-                    var customStr = String.format("<div><span>{0}<span><button class='btn btn-xs btn-primary' style='margin-left: 5px;' onclick='memberChangeObj.replaceManage(\"{1}\")'><i class='fa fa-edit'></i>变更</button></div>", value, row.newManagerName);
+                    var customStr = String.format("<div><span>{0}<span><button type='button' class='btn btn-xs btn-primary' style='margin-left: 5px;' onclick='memberChangeObj.replaceManage(\"{1}\")'><i class='fa fa-pen'></i></button></div>", value, row.newManagerName);
                     return customStr;
                 }
             }, {
@@ -249,8 +256,14 @@
 
                     if (row.newMemberAccount) {
                         var str = '<div class="btn-margin">';
-                        str += '<a id="item_edit" class="re btn btn-xs btn-primary" href="javascript:void(0);"><i class="fa fa-edit"></i>变更</a>';
-                        str += '<a id="item_delete" class="re btn btn-xs btn-warning" href="javascript:void(0);"><i class="fa fa-trash"></i>删除</a>';
+                        //str += '<a id="item_edit" class="re btn btn-xs btn-primary" href="javascript:void(0);"><i class="fa fa-edit"></i>变更</a>';
+                        str += '<button type="button" id="item_edit"  style="margin-left: 5px;"  class="btn   btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="变更">';
+                        str += '<i class="fa fa-pen"></i>';
+                        str += '</button>';
+                        str += '<button type="button" id="item_delete"  style="margin-left: 5px;"  class="btn   btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
+                        str += '<i class="fa fa-minus"></i>';
+                        str += '</button>';
+                        //str += '<a id="item_delete" class="re btn btn-xs btn-warning" href="javascript:void(0);"><i class="fa fa-trash"></i>删除</a>';
                         str += '</div>';
                         return str;
                     } else {
@@ -263,7 +276,7 @@
                         memberChangeObj.replaceMember(row);
                     },
                     'click #item_delete': function (e, value, row, index) {
-                        AlertConfirm("是否确认删除",String.format("确定要移除成员【{0}】?", row.newMemberName), function () {
+                        AlertConfirm("是否确认删除", String.format("确定要移除成员【{0}】?", row.newMemberName), function () {
                             memberChangeObj.removeMember(row);
                         })
                     }
@@ -294,10 +307,10 @@
 
     };
 
-    memberChangeObj.addMember = function() {
+    memberChangeObj.addMember = function () {
         erpEmployee.select({
-            multi:true,
-            currOrgId:'${projectInfo.departmentId}',
+            multi: true,
+            currOrgId: '${projectInfo.departmentId}',
             value: "",
             onSelected: function (data) {
                 if (data.base) {
@@ -360,8 +373,8 @@
 
     memberChangeObj.replaceMember = function (row) {
         erpEmployee.select({
-            multi:false,
-            currOrgId:'${projectInfo.departmentId}',
+            multi: false,
+            currOrgId: '${projectInfo.departmentId}',
             value: row.newMemberName,
             onSelected: function (data) {
                 if (data.base) {
@@ -397,16 +410,16 @@
 
 
     memberChangeObj.replaceManage = function (oldManager) {
-        var src =  oldManager;
+        var src = oldManager;
         var oldManagerAccount = src.split("_").pop();
         erpEmployee.select({
-            multi:false,
-            currOrgId:'${projectInfo.departmentId}',
+            multi: false,
+            currOrgId: '${projectInfo.departmentId}',
             value: oldManager,
             onSelected: function (data) {
                 if (data.account) {
                     var selectUser = data.account;
-                    memberChangeObj.replaceManageAccount(oldManagerAccount,selectUser);
+                    memberChangeObj.replaceManageAccount(oldManagerAccount, selectUser);
                 } else {
                     AlertError("未选择成员!");
                 }
@@ -414,13 +427,13 @@
         });
     };
 
-    memberChangeObj.replaceManageAccount = function (oldManagerAccount,selectUser) {
+    memberChangeObj.replaceManageAccount = function (oldManagerAccount, selectUser) {
         $.ajax({
             url: "${pageContext.request.contextPath}/member.change/replaceManage",
             data: {
                 projectId: memberChangeObj.projectId,
                 processInsId: memberChangeObj.processInsId,
-                oldManager:oldManagerAccount,
+                oldManager: oldManagerAccount,
                 newManage: selectUser
             },
             type: "post",
@@ -474,7 +487,7 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    AlertSuccess("成功", "变更申请提交成功",function(){
+                    AlertSuccess("成功", "变更申请提交成功", function () {
                         window.close();
                     });
                 } else {
@@ -506,7 +519,7 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    AlertSuccess("成功", "提交数据成功",function(){
+                    AlertSuccess("成功", "提交数据成功", function () {
                         window.close();
                     });
                 } else {
