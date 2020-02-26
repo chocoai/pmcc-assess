@@ -304,11 +304,11 @@ developmentCommon.saveMdArchitecturalObj2 = function (data, obj, callback) {
                     callback(result.data);
                 }
             } else {
-                Alert("保存失败:" + result.errmsg);
+                AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
         error: function (e) {
-            Alert("调用服务端方法失败，失败原因:" + e);
+            AlertError("错误", "调用服务端方法失败，失败原因:" +e);
         }
     });
 };
@@ -324,11 +324,11 @@ developmentCommon.getMdArchitecturalObjById = function (id, callback) {
                     callback(result.data);
                 }
             } else {
-                Alert("失败:" + result.errmsg);
+                AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
         error: function (e) {
-            Alert("调用服务端方法失败，失败原因:" + e);
+            AlertError("错误", "调用服务端方法失败，失败原因:" + e);
         }
     });
 };
@@ -344,11 +344,11 @@ developmentCommon.deleteMdArchitecturalObjById = function (id, callback) {
                     callback(result.data);
                 }
             } else {
-                Alert("失败:" + result.errmsg);
+                AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
         error: function (e) {
-            Alert("调用服务端方法失败，失败原因:" + e);
+            AlertError("错误", "调用服务端方法失败，失败原因:" + e);
         }
     });
 };
@@ -364,11 +364,11 @@ developmentCommon.removeMdArchitecturalObj = function (type, databaseName, pid, 
                     callback(result.data);
                 }
             } else {
-                Alert("失败:" + result.errmsg);
+                AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
         error: function (e) {
-            Alert("调用服务端方法失败，失败原因:" + e);
+            AlertError("错误", "调用服务端方法失败，失败原因:" + e);
         }
     });
 };
@@ -393,11 +393,11 @@ developmentCommon.getMdArchitecturalObjList2 = function (data, callback) {
                     callback(result.data);
                 }
             } else {
-                Alert("失败:" + result.errmsg);
+                AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
         error: function (e) {
-            Alert("调用服务端方法失败，失败原因:" + e);
+            AlertError("错误", "调用服务端方法失败，失败原因:" + e);
         }
     });
 };
@@ -413,11 +413,11 @@ developmentCommon.saveMdCalculatingMethodEngineeringCost = function (data, callb
                     callback(result.data);
                 }
             } else {
-                Alert("保存失败:" + result.errmsg);
+                AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
         error: function (e) {
-            Alert("调用服务端方法失败，失败原因:" + e);
+            AlertError("错误", "调用服务端方法失败，失败原因:" + e);
         }
     });
 };
@@ -450,11 +450,11 @@ developmentCommon.deleteMdCalculatingMethodEngineeringCostById = function (id, c
                     callback(result.data);
                 }
             } else {
-                Alert("失败:" + result.errmsg);
+                AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
         error: function (e) {
-            Alert("调用服务端方法失败，失败原因:" + e);
+            AlertError("错误", "调用服务端方法失败，失败原因:" + e);
         }
     });
 };
@@ -470,11 +470,11 @@ developmentCommon.getMdCalculatingMethodEngineeringCostList = function (data, ca
                     callback(result.data);
                 }
             } else {
-                Alert("失败:" + result.errmsg);
+                AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
         error: function (e) {
-            Alert("调用服务端方法失败，失败原因:" + e);
+            AlertError("错误", "调用服务端方法失败，失败原因:" + e);
         }
     });
 };
@@ -639,11 +639,11 @@ developmentCommon.infrastructureChildren = {
                         callback(result.data);
                     }
                 } else {
-                    Alert("失败:" + result.errmsg);
+                    AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (e) {
-                Alert("调用服务端方法失败，失败原因:" + e);
+                AlertError("错误", "调用服务端方法失败，失败原因:" + e);
             }
         });
     },
@@ -663,11 +663,11 @@ developmentCommon.infrastructureChildren = {
                         callback(result.data);
                     }
                 } else {
-                    Alert("保存失败:" + result.errmsg);
+                    AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (e) {
-                Alert("调用服务端方法失败，失败原因:" + e);
+                AlertError("错误", "调用服务端方法失败，失败原因:" + e);
             }
         });
     },
@@ -682,11 +682,11 @@ developmentCommon.infrastructureChildren = {
                         callback(result.data);
                     }
                 } else {
-                    Alert("失败:" + result.errmsg);
+                    AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (e) {
-                Alert("调用服务端方法失败，失败原因:" + e);
+                AlertError("错误", "调用服务端方法失败，失败原因:" + e);
             }
         });
     },

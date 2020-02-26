@@ -14,16 +14,16 @@
         <td>{name}</td>
         <td>
             <input type="text" onblur="developmentCommon.architecturalB.totalResult(this,'{reckon}')" placeholder=""
-                   name="price" style="width: 50%;">
+                   name="price" style="width: 50%;" class="form-control input-full">
         </td>
         <td>
             <input type="text" onblur="developmentCommon.architecturalB.totalResult(this,'{reckon}')" placeholder=""
-                   name="area" style="width: 50%;">
+                   name="area" style="width: 50%;"  class="form-control input-full">
         </td>
         <td><input type="text" class="x-percent" onblur="developmentCommon.architecturalB.totalResult(this,'{reckon}')"
                    placeholder="" name="valuationDateDegreeCompletion" style="width: 50%;">
         </td>
-        <td><input type="text" name="remark" placeholder="描述" style="width: 80%;"></td>
+        <td><input type="text" name="remark" placeholder="描述" style="width: 80%;"  class="form-control input-full"></td>
         <td name="result"></td>
     </tr>
 </script>
@@ -65,7 +65,7 @@
         <tfoot>
         <tr class="treegrid-99" data-key="architecturalEngineering" data-role="parent">
             <td>合计</td>
-            <td><input type="text" class="form-control" readonly="readonly" name="totalPrice"></td>
+            <td><input type="text" readonly="readonly" name="totalPrice" disabled="disabled" class="form-control input-full"></td>
         </tr>
         </tfoot>
     </table>
@@ -85,12 +85,12 @@
         <td>{name}</td>
         <td style="width: 20%;"><input type="text"
                                        onblur="developmentCommon.architecturalB.totalResult(this,'{reckon}')"
-                                       placeholder="单价(数字)" name="price"></td>
+                                       placeholder="单价(数字)" name="price"  class="form-control input-full"></td>
         <td style="width: 10%;">
             <input type="text" onblur="developmentCommon.architecturalB.totalResult(this,'{reckon}')" placeholder="面积"
-                   name="area">
+                   name="area"  class="form-control input-full">
         </td>
-        <td><input type="text" name="remark" placeholder="描述"></td>
+        <td><input type="text" name="remark" placeholder="描述"  class="form-control input-full"></td>
         <td name="result"></td>
     </tr>
 </script>
@@ -200,41 +200,48 @@
 </div>
 
 
+
+
 <div id="boxSchemeInfoModel" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">测算方法数据引用</h3>
+                <h4 class="modal-title">测算方法数据引用</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
-                <div class="row">
-                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                        <div class="panel-body">
-                            <div class="form-horizontal">
-
-                                <div class="form-group">
-                                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                                        <table class="table table-bordered" id="boxSchemeInfoList">
-
-                                        </table>
+                <form class="form-horizontal">
+                    <div class="row">
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                            <div class="card-body">
+                                <div class="row form-group">
+                                    <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                                        <div class="form-inline x-valid">
+                                            <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                                                <table class="table table-bordered" id="boxSchemeInfoList">
+                                                </table>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </form>
             </div>
             <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
                     关闭
                 </button>
             </div>
         </div>
     </div>
 </div>
+
+
+
 
 
