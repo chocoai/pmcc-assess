@@ -655,7 +655,6 @@
                 <div class="row mt--2">
                     <%@include file="/views/share/project/projectInfoSimple.jsp" %>
                     <%@include file="/views/share/project/projectPlanDetails.jsp" %>
-
                     <div class="col-md-12">
                         <div class="card full-height">
                             <div class="card-header collapse-link">

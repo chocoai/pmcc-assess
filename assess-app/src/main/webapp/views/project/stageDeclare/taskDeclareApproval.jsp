@@ -26,16 +26,8 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <form class="form-horizontal">
-                                    <div class="row form-group">
-                                        <div class="form-inline x-valid">
-                                            <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
-                                                <table class="table table-bordered" id="tableDeclareRealtyHouseCert">
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
+                                <table class="table table-bordered" id="tableDeclareRealtyHouseCert">
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -49,16 +41,8 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <form class="form-horizontal">
-                                    <div class="row form-group">
-                                        <div class="form-inline x-valid">
-                                            <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
-                                                <table class="table table-bordered" id="tableDeclareRealtyLandCert">
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
+                                <table class="table table-bordered" id="tableDeclareRealtyLandCert">
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -72,17 +56,9 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <form class="form-horizontal">
-                                    <div class="row form-group">
-                                        <div class="form-inline x-valid">
-                                            <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
-                                                <table class="table table-bordered"
-                                                       id="tableDeclareRealtyRealEstateCert">
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
+                                <table class="table table-bordered"
+                                       id="tableDeclareRealtyRealEstateCert">
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -324,7 +300,7 @@
     declareApprovalFun.houseRelationLandData = function (id) {
         var item = $("#" + declareApprovalFun.houseConfig.table).bootstrapTable('getRowByUniqueId', id);
         if (!declareCommon.isNotBlank(item.centerId)) {
-            notifyWarning("警告","不合符调整后的数据约定,请联系管理员!");
+            notifyWarning("警告", "不合符调整后的数据约定,请联系管理员!");
             return false;
         }
         declareCommon.getDeclareBuildCenter(item.centerId, function (centerData) {
@@ -336,12 +312,12 @@
                         declareCommon.initLand(data, $("#" + declareApprovalFun.houseConfig.son.declareRealtyLandCert.frm), [declareCommon.config.house.landFileId], null, false);
                         $('#' + declareApprovalFun.houseConfig.son.declareRealtyLandCert.box).modal("show");
                     } else {
-                        notifyWarning("警告","关联的土地证数据已经被删除!");
+                        notifyWarning("警告", "关联的土地证数据已经被删除!");
 
                     }
                 });
             } else {
-                notifyWarning("警告","无土地证数据!");
+                notifyWarning("警告", "无土地证数据!");
 
             }
         });
@@ -351,7 +327,7 @@
     declareApprovalFun.houseRelationDeclareEconomicIndicatorsData = function (id) {
         var item = $("#" + declareApprovalFun.houseConfig.table).bootstrapTable('getRowByUniqueId', id);
         if (!declareCommon.isNotBlank(item.centerId)) {
-            notifyWarning("警告","不合符调整后的数据约定,请联系管理员!");
+            notifyWarning("警告", "不合符调整后的数据约定,请联系管理员!");
             return false;
         }
         var attribute = {readonly: "readonly", 'class': 'form-control'};
@@ -364,7 +340,7 @@
                     attribute: attribute
                 });
             } else {
-                notifyWarning("警告","经济指标无!");
+                notifyWarning("警告", "经济指标无!");
             }
         });
     };
@@ -374,18 +350,17 @@
         var cols = declareCommon.getHouseColumn();
         cols.push({field: 'fileViewName', title: '附件'});
         cols.push({
-            field: 'id', title: '操作', width:"20%",formatter: function (value, row, index) {
+            field: 'id', title: '操作', width: "20%", formatter: function (value, row, index) {
                 var str = '<button type="button" onclick="declareApprovalFun.houseRelationLandData(' + row.id + ')" style="margin-left: 5px;" class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="土地证">';
-                str += '土地证 <i class="fa fa-search fa-white"></i>';
+                str += '土地证';
                 str += '</button>';
 
-
                 str += '<button type="button" onclick="declareApprovalFun.houseFindData(' + row.id + ')" style="margin-left: 5px;" class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="房产证">';
-                str += '房产证 <i class="fa fa-search fa-white"></i>';
+                str += '房产证';
                 str += '</button>';
 
                 str += '<button type="button" onclick="declareApprovalFun.houseRelationDeclareEconomicIndicatorsData(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="经济指标">';
-                str += '经济指标 <i class="fa fa-search fa-white"></i>';
+                str += '经济指标';
                 str += '</button>';
 
                 return str;
@@ -420,7 +395,7 @@
     declareApprovalFun.realtyRealDeclareEconomicIndicators = function (id) {
         var item = $("#" + declareApprovalFun.declareRealtyRealEstateCertConfig.table).bootstrapTable('getRowByUniqueId', id);
         if (!declareCommon.isNotBlank(item.centerId)) {
-            notifyWarning("警告","不合符调整后的数据约定,请联系管理员!");
+            notifyWarning("警告", "不合符调整后的数据约定,请联系管理员!");
             return false;
         }
         var attribute = {readonly: "readonly", 'class': 'form-control'};
@@ -433,7 +408,7 @@
                     attribute: attribute
                 });
             } else {
-                notifyWarning("警告","经济指标无!");
+                notifyWarning("警告", "经济指标无!");
 
             }
         });
@@ -444,38 +419,29 @@
         var cols = declareCommon.getRealEstateColumn();
         cols.push({field: 'fileViewName', title: '不动产附件'});
         cols.push({
-            field: 'id', title: '操作', width:"20%",formatter: function (value, row, index) {
+            field: 'id', title: '操作', width: "20%", formatter: function (value, row, index) {
                 var str = '<button type="button" onclick="declareApprovalFun.realtyRealEstatefindData(' + row.id + ')" style="margin-left: 5px;" class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="不动产">';
-                str += '不动产 <i class="fa fa-search fa-white"></i>';
+                str += '不动产';
                 str += '</button>';
 
                 str += '<button type="button" onclick="declareApprovalFun.realtyRealDeclareEconomicIndicators(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="经济指标">';
-                str += '经济指标 <i class="fa fa-search fa-white"></i>';
+                str += '经济指标';
                 str += '</button>';
 
-                return str;
-            }
-        });
-        cols.push({
-            field: 'creator', title: '许可证信息', formatter: function (value, row, index) {
-                var str = '<div class="dropdown">';
-                str += "<button class='btn btn-primary dropdown-toggle' data-toggle='dropdown'>" + "<i class='fa fa-users'>" + "</i>" + "许可证信息" + "<span class='caret'>" + "</span>" + "</button>";
-                str += "<ul class='dropdown-menu' role='menu' aria-labelledby='dropdownMenu2'>";
-
-                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='declareApprovalFun.realtyRealDeclaredeclareBuildingPermitView(" + row.id + ")'" + ">" + "建设工程规划许可证" + "<i class='fa fa-navicon'></i>" + "</a>" + "</li>";
-
-                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='declareApprovalFun.realtyRealDeclaredeclareLandUsePermitView(" + row.id + ")'" + ">" + "建设用地规划许可证" + "<i class='fa fa-navicon'></i>" + "</a>" + "</li>";
-
-                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='declareApprovalFun.realtyRealDeclaredeclareBuildingConstructionPermitView(" + row.id + ")'" + ">" + "建筑工程施工许可证" + "<i class='fa fa-navicon'></i>" + "</a>" + "</li>";
-
-                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='declareApprovalFun.realtyRealDeclaredeclarePreSalePermitView(" + row.id + ")'" + ">" + "商品房预售许可证" + "<i class='fa fa-navicon'></i>" + "</a>" + "</li>";
-
-
-                str += "</ul>";
+                str += '<div class="dropdown" style="display: inline;margin-left: 5px;">';
+                str += "<button type='button' class='btn btn-info btn-xs dropdown-toggle' data-toggle='dropdown'>许可证信息</button>";
+                str += "<div class='dropdown-menu' role='menu' aria-labelledby='dropdownMenu2'>";
+                str += "<a  class='dropdown-item' onclick='declareApprovalFun.realtyRealDeclaredeclareLandUsePermitView(" + row.id + ")'" + ">" + "建设用地规划许可证" + "<i class='fa fa-navicon'></i></a>";
+                str += "<a  class='dropdown-item' onclick='declareApprovalFun.realtyRealDeclaredeclareBuildingPermitView(" + row.id + ")'" + ">" + "建设工程规划许可证" + "<i class='fa fa-navicon'></i></a>";
+                str += "<a  class='dropdown-item' onclick='declareApprovalFun.realtyRealDeclaredeclareBuildingConstructionPermitView(" + row.id + ")'" + ">" + "建筑工程施工许可证" + "<i class='fa fa-navicon'></i></a>";
+                str += "<a  class='dropdown-item' onclick='declareApprovalFun.realtyRealDeclaredeclarePreSalePermitView(" + row.id + ")'" + ">" + "商品房预售许可证" + "<i class='fa fa-navicon'></i></a>";
                 str += "</div>";
+                str += "</div>";
+
                 return str;
             }
         });
+
         $("#" + declareApprovalFun.declareRealtyRealEstateCertConfig.table).bootstrapTable('destroy');
         TableInit(declareApprovalFun.declareRealtyRealEstateCertConfig.table, "${pageContext.request.contextPath}/declareRealtyRealEstateCert/getDeclareRealtyRealEstateCertList", cols, {
             planDetailsId: '${empty projectPlanDetails.id?0:projectPlanDetails.id}', enable: declareCommon.masterData
@@ -492,7 +458,7 @@
     declareApprovalFun.realtyRealDeclaredeclareBuildingPermitView = function (id) {
         var item = $("#" + declareApprovalFun.declareRealtyRealEstateCertConfig.table).bootstrapTable('getRowByUniqueId', id);
         if (!declareCommon.isNotBlank(item.centerId)) {
-            notifyWarning("警告","不合符调整后的数据约定,请联系管理员!");
+            notifyWarning("警告", "不合符调整后的数据约定,请联系管理员!");
             return false;
         }
         var box = $("#declareBuildingPermitRealtyRealBox");
@@ -516,7 +482,7 @@
     declareApprovalFun.realtyRealDeclaredeclareLandUsePermitView = function (id) {
         var item = $("#" + declareApprovalFun.declareRealtyRealEstateCertConfig.table).bootstrapTable('getRowByUniqueId', id);
         if (!declareCommon.isNotBlank(item.centerId)) {
-            notifyWarning("警告","不合符调整后的数据约定,请联系管理员!");
+            notifyWarning("警告", "不合符调整后的数据约定,请联系管理员!");
             return false;
         }
         var box = $("#declareLandUsePermitRealtyRealBox");
@@ -541,7 +507,7 @@
     declareApprovalFun.realtyRealDeclaredeclareBuildingConstructionPermitView = function (id) {
         var item = $("#" + declareApprovalFun.declareRealtyRealEstateCertConfig.table).bootstrapTable('getRowByUniqueId', id);
         if (!declareCommon.isNotBlank(item.centerId)) {
-            notifyWarning("警告","不合符调整后的数据约定,请联系管理员!");
+            notifyWarning("警告", "不合符调整后的数据约定,请联系管理员!");
             return false;
         }
         var arr = ["declareBuildingConstructionPermitFileId2"];
@@ -566,7 +532,7 @@
     declareApprovalFun.realtyRealDeclaredeclarePreSalePermitView = function (id) {
         var item = $("#" + declareApprovalFun.declareRealtyRealEstateCertConfig.table).bootstrapTable('getRowByUniqueId', id);
         if (!declareCommon.isNotBlank(item.centerId)) {
-            notifyWarning("警告","不合符调整后的数据约定,请联系管理员!");
+            notifyWarning("警告", "不合符调整后的数据约定,请联系管理员!");
             return false;
         }
         var arr = ["declarePreSalePermitFileId2"];
@@ -603,38 +569,29 @@
         var cols = declareCommon.getLandColumn();
         cols.push({field: 'fileViewName', title: '附件'});
         cols.push({
-            field: 'id', title: '操作', width:"20%",formatter: function (value, row, index) {
+            field: 'id', title: '操作', width: "20%", formatter: function (value, row, index) {
                 var str = '<button type="button" onclick="declareApprovalFun.LandModelHouseView(' + row.id + ')" style="margin-left: 5px;" class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="关联的房产证">';
-                str += '关联的房产证 <i class="fa fa-search fa-white"></i>';
+                str += '房产证';
                 str += '</button>';
 
                 str += '<button type="button" onclick="declareApprovalFun.landFindData(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="土地证">';
-                str += '土地证 <i class="fa fa-search fa-white"></i>';
+                str += '土地证';
                 str += '</button>';
 
-                return str;
-            }
-        });
-        cols.push({
-            field: 'creator', title: '许可证信息', formatter: function (value, row, index) {
-                var str = '<div class="dropdown">';
-                str += "<button class='btn btn-primary dropdown-toggle' data-toggle='dropdown'>" + "<i class='fa fa-users'>" + "</i>" + "许可证信息" + "<span class='caret'>" + "</span>" + "</button>";
-                str += "<ul class='dropdown-menu' role='menu' aria-labelledby='dropdownMenu2'>";
-
-                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='declareApprovalFun.LanddeclareBuildingPermitView(" + row.id + ")'" + ">" + "建设工程规划许可证" + "<i class='fa fa-navicon'></i>" + "</a>" + "</li>";
-
-                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='declareApprovalFun.LanddeclareLandUsePermitView(" + row.id + ")'" + ">" + "建设用地规划许可证" + "<i class='fa fa-navicon'></i>" + "</a>" + "</li>";
-
-                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='declareApprovalFun.LanddeclareBuildingConstructionPermitView(" + row.id + ")'" + ">" + "建筑工程施工许可证" + "<i class='fa fa-navicon'></i>" + "</a>" + "</li>";
-
-                str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='declareApprovalFun.LanddeclarePreSalePermitView(" + row.id + ")'" + ">" + "商品房预售许可证" + "<i class='fa fa-navicon'></i>" + "</a>" + "</li>";
-
-
-                str += "</ul>";
+                str += '<div class="dropdown" style="display: inline;margin-left: 5px;">';
+                str += "<button type='button' class='btn btn-info btn-xs dropdown-toggle' data-toggle='dropdown'>许可证信息</button>";
+                str += "<div class='dropdown-menu' role='menu' aria-labelledby='dropdownMenu2'>";
+                str += "<a  class='dropdown-item' onclick='declareApprovalFun.LanddeclareLandUsePermitView(" + row.id + ")'" + ">" + "建设用地规划许可证" + "<i class='fa fa-navicon'></i></a>";
+                str += "<a  class='dropdown-item' onclick='declareApprovalFun.LanddeclareBuildingPermitView(" + row.id + ")'" + ">" + "建设工程规划许可证" + "<i class='fa fa-navicon'></i></a>";
+                str += "<a  class='dropdown-item' onclick='declareApprovalFun.LanddeclareBuildingConstructionPermitView(" + row.id + ")'" + ">" + "建筑工程施工许可证" + "<i class='fa fa-navicon'></i></a>";
+                str += "<a  class='dropdown-item' onclick='declareApprovalFun.LanddeclarePreSalePermitView(" + row.id + ")'" + ">" + "商品房预售许可证" + "<i class='fa fa-navicon'></i></a>";
                 str += "</div>";
+                str += "</div>";
+
                 return str;
             }
         });
+
         $("#" + declareApprovalFun.landConfig.table).bootstrapTable('destroy');
         TableInit(declareApprovalFun.landConfig.table, "${pageContext.request.contextPath}/declareRealtyLandCert/getDeclareRealtyLandCertList", cols, {
             planDetailsId: '${empty projectPlanDetails.id?0:projectPlanDetails.id}', enable: declareCommon.masterData
@@ -651,7 +608,7 @@
     declareApprovalFun.LanddeclareBuildingPermitView = function (id) {
         var item = $("#" + declareApprovalFun.landConfig.table).bootstrapTable('getRowByUniqueId', id);
         if (!declareCommon.isNotBlank(item.centerId)) {
-            notifyWarning("警告","不合符调整后的数据约定,请联系管理员!");
+            notifyWarning("警告", "不合符调整后的数据约定,请联系管理员!");
             return false;
         }
         var box = $("#declareBuildingPermitLandBox");
@@ -675,7 +632,7 @@
     declareApprovalFun.LanddeclareLandUsePermitView = function (id) {
         var item = $("#" + declareApprovalFun.landConfig.table).bootstrapTable('getRowByUniqueId', id);
         if (!declareCommon.isNotBlank(item.centerId)) {
-            notifyWarning("警告","不合符调整后的数据约定,请联系管理员!");
+            notifyWarning("警告", "不合符调整后的数据约定,请联系管理员!");
             return false;
         }
         var box = $("#declareLandUsePermitLandBox");
@@ -699,7 +656,7 @@
     declareApprovalFun.LanddeclareBuildingConstructionPermitView = function (id) {
         var item = $("#" + declareApprovalFun.landConfig.table).bootstrapTable('getRowByUniqueId', id);
         if (!declareCommon.isNotBlank(item.centerId)) {
-            notifyWarning("警告","不合符调整后的数据约定,请联系管理员!");
+            notifyWarning("警告", "不合符调整后的数据约定,请联系管理员!");
             return false;
         }
         var arr = ["declareBuildingConstructionPermitFileId3"];
@@ -723,7 +680,7 @@
     declareApprovalFun.LanddeclarePreSalePermitView = function (id) {
         var item = $("#" + declareApprovalFun.landConfig.table).bootstrapTable('getRowByUniqueId', id);
         if (!declareCommon.isNotBlank(item.centerId)) {
-            notifyWarning("警告","不合符调整后的数据约定,请联系管理员!");
+            notifyWarning("警告", "不合符调整后的数据约定,请联系管理员!");
             return false;
         }
         var arr = ["declarePreSalePermitFileId3"];
@@ -747,7 +704,7 @@
     declareApprovalFun.LandModelHouseView = function (id) {
         var item = $("#" + declareApprovalFun.landConfig.table).bootstrapTable('getRowByUniqueId', id);
         if (!declareCommon.isNotBlank(item.centerId)) {
-            notifyWarning("警告","不合符调整后的数据约定,请联系管理员!");
+            notifyWarning("警告", "不合符调整后的数据约定,请联系管理员!");
             return false;
         }
         var box = $("#" + declareApprovalFun.landConfig.houseBox);
@@ -797,10 +754,11 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">房产证信息</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span  aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
-                <form  id="frmDeclareRealtyHouseCert" class="form-horizontal">
+                <form id="frmDeclareRealtyHouseCert" class="form-horizontal">
                     <div class="row">
                         <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
                             <div class="card-body">
@@ -828,10 +786,11 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">关联土地证信息</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span  aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
-                <form  class="form-horizontal" id="frmSonDeclareRealtyLandCert">
+                <form class="form-horizontal" id="frmSonDeclareRealtyLandCert">
                     <div class="row">
                         <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
                             <div class="card-body">
@@ -865,7 +824,6 @@
 </div>
 
 
-
 <!-- 不动产  -->
 <div id="boxDeclareRealtyRealEstateCert" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
@@ -874,10 +832,11 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">不动产证信息</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span  aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
-                <form  class="form-horizontal" id="frmDeclareRealtyRealEstateCert">
+                <form class="form-horizontal" id="frmDeclareRealtyRealEstateCert">
                     <div class="row">
                         <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
                             <div class="card-body">
@@ -904,10 +863,11 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">建设工程规划许可证</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span  aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
-                <form  class="form-horizontal">
+                <form class="form-horizontal">
                     <div class="row">
                         <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
                             <div class="card-body">
@@ -946,10 +906,11 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">建设用地规划许可证</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span  aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
-                <form  class="form-horizontal">
+                <form class="form-horizontal">
                     <div class="row">
                         <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
                             <div class="card-body">
@@ -981,17 +942,19 @@
 
 
 <!-- 不动产 建筑工程施工许可证 -->
-<div id="declareBuildingConstructionPermitRealtyRealBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+<div id="declareBuildingConstructionPermitRealtyRealBox" class="modal fade bs-example-modal-lg" data-backdrop="static"
+     tabindex="-1"
      role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">建筑工程施工许可证</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span  aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
-                <form  class="form-horizontal">
+                <form class="form-horizontal">
                     <div class="row">
                         <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
                             <div class="card-body">
@@ -1030,10 +993,11 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">商品房预售许可证</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span  aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
-                <form  class="form-horizontal">
+                <form class="form-horizontal">
                     <div class="row">
                         <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
                             <div class="card-body">
@@ -1064,7 +1028,6 @@
 </div>
 
 
-
 <!--  土地证模块  土地证信息-->
 <div id="boxDeclareRealtyLandCert" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
@@ -1073,7 +1036,8 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">土地证信息</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span  aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
                 <form id="frmDeclareRealtyLandCert" class="form-horizontal">
@@ -1103,10 +1067,11 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">建设工程规划许可证</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span  aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
-                <form  class="form-horizontal">
+                <form class="form-horizontal">
                     <div class="row">
                         <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
                             <div class="card-body">
@@ -1145,10 +1110,11 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">建设用地规划许可证</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span  aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
-                <form  class="form-horizontal">
+                <form class="form-horizontal">
                     <div class="row">
                         <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
 
@@ -1183,17 +1149,19 @@
 
 
 <!-- 土地证模块 建筑工程施工许可证 -->
-<div id="declareBuildingConstructionPermitLandBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+<div id="declareBuildingConstructionPermitLandBox" class="modal fade bs-example-modal-lg" data-backdrop="static"
+     tabindex="-1"
      role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">建筑工程施工许可证</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span  aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
-                <form  class="form-horizontal">
+                <form class="form-horizontal">
                     <div class="row">
                         <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
 
@@ -1235,11 +1203,12 @@
 
             <div class="modal-header">
                 <h4 class="modal-title">商品房预售许可证</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span  aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
             </div>
 
             <div class="modal-body">
-                <form  class="form-horizontal">
+                <form class="form-horizontal">
                     <div class="row">
                         <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
 
@@ -1274,7 +1243,8 @@
 </div>
 
 <!-- 土地证模块 关联房产证信息 -->
-<div id="declareRealtyLandCert_HouseCert_box" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+<div id="declareRealtyLandCert_HouseCert_box" class="modal fade bs-example-modal-lg" data-backdrop="static"
+     tabindex="-1"
      role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -1282,11 +1252,12 @@
 
             <div class="modal-header">
                 <h4 class="modal-title">关联房产证信息</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span  aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
             </div>
 
             <div class="modal-body">
-                <form  class="form-horizontal">
+                <form class="form-horizontal">
                     <div class="row">
                         <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
 

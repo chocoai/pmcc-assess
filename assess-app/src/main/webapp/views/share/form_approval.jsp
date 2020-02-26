@@ -164,6 +164,7 @@
     </c:if>
     <%@include file="/views/share/form_details.jsp" %>
 </c:if>
+<%@include file="/views/share/form_log.jsp" %>
 <script type="application/javascript">
     var formApproval = {
         valid: function () {

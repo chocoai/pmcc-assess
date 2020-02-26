@@ -248,7 +248,7 @@ declareCommon.ajaxServerMethod = function (data, url,type,callback,errorCallback
 //土地
 declareCommon.getLandColumn = function () {
     var cols = [];
-    cols.push({field: 'autoInitNumber', title: '编号(excel导入)'});
+    cols.push({field: 'autoInitNumber', title: '编号'});
     cols.push({
         field: 'provinceName', title: '区域', formatter: function (value, row, index) {
             return AssessCommon.getAreaFullName(row.provinceName, row.cityName, row.districtName);
@@ -265,7 +265,7 @@ declareCommon.getLandColumn = function () {
 //房产
 declareCommon.getHouseColumn = function () {
     var cols = [];
-    cols.push({field: 'autoInitNumber', title: '编号(excel导入)'});
+    cols.push({field: 'autoInitNumber', title: '编号'});
     cols.push({
         field: 'provinceName', title: '区域', formatter: function (value, row, index) {
             return AssessCommon.getAreaFullName(row.provinceName, row.cityName, row.districtName);
@@ -282,7 +282,7 @@ declareCommon.getHouseColumn = function () {
 //不动产
 declareCommon.getRealEstateColumn = function () {
     var cols = [];
-    cols.push({field: 'autoInitNumber', title: '编号(excel导入)'});
+    cols.push({field: 'autoInitNumber', title: '编号'});
     cols.push({
         field: 'provinceName', title: '区域', formatter: function (value, row, index) {
             return AssessCommon.getAreaFullName(row.provinceName, row.cityName, row.districtName);

@@ -558,7 +558,7 @@
                 success: function (result) {
                     if (result.ret) {
                         if (result.data) {
-                            notifySuccess("成功");
+                            notifySuccess("成功","成功");
                             initResult(frmId, result.data.groupArea, result.data.groupPrice);
                             $("#" + frmId).find('[name=evaluationArea]').text(fmoney(Number(result.data.groupArea).toFixed(2), 2));
                             $("#" + frmId).find('[name=evaluationArea]').val(Number(result.data.groupArea));

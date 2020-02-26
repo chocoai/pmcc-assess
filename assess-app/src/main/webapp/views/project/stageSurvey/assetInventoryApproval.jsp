@@ -50,12 +50,7 @@
                                                         class="symbol required"></span></label>
                                                 <div class="col-sm-3">
                                                     <label class="form-control input-full"> ${surveyAssetInventory.bisCheckOriginal eq true? '是':'否'}</label>
-
                                                 </div>
-                                                <button type="button" class="btn btn-warning btn-sm"
-                                                        onclick="checkRealEstate()"
-                                                        data-toggle="modal"> 查看权证信息
-                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -66,13 +61,8 @@
                                                     分割限制<span class="symbol required"></span></label>
                                                 <div class="col-sm-3">
                                                     <label class="form-control input-full">${surveyAssetInventory.segmentationLimit}</label>
-
                                                 </div>
-
-                                                <div class="showUse">
-
-
-                                                </div>
+                                                <div class="showUse"></div>
                                             </div>
                                         </div>
                                     </div>
@@ -245,13 +235,10 @@
                                                     <label class="form-control input-full">${surveyAssetInventory.paymentStatus}
                                                     </label>
                                                 </div>
-
                                             </div>
                                         </div>
                                     </div>
-
                                     <div class="paymentItem">
-
                                     </div>
                                     <div class="row form-group" id="showUploadFile" style="display: none">
                                         <div class="col-md-12">
@@ -260,9 +247,6 @@
                                                     附件
                                                 </label>
                                                 <div class="col-sm-11">
-                                                    <input id="paymentStatusFile" name="house_estateParking"
-                                                           placeholder="上传附件" class="form-control input-full input-full"
-                                                           type="file">
                                                     <div id="_paymentStatusFile"></div>
                                                 </div>
                                             </div>

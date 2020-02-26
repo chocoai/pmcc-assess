@@ -199,7 +199,7 @@ public class ProjectPlanDetailsService {
                 try {
                     saveProjectPlanDetails(item);
                 } catch (BusinessException e) {
-                    logger.error(e.getMessage(),e);
+                    logger.error(e.getMessage(), e);
                 }
                 try {
                     projectPlanService.saveProjectPlanDetailsResponsibility(item, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.TASK);
@@ -376,7 +376,7 @@ public class ProjectPlanDetailsService {
             boolean isMember = projectMemberService.isProjectMember(projectId, commonService.thisUserAccount());
             boolean isOperable = projectInfoService.isProjectOperable(projectId);
 
-            if (isMember && isOperable) {
+            if (isMember && isOperable && sysProjectEnum.getValue().equals(ProcessStatusEnum.FINISH.getValue())) {
                 if (StringUtils.isNotBlank(projectPlanDetailsVo.getExecuteUserAccount()) && projectPlanDetailsVo.getBisStart()) {
                     ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseById(projectPlanDetailsVo.getProjectPhaseId());
                     if (projectPhase != null) {
@@ -605,7 +605,7 @@ public class ProjectPlanDetailsService {
         //1.更新任务状态 记录重启原因 2.添加新的待提交任务
         ProjectPlanDetails projectPlanDetails = getProjectPlanDetailsById(planDetailsId);
         if (projectPlanDetails == null) return null;
-        if (StringUtils.equals(projectPlanDetails.getStatus(), ProcessStatusEnum.FINISH.getValue())){
+        if (StringUtils.equals(projectPlanDetails.getStatus(), ProcessStatusEnum.FINISH.getValue())) {
             projectPlanDetails.setStatus(ProcessStatusEnum.RUN.getValue());
             projectPlanDetails.setBisStart(false);
             projectPlanDetails.setProcessInsId("0");
@@ -617,7 +617,7 @@ public class ProjectPlanDetailsService {
             projectPlanService.saveProjectPlanDetailsResponsibility(projectPlanDetails, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.TASK);
 
         }
-        if(StringUtils.isNotBlank(formData)){
+        if (StringUtils.isNotBlank(formData)) {
             //新增一条重启记录
             ProjectTaskReturnRecord projectTaskReturnRecord = JSON.parseObject(formData, ProjectTaskReturnRecord.class);
             projectTaskReturnRecord.setProjectId(projectPlanDetails.getProjectId());

@@ -150,7 +150,7 @@ public class DeclareRealtyLandCertService {
             //使用 excel导入编号关联
             //-----------------------------------start----------------------------------
             if (houseCert.getAutoInitNumber() == null){
-                declarePublicService.excelImportWriteErrorInfo(i, "编号(excel导入) 没有", stringBuilder);
+                declarePublicService.excelImportWriteErrorInfo(i, "编号没有", stringBuilder);
                 continue;
             }
             DeclareRealtyLandCert select = new DeclareRealtyLandCert();

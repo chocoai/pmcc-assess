@@ -716,7 +716,7 @@
             chksScore: JSON.stringify(filterData),
             fomData: JSON.stringify(parentData)
         }, function (spotId) {
-            notifySuccess("考核成功!");
+            notifySuccess("成功","考核成功!");
             box.modal("hide");
             var marsterId = box.find("input[name=marsterId]").val();
             assessmentCommonHandle.getAssessmentProjectPerformanceById(marsterId, function (tempData) {
@@ -807,7 +807,7 @@
             chksScore: JSON.stringify(filterData),
             fomData: JSON.stringify(parentData)
         }, function (data) {
-            notifySuccess("考核成功!");
+            notifySuccess("成功","考核成功!");
             box.modal("hide");
             $("#assessmentTableList").bootstrapTable('refresh');
         });

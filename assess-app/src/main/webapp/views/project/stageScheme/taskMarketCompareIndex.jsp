@@ -81,7 +81,7 @@
     //保存
     function save() {
         marketCompare.save(function () {
-            notifySuccess('保存成功');
+            notifySuccess("成功",'保存成功');
         });
     }
 

@@ -370,7 +370,7 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    notifySuccess('调整成功');
+                    notifySuccess("成功",'调整成功');
                 }
                 else {
                     toastr.warning(result.errmsg);

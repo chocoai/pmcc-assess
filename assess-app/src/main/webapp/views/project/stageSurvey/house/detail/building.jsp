@@ -5,14 +5,15 @@
 <head>
     <title>楼栋</title>
     <%@include file="/views/share/main_css.jsp" %>
+
 </head>
 <body>
 
 <div class="wrapper">
     <div class="main-panel" style="width: 100%">
         <div class="content" style="margin-top: 0px;">
-            <div class="page-inner mt--5">
-                <div class="row mt--2">
+            <div class="page-inner">
+                <div class="row">
                     <div class="col-md-12">
                         <div class="card full-height">
                             <div class="card-header collapse-link">
@@ -337,13 +338,13 @@
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                         <div class="form-inline x-valid">
-                                            <label class="col-sm-1">
-                                                建筑安装完工度调查
-                                            </label>
-                                            <button type="button" class="btn btn-default btn-sm"
-                                                    onclick="buildingCommon.constructionInstallationEngineeringFeeEvent.loadHtml();">
-                                                <i class="fa fa-object-group" aria-hidden="true"></i>
-                                            </button>
+                                            <label class="col-sm-1"></label>
+                                            <div class="col-sm-3">
+                                                <button type="button" class="btn btn-info btn-sm"
+                                                        onclick="buildingCommon.constructionInstallationEngineeringFeeEvent.loadHtml();">
+                                                    建筑安装完工度调查
+                                                </button>
+                                            </div>
                                         </div>
                                         </div>
                                     </div>
@@ -385,25 +386,18 @@
                             </div>
                         </div>
                     </div>
-
                     <c:if test="${empty isHistory}">
-
                             <%@include file="/views/project/stageSurvey/commonDetail/buildingOutfit.jsp" %>
                             <%@include file="/views/project/stageSurvey/commonDetail/buildingFunction.jsp" %>
                             <c:if test="${formType eq 'industry'}">
                                 <%@include file="/views/project/stageSurvey/commonDetail/buildingSurface.jsp" %>
                                 <%@include file="/views/project/stageSurvey/commonDetail/buildingMaintenance.jsp" %>
                             </c:if>
-
                     </c:if>
-
                     <%@include file="/views/project/chksCustomize/chksSurvey.jsp" %>
-                    
-
                     <div class="col-md-12" style="text-align: center;padding-bottom: 1.25rem">
-
                         <div class="card-body">
-                            <button id="cancel_btn" class="btn btn-default btn-sm" onclick="window.close()">
+                            <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
                                 关闭
                             </button>
                         </div>
@@ -425,7 +419,8 @@
         src="${pageContext.request.contextPath}/js/examine/examine.common.js?v=${assessVersion}"></script>
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/js/examine/examine.build.js?v=${assessVersion}"></script>
-
+<script src="${pageContext.request.contextPath}/js/method/developmentCommon.js?v=${assessVersion}"></script>
+<%@include file="/views/method/module/developmentCommon.jsp" %>
 <script type="text/javascript">
     $(function () {
         buildingCommon.initDetailById('${basicBuilding.id}', '', false);

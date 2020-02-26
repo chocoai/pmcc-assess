@@ -502,7 +502,7 @@
             },
             success: function (result) {
                 if (result.ret) {
-                    notifySuccess('保存成功');
+                    notifySuccess("成功",'保存成功');
                     if ('${applyBatch.caseEstateId > 0}' == 'true') {
                         batchTreeTool.ztreeInit(${applyBatch.id});
                     } else {
@@ -594,7 +594,7 @@
         batchTreeTool.beCopyObject = {};
         batchTreeTool.beCopyObject.id = node.id;
         batchTreeTool.beCopyObject.level = node.level;
-        notifySuccess("复制成功");
+        notifySuccess("成功","复制成功");
         $("#btnGroup").find('.paste').show();
     }
 
@@ -626,7 +626,7 @@
                 success: function (result) {
                     Loading.progressHide();
                     if (result.ret) {
-                        notifySuccess("粘贴成功");
+                        notifySuccess("成功","粘贴成功");
                     }
                     else {
                         AlertError("获取数据失败，失败原因:" + result.errmsg, 1, null, null);

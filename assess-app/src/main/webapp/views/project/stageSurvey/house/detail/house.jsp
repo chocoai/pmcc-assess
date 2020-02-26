@@ -10,8 +10,8 @@
 <div class="wrapper">
     <div class="main-panel" style="width: 100%">
         <div class="content" style="margin-top: 0px;">
-            <div class="page-inner mt--5">
-                <div class="row mt--2">
+            <div class="page-inner">
+                <div class="row">
                     <div class="col-md-12">
                         <div class="card full-height">
                             <div class="card-header collapse-link">
@@ -503,7 +503,6 @@
 
 
                     <c:if test="${empty isHistory}">
-
                         <%@include file="/views/project/stageSurvey/commonDetail/houseFaceStreet.jsp" %>
                         <c:if test="${formType eq 'residence'}">
                             <%@include file="/views/project/stageSurvey/commonDetail/houseWater.jsp" %>
@@ -518,16 +517,11 @@
                             <%@include file="/views/project/stageSurvey/commonDetail/houseCorollaryEquipment.jsp" %>
                         </c:if>
                         <%@include file="/views/project/stageSurvey/commonDetail/houseDamagedDegree.jsp" %>
-
                     </c:if>
-
                     <%@include file="/views/project/chksCustomize/chksSurvey.jsp" %>
-
-
                     <div class="col-md-12" style="text-align: center;padding-bottom: 1.25rem">
-
                         <div class="card-body">
-                            <button id="cancel_btn" class="btn btn-default btn-sm" onclick="window.close()">
+                            <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
                                 关闭
                             </button>
                         </div>
@@ -537,11 +531,8 @@
         </div>
         <%@include file="/views/share/main_footer.jsp" %>
     </div>
-
 </div>
-
 </body>
-
 <%@include file="/views/share/chksCommon.jsp" %>
 <%@include file="/views/project/tool/toolMapHandleView.jsp" %>
 <script type="text/javascript"

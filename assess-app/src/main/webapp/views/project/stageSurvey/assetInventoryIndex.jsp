@@ -55,20 +55,17 @@
                                                 <label class="col-sm-1 col-form-label">是否查看原件<span
                                                         class="symbol required"></span></label>
                                                 <div class="col-sm-3">
-                                    <span class="radio-inline">
-                                          <div class="input-group">
-                                                <span class="input-group-addon">
-                                                    <input type="radio" name="bisCheckOriginal" value="0">是
-                                                    <input type="radio" checked="checked" name="bisCheckOriginal"
-                                                           value="1">否
-                                                </span>
-                                            </div>
-                                    </span>
+                                                     <span class="radio-inline">
+                                                     <div class="input-group">
+                                                         <span class="input-group-addon">
+                                                          <input type="radio" name="bisCheckOriginal" value="0">是
+                                                             <input type="radio" checked="checked"
+                                                                    name="bisCheckOriginal"
+                                                                    value="1">否
+                                                              </span>
+                                                          </div>
+                                                      </span>
                                                 </div>
-                                                <button type="button" class="btn btn-warning btn-sm"
-                                                        onclick="checkRealEstate()"
-                                                        data-toggle="modal"> 查看权证信息
-                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -85,11 +82,7 @@
                                                         <option value="不可分" selected>不可分</option>
                                                     </select>
                                                 </div>
-
-                                                <div class="showUse">
-
-
-                                                </div>
+                                                <div class="showUse"></div>
                                             </div>
                                         </div>
                                     </div>
@@ -349,7 +342,8 @@
                                                     </select>
                                                 </div>
 
-                                                <label class="col-sm-1 col-form-label showPaymentAdd" style="display: none">
+                                                <label class="col-sm-1 col-form-label showPaymentAdd"
+                                                       style="display: none">
                                                     明细新增
                                                 </label>
                                                 <div class="col-sm-3 showPaymentAdd" style="display: none">
@@ -449,7 +443,8 @@
                                                     </select>
                                                 </div>
 
-                                                <label class="col-sm-1 col-form-label showEntityAdd" style="display:none">
+                                                <label class="col-sm-1 col-form-label showEntityAdd"
+                                                       style="display:none">
                                                     实物损坏新增
                                                 </label>
                                                 <div class="col-sm-3 showEntityAdd" style="display:none">
@@ -534,442 +529,7 @@
         </div>
         <%@include file="/views/share/main_footer.jsp" %>
     </div>
-
 </div>
-
-<%--<div class="container body">
-    <div class="main_container">
-        <div class="right_col" role="main" style="margin-left: 0">
-            <%@include file="/views/share/form_head.jsp" %>
-            <%@include file="/views/share/project/projectInfoSimple.jsp" %>
-            <%@include file="/views/share/project/projectPlanDetails.jsp" %>
-
-            <!--填写表单-->
-            <div class="x_panel">
-                <div class="x_title collapse-link">
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                    </ul>
-                    <h3>
-                        ${projectPlanDetails.projectPhaseName}
-                        <small>${declareRecord.name}</small>
-                    </h3>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="x_content">
-                    <form id="frm_asset" class="form-horizontal">
-                        <input type="hidden" name="id" value="${surveyAssetInventory.id}">
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">核对日期<span
-                                        class="symbol required"></span></label>
-                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <input type="text" required placeholder="核对日期" id="checkDate" name="checkDate"
-                                           data-date-format="yyyy-mm-dd" class="form-control input-full date-picker dbdate"
-                                           readonly="readonly"
-                                           value="<fmt:formatDate value='${surveyAssetInventory.checkDate}' pattern='yyyy-MM-dd'/>">
-                                </div>
-                            </div>
-
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">是否查看原件<span
-                                        class="symbol required"></span></label>
-                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <span class="radio-inline">
-                                        <input type="radio" required name="bisCheckOriginal" id="bisCheckOriginal0"
-                                        ${surveyAssetInventory.bisCheckOriginal eq true?'checked="checked"':''}
-                                               value="true"><label
-                                            for="bisCheckOriginal0">是</label></span>
-                                    <span class="radio-inline">
-                                        <input type="radio" name="bisCheckOriginal" id="bisCheckOriginal1"
-                                        ${surveyAssetInventory.bisCheckOriginal eq false?'checked="checked"':''}
-                                               value="false"><label
-                                            for="bisCheckOriginal1">否</label>
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="x-valid">
-                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <button type="button" class="btn btn-xs btn-warning" onclick="checkRealEstate()"
-                                            data-toggle="modal"> 查看权证信息
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">分割限制<span
-                                        class="symbol required"></span></label>
-                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <select class="form-control input-full" id="segmentationLimit" name="segmentationLimit"
-                                            required onchange="showOther()">
-                                        <option value="可分">可分</option>
-                                        <option value="不可分" selected>不可分</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div id="showUse" style="display: none">
-                                <div class="x-valid">
-                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">能否使用</label>
-                                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                        <select class="form-control input-full" id="canUse" name="canUse">
-                                            <option value="" selected>请选择</option>
-                                            <option value="正常使用">正常使用</option>
-                                            <option value="不能正常使用">不能正常使用</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="x-valid">
-                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">证载用途</label>
-                                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                        <select class="form-control input-full" id="application" name="application">
-                                            <option value="">-请选择-</option>
-                                            <c:forEach var="items" items="${types}">
-                                                <option value="${items.id}">${items.name}</option>
-                                            </c:forEach>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group" style="display: none" id="showCertificate">
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">是否办证</label>
-                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <select class="form-control input-full" id="certificate" name="certificate">
-                                        <option value="">-请选择-</option>
-                                        <c:forEach var="items" items="${certificateTypes}">
-                                            <option value="${items.id}">${items.name}</option>
-                                        </c:forEach>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">证明文件</label>
-                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <input id="checkOriginalFile" type="file" multiple="false">
-                                    <div id="_checkOriginalFile"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">说明</label>
-                                <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
-                                    <textarea placeholder="说明" class="form-control input-full"
-                                              name="remark">${surveyAssetInventory.remark}</textarea>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <div class="x_panel">
-                <div class="x_title collapse-link">
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                    </ul>
-                    <h3>清查内容</h3>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="x_content">
-                    <form id="frm_asset_inventory_content" class="form-horizontal">
-                        <table class="table" id="tb_surveyList">
-                            <thead>
-                            <tr>
-                                <th style="width: 10%">一致性内容</th>
-                                <th style="width: 10%">登记<span style="color:red;font-size:10px;">(没有登记信息则填无)</span></th>
-                                <th style="width: 10%">实际</th>
-                                <th style="width: 6%">是否一致</th>
-                                <th style="width: 10%">差异原因</th>
-                                <th style="width: 10%">证明文件</th>
-                                <th style="width: 7%">证明文件附件</th>
-                                <th style="width: 7%">证明人</th>
-                                <th style="width: 8%">调查时间</th>
-                                <th style="width: 8%">确认一致</th>
-                                <th style="width: 6%">操作</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <c:forEach items="${surveyAssetInventoryContentVos}" var="item" varStatus="s">
-                                <tr>
-                                    <input type="hidden" id="id" name="id" value="${item.id}">
-                                    <td>${item.inventoryContentName}</td>
-                                    <td>
-                                        <div class="x-valid">
-                                            <input type="text" data-rule-maxlength="50" placeholder="登记" required
-                                                   id="registration${item.id}" onchange="isAgreement(this);"
-                                                   name="registration${item.id}"
-                                                   class="form-control input-full " value="${item.registration}">
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="x-valid">
-                                            <input type="text" data-rule-maxlength="50" placeholder="实际" required
-                                                   id="actual${item.id}" onchange="isAgreement(this);"
-                                                   name="actual${item.id}"
-                                                   class="form-control input-full " value="${item.actual}">
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <label data-name="areConsistent">${item.areConsistent}</label>
-                                    </td>
-                                    <td>
-                                        <div class="x-valid show-hide"
-                                             style="display: ${item.areConsistent eq '一致'?'none':'block'}">
-                                            <input type="text" data-rule-maxlength="50" placeholder="差异原因" required
-                                                   id="differenceReason${item.id}" name="differenceReason${item.id}"
-                                                   class="form-control input-full" value="${item.differenceReason}">
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="x-valid show-hide"
-                                             style="display: ${item.areConsistent eq '一致'?'none':'block'}">
-                                            <input type="text" data-rule-maxlength="50" placeholder="证明文件" required
-                                                   id="credential${item.id}" name="credential"
-                                                   class="form-control input-full" value="${item.credential}">
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="show-hide"
-                                             style="display: ${item.areConsistent eq '一致'?'none':'block'}">
-                                            <input id="credentialAccessory${item.id}"
-                                                   name="credentialAccessory${item.id}" type="file" multiple="false">
-                                            <div id="_credentialAccessory${item.id}"></div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="x-valid show-hide"
-                                             style="display: ${item.areConsistent eq '一致'?'none':'block'}">
-                                            <input type="text" data-rule-maxlength="50" placeholder="证明人" required
-                                                   id="voucher${item.id}" name="voucher${item.id}"
-                                                   class="form-control input-full" value="${item.voucher}">
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="x-valid show-hide"
-                                             style="display: ${item.areConsistent eq '一致'?'none':'block'}">
-                                            <input placeholder="调查时间" id="surveyTime${item.id}"
-                                                   name="surveyTime${item.id}" required
-                                                   data-date-format="yyyy-mm-dd"
-                                                   class="form-control input-full date-picker dbdate"
-                                                   readonly="readonly"
-                                                   value='<fmt:formatDate value="${item.surveyTime}" pattern="yyyy-MM-dd"/>'>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="x-valid show-hide"
-                                             style="display: ${item.areConsistent eq '一致'?'none':'block'}">
-                                            <select class="form-control input-full" id="sureConsistent${item.id}"
-                                                    name="sureConsistent${item.id}" required>
-                                                <option value=""></option>
-                                                <option value="一致">一致</option>
-                                                <option value="不一致">不一致</option>
-                                            </select>
-                                        </div>
-                                    </td>
-                                    <script type="text/javascript">
-                                        $(function () {
-                                            getConsistentVal("sureConsistent${item.id}", "${item.sureConsistent}");
-                                        })
-                                    </script>
-                                    <td>
-                                        <a class="btn btn-xs btn-danger" onclick="emptyRefill(this)">清空</a>
-                                    </td>
-                                </tr>
-                                <script type="text/javascript">
-                                    $(function () {
-                                        //清查内容附件上传和加载
-                                        uploadFileCommon("${item.id}");
-                                        showFileCommon("${item.id}");
-                                    })
-                                </script>
-                            </c:forEach>
-
-                            </tbody>
-                        </table>
-                    </form>
-                </div>
-            </div>
-            <div class="x_panel">
-                <div class="x_title">
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                    </ul>
-                    <h3>税费、工程、物管欠款调查</h3>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="x_content">
-                    <form id="taxesPaymentSurvey" class="form-horizontal">
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    缴纳情况
-                                </label>
-                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <select class="form-control input-full" id="paymentStatus" name="paymentStatus" required
-                                            onchange="showButton()">
-                                        <option value="">请选择</option>
-                                        <option value="正常" selected="selected">正常</option>
-                                        <option value="不正常">不正常</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="x-valid">
-                                <div style="display:none" id="showPaymentAdd">
-                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                        明细新增
-                                    </label>
-                                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                        <div class="btn btn-xs btn-success" onclick="appendPaymentHTML(this)"><i
-                                                class="fa fa-plus"></i></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="paymentItem">
-
-                        </div>
-                        <div class="form-group" id="showUploadFile" style="display: none">
-                            <div class="x-valid">
-                                <label class=" ol-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    附件
-                                </label>
-                                <div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10 ">
-                                    <input id="paymentStatusFile" name="house_estateParking"
-                                           placeholder="上传附件" class="form-control input-full"
-                                           type="file">
-                                    <div id="_paymentStatusFile"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <div class="x_panel">
-                <div class="x_title">
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                    </ul>
-                    <h3>损坏调查表</h3>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="x_content">
-                    <form id="damageSurvey" class="form-horizontal">
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    区位是否损坏
-                                </label>
-                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <select class="form-control input-full" id="rimIsNormal" name="rimIsNormal" required
-                                            onchange="showButton()">
-                                        <option value="">请选择</option>
-                                        <option value="正常" selected="selected">正常</option>
-                                        <option value="不正常">不正常</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="x-valid">
-                                <div style="display:none" id="showZoneAdd">
-                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                        区位损坏新增
-                                    </label>
-                                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                        <div class="btn btn-xs btn-success"
-                                             onclick="appendHTML('zoneProjectName','zoneProjectItem','zoneBit',this)"><i
-                                                class="fa fa-plus"></i></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="zoneBit">
-
-                        </div>
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                    实物状况是否损坏
-                                </label>
-                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <select class="form-control input-full" id="entityIsDamage" name="entityIsDamage" required
-                                            onchange="showButton()">
-                                        <option value="">请选择</option>
-                                        <option value="损坏">损坏</option>
-                                        <option value="未损坏" selected="selected">未损坏</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="x-valid">
-                                <div style="display:none" id="showEntityAdd">
-                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                        实物损坏新增
-                                    </label>
-                                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                        <div class="btn btn-xs btn-success"
-                                             onclick="appendHTML('entityProjectName','entityProjectItem','entity',this)">
-                                            <i class="fa fa-plus"></i></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="entity">
-
-                        </div>
-                        <c:if test="${projectInfo.projectCategoryId == houseLand}">
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                        影响评估的其他事项
-                                    </label>
-                                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                        <div class="btn btn-xs btn-success"
-                                             onclick="appendHTML('otherProjectName','otherProjectItem','otherProject',this)">
-                                            <i class="fa fa-plus"></i></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="otherProject">
-
-                            </div>
-                        </c:if>
-                    </form>
-                </div>
-            </div>
-            <c:if test="${projectInfo.projectCategoryId != houseLand}">
-                <div class="x_panel">
-                    <div class="x_title">
-                        <ul class="nav navbar-right panel_toolbox">
-                            <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                        </ul>
-                        <h3>转让限制</h3>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div class="x_content">
-                        <form class="form-horizontal">
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                        转让限制
-                                    </label>
-                                    <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
-                                    <textarea placeholder="转让限制" name="transferLimit" id="transferLimit"
-                                              class="form-control input-full"
-                                              value="${surveyAssetInventory.transferLimit}"></textarea>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </c:if>
-            <%@include file="/views/share/form_apply.jsp" %>
-            <%@include file="/views/share/form_log.jsp" %>
-        </div>
-    </div>
-</div>--%>
 </body>
 
 

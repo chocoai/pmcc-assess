@@ -1047,7 +1047,7 @@
                 success: function (result) {
                     Loading.progressHide();
                     if (result.ret) {
-                        notifySuccess("粘贴成功");
+                        notifySuccess("成功","粘贴成功");
                     }
                     else {
                         AlertError("获取数据失败，失败原因:" + result.errmsg, 1, null, null);

@@ -20,7 +20,6 @@
             </div>
             <div class="page-inner mt--5">
                 <div class="row mt--2">
-
                     <div class="col-md-12">
                         <div class="card full-height">
                             <div class="card-header">
@@ -30,7 +29,6 @@
                             </div>
                             <div class="card-body">
                                 <form id="frmCaseEstate" class="form-horizontal">
-
                                     <div class="form-group form-inline">
                                         <label class="col-md-1 col-form-label">省</label>
                                         <div class="col-md-2 p-0">
@@ -56,24 +54,64 @@
                                             查询
                                         </button>
                                     </div>
-
-
                                 </form>
                                 <table class="table table-bordered" id="caseEstateTable">
                                     <!-- cerare document add ajax data-->
                                 </table>
                             </div>
+
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-head-row">
+                                        <div class="card-title">楼栋信息</div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <form class="form-horizontal" id="frmCaseBuild">
+                                        <input type="hidden" name="estateId">
+                                        <table class="table table-bordered" id="caseBuildTable">
+                                        </table>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-head-row">
+                                        <div class="card-title">单元信息</div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <form class="form-horizontal" id="frmCaseUnit">
+                                        <input type="hidden" name="buildingId">
+                                        <table class="table table-bordered" id="caseUnitTable">
+                                        </table>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-head-row">
+                                        <div class="card-title">房屋信息</div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <form class="form-horizontal" id="frmCaseHouse">
+                                        <input type="hidden" name="unitId">
+                                        <table class="table table-bordered" id="caseHouseTable">
+                                        </table>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
         <%@include file="/views/share/main_footer.jsp" %>
     </div>
-
 </div>
-
 </body>
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/map.position.js?v=${assessVersion}"></script>
@@ -181,11 +219,6 @@
                     str += '<button onclick="baseFun.caseEstate.findData(' + row.id + ')" style="margin-left: 5px;" class="btn btn-icon btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="详情">';
                     str += '<i class="fa fa-search"></i>';
                     str += '</button>';
-                   // str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="地图" onclick="baseFun.caseEstate.findDataMap(' + row.id + ')"><i class="fa fa-map fa-white"></i></a>';
-                    str += '<button onclick="baseFun.caseEstate.findDataMap(' + row.id + ')" style="margin-left: 5px;" class="btn btn-icon btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="地图">';
-                    str += '<i class="fa fa-map"></i>';
-                    str += '</button>';
-                    str += '</div>';
                     return str;
                 }
             });
@@ -246,7 +279,9 @@
                 field: 'id', title: '查询', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
-                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="查看" onclick="baseFun.caseBuild.findData(' + row.id + ',\'tb_List\')"><i class="fa fa-search fa-white"></i></a>';
+                    str += '<button onclick="baseFun.caseBuild.findData(' + row.id + ',\'tb_List\')" style="margin-left: 5px;" class="btn btn-icon btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="详情">';
+                    str += '<i class="fa fa-search"></i>';
+                    str += '</button>';
                     str += '</div>';
                     return str;
                 }
@@ -285,7 +320,9 @@
                 field: 'id', title: '查询', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
-                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="查看" onclick="baseFun.caseUnit.findData(' + row.id + ',\'tb_List\')"><i class="fa fa-search fa-white"></i></a>';
+                    str += '<button onclick="baseFun.caseUnit.findData(' + row.id + ',\'tb_List\')" style="margin-left: 5px;" class="btn btn-icon btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="详情">';
+                    str += '<i class="fa fa-search"></i>';
+                    str += '</button>';
                     str += '</div>';
                     return str;
                 }
@@ -324,7 +361,9 @@
                 field: 'id', title: '查询', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
-                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="查看" onclick="baseFun.caseHouse.findData(' + row.id + ',\'tb_List\')"><i class="fa fa-search fa-white"></i></a>';
+                    str += '<button onclick="baseFun.caseHouse.findData(' + row.id + ',\'tb_List\');" style="margin-left: 5px;" class="btn btn-icon btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="详情">';
+                    str += '<i class="fa fa-search"></i>';
+                    str += '</button>';
                     str += '</div>';
                     return str;
                 }

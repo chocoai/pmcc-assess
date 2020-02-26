@@ -10,8 +10,8 @@
 <div class="wrapper">
     <div class="main-panel" style="width: 100%">
         <div class="content" style="margin-top: 0px;">
-            <div class="page-inner mt--5">
-                <div class="row mt--2">
+            <div class="page-inner">
+                <div class="row">
                     <div class="col-md-12">
                         <div class="card full-height">
                             <div class="card-header collapse-link">
@@ -631,7 +631,7 @@
                     <div class="col-md-12" style="text-align: center;padding-bottom: 1.25rem">
 
                         <div class="card-body">
-                            <button id="cancel_btn" class="btn btn-default btn-sm" onclick="window.close()">
+                            <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
                                 关闭
                             </button>
                         </div>

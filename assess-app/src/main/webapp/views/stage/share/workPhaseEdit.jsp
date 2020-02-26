@@ -668,7 +668,7 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    notifySuccess("操作成功");
+                    notifySuccess("成功","操作成功");
                     if (typeof successFn === "function") {
                         successFn();
                     }

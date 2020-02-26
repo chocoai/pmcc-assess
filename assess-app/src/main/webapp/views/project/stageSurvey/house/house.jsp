@@ -9,8 +9,8 @@
     </div>
     <form class="form-horizontal" id="basicHouseFrm">
         <input type="hidden" name="id" value="${basicHouse.id}">
-        <input type="hidden" name="unitId" value="${basicHouse.unitId}">
         <input type="hidden" name="quoteId" value="${basicHouse.quoteId}">
+        <input type="hidden" name="unitId" value="${basicHouse.unitId}">
         <input type="hidden" name="estateId" value="${basicHouse.estateId}">
         <input type="hidden" name="buildingId" value="${basicHouse.buildingId}">
         <div class="row">
@@ -51,13 +51,13 @@
                                            placeholder="户型" class="form-control" name="huxingName"
                                            value="${basicHouse.huxingName}">
                                     <span class="input-group-btn">
-                        <button type="button" class="btn btn-default docs-tooltip"
+                        <button type="button" class="btn btn-primary docs-tooltip"
                                 data-toggle="tooltip"
                                 data-original-title="选择"
                                 onclick="houseCommon.selectHuxing(this);">
                              <i class="fa fa-search"></i>
                         </button>
-                        <button type="button" class="btn btn-default docs-tooltip"
+                        <button type="button" class="btn btn-warning docs-tooltip"
                                 onclick="$(this).closest('.input-group').find('input').val('');"
                                 data-toggle="tooltip" data-original-title="清除">
                         <i class="fa fa-minus"></i>
@@ -83,11 +83,11 @@
                                     <input type="text" placeholder="户型(装修)" name="newHuxingName"
                                            class="form-control" value="${basicHouse.newHuxingName}">
                                     <span class="input-group-btn">
-                        <button type="button" class="btn btn-default docs-tooltip"
+                        <button type="button" class="btn btn-primary docs-tooltip"
                                 data-toggle="tooltip"
                                 data-original-title="编辑"
                                 onclick="houseCommon.openHuxingModal();">
-                             <i class="fa fa-edit"></i>
+                             <i class="fa fa-pen"></i>
                         </button>
                         </span>
                                 </div>
@@ -141,7 +141,7 @@
 
                                     </datalist>
                                     <span class="input-group-btn">
-                                                <button type="button" class="btn btn-default docs-tooltip"
+                                                <button type="button" class="btn btn-warning docs-tooltip"
                                                         onclick="$(this).closest('.input-group').find('input').val('');"
                                                         data-toggle="tooltip" data-original-title="清除">
                                                 <i class="fa fa-minus"></i>
@@ -161,7 +161,7 @@
 
                                     </datalist>
                                     <span class="input-group-btn">
-                                                <button type="button" class="btn btn-default docs-tooltip"
+                                                <button type="button" class="btn btn-warning docs-tooltip"
                                                         onclick="$(this).closest('.input-group').find('input').val('');"
                                                         data-toggle="tooltip" data-original-title="清除">
                                                 <i class="fa fa-minus"></i>
