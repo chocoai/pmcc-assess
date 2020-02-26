@@ -206,41 +206,34 @@
                         <div class="col-md-12">
                             <div class="card-body">
                                 <div class="row form-group">
-                                    <div class="col-md-6">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-2 col-form-label">
-                                                委托目的<span class="symbol required"></span>
-                                            </label>
-                                            <div class="col-sm-10">
-                                                <c:forEach items="${purposeDicList}" var="item">
-                                                <span class="checkbox-inline">
-                                                <input type="checkbox" id="entrustmentPurpose${item.id}" required
+                                    <c:forEach items="${purposeDicList}" var="item">
+                                        <div class="form-check">
+                                            <label class="form-check-label" style="margin-left: 2px;">
+                                                <input type="checkbox" id="entrustmentPurpose${item.id}"
+                                                       required
                                                        name="entrustmentPurpose" value="${item.id}"
-                                                       class="form-inline">
-                                                <label for="entrustmentPurpose${item.id}">${item.name}</label>
-                                                </span>
-                                                </c:forEach>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-2 col-form-label">
-                                                价值类型<span class="symbol required"></span>
+                                                       class="form-check-input">
+                                                <span class="form-check-sign"><label
+                                                        for="entrustmentPurpose${item.id}">${item.name}</label></span>
                                             </label>
-                                            <div class="col-sm-10">
-                                                <c:forEach items="${valueTypeList}" var="item">
-                                                <span class="checkbox-inline">
-                                                <input type="checkbox" id="valueType${item.id}" required
-                                                       name="valueType" value="${item.id}"
-                                                       class="form-inline">
-                                                <label for="valueType${item.id}">${item.name}</label>
-                                                </span>
-                                                </c:forEach>
-                                            </div>
                                         </div>
-                                    </div>
+                                    </c:forEach>
                                 </div>
+                                <div class="row form-group">
+                                    <c:forEach items="${valueTypeList}" var="item">
+                                        <div class="form-check">
+                                            <label class="form-check-label" style="margin-left: 2px;">
+                                                <input type="checkbox" id="valueType${item.id}"
+                                                       required
+                                                       name="valueType" value="${item.id}"
+                                                       class="form-check-input">
+                                                <span class="form-check-sign"><label
+                                                        for="valueType${item.id}">${item.name}</label></span>
+                                            </label>
+                                        </div>
+                                    </c:forEach>
+                                </div>
+
                                 <div class="row form-group">
                                     <div class="col-md-6">
                                         <div class="form-inline x-valid">

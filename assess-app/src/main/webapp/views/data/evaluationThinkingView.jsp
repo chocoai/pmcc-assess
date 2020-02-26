@@ -154,25 +154,21 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="row form-group">
-                                    <div class="col-md-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-2 col-form-label">
-                                                评估方法<span class="symbol required"></span>
+                                    <c:forEach items="${methodDicList}" var="item">
+                                        <div class="form-check">
+                                            <label class="form-check-label" style="margin-left: 2px;">
+                                                <input type="checkbox" id="method${item.id}"
+                                                       required
+                                                       name="method" value="${item.id}"
+                                                       class="form-check-input">
+                                                <span class="form-check-sign"><label
+                                                        for="method${item.id}">${item.name}</label></span>
                                             </label>
-                                            <div class="col-sm-10">
-                                                <c:forEach items="${methodDicList}" var="item">
-                                                    <span class="checkbox-inline">
-                                                    <input type="checkbox" id="method${item.id}" name="method"
-                                                           value="${item.id}">
-                                                        <label for="method${item.id}">${item.name}</label>
-                                                    </span>
-                                                </c:forEach>
-                                            </div>
                                         </div>
-                                    </div>
+                                    </c:forEach>
                                 </div>
+
                                 <div class="row form-group">
                                     <div class="col-md-12">
                                         <div class="form-inline x-valid">

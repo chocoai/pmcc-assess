@@ -38,8 +38,8 @@
                                     <div class="col-md-2">
                                         <%@include file="/views/share/navigation/reportSetup.jsp" %>
                                     </div>
-                                    <div id="tree" class="col-md-3">
-
+                                    <div class="col-md-3">
+                                        <ul id="ztree" class="ztree"></ul>
                                     </div>
                                     <div class="col-md-7">
                                         <input type="hidden" id="tree_value" value="0">
@@ -278,7 +278,7 @@
 
 <script type="text/javascript">
     $(function () {
-        loadTree();
+        ztreeInit();
         loadTemplateTableList();
         FileUtils.uploadFiles({
             target: "uploadFile",
@@ -504,9 +504,52 @@
                 notifyWarning("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
             }
         });
+    };
+
+    var setting = {
+        data: {
+            key: {
+                name: "name"
+            },
+            simpleData: {
+                enable: true,
+                idKey: "id",
+                pIdKey: "pid",
+                rootPId: 0
+            }
+        },// 回调函数
+        callback: {
+            onClick: function (event, treeId, treeNode, clickFlag) {
+                cilckNode();
+            }
+        }
+    };
+
+    function cilckNode() {
+        var node = zTreeObj.getSelectedNodes()[0];
+        $("#tree_value").val(node.id);
+        loadTemplateTableList();
+
+    }
+
+
+    function ztreeInit() {
+        $.ajax({
+            url: '${pageContext.request.contextPath}/templateSet/queryCustomerTree',
+            data: {},
+            type: 'get',
+            dataType: "json",
+            success: function (result) {
+                zTreeObj = $.fn.zTree.init($("#ztree"), setting, result);
+                //展开第一级，选中根节点
+                var rootNode = zTreeObj.getNodes()[0];
+                zTreeObj.selectNode(rootNode);
+                zTreeObj.expandAll(true);
+                zTreeObj.setting.callback.onClick(null, zTreeObj.setting.treeId, rootNode);//调用事件
+            }
+        })
     }
 </script>
-
 
 
 

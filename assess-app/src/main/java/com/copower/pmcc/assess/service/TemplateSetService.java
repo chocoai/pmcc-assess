@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.service;
 
 import com.copower.pmcc.assess.dto.input.CrmTreeDto;
+import com.copower.pmcc.assess.dto.input.ZtreeDto;
 import com.copower.pmcc.crm.api.dto.CrmCustomerDto;
 import com.copower.pmcc.crm.api.provider.CrmRpcCustomerService;
 import com.copower.pmcc.erp.common.utils.LangUtils;
@@ -24,8 +25,7 @@ public class TemplateSetService {
     private CrmRpcCustomerService crmRpcCustomerService;
     @Autowired
     private PublicService publicService;
-
-    public CrmTreeDto getCrmTree() {
+ /*   public CrmTreeDto getCrmTree() {
         CrmCustomerDto crmCustomerDto = new CrmCustomerDto();
         crmCustomerDto.setCompanyId(publicService.getCurrentCompany().getCompanyId());
         List<CrmCustomerDto> customerList = crmRpcCustomerService.getCustomerList(crmCustomerDto);
@@ -58,7 +58,53 @@ public class TemplateSetService {
         crmTreeDto.setNodes(crmTreeDtos);
         return crmTreeDto;
 
-    }
+    };*/
+
+    public List<ZtreeDto> getCrmTree() {
+        CrmCustomerDto crmCustomerDto = new CrmCustomerDto();
+        crmCustomerDto.setCompanyId(publicService.getCurrentCompany().getCompanyId());
+        List<CrmCustomerDto> customerList = crmRpcCustomerService.getCustomerList(crmCustomerDto);
+
+        List<ZtreeDto> treeDtos = new ArrayList<>();
+
+        ZtreeDto dto = new ZtreeDto();
+        dto.setId(0);
+        dto.setName("公司模板");
+        dto.setPid(-1);
+        treeDtos.add(dto);
+
+        List<CrmCustomerDto> filter = LangUtils.filter(customerList, o -> o.getPid() == 0);//取第一级客户信息
+        for (CrmCustomerDto item : filter) {
+            ZtreeDto ztreeDto = new ZtreeDto();
+            ztreeDto.setId(item.getId());
+            ztreeDto.setName(item.getName());
+            ztreeDto.setPid(-1);
+            treeDtos.add(ztreeDto);
+            List<CrmTreeDto> crmTreeChildeDto = getCrmTreeChildeDto(item.getId(), customerList);
+
+            if(CollectionUtils.isNotEmpty(crmTreeChildeDto)){
+                for (CrmTreeDto item2: crmTreeChildeDto) {
+                    ZtreeDto ztreeDto2 = new ZtreeDto();
+                    ztreeDto2.setId(item2.getId());
+                    ztreeDto2.setPid(item2.getpId());
+                    ztreeDto2.setName(item2.getText());
+                    treeDtos.add(ztreeDto2);
+                }
+            }
+
+        }
+
+
+        ZtreeDto ztreeDtoParent = new ZtreeDto();
+        ztreeDtoParent.setId(-1);
+        ztreeDtoParent.setName("客户模板");
+        ztreeDtoParent.setPid(0);
+        treeDtos.add(ztreeDtoParent);
+
+
+        return treeDtos;
+
+    };
 
     private List<CrmTreeDto> getCrmTreeChildeDto(Integer pid, List<CrmCustomerDto> crmCustomerDtos) {
         List<CrmTreeDto> crmTreeDtos = new ArrayList<>();
