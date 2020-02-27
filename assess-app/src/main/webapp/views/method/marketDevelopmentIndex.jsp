@@ -18,17 +18,17 @@
                     <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                         <div class="form-inline x-valid">
                             <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
-                                经营方式
+                                经营方式 <span class="symbol required"></span>
                             </label>
                             <div class="col-xs-6  col-sm-6  col-md-6  col-lg-6" id="developmentCheckboxTool">
                                 <div class="form-check">
                                     <label class="form-check-label">
-                                        <input class="form-check-input" type="checkbox" name="developmentLand"
+                                        <input class="form-check-input" type="radio"
                                                id="developmentLand" name="type" value="1">
                                         <span class="form-check-sign">土地</span>
                                     </label>
                                     <label class="form-check-label">
-                                        <input class="form-check-input" type="checkbox" name="developmentEngineering"
+                                        <input class="form-check-input" type="radio"
                                                id="developmentEngineering" name="type" value="2">
                                         <span class="form-check-sign">在建工程</span>
                                     </label>
@@ -36,7 +36,7 @@
                             </div>
                             <div class="col-xs-5  col-sm-5  col-md-5  col-lg-5">
                                 <small>
-                                    <button class="btn btn-xs btn-primary" data-toggle="modal"
+                                    <button class="btn btn-xs btn-primary" data-toggle="modal" type="button"
                                             href="#boxSchemeInfoModel"
                                             onclick="developmentCommon.loadSchemeInfoTableList({projectId:'${projectPlanDetails.projectId}',methodDataId:'${mdDevelopment.id}',methodType:'${methodTypeObj.id}'},'landEngineering.selectFun');">
                                         引用
@@ -220,6 +220,8 @@
                     </div>
                 </div>
 
+
+
                 <div class="row form-group">
                     <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                         <div class="form-inline x-valid">
@@ -267,6 +269,26 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="row form-group">
+                    <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                        <div class="form-inline x-valid">
+                            <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                                <div id="toolbarMdDevelopmentInfrastructureChildrenTable" style="display: none">
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-primary btn-sm" onclick="landEngineering.deleteMdDevelopmentInfrastructureChildrenTable('#landMdDevelopmentInfrastructureChildrenTable')">删除</button>
+                                        <button type="button" class="btn btn-primary btn-sm" onclick="landEngineering.editMdDevelopmentInfrastructureChildrenTable('#landMdDevelopmentInfrastructureChildrenTable','#basicMdDevelopmentInfrastructureChildrenModalTool',true)">编辑</button>
+                                        <button type="button" class="btn btn-primary btn-sm" onclick="landEngineering.editMdDevelopmentInfrastructureChildrenTable('#landMdDevelopmentInfrastructureChildrenTable','#basicMdDevelopmentInfrastructureChildrenModalTool',false)">添加</button>
+                                    </div>
+                                </div>
+                                <table class="table table-bordered" id="landMdDevelopmentInfrastructureChildrenTable">
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="row form-group">
                     <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                         <div class="form-inline x-valid">
@@ -813,96 +835,102 @@
 <%@include file="/views/project/tool/rewardRate.jsp" %>
 <%@include file="/views/method/module/economicIndicators.jsp" %>
 
-<!-- 建筑安装工程费 -->
 <div id="boxLandEngineering" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">建筑安装工程费</h3>
+                <h4 class="modal-title">建筑安装工程费</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
             </div>
-            <input type="hidden" name="id">
-            <input type="hidden" name="masterId">
             <div class="modal-body">
-                <div class="row">
-                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                        <div class="panel-body">
+                <form class="form-horizontal">
+                    <input type="hidden" name="id">
+                    <input type="hidden" name="masterId">
+                    <div class="row">
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                            <div class="card-body">
+                                <div class="row form-group">
+                                    <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                                        <div class="form-inline x-valid">
+                                            <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12 "
+                                                 data-title="boxLandEngineering">
 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </form>
             </div>
-            <form>
-                <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-default">
-                        取消
-                    </button>
-                    <button type="button" class="btn btn-primary"
-                            onclick="landEngineering.constructionInstallationEngineeringFeeEvent.save()">
-                        保存
-                    </button>
-                </div>
-            </form>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-success btn-sm"
+                        onclick="landEngineering.constructionInstallationEngineeringFeeEvent.save()">
+                    保存
+                </button>
+            </div>
         </div>
     </div>
 </div>
 
 
-<div id="boxMdCalculatingMethodEngineeringCost" class="modal fade bs-example-modal-lg" data-backdrop="static"
-     tabindex="-1"
+
+
+<div id="boxMdCalculatingMethodEngineeringCost" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">建筑安装工程费</h3>
+                <h4 class="modal-title">建筑安装工程费</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
             </div>
-            <input type="hidden" name="id">
-            <input type="hidden" name="masterId">
             <div class="modal-body">
-                <div class="row">
-                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                        <div class="panel-body">
-                            <form class="form-horizontal">
-                                <input type="hidden" name="id">
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-xs-2  col-sm-2  col-md-2  col-lg-2 control-label">
-                                            名称<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-xs-10  col-sm-10  col-md-10  col-lg-10">
-                                            <input type="text" class="form-control" name="name"
-                                                   placeholder="名称" required="required">
+                <input type="hidden" name="id">
+                <input type="hidden" name="masterId">
+                <form class="form-horizontal">
+                    <input type="hidden" name="id">
+                    <div class="row">
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                            <div class="card-body">
+                                <div class="row form-group">
+                                    <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                                                名称<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
+                                                <input type="text" class="form-control input-full" name="name"
+                                                       placeholder="名称" required="required">
+                                            </div>
+                                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                                                建筑面积
+                                            </label>
+                                            <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
+                                                <input type="text" class="form-control input-full" name="area"
+                                                       placeholder="面积" required="required">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-xs-2  col-sm-2  col-md-2  col-lg-2 control-label">
-                                            建筑面积<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-xs-10  col-sm-10  col-md-10  col-lg-10">
-                                            <input type="text" class="form-control" name="area"
-                                                   placeholder="面积" required="required">
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </form>
             </div>
             <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">
-                    取消
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
                 </button>
-                <button type="button" class="btn btn-primary"
+                <button type="button" class="btn btn-success btn-sm"
                         onclick="landEngineering.saveMdCalculatingMethodEngineeringCost();">
                     保存
                 </button>
@@ -914,17 +942,17 @@
 <div id="toolbarMdCalculatingMethodEngineeringCostLand" style="display: none">
     <div class="input-group">
                                 <span class="input-group-btn">
-                                    <button type="button" class="btn btn-primary"
+                                    <button type="button" class="btn btn-primary btn-sm"
                                             onclick="landEngineering.delMdCalculatingMethodEngineeringCost()">删除</button>
-                                    <button type="button" class="btn btn-primary"
+                                    <button type="button" class="btn btn-primary btn-sm"
                                             onclick="landEngineering.showMdCalculatingMethodEngineeringCost();">添加</button>
                                 </span>
         <span class="input-group-btn">
-                                    <button type="button" class="btn btn-primary"
+                                    <button type="button" class="btn btn-primary btn-sm"
                                             onclick="landEngineering.setMdCalculatingMethodEngineeringCost(false)">同步成本法建筑安装工程费</button>
                                 </span>
         <span class="input-group-btn">
-                                    <button type="button" class="btn btn-primary"
+                                    <button type="button" class="btn btn-primary btn-sm"
                                             onclick="landEngineering.setMdCalculatingMethodEngineeringCost(true)">同步查勘建筑安装工程费</button>
                                 </span>
     </div>
@@ -1036,7 +1064,7 @@
                         callback(result.data);
                     }
                 } else {
-//                    Alert("失败:" + result.errmsg);
+//                   AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (e) {
@@ -1110,11 +1138,12 @@
                             });
                         }
                     } else {
-                        Alert("保存失败:" + result.errmsg);
+                        AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
+
                     }
                 },
                 error: function (e) {
-                    Alert("调用服务端方法失败，失败原因:" + e);
+                    AlertError("错误", "调用服务端方法失败，失败原因:" + e);
                 }
             });
         }

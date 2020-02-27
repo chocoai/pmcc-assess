@@ -28,11 +28,11 @@
                     window.location.reload(true); //强制从服务器重新加载当前页面
                     target.modal("hide");
                 } else {
-                    Alert("失败，失败原因:" + result.errmsg);
+                    AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
+                AlertError("错误", "调用服务端方法失败，失败原因:" + result);
             }
         });
     };
@@ -62,17 +62,17 @@
                             arr.push(obj);
                         });
                         developmentCommon.infrastructureChildren.saveArray(arr, function () {
-                            toastr.success('添加成功!');
+                            notifySuccess("成功", "引用成功!");
                             landEngineering.infrastructureChildrenTable.bootstrapTable('refresh');
                             landEngineering.writeMdDevelopmentInfrastructureChildrenTable();
                         });
                     }
                     else {
-                        Alert("失败，失败原因:" + result.errmsg);
+                        AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("错误", "调用服务端方法失败，失败原因:" + result);
                 }
             })
         } else {
@@ -126,7 +126,7 @@
         },
         appendHTML: function (data, price) {
             var target = $("#boxLandEngineering");
-            target.find(".panel-body").empty();
+            target.find(".card-body").empty();
             if (data == undefined) {
                 data = [];
             }
@@ -141,7 +141,7 @@
                 reckon = "a";
             }
             var options = {
-                target: target.find(".panel-body"),
+                target: target.find(".card-body"),
                 obj: data,
                 attribute: null,
                 price: price,
@@ -166,10 +166,10 @@
         };
         var cols = [];
         cols.push({
-            field: 'id', title: '建筑安装工程费明细', formatter: function (value, row, index) {
-                var str = '<div class="btn-margin">';
-                str += "<a class='btn btn-xs btn-success tooltips' data-placement='top' data-original-title='建筑安装工程费明细' onclick='landEngineering.constructionInstallationEngineeringFeeEvent.detailsConstructionInstallation(" + row.id + ")'" + ">" + "<i class='fa fa-pencil-square-o'>" + "建筑安装工程费明细" + "</a>";
-                str += '</div>';
+            field: 'id', title: '建筑安装工程费明细', width: "20%", formatter: function (value, row, index) {
+                var str = '<button type="button" onclick="landEngineering.constructionInstallationEngineeringFeeEvent.detailsConstructionInstallation(' + row.id + ')" style="margin-left: 5px;" class="btn  btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="建筑安装工程费明细">';
+                str += '<i class="fa fa-pen"></i>';
+                str += '</button>';
                 return str;
             }
         });
@@ -220,7 +220,7 @@
         $.ajax({
             type: "post",
             url: getContextPath() + "/mdDevelopment/setMdCalculatingMethodEngineeringCost",
-            data: {planDetailsId: planDetailsId, type: landEngineering.typeData(),flag:flag},
+            data: {planDetailsId: planDetailsId, type: landEngineering.typeData(), flag: flag},
             success: function (result) {
                 if (result.ret) {
                     toastr.success('成功');
@@ -228,7 +228,7 @@
                 }
             },
             error: function (e) {
-                Alert("调用服务端方法失败，失败原因:" + e);
+                AlertError("错误", "调用服务端方法失败，失败原因:" + e);
             }
         });
     };
@@ -273,13 +273,14 @@
         if (!rows || rows.length <= 0) {
             toastr.info("请选择要删除的数据");
         } else {
-            Alert("确认要删除么？", 2, null, function () {
+            AlertConfirm("是否确认删除", "删除相应的数据后将不可恢复", function () {
                 developmentCommon.deleteMdCalculatingMethodEngineeringCostHandle(rows, function () {
                     toastr.success('删除成功');
                     landEngineering.engineeringFeeInfoTarget.bootstrapTable('refresh');
                     landEngineering.writeMdCalculatingMethodEngineeringCost();
                 });
-            })
+            });
+
         }
     };
 
@@ -313,7 +314,7 @@
                 data.push(item.id);
             });
             developmentCommon.infrastructureChildren.delete(data, function () {
-                toastr.success('删除成功!');
+                notifySuccess("成功", "删除成功!");
                 landEngineering.infrastructureChildrenTable.bootstrapTable('refresh');
                 landEngineering.writeMdDevelopmentInfrastructureChildrenTable();
             });
@@ -354,7 +355,7 @@
         data.planDetailsId = '${projectPlanDetails.id}';
         data.pid = landEngineering.masterId;
         developmentCommon.infrastructureChildren.save(data, function () {
-            toastr.success('添加成功!');
+            notifySuccess("成功", "添加成功!");
             target.modal('hide');
             landEngineering.infrastructureChildrenTable.bootstrapTable('refresh');
             landEngineering.writeMdDevelopmentInfrastructureChildrenTable();
@@ -421,33 +422,4 @@
         });
     };
 
-
-    /*编辑表格**/
-    landEngineering.unsaleableBuildingAreaFunHandle = function () {
-        var arrKeys = ['unsaleableBuildingArea', 'saleableArea', 'totalSaleableAreaPrice', 'plannedBuildingArea'];
-        this.target.find("a").each(function (i, item) {
-            var target = $(item);
-            var dataKey = target.attr("data-key");
-            $.each(arrKeys, function (i, key) {
-                if (dataKey == key) {
-                    target.editable({
-                        type: "text",                //编辑框的类型。支持text|textarea|select|date|checklist等
-                        disabled: false,             //是否禁用编辑 ,默认 false
-                        emptytext: "0",          //空值的默认文本
-                        mode: "popup",              //编辑框的模式：支持popup和inline两种模式，默认是popup
-                        validate: function (value) { //字段验证
-                            if ($.isNumeric(value)) {
-                                landEngineering.target.find("input[name='" + key + "']").val(value).trigger('blur');
-                            } else {
-                                return '必须是数字';
-                            }
-                        },
-                        display: function (value) {
-                            $(this).text(value);
-                        }
-                    });
-                }
-            });
-        });
-    };
 </script>
