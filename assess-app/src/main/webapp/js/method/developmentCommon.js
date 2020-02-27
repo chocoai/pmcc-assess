@@ -24,6 +24,34 @@ developmentCommon.isNotBlankObject = function (obj) {
     return false
 };
 
+developmentCommon.ajaxServerMethod = function (data, url, type, callback) {
+    $.ajax({
+        type: type,
+        url: getContextPath() + url,
+        data: data,
+        success: function (result) {
+            if (result.ret) {
+                if (callback) {
+                    callback(result.data);
+                }
+            } else {
+                if (result.errmsg) {
+                    AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
+                }else {
+                    AlertError("错误", "调用服务端方法失败，失败原因:" + result);
+                }
+            }
+        },
+        error: function (result) {
+            if (result.errmsg) {
+                AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
+            }else {
+                AlertError("错误", "调用服务端方法失败，失败原因:" + result);
+            }
+        }
+    });
+};
+
 developmentCommon.config = {
     architecturalB: {id: "architecturalB"}
 };
@@ -294,83 +322,19 @@ developmentCommon.saveMdArchitecturalObj = function (data, type, databaseName, p
 };
 
 developmentCommon.saveMdArchitecturalObj2 = function (data, obj, callback) {
-    $.ajax({
-        type: "post",
-        url: getContextPath() + "/mdArchitecturalObj/saveMdArchitecturalObj",
-        data: {jsonString: JSON.stringify(data), forData: JSON.stringify(obj)},
-        success: function (result) {
-            if (result.ret) {
-                if (callback) {
-                    callback(result.data);
-                }
-            } else {
-                AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
-            }
-        },
-        error: function (e) {
-            AlertError("错误", "调用服务端方法失败，失败原因:" +e);
-        }
-    });
+    developmentCommon.ajaxServerMethod({jsonString: JSON.stringify(data), forData: JSON.stringify(obj)},"/mdArchitecturalObj/saveMdArchitecturalObj","post",callback) ;
 };
 
 developmentCommon.getMdArchitecturalObjById = function (id, callback) {
-    $.ajax({
-        type: "get",
-        url: getContextPath() + "/mdArchitecturalObj/getMdArchitecturalObjById",
-        data: {id: id},
-        success: function (result) {
-            if (result.ret) {
-                if (callback) {
-                    callback(result.data);
-                }
-            } else {
-                AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
-            }
-        },
-        error: function (e) {
-            AlertError("错误", "调用服务端方法失败，失败原因:" + e);
-        }
-    });
+    developmentCommon.ajaxServerMethod({id: id},"/mdArchitecturalObj/getMdArchitecturalObjById","get",callback) ;
 };
 
 developmentCommon.deleteMdArchitecturalObjById = function (id, callback) {
-    $.ajax({
-        type: "post",
-        url: getContextPath() + "/mdArchitecturalObj/deleteMdArchitecturalObjById",
-        data: {id: id},
-        success: function (result) {
-            if (result.ret) {
-                if (callback) {
-                    callback(result.data);
-                }
-            } else {
-                AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
-            }
-        },
-        error: function (e) {
-            AlertError("错误", "调用服务端方法失败，失败原因:" + e);
-        }
-    });
+    developmentCommon.ajaxServerMethod({id: id},"/mdArchitecturalObj/deleteMdArchitecturalObjById","post",callback) ;
 };
 
 developmentCommon.removeMdArchitecturalObj = function (type, databaseName, pid, planDetailsId, callback) {
-    $.ajax({
-        type: "post",
-        url: getContextPath() + "/mdArchitecturalObj/removeMdArchitecturalObj",
-        data: {type: type, databaseName: databaseName, pid: pid, planDetailsId: planDetailsId},
-        success: function (result) {
-            if (result.ret) {
-                if (callback) {
-                    callback(result.data);
-                }
-            } else {
-                AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
-            }
-        },
-        error: function (e) {
-            AlertError("错误", "调用服务端方法失败，失败原因:" + e);
-        }
-    });
+    developmentCommon.ajaxServerMethod({type: type, databaseName: databaseName, pid: pid, planDetailsId: planDetailsId},"/mdArchitecturalObj/getMdArchitecturalObjList","post",callback) ;
 };
 
 developmentCommon.getMdArchitecturalObjList = function (type, databaseName, pid, planDetailsId, callback) {
@@ -383,43 +347,11 @@ developmentCommon.getMdArchitecturalObjList = function (type, databaseName, pid,
 };
 
 developmentCommon.getMdArchitecturalObjList2 = function (data, callback) {
-    $.ajax({
-        type: "get",
-        url: getContextPath() + "/mdArchitecturalObj/getMdArchitecturalObjList",
-        data: data,
-        success: function (result) {
-            if (result.ret) {
-                if (callback) {
-                    callback(result.data);
-                }
-            } else {
-                AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
-            }
-        },
-        error: function (e) {
-            AlertError("错误", "调用服务端方法失败，失败原因:" + e);
-        }
-    });
+    developmentCommon.ajaxServerMethod(data,"/mdArchitecturalObj/getMdArchitecturalObjList","get",callback) ;
 };
 
 developmentCommon.saveMdCalculatingMethodEngineeringCost = function (data, callback) {
-    $.ajax({
-        type: "post",
-        url: getContextPath() + "/mdCalculatingMethodEngineeringCost/saveMdCalculatingMethodEngineeringCost",
-        data: {formData: JSON.stringify(data)},
-        success: function (result) {
-            if (result.ret) {
-                if (callback) {
-                    callback(result.data);
-                }
-            } else {
-                AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
-            }
-        },
-        error: function (e) {
-            AlertError("错误", "调用服务端方法失败，失败原因:" + e);
-        }
-    });
+    developmentCommon.ajaxServerMethod({formData: JSON.stringify(data)},"/mdCalculatingMethodEngineeringCost/saveMdCalculatingMethodEngineeringCost","post",callback) ;
 };
 
 developmentCommon.deleteMdCalculatingMethodEngineeringCostHandle = function (rows, callback) {
@@ -440,43 +372,11 @@ developmentCommon.deleteMdCalculatingMethodEngineeringCostHandle = function (row
 };
 
 developmentCommon.deleteMdCalculatingMethodEngineeringCostById = function (id, callback) {
-    $.ajax({
-        type: "post",
-        url: getContextPath() + "/mdCalculatingMethodEngineeringCost/deleteMdCalculatingMethodEngineeringCostById",
-        data: {id: id},
-        success: function (result) {
-            if (result.ret) {
-                if (callback) {
-                    callback(result.data);
-                }
-            } else {
-                AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
-            }
-        },
-        error: function (e) {
-            AlertError("错误", "调用服务端方法失败，失败原因:" + e);
-        }
-    });
+    developmentCommon.ajaxServerMethod({id: id},"/mdCalculatingMethodEngineeringCost/deleteMdCalculatingMethodEngineeringCostById","post",callback) ;
 };
 
 developmentCommon.getMdCalculatingMethodEngineeringCostList = function (data, callback) {
-    $.ajax({
-        type: "get",
-        url: getContextPath() + "/mdCalculatingMethodEngineeringCost/getMdCalculatingMethodEngineeringCostList",
-        data: data,
-        success: function (result) {
-            if (result.ret) {
-                if (callback) {
-                    callback(result.data);
-                }
-            } else {
-                AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
-            }
-        },
-        error: function (e) {
-            AlertError("错误", "调用服务端方法失败，失败原因:" + e);
-        }
-    });
+    developmentCommon.ajaxServerMethod(data,"/mdCalculatingMethodEngineeringCost/getMdCalculatingMethodEngineeringCostList","get",callback) ;
 };
 
 developmentCommon.loadMdCalculatingMethodEngineeringCostTable = function (table, quarm, toolbar, callback, array) {
@@ -559,20 +459,20 @@ developmentCommon.loadSchemeInfoTableList = function (quarm, callbackName) {
         }
     });
     cols.push({
-        field: 'gmtModified', title: '最后修改日期',width: "20%", formatter: function (value, row, index) {
+        field: 'gmtModified', title: '最后修改日期', width: "20%", formatter: function (value, row, index) {
             return formatDate(value);
         }
     });
 
     cols.push({
-        field: 'gmtCreated', title: '测算方法创建日期',width: "20%", formatter: function (value, row, index) {
+        field: 'gmtCreated', title: '测算方法创建日期', width: "20%", formatter: function (value, row, index) {
             return formatDate(value);
         }
     });
     cols.push({
         field: 'id', title: '引用', width: "20%", formatter: function (value, row, index) {
             var str = '';
-            str += '<button type="button" class="btn btn-xs btn-success" onclick="{method}(' + row.methodDataId +","+"'boxSchemeInfoModel'"+  ');" >引用 <i class="fa fa-check-circle"></i></button>';
+            str += '<button type="button" class="btn btn-xs btn-success" onclick="{method}(' + row.methodDataId + "," + "'boxSchemeInfoModel'" + ');" >引用 <i class="fa fa-check-circle"></i></button>';
             str += '';
             str = str.replace(/{method}/g, callbackName);
             return str;
@@ -597,23 +497,7 @@ developmentCommon.loadSchemeInfoTableList = function (quarm, callbackName) {
 
 developmentCommon.infrastructureChildren = {
     getDataList: function (data, callback) {
-        $.ajax({
-            type: "get",
-            url: getContextPath() + "/mdDevelopmentInfrastructureChildren/getMdDevelopmentInfrastructureChildrenList",
-            data: data,
-            success: function (result) {
-                if (result.ret) {
-                    if (callback) {
-                        callback(result.data);
-                    }
-                } else {
-                    AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
-                }
-            },
-            error: function (e) {
-                AlertError("错误", "调用服务端方法失败，失败原因:" + e);
-            }
-        });
+        developmentCommon.ajaxServerMethod(data,"/mdDevelopmentInfrastructureChildren/getMdDevelopmentInfrastructureChildrenList","get",callback) ;
     },
     save: function (data, callback) {
         var item = [];
@@ -621,42 +505,10 @@ developmentCommon.infrastructureChildren = {
         developmentCommon.infrastructureChildren.saveArray(item, callback);
     },
     saveArray: function (data, callback) {
-        $.ajax({
-            type: "post",
-            url: getContextPath() + "/mdDevelopmentInfrastructureChildren/save",
-            data: {forData: JSON.stringify(data)},
-            success: function (result) {
-                if (result.ret) {
-                    if (callback) {
-                        callback(result.data);
-                    }
-                } else {
-                    AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
-                }
-            },
-            error: function (e) {
-                AlertError("错误", "调用服务端方法失败，失败原因:" + e);
-            }
-        });
+        developmentCommon.ajaxServerMethod({forData: JSON.stringify(data)},"/mdDevelopmentInfrastructureChildren/save","post",callback) ;
     },
     delete: function (data, callback) {
-        $.ajax({
-            type: "post",
-            url: getContextPath() + "/mdDevelopmentInfrastructureChildren/delete",
-            data: {id: data.join(",")},
-            success: function (result) {
-                if (result.ret) {
-                    if (callback) {
-                        callback(result.data);
-                    }
-                } else {
-                    AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
-                }
-            },
-            error: function (e) {
-                AlertError("错误", "调用服务端方法失败，失败原因:" + e);
-            }
-        });
+        developmentCommon.ajaxServerMethod({id: data.join(",")},"/mdDevelopmentInfrastructureChildren/delete","post",callback) ;
     },
     loadTable: function (pid, planDetailsId, type, selectId, toolbar) {
         var data = {pid: pid, planDetailsId: planDetailsId, type: type};

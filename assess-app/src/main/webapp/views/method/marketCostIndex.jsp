@@ -15,7 +15,9 @@
 
                 <input type="hidden" name="id" value="${mdCostVo.mdCostConstruction.id}">
                 <input type="hidden" name="pid" value="${mdCostVo.mdCostConstruction.pid}">
-                <input type="hidden" name="type" value="${mdCostVo.type}">
+
+                <input type="hidden" name="type" value="${mdCostVo.type==null?1:mdCostVo.type}">
+
                 <input type="hidden" name="mcId" value="${mdCostVo.mdCostConstruction.mcId}">
                 <input type="hidden" name="planDetailsId" value="${projectPlanDetails.id}">
                 <input type="hidden" name="economicId" value="${mdCostVo.mdCostConstruction.economicId}"
@@ -31,12 +33,20 @@
                             <div class="col-xs-6  col-sm-6  col-md-6  col-lg-6">
                                 <div class="form-check" id="costCheckboxTool">
                                     <label class="form-check-label">
-                                        <input class="form-check-input" type="radio" name="type" value="1"
-                                               data-value="1">
+                                        <c:choose>
+                                            <c:when test="${empty mdCostVo.type}">
+                                                <input class="form-check-input" type="radio" name="typeShow" value="1" checked="checked"
+                                                       data-value="1">
+                                            </c:when>
+                                            <c:otherwise>
+                                                <input class="form-check-input" type="radio" name="typeShow" value="1"
+                                                       data-value="1">
+                                            </c:otherwise>
+                                        </c:choose>
                                         <span class="form-check-sign">建筑物</span>
                                     </label>
                                     <label class="form-check-label">
-                                        <input class="form-check-input" type="radio" name="type" value="2"
+                                        <input class="form-check-input" type="radio" name="typeShow" value="2"
                                                data-value="2">
                                         <span class="form-check-sign">在建工程</span>
                                     </label>
@@ -303,33 +313,36 @@
                                 基础设施配套费(元/㎡)<span class="symbol required"></span>
                             </label>
                             <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                                <div class="input-group">
-                                    <input type="text" placeholder="基础设施配套费" class="form-control" required="required"
-                                           name="infrastructureCost" onblur="cost.checkParams(this);"
-                                           value="${mdCostVo.mdCostConstruction.infrastructureCost}">
-                                    <div class="input-group-append">
-                                        <select name="infrastructureCostValue"
-                                                class="form-control input-full"
-                                                onchange="construction.calculationE13Select(this)">
-                                            <option value="0">请选择</option>
-                                            <c:forEach items="${dataInfrastructureList}" var="item">
-                                                <c:if test="${item.infrastructureSupportingFacilities != 0}">
-                                                    <c:if test="${mdCostVo.mdCostConstruction.infrastructureCost != item.infrastructureSupportingFacilities}">
-                                                        <option value="${item.infrastructureSupportingFacilities}"
-                                                                data-key="${item.id}"
-                                                                data-type="${item.type}">${item.timeSlot}
-                                                            金额:${item.infrastructureSupportingFacilities}</option>
-                                                    </c:if>
-                                                    <c:if test="${mdCostVo.mdCostConstruction.infrastructureCost == item.infrastructureSupportingFacilities}">
-                                                        <option value="${item.infrastructureSupportingFacilities}"
-                                                                selected="selected" data-key="${item.id}"
-                                                                data-type="${item.type}">${item.timeSlot}
-                                                            金额:${item.infrastructureSupportingFacilities}</option>
-                                                    </c:if>
-                                                </c:if>
-                                            </c:forEach>
-                                        </select>
+                                <div class="input-group ">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-addon">
+                                            <input type="text" placeholder="基础设施配套费" class="form-control"
+                                                   required="required"
+                                                   name="infrastructureCost" onblur="cost.checkParams(this);"
+                                                   value="${mdCostVo.mdCostConstruction.infrastructureCost}">
+                                        </span>
                                     </div>
+                                    <select name="infrastructureCostValue"
+                                            class="form-control"
+                                            onchange="construction.calculationE13Select(this)">
+                                        <option value="0">请选择</option>
+                                        <c:forEach items="${dataInfrastructureList}" var="item">
+                                            <c:if test="${item.infrastructureSupportingFacilities != 0}">
+                                                <c:if test="${mdCostVo.mdCostConstruction.infrastructureCost != item.infrastructureSupportingFacilities}">
+                                                    <option value="${item.infrastructureSupportingFacilities}"
+                                                            data-key="${item.id}"
+                                                            data-type="${item.type}">${item.timeSlot}
+                                                        金额:${item.infrastructureSupportingFacilities}</option>
+                                                </c:if>
+                                                <c:if test="${mdCostVo.mdCostConstruction.infrastructureCost == item.infrastructureSupportingFacilities}">
+                                                    <option value="${item.infrastructureSupportingFacilities}"
+                                                            selected="selected" data-key="${item.id}"
+                                                            data-type="${item.type}">${item.timeSlot}
+                                                        金额:${item.infrastructureSupportingFacilities}</option>
+                                                </c:if>
+                                            </c:if>
+                                        </c:forEach>
+                                    </select>
                                 </div>
                             </div>
                             <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
