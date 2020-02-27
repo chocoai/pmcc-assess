@@ -21,110 +21,109 @@
                 <input type="hidden" name="name" value="${judgeObject.name}">
                 <div class="row form-group">
                     <div class="col-md-12">
-                    <div class="form-inline x-valid">
-                        <label class="col-sm-1 control-label">
-                            房产剩余使用年限
-                        </label>
-                        <div class="col-sm-3">
-                            <input type="text" class="form-control input-full" name="houseRemainingYear" readonly="readonly" value="${houseSurplusYear}">
+                        <div class="form-inline x-valid">
+                            <label class="col-sm-1 control-label">
+                                房产剩余使用年限
+                            </label>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control input-full" name="houseRemainingYear"
+                                       readonly="readonly" value="${houseSurplusYear}">
+                            </div>
+                            <label class="col-sm-1 control-label">
+                                土地剩余使用年限
+                            </label>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control input-full" name="landRemainingYear"
+                                       readonly="readonly" value="${landSurplusYear}">
+                            </div>
                         </div>
-                        <label class="col-sm-1 control-label">
-                            土地剩余使用年限
-                        </label>
-                        <div class="col-sm-3">
-                            <input type="text" class="form-control input-full" name="landRemainingYear" readonly="readonly" value="${landSurplusYear}">
-                        </div>
-                    </div>
                     </div>
                 </div>
                 <div class="row form-group">
                     <div class="col-md-12">
                         <div class="form-inline x-valid">
-                    <label class="col-sm-1 control-label">
-                        经营方式<span class="symbol required"></span>
-                    </label>
-                    <div class="col-sm-2 col-sm-offset-1">
-                        <span class="radio-inline"><input type="radio" name="operationMode" id="operationMode1"
-                                                          onclick="incomeIndex.operationModeChange(this);"
-                                                          value="1"><label
-                                for="operationMode1">租赁</label></span>
-                    </div>
-                    <div class="col-sm-2">
-
-                         <span class="radio-inline"><input type="radio" required name="operationMode"
-                                                           id="operationMode0"
-                                                           onclick="incomeIndex.operationModeChange(this);"
-                                                           value="0">
-                        <label for="operationMode0">自营</label></span>
-
-                    </div>
+                            <label class="col-sm-1 control-label">
+                                经营方式<span class="symbol required"></span>
+                            </label>
+                            <label class="form-radio-label col-sm-1">
+                                <input type="radio" name="operationMode" id="operationMode1" class="form-radio-input"
+                                       onclick="incomeIndex.operationModeChange(this);"
+                                       value="1"><label class="form-radio-sign" for="operationMode1">租赁</label>
+                            </label>
+                            <label class="form-radio-label col-sm-1">
+                                <input type="radio" required name="operationMode" class="form-radio-input"
+                                       id="operationMode0"
+                                       onclick="incomeIndex.operationModeChange(this);"
+                                       value="0">
+                                <label class="form-radio-sign" for="operationMode0">自营</label>
+                            </label>
                         </div>
                     </div>
-
                 </div>
                 <div class="row form-group" id="group_FormType" style="display: none;">
                     <div class="col-md-12">
-                    <div class="form-inline x-valid">
-                        <label class="col-sm-1 control-label">
-                            表单类型<span class="symbol required"></span>
-                        </label>
-                        <div class="col-sm-2 col-sm-offset-1">
-                    <span class="radio-inline">
-                        <input type="radio" checked="checked" name="formType" id="formType0"
-                               onchange="incomeIndex.formTypeChange(this);" value="0">
-                        <label for="formType0">默认</label></span>
+                        <div class="form-inline x-valid">
+                            <label class="col-sm-1 control-label">
+                                表单类型<span class="symbol required"></span>
+                            </label>
+                            <label class="form-radio-label col-sm-1">
+                                <input type="radio" checked="checked" name="formType" id="formType0"
+                                       class="form-radio-input"
+                                       onchange="incomeIndex.formTypeChange(this);" value="0">
+                                <label class="form-radio-sign" for="formType0">默认</label>
+                            </label>
+                            <label class="form-radio-label col-sm-1">
+                                <input type="radio" name="formType" id="formType1" value="1" class="form-radio-input"
+                                       onchange="incomeIndex.formTypeChange(this);">
+                                <label class="form-radio-sign" for="formType1">餐饮、酒店、宾馆</label>
+                            </label>
                         </div>
-                        <div class="col-sm-2">
-                        <span class="radio-inline">
-                            <input type="radio" name="formType" id="formType1" value="1"
-                                   onchange="incomeIndex.formTypeChange(this);">
-                            <label for="formType1">餐饮、酒店、宾馆</label></span>
-                        </div>
-                    </div>
                     </div>
                 </div>
                 <div class="row form-group" id="group_leaseMode" style="display: none;">
                     <div class="col-md-12">
-                    <div class="form-inline x-valid">
-                        <label class="col-sm-1 control-label">
-                            租赁限制<span class="symbol required"></span>
-                        </label>
-                        <div class="col-sm-2 col-sm-offset-1">
-                    <span class="radio-inline"><input type="radio" required name="leaseMode" id="leaseMode0" value="0"><label
-                            for="leaseMode0">限制</label></span>
+                        <div class="form-inline x-valid">
+                            <label class="col-sm-1 control-label">
+                                租赁限制<span class="symbol required"></span>
+                            </label>
+                            <label class="form-radio-label col-sm-1">
+                                <input type="radio" required name="leaseMode" class="form-radio-input"
+                                       id="leaseMode0"
+                                       value="0"><label class="form-radio-sign" for="leaseMode0">限制</label>
+                            </label>
+                            <label class="form-radio-label col-sm-1">
+                                <input type="radio" checked="checked" name="leaseMode" class="form-radio-input"
+                                       id="leaseMode1" value="1"><label class="form-radio-sign"
+                                                                        for="leaseMode1">无限制</label>
+                            </label>
                         </div>
-                        <div class="col-sm-2">
-                        <span class="radio-inline"><input type="radio" checked="checked" name="leaseMode" id="leaseMode1" value="1"><label
-                                for="leaseMode1">无限制</label></span>
-                        </div>
-                    </div>
                     </div>
                 </div>
                 <div class="row form-group">
                     <div class="col-md-12">
-                    <div class="form-inline x-valid">
-                        <label class="col-sm-1 control-label">
-                            租约限制说明<span class="symbol required"></span>
-                        </label>
-                        <div class="col-sm-8">
-                            <textarea name="restrictionExplain" class="form-control input-full"  required>${empty mdIncome?'': mdIncome.restrictionExplain}</textarea>
+                        <div class="form-inline x-valid">
+                            <label class="col-sm-1 control-label">
+                                租约限制说明<span class="symbol required"></span>
+                            </label>
+                            <div class="col-sm-8">
+                                <textarea name="restrictionExplain" class="form-control input-full"
+                                          required>${empty mdIncome?'': mdIncome.restrictionExplain}</textarea>
+                            </div>
+                            <label class="col-sm-1 control-label">
+                                租约限制附件
+                            </label>
+                            <div class="col-sm-2">
+                                <input id="restrictionExplainEnclosure" placeholder="上传附件"
+                                       name="restrictionExplainEnclosure" class="form-control input-full" type="file">
+                                <div id="_restrictionExplainEnclosure"></div>
+                            </div>
                         </div>
-                        <label class="col-sm-1 control-label">
-                            租约限制附件
-                        </label>
-                        <div class="col-sm-2">
-                            <input id="restrictionExplainEnclosure" placeholder="上传附件" name="restrictionExplainEnclosure" class="form-control input-full" type="file">
-                            <div id="_restrictionExplainEnclosure"></div>
-                        </div>
-                    </div>
                     </div>
                 </div>
             </form>
         </div>
     </div>
 </div>
-
-
 
 <div class="col-md-12" id="panel_date_section" style="display: none;">
     <div class="card full-height">
@@ -141,15 +140,15 @@
             </div>
         </div>
         <div class="card-body">
-            <form  class="form-horizontal">
+            <form class="form-horizontal">
                 <p>
-                <a class="btn btn-success btn-sm" data-toggle="modal" href="#modal_data_section"
-                        onclick="incomeIndex.addDateSection();">
+                    <a class="btn btn-success btn-sm" data-toggle="modal" href="#modal_data_section"
+                       onclick="incomeIndex.addDateSection();">
                     <span class="btn-label">
 												<i class="fa fa-plus"></i>
 											</span>
-                    新增
-                </a>
+                        新增
+                    </a>
                 </p>
                 <table class="table table-bordered" id="tb_data_section_list">
                 </table>
@@ -157,7 +156,6 @@
         </div>
     </div>
 </div>
-
 
 
 <jsp:include page="/views/method/module/income/selfSupport/apply/info.jsp"></jsp:include>
@@ -182,24 +180,26 @@
                             <div class="card-body">
                                 <div class="row form-group">
                                     <div class="col-md-12">
-                                    <div class="form-inline x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            开始时间<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="text" required name="beginDate" placeholder="开始时间"
-                                                   data-date-format="yyyy-mm-dd" class="form-control input-full date-picker dbdate"
-                                                   readonly="readonly">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                开始时间<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" required name="beginDate" placeholder="开始时间"
+                                                       data-date-format="yyyy-mm-dd"
+                                                       class="form-control input-full date-picker dbdate"
+                                                       readonly="readonly">
+                                            </div>
+                                            <label class="col-sm-2 control-label">
+                                                结束时间
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" name="endDate" placeholder="结束时间"
+                                                       data-date-format="yyyy-mm-dd"
+                                                       class="form-control input-full date-picker dbdate"
+                                                       readonly="readonly">
+                                            </div>
                                         </div>
-                                        <label class="col-sm-2 control-label">
-                                            结束时间
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="text" name="endDate" placeholder="结束时间"
-                                                   data-date-format="yyyy-mm-dd" class="form-control input-full date-picker dbdate"
-                                                   readonly="readonly">
-                                        </div>
-                                    </div>
                                     </div>
                                 </div>
                             </div>
@@ -228,9 +228,9 @@
             $("#frm_income").find("[name=leaseMode][value=${mdIncome.leaseMode}]").trigger('click');
             $("#frm_income").find("[name=formType][value=${mdIncome.formType}]").trigger('click');
         }
-        $.each(incomeIndex.fileArrayId,function (i,n) {
-            incomeIndex.showFile(n,AssessDBKey.MdIncome,incomeIndex.isNotBlank('${mdIncome}')?'${mdIncome.id}':"0",true,n);
-            incomeIndex.fileUpload(n,AssessDBKey.MdIncome,incomeIndex.isNotBlank('${mdIncome}')?'${mdIncome.id}':"0",true,n);
+        $.each(incomeIndex.fileArrayId, function (i, n) {
+            incomeIndex.showFile(n, AssessDBKey.MdIncome, incomeIndex.isNotBlank('${mdIncome}') ? '${mdIncome.id}' : "0", true, n);
+            incomeIndex.fileUpload(n, AssessDBKey.MdIncome, incomeIndex.isNotBlank('${mdIncome}') ? '${mdIncome.id}' : "0", true, n);
         });
     });
     var incomeIndex = {};
@@ -241,7 +241,7 @@
         return false;
     };
 
-    incomeIndex.fileArrayId = ["restrictionExplainEnclosure","report_file"] ;
+    incomeIndex.fileArrayId = ["restrictionExplainEnclosure", "report_file"];
 
     incomeIndex.fileUpload = function (target, tableName, id, deleteFlag, fieldsName) {
         FileUtils.uploadFiles({
@@ -344,14 +344,12 @@
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-               // str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="编辑" onclick="incomeIndex.editDateSection(' + index + ')"><i class="fa fa-edit fa-white"></i></a>';
-                str += '<a onclick="incomeIndex.editDateSection(' + index + ')"  style="margin-left: 5px;"  class="btn   btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
+                str += '<button type="button" onclick="incomeIndex.editDateSection(' + index + ')"  style="margin-left: 5px;"  class="btn   btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
                 str += '<i class="fa fa-pen"></i>';
-                str += '</a>';
-                str += '<a onclick="incomeIndex.delDateSection(' + row.id + ')"  style="margin-left: 5px;"  class="btn   btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
+                str += '</button>';
+                str += '<button type="button" onclick="incomeIndex.delDateSection(' + row.id + ')"  style="margin-left: 5px;"  class="btn   btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
                 str += '<i class="fa fa-minus"></i>';
-                str += '</a>';
-                //str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="incomeIndex.delDateSection(' + row.id + ')"><i class="fa fa-minus fa-white"></i></a>';
+                str += '</button>';
                 str += '</div>';
                 return str;
             }
@@ -364,7 +362,7 @@
             showColumns: false,
             showRefresh: false,
             search: false,
-            pageSize:100,
+            pageSize: 100,
             onLoadSuccess: function () {
                 $(".tooltips").tooltip();
             }
@@ -387,7 +385,7 @@
                         incomeIndex.loadDateSectionList(incomeIndex.getOperationMode());
 
                         //刷新从表信息
-                        var operationMode =incomeIndex.getOperationMode();
+                        var operationMode = incomeIndex.getOperationMode();
                         if (operationMode == 0) {
                             selfSupport.loadForecastIncomeList();
                             selfSupport.loadForecastCostList();
@@ -423,7 +421,7 @@
         if ($(_this).val() == 0) {
             $(".self_support_info,#group_FormType").show();
             $("#group_leaseMode,#group_restriction_explain,.lease_info").hide();
-            switch (incomeIndex.getFormType()){
+            switch (incomeIndex.getFormType()) {
                 case "0":
                     selfSupportForecast.loadHistoryList(0);
                     selfSupportForecast.loadHistoryList(1);

@@ -5,8 +5,6 @@
     <%@include file="/views/share/main_css.jsp" %>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/tree-grid/css/jquery.treegrid.css">
 </head>
-
-
 <body>
 <div class="wrapper">
     <div class="main-panel" style="width: 100%">
@@ -16,10 +14,8 @@
                 <div class="row mt--2">
                     <%@include file="/views/share/project/projectInfoSimple.jsp" %>
                     <%@include file="/views/share/project/projectPlanDetails.jsp" %>
-
                     <!-- 填写表单 start -->
                     <jsp:include page="/views/method/incomeIndex.jsp"></jsp:include>
-
                     <div class="col-md-12">
                         <div class="form-horizontal">
                             <div class="row form-group">
@@ -35,23 +31,13 @@
                             </div>
                         </div>
                     </div>
-
-
-                    <div class="col-md-12" style="text-align: center;padding-bottom: 1.25rem">
-
-                        <div class="card-body">
-                            <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
-                                取消
-                            </button>
-                            <button id="btn_save" class="btn btn-warning" onclick="saveData()">
-                                保存<i style="margin-left: 10px" class="fa fa-save"></i>
-                            </button>
-                            <button id="btn_submit" class="btn btn-success" onclick="submit()">
-                                提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
-                            </button>
+                    <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                        <div class="card full-height">
+                            <div class="card-body">
+                                <%@include file="/views/share/form_apply.jsp" %>
+                            </div>
                         </div>
                     </div>
-
                     <%@include file="/views/share/form_log.jsp" %>
                 </div>
             </div>
