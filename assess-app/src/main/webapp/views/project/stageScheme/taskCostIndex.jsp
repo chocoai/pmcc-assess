@@ -22,7 +22,8 @@
     construction.type = 'engineering';
 
     construction.typeData = function () {
-        return construction.target.find("input[name='type']").val();
+        var target = $(construction.target.selector) ;
+        return target.find("input[name='type']").val();
     };
 
     construction.selectFun = function (copyId, box) {
@@ -111,7 +112,7 @@
                             arr.push(obj);
                         });
                         developmentCommon.infrastructureChildren.saveArray(arr, function () {
-                            toastr.success('添加成功!');
+                            notifySuccess("成功", "选择成功!");
                             $(construction.infrastructureChildrenTable).bootstrapTable('refresh');
                             construction.writeMdDevelopmentInfrastructureChildrenTable();
                         });
@@ -260,7 +261,7 @@
         developmentCommon.saveMdCalculatingMethodEngineeringCost(data, function (item) {
             construction.writeMdCalculatingMethodEngineeringCost(item);
             target.modal("hide");
-            toastr.info("添加成功!");
+            notifySuccess("成功", "添加成功!");
             //这里会同时生成 建筑安装工程费 详细情况id
             developmentCommon.saveMdArchitecturalObj2({}, {price: "0", pid: 0}, function (result) {
                 item.architecturalObjId = result.id;
@@ -307,11 +308,11 @@
     construction.delMdCalculatingMethodEngineeringCost = function () {
         var rows = $(construction.engineeringFeeInfoTarget).bootstrapTable('getSelections');
         if (!rows || rows.length <= 0) {
-            toastr.info("请选择要删除的数据");
+            notifyWarning("没有要删除的数据!", "请选择要删除的数据!");
         } else {
             AlertConfirm("是否确认删除", "删除相应的数据后将不可恢复", function () {
                 developmentCommon.deleteMdCalculatingMethodEngineeringCostHandle(rows, function () {
-                    toastr.success('删除成功');
+                    notifySuccess("成功", "删除成功!");
                     $(construction.engineeringFeeInfoTarget).bootstrapTable('refresh');
                     construction.writeMdCalculatingMethodEngineeringCost();
                 });
@@ -320,17 +321,18 @@
     };
 
     /**
-     * 设置工程费
+     * 同步假设开发法建筑安装工程费
      */
     construction.setMdCalculatingMethodEngineeringCost = function (flag) {
         var planDetailsId = '${projectPlanDetails.id}';
+        var json = {planDetailsId: planDetailsId, type: construction.typeData(), flag: flag} ;
         $.ajax({
             type: "post",
             url: getContextPath() + "/mdCostConstruction/setMdCalculatingMethodEngineeringCost",
-            data: {planDetailsId: planDetailsId, type: construction.typeData(), flag: flag},
+            data: json,
             success: function (result) {
                 if (result.ret) {
-                    toastr.success('成功');
+                    notifySuccess("成功", "同步建筑安装工程费 成功!");
                     construction.loadMdCalculatingMethodEngineeringCostTable();
                 }
             },
@@ -402,14 +404,16 @@
             $.each(rows, function (i, item) {
                 data.push(item.id);
             });
-            developmentCommon.infrastructureChildren.delete(data, function () {
-                toastr.success('删除成功!');
-                notifyInfo("成功", "删除成功!");
-                $(construction.infrastructureChildrenTable).bootstrapTable('refresh');
-                construction.writeMdDevelopmentInfrastructureChildrenTable();
+            AlertConfirm("是否确认删除", "删除相应的数据后将不可恢复", function () {
+                developmentCommon.infrastructureChildren.delete(data, function () {
+                    notifyInfo("成功", "删除成功!");
+                    $(construction.infrastructureChildrenTable).bootstrapTable('refresh');
+                    construction.writeMdDevelopmentInfrastructureChildrenTable();
+                });
             });
         } else {
-            toastr.success('至少勾选一个!');
+            notifyWarning("没有要删除的数据", "至少勾选一个!");
+
         }
     };
 
@@ -427,7 +431,7 @@
                 target.find(".modal-footer").empty().append($(construction.infrastructureFooterHtml).html());
                 target.modal('show');
             } else {
-                toastr.success('勾选一个!');
+                notifyWarning("没有数据", "至少勾选一个!");
             }
         } else {
             frm.clearAll();
@@ -836,7 +840,7 @@
         //建筑安装工程费 估价时点完工程度的设置为100%
         var type = '${mdCostVo.type}';
         if (cost.isNotBlank(type)) {
-            tool.find("input[name=type]").each(function (i, ele) {
+            tool.find("input[name=typeShow]").each(function (i, ele) {
                 var element = $(ele);
                 var value = element.attr('data-value');
                 if (value == type) {
@@ -845,14 +849,15 @@
                     element.removeAttr("checked");
                 }
             });
-        } else {
-            type = $("#costCheckboxTool").find("input[name='type']:checked").val();
+            construction.target.find("input[name='type']").val(type) ;
+            cost.writeValueEvent(type, function () {
+                construction.loadMdCalculatingMethodEngineeringCostTable();
+            });
         }
-        cost.writeValueEvent(type, function () {
-            construction.loadMdCalculatingMethodEngineeringCostTable();
-        });
-        tool.find("input[name='type']:radio").change(function () {
+
+        tool.find("input[name='typeShow']:radio").change(function () {
             var value = $(this).attr('data-value');
+            construction.target.find("input[name='type']").val(value) ;
             cost.writeValueEvent(value, function () {
                 try {
                     construction.loadMdCalculatingMethodEngineeringCostTable();
@@ -904,8 +909,9 @@
                 }
             });
         }
-        ;
 
+
+        construction.loadMdCalculatingMethodEngineeringCostTable();
         construction.loadMdDevelopmentInfrastructureChildrenTable();
 
         var data = {

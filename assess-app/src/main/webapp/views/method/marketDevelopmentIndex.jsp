@@ -232,32 +232,42 @@
                             </label>
                             <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                                 <div class="input-group">
-                                    <input type="text" required="required"
-                                           placeholder="基础设施配套费(元/㎡)" class="form-control"
-                                           name="infrastructureCost" onblur="checkParams(this);"
-                                           value="${mdDevelopment.infrastructureCost}">
+
                                     <div class="input-group-append">
-                                        <select name="f22Value" class="form-control"
-                                                onchange="landEngineering.calculationF22(this)">
-                                            <option>请选择</option>
-                                            <c:forEach items="${dataInfrastructureList}" var="item">
-                                                <c:if test="${item.infrastructureSupportingFacilities != 0}">
-                                                    <c:if test="${mdDevelopment.infrastructureCost != item.infrastructureSupportingFacilities}">
-                                                        <option value="${item.infrastructureSupportingFacilities}"
-                                                                data-key="${item.id}"
-                                                                data-type="${item.type}">${item.timeSlot}
-                                                            金额:${item.infrastructureSupportingFacilities}</option>
-                                                    </c:if>
-                                                    <c:if test="${mdDevelopment.infrastructureCost == item.infrastructureSupportingFacilities}">
-                                                        <option value="${item.infrastructureSupportingFacilities}"
-                                                                selected="selected" data-key="${item.id}"
-                                                                data-type="${item.type}">${item.timeSlot}
-                                                            金额:${item.infrastructureSupportingFacilities}</option>
-                                                    </c:if>
-                                                </c:if>
-                                            </c:forEach>
-                                        </select>
+
                                     </div>
+                                </div>
+
+                                <div class="input-group ">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-addon">
+                                            <input type="text" required="required"
+                                                   placeholder="基础设施配套费(元/㎡)" class="form-control"
+                                                   name="infrastructureCost" onblur="checkParams(this);"
+                                                   value="${mdDevelopment.infrastructureCost}">
+                                        </span>
+                                    </div>
+                                    <select name="f22Value" class="form-control"
+                                            onchange="landEngineering.calculationF22(this)">
+                                        <option>请选择</option>
+                                        <c:forEach items="${dataInfrastructureList}" var="item">
+                                            <c:if test="${item.infrastructureSupportingFacilities != 0}">
+                                                <c:if test="${mdDevelopment.infrastructureCost != item.infrastructureSupportingFacilities}">
+                                                    <option value="${item.infrastructureSupportingFacilities}"
+                                                            data-key="${item.id}"
+                                                            data-type="${item.type}">${item.timeSlot}
+                                                        金额:${item.infrastructureSupportingFacilities}</option>
+                                                </c:if>
+                                                <c:if test="${mdDevelopment.infrastructureCost == item.infrastructureSupportingFacilities}">
+                                                    <option value="${item.infrastructureSupportingFacilities}"
+                                                            selected="selected" data-key="${item.id}"
+                                                            data-type="${item.type}">${item.timeSlot}
+                                                        金额:${item.infrastructureSupportingFacilities}</option>
+                                                </c:if>
+                                            </c:if>
+                                        </c:forEach>
+                                    </select>
+
                                 </div>
                             </div>
                             <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">

@@ -12,7 +12,8 @@
     landEngineering.fixedMin = 0; //小数点保留0位
     landEngineering.defaultType = '1';
     landEngineering.typeData = function () {
-        return landEngineering.target.find("input[name='type']").val();
+        var target = $(landEngineering.target.selector) ;
+        return target.find("input[name='type']").val();
     };
     landEngineering.masterId = developmentCommon.isNotBlank('${mdDevelopment.id}') ? '${mdDevelopment.id}' : '0';
 
