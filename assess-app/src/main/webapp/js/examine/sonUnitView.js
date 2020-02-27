@@ -22,8 +22,8 @@ var unitDecorate;
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
-                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="unitDecorate.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
-                    str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="unitDecorate.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
+                    str += '<button type="button" class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="unitDecorate.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
+                    str += '<button type="button" class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="unitDecorate.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
                     str += '</div>';
                     return str;
                 }
@@ -48,15 +48,15 @@ var unitDecorate;
                 data: {id: id},
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success('删除成功');
+                        notifySuccess("成功", "删除成功");
                         unitDecorate.prototype.loadDataDicList();
                     }
                     else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -77,16 +77,16 @@ var unitDecorate;
                 data: data,
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success('保存成功');
+                        notifySuccess("成功", "保存成功");
                         $('#' + unitDecorate.prototype.config().box).modal('hide');
                         unitDecorate.prototype.loadDataDicList();
                     }
                     else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -107,7 +107,7 @@ var unitDecorate;
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -160,10 +160,10 @@ var unitHuxing;
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
-                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="unitHuxing.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
-                    str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="unitHuxing.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
-                    str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="单价调查" onclick="unitHuxingPrice.prototype.showTableModel(' + row.id + ',\'tb_List\')"><i class="fa fa-arrow-right fa-white"></i></a>';
-                    str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="下载房屋模板" onclick="unitHuxing.prototype.getAttachmentId(' + row.id + ',\'tb_List\')">房屋模板</a>';
+                    str += '<button type="button" class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="unitHuxing.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
+                    str += '<button type="button" class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="unitHuxing.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
+                    str += '<button type="button" class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="单价调查" onclick="unitHuxingPrice.prototype.showTableModel(' + row.id + ',\'tb_List\')"><i class="fa fa-arrow-right fa-white"></i></button>';
+                    str += '<button type="button" class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="下载房屋模板" onclick="unitHuxing.prototype.getAttachmentId(' + row.id + ',\'tb_List\')">房屋模板</button>';
                     str += '</div>';
                     return str;
                 }
@@ -188,15 +188,15 @@ var unitHuxing;
                 data: {id: id},
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success('删除成功');
+                        notifySuccess("成功", "删除成功");
                         unitHuxing.prototype.loadDataDicList();
                     }
                     else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -231,16 +231,16 @@ var unitHuxing;
                 data: data,
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success('保存成功');
+                        notifySuccess("成功", "保存成功");
                         $('#' + unitHuxing.prototype.config().box).modal('hide');
                         unitHuxing.prototype.loadDataDicList();
                     }
                     else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -342,7 +342,7 @@ var unitHuxing;
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -434,12 +434,12 @@ var unitHuxing;
                 success: function (result) {
                     Loading.progressHide();
                     if (result.ret) {
-                        Alert(result.data);
+                        AlertError(result.data);
                     }
                 },
                 error: function (result, status, e) {
                     Loading.progressHide();
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             });
         }
@@ -470,8 +470,8 @@ var unitHuxingPrice;
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
-                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="unitHuxingPrice.prototype.getAndInit(' + row.id + ',\'' + unitHuxingId + '\',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
-                    str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="unitHuxingPrice.prototype.removeData(' + row.id + ',\'' + unitHuxingId + '\',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
+                    str += '<button type="button" class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="unitHuxingPrice.prototype.getAndInit(' + row.id + ',\'' + unitHuxingId + '\',\'tb_List\')"><i class="fa fa-pen"></i></button>';
+                    str += '<button type="button" class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="unitHuxingPrice.prototype.removeData(' + row.id + ',\'' + unitHuxingId + '\',\'tb_List\')"><i class="fa fa-minus"></i></button>';
                     str += '</div>';
                     return str;
                 }
@@ -496,15 +496,15 @@ var unitHuxingPrice;
                 data: {id: id},
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success('删除成功');
+                        notifySuccess("成功", "删除成功");
                         unitHuxingPrice.prototype.loadDataDicList(unitHuxingId);
                     }
                     else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -535,16 +535,16 @@ var unitHuxingPrice;
                 data: data,
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success('保存成功');
+                        notifySuccess("成功", "保存成功");
                         $('#' + unitHuxingPrice.prototype.config().box).modal('hide');
                         unitHuxingPrice.prototype.loadDataDicList(unitHuxingId);
                     }
                     else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -572,7 +572,7 @@ var unitHuxingPrice;
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -599,12 +599,12 @@ var unitHuxingPrice;
                 success: function (result) {
                     if (result.ret) {
                         unitHuxingPrice.prototype.loadDataDicList(unitHuxingId);
-                        Alert(result.data);
+                        AlertError(result.data);
                     }
                 },
                 error: function (result, status, e) {
                     Loading.progressHide();
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             });
         }
@@ -637,8 +637,8 @@ var unitElevator;
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
-                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="unitElevator.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
-                    str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="unitElevator.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
+                    str += '<button type="button" class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="unitElevator.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
+                    str += '<button type="button" class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="unitElevator.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
                     str += '</div>';
                     return str;
                 }
@@ -663,15 +663,15 @@ var unitElevator;
                 data: {id: id},
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success('删除成功');
+                        notifySuccess("成功", "删除成功");
                         unitElevator.prototype.loadDataDicList();
                     }
                     else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -692,16 +692,16 @@ var unitElevator;
                 data: data,
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success('保存成功');
+                        notifySuccess("成功", "保存成功");
                         $('#' + unitElevator.prototype.config().box).modal('hide');
                         unitElevator.prototype.loadDataDicList();
                     }
                     else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -718,7 +718,7 @@ var unitElevator;
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         },

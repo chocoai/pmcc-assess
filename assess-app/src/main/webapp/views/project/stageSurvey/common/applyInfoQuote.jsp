@@ -1,281 +1,334 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%--引用项目中的楼盘--%>
-<div id="divBoxProjectData" class="modal fade bs-example-modal-lg" data-backdrop="static"
-     tabindex="-1"
-     role="dialog"
+<div id="divBoxProjectData" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
+                <h4 class="modal-title">项目</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">项目</h3>
             </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                        <form id="frmQuery" class="form-horizontal">
-                            <div class="form-group ">
-                                <div>
-                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                        项目名称
-                                    </label>
-                                    <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                        <input type="text" data-rule-maxlength="50"
-                                               placeholder="项目名称" id="queryName" name="queryName"
-                                               class="form-control">
-                                    </div>
-                                </div>
-                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <button type="button" class="btn btn-primary"
-                                            onclick="projectData.prototype.loadProjectDataList()">
-                                        查询
-                                    </button>
-                                </div>
-                            </div>
 
-                        </form>
-                        <table class="table table-bordered" id="projectDataList">
-                            <!-- cerare document add ajax data-->
-                        </table>
+            <div class="modal-body">
+                <form id="frmQuery" class="form-horizontal">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <div class="row form-group ">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                项目名称
+                                            </label>
+                                            <div class="col-sm-2">
+                                                <input type="text" data-rule-maxlength="50"
+                                                       placeholder="项目名称" id="queryName" name="queryName"
+                                                       class="form-control input-full">
+                                            </div>
+                                            <button type="button" class="btn btn-primary"
+                                                    onclick="projectData.prototype.loadProjectDataList()">
+                                                查询
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <table class="table table-bordered" id="projectDataList">
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+            </div>
 
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">
-                    关闭
-                </button>
-            </div>
         </div>
     </div>
 </div>
-<div id="divBoxProjectItemData" class="modal fade bs-example-modal-lg" data-backdrop="static"
-     tabindex="-1"
-     role="dialog"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">查勘及案例</h3>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                        <table class="table table-bordered" id="projectCaseItemList">
-                            <!-- cerare document add ajax data-->
-                        </table>
 
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">
-                    关闭
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-<div id="divBoxProjectEstate" class="modal fade bs-example-modal-lg" data-backdrop="static"
-     tabindex="-1"
+
+<div id="divBoxProjectItemData" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
+                <h4 class="modal-title">查勘及案例</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">楼盘</h3>
             </div>
+
             <div class="modal-body">
-                <div class="row">
-                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                        <form class="form-horizontal">
-                            <div class="form-group ">
-                                <div>
-                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                        名称
-                                    </label>
-                                    <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                        <input type="text" data-rule-maxlength="50"
-                                               placeholder="名称" id="queryEstateName" name="queryEstateName"
-                                               class="form-control">
+                <form class="form-horizontal">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <table class="table table-bordered" id="projectCaseItemList">
+                                        </table>
                                     </div>
                                 </div>
-                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <button type="button" class="btn btn-primary"
-                                            onclick="projectData.prototype.loadHousesDataList()">
-                                        查询
-                                    </button>
-                                </div>
                             </div>
-                            <div class="form-group">
-                                <table class="table table-bordered" id="projectEstateTable">
-                                </table>
-                            </div>
-                        </form>
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
             <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
                     关闭
                 </button>
             </div>
+
         </div>
     </div>
 </div>
-<div id="divBoxProjectBuild" class="modal fade bs-example-modal-lg" data-backdrop="static"
-     tabindex="-1"
-     role="dialog"
+
+<div id="divBoxProjectEstate" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
+                <h4 class="modal-title">楼盘</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">楼栋</h3>
             </div>
+
             <div class="modal-body">
-                <div class="row">
-                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                        <form class="form-horizontal">
-                            <div class="form-group ">
-                                <div>
-                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                        名称
-                                    </label>
-                                    <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                        <input type="text" data-rule-maxlength="50"
-                                               placeholder="名称" id="queryBuildName" name="queryBuildName"
-                                               class="form-control">
+                <form class="form-horizontal">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+
+                                <div class="row form-group ">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                名称
+                                            </label>
+                                            <div class="col-sm-3">
+                                                <input type="text" data-rule-maxlength="50"
+                                                       placeholder="名称" id="queryEstateName" name="queryEstateName"
+                                                       class="form-control input-full">
+                                            </div>
+                                            <button style="margin-left: 10px" class="btn btn-info  btn-sm" type="button"
+                                                    onclick="projectData.prototype.loadDataList()">
+											<span class="btn-label">
+												<i class="fa fa-search"></i>
+											</span>
+                                                查询
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <button type="button" class="btn btn-primary"
-                                            onclick="projectBuild.prototype.loadDataList()">
-                                        查询
-                                    </button>
+                                <div class="row form-group ">
+                                    <div class="col-md-12">
+                                        <table class="table table-bordered" id="projectEstateTable">
+                                        </table>
+                                    </div>
                                 </div>
+
                             </div>
-                            <div class="form-group">
-                                <table class="table table-bordered" id="projectBuildTable">
-                                </table>
-                            </div>
-                        </form>
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
             <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
                     关闭
                 </button>
             </div>
+
         </div>
     </div>
 </div>
-<div id="divBoxProjectUnit" class="modal fade bs-example-modal-lg" data-backdrop="static"
-     tabindex="-1"
-     role="dialog"
+<div id="divBoxProjectBuild" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
+                <h4 class="modal-title">楼栋</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">单元</h3>
             </div>
+
             <div class="modal-body">
-                <div class="row">
-                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                        <form class="form-horizontal">
-                            <div class="form-group ">
-                                <div>
-                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                        名称
-                                    </label>
-                                    <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                        <input type="text" data-rule-maxlength="50"
-                                               placeholder="名称" id="queryUnitName" name="queryUnitName"
-                                               class="form-control">
+                <form class="form-horizontal">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+
+                                <div class="row form-group ">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                名称
+                                            </label>
+                                            <div class="col-sm-3">
+                                                <input type="text" data-rule-maxlength="50"
+                                                       placeholder="名称" id="queryBuildName" name="queryBuildName"
+                                                       class="form-control input-full">
+                                            </div>
+                                            <button style="margin-left: 10px" class="btn btn-info  btn-sm"
+                                                    type="button"
+                                                    onclick="projectBuild.prototype.loadDataList()">
+											<span class="btn-label">
+												<i class="fa fa-search"></i>
+											</span>
+                                                查询
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <button type="button" class="btn btn-primary"
-                                            onclick="projectUnit.prototype.loadDataList()">
-                                        查询
-                                    </button>
+                                <div class="row form-group ">
+                                    <div class="col-md-12">
+                                        <table class="table table-bordered" id="projectBuildTable">
+                                        </table>
+                                    </div>
                                 </div>
+
                             </div>
-                            <div class="form-group">
-                                <table class="table table-bordered" id="projectUnitTable">
-                                </table>
-                            </div>
-                        </form>
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
             <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
                     关闭
                 </button>
             </div>
+
         </div>
     </div>
 </div>
-<div id="divBoxProjectHouse" class="modal fade bs-example-modal-lg" data-backdrop="static"
-     tabindex="-1"
-     role="dialog"
+<div id="divBoxProjectUnit" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
+                <h4 class="modal-title">单元</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">房屋</h3>
             </div>
+
             <div class="modal-body">
-                <div class="row">
-                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                        <form class="form-horizontal">
-                            <div class="form-group ">
-                                <div>
-                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                        名称
-                                    </label>
-                                    <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                        <input type="text" data-rule-maxlength="50"
-                                               placeholder="名称" id="queryHouseName" name="queryHouseName"
-                                               class="form-control">
+                <form class="form-horizontal">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+
+                                <div class="row form-group ">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                名称
+                                            </label>
+                                            <div class="col-sm-3">
+                                                <input type="text" data-rule-maxlength="50"
+                                                       placeholder="名称" id="queryUnitName" name="queryUnitName"
+                                                       class="form-control input-full">
+                                            </div>
+                                            <button style="margin-left: 10px" class="btn btn-info  btn-sm"
+                                                    type="button"
+                                                    onclick="projectUnit.prototype.loadDataList()">
+											<span class="btn-label">
+												<i class="fa fa-search"></i>
+											</span>
+                                                查询
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                    <button type="button" class="btn btn-primary"
-                                            onclick="projectHouse.prototype.loadDataList()">
-                                        查询
-                                    </button>
+                                <div class="row form-group ">
+                                    <div class="col-md-12">
+                                        <table class="table table-bordered" id="projectUnitTable">
+                                        </table>
+                                    </div>
                                 </div>
+
                             </div>
-                            <div class="form-group">
-                                <table class="table table-bordered" id="projectHouseTable">
-                                </table>
-                            </div>
-                        </form>
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
             <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
                     关闭
                 </button>
             </div>
+
         </div>
     </div>
 </div>
+<div id="divBoxProjectHouse" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">房屋</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+
+                                <div class="row form-group ">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                名称
+                                            </label>
+                                            <div class="col-sm-3">
+                                                <input type="text" data-rule-maxlength="50"
+                                                       placeholder="名称" id="queryHouseName" name="queryHouseName"
+                                                       class="form-control input-full">
+                                            </div>
+                                            <button style="margin-left: 10px" class="btn btn-info  btn-sm"
+                                                    type="button"
+                                                    onclick="projectHouse.prototype.loadDataList()">
+											<span class="btn-label">
+												<i class="fa fa-search"></i>
+											</span>
+                                                查询
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group ">
+                                    <div class="col-md-12">
+                                        <table class="table table-bordered" id="projectHouseTable">
+                                        </table>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
 <script type="application/javascript">
 
     //填充对应的数据
@@ -299,7 +352,7 @@
 
 </script>
 <script type="application/javascript">
-    function infoDetail(id,tbType){
+    function infoDetail(id, tbType) {
         $.ajax({
             url: "${pageContext.request.contextPath}/basicAlternativeCase/infoDetail",
             type: "post",
@@ -309,29 +362,30 @@
             },
             success: function (result) {
                 if (result.ret) {
-                    if(result.data){
+                    if (result.data) {
                         var url = '${pageContext.request.contextPath}/basicApplyBatch/informationDetail?';
-                        url += 'applyBatchId=' +  result.data.applyBatchId;
+                        url += 'applyBatchId=' + result.data.applyBatchId;
                         url += '&formClassify=' + result.data.formClassify;
                         url += '&formType=' + result.data.formType;
                         url += '&tableId=' + result.data.tableId;
                         url += '&tableName=' + result.data.tableName;
                         url += '&tbType=' + tbType;
-                        url += '&planDetailsId='+result.data.planDetailsId;
+                        url += '&planDetailsId=' + result.data.planDetailsId;
                         openWin(url, function () {
                         })
                     }
 
                 }
                 else {
-                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                    AlertError("失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
+                AlertError("调用服务端方法失败，失败原因:" + result);
             }
         })
     }
+
     // 查找项目及楼盘
     var projectData = function () {
 
@@ -374,7 +428,7 @@
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
-                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="查勘及案例" onclick="projectData.prototype.checkTaskData(' + index + ')">查勘及案例</a>';
+                    str += '<button type="button" class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="查勘及案例" onclick="projectData.prototype.checkTaskData(' + index + ')">查勘及案例</button>';
                     str += '</div>';
                     return str;
                 }
@@ -402,7 +456,7 @@
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
-                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="查看信息" onclick="projectData.prototype.showHouseModel(' + row.id + ')"><i class="fa fa-search fa-white"></i></a>';
+                    str += '<button type="button" class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="查看信息" onclick="projectData.prototype.showHouseModel(' + row.id + ')"><i class="fa fa-search fa-white"></i></button>';
                     str += '</div>';
                     return str;
                 }
@@ -432,8 +486,8 @@
                 field: 'id', title: '查询', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
-                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="查看" onclick="projectData.prototype.findData(' + row.id + ',\'estate\')"><i class="fa fa-search fa-white"></i></a>';
-                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="引用" onclick="projectData.prototype.quote(' + row.id + ')"><i class="fa fa-check"></i></a>';
+                    str += '<button type="button" class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="查看" onclick="projectData.prototype.findData(' + row.id + ',\'estate\')"><i class="fa fa-search fa-white"></i></button>';
+                    str += '<button type="button" class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="引用" onclick="projectData.prototype.quote(' + row.id + ')"><i class="fa fa-check"></i></button>';
                     str += '</div>';
                     return str;
                 }
@@ -453,7 +507,7 @@
 
         },
         findData: function (id, buildType, estateId) {
-            infoDetail(id,buildType);
+            infoDetail(id, buildType);
         },
         quote: function (id) {
             $.ajax({
@@ -472,7 +526,7 @@
                             $('#' + projectData.prototype.config().box).modal("hide");
                         }
                     } else {
-                        Alert(result.errmsg);
+                        AlertError("失败，失败原因:" + result.errmsg);
                     }
                 }
             })
@@ -501,8 +555,8 @@
                 field: 'id', title: '查询', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
-                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="查看" onclick="projectBuild.prototype.findData(' + row.id + ',\'building\')"><i class="fa fa-search fa-white"></i></a>';
-                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="引用" onclick="projectBuild.prototype.quote(' + row.id + ')"><i class="fa fa-check"></i></a>';
+                    str += '<button type="button" class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="查看" onclick="projectBuild.prototype.findData(' + row.id + ',\'building\')"><i class="fa fa-search fa-white"></i></button>';
+                    str += '<button type="button" class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="引用" onclick="projectBuild.prototype.quote(' + row.id + ')"><i class="fa fa-check"></i></button>';
                     str += '</div>';
                     return str;
                 }
@@ -521,7 +575,7 @@
             });
         },
         findData: function (id, buildType, estateId) {
-            infoDetail(id,buildType);
+            infoDetail(id, buildType);
         },
         quote: function (id) {
             $.ajax({
@@ -538,7 +592,7 @@
                             $('#' + projectBuild.prototype.config().box).modal("hide");
                         }
                     } else {
-                        Alert(result.errmsg);
+                        AlertError("失败，失败原因:" + result.errmsg);
                     }
                 }
             })
@@ -566,8 +620,8 @@
                 field: 'id', title: '查询', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
-                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="查看" onclick="projectUnit.prototype.findData(' + row.id + ',\'unit\')"><i class="fa fa-search fa-white"></i></a>';
-                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="引用" onclick="projectUnit.prototype.quote(' + row.id + ')"><i class="fa fa-check"></i></a>';
+                    str += '<button type="button" class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="查看" onclick="projectUnit.prototype.findData(' + row.id + ',\'unit\')"><i class="fa fa-search fa-white"></i></button>';
+                    str += '<button type="button" class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="引用" onclick="projectUnit.prototype.quote(' + row.id + ')"><i class="fa fa-check"></i></button>';
                     str += '</div>';
                     return str;
                 }
@@ -586,7 +640,7 @@
             });
         },
         findData: function (id, buildType, estateId) {
-            infoDetail(id,buildType);
+            infoDetail(id, buildType);
         },
         quote: function (id) {
             $.ajax({
@@ -603,7 +657,7 @@
                             $('#' + projectUnit.prototype.config().box).modal("hide");
                         }
                     } else {
-                        Alert(result.errmsg);
+                        AlertError("失败，失败原因:" + result.errmsg);
                     }
                 }
             })
@@ -631,8 +685,8 @@
                 field: 'id', title: '查询', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
-                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="查看" onclick="projectHouse.prototype.findData(' + row.id + ',\'house\')"><i class="fa fa-search fa-white"></i></a>';
-                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="引用" onclick="projectHouse.prototype.quote(' + row.id + ')"><i class="fa fa-check"></i></a>';
+                    str += '<button type="button" class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="查看" onclick="projectHouse.prototype.findData(' + row.id + ',\'house\')"><i class="fa fa-search fa-white"></i></button>';
+                    str += '<button type="button" class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="引用" onclick="projectHouse.prototype.quote(' + row.id + ')"><i class="fa fa-check"></i></button>';
                     str += '</div>';
                     return str;
                 }
@@ -651,7 +705,7 @@
             });
         },
         findData: function (id, buildType, estateId) {
-            infoDetail(id,buildType);
+            infoDetail(id, buildType);
         },
         quote: function (id) {
             $.ajax({
@@ -668,7 +722,7 @@
                             $('#' + projectHouse.prototype.config().box).modal("hide");
                         }
                     } else {
-                        Alert(result.errmsg);
+                        AlertError("失败，失败原因:" + result.errmsg);
                     }
                 }
             })
@@ -677,160 +731,180 @@
 </script>
 
 <%--引用案例库信息--%>
-<div id="caseEstateModal" class="modal fade bs-example-modal-lg" data-backdrop="static"
-     tabindex="-1"
-     role="dialog"
+<div id="caseEstateModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
+                <h4 class="modal-title">楼盘</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">楼盘</h3>
             </div>
+
             <div class="modal-body">
-                <div class="row">
-                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                        <form class="form-horizontal" id="frmEstateQuery">
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                        省
-                                    </label>
-                                    <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                        <select id="queryProvince" class="form-control search-select select2">
-                                        </select>
+                <form id="frmEstateQuery" class="form-horizontal">
+                    <input type="hidden" id="id" name="id">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                省
+                                            </label>
+                                            <div class="col-sm-2">
+                                                <select id="queryProvince"
+                                                        class="form-control input-full search-select select2">
+                                                </select>
+                                            </div>
+                                            <label class="col-sm-1 control-label">
+                                                市
+                                            </label>
+                                            <div class="col-sm-2">
+                                                <select id="queryCity"
+                                                        class="form-control input-full search-select select2">
+                                                </select>
+                                            </div>
+                                            <label class="col-sm-1 control-label">楼盘名称</label>
+                                            <div class="col-sm-2">
+                                                <input type="text" class="form-control input-full" id="querySearch"/>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <button style="margin-left: 10px" class="btn btn-info  btn-sm"
+                                                        type="button"
+                                                        onclick="caseFun.caseEstate.find()">
+											<span class="btn-label">
+												<i class="fa fa-search"></i>
+											</span>
+                                                    查询
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="x-valid">
-                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                        市
-                                    </label>
-                                    <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                        <select id="queryCity" class="form-control search-select select2">
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="x-valid">
-                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">楼盘名称</label>
-                                    <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                        <input type="text" class="form-control" id="querySearch"/>
-                                    </div>
-                                </div>
-                                <div class="x-valid">
-                                    <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                        <label class="btn btn-primary" onclick="caseFun.caseEstate.find();">
-                                            查询
-                                        </label>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <table class="table table-bordered" id="caseEstateTable">
+                                        </table>
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <table class="table table-bordered" id="caseEstateTable">
-                                </table>
-                            </div>
-                        </form>
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
             <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
                     关闭
                 </button>
             </div>
+
         </div>
     </div>
 </div>
-<div id="caseBuildModal" class="modal fade bs-example-modal-lg" data-backdrop="static"
-     tabindex="-1"
-     role="dialog"
+<div id="caseBuildModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
+                <h4 class="modal-title">楼栋</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">楼栋</h3>
             </div>
+
             <div class="modal-body">
-                <div class="row">
-                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                        <form class="form-horizontal">
-                            <div class="form-group">
-                                <table class="table table-bordered" id="caseBuildTable">
-                                </table>
+                <form class="form-horizontal">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <table class="table table-bordered" id="caseBuildTable">
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
-                        </form>
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
             <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
                     关闭
                 </button>
             </div>
+
         </div>
     </div>
 </div>
-<div id="caseUnitModal" class="modal fade bs-example-modal-lg" data-backdrop="static"
-     tabindex="-1"
-     role="dialog"
+<div id="caseUnitModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
+                <h4 class="modal-title">单元</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">单元</h3>
             </div>
+
             <div class="modal-body">
-                <div class="row">
-                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                        <form class="form-horizontal">
-                            <div class="form-group">
-                                <table class="table table-bordered" id="caseUnitTable">
-                                </table>
+                <form class="form-horizontal">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <table class="table table-bordered" id="caseUnitTable">
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
-                        </form>
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
             <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
                     关闭
                 </button>
             </div>
+
         </div>
     </div>
 </div>
-<div id="caseHouseModal" class="modal fade bs-example-modal-lg" data-backdrop="static"
-     tabindex="-1"
-     role="dialog"
+<div id="caseHouseModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
+                <h4 class="modal-title">房屋</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">房屋</h3>
             </div>
+
             <div class="modal-body">
-                <div class="row">
-                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                        <form class="form-horizontal">
-                            <div class="form-group">
-                                <table class="table table-bordered" id="caseHouseTable">
-                                </table>
+                <form class="form-horizontal">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <table class="table table-bordered" id="caseHouseTable">
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
-                        </form>
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
             <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
                     关闭
                 </button>
             </div>
+
         </div>
     </div>
 </div>
@@ -920,8 +994,8 @@
                 field: 'id', title: '查询', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
-                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="详情" onclick="caseFun.caseEstate.findData(' + row.id + ')"><i class="fa fa-search fa-white"></i></a>';
-                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="引用" onclick="caseFun.caseEstate.quote(' + row.id + ')"><i class="fa fa-check"></i></a>';
+                    str += '<button type="button" class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="详情" onclick="caseFun.caseEstate.findData(' + row.id + ')"><i class="fa fa-search fa-white"></i></button>';
+                    str += '<button type="button" class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="引用" onclick="caseFun.caseEstate.quote(' + row.id + ')"><i class="fa fa-check"></i></button>';
                     str += '</div>';
                     return str;
                 }
@@ -979,7 +1053,7 @@
                             $('#' + caseFun.config.father.caseEstate.box()).modal('hide');
                         }
                     } else {
-                        Alert(result.errmsg);
+                        AlertError("失败，失败原因:" + result.errmsg);
                     }
                 }
             })
@@ -1002,8 +1076,8 @@
                 field: 'id', title: '查询', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
-                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="查看" onclick="caseFun.caseBuild.findData(' + row.id + ',\'tb_List\')"><i class="fa fa-search fa-white"></i></a>';
-                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="引用" onclick="caseFun.caseBuild.quote(' + row.id + ')"><i class="fa fa-check"></i></a>';
+                    str += '<button type="button" class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="查看" onclick="caseFun.caseBuild.findData(' + row.id + ',\'tb_List\')"><i class="fa fa-search fa-white"></i></button>';
+                    str += '<button type="button" class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="引用" onclick="caseFun.caseBuild.quote(' + row.id + ')"><i class="fa fa-check"></i></button>';
                     str += '</div>';
                     return str;
                 }
@@ -1040,7 +1114,7 @@
                             $('#' + caseFun.config.father.caseBuild.box()).modal('hide');
                         }
                     } else {
-                        Alert(result.errmsg);
+                        AlertError("失败，失败原因:" + result.errmsg);
                     }
                 }
             })
@@ -1063,8 +1137,8 @@
                 field: 'id', title: '查询', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
-                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="查看" onclick="caseFun.caseUnit.findData(' + row.id + ',\'tb_List\')"><i class="fa fa-search fa-white"></i></a>';
-                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="引用" onclick="caseFun.caseUnit.quote(' + row.id + ')"><i class="fa fa-check"></i></a>';
+                    str += '<button type="button" class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="查看" onclick="caseFun.caseUnit.findData(' + row.id + ',\'tb_List\')"><i class="fa fa-search fa-white"></i></button>';
+                    str += '<button type="button" class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="引用" onclick="caseFun.caseUnit.quote(' + row.id + ')"><i class="fa fa-check"></i></button>';
                     str += '</div>';
                     return str;
                 }
@@ -1101,7 +1175,7 @@
                             $('#' + caseFun.config.father.caseUnit.box()).modal('hide');
                         }
                     } else {
-                        Alert(result.errmsg);
+                        AlertError("失败，失败原因:" + result.errmsg);
                     }
                 }
             })
@@ -1123,8 +1197,8 @@
                 field: 'id', title: '查询', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
-                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="查看" onclick="caseFun.caseHouse.findData(' + row.id + ',\'tb_List\')"><i class="fa fa-search fa-white"></i></a>';
-                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="引用" onclick="caseFun.caseHouse.quote(' + row.id + ')"><i class="fa fa-check"></i></a>';
+                    str += '<button type="button" class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="查看" onclick="caseFun.caseHouse.findData(' + row.id + ',\'tb_List\')"><i class="fa fa-search fa-white"></i></button>';
+                    str += '<button type="button" class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="引用" onclick="caseFun.caseHouse.quote(' + row.id + ')"><i class="fa fa-check"></i></button>';
                     str += '</div>';
                     return str;
                 }
@@ -1161,7 +1235,7 @@
                             $('#' + caseFun.config.father.caseHouse.box()).modal('hide');
                         }
                     } else {
-                        Alert(result.errmsg);
+                        AlertError("失败，失败原因:" + result.errmsg);
                     }
                 }
             })

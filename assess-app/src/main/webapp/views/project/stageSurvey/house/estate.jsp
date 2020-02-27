@@ -269,15 +269,12 @@
                                         name="infrastructureCompleteness" required="required">
                                 </select>
                             </div>
+                            <div class="col-sm-8">
+                                <div id="industrySupplyInfoContainer"></div>
+                            </div>
                         </div>
 
                         </div>
-                    </div>
-                    <div class="row form-group">
-                    <div class="col-sm-6"
-                         id="industrySupplyInfoContainer">
-
-                    </div>
                     </div>
                 </div>
             </div>
@@ -472,10 +469,9 @@
                     <select class="form-control input-full developmentDegree" name="developmentDegree">
                     </select>
                 </div>
-          <%--  </div>
-            <div class="form-inline x-valid" style="display: none">--%>
-                <label class="col-sm-1">土地开发程度备注</label>
-                <div class="col-sm-3">
+
+                <label class="col-sm-1 developmentDegreeContent">土地开发程度备注</label>
+                <div class="col-sm-3 developmentDegreeContent">
                     <input type="text" class="form-control input-full" placeholder="土地开发程度备注"
                            name="developmentDegreeRemark" value="${basicEstateLandState.developmentDegreeRemark}">
                 </div>
@@ -486,17 +482,12 @@
                            placeholder="未开发，已开发完成投入使用，部分开发" name="presentSituationLandUse"
                            value="${basicEstateLandState.presentSituationLandUse}">
                 </div>
+                <div class="col-sm-4">
+                <div id="developmentDegreeContentContainer"></div>
+                </div>
             </div>
             </div>
         </div>
-        <div class="row form-group">
-            <div class="col-md-12">
-            <div class="col-sm-6"
-                 id="developmentDegreeContentContainer">
-            </div>
-            </div>
-        </div>
-
         <div class="x_title">开发限制条件</div>
         <div class="row form-group">
             <div class="col-md-12">
@@ -527,22 +518,22 @@
                     <input type="text" class="form-control input-full" placeholder="兼容比例"
                            name="compatibleRatio" value="${basicEstateLandState.compatibleRatio}">
                 </div>
-          <%--  </div>
-            <div class="form-inline x-valid" style="display: none">--%>
+            <div style="display: none">
                 <label class="col-sm-1">投资强度（万元/亩）</label>
                 <div class="col-sm-3">
                     <input type="text" class="form-control input-full" data-rule-number='true'
                            placeholder="投资强度（万元/亩） 数字" name="investmentIntensity"
                            value="${basicEstateLandState.investmentIntensity}">
                 </div>
-<%--            </div>
-            <div class="form-inline x-valid" style="display: none">--%>
+            </div>
+            <div style="display: none">
                 <label class="col-sm-1">建筑限高</label>
                 <div class="col-sm-3">
                     <input type="text" class="form-control input-full" data-rule-number='true'
                            placeholder="建筑限高(数字)" name="buildingHeightLimit"
                            value="${basicEstateLandState.buildingHeightLimit}">
                 </div>
+            </div>
             </div>
             </div>
         </div>

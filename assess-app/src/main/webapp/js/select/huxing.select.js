@@ -20,7 +20,7 @@
         cols.push({
             field: 'opt', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-warning" href="javascript://" onclick="assessHuxing.onSelected(' + index + ');"><i class="fa fa-edit"></i>选择</a>';
+                str += '<button type="button" class="btn btn-xs btn-warning" href="javascript://" onclick="assessHuxing.onSelected(' + index + ');"><i class="fa fa-edit"></i>选择</button>';
                 str += '</div>';
                 return str;
             }
@@ -101,18 +101,42 @@
             $("#select_huxing_modal").remove();
         }
         that.success = options.success;
-        var html = '<div id="select_huxing_modal" class="modal fade bs-example-modal-lg" data-backdrop="static" ';
-        html += 'role="dialog" data-keyboard="false" tabindex="1" >';
-        html += '<div class="modal-dialog  modal-lg">';
-        html += '<div class="modal-content">';
+        var html = '<div id="select_huxing_modal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"aria-hidden="true">';
+        html += ' <div class="modal-dialog modal-lg">';
+        html += ' <div class="modal-content">';
+
         html += '<div class="modal-header">';
-        html += '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span';
-        html += 'aria-hidden="true">&times;</span></button>';
-        html += '<h3 class="modal-title">户型选择</h3>';
+        html += '<h4 class="modal-title">户型选择</h4>';
+
+
+        html += '<button type="button" class="close" data-dismiss="modal" aria-label="Close">';
+        html += '<span ria-hidden="true">&times;</span></button>';
         html += '</div>';
+
         html += '<div class="modal-body">';
+        html += '<form class="form-horizontal">';
+        html += '<div class="row">';
+        html += '<div class="col-md-12">';
+        html += '<div class="card-body">';
         html += '<table id="select_huxing_list" class="table table-bordered">';
         html += '</table>';
+        html += "<div class='row form-group'>";
+        html += "<div class='col-md-12'>";
+
+        html += '</div>';
+        html += '</div>';
+
+        html += '</div>';
+        html += '</div>';
+        html += '</div>';
+        html += '</form>';
+        html += '</div>';
+
+        html += '<div class="modal-footer">';
+        html += '<button type="button" data-dismiss="modal" class="btn btn-default btn-sm">关闭';
+        html += '</button>';
+        html += '</div>';
+
         html += '</div>';
         html += '</div>';
         html += '</div>';

@@ -250,19 +250,25 @@
         AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estateLandInfrastructure, '', function (html, resultData) {
             var target = $("#industrySupplyInfoContainer");
             target.empty();
-            var resultHtml = '';
+
+            var resultHtml = '<div>';
             var array = [];
-            if (data.estate.infrastructure) {
-                array = data.estate.infrastructure.split(',');
+            if (data) {
+                if (data.estate.infrastructure) {
+                    array = data.estate.infrastructure.split(',');
+                }
             }
+            resultHtml += "<div class='form-check' style='justify-content:left'>";
             $.each(resultData, function (i, item) {
-                resultHtml += '<span class="checkbox-inline"><input type="checkbox" ';
+                resultHtml += "<label class='form-check-label'>";
+                resultHtml += "<input class='form-check-input' type='checkbox' name='infrastructure' ";
                 if ($.inArray(item.id.toString(), array) > -1) {
                     resultHtml += ' checked="checked" ';
                 }
-                resultHtml += ' id="infrastructure' + item.id + '" name="infrastructure" value="' + item.id + '">';
-                resultHtml += '<label for="infrastructure' + item.id + '">' + item.name + '</label></span>';
+                resultHtml += 'value="' + item.id + '">';
+                resultHtml += "<span class='form-check-sign'>" + item.name + "</span>";
             });
+            resultHtml += "</div>";
             resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '全选或全不选' + "</span>";
             resultHtml += "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"estateCommon.checkedFun(this,'infrastructure',true)\">";
             resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '反选' + "</span>";
@@ -359,27 +365,34 @@
             if (key == AssessDicKey.estateDevelopment_degreePrepared_land) {
                 AssessCommon.loadDataDicByPid($(this).val(), '', function (html, resultData) {
                     if (resultData) {
-                        var resultHtml = '';
+                        var resultHtml = '<div>';
                         var array = [];
-                        if (data.land.developmentDegreeContent) {
-                            array = data.land.developmentDegreeContent.split(',');
+                        if (data) {
+                            if (data.land.developmentDegreeContent) {
+                                array = data.land.developmentDegreeContent.split(',');
+                            }
                         }
+                        resultHtml += "<div class='form-check' style='justify-content:left'>";
                         $.each(resultData, function (i, item) {
-                            resultHtml += '<span class="checkbox-inline"><input type="checkbox" ';
+                            resultHtml += "<label class='form-check-label'>";
+                            resultHtml += "<input class='form-check-input' type='checkbox' name='developmentDegreeContent' ";
                             if ($.inArray(item.id.toString(), array) > -1) {
                                 resultHtml += ' checked="checked" ';
                             }
-                            resultHtml += ' id="developmentDegreeContent' + item.id + '" name="developmentDegreeContent" value="' + item.id + '">';
-                            resultHtml += '<label for="developmentDegreeContent' + item.id + '">' + item.name + '</label></span>';
+                            resultHtml += 'value="' + item.id + '">';
+                            resultHtml += "<span class='form-check-sign'>" + item.name + "</span>";
                         });
+                        resultHtml += "</div>";
                         resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '全选或全不选' + "</span>";
                         resultHtml += "<input type=\"radio\" name=\"developmentDegreeContentSelect\"  onclick=\"estateCommon.checkedFun(this,'developmentDegreeContent',true)\">";
                         resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '反选' + "</span>";
                         resultHtml += "<input type=\"radio\" name=\"developmentDegreeContentSelect\"  onclick=\"estateCommon.checkedFun(this,'developmentDegreeContent',false)\">";
                         $("#developmentDegreeContentContainer").html(resultHtml);
-                    }
+                        }
                 });
-                estateCommon.estateLandStateForm.find("input[name='developmentDegreeRemark']").parent().parent().hide();
+                estateCommon.estateLandStateForm.find(".developmentDegreeContent").hide();
+            }else{
+                estateCommon.estateLandStateForm.find(".developmentDegreeContent").show();
             }
         });
 

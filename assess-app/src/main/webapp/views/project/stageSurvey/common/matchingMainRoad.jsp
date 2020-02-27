@@ -87,19 +87,21 @@
                                         <label class="col-sm-2 control-label">
                                                 是否限行<span class="symbol required"></span>
                                             </label>
-                                        <div class="col-sm-10">
-                                        <span class="checkbox-inline">
-                                            <input type="radio" onchange="matchingMainRoad.prototype.showLimit(this)"
-                                                   id="limitBasicMatchingTraffic2" name="flag" value="true">
-                                            <label for="limitBasicMatchingTraffic2">是</label>
-                                        </span>
-                                            <span class="checkbox-inline">
-                                            <input type="radio" onchange="matchingMainRoad.prototype.showLimit(this)"
-                                                   checked="checked" id="limitBasicMatchingTraffic1" name="flag"
-                                                   value="false">
-                                            <label for="limitBasicMatchingTraffic1">否</label>
-                                        </span>
-                                        </div>
+                                            <div class="col-sm-10">
+                                                <div class="form-check">
+                                                    <label class="form-check-label">
+                                                        <input type="radio" onchange="matchingMainRoad.prototype.showLimit(this)"
+                                                               id="limitBasicMatchingTraffic2" name="flag" value="true">
+                                                        <span class="form-check-sign">是</span>
+                                                    </label>
+                                                    <label class="form-check-label">
+                                                        <input type="radio" onchange="matchingMainRoad.prototype.showLimit(this)"
+                                                               checked="checked" id="limitBasicMatchingTraffic1" name="flag"
+                                                               value="false">
+                                                        <span class="form-check-sign">否</span>
+                                                    </label>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

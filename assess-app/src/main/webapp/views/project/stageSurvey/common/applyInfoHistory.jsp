@@ -1,130 +1,147 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%--引用案例库信息--%>
-<div id="estateModal" class="modal fade bs-example-modal-lg" data-backdrop="static"
-     tabindex="-1"
-     role="dialog"
+<div id="estateModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
+                <h4 class="modal-title">楼盘</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">楼盘</h3>
             </div>
+
             <div class="modal-body">
-                <div class="row">
-                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                        <form class="form-horizontal" id="frmCaseEstate">
-                            <div class="form-group">
-                                <table class="table table-bordered" id="estateTable">
-                                </table>
+                <form id="frmCaseEstate" class="form-horizontal">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                    <table class="table table-bordered" id="estateTable">
+                                    </table>
+                                    </div>
+                                </div>
                             </div>
-                        </form>
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
             <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
                     关闭
                 </button>
             </div>
+
         </div>
     </div>
 </div>
-<div id="buildModal" class="modal fade bs-example-modal-lg" data-backdrop="static"
-     tabindex="-1"
-     role="dialog"
+<div id="buildModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
+                <h4 class="modal-title">楼栋</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">楼栋</h3>
             </div>
+
             <div class="modal-body">
-                <div class="row">
-                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                        <form class="form-horizontal">
-                            <div class="form-group">
-                                <table class="table table-bordered" id="buildTable">
-                                </table>
+                <form class="form-horizontal">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                    <table class="table table-bordered" id="buildTable">
+                                    </table>
+                                    </div>
+                                </div>
                             </div>
-                        </form>
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
             <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
                     关闭
                 </button>
             </div>
+
         </div>
     </div>
 </div>
-<div id="unitModal" class="modal fade bs-example-modal-lg" data-backdrop="static"
-     tabindex="-1"
-     role="dialog"
+<div id="unitModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
+                <h4 class="modal-title">单元</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">单元</h3>
             </div>
+
             <div class="modal-body">
-                <div class="row">
-                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                        <form class="form-horizontal">
-                            <div class="form-group">
-                                <table class="table table-bordered" id="unitTable">
-                                </table>
+                <form class="form-horizontal">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                    <table class="table table-bordered" id="unitTable">
+                                    </table>
+                                    </div>
+                                </div>
                             </div>
-                        </form>
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
             <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
                     关闭
                 </button>
             </div>
+
         </div>
     </div>
 </div>
-<div id="houseModal" class="modal fade bs-example-modal-lg" data-backdrop="static"
-     tabindex="-1"
-     role="dialog"
+<div id="houseModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
+                <h4 class="modal-title">房屋</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">房屋</h3>
             </div>
+
             <div class="modal-body">
-                <div class="row">
-                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                        <form class="form-horizontal">
-                            <div class="form-group">
-                                <table class="table table-bordered" id="houseTable">
-                                </table>
+                <form class="form-horizontal">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                    <table class="table table-bordered" id="houseTable">
+                                    </table>
+                                    </div>
+                                </div>
                             </div>
-                        </form>
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
             <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
                     关闭
                 </button>
             </div>
+
         </div>
     </div>
 </div>
+
 <script type="text/javascript">
     var historyInfo = function () {
 
@@ -203,7 +220,7 @@
                 field: 'id', title: '查询', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
-                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="详情" onclick="historyInfo.caseEstate.findData(' + row.id + ','+classify+',\''+tbType+'\',\''+tableName+'\',\''+applyBatchId+'\')"><i class="fa fa-search fa-white"></i></a>';
+                    str += '<button type="button" class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="详情" onclick="historyInfo.caseEstate.findData(' + row.id + ','+classify+',\''+tbType+'\',\''+tableName+'\',\''+applyBatchId+'\')"><i class="fa fa-search"></i></button>';
                     str += '</div>';
                     return str;
                 }
@@ -271,7 +288,7 @@
                 field: 'id', title: '查询', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
-                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="查看" onclick="historyInfo.caseBuild.findData(' + row.id + ','+classify+',\''+tbType+'\',\''+tableName+'\',\''+applyBatchId+'\')"><i class="fa fa-search fa-white"></i></a>';
+                    str += '<button type="button" class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="查看" onclick="historyInfo.caseBuild.findData(' + row.id + ','+classify+',\''+tbType+'\',\''+tableName+'\',\''+applyBatchId+'\')"><i class="fa fa-search fa-white"></i></button>';
                     str += '</div>';
                     return str;
                 }
@@ -321,7 +338,7 @@
                 field: 'id', title: '查询', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
-                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="查看" onclick="historyInfo.caseUnit.findData(' + row.id + ','+classify+',\''+tbType+'\',\''+tableName+'\',\''+applyBatchId+'\')"><i class="fa fa-search fa-white"></i></a>';
+                    str += '<button type="button" class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="查看" onclick="historyInfo.caseUnit.findData(' + row.id + ','+classify+',\''+tbType+'\',\''+tableName+'\',\''+applyBatchId+'\')"><i class="fa fa-search fa-white"></i></button>';
                     str += '</div>';
                     return str;
                 }
@@ -371,7 +388,7 @@
                 field: 'id', title: '查询', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
-                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="查看" onclick="historyInfo.caseHouse.findData(' + row.id + ','+classify+',\''+tbType+'\',\''+tableName+'\',\''+applyBatchId+'\')"><i class="fa fa-search fa-white"></i></a>';
+                    str += '<button type="button" class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="查看" onclick="historyInfo.caseHouse.findData(' + row.id + ','+classify+',\''+tbType+'\',\''+tableName+'\',\''+applyBatchId+'\')"><i class="fa fa-search fa-white"></i></button>';
                     str += '</div>';
                     return str;
                 }

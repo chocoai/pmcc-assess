@@ -578,7 +578,7 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    notifySuccess("保存成功");
+                    notifySuccess("成功","保存成功");
                     var tr = $('#adjust_factor_table').find('[data-id=' + judgeObjectId + ']');
                     tr.find('[data-name=price]').text(result.data.price);
                     tr.find('[data-name=coefficient]').text(result.data.coefficient);
@@ -656,7 +656,7 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    notifySuccess("保存成功");
+                    notifySuccess("成功","保存成功");
                     //更新元素信息
                     $(_this).closest('tr').find('[data-name=price]').text(surePrice.beCopyJudgeObject.price);
                     $(_this).closest('tr').find('[data-name=coefficient]').text(surePrice.beCopyJudgeObject.coefficient);
@@ -697,7 +697,7 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    notifySuccess("保存成功");
+                    notifySuccess("成功","保存成功");
                     //更新元素信息
                     $("#adjust_factor_table tbody").find(':checkbox:checked').each(function () {
                         $(this).closest('tr').find('[data-name=price]').text(surePrice.beCopyJudgeObject.price);

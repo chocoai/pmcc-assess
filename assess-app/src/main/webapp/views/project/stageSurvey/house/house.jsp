@@ -414,7 +414,9 @@
             <div class="form-inline x-valid">
                 <div class="col-sm-1" style="text-align: right;">
                     <button type="button" class="btn btn-success btn-sm" data-toggle="modal"
-                            onclick="houseCommon.addTradingSellAndLease()"> 新增
+                            onclick="houseCommon.addTradingSellAndLease()"> <span class="btn-label">
+												<i class="fa fa-plus"></i>
+											</span>新增
                     </button>
                 </div>
                 <div class="col-sm-11">
@@ -473,11 +475,9 @@
                             required>
                     </select>
                 </div>
-            </div>
-            <div style="display: none">
-                <label class="col-sm-1">单价单位<span
+                <label class="col-sm-1 priceConnotationUnitContent">单价单位<span
                         class="symbol required"></span></label>
-                <div class="col-sm-3">
+                <div class="col-sm-3 priceConnotationUnitContent">
                     <input type="text" placeholder="单价单位(元/㎡|元/个)" class="form-control input-full" name="priceConnotationUnit"
                            id="priceConnotationUnit" required value="${basicHouseTrading.priceConnotationUnit}">
                 </div>

@@ -28,7 +28,7 @@
                             AssessTransit.prototype.appendHtml(options);
                         }
                     } else {
-                        Alert("无标记");
+                        AlertError("无标记");
                     }
                 }
             }
@@ -46,37 +46,53 @@
         }
         try {
             assessSearchMap.transferSearch('公交站', options.distance, options, function (data) {
-                var html = '<div id="select_transit_modal" class="modal fade bs-example-modal-lg" data-backdrop="static" ';
-                html += 'role="dialog" data-keyboard="false" tabindex="1" >';
-                html += '<div class="modal-dialog  modal-lg">';
-                html += '<div class="modal-content">';
-                html += '<div class="modal-header">';
+                var html = '<div id="select_transit_modal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"aria-hidden="true">';
+                html += ' <div class="modal-dialog modal-lg">';
+                html += ' <div class="modal-content">';
 
-                html += '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span';
-                html += 'aria-hidden="true">&times;</span></button>';
-                html += '<h3 class="modal-title">公交站选择 &nbsp;&nbsp;&nbsp;&nbsp;';
+                html += '<div class="modal-header">';
+                html += '<h4 class="modal-title">公交站选择</h4>';
+
+
+                html += '<button type="button" class="close" data-dismiss="modal" aria-label="Close">';
+                html += '<span ria-hidden="true">&times;</span></button>';
+                html += '</div>';
+
+                html += '<div class="modal-body">';
+                html += '<form class="form-horizontal">';
+                html += '<div class="row">';
+                html += '<div class="col-md-12">';
+                html += '<div class="card-body">';
+
+                html += "<div class='row form-group'>";
+                html += "<div class='col-md-12'>";
+                html += '<div class="form-inline x-valid">';
                 html += "<span class='label label-primary'>" + '全选或全不选' + "</span>";
                 html += "<input type='checkbox' onclick='assessTransit.checkedFun(this,true)'>";
                 html += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '反选' + "</span>";
                 html += "<input type='checkbox' onclick='assessTransit.checkedFun(this,false)'>";
                 html += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='badge'>记录max20</span>";
-                html += "&nbsp;&nbsp;&nbsp;&nbsp;<input type='button' class='btn btn-success' value='保存选中选项' onclick='assessTransit.save(this)'>" ;
-                html += "</h3>";
+                html += '</div>';
+                html += '</div>';
                 html += '</div>';
 
-                html += "<form class='form-horizontal'>";
-                html += '<div class="modal-body">';
 
-                html += "<div class='row'>";
-                html += "<div class='col-xs-12 col-sm-12 col-md-12 col-lg-12'>";
-                html += "<div class='panel-body'>";
                 html += AssessTransit.prototype.write(data);
+
                 html += '</div>';
                 html += '</div>';
+                html += '</div>';
+                html += '</form>';
+                html += '</div>';
+
+                html += '<div class="modal-footer">';
+                html += '<button type="button" data-dismiss="modal" class="btn btn-default btn-sm">关闭';
+                html += '</button>';
+                html += '<button type="button" class="btn btn-primary btn-sm" onclick="assessTransit.save(this)">';
+                html += '保存</button>';
                 html += '</div>';
 
                 html += '</div>';
-                html += "</form>";
                 html += '</div>';
                 html += '</div>';
 
@@ -112,23 +128,23 @@
                 data: data,
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success('保存成功');
+                        notifySuccess('成功','保存成功');
                         matchingTransit.prototype.loadDataDicList();
                         $('#select_transit_modal').modal('hide');
                     }
                     else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             });
         });
     };
 
     AssessTransit.prototype.save = function (that) {
-        var form = $(that).parent().parent().next();
+        var form = $(that).parent().parent().find('.form-horizontal');
         form.find(":checkbox").each(function (i, n) {
             if ($(this).prop("checked")) {
                 AssessTransit.prototype.onSelected(this);
@@ -139,21 +155,28 @@
     AssessTransit.prototype.write = function (data) {
         var retHtml = "";
         $.each(data.poiList.pois, function (i, item) {
-            retHtml += "<div class='form-group'>";
-            retHtml += "<div class='col-xs-3 col-sm-3 col-md-3 col-lg-3'><span class='checkbox-inline'>";
+            retHtml += "<div class='row form-group'>";
+            retHtml += "<div class='col-md-12'>";
+            retHtml += ' <div class="form-inline x-valid">';
+
+
+            retHtml += "<div class='col-sm-3'><span class='checkbox-inline'>";
             retHtml += "<input type='checkbox' id='matchingTransit" + i + "' name='name' readonly='readonly' value='" + item.name + "' onclick=''" + ">";
             retHtml += "<label for='matchingTransit" + i + "'>" + item.name + "</label>";
             retHtml += '</span></div>';
-            retHtml += "<label class='col-xs-1 col-sm-1 col-md-1 col-lg-1 control-label'>距离</label>";
-            retHtml += "<div class='col-xs-2 col-sm-2 col-md-2 col-lg-2'>";
-            retHtml += "<input type='text' class='form-control' name='distance' readonly='readonly' value='" + item.distance + "'" + ">";
+
+            retHtml += "<label class='col-sm-1 control-label'>距离</label>";
+            retHtml += "<div class='col-sm-2'>";
+            retHtml += "<input type='text' class='form-control input-full' name='distance' readonly='readonly' value='" + item.distance + "'" + ">";
             retHtml += "</div>";
 
-            retHtml += "<label class='col-xs-1 col-sm-1 col-md-1 col-lg-1 control-label'>线路</label>";
-            retHtml += "<div class='col-xs-5 col-sm-5 col-md-5 col-lg-5'>";
-            retHtml += "<label class='form-control theLine'>" + item.address + "</label>";
+            retHtml += "<label class='col-sm-1 control-label'>线路</label>";
+            retHtml += "<div class='col-sm-5'>";
+            retHtml += "<label class='form-control input-full theLine'>" + item.address + "</label>";
             retHtml += "</div>";
 
+            retHtml += '</div>';
+            retHtml += '</div>';
             retHtml += '</div>';
         });
         return retHtml;
@@ -173,7 +196,7 @@
      * @param flag true 表示全选或者全不选,否则表示反选
      */
     AssessTransit.prototype.checkedFun = function (that, flag) {
-        var form = $(that).parent().parent().next();
+        var form = $(that).closest('.form-horizontal');
         if (flag) {//全选或者全不选
             var number = 1;
             form.find(":checkbox").each(function (i, n) {

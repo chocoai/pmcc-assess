@@ -35,13 +35,6 @@
                         删除
                     </button>
 
-                    <label class="col-sm-1 control-label">
-                        餐饮类别
-                    </label>
-                    <div class="col-sm-2">
-                        <select name="category" class="form-control input-full input-full category">
-                        </select>
-                    </div>
                     <div class="col-sm-3">
                         <input type="text" placeholder="距离(单位/m)" class="form-control input-full input-full" name="distance"
                                value="3000">

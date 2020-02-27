@@ -27,8 +27,8 @@ var houseHeating;
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
-                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="houseHeating.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
-                    str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseHeating.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
+                    str += '<button type="button" class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="houseHeating.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
+                    str += '<button type="button" class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseHeating.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
                     str += '</div>';
                     return str;
                 }
@@ -54,15 +54,15 @@ var houseHeating;
                 data: {id: id},
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success('删除成功');
+                        notifySuccess("成功", "删除成功");
                         houseHeating.prototype.loadDataDicList();
                     }
                     else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -70,7 +70,7 @@ var houseHeating;
             houseHeating.prototype.init({});
             $('#' + houseHeating.prototype.config().box).modal("show");
         },
-        saveData: function () {
+        saveData: function () {r
             if (!$("#" + houseHeating.prototype.config().frm).valid()) {
                 return false;
             }
@@ -84,16 +84,16 @@ var houseHeating;
                 data: data,
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success('保存成功');
+                        notifySuccess("成功", "保存成功");
                         $('#' + houseHeating.prototype.config().box).modal('hide');
                         houseHeating.prototype.loadDataDicList();
                     }
                     else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -114,7 +114,7 @@ var houseHeating;
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -167,8 +167,8 @@ var houseAirConditioner;
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
-                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="houseAirConditioner.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
-                    str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseAirConditioner.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
+                    str += '<button type="button"  class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="houseAirConditioner.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
+                    str += '<button type="button"  class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseAirConditioner.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
                     str += '</div>';
                     return str;
                 }
@@ -194,15 +194,15 @@ var houseAirConditioner;
                 data: {id: id},
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success('删除成功');
+                        notifySuccess("成功", "删除成功");
                         houseAirConditioner.prototype.loadDataDicList();
                     }
                     else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -224,16 +224,16 @@ var houseAirConditioner;
                 data: data,
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success('保存成功');
+                        notifySuccess("成功", "保存成功");
                         $('#' + houseAirConditioner.prototype.config().box).modal('hide');
                         houseAirConditioner.prototype.loadDataDicList();
                     }
                     else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -254,7 +254,7 @@ var houseAirConditioner;
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -307,8 +307,8 @@ var houseNewWind;
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
-                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="houseNewWind.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
-                    str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseNewWind.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
+                    str += '<button type="button"  class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="houseNewWind.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
+                    str += '<button type="button"  class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseNewWind.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
                     str += '</div>';
                     return str;
                 }
@@ -334,15 +334,15 @@ var houseNewWind;
                 data: {id: id},
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success('删除成功');
+                        notifySuccess("成功", "删除成功");
                         houseNewWind.prototype.loadDataDicList();
                     }
                     else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -364,16 +364,16 @@ var houseNewWind;
                 data: data,
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success('保存成功');
+                        notifySuccess("成功", "保存成功");
                         $('#' + houseNewWind.prototype.config().box).modal('hide');
                         houseNewWind.prototype.loadDataDicList();
                     }
                     else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -394,7 +394,7 @@ var houseNewWind;
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -447,8 +447,8 @@ var houseCorollaryEquipment;
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
-                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="houseCorollaryEquipment.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
-                    str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseCorollaryEquipment.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
+                    str += '<button type="button"  class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="houseCorollaryEquipment.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
+                    str += '<button type="button"  class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseCorollaryEquipment.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
                     str += '</div>';
                     return str;
                 }
@@ -473,15 +473,15 @@ var houseCorollaryEquipment;
                 data: {id: id},
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success('删除成功');
+                        notifySuccess("成功", "删除成功");
                         houseCorollaryEquipment.prototype.loadDataDicList();
                     }
                     else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -502,16 +502,16 @@ var houseCorollaryEquipment;
                 data: data,
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success('保存成功');
+                        notifySuccess("成功", "保存成功");
                         $('#' + houseCorollaryEquipment.prototype.config().box).modal('hide');
                         houseCorollaryEquipment.prototype.loadDataDicList();
                     }
                     else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -532,7 +532,7 @@ var houseCorollaryEquipment;
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -606,8 +606,8 @@ var houseFaceStreet;
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
-                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="houseFaceStreet.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
-                    str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseFaceStreet.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
+                    str += '<button type="button"  class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="houseFaceStreet.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
+                    str += '<button type="button"  class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseFaceStreet.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
                     str += '</div>';
                     return str;
                 }
@@ -632,15 +632,15 @@ var houseFaceStreet;
                 data: {id: id},
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success('删除成功');
+                        notifySuccess("成功", "删除成功");
                         houseFaceStreet.prototype.loadDataDicList();
                     }
                     else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -679,16 +679,16 @@ var houseFaceStreet;
                 data: data,
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success('保存成功');
+                        notifySuccess("成功", "保存成功");
                         $('#' + houseFaceStreet.prototype.config().box).modal('hide');
                         houseFaceStreet.prototype.loadDataDicList();
                     }
                     else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -709,7 +709,7 @@ var houseFaceStreet;
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -815,8 +815,8 @@ var houseIntelligent;
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
-                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="houseIntelligent.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
-                    str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseIntelligent.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
+                    str += '<button type="button"  class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="houseIntelligent.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
+                    str += '<button type="button"  class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseIntelligent.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
                     str += '</div>';
                     return str;
                 }
@@ -841,15 +841,15 @@ var houseIntelligent;
                 data: {id: id},
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success('删除成功');
+                        notifySuccess("成功", "删除成功");
                         houseIntelligent.prototype.loadDataDicList();
                     }
                     else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -890,18 +890,18 @@ var houseIntelligent;
                 data: data,
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success('保存成功');
+                        notifySuccess("成功", "保存成功");
                         $('#' + houseIntelligent.prototype.config().box).modal('hide');
                         houseIntelligent.prototype.loadDataDicList();
                         num = 0;
                         arr.length = 0;
                     }
                     else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -922,7 +922,7 @@ var houseIntelligent;
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -952,7 +952,7 @@ var houseIntelligent;
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             });
             AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_switch_circuit, item.switchCircuit, function (html, data) {
@@ -1142,8 +1142,8 @@ var houseWater;
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
-                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="houseWater.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
-                    str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseWater.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
+                    str += '<button type="button"  class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="houseWater.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
+                    str += '<button type="button"  class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseWater.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
                     str += '</div>';
                     return str;
                 }
@@ -1168,15 +1168,15 @@ var houseWater;
                 data: {id: id},
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success('删除成功');
+                        notifySuccess("成功", "删除成功");
                         houseWater.prototype.loadDataDicList();
                     }
                     else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -1197,16 +1197,16 @@ var houseWater;
                 data: data,
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success('保存成功');
+                        notifySuccess("成功", "保存成功");
                         $('#' + houseWater.prototype.config().box).modal('hide');
                         houseWater.prototype.loadDataDicList();
                     }
                     else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -1227,7 +1227,7 @@ var houseWater;
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -1285,8 +1285,8 @@ houseWaterDrain.loadDataDicList = function () {
     cols.push({
         field: 'id', title: '操作', formatter: function (value, row, index) {
             var str = '<div class="btn-margin">';
-            str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="houseWaterDrain.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
-            str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseWaterDrain.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
+            str += '<button type="button"  class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="houseWaterDrain.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
+            str += '<button type="button"  class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseWaterDrain.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
             str += '</div>';
             return str;
         }
@@ -1304,7 +1304,7 @@ houseWaterDrain.loadDataDicList = function () {
     });
 };
 houseWaterDrain.removeData = function (id) {
-    Alert("确认删除", 2, null, function () {
+    AlertConfirm("是否确认删除", "删除相应的数据后将不可恢复", function () {
         $.ajax({
             url: getContextPath() + "/basicHouseWaterDrain/delete",
             type: "post",
@@ -1316,7 +1316,7 @@ houseWaterDrain.removeData = function (id) {
                 }
             },
             error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
+                AlertError("调用服务端方法失败，失败原因:" + result);
             }
         })
     });
@@ -1338,7 +1338,7 @@ houseWaterDrain.getAndInit = function (id) {
             }
         },
         error: function (result) {
-            Alert("调用服务端方法失败，失败原因:" + result);
+            AlertError("调用服务端方法失败，失败原因:" + result);
         }
     })
 };
@@ -1377,16 +1377,16 @@ houseWaterDrain.saveData = function () {
         data: data,
         success: function (result) {
             if (result.ret) {
-                toastr.success('保存成功');
+                notifySuccess("成功", "保存成功");
                 $('#' + houseWaterDrain.config.box).modal('hide');
                 houseWaterDrain.loadDataDicList();
             }
             else {
-                Alert("保存数据失败，失败原因:" + result.errmsg);
+                AlertError("保存数据失败，失败原因:" + result.errmsg);
             }
         },
         error: function (result) {
-            Alert("调用服务端方法失败，失败原因:" + result);
+            AlertError("调用服务端方法失败，失败原因:" + result);
         }
     });
 };
@@ -1434,10 +1434,10 @@ var houseRoom;
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
-                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="houseRoom.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
-                    str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseRoom.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
-                    str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="装修情况" onclick="houseRoom.prototype.showModelSubclass(' + row.id + ',\'tb_List\')"><i class="fa fa-gavel fa-white"></i></a>';
-                    str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="复制" onclick="houseRoom.prototype.dataCopy(' + row.id + ',\'tb_List\')"><i class="fa fa-copy fa-white"></i></a>';
+                    str += '<button type="button"  class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="houseRoom.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
+                    str += '<button type="button"  class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseRoom.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
+                    str += '<button type="button"  class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="装修情况" onclick="houseRoom.prototype.showModelSubclass(' + row.id + ',\'tb_List\')"><i class="fa fa-gavel fa-white"></i></button>';
+                    str += '<button type="button"  class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="复制" onclick="houseRoom.prototype.dataCopy(' + row.id + ',\'tb_List\')"><i class="fa fa-copy fa-white"></i></button>';
                     str += '</div>';
                     return str;
                 }
@@ -1462,15 +1462,15 @@ var houseRoom;
                 data: {id: id},
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success('删除成功');
+                        notifySuccess("成功", "删除成功");
                         houseRoom.prototype.loadDataDicList();
                     }
                     else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -1503,7 +1503,7 @@ var houseRoom;
                 data: data,
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success('保存成功');
+                        notifySuccess("成功", "保存成功");
                         $('#' + houseRoom.prototype.config().boxSubclassSaveView).modal('hide');
                         var item = result.data;
                         if (houseRoom.prototype.isEmpty(item)) {
@@ -1511,11 +1511,11 @@ var houseRoom;
                         }
                     }
                     else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -1527,15 +1527,15 @@ var houseRoom;
                 data: {id: id},
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success('删除成功');
+                        notifySuccess("成功", "删除成功");
                         houseRoom.prototype.subclassLoadList(result.data);
                     }
                     else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -1568,8 +1568,8 @@ var houseRoom;
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
-                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="houseRoom.prototype.subclassGetAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
-                    str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseRoom.prototype.subclassRemoveData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
+                    str += '<button type="button"  class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="houseRoom.prototype.subclassGetAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
+                    str += '<button type="button"  class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseRoom.prototype.subclassRemoveData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
                     str += '</div>';
                     return str;
                 }
@@ -1599,16 +1599,16 @@ var houseRoom;
                 data: data,
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success('保存成功');
+                        notifySuccess("成功", "保存成功");
                         $('#' + houseRoom.prototype.config().box).modal('hide');
                         houseRoom.prototype.loadDataDicList();
                     }
                     else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -1625,7 +1625,7 @@ var houseRoom;
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -1642,7 +1642,7 @@ var houseRoom;
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -1659,7 +1659,7 @@ var houseRoom;
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -1675,7 +1675,7 @@ var houseRoom;
                     practicalUseId:  practicalUse
                 });
             } else {
-                Alert("请先选择房屋下的实际用途");
+                AlertError("请先选择房屋下的实际用途");
             }
 
             FileUtils.uploadFiles({
@@ -1826,8 +1826,8 @@ damagedDegree.loadDamagedDegreeDetailList = function () {
     cols.push({
         field: 'id', title: '操作', formatter: function (value, row, index) {
             var str = '<div class="btn-margin">';
-            str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="damagedDegree.editDamagedDegreeDetail(' + index + ')"><i class="fa fa-edit fa-white"></i></a>';
-            str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="damagedDegree.deleteDamagedDegreeDetail(' + row.id + ')"><i class="fa fa-minus fa-white"></i></a>';
+            str += '<button type="button"  class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="damagedDegree.editDamagedDegreeDetail(' + index + ')"><i class="fa fa-pen"></i></button>';
+            str += '<button type="button"  class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="damagedDegree.deleteDamagedDegreeDetail(' + row.id + ')"><i class="fa fa-minus"></i></button>';
             str += '</div>';
             return str;
         }
@@ -1879,7 +1879,7 @@ damagedDegree.deleteDamagedDegreeDetail = function (id) {
             if (result.ret) {
                 damagedDegree.loadDamagedDegreeDetailList();
             } else {
-                Alert(result.errmsg);
+                AlertError(result.errmsg);
             }
         }
     })
@@ -1901,7 +1901,7 @@ damagedDegree.saveDamagedDegreeDetail = function () {
                 damagedDegree.loadDamagedDegreeDetailList();
                 $("#damagedDegreeDetailModal").modal('hide');
             } else {
-                Alert(result.errmsg);
+                AlertError(result.errmsg);
             }
         }
     })

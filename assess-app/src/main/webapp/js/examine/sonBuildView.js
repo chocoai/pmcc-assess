@@ -69,7 +69,7 @@ var buildingModelView;
                             }
                         },
                         error: function (result) {
-                            Alert("调用服务端方法失败，失败原因:" + result);
+                            AlertError("调用服务端方法失败，失败原因:" + result);
                         }
                     })
                 },
@@ -86,16 +86,16 @@ var buildingModelView;
                         data: data,
                         success: function (result) {
                             if (result.ret) {
-                                toastr.success('保存成功');
+                                notifySuccess("成功", "保存成功");
                                 $('#' + buildingModelView.prototype.config().sonBox).modal('hide');
                                 buildingModelView.prototype.sonModelMethod.buildingOutfit.loadDataDicList();
                             }
                             else {
-                                Alert("保存数据失败，失败原因:" + result.errmsg);
+                                AlertError("保存数据失败，失败原因:" + result.errmsg);
                             }
                         },
                         error: function (result) {
-                            Alert("调用服务端方法失败，失败原因:" + result);
+                            AlertError("调用服务端方法失败，失败原因:" + result);
                         }
                     })
                 },
@@ -112,15 +112,15 @@ var buildingModelView;
                         data: {id: id},
                         success: function (result) {
                             if (result.ret) {
-                                toastr.success('删除成功');
+                                notifySuccess("成功", "删除成功");
                                 buildingModelView.prototype.sonModelMethod.buildingOutfit.loadDataDicList();
                             }
                             else {
-                                Alert("保存数据失败，失败原因:" + result.errmsg);
+                                AlertError("保存数据失败，失败原因:" + result.errmsg);
                             }
                         },
                         error: function (result) {
-                            Alert("调用服务端方法失败，失败原因:" + result);
+                            AlertError("调用服务端方法失败，失败原因:" + result);
                         }
                     })
                 },
@@ -149,8 +149,8 @@ var buildingModelView;
                     cols.push({
                         field: 'id', title: '操作', formatter: function (value, row, index) {
                             var str = '<div class="btn-margin">';
-                            str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="buildingModelView.prototype.sonModelMethod.buildingOutfit.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
-                            str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="buildingModelView.prototype.sonModelMethod.buildingOutfit.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
+                            str += '<button type="button" class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="buildingModelView.prototype.sonModelMethod.buildingOutfit.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
+                            str += '<button type="button" class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="buildingModelView.prototype.sonModelMethod.buildingOutfit.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
                             str += '</div>';
                             return str;
                         }
@@ -189,7 +189,7 @@ var buildingModelView;
                             }
                         },
                         error: function (result) {
-                            Alert("调用服务端方法失败，失败原因:" + result);
+                            AlertError("调用服务端方法失败，失败原因:" + result);
                         }
                     })
                 },
@@ -206,16 +206,16 @@ var buildingModelView;
                         data: data,
                         success: function (result) {
                             if (result.ret) {
-                                toastr.success('保存成功');
+                                notifySuccess("成功", "保存成功");
                                 $('#' + buildingModelView.prototype.config().examineBuildingSurfaceBox).modal('hide');
                                 buildingModelView.prototype.sonModelMethod.buildingSurface.loadDataDicList();
                             }
                             else {
-                                Alert("保存数据失败，失败原因:" + result.errmsg);
+                                AlertError("保存数据失败，失败原因:" + result.errmsg);
                             }
                         },
                         error: function (result) {
-                            Alert("调用服务端方法失败，失败原因:" + result);
+                            AlertError("调用服务端方法失败，失败原因:" + result);
                         }
                     })
                 },
@@ -232,15 +232,15 @@ var buildingModelView;
                         data: {id: id},
                         success: function (result) {
                             if (result.ret) {
-                                toastr.success('删除成功');
+                                notifySuccess("成功", "删除成功");
                                 buildingModelView.prototype.sonModelMethod.buildingSurface.loadDataDicList();
                             }
                             else {
-                                Alert("保存数据失败，失败原因:" + result.errmsg);
+                                AlertError("保存数据失败，失败原因:" + result.errmsg);
                             }
                         },
                         error: function (result) {
-                            Alert("调用服务端方法失败，失败原因:" + result);
+                            AlertError("调用服务端方法失败，失败原因:" + result);
                         }
                     });
                 },
@@ -254,8 +254,8 @@ var buildingModelView;
                     cols.push({
                         field: 'id', title: '操作', formatter: function (value, row, index) {
                             var str = '<div class="btn-margin">';
-                            str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="buildingModelView.prototype.sonModelMethod.buildingSurface.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
-                            str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="buildingModelView.prototype.sonModelMethod.buildingSurface.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
+                            str += '<button type="button" class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="buildingModelView.prototype.sonModelMethod.buildingSurface.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
+                            str += '<button type="button" class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="buildingModelView.prototype.sonModelMethod.buildingSurface.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
                             str += '</div>';
                             return str;
                         }
@@ -293,7 +293,7 @@ var buildingModelView;
                             }
                         },
                         error: function (result) {
-                            Alert("调用服务端方法失败，失败原因:" + result);
+                            AlertError("调用服务端方法失败，失败原因:" + result);
                         }
                     })
                 },
@@ -310,16 +310,16 @@ var buildingModelView;
                         data: data,
                         success: function (result) {
                             if (result.ret) {
-                                toastr.success('保存成功');
+                                notifySuccess("成功", "保存成功");
                                 $('#' + buildingModelView.prototype.config().examineBuildingMaintenanceBox).modal('hide');
                                 buildingModelView.prototype.sonModelMethod.buildingMaintenance.loadDataDicList();
                             }
                             else {
-                                Alert("保存数据失败，失败原因:" + result.errmsg);
+                                AlertError("保存数据失败，失败原因:" + result.errmsg);
                             }
                         },
                         error: function (result) {
-                            Alert("调用服务端方法失败，失败原因:" + result);
+                            AlertError("调用服务端方法失败，失败原因:" + result);
                         }
                     })
                 },
@@ -336,15 +336,15 @@ var buildingModelView;
                         data: {id: id},
                         success: function (result) {
                             if (result.ret) {
-                                toastr.success('删除成功');
+                                notifySuccess("成功", "删除成功");
                                 buildingModelView.prototype.sonModelMethod.buildingMaintenance.loadDataDicList();
                             }
                             else {
-                                Alert("保存数据失败，失败原因:" + result.errmsg);
+                                AlertError("保存数据失败，失败原因:" + result.errmsg);
                             }
                         },
                         error: function (result) {
-                            Alert("调用服务端方法失败，失败原因:" + result);
+                            AlertError("调用服务端方法失败，失败原因:" + result);
                         }
                     });
                 },
@@ -368,8 +368,8 @@ var buildingModelView;
                     cols.push({
                         field: 'id', title: '操作', formatter: function (value, row, index) {
                             var str = '<div class="btn-margin">';
-                            str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="buildingModelView.prototype.sonModelMethod.buildingMaintenance.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
-                            str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="buildingModelView.prototype.sonModelMethod.buildingMaintenance.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
+                            str += '<button type="button" class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="buildingModelView.prototype.sonModelMethod.buildingMaintenance.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
+                            str += '<button type="button" class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="buildingModelView.prototype.sonModelMethod.buildingMaintenance.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
                             str += '</div>';
                             return str;
                         }
@@ -407,7 +407,7 @@ var buildingModelView;
                             }
                         },
                         error: function (result) {
-                            Alert("调用服务端方法失败，失败原因:" + result);
+                            AlertError("调用服务端方法失败，失败原因:" + result);
                         }
                     })
                 },
@@ -424,16 +424,16 @@ var buildingModelView;
                         data: data,
                         success: function (result) {
                             if (result.ret) {
-                                toastr.success('保存成功');
+                                notifySuccess("成功", "保存成功");
                                 $('#' + buildingModelView.prototype.config().examineBuildingFunctionBox).modal('hide');
                                 buildingModelView.prototype.sonModelMethod.buildingFunction.loadDataDicList();
                             }
                             else {
-                                Alert("保存数据失败，失败原因:" + result.errmsg);
+                                AlertError("保存数据失败，失败原因:" + result.errmsg);
                             }
                         },
                         error: function (result) {
-                            Alert("调用服务端方法失败，失败原因:" + result);
+                            AlertError("调用服务端方法失败，失败原因:" + result);
                         }
                     })
                 },
@@ -450,15 +450,15 @@ var buildingModelView;
                         data: {id: id},
                         success: function (result) {
                             if (result.ret) {
-                                toastr.success('删除成功');
+                                notifySuccess("成功", "删除成功");
                                 buildingModelView.prototype.sonModelMethod.buildingFunction.loadDataDicList();
                             }
                             else {
-                                Alert("保存数据失败，失败原因:" + result.errmsg);
+                                AlertError("保存数据失败，失败原因:" + result.errmsg);
                             }
                         },
                         error: function (result) {
-                            Alert("调用服务端方法失败，失败原因:" + result);
+                            AlertError("调用服务端方法失败，失败原因:" + result);
                         }
                     });
                 },
@@ -475,8 +475,8 @@ var buildingModelView;
                     cols.push({
                         field: 'id', title: '操作', formatter: function (value, row, index) {
                             var str = '<div class="btn-margin">';
-                            str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="buildingModelView.prototype.sonModelMethod.buildingFunction.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
-                            str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="buildingModelView.prototype.sonModelMethod.buildingFunction.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
+                            str += '<button type="button" class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="buildingModelView.prototype.sonModelMethod.buildingFunction.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
+                            str += '<button type="button" class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="buildingModelView.prototype.sonModelMethod.buildingFunction.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
                             str += '</div>';
                             return str;
                         }

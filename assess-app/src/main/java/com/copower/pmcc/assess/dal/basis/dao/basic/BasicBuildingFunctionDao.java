@@ -44,6 +44,7 @@ public class BasicBuildingFunctionDao {
     public boolean deleteBasicBuildingFunction(Integer id) {
         BasicBuildingFunction buildingFunction = getBasicBuildingFunctionById(id);
         if (buildingFunction == null) return false;
+        buildingFunction.setBisDelete(true);
         return basicBuildingFunctionMapper.updateByPrimaryKeySelective(buildingFunction) == 1;
     }
 

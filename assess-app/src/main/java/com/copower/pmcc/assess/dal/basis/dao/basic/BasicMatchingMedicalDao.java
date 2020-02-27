@@ -38,6 +38,7 @@ public class BasicMatchingMedicalDao {
     public boolean deleteBasicMatchingMedical(Integer id) {
         BasicMatchingMedical basicMatchingMedical = getBasicMatchingMedicalById(id);
         if (basicMatchingMedical == null) return false;
+        basicMatchingMedical.setBisDelete(true);
         return basicMatchingMedicalMapper.updateByPrimaryKeySelective(basicMatchingMedical) == 1;
     }
 
