@@ -29,11 +29,11 @@
                     window.location.reload(true); //强制从服务器重新加载当前页面
                     target.modal("hide");
                 } else {
-                    Alert("失败，失败原因:" + result.errmsg);
+                    AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
+                AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     };
@@ -107,11 +107,11 @@
                         });
                     }
                     else {
-                        Alert("失败，失败原因:" + result.errmsg);
+                        AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             })
         } else {
@@ -182,7 +182,7 @@
             target.find("input[name='id']").val('');
             target.find("input[name='masterId']").val('');
             var options = {
-                target: target.find(".panel-body"),
+                target: target.find(".card-body"),
                 obj: data,
                 attribute: null,
                 price: price,
@@ -216,14 +216,13 @@
         };
         var cols = [];
         cols.push({
-            field: 'id', title: '建筑安装工程费明细', formatter: function (value, row, index) {
-                var str = '<div class="btn-margin">';
-                str += "<a class='btn btn-xs btn-success tooltips' data-placement='top' data-original-title='建筑安装工程费明细' onclick='construction.constructionInstallationEngineeringFeeEvent.detailsConstructionInstallation(" + row.id + ")'" + ">" + "<i class='fa fa-pencil-square-o'>" + "建筑安装工程费明细" + "</a>";
-                str += '</div>';
+            field: 'id', title: '建筑安装工程费明细', width: "20%", formatter: function (value, row, index) {
+                var str = '<button type="button" onclick="construction.constructionInstallationEngineeringFeeEvent.detailsConstructionInstallation(' + row.id + ')" style="margin-left: 5px;" class="btn  btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="建筑安装工程费明细">';
+                str += '<i class="fa fa-pen"></i>';
+                str += '</button>';
                 return str;
             }
         });
-
         developmentCommon.loadMdCalculatingMethodEngineeringCostTable($(construction.engineeringFeeInfoTarget), obj, $("#toolbarMdCalculatingMethodEngineeringCost"), function () {
             construction.writeMdCalculatingMethodEngineeringCost();
         }, cols);
@@ -300,13 +299,13 @@
         if (!rows || rows.length <= 0) {
             toastr.info("请选择要删除的数据");
         } else {
-            Alert("确认要删除么？", 2, null, function () {
+            AlertConfirm("是否确认删除", "删除相应的数据后将不可恢复", function () {
                 developmentCommon.deleteMdCalculatingMethodEngineeringCostHandle(rows, function () {
                     toastr.success('删除成功');
                     $(construction.engineeringFeeInfoTarget).bootstrapTable('refresh');
                     construction.writeMdCalculatingMethodEngineeringCost();
                 });
-            })
+            });
         }
     };
 
@@ -325,8 +324,8 @@
                     construction.loadMdCalculatingMethodEngineeringCostTable();
                 }
             },
-            error: function (e) {
-                Alert("调用服务端方法失败，失败原因:" + e);
+            error: function (result) {
+                AlertError("错误", "调用服务端方法失败，失败原因:" + result);
             }
         });
     };

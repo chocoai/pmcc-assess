@@ -24,17 +24,19 @@
                                 <div class="form-check">
                                     <label class="form-check-label">
                                         <input class="form-check-input" type="radio"
-                                               id="developmentLand" name="type" value="1">
+                                               id="developmentLand" name="type" value="1" data-value="1">
                                         <span class="form-check-sign">土地</span>
                                     </label>
                                     <label class="form-check-label">
                                         <input class="form-check-input" type="radio"
-                                               id="developmentEngineering" name="type" value="2">
+                                               id="developmentEngineering" name="type" value="2" data-value="2">
                                         <span class="form-check-sign">在建工程</span>
                                     </label>
                                 </div>
                             </div>
                             <div class="col-xs-5  col-sm-5  col-md-5  col-lg-5">
+                                ${judgeObject.name}
+                                <small>(${judgeObject.evaluationArea}㎡)</small>
                                 <small>
                                     <button class="btn btn-xs btn-primary" data-toggle="modal" type="button"
                                             href="#boxSchemeInfoModel"
@@ -1314,7 +1316,7 @@
         });
 
         $("#developmentCheckboxTool").find("input[type='radio'][name='type']").change(function () {
-            var value = $(this).val();
+            var value = $(this).attr('data-value');
             development.writeValueEvent(value, function () {
                 landEngineering.loadMdCalculatingMethodEngineeringCostTable();
 
