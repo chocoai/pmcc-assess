@@ -25,40 +25,6 @@ public class TemplateSetService {
     private CrmRpcCustomerService crmRpcCustomerService;
     @Autowired
     private PublicService publicService;
- /*   public CrmTreeDto getCrmTree() {
-        CrmCustomerDto crmCustomerDto = new CrmCustomerDto();
-        crmCustomerDto.setCompanyId(publicService.getCurrentCompany().getCompanyId());
-        List<CrmCustomerDto> customerList = crmRpcCustomerService.getCustomerList(crmCustomerDto);
-
-        List<CrmTreeDto> crmTreeDtos = new ArrayList<>();
-
-        CrmTreeDto crmTreeDto = new CrmTreeDto();
-        crmTreeDto.setId(0);
-        crmTreeDto.setText("公司模板");
-        crmTreeDto.setpId(-1);
-        crmTreeDtos.add(crmTreeDto);
-
-        List<CrmCustomerDto> filter = LangUtils.filter(customerList, o -> o.getPid() == 0);//取第一级客户信息
-        for (CrmCustomerDto item : filter) {
-            crmTreeDto = new CrmTreeDto();
-            crmTreeDto.setId(item.getId());
-            crmTreeDto.setText(item.getName());
-            crmTreeDto.setpId(-1);
-            List<CrmTreeDto> crmTreeChildeDto = getCrmTreeChildeDto(item.getId(), customerList);
-            if(crmTreeChildeDto.size()>0) {
-                crmTreeDto.setNodes(crmTreeChildeDto);
-            }
-            crmTreeDtos.add(crmTreeDto);
-        }
-
-        crmTreeDto = new CrmTreeDto();
-        crmTreeDto.setId(-1);
-        crmTreeDto.setText("客户模板");
-        crmTreeDto.setpId(0);
-        crmTreeDto.setNodes(crmTreeDtos);
-        return crmTreeDto;
-
-    };*/
 
     public List<ZtreeDto> getCrmTree() {
         CrmCustomerDto crmCustomerDto = new CrmCustomerDto();
@@ -70,7 +36,7 @@ public class TemplateSetService {
         ZtreeDto dto = new ZtreeDto();
         dto.setId(0);
         dto.setName("公司模板");
-        dto.setPid(-1);
+        dto.setPid(0);
         treeDtos.add(dto);
 
         List<CrmCustomerDto> filter = LangUtils.filter(customerList, o -> o.getPid() == 0);//取第一级客户信息
@@ -91,17 +57,7 @@ public class TemplateSetService {
                     treeDtos.add(ztreeDto2);
                 }
             }
-
         }
-
-
-        ZtreeDto ztreeDtoParent = new ZtreeDto();
-        ztreeDtoParent.setId(-1);
-        ztreeDtoParent.setName("客户模板");
-        ztreeDtoParent.setPid(0);
-        treeDtos.add(ztreeDtoParent);
-
-
         return treeDtos;
 
     };
@@ -118,7 +74,7 @@ public class TemplateSetService {
                 crmTreeDto.setpId(item.getPid());
                 List<CrmTreeDto> crmTreeChildeDto = getCrmTreeChildeDto(item.getId(), crmCustomerDtos);
                 if(crmTreeChildeDto.size()>0) {
-                    crmTreeDto.setNodes(crmTreeChildeDto);
+                    crmTreeChildeDto.forEach(o-> crmTreeDtos.add(o));
                 }
                 crmTreeDtos.add(crmTreeDto);
             }

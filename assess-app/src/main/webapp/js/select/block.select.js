@@ -18,7 +18,7 @@
         cols.push({
             field: 'opt', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-warning" href="javascript://" onclick="assessBlock.onSelected(' + index + ');"><i class="fa fa-edit"></i>选择</a>';
+                str += '<button type="button" class="btn btn-xs btn-warning"  onclick="assessBlock.onSelected(' + index + ');">选择</button>';
                 str += '</div>';
                 return str;
             }
@@ -50,14 +50,13 @@
         html += '<div class="modal-dialog  modal-lg">';
         html += '<div class="modal-content">';
         html += '<div class="modal-header">';
+        html += '<h4 class="modal-title">版块选择</h4>';
         html += '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span';
         html += 'aria-hidden="true">&times;</span></button>';
-        html += '<h3 class="modal-title">版块选择</h3>';
         html += '</div>';
         html += '<div class="modal-body">';
         html += '<div class="form-horizontal">';
-        html += '<div class="form-group ">';
-        html += '<div>';
+        html += '<div class="row form-group form-inline">';
         html += '<label class="col-xs-1 col-sm-1 col-md-1 col-lg-1 control-label">';
         html += '名称';
         html += '</label>';
@@ -65,11 +64,10 @@
         html += '<input type="text" name="name" class="form-control">';
         html += '</div>';
         html += '<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">';
-        html += '<div type="button" class="btn btn-primary"';
+        html += '<button type="button" class="btn btn-info btn-sm"';
         html += 'onclick="assessBlock.loadBlockList();">';
-        html += '查询';
-        html += '</div>';
-        html += '</div>';
+        html += '<span class="btn-label"> <i class="fa fa-search"></i></span>查询';
+        html += '</button>';
         html += '</div>';
         html += '</div>';
         html += '</div>';
