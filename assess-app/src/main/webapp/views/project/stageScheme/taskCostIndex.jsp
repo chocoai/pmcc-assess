@@ -36,6 +36,7 @@
                 data: {copyId: copyId, masterId: '${mdCostVo.mdCostConstruction.pid}'},
                 success: function (result) {
                     if (result.ret) {
+                        notifySuccess("成功","引用数据成功!");
                         window.location.reload(true); //强制从服务器重新加载当前页面
                         target.modal("hide");
                     } else {
