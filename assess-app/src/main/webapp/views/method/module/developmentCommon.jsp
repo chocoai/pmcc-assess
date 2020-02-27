@@ -20,7 +20,7 @@
             <input type="text" onblur="developmentCommon.architecturalB.totalResult(this,'{reckon}')" placeholder=""
                    name="area" style="width: 50%;"  class="form-control input-full">
         </td>
-        <td><input type="text" class="x-percent" onblur="developmentCommon.architecturalB.totalResult(this,'{reckon}')"
+        <td><input type="text" class="x-percent form-control input-full" onblur="developmentCommon.architecturalB.totalResult(this,'{reckon}')"
                    placeholder="" name="valuationDateDegreeCompletion" style="width: 50%;">
         </td>
         <td><input type="text" name="remark" placeholder="描述" style="width: 80%;"  class="form-control input-full"></td>
@@ -65,7 +65,7 @@
         <tfoot>
         <tr class="treegrid-99" data-key="architecturalEngineering" data-role="parent">
             <td>合计</td>
-            <td><input type="text" readonly="readonly" name="totalPrice" disabled="disabled" class="form-control input-full"></td>
+            <td><input type="text"  name="totalPrice" disabled="disabled" class="form-control input-full"></td>
         </tr>
         </tfoot>
     </table>
@@ -95,42 +95,52 @@
     </tr>
 </script>
 
-<div id="basicMdDevelopmentInfrastructureChildrenModalTool" class="modal fade bs-example-modal-lg"
-     data-backdrop="static" tabindex="-1"
-     role="dialog"
+
+
+<div id="basicMdDevelopmentInfrastructureChildrenModalTool" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
+                <h4 class="modal-title">基础设施配套</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">基础设施配套</h3>
             </div>
-            <div class="panel-body">
+
+            <div class="modal-body">
                 <form id="basicMdDevelopmentInfrastructureChildrenModalFrm" class="form-horizontal">
                     <input type="hidden" name="pid">
                     <input type="hidden" name="id">
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
-                                名称<span class="symbol required"></span>
-                            </label>
-                            <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
-                                <input type="text" name="name" class="form-control" required="required"
-                                       placeholder="名称">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
-                                价钱(元/㎡)<span class="symbol required"></span>
-                            </label>
-                            <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
-                                <input type="text" name="number" placeholder="价钱" class="form-control"
-                                       data-rule-number='true'
-                                       required="required">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                名称<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-10 col-md-10">
+                                                <input type="text" name="name" class="form-control input-full" required="required"
+                                                       placeholder="名称">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                价钱(元/㎡)
+                                            </label>
+                                            <div class="col-sm-10 col-md-10">
+                                                <input type="text" name="number" placeholder="价钱" class="form-control input-full"
+                                                       data-rule-number='true'
+                                                       required="required">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -140,25 +150,28 @@
             <div class="modal-footer">
 
             </div>
+
         </div>
     </div>
 </div>
 
+
+
 <script type="text/html" id="landEngineeringMdDevelopmentInfrastructureFooter">
-    <button type="button" data-dismiss="modal" class="btn btn-default">
-        取消
+    <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+        关闭
     </button>
-    <button type="button" class="btn btn-primary"
+    <button type="button" class="btn btn-primary btn-sm"
             onclick="landEngineering.saveMdDevelopmentInfrastructureChildrenTable(this)">
         保存
     </button>
 </script>
 
 <script type="text/html" id="underConstructionMdDevelopmentInfrastructureFooterX">
-    <button type="button" data-dismiss="modal" class="btn btn-default">
-        取消
+    <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+        关闭
     </button>
-    <button type="button" class="btn btn-primary"
+    <button type="button" class="btn btn-primary btn-sm"
             onclick="construction.saveMdDevelopmentInfrastructureChildrenTable(this)">
         保存
     </button>
@@ -171,26 +184,27 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">建安工程完工度调查表</h3>
+                <h4 class="modal-title">建安工程完工度调查表</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
-                <div class="row">
-                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                        <div class="panel-body">
-
+                <form class="form-horizontal">
+                    <input type="hidden" name="constructionInstallationEngineeringFeeId">
+                    <input type="hidden" name="masterId">
+                    <div class="row">
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                            <div class="card-body">
+                            </div>
                         </div>
                     </div>
-                </div>
+                </form>
             </div>
-            <input type="hidden" name="constructionInstallationEngineeringFeeId">
-            <input type="hidden" name="masterId">
             <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">
-                    取消
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
                 </button>
-                <button type="button" class="btn btn-primary"
+                <button type="button" class="btn btn-primary btn-sm"
                         onclick="'{method}'">
                     保存
                 </button>

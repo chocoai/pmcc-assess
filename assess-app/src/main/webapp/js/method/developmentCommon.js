@@ -482,46 +482,14 @@ developmentCommon.getMdCalculatingMethodEngineeringCostList = function (data, ca
 developmentCommon.loadMdCalculatingMethodEngineeringCostTable = function (table, quarm, toolbar, callback, array) {
     var cols = [];
     cols.push({checkbox: true, width: "5%"});
-    // cols.push({
-    //     field: 'dataTableName', title: '工程表绑定类型', formatter: function (value, row, index) {
-    //         if (value == AssessDBKey.BasicEstate) {
-    //             return "楼盘";
-    //         }
-    //         if (value == AssessDBKey.BasicBuilding) {
-    //             return "楼栋";
-    //         }
-    //         return "未设定";
-    //     }
-    // });
     cols.push({
-        field: 'name', title: '名称', width: "20%", class: 'editable', editable: {
-            type: 'text',
-            validate: function (value) {
-                if ($.trim(value) == '') {
-                    return '名称不能为空!';
-                }
-            }
-        }
+        field: 'name', title: '名称', width: "20%"
     });
     cols.push({
-        field: 'area', title: '建筑面积', width: "10%", class: 'editable', editable: {
-            type: 'text',
-            validate: function (value) {
-                if (!$.isNumeric(value)) {
-                    return '必须是数字!';
-                }
-            }
-        }
+        field: 'area', title: '建筑面积', width: "10%"
     });
     cols.push({
-        field: 'price', title: '建安单价(元/㎡)', width: "20%", class: 'editable', editable: {
-            type: 'text',
-            validate: function (value) {
-                if (!$.isNumeric(value)) {
-                    return '必须是数字!';
-                }
-            }
-        }
+        field: 'price', title: '建安单价(元/㎡)', width: "36%", class: 'editable'
     });
     if (array) {
         $.each(array, function (i, item) {
@@ -551,8 +519,8 @@ developmentCommon.loadMdCalculatingMethodEngineeringCostTable = function (table,
                 toastr.success('编辑失败!');
             });
         },
-        showColumns: true,
-        showRefresh: true,
+        showColumns: false,
+        showRefresh: false,
         search: false,
         onLoadSuccess: function () {//加载成功时执行
             if (callback) {
@@ -603,16 +571,16 @@ developmentCommon.loadSchemeInfoTableList = function (quarm, callbackName) {
     });
     cols.push({
         field: 'id', title: '引用', width: "20%", formatter: function (value, row, index) {
-            var str = '<div class="btn-margin">';
-            str += '<a class="btn btn-xs btn-success" href="javascript:{method}(' + row.methodDataId +","+"'boxSchemeInfoModel'"+  ');" >引用 <i class="fa fa-check-circle"></i></a>';
-            str += '</div>';
+            var str = '';
+            str += '<button type="button" class="btn btn-xs btn-success" onclick="{method}(' + row.methodDataId +","+"'boxSchemeInfoModel'"+  ');" >引用 <i class="fa fa-check-circle"></i></button>';
+            str += '';
             str = str.replace(/{method}/g, callbackName);
             return str;
         }
     });
     var method = {
-        showColumns: true,
-        showRefresh: true,
+        showColumns: false,
+        showRefresh: false,
         search: false,
         onLoadSuccess: function () {//加载成功时执行
             // table.bootstrapTable('filterBy', {
@@ -701,8 +669,8 @@ developmentCommon.infrastructureChildren = {
         cols.push({field: 'number', title: '价钱(元/㎡)'});
         selectId.bootstrapTable('destroy');
         TableInit(selectId.attr("id"), getContextPath() + "/mdDevelopmentInfrastructureChildren/getBootstrapTableVo", cols, data, {
-            showColumns: true,
-            showRefresh: true,
+            showColumns: false,
+            showRefresh: false,
             search: false
         });
         if (toolbar) {
