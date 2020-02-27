@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.BaseProjectClassify;
 import com.copower.pmcc.assess.dal.basis.entity.BaseReportTemplate;
 import com.copower.pmcc.assess.dto.input.CrmTreeDto;
+import com.copower.pmcc.assess.dto.input.ZtreeDto;
 import com.copower.pmcc.assess.service.TemplateSetService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
@@ -60,9 +61,9 @@ public class TemplateSetController {
 
     @ResponseBody
     @RequestMapping(value = "/queryCustomerTree", name = "取得客户树", method = RequestMethod.GET)
-    public HttpResult queryCustomerTree(int pid) {
+    public HttpResult queryCustomerTree() {
         try {
-            CrmTreeDto crmTree = templateSetService.getCrmTree();
+            List<ZtreeDto> crmTree = templateSetService.getCrmTree();
             return HttpResult.newCorrectResult(crmTree);
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());

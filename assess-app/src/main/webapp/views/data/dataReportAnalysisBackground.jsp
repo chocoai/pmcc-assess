@@ -230,23 +230,18 @@
                                     </div>
                                 </div>
                                 <div class="row form-group">
-                                    <div class="col-md-6">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-2 col-form-label">
-                                                委托目的<span class="symbol required"></span>
-                                            </label>
-                                            <div class="col-sm-10" id="entrustmentPurpose">
-                                                <c:forEach items="${purposeDicList}" var="item">
-                                                <span class="checkbox-inline">
-                                                <input type="checkbox" id="entrustmentPurpose${item.id}" required
+                                    <c:forEach items="${purposeDicList}" var="item">
+                                        <div class="form-check">
+                                            <label class="form-check-label" style="margin-left: 2px;">
+                                                <input type="checkbox" id="entrustmentPurpose${item.id}"
+                                                       required
                                                        name="entrustmentPurpose" value="${item.id}"
-                                                       class="form-inline">
-                                                <label for="entrustmentPurpose${item.id}">${item.name}</label>
-                                                </span>
-                                                </c:forEach>
-                                            </div>
+                                                       class="form-check-input">
+                                                <span class="form-check-sign"><label
+                                                        for="entrustmentPurpose${item.id}">${item.name}</label></span>
+                                            </label>
                                         </div>
-                                    </div>
+                                    </c:forEach>
                                 </div>
                                 <div class="row form-group">
                                     <div class="col-md-6">
