@@ -21,6 +21,34 @@
     construction.incomeCategoryFooterHtml = "#mdCostConstructionMdDevelopmentIncomeCategoryFooter";
     construction.type = 'engineering';
 
+    construction.ajaxServerMethod = function (data, url, type, callback) {
+        $.ajax({
+            type: type,
+            url: '${pageContext.request.contextPath}' + url,
+            data: data,
+            success: function (result) {
+                if (result.ret) {
+                    if (callback) {
+                        callback(result.data);
+                    }
+                } else {
+                    if (result.errmsg) {
+                        AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
+                    }else {
+                        AlertError("错误", "调用服务端方法失败，失败原因:" + result);
+                    }
+                }
+            },
+            error: function (result) {
+                if (result.errmsg) {
+                    AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
+                }else {
+                    AlertError("错误", "调用服务端方法失败，失败原因:" + result);
+                }
+            }
+        });
+    };
+
     construction.typeData = function () {
         var target = $(construction.target.selector) ;
         return target.find("input[name='type']").val();
@@ -29,23 +57,10 @@
     construction.selectFun = function (copyId, box) {
         var target = $("#" + box);
         AlertConfirm("是否确认引用", "引用后可继续根据实际情况来编辑", function () {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/mdCostConstruction/copyConstructionById",
-                type: "post",
-                dataType: "json",
-                data: {copyId: copyId, masterId: '${mdCostVo.mdCostConstruction.pid}'},
-                success: function (result) {
-                    if (result.ret) {
-                        notifySuccess("成功","引用数据成功!");
-                        window.location.reload(true); //强制从服务器重新加载当前页面
-                        target.modal("hide");
-                    } else {
-                        AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
-                    }
-                },
-                error: function (result) {
-                    AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
-                }
+            construction.ajaxServerMethod({copyId: copyId, masterId: '${mdCostVo.mdCostConstruction.pid}'},"/mdCostConstruction/copyConstructionById","post",function () {
+                notifySuccess("成功","引用数据成功!");
+                window.location.reload(true); //强制从服务器重新加载当前页面
+                target.modal("hide");
             });
         });
     };
@@ -93,41 +108,26 @@
         var type = item.attr('data-type');
         var master = developmentCommon.isNotBlank('${mdCostVo.mdCostConstruction.id}') ? '${mdCostVo.mdCostConstruction.id}' : '0';
         if (pid) {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/dataInfrastructureChildren/getDataList",
-                type: "get",
-                dataType: "json",
-                data: {pid: pid, type: type},
-                success: function (result) {
-                    if (result.ret) {
-                        var arr = [];
-                        var data = result.data;
-                        if (data.length == 0) {
-                            return false;
-                        }
-                        $.each(data, function (i, n) {
-                            var obj = {name: n.name, number: n.number, tax: n.tax};
-                            obj.planDetailsId = '${projectPlanDetails.id}';
-                            obj.type = construction.type;
-                            obj.pid = master;
-                            arr.push(obj);
-                        });
-                        developmentCommon.infrastructureChildren.saveArray(arr, function () {
-                            notifySuccess("成功", "选择成功!");
-                            $(construction.infrastructureChildrenTable).bootstrapTable('refresh');
-                            construction.writeMdDevelopmentInfrastructureChildrenTable();
-                        });
-                    }
-                    else {
-                        AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
-                    }
-                },
-                error: function (result) {
-                    AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
+            construction.ajaxServerMethod({pid: pid, type: type},"/dataInfrastructureChildren/getDataList","get",function (data) {
+                var arr = [];
+                if (data.length == 0) {
+                    return false;
                 }
-            })
+                $.each(data, function (i, n) {
+                    var obj = {name: n.name, number: n.number, tax: n.tax};
+                    obj.planDetailsId = '${projectPlanDetails.id}';
+                    obj.type = construction.type;
+                    obj.pid = master;
+                    arr.push(obj);
+                });
+                developmentCommon.infrastructureChildren.saveArray(arr, function () {
+                    notifySuccess("成功", "选择成功!");
+                    $(construction.infrastructureChildrenTable).bootstrapTable('refresh');
+                    construction.writeMdDevelopmentInfrastructureChildrenTable();
+                });
+            }) ;
         } else {
-            toastr.success('无子项!');
+            notifyWarning("","无子项!");
         }
     };
 
@@ -158,7 +158,7 @@
             var table = target.find("table");
             var value = table.find("tfoot").find("input[name='totalPrice']").first().val();
             if (!$.isNumeric(value)) {
-                toastr.success('请重新填写!');
+                notifyWarning("","请重新填写!");
                 return false;
             }
             var obj = {};
@@ -166,7 +166,7 @@
             obj.price = Number(value);
             obj.id = target.find("input[name='id']").val();
             developmentCommon.saveMdArchitecturalObj2(developmentCommon.architecturalB.getFomData(table), obj, function (item) {
-                toastr.success('保存成功!');
+                notifySuccess("成功","保存成功!");
             });
             var mdCalculatingMethodEngineeringCost = $(construction.engineeringFeeInfoTarget).bootstrapTable('getRowByUniqueId', obj.masterId);
             try {
@@ -825,8 +825,6 @@
                     if (callback) {
                         callback(result.data);
                     }
-                } else {
-//                   AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {

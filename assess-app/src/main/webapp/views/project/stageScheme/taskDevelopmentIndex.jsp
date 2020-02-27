@@ -107,6 +107,34 @@
     landEngineering.fixedMin = 0; //小数点保留0位
     landEngineering.defaultType = '1';
 
+    landEngineering.ajaxServerMethod = function (data, url, type, callback) {
+        $.ajax({
+            type: type,
+            url: '${pageContext.request.contextPath}' + url,
+            data: data,
+            success: function (result) {
+                if (result.ret) {
+                    if (callback) {
+                        callback(result.data);
+                    }
+                } else {
+                    if (result.errmsg) {
+                        AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
+                    }else {
+                        AlertError("错误", "调用服务端方法失败，失败原因:" + result);
+                    }
+                }
+            },
+            error: function (result) {
+                if (result.errmsg) {
+                    AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
+                }else {
+                    AlertError("错误", "调用服务端方法失败，失败原因:" + result);
+                }
+            }
+        });
+    };
+
     landEngineering.typeData = function () {
         var target = $(landEngineering.target.selector);
         return target.find("input[name='type']").val();
@@ -116,23 +144,10 @@
     landEngineering.selectFun = function (copyId, box) {
         var target = $("#" + box);
         AlertConfirm("是否确认引用", "引用后可继续根据实际情况来编辑", function () {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/mdDevelopment/copyDevelopmentById",
-                type: "post",
-                dataType: "json",
-                data: {copyId: copyId, masterId: '${mdDevelopment.id}'},
-                success: function (result) {
-                    if (result.ret) {
-                        notifySuccess("成功","引用数据成功!");
-                        window.location.reload(true); //强制从服务器重新加载当前页面
-                        target.modal("hide");
-                    } else {
-                        AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
-                    }
-                },
-                error: function (result) {
-                    AlertError("错误", "调用服务端方法失败，失败原因:" + result);
-                }
+            landEngineering.ajaxServerMethod({copyId: copyId, masterId: '${mdDevelopment.id}'},'/mdDevelopment/copyDevelopmentById',"post",function () {
+                notifySuccess("成功","引用数据成功!");
+                window.location.reload(true); //强制从服务器重新加载当前页面
+                target.modal("hide");
             });
         });
     };
@@ -142,41 +157,26 @@
         var pid = item.attr('data-key');
         var type = item.attr('data-type');
         if (pid) {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/dataInfrastructureChildren/getDataList",
-                type: "get",
-                dataType: "json",
-                data: {pid: pid, type: type},
-                success: function (result) {
-                    if (result.ret) {
-                        var arr = [];
-                        var data = result.data;
-                        if (data.length == 0) {
-                            return false;
-                        }
-                        $.each(data, function (i, n) {
-                            var obj = {name: n.name, number: n.number, tax: n.tax};
-                            obj.planDetailsId = '${projectPlanDetails.id}';
-                            obj.type = landEngineering.typeData();
-                            obj.pid = developmentCommon.isNotBlank('${mdDevelopment.id}') ? '${mdDevelopment.id}' : '0';
-                            arr.push(obj);
-                        });
-                        developmentCommon.infrastructureChildren.saveArray(arr, function () {
-                            notifySuccess("成功", "引用成功!");
-                            landEngineering.infrastructureChildrenTable.bootstrapTable('refresh');
-                            landEngineering.writeMdDevelopmentInfrastructureChildrenTable();
-                        });
-                    }
-                    else {
-                        AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
-                    }
-                },
-                error: function (result) {
-                    AlertError("错误", "调用服务端方法失败，失败原因:" + result);
+            landEngineering.ajaxServerMethod({pid: pid, type: type},"/dataInfrastructureChildren/getDataList","get",function (data) {
+                var arr = [];
+                if (data.length == 0) {
+                    return false;
                 }
-            })
+                $.each(data, function (i, n) {
+                    var obj = {name: n.name, number: n.number, tax: n.tax};
+                    obj.planDetailsId = '${projectPlanDetails.id}';
+                    obj.type = landEngineering.typeData();
+                    obj.pid = developmentCommon.isNotBlank('${mdDevelopment.id}') ? '${mdDevelopment.id}' : '0';
+                    arr.push(obj);
+                });
+                developmentCommon.infrastructureChildren.saveArray(arr, function () {
+                    notifySuccess("成功", "引用成功!");
+                    landEngineering.infrastructureChildrenTable.bootstrapTable('refresh');
+                    landEngineering.writeMdDevelopmentInfrastructureChildrenTable();
+                });
+            }) ;
         } else {
-            toastr.success('无子项!');
+            notifyWarning("无子项","");
         }
     };
 
@@ -202,7 +202,7 @@
             var table = target.find("table");
             var value = table.find("tfoot").find("input[name='totalPrice']").first().val();
             if (!$.isNumeric(value)) {
-                toastr.success('请重新填写!');
+                notifyWarning("请重新填写!","");
                 return false;
             }
             var obj = {};
@@ -210,7 +210,7 @@
             obj.price = Number(value);
             obj.id = target.find("input[name='id']").val();
             developmentCommon.saveMdArchitecturalObj2(developmentCommon.architecturalB.getFomData(table), obj, function (item) {
-                toastr.success('保存成功!');
+                notifySuccess("成功","保存成功!");
             });
             var mdCalculatingMethodEngineeringCost = landEngineering.engineeringFeeInfoTarget.bootstrapTable('getRowByUniqueId', obj.masterId);
             try {
@@ -317,20 +317,10 @@
      */
     landEngineering.setMdCalculatingMethodEngineeringCost = function (flag) {
         var planDetailsId = '${projectPlanDetails.id}';
-        $.ajax({
-            type: "post",
-            url: getContextPath() + "/mdDevelopment/setMdCalculatingMethodEngineeringCost",
-            data: {planDetailsId: planDetailsId, type: landEngineering.typeData(), flag: flag},
-            success: function (result) {
-                if (result.ret) {
-                    notifySuccess("成功", "同步建筑安装工程费 成功!");
-                    landEngineering.loadMdCalculatingMethodEngineeringCostTable();
-                }
-            },
-            error: function (e) {
-                AlertError("错误", "调用服务端方法失败，失败原因:" + e);
-            }
-        });
+        landEngineering.ajaxServerMethod({planDetailsId: planDetailsId, type: landEngineering.typeData(), flag: flag},"/mdDevelopment/setMdCalculatingMethodEngineeringCost","post",function () {
+            notifySuccess("成功", "同步建筑安装工程费 成功!");
+            landEngineering.loadMdCalculatingMethodEngineeringCostTable();
+        }) ;
     };
 
 
@@ -371,11 +361,11 @@
     landEngineering.delMdCalculatingMethodEngineeringCost = function () {
         var rows = landEngineering.engineeringFeeInfoTarget.bootstrapTable('getSelections');
         if (!rows || rows.length <= 0) {
-            toastr.info("请选择要删除的数据");
+            notifyWarning("请选择要删除的数据","");
         } else {
             AlertConfirm("是否确认删除", "删除相应的数据后将不可恢复", function () {
                 developmentCommon.deleteMdCalculatingMethodEngineeringCostHandle(rows, function () {
-                    toastr.success('删除成功');
+                    notifySuccess("成功","删除成功!");
                     landEngineering.engineeringFeeInfoTarget.bootstrapTable('refresh');
                     landEngineering.writeMdCalculatingMethodEngineeringCost();
                 });
@@ -437,7 +427,7 @@
                 target.find(".modal-footer").empty().append($(landEngineering.infrastructureFooterHtml).html());
                 target.modal('show');
             } else {
-                toastr.success('勾选一个!');
+                notifyWarning("","勾选一个!");
             }
         } else {
             frm.clearAll();
@@ -631,8 +621,6 @@
                     if (callback) {
                         callback(result.data);
                     }
-                } else {
-//                   AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
