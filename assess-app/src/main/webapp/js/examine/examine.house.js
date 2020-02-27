@@ -392,9 +392,9 @@
                     var str = strArr.join(",");
                     //当属于数组中的任意一项时显示
                     if (str.indexOf(priceConnotationData.name) != -1) {
-                        $("#priceConnotationUnit").parent().parent().hide();
+                        houseCommon.houseTradingForm.find(".priceConnotationUnitContent").hide();
                     } else {
-                        $("#priceConnotationUnit").parent().parent().show();
+                        houseCommon.houseTradingForm.find(".priceConnotationUnitContent").show();
                     }
                 });
             }
@@ -408,9 +408,9 @@
                     var str = strArr.join(",");
                     //当属于数组中的任意一项时显示
                     if (str.indexOf(priceConnotationData.name) != -1) {
-                        $("#priceConnotationUnit").parent().parent().hide();
+                        houseCommon.houseTradingForm.find(".priceConnotationUnitContent").hide();
                     } else {
-                        $("#priceConnotationUnit").parent().parent().show();
+                        houseCommon.houseTradingForm.find(".priceConnotationUnitContent").show();
                     }
                 });
             }

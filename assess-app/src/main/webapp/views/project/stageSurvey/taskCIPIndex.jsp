@@ -94,11 +94,11 @@
                                 </form>
                                 <div class="row form-group">
                                     <div class="col-md-12">
-                                        <div class="form-inline x-valid">
-                                            <div class="col-md-3" style="max-height: 500px;overflow: auto;">
+
+                                            <div class="col-md-3 pull-left" style="max-height: 500px;overflow: auto;">
                                                 <ul id="ztree" class="ztree"></ul>
                                             </div>
-                                            <div class="col-md-8" id="btnGroup">
+                                            <div class="col-md-8 pull-left" id="btnGroup">
                                                 <button class="btn btn-sm btn-success deserveTool"
                                                    onclick="batchTreeTool.showAddModal()">
                                                     新增
@@ -147,7 +147,7 @@
                                                     </button>
                                                 </c:if>
                                             </div>
-                                        </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -1103,7 +1103,7 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    notifySuccess("成功,添加成功");
+                    notifySuccess("成功","添加成功");
                 }
                 else {
                     AlertError("添加失败，失败原因:" + result.errmsg);

@@ -37,6 +37,7 @@ public class BasicEstateParkingDao {
     public boolean deleteBasicEstateParking(Integer id) {
         BasicEstateParking basicEstateParking = getBasicEstateParkingById(id);
         if (basicEstateParking == null) return false;
+        basicEstateParking.setBisDelete(true);
         return basicEstateParkingMapper.updateByPrimaryKeySelective(basicEstateParking) == 1;
     }
 

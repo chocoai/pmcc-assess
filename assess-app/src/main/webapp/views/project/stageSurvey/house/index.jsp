@@ -18,18 +18,16 @@
                                 <div class="card-head-row">
                                     <div class="card-title">
                                         信息填写
-                                        <small>
-                                            <input type="button" class="btn btn-xs btn-primary" value="历史记录"
-                                                   onclick="showHistoryModal();">
-                                        </small>
-                                        <small>
-                                            <input type="button" class="btn btn-xs btn-primary" value="引用案例"
-                                                   onclick="showCaseQuoteModal();">
-                                        </small>
-                                        <small>
-                                            <input type="button" class="btn btn-xs btn-primary" value="引用备选案例"
-                                                   onclick="showProjectQuoteModal();">
-                                        </small>
+
+                                        <button type="button" class="btn btn-sm btn-primary"
+                                                onclick="showHistoryModal();">历史记录</button>
+
+                                        <button type="button" class="btn btn-sm btn-primary"
+                                                onclick="showCaseQuoteModal();">引用案例</button>
+
+                                        <button type="button" class="btn btn-sm btn-primary"
+                                                onclick="showProjectQuoteModal();">引用备选案例</button>
+
                                     </div>
                                 </div>
                             </div>

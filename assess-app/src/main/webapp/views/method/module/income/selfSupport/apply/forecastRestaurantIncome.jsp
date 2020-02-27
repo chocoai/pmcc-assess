@@ -622,7 +622,7 @@
                 },
                 success: function (result) {
                     if (result.ret) {
-                        notifySuccess("添加成功");
+                        notifySuccess("成功","添加成功");
                         $('#' + forecastRestaurant.getHistoryListId(type)).bootstrapTable('refresh');
                         $('#' + forecastRestaurant.getForecastAnalyseListId(type)).bootstrapTable('refresh');
                     }
@@ -650,7 +650,7 @@
                     type: type
                 }, success: function (result) {
                     if (result.ret) {
-                        notifySuccess("取消成功");
+                        notifySuccess("成功","取消成功");
                         $('#' + forecastRestaurant.getHistoryListId(type)).bootstrapTable('refresh');
                         $('#' + forecastRestaurant.getForecastAnalyseListId(type)).bootstrapTable('refresh');
                     }

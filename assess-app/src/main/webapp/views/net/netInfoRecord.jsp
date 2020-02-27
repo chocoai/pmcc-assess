@@ -414,7 +414,7 @@
                 success: function (result) {
                     if (result.ret) {
                         Loading.progressHide();
-                        notifySuccess("获取数据成功");
+                        notifySuccess("成功","获取数据成功");
                     }
                     else {
                         AlertError("获取数据失败，失败原因:" + result.errmsg);

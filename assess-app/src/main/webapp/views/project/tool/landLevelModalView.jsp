@@ -55,7 +55,6 @@
                                 </div>
                                 <div class="row form-group">
                                     <div class="col-md-12">
-                                        <div class="form-inline x-valid">
                                         <div class="col-sm-8 pull-left">
                                             <table class="table table-bordered" id="tool_select_land_level_list">
                                                 <!-- cerare document add ajax data-->
@@ -64,7 +63,6 @@
 
                                         <div class="col-sm-4 pull-right">
                                             <ul id="tool_select_land_level_list_tree" class="ztree"></ul>
-                                        </div>
                                         </div>
                                     </div>
                                 </div>

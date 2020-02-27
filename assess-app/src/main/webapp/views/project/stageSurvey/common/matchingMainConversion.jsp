@@ -56,12 +56,12 @@
                             <div class="card-body">
                                 <div class="row form-group">
                                     <div class="col-md-12">
-                                    <div class="x-valid">
+                                    <div class="form-inline x-valid">
                                         <label class="col-sm-2 control-label">
                                             名称<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="name"
+                                            <input type="text" class="form-control input-full" name="name"
                                                    placeholder="名称" required="required">
                                         </div>
                                     </div>
@@ -69,12 +69,12 @@
                                 </div>
                                 <div class="row form-group">
                                     <div class="col-md-12">
-                                    <div class="x-valid">
+                                    <div class="form-inline x-valid">
                                         <label class="col-sm-2 control-label">
                                             收费标准
                                         </label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="costStandard"
+                                            <input type="text" class="form-control input-full" name="costStandard"
                                                    placeholder="收费标准">
                                         </div>
                                     </div>
@@ -82,13 +82,13 @@
                                 </div>
                                 <div class="row form-group">
                                     <div class="col-md-12">
-                                    <div class="x-valid">
+                                    <div class="form-inline x-valid">
                                         <label class="col-sm-2 control-label">
                                             距离<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="distance"
-                                                    class="form-control search-select select2 distance">
+                                                    class="form-control input-full search-select select2 distance">
                                             </select>
                                         </div>
                                     </div>
