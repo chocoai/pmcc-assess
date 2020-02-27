@@ -83,7 +83,7 @@ declareCommon.declareCenterData = {
     realEstateId: {name: "不动产", field: "realEstateId", type: "DeclareRealtyRealEstateCert"},
     indicatorId: {name: "经济指标", field: "indicatorId", type: "MdEconomicIndicators"},
     indicatorIdOld: {name: "待删除经济指标", field: "indicatorId", type: "DeclareBuildEconomicIndicatorsCenter"},
-    indicatorIdDelHtml:"<input type=\"button\" class=\"btn btn-warning btn\" value=\"删除\" onclick=\"{method}('{frm}','{box}');\">"
+    indicatorIdDelHtml:"<input type=\"button\" class=\"btn btn-warning btn-sm\" value=\"删除\" onclick=\"{method}('{frm}','{box}');\">"
 };
 
 declareCommon.declareApplyForm = $('#declareApplyForm');
