@@ -4,188 +4,206 @@
 <head>
     <%@include file="/views/share/main_css.jsp" %>
 </head>
-<body class="nav-md footer_fixed">
-<div class="container body">
-    <div class="main_container">
-        <div class="right_col" role="main" style="margin-left: 0">
-
+<body>
+<div class="wrapper">
+    <div class="main-panel" style="width: 100%">
+        <div class="content" style="margin-top: 0px;">
             <%@include file="/views/share/form_head.jsp" %>
-            <%@include file="/views/share/project/projectInfoSimple.jsp" %>
-            <%@include file="/views/share/project/projectPlanDetails.jsp" %>
-            <div class="x_panel">
+            <div class="page-inner mt--5">
+                <div class="row mt--2">
+                    <%@include file="/views/share/project/projectInfoSimple.jsp" %>
+                    <%@include file="/views/share/project/projectPlanDetails.jsp" %>
 
-                <div class="x_title collapse-link">
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
-                    </ul>
-                    <h3>拿取文号</h3>
-                    <div class="clearfix"></div>
-                </div>
+                    <!-- 公共模块end -->
 
-                <div class="x_content">
-
-                    <form class="form-horizontal" id="frmProjectTakeNumber">
-                        <input type="hidden" name="id" value="${projectTakeNumber.id}">
-                        <input type="hidden" name="assessProjectType" value="${projectTakeNumber.assessProjectType}">
-                        <input type="hidden" name="projectId" value="${projectPlanDetails.projectId}">
-
-
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
-                                    报告出具日期<span class="symbol required"></span>
-                                </label>
-                                <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                                    <input type="text" name="reportIssuanceDate" placeholder="报告出具日期"
-                                           class="form-control date-picker dbdate" pattern='yyyy-MM-dd'
-                                           data-date-format="yyyy-mm-dd" required
-                                           value="<fmt:formatDate value='${projectTakeNumber.reportIssuanceDate}' pattern='yyyy-MM-dd'/>">
-                                </div>
-                            </div>
-                            <div class="x-valid">
-                                <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
-                                    作业结束时间<span class="symbol required"></span>
-                                </label>
-                                <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                                    <input type="text" name="homeWorkEndTime" placeholder="作业结束时间"
-                                           class="form-control date-picker dbdate"
-                                           data-date-format="yyyy-mm-dd"
-                                           pattern='yyyy-MM-dd' required
-                                           value="<fmt:formatDate value='${projectTakeNumber.homeWorkEndTime}' pattern='yyyy-MM-dd'/>">
-                                </div>
-                            </div>
-                            <div class="x-valid">
-                                <div>
-                                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
-                                        资质类型<span class="symbol required"></span>
-                                    </label>
-                                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                                        <select class="form-control" name="qualificationType"
-                                                onchange="baseTakeNumber.onChange(this)" required>
-                                            <option value="">--请选择--</option>
-                                            <c:if test="${not empty qualificationTypes}">
-                                                <c:forEach items="${qualificationTypes}" var="itemA">
-                                                    <c:if test="${projectTakeNumber.qualificationType eq itemA.key}">
-                                                        <option selected="selected"
-                                                                value="${itemA.key}">${itemA.value}</option>
-                                                    </c:if>
-                                                    <c:if test="${projectTakeNumber.qualificationType ne itemA.key}">
-                                                        <option value="${itemA.key}">${itemA.value}</option>
-                                                    </c:if>
-                                                </c:forEach>
-                                            </c:if>
-                                        </select>
+                    <div class="col-md-12">
+                        <div class="card full-height">
+                            <div class="card-header collapse-link">
+                                <div class="card-head-row">
+                                    <div class="card-title">
+                                        拿取文号
+                                    </div>
+                                    <div class="card-tools">
+                                        <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                                                class="fa fa-angle-down"></span>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
-                                    现场查勘开始日期<span class="symbol required"></span>
-                                </label>
-                                <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                                    <input type="text" required name="investigationsStartDate"
-                                           placeholder="现场查勘开始日期"
-                                           class="form-control date-picker dbdate"
-                                           data-date-format="yyyy-mm-dd"
-                                           pattern='yyyy-MM-dd'
-                                           value="<fmt:formatDate value='${projectTakeNumber.investigationsStartDate}' pattern='yyyy-MM-dd'/>">
-                                </div>
-                            </div>
-                            <div class="x-valid">
-                                <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
-                                    现场查勘结束日期<span class="symbol required"></span>
-                                </label>
-                                <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                                    <input type="text" required name="investigationsEndDate" placeholder="现场查勘结束日期"
-                                           class="form-control date-picker dbdate"
-                                           data-date-format="yyyy-mm-dd"
-                                           pattern='yyyy-MM-dd'
-                                           value="<fmt:formatDate value='${projectTakeNumber.investigationsEndDate}' pattern='yyyy-MM-dd'/>">
-                                </div>
-                            </div>
-                            <div class="x-valid">
-                                <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">估价师<span
-                                        class="symbol required"></span></label>
-                                <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                                    <select name="realEstateAppraiser" multiple="multiple"
-                                            class="form-control search-select select2"
-                                            required="required">
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
+                            <div class="card-body">
+                                <form class="form-horizontal" id="frmProjectTakeNumber">
+                                    <input type="hidden" name="id" value="${projectTakeNumber.id}">
+                                    <input type="hidden" name="assessProjectType" value="${projectTakeNumber.assessProjectType}">
+                                    <input type="hidden" name="projectId" value="${projectPlanDetails.projectId}">
 
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
-                                    说明
-                                </label>
-                                <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
-                                <textarea class="form-control" name="remark" rows="4"
+
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                报告出具日期<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-3">
+                                                <input type="text" name="reportIssuanceDate" placeholder="报告出具日期"
+                                                       class="form-control input-full date-picker dbdate" pattern='yyyy-MM-dd'
+                                                       data-date-format="yyyy-mm-dd" required
+                                                       value="<fmt:formatDate value='${projectTakeNumber.reportIssuanceDate}' pattern='yyyy-MM-dd'/>">
+                                            </div>
+                                            <label class="col-sm-1 control-label">
+                                                作业结束时间<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-3">
+                                                <input type="text" name="homeWorkEndTime" placeholder="作业结束时间"
+                                                       class="form-control input-full date-picker dbdate"
+                                                       data-date-format="yyyy-mm-dd"
+                                                       pattern='yyyy-MM-dd' required
+                                                       value="<fmt:formatDate value='${projectTakeNumber.homeWorkEndTime}' pattern='yyyy-MM-dd'/>">
+                                            </div>
+
+                                                <label class="col-sm-1 control-label">
+                                                    资质类型<span class="symbol required"></span>
+                                                </label>
+                                                <div class="col-sm-3">
+                                                    <select class="form-control input-full" name="qualificationType"
+                                                            onchange="baseTakeNumber.onChange(this)" required>
+                                                        <option value="">--请选择--</option>
+                                                        <c:if test="${not empty qualificationTypes}">
+                                                            <c:forEach items="${qualificationTypes}" var="itemA">
+                                                                <c:if test="${projectTakeNumber.qualificationType eq itemA.key}">
+                                                                    <option selected="selected"
+                                                                            value="${itemA.key}">${itemA.value}</option>
+                                                                </c:if>
+                                                                <c:if test="${projectTakeNumber.qualificationType ne itemA.key}">
+                                                                    <option value="${itemA.key}">${itemA.value}</option>
+                                                                </c:if>
+                                                            </c:forEach>
+                                                        </c:if>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                现场查勘开始日期<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-3">
+                                                <input type="text" required name="investigationsStartDate"
+                                                       placeholder="现场查勘开始日期"
+                                                       class="form-control input-full date-picker dbdate"
+                                                       data-date-format="yyyy-mm-dd"
+                                                       pattern='yyyy-MM-dd'
+                                                       value="<fmt:formatDate value='${projectTakeNumber.investigationsStartDate}' pattern='yyyy-MM-dd'/>">
+                                            </div>
+                                            <label class="col-sm-1 control-label">
+                                                现场查勘结束日期<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-3">
+                                                <input type="text" required name="investigationsEndDate" placeholder="现场查勘结束日期"
+                                                       class="form-control input-full date-picker dbdate"
+                                                       data-date-format="yyyy-mm-dd"
+                                                       pattern='yyyy-MM-dd'
+                                                       value="<fmt:formatDate value='${projectTakeNumber.investigationsEndDate}' pattern='yyyy-MM-dd'/>">
+                                            </div>
+                                            <label class="col-sm-1 control-label">估价师<span
+                                                    class="symbol required"></span></label>
+                                            <div class="col-sm-3">
+                                                <select name="realEstateAppraiser" multiple="multiple"
+                                                        class="form-control input-full search-select select2"
+                                                        required="required">
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div>
+
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                说明
+                                            </label>
+                                            <div class="col-sm-11">
+                                <textarea class="form-control input-full" name="remark" rows="4"
                                           data-rule-maxlength="255" placeholder="说明"></textarea>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class="col-xs-4  col-sm-4  col-md-4  col-lg-4 control-label">
-                                    每个文件都可以生成自己的文号和二维码(可以一次性上传多个)
-                                </label>
-
-                                <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                                    <input id="ProjectTakeNumber_DocumentHandle"
-                                           name="file" multiple="multiple" type="file" style="display: none"
-                                           onchange="baseTakeNumber.upFileLoadReport(this)">
-                                    <div class="btn btn-primary"
-                                         onclick="$(this).prev().trigger('click')">上传报告
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
+                                    </div>
+
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-xs-4  col-sm-4  col-md-4  col-lg-4 control-label">
+                                                每个文件都可以生成自己的文号和二维码(可以一次性上传多个)
+                                            </label>
+
+                                            <div class="col-sm-3">
+                                                <button type="button" class="btn btn-info btn-sm"
+                                                     onclick="$(this).prev().trigger('click')">	<span class="btn-label">
+												<i class="fa fa-cloud-upload-alt"></i>
+											</span>上传报告
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div>
+
+
+                                </form>
+
                             </div>
                         </div>
-
-
-                    </form>
-                </div>
-
-            </div>
-
-
-            <div class="x_panel">
-                <div class="x_content">
-                    <div class=" col-xs-4  col-sm-4  col-md-4  col-lg-4    col-xs-offset-5 col-sm-offset-5 col-md-offset-5 col-lg-offset-5">
-                        <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
-                            取消
-                        </button>
-                        <c:choose>
-                            <c:when test="${projectPhase.bisUseBox eq false}">
-                                <button id="btn_submit" class="btn btn-success"
-                                        onclick="submit(false);">
-                                    直接提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
-                                </button>
-                                <button id="btn_submit" class="btn btn-primary"
-                                        onclick="submit(true);">
-                                    提交审批<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
-                                </button>
-                            </c:when>
-                            <c:otherwise>
-                                <button id="btn_submit" class="btn btn-success"
-                                        onclick="submit();">
-                                    提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
-                                </button>
-                            </c:otherwise>
-                        </c:choose>
                     </div>
+
+                    <!-- 公共尾部模块引用 -->
+                    <div class="col-md-12" style="text-align: center;padding-bottom: 1.25rem">
+
+                        <div class="card-body">
+                            <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
+                                取消
+                            </button>
+                            <c:choose>
+                                <c:when test="${projectPhase.bisUseBox eq false}">
+                                    <button id="btn_submit" class="btn btn-success"
+                                            onclick="submit(false);">
+                                        直接提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
+                                    </button>
+                                    <button id="btn_submit" class="btn btn-primary"
+                                            onclick="submit(true);">
+                                        提交审批<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
+                                    </button>
+                                </c:when>
+                                <c:otherwise>
+                                    <button id="btn_submit" class="btn btn-success"
+                                            onclick="submit();">
+                                        提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
+                                    </button>
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
+                    </div>
+                    <%--返回修改--%>
+                    <c:if test="${processInsId != 0}">
+                        <%@include file="/views/share/form_log.jsp" %>
+                        <form id="process_variable_form">
+                            <%@include file="/views/share/form_edit.jsp" %>
+                        </form>
+                    </c:if>
                 </div>
             </div>
-            <%@include file="/views/share/form_log.jsp" %>
         </div>
+        <%@include file="/views/share/main_footer.jsp" %>
     </div>
+
 </div>
+
+
 </body>
-<%@include file="/views/share/main_footer.jsp" %>
+
 <input type="file" id="ajaxFileUpload" name="file" style="display: none;">
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/js/ajaxfileupload.js?v=${assessVersion}"></script>
@@ -193,9 +211,9 @@
 <script type="text/html" id="projectTakeNumberDetailHtml">
 
     <div>
-        <div class=" col-xs-1  col-sm-1  col-md-1  col-lg-1">
+        <div class=" col-sm-1">
         </div>
-        <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
+        <div class=" col-sm-11 ">
             <div class="row panel">
                 <form>
                     <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12  panel-heading  text-center">
@@ -209,42 +227,42 @@
                         <div class="row">
                             <input type="hidden" name="id" value="{id}">
                             <input type="hidden" name="masterId">
-                            <div class=" col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
+                            <div class=" col-sm-1 control-label">
                                 二维码
                             </div>
-                            <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
+                            <div class=" col-sm-11 ">
                                 <div id="_ProjectTakeNumber_BaseOrCode{id}"></div>
                                 <img src="">
                             </div>
-                            <div class=" col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
+                            <div class=" col-sm-1 control-label">
                                 报告类型<span class="symbol required"></span>
                             </div>
-                            <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
+                            <div class=" col-sm-11 ">
                                 <select name="reportType" required="required"
-                                        class="form-control search-select select2">
+                                        class="form-control input-full search-select select2">
                                 </select>
                             </div>
-                            <div class=" col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
+                            <div class=" col-sm-1 control-label">
                                 上传的文档
                             </div>
-                            <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
+                            <div class=" col-sm-11 ">
                                 <input id="projectTakeNumberDetailSysAttachmentDto{id}" placeholder="继续上传待替换附件"
-                                       class="form-control"
+                                       class="form-control input-full"
                                        type="file">
                                 <div id="_projectTakeNumberDetailSysAttachmentDto{id}"></div>
                             </div>
-                            <div class="x-valid">
+                            <div class="form-inline x-valid">
                                 <label class="col-md-1 col-sm-1 col-xs-12 control-label">
                                     文号
                                 </label>
-                                <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
-                                    <input type="text" class="form-control" name="numberValue" readonly="readonly">
+                                <div class=" col-sm-11 ">
+                                    <input type="text" class="form-control input-full" name="numberValue" readonly="readonly">
                                 </div>
                             </div>
-                            <div class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
+                            <div class="col-sm-1 control-label">
                                 拿取文号
                             </div>
-                            <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
+                            <div class=" col-sm-11 ">
                                 <button type="button" class="btn-primary btn"
                                         onclick="baseTakeNumber.getReportNumber(this)"><i
                                         class="fa fa-dot-circle-o"></i></button>
@@ -333,7 +351,7 @@
                     errorCallback(e);
                 } else {
                     console.log(result.errmsg);
-                    Alert("调用服务端方法失败，失败原因:" + e);
+                    AlertError("调用服务端方法失败，失败原因:" + e);
                 }
             }
         });
@@ -475,10 +493,10 @@
                     baseTakeNumber.initFormProjectTakeNumberDetailData(data, form, false);
                 }, function (error) {
                     Loading.progressHide();
-                    Alert(error);
+                    notifyWarning("失败","失败原因:"+data);
                 });
             }, function (data) {
-                Alert(data);
+                notifyWarning("失败","失败原因:"+data);
                 Loading.progressHide();
             });
         });
@@ -527,7 +545,7 @@
             },
             error: function (result, status, e) {
                 Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + result);
+                AlertError("调用服务端方法失败，失败原因:" + result);
             }
         });
     };

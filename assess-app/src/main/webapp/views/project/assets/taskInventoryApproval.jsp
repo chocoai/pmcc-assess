@@ -5,27 +5,53 @@
     <%@include file="/views/share/main_css.jsp" %>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/tree-grid/css/jquery.treegrid.css">
 </head>
-<body class="nav-md footer_fixed">
-<div class="container body">
-    <div class="main_container">
-        <div class="right_col" role="main" style="margin-left: 0">
+<body>
+<div class="wrapper">
+    <div class="main-panel" style="width: 100%">
+        <div class="content" style="margin-top: 0px;">
             <%@include file="/views/share/form_head.jsp" %>
-            <%@include file="/views/share/project/projectInfoSimple.jsp" %>
-            <%@include file="/views/share/project/projectPlanDetails.jsp" %>
+            <div class="page-inner mt--5">
+                <div class="row mt--2">
+                    <%@include file="/views/share/project/projectInfoSimple.jsp" %>
+                    <%@include file="/views/share/project/projectPlanDetails.jsp" %>
 
-            <form class="form-horizontal" id="declareApplyForm">
-                <input type="hidden" name="planDetailsId" value="${projectPlanDetails.id}">
-                <input type="hidden" name="projectId" value="${projectPlanDetails.projectId}">
-                <%@include file="./assetsAppraisalDicApprovalModel.jsp" %>
-            </form>
+                    <!-- 公共模块end -->
 
-            <%@include file="/views/share/form_approval.jsp" %>
-            <%@include file="/views/share/form_log.jsp" %>
+                    <div class="col-md-12">
+                        <div class="card full-height">
+                            <div class="card-header collapse-link">
+                                <div class="card-head-row">
+                                    <div class="card-title">
+                                        申报编辑文件
+                                    </div>
+                                    <div class="card-tools">
+                                        <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                                                class="fa fa-angle-down"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <form class="form-horizontal" id="declareApplyForm">
+                                    <input type="hidden" name="planDetailsId" value="${projectPlanDetails.id}">
+                                    <input type="hidden" name="projectId" value="${projectPlanDetails.projectId}">
+                                    <%@include file="./assetsAppraisalDicApprovalModel.jsp" %>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 公共尾部模块引用 -->
+                    <%@include file="/views/share/form_approval.jsp" %>
+
+                </div>
+            </div>
         </div>
+        <%@include file="/views/share/main_footer.jsp" %>
     </div>
+
 </div>
+
 </body>
-<%@include file="/views/share/main_footer.jsp" %>
 <script type="application/javascript">
     //提交审批
     function saveform() {
