@@ -162,27 +162,7 @@
                         </div>
                     </div>
 
-                    <!-- 估价中引用的专用文件资料 start -->
-                    <div class="col-md-12">
-                        <div class="card full-height">
-                            <div class="card-header collapse-link">
-                                <div class="card-head-row">
-                                    <div class="card-title">
-                                        估价中引用的专用文件资料
-                                    </div>
-                                    <div class="card-tools">
-                                        <button class="btn btn-icon btn-link btn-primary btn-xs"><span
-                                                class="fa fa-angle-down"></span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
 
-                            <div class="card-body" id="ReportFileCustom">
-
-                            </div>
-                        </div>
-                    </div>
                     <!-- 实况照片 start -->
                     <div class="col-md-12">
                         <div class="card full-height">
@@ -198,9 +178,27 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="card-body" id="liveSituationHtml">
+                            </div>
+                        </div>
+                    </div>
 
+                    <!-- 估价中引用的专用文件资料 start -->
+                    <div class="col-md-12">
+                        <div class="card full-height">
+                            <div class="card-header collapse-link">
+                                <div class="card-head-row">
+                                    <div class="card-title">
+                                        估价中引用的专用文件资料
+                                    </div>
+                                    <div class="card-tools">
+                                        <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                                                class="fa fa-angle-down"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body" id="ReportFileCustom">
                             </div>
                         </div>
                     </div>
@@ -214,175 +212,14 @@
                         </button>
 
                     </div>
-                        <%@include file="/views/share/form_log.jsp" %>
+                    <%@include file="/views/share/form_log.jsp" %>
                 </div>
             </div>
         </div>
         <%@include file="/views/share/main_footer.jsp" %>
     </div>
-
 </div>
 
-<%--<div class="container body">
-    <div class="main_container">
-        <div class="right_col" role="main" style="margin-left: 0">
-            <%@include file="/views/share/project/projectInfoSimple.jsp" %>
-            <div class="x_panel">
-                <div class="x_title">
-                    <h3>估价委托书</h3>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="x_content">
-                    <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4 ">
-                        <input id="project_proxy" name="project_proxy" type="file" multiple="false">
-                        <div id="_project_proxy"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="x_panel">
-                <div class="x_title">
-                    <h3> 估价委托书及相关证明</h3>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="x_content">
-                    <div class=" col-xs-6  col-sm-6  col-md-6  col-lg-6 ">
-                        <form class="form-horizontal">
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                        省
-                                    </label>
-                                    <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                        <select id="queryProvince" class="form-control input-full">
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="x-valid">
-                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                        市
-                                    </label>
-                                    <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                        <select id="queryCity" class="form-control input-full">
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="x-valid">
-                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                        区
-                                    </label>
-                                    <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                        <select id="queryDistrict" class="form-control input-full">
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="x-valid">
-                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">名称</label>
-                                    <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                        <input type="text" class="form-control input-full" id="queryName"/>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">坐落</label>
-                                    <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                        <input type="text" class="form-control input-full" id="querySeat"/>
-                                    </div>
-                                </div>
-                                <div class="x-valid">
-                                    <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                                        <label class="btn btn-primary" onclick="reloadDeclareList();">
-                                            查询
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                            <table class="table table-bordered" id="declareTable">
-                                <!-- cerare document add ajax data-->
-                            </table>
-                        </form>
-                    </div>
-                    <div class=" col-xs-6  col-sm-6  col-md-6  col-lg-6 ">
-                        <div class="x_panel">
-                            <div class="x_title">
-                                <h4>位置示意图</h4>
-                                <div class="clearfix"></div>
-                            </div>
-                            <div class="x_content">
-                                <div class=" col-xs-6  col-sm-6  col-md-6  col-lg-6 ">
-                                    <table class="table table-hover">
-                                        <thead>
-                                        <tr>
-                                            <th>权证对象</th>
-                                            <th>位置图</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody id="positionTbody">
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                        &lt;%&ndash;<div class="x_panel">&ndash;%&gt;
-                        &lt;%&ndash;<div class="x_title collapse-link">&ndash;%&gt;
-                        &lt;%&ndash;<h4>权属证明复印件</h4>&ndash;%&gt;
-                        &lt;%&ndash;<div class="clearfix"></div>&ndash;%&gt;
-                        &lt;%&ndash;</div>&ndash;%&gt;
-                        &lt;%&ndash;<div class="x_content" id="ownershipCertHtml">&ndash;%&gt;
-                        &lt;%&ndash;</div>&ndash;%&gt;
-                        &lt;%&ndash;</div>&ndash;%&gt;
-                        &lt;%&ndash;<div class="x_panel">&ndash;%&gt;
-                        &lt;%&ndash;<div class="x_title collapse-link">&ndash;%&gt;
-                        &lt;%&ndash;<ul class="nav navbar-right panel_toolbox">&ndash;%&gt;
-                        &lt;%&ndash;<li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>&ndash;%&gt;
-                        &lt;%&ndash;</ul>&ndash;%&gt;
-                        &lt;%&ndash;<h4>关联土地证附件</h4>&ndash;%&gt;
-                        &lt;%&ndash;<div class="clearfix"></div>&ndash;%&gt;
-                        &lt;%&ndash;</div>&ndash;%&gt;
-                        &lt;%&ndash;<div class="x_content collapse" id="landFileHtml">&ndash;%&gt;
-                        &lt;%&ndash;</div>&ndash;%&gt;
-                        &lt;%&ndash;</div>&ndash;%&gt;
-                        <div class="x_panel">
-                            <div class="x_title">
-                                <h4>
-                                    估价中引用的专用文件资料
-                                </h4>
-                                <div class="clearfix"></div>
-                            </div>
-                            <div class="x_content " id="ReportFileCustom">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="x_panel">
-                        <div class="x_title collapse-link">
-                            <ul class="nav navbar-right panel_toolbox">
-                                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                            </ul>
-                            <h4>实况照片</h4>
-                            <div class="clearfix"></div>
-                        </div>
-                        <div class="x_content collapse" id="liveSituationHtml">
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-            <div class="x_panel">
-                <div class="x_content">
-                    <div class="col-sm-4 col-sm-offset-5">
-                        <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
-                            取消
-                        </button>
-                        <button id="btn_submit" class="btn btn-warning" onclick="submit()">
-                            保存<i style="margin-left: 10px" class="fa fa-save"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <%@include file="/views/share/form_log.jsp" %>
-        </div>
-    </div>
-</div>--%>
 </body>
 <div id="addItemModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
@@ -518,7 +355,8 @@
         </div>
     </div>
 </div>
-<div id="examineFileModalByCertifyPart" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+<div id="examineFileModalByCertifyPart" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -560,7 +398,8 @@
         </div>
     </div>
 </div>
-<div id="selectPictureTypeModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+<div id="selectPictureTypeModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -640,7 +479,8 @@
                                                 附件
                                             </label>
                                             <div class="col-sm-11">
-                                                <input id="uploadPicture" placeholder="上传附件" class="form-control input-full"
+                                                <input id="uploadPicture" placeholder="上传附件"
+                                                       class="form-control input-full"
                                                        type="file">
                                                 <div id="_uploadPicture"></div>
                                             </div>
@@ -796,387 +636,6 @@
         </div>
     </div>
 </div>
-
-
-<%--<div id="addItemModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
-     role="dialog"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">添加照片</h3>
-            </div>
-            <form id="frmItemFile" class="form-horizontal">
-                <input type="hidden" name="declareRecordId">
-                <input type="hidden" name="id">
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="panel-body">
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">名称<span
-                                                class="symbol required"></span></label>
-                                        <div class="col-sm-3">
-                                            <input type="text" class="form-control input-full" required
-                                                   name="fileName" placeholder="名称">
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">排序<span
-                                                class="symbol required"></span></label>
-                                        <div class="col-sm-3">
-                                            <input type="text" class="form-control input-full" required
-                                                   name="sorting" placeholder="排序">
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            是否上报告
-                                        </label>
-                                        <div class="col-sm-3">
-                                            <label class="checkbox-inline">
-                                                <input type="checkbox" id="bisEnable" name="bisEnable"
-                                                       value="true" checked>
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">对应查勘部位<span
-                                                class="symbol required"></span></label>
-                                        <div class="col-sm-3">
-                                            <select name="certifyPart"
-                                                    class="form-control input-full search-select certifyPart select2"
-                                                    required>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">附件类别<span class="symbol required"></span></label>
-                                        <div class="col-sm-3">
-                                            <select name="certifyPartCategory"
-                                                    class="form-control input-full search-select certifyPartCategory select2"
-                                                    required>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <div class="col-sm-3">
-                                            <small><input type="button" value="选择查勘照片"
-                                                          onclick="getLiveSituationByCertifyPart()"
-                                                          class="btn btn-success btn-xs"></small>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">备注</label>
-                                        <div class="col-sm-10">
-                                    <textarea placeholder="备注" name="remark"
-                                              class="form-control input-full"></textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">附件</label>
-                                        <div class="col-sm-10">
-                                            <input id="uploadSupplementFile" placeholder="上传附件"
-                                                   class="form-control input-full"
-                                                   type="file">
-                                            <div id="_uploadSupplementFile"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-default">
-                        关闭
-                    </button>
-                    <button type="button" onclick="saveItemFileData()" class="btn btn-primary">
-                        保存
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>--%>
-<%--
-<div id="allExamineFileModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
-     role="dialog"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">查勘照片</h3>
-            </div>
-            <form id="allExamineFileFrm" class="form-horizontal">
-                <input type="hidden" name="id">
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="panel-body">
-                                <div class="">
-                                    <table class="table">
-                                        <thead>
-                                        <tr>
-                                            <th>序号</th>
-                                            <th>文件名称</th>
-                                            <th>附件</th>
-                                            <th>操作</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody data-id="all_live_situation">
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-default">
-                        关闭
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
---%>
-<%--
-<div id="examineFileModalByCertifyPart" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
-     role="dialog"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">查勘照片</h3>
-            </div>
-            <form id="examineFileFrmByCertifyPart" class="form-horizontal">
-                <input type="hidden" name="id">
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="panel-body">
-                                <div class="">
-                                    <table class="table">
-                                        <thead>
-                                        <tr>
-                                            <th>序号</th>
-                                            <th>文件名称</th>
-                                            <th>附件</th>
-                                            <th>操作</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody data-id="certifyPart_file">
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-default">
-                        关闭
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
---%>
-<%--
-<div id="selectPictureTypeModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
-     role="dialog"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">模板类型</h3>
-            </div>
-            <form id="frmPictureType" class="form-horizontal">
-                <input type="hidden" name="declareRecordId">
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="panel-body">
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">类型<span
-                                                class="symbol required"></span></label>
-                                        <div class="col-sm-3">
-                                            <select id='type' name='type'
-                                                    class='form-control input-full search-select select2'
-                                                    onchange="typeOnchange(this)">
-                                                <option value="-1">-请选择-</option>
-                                                <option value="0">系统</option>
-                                                <option value="1">个人</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <table class="table table-bordered" id="dataLocaleSurveyList">
-                            <!-- cerare document add ajax data-->
-                        </table>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-default">
-                        关闭
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
---%>
-<%--
-<div id="addPictureModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
-     role="dialog"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">添加照片</h3>
-            </div>
-            <form id="frmPicture" class="form-horizontal">
-                <input type="hidden" name="declareRecordId">
-                <input type="hidden" name="certifyPartCategory">
-                <input type="hidden" name="id">
-                <input type="hidden" name="bisEnable">
-                <div class="modal-body">
-                    <input type="button" class="btn btn-primary btn-xs"
-                           onclick="correspondingSitePic()"
-                           value="选择对应位置查勘图片">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="panel-body">
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">附件</label>
-                                        <div class="col-sm-10">
-                                            <input id="uploadPicture" placeholder="上传附件" class="form-control input-full"
-                                                   type="file">
-                                            <div id="_uploadPicture"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-default">
-                        关闭
-                    </button>
-                    <button type="button" onclick="savePicture()" class="btn btn-primary">
-                        保存
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
---%>
-<%--
-<div id="divBoxTemplateDetail" class="modal fade bs-example-modal-lg" data-backdrop="static"
-     tabindex="-1"
-     role="dialog"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">明细</h3>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <form id="frmMaster" class="form-horizontal">
-                        <input type="hidden" id="masterId">
-                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                            <button type="button" data-dismiss="modal" class="btn btn-default"
-                                    onclick="dataLocaleSurveyPicture.prototype.showModel()">
-                                新增
-                            </button>
-                            <table class="table table-bordered" id="dataLocaleSurveyPictureList">
-                                <!-- cerare document add ajax data-->
-                            </table>
-
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">
-                    关闭
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
---%>
-<%--
-<div id="divBoxSaveTemplate" class="modal fade bs-example-modal-lg" data-backdrop="static"
-     tabindex="-1"
-     role="dialog"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">保存到模板</h3>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <form id="frmTemplateMaster" class="form-horizontal">
-                        <input type="hidden" name="declareRecordId">
-                        <div class="form-group ">
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">
-                                    名称
-                                </label>
-                                <div class="col-sm-3">
-                                    <input type="text" data-rule-maxlength="50"
-                                           placeholder="名称" id="name" class="form-control input-full">
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">
-                    关闭
-                </button>
-                <button type="button" class="btn btn-primary" onclick="saveToTemplate()">
-                    保存
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
---%>
 
 <%@include file="/views/data/dataLocaleSurveyPictureView.jsp" %>
 <script type="text/html" id="reportFileCustomHtml">
@@ -1507,7 +966,7 @@
             data: {formData: JSON.stringify(data)},
             success: function (result) {
                 if (result.ret) {
-                    AlertSuccess("成功", "保存成功",function(){
+                    AlertSuccess("成功", "保存成功", function () {
                         window.close();
                     });
                 } else {
@@ -1673,7 +1132,7 @@
             },
             success: function (result) {
                 Loading.progressHide();
-                AlertSuccess("成功", "选择图片成功",function(){
+                AlertSuccess("成功", "选择图片成功", function () {
                     loadLiveSituation($('tbody[data-id=' + declareRecordId + '][data-name=live_situation_select]'), declareRecordId);
 
                 });
@@ -1964,7 +1423,7 @@
                         }
                         $("#allExamineFileModal").modal("show");
                     } else {
-                        notifyWarning("加载失败","失败原因:"+result.errmsg);
+                        notifyWarning("加载失败", "失败原因:" + result.errmsg);
                     }
                 }
             })
@@ -2010,7 +1469,7 @@
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = "";
-                str += "<a href='javascript://'  style='margin-left: 5px;' data-placement='top' data-original-title='选择' class='btn btn-xs btn-success tooltips' >选择<i class='fa fa-search fa-white'></i></a>";
+                str += "<button type='button'  style='margin-left: 5px;' data-placement='top' data-original-title='选择' class='btn btn-xs btn-primary tooltips' >选择</button>";
                 return str;
             }
         });
@@ -2083,11 +1542,11 @@
         html += '<div class="x_panel">';
         html += '<div class="x_title"><h4>';
         html += '<strong>' + declareRecord.name + '</strong>';
-        html += '<small><input type="button" value="新增照片" onclick="addLiveSituationFile(' + declareRecord.id + ')" class="btn btn-success btn-xs"></small>';
-        html += '<small><input type="button" value="选择查勘中图片" onclick="getLiveSituationAll(' + declareRecord.id + ')" class="btn btn-success btn-xs"></small>';
-        html += '<small><input type="button" value="选择模板" onclick="selectPictureTempale(' + declareRecord.id + ')" class="btn btn-success btn-xs"></small>';
-        html += '<small><input type="button" value="保存到模板" onclick="saveToTemplateModal(' + declareRecord.id + ')" class="btn btn-success btn-xs"></small>';
-        html += '<small><input type="button" value="预览实况图片" onclick="generateLiveSituation(' + declareRecord.id + ')" class="btn btn-success btn-xs"></small></h4>';
+        html += '<small style="margin-left: 5px;"><button type="button" value="新增照片" onclick="addLiveSituationFile(' + declareRecord.id + ')" class="btn btn-success btn-xs">新增照片</button></small>';
+        html += '<small style="margin-left: 5px;><button type="button" value="选择查勘中图片" onclick="getLiveSituationAll(' + declareRecord.id + ')" class="btn btn-primary btn-xs">选择查勘中图片</button></small>';
+        html += '<small style="margin-left: 5px;><button type="button" value="选择模板" onclick="selectPictureTempale(' + declareRecord.id + ')" class="btn btn-primary btn-xs">选择模板</button></small>';
+        html += '<small style="margin-left: 5px;><button type="button" value="保存到模板" onclick="saveToTemplateModal(' + declareRecord.id + ')" class="btn btn-primary btn-xs">保存到模板</button></small>';
+        html += '<small style="margin-left: 5px;><button type="button" value="预览实况图片" onclick="generateLiveSituation(' + declareRecord.id + ')" class="btn btn-primary btn-xs">预览实况图片</button></small></h4>';
         html += '</div><table class="table table-hover"><thead><tr><th width="10%">文件名称</th><th width="10%">排序</th><th width="20%">附件</th><th width="15%">对应查勘部位</th><th width="10%">附件类别</th><th width="10%">是否上报告</th><th width="20%">操作</th></tr></thead>';
         html += '<tbody data-id="' + declareRecord.id + '" data-name="live_situation_select"></tbody></table>';
         html += '</div></div></div>';

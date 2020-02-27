@@ -141,40 +141,24 @@ declareRealtyRealEstateCert.loadList = function () {
     cols.push({
         field: 'id', title: '操作', width: "20%", formatter: function (value, row, index) {
             var str = "";
+            str += '<button type="button" onclick="declareRealtyRealEstateCert.showAddModelDeclareEconomicIndicators(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="经济指标">经济指标</button>';
 
-            str += '<button type="button" onclick="declareRealtyRealEstateCert.showAddModelDeclareEconomicIndicators(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-success  btn-xs tooltips"  data-placement="bottom" data-original-title="经济指标">';
-            str += '经济指标 <i class="fa fa-adjust"></i>';
-            str += '</button>';
+            str += '<button type="button" onclick="declareRealtyRealEstateCert.enclosure(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="不动产附件">不动产附件</button>';
 
-            str += '<button type="button" onclick="declareRealtyRealEstateCert.enclosure(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn  btn-success  btn-xs tooltips"  data-placement="bottom" data-original-title="不动产附件">';
-            str += '不动产附件 <i class="fa fa-file"></i>';
-            str += '</button>';
-
-
-            return str;
-        }
-    });
-
-    cols.push({
-        field: 'creator', title: '许可证信息', formatter: function (value, row, index) {
-            var str = '<div class="dropdown">';
-            str += "<button class='btn btn-primary dropdown-toggle' data-toggle='dropdown'>" + "<i class='fa fa-users'>" + "</i>" + "许可证信息" + "<span class='caret'>" + "</span>" + "</button>";
-            str += "<ul class='dropdown-menu' role='menu' aria-labelledby='dropdownMenu2'>";
-
-            str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='declareRealtyRealEstateCert.declareBuildingPermitView(" + row.id + ")'" + ">" + "建设工程规划许可证" + "<i class='fa fa-navicon'></i>" + "</a>" + "</li>";
-
-            str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='declareRealtyRealEstateCert.declareLandUsePermitView(" + row.id + ")'" + ">" + "建设用地规划许可证" + "<i class='fa fa-navicon'></i>" + "</a>" + "</li>";
-
-            str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='declareRealtyRealEstateCert.declareBuildingConstructionPermitView(" + row.id + ")'" + ">" + "建筑工程施工许可证" + "<i class='fa fa-navicon'></i>" + "</a>" + "</li>";
-
-            str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='declareRealtyRealEstateCert.declarePreSalePermitView(" + row.id + ")'" + ">" + "商品房预售许可证" + "<i class='fa fa-navicon'></i>" + "</a>" + "</li>";
-
-
-            str += "</ul>";
+            str += '<div class="dropdown">';
+            str += "<button class='btn btn-info btn-xs dropdown-toggle' data-toggle='dropdown'>许可证信息</button>";
+            str += "<div class='dropdown-menu' role='menu' aria-labelledby='dropdownMenu2'>";
+            str += "<a class='dropdown-item' onclick='declareRealtyRealEstateCert.declareBuildingPermitView(" + row.id + ")'>建设工程规划许可证</a>";
+            str += "<a class='dropdown-item' onclick='declareRealtyRealEstateCert.declareLandUsePermitView(" + row.id + ")'>建设用地规划许可证</a>";
+            str += "<a class='dropdown-item' onclick='declareRealtyRealEstateCert.declareBuildingConstructionPermitView(" + row.id + ")'>建筑工程施工许可证</a>";
+            str += "<a class='dropdown-item' onclick='declareRealtyRealEstateCert.declarePreSalePermitView(" + row.id + ")'>商品房预售许可证</a>";
             str += "</div>";
+            str += "</div>";
+
             return str;
         }
     });
+
     $("#" + declareRealtyRealEstateCert.config.table).bootstrapTable('destroy');
     TableInit(declareRealtyRealEstateCert.config.table, getContextPath() + "/declareRealtyRealEstateCert/getDeclareRealtyRealEstateCertList", cols, {
         planDetailsId: declareCommon.getPlanDetailsId(), enable: declareCommon.masterData

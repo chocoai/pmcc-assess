@@ -253,45 +253,26 @@ assessCommonLand.loadList = function () {
 
     cols.push({
         field: 'id', title: '操作', width:"20%",formatter: function (value, row, index) {
-            var str = '<button type="button" onclick="assessCommonLand.showAddModelHouse(' + row.id + ')" style="margin-left: 5px;" class="btn  btn-success  btn-xs tooltips"  data-placement="bottom" data-original-title="关联的房产证">';
-            str += '关联的房产证 <i class="fa fa-eye"></i>';
-            str += '</button>';
+            var str = '<button type="button" onclick="assessCommonLand.showAddModelHouse(' + row.id + ')" style="margin-left: 5px;" class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="关联的房产证">房产证</button>';
 
-            str += '<button type="button" onclick="assessCommonLand.landImportHandleHouse(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn  btn-success  btn-xs tooltips"  data-placement="bottom" data-original-title="房产证附件">';
-            str += '房产证附件 <i class="fa fa-file"></i>';
-            str += '</button>';
+            str += '<button type="button" onclick="assessCommonLand.landImportHandleHouse(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="房产证附件">房产证附件</button>';
 
+            str += '<button type="button" onclick="assessCommonLand.landImportEvent(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="土地证附件">土地证附件</button>';
 
-            str += '<button type="button" onclick="assessCommonLand.landImportEvent(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn  btn-success  btn-xs tooltips"  data-placement="bottom" data-original-title="土地证附件">';
-            str += '土地证附件 <i class="fa fa-file"></i>';
-            str += '</button>';
-
-
-            return str;
-        }
-    });
-
-
-    cols.push({
-        field: 'creator', title: '许可证信息', formatter: function (value, row, index) {
-            var str = '<div class="dropdown">';
-            str += "<button class='btn btn-primary dropdown-toggle' data-toggle='dropdown'>" + "<i class='fa fa-users'>" + "</i>" + "许可证信息" + "<span class='caret'>" + "</span>" + "</button>";
-            str += "<ul class='dropdown-menu' role='menu' aria-labelledby='dropdownMenu2'>";
-
-            str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='assessCommonLand.declareBuildingPermitView(" + row.id + ")'" + ">" + "建设工程规划许可证" + "<i class='fa fa-navicon'></i>" + "</a>" + "</li>";
-
-            str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='assessCommonLand.declareLandUsePermitView(" + row.id + ")'" + ">" + "建设用地规划许可证" + "<i class='fa fa-navicon'></i>" + "</a>" + "</li>";
-
-            str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='assessCommonLand.declareBuildingConstructionPermitView(" + row.id + ")'" + ">" + "建筑工程施工许可证" + "<i class='fa fa-navicon'></i>" + "</a>" + "</li>";
-
-            str += "<li role='presentation'>" + "<a role='menuitem' tabindex='-1' class='btn btn-default' onclick='assessCommonLand.declarePreSalePermitView(" + row.id + ")'" + ">" + "商品房预售许可证" + "<i class='fa fa-navicon'></i>" + "</a>" + "</li>";
-
-
-            str += "</ul>";
+            str += '<div class="dropdown">';
+            str += "<button class='btn btn-info btn-xs dropdown-toggle' data-toggle='dropdown'>许可证信息</button>";
+            str += "<div class='dropdown-menu' role='menu' aria-labelledby='dropdownMenu2'>";
+            str += "<a class='dropdown-item'  onclick='assessCommonLand.declareBuildingPermitView(" + row.id + ")'>" + "建设工程规划许可证</a>";
+            str += "<a class='dropdown-item'  onclick='assessCommonLand.declareLandUsePermitView(" + row.id + ")'>" + "建设用地规划许可证</a>";
+            str += "<a class='dropdown-item'  onclick='assessCommonLand.declareBuildingConstructionPermitView(" + row.id + ")'>" + "建筑工程施工许可证</a>";
+            str += "<a class='dropdown-item'  onclick='assessCommonLand.declarePreSalePermitView(" + row.id + ")'>" + "商品房预售许可证</a>";
             str += "</div>";
+            str += "</div>";
+
             return str;
         }
     });
+
     $("#" + assessCommonLand.config.table).bootstrapTable('destroy');
     TableInit(assessCommonLand.config.table, getContextPath() + "/declareRealtyLandCert/getDeclareRealtyLandCertList", cols, {
         planDetailsId: declareCommon.getPlanDetailsId(),

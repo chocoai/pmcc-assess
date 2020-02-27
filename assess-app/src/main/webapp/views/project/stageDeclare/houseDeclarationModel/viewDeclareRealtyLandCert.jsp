@@ -2,47 +2,58 @@
 
 <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
     <div class="card full-height">
-
         <div class="card-header">
             <div class="card-head-row">
                 <div class="card-title">土地证</div>
             </div>
         </div>
-
         <div class="card-body">
             <form class="form-horizontal">
-
                 <div class="row form-group">
-
                     <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
                         <div class="form-inline x-valid">
                             <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-success "
-                                            onclick="assessCommonLand.showAddModelLand()"
-                                            data-toggle="modal">
-                                        <i class="fa fa-plus"></i>
-                                        新增
+                                <button type="button" class="btn btn-success btn-sm"
+                                        onclick="assessCommonLand.showAddModelLand()"
+                                        data-toggle="modal">
+                                    <i class="fa fa-plus"></i>
+                                    新增
+                                </button>
+                                <button type="button" class="btn btn-primary btn-sm" onclick="assessCommonLand.editLand()">
+                                    <i class="fa fa-pen"></i>
+                                    编辑
+                                </button>
+                                <button type="button" class="btn btn-warning btn-sm"
+                                        onclick="assessCommonLand.deleteLand()">
+                                    <i class="fa fa-minus"></i>
+                                    删除
+                                </button>
+                                <div class="dropdown" style="display: inline;margin-left: 5px;">
+                                    <button type="button" class="btn btn-info dropdown-toggle btn-sm"
+                                            data-toggle="dropdown"
+                                            aria-expanded="false">
+                                        导入土地证
                                     </button>
-                                    <button type="button" class="btn btn-primary " onclick="assessCommonLand.editLand()">
-                                        <i class="fa fa-pen"></i>
-                                        编辑
+                                    <div class="dropdown-menu" role="menu">
+                                        <a href="javascript://" class="dropdown-item"
+                                           onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftLandOwnershipCertificate);">下载模板</a>
+                                        <a href="javascript://;" class="dropdown-item"
+                                           onclick="$('#ajaxFileUploadLand').val('').attr('data-type',1).trigger('click');">导入数据</a>
+                                    </div>
+                                </div>
+
+                                <div class="dropdown" style="display: inline;margin-left: 5px;">
+                                    <button type="button" class="btn btn-info dropdown-toggle btn-sm"
+                                            data-toggle="dropdown"
+                                            aria-expanded="false">
+                                        导入房产证
                                     </button>
-                                    <button type="button" class="btn btn-warning "
-                                            onclick="assessCommonLand.deleteLand()">
-                                        <i class="fa fa-minus"></i>
-                                        删除
-                                    </button>
-                                    <button type="button" class="btn btn-success "
-                                            onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftLandOwnershipCertificate)">
-                                        <i class="fa fa-cloud-upload-alt"></i>
-                                        下载模板
-                                    </button>
-                                    <button type="button" class="btn btn-primary "
-                                            onclick="$('#ajaxFileUploadLand').val('').trigger('click')">
-                                        <i class="fa fa-cloud-upload-alt"></i>
-                                        导入
-                                    </button>
+                                    <div class="dropdown-menu" role="menu">
+                                        <a href="javascript://" class="dropdown-item"
+                                           onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftHouseOwnershipCertificate);">下载模板</a>
+                                        <a href="javascript://;" class="dropdown-item"
+                                           onclick="$('#ajaxFileUploadLandHouse').val('').attr('data-type',1).trigger('click');">导入数据</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -51,36 +62,12 @@
                     <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
                         <div class="form-inline x-valid">
                             <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-primary   dropdown-toggle"
-                                            data-toggle="dropdown">导入关联的房产证
-                                        <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li>
-                                            <a onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftHouseOwnershipCertificate)"><span>下载模板 <i class="fa-cloud-download-alt fa"></i></span></a>
-                                        </li>
-                                        <li>
-                                            <a  onclick="$('#ajaxFileUploadLandHouse').val('').trigger('click')"><span>导入</span><i class="fa-cloud-upload-alt fa"></i></a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-                        <div class="form-inline x-valid">
-                            <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-primary " onclick="assessCommonLand.copyData();"><i
-                                            class="fa fa-copy" aria-hidden="true"></i> 复制
-                                    </button>
-                                    <button type="button" class="btn btn-primary " onclick="assessCommonLand.pasteAll();"><i
-                                            class="fa fa-clipboard" aria-hidden="true"></i>粘贴
-                                    </button>
-                                </div>
+                                <button type="button" class="btn btn-info btn-sm" onclick="assessCommonLand.copyData();"><i
+                                        class="fa fa-copy" aria-hidden="true"></i> 复制
+                                </button>
+                                <button type="button" class="btn btn-warning btn-sm" onclick="assessCommonLand.pasteAll();"><i
+                                        class="fa fa-clipboard" aria-hidden="true"></i>粘贴
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -90,10 +77,10 @@
                             <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                                 <div class="input-group " id="landHandleInputGroup">
                                     <input type="hidden" name="id">
-                                    <input type="text" readonly="readonly" name="name" class="form-control"
+                                    <input type="text" readonly="readonly" name="name" class="form-control form-control-sm"
                                            placeholder="暂无复制数据">
                                     <div class="input-group-prepend ">
-                                        <button class="btn btn-warning "
+                                        <button class="btn btn-warning btn-sm"
                                                 style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
                                                 type="button" onclick="$(this).closest('.input-group').find('input').val('');">
                                             清空
@@ -108,28 +95,24 @@
 
 
                 <div class="row form-group">
-                    <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                    <div class=" col-xs-1  col-sm-1  col-md-1  col-lg-1 ">
                         <div class="x-valid form-inline">
-                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">非主数据</label>
                             <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
                                 <div class="form-check" style="justify-content:left">
                                     <label class="form-check-label">
                                         <input class="form-check-input" type="checkbox" name="isSource" value="false">
-                                        <span class="form-check-sign">关联土地证关联的房产证</span>
+                                        <span class="form-check-sign">房产证</span>
                                     </label>
                                 </div>
-
                             </div>
                         </div>
                     </div>
 
                     <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
-
                         <div class="x-valid form-inline">
                             <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">启始编号</label>
-                            <div class=" col-xs-1  col-sm-1  col-md-1  col-lg-1 ">
-                                <input type="text"
-                                       placeholder="必须数字" name="startNumber" class="form-control input-full">
+                            <div class=" col-xs-9  col-sm-9  col-md-9  col-lg-9 ">
+                                <input type="text" placeholder="必须数字" name="startNumber" class="form-control input-full">
                             </div>
                         </div>
                     </div>
@@ -137,9 +120,8 @@
                     <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
                         <div class="x-valid form-inline">
                             <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">截至编号</label>
-                            <div class=" col-xs-1  col-sm-1  col-md-1  col-lg-1 ">
-                                <input type="text"
-                                       placeholder="必须数字" name="endNumber" class="form-control input-full">
+                            <div class=" col-xs-9  col-sm-9  col-md-9  col-lg-9 ">
+                                <input type="text" placeholder="必须数字" name="endNumber" class="form-control input-full">
                             </div>
                         </div>
                     </div>
@@ -147,7 +129,7 @@
                     <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
                         <div class="x-valid form-inline">
                             <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">步长</label>
-                            <div class=" col-xs-1  col-sm-1  col-md-1  col-lg-1 ">
+                            <div class=" col-xs-9  col-sm-9  col-md-9  col-lg-9 ">
                                 <input type="text" placeholder="每个权证关联的图片个数" name="step" class="form-control input-full"
                                        value="">
                             </div>
@@ -172,7 +154,6 @@
                         </button>
                     </div>
                 </div>
-
 
                 <div class="row form-group">
                     <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">

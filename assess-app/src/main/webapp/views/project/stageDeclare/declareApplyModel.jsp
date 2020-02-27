@@ -1016,10 +1016,6 @@
                 </div>
             </div>
         </div>
-
-
-
-
     </div>
 </script>
 
@@ -1208,9 +1204,6 @@
 
 <script type="text/html" id="landUsePermitCommon" data-title="建设用地规划许可证">
     <div id="declareModelHandleLandUsePermitCommon">
-
-
-
         <div class="row form-group">
             <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                 <div class="form-inline x-valid">
@@ -1443,9 +1436,7 @@
 
 <script type="text/html" id="declareModelRealEstateCert" data-title="不动产证">
     <div id="declareModelHandleRealEstateCert">
-
-
-
+        <input type="hidden" name="autoInitNumber">
         <div class="row form-group">
             <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                 <div class="form-inline x-valid">
@@ -1994,6 +1985,7 @@
 
 <script type="text/html" id="declareModelRealEstateCert2" data-title="不动产证(样式和上面的不动产有所差异)">
     <div id="declareModelHandleRealEstateCert2">
+        <input type="hidden" name="autoInitNumber">
         <div class="row form-group">
             <div class="col-md-4">
                 <div class="form-inline x-valid">
@@ -2510,6 +2502,7 @@
 
 <script type="text/html" id="declareModelHouse" data-title="房产证信息">
     <div id="declareModelHandleHouse">
+        <input type="hidden" name="autoInitNumber">
         <div class="row form-group">
             <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                 <div class="form-inline x-valid">
@@ -2934,7 +2927,7 @@
 
 <script type="text/html" id="declareModelLand" data-title="土地证信息">
     <div id="declareModelHandleLand">
-
+        <input type="hidden" name="autoInitNumber">
         <div class="row form-group">
             <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                 <div class="form-inline x-valid">
@@ -2971,11 +2964,6 @@
                 </div>
             </div>
         </div>
-
-
-
-
-
         <div class="row form-group">
             <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                 <div class="form-inline x-valid">
@@ -3011,8 +2999,6 @@
                 </div>
             </div>
         </div>
-
-
 
 
         <div class="row form-group">
@@ -3204,9 +3190,7 @@
                         <div class="input-group">
                             <input type="text" id="certUse" name="certUse" class="form-control" list="certUseList"
                                    required>
-                            <datalist id="certUseList">
-
-                            </datalist>
+                            <datalist id="certUseList"></datalist>
                             <div class="input-group-prepend ">
                                 <button class="btn btn-warning "
                                         style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
@@ -3221,10 +3205,6 @@
                 </div>
             </div>
         </div>
-
-
-
-
 
         <div class="row form-group">
             <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
@@ -3323,6 +3303,7 @@
 
 <script type="text/html" id="declareModelLand2" data-title="土地证信息2">
     <div id="declareModelHandleLand2">
+        <input type="hidden" name="autoInitNumber">
         <div class="row form-group">
             <div class="col-md-4">
                 <div class="form-inline x-valid">

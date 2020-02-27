@@ -853,7 +853,7 @@
                         附件
                     </label>
                     <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
-                        <div id="_declareRealtyLandCertFileId"></div>
+                        <div id="_declareRealtyHouseCert_land_FileId"></div>
                     </div>
                 </div>
             </div>

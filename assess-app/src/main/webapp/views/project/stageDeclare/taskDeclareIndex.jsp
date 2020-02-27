@@ -69,7 +69,7 @@
                                                 </label>
                                                 <div class="col-xs-10  col-sm-10  col-md-10  col-lg-10">
                                                     <input name="assessArea" class="form-control input-full"
-                                                           placeholder="上次评估面积" value='${declare.assessArea}'/>
+                                                        data-rule-number="true"   placeholder="上次评估面积" value='${declare.assessArea}'/>
                                                 </div>
                                             </div>
                                         </div>
@@ -80,7 +80,7 @@
                                                 </label>
                                                 <div class="col-xs-10  col-sm-10  col-md-10  col-lg-10">
                                                     <input name="assessMoney" class="form-control input-full"
-                                                           placeholder="上次评估金额" value='${declare.assessMoney}'/>
+                                                           data-rule-number="true"  placeholder="上次评估金额" value='${declare.assessMoney}'/>
                                                 </div>
                                             </div>
                                         </div>
@@ -144,7 +144,7 @@
                                                     自定义附件
                                                 </label>
                                                 <div class="col-xs-10  col-sm-10  col-md-10  col-lg-10">
-                                                    <div class="btn  btn-success"
+                                                    <div class="btn  btn-success btn-sm"
                                                          onclick="declareApplyExtensionCumstom.appendHTML('${declare.id}','${projectPlanDetails.projectId}',this)">
                                                         <i class="fa fa-plus"></i></div>
                                                 </div>
@@ -206,13 +206,9 @@
                             </div>
                         </div>
                     </div>
-
-
                     <%@include file="/views/share/form_log.jsp" %>
-
                     <%@include file="/views/method/module/economicIndicators.jsp" %>
                     <%@include file="/views/project/tool/declareApplyExtensionCumstomModelView.jsp" %>
-
                 </div>
             </div>
         </div>

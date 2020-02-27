@@ -273,7 +273,7 @@ public class DeclareRealtyLandCertService {
     public Integer saveAndUpdateDeclareRealtyLandCert(DeclareRealtyLandCert declareRealtyLandCert, boolean updateNull) {
         if (declareRealtyLandCert.getId() == null) {
             declareRealtyLandCert.setCreator(commonService.thisUserAccount());
-            declareRealtyLandCert.setAutoInitNumber(declareRealtyLandCertDao.getCountByPlanDetailsId(declareRealtyLandCert.getPlanDetailsId()) + 1);
+            declareRealtyLandCert.setAutoInitNumber(declareBuildEngineeringAndEquipmentCenterService.getCountByPlanDetailsId(declareRealtyLandCert.getPlanDetailsId()) + 1);
             declareRealtyLandCertDao.addDeclareRealtyLandCert(declareRealtyLandCert);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(DeclareRealtyLandCert.class), declareRealtyLandCert.getId());
             return declareRealtyLandCert.getId();

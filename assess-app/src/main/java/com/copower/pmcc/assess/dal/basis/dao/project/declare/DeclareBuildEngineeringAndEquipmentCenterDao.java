@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.dal.basis.dao.project.declare;
 
 import com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEngineeringAndEquipmentCenter;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareBuildEngineeringAndEquipmentCenterExample;
+import com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyHouseCertExample;
 import com.copower.pmcc.assess.dal.basis.mapper.DeclareBuildEngineeringAndEquipmentCenterMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -116,5 +117,10 @@ public class DeclareBuildEngineeringAndEquipmentCenterDao {
         return declareBuildEngineeringAndEquipmentCenterMapper.selectByExample(example);
     }
 
+    public Integer getCountByPlanDetailsId(Integer planDetailsId){
+        DeclareBuildEngineeringAndEquipmentCenterExample example = new DeclareBuildEngineeringAndEquipmentCenterExample();
+        example.createCriteria().andPlanDetailsIdEqualTo(planDetailsId);
+        return declareBuildEngineeringAndEquipmentCenterMapper.countByExample(example);
+    }
 
 }

@@ -270,7 +270,7 @@ public class DeclareRealtyHouseCertService {
     public Integer saveAndUpdateDeclareRealtyHouseCert(DeclareRealtyHouseCert declareRealtyHouseCert, boolean updateNull) {
         if (declareRealtyHouseCert.getId() == null) {
             declareRealtyHouseCert.setCreator(commonService.thisUserAccount());
-            declareRealtyHouseCert.setAutoInitNumber(declareRealtyHouseCertDao.getCountByPlanDetailsId(declareRealtyHouseCert.getPlanDetailsId()) + 1);
+            declareRealtyHouseCert.setAutoInitNumber(declareBuildEngineeringAndEquipmentCenterService.getCountByPlanDetailsId(declareRealtyHouseCert.getPlanDetailsId()) + 1);
             declareRealtyHouseCertDao.addDeclareRealtyHouseCert(declareRealtyHouseCert);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class), declareRealtyHouseCert.getId());
             return declareRealtyHouseCert.getId();

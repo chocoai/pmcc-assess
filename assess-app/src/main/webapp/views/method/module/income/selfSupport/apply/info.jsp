@@ -1892,14 +1892,12 @@
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
-                    //str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="priceInvestigation.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
-                    str += '<a onclick="priceInvestigation.prototype.getAndInit(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn   btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
+                    str += '<button type="button" onclick="priceInvestigation.prototype.getAndInit(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn   btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
                     str += '<i class="fa fa-pen"></i>';
-                    str += '</a>';
-                    str += '<a onclick="priceInvestigation.prototype.removeData(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn   btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
+                    str += '</button>';
+                    str += '<button type="button" onclick="priceInvestigation.prototype.removeData(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn   btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
                     str += '<i class="fa fa-minus"></i>';
-                    str += '</a>';
-                    //str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="priceInvestigation.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
+                    str += '</button>';
                     str += '</div>';
                     return str;
                 }
@@ -1917,7 +1915,7 @@
             });
         },
         removeData: function (id) {
-            Alert("确认删除!", 2, null, function () {
+            AlertConfirm("是否确认删除", "删除相应的数据后将不可恢复", function () {
                 $.ajax({
                     url: "${pageContext.request.contextPath}/income/removeMdIncomePriceInvestigation",
                     type: "post",

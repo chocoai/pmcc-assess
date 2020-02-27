@@ -20,105 +20,101 @@
                 <input type="hidden" name="operationMode" value="${empty mdIncome?0: mdIncome.operationMode}">
                 <input type="hidden" name="formType" value="${empty mdIncome?0: mdIncome.formType}">
                 <input type="hidden" name="name" value="${judgeObject.name}">
-                
+
                 <div class="row form-group">
                     <div class="col-md-12">
-                    <div class="form-inline x-valid">
-                        <label class="col-sm-1 control-label">
-                            房产剩余使用年限
-                        </label>
-                        <div class="col-sm-3">
-                            <label class="form-control input-full">${houseSurplusYear}</label>
+                        <div class="form-inline x-valid">
+                            <label class="col-sm-1 control-label">
+                                房产剩余使用年限
+                            </label>
+                            <div class="col-sm-3">
+                                <label class="form-control input-full">${houseSurplusYear}</label>
+                            </div>
+                            <label class="col-sm-1 control-label">
+                                土地剩余使用年限
+                            </label>
+                            <div class="col-sm-3">
+                                <label class="form-control input-full">${landSurplusYear}</label>
+                            </div>
                         </div>
-                        <label class="col-sm-1 control-label">
-                            土地剩余使用年限
-                        </label>
-                        <div class="col-sm-3">
-                            <label class="form-control input-full">${landSurplusYear}</label>
-                        </div>
-                    </div>
                     </div>
                 </div>
                 <div class="row form-group">
                     <div class="col-md-12">
                         <div class="form-inline x-valid">
-                    <label class="col-sm-1 control-label">
-                        经营方式
-                    </label>
-                    <div class="col-sm-2 col-sm-offset-1">
-                         <span class="radio-inline"><input type="radio" name="operationMode" id="operationMode1"
-                                                           readonly="readonly"
-                                                           onclick="incomeIndex.operationModeChange(this);"
-                                                           value="1"><label
-                                 for="operationMode1">租赁</label></span>
-                    </div>
-                    <div class="col-sm-2 col-sm-offset-1">
-                    <span class="radio-inline">
-                             <input type="radio" required name="operationMode" readonly="readonly"
-                                    id="operationMode0" onclick="incomeIndex.operationModeChange(this);" value="0">
-                        <label for="operationMode0">自营</label></span>
-                    </div>
+                            <label class="col-sm-1 control-label">
+                                经营方式
+                            </label>
+                            <label class="form-radio-label col-sm-1">
+                                <input type="radio" name="operationMode" id="operationMode1" class="form-radio-input"
+                                       onclick="incomeIndex.operationModeChange(this);" readonly="readonly"
+                                       value="1"><label class="form-radio-sign" for="operationMode1">租赁</label>
+                            </label>
+                            <label class="form-radio-label col-sm-1">
+                                <input type="radio" required name="operationMode" class="form-radio-input"
+                                       id="operationMode0"  readonly="readonly"
+                                       onclick="incomeIndex.operationModeChange(this);"
+                                       value="0">
+                                <label class="form-radio-sign" for="operationMode0">自营</label>
+                            </label>
                         </div>
                     </div>
                 </div>
                 <div class="row form-group" id="group_FormType" style="display: none;">
                     <div class="col-md-12">
-                    <div class="form-inline x-valid">
-                        <label class="col-sm-1 control-label">
-                            表单类型
-                        </label>
-                        <div class="col-sm-2 col-sm-offset-1">
-                    <span class="radio-inline">
-                        <input type="radio" checked="checked" name="formType" id="formType0"
-                               onchange="incomeIndex.formTypeChange(this);" value="0">
-                        <label for="formType0">默认</label></span>
+                        <div class="form-inline x-valid">
+                            <label class="col-sm-1 control-label">
+                                表单类型
+                            </label>
+                            <label class="form-radio-label col-sm-1">
+                                <input type="radio" checked="checked" name="formType" id="formType0"
+                                       class="form-radio-input" readonly="readonly"
+                                       onchange="incomeIndex.formTypeChange(this);" value="0">
+                                <label class="form-radio-sign" for="formType0">默认</label>
+                            </label>
+                            <label class="form-radio-label col-sm-1">
+                                <input type="radio" name="formType" id="formType1" value="1" class="form-radio-input"
+                                       readonly="readonly"    onchange="incomeIndex.formTypeChange(this);">
+                                <label class="form-radio-sign" for="formType1">餐饮、酒店、宾馆</label>
+                            </label>
                         </div>
-                        <div class="col-sm-2">
-                        <span class="radio-inline">
-                            <input type="radio" name="formType" id="formType1" value="1"
-                                   onchange="incomeIndex.formTypeChange(this);">
-                            <label for="formType1">餐饮、酒店、宾馆</label></span>
-                        </div>
-                    </div>
                     </div>
                 </div>
                 <div class="row form-group" id="group_leaseMode" style="display: none;">
                     <div class="col-md-12">
-                    <div class="form-inline x-valid">
-                        <label class="col-sm-1 control-label">
-                            租赁限制
-                        </label>
-                        <div class="col-sm-2 col-sm-offset-1">
-                        <span class="radio-inline"><input type="radio" required name="leaseMode" id="leaseMode0"
-                                                          readonly="readonly"
-                                                          onchange="incomeIndex.leaseModeChange(this);" value="0"><label
-                                for="leaseMode0">限制</label></span>
+                        <div class="form-inline x-valid">
+                            <label class="col-sm-1 control-label">
+                                租赁限制
+                            </label>
+                            <label class="form-radio-label col-sm-1">
+                                <input type="radio" required name="leaseMode" class="form-radio-input"
+                                       id="leaseMode0" readonly="readonly"
+                                       value="0"><label class="form-radio-sign" for="leaseMode0">限制</label>
+                            </label>
+                            <label class="form-radio-label col-sm-1">
+                                <input type="radio" checked="checked" name="leaseMode" class="form-radio-input"
+                                      readonly="readonly"  id="leaseMode1" value="1">
+                                <label class="form-radio-sign" for="leaseMode1">无限制</label>
+                            </label>
                         </div>
-                        <div class="col-sm-2 col-sm-offset-1">
-                            <span class="radio-inline"><input type="radio" name="leaseMode" id="leaseMode1" value="1"
-                                                              readonly="readonly"
-                                                              onchange="incomeIndex.leaseModeChange(this);"><label
-                                    for="leaseMode1">无限制</label></span>
-                        </div>
-                    </div>
                     </div>
                 </div>
                 <div class="row form-group" id="group_restriction_explain" style="display: none;">
                     <div class="col-md-12">
-                    <div class="form-inline x-valid">
-                        <label class="col-sm-1 control-label">
-                            租约限制说明<span class="symbol required"></span>
-                        </label>
-                        <div class="col-sm-8">
-                            <label class="form-control input-full">${mdIncome.restrictionExplain}</label>
+                        <div class="form-inline x-valid">
+                            <label class="col-sm-1 control-label">
+                                租约限制说明<span class="symbol required"></span>
+                            </label>
+                            <div class="col-sm-8">
+                                <label class="form-control input-full">${mdIncome.restrictionExplain}</label>
+                            </div>
+                            <label class="col-sm-1 control-label">
+                                租约限制附件
+                            </label>
+                            <div class="col-sm-2">
+                                <div id="_restrictionExplainEnclosure"></div>
+                            </div>
                         </div>
-                        <label class="col-sm-1 control-label">
-                            租约限制附件
-                        </label>
-                        <div class="col-sm-2">
-                            <div id="_restrictionExplainEnclosure"></div>
-                        </div>
-                    </div>
                     </div>
                 </div>
             </form>
@@ -255,14 +251,13 @@
             </div>
         </div>
         <div class="card-body">
-            <form  class="form-horizontal">
+            <form class="form-horizontal">
                 <table class="table table-bordered" id="tb_data_section_list">
                 </table>
             </form>
         </div>
     </div>
 </div>
-
 
 
 <jsp:include page="/views/method/module/income/selfSupport/detail/info.jsp"></jsp:include>
@@ -276,13 +271,13 @@
             $("#frm_income").find("[name=formType][value=${mdIncome.formType}]").trigger('click');
             $("#frm_income").find(':radio').attr('disabled', 'disabled');
         }
-        $.each(incomeIndex.fileArrayId,function (i,n) {
-            incomeIndex.showFile(n,AssessDBKey.MdIncome,incomeIndex.isNotBlank('${mdIncome}')?'${mdIncome.id}':"0",true,n);
-        }) ;
+        $.each(incomeIndex.fileArrayId, function (i, n) {
+            incomeIndex.showFile(n, AssessDBKey.MdIncome, incomeIndex.isNotBlank('${mdIncome}') ? '${mdIncome.id}' : "0", true, n);
+        });
     })
     var incomeIndex = {};
 
-    incomeIndex.fileArrayId = ["restrictionExplainEnclosure","report_file"] ;
+    incomeIndex.fileArrayId = ["restrictionExplainEnclosure", "report_file"];
 
     incomeIndex.isNotBlank = function (item) {
         if (item) {
@@ -325,7 +320,7 @@
             showColumns: false,
             showRefresh: false,
             search: false,
-            pageSize:100,
+            pageSize: 100,
             onLoadSuccess: function () {
                 $(".tooltips").tooltip();
             }

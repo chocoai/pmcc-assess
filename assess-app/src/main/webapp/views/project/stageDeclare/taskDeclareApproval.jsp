@@ -796,20 +796,6 @@
                             <div class="card-body">
 
                             </div>
-                            <div class="card">
-                                <div class="row form-group">
-                                    <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
-                                                附件
-                                            </label>
-                                            <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
-                                                <div id="_declareRealtyHouseCert_land_FileId"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </form>

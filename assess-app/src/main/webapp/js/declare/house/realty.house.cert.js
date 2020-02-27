@@ -688,27 +688,15 @@ assessCommonHouse.attachmentAutomatedWarrants = function (_this) {
 assessCommonHouse.loadList = function () {
     var cols = declareCommon.getHouseColumn();
     cols.push({field: 'fileViewName', title: '附件'});
-
-
     cols.push({
         field: 'id', title: '操作', width:"20%",formatter: function (value, row, index) {
-            var str = '<button type="button" onclick="assessCommonHouse.showAddModelLand(' + row.id + ')" style="margin-left: 5px;" class="btn  btn-success  btn-xs tooltips"  data-placement="bottom" data-original-title="土地证">';
-            str += '土地证 <i class="fa fa-eye"></i>';
-            str += '</button>';
+            var str = '<button type="button" onclick="assessCommonHouse.showAddModelLand(' + row.id + ')" style="margin-left: 5px;" class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="土地证">土地证</button>';
 
-            str += '<button type="button" onclick="assessCommonHouse.showAddModelDeclareEconomicIndicators(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-success  btn-xs tooltips"  data-placement="bottom" data-original-title="经济指标">';
-            str += '经济指标 <i class="fa fa-adjust"></i>';
-            str += '</button>';
+            str += '<button type="button" onclick="assessCommonHouse.showAddModelDeclareEconomicIndicators(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="经济指标">经济指标</button>';
 
-            str += '<button type="button" onclick="assessCommonHouse.houseImportEvent(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn  btn-success  btn-xs tooltips"  data-placement="bottom" data-original-title="房产证附件">';
-            str += '房产证附件 <i class="fa fa-file"></i>';
-            str += '</button>';
+            str += '<button type="button" onclick="assessCommonHouse.houseImportEvent(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="房产证附件">房产证附件</button>';
 
-
-            str += '<button type="button" onclick="assessCommonHouse.landImportEvent(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn  btn-success  btn-xs tooltips"  data-placement="bottom" data-original-title="土地证附件">';
-            str += '土地证附件 <i class="fa fa-file"></i>';
-            str += '</button>';
-
+            str += '<button type="button" onclick="assessCommonHouse.landImportEvent(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="土地证附件">土地证附件</button>';
 
             return str;
         }
