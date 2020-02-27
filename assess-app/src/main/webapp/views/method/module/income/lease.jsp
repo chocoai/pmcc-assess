@@ -744,7 +744,7 @@
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-success tooltips" data-placement="top" data-original-title="编辑" onclick="lease.editLease(' + index + ');" ><i class="fa fa-edit fa-white"></i></a>';
+                str += '<button type="button" class="btn btn-xs btn-primary tooltips" data-placement="top" data-original-title="编辑" onclick="lease.editLease(' + index + ');" ><i class="fa fa-pen fa-white"></i></button>';
                 str += '</div>';
                 return str;
             }
@@ -888,7 +888,7 @@
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-success tooltips" data-placement="top" data-original-title="编辑" onclick="lease.editLeaseCost(' + index + ');" ><i class="fa fa-edit fa-white"></i></a>';
+                str += '<button type="button" class="btn btn-xs btn-primary tooltips" data-placement="top" data-original-title="编辑" onclick="lease.editLeaseCost(' + index + ');" ><i class="fa fa-pen fa-white"></i></button>';
                 str += '</div>';
                 return str;
             }
@@ -974,7 +974,7 @@
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-success tooltips" data-placement="top" data-original-title="编辑" onclick="lease.editLeaseParameter(' + index + ');" ><i class="fa fa-edit fa-white"></i></a>';
+                str += '<button type="button" class="btn btn-xs btn-primary tooltips" data-placement="top" data-original-title="编辑" onclick="lease.editLeaseParameter(' + index + ');" ><i class="fa fa-pen fa-white"></i></button>';
                 str += '</div>';
                 return str;
             }

@@ -13,7 +13,6 @@
     <title>基础报告模板</title>
     <%@include file="/views/share/main_css.jsp" %>
 </head>
-
 <body>
 <div class="wrapper">
     <%@include file="/views/share/main_navigation.jsp" %>
@@ -43,7 +42,6 @@
                                     </div>
                                     <div class="col-md-7">
                                         <input type="hidden" id="tree_value" value="0">
-
                                         <div class="form-group form-inline">
                                             <div class="col-md-3 p-0">
                                                 <select id='projectType' class='form-control input-full search-select select2'
@@ -90,10 +88,8 @@
         </div>
         <%@include file="/views/share/main_footer.jsp" %>
     </div>
-
 </div>
 </body>
-
 <div id="modalTemplate" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -122,28 +118,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row form-group">
-                                    <div class="col-md-6">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-2 col-form-label">
-                                                委托目的<span class="symbol required"></span>
-                                            </label>
-                                            <div class="col-sm-10" id="entrustmentPurpose">
-                                                <c:forEach items="${entrustPurposeList}" var="item">
-                                                <span class="checkbox-inline">
-                                                <input type="checkbox" required id="entrustmentPurpose${item.id}"
-                                                       name="entrustPurpose" value="${item.id}"
-                                                       class="form-inline">
-                                                    <label for="entrustmentPurpose${item.id}">${item.name}</label>
-                                                </span>
-                                                </c:forEach>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row form-group">
                                     <div class="col-md-6">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-2 col-form-label">
@@ -158,6 +132,22 @@
                                                 </select>
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="form-inline x-valid" id="entrustmentPurpose">
+                                        <c:forEach items="${entrustPurposeList}" var="item">
+                                            <div class="form-check">
+                                                <label class="form-check-label" style="margin-left: 2px;">
+                                                    <input type="checkbox" id="entrustPurpose${item.id}"
+                                                           required
+                                                           name="entrustPurpose" value="${item.id}"
+                                                           class="form-check-input">
+                                                    <span class="form-check-sign"><label
+                                                            for="entrustPurpose${item.id}">${item.name}</label></span>
+                                                </label>
+                                            </div>
+                                        </c:forEach>
                                     </div>
                                 </div>
                                 <div class="row form-group">
@@ -192,88 +182,6 @@
         </div>
     </div>
 </div>
-
-
-<%--<div id="modalTemplate" class="modal fade bs-example-modal-lg"
-     data-backdrop="static" tabindex="1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class='modal-header'>
-                <h3 class='modal-title'>模板设置</h3></div>
-            <form id='frm_files' class='form-horizontal'>
-                <input type='hidden' id="files_id" name='id' value="0">
-                <div class='modal-body'>
-                    <div class='row'>
-                        <div class='col-md-12'>
-                            <div class='panel-body'>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            模板名称<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <input name='name' class='form-control input-full' required
-                                                   maxlength="200">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            委托目的<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10" id="entrustmentPurpose">
-                                            <c:forEach items="${entrustPurposeList}" var="item">
-                                                <span class="checkbox-inline">
-                                                <input type="checkbox" required id="entrustmentPurpose${item.id}"
-                                                       name="entrustPurpose" value="${item.id}"
-                                                       class="form-inline">
-                                                    <label for="entrustmentPurpose${item.id}">${item.name}</label>
-                                                </span>
-                                            </c:forEach>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            贷款类型
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <select name='loanType' class='form-control input-full  search-select select2'>
-                                                <option value="0">-请选择-</option>
-                                                <c:forEach var="item" items="${loanTypeList}">
-                                                    <option value="${item.id}">${item.name}</option>
-                                                </c:forEach>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class='x-valid'>
-                                        <label class='col-sm-2 control-label'>报告模板</label>
-                                        <div class='col-sm-10'>
-                                            <input id="uploadFile" name="uploadFile"
-                                                   type="file" multiple="false">
-                                            <div id="_uploadFile">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </form>
-            <div class='modal-footer'>
-                <button type='button' data-dismiss='modal' class='btn btn-default'>取消</button>
-                <button type='button' class='btn btn-primary save_custom_model' onclick="saveTemplate();">保存
-                </button>
-            </div>
-        </div>
-    </div>
-</div>--%>
-
 </html>
 
 <script type="text/javascript">
@@ -342,20 +250,17 @@
         });
         cols.push({
             field: 'opation', title: '操作', width: '15%', formatter: function (value, row, index) {
-                //var s = "<a href='javascript:;' class='btn btn-xs btn-success tooltips'  data-toggle='tooltip' data-original-title='编辑'  data-toggle='modal' onclick='editTemplate(" + row.id + ")' style='margin-left: 5px'><i  class='fa fa-edit fa-white' title='编辑'></i></a>";
-                var s = '<button onclick="editTemplate(' + row.id + ')"  style="margin-left: 5px;"  class="btn btn-icon btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
+                var s = '<button onclick="editTemplate(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
                 s += '<i class="fa fa-pen"></i>';
                 s += '</button>';
                 if (row.bisEnable) {
-                    //s += "<a href='javascript:;' class='btn btn-xs btn-warning tooltips'  data-toggle='tooltip' data-original-title='停用' onclick='stop(" + row.id + ")' style='margin-left: 5px'><i class='fa fa-stop fa-white'></i></a>";
-                    s += '<button onclick="stop(' + row.id + ')"  style="margin-left: 5px;"  class="btn btn-icon btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="停用">';
-                    s += '<i class="fa fa-stop"></i>';
+                    s += '<button onclick="stop(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-success  btn-xs tooltips"  data-placement="bottom" data-original-title="停用">';
+                    s += '<i class="fa fa-lock"></i>';
                     s += '</button>';
                 }
                 else {
-                    //s += "<a href='javascript:;' class='btn btn-xs btn-info tooltips'  data-toggle='tooltip' data-original-title='启用' onclick='satrt(" + row.id + ")' style='margin-left: 5px'><i class='fa fa-play fa-white'></i></a>";
-                    s += '<button onclick="satrt(' + row.id + ')"  style="margin-left: 5px;"  class="btn btn-icon btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="启用">';
-                    s += '<i class="fa fa-play"></i>';
+                    s += '<button onclick="satrt(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="启用">';
+                    s += '<i class="fa fa-lock-open"></i>';
                     s += '</button>';
                 }
                 return s;
@@ -506,6 +411,7 @@
         });
     };
 
+    var zTreeObj;
     var setting = {
         data: {
             key: {
@@ -520,17 +426,12 @@
         },// 回调函数
         callback: {
             onClick: function (event, treeId, treeNode, clickFlag) {
-                cilckNode();
+                var node = zTreeObj.getSelectedNodes()[0];
+                $("#tree_value").val(node.id);
+                loadTemplateTableList();
             }
         }
     };
-
-    function cilckNode() {
-        var node = zTreeObj.getSelectedNodes()[0];
-        $("#tree_value").val(node.id);
-        loadTemplateTableList();
-
-    }
 
 
     function ztreeInit() {
@@ -540,11 +441,10 @@
             type: 'get',
             dataType: "json",
             success: function (result) {
-                zTreeObj = $.fn.zTree.init($("#ztree"), setting, result);
+                zTreeObj = $.fn.zTree.init($("#ztree"), setting, result.data);
                 //展开第一级，选中根节点
                 var rootNode = zTreeObj.getNodes()[0];
                 zTreeObj.selectNode(rootNode);
-                zTreeObj.expandAll(true);
                 zTreeObj.setting.callback.onClick(null, zTreeObj.setting.treeId, rootNode);//调用事件
             }
         })

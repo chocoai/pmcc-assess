@@ -7,7 +7,7 @@
     <a data-item="evaluationPrinciple" onclick="reportSetUp.openUrl('${pageContext.request.contextPath}/evaluationPrinciple/view');" class="list-group-item">评估原则</a>
     <a data-item="evaluationBasis" onclick="reportSetUp.openUrl('${pageContext.request.contextPath}/evaluationBasis/view');" class="list-group-item">评估依据</a>
     <a data-item="bestUse" onclick="reportSetUp.openUrl('${pageContext.request.contextPath}/bestUse/index');" class="list-group-item">最佳利用方式</a>
-    <a data-item="reportAnalysis" onclick="reportSetUp.openUrl('${pageContext.request.contextPath}/reportAnalysis/view');" class="list-group-item">变现能力分析</a>
+    <a data-item="reportAnalysisView" onclick="reportSetUp.openUrl('${pageContext.request.contextPath}/reportAnalysis/view');" class="list-group-item">变现能力分析</a>
     <a data-item="reportAnalysisRisk" onclick="reportSetUp.openUrl('${pageContext.request.contextPath}/reportAnalysisRisk/view');" class="list-group-item">风险分析</a>
     <a data-item="reportAnalysisBackground" onclick="reportSetUp.openUrl('${pageContext.request.contextPath}/reportAnalysisBackground/view');" class="list-group-item">市场背景描述与分析</a>
 </div>
