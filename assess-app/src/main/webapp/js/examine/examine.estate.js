@@ -103,7 +103,7 @@
         var city = $form.find('[name=city]').val();
         var estateName = $form.find('[name=estateName]').val();
         if (!estateName) {
-            toastr.info('请填写楼盘名称！');
+            notifyInfo('提示','请填写楼盘名称！');
             return false;
         }
         $.ajax({
@@ -132,7 +132,7 @@
         var caseEstateId = $(_this).closest('form').find("input[name='caseEstateId']").val();
         var estatePartInMode = $(_this).attr('data-mode');
         if (!caseEstateId) {
-            toastr.info('请选择系统中已存在的楼盘信息！');
+            notifyInfo('提示','请选择系统中已存在的楼盘信息！');
             return false;
         }
         $.ajax({
@@ -624,7 +624,7 @@
                     }
                 }
                 else {
-                    toastr.warning(result.errmsg);
+                    notifyWaring('警告',result.errmsg);
                 }
             },
             error: function (result) {

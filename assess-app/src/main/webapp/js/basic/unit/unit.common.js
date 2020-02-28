@@ -25,7 +25,7 @@
     unitCommon.add = function (_this, callback) {
         var unitNumber = $(_this).closest('form').find('[name=unitNumber]').val();
         if (!unitNumber) {
-            toastr.info('请填写单元编号！');
+            notifyInfo('提示','请填写单元编号！');
             return false;
         }
         $.ajax({
@@ -49,7 +49,7 @@
         var caseUnitId = $(_this).closest('form').find("input[name='caseUnitId']").val();
         var unitPartInMode = $(_this).attr('data-mode');
         if (!caseUnitId) {
-            toastr.info('请选择系统中已存在的单元信息！');
+            notifyInfo('提示','请选择系统中已存在的单元信息！');
             return false;
         }
         $.ajax({

@@ -207,7 +207,7 @@ var unitHuxing;
                 return false;
             }
             if ($("#_" + unitHuxing.prototype.config().unitHuxingFileIDFildName).html().length <= 0) {
-                toastr.info("请上传户型图");
+                notifyInfo('提示',"请上传户型图");
                 return false;
             }
 

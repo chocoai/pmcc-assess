@@ -698,7 +698,7 @@
         //数据校验
         marketCompare.valid = function () {
             if (!marketCompare.isPass) {
-                toastr.error('案例错误请检查案例');
+                notifyError('错误','案例错误请检查案例');
                 return false;
             }
             //数据验证
@@ -708,7 +708,7 @@
             //4.校验权重对应的权重描述是否填写
             var data = marketCompare.getData();
             if (!data.evaluationItem.averagePrice) {
-                toastr.error('【平均价】还未计算出');
+                notifyError('错误','【平均价】还未计算出');
                 return false;
             }
 
@@ -729,7 +729,7 @@
                     }
                 })
                 if (isWeightEmpty) {
-                    toastr.error('【权重】必须填写');
+                    notifyError('错误','【权重】必须填写');
                     return false;
                 }
 
@@ -743,12 +743,12 @@
                     }
                 })
                 if (weightTotal != 1) {
-                    toastr.error('权重和必须为1');
+                    notifyError('错误','权重和必须为1');
                     return false;
                 }
 
                 if (isWeightDescEmpty) {
-                    toastr.error('【权重描述】必须填写');
+                    notifyError('错误','【权重描述】必须填写');
                     return false;
                 }
             }
@@ -1022,14 +1022,14 @@
                                             notifySuccess('成功',"保存成功");
                                             layer.close(index);
                                         } else {
-                                            toastr.error(result.errmsg);
+                                            notifyError('错误',result.errmsg);
                                         }
                                     }
                                 })
                             });
                         }
                     } else {
-                        toastr.error(result.errmsg);
+                        notifyError('错误',result.errmsg);
                     }
                 }
             })
@@ -1066,7 +1066,7 @@
                                 }
                                 marketCompare.calculation();
                             } else {
-                                toastr.error(result.errmsg);
+                                notifyError('错误',result.errmsg);
                             }
                         }
                     })

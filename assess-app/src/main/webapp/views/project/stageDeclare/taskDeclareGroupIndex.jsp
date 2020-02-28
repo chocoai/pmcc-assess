@@ -334,7 +334,7 @@
     /*自动分组*/
     declareRecordGroup.switchAutoGroup = function (key) {
         if (key == 3) {
-            toastr.info("未实现此功能!");
+            notifyInfo('提示',"未实现此功能!");
             return false;
         }
         $.ajax({
@@ -360,7 +360,7 @@
     declareRecordGroup.submitGroup = function () {
         var rows = $(declareRecordGroup.cancelDeclareRecordTable.selector).bootstrapTable('getSelections');
         if (!rows || rows.length <= 0) {
-            toastr.info("请选择要分组的数据");
+            notifyInfo('提示',"请选择要分组的数据");
         } else {
             var groupId = $(declareRecordGroup.groupDispatchModel.selector).find("[name='groupId']").val();
             var data = [];
@@ -392,7 +392,7 @@
     declareRecordGroup.cancelGroup = function () {
         var rows = $(declareRecordGroup.sureDeclareRecordTable.selector).bootstrapTable('getSelections');
         if (!rows || rows.length <= 0) {
-            toastr.info("请选择要取消分组的数据");
+            notifyInfo('提示',"请选择要取消分组的数据");
         } else {
             var data = [];
             $.each(rows, function (i, row) {
@@ -463,7 +463,7 @@
     declareRecordGroup.deleteData = function () {
         var rows = declareRecordGroup.groupTargetTable.bootstrapTable('getSelections');
         if (!rows || rows.length <= 0) {
-            toastr.info("请选择要删除的数据");
+            notifyInfo('提示',"请选择要删除的数据");
         } else {
             var idArray = [];
             $.each(rows, function (i, item) {

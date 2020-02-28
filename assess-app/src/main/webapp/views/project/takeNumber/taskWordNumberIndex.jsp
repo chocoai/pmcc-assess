@@ -359,7 +359,7 @@
 
     baseTakeNumber.saveAndUpdateProjectTakeNumberDetail = function (data, callback) {
         baseTakeNumber.ajaxServerMethod({formData: JSON.stringify(data)}, "projectTakeNumber/saveAndUpdateProjectTakeNumberDetail", "post", callback, function (message) {
-            toastr.info(message);
+            notifyInfo('提示',message);
         });
     };
 

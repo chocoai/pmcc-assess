@@ -458,7 +458,7 @@
     memberChangeObj.submit = function () {
         var changeReason = $("#changeReason").val();
         if (!changeReason) {
-            toastr.warning("变更原因必须填写!");
+            notifyWaring('警告',"变更原因必须填写!");
             $("#changeReason").focus();
             return false;
         }

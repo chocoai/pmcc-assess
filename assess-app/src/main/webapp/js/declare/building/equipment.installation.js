@@ -222,7 +222,7 @@ equipmentInstallation.getData = function (id, callback) {
 equipmentInstallation.editData = function () {
     var rows = $("#" + equipmentInstallation.config.table).bootstrapTable('getSelections');
     if (!rows || rows.length <= 0) {
-        toastr.info("请选择要编辑的数据");
+        notifyInfo('提示',"请选择要编辑的数据");
     } else if (rows.length == 1) {
         equipmentInstallation.showAddModel();
         equipmentInstallation.getData(rows[0].id, function (data) {
@@ -230,7 +230,7 @@ equipmentInstallation.editData = function () {
         });
         $('#' + equipmentInstallation.config.box).modal("show");
     } else {
-        toastr.info("只能选择一行数据进行编辑");
+        notifyInfo('提示',"只能选择一行数据进行编辑");
     }
 };
 
@@ -242,7 +242,7 @@ equipmentInstallation.editData = function () {
 equipmentInstallation.deleteData = function () {
     var rows = $("#" + equipmentInstallation.config.table).bootstrapTable('getSelections');
     if (!rows || rows.length <= 0) {
-        toastr.info("请选择要删除的数据");
+        notifyInfo('提示',"请选择要删除的数据");
     } else {
         AlertConfirm("确认要删除么", "删除后数据将不可恢复", function () {
             var idArray = [];
@@ -1129,7 +1129,7 @@ equipmentInstallation.declareEconomicIndicatorsSaveAndUpdate = function () {
 equipmentInstallation.copyData = function () {
     var rows = $("#" + equipmentInstallation.config.table).bootstrapTable('getSelections');
     if (!rows || rows.length <= 0) {
-        toastr.info("请选择要copy的数据");
+        notifyInfo('提示',"请选择要copy的数据");
     } else if (rows.length == 1) {
         $.ajax({
             url: getContextPath() + "/declareBuildEquipmentInstall/getDeclareBuildEquipmentInstallById",
@@ -1150,7 +1150,7 @@ equipmentInstallation.copyData = function () {
             }
         });
     } else {
-        toastr.info("只能选择一行数据进行copy");
+        notifyInfo('提示',"只能选择一行数据进行copy");
     }
 };
 
@@ -1159,7 +1159,7 @@ equipmentInstallation.copyData = function () {
 equipmentInstallation.pasteAll = function () {
     var item = $("#" + equipmentInstallation.config.table).bootstrapTable('getSelections');
     if (item.length < 1) {
-        toastr.info("至少选择一行");
+        notifyInfo('提示',"至少选择一行");
         return false;
     }
     var copyId = $("#" + equipmentInstallation.config.copy).find("input[name='id']").val();
@@ -1178,7 +1178,7 @@ equipmentInstallation.pasteAll = function () {
             }
         });
         if (!select) {
-            toastr.info("自己复制自己,这样情况是不被允许的");
+            notifyInfo('提示',"自己复制自己,这样情况是不被允许的");
             return false;
         }
         if (select) {
@@ -1203,7 +1203,7 @@ equipmentInstallation.pasteAll = function () {
             });
         }
     } else {
-        toastr.info("没有copy从数据");
+        notifyInfo('提示',"没有copy从数据");
         return false;
     }
 };

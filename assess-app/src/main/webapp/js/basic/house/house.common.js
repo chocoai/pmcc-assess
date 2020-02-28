@@ -48,7 +48,7 @@
     houseCommon.add = function (_this, callback) {
         var houseNumber = $(_this).closest('form').find('[name=houseNumber]').val();
         if (!houseNumber) {
-            toastr.info('请填写房屋编号！');
+            notifyInfo('提示','请填写房屋编号！');
             return false;
         }
         $.ajax({
@@ -72,7 +72,7 @@
         var caseHouseId = $(_this).closest('form').find("input[name='caseHouseId']").val();
         var housePartInMode = $(_this).attr('data-mode');
         if (!caseHouseId) {
-            toastr.info('请选择系统中已存在的房屋信息！');
+            notifyInfo('提示','请选择系统中已存在的房屋信息！');
             return false;
         }
         $.ajax({
@@ -698,13 +698,13 @@
                 } else {
                     var attachmentId = houseCommon.getMarkersysAttachmentId();
                     if (!attachmentId) {
-                        toastr.info("未找到相关户型图片");
+                        notifyInfo('提示',"未找到相关户型图片");
                         return;
                     }
                     data.attachmentId = attachmentId;
                     var unitMarker = houseCommon.getUnitMarker();
                     if (!unitMarker) {
-                        toastr.info("还未标注单元位置信息");
+                        notifyInfo('提示',"还未标注单元位置信息");
                         return;
                     }
                     data.lng = unitMarker.lng;
@@ -778,14 +778,14 @@
                     var attachmentId = houseCommon.getMarkersysAttachmentId();
                     console.log(attachmentId+"=2==")
                     if (!attachmentId) {
-                        toastr.info("未找到相关户型图片");
+                        notifyInfo('提示',"未找到相关户型图片");
                         return;
                     }
                     data.attachmentId = attachmentId;
                     var unitMarker = houseCommon.getUnitMarker2();
                     console.log(unitMarker+"=3==")
                     if (!unitMarker) {
-                        toastr.info("还未标注单元位置信息");
+                        notifyInfo('提示',"还未标注单元位置信息");
                         return;
                     }
                     data.lng = unitMarker.lng;

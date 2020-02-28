@@ -126,7 +126,7 @@
     houseCommon.add = function (_this, callback) {
         var houseNumber = $(_this).closest('form').find('[name=houseNumber]').val();
         if (!houseNumber) {
-            toastr.info('请填写房屋编号！');
+            notifyInfo('提示','请填写房屋编号！');
             return false;
         }
         $.ajax({
@@ -150,7 +150,7 @@
         var caseHouseId = $(_this).closest('form').find("input[name='caseHouseId']").val();
         var housePartInMode = $(_this).attr('data-mode');
         if (!caseHouseId) {
-            toastr.info('请选择系统中已存在的房屋信息！');
+            notifyInfo('提示','请选择系统中已存在的房屋信息！');
             return false;
         }
         $.ajax({
@@ -740,12 +740,12 @@
                 }
                 var unitMarker = unitMarkerArray[0];
                 if (!unitMarker) {
-                    toastr.info("还未标注单元位置信息");
+                    notifyInfo('提示',"还未标注单元位置信息");
                     return;
                 }
                 var attachmentId = houseCommon.getMarkersysAttachmentId();
                 if (!attachmentId) {
-                    toastr.info("未找到相关户型图片");
+                    notifyInfo('提示',"未找到相关户型图片");
                     return;
                 }
                 examineCommon.getApplyBatchEstateTaggingsByTableId({
@@ -790,7 +790,7 @@
                                     name: houseCommon.houseForm.find('[name=houseNumber]').val()
                                 };
                                 examineCommon.addBasicEstateTagging(resultData, function () {
-                                    toastr.info("标注成功信息!");
+                                    notifyInfo('提示',"标注成功信息!");
                                 });
                             }
                         }
@@ -810,7 +810,7 @@
                 type: "unit"
             }, function (unitMarker) {
                 if (!unitMarker) {
-                    toastr.info("还未标注单元位置信息");
+                    notifyInfo('提示',"还未标注单元位置信息");
                     return;
                 }
                 toolMapHandleFun.getToolMapHandleListByExample({
@@ -819,7 +819,7 @@
                 }, function (result) {
                     var attachmentId = houseCommon.getMarkersysAttachmentId();
                     if (!attachmentId) {
-                        toastr.info("未找到相关户型图片");
+                        notifyInfo('提示',"未找到相关户型图片");
                         return;
                     }
                     var data = {
@@ -860,7 +860,7 @@
                                     tableId: saveData.tableId
                                 }, function () {
                                     toolMapHandleFun.saveData(saveData, function () {
-                                        toastr.info("成功！");
+                                        notifyInfo('提示',"成功！");
                                     });
                                 });
                             }

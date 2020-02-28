@@ -107,7 +107,7 @@ assessLand.saveAndUpdateLand = function () {
 assessLand.editLand = function () {
     var rows = $(assessLand.config.table).bootstrapTable('getSelections');
     if (!rows || rows.length <= 0) {
-        toastr.info("请选择要编辑的数据");
+        notifyInfo('提示',"请选择要编辑的数据");
     } else if (rows.length == 1) {
         var landCertGetQuestion = rows[0].landCertGetQuestion;
         if (landCertGetQuestion) {
@@ -122,7 +122,7 @@ assessLand.editLand = function () {
             assessLand.showAddModelLandFun(true, rows[0]);
         }
     } else {
-        toastr.info("只能选择一行数据进行编辑");
+        notifyInfo('提示',"只能选择一行数据进行编辑");
     }
 };
 
@@ -440,16 +440,16 @@ assessLand.copyData = function () {
     var table = $(assessLand.config.table) ;
     var rows = table.bootstrapTable('getSelections');
     if (!rows || rows.length <= 0) {
-        toastr.info("请选择要复制的数据");
+        notifyInfo('提示',"请选择要复制的数据");
     } else if (rows.length == 1) {
         AlertConfirm("确认要复制", "", function () {
             $(assessLand.config.handleCopy).find("input[name='name']").val(rows[0].landCertName);
             $(assessLand.config.handleCopy).find("input[name='id']").val(rows[0].centerId);
-            toastr.info("复制从数据成功!");
+            notifyInfo('提示',"复制从数据成功!");
             table.bootstrapTable('uncheckAll');
         });
     } else {
-        toastr.info("只能选择一行数据进行复制");
+        notifyInfo('提示',"只能选择一行数据进行复制");
     }
 };
 
@@ -457,7 +457,7 @@ assessLand.pasteAll = function () {
     var table = $(assessLand.config.table) ;
     var rows = table.bootstrapTable('getSelections');
     if (!rows || rows.length <= 0) {
-        toastr.info("请选择要复制的数据");
+        notifyInfo('提示',"请选择要复制的数据");
     } else if (rows.length >= 1) {
         var copyId = $(assessLand.config.handleCopy).find("input[name='id']").val();
         var idArray = [];
@@ -470,20 +470,20 @@ assessLand.pasteAll = function () {
         });
         //判断
         if (filtered.length == 1) {
-            toastr.info("需要粘贴的从数据包含了自身,这样情况是不被允许的");
+            notifyInfo('提示',"需要粘贴的从数据包含了自身,这样情况是不被允许的");
             table.bootstrapTable('uncheckAll');
             return false;
         }
         AlertConfirm("确认要粘贴", "", function () {
             declareCommon.copyDeclareBuildCenter(copyId, idArray.join(","), function () {
-                toastr.info("粘贴从数据成功!");
+                notifyInfo('提示',"粘贴从数据成功!");
                 table.bootstrapTable('uncheckAll');
                 $(assessLand.config.handleCopy).find("input").val('');
                 $(assessLand.config.table).bootstrapTable('refresh');
             });
         });
     } else {
-        toastr.info("只能选择一行数据进行复制");
+        notifyInfo('提示',"只能选择一行数据进行复制");
     }
 };
 
@@ -594,7 +594,7 @@ declareRealtyRealEstateCert.showAddModel = function (flag) {
 declareRealtyRealEstateCert.editData = function () {
     var rows = $("#" + declareRealtyRealEstateCert.config.table).bootstrapTable('getSelections');
     if (!rows || rows.length <= 0) {
-        toastr.info("请选择要编辑的数据");
+        notifyInfo('提示',"请选择要编辑的数据");
     } else if (rows.length == 1) {
         var landCertGetQuestion = rows[0].landCertGetQuestion;
         if (landCertGetQuestion) {
@@ -609,7 +609,7 @@ declareRealtyRealEstateCert.editData = function () {
             declareRealtyRealEstateCert.showAddModelFun(true, rows[0]);
         }
     } else {
-        toastr.info("只能选择一行数据进行编辑");
+        notifyInfo('提示',"只能选择一行数据进行编辑");
     }
 };
 //上传附件到服务端
@@ -843,16 +843,16 @@ declareRealtyRealEstateCert.copyData = function () {
     var table = $("#" + declareRealtyRealEstateCert.config.table) ;
     var rows = table.bootstrapTable('getSelections');
     if (!rows || rows.length <= 0) {
-        toastr.info("请选择要复制的数据");
+        notifyInfo('提示',"请选择要复制的数据");
     } else if (rows.length == 1) {
         AlertConfirm("确认要复制","", function () {
             $(declareRealtyRealEstateCert.config.handleCopy).find("input[name='name']").val(rows[0].certName);
             $(declareRealtyRealEstateCert.config.handleCopy).find("input[name='id']").val(rows[0].centerId);
-            toastr.info("复制从数据成功!");
+            notifyInfo('提示',"复制从数据成功!");
             table.bootstrapTable('uncheckAll');
         });
     } else {
-        toastr.info("只能选择一行数据进行复制");
+        notifyInfo('提示',"只能选择一行数据进行复制");
     }
 };
 
@@ -861,7 +861,7 @@ declareRealtyRealEstateCert.pasteAll = function () {
     var table = $("#" + declareRealtyRealEstateCert.config.table) ;
     var rows = table.bootstrapTable('getSelections');
     if (!rows || rows.length <= 0) {
-        toastr.info("请选择要复制的数据");
+        notifyInfo('提示',"请选择要复制的数据");
     } else if (rows.length >= 1) {
         var copyId = $(declareRealtyRealEstateCert.config.handleCopy).find("input[name='id']").val();
         var idArray = [];
@@ -874,20 +874,20 @@ declareRealtyRealEstateCert.pasteAll = function () {
         });
         //判断
         if (filtered.length == 1) {
-            toastr.info("需要粘贴的从数据包含了自身,这样情况是不被允许的");
+            notifyInfo('提示',"需要粘贴的从数据包含了自身,这样情况是不被允许的");
             table.bootstrapTable('uncheckAll');
             return false;
         }
         AlertConfirm("确认要粘贴","", function () {
             declareCommon.copyDeclareBuildCenter(copyId, idArray.join(","), function () {
-                toastr.info("粘贴从数据成功!");
+                notifyInfo('提示',"粘贴从数据成功!");
                 table.bootstrapTable('uncheckAll');
                 $(declareRealtyRealEstateCert.config.handleCopy).find("input").val('');
                 table.bootstrapTable('refresh');
             });
         });
     } else {
-        toastr.info("只能选择一行数据进行复制");
+        notifyInfo('提示',"只能选择一行数据进行复制");
     }
 };
 
