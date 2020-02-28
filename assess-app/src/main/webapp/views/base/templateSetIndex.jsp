@@ -327,7 +327,7 @@
             },
             error: function (result) {
                 Loading.progressHide();
-                AlertError("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     }
@@ -351,7 +351,7 @@
             },
             error: function (result) {
                 Loading.progressHide();
-                AlertError("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     }
@@ -375,7 +375,7 @@
             },
             error: function (result) {
                 Loading.progressHide();
-                AlertError("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     }

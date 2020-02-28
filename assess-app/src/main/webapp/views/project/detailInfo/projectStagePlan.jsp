@@ -87,15 +87,18 @@
                                             class="fa fa-search"></i></span>查询
                                     </button>
                                     <button style="margin-left: 5px" class="btn btn-success btn-sm" type="button"
-                                            data-toggle="modal" onclick="projectStagePlan.createTask()"><span class="btn-label"><i
+                                            data-toggle="modal" onclick="projectStagePlan.createTask()"><span
+                                            class="btn-label"><i
                                             class="fa fa-plus"></i></span>添加任务
                                     </button>
                                     <button style="margin-left: 5px" class="btn btn-warning btn-sm" type="button"
-                                            data-toggle="modal" onclick="projectStagePlan.deletePlanDetailsByIds()"><span
+                                            data-toggle="modal"
+                                            onclick="projectStagePlan.deletePlanDetailsByIds()"><span
                                             class="btn-label"><i class="fa fa-minus"></i></span>删除任务
                                     </button>
                                     <button style="margin-left: 5px" class="btn btn-info btn-sm" type="button"
-                                            data-toggle="modal" onclick="projectStagePlan.setExecuteUserAccount();"><span
+                                            data-toggle="modal"
+                                            onclick="projectStagePlan.setExecuteUserAccount();"><span
                                             class="btn-label"><i class="fa fa-people"></i></span>设置责任人
                                     </button>
                                 </div>
@@ -355,7 +358,7 @@
                 }
             });
             cols.push({
-                field: 'executeUserName', title: '责任人/审批人',width: '15%', formatter: function (value, row, index) {
+                field: 'executeUserName', title: '责任人/审批人', width: '15%', formatter: function (value, row, index) {
                     var s = value;
                     if (row.approverUserName) {
                         s += '/' + row.approverUserName;
@@ -384,12 +387,12 @@
                 }
             });
             cols.push({
-                field: 'planStartDate', title: '开始日期',width: '10%', formatter: function (value, row, index) {
+                field: 'planStartDate', title: '开始日期', width: '10%', formatter: function (value, row, index) {
                     return formatDate(value, false);
                 }
             });
             cols.push({
-                field: 'planEndDate', title: '结束日期',width: '10%', formatter: function (value, row, index) {
+                field: 'planEndDate', title: '结束日期', width: '10%', formatter: function (value, row, index) {
                     return formatDate(value, false);
                 }
             });
@@ -397,27 +400,27 @@
                 field: 'opt', title: '操作', formatter: function (value, row, index) {
                     var str = "";
                     if (row.status == 'wait') {
-                        str += "<a onclick='projectStagePlan.editStagePlan(" + row.id + ")' style='margin-left: 5px;' data-placement='top' data-original-title='编辑' class='btn btn-xs btn-primary tooltips'  ><i class='fa fa-edit fa-white'></i></a>";
-                        str += "<a onclick='projectStagePlan.deleteStagePlan(" + row.id + ")' style='margin-left: 5px;' data-placement='top' data-original-title='删除'  class='btn btn-xs btn-warning tooltips' ><i class='fa fa-minus fa-white'></i></a>";
+                        str += "<button type='button' onclick='projectStagePlan.editStagePlan(" + row.id + ")' style='margin-left: 5px;' data-placement='top' data-original-title='编辑' class='btn btn-xs btn-primary tooltips'  ><i class='fa fa-edit fa-white'></i></button>";
+                        str += "<button type='button' onclick='projectStagePlan.deleteStagePlan(" + row.id + ")' style='margin-left: 5px;' data-placement='top' data-original-title='删除'  class='btn btn-xs btn-warning tooltips' ><i class='fa fa-minus fa-white'></i></button>";
                     }
                     if (row.canReplay) {
-                        str += "<a onclick='projectStagePlan.replyTask(" + row.id + ")' style='margin-left: 5px;' data-placement='top' data-original-title='重启' class='btn btn-xs btn-primary tooltips'  ><i class='fa fa-reply fa-white'></i></a>";
+                        str += "<button type='button' onclick='projectStagePlan.replyTask(" + row.id + ")' style='margin-left: 5px;' data-placement='top' data-original-title='重启' class='btn btn-xs btn-primary tooltips'  ><i class='fa fa-reply fa-white'></i></button>";
                     }
                     if (row.excuteUrl) {
                         var btnClass = 'btn-success';
                         if (/processInsId/.test(row.excuteUrl)) {
                             btnClass = 'btn-primary';
                         }
-                        str += "<a onclick='projectStagePlan.taskOpenWin(\"" + row.excuteUrl + "\")' href='javascript://' style='margin-left: 5px;' data-placement='top' data-original-title='提交' class='btn btn-xs " + btnClass + " tooltips'  ><i class='fa fa-arrow-right fa-white'></i></a>";
+                        str += "<button type='button' onclick='projectStagePlan.taskOpenWin(\"" + row.excuteUrl + "\")' href='javascript://' style='margin-left: 5px;' data-placement='top' data-original-title='提交' class='btn btn-xs " + btnClass + " tooltips'  ><i class='fa fa-arrow-right fa-white'></i></button>";
                     }
                     if (row.displayUrl) {
-                        str += "<a onclick='projectStagePlan.taskOpenWin(\"" + row.displayUrl + "\")' href='javascript://' style='margin-left: 5px;' data-placement='top' data-original-title='查看' class='btn btn-xs btn-warning tooltips'  ><i class='fa fa-search fa-white'></i></a>";
+                        str += "<button type='button' onclick='projectStagePlan.taskOpenWin(\"" + row.displayUrl + "\")' href='javascript://' style='margin-left: 5px;' data-placement='top' data-original-title='查看' class='btn btn-xs btn-warning tooltips'  ><i class='fa fa-search fa-white'></i></button>";
                     }
                     if (row.canCopy) {
-                        str += " <a href='javascript://' onclick='projectStagePlan.taskCopy(this," + row.id + ");' data-planDetailsId='" + row.id + "' title='复制' class='btn btn-xs btn-warning btn-copy' ><i class='fa fa-copy fa-white'></i> <span>复制</span></a>";
+                        str += "<button type='button'  onclick='projectStagePlan.taskCopy(this," + row.id + ");' data-planDetailsId='" + row.id + "' title='复制' class='btn btn-xs btn-warning btn-copy' ><i class='fa fa-copy fa-white'></i> <span>复制</span></button>";
                     }
                     if (row.canPaste) {
-                        str += " <a href='javascript://' onclick='projectStagePlan.taskPaste(this," + row.id + ");' data-planDetailsId='" + row.id + "' title='粘贴' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-paste fa-white'></i> <span>粘贴</span></a>";
+                        str += " <button type='button' onclick='projectStagePlan.taskPaste(this," + row.id + ");' data-planDetailsId='" + row.id + "' title='粘贴' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-paste fa-white'></i> <span>粘贴</span></button>";
                     }
                     return str;
                 }
@@ -571,7 +574,6 @@
                 AlertError("还未选择任何人员");
             }
         });
-
     };
 
     /**
@@ -639,7 +641,7 @@
                 }
             },
             error: function (result) {
-                AlertError("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     };
@@ -680,7 +682,7 @@
                     }
                 },
                 error: function (result) {
-                    AlertError("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             });
 
