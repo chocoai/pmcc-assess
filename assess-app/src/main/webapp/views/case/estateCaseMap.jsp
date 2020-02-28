@@ -147,7 +147,7 @@
     areaMap.getContent = function (name) {
         var div = "";
         div += '<div class="" style="width:15px;height:135px;">';
-        div += "<label class='label label-info' style='padding-top:-10px;'>" + name + "</label>";
+        div += "<span class='label label-info' style='padding-top:-10px;'>" + name + "</span>";
         div += '<img style="height:12.75px;width:10px;" src="http://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png">';
         div += '</div>';
         return div;

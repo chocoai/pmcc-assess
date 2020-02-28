@@ -672,8 +672,8 @@
         }
         cols.push({field: 'businessKey', title: '业务类型'});
         var method = {
-            showColumns: true,
-            showRefresh: true,
+            showColumns: false,
+            showRefresh: false,
             search: false,
             onLoadSuccess: function () {
 

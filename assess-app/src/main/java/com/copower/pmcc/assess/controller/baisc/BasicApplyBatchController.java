@@ -153,9 +153,11 @@ public class BasicApplyBatchController extends BaseController {
         }
     }
 
-    @RequestMapping(value = "/applyAgain", name = "重新申请", method = RequestMethod.GET)
+    @RequestMapping(value = "/applyAgain", name = "继续申请", method = RequestMethod.GET)
     public ModelAndView applyAgain(Integer id) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/basic/basicBatchApplyIndex", "0", 0, "0", "");
+        final String boxName = baseParameterService.getParameterValues(BaseParameterEnum.CASE_BASE_INFO_BATCH_APPLY_KEY.getParameterKey());
+        Integer boxId = bpmRpcBoxService.getBoxIdByBoxName(boxName);
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/basic/basicBatchApplyIndex", "0", boxId, "0", "");
         try {
             BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchById(id);
             modelAndView.addObject("applyBatch", basicApplyBatch);
@@ -247,7 +249,7 @@ public class BasicApplyBatchController extends BaseController {
 
     @RequestMapping(value = "/detail", name = "详情页面", method = RequestMethod.GET)
     public ModelAndView basicApplyBatchDetail(String processInsId, Integer boxId) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/basic/basicBatchApplyDetail", processInsId, boxId, "-1", null);
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/basic/basicBatchApplyApproval", processInsId, boxId, "-1", null);
         modelAndView.addObject("formClassifyList", basicApplyBatchService.getFormClassifyList());
         modelAndView.addObject("examineFormTypeList", surveyCommonService.getExamineFormTypeList());
         try {
@@ -313,7 +315,7 @@ public class BasicApplyBatchController extends BaseController {
         String boxName = baseParameterService.getParameterValues(BaseParameterEnum.CASE_BASE_INFO_BATCH_APPLY_KEY.getParameterKey());
         Integer boxId = bpmRpcBoxService.getBoxIdByBoxName(boxName);
         BasicApplyBatch applyBatch = basicApplyBatchService.getBasicApplyBatchById(id);
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/basic/basicBatchApplyDetail", applyBatch.getProcessInsId(), boxId, "-1", null);
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/basic/basicBatchApplyApproval", applyBatch.getProcessInsId(), boxId, "-1", null);
         modelAndView.addObject("applyBatch", applyBatch);
         modelAndView.addObject("formClassifyList", basicApplyBatchService.getFormClassifyList());
         modelAndView.addObject("examineFormTypeList", surveyCommonService.getExamineFormTypeList());

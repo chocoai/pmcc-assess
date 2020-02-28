@@ -69,24 +69,25 @@
                                     </div>
                                 </form>
                                 <div class="row">
+                                    <div class="col-md-1"></div>
                                     <div class="col-md-3 col-lg-offset-1" style="max-height: 500px;overflow: auto;">
                                         <ul id="ztree" class="ztree"></ul>
                                     </div>
                                     <div class="col-md-4">
                                          <span id="btnGroup" style="display: none;">
-                                             <a class="btn btn-xs btn-success baseTool"
-                                                onclick="batchTreeTool.showAddModal()">新增</a>
-                                             <a class="btn btn-xs btn-warning" onclick=" batchTreeTool.deleteDetail();">删除</a>
-                                             <a class="btn btn-xs btn-primary baseTool"
-                                                onclick=" batchTreeTool.expandAll(true);">全部展开</a>
-                                             <a class="btn btn-xs btn-primary baseTool"
-                                                onclick=" batchTreeTool.expandAll(false);">全部收起</a>
-                                             <a class="btn btn-xs btn-primary fillInformation"
-                                                onclick="batchTreeTool.fillInformation();">填写信息</a>
-                                             <a class="btn btn-xs btn-warning copy"
-                                                onclick="batchTreeTool.copy();">复制</a>
-                                             <a class="btn btn-xs btn-warning paste"
-                                                onclick="batchTreeTool.paste();">粘贴</a>
+                                             <button type="button" class="btn btn-sm btn-success baseTool"
+                                                onclick="batchTreeTool.showAddModal()">新增</button>
+                                             <button type="button" class="btn btn-sm btn-warning" onclick=" batchTreeTool.deleteDetail();">删除</button>
+                                             <button type="button" class="btn btn-sm btn-primary baseTool"
+                                                onclick=" batchTreeTool.expandAll(true);">全部展开</button>
+                                             <button type="button" class="btn btn-sm btn-primary baseTool"
+                                                onclick=" batchTreeTool.expandAll(false);">全部收起</button>
+                                             <button type="button" class="btn btn-sm btn-primary fillInformation"
+                                                onclick="batchTreeTool.fillInformation();">填写信息</button>
+                                             <button type="button" class="btn btn-sm btn-warning copy"
+                                                onclick="batchTreeTool.copy();">复制</button>
+                                             <button type="button" class="btn btn-sm btn-warning paste"
+                                                onclick="batchTreeTool.paste();">粘贴</button>
                                         </span>
                                     </div>
                                     <c:if test="${applyBatch.caseEstateId > 0}">

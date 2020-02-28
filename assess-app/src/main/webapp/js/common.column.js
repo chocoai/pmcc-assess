@@ -60,7 +60,7 @@ commonColumn.matchingEducationColumn = function () {
         field: 'name', title: '学校名称', formatter: function (value, row, index) {
             var s = row.schoolName;
             if (row.creatorName) {
-                s += "<label style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</label>"
+                s += "<span style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</span>"
             }
             return s;
         }
@@ -79,7 +79,7 @@ commonColumn.matchingEnvironmentColumn = function () {
         field: 'name', title: '环境类型', formatter: function (value, row, index) {
             var s = row.typeName;
             if (row.creatorName) {
-                s += "<label style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</label>"
+                s += "<span style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</span>"
             }
             return s;
         }
@@ -98,7 +98,7 @@ commonColumn.matchingFinanceColumn = function () {
         field: 'financeName', title: '金融名称', formatter: function (value, row, index) {
             var s = row.name;
             if (row.creatorName) {
-                s += "<label style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</label>"
+                s += "<span style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</span>"
             }
             return s;
         }
@@ -118,7 +118,7 @@ commonColumn.matchingMarketColumn = function () {
         field: 'marketName', title: '购物商场名称', formatter: function (value, row, index) {
             var s = row.name;
             if (row.creatorName) {
-                s += "<label style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</label>"
+                s += "<span style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</span>"
             }
             return s;
         }
@@ -136,7 +136,7 @@ commonColumn.matchingRecreationColumn = function () {
         field: 'recreationName', title: '休闲娱乐名称', formatter: function (value, row, index) {
             var s = row.name;
             if (row.creatorName) {
-                s += "<label style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</label>"
+                s += "<span style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</span>"
             }
             return s;
         }
@@ -153,7 +153,7 @@ commonColumn.matchingRestaurantColumn = function () {
         field: 'restaurantName', title: '餐饮名称', formatter: function (value, row, index) {
             var s = row.name;
             if (row.creatorName) {
-                s += "<label style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</label>"
+                s += "<span style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</span>"
             }
             return s;
         }
@@ -171,7 +171,7 @@ commonColumn.matchingMedicalColumn = function () {
         field: 'name', title: '机构名称', formatter: function (value, row, index) {
             var s = row.organizationName;
             if (row.creatorName) {
-                s += "<label style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</label>"
+                s += "<span style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</span>"
             }
             return s;
         }
@@ -189,7 +189,7 @@ commonColumn.matchingTransitColumn = function () {
         field: 'transitName', title: '名称', formatter: function (value, row, index) {
             var s = row.name;
             if (row.creatorName) {
-                s += "<label style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</label>"
+                s += "<span style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</span>"
             }
             return s;
         }
@@ -207,7 +207,7 @@ commonColumn.matchingMetroColumn = function () {
         field: 'metroName', title: '名称', formatter: function (value, row, index) {
             var s = row.name;
             if (row.creatorName) {
-                s += "<label style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</label>"
+                s += "<span style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</span>"
             }
             return s;
         }
@@ -225,7 +225,7 @@ commonColumn.matchingTrafficHubColumn = function () {
         field: 'trafficHubName', title: '名称', formatter: function (value, row, index) {
             var s = row.name;
             if (row.creatorName) {
-                s += "<label style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</label>"
+                s += "<span style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</span>"
             }
             return s;
         }
@@ -243,7 +243,7 @@ commonColumn.matchingMainRoadColumn = function () {
         field: 'mainRoadName', title: '名称', formatter: function (value, row, index) {
             var s = row.name;
             if (row.creatorName) {
-                s += "<label style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</label>"
+                s += "<span style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</span>"
             }
             return s;
         }
@@ -270,7 +270,7 @@ commonColumn.matchingMainConversionColumn = function () {
         field: 'mainConversionName', title: '名称', formatter: function (value, row, index) {
             var s = row.name;
             if (row.creatorName) {
-                s += "<label style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</label>"
+                s += "<span style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</span>"
             }
             return s;
         }
@@ -287,7 +287,7 @@ commonColumn.matchingMaterialColumn = function () {
         field: 'materialName', title: '名称', formatter: function (value, row, index) {
             var s = row.name;
             if (row.creatorName) {
-                s += "<label style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</label>"
+                s += "<span style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</span>"
             }
             return s;
         }
@@ -305,7 +305,7 @@ commonColumn.estateSupplyWaterColumn = function () {
         field: 'waterName', title: '供水商名称', formatter: function (value, row, index) {
             var s = row.name;
             if (row.creatorName) {
-                s += "<label style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</label>"
+                s += "<span style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</span>"
             }
             return s;
         }
@@ -324,7 +324,7 @@ commonColumn.estateDrainWaterColumn = function () {
         field: 'drainWaterName', title: '废水处理商名称', formatter: function (value, row, index) {
             var s = row.name;
             if (row.creatorName) {
-                s += "<label style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</label>"
+                s += "<span style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</span>"
             }
             return s;
         }
@@ -343,7 +343,7 @@ commonColumn.estateSupplyPowerColumn = function () {
         field: 'supplyPowerName', title: '供应商名称', formatter: function (value, row, index) {
             var s = row.name;
             if (row.creatorName) {
-                s += "<label style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</label>"
+                s += "<span style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</span>"
             }
             return s;
         }
@@ -362,7 +362,7 @@ commonColumn.estateSupplyHeatingColumn = function () {
         field: 'supplyHeatingName', title: '供热商名称', formatter: function (value, row, index) {
             var s = row.name;
             if (row.creatorName) {
-                s += "<label style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</label>"
+                s += "<span style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</span>"
             }
             return s;
         }
@@ -381,7 +381,7 @@ commonColumn.estateSupplyGasColumn = function () {
         field: 'supplyGasName', title: '供应商名称', formatter: function (value, row, index) {
             var s = row.name;
             if (row.creatorName) {
-                s += "<label style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</label>"
+                s += "<span style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</span>"
             }
             return s;
         }
@@ -400,7 +400,7 @@ commonColumn.buildingOutfitColumn = function () {
         field: 'name', title: '装修部位', formatter: function (value, row, index) {
             var s = row.decorationPart;
             if (row.creatorName) {
-                s += "<label style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</label>"
+                s += "<span style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</span>"
             }
             return s;
         }
@@ -419,7 +419,7 @@ commonColumn.buildingSurfaceColumn = function () {
         field: 'name', title: '屋面结构', formatter: function (value, row, index) {
             var s = row.structureName;
             if (row.creatorName) {
-                s += "<label style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</label>"
+                s += "<span style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</span>"
             }
             return s;
         }
@@ -435,7 +435,7 @@ commonColumn.buildingMaintenanceColumn = function () {
         field: 'name', title: '类型', formatter: function (value, row, index) {
             var s = row.typeName;
             if (row.creatorName) {
-                s += "<label style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</label>"
+                s += "<span style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</span>"
             }
             return s;
         }
@@ -452,7 +452,7 @@ commonColumn.buildingFunctionColumn = function () {
         field: 'name', title: '类型', formatter: function (value, row, index) {
             var s = row.typeName;
             if (row.creatorName) {
-                s += "<label style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</label>"
+                s += "<span style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</span>"
             }
             return s;
         }
@@ -469,7 +469,7 @@ commonColumn.unitDecorateColumn = function () {
         field: 'name', title: '装修部位', formatter: function (value, row, index) {
             var s = row.decorationPartName;
             if (row.creatorName) {
-                s += "<label style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</label>"
+                s += "<span style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</span>"
             }
             return s;
         }
@@ -488,7 +488,7 @@ commonColumn.unitHuxingColumn = function () {
         field: 'huXingName', title: '户型', formatter: function (value, row, index) {
             var s = row.name;
             if (row.creatorName) {
-                s += "<label style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</label>"
+                s += "<span style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</span>"
             }
             return s;
         }
@@ -508,7 +508,7 @@ commonColumn.unitElevatorColumn = function () {
         field: 'name', title: '电梯维护情况', formatter: function (value, row, index) {
             var s = row.maintenanceName;
             if (row.creatorName) {
-                s += "<label style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</label>"
+                s += "<span style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</span>"
             }
             return s;
         }
@@ -532,7 +532,7 @@ commonColumn.houseRoomColumn = function () {
                 s += row.roomType;
             }
             if (row.creatorName) {
-                s += "<label style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</label>"
+                s += "<span style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</span>"
             }
             return s;
         }
@@ -557,7 +557,7 @@ commonColumn.houseRoomDecorateColumn = function () {
         field: 'name', title: '房间装修部位', formatter: function (value, row, index) {
             var s = row.partName;
             if (row.creatorName) {
-                s += "<label style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</label>"
+                s += "<span style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</span>"
             }
             return s;
         }
@@ -576,7 +576,7 @@ commonColumn.houseIntelligentColumn = function () {
         field: 'name', title: '开关回路', formatter: function (value, row, index) {
             var s = row.switchCircuitName;
             if (row.creatorName) {
-                s += "<label style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</label>"
+                s += "<span style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</span>"
             }
             return s;
         }
@@ -596,7 +596,7 @@ commonColumn.houseWaterColumn = function () {
         field: 'name', title: '给水方式', formatter: function (value, row, index) {
             var s = row.supplyModeName;
             if (row.creatorName) {
-                s += "<label style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</label>"
+                s += "<span style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</span>"
             }
             return s;
         }
@@ -618,7 +618,7 @@ commonColumn.houseWaterDrainColumn = function () {
         field: 'name', title: '排水系统', formatter: function (value, row, index) {
             var s = row.drainSystemName;
             if (row.creatorName) {
-                s += "<label style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</label>"
+                s += "<span style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</span>"
             }
             return s;
         }
@@ -637,7 +637,7 @@ commonColumn.houseHeatingColumn = function () {
         field: 'name', title: '设备品牌', formatter: function (value, row, index) {
             var s = row.equipment;
             if (row.creatorName) {
-                s += "<label style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</label>"
+                s += "<span style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</span>"
             }
             return s;
         }
@@ -657,7 +657,7 @@ commonColumn.houseAirConditionerColumn = function () {
         field: 'name', title: '设备品牌', formatter: function (value, row, index) {
             var s = row.equipment;
             if (row.creatorName) {
-                s += "<label style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</label>"
+                s += "<span style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</span>"
             }
             return s;
         }
@@ -677,7 +677,7 @@ commonColumn.houseNewWindColumn = function () {
         field: 'name', title: '设备品牌', formatter: function (value, row, index) {
             var s = row.equipment;
             if (row.creatorName) {
-                s += "<label style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</label>"
+                s += "<span style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</span>"
             }
             return s;
         }
@@ -697,7 +697,7 @@ commonColumn.houseCorollaryEquipmentColumn = function () {
         field: 'name', title: '类型', formatter: function (value, row, index) {
             var s = row.typeName;
             if (row.creatorName) {
-                s += "<label style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</label>"
+                s += "<span style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</span>"
             }
             return s;
         }
@@ -719,7 +719,7 @@ commonColumn.houseFaceStreetColumn = function () {
         field: 'name', title: '名称', formatter: function (value, row, index) {
             var s = row.streetName;
             if (row.creatorName) {
-                s += "<label style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</label>"
+                s += "<span style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</span>"
             }
             return s;
         }

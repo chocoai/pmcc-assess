@@ -98,13 +98,12 @@
 											</span>
                                             查询
                                         </button>
-                                        <button style="margin-left: 5px" class="btn btn-success btn-sm" type="button"
+                                        <button style="margin-left: 10px" class="btn btn-info btn-sm" type="button"
                                                 onclick="houseSearch.clearQuery()">
-                                            清空
+                                            <span class="btn-label"><i class="fa fa-undo-alt"></i></span>
+                                            重置
                                         </button>
                                     </div>
-
-
                                 </form>
                                 <table class="table table-bordered" id="tbCaseBaseHouseList">
                                     <!-- cerare document add ajax data-->
@@ -118,9 +117,7 @@
         </div>
         <%@include file="/views/share/main_footer.jsp" %>
     </div>
-
 </div>
-
 </body>
 
 <div id="divBoxFather" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
@@ -378,7 +375,7 @@
             field: 'name', title: '名称', formatter: function (value, row, index) {
                 var s = row.fullName;
                 if (row.creatorName) {
-                    s += "<label style='padding: 5px;' class='label label-info'>" + row.creatorName + "</label>"
+                    s += "<span style='padding: 5px;' class='label label-info'>" + row.creatorName + "</span>"
                 }
                 return s;
             }

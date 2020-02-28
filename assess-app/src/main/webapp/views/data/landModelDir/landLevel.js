@@ -241,15 +241,15 @@ landLevel.loadLandLevelList = function (select) {
             var str = "";
             switch (value) {
                 case "runing": {
-                    str = "<label class='label label-info'>" + "进行中" + "</label>";
+                    str = "<span class='label label-info'>" + "进行中" + "</span>";
                     break;
                 }
                 case "finish": {
-                    str = "<label class='label label-success'>" + "已完成" + "</label>";
+                    str = "<span class='label label-success'>" + "已完成" + "</span>";
                     break;
                 }
                 case "draft": {
-                    str = "<label class='label label-warning'>" + "草稿" + "</label>";
+                    str = "<span class='label label-warning'>" + "草稿" + "</span>";
                     break;
                 }
             }
