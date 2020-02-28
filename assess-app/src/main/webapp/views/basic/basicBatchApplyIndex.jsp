@@ -84,7 +84,7 @@
                                                 onclick=" batchTreeTool.expandAll(false);">全部收起</button>
                                              <button type="button" class="btn btn-sm btn-primary fillInformation"
                                                 onclick="batchTreeTool.fillInformation();">填写信息</button>
-                                             <button type="button" class="btn btn-sm btn-warning copy"
+                                             <button type="button" class="btn btn-sm btn-info copy"
                                                 onclick="batchTreeTool.copy();">复制</button>
                                              <button type="button" class="btn btn-sm btn-warning paste"
                                                 onclick="batchTreeTool.paste();">粘贴</button>
@@ -95,12 +95,12 @@
                                             <ul id="estateCaseZtree" class="ztree"></ul>
                                         </div>
                                         <div class="col-md-1">
-                                            <a class="btn btn-xs btn-success baseTool"
+                                            <button type="button" class="btn btn-sm btn-success baseTool"
                                                onclick="batchTreeTool.addFromCase()">
                                                 新增
-                                            </a>
-                                            <a class="btn btn-xs btn-primary caseTool"
-                                               onclick=" batchTreeTool.upgradeFromCase();">升级</a>
+                                            </button>
+                                            <button type="button" class="btn btn-sm btn-primary caseTool"
+                                               onclick=" batchTreeTool.upgradeFromCase();">升级</button>
                                         </div>
                                     </c:if>
                                 </div>

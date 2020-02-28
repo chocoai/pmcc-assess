@@ -28,11 +28,8 @@
                             </div>
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-md-2">
-                                        <%@include file="/views/share/navigation/systemSetup.jsp" %>
-                                    </div>
-                                    <div class="col-md-10">
-                                        <button style="margin-left: 5px" class="btn btn-success btn-sm" type="button" data-toggle="modal" onclick="addReport()"><span class="btn-label"><i class="fa fa-plus"></i></span>新加报表</button>
+                                    <div class="col-md-12">
+                                        <button id="report-tools" style="margin-left: 5px" class="btn btn-success btn-sm" type="button" data-toggle="modal" onclick="addReport()"><span class="btn-label"><i class="fa fa-plus"></i></span>新加报表</button>
                                         <table id="report_list" class="table table-striped jambo_table bulk_action table-bordered"></table>
                                     </div>
                                 </div>
@@ -83,7 +80,7 @@
             });
 
             TableClient(reportDesignerObj.report_list, cols, data, {
-                toolbar: "report-tools",
+                toolbar: "#report-tools",
                 pageSize: 20
             }, false);
         },

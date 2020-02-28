@@ -27,10 +27,7 @@
                             </div>
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-md-2">
-                                        <%@include file="/views/share/navigation/systemSetup.jsp" %>
-                                    </div>
-                                    <div class="col-md-10">
+                                    <div class="col-md-12">
                                         <form id="frmQuery" class="form-horizontal">
                                             <div class="form-group form-inline">
                                                 <label class="col-md-1 col-form-label">名称</label>

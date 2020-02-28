@@ -34,13 +34,10 @@
                             </div>
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-md-2">
-                                        <%@include file="/views/share/navigation/reportSetup.jsp" %>
-                                    </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-3" style="max-height: 500px;overflow-y: auto;">
                                         <ul id="ztree" class="ztree"></ul>
                                     </div>
-                                    <div class="col-md-7">
+                                    <div class="col-md-9">
                                         <input type="hidden" id="tree_value" value="0">
                                         <div class="form-group form-inline">
                                             <div class="col-md-3 p-0">

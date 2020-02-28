@@ -4,7 +4,6 @@
 <head>
     <%@include file="/views/share/main_css.jsp" %>
 </head>
-
 <body>
 <div class="wrapper">
     <%@include file="/views/share/main_navigation.jsp" %>
@@ -17,7 +16,6 @@
             </div>
             <div class="page-inner mt--5">
                 <div class="row mt--2">
-
                     <div class="col-md-12">
                         <div class="card full-height">
                             <div class="card-header">
@@ -34,7 +32,6 @@
                                                    placeholder="名称" id="queryName" name="queryName"
                                                    class="form-control input-full">
                                         </div>
-
                                         <button style="margin-left: 10px" class="btn btn-info  btn-sm" type="button"
                                                 onclick="loadThinkingList()">
 											<span class="btn-label">
@@ -50,8 +47,6 @@
                                             新增
                                         </button>
                                     </div>
-
-
                                 </form>
                                 <table class="table table-bordered" id="tb_List">
                                     <!-- cerare document add ajax data-->
@@ -95,7 +90,6 @@
                                                 <input type="text" required data-rule-maxlength="50" placeholder="名称"
                                                        id="name" name="name" class="form-control input-full">
                                             </div>
-
                                             <div class="col-sm-4">
                                                 <div class="form-check" style="justify-content:left">
                                                     <label class="form-check-label">
@@ -106,69 +100,34 @@
                                                     </label>
                                                 </div>
                                             </div>
+                                            <div class="col-sm-3">
+                                                <button type="button" class="btn btn-success btn-sm"
+                                                        onclick="appendHTML('',this);">
+                                                    <span class="btn-label"><i class="fa fa-plus"></i></span>添加类型
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
+                                <div class="system"></div>
                                 <div class="row form-group">
                                     <div class="col-md-12">
                                         <div class="form-inline x-valid">
-                                            <label class="col-sm-2 col-form-label">
-                                                项目类型类别
-                                            </label>
-
-                                            <div class="btn btn-xs btn-success btn-sm"
-                                                 onclick="appendHTML('',this)"><i
-                                                    class="fa fa-plus"></i></div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="system">
-                                    <div class="row form-group">
-                                        <div class="form-inline x-valid">
                                             <label class="col-sm-2 control-label">
-                                                项目类型
+                                                评估方法<span class="symbol required"></span>
                                             </label>
-                                            <div class="col-sm-3">
-                                                <select name="type" onchange="typeChange(this);" id="type0"
-                                                        class="form-control input-full search-select select2 type0">
+                                            <div class="col-sm-10">
+                                                <select name="method" multiple="multiple"
+                                                        class="form-control input-full search-select select2"
+                                                        required="required">
+                                                    <c:forEach items="${methodDicList}" var="item">
+                                                        <option value="${item.id}">${item.name}</option>
+                                                    </c:forEach>
                                                 </select>
-                                            </div>
-
-
-                                            <label class="col-sm-2 control-label">
-                                                项目类别
-                                            </label>
-
-                                            <div class="col-sm-3">
-                                                <select name="category"
-                                                        class="form-control input-full search-select select2 category0">
-                                                    <option selected="selected" value="">请先选择类型</option>
-                                                </select>
-
-                                            </div>
-                                            <div class="col-sm-2">
-                                                <input type="button" class="btn btn-warning" value="X"
-                                                       onclick="cleanHTMLData(this)">
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row form-group">
-                                    <c:forEach items="${methodDicList}" var="item">
-                                        <div class="form-check">
-                                            <label class="form-check-label" style="margin-left: 2px;">
-                                                <input type="checkbox" id="method${item.id}"
-                                                       required
-                                                       name="method" value="${item.id}"
-                                                       class="form-check-input">
-                                                <span class="form-check-sign"><label
-                                                        for="method${item.id}">${item.name}</label></span>
-                                            </label>
-                                        </div>
-                                    </c:forEach>
-                                </div>
-
                                 <div class="row form-group">
                                     <div class="col-md-12">
                                         <div class="form-inline x-valid">
@@ -271,8 +230,7 @@
                     if (result.ret) {
                         notifySuccess("成功", "删除数据成功");
                         loadThinkingList();//重载 (刷新)
-                    }
-                    else {
+                    } else {
                         AlertError("删除数据失败", result.errmsg);
                     }
                 },
@@ -308,8 +266,7 @@
                         AlertSuccess("成功", "数据已成功保存到数据库");
                         loadThinkingList();
                         $('#divBox').modal('hide');
-                    }
-                    else {
+                    } else {
                         AlertError("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
@@ -341,7 +298,7 @@
                     for (var i = 0; i < types.length - 1; i++) {
                         appendHTML(types[i + 1], categorys[i + 1]);
                     }
-                    AssessCommon.checkboxToChecked($("#frm").find(":checkbox[name='method']"), row.method.split(','));
+                    $("#frm").find("[name='method']").val(row.method.split(',')).trigger('change');
                     extractTemplateContentField();
                     $('#divBox').modal();
                 }
@@ -377,8 +334,7 @@
                             $("#frm").find('select.type' + number).val([typeValue]).trigger('change');
                         }
                     }
-                }
-                else {
+                } else {
                     notifyWarning("获取类型失败，失败原因:" + result.errmsg);
                 }
             },
@@ -417,8 +373,7 @@
                                 $("#frm").find('select.category' + number).val([categoryValue]).trigger('change');
                             }
                         }
-                    }
-                    else {
+                    } else {
                         notifyWarning("获取类别失败，失败原因:" + result.errmsg);
                     }
                 },
@@ -454,7 +409,6 @@
         html += "</select>";
         html += "</div>";
 
-
         html += '<label class="col-sm-2 col-form-label">' + '项目类别' + '</label>';
         html += '<div class="col-sm-3 ">';
         html += "<select  name='category' id='" + projectCategory + "'  class='form-control input-full search-select select2 " + projectCategory + "'>";
@@ -462,12 +416,9 @@
         html += "</select>";
         html += "</div>";
 
-
-        html += '<label class="col-sm-1 col-form-label">' + '取消' + '</label>';
         html += '<div class="col-sm-1">';
-        html += "<input type='button' class='btn btn-warning btn-sm' type='button' value='X' onclick='cleanHTMLData(this)'>";
+        html += "<button type='button' class='btn btn-warning btn-sm' onclick='cleanHTMLData(this)'><i class=\"fa fa-minus\"></i></button>";
         html += "</div>";
-
 
         html += "</div>";
         html += "</div>";
@@ -476,7 +427,7 @@
     }
 
     function cleanHTMLData(this_) {
-        $(this_).parent().parent().remove();
+        $(this_).closest('.form-group').remove();
     }
 
     function typeChange(this_) {
@@ -505,10 +456,8 @@
         html += "</select>";
         html += "</div>";
 
-
-        html += '<label class="col-sm-1 col-form-label">' + '取消' + '</label>';
         html += '<div class="col-sm-1">';
-        html += "<input type='button' class='btn btn-warning btn-sm' type='button' value='X' onclick='cleanHTMLData(this)'>";
+        html += "<button type='button' class='btn btn-warning btn-sm' onclick='cleanHTMLData(this)'><i class=\"fa fa-minus\"></i></button>";
         html += "</div>";
 
         html += "</div>";

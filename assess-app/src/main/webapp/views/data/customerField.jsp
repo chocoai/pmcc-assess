@@ -78,93 +78,52 @@
                     <input type='hidden' id='id' name='id' value="0">
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="card-body">
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            客户名称<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-md-10 col-sm-10 col-xs-12 input-group">
-                                            <div class="input-group">
-                                                <input type="hidden" name="customerId">
-                                                <input type="text" readonly="readonly" required="required"
-                                                       placeholder="单位" class="form-control" name="customerName"
-                                                       onclick="selectCustomer(this)">
-                                                <span class="input-group-btn">
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-2 control-label">
+                                        客户名称<span class="symbol required"></span>
+                                    </label>
+                                    <div class="col-md-10 col-sm-10 col-xs-12 input-group">
+                                        <div class="input-group">
+                                            <input type="hidden" name="customerId">
+                                            <input type="text" readonly="readonly" required="required"
+                                                   placeholder="单位" class="form-control" name="customerName"
+                                                   onclick="selectCustomer(this)">
+                                            <span class="input-group-btn">
                                                     <button type="button" class="btn btn-info docs-tooltip"
-                                                                    data-toggle="tooltip"
-                                                                    data-original-title="选择"
-                                                                    onclick="selectCustomer(this)">
+                                                            data-toggle="tooltip"
+                                                            data-original-title="选择"
+                                                            onclick="selectCustomer(this)">
                                                          <i class="fa fa-search"></i>
                                                     </button>
                                                 </span>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            业务类型
-                                        </label>
-                                        <div class="col-md-10 col-sm-10 col-xs-12 input-group">
-                                            <button class="btn btn-xs btn-success"
-                                                    onclick="appendHTML('业务类型','businessType',this)"><i
-                                                    class="fa fa-plus"></i></button>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div style="margin-bottom: 8px;" class="businessType">
-                                    <div class="form-group" style=" margin-top: 8px;">
-                                        <div class="x-valid">
-
-                                            <label class="col-md-2 control-label">业务类型</label>
-                                            <div class="col-md-10 col-sm-10 col-xs-12 input-group">
-                                                <div class="input-group">
-                                                    <input class="form-control" name="businessType"
-                                                           required="required"
-                                                           type="text">
-                                                    <span class="input-group-btn">
-                                                         <input type="button" class="btn btn-warning" value="X"
-                                                                onclick="cleanHTMLData(this)"></span>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            评估类型
-                                        </label>
-                                        <div class="col-md-10 col-sm-10 col-xs-12 input-group">
-                                            <button class="btn btn-xs btn-success"
-                                                    onclick="appendHTML('评估类型','assessType',this)"><i
-                                                    class="fa fa-plus"></i></button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div style="margin-bottom: 8px;" class="assessType">
-                                    <div class="form-group" style=" margin-top: 8px;">
-                                        <div class="x-valid">
-                                            <label class="col-md-2 control-label">评估类型</label>
-                                            <div class="col-md-10 col-sm-10 col-xs-12 input-group ">
-                                                <div class="input-group">
-                                                    <input class="form-control" name="assessType" required="required"
-                                                           type="text">
-                                                    <span class="input-group-btn">
-                                                           <input type="button" class="btn btn-warning" value="X"
-                                                                  onclick="cleanHTMLData(this)"></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-
                             </div>
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-2 control-label">
+                                        业务类型
+                                    </label>
+                                    <div class="col-md-10 col-sm-10 col-xs-12 input-group">
+                                        <button type="button" class="btn btn-sm btn-success" onclick="appendHTML('业务类型','businessType',this)"><span class="btn-label"><i class="fa fa-plus"></i></span>添加业务类型</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="margin-bottom: 8px;" class="businessType">
+                            </div>
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-2 control-label">
+                                        评估类型
+                                    </label>
+                                    <div class="col-md-10 col-sm-10 col-xs-12 input-group">
+                                        <button type="button" class="btn btn-sm btn-success" onclick="appendHTML('评估类型','assessType',this)"><span class="btn-label"><i class="fa fa-plus"></i></span>添加评估类型</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="margin-bottom: 8px;" class="assessType"></div>
                         </div>
                     </div>
                 </form>
@@ -226,7 +185,7 @@
         html += "<label class='col-md-2 col-sm-2 col-xs-12 control-label'>" + lableValue + "</label>";
         html += "<div class='col-md-10 col-sm-10 col-xs-12 input-group'>";
         html += "<input type='text' required class='form-control'" + "name='" + 'businessType' + "'" + ">";
-        html += "<span class='input-group-btn'>" + "<input class='btn btn-warning' type='button' value='X' onclick='cleanHTMLData(this)'>" + "</span>";
+        html += "<span class='input-group-btn'>" + "<button class='btn btn-warning' type='button'  onclick='cleanHTMLData(this)'><i class=\"fa fa-minus\"></i></button></span>";
         html += "</div>";
         html += "</div>";
         $(".businessType").append(html);
@@ -237,11 +196,10 @@
         html += "<label class='col-md-2 col-sm-2 col-xs-12 control-label'>" + lableValue + "</label>";
         html += "<div class='col-md-10 col-sm-10 col-xs-12 input-group'>";
         html += "<input type='text' required class='form-control'" + "name='" + 'assessType' + "'" + ">";
-        html += "<span class='input-group-btn'>" + "<input class='btn btn-warning' type='button' value='X' onclick='cleanHTMLData(this)'>" + "</span>";
+        html += "<span class='input-group-btn'>" + "<button class='btn btn-warning' type='button' onclick='cleanHTMLData(this)'><i class=\"fa fa-minus\"></i></button></span>";
         html += "</div>";
         html += "</div>";
         $(".assessType").append(html);
-
     }
 
     //删除
@@ -307,7 +265,7 @@
         html += "<label class='col-md-2 col-sm-2 col-xs-12 control-label'>" + lableValue + "</label>";
         html += "<div class='col-md-10 col-sm-10 col-xs-12 input-group'>";
         html += "<input type='text' required class='form-control'" + "name='" + item + "'" + ">";
-        html += "<span class='input-group-btn'>" + "<input class='btn btn-warning' type='button' value='X' onclick='cleanHTMLData(this)'>" + "</span>";
+        html += "<span class='input-group-btn'>" + "<button class='btn btn-warning' type='button' onclick='cleanHTMLData(this)'><i class=\"fa fa-minus\"></i></button></span>";
         html += "</div>";
         html += "</div>";
 
@@ -318,7 +276,7 @@
 
     function cleanHTMLData(item) {
         var value = "";
-        $(item).parent().prev().parent().parent().empty();
+        $(item).closest('.form-group').empty();
     }
 
     function writeHTMLData(str, name, item) {
@@ -331,7 +289,7 @@
             html += "<label class='col-md-2 col-sm-2 col-xs-12 control-label'>" + lableValue + "</label>";
             html += "<div class='col-md-10 col-sm-10 col-xs-12 input-group'>";
             html += "<input type='text' required class='form-control'" + "name='" + item + "' value='" + strs[i] + "'>";
-            html += "<span class='input-group-btn'>" + "<input class='btn btn-warning' type='button' value='X' onclick='cleanHTMLData(this)'>" + "</span>";
+            html += "<span class='input-group-btn'>" + "<button class='btn btn-warning' type='button'  onclick='cleanHTMLData(this)'><i class=\"fa fa-minus\"></i></button></span>";
             html += "</div>";
             html += "</div>";
             $("." + item).append(html);
