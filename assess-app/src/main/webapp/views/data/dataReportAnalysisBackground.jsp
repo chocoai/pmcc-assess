@@ -5,7 +5,6 @@
     <title>市场背景描述与分析</title>
     <%@include file="/views/share/main_css.jsp" %>
 </head>
-
 <body>
 <!-- 列表 -->
 <div class="wrapper">
@@ -42,26 +41,9 @@
                                                         </c:forEach>
                                                     </select>
                                                 </div>
-                                                <button style="margin-left: 10px" class="btn btn-info  btn-sm"
-                                                        type="button"
-                                                        onclick="loadReportAnalysisList()">
-											<span class="btn-label">
-												<i class="fa fa-search"></i>
-											</span>
-                                                    查询
-                                                </button>
-                                                <button style="margin-left: 5px" class="btn btn-success btn-sm"
-                                                        type="button"
-                                                        data-toggle="modal" onclick="addReportAnalysis()"
-                                                        href="#divBox">
-											<span class="btn-label">
-												<i class="fa fa-plus"></i>
-											</span>
-                                                    新增
-                                                </button>
+                                                <button style="margin-left: 10px" class="btn btn-info  btn-sm" type="button" onclick="loadReportAnalysisList()"><span class="btn-label"><i class="fa fa-search"></i></span>查询</button>
+                                                <button style="margin-left: 5px" class="btn btn-success btn-sm" type="button" data-toggle="modal" onclick="addReportAnalysis()" href="#divBox"><span class="btn-label"><i class="fa fa-plus"></i></span>新增</button>
                                             </div>
-
-
                                         </form>
                                         <table class="table table-bordered" id="tb_List">
                                             <!-- cerare document add ajax data-->
@@ -71,7 +53,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -89,7 +70,6 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
             </div>
-
             <div class="modal-body">
                 <form id="frm" class="form-horizontal">
                     <input type="hidden" id="id" name="id" value="0">
@@ -203,34 +183,43 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-inline x-valid">
-
-                                            <div class="col-sm-10">
+                                            <div class="col-sm-6">
                                                 <div class="form-check" style="justify-content:left">
                                                     <label class="form-check-label">
                                                         <input class="form-check-input" type="checkbox"
                                                                id="bisModifiable"
                                                                name="bisModifiable" value="true"
                                                                checked="checked">
-                                                        <span class="form-check-sign">是否可修改</span>
+                                                        <span class="form-check-sign">可修改</span>
                                                     </label>
                                                 </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <button type="button" class="btn btn-warning btn-sm"
+                                                        onclick="showItemable()" data-toggle="modal"><span
+                                                        class="btn-label"><i class="fa fa-bars"></i></span>管理子模板
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row form-group">
-                                    <c:forEach items="${purposeDicList}" var="item">
-                                        <div class="form-check">
-                                            <label class="form-check-label" style="margin-left: 2px;">
-                                                <input type="checkbox" id="entrustmentPurpose${item.id}"
-                                                       required
-                                                       name="entrustmentPurpose" value="${item.id}"
-                                                       class="form-check-input">
-                                                <span class="form-check-sign"><label
-                                                        for="entrustmentPurpose${item.id}">${item.name}</label></span>
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                委托目的<span class="symbol required"></span>
                                             </label>
+                                            <div class="col-sm-11">
+                                                <select name="entrustmentPurpose" multiple="multiple"
+                                                        class="form-control input-full search-select select2"
+                                                        required="required">
+                                                    <c:forEach items="${purposeDicList}" var="item">
+                                                        <option value="${item.id}">${item.name}</option>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
                                         </div>
-                                    </c:forEach>
+                                    </div>
                                 </div>
                                 <div class="row form-group">
                                     <div class="col-md-6">
@@ -297,7 +286,7 @@
         </div>
     </div>
 </div>
-<%@include file="/views/data/dataReportTemplateItem.jsp" %>
+<%@include file="/views/data/common/dataReportTemplateItem.jsp" %>
 
 <script type="application/javascript">
     $(function () {
@@ -444,8 +433,7 @@
                         cityValue: result.data.city,
                         districtValue: result.data.district
                     })
-                    //extractTemplateField();
-                    AssessCommon.checkboxToChecked($("#frm").find(":checkbox[name='entrustmentPurpose']"), result.data.entrustmentPurpose.split(','));
+                    $("#frm").find("[name='entrustmentPurpose']").val(result.data.entrustmentPurpose.split(',')).trigger('change');
                     var content = result.data.template;
                     setTimeout(function () {
                         ue.setContent(content, false);
@@ -469,7 +457,6 @@
 
     function getTypeName() {
         var name = $("#marketBackgroundType").find("option:selected").text();
-
         $("#marketBackgroundName").val(name);
     }
 </script>

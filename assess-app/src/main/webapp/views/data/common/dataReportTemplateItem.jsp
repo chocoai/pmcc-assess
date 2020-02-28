@@ -13,21 +13,8 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="card-body">
-                                <button style="margin-left: 5px" class="btn btn-success btn-sm" type="button"
-                                        data-toggle="modal" onclick="dataReportTemplateItem.prototype.showModel()"
-                                        href="#dataReportTemplateItemModal">
-											<span class="btn-label">
-												<i class="fa fa-plus"></i>
-											</span>
-                                    新增
-                                </button>
-
-
-                            <table id="tb_dataTemplateItemList" class="table table-bordered"></table>
-
-
-                        </div>
+                        <button id="toolbarTemplateItem" style="margin-left: 5px" class="btn btn-success btn-sm" type="button" data-toggle="modal" onclick="dataReportTemplateItem.prototype.showModel()" href="#dataReportTemplateItemModal"><span class="btn-label"><i class="fa fa-plus"></i></span>新增</button>
+                        <table id="tb_dataTemplateItemList" class="table table-bordered"></table>
                     </div>
                 </div>
             </div>
@@ -36,39 +23,9 @@
                     关闭
                 </button>
             </div>
-
         </div>
     </div>
 </div>
-
-<%--
-<div id="startModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">子模板</h3>
-            </div>
-            <div class="modal-body">
-                <button type="button" class="btn btn-success"
-                        onclick="dataReportTemplateItem.prototype.showModel()"
-                        data-toggle="modal"> 新增
-                </button>
-                <table class="table table-bordered" id="tb_dataTemplateItemList">
-                    <!-- cerare document add ajax data-->
-                </table>
-            </div>
-            <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">
-                    关闭
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
---%>
 
 <div id="dataReportTemplateItemModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
@@ -79,7 +36,6 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
             </div>
-
             <div class="modal-body">
                 <form id="dataReportTemplateItemFrm" class="form-horizontal">
                     <input type="hidden" name="id" value="0">
@@ -150,89 +106,9 @@
                     保存
                 </button>
             </div>
-
         </div>
     </div>
 </div>
-
-
-
-<%--
-<div id="dataReportTemplateItemModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
-     role="dialog"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">编辑子模板</h3>
-            </div>
-            <div class="modal-body">
-                <form id="dataReportTemplateItemFrm" class="form-horizontal">
-                    <input type="hidden" name="id" value="0">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="panel-body">
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            名称<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="text" class="form-control" name="name" placeholder="名称"
-                                                   required="required">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            key值<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <input type="text" class="form-control" name="fieldName" placeholder="key值"
-                                                   required="required">
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            排序<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-3">
-                                            <input type="text" class="form-control" name="sorting" placeholder="排序"
-                                                   required="required" data-rule-number='true'>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            模板<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-
-                                            <div style="width:99%;height:200px;" id="item_template"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">
-                    取消
-                </button>
-                <button type="button" class="btn btn-primary" onclick="dataReportTemplateItem.prototype.saveData()">
-                    保存
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
---%>
 <script type="application/javascript">
     $(function () {
         UE.getEditor('item_template', {
@@ -280,6 +156,7 @@
             TableInit(dataReportTemplateItem.prototype.config().table, "${pageContext.request.contextPath}/dataReportTemplateItem/getDataReportTemplateItemList?masterId=" + masterId+"&type="+masterType, cols, {}, {
                 showColumns: false,
                 showRefresh: false,
+                toolbar: '#toolbarTemplateItem',
                 search: false
             });
         },
