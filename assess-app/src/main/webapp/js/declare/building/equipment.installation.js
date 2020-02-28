@@ -117,7 +117,7 @@ equipmentInstallation.deleteByType = function (data,callback) {
             }
         },
         error: function (e) {
-            Alert("调用服务端方法失败，失败原因:" + e);
+            AlertError("失败","调用服务端方法失败，失败原因:" + e);
         }
     });
 };
@@ -190,7 +190,7 @@ equipmentInstallation.saveAndUpdateData = function () {
             }
         },
         error: function (e) {
-            Alert("调用服务端方法失败，失败原因:" + e);
+            AlertError("失败","调用服务端方法失败，失败原因:" + e);
         }
     });
 };
@@ -209,7 +209,7 @@ equipmentInstallation.getData = function (id, callback) {
             }
         },
         error: function (result) {
-            Alert("调用服务端方法失败，失败原因:" + result);
+            AlertError("失败","调用服务端方法失败，失败原因:" + result);
         }
     });
 };
@@ -261,7 +261,7 @@ equipmentInstallation.deleteData = function () {
                     }
                 },
                 error: function (e) {
-                    Alert("调用服务端方法失败，失败原因:" + e);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + e);
                 }
             });
         })
@@ -281,7 +281,7 @@ equipmentInstallation.handleFather = function (item) {
             }
         },
         error: function (e) {
-            Alert("调用服务端方法失败，失败原因:" + e);
+            AlertError("失败","调用服务端方法失败，失败原因:" + e);
         }
     });
 };
@@ -323,7 +323,7 @@ equipmentInstallation.declareBuildingPermitView = function (id) {
                             }
                         },
                         error: function (result) {
-                            Alert("调用服务端方法失败，失败原因:" + result);
+                            AlertError("失败","调用服务端方法失败，失败原因:" + result);
                         }
                     });
                 } else {
@@ -336,7 +336,7 @@ equipmentInstallation.declareBuildingPermitView = function (id) {
             }
         },
         error: function (e) {
-            Alert("调用服务端方法失败，失败原因:" + e);
+            AlertError("失败","调用服务端方法失败，失败原因:" + e);
         }
     });
 };
@@ -371,7 +371,7 @@ equipmentInstallation.declareBuildingPermitSaveAndUpdate = function () {
             }
         },
         error: function (e) {
-            Alert("调用服务端方法失败，失败原因:" + e);
+            AlertError("失败","调用服务端方法失败，失败原因:" + e);
         }
     });
 };
@@ -426,7 +426,7 @@ equipmentInstallation.declareLandUsePermitView = function (id) {
                             }
                         },
                         error: function (result) {
-                            Alert("调用服务端方法失败，失败原因:" + result);
+                            AlertError("失败","调用服务端方法失败，失败原因:" + result);
                         }
                     });
                 } else {
@@ -439,7 +439,7 @@ equipmentInstallation.declareLandUsePermitView = function (id) {
             }
         },
         error: function (e) {
-            Alert("调用服务端方法失败，失败原因:" + e);
+            AlertError("失败","调用服务端方法失败，失败原因:" + e);
         }
     });
 
@@ -475,7 +475,7 @@ equipmentInstallation.declareLandUsePermitSaveAndUpdate = function () {
             }
         },
         error: function (e) {
-            Alert("调用服务端方法失败，失败原因:" + e);
+            AlertError("失败","调用服务端方法失败，失败原因:" + e);
         }
     });
 };
@@ -530,7 +530,7 @@ equipmentInstallation.declarePreSalePermitView = function (id) {
                             }
                         },
                         error: function (result) {
-                            Alert("调用服务端方法失败，失败原因:" + result);
+                            AlertError("失败","调用服务端方法失败，失败原因:" + result);
                         }
                     });
                 } else {
@@ -543,7 +543,7 @@ equipmentInstallation.declarePreSalePermitView = function (id) {
             }
         },
         error: function (e) {
-            Alert("调用服务端方法失败，失败原因:" + e);
+            AlertError("失败","调用服务端方法失败，失败原因:" + e);
         }
     });
 
@@ -579,7 +579,7 @@ equipmentInstallation.declarePreSalePermitSaveAndUpdate = function () {
             }
         },
         error: function (e) {
-            Alert("调用服务端方法失败，失败原因:" + e);
+            AlertError("失败","调用服务端方法失败，失败原因:" + e);
         }
     });
 };
@@ -635,7 +635,7 @@ equipmentInstallation.declareBuildingConstructionPermitView = function (id) {
                             }
                         },
                         error: function (result) {
-                            Alert("调用服务端方法失败，失败原因:" + result);
+                            AlertError("失败","调用服务端方法失败，失败原因:" + result);
                         }
                     });
                 } else {
@@ -648,7 +648,7 @@ equipmentInstallation.declareBuildingConstructionPermitView = function (id) {
             }
         },
         error: function (e) {
-            Alert("调用服务端方法失败，失败原因:" + e);
+            AlertError("失败","调用服务端方法失败，失败原因:" + e);
         }
     });
 
@@ -685,7 +685,7 @@ equipmentInstallation.declareBuildingConstructionPermitSaveAndUpdate = function 
             }
         },
         error: function (e) {
-            Alert("调用服务端方法失败，失败原因:" + e);
+            AlertError("失败","调用服务端方法失败，失败原因:" + e);
         }
     });
 };
@@ -769,7 +769,7 @@ equipmentInstallation.declareRealtyLandCertView = function (id) {
                             }
                         },
                         error: function (result) {
-                            Alert("调用服务端方法失败，失败原因:" + result);
+                            AlertError("失败","调用服务端方法失败，失败原因:" + result);
                         }
                     });
                 } else {
@@ -786,7 +786,7 @@ equipmentInstallation.declareRealtyLandCertView = function (id) {
             }
         },
         error: function (e) {
-            Alert("调用服务端方法失败，失败原因:" + e);
+            AlertError("失败","调用服务端方法失败，失败原因:" + e);
         }
     });
 
@@ -827,7 +827,7 @@ equipmentInstallation.declareRealtyLandCertSaveAndUpdate = function () {
             }
         },
         error: function (e) {
-            Alert("调用服务端方法失败，失败原因:" + e);
+            AlertError("失败","调用服务端方法失败，失败原因:" + e);
         }
     });
 };
@@ -913,7 +913,7 @@ equipmentInstallation.declareRealtyRealEstateCertView = function (id) {
                             }
                         },
                         error: function (result) {
-                            Alert("调用服务端方法失败，失败原因:" + result);
+                            AlertError("失败","调用服务端方法失败，失败原因:" + result);
                         }
                     });
                 } else {
@@ -930,7 +930,7 @@ equipmentInstallation.declareRealtyRealEstateCertView = function (id) {
             }
         },
         error: function (e) {
-            Alert("调用服务端方法失败，失败原因:" + e);
+            AlertError("失败","调用服务端方法失败，失败原因:" + e);
         }
     });
 };
@@ -965,7 +965,7 @@ equipmentInstallation.declareRealtyRealEstateCertSaveAndUpdate = function () {
             }
         },
         error: function (e) {
-            Alert("调用服务端方法失败，失败原因:" + e);
+            AlertError("失败","调用服务端方法失败，失败原因:" + e);
         }
     });
 };
@@ -1030,14 +1030,14 @@ equipmentInstallation.declareEconomicIndicatorsView = function (pid) {
                             }
                         },
                         error: function (e) {
-                            Alert("调用服务端方法失败，失败原因:" + e);
+                            AlertError("失败","调用服务端方法失败，失败原因:" + e);
                         }
                     });
                 }
             }
         },
         error: function (e) {
-            Alert("调用服务端方法失败，失败原因:" + e);
+            AlertError("失败","调用服务端方法失败，失败原因:" + e);
         }
     });
 };
@@ -1058,7 +1058,7 @@ equipmentInstallation.declareEconomicIndicatorsRemove = function () {
                 }
             },
             error: function (e) {
-                Alert("调用服务端方法失败，失败原因:" + e);
+                AlertError("失败","调用服务端方法失败，失败原因:" + e);
             }
         });
     }
@@ -1085,7 +1085,7 @@ equipmentInstallation.declareEconomicIndicatorsRemove = function () {
             }
         },
         error: function (e) {
-            Alert("调用服务端方法失败，失败原因:" + e);
+            AlertError("失败","调用服务端方法失败，失败原因:" + e);
         }
     });
 };
@@ -1147,7 +1147,7 @@ equipmentInstallation.copyData = function () {
                 }
             },
             error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result);
             }
         });
     } else {
@@ -1199,7 +1199,7 @@ equipmentInstallation.pasteAll = function () {
                     }
                 },
                 error: function (e) {
-                    Alert("调用服务端方法失败，失败原因:" + e);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + e);
                 }
             });
         }
@@ -1327,7 +1327,7 @@ equipmentInstallation.inputFile = function () {
         },
         error: function (result, status, e) {
             Loading.progressHide();
-            Alert("调用服务端方法失败，失败原因:" + result);
+            AlertError("失败","调用服务端方法失败，失败原因:" + result);
         }
     });
 };

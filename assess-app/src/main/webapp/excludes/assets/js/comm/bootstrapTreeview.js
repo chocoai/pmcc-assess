@@ -96,7 +96,7 @@ function initTreeView(objs,contextPath, currOrgId, single, fn) {
             }
         },
         error: function (result) {
-            Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
         }
     });
 }
@@ -158,7 +158,7 @@ function initBaseTreeView(objs, url, data, single, fn) {
         },
         error: function (result) {
             // Loading.progressHide();
-            Alert("调用服务端方法失败，失败原因:" + result.errmsg, 1, null, null);
+            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
         }
     });
 }

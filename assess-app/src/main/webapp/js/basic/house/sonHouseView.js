@@ -62,7 +62,7 @@ var houseHeating;
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -93,7 +93,7 @@ var houseHeating;
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -114,7 +114,7 @@ var houseHeating;
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -202,7 +202,7 @@ var houseAirConditioner;
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -233,7 +233,7 @@ var houseAirConditioner;
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -254,7 +254,7 @@ var houseAirConditioner;
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -342,7 +342,7 @@ var houseNewWind;
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -373,7 +373,7 @@ var houseNewWind;
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -394,7 +394,7 @@ var houseNewWind;
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -481,7 +481,7 @@ var houseCorollaryEquipment;
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -511,7 +511,7 @@ var houseCorollaryEquipment;
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -532,7 +532,7 @@ var houseCorollaryEquipment;
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -640,7 +640,7 @@ var houseFaceStreet;
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -680,7 +680,7 @@ var houseFaceStreet;
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -701,7 +701,7 @@ var houseFaceStreet;
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -825,7 +825,7 @@ var houseIntelligent;
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -877,7 +877,7 @@ var houseIntelligent;
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -898,7 +898,7 @@ var houseIntelligent;
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -928,7 +928,7 @@ var houseIntelligent;
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             });
             AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_switch_circuit, item.switchCircuit, function (html, data) {
@@ -1146,7 +1146,7 @@ var houseWater;
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -1176,7 +1176,7 @@ var houseWater;
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -1197,7 +1197,7 @@ var houseWater;
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -1286,7 +1286,7 @@ houseWaterDrain.removeData = function (id) {
                 }
             },
             error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result);
             }
         })
     });
@@ -1308,7 +1308,7 @@ houseWaterDrain.getAndInit = function (id) {
             }
         },
         error: function (result) {
-            Alert("调用服务端方法失败，失败原因:" + result);
+            AlertError("失败","调用服务端方法失败，失败原因:" + result);
         }
     })
 };
@@ -1356,7 +1356,7 @@ houseWaterDrain.saveData = function () {
             }
         },
         error: function (result) {
-            Alert("调用服务端方法失败，失败原因:" + result);
+            AlertError("失败","调用服务端方法失败，失败原因:" + result);
         }
     });
 };
@@ -1440,7 +1440,7 @@ var houseRoom;
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -1485,7 +1485,7 @@ var houseRoom;
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -1505,7 +1505,7 @@ var houseRoom;
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -1578,7 +1578,7 @@ var houseRoom;
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -1595,7 +1595,7 @@ var houseRoom;
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -1612,7 +1612,7 @@ var houseRoom;
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -1629,7 +1629,7 @@ var houseRoom;
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             })
         },

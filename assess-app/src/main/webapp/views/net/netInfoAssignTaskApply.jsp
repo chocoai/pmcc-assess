@@ -856,7 +856,7 @@
                 }
             },
             error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result);
             }
         });
     };
@@ -885,7 +885,7 @@
                 }
             },
             error: function (result) {
-                Alert("调用服务端方法失败，失败原因:" + result);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result);
             }
         });
     };
@@ -981,7 +981,7 @@
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -1113,7 +1113,7 @@
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -1144,7 +1144,7 @@
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -1340,7 +1340,7 @@
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -1362,7 +1362,7 @@
                         }
                     },
                     error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result);
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result);
                     }
                 })
             });
@@ -1494,7 +1494,7 @@
                     }
                 },
                 error: function (result) {
-                    Alert("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -1516,7 +1516,7 @@
                         }
                     },
                     error: function (result) {
-                        Alert("调用服务端方法失败，失败原因:" + result);
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result);
                     }
                 })
             });

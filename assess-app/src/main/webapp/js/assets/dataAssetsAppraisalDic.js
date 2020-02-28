@@ -31,7 +31,7 @@ dataAssetsAppraisalDic.getDataAssetsAppraisalDicList = function (data, callback)
             }
         },
         error: function (result) {
-            Alert("调用服务端方法失败，失败原因:" + result.errmsg);
+            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
         }
     })
 };
@@ -52,7 +52,7 @@ dataAssetsAppraisalDic.saveAssetsCustomizeDataField = function (arr, callback) {
             }
         },
         error: function (result) {
-            Alert("调用服务端方法失败，失败原因:" + result.errmsg);
+            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
         }
     })
 };
@@ -73,7 +73,7 @@ dataAssetsAppraisalDic.deleteAssetsCustomizeDataFieldById = function (id, callba
             }
         },
         error: function (result) {
-            Alert("调用服务端方法失败，失败原因:" + result.errmsg);
+            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
         }
     })
 };

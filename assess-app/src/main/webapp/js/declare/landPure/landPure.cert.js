@@ -273,7 +273,7 @@ assessLand.houseImportHandle = function () {
         },
         error: function (result, status, e) {
             Loading.progressHide();
-            Alert("调用服务端方法失败，失败原因:" + result);
+            AlertError("失败","调用服务端方法失败，失败原因:" + result);
         }
     });
 };
@@ -302,7 +302,7 @@ assessLand.landImportHandle = function () {
         },
         error: function (result, status, e) {
             Loading.progressHide();
-            Alert("调用服务端方法失败，失败原因:" + result);
+            AlertError("失败","调用服务端方法失败，失败原因:" + result);
         }
     });
 };
@@ -328,7 +328,7 @@ assessLand.inputFileHouse = function () {
         },
         error: function (result, status, e) {
             Loading.progressHide();
-            Alert("调用服务端方法失败，失败原因:" + result);
+            AlertError("失败","调用服务端方法失败，失败原因:" + result);
         }
     });
 };
@@ -371,7 +371,7 @@ assessLand.inputFile = function (flag) {
             },
             error: function (result, status, e) {
                 Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + result);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result);
             }
         });
     });
@@ -636,7 +636,7 @@ declareRealtyRealEstateCert.enclosureFun = function () {
         },
         error: function (result, status, e) {
             Loading.progressHide();
-            Alert("调用服务端方法失败，失败原因:" + result);
+            AlertError("失败","调用服务端方法失败，失败原因:" + result);
         }
     });
 };
@@ -740,7 +740,7 @@ declareRealtyRealEstateCert.inputFile = function (flag) {
             },
             error: function (result, status, e) {
                 Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + result);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result);
             }
         });
     });

@@ -147,7 +147,7 @@
             },
             error: function (e) {
                 Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + e);
+                AlertError("失败","调用服务端方法失败，失败原因:" + e);
             }
         });
     }
@@ -184,7 +184,7 @@
             },
             error: function (e) {
                 Loading.progressHide();
-                Alert("调用服务端方法失败，失败原因:" + e);
+                AlertError("失败","调用服务端方法失败，失败原因:" + e);
             }
         });
     }

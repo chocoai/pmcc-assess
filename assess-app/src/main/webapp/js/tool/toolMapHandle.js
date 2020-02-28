@@ -818,7 +818,7 @@ toolMapHandleFun.saveData = function (data, callback) {
             }
         },
         error: function (e) {
-            Alert("调用服务端方法失败，失败原因:" + e);
+            AlertError("失败","调用服务端方法失败，失败原因:" + e);
         }
     });
 };
@@ -838,7 +838,7 @@ toolMapHandleFun.removeToolMapHandle = function (data, callback) {
             }
         },
         error: function (e) {
-            Alert("调用服务端方法失败，失败原因:" + e);
+            AlertError("失败","调用服务端方法失败，失败原因:" + e);
         }
     });
 };
@@ -858,7 +858,7 @@ toolMapHandleFun.getDataById = function (id, callback) {
             }
         },
         error: function (e) {
-            Alert("调用服务端方法失败，失败原因:" + e);
+            AlertError("失败","调用服务端方法失败，失败原因:" + e);
         }
     });
 };
@@ -878,7 +878,7 @@ toolMapHandleFun.getToolMapHandleListByExample = function (data, callback) {
             }
         },
         error: function (e) {
-            Alert("调用服务端方法失败，失败原因:" + e);
+            AlertError("失败","调用服务端方法失败，失败原因:" + e);
         }
     });
 };
