@@ -515,137 +515,6 @@
         </div>
     </div>
 </script>
-
-<%--<script type="text/html" id="taskRightAssistDiv">
-    <div class="x_panel">
-        <div class="x_title">
-            <h3>他权分组（0{index}）
-                <small>
-                    <a href="javascript://;" class="btn btn-xs btn-warning"
-                       onclick="cleanHTMLData(this,'_number')">移除</a>
-                </small>
-            </h3>
-        </div>
-        <div class="x_content">
-            <div class="form-horizontal">
-                <div class="row form-group">
-                    <div class="col-sm-offset-1  col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
-                        <div class="row">
-                            <div class="col-xs-1  col-sm-1  col-md-1  col-lg-1">
-                                <div class="btn-group">
-                                    <input type="hidden" name="groupId" value="_number">
-                                    <button class="btn-primary btn" type="button"
-                                            onclick="declareRecordModeObj.init({callback:selectRecord,this_:this});">
-                                        选择权证
-                                    </button>
-                                </div>
-                            </div>
-
-                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                权证名称
-                            </label>
-                            <div class="col-xs-1  col-sm-1  col-md-1  col-lg-1 ">
-                                <input type="text" placeholder="权证名称" name="declareName"
-                                       class="form-control input-full">
-                            </div>
-                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                楼栋号
-                            </label>
-                            <div class="col-xs-1  col-sm-1  col-md-1  col-lg-1 ">
-                                <input type="text" placeholder="楼栋号" name="buildingNumber"
-                                       class="form-control input-full">
-                            </div>
-                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                单元号
-                            </label>
-                            <div class="col-xs-1  col-sm-1  col-md-1  col-lg-1 ">
-                                <input type="text" placeholder="单元号" name="unitNumber" class="form-control input-full">
-                            </div>
-                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                坐落
-                            </label>
-                            <div class="col-xs-1  col-sm-1  col-md-1  col-lg-1 ">
-                                <input type="text" placeholder="坐落" name="seat" class="form-control input-full">
-                            </div>
-
-                            <div class="col-xs-1  col-sm-1  col-md-1  col-lg-1 ">
-                                <button type="button" class="btn btn-primary"
-                                        onclick="queryDeclareRecordTable(this,true);" aria-expanded="false">
-                                    查询 <i class="fa fa-search"></i>
-                                </button>
-                            </div>
-
-                            <div class="col-xs-1  col-sm-1  col-md-1  col-lg-1 ">
-                                <button type="button" class="btn btn-primary"
-                                        onclick="queryDeclareRecordTable(this,false);" aria-expanded="false">
-                                    重置 <i class="fa fa-paper-plane"></i>
-                                </button>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-                <div class="row form-group">
-                    <div class="form-inline x-valid">
-                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">权证信息<span
-                                class="symbol required"></span></label>
-                        <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
-                            <table class="table table-bordered" id="tb_List_recordTable_number">
-                                <!-- cerare document add ajax data-->
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <div class="row form-group">
-                    <div class="col-sm-offset-1  col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-success" onclick="addData(this,'_number')"> 新增
-                            </button>
-                        </div>
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-primary"
-                                    onclick="editData(this,'_number')" aria-expanded="false">
-                                编辑
-                            </button>
-                        </div>
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-warning"
-                                    onclick="delData(this,'_number')" aria-expanded="false">
-                                删除
-                            </button>
-                        </div>
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-warning"
-                                    onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftAssetInventoryRight)"
-                                    aria-expanded="false">
-                                下载模板
-                            </button>
-                        </div>
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-primary"
-                                    onclick="$('#ajaxFileUpload_number').val('').trigger('click')"> 导入
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="row form-group">
-                    <div class="form-inline x-valid">
-                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">他权明细<span
-                                class="symbol required"></span></label>
-                        <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
-                            <table class="table table-bordered" id="tb_List_number">
-                                <!-- cerare document add ajax data-->
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <input type="file" id="ajaxFileUpload_number" name="file"
-                   onchange="importRightData('_number');" style="display: none;">
-        </div>
-    </div>
-</script>--%>
-
 <body>
 <div class="wrapper">
     <div class="main-panel" style="width: 100%">
@@ -669,7 +538,7 @@
                                         </small>
                                     </div>
                                     <div class="card-tools">
-                                        <button class="btn  btn-link btn-primary btn-xs"><span
+                                        <button type="button" class="btn  btn-link btn-primary btn-xs"><span
                                                 class="fa fa-angle-down"></span>
                                         </button>
                                     </div>
@@ -972,7 +841,7 @@
         cols.push({field: 'seat', title: '坐落', width: "29%"});
         cols.push({
             field: 'id', title: '操作', width: 200, formatter: function (value, row, index) {
-                var str = '<button onclick="removeDataDeclareRecord(' + row.id + ",'" + row.groupId + "'" + ')"  style="margin-left: 5px;"  class="btn  btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
+                var str = '<button type="button" onclick="removeDataDeclareRecord(' + row.id + ",'" + row.groupId + "'" + ')"  style="margin-left: 5px;"  class="btn  btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
                 str += '<i class="fa fa-minus"></i>';
                 str += '</button>';
                 return str;

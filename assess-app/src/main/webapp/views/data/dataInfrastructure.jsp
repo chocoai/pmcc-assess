@@ -175,13 +175,13 @@
         cols.push({field: 'endDateName', width: '10%', title: '结束日期'});
         cols.push({
             field: 'id',width: '10%',  title: '操作', formatter: function (value, row, index) {
-                var str = '<button onclick="dataObjFun.dataInfrastructureChildrenShowView(' + row.id + ')" style="margin-left: 5px;" class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="子类税费">';
+                var str = '<button type="button" onclick="dataObjFun.dataInfrastructureChildrenShowView(' + row.id + ')" style="margin-left: 5px;" class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="子类税费">';
                 str += '<i class="fa fa-search"></i>';
                 str += '</button>';
-                str += '<button onclick="dataObjFun.editDataById(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
+                str += '<button type="button" onclick="dataObjFun.editDataById(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
                 str += '<i class="fa fa-pen"></i>';
                 str += '</button>';
-                str += '<button onclick="dataObjFun.deleteDataById(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn  btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
+                str += '<button type="button" onclick="dataObjFun.deleteDataById(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn  btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
                 str += '<i class="fa fa-minus"></i>';
                 str += '</button>';
                 return str;
@@ -374,10 +374,10 @@
 
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
-                var str = '<button onclick="dataObjFun.editDataInfrastructureChildren(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
+                var str = '<button type="button" onclick="dataObjFun.editDataInfrastructureChildren(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
                 str += '<i class="fa fa-pen"></i>';
                 str += '</button>';
-                str += '<button onclick="dataObjFun.dataInfrastructureChildrenDelete(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn  btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
+                str += '<button type="button" onclick="dataObjFun.dataInfrastructureChildrenDelete(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn  btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
                 str += '<i class="fa fa-minus"></i>';
                 str += '</button>';
                 return str;

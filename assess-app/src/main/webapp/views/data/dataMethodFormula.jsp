@@ -123,10 +123,10 @@
             cols.push({field: 'relevantParameter',width: '40%',  title: '相关参数'});
             cols.push({
                 field: 'id', width: '10%', title: '操作', formatter: function (value, row, index) {
-                    var str = '<button onclick="dataMethodFormula.prototype.getAndInit(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
+                    var str = '<button type="button" onclick="dataMethodFormula.prototype.getAndInit(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
                     str += '<i class="fa fa-pen"></i>';
                     str += '</button>';
-                    str += '<button onclick="dataMethodFormula.prototype.removeData(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn  btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
+                    str += '<button type="button" onclick="dataMethodFormula.prototype.removeData(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn  btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
                     str += '<i class="fa fa-minus"></i>';
                     str += '</button>';
                     return str;

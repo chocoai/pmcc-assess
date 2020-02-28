@@ -115,13 +115,13 @@
             cols.push({field: 'remark',width: '35%',  title: '备注'});
             cols.push({
                 field: 'id',width: '15%',  title: '操作', formatter: function (value, row, index) {
-                    var str = '<button onclick="dataProperty.prototype.showItemModel(' + row.id + ')" style="margin-left: 5px;" class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看">';
+                    var str = '<button type="button" onclick="dataProperty.prototype.showItemModel(' + row.id + ')" style="margin-left: 5px;" class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看">';
                     str += '<i class="fa fa-search"></i>';
                     str += '</button>';
-                    str += '<button onclick="dataProperty.prototype.getAndInit(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
+                    str += '<button type="button" onclick="dataProperty.prototype.getAndInit(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
                     str += '<i class="fa fa-pen"></i>';
                     str += '</button>';
-                    str += '<button onclick="dataProperty.prototype.removeData(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn  btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
+                    str += '<button type="button" onclick="dataProperty.prototype.removeData(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn  btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
                     str += '<i class="fa fa-minus"></i>';
                     str += '</button>';
                     return str;

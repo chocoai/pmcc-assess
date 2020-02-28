@@ -18,11 +18,11 @@
                                        placeholder="单位" class="form-control" name="uUseUnitName"
                                        value="${projectInfo.unitInformationVo.uUseUnitName}">
                                 <div class="input-group-prepend">
-                                    <button class="btn btn-warning btn-sm " style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;" type="button" onclick="$(this).closest('.input-group').find('input').val('');">清空
+                                    <button type="button" class="btn btn-warning btn-sm " style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;" type="button" onclick="$(this).closest('.input-group').find('input').val('');">清空
                                     </button>
                                 </div>
                                 <div class="input-group-prepend">
-                                    <button class="btn btn-primary btn-sm " style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;" type="button" onclick="objProject.selectCustomer(this);">选择
+                                    <button type="button" class="btn btn-primary btn-sm " style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;" type="button" onclick="objProject.selectCustomer(this);">选择
                                     </button>
                                 </div>
                             </div>
