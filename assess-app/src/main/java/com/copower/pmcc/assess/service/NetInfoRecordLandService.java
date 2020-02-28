@@ -14,6 +14,7 @@ import com.copower.pmcc.erp.api.provider.ErpRpcAttachmentService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
@@ -28,7 +29,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -81,11 +84,25 @@ public class NetInfoRecordLandService {
         return netInfoRecordLandDao.getNetInfoRecordLandById(id);
     }
 
-    public BootstrapTableVo getNetInfoRecordLandListVos(Integer status, String province, String city, String district, String street, String name) {
+    public BootstrapTableVo getNetInfoRecordLandListVos(Integer status, String province, String city, String district, String street, Integer belongType, String belongCategory, Integer dealType, String negotiatedDateStart, String negotiatedDateEnd) {
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<NetInfoRecordLand> netInfoRecordLands = netInfoRecordLandDao.getNetInfoRecordLandList(status, province, city, district, street, name);
+        Date queryNegotiatedDateStart = null;
+        if (org.apache.commons.lang3.StringUtils.isNotEmpty(negotiatedDateStart)) {
+            queryNegotiatedDateStart = DateUtils.parse(negotiatedDateStart);
+        }
+        Date queryNegotiatedDateEnd = null;
+        if (org.apache.commons.lang3.StringUtils.isNotEmpty(negotiatedDateEnd)) {
+            queryNegotiatedDateEnd = DateUtils.parse(negotiatedDateEnd);
+        }
+        String queryBelongType = "";
+        if (belongType != null) {
+            BaseDataDic dic = baseDataDicService.getCacheDataDicById(belongType);
+            queryBelongType = dic.getName();
+        }
+
+        List<NetInfoRecordLand> netInfoRecordLands = netInfoRecordLandDao.getNetInfoRecordLandList(status, province, city, district, street, queryBelongType, belongCategory, dealType, queryNegotiatedDateStart, queryNegotiatedDateEnd);
         SysAttachmentDto where = new SysAttachmentDto();
         where.setTableName(FormatUtils.entityNameConvertToTableName(NetInfoRecordLand.class));
         List<SysAttachmentDto> attachmentDtos = baseAttachmentService.getAttachmentList(LangUtils.transform(netInfoRecordLands, o -> o.getId()), where);
@@ -148,6 +165,18 @@ public class NetInfoRecordLandService {
         if (StringUtils.isNotEmpty(netInfoRecordLand.getDistrict())) {
             vo.setDistrictName(erpAreaService.getSysAreaName(netInfoRecordLand.getDistrict()));
         }
+        if (netInfoRecordLand.getLandArea() != null) {
+
+            if (StringUtils.isNotEmpty(netInfoRecordLand.getLandAreaUnit()) && netInfoRecordLand.getLandAreaUnit().contains("亩")) {
+                vo.setLandAreaMu(netInfoRecordLand.getLandArea());
+                vo.setLandAreaCentiare(netInfoRecordLand.getLandArea().multiply(new BigDecimal("666.67").setScale(2, BigDecimal.ROUND_HALF_UP)));
+            } else {
+                vo.setLandAreaCentiare(netInfoRecordLand.getLandArea());
+                vo.setLandAreaMu(netInfoRecordLand.getLandArea().divide(new BigDecimal("666.67"),2, BigDecimal.ROUND_HALF_UP));
+            }
+
+
+        }
         if (!CollectionUtils.isEmpty(attachmentDtos)) {
             StringBuilder stringBuilder = new StringBuilder();
             for (SysAttachmentDto attachmentDto : attachmentDtos) {
@@ -158,7 +187,9 @@ public class NetInfoRecordLandService {
             vo.setFileViewName(stringBuilder.toString());
         }
         NetInfoRecord record = netInfoRecordDao.getInfoById(netInfoRecordLand.getMasterId());
-        vo.setSourceSiteUrl(record.getSourceSiteUrl());
+        if (record != null) {
+            vo.setSourceSiteUrl(record.getSourceSiteUrl());
+        }
         return vo;
     }
 

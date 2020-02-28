@@ -1,6 +1,9 @@
 package com.copower.pmcc.assess.dto.output.net;
 
 import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordLand;
+import javafx.scene.layout.BackgroundImage;
+
+import java.math.BigDecimal;
 
 /**
  * @Auther: zch
@@ -14,6 +17,24 @@ public class NetInfoRecordLandVo extends NetInfoRecordLand {
     private String districtName;
     private String fileViewName;
     private String sourceSiteUrl;
+    private BigDecimal landAreaCentiare;
+    private BigDecimal landAreaMu;
+
+    public BigDecimal getLandAreaCentiare() {
+        return landAreaCentiare;
+    }
+
+    public void setLandAreaCentiare(BigDecimal landAreaCentiare) {
+        this.landAreaCentiare = landAreaCentiare;
+    }
+
+    public BigDecimal getLandAreaMu() {
+        return landAreaMu;
+    }
+
+    public void setLandAreaMu(BigDecimal landAreaMu) {
+        this.landAreaMu = landAreaMu;
+    }
 
     public String getSourceSiteUrl() {
         return sourceSiteUrl;

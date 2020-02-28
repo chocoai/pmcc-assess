@@ -56,12 +56,14 @@
                                         <label class="col-md-1 col-form-label">省</label>
                                         <div class="col-md-3 p-0">
                                             <select id="province" name="province"
-                                                    class="form-control input-full search-select select2" required="required">
+                                                    class="form-control input-full search-select select2"
+                                                    required="required">
                                             </select>
                                         </div>
                                         <label class="col-md-1 col-form-label">市</label>
                                         <div class="col-md-3 p-0">
-                                            <select id="city" name="city" class="form-control input-full search-select select2"
+                                            <select id="city" name="city"
+                                                    class="form-control input-full search-select select2"
                                                     required="required">
                                             </select>
                                         </div>
@@ -102,11 +104,11 @@
 											</span>
                                             查询
                                         </button>
-                                        <button  style="margin-left: 10px" type="button" class="btn btn-primary btn-sm"
+                                        <button style="margin-left: 10px" type="button" class="btn btn-primary btn-sm"
                                                 onclick="detailInfo.prototype.assignTask()">
                                             发起审批
                                         </button>
-                                        <button  style="margin-left: 10px" type="button" class="btn btn-warning btn-sm"
+                                        <button style="margin-left: 10px" type="button" class="btn btn-warning btn-sm"
                                                 onclick="detailInfo.prototype.backTask()">
                                             取消认领任务
                                         </button>
@@ -131,7 +133,6 @@
 </div>
 
 </body>
-
 
 
 <div id="divBoxTableList" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
@@ -249,7 +250,7 @@
 
 <div id="divBoxFather" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg" style="max-width: 80%">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">信息补全</h4>
@@ -262,18 +263,22 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="card-body">
-                                <table class="table table-bordered" id="singleData">
-                                    <!-- cerare document add ajax data-->
-                                </table>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <table class="table table-bordered" id="singleData">
+                                            <!-- cerare document add ajax data-->
+                                        </table>
+                                    </div>
+                                </div>
                                 <div class="row form-group">
                                     <input type="hidden" name="masterId">
                                     <input type="hidden" name="id">
-                                    <div class="col-md-4">
+                                    <div class="col-md-12">
                                         <div class="form-inline x-valid">
-                                            <label class="col-sm-2 col-form-label">
+                                            <label class="col-sm-1 col-form-label">
                                                 类型<span class="symbol required"></span>
                                             </label>
-                                            <div class="col-sm-10">
+                                            <div class="col-sm-2">
                                                 <select class="form-control input-full" name="type">
                                                     <option value="">-请选择-</option>
                                                     <option value="房产">房产</option>
@@ -285,401 +290,347 @@
                                 </div>
                                 <div class="form-group landContent" style="display: none">
                                     <div class="row form-group">
-                                        <div class="col-md-4">
+                                        <div class="col-md-12">
                                             <div class="form-inline x-valid">
-                                                <label class="col-sm-2 col-form-label">
+                                                <label class="col-sm-1 col-form-label">
                                                     省
                                                 </label>
-                                                <div class="col-sm-10">
+                                                <div class="col-sm-2">
                                                     <select name="province" id="landProvince"
                                                             class="form-control input-full search-select select2">
                                                     </select>
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-2 col-form-label">
+                                                <label class="col-sm-1 col-form-label">
                                                     市
                                                 </label>
-                                                <div class="col-sm-10">
+                                                <div class="col-sm-2">
                                                     <select name="city" id="landCity"
                                                             class="form-control input-full search-select select2">
                                                     </select>
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-2 col-form-label">
+                                                <label class="col-sm-1 col-form-label">
                                                     区
                                                 </label>
-                                                <div class="col-sm-10">
+                                                <div class="col-sm-2">
                                                     <select name="district" id="landDistrict"
                                                             class="form-control input-full search-select select2">
                                                     </select>
                                                 </div>
+                                                <label class="col-sm-1 col-form-label">
+                                                    街道
+                                                </label>
+                                                <div class="col-sm-2">
+                                                    <input type="text" name="street" class="form-control input-full">
+                                                </div>
+
                                             </div>
                                         </div>
 
                                     </div>
                                     <div class="row form-group">
-                                        <div class="col-md-4">
+                                        <div class="col-md-12">
                                             <div class="form-inline x-valid">
-                                                <label class="col-sm-2 col-form-label">
+                                                <label class="col-sm-1 col-form-label">
+                                                    宗地位置
+                                                </label>
+                                                <div class="col-sm-2">
+                                                    <input type="text" name="parcelSite"
+                                                           class="form-control input-full">
+                                                </div>
+                                                <label class="col-sm-1 col-form-label">
+                                                    地块名称
+                                                </label>
+                                                <div class="col-sm-2">
+                                                    <input type="text" name="name" class="form-control input-full">
+                                                </div>
+                                                <label class="col-sm-1 col-form-label">
+                                                    宗地编号
+                                                </label>
+                                                <div class="col-sm-2">
+                                                    <input type="text" name="parcelNumber"
+                                                           class="form-control input-full">
+                                                </div>
+                                                <label class="col-sm-1 col-form-label">
+                                                    土地性质
+                                                </label>
+                                                <div class="col-sm-2">
+                                                    <input type="text" name="landPurpose" placeholder="出让、划拨"
+                                                           class="form-control input-full">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1 col-form-label">
                                                     土地类型
                                                 </label>
-                                                <div class="col-sm-10">
+                                                <div class="col-sm-2">
                                                     <div class="input-group">
                                                         <input type="text" name="belongType" class="form-control"
                                                                list="landUseList">
                                                         <datalist id="landUseList">
 
                                                         </datalist>
-                                                        <span class="input-group-btn">
-                                                <button type="button" class="btn btn-default docs-tooltip"
-                                                        onclick="$(this).closest('.input-group').find('input').val('');"
-                                                        data-toggle="tooltip" data-original-title="清除">
-                                                <i class="fa fa-trash-o"></i>
-                                                </button>
-                                            </span>
+                                                        <button type="button" class="btn btn-warning docs-tooltip"
+                                                                onclick="$(this).closest('.input-group').find('input').val('');"
+                                                                data-toggle="tooltip" data-original-title="清除">
+                                                            <i class="fa fa-minus"></i>
+                                                        </button>
+
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-2 col-form-label">
+                                                <label class="col-sm-1 col-form-label">
                                                     土地类别
                                                 </label>
-                                                <div class="col-sm-10">
+                                                <div class="col-sm-2">
                                                     <div class="input-group">
                                                         <input type="text" name="belongCategory" class="form-control"
                                                                list="landUseCategoryList">
                                                         <datalist id="landUseCategoryList">
 
                                                         </datalist>
-                                                        <span class="input-group-btn">
-                                                <button type="button" class="btn btn-default docs-tooltip"
-                                                        onclick="$(this).closest('.input-group').find('input').val('');"
-                                                        data-toggle="tooltip" data-original-title="清除">
-                                                <i class="fa fa-trash-o"></i>
-                                                </button>
-                                            </span>
+                                                        <button type="button" class="btn btn-warning docs-tooltip"
+                                                                onclick="$(this).closest('.input-group').find('input').val('');"
+                                                                data-toggle="tooltip" data-original-title="清除">
+                                                            <i class="fa fa-minus"></i>
+                                                        </button>
+
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-2 col-form-label">
-                                                    土地性质
+                                                <label class="col-sm-1 col-form-label">
+                                                    交易方式
                                                 </label>
-                                                <div class="col-sm-10">
-                                                    <input type="text" name="landPurpose" class="form-control input-full">
+                                                <div class="col-sm-2">
+                                                    <select name="dealType"
+                                                            class="form-control input-full search-select select2">
+                                                    </select>
                                                 </div>
+                                                <label class="col-sm-1 col-form-label">
+                                                    成交(协商)日期
+                                                </label>
+                                                <div class="col-sm-2">
+                                                    <input name="negotiatedDate" data-date-format="yyyy-mm-dd"
+                                                           onchange="detailInfo.prototype.getRealizationCycle()"
+                                                           id="landNegotiatedDate"
+                                                           class="form-control input-full date-picker dbdate">
+                                                </div>
+
                                             </div>
                                         </div>
 
                                     </div>
                                     <div class="row form-group">
-                                        <div class="col-md-4">
+                                        <div class="col-md-12">
                                             <div class="form-inline x-valid">
-                                                <label class="col-sm-2 col-form-label">
-                                                    街道
-                                                </label>
-                                                <div class="col-sm-10">
-                                                    <input type="text" name="street" class="form-control input-full">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-2 col-form-label">
+                                                <label class="col-sm-1 col-form-label">
                                                     面积
                                                 </label>
-                                                <div class="col-sm-10">
+                                                <div class="col-sm-2">
                                                     <input type="text" data-rule-number="true" data-rule-maxlength="50"
                                                            id="landArea"
                                                            name="area" class="form-control input-full"
-                                                           onblur="detailInfo.prototype.getUnitPrice()">                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-2 col-form-label">
+                                                           onblur="detailInfo.prototype.getUnitPrice()"></div>
+                                                <label class="col-sm-1 col-form-label">
                                                     单位
                                                 </label>
-                                                <div class="col-sm-10">
-                                                    <input type="text" name="areaUnit" class="form-control input-full">
+                                                <div class="col-sm-2">
+                                                    <input type="text" name="areaUnit" placeholder="平方米、亩" class="form-control input-full">
+                                                </div>
+                                                <label class="col-sm-1 col-form-label">
+                                                    净用地面积
+                                                </label>
+                                                <div class="col-sm-2">
+                                                    <input type="text" data-rule-number="true" data-rule-maxlength="50"
+                                                           name="landArea" class="form-control input-full">
+                                                </div>
+                                                <label class="col-sm-1 col-form-label">
+                                                    净用地面积单位
+                                                </label>
+                                                <div class="col-sm-2">
+                                                    <input type="text" name="landAreaUnit" placeholder="平方米、亩" class="form-control input-full">
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row form-group">
-                                        <div class="col-md-4">
+                                        <div class="col-md-12">
                                             <div class="form-inline x-valid">
-                                                <label class="col-sm-2 col-form-label">
-                                                    地块名称
+                                                <label class="col-sm-1 col-form-label">
+                                                    成交总价（万元）
                                                 </label>
-                                                <div class="col-sm-10">
-                                                    <input type="text" name="name" class="form-control input-full">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-2 col-form-label">
-                                                    宗地编号
-                                                </label>
-                                                <div class="col-sm-10">
-                                                    <input type="text" name="parcelNumber" class="form-control input-full">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-2 col-form-label">
-                                                    宗地位置
-                                                </label>
-                                                <div class="col-sm-10">
-                                                    <input type="text" name="parcelSite" class="form-control input-full">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row form-group">
-                                        <div class="col-md-4">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-2 col-form-label">
-                                                    交易方式
-                                                </label>
-                                                <div class="col-sm-10">
-                                                    <select name="dealType" class="form-control input-full search-select select2">
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-2 col-form-label">
-                                                    成交价
-                                                </label>
-                                                <div class="col-sm-10">
+                                                <div class="col-sm-2">
                                                     <input type="text" data-rule-number="true" data-rule-maxlength="50"
                                                            id="landCurrentPrice"
                                                            name="currentPrice" class="form-control input-full"
                                                            onblur="detailInfo.prototype.getUnitPrice()">
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-2 col-form-label">
-                                                    成交(协商)日期
+                                                <label class="col-sm-1 col-form-label">
+                                                    成交单价（元/㎡）
                                                 </label>
-                                                <div class="col-sm-10">
-                                                    <input name="negotiatedDate" data-date-format="yyyy-mm-dd"
-                                                           onchange="detailInfo.prototype.getRealizationCycle()"
-                                                           id="landNegotiatedDate" class="form-control input-full date-picker dbdate">
+                                                <div class="col-sm-2">
+                                                    <input type="text" data-rule-number="true" data-rule-maxlength="50"
+                                                           name="unitPrice" class="form-control input-full"
+                                                           id="landUnitPrice" onblur="detailInfo.prototype.getHouseRealizationRatios()">
                                                 </div>
+                                                <label class="col-sm-1 col-form-label">
+                                                    成交单价（万元/每亩）
+                                                </label>
+                                                <div class="col-sm-2">
+                                                    <input type="text" data-rule-number="true" data-rule-maxlength="50"
+                                                           name="unitPriceMu" class="form-control input-full"
+                                                           id="unitPriceMu">
+                                                </div>
+                                                <label class="col-sm-1 col-form-label">
+                                                    成交楼面地价（元/㎡）
+                                                </label>
+                                                <div class="col-sm-2">
+                                                    <input type="text" data-rule-number="true" data-rule-maxlength="50"
+                                                           name="floorPrice" class="form-control input-full">
+                                                </div>
+
                                             </div>
                                         </div>
-
                                     </div>
                                     <div class="row form-group">
-                                        <div class="col-md-4">
+                                        <div class="col-md-12">
                                             <div class="form-inline x-valid">
-                                                <label class="col-sm-2 col-form-label">
-                                                    评估价
-                                                </label>
-                                                <div class="col-sm-10">
-                                                    <input type="text" data-rule-number="true" data-rule-maxlength="50"
-                                                           name="consultPrice" id="landConsultPrice" class="form-control input-full"
-                                                           onblur="detailInfo.prototype.getHouseRealizationRatios()">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-2 col-form-label">
+                                                <label class="col-sm-1 col-form-label">
                                                     评估基准日期
                                                 </label>
-                                                <div class="col-sm-10">
+                                                <div class="col-sm-2">
                                                     <input name="assessStandardDate" data-date-format="yyyy-mm-dd"
                                                            onchange="detailInfo.prototype.getRealizationCycle()"
                                                            id="landAssessStandardDate"
                                                            class="form-control input-full date-picker dbdate">
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-2 col-form-label">
-                                                    单价
+                                                <label class="col-sm-1 col-form-label">
+                                                    评估起拍单价（元/㎡）
                                                 </label>
-                                                <div class="col-sm-10">
+                                                <div class="col-sm-2">
                                                     <input type="text" data-rule-number="true" data-rule-maxlength="50"
-                                                           name="unitPrice" class="form-control input-full" id="landUnitPrice">
+                                                           name="consultPrice" id="landConsultPrice"
+                                                           class="form-control input-full"
+                                                           onblur="detailInfo.prototype.getHouseRealizationRatios()">
                                                 </div>
+                                                <label class="col-sm-1 col-form-label">
+                                                    评估起拍单价（万元/每亩）
+                                                </label>
+                                                <div class="col-sm-2">
+                                                    <input type="text" data-rule-number="true" data-rule-maxlength="50"
+                                                           name="consultPriceMu" id="consultPriceMu"
+                                                           class="form-control input-full">
+                                                </div>
+
+
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row form-group">
-                                        <div class="col-md-4">
+                                        <div class="col-md-12">
                                             <div class="form-inline x-valid">
-                                                <label class="col-sm-2 col-form-label">
-                                                    楼面地价
+                                                <label class="col-sm-1 col-form-label">
+                                                    变现周期
                                                 </label>
-                                                <div class="col-sm-10">
-                                                    <input type="text" data-rule-number="true" data-rule-maxlength="50"
-                                                           name="floorPrice" class="form-control input-full">
+                                                <div class="col-sm-2">
+                                                    <input type="text" name="realizationCycle" id="landRealizationCycle"
+                                                           class="form-control input-full">
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-2 col-form-label">
+                                                <label class="col-sm-1 col-form-label">
                                                     变现率
                                                 </label>
-                                                <div class="col-sm-10">
+                                                <div class="col-sm-2">
                                                     <input type="text" name="landRealizationRatios"
                                                            onfocus="detailInfo.prototype.getHouseRealizationRatios()"
                                                            class="form-control input-full x-percent">
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-2 col-form-label">
-                                                    变现周期
+                                                <label class="col-sm-1 col-form-label">
+                                                    容积率
                                                 </label>
-                                                <div class="col-sm-10">
-                                                    <input type="text" name="realizationCycle" id="landRealizationCycle"
+                                                <div class="col-sm-2">
+                                                    <input type="text" name="plotRatio" data-rule-number="true"
+                                                           data-rule-maxlength="50" class="form-control input-full">
+                                                </div>
+                                                <label class="col-sm-1 col-form-label">
+                                                    容积率说明
+                                                </label>
+                                                <div class="col-sm-2">
+                                                    <input type="text" name="plotRatioRemark"
                                                            class="form-control input-full">
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row form-group">
-                                        <div class="col-md-4">
+                                        <div class="col-md-12">
                                             <div class="form-inline x-valid">
-                                                <label class="col-sm-2 col-form-label">
-                                                    净用地面积
-                                                </label>
-                                                <div class="col-sm-10">
-                                                    <input type="text" data-rule-number="true" data-rule-maxlength="50"
-                                                           name="landArea" class="form-control input-full">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-2 col-form-label">
-                                                    容积率
-                                                </label>
-                                                <div class="col-sm-10">
-                                                    <input type="text" name="plotRatio" data-rule-number="true"
-                                                           data-rule-maxlength="50" class="form-control input-full">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-2 col-form-label">
-                                                    容积率说明
-                                                </label>
-                                                <div class="col-sm-10">
-                                                    <input type="text" name="plotRatioRemark" class="form-control input-full">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row form-group">
-                                        <div class="col-md-4">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-2 col-form-label">
+                                                <label class="col-sm-1 col-form-label">
                                                     绿化率
                                                 </label>
-                                                <div class="col-sm-10">
-                                                    <input type="text" name="greeningRate" class="form-control input-full x-percent">
+                                                <div class="col-sm-2">
+                                                    <input type="text" name="greeningRate"
+                                                           class="form-control input-full x-percent">
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-2 col-form-label">
+                                                <label class="col-sm-1 col-form-label">
                                                     绿化率说明
                                                 </label>
-                                                <div class="col-sm-10">
-                                                    <input type="text" name="greeningRateRemark" class="form-control input-full">                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-2 col-form-label">
+                                                <div class="col-sm-2">
+                                                    <input type="text" name="greeningRateRemark"
+                                                           class="form-control input-full"></div>
+                                                <label class="col-sm-1 col-form-label">
                                                     建筑密度
                                                 </label>
-                                                <div class="col-sm-10">
-                                                    <input type="text" name="buildDensity" class="form-control input-full"
-                                                           data-rule-number="true" data-rule-maxlength="50">                                     </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row form-group">
-                                        <div class="col-md-4">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-2 col-form-label">
+                                                <div class="col-sm-2">
+                                                    <input type="text" name="buildDensity"
+                                                           class="form-control input-full"
+                                                           data-rule-number="true" data-rule-maxlength="50"></div>
+                                                <label class="col-sm-1 col-form-label">
                                                     建筑密度说明
                                                 </label>
-                                                <div class="col-sm-10">
-                                                    <input type="text" name="buildDensityRemark" class="form-control input-full">                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-2 col-form-label">
-                                                    建筑高度
-                                                </label>
-                                                <div class="col-sm-10">
-                                                    <input type="text" name="buildHeight" class="form-control input-full"
-                                                           data-rule-number="true" data-rule-maxlength="50">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-2 col-form-label">
-                                                    建筑高度说明
-                                                </label>
-                                                <div class="col-sm-10">
-                                                    <input type="text" name="buildHeightRemark" class="form-control input-full">
-                                                </div>
+                                                <div class="col-sm-2">
+                                                    <input type="text" name="buildDensityRemark"
+                                                           class="form-control input-full"></div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row form-group">
-                                        <div class="col-md-4">
+                                        <div class="col-md-12">
                                             <div class="form-inline x-valid">
-                                                <label class="col-sm-2 col-form-label">
+                                                <label class="col-sm-1 col-form-label">
+                                                    建筑高度(米)
+                                                </label>
+                                                <div class="col-sm-2">
+                                                    <input type="text" name="buildHeight"
+                                                           class="form-control input-full"
+                                                           data-rule-number="true" data-rule-maxlength="50">
+                                                </div>
+                                                <label class="col-sm-1 col-form-label">
+                                                    建筑高度说明
+                                                </label>
+                                                <div class="col-sm-2">
+                                                    <input type="text" name="buildHeightRemark"
+                                                           class="form-control input-full">
+                                                </div>
+                                                <label class="col-sm-1 col-form-label">
                                                     指标款(亩)
                                                 </label>
-                                                <div class="col-sm-10">
-                                                    <input type="text" name="indexAmount" class="form-control input-full"
-                                                           data-rule-number="true" data-rule-maxlength="50">                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-2 col-form-label">
+                                                <div class="col-sm-2">
+                                                    <input type="text" name="indexAmount"
+                                                           class="form-control input-full"
+                                                           data-rule-number="true" data-rule-maxlength="50"></div>
+                                                <label class="col-sm-1 col-form-label">
                                                     指标款说明
                                                 </label>
-                                                <div class="col-sm-10">
-                                                    <input type="text" name="indexAmountRemark" class="form-control input-full">
+                                                <div class="col-sm-2">
+                                                    <input type="text" name="indexAmountRemark"
+                                                           class="form-control input-full">
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
@@ -709,213 +660,166 @@
                                 </div>
                                 <div class="form-group houseContent" style="display: none">
                                     <div class="row form-group">
-                                        <div class="col-md-4">
+                                        <div class="col-md-12">
                                             <div class="form-inline x-valid">
-                                                <label class="col-sm-2 col-form-label">
+                                                <label class="col-sm-1 col-form-label">
                                                     省
                                                 </label>
-                                                <div class="col-sm-10">
+                                                <div class="col-sm-2">
                                                     <select name="province" id="houseProvince"
                                                             class="form-control input-full search-select select2">
                                                     </select>
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-2 col-form-label">
+                                                <label class="col-sm-1 col-form-label">
                                                     市
                                                 </label>
-                                                <div class="col-sm-10">
+                                                <div class="col-sm-2">
                                                     <select name="city" id="houseCity"
                                                             class="form-control input-full search-select select2">
                                                     </select>
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-2 col-form-label">
+                                                <label class="col-sm-1 col-form-label">
                                                     区
                                                 </label>
-                                                <div class="col-sm-10">
+                                                <div class="col-sm-2">
                                                     <select name="district" id="houseDistrict"
                                                             class="form-control input-full search-select select2">
                                                     </select>
                                                 </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    <div class="row form-group">
-                                        <div class="col-md-4">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-2 col-form-label">
+                                                <label class="col-sm-1 col-form-label">
                                                     房产类型
                                                 </label>
-                                                <div class="col-sm-10">
+                                                <div class="col-sm-2">
                                                     <div class="input-group">
                                                         <input type="text" name="belongType" class="form-control"
                                                                list="houseUseList">
                                                         <datalist id="houseUseList">
 
                                                         </datalist>
-                                                        <span class="input-group-btn">
-                                                <button type="button" class="btn btn-default docs-tooltip"
-                                                        onclick="$(this).closest('.input-group').find('input').val('');"
-                                                        data-toggle="tooltip" data-original-title="清除">
-                                                <i class="fa fa-trash-o"></i>
-                                                </button>
-                                            </span>
+
+                                                        <button type="button" class="btn btn-warning docs-tooltip"
+                                                                onclick="$(this).closest('.input-group').find('input').val('');"
+                                                                data-toggle="tooltip" data-original-title="清除">
+                                                            <i class="fa fa-minus"></i>
+                                                        </button>
+
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
                                             <div class="form-inline x-valid">
-                                                <label class="col-sm-2 col-form-label">
+                                                <label class="col-sm-1 col-form-label">
                                                     房产类别
                                                 </label>
-                                                <div class="col-sm-10">
+                                                <div class="col-sm-2">
                                                     <div class="input-group">
                                                         <input type="text" name="belongCategory" class="form-control"
                                                                list="houseUseCategoryList">
                                                         <datalist id="houseUseCategoryList">
 
                                                         </datalist>
-                                                        <span class="input-group-btn">
-                                                <button type="button" class="btn btn-default docs-tooltip"
-                                                        onclick="$(this).closest('.input-group').find('input').val('');"
-                                                        data-toggle="tooltip" data-original-title="清除">
-                                                <i class="fa fa-trash-o"></i>
-                                                </button>
-                                            </span>
+                                                        <button type="button" class="btn btn-warning docs-tooltip"
+                                                                onclick="$(this).closest('.input-group').find('input').val('');"
+                                                                data-toggle="tooltip" data-original-title="清除">
+                                                            <i class="fa fa-minus"></i>
+                                                        </button>
+
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-2 col-form-label">
+                                                <label class="col-sm-1 col-form-label">
                                                     街道
                                                 </label>
-                                                <div class="col-sm-10">
+                                                <div class="col-sm-2">
                                                     <input type="text" name="street" class="form-control input-full">
                                                 </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row form-group">
-                                        <div class="col-md-4">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-2 col-form-label">
+                                                <label class="col-sm-1 col-form-label">
                                                     面积
                                                 </label>
-                                                <div class="col-sm-10">
+                                                <div class="col-sm-2">
                                                     <input type="text" data-rule-number="true" data-rule-maxlength="50"
                                                            id="houseArea"
                                                            name="area" class="form-control input-full"
-                                                           onblur="detailInfo.prototype.getUnitPrice()">                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-2 col-form-label">
+                                                           onblur="detailInfo.prototype.getUnitPrice()"></div>
+                                                <label class="col-sm-1 col-form-label">
                                                     楼盘名称
                                                 </label>
-                                                <div class="col-sm-10">
+                                                <div class="col-sm-2">
                                                     <input type="text" name="name" class="form-control input-full">
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-2 col-form-label">
-                                                    楼栋号
-                                                </label>
-                                                <div class="col-sm-10">
-                                                    <input type="text" name="buildingNumber" class="form-control input-full">
-                                                </div>
-                                            </div>
-                                        </div>
                                     </div>
                                     <div class="row form-group">
-                                        <div class="col-md-4">
+                                        <div class="col-md-12">
                                             <div class="form-inline x-valid">
-                                                <label class="col-sm-2 col-form-label">
+                                                <label class="col-sm-1 col-form-label">
+                                                    楼栋号
+                                                </label>
+                                                <div class="col-sm-2">
+                                                    <input type="text" name="buildingNumber"
+                                                           class="form-control input-full">
+                                                </div>
+                                                <label class="col-sm-1 col-form-label">
                                                     单元号
                                                 </label>
-                                                <div class="col-sm-10">
-                                                    <input type="text" name="unitNumber" class="form-control input-full">                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-2 col-form-label">
+                                                <div class="col-sm-2">
+                                                    <input type="text" name="unitNumber"
+                                                           class="form-control input-full"></div>
+                                                <label class="col-sm-1 col-form-label">
                                                     房号
                                                 </label>
-                                                <div class="col-sm-10">
-                                                    <input type="text" name="houseNumber" class="form-control input-full">                                       </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-2 col-form-label">
+                                                <div class="col-sm-2">
+                                                    <input type="text" name="houseNumber"
+                                                           class="form-control input-full">
+                                                </div>
+                                                <label class="col-sm-1 col-form-label">
                                                     交易方式
                                                 </label>
-                                                <div class="col-sm-10">
-                                                    <select name="dealType" class="form-control input-full search-select select2">
+                                                <div class="col-sm-2">
+                                                    <select name="dealType"
+                                                            class="form-control input-full search-select select2">
                                                     </select>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row form-group">
-                                        <div class="col-md-4">
+                                        <div class="col-md-12">
                                             <div class="form-inline x-valid">
-                                                <label class="col-sm-2 col-form-label">
+                                                <label class="col-sm-1 col-form-label">
                                                     成交总价
                                                 </label>
-                                                <div class="col-sm-10">
+                                                <div class="col-sm-2">
                                                     <input type="text" data-rule-number="true" data-rule-maxlength="50"
                                                            id="houseCurrentPrice"
                                                            name="currentPrice" class="form-control input-full"
                                                            onblur="detailInfo.prototype.getUnitPrice()">
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-2 col-form-label">
+                                                <label class="col-sm-1 col-form-label">
                                                     成交(协商)日期
                                                 </label>
-                                                <div class="col-sm-10">
+                                                <div class="col-sm-2">
                                                     <input name="negotiatedDate" data-date-format="yyyy-mm-dd"
                                                            onchange="detailInfo.prototype.getRealizationCycle()"
-                                                           id="houseNegotiatedDate" class="form-control input-full date-picker dbdate">
+                                                           id="houseNegotiatedDate"
+                                                           class="form-control input-full date-picker dbdate">
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-2 col-form-label">
+                                                <label class="col-sm-1 col-form-label">
                                                     评估总价
                                                 </label>
-                                                <div class="col-sm-10">
+                                                <div class="col-sm-2">
                                                     <input type="text" data-rule-number="true" data-rule-maxlength="50"
-                                                           name="consultPrice" id="houseConsultPrice" class="form-control input-full"
+                                                           name="consultPrice" id="houseConsultPrice"
+                                                           class="form-control input-full"
                                                            onblur="detailInfo.prototype.getHouseRealizationRatios()">
                                                 </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row form-group">
-                                        <div class="col-md-4">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-2 col-form-label">
+                                                <label class="col-sm-1 col-form-label">
                                                     评估基准日期
                                                 </label>
-                                                <div class="col-sm-10">
+                                                <div class="col-sm-2">
                                                     <input name="assessStandardDate" data-date-format="yyyy-mm-dd"
                                                            onchange="detailInfo.prototype.getRealizationCycle()"
                                                            id="houseAssessStandardDate"
@@ -923,63 +827,57 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
                                             <div class="form-inline x-valid">
-                                                <label class="col-sm-2 col-form-label">
+                                                <label class="col-sm-1 col-form-label">
                                                     成交单价
                                                 </label>
-                                                <div class="col-sm-10">
+                                                <div class="col-sm-2">
                                                     <input type="text" data-rule-number="true" data-rule-maxlength="50"
-                                                           name="unitPrice" class="form-control input-full" id="houseUnitPrice">
+                                                           name="unitPrice" class="form-control input-full"
+                                                           id="houseUnitPrice">
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-2 col-form-label">
+                                                <label class="col-sm-1 col-form-label">
                                                     变现率
                                                 </label>
-                                                <div class="col-sm-10">
+                                                <div class="col-sm-2">
                                                     <input type="text" name="houseRealizationRatios"
                                                            onfocus="detailInfo.prototype.getHouseRealizationRatios()"
                                                            class="form-control input-full x-percent">
+                                                </div>
+                                                <label class="col-sm-1 col-form-label">
+                                                    变现周期
+                                                </label>
+                                                <div class="col-sm-2">
+                                                    <input type="text" name="realizationCycle"
+                                                           id="houseRealizationCycle"
+                                                           class="form-control input-full">
+                                                </div>
+                                                <label class="col-sm-1 col-form-label">
+                                                    交易类型
+                                                </label>
+                                                <div class="col-sm-2">
+                                                    <select name="tradingType"
+                                                            class="form-control input-full search-select select2">
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row form-group">
-                                        <div class="col-md-4">
+                                        <div class="col-md-12">
                                             <div class="form-inline x-valid">
-                                                <label class="col-sm-2 col-form-label">
+                                                <label class="col-sm-1 col-form-label">
                                                     限购状态
                                                 </label>
-                                                <div class="col-sm-10">
-                                                    <select class="form-control input-full" required name="purchaseLimitStatus">
+                                                <div class="col-sm-2">
+                                                    <select class="form-control input-full" required
+                                                            name="purchaseLimitStatus">
                                                         <option value="">--请选择--</option>
                                                         <option value="限购">限购</option>
                                                         <option value="不限购">不限购</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-2 col-form-label">
-                                                    变现周期
-                                                </label>
-                                                <div class="col-sm-10">
-                                                    <input type="text" name="realizationCycle" id="houseRealizationCycle"
-                                                           class="form-control input-full">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-2 col-form-label">
-                                                    交易类型
-                                                </label>
-                                                <div class="col-sm-10">
-                                                    <select name="tradingType" class="form-control input-full search-select select2">
                                                     </select>
                                                 </div>
                                             </div>
@@ -1013,9 +911,7 @@
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
-
                         </div>
                     </div>
                 </form>
@@ -1768,8 +1664,9 @@
             detailInfo.prototype.getHouseRealizationRatios();
         },
         getHouseRealizationRatios: function () {
-            var landCurrentPrice = Number($("#landCurrentPrice").val());
+            var landUnitPrice = Number($("#landUnitPrice").val());
             var landConsultPrice = Number($("#landConsultPrice").val());
+            console.log(landUnitPrice+"===="+landConsultPrice)
             var houseCurrentPrice = Number($("#houseCurrentPrice").val());
             var houseConsultPrice = Number($("#houseConsultPrice").val());
 
@@ -1780,8 +1677,8 @@
             } else {
                 $("#" + detailInfo.prototype.config().frm).find('[name=houseRealizationRatios]').val('');
             }
-            if (landCurrentPrice >= 0 && landConsultPrice > 0) {
-                var landRealizationRatios = (landCurrentPrice / landConsultPrice).toFixed(2);
+            if (landUnitPrice >= 0 && landConsultPrice > 0) {
+                var landRealizationRatios = (landUnitPrice / landConsultPrice).toFixed(2);
                 $("#" + detailInfo.prototype.config().frm).find('[name=landRealizationRatios]').attr('data-value', landRealizationRatios);
                 AssessCommon.elementParsePercent($("#" + detailInfo.prototype.config().frm).find('[name=landRealizationRatios]'));
             } else {
@@ -1878,10 +1775,10 @@
                 })
             });
         },
-        getMuPrict:function(_this,targeName){
+        getMuPrict: function (_this, targeName) {
             var val = $(_this).val();
-            if(val&&AssessCommon.isNumber(val)){
-                $(_this).closest('.form-group').find('[name='+targeName+']').val(parseFloat(val)*666.67/10000).toFixed(4);
+            if (val && AssessCommon.isNumber(val)) {
+                $(_this).closest('.form-group').find('[name=' + targeName + ']').val(parseFloat(val) * 666.67 / 10000).toFixed(4);
             }
         }
     }

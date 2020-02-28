@@ -10,6 +10,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -53,7 +54,7 @@ public class NetInfoRecordLandDao {
         return netInfoRecordLandMapper.selectByExample(example);
     }
 
-    public List<NetInfoRecordLand> getNetInfoRecordLandList(Integer status, String province, String city, String district, String street, String name) {
+    public List<NetInfoRecordLand> getNetInfoRecordLandList(Integer status, String province, String city, String district, String street, String belongType, String belongCategory, Integer dealType, Date negotiatedDateStart, Date negotiatedDateEnd) {
         NetInfoRecordLandExample example = new NetInfoRecordLandExample();
         NetInfoRecordLandExample.Criteria criteria = example.createCriteria();
         criteria.andStatusEqualTo(status);
@@ -63,10 +64,21 @@ public class NetInfoRecordLandDao {
             criteria.andCityEqualTo(city);
         if (StringUtils.isNotBlank(district))
             criteria.andDistrictEqualTo(district);
-        if (StringUtils.isNotBlank(street))
+        if (StringUtils.isNotBlank(street))////belongType,belongCategory,dealType,negotiatedDateStart,negotiatedDateEnd
             criteria.andStreetLike(String.format("%%%s%%", street));
-        if (StringUtils.isNotBlank(name))
-            criteria.andNameLike(String.format("%%%s%%", name));
+        if (StringUtils.isNotBlank(belongType))
+            criteria.andBelongTypeEqualTo(belongType);
+        if (StringUtils.isNotBlank(belongCategory))
+            criteria.andBelongCategoryEqualTo(belongCategory);
+        if (dealType != null){
+            criteria.andDealTypeEqualTo(dealType);
+        }
+        if ( negotiatedDateStart != null){
+            criteria.andNegotiatedDateGreaterThanOrEqualTo(negotiatedDateStart);
+        }
+        if (negotiatedDateEnd != null){
+            criteria.andNegotiatedDateLessThanOrEqualTo(negotiatedDateEnd);
+        }
         return netInfoRecordLandMapper.selectByExample(example);
     }
 

@@ -58,9 +58,9 @@ public class NetInfoRecordLandController {
 
 
     @ResponseBody
-    @RequestMapping(value = "/landList", name = "取得土地信息", method = RequestMethod.GET)
-    public BootstrapTableVo landList(String province, String city, String district, String street, String name) {
-        BootstrapTableVo vo = netInfoRecordLandService.getNetInfoRecordLandListVos(1, province, city, district, street, name);
+    @RequestMapping(value = "/landList", name = "取得土地信息", method = RequestMethod.GET)//belongType,belongCategory,dealType,negotiatedDateStart,negotiatedDateEnd
+    public BootstrapTableVo landList(String province, String city, String district, String street, Integer belongType,String belongCategory,Integer dealType,String negotiatedDateStart,String negotiatedDateEnd) {
+        BootstrapTableVo vo = netInfoRecordLandService.getNetInfoRecordLandListVos(1, province, city, district, street, belongType,belongCategory,dealType,negotiatedDateStart,negotiatedDateEnd);
         return vo;
     }
 
