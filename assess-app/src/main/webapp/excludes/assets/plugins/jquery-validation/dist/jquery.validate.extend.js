@@ -101,7 +101,7 @@ $.validator.setDefaults({
         valid: function () {
             var valid = $(this[0]).validBase();
             if (valid === false && typeof toastr != "undefined") {//验证余
-                toastr.info("请检查表单内容是否完整及符合要求！");
+                notifyInfo('提示',"请检查表单内容是否完整及符合要求！");
             }
             return valid;
         }

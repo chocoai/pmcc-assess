@@ -46,7 +46,7 @@
             }
         }
         if (filterData.length == 0) {
-            toastr.warning("考核需要填写全部数据!");
+            notifyWaring('警告',"考核需要填写全部数据!");
             return false;
         }
         var parentData = {
@@ -58,7 +58,7 @@
             chksScore: JSON.stringify(filterData),
             fomData: JSON.stringify(parentData)
         }, function (data) {
-            toastr.warning("考核成功!");
+            notifyWaring('警告',"考核成功!");
             finishAssessmentSurveyItem() ;
             $(_this).parent().hide() ;
         });

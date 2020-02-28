@@ -276,7 +276,7 @@
         })
         data.proportionList = data.proportionList.replace(/,$/, '');
         if (total != 100) {
-            toastr.error('占比之和不为100!');
+            notifyError('错误','占比之和不为100!');
             return false;
         }
         $.ajax({
@@ -314,7 +314,7 @@
         })
         data.proportionList = data.proportionList.replace(/,$/, '');
         if (total != 100) {
-            toastr.error('占比之和不为100!');
+            notifyError('错误','占比之和不为100!');
             return false
         }
         $.ajax({

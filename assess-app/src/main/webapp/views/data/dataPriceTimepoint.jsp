@@ -249,7 +249,7 @@
                         $('#divBox').modal('hide');
                     }
                     else {
-                        toastr.warning(result.errmsg);
+                        notifyWaring('警告',result.errmsg);
                     }
                 },
                 error: function (result) {

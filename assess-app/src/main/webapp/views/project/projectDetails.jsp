@@ -846,7 +846,7 @@
                             projectDetails.loadPlanTabInfo(projectDetails.getActiveTab());
                             layer.closeAll();
                         } else {
-                            toastr.info(result.errmsg);
+                            notifyInfo('提示',result.errmsg);
                         }
                     }
                 })
@@ -911,7 +911,7 @@
                         //projectDetails.loadPlanTabInfo(projectDetails.getActiveTab());
                         refreshNode(result.data);
                     } else {
-                        toastr.info(result.errmsg);
+                        notifyInfo('提示',result.errmsg);
                     }
                 }
             })

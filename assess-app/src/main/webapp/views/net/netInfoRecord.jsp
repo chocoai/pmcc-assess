@@ -427,7 +427,7 @@
                 //选择人员
                 detailInfo.prototype.selectUser()
             } else {
-                toastr.info('请选择要分派的数据');
+                notifyInfo('提示','请选择要分派的数据');
             }
         },
         selectUser: function () {

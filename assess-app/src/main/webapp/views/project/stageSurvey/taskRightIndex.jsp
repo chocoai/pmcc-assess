@@ -1032,7 +1032,7 @@
     function delData(_this, value) {
         var rows = $("#" + commonField.tbList + value).bootstrapTable('getSelections');
         if (!rows || rows.length <= 0) {
-            toastr.info("请选择要删除的数据");
+            notifyInfo('提示',"请选择要删除的数据");
         } else {
             var idArray = [];
             $.each(rows, function (i, item) {

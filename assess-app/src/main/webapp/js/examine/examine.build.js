@@ -37,7 +37,7 @@
     buildingCommon.add = function (_this, callback) {
         var buildingNumber = $(_this).closest('form').find('[name=buildingNumber]').val();
         if (!buildingNumber) {
-            toastr.info('请填写楼栋编号！');
+            notifyInfo('提示','请填写楼栋编号！');
             return false;
         }
         $.ajax({
@@ -61,7 +61,7 @@
         var caseBuildingId = $(_this).closest('form').find("input[name='caseBuildingId']").val();
         var buildingPartInMode = $(_this).attr('data-mode');
         if (!caseBuildingId) {
-            toastr.info('请选择系统中已存在的楼栋信息！');
+            notifyInfo('提示','请选择系统中已存在的楼栋信息！');
             return false;
         }
         $.ajax({

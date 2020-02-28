@@ -547,7 +547,7 @@
                     $("#frm_other_info").clearAll().initForm(result.data);
                     $("#modal_other_info").modal();
                 } else {
-                    toastr.error(result.errmsg);
+                    notifyError('错误',result.errmsg);
                 }
             }
         })

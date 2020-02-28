@@ -1409,7 +1409,7 @@
                 href += "?ids=" + ids;
                 window.open(href, "");
             } else {
-                toastr.info('请选择要审批的数据');
+                notifyInfo('提示','请选择要审批的数据');
             }
         },
         loadOnclickData: function (id) {
@@ -1816,7 +1816,7 @@
                 })
                 var ids = idArray.join();
                 if (!ids) {
-                    toastr.info('至少选择一条非审批中或审批通过的任务');
+                    notifyInfo('提示','至少选择一条非审批中或审批通过的任务');
                     return false;
                 }
                 AlertConfirm("确认取消任务", "取消后任务将退回", function () {
@@ -1840,7 +1840,7 @@
                     })
                 });
             } else {
-                toastr.info('请选择要取消认领的任务');
+                notifyInfo('提示','请选择要取消认领的任务');
             }
         }, closeModal: function (id) {
             $("#closeFrm").clearAll();

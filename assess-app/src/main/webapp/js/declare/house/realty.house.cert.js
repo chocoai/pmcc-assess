@@ -672,7 +672,7 @@ assessCommonHouse.attachmentAutomatedWarrants = function (_this) {
                 notifyInfo("成功", "操作成功!");
             }, function (message) {
                 Loading.progressHide();
-                toastr.error(message);
+                notifyError('错误',message);
             });
         } else {
             notifyWarning("警告", "请上传pdf或者word一个!");

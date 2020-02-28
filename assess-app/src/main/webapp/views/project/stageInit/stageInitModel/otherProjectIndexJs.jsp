@@ -300,7 +300,7 @@
         selectCRMContacts: function () {
             var rows = $("#tb_ListCRMContacts").bootstrapTable('getSelections');
             if (rows.length == 0) {
-                toastr.warning("至少选择一个客户!");
+                notifyWaring('警告',"至少选择一个客户!");
                 return false;
             }
             var data = [];
@@ -328,7 +328,7 @@
                     }
                 },
                 error: function (result) {
-                    toastr.warning("调用服务端方法失败，失败!");
+                    notifyWaring('警告',"调用服务端方法失败，失败!");
                     console.log(result);
                 }
             })
@@ -426,7 +426,7 @@
                                 }
                             }
                             else {
-                                toastr.warning(result.errmsg);
+                                notifyWaring('警告',result.errmsg);
                             }
                         },
                         error: function (result) {
@@ -485,7 +485,7 @@
                                 }
                             }
                             else {
-                                toastr.warning(result.errmsg);
+                                notifyWaring('警告',result.errmsg);
                             }
                         },
                         error: function (result) {
@@ -515,7 +515,7 @@
                                 }
                             }
                             else {
-                                toastr.warning(result.errmsg);
+                                notifyWaring('警告',result.errmsg);
                             }
                         },
                         error: function (result) {

@@ -348,7 +348,7 @@
                         $('#divBox').modal('hide');
                     }
                     else {
-                        toastr.warning(result.errmsg);
+                        notifyWaring('警告',result.errmsg);
                     }
                 },
                 error: function (result) {
@@ -370,7 +370,7 @@
                     notifySuccess("成功",'调整成功');
                 }
                 else {
-                    toastr.warning(result.errmsg);
+                    notifyWaring('警告',result.errmsg);
                 }
             },
             error: function (result) {

@@ -161,7 +161,7 @@ basicCommon.hideAllTab = function () {
 basicCommon.saveDraftValid = function () {
     var applyForm = formSerializeArray(basicCommon.basicApplyForm);
     if (!basicCommon.hasApplyData(applyForm)) {
-        toastr.info('还未填写任何申请信息');
+        notifyInfo('提示','还未填写任何申请信息');
         return false;
     }
     if (!basicCommon.isRelation(applyForm)) {
@@ -182,7 +182,7 @@ basicCommon.saveDraftValid = function () {
 basicCommon.submitFormValid = function () {
     var applyForm = formSerializeArray(basicCommon.basicApplyForm);
     if (!basicCommon.hasApplyData(applyForm)) {
-        toastr.info('还未填写任何申请信息');
+        notifyInfo('提示','还未填写任何申请信息');
         return false;
     }
     if (!basicCommon.isRelation(applyForm)) {
@@ -220,11 +220,11 @@ basicCommon.isComplete = function (applyForm, isDraft) {
         }
         if (!isDraft) {
             // if (estateCommon.estateForm.find('#_' + estateCommon.estateFileControlIdArray[0]).html().length <= 0) {
-            //     toastr.info('请上传楼盘总平图');
+            //     notifyInfo('提示','请上传楼盘总平图');
             //     return false;
             // }
             if (estateCommon.estateForm.find('#_' + estateCommon.estateFileControlIdArray[1]).html().length <= 0) {
-                toastr.info('请上传楼盘外观图');
+                notifyInfo('提示','请上传楼盘外观图');
                 return false;
             }
         }
@@ -268,12 +268,12 @@ basicCommon.isRelation = function (applyForm) {
     if (applyForm.housePartInMode) {
         if (applyForm.housePartInMode == 'upgrade') {//如果是升级，则必须有caseHouseId
             if (!applyForm.caseHouseId) {
-                toastr.info('未找到房屋升级的源案例信息');
+                notifyInfo('提示','未找到房屋升级的源案例信息');
                 return false;
             }
         } else {//如果是新增，单元也必须为新增或者选择了案例中的数据
             if (!applyForm.unitPartInMode && !applyForm.caseUnitId) {
-                toastr.info('房屋信息未关联到所属单元中');
+                notifyInfo('提示','房屋信息未关联到所属单元中');
                 return false;
             }
         }
@@ -282,12 +282,12 @@ basicCommon.isRelation = function (applyForm) {
     if (applyForm.unitPartInMode) {
         if (applyForm.unitPartInMode == 'upgrade') {//如果是升级，则必须有caseUnitId
             if (!applyForm.caseUnitId) {
-                toastr.info('未找到单元升级的源案例信息');
+                notifyInfo('提示','未找到单元升级的源案例信息');
                 return false;
             }
         } else {//如果是新增，楼栋也必须为新增或者选择了案例中的数据
             if (!applyForm.buildingPartInMode && !applyForm.caseBuildingId) {
-                toastr.info('单元信息未关联到所属楼栋中');
+                notifyInfo('提示','单元信息未关联到所属楼栋中');
                 return false;
             }
         }
@@ -296,12 +296,12 @@ basicCommon.isRelation = function (applyForm) {
     if (applyForm.buildingPartInMode) {
         if (applyForm.buildingPartInMode == 'upgrade') {//如果是升级，则必须有caseBuildingId
             if (!applyForm.caseBuildingId) {
-                toastr.info('未找到楼栋升级的源案例信息');
+                notifyInfo('提示','未找到楼栋升级的源案例信息');
                 return false;
             }
         } else {//如果是新增，楼盘也必须为新增或者选择了案例中的数据
             if (!applyForm.estatePartInMode && !applyForm.caseEstateId) {
-                toastr.info('楼栋信息未关联到所属楼盘中');
+                notifyInfo('提示','楼栋信息未关联到所属楼盘中');
                 return false;
             }
         }
