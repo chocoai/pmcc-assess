@@ -144,7 +144,7 @@
         cols.push({field: 'fieldName',width:"40%",  title: '通用字段'});
         cols.push({
             field: 'opt', title: '操作',width:"20%",  formatter: function (value, row, index) {
-                var str = '<button onclick="editTemplateBookmark(' + index + ')"  style="margin-left: 5px;"  class="btn btn-icon btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
+                var str = '<button onclick="editTemplateBookmark(' + index + ')"  style="margin-left: 5px;"  class="btn  btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
                 str += '<i class="fa fa-pen"></i>';
                 str += '</button>';
                 return str;

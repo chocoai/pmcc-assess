@@ -162,7 +162,7 @@ body.rtl .sidebar-search .form-group button {
 /* ---------------------------------------------------------------------- */
 /*	Buttons
  /* ---------------------------------------------------------------------- */
-body.rtl .btn-icon .badge {
+body.rtl . .badge {
 	left: -5px;
 	right: auto;
 }

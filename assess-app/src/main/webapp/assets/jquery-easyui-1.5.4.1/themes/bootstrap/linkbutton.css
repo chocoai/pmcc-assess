@@ -31,7 +31,7 @@
   padding: 0;
   margin: 0 4px;
 }
-.l-btn-icon {
+.l- {
   display: inline-block;
   width: 16px;
   height: 16px;
@@ -49,38 +49,38 @@
   font-size: 1px;
   vertical-align: top;
 }
-.l-btn span .l-btn-icon-left {
+.l-btn span .l--left {
   padding: 0 0 0 20px;
   background-position: left center;
 }
-.l-btn span .l-btn-icon-right {
+.l-btn span .l--right {
   padding: 0 20px 0 0;
   background-position: right center;
 }
-.l-btn-icon-left .l-btn-text {
+.l--left .l-btn-text {
   margin: 0 4px 0 24px;
 }
-.l-btn-icon-left .l-btn-icon {
+.l--left .l- {
   left: 4px;
 }
-.l-btn-icon-right .l-btn-text {
+.l--right .l-btn-text {
   margin: 0 24px 0 4px;
 }
-.l-btn-icon-right .l-btn-icon {
+.l--right .l- {
   right: 4px;
 }
-.l-btn-icon-top .l-btn-text {
+.l--top .l-btn-text {
   margin: 20px 4px 0 4px;
 }
-.l-btn-icon-top .l-btn-icon {
+.l--top .l- {
   top: 4px;
   left: 50%;
   margin: 0 0 0 -8px;
 }
-.l-btn-icon-bottom .l-btn-text {
+.l--bottom .l-btn-text {
   margin: 0 4px 20px 4px;
 }
-.l-btn-icon-bottom .l-btn-icon {
+.l--bottom .l- {
   top: auto;
   bottom: 4px;
   left: 50%;
@@ -99,32 +99,32 @@
 .l-btn-large .l-btn-text {
   line-height: 40px;
 }
-.l-btn-large .l-btn-icon {
+.l-btn-large .l- {
   width: 32px;
   height: 32px;
   line-height: 32px;
   margin-top: -16px;
 }
-.l-btn-large .l-btn-icon-left .l-btn-text {
+.l-btn-large .l--left .l-btn-text {
   margin-left: 40px;
 }
-.l-btn-large .l-btn-icon-right .l-btn-text {
+.l-btn-large .l--right .l-btn-text {
   margin-right: 40px;
 }
-.l-btn-large .l-btn-icon-top .l-btn-text {
+.l-btn-large .l--top .l-btn-text {
   margin-top: 36px;
   line-height: 24px;
   min-width: 32px;
 }
-.l-btn-large .l-btn-icon-top .l-btn-icon {
+.l-btn-large .l--top .l- {
   margin: 0 0 0 -16px;
 }
-.l-btn-large .l-btn-icon-bottom .l-btn-text {
+.l-btn-large .l--bottom .l-btn-text {
   margin-bottom: 36px;
   line-height: 24px;
   min-width: 32px;
 }
-.l-btn-large .l-btn-icon-bottom .l-btn-icon {
+.l-btn-large .l--bottom .l- {
   margin: 0 0 0 -16px;
 }
 .l-btn-large .l-btn-left .l-btn-empty {
@@ -184,7 +184,7 @@
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#ffffff,endColorstr=#e6e6e6,GradientType=0);
 }
 .l-btn-disabled .l-btn-text,
-.l-btn-disabled .l-btn-icon {
+.l-btn-disabled .l- {
   filter: alpha(opacity=50);
 }
 .l-btn-plain-disabled,

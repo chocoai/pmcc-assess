@@ -29,7 +29,7 @@
                                 权证信息
                             </div>
                             <div class="card-tools">
-                                <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                                <button class="btn  btn-link btn-primary btn-xs"><span
                                         class="fa fa-angle-down"></span>
                                 </button>
                             </div>
@@ -120,7 +120,7 @@
                                     </c:if>
                                 </div>
                                 <div class="card-tools">
-                                    <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                                    <button class="btn  btn-link btn-primary btn-xs"><span
                                             class="fa fa-angle-${fn:length(areaGroups)<3?'down':'up'}"></span>
                                     </button>
                                 </div>
@@ -545,7 +545,7 @@
                                class="btn btn-xs btn-success judge-method tooltips">评估方法</a>
                         </div>
                         <div class="card-tools">
-                            <button class="btn btn-icon btn-link btn-primary btn-xs collapse-link"><span
+                            <button class="btn  btn-link btn-primary btn-xs collapse-link"><span
                                     class="fa fa-angle-down"></span>
                             </button>
                         </div>

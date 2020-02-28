@@ -57,8 +57,8 @@ $("<span class=\"l-btn-text\"></span>").html(_d.text).appendTo(_e);
 $("<span class=\"l-btn-text l-btn-empty\">&nbsp;</span>").appendTo(_e);
 }
 if(_d.iconCls){
-$("<span class=\"l-btn-icon\">&nbsp;</span>").addClass(_d.iconCls).appendTo(_e);
-_e.addClass("l-btn-icon-"+_d.iconAlign);
+$("<span class=\"l-\">&nbsp;</span>").addClass(_d.iconCls).appendTo(_e);
+_e.addClass("l--"+_d.iconAlign);
 }
 t.unbind(".linkbutton").bind("focus.linkbutton",function(){
 if(!_d.disabled){

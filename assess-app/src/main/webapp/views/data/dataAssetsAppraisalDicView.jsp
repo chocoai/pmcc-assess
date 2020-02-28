@@ -58,7 +58,7 @@
                                         </button>
                                         <button style="margin-left: 10px" class="btn btn-info  btn-sm" type="button"
                                                 onclick="dataAssetsAppraisalDic.resetSearch()">
-                                            <span class="fa fa-eraser" aria-hidden="true" class="btn-icon-space"></span>
+                                            <span class="fa fa-eraser" aria-hidden="true" class="-space"></span>
                                             重置
                                         </button>
                                         <button style="margin-left: 10px" class="btn btn-default  btn-sm" type="button"
@@ -457,10 +457,10 @@
         var cols = [];
         cols.push({
             field: 'id', title: '操作', width: '20%', formatter: function (value, row, index) {
-                var str = '<button onclick="dataAssetsAppraisalDic.setSubDataDic(' + row.id + ')" style="margin-left: 5px;" class="btn btn-icon btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看子项">';
+                var str = '<button onclick="dataAssetsAppraisalDic.setSubDataDic(' + row.id + ')" style="margin-left: 5px;" class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看子项">';
                 str += '<i class="fa fa-search"></i>';
                 str += '</button>';
-                str += '<button onclick="javascript:dataAssetsAppraisalDic.editSubDataDic(' + row.id + ')"  style="margin-left: 5px;"  class="btn btn-icon btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
+                str += '<button onclick="javascript:dataAssetsAppraisalDic.editSubDataDic(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
                 str += '<i class="fa fa-pen"></i>';
                 str += '</button>';
                 return str;

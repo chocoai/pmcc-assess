@@ -21,7 +21,7 @@
                                 <small>(${judgeObject.evaluationArea}㎡)</small>
                             </div>
                             <div class="card-tools">
-                                <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                                <button class="btn  btn-link btn-primary btn-xs"><span
                                         class="fa fa-angle-down"></span>
                                 </button>
                             </div>
@@ -86,7 +86,7 @@
                                     </small>
                                 </div>
                                 <div class="card-tools">
-                                    <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                                    <button class="btn  btn-link btn-primary btn-xs"><span
                                             class="fa fa-angle-down"></span>
                                     </button>
                                 </div>
@@ -119,7 +119,7 @@
                         <div class="card-header-row">
                             <div class="card-title">确认单价记录</div>
                             <div class="card-tools">
-                                <button class="btn btn-icon btn-link btn-primary btn-xs"><span class="fa fa-angle-down"></span>
+                                <button class="btn  btn-link btn-primary btn-xs"><span class="fa fa-angle-down"></span>
                                 </button>
                             </div>
                         </div>

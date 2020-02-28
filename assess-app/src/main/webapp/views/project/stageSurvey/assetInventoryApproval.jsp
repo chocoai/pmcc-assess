@@ -26,7 +26,7 @@
                                         <small>${declareRecord.name}</small>
                                     </div>
                                     <div class="card-tools">
-                                        <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                                        <button class="btn  btn-link btn-primary btn-xs"><span
                                                 class="fa fa-angle-down"></span>
                                         </button>
                                     </div>
@@ -131,7 +131,7 @@
                                         清查内容
                                     </div>
                                     <div class="card-tools">
-                                        <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                                        <button class="btn  btn-link btn-primary btn-xs"><span
                                                 class="fa fa-angle-down"></span>
                                         </button>
                                     </div>
@@ -215,7 +215,7 @@
                                         税费、工程、物管欠款调查
                                     </div>
                                     <div class="card-tools">
-                                        <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                                        <button class="btn  btn-link btn-primary btn-xs"><span
                                                 class="fa fa-angle-down"></span>
                                         </button>
                                     </div>
@@ -266,7 +266,7 @@
                                         损坏调查表
                                     </div>
                                     <div class="card-tools">
-                                        <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                                        <button class="btn  btn-link btn-primary btn-xs"><span
                                                 class="fa fa-angle-down"></span>
                                         </button>
                                     </div>
@@ -343,7 +343,7 @@
                                             转让限制
                                         </div>
                                         <div class="card-tools">
-                                            <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                                            <button class="btn  btn-link btn-primary btn-xs"><span
                                                     class="fa fa-angle-down"></span>
                                             </button>
                                         </div>

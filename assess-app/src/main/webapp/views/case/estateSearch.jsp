@@ -216,7 +216,7 @@
                     var str = '<div class="btn-margin">';
                     <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
                     //str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="详情" onclick="baseFun.caseEstate.findData(' + row.id + ')"><i class="fa fa-search fa-white"></i></a>';
-                    str += '<button onclick="baseFun.caseEstate.findData(' + row.id + ')" style="margin-left: 5px;" class="btn btn-icon btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="详情">';
+                    str += '<button onclick="baseFun.caseEstate.findData(' + row.id + ')" style="margin-left: 5px;" class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="详情">';
                     str += '<i class="fa fa-search"></i>';
                     str += '</button>';
                     return str;
@@ -279,7 +279,7 @@
                 field: 'id', title: '查询', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
-                    str += '<button onclick="baseFun.caseBuild.findData(' + row.id + ',\'tb_List\')" style="margin-left: 5px;" class="btn btn-icon btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="详情">';
+                    str += '<button onclick="baseFun.caseBuild.findData(' + row.id + ',\'tb_List\')" style="margin-left: 5px;" class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="详情">';
                     str += '<i class="fa fa-search"></i>';
                     str += '</button>';
                     str += '</div>';
@@ -320,7 +320,7 @@
                 field: 'id', title: '查询', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
-                    str += '<button onclick="baseFun.caseUnit.findData(' + row.id + ',\'tb_List\')" style="margin-left: 5px;" class="btn btn-icon btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="详情">';
+                    str += '<button onclick="baseFun.caseUnit.findData(' + row.id + ',\'tb_List\')" style="margin-left: 5px;" class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="详情">';
                     str += '<i class="fa fa-search"></i>';
                     str += '</button>';
                     str += '</div>';
@@ -361,7 +361,7 @@
                 field: 'id', title: '查询', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
-                    str += '<button onclick="baseFun.caseHouse.findData(' + row.id + ',\'tb_List\');" style="margin-left: 5px;" class="btn btn-icon btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="详情">';
+                    str += '<button onclick="baseFun.caseHouse.findData(' + row.id + ',\'tb_List\');" style="margin-left: 5px;" class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="详情">';
                     str += '<i class="fa fa-search"></i>';
                     str += '</button>';
                     str += '</div>';

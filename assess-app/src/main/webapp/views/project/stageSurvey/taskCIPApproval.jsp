@@ -25,7 +25,7 @@
                                         <small>${declareRecord.name}</small>
                                     </div>
                                     <div class="card-tools">
-                                        <button class="btn btn-icon btn-link btn-primary btn-sm"><span
+                                        <button class="btn  btn-link btn-primary btn-sm"><span
                                                 class="fa fa-angle-down"></span>
                                         </button>
                                     </div>

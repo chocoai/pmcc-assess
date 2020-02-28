@@ -294,16 +294,16 @@
                 var str = '<div class="btn-margin">';
                 if (row.draftFlag) {
                     //str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="继续申请" onclick="dataObjFun.temporary(' + row.id + ')">继续申请</a>';
-                    str += '<button onclick="dataObjFun.temporary(' + row.id + ')"  style="margin-left: 5px;"  class="btn btn-icon btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="继续申请">';
+                    str += '<button onclick="dataObjFun.temporary(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="继续申请">';
                     str += '<i class="fa fa-pen"></i>';
                     str += '</button>';
                     //str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="删除" onclick="dataObjFun.delete(' + row.id + ')">删除</a>';
-                    str += '<button onclick="dataObjFun.delete(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn btn-icon btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
+                    str += '<button onclick="dataObjFun.delete(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn  btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
                     str += '<i class="fa fa-minus"></i>';
                     str += '</button>';
                 }else{
                     //str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="查看" onclick="dataObjFun.checkData(' + row.id + ')">查看</a>';
-                    str += '<button onclick="dataObjFun.checkData(' + row.id + ')" style="margin-left: 5px;" class="btn btn-icon btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看">';
+                    str += '<button onclick="dataObjFun.checkData(' + row.id + ')" style="margin-left: 5px;" class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看">';
                     str += '<i class="fa fa-search"></i>';
                     str += '</button>';
                 }

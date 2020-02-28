@@ -246,13 +246,13 @@
         cols.push({field: 'templateTypeName', width:"15%", title: '模板类型'});
         cols.push({
             field: 'opation', width:"15%", title: '操作', formatter: function (value, row, index) {
-                var str = '<button onclick="editTemplate(' + index + ')"  style="margin-left: 5px;"  class="btn btn-icon btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
+                var str = '<button onclick="editTemplate(' + index + ')"  style="margin-left: 5px;"  class="btn  btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
                 str += '<i class="fa fa-pen"></i>';
                 str += '</button>';
-                str += '<button onclick="loadFiledWindow(' + row.id + ')"  style="margin-left: 5px;"  class="btn btn-icon btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="字段">';
+                str += '<button onclick="loadFiledWindow(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="字段">';
                 str += '<i class="fa fa-th-list"></i>';
                 str += '</button>';
-                str += '<button onclick="loadBookmarkWindow(' + row.id + ')"  style="margin-left: 5px;"  class="btn btn-icon btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="书签">';
+                str += '<button onclick="loadBookmarkWindow(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="书签">';
                 str += '<i class="fa fa-tags"></i>';
                 str += '</button>';
 

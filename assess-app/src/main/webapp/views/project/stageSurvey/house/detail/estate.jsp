@@ -20,7 +20,7 @@
                                         楼盘基本信息
                                     </div>
                                     <div class="card-tools">
-                                        <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                                        <button class="btn  btn-link btn-primary btn-xs"><span
                                                 class="fa fa-angle-down"></span>
                                         </button>
                                     </div>
@@ -276,7 +276,7 @@
                                         土地实体情况
                                     </div>
                                     <div class="card-tools">
-                                        <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                                        <button class="btn  btn-link btn-primary btn-xs"><span
                                                 class="fa fa-angle-down"></span>
                                         </button>
                                     </div>

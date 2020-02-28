@@ -131,10 +131,10 @@
             cols.push({
                 field: 'id',width:"20%", title: '操作', formatter: function (value, row, index) {
                     <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
-                    var str = '<button onclick="dataQualification.prototype.getAndInit(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn btn-icon btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
+                    var str = '<button onclick="dataQualification.prototype.getAndInit(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn  btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
                     str += '<i class="fa fa-pen"></i>';
                     str += '</button>';
-                    str += '<button onclick="dataQualification.prototype.removeData(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn btn-icon btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
+                    str += '<button onclick="dataQualification.prototype.removeData(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn  btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
                     str += '<i class="fa fa-minus"></i>';
                     str += '</button>';
                     return str;

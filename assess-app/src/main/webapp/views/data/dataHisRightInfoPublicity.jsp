@@ -93,10 +93,10 @@
             cols.push({field: 'content', title: '模板', width: '70%'});
             cols.push({
                 field: 'id', width: '15%',title: '操作', formatter: function (value, row, index) {
-                    var str = '<button onclick="dataHisRightInfoPublicity.prototype.getAndInit(' + row.id + ')"  style="margin-left: 5px;"  class="btn btn-icon btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
+                    var str = '<button onclick="dataHisRightInfoPublicity.prototype.getAndInit(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
                     str += '<i class="fa fa-pen"></i>';
                     str += '</button>';
-                    str += '<button onclick="dataHisRightInfoPublicity.prototype.removeData(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn btn-icon btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
+                    str += '<button onclick="dataHisRightInfoPublicity.prototype.removeData(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn  btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
                     str += '<i class="fa fa-minus"></i>';
                     str += '</button>';
                     return str;

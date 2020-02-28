@@ -29,26 +29,26 @@
 .m-btn .l-btn-left .l-btn-text {
   margin-right: 20px;
 }
-.m-btn .l-btn-icon-right .l-btn-text {
+.m-btn .l--right .l-btn-text {
   margin-right: 40px;
 }
-.m-btn .l-btn-icon-right .l-btn-icon {
+.m-btn .l--right .l- {
   right: 20px;
 }
-.m-btn .l-btn-icon-top .l-btn-text {
+.m-btn .l--top .l-btn-text {
   margin-right: 4px;
   margin-bottom: 14px;
 }
-.m-btn .l-btn-icon-bottom .l-btn-text {
+.m-btn .l--bottom .l-btn-text {
   margin-right: 4px;
   margin-bottom: 34px;
 }
-.m-btn .l-btn-icon-bottom .l-btn-icon {
+.m-btn .l--bottom .l- {
   top: auto;
   bottom: 20px;
 }
-.m-btn .l-btn-icon-top .m-btn-downarrow,
-.m-btn .l-btn-icon-bottom .m-btn-downarrow {
+.m-btn .l--top .m-btn-downarrow,
+.m-btn .l--bottom .m-btn-downarrow {
   top: auto;
   bottom: 0px;
   left: 50%;
@@ -68,18 +68,18 @@
   border-color: #bbb;
   border-width: 0 0 0 1px;
 }
-.m-btn .l-btn-icon-top .m-btn-line,
-.m-btn .l-btn-icon-bottom .m-btn-line {
+.m-btn .l--top .m-btn-line,
+.m-btn .l--bottom .m-btn-line {
   left: 0;
   bottom: 0;
   width: 500px;
   height: 16px;
   border-width: 1px 0 0 0;
 }
-.m-btn-large .l-btn-icon-right .l-btn-text {
+.m-btn-large .l--right .l-btn-text {
   margin-right: 56px;
 }
-.m-btn-large .l-btn-icon-bottom .l-btn-text {
+.m-btn-large .l--bottom .l-btn-text {
   margin-bottom: 50px;
 }
 .m-btn-downarrow,

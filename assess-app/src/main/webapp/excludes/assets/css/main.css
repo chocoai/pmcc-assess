@@ -803,7 +803,7 @@ li.dropdown.current-user .dropdown-menu li a {
 .btn {
 	transition: all 0.3s ease 0s !important;
 }
-.btn-icon {
+. {
 	background-color: #EFEFEF;
 
 	border: 1px solid #DDDDDD;
@@ -821,14 +821,14 @@ li.dropdown.current-user .dropdown-menu li a {
 	transition: all 0.3s ease 0s;
 	color: #333333;
 }
-.btn-icon:hover {
+.:hover {
 	border-color: #A5A5A5;
 	box-shadow: 0 0 3px rgba(0, 0, 0, 0.25);
 	color: #444444;
 	text-decoration: none;
 	text-shadow: 0 1px 0 #FFFFFF;
 }
-.btn-icon .badge {
+. .badge {
 	border-radius: 12px 12px 12px 12px !important;
 	border-style: solid;
 	border-width: 0;
@@ -843,7 +843,7 @@ li.dropdown.current-user .dropdown-menu li a {
 	text-shadow: none;
 	top: -5px;
 }
-.btn-icon [class^="fa-"], .btn-icon [class*=" fa-"], .btn-icon [class^="clip-"], .btn-icon [class*=" clip-"] {
+. [class^="fa-"], . [class*=" fa-"], . [class^="clip-"], . [class*=" clip-"] {
 	clear: both;
 	display: block;
 }

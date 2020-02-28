@@ -68,8 +68,8 @@
 			$('<span class="l-btn-text l-btn-empty">&nbsp;</span>').appendTo(inner);
 		}
 		if (opts.iconCls){
-			$('<span class="l-btn-icon">&nbsp;</span>').addClass(opts.iconCls).appendTo(inner);
-			inner.addClass('l-btn-icon-'+opts.iconAlign);
+			$('<span class="l-">&nbsp;</span>').addClass(opts.iconCls).appendTo(inner);
+			inner.addClass('l--'+opts.iconAlign);
 		}
 		
 		t.unbind('.linkbutton').bind('focus.linkbutton',function(){

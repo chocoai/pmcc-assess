@@ -127,7 +127,7 @@
                                         </button>
                                         <button style="margin-left: 10px" class="btn btn-info  btn-sm" type="button"
                                                 onclick="$('#frmQuery').clearAll()">
-                                            <span class="fa fa-undo-alt" aria-hidden="true" class="btn-icon-space"></span>
+                                            <span class="fa fa-undo-alt" aria-hidden="true" class="-space"></span>
                                             重置
                                         </button>
                                     </div>
@@ -200,11 +200,11 @@
                 var str = "";
                 if (row.projectStatus) {
                     if (row.projectStatus == '草稿') {
-                        str += '<button onclick="editHref(' + row.id + ')"  style="margin-left: 5px;"  class="btn btn-icon btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="继续填写">';
+                        str += '<button onclick="editHref(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="继续填写">';
                         str += '<i class="fa fa-pen"></i>';
                         str += '</button>';
                     } else {
-                        str += '<button onclick="checkDetail(' + row.id + ')" style="margin-left: 5px;" class="btn btn-icon btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看详情">';
+                        str += '<button onclick="checkDetail(' + row.id + ')" style="margin-left: 5px;" class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看详情">';
                         str += '<i class="fa fa-search"></i>';
                         str += '</button>';
                     }

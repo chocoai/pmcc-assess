@@ -34,7 +34,7 @@
                                                 ${item.areaName}
                                         </div>
                                         <div class="card-tools">
-                                            <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                                            <button class="btn  btn-link btn-primary btn-xs"><span
                                                     class="fa fa-angle-down"></span>
                                             </button>
                                         </div>
@@ -148,7 +148,7 @@
                                        变更原因
                                     </div>
                                     <div class="card-tools">
-                                        <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                                        <button class="btn  btn-link btn-primary btn-xs"><span
                                                 class="fa fa-angle-down"></span>
                                         </button>
                                     </div>

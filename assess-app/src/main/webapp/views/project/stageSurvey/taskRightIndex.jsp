@@ -382,7 +382,7 @@
                         </small>
                     </div>
                     <div class="card-tools">
-                        <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                        <button class="btn  btn-link btn-primary btn-xs"><span
                                 class="fa fa-angle-down"></span>
                         </button>
                     </div>
@@ -669,7 +669,7 @@
                                         </small>
                                     </div>
                                     <div class="card-tools">
-                                        <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                                        <button class="btn  btn-link btn-primary btn-xs"><span
                                                 class="fa fa-angle-down"></span>
                                         </button>
                                     </div>
@@ -972,7 +972,7 @@
         cols.push({field: 'seat', title: '坐落', width: "29%"});
         cols.push({
             field: 'id', title: '操作', width: 200, formatter: function (value, row, index) {
-                var str = '<button onclick="removeDataDeclareRecord(' + row.id + ",'" + row.groupId + "'" + ')"  style="margin-left: 5px;"  class="btn btn-icon btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
+                var str = '<button onclick="removeDataDeclareRecord(' + row.id + ",'" + row.groupId + "'" + ')"  style="margin-left: 5px;"  class="btn  btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
                 str += '<i class="fa fa-minus"></i>';
                 str += '</button>';
                 return str;

@@ -16,7 +16,7 @@
                         他权分组（0{index}）
                     </div>
                     <div class="card-tools">
-                        <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                        <button class="btn  btn-link btn-primary btn-xs"><span
                                 class="fa fa-angle-down"></span>
                         </button>
                     </div>
@@ -77,7 +77,7 @@
                                         他项权利
                                     </div>
                                     <div class="card-tools">
-                                        <button class="btn btn-icon btn-link btn-primary btn-xs"><span
+                                        <button class="btn  btn-link btn-primary btn-xs"><span
                                                 class="fa fa-angle-down"></span>
                                         </button>
                                     </div>
