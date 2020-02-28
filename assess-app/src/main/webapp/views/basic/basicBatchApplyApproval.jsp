@@ -70,7 +70,6 @@
                 </div>
             </div>
             <%@include file="/views/share/form_approval.jsp" %>
-            <%@include file="/views/share/form_log.jsp" %>
         </div>
         <%@include file="/views/share/main_footer.jsp" %>
     </div>

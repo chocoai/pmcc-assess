@@ -65,10 +65,7 @@
                     <!-- 公共尾部模块引用 -->
                     <!-- 审批用 -->
                     <%@include file="/views/share/form_approval.jsp" %>
-
-                    <%@include file="/views/share/form_log.jsp" %>
                     <!-- 尾部end -->
-
                 </div>
             </div>
         </div>
@@ -76,60 +73,6 @@
     </div>
 
 </div>
-
-<%--<div class="container body">
-    <div class="main_container">
-        <div class="right_col" role="main" style="margin-left: 0px">
-            <!-- 公共模块引用 -->
-            <%@include file="/views/share/form_head.jsp" %>
-            <%@include file="/views/share/project/projectInfoSimple.jsp" %>
-            <!-- 公共模块end -->
-
-            <div class="x_panel">
-                <div class="x_title">
-                    <h3 id="show-title">
-                        项目成员变更<small></small>
-                    </h3>
-                    <div class="clearfix"></div>
-                </div>
-
-                <div class="x_content">
-                    <div class="panel-body">
-
-                        <table class="table table-striped jambo_table bulk_action table-bordered" id="member_change_table"></table>
-
-                        <hr/>
-                        <form class="form-horizontal" id="member_change_form">
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <label class="col-md-1 col-sm-1 col-xs-12 control-label">
-                                        变更原因
-                                    </label>
-                                    <div class="col-md-11 col-sm-11 col-xs-12">
-                                        <label class="form-control input-full" id="changeReason" name="changeReason">${costsProjectChangeLog.changeReason}</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-
-            <!-- 公共尾部模块引用 -->
-            <!-- 审批用 -->
-            <%@include file="/views/share/form_approval.jsp" %>
-
-            <%@include file="/views/share/form_log.jsp" %>
-            <!-- 尾部end -->
-
-        </div>
-
-    </div>
-
-</div>--%>
-
-
 
 </body>
 </html>

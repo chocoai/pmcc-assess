@@ -27,8 +27,6 @@
             <!-- 公共尾部模块引用 -->
             <!-- 审批用 -->
             <%@include file="/views/share/form_approval.jsp" %>
-
-            <%@include file="/views/share/form_log.jsp" %>
             <!-- 尾部end -->
         </div>
     </div>

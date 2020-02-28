@@ -70,16 +70,14 @@
 											</span>
                                             查询
                                         </button>
-                                        <a style="margin-left: 5px" class="btn btn-success btn-sm" type="button"
+                                        <button type="button" style="margin-left: 5px" class="btn btn-success btn-sm" type="button"
                                                 data-toggle="modal" onclick="comeInLandLevelIndex()">
 											<span class="btn-label">
 												<i class="fa fa-plus"></i>
 											</span>
                                             新增
-                                        </a>
+                                        </button>
                                     </div>
-
-
                                 </form>
                                 <table class="table table-bordered" id="tb_FatherList">
                                     <!-- cerare document add ajax data-->

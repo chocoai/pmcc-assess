@@ -54,8 +54,6 @@
                     </div>
 
                     <%@include file="/views/share/form_approval.jsp" %>
-                    <%@include file="/views/share/form_log.jsp" %>
-
                 </div>
             </div>
         </div>
