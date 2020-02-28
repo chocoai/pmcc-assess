@@ -1087,15 +1087,15 @@
         }
         //联系人校验
         if (!this.hasLinkman(this.config.consignor.table)) {
-            notifyWarning('还未填写委托人联系人信息');
+            notifyInfo("提示",'还未填写委托人联系人信息');
             return false;
         }
         if (!this.hasLinkman(this.config.possessor.table)) {
-            notifyWarning('还未填写占有人联系人信息');
+            notifyInfo("提示",'还未填写占有人联系人信息');
             return false;
         }
         if (!this.hasLinkman(this.config.unit_information.table)) {
-            notifyWarning('还未填写报告使用单位联系人信息');
+            notifyInfo("提示",'还未填写报告使用单位联系人信息');
             return false;
         }
         return true;

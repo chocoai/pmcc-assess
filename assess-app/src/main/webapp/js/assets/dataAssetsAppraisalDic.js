@@ -27,7 +27,7 @@ dataAssetsAppraisalDic.getDataAssetsAppraisalDicList = function (data, callback)
                     callback(result.data);
                 }
             } else {
-                toastr.success('失败' + result.errmsg);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
         error: function (result) {
@@ -48,7 +48,7 @@ dataAssetsAppraisalDic.saveAssetsCustomizeDataField = function (arr, callback) {
                     callback(result.data);
                 }
             } else {
-                toastr.success('失败' + result.errmsg);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
         error: function (result) {
@@ -69,7 +69,7 @@ dataAssetsAppraisalDic.deleteAssetsCustomizeDataFieldById = function (id, callba
                     callback(result.data);
                 }
             } else {
-                toastr.success('失败' + result.errmsg);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
         error: function (result) {

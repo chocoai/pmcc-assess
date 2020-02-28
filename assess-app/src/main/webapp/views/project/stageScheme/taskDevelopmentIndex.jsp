@@ -176,7 +176,7 @@
                 });
             }) ;
         } else {
-            notifyWarning("无子项","");
+            notifyInfo("提示","无子项");
         }
     };
 
@@ -202,7 +202,7 @@
             var table = target.find("table");
             var value = table.find("tfoot").find("input[name='totalPrice']").first().val();
             if (!$.isNumeric(value)) {
-                notifyWarning("请重新填写!","");
+                notifyInfo("提示","请重新填写!");
                 return false;
             }
             var obj = {};
@@ -361,7 +361,7 @@
     landEngineering.delMdCalculatingMethodEngineeringCost = function () {
         var rows = landEngineering.engineeringFeeInfoTarget.bootstrapTable('getSelections');
         if (!rows || rows.length <= 0) {
-            notifyWarning("请选择要删除的数据","");
+            notifyInfo("提示","请选择要删除的数据");
         } else {
             AlertConfirm("是否确认删除", "删除相应的数据后将不可恢复", function () {
                 developmentCommon.deleteMdCalculatingMethodEngineeringCostHandle(rows, function () {
@@ -411,7 +411,7 @@
                 });
             });
         } else {
-            toastr.success('至少勾选一个!');
+            notifySuccess('成功','至少勾选一个!');
         }
     };
     /*基础设施配套费  table edit**/
@@ -427,7 +427,7 @@
                 target.find(".modal-footer").empty().append($(landEngineering.infrastructureFooterHtml).html());
                 target.modal('show');
             } else {
-                notifyWarning("","勾选一个!");
+                notifyInfo("提示","至少勾选一个!");
             }
         } else {
             frm.clearAll();
@@ -698,7 +698,7 @@
 
                     }
                 },
-                error: function (e) {
+                error: function (result) {
                     AlertError("错误", "调用服务端方法失败，失败原因:" + e);
                 }
             });

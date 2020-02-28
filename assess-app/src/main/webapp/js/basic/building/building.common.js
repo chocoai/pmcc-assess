@@ -484,18 +484,18 @@
                 success: function (result) {
                     if (result.ret) {
                         $(table).bootstrapTable('refresh');
-                        toastr.success('删除成功!');
+                        notifySuccess('成功','删除成功!');
                     }
                     else {
                         Alert("数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             });
         } else {
-            toastr.success('至少勾选一个!');
+            notifySuccess('成功','至少勾选一个!');
         }
     };
 
@@ -507,7 +507,7 @@
                 dataPropertyModelQuote.initFormDataPropertyServiceItemModalTool($(box).find("form"), data);
                 $(box).modal('show');
             } else {
-                toastr.success('只能勾选一个!');
+                notifySuccess('成功','只能勾选一个!');
             }
         }else {
             var masterId = buildingCommon.buildingForm.find('input[name=property]').val();
@@ -515,7 +515,7 @@
                 $(box).modal('show');
                 dataPropertyModelQuote.initFormDataPropertyServiceItemModalTool($(box).find("form"), {masterId:masterId,buildingId:buildingCommon.getBuildingId()});
             }else {
-                toastr.success('物业公司必选选择!');
+                notifySuccess('成功','物业公司必选选择!');
             }
         }
     };
@@ -528,7 +528,7 @@
         var data = formSerializeArray(frm);
         buildingCommon.saveAndUpdateBasicBuildingPropertyServiceItem([data] , function () {
             $(_this).parent().parent().parent().parent().modal('hide');
-            toastr.success('成功!');
+            notifySuccess('成功','成功!');
             $("#basicBuildingPropertyServiceItemTable").bootstrapTable('refresh');
         });
     };
@@ -550,7 +550,7 @@
                 }
             },
             error: function (result) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         })
     };

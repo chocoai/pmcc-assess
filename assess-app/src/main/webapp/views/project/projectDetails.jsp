@@ -640,7 +640,7 @@
                 success: function (result) {
                     Loading.progressHide();
                     if (result.ret) {
-                        toastr.success("关注成功");
+                        notifySuccess('成功',"关注成功");
                         $("#btn_followProject").hide();
                         $("#btn_cancelFollowProject").show();
                     }
@@ -668,7 +668,7 @@
                 success: function (result) {
                     Loading.progressHide();
                     if (result.ret) {
-                        toastr.success("取消成功");
+                        notifySuccess('成功',"取消成功");
                         $("#btn_followProject").show();
                         $("#btn_cancelFollowProject").hide();
                     }
@@ -842,7 +842,7 @@
                     },
                     success: function (result) {
                         if (result.ret) {
-                            toastr.success('计划重启成功');
+                            notifySuccess('成功','计划重启成功');
                             projectDetails.loadPlanTabInfo(projectDetails.getActiveTab());
                             layer.closeAll();
                         } else {
@@ -907,7 +907,7 @@
                 success: function (result) {
                     if (result.ret) {
                         $("#replyTaskBox").modal("hide");
-                        toastr.success('任务重启成功');
+                        notifySuccess('成功','任务重启成功');
                         //projectDetails.loadPlanTabInfo(projectDetails.getActiveTab());
                         refreshNode(result.data);
                     } else {
@@ -933,7 +933,7 @@
                             },
                             success: function (result) {
                                 if (result.ret) {
-                                    toastr.success('责任人调整成功');
+                                    notifySuccess('成功','责任人调整成功');
                                     //projectDetails.loadPlanTabInfo(projectDetails.getActiveTab());
                                     refreshNode(result.data);
                                 } else {
@@ -983,7 +983,7 @@
                     Loading.progressHide();
                     if (result.ret) {
                         projectDetails.loadPlanTabInfo(projectDetails.getActiveTab());
-                        toastr.success("粘贴完成");
+                        notifySuccess('成功',"粘贴完成");
                     } else {
                         Alert(result.errmsg);
                     }
@@ -1204,7 +1204,7 @@
                 },
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success('操作成功');
+                        notifySuccess('成功','操作成功');
                     } else {
                         Alert(result.errmsg);
                     }
@@ -1362,7 +1362,7 @@
                                     projectId: '${projectInfo.id}',
                                     planId: that.attr('plan-id')
                                 });
-                                toastr.success('责任人调整成功');
+                                notifySuccess('成功','责任人调整成功');
                             } else {
                                 Alert(result.errmsg);
                             }

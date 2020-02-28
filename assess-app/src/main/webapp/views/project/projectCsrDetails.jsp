@@ -305,7 +305,7 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    toastr.success("关注成功");
+                    notifySuccess('成功',"关注成功");
                     $("#btn_followProject").hide();
                     $("#btn_cancelFollowProject").show();
                 }
@@ -332,7 +332,7 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    toastr.success("取消成功");
+                    notifySuccess('成功',"取消成功");
                     $("#btn_followProject").show();
                     $("#btn_cancelFollowProject").hide();
                 }
@@ -360,7 +360,7 @@
                 success: function (result) {
                     Loading.progressHide();
                     if (result.ret) {
-                        toastr.success("项目重启成功");
+                        notifySuccess('成功',"项目重启成功");
                         location.reload();
                     }
                     else {

@@ -177,7 +177,7 @@
                     AlertError("保存失败:" + result.errmsg);
                 }
             },
-            error: function (e) {
+            error: function (result) {
                 Loading.progressHide();
                 AlertError("调用服务端方法失败，失败原因:" + e);
             }
@@ -214,7 +214,7 @@
                     AlertError("保存失败:" + result.errmsg);
                 }
             },
-            error: function (e) {
+            error: function (result) {
                 Loading.progressHide();
                 AlertError("调用服务端方法失败，失败原因:" + e);
             }

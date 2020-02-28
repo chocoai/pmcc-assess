@@ -380,16 +380,16 @@
                 Loading.progressHide();
                 if (result.ret) {
                     $('#model_hxxx').modal('hide');
-                    toastr.success('保存成功');
+                    notifySuccess('成功','保存成功');
                     loadHousesTypeList(${funiHouses.id});
                 }
                 else {
-                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
                 Loading.progressHide();
-                AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         })
     }
@@ -411,16 +411,16 @@
                 Loading.progressHide();
                 if (result.ret) {
                     $('#model_wyxx').modal('hide');
-                    toastr.success('保存成功');
+                    notifySuccess('成功','保存成功');
                     window.reload();
                 }
                 else {
-                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
                 Loading.progressHide();
-                AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         })
     }
@@ -451,16 +451,16 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    toastr.success('保存成功');
+                    notifySuccess('成功','保存成功');
                     reloadFuniList();
                 }
                 else {
-                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
                 Loading.progressHide();
-                AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         })
     }
@@ -492,12 +492,12 @@
                     $("#tab_content2").html(html);
                 }
                 else {
-                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
                 Loading.progressHide();
-                AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         })
     }

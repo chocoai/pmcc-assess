@@ -873,7 +873,7 @@
         var judgeObjectContent = $(_this).closest('.area_panel').find('.judge-object-content');
         var checkedBoxs = judgeObjectContent.find('input:checkbox:checked');
         if (checkedBoxs.length <= 0) {
-            notifyInfo('请选择需要拆分到新区域的估价对象');
+            notifyInfo('提示','请选择需要拆分到新区域的估价对象');
             return false;
         }
         var judgeObjectIdArray = [];
@@ -987,7 +987,7 @@
             title: '拆分个数',
         }, function (value, index, elem) {
             if (!AssessCommon.isNumber(value)) {
-                notifyInfo("只能填写数字");
+                notifyInfo('提示',"只能填写数字");
                 return;
             }
             $.ajax({
@@ -1067,7 +1067,7 @@
         var $panel = $(_this).closest('.x_panel');
         var judgeNumber = $(_this).closest('.card-title').find('label').text();
         if (!programme.valideJudge(_this)) {
-            notifyInfo('请先完善估价对象' + judgeNumber + '信息');
+            notifyInfo('提示','请先完善估价对象' + judgeNumber + '信息');
             return false;
         }
         var mergeNumber = $panel.find('[data-name="mergeNumber"]').val();
@@ -1124,7 +1124,7 @@
             }
         })
         if (!standardJudgeId) {
-            notifyInfo('参与合并的估价对象中未设置标准房地产');
+            notifyInfo('提示','参与合并的估价对象中未设置标准房地产');
             return false;
         }
         $.ajax({
@@ -1137,7 +1137,7 @@
             dataType: "json",
             success: function (result) {
                 if (result.ret) {
-                    notifySuccess('委估对象合并成功');
+                    notifySuccess("成功",'委估对象合并成功');
                     layer.close(programme.config.judgePopIndex);
                     programme.loadJudgeObjectList(panel);
                 } else {
@@ -1163,7 +1163,7 @@
                 success: function (result) {
                     Loading.progressHide();
                     if (result.ret) {
-                        notifySuccess('委估对象取消合并成功');
+                        notifySuccess("成功",'委估对象取消合并成功');
                         programme.loadJudgeObjectList($(_this).closest('.area_panel'));
                     } else {
                         AlertError(result.errmsg);
@@ -1591,7 +1591,7 @@
     programme.batchMerge = function (_this) {
         var checkedBoxs = $(_this).closest('.area_panel').find('input:checkbox:checked');
         if (checkedBoxs.length <= 0) {
-            notifyInfo('请选择需要合并的估价对象');
+            notifyInfo('提示','请选择需要合并的估价对象');
             return false;
         }
         checkedBoxs.each(function () {
@@ -1693,7 +1693,7 @@
     programmeMethod.setMethod = function (_this) {
         var judgeNumber = $(_this).closest('.card-title').find('label').text();
         if (!programme.valideJudge(_this)) {
-            notifyInfo('请先完善估价对象' + judgeNumber + '信息');
+            notifyInfo('提示','请先完善估价对象' + judgeNumber + '信息');
             return false;
         }
         programmeMethod.clear();
@@ -1834,7 +1834,7 @@
     //保存的数据
     programmeMethod.saveJudgeFunction = function () {
         if ($("#applicableTbody tr").length <= 0) {
-            notifyInfo('还未选择适用的方法');
+            notifyInfo('提示','还未选择适用的方法');
             return false;
         }
         if (!$("#frm_method_info").valid()) {
@@ -1853,7 +1853,7 @@
                     Loading.progressHide();
                     $("#modal_method_info").modal('hide');
                 } else {
-                    Alert(result.errmsg);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             }
         })

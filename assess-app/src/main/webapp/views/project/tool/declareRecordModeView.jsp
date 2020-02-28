@@ -243,7 +243,7 @@
                 box.modal('hide');
             }
         } else {
-            notifyInfo("至少选择一个");
+            notifyInfo('提示',"至少选择一个");
         }
     };
 

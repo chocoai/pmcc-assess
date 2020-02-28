@@ -377,11 +377,11 @@
 
                 }
                 else {
-                    AlertError("失败，失败原因:" + result.errmsg);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                AlertError("调用服务端方法失败，失败原因:" + result);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         })
     }
@@ -526,7 +526,7 @@
                             $('#' + projectData.prototype.config().box).modal("hide");
                         }
                     } else {
-                        AlertError("失败，失败原因:" + result.errmsg);
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 }
             })
@@ -592,7 +592,7 @@
                             $('#' + projectBuild.prototype.config().box).modal("hide");
                         }
                     } else {
-                        AlertError("失败，失败原因:" + result.errmsg);
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 }
             })
@@ -657,7 +657,7 @@
                             $('#' + projectUnit.prototype.config().box).modal("hide");
                         }
                     } else {
-                        AlertError("失败，失败原因:" + result.errmsg);
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 }
             })
@@ -722,7 +722,7 @@
                             $('#' + projectHouse.prototype.config().box).modal("hide");
                         }
                     } else {
-                        AlertError("失败，失败原因:" + result.errmsg);
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 }
             })
@@ -1053,7 +1053,7 @@
                             $('#' + caseFun.config.father.caseEstate.box()).modal('hide');
                         }
                     } else {
-                        AlertError("失败，失败原因:" + result.errmsg);
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 }
             })
@@ -1114,7 +1114,7 @@
                             $('#' + caseFun.config.father.caseBuild.box()).modal('hide');
                         }
                     } else {
-                        AlertError("失败，失败原因:" + result.errmsg);
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 }
             })
@@ -1175,7 +1175,7 @@
                             $('#' + caseFun.config.father.caseUnit.box()).modal('hide');
                         }
                     } else {
-                        AlertError("失败，失败原因:" + result.errmsg);
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 }
             })
@@ -1235,7 +1235,7 @@
                             $('#' + caseFun.config.father.caseHouse.box()).modal('hide');
                         }
                     } else {
-                        AlertError("失败，失败原因:" + result.errmsg);
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 }
             })

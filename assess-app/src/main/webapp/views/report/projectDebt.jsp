@@ -217,7 +217,7 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    toastr.success('刷新成功');
+                    notifySuccess('成功','刷新成功');
                     document.getElementById('report_iframe').src = "${pageContext.request.contextPath}/ureport/preview?_u=erp:projectDeb.ureport.xml&_i=1&_r=1"
                 }
                 else {
@@ -226,7 +226,7 @@
             },
             error: function (result) {
                 Loading.progressHide();
-                AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         })
 

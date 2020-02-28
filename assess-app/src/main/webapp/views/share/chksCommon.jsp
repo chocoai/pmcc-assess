@@ -306,7 +306,7 @@
         }
         if (!$.isNumeric(value)) {
             target.val('');
-            notifyInfo("请输入数字!");
+            notifyInfo('提示',"请输入数字");
             return false;
         }
         var minScore = target.attr("data-minScore");
@@ -315,7 +315,7 @@
         minScore = Number(minScore);
         maxScore = Number(maxScore);
         if (value > maxScore || value < minScore) {
-            notifyInfo("请在考核范围内打分");
+            notifyInfo('提示',"请在考核范围内打分");
             target.val('');
         }
     };
@@ -703,7 +703,7 @@
             }
         }
         if (filterData.length == 0) {
-            notifyWarning("考核需要填写全部数据!");
+            notifyWarning('警告',"考核需要填写全部数据!");
             return false;
         }
         var parentData = {
@@ -795,7 +795,7 @@
             }
         }
         if (filterData.length == 0) {
-            notifyWarning("考核需要填写全部数据!");
+            notifyWarning('警告',"考核需要填写全部数据!");
             return false;
         }
         var parentData = {
@@ -917,7 +917,7 @@
         var filterData = [];
         assessmentCommonHandle.getChksSonData(target, data);
         if (data.length == 0) {
-            notifyWarning("请确定考核数据填写情况!或者咨询管理员配置考核数据模板!");
+            notifyWarning('警告',"请确定考核数据填写情况!或者咨询管理员配置考核数据模板!");
             return false;
         }
         for (var i = 0; i < data.length; i++) {

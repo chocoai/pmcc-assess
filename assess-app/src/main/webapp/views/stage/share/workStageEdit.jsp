@@ -461,7 +461,7 @@
                     console.log("获取项目阶段失败:" + result.errmsg);
                 }
             },
-            error: function (e) {
+            error: function (result) {
                 workStageObj.workStageData = [];
                 console.log("获取项目阶段失败，失败原因:" + e);
             }
@@ -484,7 +484,7 @@
             $('#create_project_phase').removeAttr('disabled');
         } else {
             var typeName = $("#typeId option:selected").text();
-            AlertError("【" + typeName + "】类型还没有配置项目阶段，请点击'新增项目阶段'来添加项目阶段.");
+            AlertError("失败","【" + typeName + "】类型还没有配置项目阶段，请点击'新增项目阶段'来添加项目阶段.");
         }
     };
 
@@ -577,7 +577,7 @@
                 $('#workStageBox_assessment').attr('disabled', "true");
                 $('#reviewBox_assessment').attr('disabled', "true");
             } else {
-                AlertError("新增项目阶段时必须选择具体的类型");
+                AlertError("失败","新增项目阶段时必须选择具体的类型");
             }
         }
         $("#boxRoleType").change();
@@ -594,12 +594,12 @@
 
         var data = formSerializeArray(workStageObj.formWorkStage);
         if (!data) {
-            AlertError("没有需要保存的数据");
+            AlertError("失败","没有需要保存的数据");
             return false;
         }
         //保存项目如果禁用了则提示一下
         if (!data.bisEnable) {
-            AlertError("您在编辑项目阶段时选择了禁用此阶段，您确认要这么做(如果这么做页面上将不会显示此阶段的相关数据)？", 2, function () {
+            AlertError("失败","您在编辑项目阶段时选择了禁用此阶段，您确认要这么做(如果这么做页面上将不会显示此阶段的相关数据)？", 2, function () {
                 data.bisEnable = true;
             }, function () {
                 data.bisEnable = false;
@@ -621,12 +621,12 @@
                         successFn();
                     }
                 } else {
-                    AlertError("操作失败:" + result.errmsg);
+                    AlertError("失败","操作失败:" + result.errmsg);
                 }
             },
-            error: function (e) {
+            error: function (result) {
                 Loading.progressHide();
-                AlertError("调用服务端方法失败，失败原因:" + e);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     };

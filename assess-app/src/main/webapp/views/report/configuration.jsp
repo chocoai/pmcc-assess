@@ -101,7 +101,7 @@
                         AlertError("获取数据失败:" + result.errmsg);
                     }
                 },
-                error: function (e) {
+                error: function (result) {
 
                     lertError("调用服务端方法失败，失败原因:" + result);
                 }

@@ -280,7 +280,7 @@
                 data: {id: id},
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success('删除成功');
+                        notifySuccess('成功','删除成功');
                         loadProjectList();
                     }
                     else {

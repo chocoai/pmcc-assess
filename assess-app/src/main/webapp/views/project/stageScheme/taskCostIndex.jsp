@@ -33,17 +33,17 @@
                     }
                 } else {
                     if (result.errmsg) {
-                        AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                     }else {
-                        AlertError("错误", "调用服务端方法失败，失败原因:" + result);
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 }
             },
             error: function (result) {
                 if (result.errmsg) {
-                    AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }else {
-                    AlertError("错误", "调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             }
         });
@@ -127,7 +127,7 @@
                 });
             }) ;
         } else {
-            notifyWarning("","无子项!");
+            notifyWarning("警告","无子项!");
         }
     };
 
@@ -158,7 +158,7 @@
             var table = target.find("table");
             var value = table.find("tfoot").find("input[name='totalPrice']").first().val();
             if (!$.isNumeric(value)) {
-                notifyWarning("","请重新填写!");
+                notifyWarning("警告","请重新填写!");
                 return false;
             }
             var obj = {};
@@ -309,7 +309,7 @@
     construction.delMdCalculatingMethodEngineeringCost = function () {
         var rows = $(construction.engineeringFeeInfoTarget).bootstrapTable('getSelections');
         if (!rows || rows.length <= 0) {
-            notifyWarning("没有要删除的数据!", "请选择要删除的数据!");
+            notifyWarning("警告", "请选择要删除的数据!");
         } else {
             AlertConfirm("是否确认删除", "删除相应的数据后将不可恢复", function () {
                 developmentCommon.deleteMdCalculatingMethodEngineeringCostHandle(rows, function () {
@@ -338,7 +338,7 @@
                 }
             },
             error: function (result) {
-                AlertError("错误", "调用服务端方法失败，失败原因:" + result);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     };
@@ -407,13 +407,13 @@
             });
             AlertConfirm("是否确认删除", "删除相应的数据后将不可恢复", function () {
                 developmentCommon.infrastructureChildren.delete(data, function () {
-                    notifyInfo("成功", "删除成功!");
+                    notifyInfo('提示', "删除成功!");
                     $(construction.infrastructureChildrenTable).bootstrapTable('refresh');
                     construction.writeMdDevelopmentInfrastructureChildrenTable();
                 });
             });
         } else {
-            notifyWarning("没有要删除的数据", "至少勾选一个!");
+            notifyWarning("警告", "至少勾选一个!");
 
         }
     };
@@ -432,7 +432,7 @@
                 target.find(".modal-footer").empty().append($(construction.infrastructureFooterHtml).html());
                 target.modal('show');
             } else {
-                notifyWarning("没有数据", "至少勾选一个!");
+                notifyWarning("警告", "至少勾选一个!");
             }
         } else {
             frm.clearAll();
@@ -828,7 +828,7 @@
                 }
             },
             error: function (result) {
-                AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     };
@@ -900,11 +900,11 @@
                             });
                         }
                     } else {
-                        Alert("保存失败:" + result.errmsg);
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 },
-                error: function (e) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + e);
+                error: function (result) {
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             });
         }

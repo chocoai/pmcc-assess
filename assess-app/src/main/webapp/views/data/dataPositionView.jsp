@@ -151,15 +151,15 @@
             data: {id: id},
             success: function (result) {
                 if (result.ret) {
-                    toastr.success('删除成功');
+                    notifySuccess('成功','删除成功');
                     dataObjFun.loadDataList();
                 }
                 else {
-                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                    ("保存数据失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         })
     }
@@ -193,7 +193,7 @@
                 }
             },
             error: function (result) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         })
     }
@@ -214,16 +214,16 @@
             data: data,
             success: function (result) {
                 if (result.ret) {
-                    toastr.success('保存成功');
+                    notifySuccess('成功','保存成功');
                     $('#' + dataObjFun.config.father.box()).modal('hide');
                     dataObjFun.loadDataList();
                 }
                 else {
-                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                    AlertError("失败","保存数据失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         })
     }

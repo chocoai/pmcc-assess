@@ -108,7 +108,7 @@
                 success: function (result) {
                     Loading.progressHide();
                     if (result.ret) {
-                        toastr.success('删除成功！');
+                        notifySuccess('成功','删除成功！');
                         dataObjFun.loadDataList();
                     }
                 }

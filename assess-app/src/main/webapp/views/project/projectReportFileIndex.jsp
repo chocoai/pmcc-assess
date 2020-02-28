@@ -1114,7 +1114,7 @@
                     }
                     $("#examineFileModalByCertifyPart").modal("show");
                 } else {
-                    notifyWarning("获取数据失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             }
         })
@@ -1423,12 +1423,12 @@
                         }
                         $("#allExamineFileModal").modal("show");
                     } else {
-                        notifyWarning("加载失败", "失败原因:" + result.errmsg);
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 }
             })
         } else {
-            alert("请先选择查勘部位")
+            notifyInfo("提示","请先选择查勘部位")
         }
     }
 

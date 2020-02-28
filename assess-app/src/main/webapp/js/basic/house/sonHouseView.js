@@ -54,15 +54,15 @@ var houseHeating;
                 data: {id: id},
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success('删除成功');
+                        notifySuccess('成功','删除成功');
                         houseHeating.prototype.loadDataDicList();
                     }
                     else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             })
         },
@@ -84,16 +84,16 @@ var houseHeating;
                 data: data,
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success('保存成功');
+                        notifySuccess('成功','保存成功');
                         $('#' + houseHeating.prototype.config().box).modal('hide');
                         houseHeating.prototype.loadDataDicList();
                     }
                     else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             })
         },
@@ -114,7 +114,7 @@ var houseHeating;
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             })
         },
@@ -194,15 +194,15 @@ var houseAirConditioner;
                 data: {id: id},
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success('删除成功');
+                        notifySuccess('成功','删除成功');
                         houseAirConditioner.prototype.loadDataDicList();
                     }
                     else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             })
         },
@@ -224,16 +224,16 @@ var houseAirConditioner;
                 data: data,
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success('保存成功');
+                        notifySuccess('成功','保存成功');
                         $('#' + houseAirConditioner.prototype.config().box).modal('hide');
                         houseAirConditioner.prototype.loadDataDicList();
                     }
                     else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             })
         },
@@ -254,7 +254,7 @@ var houseAirConditioner;
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             })
         },
@@ -334,15 +334,15 @@ var houseNewWind;
                 data: {id: id},
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success('删除成功');
+                        notifySuccess('成功','删除成功');
                         houseNewWind.prototype.loadDataDicList();
                     }
                     else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             })
         },
@@ -364,16 +364,16 @@ var houseNewWind;
                 data: data,
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success('保存成功');
+                        notifySuccess('成功','保存成功');
                         $('#' + houseNewWind.prototype.config().box).modal('hide');
                         houseNewWind.prototype.loadDataDicList();
                     }
                     else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             })
         },
@@ -394,7 +394,7 @@ var houseNewWind;
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             })
         },
@@ -473,15 +473,15 @@ var houseCorollaryEquipment;
                 data: {id: id},
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success('删除成功');
+                        notifySuccess('成功','删除成功');
                         houseCorollaryEquipment.prototype.loadDataDicList();
                     }
                     else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             })
         },
@@ -502,16 +502,16 @@ var houseCorollaryEquipment;
                 data: data,
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success('保存成功');
+                        notifySuccess('成功','保存成功');
                         $('#' + houseCorollaryEquipment.prototype.config().box).modal('hide');
                         houseCorollaryEquipment.prototype.loadDataDicList();
                     }
                     else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             })
         },
@@ -532,7 +532,7 @@ var houseCorollaryEquipment;
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             })
         },
@@ -632,15 +632,15 @@ var houseFaceStreet;
                 data: {id: id},
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success('删除成功');
+                        notifySuccess('成功','删除成功');
                         houseFaceStreet.prototype.loadDataDicList();
                     }
                     else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             })
         },
@@ -671,16 +671,16 @@ var houseFaceStreet;
                 data: data,
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success('保存成功');
+                        notifySuccess('成功','保存成功');
                         $('#' + houseFaceStreet.prototype.config().box).modal('hide');
                         houseFaceStreet.prototype.loadDataDicList();
                     }
                     else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             })
         },
@@ -701,7 +701,7 @@ var houseFaceStreet;
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             })
         },
@@ -817,15 +817,15 @@ var houseIntelligent;
                 data: {id: id},
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success('删除成功');
+                        notifySuccess('成功','删除成功');
                         houseIntelligent.prototype.loadDataDicList();
                     }
                     else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             })
         },
@@ -866,18 +866,18 @@ var houseIntelligent;
                 data: data,
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success('保存成功');
+                        notifySuccess('成功','保存成功');
                         $('#' + houseIntelligent.prototype.config().box).modal('hide');
                         houseIntelligent.prototype.loadDataDicList();
                         num = 0;
                         arr.length = 0;
                     }
                     else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             })
         },
@@ -898,7 +898,7 @@ var houseIntelligent;
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             })
         },
@@ -928,7 +928,7 @@ var houseIntelligent;
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             });
             AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_switch_circuit, item.switchCircuit, function (html, data) {
@@ -1138,15 +1138,15 @@ var houseWater;
                 data: {id: id},
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success('删除成功');
+                        notifySuccess('成功','删除成功');
                         houseWater.prototype.loadDataDicList();
                     }
                     else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             })
         },
@@ -1167,16 +1167,16 @@ var houseWater;
                 data: data,
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success('保存成功');
+                        notifySuccess('成功','保存成功');
                         $('#' + houseWater.prototype.config().box).modal('hide');
                         houseWater.prototype.loadDataDicList();
                     }
                     else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             })
         },
@@ -1197,7 +1197,7 @@ var houseWater;
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             })
         },
@@ -1286,7 +1286,7 @@ houseWaterDrain.removeData = function (id) {
                 }
             },
             error: function (result) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         })
     });
@@ -1308,7 +1308,7 @@ houseWaterDrain.getAndInit = function (id) {
             }
         },
         error: function (result) {
-            AlertError("失败","调用服务端方法失败，失败原因:" + result);
+            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
         }
     })
 };
@@ -1347,16 +1347,16 @@ houseWaterDrain.saveData = function () {
         data: data,
         success: function (result) {
             if (result.ret) {
-                toastr.success('保存成功');
+                notifySuccess('成功','保存成功');
                 $('#' + houseWaterDrain.config.box).modal('hide');
                 houseWaterDrain.loadDataDicList();
             }
             else {
-                Alert("保存数据失败，失败原因:" + result.errmsg);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
         error: function (result) {
-            AlertError("失败","调用服务端方法失败，失败原因:" + result);
+            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
         }
     });
 };
@@ -1432,15 +1432,15 @@ var houseRoom;
                 data: {id: id},
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success('删除成功');
+                        notifySuccess('成功','删除成功');
                         houseRoom.prototype.loadDataDicList();
                     }
                     else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             })
         },
@@ -1473,7 +1473,7 @@ var houseRoom;
                 data: data,
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success('保存成功');
+                        notifySuccess('成功','保存成功');
                         $('#' + houseRoom.prototype.config().boxSubclassSaveView).modal('hide');
                         var item = result.data;
                         if (houseRoom.prototype.isEmpty(item)) {
@@ -1481,11 +1481,11 @@ var houseRoom;
                         }
                     }
                     else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             })
         },
@@ -1497,15 +1497,15 @@ var houseRoom;
                 data: {id: id},
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success('删除成功');
+                        notifySuccess('成功','删除成功');
                         houseRoom.prototype.subclassLoadList(result.data);
                     }
                     else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             })
         },
@@ -1569,16 +1569,16 @@ var houseRoom;
                 data: data,
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success('保存成功');
+                        notifySuccess('成功','保存成功');
                         $('#' + houseRoom.prototype.config().box).modal('hide');
                         houseRoom.prototype.loadDataDicList();
                     }
                     else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             })
         },
@@ -1595,7 +1595,7 @@ var houseRoom;
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             })
         },
@@ -1612,7 +1612,7 @@ var houseRoom;
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             })
         },
@@ -1624,12 +1624,12 @@ var houseRoom;
                 data: {id: id},
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success('复制成功');
+                        notifySuccess('成功','复制成功');
                         houseRoom.prototype.loadDataDicList();
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             })
         },
@@ -1771,9 +1771,9 @@ damagedDegree.valid = function (remark) {
     }) ;
     if (i != 0){
         if (remark){
-            toastr.success(remark);
+            notifySuccess('成功',remark);
         }else {
-            toastr.success('请检查房屋完损度');
+            notifySuccess('成功','请检查房屋完损度');
         }
     }
     return i == 0 ;

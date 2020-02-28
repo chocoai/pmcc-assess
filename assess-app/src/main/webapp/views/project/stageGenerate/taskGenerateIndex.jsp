@@ -527,11 +527,11 @@
                 if (result.ret && result.data) {
                     callback(result.data);
                 } else {
-                    notifyWarning("异常，原因:" + result.errmsg);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                AlertError("调用服务端方法失败，失败原因:" + result);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     }
@@ -558,7 +558,7 @@
             },
             error: function (result, status, e) {
                 Loading.progressHide();
-                AlertError("调用服务端方法失败，失败原因:" + result);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     }
@@ -669,7 +669,7 @@
                 }
             },
             error: function (result) {
-                AlertError("调用服务端方法失败，失败原因:" + result);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     }
@@ -687,7 +687,7 @@
         }
         AlertConfirm("是否确认", "请注意报告二维码无法自动替换,假如要替换类似于报告二维码这样的数据请在页面上上删除报告二维码,然后用\\${报告二维码}这样的文本放置在删除的位置", function () {
             generateReportHandle(data, reportType, form, areaId, function () {
-                notifySuccess('重新拿号成功!');
+                notifySuccess("成功",'重新拿号成功!');
             });
         })
 
@@ -705,7 +705,7 @@
             data.assessCategory = null;
         }
         generateReportHandle(data, reportType, form, areaId, function () {
-            notifySuccess('拿号成功!');
+            notifySuccess("成功",'拿号成功');
         });
     }
 
@@ -728,16 +728,16 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    notifySuccess('生成结果集附件成功!');
+                    notifySuccess("成功",'生成结果集附件成功');
                     getSchemeReportGeneration(data, function (info) {
                         initFormSchemeReportGeneration(info, form, areaId);
                     });
                 } else {
-                    AlertError("生成失败，失败原因:" + result.errmsg);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                AlertError("调用服务端方法失败，失败原因:" + result);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     }
@@ -752,7 +752,7 @@
         if (data.realEstateAppraiser) {
 
         } else {
-            notifyInfo('估价师必须选择');
+            notifyInfo('提示','估价师必须选择');
             return false;
         }
         data.areaGroupId = areaId;
@@ -763,7 +763,7 @@
             data.assessCategory = null;
         }
         generateReportHandle(data, reportType, form, areaId, function () {
-            notifySuccess('报告生成成功!');
+            notifySuccess("成功",'报告生成成功');
         });
     }
 
@@ -786,11 +786,11 @@
                         Loading.progressHide();
                     });
                 } else {
-                    AlertError("替换失败，失败原因:" + result.errmsg);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                AlertError("调用服务端方法失败，失败原因:" + result);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     }

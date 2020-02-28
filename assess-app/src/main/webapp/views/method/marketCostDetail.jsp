@@ -769,7 +769,7 @@
             });
             layer.full(frame);
         } else {
-            toastr.success('未使用过比较法!');
+            notifyInfo('提示','未使用过比较法!');
         }
     };
 

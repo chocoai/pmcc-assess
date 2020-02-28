@@ -57,7 +57,7 @@ function loadDataDicByPid(pid, fn) {
                 }
             },
             error: function (result) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     }
@@ -94,7 +94,7 @@ function loadDataDicByPidExtend(pid, subId, fn) {
                 }
             },
             error: function (result) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     }
@@ -129,7 +129,7 @@ function loadDataDicByFieldNameExtend(fieldName, subId, fn) {
                 }
             },
             error: function (result) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     }

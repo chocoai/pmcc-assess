@@ -78,7 +78,7 @@ declareRealtyRealEstateCert.enclosureFun = function () {
         success: function (result) {
             if (result.ret) {
                 declareCommon.getDeclareRealtyData(id, function (row) {
-                    notifyInfo("成功", "操作成功!");
+                    notifyInfo('提示', "操作成功!");
                     $("#" + declareRealtyRealEstateCert.config.table).bootstrapTable('updateByUniqueId', {
                         id: id,
                         row: row
@@ -121,8 +121,6 @@ declareRealtyRealEstateCert.inputFile = function () {
         success: function (result) {
             if (result.ret) {
                 declareRealtyRealEstateCert.loadList();
-                AlertConfirm("导入消息", result.data, function () {
-                });
             }
         },
         error: function (result, status, e) {
@@ -209,7 +207,7 @@ declareRealtyRealEstateCert.deleteData = function () {
 declareRealtyRealEstateCert.copyData = function () {
     var rows = $("#" + declareRealtyRealEstateCert.config.table).bootstrapTable('getSelections');
     if (!rows || rows.length <= 0) {
-        notifyInfo("没有勾选", "请选择要复制的数据!");
+        notifyInfo('提示', "请选择要复制的数据!");
     } else if (rows.length == 1) {
         AlertConfirm("是否确认要复制", "", function () {
             $(declareRealtyRealEstateCert.config.handleCopy).find("input[name='name']").val(rows[0].certName);
@@ -309,7 +307,7 @@ declareRealtyRealEstateCert.declareBuildingPermitRemove = function () {
             if (declareCommon.isNotBlank(centerData.buildingPermitId)) {
                 declareCommon.deleteByDeclareBuildCenterType(data.centerId, declareCommon.declareCenterData.buildingPermitId.type, function () {
                     box.modal("hide");
-                    notifyInfo("成功", "删除成功!");
+                    notifyInfo('提示', "删除成功!");
                 });
             } else {
                 notifyWarning("警告", "未添加数据!");
@@ -371,7 +369,7 @@ declareRealtyRealEstateCert.declareLandUsePermitRemove = function () {
             if (declareCommon.isNotBlank(centerData.landUsePermitId)) {
                 declareCommon.deleteByDeclareBuildCenterType(data.centerId, declareCommon.declareCenterData.landUsePermitId.type, function () {
                     box.modal("hide");
-                    notifyInfo("成功", "删除成功!");
+                    notifyInfo('提示', "删除成功!");
                 });
             } else {
                 notifyWarning("警告", "未添加数据!");
@@ -417,7 +415,7 @@ declareRealtyRealEstateCert.declareBuildingConstructionPermitRemove = function (
             if (declareCommon.isNotBlank(centerData.buildingConstructionPermitId)) {
                 declareCommon.deleteByDeclareBuildCenterType(data.centerId, declareCommon.declareCenterData.buildingConstructionPermitId.type, function () {
                     box.modal("hide");
-                    notifyInfo("成功", "删除成功!");
+                    notifyInfo('提示', "删除成功!");
                 });
             } else {
                 notifyWarning("警告", "未添加数据!");
@@ -484,7 +482,7 @@ declareRealtyRealEstateCert.declarePreSalePermitRemove = function () {
             if (declareCommon.isNotBlank(centerData.preSalePermitId)) {
                 declareCommon.deleteByDeclareBuildCenterType(data.centerId, declareCommon.declareCenterData.preSalePermitId.type, function () {
                     box.modal("hide");
-                    notifyInfo("成功", "删除成功!");
+                    notifyInfo('提示', "删除成功!");
                 });
             } else {
                 notifyWarning("警告", "未添加数据!");
@@ -551,7 +549,7 @@ declareRealtyRealEstateCert.deleteDeclareEconomicIndicatorsCenter = function (fr
             if (declareCommon.isNotBlank(centerData.indicatorId)) {//关联情况
                 declareCommon.deleteByDeclareBuildCenterType(data.centerId, declareCommon.declareCenterData.indicatorId.type, function () {
                     $('#' + box).modal("hide");
-                    notifyInfo("成功", "删除成功!");
+                    notifyInfo('提示', "删除成功!");
 
 
                     economicIndicators.autoSummary(true);
@@ -666,7 +664,7 @@ declareRealtyRealEstateCert.attachmentAutomatedWarrants = function (_this) {
                     declareCommon.showFile(FileId, tableName, id, true);
                 }(query.tableId, query.fieldsName, query.tableName));
                 declareRealtyRealEstateCert.loadList();
-                notifyInfo("成功", "操作成功!");
+                notifyInfo('提示', "操作成功!");
             }, function (message) {
                 Loading.progressHide();
                 AlertError("错误", "调用服务端方法失败，失败原因:" + message);

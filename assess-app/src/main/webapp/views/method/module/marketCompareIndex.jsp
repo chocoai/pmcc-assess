@@ -180,12 +180,12 @@
                 var that=$(this);
                 AssessCommon.prompt(that.text(),function (value) {
                     if (!/^\d+(?=\.{0,1}\d+$|$)/.test(value)) {
-                        notifyInfo('只能填数字');
+                        notifyInfo('提示','只能填数字');
                         return;
                     }
                     value = parseInt(value);
                     if (value < 80 || value > 120) {
-                        notifyInfo('分值只能在80至120之间');
+                        notifyInfo('提示','分值只能在80至120之间');
                         return;
                     }
 
@@ -199,7 +199,7 @@
                         var currPrice = that.closest('table').find('tbody').find('[data-bisprice="true"]').find('td[data-item-id=' + itemId + ']').text();
                         if (AssessCommon.isNumber(initialPrice) && AssessCommon.isNumber(currPrice)) {
                             if (parseFloat(initialPrice) == parseFloat(currPrice)) {
-                                notifyInfo('请先调整该案例的交易价格');
+                                notifyInfo('提示','请先调整该案例的交易价格');
                                 return;
                             }
                         }
@@ -229,7 +229,7 @@
                 var that=$(this);
                 AssessCommon.prompt(that.text(),function (value) {
                     if (value && !/^(0.\d{1,2})$/.test(value)) {
-                        notifyInfo('权重只能在0至1之间的小数，小数位数最多两位');
+                        notifyInfo('提示','权重只能在0至1之间的小数，小数位数最多两位');
                         return;
                     }
                     that.text(value);
@@ -879,7 +879,7 @@
                         if (callback)
                             callback(result.data.id);
                     } else {
-                        Alert('保存数据异常，' + result.errmsg);
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 }
             })
@@ -931,7 +931,7 @@
                 success: function (result) {
                     Loading.progressHide();
                     if (result.ret) {
-                        toastr.success("选择成功！");
+                        notifySuccess('成功',"选择成功！");
                         $('#modal_select_case').modal('hide');
                         marketCompare.init({
                             projectId: marketCompare.projectId,
@@ -1019,7 +1019,7 @@
                                     },
                                     success: function (result) {
                                         if (result.ret) {
-                                            toastr.success("保存成功");
+                                            notifySuccess('成功',"保存成功");
                                             layer.close(index);
                                         } else {
                                             toastr.error(result.errmsg);
@@ -1090,7 +1090,7 @@
                 success: function (result) {
                     Loading.progressHide();
                     if (result.ret) {
-                        toastr.success("刷新成功！");
+                        notifySuccess('成功',"刷新成功！");
                         marketCompare.init({
                             projectId: marketCompare.projectId,
                             mcId: result.data.mcId,
@@ -1142,7 +1142,7 @@
                 success: function (result) {
                     Loading.progressHide();
                     if (result.ret) {
-                        toastr.success("选择成功！");
+                        notifySuccess('成功',"选择成功！");
                         $('#modal_select_judge').modal('hide');
                         marketCompare.init({
                             projectId: marketCompare.projectId,

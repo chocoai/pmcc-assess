@@ -551,7 +551,7 @@
                     },
                     'click #item_assessment': function (e, value, row, index) {
                         if (!row.boxName) {
-                            AlertError("当前工作事项还没有配置模型,不能配置考核数据");
+                            AlertError("失败","当前工作事项还没有配置模型,不能配置考核数据");
                             return false;
                         }
                         boxDetailItemObj.renderBoxDetailItemTableForWorkPhase(row.boxName, row.workStageId, 0, "project");
@@ -647,7 +647,7 @@
 
             workStageObj.renderWorkStageDropList(workStage, typeId);
         } else {
-            AlertError("新增项目阶段时必须选择具体的类型->类别.");
+            AlertError("失败","新增项目阶段时必须选择具体的类型->类别.");
         }
         $("#phaseForm").select2();
         $("#workPhaseBoxName").select2();
@@ -673,12 +673,12 @@
                         successFn();
                     }
                 } else {
-                    AlertError("操作失败:" + result.errmsg);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
-            error: function (e) {
+            error: function (result) {
                 Loading.progressHide();
-                AlertError("调用服务端方法失败，失败原因:" + e);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     };
@@ -690,7 +690,7 @@
         if (!workPhaseObj.formWorkPhase.valid()) return false;
         var data = formSerializeArray(workPhaseObj.formWorkPhase);
         if (!data) {
-            AlertError("没有需要保存的数据");
+            AlertError("失败","没有需要保存的数据");
             return;
         }
         data.bisWait = $('#bisWait').prop('checked');
@@ -711,12 +711,12 @@
                         successFn();
                     }
                 } else {
-                    AlertError("操作失败:" + result.errmsg);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
-            error: function (e) {
+            error: function (result) {
                 Loading.progressHide();
-                AlertError("调用服务端方法失败，失败原因:" + e);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     };

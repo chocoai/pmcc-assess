@@ -351,7 +351,7 @@
     }
     //保存数据
     function updateLandTransaction() {
-        Alert("更新信息将花费较长时间，确认要现在更新么？", 2, null, function () {
+        AlertConfirm("确认要现在更新么？", "", function () {
             Loading.progressShow();
             $.ajax({
                 url: "${pageContext.request.contextPath}/netLandTransaction/updateLandTransaction",
@@ -363,16 +363,16 @@
                 success: function (result) {
                     Loading.progressHide();
                     if (result.ret) {
-                        toastr.success('保存成功');
+                        notifySuccess('成功','保存成功');
                         dataBuilder.prototype.loadDataDicList();
                     }
                     else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
                     Loading.progressHide();
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             })
         });

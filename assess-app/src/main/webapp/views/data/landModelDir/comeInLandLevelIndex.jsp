@@ -193,7 +193,7 @@
     function submit() {
         var result = landLevel.config.table.bootstrapTable('getData');
         if (result.length == 0) {
-            toastr.success('至少添加一条数据');
+            notifySuccess('成功','至少添加一条数据');
             return false;
         }
         var data = [];
@@ -214,11 +214,11 @@
                     });
                 }
                 else {
-                    AlertError("保存数据失败，失败原因:" + result.errmsg);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                AlertError("调用服务端方法失败，失败原因:" + result);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         })
     }

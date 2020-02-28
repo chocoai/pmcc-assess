@@ -100,7 +100,7 @@ commonAssets.deleteAttachmentById = function (array, callback) {
                     callback(result.data);
                 }
             } else {
-                toastr.success('失败' + result.errmsg);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
         error: function (result) {
@@ -126,7 +126,7 @@ commonAssets.getSysAttachmentDtoList = function (data, callback) {
                     callback(result.data);
                 }
             } else {
-                toastr.success('失败' + result.errmsg);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
         error: function (result) {
@@ -152,7 +152,7 @@ commonAssets.batchUpdateSysAttachmentDto = function (data, callback) {
                     callback(result.data);
                 }
             } else {
-                toastr.success('失败' + result.errmsg);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
         error: function (result) {
@@ -340,7 +340,7 @@ commonAssets.cleanItemHTML = function (_this, fileId, value, id) {
             }
             if (array.length != 0) {
                 commonAssets.deleteAttachmentById(array, function () {
-                    toastr.success('清除附件成功!');
+                    notifySuccess('成功','清除附件成功!');
                 });
             }
         });

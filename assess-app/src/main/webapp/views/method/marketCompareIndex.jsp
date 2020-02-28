@@ -51,7 +51,7 @@
             data: {formData: JSON.stringify(data)},
             success: function (result) {
                 if (result.ret) {
-                    toastr.success('保存成功');
+                    notifySuccess('成功','保存成功');
                     if (callback) {
                         callback(result.data.id, result.data.price)
                     }

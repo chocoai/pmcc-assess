@@ -218,13 +218,13 @@
             },
             error: function (result) {
                 Loading.progressHide();
-                AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         })
     }
     //保存数据
     function updateFuni() {
-        Alert("根据楼盘将花费较长时间，确认要现在更新么？", 2, null, function () {
+        AlertConfirm("确认要现在更新么", "更新楼盘将花费较长时间", function () {
             $("#btn_update_house").hide();
             Loading.progressShow();
             $.ajax({
@@ -237,15 +237,15 @@
                 success: function (result) {
                     Loading.progressHide();
                     if (result.ret) {
-                        toastr.success('保存成功');
+                        notifySuccess('成功','保存成功');
                     }
                     else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
                     Loading.progressHide();
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             })
         });
@@ -266,16 +266,16 @@
                 Loading.progressHide();
                 if (result.ret) {
                     $('#model_house').modal('hide');
-                    toastr.success('保存成功');
+                    notifySuccess('成功','保存成功');
                     loadHouseListAjax(1);
                 }
                 else {
-                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
                 Loading.progressHide();
-                AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         })
     }

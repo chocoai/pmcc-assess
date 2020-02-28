@@ -251,10 +251,10 @@
 <script type="text/javascript">
     function autoReadBookmark_Callback(message) {
         if (message == "ok") {
-            toastr.success('书签导入成功');
+            notifySuccess('成功','书签导入成功');
             loadTemplateBookmarkList($("#templateId").val());
         } else {
-            Alert("书签导入失败，" + message);
+            AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
         }
     }
 
@@ -338,6 +338,7 @@
         $("#category").empty();
         loadTemplateAttachment(0, "${currUserInfo.userAccount}");
     }
+
     //编辑模板
     function editTemplate(index) {
         var row = $("#tbList").bootstrapTable('getData')[index];
@@ -376,8 +377,7 @@
 
     //删除模板
     function delTemplate(id) {
-        bootbox.confirm("确认要删除么？", function (result) {
-            if (result) {
+        AlertConfirm("确认要删除么", "删除后数据不可恢复", function (result) {
                 Loading.progressShow();
                 $.ajax({
                     url: "${pageContext.request.contextPath}/reportTemplate/deleteTemplate",
@@ -387,19 +387,17 @@
                     success: function (result) {
                         Loading.progressHide();
                         if (result.ret) {
-                            toastr.success('删除成功');
+                            notifySuccess('成功','删除成功');
                             $('#tbList').bootstrapTable("refresh");
-                        }
-                        else {
-                            Alert("删除数据失败，失败原因:" + result.errmsg);
+                        } else {
+                            AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                         }
                     },
                     error: function (result) {
                         Loading.progressHide();
-                        AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                        AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 })
-            }
         });
     }
 
@@ -416,17 +414,16 @@
                 success: function (result) {
                     Loading.progressHide();
                     if (result.ret) {
-                        toastr.success('保存成功');
+                        notifySuccess('成功','保存成功');
                         $('#tbList').bootstrapTable("refresh");
                         $('#modalTemplate').modal('hide');
-                    }
-                    else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                    } else {
+                        AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
                     Loading.progressHide();
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             })
         }
@@ -476,6 +473,7 @@
         $("#frm_bookmark").clearAll();
         $("#bookmarkId").val("0");
     }
+
     //编辑模板
     function editTemplateBookmark(index) {
         var row = $("#tb_bookmark_list").bootstrapTable('getData')[index];
@@ -487,30 +485,27 @@
 
     //删除模板
     function delTemplateBookmark(id) {
-        bootbox.confirm("确认要删除么？", function (result) {
-            if (result) {
-                Loading.progressShow();
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/reportTemplate/deleteTemplateBookmark",
-                    type: "post",
-                    dataType: "json",
-                    data: {id: id},
-                    success: function (result) {
-                        Loading.progressHide();
-                        if (result.ret) {
-                            toastr.success('删除成功');
-                            $('#tb_bookmark_list').bootstrapTable("refresh");
-                        }
-                        else {
-                            Alert("删除数据失败，失败原因:" + result.errmsg);
-                        }
-                    },
-                    error: function (result) {
-                        Loading.progressHide();
-                        AlertError("失败","调用服务端方法失败，失败原因:" + result);
+        AlertConfirm("确认要删除么", "删除后数据不可恢复", function (result) {
+            Loading.progressShow();
+            $.ajax({
+                url: "${pageContext.request.contextPath}/reportTemplate/deleteTemplateBookmark",
+                type: "post",
+                dataType: "json",
+                data: {id: id},
+                success: function (result) {
+                    Loading.progressHide();
+                    if (result.ret) {
+                        notifySuccess('成功','删除成功');
+                        $('#tb_bookmark_list').bootstrapTable("refresh");
+                    } else {
+                        AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                     }
-                })
-            }
+                },
+                error: function (result) {
+                    Loading.progressHide();
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
+                }
+            })
         });
     }
 
@@ -528,17 +523,16 @@
                 success: function (result) {
                     Loading.progressHide();
                     if (result.ret) {
-                        toastr.success('保存成功');
+                        notifySuccess('成功','保存成功');
                         $('#tb_bookmark_list').bootstrapTable("refresh");
                         $('#modal_template_bookmark').modal('hide');
-                    }
-                    else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                    } else {
+                        AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
                     Loading.progressHide();
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             })
         }

@@ -477,12 +477,6 @@
 
     //任务提交
     function submit(useBox) {
-        // if (AssessDicKey.projectSurveyFormClassifyMultiple == getClassifyKey()) {
-        //     if (getStandardCount() <= 0) {
-        //         Alert("申请中至少包含一个标准对象");
-        //         return;
-        //     }
-        // }
         var formData = {};
         formData.declareId = "${declareRecord.id}";
         formData.projectId = "${projectInfo.id}";
@@ -533,7 +527,7 @@
                     $("#basicBatchApplyFrm").find('[name=estateId]').val(result.data.estateId);
                     batchTreeTool.ztreeInit(result.data.id);
                 } else {
-                    AlertError("初始化失败，失败原因:"+result.errmsg);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             }
         });
@@ -552,7 +546,7 @@
                 if (result.ret) {
                     $("#basicBatchApplyFrm").find('[name=id]').val(result.data.id);
                 } else {
-                    AlertError("保存失败,失败原因:"+result.errmsg);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             }
         });
@@ -571,7 +565,7 @@
                 if (result.ret) {
 
                 } else {
-                    AlertError("失败,失败原因:"+result.errmsg);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             }
         });
@@ -646,7 +640,7 @@
         var level = node.level;
         console.log(node.bisStructure + "=====bisStructure")
         if (node.bisStructure) {
-            notifyInfo("构筑物下无法继续添加节点。");
+            notifyInfo('提示',"构筑物下无法继续添加节点。");
             return false;
         }
         var html = "";
@@ -742,7 +736,7 @@
             }
 
             case 3: {
-                notifyInfo("房屋下无法继续添加节点。");
+                notifyInfo('提示',"房屋下无法继续添加节点。");
                 return false;
                 break;
             }
@@ -771,7 +765,7 @@
             },
             success: function (result) {
                 if (result.ret) {
-                    toastr.success('保存成功');
+                    notifySuccess('成功','保存成功');
                     var node = zTreeObj.getSelectedNodes()[0];
                     var childNode = zTreeObj.addNodes(node, {
                         id: result.data.id,
@@ -788,7 +782,7 @@
 
                     $('#detail_modal').modal('hide');
                 } else {
-                    AlertError("保存数据失败，失败原因:" + result.errmsg);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             }
         });
@@ -798,7 +792,7 @@
     batchTreeTool.getAndEditDetail = function () {
         var node = zTreeObj.getSelectedNodes()[0];
         if (node.level == 0) {
-            notifyInfo("楼盘信息请在【填写信息】中修改。");
+            notifyInfo('提示',"楼盘信息请在【填写信息】中修改。");
             return false;
         }
         $.ajax({
@@ -930,7 +924,7 @@
             },
             success: function (result) {
                 if (result.ret) {
-                    toastr.success('保存成功');
+                    notifySuccess('成功','保存成功');
                     var node = zTreeObj.getSelectedNodes()[0];
                     node.id = result.data.id;
                     node.name = result.data.name;
@@ -944,7 +938,7 @@
                     zTreeObj.updateNode(node, false);
                     $('#detail_modal_b').modal('hide');
                 } else {
-                    AlertError("保存数据失败，失败原因:" + result.errmsg);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             }
         });
@@ -956,7 +950,7 @@
             if (result) {
                 var node = zTreeObj.getSelectedNodes()[0];
                 if (node.id == 0) {
-                    notifyInfo("无法删除，请重新选择。");
+                    notifyInfo('提示',"无法删除，请重新选择。");
                     return false;
                 }
                 $.ajax({
@@ -973,7 +967,7 @@
                                 zTreeObj.selectNode(parentNode);
                             }
                         } else {
-                            AlertError("删除失败：" + result.errmsg);
+                            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                         }
                     }
                 })
@@ -1009,32 +1003,32 @@
         //显示出粘贴按钮
         var node = zTreeObj.getSelectedNodes()[0];
         if (node.level == 0) {
-            notifyInfo("不能复制楼盘，重新选择");
+            notifyInfo('提示',"不能复制楼盘，重新选择");
             return false;
         }
         batchTreeTool.beCopyObject = {};
         batchTreeTool.beCopyObject.id = node.id;
         batchTreeTool.beCopyObject.level = node.level;
-        toastr.success("复制成功");
+        notifySuccess('成功',"复制成功");
         $("#btnGroup").find('.paste').show();
     }
 
     //调整因素粘贴
     batchTreeTool.paste = function () {
         if (!batchTreeTool.beCopyObject) {
-            notifyInfo('请选择被复制对象');
+            notifyInfo('提示','请选择被复制对象');
             return false;
         }
         var node = zTreeObj.getSelectedNodes()[0];
         if (node.id == batchTreeTool.beCopyObject.id) {
-            notifyInfo('不能复制粘贴自身');
+            notifyInfo('提示','不能复制粘贴自身');
             return false;
         }
         if (node.level != batchTreeTool.beCopyObject.level) {
-            notifyInfo('请选择相应节点进行粘贴');
+            notifyInfo('提示','请选择相应节点进行粘贴');
             return false;
         }
-        bootbox.confirm("将覆盖原来数据，确认要粘贴么？", function (result) {
+        AlertConfirm("确认要粘贴么","将覆盖原来数据", function (result) {
             Loading.progressShow();
             $.ajax({
                 url: "${pageContext.request.contextPath}/basicApplyBatch/paste",
@@ -1061,7 +1055,7 @@
     batchTreeTool.deepCopy = function () {
         var node = zTreeObj.getSelectedNodes()[0];
         if (node.level == 0) {
-            notifyInfo("不能复制楼盘，重新选择")
+            notifyInfo('提示',"不能复制楼盘，重新选择")
             return false;
         }
         Loading.progressShow();
@@ -1076,7 +1070,7 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    toastr.success("复制成功");
+                    notifySuccess('成功',"复制成功");
                     batchTreeTool.ztreeInitByPlanDetailsId('${projectPlanDetails.id}');
                 }
                 else {
@@ -1106,7 +1100,7 @@
                     notifySuccess("成功","添加成功");
                 }
                 else {
-                    AlertError("添加失败，失败原因:" + result.errmsg);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             }
         });

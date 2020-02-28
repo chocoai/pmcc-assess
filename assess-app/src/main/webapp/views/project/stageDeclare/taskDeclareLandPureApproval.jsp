@@ -208,7 +208,7 @@
     declareApprovalFun.landRelationHouseData = function (id) {
         var item = $("#" + declareApprovalFun.landConfig.table).bootstrapTable('getRowByUniqueId', id);
         if (!declareCommon.isNotBlank(item.centerId)) {
-            toastr.success('不合符调整后的数据约定,请联系管理员!');
+            notifySuccess('成功','不合符调整后的数据约定,请联系管理员!');
             return false;
         }
         declareCommon.getDeclareBuildCenter(item.centerId, function (centerData) {
@@ -221,12 +221,12 @@
                             declareCommon.initHouse(data, $("#" + declareApprovalFun.landConfig.HouseCert.frm), [declareCommon.config.house.fileId], null,false);
                             $('#' + declareApprovalFun.landConfig.HouseCert.box).modal("show");
                         } else {
-                            toastr.success('关联数据已经被删除了!');
+                            notifySuccess('成功','关联数据已经被删除了!');
                         }
                     });
                 }
             }else {
-                toastr.success('土地证关联的房产证无!');
+                notifySuccess('成功','土地证关联的房产证无!');
             }
         });
     };
@@ -261,7 +261,7 @@
     declareApprovalFun.landRelationDeclareEconomicIndicatorsData = function (id) {
         var item = $("#" + declareApprovalFun.landConfig.table).bootstrapTable('getRowByUniqueId', id);
         if (!declareCommon.isNotBlank(item.centerId)) {
-            toastr.success('不合符调整后的数据约定,请联系管理员!');
+            notifySuccess('成功','不合符调整后的数据约定,请联系管理员!');
             return false;
         }
         var attribute = {readonly:"readonly",'class':'form-control'} ;
@@ -274,7 +274,7 @@
                     attribute:attribute
                 });
             }else {
-                toastr.success('经济指标无!');
+                notifySuccess('成功','经济指标无!');
             }
         });
     };
@@ -328,7 +328,7 @@
     declareApprovalFun.realtyRealDeclareEconomicIndicators = function (id) {
         var item = $("#" + declareApprovalFun.declareRealtyRealEstateCertConfig.table).bootstrapTable('getRowByUniqueId', id);
         if (!declareCommon.isNotBlank(item.centerId)) {
-            toastr.success('不合符调整后的数据约定,请联系管理员!');
+            notifySuccess('成功','不合符调整后的数据约定,请联系管理员!');
             return false;
         }
         var attribute = {readonly:"readonly",'class':'form-control'} ;
@@ -341,7 +341,7 @@
                     attribute:attribute
                 });
             }else {
-                toastr.success('经济指标无!');
+                notifySuccess('成功','经济指标无!');
             }
         });
     };

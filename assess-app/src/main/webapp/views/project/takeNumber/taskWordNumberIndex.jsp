@@ -346,12 +346,12 @@
                     }
                 }
             },
-            error: function (e) {
+            error: function (result) {
                 if (errorCallback) {
                     errorCallback(e);
                 } else {
                     console.log(result.errmsg);
-                    AlertError("调用服务端方法失败，失败原因:" + e);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             }
         });
@@ -491,12 +491,12 @@
                     data.imgPath = "${pageContext.request.contextPath}" + sysAttachmentDto.filePath;
                     data.attachmentId = sysAttachmentDto.id;
                     baseTakeNumber.initFormProjectTakeNumberDetailData(data, form, false);
-                }, function (error) {
+                }, function (result) {
                     Loading.progressHide();
-                    notifyWarning("失败","失败原因:"+data);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 });
-            }, function (data) {
-                notifyWarning("失败","失败原因:"+data);
+            }, function (result) {
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 Loading.progressHide();
             });
         });
@@ -545,7 +545,7 @@
             },
             error: function (result, status, e) {
                 Loading.progressHide();
-                AlertError("调用服务端方法失败，失败原因:" + result);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errrmsg);
             }
         });
     };
@@ -555,7 +555,7 @@
         var defaultObj = formSerializeArray(form);
         baseTakeNumber.ajaxServerMethod(defaultObj, "projectTakeNumber/deleteProjectTakeNumberDetailById", "post", function () {
             form.parent().parent().parent().remove();
-            toastr.success('移除成功!');
+            notifySuccess('成功','移除成功!');
         });
     };
 

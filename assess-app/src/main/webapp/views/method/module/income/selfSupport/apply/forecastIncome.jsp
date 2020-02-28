@@ -445,7 +445,7 @@
                 })
                 selfSupportForecast.delHistory(arrayId.join(),type);
             } else {
-                notifyInfo("请选择需删除的数据");
+                notifyInfo('提示',"请选择需删除的数据");
             }
         })
     }
@@ -461,7 +461,7 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    notifySuccess('删除成功');
+                    notifySuccess("成功",'删除成功');
                     selfSupportForecast.loadHistoryList(type);
                 }
                 else {
@@ -492,7 +492,7 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    notifySuccess('保存成功');
+                    notifySuccess("成功",'保存成功');
                     var type = $("#frm_history").find('[name=type]').val();
                     selfSupportForecast.loadHistoryList(type);
                     $('#modal_history').modal('hide');
@@ -526,7 +526,7 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    notifySuccess(result.data.replace(/\n/g, '<br/>'));
+                    notifySuccess("成功",result.data.replace(/\n/g, '<br/>'));
                     selfSupportForecast.loadHistoryList(type);
                 } else {
                     AlertError("导入数据失败，失败原因:" + result.errmsg);
@@ -556,14 +556,14 @@
                 },
                 success: function (result) {
                     if (result.ret) {
-                        notifySuccess("添加成功");
+                        notifySuccess("成功","添加成功");
                         $('#' + selfSupportForecast.getHistoryListId(type)).bootstrapTable('refresh');
                         $('#' + selfSupportForecast.getForecastAnalyseListId(type)).bootstrapTable('refresh');
                     }
                 }
             })
         } else {
-            notifyInfo('请选择要添加的数据');
+            notifyInfo('提示','请选择要添加的数据');
         }
     }
 
@@ -584,14 +584,14 @@
                     type: type
                 }, success: function (result) {
                     if (result.ret) {
-                        notifySuccess("取消成功");
+                        notifySuccess("成功","取消成功");
                         $('#' + selfSupportForecast.getHistoryListId(type)).bootstrapTable('refresh');
                         $('#' + selfSupportForecast.getForecastAnalyseListId(type)).bootstrapTable('refresh');
                     }
                 }
             })
         } else {
-            notifyInfo('请选择要取消的数据');
+            notifyInfo('提示','请选择要取消的数据');
         }
     }
 
@@ -608,7 +608,7 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    notifySuccess('分析成功');
+                    notifySuccess("成功",'分析成功');
                     $("#" + selfSupportForecast.getForecastAnalyseListId(type)).bootstrapTable('refresh');
                 }
             }

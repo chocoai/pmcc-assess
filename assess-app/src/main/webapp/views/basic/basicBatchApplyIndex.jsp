@@ -76,18 +76,19 @@
                                     <div class="col-md-4">
                                          <span id="btnGroup" style="display: none;">
                                              <button type="button" class="btn btn-sm btn-success baseTool"
-                                                onclick="batchTreeTool.showAddModal()">新增</button>
-                                             <button type="button" class="btn btn-sm btn-warning" onclick=" batchTreeTool.deleteDetail();">删除</button>
+                                                     onclick="batchTreeTool.showAddModal()">新增</button>
+                                             <button type="button" class="btn btn-sm btn-warning"
+                                                     onclick=" batchTreeTool.deleteDetail();">删除</button>
                                              <button type="button" class="btn btn-sm btn-primary baseTool"
-                                                onclick=" batchTreeTool.expandAll(true);">全部展开</button>
+                                                     onclick=" batchTreeTool.expandAll(true);">全部展开</button>
                                              <button type="button" class="btn btn-sm btn-primary baseTool"
-                                                onclick=" batchTreeTool.expandAll(false);">全部收起</button>
+                                                     onclick=" batchTreeTool.expandAll(false);">全部收起</button>
                                              <button type="button" class="btn btn-sm btn-primary fillInformation"
-                                                onclick="batchTreeTool.fillInformation();">填写信息</button>
+                                                     onclick="batchTreeTool.fillInformation();">填写信息</button>
                                              <button type="button" class="btn btn-sm btn-info copy"
-                                                onclick="batchTreeTool.copy();">复制</button>
+                                                     onclick="batchTreeTool.copy();">复制</button>
                                              <button type="button" class="btn btn-sm btn-warning paste"
-                                                onclick="batchTreeTool.paste();">粘贴</button>
+                                                     onclick="batchTreeTool.paste();">粘贴</button>
                                         </span>
                                     </div>
                                     <c:if test="${applyBatch.caseEstateId > 0}">
@@ -96,11 +97,12 @@
                                         </div>
                                         <div class="col-md-1">
                                             <button type="button" class="btn btn-sm btn-success baseTool"
-                                               onclick="batchTreeTool.addFromCase()">
+                                                    onclick="batchTreeTool.addFromCase()">
                                                 新增
                                             </button>
                                             <button type="button" class="btn btn-sm btn-primary caseTool"
-                                               onclick=" batchTreeTool.upgradeFromCase();">升级</button>
+                                                    onclick=" batchTreeTool.upgradeFromCase();">升级
+                                            </button>
                                         </div>
                                     </c:if>
                                 </div>
@@ -177,7 +179,8 @@
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                                                    <button type="button" data-dismiss="modal"
+                                                            class="btn btn-default btn-sm">
                                                         取消
                                                     </button>
                                                     <button type="button" class="btn btn-primary btn-sm"
@@ -243,7 +246,7 @@
             }
             var id = $("#basicBatchApplyFrm").find("input[name='id']").val();
             if (!id) {
-                notifyInfo("请先添加楼盘的信息");
+                notifyInfo('提示', "请先添加楼盘的信息");
                 return false;
             }
             Loading.progressShow();
@@ -478,7 +481,7 @@
                 break;
             }
             case "tb_basic_house": {
-                notifyInfo("房屋下无法继续添加节点。");
+                notifyInfo('提示', "房屋下无法继续添加节点");
                 return false;
                 break;
             }
@@ -503,7 +506,7 @@
             },
             success: function (result) {
                 if (result.ret) {
-                    notifySuccess("成功",'保存成功');
+                    notifySuccess("成功", '保存成功');
                     if ('${applyBatch.caseEstateId > 0}' == 'true') {
                         batchTreeTool.ztreeInit(${applyBatch.id});
                     } else {
@@ -530,35 +533,33 @@
     batchTreeTool.deleteDetail = function () {
         var node = zTreeObj.getSelectedNodes()[0];
         if (node.bisModify == false) {
-            notifyInfo("案例数据无法删除。");
+            notifyInfo('提示', "案例数据无法删除");
             return false;
         }
-        bootbox.confirm("确认要删除么？", function (result) {
-            if (result) {
-                var node = zTreeObj.getSelectedNodes()[0];
-                if (node.id == 0) {
-                    notifyInfo("无法删除，请重新选择。");
-                    return false;
-                }
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/basicApplyBatch/deleteDetail",
-                    data: {id: node.id},
-                    type: "post",
-                    dataType: "json",
-                    success: function (result) {
-                        if (result.ret) {
-                            //刷新树 如果存在同级节点 则移除当前节点 否则刷新上上级节点  最后默认选中上级节点
-                            var parentNode = node.getParentNode();
-                            zTreeObj.removeNode(node);
-                            if (parentNode) {
-                                zTreeObj.selectNode(parentNode);
-                            }
-                        } else {
-                            AlertError("删除失败：" + result.errmsg);
-                        }
-                    }
-                })
+        AlertConfirm("确认要删除么", "删除后数据不可恢复", function (result) {
+            var node = zTreeObj.getSelectedNodes()[0];
+            if (node.id == 0) {
+                notifyInfo('提示', "无法删除，请重新选择。");
+                return false;
             }
+            $.ajax({
+                url: "${pageContext.request.contextPath}/basicApplyBatch/deleteDetail",
+                data: {id: node.id},
+                type: "post",
+                dataType: "json",
+                success: function (result) {
+                    if (result.ret) {
+                        //刷新树 如果存在同级节点 则移除当前节点 否则刷新上上级节点  最后默认选中上级节点
+                        var parentNode = node.getParentNode();
+                        zTreeObj.removeNode(node);
+                        if (parentNode) {
+                            zTreeObj.selectNode(parentNode);
+                        }
+                    } else {
+                        AlertError("删除失败：" + result.errmsg);
+                    }
+                }
+            })
         });
     }
 
@@ -589,32 +590,32 @@
         //显示出粘贴按钮
         var node = zTreeObj.getSelectedNodes()[0];
         if (node.level == 0) {
-            notifyInfo("不能复制楼盘，重新选择")
+            notifyInfo('提示', "不能复制楼盘，重新选择")
             return false;
         }
         batchTreeTool.beCopyObject = {};
         batchTreeTool.beCopyObject.id = node.id;
         batchTreeTool.beCopyObject.level = node.level;
-        notifySuccess("成功","复制成功");
+        notifySuccess("成功", "复制成功");
         $("#btnGroup").find('.paste').show();
     }
 
     //调整因素粘贴
     batchTreeTool.paste = function () {
         if (!batchTreeTool.beCopyObject) {
-            notifyInfo('请选择被复制对象');
+            notifyInfo('提示', '请选择被复制对象');
             return false;
         }
         var node = zTreeObj.getSelectedNodes()[0];
         if (node.id == batchTreeTool.beCopyObject.id) {
-            notifyInfo('不能复制粘贴自身');
+            notifyInfo('提示', '不能复制粘贴自身');
             return false;
         }
         if (node.level != batchTreeTool.beCopyObject.level) {
-            notifyInfo('请选择相应节点进行粘贴');
+            notifyInfo('提示', '请选择相应节点进行粘贴');
             return false;
         }
-        AlertConfirm("确认要粘贴么","将覆盖原来数据", function (result) {
+        AlertConfirm("确认要粘贴么", "将覆盖原来数据", function (result) {
             Loading.progressShow();
             $.ajax({
                 url: "${pageContext.request.contextPath}/basicApplyBatch/paste",
@@ -627,9 +628,8 @@
                 success: function (result) {
                     Loading.progressHide();
                     if (result.ret) {
-                        notifySuccess("成功","粘贴成功");
-                    }
-                    else {
+                        notifySuccess("成功", "粘贴成功");
+                    } else {
                         AlertError("获取数据失败，失败原因:" + result.errmsg, 1, null, null);
                     }
                 }
@@ -656,7 +656,7 @@
     batchTreeTool.addFromCase = function () {
         var node = caseEstateZtreeObj.getSelectedNodes()[0];
         if (!node) {
-            notifyInfo("请先选择节点");
+            notifyInfo('提示', "请先选择节点");
             return;
         }
         $.ajax({
@@ -680,7 +680,7 @@
     batchTreeTool.upgradeFromCase = function () {
         var node = caseEstateZtreeObj.getSelectedNodes()[0];
         if (!node) {
-            notifyInfo("请先选择节点");
+            notifyInfo('提示', "请先选择节点");
             return;
         }
         $.ajax({

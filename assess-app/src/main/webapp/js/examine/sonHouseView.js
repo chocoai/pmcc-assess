@@ -1654,7 +1654,7 @@ var houseRoom;
                 data: {id: id},
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success('复制成功');
+                        notifySuccess('成功','复制成功');
                         houseRoom.prototype.loadDataDicList();
                     }
                 },
@@ -1801,9 +1801,9 @@ damagedDegree.valid = function (remark) {
     }) ;
     if (i != 0){
         if (remark){
-            toastr.success(remark);
+            notifySuccess('成功',remark);
         }else {
-            toastr.success('请检查房屋完损度');
+            notifySuccess('成功','请检查房屋完损度');
         }
     }
     return i == 0 ;

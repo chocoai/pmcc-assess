@@ -315,7 +315,7 @@
                         } else {
                             sysAreaObj.loadTree();
                         }
-                        toastr.success('删除成功');
+                        notifySuccess('成功','删除成功');
                         sysAreaObj.hideDetailHandle() ;
                     } else {
                         Alert(result.errmsg);
@@ -364,7 +364,7 @@
                 if (result.ret) {
                     sysAreaObj.loadTree();
                     sysAreaObj.hideDetailHandle() ;
-                    toastr.success('成功');
+                    notifySuccess('成功','成功');
                     sysAreaObj.box.modal("hide");
                 } else {
                     Alert(result.errmsg);

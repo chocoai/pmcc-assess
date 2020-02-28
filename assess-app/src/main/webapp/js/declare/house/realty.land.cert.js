@@ -32,7 +32,7 @@ assessCommonLand.copyData = function () {
         });
 
     } else {
-        notifyInfo("只能选择一行数据进行复制", "请确认!");
+        notifyInfo('提示',"只能选择一行数据进行复制");
 
     }
 };
@@ -41,7 +41,7 @@ assessCommonLand.pasteAll = function () {
     var table = $("#" + assessCommonLand.config.table);
     var rows = table.bootstrapTable('getSelections');
     if (!rows || rows.length <= 0) {
-        notifyInfo("请选择要复制的数据", "请确认!");
+        notifyInfo('提示',"请选择要复制的数据");
     } else if (rows.length >= 1) {
         var copyId = $(assessCommonLand.config.handleCopy).find("input[name='id']").val();
         var idArray = [];
@@ -54,7 +54,7 @@ assessCommonLand.pasteAll = function () {
         });
         //判断
         if (filtered.length == 1) {
-            notifyInfo("需要粘贴的从数据包含了自身,这样情况是不被允许的", "请确认!");
+            notifyInfo('提示',"需要粘贴的从数据包含了自身,这样情况是不被允许的");
 
             table.bootstrapTable('uncheckAll');
             return false;
@@ -62,7 +62,7 @@ assessCommonLand.pasteAll = function () {
 
         AlertConfirm("确认要粘贴", "", function () {
             declareCommon.copyDeclareBuildCenter(copyId, idArray.join(","), function () {
-                notifyInfo("粘贴从数据成功", "请确认!");
+                notifyInfo('提示',"粘贴从数据成功");
 
                 table.bootstrapTable('uncheckAll');
                 $(assessCommonLand.config.handleCopy).find("input").val('');
@@ -71,7 +71,7 @@ assessCommonLand.pasteAll = function () {
         });
 
     } else {
-        notifyInfo("只能选择一行数据进行复制", "请确认!");
+        notifyInfo('提示',"只能选择一行数据进行复制");
 
     }
 };
@@ -87,7 +87,7 @@ assessCommonLand.landImportHandleHouse = function (flag, id) {
     if (flag) {
         var item = $("#" + assessCommonLand.config.table).bootstrapTable('getRowByUniqueId', id);
         if (!declareCommon.isNotBlank(item.centerId)) {
-            notifyInfo("不合符调整后的数据约定,请联系管理员", "请确认!");
+            notifyInfo('提示',"不合符调整后的数据约定,请联系管理员");
 
             return false;
         }
@@ -200,7 +200,7 @@ assessCommonLand.deleteLand = function () {
     var rows = $("#" + assessCommonLand.config.table).bootstrapTable('getSelections');
     if (rows.length >= 1) {
 
-        AlertConfirm("是否确认删除", "删除相应的数据后将不可恢复", function () {
+        AlertConfirm("确认删除", "删除相应的数据后将不可恢复", function () {
             var arr = [];
             rows.forEach(function (item, index, source) {
                 arr.push(item.id);
@@ -228,7 +228,7 @@ assessCommonLand.editLand = function () {
     var table = $("#" + assessCommonLand.config.table);
     var rows = table.bootstrapTable('getSelections');
     if (!rows || rows.length <= 0) {
-        notifyInfo("请选择要编辑的数据","请确认!");
+        notifyInfo('提示',"请选择要编辑的数据");
 
     } else if (rows.length == 1) {
         assessCommonLand.showAddModelLand();
@@ -237,7 +237,7 @@ assessCommonLand.editLand = function () {
         $('#' + assessCommonLand.config.box).modal("show");
         table.bootstrapTable('uncheckAll');
     } else {
-        notifyInfo("只能选择一行数据进行编辑","请确认!");
+        notifyInfo('提示',"只能选择一行数据进行编辑");
 
     }
 };
@@ -478,10 +478,10 @@ assessCommonLand.declareBuildingPermitRemove = function () {
             if (declareCommon.isNotBlank(centerData.buildingPermitId)) {
                 declareCommon.deleteByDeclareBuildCenterType(data.centerId, declareCommon.declareCenterData.buildingPermitId.type, function () {
                     box.modal("hide");
-                    notifyInfo("已经删除","请确认!");
+                    notifyInfo('提示',"已经删除");
                 });
             } else {
-                notifyInfo("未添加数据","请确认!");
+                notifyInfo('提示',"未添加数据");
 
             }
         });
@@ -542,10 +542,10 @@ assessCommonLand.declareLandUsePermitRemove = function () {
             if (declareCommon.isNotBlank(centerData.landUsePermitId)) {
                 declareCommon.deleteByDeclareBuildCenterType(data.centerId, declareCommon.declareCenterData.landUsePermitId.type, function () {
                     box.modal("hide");
-                    notifyInfo("已经删除","请确认!");
+                    notifyInfo('提示',"已经删除");
                 });
             } else {
-                notifyInfo("未添加数据","请确认!");
+                notifyInfo('提示',"未添加数据");
 
             }
         });
@@ -590,10 +590,10 @@ assessCommonLand.declareBuildingConstructionPermitRemove = function () {
             if (declareCommon.isNotBlank(centerData.buildingConstructionPermitId)) {
                 declareCommon.deleteByDeclareBuildCenterType(data.centerId, declareCommon.declareCenterData.buildingConstructionPermitId.type, function () {
                     box.modal("hide");
-                    notifyInfo("已经删除","请确认!");
+                    notifyInfo('提示',"已经删除");
                 });
             } else {
-                notifyInfo("未添加数据","请确认!");
+                notifyInfo('提示',"未添加数据");
 
             }
         });
@@ -655,10 +655,10 @@ assessCommonLand.declarePreSalePermitRemove = function () {
             if (declareCommon.isNotBlank(centerData.preSalePermitId)) {
                 declareCommon.deleteByDeclareBuildCenterType(data.centerId, declareCommon.declareCenterData.preSalePermitId.type, function () {
                     box.modal("hide");
-                    notifyInfo("已经删除","请确认!");
+                    notifyInfo('提示',"已经删除");
                 });
             } else {
-                notifyInfo("未添加数据","请确认!");
+                notifyInfo('提示',"未添加数据");
             }
         });
     }
@@ -738,7 +738,7 @@ assessCommonLand.attachmentAutomatedWarrants = function (_this) {
                     declareCommon.showFile(FileId, tableName, id, true);
                 }(query.tableId, query.fieldsName, query.tableName));
                 assessCommonLand.loadList();
-                notifyInfo("成功", "操作成功!");
+                notifyInfo('提示', "操作成功!");
             }, function (message) {
                 Loading.progressHide();
                 AlertError("错误", "调用服务端方法失败，失败原因:" + message);

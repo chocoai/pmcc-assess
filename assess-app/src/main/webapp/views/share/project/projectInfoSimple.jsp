@@ -275,7 +275,7 @@
                 }
             },
             error: function (result) {
-                AlertError("调用服务端方法失败，失败原因:" + result);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         })
     };
@@ -294,7 +294,7 @@
                 }
             },
             error: function (result) {
-                AlertError("调用服务端方法失败，失败原因:" + result);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         })
     };
@@ -341,7 +341,7 @@
                     }
                 });
                 if (uuids.length == 0) {
-                    AlertError('有效合同为0');
+                    notifyInfo('提示','有效合同为0');
                     return false;
                 }
                 contractObj.getProjectById('${projectInfo.id}', function (data) {

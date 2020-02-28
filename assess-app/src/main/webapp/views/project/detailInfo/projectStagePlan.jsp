@@ -487,7 +487,7 @@
                         projectStagePlan.stageTable.bootstrapTable('refresh');
 
                     } else {
-                        notifyWarning("失败", "失败原因:" + result.errmsg);
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 }
             })
@@ -542,12 +542,12 @@
     /*执行人员安排*/
     projectStagePlan.setExecuteUserAccount = function () {
         if ('${projectInfo.projectMemberVo.userAccountManager}' != '${sysUserDto.userAccount}') {
-            notifyInfo("只有项目经理才能安排任务的执行人员");
+            notifyInfo('提示',"只有项目经理才能安排任务的执行人员");
             return false;
         }
         var rows = projectStagePlan.stageTable.bootstrapTable('getSelections');
         if (!rows || rows.length <= 0) {
-            notifyInfo("还未选择相关任务");
+            notifyInfo('提示',"还未选择相关任务");
         }
         var idArray = [];
         $.each(rows, function (i, item) {
@@ -598,7 +598,7 @@
                 $(_this).val(data.name);
                 $(_this).closest("form").find("[name='executeUserAccount']").val(data.account);
             } else {
-                notifyWarning("还未选择任何人员");
+                notifyInfo("提示","还未选择任何人员");
             }
         });
     };
@@ -652,12 +652,12 @@
      */
     projectStagePlan.deletePlanDetailsByIds = function () {
         if ('${projectInfo.projectMemberVo.userAccountManager}' != '${sysUserDto.userAccount}') {
-            notifyInfo("只有项目经理才能刪除相关任务");
+            notifyInfo('提示',"只有项目经理才能刪除相关任务");
             return false;
         }
         var rows = projectStagePlan.stageTable.bootstrapTable('getSelections');
         if (!rows || rows.length <= 0) {
-            notifyInfo("还未选择相关任务");
+            notifyInfo('提示',"还未选择相关任务");
             return false;
         }
         var idArray = [];
@@ -701,11 +701,11 @@
     //工作事项粘贴
     projectStagePlan.taskPaste = function (_this, id) {
         if (!copyPlanDetailsTempId) {
-            notifyInfo('请选择复制对象');
+            notifyInfo('提示','请选择复制对象');
             return false;
         }
         if (id == copyPlanDetailsTempId) {
-            notifyInfo('无法粘贴自己');
+            notifyInfo('提示','无法粘贴自己');
             return false;
         }
         Loading.progressShow();

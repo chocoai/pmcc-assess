@@ -345,11 +345,11 @@
                 if (result.ret) {
                     declareRecordGroup.groupTargetTable.bootstrapTable('refresh');
                 } else {
-                    AlertError("失败原因:" + result.errmsg);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
-            error: function (e) {
-                AlertError("调用服务端方法失败，失败原因:" + e);
+            error: function (result) {
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     };
@@ -378,11 +378,11 @@
                         $(declareRecordGroup.cancelDeclareRecordTable.selector).bootstrapTable('refresh');
                         $(declareRecordGroup.sureDeclareRecordTable.selector).bootstrapTable('refresh');
                     } else {
-                        AlertError("失败:" + result.errmsg);
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 },
-                error: function (e) {
-                    AlertError("调用服务端方法失败，失败原因:" + e);
+                error: function (result) {
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             });
         }
@@ -409,11 +409,11 @@
                         $(declareRecordGroup.cancelDeclareRecordTable.selector).bootstrapTable('refresh');
                         $(declareRecordGroup.sureDeclareRecordTable.selector).bootstrapTable('refresh');
                     } else {
-                        AlertError("失败:" + result.errmsg);
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 },
-                error: function (e) {
-                    AlertError("调用服务端方法失败，失败原因:" + e);
+                error: function (result) {
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             });
         }
@@ -479,11 +479,11 @@
                             declareRecordGroup.groupTargetTable.bootstrapTable('refresh');
                         } else {
                             declareRecordGroup.groupTargetTable.bootstrapTable('uncheckAll');
-                            AlertError("失败原因:" + result.errmsg);
+                            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                         }
                     },
-                    error: function (e) {
-                        AlertError("调用服务端方法失败，失败原因:" + e);
+                    error: function (result) {
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 });
             })
@@ -496,7 +496,7 @@
     declareRecordGroup.editData = function () {
         var rows = declareRecordGroup.groupTargetTable.bootstrapTable('getSelections');
         if (!rows || rows.length <= 0) {
-            notifyInfo("请选择要删除的数据");
+            notifyInfo('提示',"请选择要删除的数据");
         } else {
             if (rows.length == 1) {
                 var data = rows[0];
@@ -531,11 +531,11 @@
                     target.modal("hide");
                     declareRecordGroup.groupTargetTable.bootstrapTable('refresh');
                 } else {
-                    AlertError("保存失败:" + result.errmsg);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
-            error: function (e) {
-                AlertError("调用服务端方法失败，失败原因:" + e);
+            error: function (result) {
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     };

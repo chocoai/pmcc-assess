@@ -640,7 +640,7 @@
     //调整因素粘贴
     surePrice.paste = function (_this) {
         if (!surePrice.beCopyJudgeObject) {
-            notifyInfo('请选择被复制对象');
+            notifyInfo('提示','请选择被复制对象');
             return false;
         }
         var judgeObjectId = $(_this).closest('tr').attr('data-id');
@@ -671,7 +671,7 @@
     //调整因素批量粘贴
     surePrice.pasteBatch = function () {
         if (!surePrice.beCopyJudgeObject) {
-            notifyInfo('请选择被复制对象');
+            notifyInfo('提示','请选择被复制对象');
             return false;
         }
         var judgeObjectIdArray = [];
@@ -682,7 +682,7 @@
             }
         })
         if (judgeObjectIdArray.length <= 0) {
-            notifyInfo('请选择勾选参与复制对象');
+            notifyInfo('提示','请选择勾选参与复制对象');
             return false;
         }
         Loading.progressShow();
@@ -735,7 +735,7 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    notifySuccess(result.data);
+                    notifySuccess("成功",result.data);
                     surePrice.loadAdjustJudgeObject('${projectPlanDetails.judgeObjectId}');
                 }
             },

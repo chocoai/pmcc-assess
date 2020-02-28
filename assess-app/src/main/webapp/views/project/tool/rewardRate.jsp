@@ -157,7 +157,7 @@
             }
         });
        if (checkData.length != frm.find("input[name='ratio']").size()){
-           notifyInfo('每一项报酬率都要填写!');
+           notifyInfo('提示','每一项报酬率都要填写!');
            return false;
        }
         Loading.progressShow();
@@ -171,7 +171,7 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    notifySuccess('保存成功');
+                    notifySuccess("成功",'保存成功');
                     $("#modal_reward_rate").modal('hide');
                     if (rewardRateFunc.onSuccess) {
                         rewardRateFunc.onSuccess(result.data);

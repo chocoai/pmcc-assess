@@ -226,7 +226,7 @@
             }
 
             case 3: {
-                Alert("房屋下无法继续添加节点。");
+                notifyInfo("提示","房屋下无法继续添加节点。");
                 return false;
                 break;
             }
@@ -252,7 +252,7 @@
             },
             success: function (result) {
                 if (result.ret) {
-                    toastr.success('保存成功');
+                    notifySuccess('成功','保存成功');
                     var node = zTreeObj.getSelectedNodes()[0];
                     zTreeObj.addNodes(node, {
                         id: result.data.id,
@@ -261,7 +261,7 @@
                     });
                     $('#detail_modal').modal('hide');
                 } else {
-                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             }
         });
@@ -283,7 +283,7 @@
             },
             success: function (result) {
                 if (result.ret) {
-                    toastr.success('保存成功');
+                    notifySuccess('成功','保存成功');
                     //ztreeInit($("#basicBatchApplyFrm").find("input[name='estateName']").val());
                     var node = zTreeObj.getSelectedNodes()[0];
                     node.id = result.data.id;
@@ -293,7 +293,7 @@
                     zTreeObj.updateNode(node, false);
                     $('#detail_modal_b').modal('hide');
                 } else {
-                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             }
         });
@@ -301,11 +301,10 @@
 
     //删除明细
     batchTreeTool.deleteDetail = function () {
-        bootbox.confirm("确认要删除么？", function (result) {
-            if (result) {
+        AlertConfirm("确认要删除么","删除后数据不可恢复", function (result) {
                 var node = zTreeObj.getSelectedNodes()[0];
                 if (node.id == 0) {
-                    Alert("无法删除，请重新选择。");
+                    notifyInfo("提示","无法删除，请重新选择。");
                     return false;
                 }
                 $.ajax({
@@ -322,11 +321,10 @@
                                 zTreeObj.selectNode(parentNode);
                             }
                         } else {
-                            Alert("删除失败：" + result.errmsg);
+                            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                         }
                     }
                 })
-            }
         });
     }
 
@@ -388,7 +386,7 @@
     batchTreeTool.getAndEditDetail = function () {
         var node = zTreeObj.getSelectedNodes()[0];
         if (node.id == 0) {
-            Alert("请重新选择。");
+            notifyInfo("提示","请重新选择");
             return false;
         }
         $.ajax({
@@ -426,32 +424,32 @@
         //显示出粘贴按钮
         var node = zTreeObj.getSelectedNodes()[0];
         if (node.level == 0) {
-            Alert("不能复制楼盘，重新选择")
+            notifyInfo("提示","不能复制楼盘，重新选择")
             return false;
         }
         batchTreeTool.beCopyObject = {};
         batchTreeTool.beCopyObject.id = node.id;
         batchTreeTool.beCopyObject.level = node.level;
-        toastr.success("复制成功");
+        notifySuccess('成功',"复制成功");
         $("#divTool").find('.paste').show();
     }
 
     //调整因素粘贴
     batchTreeTool.paste = function () {
         if (!batchTreeTool.beCopyObject) {
-            Alert('请选择被复制对象');
+            nofityInfo('提示','请选择被复制对象');
             return false;
         }
         var node = zTreeObj.getSelectedNodes()[0];
         if (node.id == batchTreeTool.beCopyObject.id) {
-            Alert('不能复制粘贴自身');
+            nofityInfo('提示','不能复制粘贴自身');
             return false;
         }
         if (node.level != batchTreeTool.beCopyObject.level) {
-            Alert('请选择相应节点进行粘贴');
+            nofityInfo('提示','请选择相应节点进行粘贴');
             return false;
         }
-        bootbox.confirm("将覆盖原来数据，确认要粘贴么？", function (result) {
+        AlertConfirm("确认要粘贴么","将覆盖原来数据", function (result) {
             Loading.progressShow();
             $.ajax({
                 url: "${pageContext.request.contextPath}/basicApplyBatch/paste",
@@ -465,13 +463,13 @@
                 success: function (result) {
                     Loading.progressHide();
                     if (result.ret) {
-                        toastr.success("粘贴成功");
+                        notifySuccess('成功',"粘贴成功");
                         //更新元素信息
                         $("#divTool").find('.paste').hide();
                         batchTreeTool.ztreeInit(batchApply);
                     }
                     else {
-                        Alert("获取数据失败，失败原因:" + result.errmsg, 1, null, null);
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 }
             });

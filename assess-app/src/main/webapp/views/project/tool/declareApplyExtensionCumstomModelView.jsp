@@ -71,7 +71,7 @@
         var target = $(_this).closest(".form-group");
         declareApplyExtensionCumstom.deleteById(target.find("[name='id']").val(), function () {
             target.remove();
-            notifyInfo("清除","清除本条数据成功!");
+            notifyInfo('提示',"清除本条数据成功!");
         });
     };
 
@@ -111,7 +111,7 @@
             }
         });
         if (count != number) {
-            notifyInfo('自定义字段必须填写完整!       (假如不需要那么 多自定义字段那么请点击清除按钮)');
+            notifyInfo('提示','自定义字段必须填写完整!       (假如不需要那么 多自定义字段那么请点击清除按钮)');
             return false;
         }
         return true;
@@ -136,11 +136,11 @@
                         callback(result.data);
                     }
                 } else {
-                    AlertError("获取数据失败，失败原因:" + result.errmsg);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                AlertError("调用服务端方法失败，失败原因:" + result.errmsg);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     };
@@ -173,11 +173,11 @@
                         callback(result.data);
                     }
                 } else {
-                    AlertError("获取数据失败，失败原因:" + result.errmsg);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                AlertError("调用服务端方法失败，失败原因:" + result.errmsg);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     };
@@ -195,11 +195,11 @@
                         callback(result.data);
                     }
                 } else {
-                    AlertError("获取数据失败，失败原因:" + result.errmsg);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                AlertError("调用服务端方法失败，失败原因:" + result.errmsg);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     };

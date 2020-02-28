@@ -149,15 +149,15 @@
                     data: {id: id},
                     success: function (result) {
                         if (result.ret) {
-                            toastr.success('删除成功');
+                            notifySuccess('成功','删除成功');
                             unitHuxing.prototype.loadDataDicList();
                         }
                         else {
-                            Alert("保存数据失败，失败原因:" + result.errmsg);
+                            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                         }
                     },
                     error: function (result) {
-                        AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 })
             },
@@ -187,16 +187,16 @@
                     data: data,
                     success: function (result) {
                         if (result.ret) {
-                            toastr.success('保存成功');
+                            notifySuccess('成功','保存成功');
                             $('#' + unitHuxing.prototype.config().box).modal('hide');
                             unitHuxing.prototype.loadDataDicList();
                         }
                         else {
-                            Alert("保存数据失败，失败原因:" + result.errmsg);
+                            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                         }
                     },
                     error: function (result) {
-                        AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 })
             },
@@ -221,7 +221,7 @@
                         }
                     },
                     error: function (result) {
-                        AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 })
             },

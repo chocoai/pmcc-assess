@@ -204,7 +204,7 @@
                 }
             },
             error: function (result) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     };
@@ -257,16 +257,16 @@
                                 }
                             },
                             error: function (result) {
-                                AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                             }
                         });
                     }
                 } else {
-                    Alert("保存失败:" + result.errmsg);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
-            error: function (e) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + e);
+            error: function (result) {
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     };
@@ -306,16 +306,16 @@
                                 }
                             },
                             error: function (result) {
-                                AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                             }
                         });
                     }
                 } else {
-                    Alert("保存失败:" + result.errmsg);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
-            error: function (e) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + e);
+            error: function (result) {
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
 
@@ -356,16 +356,16 @@
                                 }
                             },
                             error: function (result) {
-                                AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                             }
                         });
                     }
                 } else {
-                    Alert("保存失败:" + result.errmsg);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
-            error: function (e) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + e);
+            error: function (result) {
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
 
@@ -407,7 +407,7 @@
                                 }
                             },
                             error: function (result) {
-                                AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                             }
                         });
                     } else {
@@ -415,11 +415,11 @@
                         equipmentInstallation.showFile(equipmentInstallation.config.declareBuildingConstructionPermit.fileId, AssessDBKey.DeclareBuildingConstructionPermit, 0);
                     }
                 } else {
-                    Alert("保存失败:" + result.errmsg);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
-            error: function (e) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + e);
+            error: function (result) {
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
 
@@ -460,16 +460,16 @@
                                 }
                             },
                             error: function (result) {
-                                AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                             }
                         });
                     }
                 } else {
-                    Alert("保存失败:" + result.errmsg);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
-            error: function (e) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + e);
+            error: function (result) {
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
 
@@ -506,16 +506,16 @@
                                 }
                             },
                             error: function (result) {
-                                AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                             }
                         });
                     }
                 } else {
-                    Alert("保存失败:" + result.errmsg);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
-            error: function (e) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + e);
+            error: function (result) {
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     };
@@ -542,8 +542,8 @@
                     }
                 }
             },
-            error: function (e) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + e);
+            error: function (result) {
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     };
@@ -758,7 +758,7 @@
                 }
             },
             error: function (result) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     };
@@ -822,16 +822,16 @@
                                 }
                             },
                             error: function (result) {
-                                AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                             }
                         });
                     }
                 } else {
-                    Alert("保存失败:" + result.errmsg);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
-            error: function (e) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + e);
+            error: function (result) {
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     };
@@ -875,16 +875,16 @@
                                 }
                             },
                             error: function (result) {
-                                AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                             }
                         });
                     }
                 } else {
-                    Alert("保存失败:" + result.errmsg);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
-            error: function (e) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + e);
+            error: function (result) {
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     };
@@ -924,16 +924,16 @@
                                 }
                             },
                             error: function (result) {
-                                AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                             }
                         });
                     }
                 } else {
-                    Alert("保存失败:" + result.errmsg);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
-            error: function (e) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + e);
+            error: function (result) {
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     };
@@ -973,16 +973,16 @@
                                 }
                             },
                             error: function (result) {
-                                AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                             }
                         });
                     }
                 } else {
-                    Alert("保存失败:" + result.errmsg);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
-            error: function (e) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + e);
+            error: function (result) {
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
 
@@ -1023,16 +1023,16 @@
                                 }
                             },
                             error: function (result) {
-                                AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                             }
                         });
                     }
                 } else {
-                    Alert("保存失败:" + result.errmsg);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
-            error: function (e) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + e);
+            error: function (result) {
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
 
@@ -1074,16 +1074,16 @@
                                 }
                             },
                             error: function (result) {
-                                AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                             }
                         });
                     }
                 } else {
-                    Alert("保存失败:" + result.errmsg);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
-            error: function (e) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + e);
+            error: function (result) {
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
 
@@ -1112,8 +1112,8 @@
                     }
                 }
             },
-            error: function (e) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + e);
+            error: function (result) {
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     };

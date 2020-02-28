@@ -236,7 +236,7 @@ declareCommon.ajaxServerMethod = function (data, url,type,callback,errorCallback
                 }
             }
         },
-        error: function (e) {
+        error: function (result) {
             if (errorCallback){
                 errorCallback(e) ;
             }
@@ -358,7 +358,7 @@ declareCommon.declareBuildCenterSaveAndUpdateBase = function (item, updateNull,c
                 AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
-        error: function (e) {
+        error: function (result) {
             AlertError("错误", "调用服务端方法失败，失败原因:" +e);
         }
     });
@@ -387,7 +387,7 @@ declareCommon.getDeclareBuildCenter = function (id, callback) {
                 AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
-        error: function (e) {
+        error: function (result) {
             AlertError("错误", "调用服务端方法失败，失败原因:" + e);
         }
     });
@@ -414,7 +414,7 @@ declareCommon.deleteByDeclareBuildCenterType = function (centerId, type, callbac
                 AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
-        error: function (e) {
+        error: function (result) {
             AlertError("错误", "调用服务端方法失败，失败原因:" + e);
         }
     });
@@ -439,7 +439,7 @@ declareCommon.deleteDeclareBuildCenter = function (id, callback) {
                 AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
-        error: function (e) {
+        error: function (result) {
             AlertError("错误", "调用服务端方法失败，失败原因:" + e);
         }
     });
@@ -459,7 +459,7 @@ declareCommon.copyDeclareBuildCenter = function (copyId, ids, callback) {
                 AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
-        error: function (e) {
+        error: function (result) {
             AlertError("错误", "调用服务端方法失败，失败原因:" + e);
         }
     });
@@ -487,7 +487,7 @@ declareCommon.saveLandDataBase = function (data, updateNull,callback) {
                 AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
-        error: function (e) {
+        error: function (result) {
             AlertError("错误", "调用服务端方法失败，失败原因:" + e);
         }
     });
@@ -556,7 +556,7 @@ declareCommon.deleteLandData = function (ids, callback) {
                 AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
-        error: function (e) {
+        error: function (result) {
             AlertError("错误", "调用服务端方法失败，失败原因:" + e);
         }
     });
@@ -583,7 +583,7 @@ declareCommon.saveHouseDataBase = function (data,updateNull, callback) {
                 AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
-        error: function (e) {
+        error: function (result) {
             AlertError("错误", "调用服务端方法失败，失败原因:" + e);
         }
     });
@@ -641,7 +641,7 @@ declareCommon.deleteDeclareRealtyData = function (ids, callback) {
                 AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
-        error: function (e) {
+        error: function (result) {
             AlertError("错误", "调用服务端方法失败，失败原因:" + e);
         }
     });
@@ -669,7 +669,7 @@ declareCommon.saveDeclareRealtyDataBase = function (data, updateNull,callback) {
                 AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
-        error: function (e) {
+        error: function (result) {
             AlertError("错误", "调用服务端方法失败，失败原因:" + e);
         }
     });
@@ -1015,7 +1015,7 @@ declareCommon.saveDeclareBuildEquipmentInstall = function (data, updateNull,call
                 AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
-        error: function (e) {
+        error: function (result) {
             AlertError("错误", "调用服务端方法失败，失败原因:" + e);
         }
     });
@@ -1052,7 +1052,7 @@ declareCommon.deleteDeclareBuildEquipmentInstallById = function (id, callback) {
                 AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
-        error: function (e) {
+        error: function (result) {
             AlertError("错误", "调用服务端方法失败，失败原因:" + e);
         }
     });
@@ -1073,7 +1073,7 @@ declareCommon.getDeclareBuildEquipmentInstallById = function (id, callback) {
                 AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
-        error: function (e) {
+        error: function (result) {
             AlertError("错误", "调用服务端方法失败，失败原因:" + e);
         }
     });
@@ -1100,7 +1100,7 @@ declareCommon.saveDeclareBuildEngineering = function (data, updateNull,callback)
                 AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
-        error: function (e) {
+        error: function (result) {
             AlertError("错误", "调用服务端方法失败，失败原因:" + e);
         }
     });
@@ -1161,7 +1161,7 @@ declareCommon.deleteDeclareBuildEngineeringById = function (id, callback) {
                 AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
-        error: function (e) {
+        error: function (result) {
             AlertError("错误", "调用服务端方法失败，失败原因:" +e);
         }
     });
@@ -1182,7 +1182,7 @@ declareCommon.getDeclareBuildEngineeringById = function (id, callback) {
                 AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
-        error: function (e) {
+        error: function (result) {
             AlertError("错误", "调用服务端方法失败，失败原因:" + e);
         }
     });
@@ -1209,7 +1209,7 @@ declareCommon.saveDeclareBuildingConstructionPermit = function (data, updateNull
                 AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
-        error: function (e) {
+        error: function (result) {
             AlertError("错误", "调用服务端方法失败，失败原因:" + e);
         }
     });
@@ -1230,7 +1230,7 @@ declareCommon.deleteDeclareBuildingConstructionPermitById = function (id, callba
                 AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
-        error: function (e) {
+        error: function (result) {
             AlertError("错误", "调用服务端方法失败，失败原因:" + e);
         }
     });
@@ -1251,7 +1251,7 @@ declareCommon.getDeclareBuildingConstructionPermitById = function (id, callback)
                 AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
-        error: function (e) {
+        error: function (result) {
             AlertError("错误", "调用服务端方法失败，失败原因:" + e);
         }
     });
@@ -1280,7 +1280,7 @@ declareCommon.saveDeclareBuildingPermit = function (data, updateNull,callback) {
                 AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
-        error: function (e) {
+        error: function (result) {
             AlertError("错误", "调用服务端方法失败，失败原因:" + e);
         }
     });
@@ -1301,7 +1301,7 @@ declareCommon.deleteDeclareBuildingPermitById = function (id, callback) {
                 AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
-        error: function (e) {
+        error: function (result) {
             AlertError("错误", "调用服务端方法失败，失败原因:" + e);
         }
     });
@@ -1322,7 +1322,7 @@ declareCommon.getDeclareBuildingPermitById = function (id, callback) {
                 AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
-        error: function (e) {
+        error: function (result) {
             AlertError("错误", "调用服务端方法失败，失败原因:" + e);
         }
     });
@@ -1341,21 +1341,21 @@ declareCommon.saveDeclareLandUsePermit = function (data, updateNull,callback) {
         updateNull = false;
     }
     declareCommon.ajaxServerMethod({formData: JSON.stringify(data),updateNull:updateNull},"/declareLandUsePermit/saveDeclareLandUsePermit","POST",callback,function (message) {
-        notifyWarning("失败","失败原因:"+message);
+        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
     });
 };
 
 //delete 建设用地规划许可证
 declareCommon.deleteDeclareLandUsePermitById = function (id, callback) {
     declareCommon.ajaxServerMethod({id: id},"/declareLandUsePermit/deleteDeclareLandUsePermitById","POST",callback,function (message) {
-        notifyWarning("失败","失败原因:"+message);
+        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
     });
 };
 
 //get 建设用地规划许可证
 declareCommon.getDeclareLandUsePermitById = function (id, callback) {
     declareCommon.ajaxServerMethod({id: id},"/declareLandUsePermit/getDeclareLandUsePermitById","get",callback,function (message) {
-        notifyWarning("失败","失败原因:"+message);
+        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
     });
 };
 
@@ -1373,20 +1373,20 @@ declareCommon.saveDeclarePreSalePermit = function (data, updateNull,callback) {
         updateNull = false;
     }
     declareCommon.ajaxServerMethod({formData: JSON.stringify(data),updateNull:updateNull},"/declarePreSalePermit/saveDeclarePreSalePermit","POST",callback,function (message) {
-        notifyWarning("失败","失败原因:"+message);
+        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
     });
 };
 
 //delete 商品房预售许可证
 declareCommon.deleteDeclarePreSalePermitById = function (id, callback) {
     declareCommon.ajaxServerMethod({id: id},"/declarePreSalePermit/deleteDeclarePreSalePermitById","POST",callback,function (message) {
-        notifyWarning("失败","失败原因:"+message);
+        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
     });
 };
 
 //get 商品房预售许可证
 declareCommon.getDeclarePreSalePermitById = function (id, callback) {
     declareCommon.ajaxServerMethod({id: id},"/declarePreSalePermit/getDeclarePreSalePermitById","get",callback,function (message) {
-        notifyWarning("失败","失败原因:"+message);
+        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
     });
 };

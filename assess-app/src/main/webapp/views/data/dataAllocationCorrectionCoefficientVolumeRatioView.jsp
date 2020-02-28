@@ -131,7 +131,7 @@
                 success: function (result) {
                     Loading.progressHide();
                     if (result.ret) {
-                        toastr.success('删除成功');
+                        notifySuccess('成功','删除成功');
                         dataObjFun.listMaster();
                     } else {
                         Alert(result.errmsg);
@@ -190,7 +190,7 @@
             type: "post",
             success: function (result) {
                 if (result.ret) {
-                    toastr.success('成功');
+                    notifySuccess('成功','成功');
                     dataObjFun.listMaster();
                     $(dataObjFun.config.box).modal("hide");
                 } else {
@@ -223,7 +223,7 @@
                 success: function (result) {
                     Loading.progressHide();
                     if (result.ret) {
-                        toastr.success('删除成功');
+                        notifySuccess('成功','删除成功');
                         dataObjFun.showDataHousePriceIndexDetailList(row.allocationVolumeRatioId);
                     } else {
                         Alert(result.errmsg);
@@ -253,7 +253,7 @@
             type: "post",
             success: function (result) {
                 if (result.ret) {
-                    toastr.success('成功');
+                    notifySuccess('成功','成功');
                     dataObjFun.showDataHousePriceIndexDetailList(data.allocationVolumeRatioId);
                     $(dataObjFun.config.dataAllocationCorrectionCoefficientVolumeRatioDetailBox).modal("hide");
                 } else {

@@ -69,7 +69,7 @@ var buildingModelView;
                             }
                         },
                         error: function (result) {
-                            AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                         }
                     })
                 },
@@ -86,16 +86,16 @@ var buildingModelView;
                         data: data,
                         success: function (result) {
                             if (result.ret) {
-                                toastr.success('保存成功');
+                                notifySuccess('成功','保存成功');
                                 $('#' + buildingModelView.prototype.config().sonBox).modal('hide');
                                 buildingModelView.prototype.sonModelMethod.buildingOutfit.loadDataDicList();
                             }
                             else {
-                                Alert("保存数据失败，失败原因:" + result.errmsg);
+                                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                             }
                         },
                         error: function (result) {
-                            AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                         }
                     })
                 },
@@ -112,15 +112,15 @@ var buildingModelView;
                         data: {id: id},
                         success: function (result) {
                             if (result.ret) {
-                                toastr.success('删除成功');
+                                notifySuccess('成功','删除成功');
                                 buildingModelView.prototype.sonModelMethod.buildingOutfit.loadDataDicList();
                             }
                             else {
-                                Alert("保存数据失败，失败原因:" + result.errmsg);
+                                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                             }
                         },
                         error: function (result) {
-                            AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                         }
                     })
                 },
@@ -189,7 +189,7 @@ var buildingModelView;
                             }
                         },
                         error: function (result) {
-                            AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                         }
                     })
                 },
@@ -206,16 +206,16 @@ var buildingModelView;
                         data: data,
                         success: function (result) {
                             if (result.ret) {
-                                toastr.success('保存成功');
+                                notifySuccess('成功','保存成功');
                                 $('#' + buildingModelView.prototype.config().examineBuildingSurfaceBox).modal('hide');
                                 buildingModelView.prototype.sonModelMethod.buildingSurface.loadDataDicList();
                             }
                             else {
-                                Alert("保存数据失败，失败原因:" + result.errmsg);
+                                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                             }
                         },
                         error: function (result) {
-                            AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                         }
                     })
                 },
@@ -232,15 +232,15 @@ var buildingModelView;
                         data: {id: id},
                         success: function (result) {
                             if (result.ret) {
-                                toastr.success('删除成功');
+                                notifySuccess('成功','删除成功');
                                 buildingModelView.prototype.sonModelMethod.buildingSurface.loadDataDicList();
                             }
                             else {
-                                Alert("保存数据失败，失败原因:" + result.errmsg);
+                                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                             }
                         },
                         error: function (result) {
-                            AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                         }
                     });
                 },
@@ -293,7 +293,7 @@ var buildingModelView;
                             }
                         },
                         error: function (result) {
-                            AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                         }
                     })
                 },
@@ -310,16 +310,16 @@ var buildingModelView;
                         data: data,
                         success: function (result) {
                             if (result.ret) {
-                                toastr.success('保存成功');
+                                notifySuccess('成功','保存成功');
                                 $('#' + buildingModelView.prototype.config().examineBuildingMaintenanceBox).modal('hide');
                                 buildingModelView.prototype.sonModelMethod.buildingMaintenance.loadDataDicList();
                             }
                             else {
-                                Alert("保存数据失败，失败原因:" + result.errmsg);
+                                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                             }
                         },
                         error: function (result) {
-                            AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                         }
                     })
                 },
@@ -336,15 +336,15 @@ var buildingModelView;
                         data: {id: id},
                         success: function (result) {
                             if (result.ret) {
-                                toastr.success('删除成功');
+                                notifySuccess('成功','删除成功');
                                 buildingModelView.prototype.sonModelMethod.buildingMaintenance.loadDataDicList();
                             }
                             else {
-                                Alert("保存数据失败，失败原因:" + result.errmsg);
+                                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                             }
                         },
                         error: function (result) {
-                            AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                         }
                     });
                 },
@@ -407,7 +407,7 @@ var buildingModelView;
                             }
                         },
                         error: function (result) {
-                            AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                         }
                     })
                 },
@@ -424,16 +424,16 @@ var buildingModelView;
                         data: data,
                         success: function (result) {
                             if (result.ret) {
-                                toastr.success('保存成功');
+                                notifySuccess('成功','保存成功');
                                 $('#' + buildingModelView.prototype.config().examineBuildingFunctionBox).modal('hide');
                                 buildingModelView.prototype.sonModelMethod.buildingFunction.loadDataDicList();
                             }
                             else {
-                                Alert("保存数据失败，失败原因:" + result.errmsg);
+                                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                             }
                         },
                         error: function (result) {
-                            AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                         }
                     })
                 },
@@ -450,15 +450,15 @@ var buildingModelView;
                         data: {id: id},
                         success: function (result) {
                             if (result.ret) {
-                                toastr.success('删除成功');
+                                notifySuccess('成功','删除成功');
                                 buildingModelView.prototype.sonModelMethod.buildingFunction.loadDataDicList();
                             }
                             else {
-                                Alert("保存数据失败，失败原因:" + result.errmsg);
+                                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                             }
                         },
                         error: function (result) {
-                            AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                         }
                     });
                 },

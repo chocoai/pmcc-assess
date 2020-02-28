@@ -110,11 +110,11 @@ civilEngineering.deleteByType = function (data, callback) {
             if (result.ret) {
                 callback(result);
             } else {
-                Alert("保存失败:" + result.errmsg);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
-        error: function (e) {
-            AlertError("失败","调用服务端方法失败，失败原因:" + e);
+        error: function (result) {
+            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
         }
     });
 };
@@ -184,7 +184,7 @@ civilEngineering.deleteData = function () {
     if (!rows || rows.length <= 0) {
         toastr.info("请选择要删除的数据");
     } else {
-        Alert("确认要删除么？", 2, null, function () {
+        AlertConfirm("确认要删除么","删除后数据将不可恢复", function () {
             var idArray = [];
             $.each(rows, function (i, item) {
                 idArray.push(item.id);
@@ -197,11 +197,11 @@ civilEngineering.deleteData = function () {
                     if (result.ret) {
                         civilEngineering.loadList();
                     } else {
-                        Alert("保存失败:" + result.errmsg);
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 },
-                error: function (e) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + e);
+                error: function (result) {
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             });
         })
@@ -222,7 +222,7 @@ civilEngineering.getData = function (id, callback) {
             }
         },
         error: function (result) {
-            AlertError("失败","调用服务端方法失败，失败原因:" + result);
+            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
         }
     });
 };
@@ -265,14 +265,14 @@ civilEngineering.saveAndUpdateData = function () {
         success: function (result) {
             if (result.ret) {
                 civilEngineering.loadList();
-                toastr.success('成功!');
+                notifySuccess('成功','成功!');
                 $('#' + civilEngineering.config.box).modal("hide");
             } else {
-                Alert("保存失败:" + result.errmsg);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
-        error: function (e) {
-            AlertError("失败","调用服务端方法失败，失败原因:" + e);
+        error: function (result) {
+            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
         }
     });
 };
@@ -291,11 +291,11 @@ civilEngineering.handleFather = function (item) {
             if (result.ret) {
                 civilEngineering.loadList();
             } else {
-                Alert("保存失败:" + result.errmsg);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
-        error: function (e) {
-            AlertError("失败","调用服务端方法失败，失败原因:" + e);
+        error: function (result) {
+            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
         }
     });
 };
@@ -373,7 +373,7 @@ civilEngineering.declareRealtyRealEstateCertView = function (id) {
                             }
                         },
                         error: function (result) {
-                            AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                         }
                     });
                 } else {
@@ -387,11 +387,11 @@ civilEngineering.declareRealtyRealEstateCertView = function (id) {
                     });
                 }
             } else {
-                Alert("保存失败:" + result.errmsg);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
-        error: function (e) {
-            AlertError("失败","调用服务端方法失败，失败原因:" + e);
+        error: function (result) {
+            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
         }
     });
 };
@@ -422,14 +422,14 @@ civilEngineering.declareRealtyRealEstateCertSaveAndUpdate = function () {
                     fData.realEstateId = item;
                     fData.id = pidC;
                     civilEngineering.handleFather(fData);
-                    toastr.success('成功!');
+                    notifySuccess('成功','成功!');
                 }
             } else {
-                Alert("保存失败:" + result.errmsg);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
-        error: function (e) {
-            AlertError("失败","调用服务端方法失败，失败原因:" + e);
+        error: function (result) {
+            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
         }
     });
 };
@@ -440,10 +440,10 @@ civilEngineering.declareRealtyRealEstateCertRemove = function () {
         civilEngineering.deleteByType(item, function () {
             $('#' + civilEngineering.config.declareRealtyRealEstateCert.box).modal("hide");
             civilEngineering.loadList();
-            toastr.success('成功!');
+            notifySuccess('成功','成功!');
         });
     } else {
-        toastr.success('无删除数据!');
+        notifyInfo('提示','无删除数据!');
     }
 };
 
@@ -510,7 +510,7 @@ civilEngineering.declareRealtyLandCertView = function (id) {
                             }
                         },
                         error: function (result) {
-                            AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                         }
                     });
                 } else {
@@ -524,11 +524,11 @@ civilEngineering.declareRealtyLandCertView = function (id) {
                     });
                 }
             } else {
-                Alert("保存失败:" + result.errmsg);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
-        error: function (e) {
-            AlertError("失败","调用服务端方法失败，失败原因:" + e);
+        error: function (result) {
+            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
         }
     });
 };
@@ -556,14 +556,14 @@ civilEngineering.declareRealtyLandCertSaveAndUpdate = function () {
                     fData.landId = item;
                     fData.id = data.pidC;
                     civilEngineering.handleFather(fData);
-                    toastr.success('成功!');
+                    notifySuccess('成功','成功!');
                 }
             } else {
-                Alert("保存失败:" + result.errmsg);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
-        error: function (e) {
-            AlertError("失败","调用服务端方法失败，失败原因:" + e);
+        error: function (result) {
+            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
         }
     });
 };
@@ -574,10 +574,10 @@ civilEngineering.declareRealtyLandCertRemove = function () {
         civilEngineering.deleteByType(item, function () {
             $('#' + civilEngineering.config.declareRealtyLandCert.box).modal("hide");
             civilEngineering.loadList();
-            toastr.success('成功!');
+            notifySuccess('成功','成功!');
         });
     } else {
-        toastr.success('无删除数据!');
+        notifyInfo('提示','无删除数据!');
     }
 };
 
@@ -618,7 +618,7 @@ civilEngineering.declareBuildingPermitView = function (id) {
                             }
                         },
                         error: function (result) {
-                            AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                         }
                     });
                 } else {
@@ -627,11 +627,11 @@ civilEngineering.declareBuildingPermitView = function (id) {
                     civilEngineering.fileUpload(civilEngineering.config.declareBuildingPermit.fileId, AssessDBKey.DeclareBuildingPermit, 0);
                 }
             } else {
-                Alert("保存失败:" + result.errmsg);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
-        error: function (e) {
-            AlertError("失败","调用服务端方法失败，失败原因:" + e);
+        error: function (result) {
+            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
         }
     });
 };
@@ -659,14 +659,14 @@ civilEngineering.declareBuildingPermitSaveAndUpdate = function () {
                     fData.buildingPermitId = item;
                     fData.id = data.pid
                     civilEngineering.handleFather(fData);
-                    toastr.success('成功!');
+                    notifySuccess('成功','成功!');
                 }
             } else {
-                Alert("保存失败:" + result.errmsg);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
-        error: function (e) {
-            AlertError("失败","调用服务端方法失败，失败原因:" + e);
+        error: function (result) {
+            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
         }
     });
 };
@@ -683,10 +683,10 @@ civilEngineering.declareBuildingPermitRemove = function () {
         civilEngineering.deleteByType(item, function () {
             $('#' + civilEngineering.config.declareBuildingPermit.box).modal("hide");
             civilEngineering.loadList();
-            toastr.success('成功!');
+            notifySuccess('成功','成功!');
         });
     } else {
-        toastr.success('无数据!');
+        notifyInfo('提示','无数据!');
     }
 };
 
@@ -727,7 +727,7 @@ civilEngineering.declareLandUsePermitView = function (id) {
                             }
                         },
                         error: function (result) {
-                            AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                         }
                     });
                 } else {
@@ -736,11 +736,11 @@ civilEngineering.declareLandUsePermitView = function (id) {
                     civilEngineering.fileUpload(civilEngineering.config.declareLandUsePermit.fileId, AssessDBKey.DeclareLandUsePermit, 0);
                 }
             } else {
-                Alert("保存失败:" + result.errmsg);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
-        error: function (e) {
-            AlertError("失败","调用服务端方法失败，失败原因:" + e);
+        error: function (result) {
+            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
         }
     });
 
@@ -770,14 +770,14 @@ civilEngineering.declareLandUsePermitSaveAndUpdate = function () {
                     fData.landUsePermitId = item;
                     fData.id = data.pid;
                     civilEngineering.handleFather(fData);
-                    toastr.success('成功!');
+                    notifySuccess('成功','成功!');
                 }
             } else {
-                Alert("保存失败:" + result.errmsg);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
-        error: function (e) {
-            AlertError("失败","调用服务端方法失败，失败原因:" + e);
+        error: function (result) {
+            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
         }
     });
 };
@@ -792,10 +792,10 @@ civilEngineering.declareLandUsePermitRemove = function () {
         civilEngineering.deleteByType(item, function () {
             $('#' + civilEngineering.config.declareLandUsePermit.box).modal("hide");
             civilEngineering.loadList();
-            toastr.success('成功!');
+            notifySuccess('成功','成功!');
         });
     } else {
-        toastr.success('无数据!');
+        notifyInfo('提示','无数据!');
     }
 };
 
@@ -836,7 +836,7 @@ civilEngineering.declarePreSalePermitView = function (id) {
                             }
                         },
                         error: function (result) {
-                            AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                         }
                     });
                 } else {
@@ -845,11 +845,11 @@ civilEngineering.declarePreSalePermitView = function (id) {
                     civilEngineering.fileUpload(civilEngineering.config.declarePreSalePermit.fileId, AssessDBKey.DeclarePreSalePermit, 0);
                 }
             } else {
-                Alert("保存失败:" + result.errmsg);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
-        error: function (e) {
-            AlertError("失败","调用服务端方法失败，失败原因:" + e);
+        error: function (result) {
+            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
         }
     });
 
@@ -878,14 +878,14 @@ civilEngineering.declarePreSalePermitSaveAndUpdate = function () {
                     fData.preSalePermitId = item;
                     fData.id = data.pid;
                     civilEngineering.handleFather(fData);
-                    toastr.success('成功!');
+                    notifySuccess('成功','成功!');
                 }
             } else {
-                Alert("保存失败:" + result.errmsg);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
-        error: function (e) {
-            AlertError("失败","调用服务端方法失败，失败原因:" + e);
+        error: function (result) {
+            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
         }
     });
 };
@@ -898,10 +898,10 @@ civilEngineering.declarePreSalePermitRemove = function () {
         civilEngineering.deleteByType(item, function () {
             $('#' + civilEngineering.config.declarePreSalePermit.box).modal("hide");
             civilEngineering.loadList();
-            toastr.success('成功!');
+            notifySuccess('成功','成功!');
         });
     } else {
-        toastr.success('无数据!');
+        notifyInfo('提示','无数据!');
     }
 };
 
@@ -943,7 +943,7 @@ civilEngineering.declareBuildingConstructionPermitView = function (id) {
                             }
                         },
                         error: function (result) {
-                            AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                         }
                     });
                 } else {
@@ -952,11 +952,11 @@ civilEngineering.declareBuildingConstructionPermitView = function (id) {
                     civilEngineering.fileUpload(civilEngineering.config.declareBuildingConstructionPermit.fileId, AssessDBKey.DeclareBuildingConstructionPermit, 0);
                 }
             } else {
-                Alert("保存失败:" + result.errmsg);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
-        error: function (e) {
-            AlertError("失败","调用服务端方法失败，失败原因:" + e);
+        error: function (result) {
+            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
         }
     });
 
@@ -987,15 +987,15 @@ civilEngineering.declareBuildingConstructionPermitSaveAndUpdate = function () {
                     fData.buildingConstructionPermitId = item;
                     fData.id = data.pid;
                     civilEngineering.handleFather(fData);
-                    toastr.success('成功!');
+                    notifySuccess('成功','成功!');
                 }
             } else {
                 console.log(result.errmsg);
-                Alert("保存失败:" + result.errmsg);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
-        error: function (e) {
-            AlertError("失败","调用服务端方法失败，失败原因:" + e);
+        error: function (result) {
+            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
         }
     });
 };
@@ -1008,10 +1008,10 @@ civilEngineering.declareBuildingConstructionPermitRemove = function () {
         civilEngineering.deleteByType(item, function () {
             $('#' + civilEngineering.config.declareBuildingConstructionPermit.box).modal("hide");
             civilEngineering.loadList();
-            toastr.success('成功!');
+            notifySuccess('成功','成功!');
         });
     } else {
-        toastr.success('无数据!');
+        notifyInfo('提示','无数据!');
     }
 };
 
@@ -1058,18 +1058,18 @@ civilEngineering.declareEconomicIndicatorsView = function (pid) {
                                     $('#' + civilEngineering.config.declareEconomicIndicators.box).modal("show");
                                 });
                             } else {
-                                Alert("保存失败:" + result.errmsg);
+                                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                             }
                         },
-                        error: function (e) {
-                            AlertError("失败","调用服务端方法失败，失败原因:" + e);
+                        error: function (result) {
+                            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                         }
                     });
                 }
             }
         },
-        error: function (e) {
-            AlertError("失败","调用服务端方法失败，失败原因:" + e);
+        error: function (result) {
+            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
         }
     });
 };
@@ -1099,16 +1099,15 @@ civilEngineering.declareEconomicIndicatorsSaveAndUpdate = function () {
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    toastr.success('保存成功');
+                    notifySuccess('成功','保存成功');
                     civilEngineering.loadList();
                 } else {
-                    Alert(result.errmsg);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             }
         });
-    } catch (e) {
-        toastr.success('保存失败');
-        console.error(e);
+    } catch (result) {
+        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
     }
     $('#' + civilEngineering.config.declareEconomicIndicators.box).modal("hide");
 };
@@ -1128,11 +1127,11 @@ civilEngineering.declareEconomicIndicatorsRemove = function () {
                         callback(result.data[0]);
                     }
                 } else {
-                    Alert("失败:" + result.errmsg);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
-            error: function (e) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + e);
+            error: function (result) {
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     }
@@ -1148,18 +1147,18 @@ civilEngineering.declareEconomicIndicatorsRemove = function () {
                         civilEngineering.deleteByType(item, function () {
                             $('#' + civilEngineering.config.declareEconomicIndicators.box).modal("hide");
                             civilEngineering.loadList();
-                            toastr.success('成功!');
+                            notifySuccess('成功','成功!');
                         });
                     });
                 } else {
-                    toastr.success('无数据!');
+                    notifyInfo('提示','无数据!');
                 }
             } else {
-                Alert("失败:" + result.errmsg);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
-        error: function (e) {
-            AlertError("失败","调用服务端方法失败，失败原因:" + e);
+        error: function (result) {
+            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
         }
     });
 };
@@ -1187,7 +1186,7 @@ civilEngineering.copyData = function () {
                 }
             },
             error: function (result) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     } else {
@@ -1233,15 +1232,15 @@ civilEngineering.pasteAll = function () {
                             $(this).val('');
                         });
                         civilEngineering.loadList();
-                        toastr.success('成功');
+                        notifySuccess('成功','成功');
                     } else {
                         console.log(result);
-                        Alert("失败:" + result.errmsg);
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 },
-                error: function (e) {
+                error: function (result) {
                     console.log(e);
-                    AlertError("失败","调用服务端方法失败，失败原因:" + e);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             });
         }
@@ -1357,12 +1356,12 @@ civilEngineering.inputFile = function () {
         success: function (result) {
             if (result.ret) {
                 civilEngineering.loadList();
-                Alert(result.data);
+                notifyInfo("提示",result.data);
             }
         },
         error: function (result, status, e) {
             Loading.progressHide();
-            AlertError("失败","调用服务端方法失败，失败原因:" + result);
+            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
         }
     });
 };

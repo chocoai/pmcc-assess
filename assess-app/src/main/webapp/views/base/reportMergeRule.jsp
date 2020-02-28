@@ -224,7 +224,7 @@
 
     //删除模板
     function delMergeRule(id) {
-        bootbox.confirm("确认要删除么？", function (result) {
+        AlertConfirm("确认要删除么","删除后数据不可恢复", function (result) {
             if (result) {
                 Loading.progressShow();
                 $.ajax({
@@ -235,16 +235,16 @@
                     success: function (result) {
                         Loading.progressHide();
                         if (result.ret) {
-                            toastr.success('删除成功');
+                            notifySuccess('成功','删除成功');
                             $('#tbList').bootstrapTable("refresh");
                         }
                         else {
-                            Alert("删除数据失败，失败原因:" + result.errmsg);
+                            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                         }
                     },
                     error: function (result) {
                         Loading.progressHide();
-                        AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 })
             }
@@ -264,17 +264,17 @@
                 success: function (result) {
                     Loading.progressHide();
                     if (result.ret) {
-                        toastr.success('保存成功');
+                        notifySuccess('成功','保存成功');
                         $('#tbList').bootstrapTable("refresh");
                         $('#modalMergeRule').modal('hide');
                     }
                     else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
                     Loading.progressHide();
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             })
         }

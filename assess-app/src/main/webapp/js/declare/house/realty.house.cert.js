@@ -181,7 +181,7 @@ assessCommonHouse.showAddModelHouse = function (data) {
 assessCommonHouse.copyData = function () {
     var rows = $("#" + assessCommonHouse.config.table).bootstrapTable('getSelections');
     if (!rows || rows.length <= 0) {
-        notifyInfo("没有勾选", "请选择要复制的数据!");
+        notifyInfo("提示", "请选择要复制的数据!");
     } else if (rows.length == 1) {
         AlertConfirm("是否确认要复制", "", function () {
             $(assessCommonHouse.config.handleCopy).find("input[name='name']").val(rows[0].certName);
@@ -341,8 +341,8 @@ assessCommonHouse.showAddModelLand = function (id) {
                         data.centerId = item.centerId;
                         assessCommonHouse.initLand(data);
                     }
-                }, function (text) {
-                    AlertError("错误", text);
+                }, function (result) {
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                     assessCommonHouse.initLand(data);
                 });
             } else {//未关联情况

@@ -113,11 +113,11 @@ equipmentInstallation.deleteByType = function (data,callback) {
             if (result.ret) {
                 callback(result);
             } else {
-                Alert("保存失败:" + result.errmsg);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
-        error: function (e) {
-            AlertError("失败","调用服务端方法失败，失败原因:" + e);
+        error: function (result) {
+            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
         }
     });
 };
@@ -183,14 +183,14 @@ equipmentInstallation.saveAndUpdateData = function () {
         success: function (result) {
             if (result.ret) {
                 equipmentInstallation.loadList();
-                toastr.success('成功!');
+                notifySuccess('成功','成功!');
                 $('#' + equipmentInstallation.config.box).modal("hide");
             } else {
-                Alert("保存失败:" + result.errmsg);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
-        error: function (e) {
-            AlertError("失败","调用服务端方法失败，失败原因:" + e);
+        error: function (result) {
+            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
         }
     });
 };
@@ -209,7 +209,7 @@ equipmentInstallation.getData = function (id, callback) {
             }
         },
         error: function (result) {
-            AlertError("失败","调用服务端方法失败，失败原因:" + result);
+            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
         }
     });
 };
@@ -244,7 +244,7 @@ equipmentInstallation.deleteData = function () {
     if (!rows || rows.length <= 0) {
         toastr.info("请选择要删除的数据");
     } else {
-        Alert("确认要删除么？", 2, null, function () {
+        AlertConfirm("确认要删除么", "删除后数据将不可恢复", function () {
             var idArray = [];
             $.each(rows, function (i, item) {
                 idArray.push(item.id);
@@ -257,11 +257,11 @@ equipmentInstallation.deleteData = function () {
                     if (result.ret) {
                         equipmentInstallation.loadList();
                     } else {
-                        Alert("保存失败:" + result.errmsg);
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 },
-                error: function (e) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + e);
+                error: function (result) {
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             });
         })
@@ -277,11 +277,11 @@ equipmentInstallation.handleFather = function (item) {
             if (result.ret) {
                 equipmentInstallation.loadList();
             } else {
-                Alert("保存失败:" + result.errmsg);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
-        error: function (e) {
-            AlertError("失败","调用服务端方法失败，失败原因:" + e);
+        error: function (result) {
+            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
         }
     });
 };
@@ -323,7 +323,7 @@ equipmentInstallation.declareBuildingPermitView = function (id) {
                             }
                         },
                         error: function (result) {
-                            AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                         }
                     });
                 } else {
@@ -332,11 +332,11 @@ equipmentInstallation.declareBuildingPermitView = function (id) {
                     equipmentInstallation.fileUpload(equipmentInstallation.config.declareBuildingPermit.fileId, AssessDBKey.DeclareBuildingPermit, 0);
                 }
             } else {
-                Alert("保存失败:" + result.errmsg);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
-        error: function (e) {
-            AlertError("失败","调用服务端方法失败，失败原因:" + e);
+        error: function (result) {
+            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
         }
     });
 };
@@ -364,14 +364,14 @@ equipmentInstallation.declareBuildingPermitSaveAndUpdate = function () {
                     fData.buildingPermitId = item;
                     fData.id = data.pid;
                     equipmentInstallation.handleFather(fData);
-                    toastr.success('成功!');
+                    notifySuccess('成功','成功!');
                 }
             } else {
-                Alert("保存失败:" + result.errmsg);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
-        error: function (e) {
-            AlertError("失败","调用服务端方法失败，失败原因:" + e);
+        error: function (result) {
+            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
         }
     });
 };
@@ -382,10 +382,10 @@ equipmentInstallation.declareBuildingPermitRemove = function () {
         equipmentInstallation.deleteByType(item, function () {
             $('#' + equipmentInstallation.config.declareBuildingPermit.box).modal("hide");
             equipmentInstallation.loadList();
-            toastr.success('成功!');
+            notifySuccess('成功','成功!');
         });
     } else {
-        toastr.success('无删除数据!');
+        notifySuccess('成功','无删除数据!');
     }
 };
 
@@ -426,7 +426,7 @@ equipmentInstallation.declareLandUsePermitView = function (id) {
                             }
                         },
                         error: function (result) {
-                            AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                         }
                     });
                 } else {
@@ -435,11 +435,11 @@ equipmentInstallation.declareLandUsePermitView = function (id) {
                     equipmentInstallation.fileUpload(equipmentInstallation.config.declareLandUsePermit.fileId, AssessDBKey.DeclareLandUsePermit, 0);
                 }
             } else {
-                Alert("保存失败:" + result.errmsg);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
-        error: function (e) {
-            AlertError("失败","调用服务端方法失败，失败原因:" + e);
+        error: function (result) {
+            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
         }
     });
 
@@ -468,14 +468,14 @@ equipmentInstallation.declareLandUsePermitSaveAndUpdate = function () {
                     fData.landUsePermitId = item;
                     fData.id = data.pid;
                     equipmentInstallation.handleFather(fData);
-                    toastr.success('成功!');
+                    notifySuccess('成功','成功!');
                 }
             } else {
-                Alert("保存失败:" + result.errmsg);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
-        error: function (e) {
-            AlertError("失败","调用服务端方法失败，失败原因:" + e);
+        error: function (result) {
+            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
         }
     });
 };
@@ -486,10 +486,10 @@ equipmentInstallation.declareLandUsePermitRemove = function () {
         equipmentInstallation.deleteByType(item, function () {
             $('#' + equipmentInstallation.config.declareLandUsePermit.box).modal("hide");
             equipmentInstallation.loadList();
-            toastr.success('成功!');
+            notifySuccess('成功','成功!');
         });
     } else {
-        toastr.success('无删除数据!');
+        notifySuccess('成功','无删除数据!');
     }
 };
 
@@ -530,7 +530,7 @@ equipmentInstallation.declarePreSalePermitView = function (id) {
                             }
                         },
                         error: function (result) {
-                            AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                         }
                     });
                 } else {
@@ -539,11 +539,11 @@ equipmentInstallation.declarePreSalePermitView = function (id) {
                     equipmentInstallation.fileUpload(equipmentInstallation.config.declarePreSalePermit.fileId, AssessDBKey.DeclarePreSalePermit, 0);
                 }
             } else {
-                Alert("保存失败:" + result.errmsg);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
-        error: function (e) {
-            AlertError("失败","调用服务端方法失败，失败原因:" + e);
+        error: function (result) {
+            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
         }
     });
 
@@ -572,14 +572,14 @@ equipmentInstallation.declarePreSalePermitSaveAndUpdate = function () {
                     fData.preSalePermitId = item;
                     fData.id = data.pid;
                     equipmentInstallation.handleFather(fData);
-                    toastr.success('成功!');
+                    notifySuccess('成功','成功!');
                 }
             } else {
-                Alert("保存失败:" + result.errmsg);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
-        error: function (e) {
-            AlertError("失败","调用服务端方法失败，失败原因:" + e);
+        error: function (result) {
+            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
         }
     });
 };
@@ -590,10 +590,10 @@ equipmentInstallation.declarePreSalePermitRemove = function () {
         equipmentInstallation.deleteByType(item, function () {
             $('#' + equipmentInstallation.config.declarePreSalePermit.box).modal("hide");
             equipmentInstallation.loadList();
-            toastr.success('成功!');
+            notifySuccess('成功','成功!');
         });
     } else {
-        toastr.success('无删除数据!');
+        notifySuccess('成功','无删除数据!');
     }
 };
 
@@ -635,7 +635,7 @@ equipmentInstallation.declareBuildingConstructionPermitView = function (id) {
                             }
                         },
                         error: function (result) {
-                            AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                         }
                     });
                 } else {
@@ -644,11 +644,11 @@ equipmentInstallation.declareBuildingConstructionPermitView = function (id) {
                     equipmentInstallation.fileUpload(equipmentInstallation.config.declareBuildingConstructionPermit.fileId, AssessDBKey.DeclareBuildingConstructionPermit, 0);
                 }
             } else {
-                Alert("保存失败:" + result.errmsg);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
-        error: function (e) {
-            AlertError("失败","调用服务端方法失败，失败原因:" + e);
+        error: function (result) {
+            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
         }
     });
 
@@ -677,15 +677,15 @@ equipmentInstallation.declareBuildingConstructionPermitSaveAndUpdate = function 
                     fData.buildingConstructionPermitId = item;
                     fData.id = data.pid;
                     equipmentInstallation.handleFather(fData);
-                    toastr.success('成功!');
+                    notifySuccess('成功','成功!');
                 }
             } else {
                 console.log(result.errmsg);
-                Alert("保存失败:" + result.errmsg);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
-        error: function (e) {
-            AlertError("失败","调用服务端方法失败，失败原因:" + e);
+        error: function (result) {
+            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
         }
     });
 };
@@ -696,10 +696,10 @@ equipmentInstallation.declareBuildingConstructionPermitRemove = function () {
         equipmentInstallation.deleteByType(item, function () {
             $('#' + equipmentInstallation.config.declareBuildingConstructionPermit.box).modal("hide");
             equipmentInstallation.loadList();
-            toastr.success('成功!');
+            notifySuccess('成功','成功!');
         });
     } else {
-        toastr.success('无删除数据!');
+        notifySuccess('成功','无删除数据!');
     }
 };
 
@@ -769,7 +769,7 @@ equipmentInstallation.declareRealtyLandCertView = function (id) {
                             }
                         },
                         error: function (result) {
-                            AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                         }
                     });
                 } else {
@@ -782,11 +782,11 @@ equipmentInstallation.declareRealtyLandCertView = function (id) {
                     });
                 }
             } else {
-                Alert("保存失败:" + result.errmsg);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
-        error: function (e) {
-            AlertError("失败","调用服务端方法失败，失败原因:" + e);
+        error: function (result) {
+            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
         }
     });
 
@@ -820,14 +820,14 @@ equipmentInstallation.declareRealtyLandCertSaveAndUpdate = function () {
                     fData.landId = item;
                     fData.id = data.pidC;
                     equipmentInstallation.handleFather(fData);
-                    toastr.success('成功!');
+                    notifySuccess('成功','成功!');
                 }
             } else {
-                Alert("保存失败:" + result.errmsg);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
-        error: function (e) {
-            AlertError("失败","调用服务端方法失败，失败原因:" + e);
+        error: function (result) {
+            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
         }
     });
 };
@@ -838,10 +838,10 @@ equipmentInstallation.declareRealtyLandCertRemove = function () {
         equipmentInstallation.deleteByType(item, function () {
             $('#' + equipmentInstallation.config.declareRealtyLandCert.box).modal("hide");
             equipmentInstallation.loadList();
-            toastr.success('成功!');
+            notifySuccess('成功','成功!');
         });
     } else {
-        toastr.success('无删除数据!');
+        notifySuccess('成功','无删除数据!');
     }
 };
 
@@ -913,7 +913,7 @@ equipmentInstallation.declareRealtyRealEstateCertView = function (id) {
                             }
                         },
                         error: function (result) {
-                            AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                         }
                     });
                 } else {
@@ -926,11 +926,11 @@ equipmentInstallation.declareRealtyRealEstateCertView = function (id) {
                     });
                 }
             } else {
-                Alert("保存失败:" + result.errmsg);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
-        error: function (e) {
-            AlertError("失败","调用服务端方法失败，失败原因:" + e);
+        error: function (result) {
+            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
         }
     });
 };
@@ -958,14 +958,14 @@ equipmentInstallation.declareRealtyRealEstateCertSaveAndUpdate = function () {
                     fData.realEstateId = item;
                     fData.id = data.pidC;
                     equipmentInstallation.handleFather(fData);
-                    toastr.success('成功!');
+                    notifySuccess('成功','成功!');
                 }
             } else {
-                Alert("保存失败:" + result.errmsg);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
-        error: function (e) {
-            AlertError("失败","调用服务端方法失败，失败原因:" + e);
+        error: function (result) {
+            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
         }
     });
 };
@@ -976,10 +976,10 @@ equipmentInstallation.declareRealtyRealEstateCertRemove = function () {
         equipmentInstallation.deleteByType(item, function () {
             $('#' + equipmentInstallation.config.declareRealtyRealEstateCert.box).modal("hide");
             equipmentInstallation.loadList();
-            toastr.success('成功!');
+            notifySuccess('成功','成功!');
         });
     } else {
-        toastr.success('无删除数据!');
+        notifySuccess('成功','无删除数据!');
     }
 };
 
@@ -1026,18 +1026,18 @@ equipmentInstallation.declareEconomicIndicatorsView = function (pid) {
                                     $('#' + equipmentInstallation.config.declareEconomicIndicators.box).modal("show");
                                 });
                             } else {
-                                Alert("保存失败:" + result.errmsg);
+                                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                             }
                         },
-                        error: function (e) {
-                            AlertError("失败","调用服务端方法失败，失败原因:" + e);
+                        error: function (result) {
+                            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                         }
                     });
                 }
             }
         },
-        error: function (e) {
-            AlertError("失败","调用服务端方法失败，失败原因:" + e);
+        error: function (result) {
+            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
         }
     });
 };
@@ -1054,11 +1054,11 @@ equipmentInstallation.declareEconomicIndicatorsRemove = function () {
                         callback(result.data[0]);
                     }
                 } else {
-                    Alert("失败:" + result.errmsg);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
-            error: function (e) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + e);
+            error: function (result) {
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     }
@@ -1074,18 +1074,18 @@ equipmentInstallation.declareEconomicIndicatorsRemove = function () {
                         equipmentInstallation.deleteByType(item, function () {
                             $('#' + equipmentInstallation.config.declareEconomicIndicators.box).modal("hide");
                             equipmentInstallation.loadList();
-                            toastr.success('成功!');
+                            notifySuccess('成功','成功!');
                         });
                     });
                 } else {
-                    toastr.success('无数据!');
+                    notifySuccess('成功','无数据!');
                 }
             } else {
-                Alert("失败:" + result.errmsg);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
-        error: function (e) {
-            AlertError("失败","调用服务端方法失败，失败原因:" + e);
+        error: function (result) {
+            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
         }
     });
 };
@@ -1111,16 +1111,15 @@ equipmentInstallation.declareEconomicIndicatorsSaveAndUpdate = function () {
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    toastr.success('保存成功');
+                    notifySuccess('成功','保存成功');
                     equipmentInstallation.loadList();
                 } else {
-                    Alert(result.errmsg);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             }
         });
-    } catch (e) {
-        toastr.success('保存失败');
-        console.error(e);
+    } catch (result) {
+        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
     }
     $('#' + equipmentInstallation.config.declareEconomicIndicators.box).modal("hide");
 };
@@ -1147,7 +1146,7 @@ equipmentInstallation.copyData = function () {
                 }
             },
             error: function (result) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     } else {
@@ -1189,17 +1188,17 @@ equipmentInstallation.pasteAll = function () {
                 data: {ids: ids, copyId: copyId, type: "DeclareBuildEquipmentInstall"},
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success('成功');
+                        notifySuccess('成功','成功');
                         equipmentInstallation.loadList();
                         $("#" + equipmentInstallation.config.copy).find("input").each(function () {
                             $(this).val('');
                         });
                     } else {
-                        Alert("失败:" + result.errmsg);
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 },
-                error: function (e) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + e);
+                error: function (result) {
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             });
         }
@@ -1322,12 +1321,12 @@ equipmentInstallation.inputFile = function () {
         success: function (result) {
             if (result.ret) {
                 equipmentInstallation.loadList();
-                Alert(result.data);
+                notifyInfo("提示",result.data);
             }
         },
         error: function (result, status, e) {
             Loading.progressHide();
-            AlertError("失败","调用服务端方法失败，失败原因:" + result);
+            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
         }
     });
 };

@@ -34,11 +34,11 @@
                                     AssessMatchingRestaurant.prototype.appendHtml(options);
                                 });
                             }else {
-                                AlertError("类型必须选择!") ;
+                                notifyInfo('提示',"类型必须选择!") ;
                             }
                         }
                     } else {
-                        AlertError("无标记");
+                        notifyInfo('提示',"无标记");
                     }
                 }
             }
@@ -138,16 +138,16 @@
                 data: data,
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success('保存成功');
+                        notifySuccess('成功','保存成功');
                         matchingRestaurant.prototype.loadDataDicList();
                         $('#select_matchingRestaurant_modal').modal('hide');
                     }
                     else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             });
         });

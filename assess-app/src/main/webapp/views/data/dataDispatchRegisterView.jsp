@@ -253,7 +253,7 @@
             success: function (result) {
                 if (result.ret) {
                     dataObjFun.loadDataList();
-                    notifyInfo(result.data);
+                    notifyInfo("提示",result.data);
                 }
             },
             error: function (result, status, e) {

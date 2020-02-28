@@ -113,12 +113,12 @@ landLevel.importDataLand = function () {
         success: function (result) {
             if (result.ret) {
                 landLevel.config.table.bootstrapTable('refresh');
-                notifyInfo(result.data);
+                notifyInfo('提示',result.data);
             }
         },
         error: function (result, status, e) {
             Loading.progressHide();
-            AlertError("调用服务端方法失败，失败原因:" + result);
+            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
         }
     });
 };
@@ -135,7 +135,7 @@ landLevel.removeData = function (id) {
                     landLevel.config.table.bootstrapTable('refresh');
                 }
                 else {
-                    AlertError("删除数据失败，失败原因:" + result.errmsg);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             }
         })
@@ -188,11 +188,11 @@ landLevel.saveData = function () {
                 target.modal('hide');
                 landLevel.config.table.bootstrapTable('refresh');
             } else {
-                AlertError("保存数据失败，失败原因:" + result.errmsg);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
         error: function (result) {
-            AlertError("调用服务端方法失败，失败原因:" + result.errmsg);
+            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
         }
     })
 };
@@ -423,7 +423,7 @@ landLevel.addLandLevelDetail = function () {
     //         }
     //         default: {
     //             key = undefined;
-    //             toastr.success('不能在此层级添加子级!');
+    //             notifySuccess('成功','不能在此层级添加子级!');
     //             break;
     //         }
     //     }
@@ -447,7 +447,7 @@ landLevel.getDataLandLevelDetailById = function (id, callback) {
                     callback(result.data);
                 }
             } else {
-                AlertError(result.errmsg);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         }
     })
@@ -467,7 +467,7 @@ landLevel.deleteLandLevelDetail = function (id, callback) {
                         callback();
                     }
                 } else {
-                    AlertError("删除数据失败，失败原因:" + result.errmsg);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             }
         })
@@ -510,7 +510,7 @@ landLevel.saveLandLevelDetail = function () {
                 // Alert(result.data) ;
                 box.modal('hide');
             } else {
-                AlertError("保存数据失败，失败原因:" + result.errmsg);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         }
     })
@@ -536,12 +536,12 @@ landLevel.importLandLevelDetail = function (flag) {
         success: function (result) {
             if (result.ret) {
                 landLevel.loadTree(landLevelDetail.landLevelId);
-                notifyInfo(result.data);
+                notifyInfo('提示',result.data);
             }
         },
         error: function (result, status, e) {
             Loading.progressHide();
-            AlertError("调用服务端方法失败，失败原因:" + result);
+            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
         }
     });
 };
@@ -572,7 +572,7 @@ function zTreeOnRemove() {
     var zTree = $.fn.zTree.getZTreeObj(landLevel.config.tree.prop("id"));
     var nodes = zTree.getSelectedNodes();
     if (nodes.length > 1) {
-        toastr.success('只能选择一个作为层级');
+        notifySuccess('成功','只能选择一个作为层级');
         return false;
     }
     if (nodes.length == 1) {
@@ -581,7 +581,7 @@ function zTreeOnRemove() {
             zTree.removeNode(node);
         });
     } else {
-        toastr.success('选择删除层级');
+        notifySuccess('成功','选择删除层级');
     }
 }
 
@@ -591,7 +591,7 @@ function zTreeOnEdit() {
     var zTree = $.fn.zTree.getZTreeObj(landLevel.config.tree.prop("id"));
     var nodes = zTree.getSelectedNodes();
     if (nodes.length > 1) {
-        toastr.success('只能选择一个作为层级');
+        notifySuccess('成功','只能选择一个作为层级');
         return false;
     }
     if (nodes.length == 1) {
@@ -611,7 +611,7 @@ function zTreeOnEdit() {
             box.modal();
         });
     } else {
-        toastr.success('选择编辑层级');
+        notifySuccess('成功','选择编辑层级');
     }
 }
 
@@ -658,7 +658,7 @@ function addHoverDom(treeId, treeNode) {
                 break
             }
             default: {
-                toastr.success('不能在此层级添加子级!');
+                notifySuccess('成功','不能在此层级添加子级!');
                 break;
             }
         }
@@ -738,11 +738,11 @@ landLevel.loadTree = function () {
                 zTreeObj = $.fn.zTree.init(landLevel.config.tree, setting, result.data);
                 zTreeObj.expandAll(true);
             } else {
-                AlertError("获取数据失败，失败原因:" + result.errmsg);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         },
         error: function (result) {
-            AlertError("调用服务端方法失败，失败原因:" + result.errmsg);
+            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
         }
     });
 };
@@ -773,7 +773,7 @@ landLevel.showDataAllocationCorrectionCoefficientVolumeRatioDetail = function ()
     var zTree = $.fn.zTree.getZTreeObj(landLevel.config.tree.prop("id"));
     var nodes = zTree.getSelectedNodes();
     if (nodes.length > 1) {
-        toastr.success('只能选择一个作为层级');
+        notifySuccess('成功','只能选择一个作为层级');
         return false;
     }
     if (nodes.length == 1) {
@@ -783,10 +783,10 @@ landLevel.showDataAllocationCorrectionCoefficientVolumeRatioDetail = function ()
             landLevel.config.dataAllocationCorrectionCoefficientVolumeRatioDetailTableBox.modal("show");
             landLevel.showDataHousePriceIndexDetailList(treeNode.id);
         } else {
-            toastr.success('第一层级关联容积率系数配置');
+            notifySuccess('成功','第一层级关联容积率系数配置');
         }
     } else {
-        toastr.success('选择层级');
+        notifySuccess('成功','选择层级');
     }
 };
 
@@ -810,7 +810,7 @@ landLevel.deleteDataAllocationCorrectionCoefficientVolumeRatioDetail = function 
                     notifySuccess("成功", "删除数据成功");
                     landLevel.showDataHousePriceIndexDetailList(row.levelDetailId);
                 } else {
-                    AlertError("删除数据失败，失败原因:" + result.errmsg);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             }
         })
@@ -838,12 +838,12 @@ landLevel.importDataAllocationCorrectionCoefficientVolumeRatio = function (flag)
         success: function (result) {
             if (result.ret) {
                 landLevel.showDataHousePriceIndexDetailList(levelDetailId);
-                notifyInfo(result.data);
+                notifyInfo('提示',result.data);
             }
         },
         error: function (result, status, e) {
             Loading.progressHide();
-            AlertError("调用服务端方法失败，失败原因:" + result);
+            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
         }
     });
 
@@ -873,7 +873,7 @@ landLevel.saveDataAllocationCorrectionCoefficientVolumeRatioDetail = function ()
                 landLevel.showDataHousePriceIndexDetailList(data.levelDetailId);
                 landLevel.config.dataAllocationCorrectionCoefficientVolumeRatioDetailBox.modal("hide");
             } else {
-                AlertError("保存数据失败，失败原因:" + result.errmsg);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         }
     })
@@ -931,7 +931,7 @@ landLevel.showDataLandDetailAchievementDetail = function () {
     var zTree = $.fn.zTree.getZTreeObj(landLevel.config.tree.prop("id"));
     var nodes = zTree.getSelectedNodes();
     if (nodes.length > 1) {
-        toastr.success('只能选择一个作为层级');
+        notifySuccess('成功','只能选择一个作为层级');
         return false;
     }
     if (nodes.length == 1) {
@@ -940,7 +940,7 @@ landLevel.showDataLandDetailAchievementDetail = function () {
         landLevel.config.achievementBoxDetail.find("input[name='levelDetailId']").val(treeNode.id);
         landLevel.config.achievementBoxDetail.modal("show");
     } else {
-        toastr.success('选择层级');
+        notifySuccess('成功','选择层级');
     }
 };
 landLevel.showDataLandDetailAchievement = function () {
@@ -982,7 +982,7 @@ landLevel.deleteDataLandDetailAchievement = function (index) {
                     notifySuccess("成功", "删除数据成功");
                     landLevel.showLandDetailAchievementList(row.levelDetailId);
                 } else {
-                    AlertError("删除数据失败，失败原因:" + result.errmsg);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             }
         })
@@ -1010,12 +1010,12 @@ landLevel.importDataLandDetailAchievement = function (flag) {
         success: function (result) {
             if (result.ret) {
                 landLevel.showLandDetailAchievementList(levelDetailId);
-                notifyInfo(result.data);
+                notifyInfo('提示',result.data);
             }
         },
         error: function (result, status, e) {
             Loading.progressHide();
-            AlertError("调用服务端方法失败，失败原因:" + result);
+            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
         }
     });
 };
@@ -1099,7 +1099,7 @@ landLevel.saveDataLandDetailAchievement = function () {
                 landLevel.showLandDetailAchievementList(data.levelDetailId);
                 landLevel.config.achievementBox.modal("hide");
             } else {
-                AlertError("保存数据失败，失败原因:" + result.errmsg);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         }
     })

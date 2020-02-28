@@ -53,7 +53,7 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    AlertSuccess("提交数据成功!", 1, null, function () {
+                    AlertSuccess("成功", "提交数据成功",function(){
                         window.close();
                     });
                 }

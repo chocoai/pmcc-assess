@@ -814,11 +814,11 @@ toolMapHandleFun.saveData = function (data, callback) {
                     callback(result.data);
                 }
             } else {
-                Alert("保存失败:" + result.errmsg);
+                AlertError("失败","保存失败:" + result.errmsg);
             }
         },
-        error: function (e) {
-            AlertError("失败","调用服务端方法失败，失败原因:" + e);
+        error: function (result) {
+            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
         }
     });
 };
@@ -834,11 +834,11 @@ toolMapHandleFun.removeToolMapHandle = function (data, callback) {
                     callback(result.data);
                 }
             } else {
-                Alert("失败:" + result.errmsg);
+                AlertError("失败","原因:" + result.errmsg);
             }
         },
-        error: function (e) {
-            AlertError("失败","调用服务端方法失败，失败原因:" + e);
+        error: function (result) {
+            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
         }
     });
 };
@@ -854,11 +854,11 @@ toolMapHandleFun.getDataById = function (id, callback) {
                     callback(result.data);
                 }
             } else {
-                Alert("失败:" + result.errmsg);
+                AlertError("失败","原因:" + result.errmsg);
             }
         },
-        error: function (e) {
-            AlertError("失败","调用服务端方法失败，失败原因:" + e);
+        error: function (result) {
+            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
         }
     });
 };
@@ -874,11 +874,11 @@ toolMapHandleFun.getToolMapHandleListByExample = function (data, callback) {
                     callback(result.data);
                 }
             } else {
-                Alert("失败:" + result.errmsg);
+                AlertError("失败","原因:" + result.errmsg);
             }
         },
-        error: function (e) {
-            AlertError("失败","调用服务端方法失败，失败原因:" + e);
+        error: function (result) {
+            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
         }
     });
 };

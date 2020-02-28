@@ -155,7 +155,7 @@
     function saveform() {
         var result = landLevel.config.table.bootstrapTable('getData');
         if (result.length == 0) {
-            toastr.success('至少添加一条数据');
+            notifySuccess('成功','至少添加一条数据');
             return false;
         }
         var data = [];
@@ -173,12 +173,12 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    Alert("提交数据成功!", 1, null, function () {
+                    AlertSuccess("成功", "提交数据成功", function () {
                         window.close();
                     });
                 }
                 else {
-                    Alert("保存数据失败，失败原因:" + result.errmsg, 1, null, null);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
@@ -190,9 +190,9 @@
 
     //关闭流程
     function closeBasicApp() {
-        Alert('确定要关闭流程么？', 2, null, function () {
+        AlertConfirm('确定要关闭流程么？',"", function () {
             AssessCommon.closeProcess('${basicApply.processInsId}', function () {
-                Alert('流程关闭成功', 1, null, function () {
+                AlertSuccess('成功',"流程关闭成功", function () {
                     window.close();
                 })
             })

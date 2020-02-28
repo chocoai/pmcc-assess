@@ -301,7 +301,7 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    toastr.success('保存成功');
+                    notifySuccess('成功','保存成功');
                     incomeIndex.loadDateSectionList(data.operationMode);
                     if (data.operationMode == 0) {
                         selfSupport.loadForecastIncomeList();

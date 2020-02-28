@@ -195,12 +195,12 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    Alert("提交数据成功!", 1, null, function () {
+                    AlertSuccess("成功", "提交数据成功", function () {
                         window.close();
                     });
                 }
                 else {
-                    Alert(result.errmsg);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {

@@ -244,16 +244,16 @@
                 data: data,
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success('保存成功');
+                        notifySuccess('成功','保存成功');
                         loadDataDicList();
                         $('#divBox').modal('hide');
                     }
                     else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             })
         }
@@ -261,7 +261,7 @@
 
     //删除一条预警设置信息
     function deleteEarlyWarning(id, tbId) {
-        Alert("确认要删除么？", 2, null, function () {
+        AlertConfirm("确认要删除么？", "删除后数据将不可恢复", function () {
             Loading.progressShow();
             $.ajax({
                 url: "${pageContext.request.contextPath}/earlyWarning/deleteEarlyWarning",
@@ -271,17 +271,17 @@
                 success: function (result) {
                     Loading.progressHide();
                     if (result.ret) {
-                        toastr.success('删除成功');
+                        notifySuccess('成功','删除成功');
                         loadDataDicList();//重载 (刷新)
                         $('#' + tbId).bootstrapTable("refresh");
                     }
                     else {
-                        Alert("删除数据失败，失败原因:" + result.errmsg);
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
                     Loading.progressHide();
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             })
         })
@@ -309,12 +309,12 @@
                     $('#divBox').modal();
                 }
                 else {
-                    Alert("获取数据失败，失败原因:" + result.errmsg);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
                 Loading.progressHide();
-                AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         })
     }

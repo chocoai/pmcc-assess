@@ -526,7 +526,7 @@
                 success: function (result) {
                     Loading.progressHide();
                     if (result.ret) {
-                        notifySuccess('删除成功');
+                        notifySuccess("成功",'删除成功');
                         forecastRestaurant.loadHistoryList(type);
                     }
                     else {
@@ -629,7 +629,7 @@
                 }
             })
         } else {
-            notifyInfo('请选择要添加的数据');
+            notifyInfo('提示','请选择要添加的数据');
         }
     }
 
@@ -657,7 +657,7 @@
                 }
             })
         } else {
-            notifyInfo('请选择要取消的数据');
+            notifyInfo('提示','请选择要取消的数据');
         }
     }
 

@@ -619,7 +619,7 @@
                                 </c:if>
                                 <c:if test="${empty mdDevelopment.rewardRateId}">
                                     <input type="button" class="btn btn-primary" value="报酬率测算"
-                                           onclick="notifyInfo('','未添加土地还原率!')"/>
+                                           onclick="notifyInfo('提示','未添加土地还原率!')"/>
                                 </c:if>
                                 </span>
                             </div>

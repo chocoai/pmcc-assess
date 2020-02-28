@@ -820,11 +820,11 @@
                     }
                 }
                 else {
-                    Alert("保存数据失败，失败原因:" + result.errmsg);
+                    AlertError("失败","保存数据失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         })
     }
@@ -1238,7 +1238,7 @@
             });
         },
         removeData: function (id) {
-            Alert("确认删除!", 2, null, function () {
+            AlertConfirm("确认删除么", "删除后数据不可恢复", function () {
                 $.ajax({
                     url: "${pageContext.request.contextPath}/costApproach/deleteCostApproachItem",
                     type: "post",
@@ -1246,15 +1246,15 @@
                     data: {id: id},
                     success: function (result) {
                         if (result.ret) {
-                            toastr.success('删除成功');
+                            notifySuccess('成功','删除成功');
                             research.prototype.loadDataList(${master.id});
                         }
                         else {
-                            Alert("保存数据失败，失败原因:" + result.errmsg);
+                            AlertError("失败","保存数据失败，失败原因:" + result.errmsg);
                         }
                     },
                     error: function (result) {
-                        AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 })
             });
@@ -1276,16 +1276,16 @@
                 data: data,
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success('保存成功');
+                        notifySuccess('成功','保存成功');
                         $('#' + research.prototype.config().box).modal('hide');
                         research.prototype.loadDataList(${master.id});
                     }
                     else {
-                        Alert("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("失败","保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             })
         },
@@ -1303,7 +1303,7 @@
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             })
         }
@@ -1356,7 +1356,7 @@
             });
         },
         removeData: function (id, this_) {
-            Alert("确认删除!", 2, null, function () {
+            AlertConfirm("确认删除么", "删除后数据不可恢复", function () {
                 $.ajax({
                     url: "${pageContext.request.contextPath}/costApproach/deleteCostApproachTaxes",
                     type: "post",
@@ -1364,16 +1364,16 @@
                     data: {id: id},
                     success: function (result) {
                         if (result.ret) {
-                            toastr.success('删除成功');
+                            notifySuccess('成功','删除成功');
                             $(this_).parent().parent().remove();
 
                         }
                         else {
-                            Alert("保存数据失败，失败原因:" + result.errmsg);
+                            AlertError("失败","保存数据失败，失败原因:" + result.errmsg);
                         }
                     },
                     error: function (result) {
-                        AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 })
             });
@@ -1398,18 +1398,18 @@
                 },
                 success: function (result) {
                     if (result.ret) {
-                        toastr.success('保存成功');
+                        notifySuccess('成功','保存成功');
                         $('#' + taxes.prototype.config().box).modal('hide');
                         var html = "<tr>"
                         html += uploadTaxeHtml(result.data.id, result.data.typeKey, result.data.typeName, "", "", "");
                         html += "</tr>"
                         $("#tbodyContent").append(html);
                     } else {
-                        Alert(result.errmsg);
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             })
         },
@@ -1507,7 +1507,7 @@
                         }
                     },
                     error: function (result) {
-                        AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 }
             )
@@ -1669,7 +1669,7 @@
                 }
             },
             error: function (result) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         })
     }

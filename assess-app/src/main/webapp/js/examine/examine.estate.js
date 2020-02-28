@@ -527,7 +527,7 @@
                             pathArray: estateCommon.estateMapiframe.pathArrayJson,
                             name: estateCommon.getEstateName()
                         }, function () {
-                            toastr.success('标记成功');
+                            notifySuccess('成功','标记成功');
                         });
                     }
                 }
@@ -628,7 +628,7 @@
                 }
             },
             error: function (result) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         })
     };
@@ -848,7 +848,7 @@
             obj.pid = pid;
             obj.id = target.find("input[name='constructionInstallationEngineeringFeeId']").val();
             developmentCommon.saveMdArchitecturalObj2(developmentCommon.architecturalB.getFomData(table), obj, function (item) {
-                toastr.success('保存成功!');
+                notifySuccess('成功','保存成功!');
             });
             target.modal("hide");
         }

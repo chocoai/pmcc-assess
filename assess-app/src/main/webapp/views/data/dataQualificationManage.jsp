@@ -105,7 +105,7 @@
                 }
             },
             error: function (result) {
-                notifyWarning("调用服务端方法失败","失败原因:" + result);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     }
@@ -167,12 +167,12 @@
                             dataQualification.prototype.loadDataDicList();
                         }
                         else {
-                            AlertError("删除数据失败", result.errmsg);
+                            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                         }
                     },
                     error: function (result) {
                         Loading.progressHide();
-                        AlertError("调用服务端方法失败", result);
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 })
             });
@@ -198,11 +198,11 @@
                         dataQualification.prototype.loadDataDicList();
                     }
                     else {
-                        AlertError("错误", "保存数据失败");
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    AlertError("错误", "保存数据失败");
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             })
         },
@@ -220,7 +220,7 @@
                     }
                 },
                 error: function (result) {
-                    notifyWarning("调用服务端方法失败","失败原因:"+ result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             })
         },
@@ -243,14 +243,14 @@
                                 $("#userAccount").val("");
                                 $("#userAccountName").val("");
                                 $('#' + dataQualification.prototype.config().box).modal('hide');
-                                notifyWarning("失败","该人员未有评估师资格");
+                                notifyWarning("警告","该人员未有评估师资格");
                             }
                         });
                     }
                 });
             } else {
                 $('#' + dataQualification.prototype.config().box).modal('hide');
-                notifyWarning("失败","资格类型必须先选择");
+                notifyWarning("警告","资格类型必须先选择");
             }
         }
 

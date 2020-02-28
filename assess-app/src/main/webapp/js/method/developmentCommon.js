@@ -414,9 +414,9 @@ developmentCommon.loadMdCalculatingMethodEngineeringCostTable = function (table,
                 if (callback) {
                     callback();
                 }
-                toastr.success('编辑成功!');
+                notifySuccess('成功','编辑成功!');
             }, function () {
-                toastr.success('编辑失败!');
+                notifySuccess('成功','编辑失败!');
             });
         },
         showColumns: false,

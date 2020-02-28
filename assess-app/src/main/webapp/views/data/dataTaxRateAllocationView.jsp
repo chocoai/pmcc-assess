@@ -269,7 +269,7 @@
                     }
                 },
                 error: function (result) {
-                    notifyWarning("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             })
         },

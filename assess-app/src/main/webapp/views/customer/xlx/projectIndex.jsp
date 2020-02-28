@@ -138,16 +138,16 @@
             success: function (result) {
                 if (result.ret) {
                     //保存完后其他动作
-                    Alert("保存成功!", 1, null, function () {
+                    AlertSuccess("成功", "保存成功", function () {
                         window.close();
                     });
                 } else {
-                    Alert("保存失败:" + result.errmsg);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
-            error: function (e) {
+            error: function (result) {
                 Loading.progressHide();
-                AlertError("失败","调用服务端方法失败，失败原因:" + e);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     }
@@ -175,16 +175,16 @@
             success: function (result) {
                 if (result.ret) {
                     //保存完后其他动作
-                    Alert("提交数据成功!", 1, null, function () {
+                    AlertSuccess("成功", "提交数据成功", function () {
                         window.close();
                     });
                 } else {
-                    Alert("保存失败:" + result.errmsg);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
-            error: function (e) {
+            error: function (result) {
                 Loading.progressHide();
-                AlertError("失败","调用服务端方法失败，失败原因:" + e);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     }

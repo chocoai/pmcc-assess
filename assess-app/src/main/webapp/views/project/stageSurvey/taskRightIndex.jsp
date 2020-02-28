@@ -651,11 +651,11 @@
                         callback(result.data);
                     }
                 } else {
-                    AlertError("保存数据失败，失败原因:" + result.errmsg);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                AlertError("调用服务端方法失败，失败原因:" + result);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     }
@@ -674,11 +674,11 @@
                 } else {
                     console.log(data);
                     console.log(result.errmsg);
-                    AlertError("保存数据失败，失败原因:" + result.errmsg);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                AlertError("调用服务端方法失败，失败原因:" + result.errmsg);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     }
@@ -695,11 +695,11 @@
                         callback(result.data);
                     }
                 } else {
-                    AlertError("保存数据失败，失败原因:" + result.errmsg);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                AlertError("调用服务端方法失败，失败原因:" + result);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     }
@@ -717,11 +717,11 @@
                         callback(result.data);
                     }
                 } else {
-                    AlertError("保存数据失败，失败原因:" + result.errmsg);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                AlertError("调用服务端方法失败，失败原因:" + result);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     }
@@ -738,11 +738,11 @@
                         callback(result.data);
                     }
                 } else {
-                    AlertError("保存数据失败，失败原因:" + result.errmsg);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                AlertError("调用服务端方法失败，失败原因:" + result);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     }
@@ -759,11 +759,11 @@
                         callback(result.data);
                     }
                 } else {
-                    AlertError("保存数据失败，失败原因:" + result.errmsg);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                AlertError("调用服务端方法失败，失败原因:" + result);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     }
@@ -780,11 +780,11 @@
                         callback(result.data);
                     }
                 } else {
-                    AlertError("保存数据失败，失败原因:" + result.errmsg);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                AlertError("调用服务端方法失败，失败原因:" + result);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     }
@@ -816,11 +816,11 @@
                         });
                     }
                 } else {
-                    AlertError("保存数据失败，失败原因:" + result.errmsg);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                AlertError("调用服务端方法失败，失败原因:" + result);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     }
@@ -1010,12 +1010,12 @@
         var box = $("#" + commonField.divBox);
         var rows = $("#" + commonField.tbList + value).bootstrapTable('getSelections');
         if (!rows || rows.length <= 0) {
-            notifyInfo("请选择要编辑的数据");
+            notifyInfo('提示',"请选择要编辑的数据");
         } else if (rows.length == 1) {
             box.modal("show");
             initForm(data = rows[0], box.find("form"));
         } else {
-            notifyInfo("只能选择一行数据进行编辑");
+            notifyInfo('提示',"只能选择一行数据进行编辑");
         }
     }
 
@@ -1056,7 +1056,7 @@
         var x_panel = $(_this).closest(".x_panel");
         deleteSurveyAssetRightGroupById(groupId, function () {
             x_panel.remove();
-            toastr.success('移除成功');
+            notifySuccess('成功','移除成功');
         });
     }
 
@@ -1074,7 +1074,7 @@
         data.projectId = '${projectInfo.id}';
         data.planDetailsId = '${projectPlanDetails.id}';
         saveSurveyAssetRightItem([data], function () {
-            toastr.success('保存成功');
+            notifySuccess('成功','保存成功');
             box.modal("hide");
             loadAssetRightList(data.groupId);
         });
@@ -1098,15 +1098,15 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    notifyInfo(result.data);
+                    notifyInfo('提示',result.data);
                     loadAssetRightList(groupId);
                 } else {
-                    AlertError("导入数据失败，失败原因:" + result.errmsg);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result, status, e) {
                 Loading.progressHide();
-                AlertError("调用服务端方法失败，失败原因:" + result);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     }
