@@ -652,7 +652,7 @@
      */
     projectStagePlan.deletePlanDetailsByIds = function () {
         if ('${projectInfo.projectMemberVo.userAccountManager}' != '${sysUserDto.userAccount}') {
-            notifyInfo("只有项目经理才能安排任务的执行人员");
+            notifyInfo("只有项目经理才能刪除相关任务");
             return false;
         }
         var rows = projectStagePlan.stageTable.bootstrapTable('getSelections');

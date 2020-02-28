@@ -143,13 +143,13 @@
                 field: 'currentPrice', title: '价格', formatter: function (value, row, index) {
                     var result = '';
                     if (row.currentPrice) {
-                        result += '成交价：' + row.currentPrice + '<br/>';
+                        result += '成交总价：' + row.currentPrice + '<br/>';
                     }
                     if (row.consultPrice) {
-                        result += '评估价：' + row.consultPrice + '<br/>';
+                        result += '评估总价：' + row.consultPrice + '<br/>';
                     }
                     if (row.unitPrice) {
-                        result += '单价：' + row.unitPrice + '<br/>';
+                        result += '成交单价：' + row.unitPrice + '<br/>';
                     }
                     return result;
                 }

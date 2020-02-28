@@ -606,7 +606,7 @@
                                     <div class="form-group">
                                         <div class="x-valid">
                                             <label class="col-sm-1 control-label">
-                                                成交价
+                                                成交总价
                                             </label>
                                             <div class="col-sm-2">
                                                 <input type="text" data-rule-number="true" data-rule-maxlength="50"
@@ -627,7 +627,7 @@
                                         </div>
                                         <div class="x-valid">
                                             <label class="col-sm-1 control-label">
-                                                评估价
+                                                评估总价
                                             </label>
                                             <div class="col-sm-2">
                                                 <input type="text" data-rule-number="true" data-rule-maxlength="50"
@@ -650,7 +650,7 @@
                                     <div class="form-group">
                                         <div class="x-valid">
                                             <label class="col-sm-1 control-label">
-                                                单价
+                                                成交单价
                                             </label>
                                             <div class="col-sm-2">
                                                 <input type="text" data-rule-number="true" data-rule-maxlength="50"
@@ -1401,13 +1401,13 @@
                 field: 'currentPrice', title: '价格', formatter: function (value, row, index) {
                     var result = '';
                     if (row.currentPrice) {
-                        result += '成交价：' + row.currentPrice + '<br/>';
+                        result += '成交总价：' + row.currentPrice + '<br/>';
                     }
                     if (row.consultPrice) {
-                        result += '评估价：' + row.consultPrice + '<br/>';
+                        result += '评估总价：' + row.consultPrice + '<br/>';
                     }
                     if (row.unitPrice) {
-                        result += '单价：' + row.unitPrice + '<br/>';
+                        result += '成交单价：' + row.unitPrice + '<br/>';
                     }
                     return result;
                 }
