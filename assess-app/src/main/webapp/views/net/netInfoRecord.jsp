@@ -97,8 +97,6 @@
                                             任务分派(认领)
                                         </button>
                                     </div>
-
-
                                 </form>
                                 <input type="hidden" id="selectIds">
                                 <table class="table table-bordered" id="transaction_List">
@@ -107,15 +105,12 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
         <%@include file="/views/share/main_footer.jsp" %>
     </div>
-
 </div>
-
 </body>
 <div id="divBoxFather" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
@@ -300,28 +295,22 @@
         },
         loadDataDicList: function () {
             var cols = [];
-            cols.push({field: 'title', title: '标题', width: '13%'});
+            cols.push({field: 'title', title: '标题', width: '20%'});
             cols.push({field: 'province', title: '省', width: '5%'});
             cols.push({field: 'city', title: '市', width: '5%'});
             cols.push({
-                field: 'sourceSiteName', title: '来源网站', width: '8%', formatter: function (value, row, index) {
+                field: 'sourceSiteName', title: '来源网站', width: '`8%', formatter: function (value, row, index) {
                     var str = '<a href="' + row.sourceSiteUrl + '" target="_blank" >' + row.sourceSiteName + '</a>';
                     str += '<br/>(' + row.sourceSiteUrl + ')';
                     return str;
                 }
             });
-            cols.push({field: 'type', title: '类型', width: '6%'});
+            cols.push({field: 'type', title: '类型', width: '10%'});
             cols.push({
-                field: 'beginTime', title: '开始时间', width: '7%', formatter: function (value, row, index) {
+                field: 'beginTime', title: '开始时间', width: '10%', formatter: function (value, row, index) {
                     return formatDate(row.beginTime, false);
                 }
             });
-            cols.push({
-                field: 'endTime', title: '结束时间', width: '7%', formatter: function (value, row, index) {
-                    return formatDate(row.endTime, false);
-                }
-            });
-            cols.push({field: 'content', title: '内容', width: '25%'});
             cols.push({
                 field: 'id', title: '操作', width: '7%', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';

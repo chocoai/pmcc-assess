@@ -1065,28 +1065,22 @@
         },
         loadDataDicList: function () {
             var cols = [];
-            cols.push({field: 'title', title: '标题', width: '10%'});
+            cols.push({field: 'title', title: '标题', width: '20%'});
             cols.push({field: 'province', title: '省', width: '5%'});
             cols.push({field: 'city', title: '市', width: '5%'});
             cols.push({
-                field: 'sourceSiteName', title: '来源网站', width: '8%', formatter: function (value, row, index) {
+                field: 'sourceSiteName', title: '来源网站', width: '18%', formatter: function (value, row, index) {
                     var str = '<a href="' + row.sourceSiteUrl + '" target="_blank" >' + row.sourceSiteName + '</a>';
                     str += '<br/>(' + row.sourceSiteUrl + ')';
                     return str;
                 }
             });
-            cols.push({field: 'type', title: '类型', width: '6%'});
+            cols.push({field: 'type', title: '类型', width: '10%'});
             cols.push({
-                field: 'beginTime', title: '开始时间', width: '7%', formatter: function (value, row, index) {
+                field: 'beginTime', title: '开始时间', width: '10%', formatter: function (value, row, index) {
                     return formatDate(row.beginTime, false);
                 }
             });
-            cols.push({
-                field: 'endTime', title: '结束时间', width: '7%', formatter: function (value, row, index) {
-                    return formatDate(row.endTime, false);
-                }
-            });
-            cols.push({field: 'content', title: '内容', width: '20%'});
             cols.push({
                 field: 'status', width: '5%', title: '状态', formatter: function (value, row, index) {
                     var s;
@@ -1118,7 +1112,7 @@
                     str += '</button>';
                     //str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="关闭" onclick="detailInfo.prototype.closeModal(' + row.id + ')"><i class="fa fa-trash-o"></i></a>';
                     str += '<button onclick="detailInfo.prototype.closeModal(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="关闭">';
-                    str += '<i class="fa fa-stop"></i>';
+                    str += '<i class="fa fa-minus"></i>';
                     str += '</button>';
                     str += '</div>';
                     return str;
