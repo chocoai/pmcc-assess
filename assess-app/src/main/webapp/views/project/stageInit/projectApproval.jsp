@@ -15,8 +15,6 @@
                     <%@include file="/views/share/project/projectInfo.jsp" %>
                     <!-- 审批用 -->
                     <%@include file="/views/share/form_approval.jsp" %>
-
-                    <%@include file="/views/share/form_log.jsp" %>
                 </div>
             </div>
         </div>
