@@ -87,7 +87,6 @@
                                 </form>
                                 <div class="row form-group">
                                     <div class="col-md-12">
-                                        <div class="form-inline x-valid">
                                             <div class="col-md-3 pull-left" style="max-height: 500px;overflow: auto;">
                                                 <ul id="ztree" class="ztree"></ul>
                                             </div>
@@ -107,7 +106,6 @@
                                                     </button>
                                                 </c:if>
                                             </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>

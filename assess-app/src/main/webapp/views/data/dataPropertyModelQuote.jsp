@@ -234,25 +234,19 @@
 <script type="text/html" id="dataPropertyModelQuoteFatherHtml">
     <input type="hidden" name="id">
     <div class="row form-group">
-        <div class="col-md-6">
+        <div class="col-md-12">
             <div class="form-inline x-valid">
                 <label class="col-sm-2 col-form-label">
                     名称<span class="symbol required"></span>
                 </label>
-                <div class="col-sm-10">
+                <div class="col-sm-4">
                     <input type="text" class="form-control input-full" name="name"
                            placeholder="名称" required="required">
                 </div>
-            </div>
-        </div>
-    </div>
-    <div class="row form-group">
-        <div class="col-md-6">
-            <div class="form-inline x-valid">
                 <label class="col-sm-2 col-form-label">
                     公司性质
                 </label>
-                <div class="col-sm-10">
+                <div class="col-sm-4">
                     <select name="companyNature" class="form-control input-full">
                         <option value="">-请选择-</option>
                         <c:forEach items="${unitPropertiesList}" var="item">
@@ -264,12 +258,12 @@
         </div>
     </div>
     <div class="row form-group">
-        <div class="col-md-6">
+        <div class="col-md-12">
             <div class="form-inline x-valid">
                 <label class="col-sm-2 col-form-label">
                     社会信誉
                 </label>
-                <div class="col-sm-10">
+                <div class="col-sm-4">
                     <select name="socialPrestige" class="form-control input-full">
                         <option value="">-请选择-</option>
                         <c:forEach items="${reputations}" var="item">
@@ -282,12 +276,9 @@
     </div>
 
     <div class="row form-group" style="display: none">
-        <div class="col-md-6">
+        <div class="col-md-12">
             <div class="form-inline x-valid">
-                <label class="col-sm-2 col-form-label">
-
-                </label>
-                <div class="col-sm-10">
+                <div class="col-sm-4">
                     <button type="button" class="btn btn-success btn-sm"
                             onclick="showItemable(this)" data-toggle="modal"> 设置服务内容
                     </button>

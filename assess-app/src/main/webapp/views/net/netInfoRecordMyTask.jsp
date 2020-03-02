@@ -1004,7 +1004,7 @@
                     str += '</button>';
                     //str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="查看网址" onclick="detailInfo.prototype.openItem(' + index + ')"><i class="fa fa-eye fa-white"></i></a>';
                     str += '<button onclick="detailInfo.prototype.openItem(' + index + ')" style="margin-left: 5px;" class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看网址">';
-                    str += '<i class="fa fa-search"></i>';
+                    str += '<i class="fa fa-eye"></i>';
                     str += '</button>';
                     //str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="关闭" onclick="detailInfo.prototype.closeModal(' + row.id + ')"><i class="fa fa-trash-o"></i></a>';
                     str += '<button onclick="detailInfo.prototype.closeModal(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="关闭">';
@@ -1332,7 +1332,7 @@
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
-                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="查看网址" target="_blank" href="' + row.sourceSiteUrl + '" ><i class="fa fa-eye"></i></a>';
+                    str += '<a  class="btn btn-xs btn-info tooltips"  data-placement="top" data-original-title="查看网址" target="_blank" href="' + row.sourceSiteUrl + '" ><i class="fa fa-eye"></i></a>';
                     str += '</div>';
                     return str;
                 }
@@ -1463,8 +1463,8 @@
                 field: 'id', width: '6%', title: '操作', formatter: function (value, row, index) {
                     if (row.status == 0) {
                         var str = '<div class="btn-margin">';
-                        str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="detailInfo.prototype.getAndInitLand(' + row.id + ')"><i class="fa fa-pen"></i></a>';
-                        str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="删除" onclick="detailInfo.prototype.deleteLandItem(' + row.id + ')"><i class="fa fa-minus"></i></a>';
+                        str += '<button type="button" class="btn btn-xs btn-primary tooltips"  data-placement="top" data-original-title="编辑" onclick="detailInfo.prototype.getAndInitLand(' + row.id + ')"><i class="fa fa-pen"></i></button>';
+                        str += '<button type="button" class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="删除" onclick="detailInfo.prototype.deleteLandItem(' + row.id + ')"><i class="fa fa-minus"></i></button>';
                         str += '</div>';
                         return str;
                     } else {
@@ -1579,8 +1579,8 @@
                 field: 'id', width: '6%', title: '操作', formatter: function (value, row, index) {
                     if (row.status == 0) {
                         var str = '<div class="btn-margin">';
-                        str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="detailInfo.prototype.getAndInitHouse(' + row.id + ')"><i class="fa fa-pen"></i></a>';
-                        str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="删除" onclick="detailInfo.prototype.deleteHouseItem(' + row.id + ')"><i class="fa fa-minus"></i></a>';
+                        str += '<button type="button" class="btn btn-xs btn-primary tooltips"  data-placement="top" data-original-title="编辑" onclick="detailInfo.prototype.getAndInitHouse(' + row.id + ')"><i class="fa fa-pen"></i></button>';
+                        str += '<button type="button" class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="删除" onclick="detailInfo.prototype.deleteHouseItem(' + row.id + ')"><i class="fa fa-minus"></i></button>';
                         str += '</div>';
                         return str;
                     } else {

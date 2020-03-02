@@ -147,14 +147,16 @@
     dataObjFun.listMaster = function () {
         var cols = [];
         cols.push({field: 'areaName', width: '30%',title: '区域'});
-        cols.push({field: 'categoryName',width: '25%', title: '类别'});
+        cols.push({field: 'categoryName',width: '15%', title: '类别'});
+        cols.push({field: 'symbol',width: '15%', title: '文号'});
+        cols.push({field: 'amountMoney',width: '15%', title: '金额'});
         cols.push({
-            field: 'releaseTime', width: '25%',title: '发布时间', formatter: function (value, row, index) {
+            field: 'releaseTime', width: '15%',title: '发布时间', formatter: function (value, row, index) {
                 return formatDate(value);
             }
         });
         cols.push({
-            field: 'id',width: '20%', title: '操作', formatter: function (value, row, index) {
+            field: 'id',width: '10%', title: '操作', formatter: function (value, row, index) {
                 var str = '<button type="button" onclick="dataObjFun.editMasterById(' + index + ')"  style="margin-left: 5px;"  class="btn  btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
                 str += '<i class="fa fa-pen"></i>';
                 str += '</button>';

@@ -99,48 +99,38 @@
                         <div class="col-md-12">
                             <div class="card-body">
                                 <div class="row form-group">
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-2 col-form-label">
                                                 名称<span class="symbol required"></span>
                                             </label>
-                                            <div class="col-sm-10">
+                                            <div class="col-sm-4">
                                                 <input type="text" required data-rule-maxlength="50" placeholder="名称"
                                                        id="name" name="name" class="form-control input-full">
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-2 col-form-label">
-                                                替换类型
-                                            </label>
-                                            <div class="col-sm-10">
-                                                <select id="replaceType" name="replaceType" class="form-control input-full">
-                                                    <c:forEach items="${replaceType}" var="item">
-                                                        <option value="${item.key}">${item.value}</option>
-                                                    </c:forEach>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row form-group">
-                                    <div class="col-md-6">
-                                        <div class="form-inline x-valid">
                                             <label class="col-sm-2 col-form-label">
                                                 字段
                                             </label>
-                                            <div class="col-sm-10">
+                                            <div class="col-sm-4">
                                                 <input type="text" required="required" data-rule-maxlength="50" placeholder="字段"
                                                        id="fieldName" name="fieldName" class="form-control input-full">
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
                                         <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                排序
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" data-rule-digits="true" placeholder="排序"
+                                                       id="sorting" name="sorting" class="form-control input-full">
+                                            </div>
 
-                                            <div class="col-sm-10">
+
+                                            <div class="col-sm-6">
                                                 <div class="form-check" style="justify-content:left">
                                                     <label class="form-check-label">
                                                         <input class="form-check-input" type="checkbox" id="bisEnable"
@@ -152,28 +142,15 @@
                                             </div>
                                         </div>
                                     </div>
-                                  
-                                </div>
-                                <div class="row form-group">
-                                    <div class="col-md-6">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-2 col-form-label">
-                                                排序
-                                            </label>
-                                            <div class="col-sm-10">
-                                                <input type="text" data-rule-digits="true" placeholder="排序"
-                                                       id="sorting" name="sorting" class="form-control input-full">
-                                            </div>
-                                        </div>
-                                    </div>
+
                                 </div>
                                 <div class="row form-group">
                                     <div class="col-md-12">
                                         <div class="form-inline x-valid">
-                                            <label class="col-sm-1 control-label">
+                                            <label class="col-sm-2 control-label">
                                                 备注
                                             </label>
-                                            <div class="col-sm-11">
+                                            <div class="col-sm-10">
                                            <textarea placeholder="备注" id="remark" name="remark"
                                                      class="form-control input-full"></textarea>
                                             </div>
@@ -257,48 +234,37 @@
                         <div class="col-md-12">
                             <div class="card-body">
                                 <div class="row form-group">
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-2 col-form-label">
                                                 名称<span class="symbol required"></span>
                                             </label>
-                                            <div class="col-sm-10">
+                                            <div class="col-sm-4">
                                                 <input type="text" required data-rule-maxlength="50" placeholder="名称"
                                                        id="subName" name="name" class="form-control input-full">
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-2 col-form-label">
-                                                替换类型
-                                            </label>
-                                            <div class="col-sm-10">
-                                                <select id="subReplaceType" name="replaceType" class="form-control input-full">
-                                                    <c:forEach items="${replaceType}" var="item">
-                                                        <option value="${item.key}">${item.value}</option>
-                                                    </c:forEach>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row form-group">
-                                    <div class="col-md-6">
-                                        <div class="form-inline x-valid">
                                             <label class="col-sm-2 col-form-label">
                                                 字段
                                             </label>
-                                            <div class="col-sm-10">
+                                            <div class="col-sm-4">
                                                 <input type="text" data-rule-maxlength="100" placeholder="字段"
                                                        id="subFieldName" name="fieldName" class="form-control input-full">
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
                                         <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                排序
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" data-rule-digits="true" placeholder="排序"
+                                                       id="subSorting" name="sorting" class="form-control input-full">
+                                            </div>
 
-                                            <div class="col-sm-10">
+                                            <div class="col-sm-6">
                                                 <div class="form-check" style="justify-content:left">
                                                     <label class="form-check-label">
                                                         <input class="form-check-input" type="checkbox" id="subBisEnable"
@@ -313,26 +279,14 @@
 
                                 </div>
 
-                                <div class="row form-group">
-                                    <div class="col-md-6">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-2 col-form-label">
-                                                排序
-                                            </label>
-                                            <div class="col-sm-10">
-                                                <input type="text" data-rule-digits="true" placeholder="排序"
-                                                       id="subSorting" name="sorting" class="form-control input-full">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+
                                 <div class="row form-group">
                                     <div class="col-md-12">
                                         <div class="form-inline x-valid">
-                                            <label class="col-sm-1 control-label">
+                                            <label class="col-sm-2 control-label">
                                                 备注
                                             </label>
-                                            <div class="col-sm-11">
+                                            <div class="col-sm-10">
                                            <textarea placeholder="备注" id="subRemark" name="remark"
                                                      class="form-control input-full"></textarea>
                                             </div>
@@ -342,10 +296,10 @@
                                 <div class="row form-group">
                                     <div class="col-md-12">
                                         <div class="form-inline x-valid">
-                                            <label class="col-sm-1 control-label">
+                                            <label class="col-sm-2 control-label">
                                                 模板
                                             </label>
-                                            <div class="col-sm-11">
+                                            <div class="col-sm-10">
                                                 <div id="baseReportField_id_File"></div>
                                                 <div id="_baseReportField_id_File"></div>
                                             </div>

@@ -83,7 +83,7 @@
 
                                                 <div class=" col-xs-31  col-sm-31  col-md-31  col-lg-31  col-sm-offset-1">
                                                     <c:if test="${empty isApplyBatch}">
-                                                        <div class="btn btn-success"
+                                                        <div class="btn btn-success btn-sm"
                                                              onclick="houseCommon.orientationFun(true)">户型图朝向
                                                         </div>
                                                     </c:if>

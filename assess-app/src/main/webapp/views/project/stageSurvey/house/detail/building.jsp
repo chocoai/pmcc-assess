@@ -335,19 +335,7 @@
                                         </div>
                                         </div>
                                     </div>
-                                    <div class="row form-group">
-                                        <div class="col-md-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-1"></label>
-                                            <div class="col-sm-3">
-                                                <button type="button" class="btn btn-info btn-sm"
-                                                        onclick="buildingCommon.constructionInstallationEngineeringFeeEvent.loadHtml();">
-                                                    建筑安装完工度调查
-                                                </button>
-                                            </div>
-                                        </div>
-                                        </div>
-                                    </div>
+
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                         <div class="form-inline x-valid">
@@ -358,6 +346,12 @@
                                                 <table class="table table-bordered" id="basicBuildingPropertyServiceItemTable">
 
                                                 </table>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <button type="button" class="btn btn-info btn-sm"
+                                                        onclick="buildingCommon.constructionInstallationEngineeringFeeEvent.loadHtml();">
+                                                    建筑安装完工度调查
+                                                </button>
                                             </div>
                                         </div>
                                         </div>

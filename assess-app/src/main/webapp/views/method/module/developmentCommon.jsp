@@ -28,11 +28,26 @@
     </tr>
 </script>
 <script type="text/html" id="architecturalB" data-title="树干">
+    <div data-view-name="b" style="display: none;">
+        <label class="label-info label">计算方式 ==></label>
+        <code>单价 ✖ 面积 ✖ (1-估价时点完工程度)</code>
+    </div>
+
+    <div data-view-name="a" style="display: none;">
+        <label class="label-info label">计算方式 ==></label>
+        <code>单价 ✖ 面积</code>
+    </div>
+
+    <div data-view-name="c" style="display: none;">
+        <label class="label-info label">计算方式 ==></label>
+        <code>单价 ✖ 面积 <code data-view-name="valuationDateDegreeCompletion"> ✖ 估价时点完工程度</code>
+        </code>
+    </div>
     <table class="table tree">
 
-        <caption>
+        <%--<caption>
 
-            <div data-view-name="b" style="display: none;">
+            <div data-view-name="b">
                 <label class="label-info label">计算方式 ==></label>
                 <code>单价 ✖ 面积 ✖ (1-估价时点完工程度)</code>
             </div>
@@ -48,7 +63,7 @@
                 </code>
             </div>
 
-        </caption>
+        </caption>--%>
 
         <thead>
         <tr>

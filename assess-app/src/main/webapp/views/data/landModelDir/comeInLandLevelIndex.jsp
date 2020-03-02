@@ -72,26 +72,26 @@
                                                     </select>
                                                 </div>
 
-                                                <button type="button" class="btn btn-info btn-sm"
+                                                <button type="button" class="btn btn-info btn-sm" style="margin-left: 10px"
                                                         onclick="findQuery();">
                                                     <span class="btn-label">
 												<i class="fa fa-search"></i>
 											</span>
                                                     查询
                                                 </button>
-                                                <button type="button" class="btn btn-success btn-sm"
+                                                <button type="button" class="btn btn-success btn-sm" style="margin-left: 5px"
                                                         onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftpLandLevelAreaBaseTemplate);">
                                                      <span class="btn-label">
-												<i class="fa fa-cloud-download"></i>
+												<i class="fa fa-cloud-download-alt"></i>
 											</span>下载模板
                                                 </button>
-                                                <button type="button" class="btn btn-info btn-sm"
+                                                <button type="button" class="btn btn-info btn-sm" style="margin-left: 5px"
                                                         onclick="$('#ajaxFileUploadDataLand').val('').trigger('click');">
                                                     <span class="btn-label">
 												<i class="fa fa-cloud-upload-alt"></i>
 											</span>上传
                                                 </button>
-                                                <button type="button" class="btn btn-success btn-sm"
+                                                <button type="button" class="btn btn-success btn-sm" style="margin-left: 5px"
                                                         onclick="landLevel.initDataForm({})"
                                                         data-toggle="modal" href="#divBoxFather">
                                                         <span class="btn-label">

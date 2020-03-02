@@ -27,8 +27,8 @@ var houseHeating;
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
-                    str += '<button type="button" class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="houseHeating.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
-                    str += '<button type="button" class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseHeating.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
+                    str += '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-primary tooltips"  data-placement="top" data-original-title="编辑" onclick="houseHeating.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
+                    str += '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseHeating.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
                     str += '</div>';
                     return str;
                 }
@@ -70,7 +70,7 @@ var houseHeating;
             houseHeating.prototype.init({});
             $('#' + houseHeating.prototype.config().box).modal("show");
         },
-        saveData: function () {r
+        saveData: function () {
             if (!$("#" + houseHeating.prototype.config().frm).valid()) {
                 return false;
             }
@@ -167,8 +167,8 @@ var houseAirConditioner;
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
-                    str += '<button type="button"  class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="houseAirConditioner.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
-                    str += '<button type="button"  class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseAirConditioner.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
+                    str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-primary tooltips"  data-placement="top" data-original-title="编辑" onclick="houseAirConditioner.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
+                    str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseAirConditioner.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
                     str += '</div>';
                     return str;
                 }
@@ -307,8 +307,8 @@ var houseNewWind;
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
-                    str += '<button type="button"  class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="houseNewWind.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
-                    str += '<button type="button"  class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseNewWind.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
+                    str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-primary tooltips"  data-placement="top" data-original-title="编辑" onclick="houseNewWind.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
+                    str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseNewWind.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
                     str += '</div>';
                     return str;
                 }
@@ -447,8 +447,8 @@ var houseCorollaryEquipment;
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
-                    str += '<button type="button"  class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="houseCorollaryEquipment.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
-                    str += '<button type="button"  class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseCorollaryEquipment.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
+                    str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-primary tooltips"  data-placement="top" data-original-title="编辑" onclick="houseCorollaryEquipment.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
+                    str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseCorollaryEquipment.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
                     str += '</div>';
                     return str;
                 }
@@ -606,8 +606,8 @@ var houseFaceStreet;
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
-                    str += '<button type="button"  class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="houseFaceStreet.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
-                    str += '<button type="button"  class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseFaceStreet.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
+                    str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-primary tooltips"  data-placement="top" data-original-title="编辑" onclick="houseFaceStreet.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
+                    str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseFaceStreet.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
                     str += '</div>';
                     return str;
                 }
@@ -752,7 +752,7 @@ var houseFaceStreet;
             $("#" + houseFaceStreet.prototype.config().frm + " .name").append(html);
         },
         cleanHTMLData: function (item) {
-            $(this_).closest('.form-group').remove();
+            $(item).closest('.form-group').remove();
         },
         writeHTMLData: function (str) {
             $("#" + houseFaceStreet.prototype.config().frm + " .name").empty();
@@ -815,8 +815,8 @@ var houseIntelligent;
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
-                    str += '<button type="button"  class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="houseIntelligent.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
-                    str += '<button type="button"  class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseIntelligent.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
+                    str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-primary tooltips"  data-placement="top" data-original-title="编辑" onclick="houseIntelligent.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
+                    str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseIntelligent.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
                     str += '</div>';
                     return str;
                 }
@@ -1142,8 +1142,8 @@ var houseWater;
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
-                    str += '<button type="button"  class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="houseWater.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
-                    str += '<button type="button"  class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseWater.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
+                    str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-primary tooltips"  data-placement="top" data-original-title="编辑" onclick="houseWater.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
+                    str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseWater.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
                     str += '</div>';
                     return str;
                 }
@@ -1285,8 +1285,8 @@ houseWaterDrain.loadDataDicList = function () {
     cols.push({
         field: 'id', title: '操作', formatter: function (value, row, index) {
             var str = '<div class="btn-margin">';
-            str += '<button type="button"  class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="houseWaterDrain.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
-            str += '<button type="button"  class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseWaterDrain.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
+            str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-primary tooltips"  data-placement="top" data-original-title="编辑" onclick="houseWaterDrain.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
+            str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseWaterDrain.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
             str += '</div>';
             return str;
         }
@@ -1434,10 +1434,10 @@ var houseRoom;
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
-                    str += '<button type="button"  class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="houseRoom.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
-                    str += '<button type="button"  class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseRoom.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
-                    str += '<button type="button"  class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="装修情况" onclick="houseRoom.prototype.showModelSubclass(' + row.id + ',\'tb_List\')"><i class="fa fa-gavel fa-white"></i></button>';
-                    str += '<button type="button"  class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="复制" onclick="houseRoom.prototype.dataCopy(' + row.id + ',\'tb_List\')"><i class="fa fa-copy fa-white"></i></button>';
+                    str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-primary tooltips"  data-placement="top" data-original-title="编辑" onclick="houseRoom.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
+                    str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseRoom.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
+                    str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="装修情况" onclick="houseRoom.prototype.showModelSubclass(' + row.id + ',\'tb_List\')"><i class="fa fa-gavel fa-white"></i></button>';
+                    str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="复制" onclick="houseRoom.prototype.dataCopy(' + row.id + ',\'tb_List\')"><i class="fa fa-copy fa-white"></i></button>';
                     str += '</div>';
                     return str;
                 }
@@ -1568,8 +1568,8 @@ var houseRoom;
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
-                    str += '<button type="button"  class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="houseRoom.prototype.subclassGetAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
-                    str += '<button type="button"  class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseRoom.prototype.subclassRemoveData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
+                    str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-primary tooltips"  data-placement="top" data-original-title="编辑" onclick="houseRoom.prototype.subclassGetAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
+                    str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseRoom.prototype.subclassRemoveData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
                     str += '</div>';
                     return str;
                 }
@@ -1726,7 +1726,7 @@ damagedDegree.loadDamagedDegreeList = function () {
                 $.each(result.data, function (i, item) { //循环数据分组
                     if ($.inArray(item.type, groupArray) < 0) {
                         groupArray.push(item.type);
-                        var tabHtml = '<li role="presentation"><a href="#tab_content_' + item.type + '" role="tab" data-toggle="tab" aria-expanded="true">' + item.typeName + '</a></li>';
+                        var tabHtml = '<li role="presentation"><a href="#tab_content_' + item.type + '" role="tab" data-toggle="tab" aria-expanded="true" class="nav-link">' + item.typeName + '</a></li>';
                         $("#damagedDegreeTab").append(tabHtml);
                     }
                 })
@@ -1820,14 +1820,14 @@ damagedDegree.damagedDegreeDetailModalShow = function (damagedDegreeId, category
 //加载明细项数据列表
 damagedDegree.loadDamagedDegreeDetailList = function () {
     var cols = [];
-    cols.push({field: 'typeName', title: '类型', width: '10%'});
-    cols.push({field: 'entityConditionName', title: '实体状况', width: '10%'});
+    cols.push({field: 'typeName', title: '类型', width: '20%'});
+    cols.push({field: 'entityConditionName', title: '实体状况', width: '30%'});
     cols.push({field: 'entityConditionContent', title: '状况内容', width: '40%'});
     cols.push({
-        field: 'id', title: '操作', formatter: function (value, row, index) {
+        field: 'id',width: '10%', title: '操作', formatter: function (value, row, index) {
             var str = '<div class="btn-margin">';
-            str += '<button type="button"  class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="damagedDegree.editDamagedDegreeDetail(' + index + ')"><i class="fa fa-pen"></i></button>';
-            str += '<button type="button"  class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="damagedDegree.deleteDamagedDegreeDetail(' + row.id + ')"><i class="fa fa-minus"></i></button>';
+            str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-primary tooltips"  data-placement="top" data-original-title="编辑" onclick="damagedDegree.editDamagedDegreeDetail(' + index + ')"><i class="fa fa-pen"></i></button>';
+            str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="damagedDegree.deleteDamagedDegreeDetail(' + row.id + ')"><i class="fa fa-minus"></i></button>';
             str += '</div>';
             return str;
         }

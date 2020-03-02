@@ -26,7 +26,7 @@
                             </div>
                             <div class="card-body">
                                 <form id="frmQuery" class="form-horizontal">
-                                    <div class="form-group form-inline">
+                                    <div class="row form-group form-inline">
                                         <label for="queryName" class="col-md-1 col-form-label">客户名称</label>
                                         <div class="col-md-3 p-0">
                                             <input type="text" data-rule-maxlength="50"
@@ -78,12 +78,14 @@
                     <input type='hidden' id='id' name='id' value="0">
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="form-group">
-                                <div class="x-valid">
+                        <div class="card-body">
+                            <div class="row form-group">
+                                <div class="col-md-12">
+                                <div class="form-inline x-valid">
                                     <label class="col-sm-2 control-label">
                                         客户名称<span class="symbol required"></span>
                                     </label>
-                                    <div class="col-md-10 col-sm-10 col-xs-12 input-group">
+                                    <div class="col-md-10 input-group">
                                         <div class="input-group">
                                             <input type="hidden" name="customerId">
                                             <input type="text" readonly="readonly" required="required"
@@ -100,30 +102,36 @@
                                         </div>
                                     </div>
                                 </div>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <div class="x-valid">
+                            <div class="row form-group">
+                                <div class="col-md-12">
+                                <div class="form-inline x-valid">
                                     <label class="col-sm-2 control-label">
                                         业务类型
                                     </label>
-                                    <div class="col-md-10 col-sm-10 col-xs-12 input-group">
+                                    <div class="col-md-10 input-group">
                                         <button type="button" class="btn btn-sm btn-success" onclick="appendHTML('业务类型','businessType',this)"><span class="btn-label"><i class="fa fa-plus"></i></span>添加业务类型</button>
                                     </div>
+                                </div>
                                 </div>
                             </div>
                             <div style="margin-bottom: 8px;" class="businessType">
                             </div>
-                            <div class="form-group">
-                                <div class="x-valid">
+                            <div class="row form-group">
+                                <div class="col-md-12">
+                                <div class="form-inline x-valid">
                                     <label class="col-sm-2 control-label">
                                         评估类型
                                     </label>
-                                    <div class="col-md-10 col-sm-10 col-xs-12 input-group">
+                                    <div class="col-md-10 input-group">
                                         <button type="button" class="btn btn-sm btn-success" onclick="appendHTML('评估类型','assessType',this)"><span class="btn-label"><i class="fa fa-plus"></i></span>添加评估类型</button>
                                     </div>
                                 </div>
+                                </div>
                             </div>
                             <div style="margin-bottom: 8px;" class="assessType"></div>
+                        </div>
                         </div>
                     </div>
                 </form>
@@ -181,22 +189,34 @@
         $("#id").val("0");
         $(".businessType").empty();
         var lableValue = "业务类型";
-        var html = "<div class='form-group' style='margin-top:8px;'>";
-        html += "<label class='col-md-2 col-sm-2 col-xs-12 control-label'>" + lableValue + "</label>";
-        html += "<div class='col-md-10 col-sm-10 col-xs-12 input-group'>";
+        var html = "<div class='row form-group' style='margin-top:8px;'>";
+        html += '<div class="col-md-12">';
+        html += '<div class="form-inline x-valid">';
+
+        html += "<label class='col-md-2 control-label'>" + lableValue + "</label>";
+        html += "<div class='col-md-10 input-group'>";
         html += "<input type='text' required class='form-control'" + "name='" + 'businessType' + "'" + ">";
         html += "<span class='input-group-btn'>" + "<button class='btn btn-warning' type='button'  onclick='cleanHTMLData(this)'><i class=\"fa fa-minus\"></i></button></span>";
+        html += "</div>";
+
+        html += "</div>";
         html += "</div>";
         html += "</div>";
         $(".businessType").append(html);
 
         $(".assessType").empty();
         var lableValue = "评估类型";
-        var html = "<div class='form-group' style='margin-top:8px;'>";
-        html += "<label class='col-md-2 col-sm-2 col-xs-12 control-label'>" + lableValue + "</label>";
-        html += "<div class='col-md-10 col-sm-10 col-xs-12 input-group'>";
+        var html = "<div class='row form-group' style='margin-top:8px;'>";
+        html += '<div class="col-md-12">';
+        html += '<div class="form-inline x-valid">';
+
+        html += "<label class='col-md-2 control-label'>" + lableValue + "</label>";
+        html += "<div class='col-md-10 input-group'>";
         html += "<input type='text' required class='form-control'" + "name='" + 'assessType' + "'" + ">";
         html += "<span class='input-group-btn'>" + "<button class='btn btn-warning' type='button' onclick='cleanHTMLData(this)'><i class=\"fa fa-minus\"></i></button></span>";
+        html += "</div>";
+
+        html += "</div>";
         html += "</div>";
         html += "</div>";
         $(".assessType").append(html);
@@ -261,11 +281,17 @@
 
     function appendHTML(name, item, this_) {
         var lableValue = name;
-        var html = "<div class='form-group' style='margin-top:8px;'>";
-        html += "<label class='col-md-2 col-sm-2 col-xs-12 control-label'>" + lableValue + "</label>";
-        html += "<div class='col-md-10 col-sm-10 col-xs-12 input-group'>";
+        var html = "<div class='row form-group' style='margin-top:8px;'>";
+        html += '<div class="col-md-12">';
+        html += '<div class="form-inline x-valid">';
+
+        html += "<label class='col-md-2 control-label'>" + lableValue + "</label>";
+        html += "<div class='col-md-10 input-group'>";
         html += "<input type='text' required class='form-control'" + "name='" + item + "'" + ">";
         html += "<span class='input-group-btn'>" + "<button class='btn btn-warning' type='button' onclick='cleanHTMLData(this)'><i class=\"fa fa-minus\"></i></button></span>";
+        html += "</div>";
+
+        html += "</div>";
         html += "</div>";
         html += "</div>";
 
@@ -276,7 +302,7 @@
 
     function cleanHTMLData(item) {
         var value = "";
-        $(item).closest('.form-group').empty();
+        $(item).closest('.form-group').remove();
     }
 
     function writeHTMLData(str, name, item) {
@@ -285,11 +311,16 @@
         var length = strs.length;
         var lableValue = name;
         for (var i = 0; i < length; i++) {
-            var html = "<div class='form-group' style='margin-top:8px;'>";
-            html += "<label class='col-md-2 col-sm-2 col-xs-12 control-label'>" + lableValue + "</label>";
-            html += "<div class='col-md-10 col-sm-10 col-xs-12 input-group'>";
+            var html = "<div class='row form-group' style='margin-top:8px;'>";
+            html += '<div class="col-md-12">';
+            html += '<div class="form-inline x-valid">';
+
+            html += "<label class='col-md-2 control-label'>" + lableValue + "</label>";
+            html += "<div class='col-md-10 input-group'>";
             html += "<input type='text' required class='form-control'" + "name='" + item + "' value='" + strs[i] + "'>";
             html += "<span class='input-group-btn'>" + "<button class='btn btn-warning' type='button'  onclick='cleanHTMLData(this)'><i class=\"fa fa-minus\"></i></button></span>";
+            html += "</div>";
+            html += "</div>";
             html += "</div>";
             html += "</div>";
             $("." + item).append(html);

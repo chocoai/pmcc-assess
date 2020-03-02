@@ -174,8 +174,8 @@
                     if (result.ret) {
                         $("#" + dataValueDefinition.prototype.config().frm).clearAll();
                         $("#" + dataValueDefinition.prototype.config().frm).initForm(result.data);
-                        AssessCommon.checkboxToChecked($("#frmFather").find(":checkbox[name='entrustmentPurpose']"), result.data.entrustmentPurpose.split(','));
-                        AssessCommon.checkboxToChecked($("#frmFather").find(":checkbox[name='valueType']"), result.data.valueType.split(','));
+                        $("#frmFather").find("[name='entrustmentPurpose']").val(result.data.entrustmentPurpose.split(',')).trigger('change');
+                        $("#frmFather").find("[name='valueType']").val(result.data.valueType.split(',')).trigger('change');
 
                         $('#' + dataValueDefinition.prototype.config().box).modal("show");
                     }
@@ -206,41 +206,50 @@
                         <div class="col-md-12">
                             <div class="card-body">
                                 <div class="row form-group">
-                                    <c:forEach items="${purposeDicList}" var="item">
-                                        <div class="form-check">
-                                            <label class="form-check-label" style="margin-left: 2px;">
-                                                <input type="checkbox" id="entrustmentPurpose${item.id}"
-                                                       required
-                                                       name="entrustmentPurpose" value="${item.id}"
-                                                       class="form-check-input">
-                                                <span class="form-check-sign"><label
-                                                        for="entrustmentPurpose${item.id}">${item.name}</label></span>
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                委托目的<span class="symbol required"></span>
                                             </label>
+                                            <div class="col-sm-10">
+                                                <select name="entrustmentPurpose" multiple="multiple"
+                                                        class="form-control input-full search-select select2"
+                                                        required="required">
+                                                    <c:forEach items="${purposeDicList}" var="item">
+                                                        <option value="${item.id}">${item.name}</option>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
                                         </div>
-                                    </c:forEach>
+                                    </div>
                                 </div>
                                 <div class="row form-group">
-                                    <c:forEach items="${valueTypeList}" var="item">
-                                        <div class="form-check">
-                                            <label class="form-check-label" style="margin-left: 2px;">
-                                                <input type="checkbox" id="valueType${item.id}"
-                                                       required
-                                                       name="valueType" value="${item.id}"
-                                                       class="form-check-input">
-                                                <span class="form-check-sign"><label
-                                                        for="valueType${item.id}">${item.name}</label></span>
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                价值类型<span class="symbol required"></span>
                                             </label>
+                                            <div class="col-sm-10">
+                                                <select name="valueType" multiple="multiple"
+                                                        class="form-control input-full search-select select2"
+                                                        required="required">
+                                                    <c:forEach items="${valueTypeList}" var="item">
+                                                        <option value="${item.id}">${item.name}</option>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
                                         </div>
-                                    </c:forEach>
+                                    </div>
                                 </div>
 
+
                                 <div class="row form-group">
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-2 col-form-label">
                                                 评估财产范围<span class="symbol required"></span>
                                             </label>
-                                            <div class="col-sm-10">
+                                            <div class="col-sm-4">
                                                 <select class="form-control input-full " name="propertyScope">
                                                     <option value="">--请选择--</option>
                                                     <c:if test="${not empty propertyScopes}">
@@ -250,21 +259,17 @@
                                                     </c:if>
                                                 </select>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-inline x-valid">
                                             <label class="col-sm-2 col-form-label">
                                                 范围包括<span class="symbol required"></span>
                                             </label>
-                                            <div class="col-sm-10">
+                                            <div class="col-sm-4">
                                                 <input required type="text" class="form-control input-full " name="scopeInclude">
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row form-group">
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-2 col-form-label">
                                                 范围不包括<span class="symbol required"></span>

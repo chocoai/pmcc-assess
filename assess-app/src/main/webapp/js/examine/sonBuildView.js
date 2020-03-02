@@ -149,8 +149,8 @@ var buildingModelView;
                     cols.push({
                         field: 'id', title: '操作', formatter: function (value, row, index) {
                             var str = '<div class="btn-margin">';
-                            str += '<button type="button" class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="buildingModelView.prototype.sonModelMethod.buildingOutfit.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
-                            str += '<button type="button" class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="buildingModelView.prototype.sonModelMethod.buildingOutfit.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
+                            str += '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-primary tooltips"  data-placement="top" data-original-title="编辑" onclick="buildingModelView.prototype.sonModelMethod.buildingOutfit.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
+                            str += '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="buildingModelView.prototype.sonModelMethod.buildingOutfit.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
                             str += '</div>';
                             return str;
                         }
@@ -254,8 +254,8 @@ var buildingModelView;
                     cols.push({
                         field: 'id', title: '操作', formatter: function (value, row, index) {
                             var str = '<div class="btn-margin">';
-                            str += '<button type="button" class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="buildingModelView.prototype.sonModelMethod.buildingSurface.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
-                            str += '<button type="button" class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="buildingModelView.prototype.sonModelMethod.buildingSurface.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
+                            str += '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-primary tooltips"  data-placement="top" data-original-title="编辑" onclick="buildingModelView.prototype.sonModelMethod.buildingSurface.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
+                            str += '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="buildingModelView.prototype.sonModelMethod.buildingSurface.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
                             str += '</div>';
                             return str;
                         }
@@ -368,8 +368,8 @@ var buildingModelView;
                     cols.push({
                         field: 'id', title: '操作', formatter: function (value, row, index) {
                             var str = '<div class="btn-margin">';
-                            str += '<button type="button" class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="buildingModelView.prototype.sonModelMethod.buildingMaintenance.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
-                            str += '<button type="button" class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="buildingModelView.prototype.sonModelMethod.buildingMaintenance.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
+                            str += '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-primary tooltips"  data-placement="top" data-original-title="编辑" onclick="buildingModelView.prototype.sonModelMethod.buildingMaintenance.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
+                            str += '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="buildingModelView.prototype.sonModelMethod.buildingMaintenance.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
                             str += '</div>';
                             return str;
                         }
@@ -475,8 +475,8 @@ var buildingModelView;
                     cols.push({
                         field: 'id', title: '操作', formatter: function (value, row, index) {
                             var str = '<div class="btn-margin">';
-                            str += '<button type="button" class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="buildingModelView.prototype.sonModelMethod.buildingFunction.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
-                            str += '<button type="button" class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="buildingModelView.prototype.sonModelMethod.buildingFunction.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
+                            str += '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-primary tooltips"  data-placement="top" data-original-title="编辑" onclick="buildingModelView.prototype.sonModelMethod.buildingFunction.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
+                            str += '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="buildingModelView.prototype.sonModelMethod.buildingFunction.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
                             str += '</div>';
                             return str;
                         }

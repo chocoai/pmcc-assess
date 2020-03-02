@@ -136,32 +136,24 @@
                         <div class="col-md-12">
                             <div class="card-body">
                                 <div class="row form-group">
-                                    <div class="col-md-4">
+                                    <div class="col-md-12">
                                         <div class="form-inline x-valid">
-                                            <label class="col-sm-2 col-form-label">
+                                            <label class="col-sm-1 col-form-label">
                                                 省
                                             </label>
-                                            <div class="col-sm-10">
+                                            <div class="col-sm-3">
                                                 <label class="form-control input-full" name="provinceName"></label>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-2 col-form-label">
+                                            <label class="col-sm-1 col-form-label">
                                                 市
                                             </label>
-                                            <div class="col-sm-10">
+                                            <div class="col-sm-3">
                                                 <label class="form-control input-full" name="cityName"></label>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-2 col-form-label">
+                                            <label class="col-sm-1 col-form-label">
                                                 区
                                             </label>
-                                            <div class="col-sm-10">
+                                            <div class="col-sm-3">
                                                 <label class="form-control input-full" name="districtName"></label>
                                             </div>
                                         </div>
@@ -169,95 +161,71 @@
 
                                 </div>
                                 <div class="row form-group">
-                                    <div class="col-md-4">
+                                    <div class="col-md-12">
                                         <div class="form-inline x-valid">
-                                            <label class="col-sm-2 col-form-label">
+                                            <label class="col-sm-1 col-form-label">
                                                 房产类型
                                             </label>
-                                            <div class="col-sm-10">
+                                            <div class="col-sm-3">
                                                 <label class="form-control input-full" name="houseType"></label>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-2 col-form-label">
+                                            <label class="col-sm-1 col-form-label">
                                                 房产类别
                                             </label>
-                                            <div class="col-sm-10">
+                                            <div class="col-sm-3">
                                                 <label class="form-control input-full" name="houseCategory"></label>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-2 col-form-label">
+                                            <label class="col-sm-1 col-form-label">
                                                 街道
                                             </label>
-                                            <div class="col-sm-10">
+                                            <div class="col-sm-3">
                                                 <label class="form-control input-full" name="street"></label>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row form-group">
-                                    <div class="col-md-4">
+                                    <div class="col-md-12">
                                         <div class="form-inline x-valid">
-                                            <label class="col-sm-2 col-form-label">
+                                            <label class="col-sm-1 col-form-label">
                                                 面积
                                             </label>
-                                            <div class="col-sm-10">
+                                            <div class="col-sm-3">
                                                 <label class="form-control input-full" name="area"></label>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-2 col-form-label">
+                                            <label class="col-sm-1 col-form-label">
                                                 楼盘名称
                                             </label>
-                                            <div class="col-sm-10">
+                                            <div class="col-sm-3">
                                                 <label class="form-control input-full" name="estateName"></label>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-2 col-form-label">
+                                            <label class="col-sm-1 col-form-label">
                                                 交易方式
                                             </label>
-                                            <div class="col-sm-10">
+                                            <div class="col-sm-3">
                                                 <label class="form-control input-full" name="dealTypeName"></label>                                            </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row form-group">
-                                    <div class="col-md-4">
+                                    <div class="col-md-12">
                                         <div class="form-inline x-valid">
-                                            <label class="col-sm-2 col-form-label">
+                                            <label class="col-sm-1 col-form-label">
                                                 成交价
                                             </label>
-                                            <div class="col-sm-10">
+                                            <div class="col-sm-3">
                                                 <label class="form-control input-full" name="currentPrice"></label>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-2 col-form-label">
+                                            <label class="col-sm-1 col-form-label">
                                                 评估价
                                             </label>
-                                            <div class="col-sm-10">
+                                            <div class="col-sm-3">
                                                 <label class="form-control input-full" name="consultPrice"></label>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-2 col-form-label">
+                                            <label class="col-sm-1 col-form-label">
                                                 评估基准日期
                                             </label>
-                                            <div class="col-sm-10">
+                                            <div class="col-sm-3">
                                                 <input name="assessStandardDate" data-date-format="yyyy-mm-dd"
                                                        class="form-control input-full date-picker dbdate">
                                             </div>
@@ -265,31 +233,23 @@
                                     </div>
                                 </div>
                                  <div class="row form-group">
-                                    <div class="col-md-4">
+                                    <div class="col-md-12">
                                         <div class="form-inline x-valid">
-                                            <label class="col-sm-2 col-form-label">
+                                            <label class="col-sm-1 col-form-label">
                                                 单价
                                             </label>
-                                            <div class="col-sm-10">
+                                            <div class="col-sm-3">
                                                 <label class="form-control input-full" name="tradingUnitPrice"></label>                                          </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-2 col-form-label">
+                                            <label class="col-sm-1 col-form-label">
                                                 变现率
                                             </label>
-                                            <div class="col-sm-10">
+                                            <div class="col-sm-3">
                                                 <input class="form-control input-full" id="realizationRatios" readonly></input>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-2 col-form-label">
+                                            <label class="col-sm-1 col-form-label">
                                                 变现周期
                                             </label>
-                                            <div class="col-sm-10">
+                                            <div class="col-sm-3">
                                                 <label class="form-control input-full" name="realizationCycle"></label>
                                             </div>
                                         </div>

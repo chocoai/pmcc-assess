@@ -77,23 +77,24 @@ public class DataContractCalculateToolService {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<DataContractCalculateTool> list = dataContractCalculateToolDao.getListObject(new DataContractCalculateTool());
-        List<SysAttachmentDto> attachmentDtos = baseAttachmentService.getAttachmentListByTableName(FormatUtils.entityNameConvertToTableName(DataContractCalculateTool.class), LangUtils.transform(list, o -> o.getId()));
-        List<DataContractCalculateToolVo> vos = LangUtils.transform(list, p -> getContractCalculateToolVo(p, attachmentDtos));
+       // List<SysAttachmentDto> attachmentDtos = baseAttachmentService.getAttachmentListByTableName(FormatUtils.entityNameConvertToTableName(DataContractCalculateTool.class), LangUtils.transform(list, o -> o.getId()));
+        List<DataContractCalculateToolVo> vos = LangUtils.transform(list, p -> getContractCalculateToolVo(p));
         vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<DataContractCalculateTool>() : vos);
         vo.setTotal(page.getTotal());
         return vo;
     }
 
-    public DataContractCalculateToolVo getContractCalculateToolVo(DataContractCalculateTool reportAnalysis, List<SysAttachmentDto> attachmentDtos) {
+    public DataContractCalculateToolVo getContractCalculateToolVo(DataContractCalculateTool reportAnalysis) {
         if (reportAnalysis == null) return null;
         DataContractCalculateToolVo vo = new DataContractCalculateToolVo();
         BeanUtils.copyProperties(reportAnalysis, vo);
-        if (!org.springframework.util.CollectionUtils.isEmpty(attachmentDtos)) {
+        List<SysAttachmentDto> baseAttachments = baseAttachmentService.getByField_tableId(reportAnalysis.getId(), null, FormatUtils.entityNameConvertToTableName(DataContractCalculateTool.class));
+
+        if (!org.springframework.util.CollectionUtils.isEmpty(baseAttachments)) {
             StringBuilder stringBuilder = new StringBuilder();
-            for (SysAttachmentDto attachmentDto : attachmentDtos) {
-                if (attachmentDto.getTableId().equals(reportAnalysis.getId())) {
-                    stringBuilder.append(baseAttachmentService.getEditHtml(attachmentDto,false));
-                }
+            for (SysAttachmentDto attachmentDto : baseAttachments) {
+                stringBuilder.append(baseAttachmentService.getEditHtml(attachmentDto,false));
+
             }
             vo.setFileViewName(stringBuilder.toString());
         }

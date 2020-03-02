@@ -289,7 +289,7 @@
             <%--class="form-control input-full date-picker dbdate roomTime">--%>
             <%--</div>--%>
             <%--</div>--%>
-            
+
                 <label class="col-sm-1">
                     工程质量
                 </label>
@@ -383,17 +383,23 @@
                     <!-- 这个id是不能更改的bootstrap3 强制如此 toolbar -->
                     <div id="toolbarBuildingPropertyServiceItemTable" style="display: none">
                         <div class="btn-group">
-                            <button type="button" class="btn btn-primary"
+                            <button type="button" class="btn btn-warning btn-sm"
                                     onclick="buildingCommon.deleteBasicBuildingPropertyServiceItem('#basicBuildingPropertyServiceItemTable')">
-                                删除
+                                <span class="btn-label">
+												<i class="fa fa-minus"></i>
+											</span>删除
                             </button>
-                            <button type="button" class="btn btn-primary"
+                            <button type="button" class="btn btn-primary btn-sm"
                                     onclick="buildingCommon.editBasicBuildingPropertyServiceItem('#basicBuildingPropertyServiceItemTable','#basicBuildingPropertyServiceItemModalTool',true)">
-                                编辑
+                                <span class="btn-label">
+												<i class="fa fa-pen"></i>
+											</span>编辑
                             </button>
-                            <button type="button" class="btn btn-primary"
+                            <button type="button" class="btn btn-success btn-sm"
                                     onclick="buildingCommon.editBasicBuildingPropertyServiceItem('#basicBuildingPropertyServiceItemTable','#basicBuildingPropertyServiceItemModalTool',false)">
-                                添加
+                                <span class="btn-label">
+												<i class="fa fa-plus"></i>
+											</span>添加
                             </button>
                         </div>
                     </div>
@@ -403,8 +409,8 @@
 
                     </table>
                 </div>
-                <div class="col-md-3col-lg-offset-1 ">
-                    <button type="button" class="btn btn-xs btn-primary"
+                <div class="col-md-3 col-lg-offset-1 ">
+                    <button type="button" class="btn btn-info btn-sm"
                             onclick="buildingCommon.constructionInstallationEngineeringFeeEvent.loadHtml();">
                         建筑安装完工度调查
                     </button>
@@ -445,7 +451,7 @@
 </div>
 <div id="basicBuildingPropertyServiceItemModalTool" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg" style="max-width: 90%">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">编辑服务内容</h4>
@@ -466,20 +472,20 @@
                                         <div class="row form-group">
                                             <div class="col-md-12">
                                             <div class="form-inline x-valid">
-                                                <label class="col-sm-1">
+                                                <label class="col-sm-2">
                                                     服务类型<span class="symbol required"></span>
                                                 </label>
-                                                <div class="col-sm-3">
+                                                <div class="col-sm-4">
                                                     <select required="required" name="serviceType"
                                                             class="form-control input-full serviceType"
                                                             onchange="">
                                                         <option value="">-请选择-</option>
                                                     </select>
                                                 </div>
-                                                <label class="col-sm-1">
+                                                <label class="col-sm-2">
                                                     服务内容<span class="symbol required"></span>
                                                 </label>
-                                                <div class="col-sm-3">
+                                                <div class="col-sm-4">
                                                     <select required="required" name="serviceContent" class="form-control input-full">
                                                         <option value="">请先选择类型</option>
                                                     </select>
@@ -490,17 +496,17 @@
                                         <div class="row form-group">
                                             <div class="col-md-12">
                                             <div class="form-inline x-valid">
-                                                <label class="col-sm-1">
+                                                <label class="col-sm-2">
                                                     服务时间
                                                 </label>
-                                                <div class="col-sm-3">
+                                                <div class="col-sm-4">
                                                     <input type="text" class="form-control input-full" name="serviceTime"
                                                            placeholder="服务时间" required="required">
                                                 </div>
-                                                <label class="col-sm-1">
+                                                <label class="col-sm-2">
                                                     等级评价<span class="symbol required"></span>
                                                 </label>
-                                                <div class="col-sm-3">
+                                                <div class="col-sm-4">
                                                     <select required="required" name="gradeEvaluation"
                                                             class="form-control input-full search-select select2">
                                                         <option value="">-请选择-</option>
@@ -512,17 +518,17 @@
                                         <div class="row form-group">
                                             <div class="col-md-12">
                                             <div class="form-inline x-valid">
-                                                <label class="col-sm-1">
+                                                <label class="col-sm-2">
                                                     收费标准<span class="symbol required"></span>
                                                 </label>
-                                                <div class="col-sm-11">
+                                                <div class="col-sm-10">
                                                     <input type="text" class="form-control input-full" name="chargesNotes"
                                                            placeholder="收费标准" required="required">
                                                 </div>
                                             </div>
                                             </div>
                                         </div>
-                                        
+
                                     </div>
                                 </div>
                             </div>

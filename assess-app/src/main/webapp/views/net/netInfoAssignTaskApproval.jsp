@@ -13,62 +13,65 @@
 
     <%@include file="/views/share/main_css.jsp" %>
 </head>
-<body class="nav-md">
+<body>
 
-
-<div class="container body">
-    <div class="main_container">
-        <div class="right_col" role="main" style="margin-left: 0px">
-            <!-- 公共模块引用 -->
+<div class="wrapper">
+    <div class="main-panel" style="width: 100%">
+        <div class="content" style="margin-top: 0px;">
             <%@include file="/views/share/form_head.jsp" %>
-            <!-- 公共模块end -->
+            <div class="page-inner mt--5">
+                <div class="row mt--2">
+                    <div class="col-md-12">
+                        <div class="card full-height">
+                            <div class="card-header collapse-link">
+                                <div class="card-head-row">
+                                    <div class="card-title">
+                                        案列整理
+                                    </div>
+                                    <div class="card-tools">
+                                        <button class="btn  btn-link btn-primary btn-xs"><span
+                                                class="fa fa-angle-down"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <form class="form-horizontal">
+                                    <h3>房产</h3>
+                                    <div class="clearfix"></div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <table class="table table-bordered" id="house_list">
+                                                <!-- cerare document add ajax data-->
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <h3>土地</h3>
+                                    <div class="clearfix"></div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <table class="table table-bordered" id="land_list">
+                                                <!-- cerare document add ajax data-->
+                                            </table>
+                                        </div>
+                                    </div>
+                                </form>
 
 
-            <div class="x_panel">
-                <div class="x_title collapse-link">
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                    </ul>
-                    <h3>房产
-                    </h3>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="x_content">
-                    <div class="row">
-                        <div class="panel-body">
-                            <table class="table table-bordered" id="house_list">
-                                <!-- cerare document add ajax data-->
-                            </table>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="x_panel">
-                <div class="x_title collapse-link">
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                    </ul>
-                    <h3>土地</h3>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="x_content">
-                    <div class="row">
-                        <div class="panel-body">
-                            <table class="table table-bordered" id="land_list">
-                                <!-- cerare document add ajax data-->
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
+
             <!-- 公共尾部模块引用 -->
-            <!-- 审批用 -->
             <%@include file="/views/share/form_approval.jsp" %>
-            <!-- 尾部end -->
         </div>
-    </div>
-</div>
 <%@include file="/views/share/main_footer.jsp" %>
+</div>
+</div>
+
 </body>
 </html>
 <script type="text/javascript">
@@ -96,7 +99,7 @@
             },
             error: function (result) {
                 Loading.progressHide();
-                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     }
@@ -196,7 +199,7 @@
                     return result;
                 }
             });
-            cols.push({field: 'dealPartInfo', title: '成交对象概况',width:'30%'});
+            cols.push({field: 'dealPartInfo', title: '成交对象概况', width: '30%'});
             cols.push({field: 'fileViewName', title: '附件'});
             cols.push({
                 field: 'id', title: '查看网址', formatter: function (value, row, index) {
@@ -305,7 +308,7 @@
             cols.push({
                 field: 'id', title: '查看网址', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
-                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="查看网址" onclick="detailInfo.prototype.openItem(' + row.masterId + ')"><i class="fa fa-eye fa-white"></i></a>';
+                    str += '<button type="button" class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="查看网址" onclick="detailInfo.prototype.openItem(' + row.masterId + ')"><i class="fa fa-eye fa-white"></i></button>';
                     str += '</div>';
                     return str;
                 }
@@ -336,7 +339,7 @@
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             })
         }

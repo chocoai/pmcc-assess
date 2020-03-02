@@ -429,8 +429,10 @@
             <div class="col-md-12">
             <div class="form-inline x-valid">
                 <div class="col-sm-1" style="text-align: right;">
-                    <button type="button" class="btn btn-success" data-toggle="modal"
-                            onclick="houseCommon.addTradingSellAndLease()"> 新增
+                    <button type="button" class="btn btn-success btn-sm" data-toggle="modal"
+                            onclick="houseCommon.addTradingSellAndLease()"><span class="btn-label">
+												<i class="fa fa-plus"></i>
+											</span>新增
                     </button>
                 </div>
                 <div class="col-sm-11">
@@ -557,24 +559,18 @@
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                         <div class="form-inline x-valid">
-                                            <label class="col-sm-1">
+                                            <label class="col-sm-2">
                                                 租金支付时间起<span class="symbol required"></span>
                                             </label>
-                                            <div class="col-sm-5">
+                                            <div class="col-sm-4">
                                                 <input required="required" placeholder="租金支付时间起"
                                                        name="rentPaymentTimeStart" data-date-format="yyyy-mm-dd"
                                                        class="form-control input-full date-picker dbdate">
                                             </div>
-                                        </div>
-                                        </div>
-                                    </div>
-                                    <div class="row form-group">
-                                        <div class="col-md-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-1">
+                                            <label class="col-sm-2">
                                                 租金支付时间止<span class="symbol required"></span>
                                             </label>
-                                            <div class="col-sm-5">
+                                            <div class="col-sm-4">
                                                 <input required="required" placeholder="租金支付时间起"
                                                        name="rentPaymentTimeEnd" data-date-format="yyyy-mm-dd"
                                                        class="form-control input-full date-picker dbdate">
@@ -585,10 +581,10 @@
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                         <div class="form-inline x-valid">
-                                            <label class="col-sm-1">
+                                            <label class="col-sm-2">
                                                 租金增长比率<span class="symbol required"></span>
                                             </label>
-                                            <div class="col-sm-5">
+                                            <div class="col-sm-4">
                                                 <input type="text" data-rule-number='true' class="form-control input-full"
                                                        name="rentGrowthRate"
                                                        placeholder="租金增长比率(请输入数字)" required="required">
@@ -602,24 +598,18 @@
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                         <div class="form-inline x-valid">
-                                            <label class="col-sm-1">
+                                            <label class="col-sm-2">
                                                 分期支付时间起<span class="symbol required"></span>
                                             </label>
-                                            <div class="col-sm-5">
+                                            <div class="col-sm-4">
                                                 <input required="required" placeholder="分期支付时间起"
                                                        name="instalmentPeriodStart" data-date-format="yyyy-mm-dd"
                                                        class="form-control input-full date-picker dbdate">
                                             </div>
-                                        </div>
-                                        </div>
-                                    </div>
-                                    <div class="row form-group">
-                                        <div class="col-md-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-1">
+                                            <label class="col-sm-2">
                                                 分期支付时间起止<span class="symbol required"></span>
                                             </label>
-                                            <div class="col-sm-5">
+                                            <div class="col-sm-4">
                                                 <input required="required" placeholder="分期支付时间起止"
                                                        name="instalmentPeriodEnd" data-date-format="yyyy-mm-dd"
                                                        class="form-control input-full date-picker dbdate">
@@ -630,10 +620,10 @@
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                         <div class="form-inline x-valid">
-                                            <label class="col-sm-1">
+                                            <label class="col-sm-2">
                                                 分期支付利息<span class="symbol required"></span>
                                             </label>
-                                            <div class="col-sm-5">
+                                            <div class="col-sm-4">
                                                 <input type="text" data-rule-number='true' class="form-control input-full"
                                                        name="instalmentInterest"
                                                        placeholder="分期支付利息(请输入数字)" required="required">

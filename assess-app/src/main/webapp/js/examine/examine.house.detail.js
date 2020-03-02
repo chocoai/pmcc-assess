@@ -437,7 +437,7 @@ damagedDegree.loadDamagedDegreeList = function () {
                 $.each(result.data, function (i, item) { //循环数据分组
                     if ($.inArray(item.type, groupArray) < 0) {
                         groupArray.push(item.type);
-                        var tabHtml = '<li role="presentation"><a href="#tab_content_' + item.type + '" role="tab" data-toggle="tab" aria-expanded="true">' + item.typeName + '</a></li>';
+                        var tabHtml = '<li role="presentation"><a href="#tab_content_' + item.type + '" role="tab" data-toggle="tab" aria-expanded="true" class="nav-link">' + item.typeName + '</a></li>';
                         $("#damagedDegreeTab").append(tabHtml);
                     }
                 })

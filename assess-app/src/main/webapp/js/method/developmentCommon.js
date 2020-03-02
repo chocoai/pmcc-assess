@@ -158,8 +158,8 @@ developmentCommon.architecturalB = {
         developmentCommon.architecturalB.treeGirdParse(target);
         var table = target.find("table");
         var tbody = table.find("tbody");
-        var caption = table.find("caption");
-        caption.find("[data-view-name=" + defaultObj.reckon + "]").show();
+        //var caption = table.find("caption");
+        target.find("[data-view-name=" + defaultObj.reckon + "]").show();
         //第一级
         AssessCommon.loadDataDicByKey(AssessDicKey.build_security_engineering_project_market_cost, '', function (html, dataTree) {
             $.each(dataTree, function (index, data) {

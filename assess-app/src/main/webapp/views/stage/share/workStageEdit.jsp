@@ -31,7 +31,8 @@
                                                 阶段名称<span class="symbol required"></span>
                                             </label>
                                             <div class="col-sm-10">
-                                                <input class="form-control input-full" id="workStageName" name="workStageName" required
+                                                <input class="form-control input-full" id="workStageName"
+                                                       name="workStageName" required
                                                        data-rule-maxlength="255" placeholder="项目阶段名称">
                                             </div>
                                         </div>
@@ -90,7 +91,8 @@
                                                 角色类型
                                             </label>
                                             <div class="col-sm-10">
-                                                <select name="boxRoleType" id="boxRoleType" class="form-control input-full">
+                                                <select name="boxRoleType" id="boxRoleType"
+                                                        class="form-control input-full">
                                                     <option value="">-选择-</option>
                                                     <option value="1">部门角色</option>
                                                     <option value="2">公有角色</option>
@@ -99,7 +101,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-6"  id="div_roleId" style="display: none">
+                                    <div class="col-md-6" id="div_roleId" style="display: none">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-2 col-form-label">
                                                 部门角色
@@ -139,9 +141,11 @@
                                             </label>
                                             <div class="col-sm-10">
                                                 <div class="input-group">
-                                                    <input class="form-control input-full" id="workStageSort" name="stageSort" required
+                                                    <input class="form-control input-full" id="workStageSort"
+                                                           name="stageSort" required
                                                            data-rule-digits="true" placeholder="用于显示排序">
-                                                    <span class="input-group-addon"> <i class="fa fa-sort-numeric-asc"></i> </span>
+                                                    <span class="input-group-addon"> <i
+                                                            class="fa fa-sort-numeric-asc"></i> </span>
                                                 </div>
                                             </div>
                                         </div>
@@ -152,7 +156,8 @@
                                                 比重<span class="symbol required"></span>
                                             </label>
                                             <div class="col-sm-10">
-                                                <input class="form-control input-full" id="specificGravity" name="specificGravity"
+                                                <input class="form-control input-full" id="specificGravity"
+                                                       name="specificGravity"
                                                        required
                                                        data-rule-number="true" placeholder="比重、权重">
                                             </div>
@@ -166,7 +171,8 @@
                                             <div class="col-sm-10">
                                                 <div class="form-check" style="justify-content:left">
                                                     <label class="form-check-label">
-                                                        <input class="form-check-input" type="checkbox" id="workStageAllowIssued"
+                                                        <input class="form-check-input" type="checkbox"
+                                                               id="workStageAllowIssued"
                                                                name="allowIssued" value="true"
                                                                checked="checked">
                                                         <span class="form-check-sign">允许下发</span>
@@ -180,7 +186,8 @@
                                             <div class="col-sm-10">
                                                 <div class="form-check" style="justify-content:left">
                                                     <label class="form-check-label">
-                                                        <input class="form-check-input" type="checkbox" id="workStagebisEnable"
+                                                        <input class="form-check-input" type="checkbox"
+                                                               id="workStagebisEnable"
                                                                name="bisEnable" value="true"
                                                                checked="checked">
                                                         <span class="form-check-sign">是否可用</span>
@@ -194,7 +201,8 @@
                                             <div class="col-sm-10">
                                                 <div class="form-check" style="justify-content:left">
                                                     <label class="form-check-label">
-                                                        <input class="form-check-input" type="checkbox" id="workStagebisLoadDefalut"
+                                                        <input class="form-check-input" type="checkbox"
+                                                               id="workStagebisLoadDefalut"
                                                                name="bisLoadDefalut" value="true"
                                                                checked="checked">
                                                         <span class="form-check-sign">是否加载默认项</span>
@@ -484,7 +492,7 @@
             $('#create_project_phase').removeAttr('disabled');
         } else {
             var typeName = $("#typeId option:selected").text();
-            AlertError("失败","【" + typeName + "】类型还没有配置项目阶段，请点击'新增项目阶段'来添加项目阶段.");
+            AlertError("失败", "【" + typeName + "】类型还没有配置项目阶段，请点击'新增项目阶段'来添加项目阶段.");
         }
     };
 
@@ -493,23 +501,23 @@
         if (documentEl) {
             documentEl.empty();
             var data = workStageObj.getWordStage(null, typeId);
-            var retHtml = "<ul class='wizard_steps anchor'>";
             if (data && data.length > 0) {
+                var retHtml = "<ul class='wizard_steps anchor'>";
                 $.each(data, function (i, item) {
                     var step = i + 1;
                     retHtml += '<li><a href="javascript:void(0);" class="done tooltips" data-placement="bottom" data-original-title="点击我可编辑" isdone="1" ';
                     retHtml += 'title="点击我可编辑" onclick="workStageObj.editWorkStage(' + item.id + ')"';
                     retHtml += '>';
                     retHtml += '<div class="step_no">' + step + '</div>';
-                retHtml += '<span class="step_descr"><small style="color: #575962 !important">' + item.workStageName + '(' + item.stageSort + ')</small></span>';
+                    retHtml += '<span class="step_descr"><small style="color: #575962 !important">' + item.workStageName + '(' + item.stageSort + ')</small></span>';
                     retHtml += '</a>';
                     //+ '<button class="btn btn-xs btn-default" onclick="disableWorkStage(' + item.id + ')" title="禁用当前阶段"><li class="fa fa-times"></li></button>'
                     retHtml += '</li>';
                 });
+                retHtml += '</ul>'
             } else {
-                retHtml += '<div class="alert alert-block alert-info fade in"><h4 class="alert-heading"><i class="fa fa-exclamation-triangle"></i>请配置项目阶段</h4></div>';
+                //retHtml += '<div class="alert alert-block alert-info fade in"><h4 class="alert-heading"><i class="fa fa-exclamation-triangle"></i>请配置项目阶段</h4></div>';
             }
-            retHtml += '</ul>'
             documentEl.html(retHtml);
             $(".tooltips").tooltip();
         }
@@ -577,7 +585,7 @@
                 $('#workStageBox_assessment').attr('disabled', "true");
                 $('#reviewBox_assessment').attr('disabled', "true");
             } else {
-                AlertError("失败","新增项目阶段时必须选择具体的类型");
+                AlertError("失败", "新增项目阶段时必须选择具体的类型");
             }
         }
         $("#boxRoleType").change();
@@ -594,12 +602,12 @@
 
         var data = formSerializeArray(workStageObj.formWorkStage);
         if (!data) {
-            AlertError("失败","没有需要保存的数据");
+            AlertError("失败", "没有需要保存的数据");
             return false;
         }
         //保存项目如果禁用了则提示一下
         if (!data.bisEnable) {
-            AlertError("失败","您在编辑项目阶段时选择了禁用此阶段，您确认要这么做(如果这么做页面上将不会显示此阶段的相关数据)？", 2, function () {
+            AlertError("失败", "您在编辑项目阶段时选择了禁用此阶段，您确认要这么做(如果这么做页面上将不会显示此阶段的相关数据)？", 2, function () {
                 data.bisEnable = true;
             }, function () {
                 data.bisEnable = false;
@@ -621,12 +629,12 @@
                         successFn();
                     }
                 } else {
-                    AlertError("失败","操作失败:" + result.errmsg);
+                    AlertError("失败", "操作失败:" + result.errmsg);
                 }
             },
             error: function (result) {
                 Loading.progressHide();
-                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     };

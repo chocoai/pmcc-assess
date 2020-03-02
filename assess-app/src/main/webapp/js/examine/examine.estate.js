@@ -830,9 +830,9 @@
             html = html.replace(/'{method}'/g, 'estateCommon.constructionInstallationEngineeringFeeEvent.save()');
             target.empty().append(html);
             target.modal("show");
-            target.find(".panel-body").empty();
-            developmentCommon.architecturalB.appendHtml(target.find(".panel-body"), data, null, '', function (tr) {
-                var obj = {disable: 'disable', readonly: "readonly", 'class': 'form-control'};
+            target.find(".card-body").empty();
+            developmentCommon.architecturalB.appendHtml(target.find(".card-body"), data, null, '', function (tr) {
+                var obj = {disable: 'disable', readonly: "readonly", 'class': 'form-control input-full'};
                 $(tr).find("input[name='price']").attr(obj);
                 $(tr).find("input[name='remark']").attr(obj);
                 $(tr).find("input[name='area']").attr(obj);

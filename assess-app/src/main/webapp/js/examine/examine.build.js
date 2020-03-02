@@ -482,8 +482,8 @@
         cols.push({field: 'gradeEvaluationName', title: '等级评价'});
         selectId.bootstrapTable('destroy');
         TableInit(selectId.attr("id"), getContextPath() + "/basicBuildingPropertyServiceItem/getBasicBuildingPropertyServiceItemList?buildingId=" + buildingId, cols, {}, {
-            showColumns: true,
-            showRefresh: true,
+            showColumns: false,
+            showRefresh: false,
             search: false
         });
         var toolbar = $("#toolbarBuildingPropertyServiceItemTable");
@@ -648,9 +648,9 @@
             html = html.replace(/'{method}'/g, 'buildingCommon.constructionInstallationEngineeringFeeEvent.save()');
             target.empty().append(html);
             target.modal("show");
-            target.find(".panel-body").empty();
-            developmentCommon.architecturalB.appendHtml(target.find(".panel-body"), data, null, '', function (tr) {
-                var obj = {disable: 'disable', readonly: "readonly", 'class': 'form-control'};
+            target.find(".card-body").empty();
+            developmentCommon.architecturalB.appendHtml(target.find(".card-body"), data, null, '', function (tr) {
+                var obj = {disable: 'disable', readonly: "readonly", 'class': 'form-control input-full'};
                 $(tr).find("input[name='price']").attr(obj);
                 $(tr).find("input[name='remark']").attr(obj);
                 $(tr).find("input[name='area']").attr(obj);

@@ -29,8 +29,12 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <button id="report-tools" style="margin-left: 5px" class="btn btn-success btn-sm" type="button" data-toggle="modal" onclick="addReport()"><span class="btn-label"><i class="fa fa-plus"></i></span>新加报表</button>
-                                        <table id="report_list" class="table table-striped jambo_table bulk_action table-bordered"></table>
+                                        <button id="report-tools" style="margin-left: 5px"
+                                                class="btn btn-success btn-sm" type="button" data-toggle="modal"
+                                                onclick="addReport()"><span class="btn-label"><i class="fa fa-plus"></i></span>新加报表
+                                        </button>
+                                        <table id="report_list"
+                                               class="table table-striped jambo_table bulk_action table-bordered"></table>
                                     </div>
                                 </div>
                             </div>
@@ -52,31 +56,30 @@
         renderReportTable: function (data) {
             reportDesignerObj.report_list.bootstrapTable('destroy');
 
-            var cols=[];
+            var cols = [];
             cols.push({field: 'uuid', title: 'uuid'});
             cols.push({field: 'reportName', title: '报表全名'});
-            cols.push({field: 'modified', title: '更新时间', formatter: function (value, row, index) {
+            cols.push({
+                field: 'modified', title: '更新时间', formatter: function (value, row, index) {
                     return formatDate(value, true);
-                }});
+                }
+            });
 
             cols.push({
                 title: '操作',
                 formatter: function (value, row, index) {
-                    <%--return str;--%>
-                    var str = '<button onclick="editReport(' + index + ')"  style="margin-left: 5px;"  class="btn  btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
-                    str += '<i class="fa fa-pen"></i>';
-                    str += '</button>';
-                    str += '<button onclick="reportDesignerObj.deleteReport(' + index + ')"  style="margin-left: 5px;"  class="btn  btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
-                    str += '<i class="fa fa-minus"></i>';
-                    str += '</button>';
+                    var str = '<div class="btn-margin">';
+                    str += '<button type="button" class="re btn btn-xs btn-primary" onclick="editReport(' + index + ')" data-original-title="编辑"  style="margin-left: 5px;"><i class="fa fa-pen"></i></button>';
+                    str += '<button id="item_del" class="btn btn-xs btn-warning" href="javascript:void(0)" data-original-title="删除" style="margin-left: 5px;"><i class="fa fa-minus"></i></button>';
+                    str += '</div>';
                     return str;
                 },
-                // events: {
-                //     'click #item_del': function (e, value, row, index) {
-                //         //删除
-                //         reportDesignerObj.deleteReport(row.reportName);
-                //     }
-                // }
+                events: {
+                    'click #item_del': function (e, value, row, index) {
+                        //删除
+                        reportDesignerObj.deleteReport(row.reportName);
+                    }
+                }
             });
 
             TableClient(reportDesignerObj.report_list, cols, data, {
@@ -125,19 +128,18 @@
                 reportDesignerObj.renderReportTable(tableData);
             }
         },
-        deleteReport:function (index) {
+        deleteReport: function (name) {
             AlertConfirm("是否确认删除", "删除相应的数据后将不可恢复", function () {
-                var row = $(reportDesignerObj.report_list).bootstrapTable('getData')[index];
                 Loading.progressShow();
                 $.ajax({
                     url: "${pageContext.request.contextPath}/assessReport/deleteReport",
                     type: "get",
                     dataType: "json",
-                    data: {reportName: row.reportName},
+                    data: {reportName: name},
                     success: function (result) {
                         Loading.progressHide();
                         if (result.ret) {
-                            reportDesignerObj.report_list.bootstrapTable('refresh');
+                            reportDesignerObj.fetchReportProvider();
                         }
                         else {
                             AlertError("删除数据失败，失败原因:" + result.errmsg);
@@ -151,10 +153,12 @@
             })
         }
     };
+
     function addReport() {
         var href = "${pageContext.request.contextPath}/ureport/designer";
         window.open(href, "");
     }
+
     function editReport(index) {
         var row = $(reportDesignerObj.report_list).bootstrapTable('getData')[index];
         var href = "${pageContext.request.contextPath}/ureport/designer?_u=";

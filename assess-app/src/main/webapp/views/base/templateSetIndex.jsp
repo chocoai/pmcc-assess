@@ -104,23 +104,19 @@
                         <div class="col-md-12">
                             <div class="card-body">
                                 <div class="row form-group">
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-2 col-form-label">
                                                 模板名称<span class="symbol required"></span>
                                             </label>
-                                            <div class="col-sm-10">
+                                            <div class="col-sm-4">
                                                 <input name='name' class='form-control input-full' required
                                                        maxlength="200">
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-inline x-valid">
                                             <label class="col-sm-2 col-form-label">
                                                 贷款类型
                                             </label>
-                                            <div class="col-sm-10">
+                                            <div class="col-sm-4">
                                                 <select name='loanType' class='form-control input-full  search-select select2'>
                                                     <option value="0">-请选择-</option>
                                                     <c:forEach var="item" items="${loanTypeList}">
@@ -132,28 +128,30 @@
                                     </div>
                                 </div>
                                 <div class="row form-group">
-                                    <div class="form-inline x-valid" id="entrustmentPurpose">
-                                        <c:forEach items="${entrustPurposeList}" var="item">
-                                            <div class="form-check">
-                                                <label class="form-check-label" style="margin-left: 2px;">
-                                                    <input type="checkbox" id="entrustPurpose${item.id}"
-                                                           required
-                                                           name="entrustPurpose" value="${item.id}"
-                                                           class="form-check-input">
-                                                    <span class="form-check-sign"><label
-                                                            for="entrustPurpose${item.id}">${item.name}</label></span>
-                                                </label>
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                委托目的<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <select name="entrustPurpose" multiple="multiple"
+                                                        class="form-control input-full search-select select2"
+                                                        required="required">
+                                                    <c:forEach items="${entrustPurposeList}" var="item">
+                                                        <option value="${item.id}">${item.name}</option>
+                                                    </c:forEach>
+                                                </select>
                                             </div>
-                                        </c:forEach>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="row form-group">
                                     <div class="col-md-12">
                                         <div class="form-inline x-valid">
-                                            <label class="col-sm-1 control-label">
+                                            <label class="col-sm-2 control-label">
                                                 报告模板
                                             </label>
-                                            <div class="col-sm-11">
+                                            <div class="col-sm-10">
                                                 <input id="uploadFile" name="uploadFile"
                                                        type="file" multiple="false">
                                                 <div id="_uploadFile">
@@ -290,7 +288,8 @@
         $("#frm_files").clearAll();
         var row = $("#tb_files_list").bootstrapTable("getRowByUniqueId", id);
         $("#frm_files").initForm(row);
-        AssessCommon.checkboxToChecked($("#frm_files").find(":checkbox[name='entrustPurpose']"), row.entrustPurpose.split(','));
+        $("#frm_files").find("[name='entrustPurpose']").val(row.entrustPurpose.split(',')).trigger('change');
+
         loadTemplateAttachment(id);
         $('#modalTemplate').modal({backdrop: 'static', keyboard: false});
     }
