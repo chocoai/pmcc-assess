@@ -140,13 +140,11 @@
                                     <div class="row form-group">
                                         <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
                                             <div class="form-inline x-valid">
-                                                <label class="col-xs-2  col-sm-2  col-md-2  col-lg-2 col-form-label">
-                                                    自定义附件
-                                                </label>
                                                 <div class="col-xs-10  col-sm-10  col-md-10  col-lg-10">
-                                                    <div class="btn  btn-success btn-sm"
-                                                         onclick="declareApplyExtensionCumstom.appendHTML('${declare.id}','${projectPlanDetails.projectId}',this)">
-                                                        <i class="fa fa-plus"></i></div>
+                                                    <button type="button" class="btn btn-success btn-sm"
+                                                            onclick="declareApplyExtensionCumstom.appendHTML('${declare.id}','${projectPlanDetails.projectId}',this)">
+                                                        <span class="btn-label"><i class="fa fa-plus"></i></span>添加申报名称
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -157,12 +155,12 @@
                                             <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
                                                 <div class="form-inline x-valid">
                                                     <label class="col-xs-2  col-sm-2  col-md-2  col-lg-2 col-form-label">
-                                                        自定义名称<span class="symbol required"></span>
+                                                        申报名称<span class="symbol required"></span>
                                                     </label>
                                                     <div class="col-xs-10  col-sm-10  col-md-10  col-lg-10">
                                                         <input type="hidden" name="id" value="${itemData.id}">
                                                         <input name="name" class="form-control input-full"
-                                                               placeholder="自定义名称" value="${itemData.name}"
+                                                               placeholder="申报名称" value="${itemData.name}"
                                                                onblur="declareApplyExtensionCumstom.targetSave(this);"/>
                                                     </div>
                                                 </div>
@@ -188,9 +186,7 @@
                                                 });
                                             </script>
                                             <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
-                                                <span class="input-group-btn"><input class="btn btn-warning btn-sm"
-                                                                                     type="button" value="X"
-                                                                                     onclick="declareApplyExtensionCumstom.cleanItemHTML(this)"></span>
+                                                <button type="button" class="btn btn-warning btn-sm" onclick="declareApplyExtensionCumstom.cleanItemHTML(this)"><i class="fa fa-minus"></i></button>
                                             </div>
                                         </div>
                                     </c:forEach>
@@ -266,6 +262,7 @@
             submitForm(mustUseBox);
             return false;
         }
+        notifyWarning("警告","请确认是否添加了申报数据!");
     }
 
     //提交表单

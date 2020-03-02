@@ -94,12 +94,12 @@ public class PublicController {
                 });
             }
             if (CollectionUtils.isEmpty(multipartFileList)) {
-                return HttpResult.newErrorResult("上传的文件不能为空");
+                return HttpResult.newErrorResult(500,new Exception("上传的文件不能为空"));
             }
-            return HttpResult.newCorrectResult(baseAttachmentService.importAjaxFile(multipartFileList, tableName, tableId, fieldsName));
+            return HttpResult.newCorrectResult(200,baseAttachmentService.importAjaxFile(multipartFileList, tableName, tableId, fieldsName));
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
-            return HttpResult.newErrorResult(e.getMessage());
+            return HttpResult.newErrorResult(500,e);
         }
     }
 
