@@ -4,7 +4,6 @@
 <html lang="en" class="no-js">
 <head>
     <%@include file="/views/share/main_css.jsp" %>
-
     <link rel="stylesheet"
           href="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/themes/bootstrap/tree.css">
     <link rel="stylesheet"
@@ -17,118 +16,119 @@
     <div class="main-panel" style="width: 100%">
         <div class="content" style="margin-top: 0px;">
             <%@include file="/views/share/form_head.jsp" %>
-            <%@include file="/views/share/project/projectInfoSimple.jsp" %>
-            <%@include file="/views/share/project/projectPlanDetails.jsp" %>
+            <div class="page-inner mt--5">
+                <div class="row mt--2">
+                    <%@include file="/views/share/project/projectInfoSimple.jsp" %>
+                    <%@include file="/views/share/project/projectPlanDetails.jsp" %>
+                    <c:forEach items="${areaGroups}" var="item">
+                        <div class="col-md-12">
+                            <div class="x_panel card area_panel">
+                                <input type="hidden" name="areaGroupId" value="${item.id}">
+                                <div class="x_title card-header collapse-link" onclick="programme.loadJudgeObjectList(this);">
+                                    <div class="card-head-row">
+                                        <div class="card-title">${item.areaName}</div>
+                                        <div class="card-tools">
+                                            <button class="btn  btn-link btn-primary btn-xs"><span class="fa fa-angle-down"></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="x_content card-body collapse">
+                                    <form id="frmJudgeObject${item.id}" class="form-horizontal">
+                                        <div class="row form-group form-inline">
+                                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
+                                                委托目的
+                                            </label>
+                                            <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
+                                                <label class="form-control input-full">${item.entrustPurposeName}</label>
+                                            </div>
+                                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
+                                                委托目的类别
+                                            </label>
+                                            <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
+                                                <label class="form-control input-full">${item.entrustAimTypeName}</label>
+                                            </div>
+                                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
+                                                委托目的描述
+                                            </label>
+                                            <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
+                                                <label class="form-control input-full">${item.remarkEntrustPurpose}</label>
+                                            </div>
+                                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
+                                                财产范围
+                                            </label>
+                                            <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
+                                                <label class="form-control input-full">${item.propertyScopeName}</label>
+                                            </div>
+                                        </div>
+                                        <div class="row form-group form-inline">
+                                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
+                                                评估基准日
+                                            </label>
+                                            <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
+                                                <label class="form-control input-full">
+                                                    <fmt:formatDate value="${item.valueTimePoint}" pattern="yyyy-MM-dd"/>
+                                                </label>
+                                            </div>
+                                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
+                                                基准日说明
+                                            </label>
+                                            <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
+                                                <label class="form-control input-full">${item.timePointExplain}</label>
+                                            </div>
+                                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
+                                                价值类型
+                                            </label>
+                                            <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
+                                                <label class="form-control input-full">${item.valueDefinitionName}</label>
+                                            </div>
+                                        </div>
+                                        <div class="row form-group form-inline">
+                                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
+                                                财产包括
+                                            </label>
+                                            <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
+                                                <label class="form-control input-full">${item.scopeInclude}</label>
+                                            </div>
+                                        </div>
+                                        <div class="row form-group form-inline">
+                                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
+                                                财产不包括
+                                            </label>
+                                            <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
+                                                <label class="form-control input-full">${item.scopeNotInclude}</label>
+                                            </div>
+                                        </div>
 
-            <c:forEach items="${areaGroups}" var="item">
-                <div class="col-md-12">
-                    <div class="x_panel card area_panel">
-                        <input type="hidden" name="areaGroupId" value="${item.id}">
-                        <div class="x_title card-header collapse-link" onclick="programme.loadJudgeObjectList(this);">
-                            <div class="card-head-row">
-                                <div class="card-title">${item.areaName}</div>
-                                <div class="card-tools">
-                                    <button class="btn  btn-link btn-primary btn-xs"><span class="fa fa-angle-down"></span>
-                                    </button>
+                                        <table class="table">
+                                            <thead>
+                                            <tr>
+                                                <th style="width: 5%;word-break: break-all;">编号</th>
+                                                    <%--<th style="width: 10%">权证号</th>--%>
+                                                <th style="width: 8%">所有权人</th>
+                                                <th style="width: 10%">坐落</th>
+                                                <th style="width: 6%">终止日期</th>
+                                                <th style="width: 6%">剩余年限</th>
+                                                <th style="width: 6%">证载用途</th>
+                                                <th style="width: 6%">实际用途</th>
+                                                <th style="width: 6%">设定用途</th>
+                                                <th style="width: 10%">最佳利用方式</th>
+                                                <th style="width: 5%">证载面积</th>
+                                                <th style="width: 5%">评估面积</th>
+                                                <th style="width: 10%">操作</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </form>
                                 </div>
                             </div>
                         </div>
-                        <div class="x_content card-body collapse">
-                            <form id="frmJudgeObject${item.id}" class="form-horizontal">
-                                <div class="row form-group form-inline">
-                                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
-                                        评估基准日
-                                    </label>
-                                    <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                                        <label class="form-control input-full">
-                                            <fmt:formatDate value="${item.valueTimePoint}" pattern="yyyy-MM-dd"/>
-                                        </label>
-                                    </div>
-                                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
-                                        基准日说明
-                                    </label>
-                                    <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                                        <label class="form-control input-full">${item.timePointExplain}</label>
-                                    </div>
-                                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
-                                        价值类型
-                                    </label>
-                                    <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                                        <label class="form-control input-full">${item.valueDefinitionName}</label>
-                                    </div>
-                                </div>
-
-                                <div class="row form-group form-inline">
-                                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
-                                        委托目的
-                                    </label>
-                                    <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                                        <label class="form-control input-full">${item.entrustPurposeName}</label>
-                                    </div>
-                                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
-                                        委托目的类别
-                                    </label>
-                                    <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                                        <label class="form-control input-full">${item.entrustAimTypeName}</label>
-                                    </div>
-                                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
-                                        委托目的描述
-                                    </label>
-                                    <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                                        <label class="form-control input-full">${item.remarkEntrustPurpose}</label>
-                                    </div>
-                                </div>
-
-                                <div class="row form-group form-inline">
-                                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
-                                        财产范围
-                                    </label>
-                                    <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                                        <label class="form-control input-full">${item.propertyScopeName}</label>
-                                    </div>
-                                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
-                                        财产包括
-                                    </label>
-                                    <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                                        <label class="form-control input-full">${item.scopeInclude}</label>
-                                    </div>
-                                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
-                                        财产不包括
-                                    </label>
-                                    <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                                        <label class="form-control input-full">${item.scopeNotInclude}</label>
-                                    </div>
-                                </div>
-
-
-                                <table class="table">
-                                    <thead>
-                                    <tr>
-                                        <th style="width: 30%;word-break: break-all;">编号</th>
-                                            <%--<th style="width: 10%">权证号</th>--%>
-                                        <th style="width: 5%">所有权人</th>
-                                        <th style="width: 15%">坐落</th>
-                                        <th style="width: 6%">终止日期</th>
-                                        <th style="width: 6%">剩余年限</th>
-                                        <th style="width: 6%">证载用途</th>
-                                        <th style="width: 6%">实际用途</th>
-                                        <th style="width: 6%">设定用途</th>
-                                        <th style="width: 10%">最佳利用方式</th>
-                                        <th style="width: 5%">证载面积</th>
-                                        <th style="width: 5%">评估面积</th>
-                                        <th style="width: 10%">操作</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                                </table>
-                            </form>
-                        </div>
-                    </div>
+                    </c:forEach>
+                    <%@include file="/views/share/form_approval.jsp" %>
                 </div>
-            </c:forEach>
-            <!--填写表单-->
-            <%@include file="/views/share/form_approval.jsp" %>
+            </div>
         </div>
         <%@include file="/views/share/main_footer.jsp" %>
     </div>
@@ -361,24 +361,24 @@
             <input type="hidden" data-name="splitNumber" value="{splitNumber}">
             <input type="hidden" data-name="declareId" value="{declareId}">
             <input type="hidden" data-name="rentalPossessionDesc" value="{rentalPossessionDesc}">
-            <label class="form-control" data-name="mergeNumber">{mergeNumber}</label>
+           {mergeNumber}
         </td>
-        <td><label class="form-control" data-name="ownership">{ownership}
-            <a href="javascript://" onclick="programme.viewJudgeInfo(this);"
-               class="btn btn-xs btn-success tooltips"><i class="fa fa-white fa-search"></i></a>
-        </label></td>
-        <td><label class="form-control" data-name="seat">{seat}</label></td>
-        <td><label class="form-control" data-name="landUseEndDate"><span>{landUseEndDate}</span></label></td>
-        <td><label class="form-control" data-name="landRemainingYear"><span>{landRemainingYear}</span></label></td>
-        <td><label class="form-control" data-name="certUse">{certUse}</label></td>
-        <td><label class="form-control" data-name="practicalUse">{practicalUse}</label></td>
-        <td><label class="form-control" data-name="setUse">{setUseName}</label></td>
-        <td><label class="form-control" data-name="setUse">{bestUseName}</label></td>
-        <td><label class="form-control">{floorArea}</label></td>
-        <td><label class="form-control">{evaluationArea}</label></td>
+        <td>{ownership}
+            <button type="button" href="javascript://" onclick="programme.viewJudgeInfo(this);"
+               class="btn btn-xs btn-info tooltips"><i class="fa fa-white fa-search"></i></button>
+        </td>
+        <td>{seat}</td>
+        <td>{landUseEndDate}</td>
+        <td>{landRemainingYear}</td>
+        <td>{certUse}</td>
+        <td>{practicalUse}</td>
+        <td>{setUseName}</td>
+        <td>{bestUseName}</td>
+        <td>{floorArea}</td>
+        <td>{evaluationArea}</td>
         <td>
-            <a href="javascript://" onclick="programmeMethod.setMethod(this);"
-               class="btn btn-xs btn-primary judge-method tooltips">评估方法</a>
+            <button type="button" onclick="programmeMethod.setMethod(this);"
+               class="btn btn-sm btn-info judge-method tooltips">评估方法</button>
         </td>
     </tr>
 </script>
@@ -477,7 +477,7 @@
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top"  onclick="programme.viewJudgeDetailExamineInfo(' + index + ')"><i class="fa fa-search fa-white"></i></a>';
+                str += '<button type="button" class="btn btn-xs btn-info tooltips" data-placement="top"  onclick="programme.viewJudgeDetailExamineInfo(' + index + ')"><i class="fa fa-search fa-white"></i></button>';
                 str += '</div>';
                 return str;
             }
@@ -590,7 +590,7 @@
                                 if (row.bisEnable) {
                                     var s = "";
                                     if (row.displayUrl) {
-                                        s += " <a target='_blank' href='" + row.displayUrl + "' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-search fa-white'></i></a>";
+                                        s += " <a target='_blank' href='" + row.displayUrl + "' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-info tooltips' ><i class='fa fa-search fa-white'></i></a>";
                                     }
                                     return s;
                                 }

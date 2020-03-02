@@ -122,60 +122,44 @@
                             </div>
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-md-3">
-                                        <div class="list-group table-list-nav">
-                                            <a onclick="projectDetails.loadDocumentSend(this);"
-                                               data-table-id="tb_documentSendList"
-                                               class="list-group-item">发文信息
-                                            </a>
-                                            <a onclick="projectDetails.loadDocumentOpinion(this)"
-                                               data-table-id="tb_documentOpinionList"
-                                               class="list-group-item">意见稿信息
-                                            </a>
-                                            <a onclick="projectDetails.loadSubsequent(this)"
-                                               data-table-id="tb_subsequentList" class="list-group-item">后续事项信息
-                                            </a>
-                                            <a onclick="projectDetails.loadTakeNumber(this)"
-                                               data-table-id="tb_takeNumber" class="list-group-item">拿号信息
-                                            </a>
-                                            <a onclick="projectDetails.loadProjectLog(this)"
-                                               data-table-id="tb_projectLogList" class="list-group-item">日志信息
-                                            </a>
-                                            <a onclick="projectDetails.loadProjectLegwork(this)"
-                                               data-table-id="tb_projectLegWorkList" class="list-group-item">外勤信息
-                                            </a>
-                                            <a onclick="projectDetails.loadProjectBill(this)"
-                                               data-table-id="tb_projectBillList" class="list-group-item">开票信息
-                                            </a>
+                                    <div class="col-md-2">
+                                        <div class="nav flex-column nav-pills nav-secondary" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                                            <a class="nav-link active" onclick="projectDetails.loadDocumentSend(this);" data-table-id="tb_documentSendList" data-toggle="pill" href="#div_documentSendList" role="tab" aria-controls="v-pills-home" aria-selected="true">发文信息</a>
+                                            <a class="nav-link" onclick="projectDetails.loadDocumentOpinion(this)" data-table-id="tb_documentOpinionList" data-toggle="pill" href="#div_documentOpinionList" role="tab" aria-controls="v-pills-profile" aria-selected="false">意见稿信息</a>
+                                            <a class="nav-link" onclick="projectDetails.loadSubsequent(this)" data-table-id="tb_subsequentList" data-toggle="pill" href="#div_subsequentList" role="tab" aria-controls="v-pills-messages" aria-selected="false">后续事项信息</a>
+                                            <a class="nav-link" onclick="projectDetails.loadTakeNumber(this)" data-table-id="tb_takeNumber" data-toggle="pill" href="#div_takeNumber" role="tab" aria-controls="v-pills-home" aria-selected="true">拿号信息</a>
+                                            <a class="nav-link" onclick="projectDetails.loadProjectLog(this)" data-table-id="tb_projectLogList" data-toggle="pill" href="#div_projectLogList" role="tab" aria-controls="v-pills-profile" aria-selected="false">日志信息</a>
+                                            <a class="nav-link" onclick="projectDetails.loadProjectLegwork(this)" data-table-id="tb_projectLegWorkList" data-toggle="pill" href="#div_projectLegWorkList" role="tab" aria-controls="v-pills-messages" aria-selected="false">外勤信息</a>
+                                            <a class="nav-link" onclick="projectDetails.loadProjectBill(this)" data-table-id="tb_projectBillList" data-toggle="pill" href="#div_projectBillList" role="tab" aria-controls="v-pills-messages" aria-selected="false">开票信息</a>
                                         </div>
                                     </div>
-                                    <div class="col-md-9">
-                                        <div class="bootstrap-table-list">
+                                    <div class="col-md-10">
+                                        <div class="bootstrap-table-list" id="div_documentSendList">
                                             <table title="发文信息" class="table table-bordered" id="tb_documentSendList">
                                             </table>
                                         </div>
-                                        <div class="bootstrap-table-list">
+                                        <div class="bootstrap-table-list" id="div_documentOpinionList">
                                             <table title="意见稿信息" class="table table-bordered"
                                                    id="tb_documentOpinionList">
                                             </table>
                                         </div>
-                                        <div class="bootstrap-table-list">
+                                        <div class="bootstrap-table-list" id="div_subsequentList">
                                             <table title="后续事项信息" class="table table-bordered" id="tb_subsequentList">
                                             </table>
                                         </div>
-                                        <div class="bootstrap-table-list">
+                                        <div class="bootstrap-table-list" id="div_takeNumber">
                                             <table title="拿号信息" class="table table-bordered" id="tb_takeNumber">
                                             </table>
                                         </div>
-                                        <div class="bootstrap-table-list">
+                                        <div class="bootstrap-table-list" id="div_projectLogList">
                                             <table title="日志信息" class="table table-bordered" id="tb_projectLogList">
                                             </table>
                                         </div>
-                                        <div class="bootstrap-table-list">
+                                        <div class="bootstrap-table-list" id="div_projectLegWorkList">
                                             <table title="外勤信息" class="table table-bordered" id="tb_projectLegWorkList">
                                             </table>
                                         </div>
-                                        <div class="bootstrap-table-list">
+                                        <div class="bootstrap-table-list" id="div_projectBillList">
                                             <table title="开票信息" class="table table-bordered" id="tb_projectBillList">
                                             </table>
                                         </div>
@@ -196,7 +180,7 @@
 </html>
 <script type="text/javascript">
     $(function () {
-        $(".table-list-nav a:first").trigger('click');
+        $("#v-pills-tab a:first").trigger('click');
     })
     var projectDetails = {
         //后续事项
@@ -258,7 +242,7 @@
         },
         //加载列表前执行的方法
         preLoadListFn: function (_this) {
-            $(_this).css('background-color', 'cadetblue').closest('.list-group').find('a').not($(_this)).css('background-color', 'white');
+            //$(_this).css('background-color', '#6861ce').closest('div').find('a').not($(_this)).removeClass('background-color');
             var target = $("#" + $(_this).attr('data-table-id'));
             var targetDiv = target.closest('.bootstrap-table-list');
             targetDiv.show().siblings().hide();

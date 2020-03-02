@@ -93,24 +93,24 @@
                     <div class="col-md-12" style="text-align: center;padding-bottom: 1.25rem">
 
                         <div class="card-body">
-                            <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
+                            <button type="button" id="cancel_btn" class="btn btn-default" onclick="window.close()">
                                 取消
                             </button>
                             <c:choose>
                                 <c:when test="${processInsId == '0' || processInsId == null || processInsId == 0}">
-                                    <button id="draft_btn" class="btn btn-warning" onclick="projectApplyDraft();">
-                                        保存草稿<i style="margin-left: 10px" class="fa fa-save"></i>
+                                    <button type="button" id="draft_btn" class="btn btn-warning" style="margin-left: 10px;" onclick="projectApplyDraft();">
+                                        保存草稿
                                     </button>
-                                    <button id="commit_btn" class="btn btn-success" onclick="projectApply(false);">
-                                        直接提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
+                                    <button type="button" id="commit_btn" class="btn btn-success" style="margin-left: 10px;" onclick="projectApply(false);">
+                                        直接提交
                                     </button>
-                                    <button id="approval_btn" class="btn btn-primary" onclick="projectApply(true);">
-                                        提交审批<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
+                                    <button type="button" id="approval_btn" class="btn btn-primary" style="margin-left: 10px;" onclick="projectApply(true);">
+                                        提交审批
                                     </button>
                                 </c:when>
                                 <c:otherwise>
-                                    <button class="btn btn-primary" onclick="projectApply(true);">
-                                        提交审批<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
+                                    <button type="button" class="btn btn-primary" style="margin-left: 10px;" onclick="projectApply(true);">
+                                        提交审批
                                     </button>
                                 </c:otherwise>
                             </c:choose>

@@ -378,6 +378,10 @@
                             str = "<span class='label label-success'>" + "已完成" + "</span>";
                             break;
                         }
+                        case "close": {
+                            str = "<span class='label label-warning'>" + "关闭" + "</span>";
+                            break;
+                        }
                         case "none": {
                             str = "<span class='label label-default'>" + row.projectPhaseName + "</span>";
                             break;
@@ -399,10 +403,6 @@
             cols.push({
                 field: 'opt', title: '操作', formatter: function (value, row, index) {
                     var str = "";
-                    if (row.status == 'wait') {
-                        str += "<button type='button' onclick='projectStagePlan.editStagePlan(" + row.id + ")' style='margin-left: 5px;' data-placement='top' data-original-title='编辑' class='btn btn-xs btn-primary tooltips'  ><i class='fa fa-edit fa-white'></i></button>";
-                        str += "<button type='button' onclick='projectStagePlan.deleteStagePlan(" + row.id + ")' style='margin-left: 5px;' data-placement='top' data-original-title='删除'  class='btn btn-xs btn-warning tooltips' ><i class='fa fa-minus fa-white'></i></button>";
-                    }
                     if (row.canReplay) {
                         str += "<button type='button' onclick='projectStagePlan.replyTask(" + row.id + ")' style='margin-left: 5px;' data-placement='top' data-original-title='重启' class='btn btn-xs btn-primary tooltips'  ><i class='fa fa-reply fa-white'></i></button>";
                     }
@@ -740,5 +740,4 @@
     $(function () {
         projectStagePlan.loadProjectTaskList();
     });
-
 </script>

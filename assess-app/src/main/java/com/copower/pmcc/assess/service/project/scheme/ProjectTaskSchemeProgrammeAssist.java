@@ -95,6 +95,10 @@ public class ProjectTaskSchemeProgrammeAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView approvalView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/schemeProgrammeApproval", processInsId, boxId, taskId, agentUserAccount);
+        List<SchemeAreaGroupVo> areaGroups = schemeAreaGroupService.getSchemeAreaGroupVos(projectPlanDetails.getProjectId());//获取分组信息
+        ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId()));
+        modelAndView.addObject("projectInfo", projectInfoVo);
+        modelAndView.addObject("areaGroups", areaGroups);
         return modelAndView;
     }
 

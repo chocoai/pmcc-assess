@@ -139,7 +139,7 @@ public class SchemeProgrammeController {
 
     @RequestMapping(value = "/index", name = "方案设置视图", method = {RequestMethod.GET})
     public ModelAndView index(Integer projectId, Integer planId, String processInsId) {
-        String view = "/project/stageScheme/programmeIndex";
+        String view = "/project/stageScheme/schemeProgrammeIndex";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
         setEditParams(modelAndView, projectId, planId, processInsId);
         return modelAndView;
@@ -147,7 +147,7 @@ public class SchemeProgrammeController {
 
     @RequestMapping(value = "/view", name = "方案设置视图 (实际相当于详情)", method = {RequestMethod.GET})
     public ModelAndView view(Integer projectId, Integer planId, String processInsId) {
-        String view = "/project/stageScheme/programmeView";
+        String view = "/project/stageScheme/schemeProgrammeApproval";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
         setDetailParams(modelAndView, projectId, planId, processInsId);
         return modelAndView;
@@ -162,7 +162,7 @@ public class SchemeProgrammeController {
 
     @RequestMapping(value = "/schemeProgrammeEdit", name = "方案流程编辑", method = {RequestMethod.GET})
     public ModelAndView schemeProgrammeEdit(String processInsId, String taskId, Integer boxId, String agentUserAccount) {
-        String view = "/project/stageScheme/programmeIndex";
+        String view = "/project/stageScheme/schemeProgrammeIndex";
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView(view, processInsId, boxId, taskId, agentUserAccount);
         ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsByProcessInsId(processInsId);
         ProjectPlan projectPlan = projectPlanService.getProjectplanById(projectPlanDetails.getPlanId());
@@ -174,7 +174,7 @@ public class SchemeProgrammeController {
     public ModelAndView schemeProgrammeApproval(String processInsId, String taskId, Integer boxId, String agentUserAccount) {
         ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsByProcessInsId(processInsId);
         ProjectPlan projectPlan = projectPlanService.getProjectplanById(projectPlanDetails.getPlanId());
-        String view = "/project/stageScheme/programmeView";
+        String view = "/project/stageScheme/schemeProgrammeApproval";
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView(view, processInsId, boxId, taskId, agentUserAccount);
         setDetailParams(modelAndView, projectPlan.getProjectId(), projectPlan.getId(), processInsId);
         return modelAndView;

@@ -15,12 +15,12 @@
                 </div>
                 <div class="card-tools">
                     <button class="btn  btn-link btn-primary btn-xs"><span
-                            class="fa fa-angle-down"></span>
+                            class="fa fa-angle-up"></span>
                     </button>
                 </div>
             </div>
         </div>
-        <div class="card-body ">
+        <div class="card-body " style="display: none;">
             <div class="form-horizontal">
                 <div class="row form-group">
                     <div class="col-md-12">

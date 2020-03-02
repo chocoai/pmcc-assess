@@ -17,7 +17,7 @@
                 </div>
                 <div class="card-tools">
                     <button class="btn  btn-link btn-primary btn-xs"><span
-                            class="fa fa-angle-down"></span>
+                            class="fa fa-angle-up"></span>
                     </button>
                 </div>
             </div>
