@@ -30,35 +30,38 @@
                                     </div>
                                 </div>
                             </div>
+
                             <div class="card-body">
                                 <form class="form-horizontal" id="frmProjectTakeNumber">
                                     <input type="hidden" name="id" value="${projectTakeNumber.id}">
-                                    <input type="hidden" name="assessProjectType" value="${projectTakeNumber.assessProjectType}">
+                                    <input type="hidden" name="assessProjectType"
+                                           value="${projectTakeNumber.assessProjectType}">
                                     <input type="hidden" name="projectId" value="${projectPlanDetails.projectId}">
 
 
                                     <div class="row form-group">
                                         <div class="col-md-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-1 control-label">
-                                                报告出具日期<span class="symbol required"></span>
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" name="reportIssuanceDate" placeholder="报告出具日期"
-                                                       class="form-control input-full date-picker dbdate" pattern='yyyy-MM-dd'
-                                                       data-date-format="yyyy-mm-dd" required
-                                                       value="<fmt:formatDate value='${projectTakeNumber.reportIssuanceDate}' pattern='yyyy-MM-dd'/>">
-                                            </div>
-                                            <label class="col-sm-1 control-label">
-                                                作业结束时间<span class="symbol required"></span>
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" name="homeWorkEndTime" placeholder="作业结束时间"
-                                                       class="form-control input-full date-picker dbdate"
-                                                       data-date-format="yyyy-mm-dd"
-                                                       pattern='yyyy-MM-dd' required
-                                                       value="<fmt:formatDate value='${projectTakeNumber.homeWorkEndTime}' pattern='yyyy-MM-dd'/>">
-                                            </div>
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1 control-label">
+                                                    报告出具日期<span class="symbol required"></span>
+                                                </label>
+                                                <div class="col-sm-3">
+                                                    <input type="text" name="reportIssuanceDate" placeholder="报告出具日期"
+                                                           class="form-control input-full date-picker dbdate"
+                                                           pattern='yyyy-MM-dd'
+                                                           data-date-format="yyyy-mm-dd" required
+                                                           value="<fmt:formatDate value='${projectTakeNumber.reportIssuanceDate}' pattern='yyyy-MM-dd'/>">
+                                                </div>
+                                                <label class="col-sm-1 control-label">
+                                                    作业结束时间<span class="symbol required"></span>
+                                                </label>
+                                                <div class="col-sm-3">
+                                                    <input type="text" name="homeWorkEndTime" placeholder="作业结束时间"
+                                                           class="form-control input-full date-picker dbdate"
+                                                           data-date-format="yyyy-mm-dd"
+                                                           pattern='yyyy-MM-dd' required
+                                                           value="<fmt:formatDate value='${projectTakeNumber.homeWorkEndTime}' pattern='yyyy-MM-dd'/>">
+                                                </div>
 
                                                 <label class="col-sm-1 control-label">
                                                     资质类型<span class="symbol required"></span>
@@ -86,75 +89,79 @@
 
                                     <div class="row form-group">
                                         <div class="col-md-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-1 control-label">
-                                                现场查勘开始日期<span class="symbol required"></span>
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" required name="investigationsStartDate"
-                                                       placeholder="现场查勘开始日期"
-                                                       class="form-control input-full date-picker dbdate"
-                                                       data-date-format="yyyy-mm-dd"
-                                                       pattern='yyyy-MM-dd'
-                                                       value="<fmt:formatDate value='${projectTakeNumber.investigationsStartDate}' pattern='yyyy-MM-dd'/>">
-                                            </div>
-                                            <label class="col-sm-1 control-label">
-                                                现场查勘结束日期<span class="symbol required"></span>
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" required name="investigationsEndDate" placeholder="现场查勘结束日期"
-                                                       class="form-control input-full date-picker dbdate"
-                                                       data-date-format="yyyy-mm-dd"
-                                                       pattern='yyyy-MM-dd'
-                                                       value="<fmt:formatDate value='${projectTakeNumber.investigationsEndDate}' pattern='yyyy-MM-dd'/>">
-                                            </div>
-                                            <label class="col-sm-1 control-label">估价师<span
-                                                    class="symbol required"></span></label>
-                                            <div class="col-sm-3">
-                                                <select name="realEstateAppraiser" multiple="multiple"
-                                                        class="form-control input-full search-select select2"
-                                                        required="required">
-                                                </select>
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1 control-label">
+                                                    现场查勘开始日期<span class="symbol required"></span>
+                                                </label>
+                                                <div class="col-sm-3">
+                                                    <input type="text" required name="investigationsStartDate"
+                                                           placeholder="现场查勘开始日期"
+                                                           class="form-control input-full date-picker dbdate"
+                                                           data-date-format="yyyy-mm-dd"
+                                                           pattern='yyyy-MM-dd'
+                                                           value="<fmt:formatDate value='${projectTakeNumber.investigationsStartDate}' pattern='yyyy-MM-dd'/>">
+                                                </div>
+                                                <label class="col-sm-1 control-label">
+                                                    现场查勘结束日期<span class="symbol required"></span>
+                                                </label>
+                                                <div class="col-sm-3">
+                                                    <input type="text" required name="investigationsEndDate"
+                                                           placeholder="现场查勘结束日期"
+                                                           class="form-control input-full date-picker dbdate"
+                                                           data-date-format="yyyy-mm-dd"
+                                                           pattern='yyyy-MM-dd'
+                                                           value="<fmt:formatDate value='${projectTakeNumber.investigationsEndDate}' pattern='yyyy-MM-dd'/>">
+                                                </div>
+                                                <label class="col-sm-1 control-label">估价师<span
+                                                        class="symbol required"></span></label>
+                                                <div class="col-sm-3">
+                                                    <select name="realEstateAppraiser" multiple="multiple"
+                                                            class="form-control input-full search-select select2"
+                                                            required="required">
+                                                    </select>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
                                     </div>
 
                                     <div class="row form-group">
                                         <div class="col-md-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-1 control-label">
-                                                说明
-                                            </label>
-                                            <div class="col-sm-11">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1 control-label">
+                                                    说明
+                                                </label>
+                                                <div class="col-sm-11">
                                 <textarea class="form-control input-full" name="remark" rows="4"
                                           data-rule-maxlength="255" placeholder="说明"></textarea>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
                                     </div>
 
                                     <div class="row form-group">
                                         <div class="col-md-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-xs-4  col-sm-4  col-md-4  col-lg-4 control-label">
-                                                每个文件都可以生成自己的文号和二维码(可以一次性上传多个)
-                                            </label>
+                                            <div class="form-inline x-valid">
+                                                <label class="col-xs-4  col-sm-4  col-md-4  col-lg-4 control-label">
+                                                    每个文件都可以生成自己的文号和二维码(可以一次性上传多个)
+                                                </label>
 
-                                            <div class="col-sm-3">
-                                                <button type="button" class="btn btn-info btn-sm"
-                                                     onclick="$(this).prev().trigger('click')">	<span class="btn-label">
+                                                <div class="col-sm-3">
+                                                    <input id="ProjectTakeNumber_DocumentHandle"
+                                                           name="file" multiple="multiple" type="file"
+                                                           style="display: none"
+                                                           onchange="baseTakeNumber.upFileLoadReport(this)">
+
+                                                    <button type="button" class="btn btn-info btn-sm"
+                                                            onclick="$('#ProjectTakeNumber_DocumentHandle').trigger('click')">	<span
+                                                            class="btn-label">
 												<i class="fa fa-cloud-upload-alt"></i>
 											</span>上传报告
-                                                </button>
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                    </div>
-
-
                                 </form>
-
                             </div>
                         </div>
                     </div>
@@ -186,6 +193,7 @@
                             </c:choose>
                         </div>
                     </div>
+
                     <%--返回修改--%>
                     <c:if test="${processInsId != 0}">
                         <%@include file="/views/share/form_log.jsp" %>
@@ -193,6 +201,7 @@
                             <%@include file="/views/share/form_edit.jsp" %>
                         </form>
                     </c:if>
+
                 </div>
             </div>
         </div>
@@ -209,63 +218,77 @@
         src="${pageContext.request.contextPath}/js/ajaxfileupload.js?v=${assessVersion}"></script>
 
 <script type="text/html" id="projectTakeNumberDetailHtml">
-
-    <div>
-        <div class=" col-sm-1">
-        </div>
-        <div class=" col-sm-11 ">
-            <div class="row panel">
-                <form>
-                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12  panel-heading  text-center">
+    <div class="col-md-12">
+        <div class="card full-height">
+            <div class="card-header collapse-link">
+                <div class="card-head-row">
+                    <div class="card-title">
                         <h2>第{index}拿号
-                            <button class="btn-primary btn" type="button"
+                            <button class="btn-primary btn btn-sm" type="button"
                                     onclick="baseTakeNumber.removeProjectTakeNumberDetail(this);">移除<i
                                     class="fa fa-minus-circle"></i></button>
                         </h2>
                     </div>
-                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12  panel-body ">
-                        <div class="row">
-                            <input type="hidden" name="id" value="{id}">
-                            <input type="hidden" name="masterId">
-                            <div class=" col-sm-1 control-label">
-                                二维码
-                            </div>
-                            <div class=" col-sm-11 ">
-                                <div id="_ProjectTakeNumber_BaseOrCode{id}"></div>
-                                <img src="">
-                            </div>
-                            <div class=" col-sm-1 control-label">
-                                报告类型<span class="symbol required"></span>
-                            </div>
-                            <div class=" col-sm-11 ">
-                                <select name="reportType" required="required"
-                                        class="form-control input-full search-select select2">
-                                </select>
-                            </div>
-                            <div class=" col-sm-1 control-label">
-                                上传的文档
-                            </div>
-                            <div class=" col-sm-11 ">
-                                <input id="projectTakeNumberDetailSysAttachmentDto{id}" placeholder="继续上传待替换附件"
-                                       class="form-control input-full"
-                                       type="file">
-                                <div id="_projectTakeNumberDetailSysAttachmentDto{id}"></div>
-                            </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <form class="form-horizontal">
+                    <input type="hidden" name="id" value="{id}">
+                    <input type="hidden" name="masterId">
+                    <div class="row form-group">
+                        <div class="col-md-12">
                             <div class="form-inline x-valid">
-                                <label class="col-md-1 col-sm-1 col-xs-12 control-label">
-                                    文号
-                                </label>
-                                <div class=" col-sm-11 ">
-                                    <input type="text" class="form-control input-full" name="numberValue" readonly="readonly">
+                                <div class=" col-md-1 control-label">
+                                    二维码
+                                </div>
+                                <div class=" col-md-5 ">
+                                    <div id="_ProjectTakeNumber_BaseOrCode{id}"></div>
+                                </div>
+                                <div class=" col-md-5 ">
+                                    <img src="">
                                 </div>
                             </div>
-                            <div class="col-sm-1 control-label">
-                                拿取文号
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <div class="form-inline x-valid">
+                                <div class=" col-md-1 control-label">
+                                    报告类型<span class="symbol required"></span>
+                                </div>
+                                <div class=" col-md-5 ">
+                                    <select name="reportType" required="required"
+                                            class="form-control input-full search-select select2">
+                                    </select>
+                                </div>
+                                <label class="col-md-1  control-label">
+                                    文号
+                                </label>
+                                <div class="col-md-5">
+                                    <input type="text" class="form-control input-full" name="numberValue"
+                                           disabled="disabled">
+                                </div>
                             </div>
-                            <div class=" col-sm-11 ">
-                                <button type="button" class="btn-primary btn"
-                                        onclick="baseTakeNumber.getReportNumber(this)"><i
-                                        class="fa fa-dot-circle-o"></i></button>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <div class="form-inline x-valid">
+                                <div class=" col-md-1 control-label">
+                                    上传的文档
+                                </div>
+                                <div class=" col-md-5 ">
+                                    <input id="projectTakeNumberDetailSysAttachmentDto{id}" placeholder="继续上传待替换附件" type="file">
+                                    <div id="_projectTakeNumberDetailSysAttachmentDto{id}"></div>
+                                </div>
+                                <div class="col-md-1 control-label">
+                                    拿取文号
+                                </div>
+                                <div class=" col-md-5 ">
+                                    <button type="button" class="btn-primary btn btn-sm"
+                                            onclick="baseTakeNumber.getReportNumber(this)"><i
+                                            class="fa fa-plus"></i></button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -273,8 +296,6 @@
             </div>
         </div>
     </div>
-
-
 </script>
 
 <script>
@@ -328,39 +349,78 @@
         })
     };
 
-    baseTakeNumber.ajaxServerMethod = function (data, url, type, callback, errorCallback) {
+    baseTakeNumber.run = function (data, url, type, callback, funParams, errorCallback) {
+        Loading.progressShow();
         $.ajax({
             type: type,
             url: '${pageContext.request.contextPath}/' + url,
             data: data,
             success: function (result) {
+                Loading.progressHide();
                 if (result.ret) {
+                    if (funParams) {
+                        if (funParams == 'save') {
+                            notifySuccess("成功", "保存数据成功!");
+                        }
+                        if (funParams == 'add') {
+                            notifySuccess("成功", "添加数据成功!");
+                        }
+                        if (funParams == 'update') {
+                            notifySuccess("成功", "修改数据成功!");
+                        }
+                        if (funParams == 'query') {
+                            notifySuccess("成功", "查询数据成功!");
+                        }
+                        if (funParams == 'delete') {
+                            notifySuccess("成功", "删除数据成功!");
+                        }
+                    }
                     if (callback) {
                         callback(result.data);
                     }
                 } else {
-                    if (errorCallback) {
-                        errorCallback(result.errmsg);
+                    if (result.errmsg) {
+                        AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
                     } else {
-                        console.log(result.errmsg);
+                        AlertError("错误", "调用服务端方法失败，失败原因:" + result);
+                    }
+                    if (errorCallback) {
+                        errorCallback();
                     }
                 }
             },
             error: function (result) {
-                if (errorCallback) {
-                    errorCallback(e);
+                Loading.progressHide();
+                if (result.errmsg) {
+                    AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
                 } else {
-                    console.log(result.errmsg);
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                    AlertError("错误", "调用服务端方法失败，失败原因:" + result);
                 }
             }
         });
     };
+    baseTakeNumber.ajaxServerFun = function (data, url, type, callback, funParams, errorCallback) {
+        var deleteParams = false;
+        if (funParams) {
+            if (funParams == 'delete') {
+                deleteParams = true;
+            }
+        }
+        if (deleteParams) {
+            AlertConfirm("是否确认删除当前数据", "删除相应的数据后将不可恢复", function (flag) {
+                baseTakeNumber.run(data, url, type, callback, funParams, errorCallback);
+            });
+        } else {
+            baseTakeNumber.run(data, url, type, callback, funParams, errorCallback);
+        }
+    };
+
+    baseTakeNumber.ajaxServerMethod = function (data, url, type, callback, errorCallback) {
+        baseTakeNumber.ajaxServerFun(data, url, type, callback, null, errorCallback);
+    };
 
     baseTakeNumber.saveAndUpdateProjectTakeNumberDetail = function (data, callback) {
-        baseTakeNumber.ajaxServerMethod({formData: JSON.stringify(data)}, "projectTakeNumber/saveAndUpdateProjectTakeNumberDetail", "post", callback, function (message) {
-            notifyInfo('提示',message);
-        });
+        baseTakeNumber.ajaxServerMethod({formData: JSON.stringify(data)}, "projectTakeNumber/saveAndUpdateProjectTakeNumberDetail", "post", callback);
     };
 
 
@@ -493,10 +553,10 @@
                     baseTakeNumber.initFormProjectTakeNumberDetailData(data, form, false);
                 }, function (result) {
                     Loading.progressHide();
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 });
             }, function (result) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 Loading.progressHide();
             });
         });
@@ -506,6 +566,7 @@
         var frm = baseTakeNumber.handleJquery(baseTakeNumber.config.frm);
         var parentData = formSerializeArray(frm);
         var fileElementId = "ProjectTakeNumber_DocumentHandle";
+        var card = frm.closest(".card").parent();
         $.ajaxFileUpload({
             type: "POST",
             url: "${pageContext.request.contextPath}/public/importAjaxFile",
@@ -523,11 +584,10 @@
                     var ids = result.data.split(",");
                     $.each(ids, function (count, attachmentId) {
                         var html = $("#projectTakeNumberDetailHtml").html();
-                        var target = frm.closest(".x_panel");
                         baseTakeNumber.saveAndUpdateProjectTakeNumberDetail({masterId: parentData.id}, function (data) {
                             html = html.replace(/{id}/g, data.id);
                             html = html.replace(/{index}/g, $(document).find("input[name=id]").size() - 1);
-                            target.append(html);
+                            card.after(html);
                             AssessCommon.getSysAttachmentDto(attachmentId, function (sysAttachmentDto) {
                                 sysAttachmentDto.fieldsName = baseTakeNumber.config.detailFileId + data.id;
                                 sysAttachmentDto.tableId = data.id;
@@ -543,20 +603,20 @@
                     });
                 }
             },
-            error: function (result, status, e) {
+            error: function (result) {
                 Loading.progressHide();
-                AlertError("失败","调用服务端方法失败，失败原因:" + result.errrmsg);
+                AlertError("失败", "调用服务端方法失败，失败原因:" + result);
             }
         });
     };
 
     baseTakeNumber.removeProjectTakeNumberDetail = function (_this) {
-        var form = $(_this).closest("form");
+        var target = $(_this).closest(".card").parent();
+        var form = target.find("form");
         var defaultObj = formSerializeArray(form);
-        baseTakeNumber.ajaxServerMethod(defaultObj, "projectTakeNumber/deleteProjectTakeNumberDetailById", "post", function () {
-            form.parent().parent().parent().remove();
-            notifySuccess('成功','移除成功!');
-        });
+        baseTakeNumber.ajaxServerFun(defaultObj, "projectTakeNumber/deleteProjectTakeNumberDetailById", "post", function () {
+            target.remove();
+        }, "delete");
     };
 
     baseTakeNumber.onChange = function (item) {
@@ -576,12 +636,12 @@
             var takeNumberDetailIdList = '${takeNumberDetailIdList}';
             var frm = baseTakeNumber.handleJquery(baseTakeNumber.config.frm);
             takeNumberDetailIdList = takeNumberDetailIdList.split(",");
-            var target = frm.closest(".x_panel");
+            var target = frm.closest(".card").parent();
             $.each(takeNumberDetailIdList, function (i, id) {
                 var html = $("#projectTakeNumberDetailHtml").html();
                 html = html.replace(/{id}/g, id);
                 html = html.replace(/{index}/g, $(document).find("input[name=id]").size() - 1);
-                target.append(html);
+                target.after(html);
                 var form = $("#" + baseTakeNumber.config.detailFileId + id).closest("form");
                 baseTakeNumber.ajaxServerMethod({id: id}, "projectTakeNumber/getProjectTakeNumberDetailById", "get", function (item) {
                     baseTakeNumber.initFormProjectTakeNumberDetailData(item, form, true);

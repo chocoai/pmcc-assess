@@ -15,7 +15,6 @@
                     <%@include file="/views/share/project/projectPlanDetails.jsp" %>
 
                     <!-- 公共模块end -->
-
                     <div class="col-md-12">
                         <div class="card full-height">
                             <div class="card-header collapse-link">
@@ -93,57 +92,71 @@
                                         </div>
                                     </div>
                                 </form>
-                                <c:forEach items="${projectTakeNumberDetailList}" var="projectTakeNumberDetail"
-                                           varStatus="userStatus">
+                            </div>
+                        </div>
+                    </div>
 
+                    <c:forEach items="${projectTakeNumberDetailList}" var="projectTakeNumberDetail"
+                               varStatus="userStatus">
+                        <div class="col-md-12">
+                            <div class="card full-height">
+                                <div class="card-header collapse-link">
+                                    <div class="card-head-row">
+                                        <div class="card-title">
+                                            <h2>第${userStatus.index+1}拿号
+                                            </h2>
+                                        </div>
+                                        <div class="card-tools">
+                                            <button class="btn  btn-link btn-primary btn-xs"><span
+                                                    class="fa fa-angle-down"></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
                                     <form class="form-horizontal">
-
-                                        <div class="row form-group">
-                                            <div class="col-md-12">
-                                                <div class="col-sm-12" style="text-align: center;">
-                                                    <h2>第${userStatus.index+1}拿号
-                                                    </h2>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row form-group">
-                                            <div class="col-md-12">
-                                                <input type="hidden" name="id"
-                                                       value="${projectTakeNumberDetail.id}">
-                                                <div class="col-sm-12 ">
-                                                    二维码:
-                                                    <div id="_ProjectTakeNumber_BaseOrCode${projectTakeNumberDetail.id}"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row form-group">
-                                            <div class="col-md-12">
-                                                <div class="col-sm-12 ">
-                                                    <label class="form-control input-full">报告类型:${projectTakeNumberDetail.reportTypeName}</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row form-group">
-                                            <div class="col-md-12">
-                                                <div class="col-sm-12 ">
-                                                    上传的文档:
-                                                    <div id="_projectTakeNumberDetailSysAttachmentDto${projectTakeNumberDetail.id}"></div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <input type="hidden" name="id"
+                                               value="${projectTakeNumberDetail.id}">
                                         <div class="row form-group">
                                             <div class="col-md-12">
                                                 <div class="form-inline x-valid">
-                                                    <div class="col-sm-12 ">
-                                                        <label class="form-control input-full">文号:${projectTakeNumberDetail.numberValue}</label>
+                                                    <div class=" col-md-1 control-label">
+                                                        二维码
+                                                    </div>
+                                                    <div class="col-sm-5 ">
+                                                        <div id="_ProjectTakeNumber_BaseOrCode${projectTakeNumberDetail.id}"></div>
+                                                    </div>
+
+                                                    <div class=" col-md-1 control-label">
+                                                        文档
+                                                    </div>
+                                                    <div class="col-sm-5 ">
+                                                        <div id="_projectTakeNumberDetailSysAttachmentDto${projectTakeNumberDetail.id}"></div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
 
+                                        <div class="row form-group">
+                                            <div class="col-md-12">
+                                                <div class="form-inline x-valid">
+                                                    <div class=" col-md-1 control-label">
+                                                        文号
+                                                    </div>
+                                                    <div class="col-sm-5 ">
+                                                        <label class="form-control input-full">${projectTakeNumberDetail.numberValue}</label>
+                                                    </div>
 
+                                                    <div class=" col-md-1 control-label">
+                                                        报告类型
+                                                    </div>
+                                                    <div class="col-sm-5 ">
+                                                        <label class="form-control input-full">报告类型:${projectTakeNumberDetail.reportTypeName}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </form>
-
                                     <script>
                                         $(document).ready(function () {
                                             var fileArr = ["ProjectTakeNumber_BaseOrCode${projectTakeNumberDetail.id}", "projectTakeNumberDetailSysAttachmentDto${projectTakeNumberDetail.id}"];
@@ -152,11 +165,11 @@
                                             });
                                         });
                                     </script>
-                                </c:forEach>
-
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </c:forEach>
+
                     <!-- 公共尾部模块引用 -->
                     <%@include file="/views/share/form_approval.jsp" %>
 

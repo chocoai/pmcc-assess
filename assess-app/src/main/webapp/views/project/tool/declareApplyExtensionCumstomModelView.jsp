@@ -1,41 +1,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<%--<script type="text/html" id="other_EnclosureModel">
-    <div class="form-group">
-        <div class="x-valid">
-            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                自定义名称<span class="symbol required"></span>
-            </label>
-            <input type="hidden" name="id" value="{id}">
-            <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                <input name="name" class="form-control" placeholder="自定义名称"
-                       onblur="declareApplyExtensionCumstom.targetSave(this);"/>
-            </div>
-        </div>
-        <div class="x-valid">
-            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                附件
-            </label>
-            <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3  ">
-                <input id="other_Enclosure{id}" name="other_Enclosure{id}" type="file" multiple="false">
-                <div id="_other_Enclosure{id}"></div>
-            </div>
-        </div>
-        <div class="x-valid">
-            <span class="input-group-btn"><input class="btn btn-warning" type="button" value="X"
-                                                 onclick="declareApplyExtensionCumstom.cleanItemHTML(this)"></span>
-        </div>
-    </div>
-</script>--%>
 <script type="text/html" id="other_EnclosureModel">
     <div class="row form-group">
         <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
             <div class="form-inline x-valid">
                 <label class="col-xs-2  col-sm-2  col-md-2  col-lg-2 col-form-label">
-                    自定义名称<span class="symbol required"></span>
+                    申报名称<span class="symbol required"></span>
                 </label>
                 <div class="col-xs-10  col-sm-10  col-md-10  col-lg-10">
-                    <input name="name" class="form-control input-full" placeholder="自定义名称" value="${itemData.name}"
+                    <input name="name" class="form-control input-full" placeholder="申报名称" value="${itemData.name}"
                            onblur="declareApplyExtensionCumstom.targetSave(this);"/>
                 </div>
             </div>
@@ -52,8 +25,7 @@
             </div>
         </div>
         <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
-            <span class="input-group-btn"><input class="btn btn-warning btn-sm" type="button" value="X"
-                                                 onclick="declareApplyExtensionCumstom.cleanItemHTML(this)"></span>
+            <button type="button" class="btn btn-warning btn-sm" onclick="declareApplyExtensionCumstom.cleanItemHTML(this)"><i class="fa fa-minus"></i></button>
         </div>
     </div>
 </script>
@@ -71,7 +43,6 @@
         var target = $(_this).closest(".form-group");
         declareApplyExtensionCumstom.deleteById(target.find("[name='id']").val(), function () {
             target.remove();
-            notifyInfo('提示',"清除本条数据成功!");
         });
     };
 
@@ -125,24 +96,7 @@
     };
 
     declareApplyExtensionCumstom.getDeclareApplyExtensionList = function (declareId, callback) {
-        $.ajax({
-            url: "${pageContext.request.contextPath}/declareApplyExtension/getDeclareApplyExtensionListByExample",
-            type: "get",
-            dataType: "json",
-            data: {declareId: declareId},
-            success: function (result) {
-                if (result.ret) {
-                    if (callback) {
-                        callback(result.data);
-                    }
-                } else {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
-                }
-            },
-            error: function (result) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
-            }
-        });
+        declareCommon.ajaxServerFun({declareId: declareId},"/declareApplyExtension/getDeclareApplyExtensionListByExample","get",callback,null) ;
     };
 
     declareApplyExtensionCumstom.targetSave = function (_this) {
@@ -162,46 +116,12 @@
     };
 
     declareApplyExtensionCumstom.deleteById = function (id, callback) {
-        $.ajax({
-            url: "${pageContext.request.contextPath}/declareApplyExtension/deleteDeclareApplyExtensionById",
-            type: "post",
-            dataType: "json",
-            data: {id: id},
-            success: function (result) {
-                if (result.ret) {
-                    if (callback) {
-                        callback(result.data);
-                    }
-                } else {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
-                }
-            },
-            error: function (result) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
-            }
-        });
+        declareCommon.ajaxServerFun({id: id},"/declareApplyExtension/deleteDeclareApplyExtensionById","post",callback,"delete") ;
     };
 
 
     declareApplyExtensionCumstom.saveTempData = function (data, callback) {
-        $.ajax({
-            url: "${pageContext.request.contextPath}/declareApplyExtension/saveAndUpdateDeclareApplyExtensionAll",
-            type: "post",
-            dataType: "json",
-            data: {fomData: JSON.stringify(data), updateNull: false},
-            success: function (result) {
-                if (result.ret) {
-                    if (callback) {
-                        callback(result.data);
-                    }
-                } else {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
-                }
-            },
-            error: function (result) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
-            }
-        });
+        declareCommon.ajaxServerFun({fomData: JSON.stringify(data), updateNull: false},"/declareApplyExtension/saveAndUpdateDeclareApplyExtensionAll","post",callback,null,null) ;
     };
 
 </script>
