@@ -53,8 +53,6 @@
         </div>
     </div>
 </div>
-
-
 <div id="modelToolMapHandleView" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" style="width:1100px;">
         <div class="modal-content">
@@ -139,6 +137,4 @@
         </div>
     </div>
 </div>
-
-
 </html>

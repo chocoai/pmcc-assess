@@ -22,6 +22,7 @@ public abstract class BasicEntityAbstract {
             if (obj == null || StringUtils.isBlank(propertyName)) return null;
             Class clazz = obj.getClass();//获取字节码对象
             Field f = clazz.getDeclaredField(propertyName);
+            f.setAccessible(true);
             return f.get(obj);
         } catch (Exception e) {
             e.printStackTrace();

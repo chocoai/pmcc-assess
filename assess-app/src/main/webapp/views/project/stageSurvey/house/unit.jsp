@@ -60,7 +60,6 @@
     <%@include file="/views/project/stageSurvey/common/unitElevator.jsp" %>
     <%@include file="/views/project/stageSurvey/common/unitHuxingPrice.jsp" %>
 </div>
-<%@include file="/views/project/tool/toolMapHandleView.jsp" %>
 
 <script src='${pageContext.request.contextPath}/js/common.column.js?v=${assessVersion}'></script>
 <script type="text/javascript"

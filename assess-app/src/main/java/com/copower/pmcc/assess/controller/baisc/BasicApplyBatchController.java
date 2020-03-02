@@ -11,6 +11,7 @@ import com.copower.pmcc.assess.dto.input.ZtreeDto;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateVo;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseVo;
 import com.copower.pmcc.assess.dto.output.project.survey.BasicApplyBatchDetailVo;
+import com.copower.pmcc.assess.proxy.face.BasicEntityAbstract;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
 import com.copower.pmcc.assess.service.basic.*;
@@ -194,9 +195,9 @@ public class BasicApplyBatchController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "/initCaseEstateZtree", name = "初始化支撑新增获取升级案例结构", method = RequestMethod.POST)
-    public HttpResult initCaseEstateZtree(Integer applyBatchId, Integer caseBatchDetailId,Boolean containThis) {
+    public HttpResult initCaseEstateZtree(Integer applyBatchId, Integer caseBatchDetailId, Boolean containThis) {
         try {
-            BasicApplyBatchDetail batchDetail = basicApplyBatchService.initCaseEstateZtree(applyBatchId, caseBatchDetailId,containThis);
+            BasicApplyBatchDetail batchDetail = basicApplyBatchService.initCaseEstateZtree(applyBatchId, caseBatchDetailId, containThis);
             return HttpResult.newCorrectResult(batchDetail);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
@@ -458,32 +459,30 @@ public class BasicApplyBatchController extends BaseController {
                 modelAndView.addObject("basicEstateLandState", basicEstateMap.get(FormatUtils.toLowerCaseFirstChar(BasicEstateLandState.class.getSimpleName())));
                 break;
             case BUILDING:
-                modelAndView.addObject("basicBuilding", basicBuildingService.getBasicBuildingById(tbId));
-                BasicApplyBatchDetail batchDetailBuild = basicApplyBatchDetailService.getBasicApplyBatchDetail(applyBatchId, FormatUtils.entityNameConvertToTableName(BasicBuilding.class), tbId);
-                modelAndView.addObject("bisStructure", batchDetailBuild.getBisStructure());
-                basicApplyBatchDetail = basicApplyBatchDetailService.getDataById(batchDetailBuild.getPid());
-                if (basicApplyBatchDetail != null) {
-                    quoteId = basicApplyBatchDetail.getQuoteId();
-                }
+                modelAndView.addObject("basicBuilding", basicBuildingService.getBasicBuildingVoById(tbId));
+                basicApplyBatchDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(applyBatchId, FormatUtils.entityNameConvertToTableName(BasicBuilding.class), tbId);
+                modelAndView.addObject("bisStructure", basicApplyBatchDetail.getBisStructure());
                 break;
             case UNIT:
                 modelAndView.addObject("basicUnit", basicUnitService.getBasicUnitById(tbId));
-                BasicApplyBatchDetail batchDetailUnit = basicApplyBatchDetailService.getBasicApplyBatchDetail(applyBatchId, FormatUtils.entityNameConvertToTableName(BasicUnit.class), tbId);
-                basicApplyBatchDetail = basicApplyBatchDetailService.getDataById(batchDetailUnit.getPid());
-                if (basicApplyBatchDetail != null) {
-                    quoteId = basicApplyBatchDetail.getQuoteId();
-                }
+                basicApplyBatchDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(applyBatchId, FormatUtils.entityNameConvertToTableName(BasicUnit.class), tbId);
                 break;
             case HOUSE:
                 Map<String, Object> basicHouseMap = basicHouseService.getBasicHouseMapById(tbId);
                 basicHouse = (BasicHouse) basicHouseMap.get(FormatUtils.toLowerCaseFirstChar(BasicHouse.class.getSimpleName()));
                 basicHouseTrading = (BasicHouseTrading) basicHouseMap.get(FormatUtils.toLowerCaseFirstChar(BasicHouseTrading.class.getSimpleName()));
-                BasicApplyBatchDetail batchDetailHouse = basicApplyBatchDetailService.getBasicApplyBatchDetail(applyBatchId, FormatUtils.entityNameConvertToTableName(BasicHouse.class), tbId);
-                basicApplyBatchDetail = basicApplyBatchDetailService.getDataById(batchDetailHouse.getPid());
-                if (basicApplyBatchDetail != null) {
-                    quoteId = basicApplyBatchDetail.getQuoteId();
-                }
+                basicApplyBatchDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(applyBatchId, FormatUtils.entityNameConvertToTableName(BasicHouse.class), tbId);
                 break;
+        }
+        if (basicApplyBatchDetail != null) {//获取引用id
+            basicApplyBatchDetail = basicApplyBatchDetailService.getDataById(basicApplyBatchDetail.getPid());
+            if (basicApplyBatchDetail != null) {
+                BasicEntityAbstract entityAbstract = publicBasicService.getServiceBeanByTableName(basicApplyBatchDetail.getTableName());
+                Object entity = entityAbstract.getBasicEntityById(basicApplyBatchDetail.getTableId());
+                if (entity != null) {
+                    quoteId = (Integer) entityAbstract.getProperty(entity, "quoteId");
+                }
+            }
         }
 
         //根据表单大类 类型可确定使用哪个view，

@@ -750,7 +750,6 @@
         <%@include file="/views/project/stageSurvey/common/matchingMaterial.jsp" %>
     </c:if>
 </div>
-<%@include file="/views/project/tool/toolMapHandleView.jsp" %>
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/js/ajaxfileupload.js?v=${assessVersion}"></script>
 <script src='${pageContext.request.contextPath}/js/common.column.js?v=${assessVersion}'></script>

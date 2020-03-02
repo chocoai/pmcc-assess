@@ -214,7 +214,7 @@ public class BasicApplyService {
         BeanUtils.copyProperties(basicApply, vo);
         try {
             BasicEstate basicEstate = basicEstateService.getBasicEstateById(basicApply.getBasicEstateId());
-            BasicBuilding basicBuilding = basicBuildingService.getBasicBuildingById(basicApply.getBasicBuildingId());
+            BasicBuilding basicBuilding = basicBuildingService.getBasicBuildingVoById(basicApply.getBasicBuildingId());
             BasicUnit basicUnit = basicUnitService.getBasicUnitById(basicApply.getBasicUnitId());
             BasicHouse basicHouse = basicHouseService.getBasicHouseById(basicApply.getBasicHouseId());
             vo.setFullName(getFullName(basicEstate.getName(), basicBuilding.getBuildingName(), basicUnit.getUnitNumber(), basicHouse.getHouseNumber()));

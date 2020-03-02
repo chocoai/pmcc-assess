@@ -45,7 +45,7 @@ public class BasicBuildingController {
     @RequestMapping(value = "/getBasicBuildingById", name = "获取数据", method = {RequestMethod.GET})
     public HttpResult getBasicBuildingById(Integer id) {
         try {
-            return HttpResult.newCorrectResult(basicBuildingService.getBasicBuildingById(id));
+            return HttpResult.newCorrectResult(basicBuildingService.getBasicBuildingVoById(id));
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(500, e.getMessage());
@@ -113,7 +113,7 @@ public class BasicBuildingController {
     public ModelAndView detailView(Integer id) throws Exception {
         String view = "project/stageSurvey/house/detail/building";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
-        modelAndView.addObject(StringUtils.uncapitalize(BasicBuilding.class.getSimpleName()), basicBuildingService.getBasicBuildingById(id));
+        modelAndView.addObject(StringUtils.uncapitalize(BasicBuilding.class.getSimpleName()), basicBuildingService.getBasicBuildingVoById(id));
         return modelAndView;
     }
 

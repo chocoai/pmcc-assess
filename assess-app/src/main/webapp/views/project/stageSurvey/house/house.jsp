@@ -760,7 +760,6 @@
     </c:if>
     <%@include file="/views/project/stageSurvey/common/houseDamagedDegree.jsp" %>
 </div>
-<%@include file="/views/project/tool/toolMapHandleView.jsp" %>
 <script src='${pageContext.request.contextPath}/js/common.column.js?v=${assessVersion}'></script>
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/js/examine/examine.common.js?v=${assessVersion}"></script>

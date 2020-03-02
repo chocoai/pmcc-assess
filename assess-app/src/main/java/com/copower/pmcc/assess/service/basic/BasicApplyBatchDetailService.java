@@ -439,7 +439,7 @@ public class BasicApplyBatchDetailService {
         BasicApplyBatchDetail applyBatchDetail = getDataById(basicApplyBatchDetailId);
         if (applyBatchDetail == null) return null;
         if (FormatUtils.entityNameConvertToTableName(BasicBuilding.class).equalsIgnoreCase(applyBatchDetail.getTableName())) {
-            return basicBuildingService.getBasicBuildingById(applyBatchDetail.getTableId());
+            return basicBuildingService.getBasicBuildingVoById(applyBatchDetail.getTableId());
         } else {
             if (applyBatchDetail.getPid() == null || applyBatchDetail.getPid() <= 0)
                 return null;

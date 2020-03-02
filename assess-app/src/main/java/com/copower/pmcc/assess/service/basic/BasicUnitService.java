@@ -252,11 +252,14 @@ public class BasicUnitService extends BasicEntityAbstract {
             basicUnit = JSONObject.parseObject(jsonContent, BasicUnit.class);
             //原来数据做记录,将老数据复制一条
             BasicUnit oldBasicUnit = getBasicUnitById(basicUnit.getId());
-            BasicUnit version = (BasicUnit) copyBasicEntity(oldBasicUnit.getId(), null, false);
-            version.setRelevanceId(oldBasicUnit.getId());
-            version.setEstateId(0);
-            version.setBuildingId(0);
-            saveAndUpdate(version, false);
+            if (oldBasicUnit != null && StringUtils.isNotBlank(oldBasicUnit.getUnitNumber())) {
+                BasicUnit version = (BasicUnit) copyBasicEntity(oldBasicUnit.getId(), null, false);
+                version.setRelevanceId(oldBasicUnit.getId());
+                version.setEstateId(0);
+                version.setBuildingId(0);
+                saveAndUpdate(version, false);
+            }
+
             if (basicUnit != null) {
                 saveAndUpdate(basicUnit, true);
                 BasicApplyBatchDetail unitDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(FormatUtils.entityNameConvertToTableName(BasicUnit.class), basicUnit.getId());

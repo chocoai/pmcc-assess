@@ -97,7 +97,12 @@ public class BasicBuildingService extends BasicEntityAbstract {
      * @return
      * @throws Exception
      */
-    public BasicBuildingVo getBasicBuildingById(Integer id) {
+    public BasicBuilding getBasicBuildingById(Integer id) {
+        BasicBuilding basicBuilding = basicBuildingDao.getBasicBuildingById(id);
+        return basicBuilding;
+    }
+
+    public BasicBuildingVo getBasicBuildingVoById(Integer id) {
         BasicBuilding basicBuilding = basicBuildingDao.getBasicBuildingById(id);
         return getBasicBuildingVo(basicBuilding);
     }
@@ -142,7 +147,7 @@ public class BasicBuildingService extends BasicEntityAbstract {
             return getBasicBuildingVo(basicBuildings.get(0));
         } else {
             BasicApply basicApply = basicApplyService.getByBasicApplyId(applyId);
-            return getBasicBuildingById(basicApply.getBasicBuildingId());
+            return getBasicBuildingVoById(basicApply.getBasicBuildingId());
         }
     }
 
@@ -311,10 +316,12 @@ public class BasicBuildingService extends BasicEntityAbstract {
             basicBuilding = JSONObject.parseObject(jsonContent, BasicBuilding.class);
             //原来数据做记录,将老数据复制一条
             BasicBuilding oldBasicBuilding = getBasicBuildingById(basicBuilding.getId());
-            BasicBuilding version = (BasicBuilding) copyBasicEntity(oldBasicBuilding.getId(), null, false);
-            version.setRelevanceId(oldBasicBuilding.getId());
-            version.setEstateId(0);
-            saveAndUpdate(version, false);
+            if (oldBasicBuilding != null && StringUtils.isNotBlank(oldBasicBuilding.getBuildingNumber())) {
+                BasicBuilding version = (BasicBuilding) copyBasicEntity(oldBasicBuilding.getId(), null, false);
+                version.setRelevanceId(oldBasicBuilding.getId());
+                version.setEstateId(0);
+                saveAndUpdate(version, false);
+            }
 
             if (basicBuilding != null) {
                 saveAndUpdate(basicBuilding, true);
