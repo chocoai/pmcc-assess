@@ -378,10 +378,12 @@ public class BasicEstateService extends BasicEntityAbstract {
         String jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_ESTATE.getVar());
         BasicEstate basicEstate = JSONObject.parseObject(jsonContent, BasicEstate.class);
         //原来数据做记录,将老数据复制一条
-        BasicEstate oldBasicEstate = (BasicEstate) getBasicEntityById(basicEstate.getId());
-        BasicEstate version = (BasicEstate) copyBasicEntity(oldBasicEstate.getId(), null, false);
-        version.setRelevanceId(oldBasicEstate.getId());
-        saveAndUpdate(version, false);
+        BasicEstate oldBasicEstate = getBasicEstateById(basicEstate.getId());
+        if(oldBasicEstate!=null&&StringUtils.isNotBlank(oldBasicEstate.getName())){
+            BasicEstate version = (BasicEstate) copyBasicEntity(oldBasicEstate.getId(), null, false);
+            version.setRelevanceId(oldBasicEstate.getId());
+            saveAndUpdate(version, false);
+        }
 
         if (basicEstate != null) {
             basicEstate.setClassify(oldBasicEstate.getClassify());

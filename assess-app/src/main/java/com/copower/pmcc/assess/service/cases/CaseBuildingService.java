@@ -281,7 +281,7 @@ public class CaseBuildingService {
         }
         CaseBuilding oldCaseBuilding = this.getCaseBuildingById(id);
         basicBuildingService.clearInvalidChildData(tableId);
-        BasicBuildingVo oldBasicBuilding = basicBuildingService.getBasicBuildingById(tableId);
+        BasicBuilding oldBasicBuilding = basicBuildingService.getBasicBuildingById(tableId);
         BasicBuilding basicBuilding = new BasicBuilding();
         BeanUtils.copyProperties(oldCaseBuilding, basicBuilding);
         basicBuilding.setCreator(commonService.thisUserAccount());

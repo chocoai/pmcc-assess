@@ -428,12 +428,15 @@ public class BasicHouseService extends BasicEntityAbstract {
             basicHouse = JSONObject.parseObject(jsonContent, BasicHouse.class);
             //原来数据做记录,将老数据复制一条
             BasicHouse oldBasicHouse = basicHouseDao.getBasicHouseById(basicHouse.getId());
-            BasicHouse version = (BasicHouse) copyBasicEntity(oldBasicHouse.getId(), null, false);
-            version.setRelevanceId(oldBasicHouse.getId());
-            version.setEstateId(0);
-            version.setBuildingId(0);
-            version.setUnitId(0);
-            saveAndUpdate(version, false);
+            if (oldBasicHouse != null && StringUtils.isNotBlank(oldBasicHouse.getHouseNumber())) {
+                BasicHouse version = (BasicHouse) copyBasicEntity(oldBasicHouse.getId(), null, false);
+                version.setRelevanceId(oldBasicHouse.getId());
+                version.setEstateId(0);
+                version.setBuildingId(0);
+                version.setUnitId(0);
+                saveAndUpdate(version, false);
+            }
+
             if (basicHouse != null) {
                 Integer houseId = saveAndUpdate(basicHouse, true);
                 BasicApplyBatchDetail houseDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(FormatUtils.entityNameConvertToTableName(BasicHouse.class), basicHouse.getId());

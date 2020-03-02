@@ -645,7 +645,6 @@
         <%@include file="/views/project/stageSurvey/common/buildingSurface.jsp" %>
     </c:if>
 </div>
-<%@include file="/views/project/tool/toolMapHandleView.jsp" %>
 
 <script src='${pageContext.request.contextPath}/js/common.column.js?v=${assessVersion}'></script>
 <script type="text/javascript"
