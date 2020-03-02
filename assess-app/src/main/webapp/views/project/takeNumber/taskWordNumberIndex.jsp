@@ -278,7 +278,8 @@
                                     上传的文档
                                 </div>
                                 <div class=" col-md-5 ">
-                                    <input id="projectTakeNumberDetailSysAttachmentDto{id}" placeholder="继续上传待替换附件" type="file">
+                                    <input id="projectTakeNumberDetailSysAttachmentDto{id}" placeholder="继续上传待替换附件"
+                                           type="file">
                                     <div id="_projectTakeNumberDetailSysAttachmentDto{id}"></div>
                                 </div>
                                 <div class="col-md-1 control-label">
@@ -531,7 +532,6 @@
             tableName: AssessDBKey.ProjectTakeNumberDetail,
             fieldsName: baseTakeNumber.config.detailFileId + objData.id
         };
-        Loading.progressShow();
         //获取上传的附件
         AssessCommon.getSysAttachmentDtoList(queryFile, function (fileArrays) {
             var ids = [];
@@ -542,22 +542,14 @@
             }
             baseTakeNumber.ajaxServerMethod({formData: JSON.stringify(objData)}, "projectTakeNumber/getProjectWordNumber", "get", function (data) {
                 baseTakeNumber.initFormProjectTakeNumberDetailData(data, form, false);
-                baseTakeNumber.ajaxServerMethod({
-                    takeNumberDetailId: objData.id,
-                    masterId: objData.masterId,
-                    attachmentIds: ids.join(",")
-                }, "projectTakeNumber/toolBaseOrCode", "get", function (sysAttachmentDto) {
-                    Loading.progressHide();
+                baseTakeNumber.ajaxServerMethod({takeNumberDetailId: objData.id, masterId: objData.masterId, attachmentIds: ids.join(",")},
+                    "projectTakeNumber/toolBaseOrCode",
+                    "get",
+                    function (sysAttachmentDto) {
                     data.imgPath = "${pageContext.request.contextPath}" + sysAttachmentDto.filePath;
                     data.attachmentId = sysAttachmentDto.id;
                     baseTakeNumber.initFormProjectTakeNumberDetailData(data, form, false);
-                }, function (result) {
-                    Loading.progressHide();
-                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 });
-            }, function (result) {
-                AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
-                Loading.progressHide();
             });
         });
     };
