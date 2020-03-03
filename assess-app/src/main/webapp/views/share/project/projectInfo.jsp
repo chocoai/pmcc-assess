@@ -558,42 +558,7 @@
 
     }
 
-    function selectContract(this_) {
-        cmsContract.select({
-            multi: true,//是否允许多选
-            appkey: "pmcc-assess",
-            onSelected: function (data) {
-                var uuids = [];
-                var names = [];
-                data.forEach(function (node, i) {
-                    if (node.uuid) {
-                        uuids.push(node.uuid);
-                    }
-                    if (node.name) {
-                        names.push(node.name);
-                    }
-                });
-                if (uuids.length == 0) {
-                    AlertError("失败","有效合同为0");
-                    return false;
-                }
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/projectInfo/projectDataUpdate",
-                    type: "post",
-                    dataType: "json",
-                    data: {id: '${projectInfo.id}', contractId: uuids.join(","), contractName: names.join(",")},
-                    success: function (result) {
-                        if (result.ret) {
-                            window.location.reload();
-                        }
-                    },
-                    error: function (result) {
-                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
-                    }
-                })
-            }
-        });
-    }
+
 
     $(function () {
         settingContract() ;

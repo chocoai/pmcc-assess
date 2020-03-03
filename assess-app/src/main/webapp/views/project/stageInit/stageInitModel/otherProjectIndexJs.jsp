@@ -300,7 +300,7 @@
         selectCRMContacts: function () {
             var rows = $("#tb_ListCRMContacts").bootstrapTable('getSelections');
             if (rows.length == 0) {
-                notifyWaring('警告',"至少选择一个客户!");
+                notifyWaring('警告', "至少选择一个客户!");
                 return false;
             }
             var data = [];
@@ -328,7 +328,7 @@
                     }
                 },
                 error: function (result) {
-                    notifyWaring('警告',"调用服务端方法失败，失败!");
+                    notifyWaring('警告', "调用服务端方法失败，失败!");
                     console.log(result);
                 }
             })
@@ -426,7 +426,7 @@
                                 }
                             }
                             else {
-                                notifyWaring('警告',result.errmsg);
+                                notifyWaring('警告', result.errmsg);
                             }
                         },
                         error: function (result) {
@@ -485,7 +485,7 @@
                                 }
                             }
                             else {
-                                notifyWaring('警告',result.errmsg);
+                                notifyWaring('警告', result.errmsg);
                             }
                         },
                         error: function (result) {
@@ -515,7 +515,7 @@
                                 }
                             }
                             else {
-                                notifyWaring('警告',result.errmsg);
+                                notifyWaring('警告', result.errmsg);
                             }
                         },
                         error: function (result) {
@@ -947,6 +947,7 @@
             onSelected: function (data) {
                 var uuids = [];
                 var names = [];
+                var viewArray = [];
                 data.forEach(function (node, i) {
                     if (node.uuid) {
                         uuids.push(node.uuid);
@@ -954,13 +955,20 @@
                     if (node.name) {
                         names.push(node.name);
                     }
+                    if (node.uuid && node.name){
+                        var url = "<a target='_blank' href='${sysUrl}/pmcc-contract/contractCurrency/details/" + node.uuid +"'"+ ">" +node.name+ "</a>";
+                        viewArray.push(url);
+                    }
                 });
                 if (uuids.length == 0) {
-                    AlertError('有效合同为0');
+                    AlertError("提示", '有效合同为0');
                     return false;
                 }
                 if (uuids.length >= 1) {
                     $(this_).closest('.input-group').find("input[name='contractId']").val(uuids.join(","));
+                }
+                if (viewArray.length >= 1) {
+                    $(this_).closest('.input-group').find("label[name='contractNameView']").html(viewArray.join("/ "));
                 }
                 if (names.length >= 1) {
                     $(this_).closest('.input-group').find("input[name='contractName']").val(names.join(","));
@@ -1087,15 +1095,15 @@
         }
         //联系人校验
         if (!this.hasLinkman(this.config.consignor.table)) {
-            notifyInfo("提示",'还未填写委托人联系人信息');
+            notifyInfo("提示", '还未填写委托人联系人信息');
             return false;
         }
         if (!this.hasLinkman(this.config.possessor.table)) {
-            notifyInfo("提示",'还未填写占有人联系人信息');
+            notifyInfo("提示", '还未填写占有人联系人信息');
             return false;
         }
         if (!this.hasLinkman(this.config.unit_information.table)) {
-            notifyInfo("提示",'还未填写报告使用单位联系人信息');
+            notifyInfo("提示", '还未填写报告使用单位联系人信息');
             return false;
         }
         return true;
@@ -1230,7 +1238,8 @@
                 <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
                     关闭
                 </button>
-                <button type="button" class="btn btn-primary btn-sm" onclick="objProject.commonContacts.selectCRMContacts(this)">
+                <button type="button" class="btn btn-primary btn-sm"
+                        onclick="objProject.commonContacts.selectCRMContacts(this)">
                     确定
                 </button>
             </div>

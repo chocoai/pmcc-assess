@@ -2,7 +2,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <html lang="en" class="no-js">
 
-<div class="col-md-12" id="projectInfoSimpleId">
+<div class="col-md-12" >
     <div class="card full-height">
         <div class="card-header collapse-link">
             <div class="card-head-row">
@@ -113,14 +113,33 @@
                                 项目合同
                             </label>
                             <div class="col-sm-11">
-                                <label class="form-control input-full" name="contractName">
-                                    <c:if test="${!empty projectInfo.contractId}">
-                                        <c:forEach var="item" items="${projectInfo.contractList}">
-                                            <a href="${sysUrl}/pmcc-contract/contractCurrency/details/${item.key}"
-                                               target="_blank">${item.value}     </a>
-                                        </c:forEach>
-                                    </c:if>
-                                </label>
+                                <div class="input-group">
+                                    <label class="form-control" name="contractName">
+                                        <c:if test="${!empty projectInfo.contractId}">
+                                            <c:forEach var="item" items="${projectInfo.contractList}">
+                                                <a href="${sysUrl}/pmcc-contract/contractCurrency/details/${item.key}"
+                                                   target="_blank">${item.value} /    </a>
+                                            </c:forEach>
+                                        </c:if>
+                                    </label>
+
+                                    <div class="input-group-prepend">
+                                        <button class="btn btn-warning btn-sm "
+                                                style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                type="button" onclick="$(this).closest('.input-group').find('label[name=contractName]').html('');">
+                                            清空
+                                        </button>
+                                    </div>
+                                    <div class="input-group-prepend">
+                                        <button class="btn btn-primary btn-sm "
+                                                style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                type="button" onclick="contractObj.selectContract(this);">选择
+                                        </button>
+                                    </div>
+                                </div>
+
+
+
                             </div>
                         </div>
                     </div>
@@ -193,31 +212,11 @@
         </div>
     </div>
 </div>
-<script type="text/html" id="contractInfoModelHtml">
-    <div class="panel panel-info">
-        <i class="fa fa-close close" title="删除" onclick="contractObj.delete(this,'{uuid}')"
-           style="margin-right: 10px;font-size: 15px;cursor: pointer;"></i>
-        <i class="fa fa-search" onclick="contractObj.details('{uuid}')" title="查看"
-           style="margin-right: 10px;font-size: 15px;cursor: pointer;"></i>
-        <a href="#" style="cursor: pointer;" onclick="contractObj.details('{uuid}')">{name}</a>
-    </div>
-</script>
+
 <script src="/pmcc-contract/js/cms_contract_utils.js?v=${assessVersion}"></script>
 <script type="text/javascript">
 
     var contractObj = {};
-    contractObj.projectInfoSimpleId = $("#projectInfoSimpleId");
-    contractObj.target = $("#contractInfoTarget");
-    contractObj.modelTarget = $("#contractInfoModelHtml");
-
-    contractObj.contractId = '${projectInfo.contractId}';
-
-    /*
-     合同详情
-     */
-    contractObj.details = function (uuid) {
-        window.open('${sysUrl}/pmcc-contract/contractCurrency/details/' + uuid);
-    };
 
     /**
      * 数组去重
@@ -234,39 +233,7 @@
         return hash;
     };
 
-    /**
-     * 合同删除
-     * @param _this
-     * @param uuid
-     */
-    contractObj.delete = function (_this, uuid) {
-        contractObj.getProjectById('${projectInfo.id}', function (data) {
-            if (!data) {
-                return false;
-            }
-            if (!data.contractList) {
-                return false;
-            }
-            if (data.contractList.length < 1) {
-                return false;
-            }
-            var contractId = [];
-            var contractName = [];
-            $.each(data.contractList, function (i, item) {
-                if (item.key != uuid) {
-                    contractId.push(item.key);
-                    contractName.push(item.value);
-                }
-            });
-            contractObj.projectUpdate({
-                id: '${projectInfo.id}',
-                contractId: contractId.join(","),
-                contractName: contractName.join(",")
-            }, function () {
-                contractObj.loadHtml();
-            });
-        });
-    };
+
 
     contractObj.getProjectById = function (id, callback) {
         $.ajax({
@@ -306,39 +273,19 @@
         })
     };
 
-    /**
-     * 合同加载
-     */
-    contractObj.loadHtml = function () {
-        contractObj.getProjectById('${projectInfo.id}', function (data) {
-            if (!data) {
-                return false;
-            }
-            contractObj.target.empty();
-            var html = "";
-            if (data.contractList.length >= 1) {
-                $.each(data.contractList, function (i, item) {
-                    var resetHtml = contractObj.modelTarget.html();
-                    resetHtml = resetHtml.replace(/{uuid}/g, item.key);
-                    resetHtml = resetHtml.replace(/{name}/g, item.value);
-                    html += resetHtml;
-                });
-            }
-            contractObj.target.append(html);
-            contractObj.projectInfoSimpleId.find("input[name='contractName']").val(data.contractName);
-        });
-    };
+
 
     /**
      * 合同选择
      */
-    contractObj.selectContract = function () {
+    contractObj.selectContract = function (_this) {
         cmsContract.select({
             multi: true,//是否允许多选
             appkey: "pmcc-assess",
             onSelected: function (data) {
                 var uuids = [];
                 var names = [];
+                var viewArray = [];
                 data.forEach(function (node, i) {
                     if (node.uuid) {
                         uuids.push(node.uuid);
@@ -346,31 +293,45 @@
                     if (node.name) {
                         names.push(node.name);
                     }
+                    if (node.uuid && node.name){
+                        var url = "<a target='_blank' href='${sysUrl}/pmcc-contract/contractCurrency/details/" + node.uuid +"'"+ ">" +node.name+ "</a>";
+                        viewArray.push(url);
+                    }
                 });
                 if (uuids.length == 0) {
                     notifyInfo('提示','有效合同为0');
                     return false;
                 }
-                contractObj.getProjectById('${projectInfo.id}', function (data) {
-                    if (data.contractList) {
-                        if (data.contractList.length >= 1) {
-                            //把之前的累加上
-                            $.each(data.contractList, function (i, item) {
-                                uuids.push(item.key);
-                                names.push(item.value);
-                            });
-                        }
-                    }
-                    //去重
-                    uuids = contractObj.unique(uuids);
-                    names = contractObj.unique(names);
-                    contractObj.projectUpdate({
-                        id: '${projectInfo.id}',
-                        contractId: uuids.join(","),
-                        contractName: names.join(",")
-                    }, function () {
-                        contractObj.loadHtml();
-                    });
+                <%--contractObj.getProjectById('${projectInfo.id}', function (data) {--%>
+                    <%--if (data.contractList) {--%>
+                        <%--if (data.contractList.length >= 1) {--%>
+                            <%--//把之前的累加上--%>
+                            <%--$.each(data.contractList, function (i, item) {--%>
+                                <%--uuids.push(item.key);--%>
+                                <%--names.push(item.value);--%>
+                            <%--});--%>
+                        <%--}--%>
+                    <%--}--%>
+                    <%--//去重--%>
+                    <%--uuids = contractObj.unique(uuids);--%>
+                    <%--names = contractObj.unique(names);--%>
+                    <%--contractObj.projectUpdate({--%>
+                        <%--id: '${projectInfo.id}',--%>
+                        <%--contractId: uuids.join(","),--%>
+                        <%--contractName: names.join(",")--%>
+                    <%--}, function () {--%>
+                        <%--$(_this).closest('.input-group').find("label[name='contractName']").html(viewArray.join("/ "));--%>
+                        <%--settingContract() ;--%>
+                    <%--});--%>
+                <%--});--%>
+
+                contractObj.projectUpdate({
+                    id: '${projectInfo.id}',
+                    contractId: uuids.join(","),
+                    contractName: names.join(",")
+                }, function () {
+                    $(_this).closest('.input-group').find("label[name='contractName']").html(viewArray.join("/ "));
+                    settingContract() ;
                 });
             }
         });
@@ -380,7 +341,7 @@
      * 文字溢出 情况 超过规定的就执行
      */
     function settingContract() {
-        var textMax = 30;
+        var textMax = 75;
         var projectId = $("#projectId");
         var form = projectId.closest(".form-horizontal") ;
         var contractName = form.find("label[name='contractName']") ;
@@ -401,7 +362,6 @@
     }
 
     $(function () {
-        contractObj.loadHtml();
         settingContract() ;
         //显示附件
         FileUtils.getFileShows({
@@ -412,7 +372,7 @@
                 tableId: '${empty projectInfo.id?0:projectInfo.id}'
             },
             deleteFlag: false
-        })
+        });
         //查看更多
         $("#btnViewProjectInfoMore").click(function (e) {
             window.open('${pageContext.request.contextPath}/projectInfo/projectInfoDetails?projectId=${projectInfo.id}');

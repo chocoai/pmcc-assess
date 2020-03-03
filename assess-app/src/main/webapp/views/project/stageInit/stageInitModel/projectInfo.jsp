@@ -193,9 +193,20 @@
                     <div class="col-sm-11">
                         <div class="input-group">
                             <input type="hidden" name="contractId" value="${projectInfo.contractId}">
-                            <input type="text" class="form-control" readonly="readonly" name="contractName"
+
+                            <input type="hidden" class="form-control" readonly="readonly" name="contractName"
                                    onclick="objProject.selectContract(this);"
                                    value="${projectInfo.contractName}">
+
+                            <label class="form-control" name="contractNameView" >
+                                <c:if test="${!empty projectInfo.contractList}">
+                                    <c:forEach var="item" items="${projectInfo.contractList}">
+                                        <a href="${sysUrl}/pmcc-contract/contractCurrency/details/${item.key}"
+                                           target="_blank">${item.value}     </a>
+                                    </c:forEach>
+                                </c:if>
+                            </label>
+
                             <div class="input-group-prepend">
                                 <button class="btn btn-warning btn-sm "
                                         style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
