@@ -17,7 +17,7 @@
         </div>
         <div class="card-body" style="display: none">
             <form class="form-horizontal">
-                <ul id="damagedDegreeTab" class="nav nav-tabs bar_tabs" role="tablist">
+                <ul id="damagedDegreeTab" class="nav nav-pills nav-primary" role="tablist">
                 </ul>
                 <div id="damagedDegreeTabContent" class="tab-content">
                 </div>
