@@ -110,7 +110,14 @@
                                 项目合同
                             </label>
                             <div class="col-sm-11">
-                                <label class="form-control input-full">${projectInfo.contractName}</label>
+                                <label class="form-control input-full" name="contractName">
+                                        <c:if test="${!empty projectInfo.contractId}">
+                                            <c:forEach var="item" items="${projectInfo.contractList}">
+                                                <a href="${sysUrl}/pmcc-contract/contractCurrency/details/${item.key}"
+                                                   target="_blank">${item.value}     </a>
+                                            </c:forEach>
+                                        </c:if>
+                                </label>
                             </div>
                         </div>
                     </div>
@@ -526,6 +533,31 @@
 
 <script>
 
+
+    /**
+     * 文字溢出 情况 超过规定的就执行
+     */
+    function settingContract() {
+        var textMax = 30;
+        var projectId = $("#projectId");
+        var form = projectId.closest(".form-horizontal") ;
+        var contractName = form.find("label[name='contractName']") ;
+        var len = 0;
+        var attribute = {'overflow':'scroll','-webkit-box-orient':'vertical',display:'-webkit-box'} ;//'text-overflow':'ellipsis'
+        contractName.find("a").each(function (i,a) {
+            var text = $.trim($(a).text()) ;
+            len += text.length ;
+            if (len > textMax){
+                $(a).hide() ;
+            }
+        });
+        if (len > textMax){
+            contractName.html(contractName.html()+"...") ;
+//            contractName.css(attribute) ;
+        }
+
+    }
+
     function selectContract(this_) {
         cmsContract.select({
             multi: true,//是否允许多选
@@ -564,6 +596,7 @@
     }
 
     $(function () {
+        settingContract() ;
         //---------
         FileUtils.getFileShows({
             target: "attachmentProjectInfoId",
