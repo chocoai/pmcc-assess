@@ -227,7 +227,7 @@
         appendHTML: function (data, price) {
             var target = $("#boxLandEngineering");
             target.find(".card-body").empty();
-            if (data == undefined) {
+            if (data == undefined || data == null || data == '') {
                 data = [];
             }
             if (price == undefined) {
@@ -245,9 +245,7 @@
                 obj: data,
                 attribute: null,
                 price: price,
-                reckon: reckon,
-                callback: function (tr) {
-                }
+                reckon: reckon
             };
             developmentCommon.architecturalB.init(options);
             target.modal("show");
@@ -267,8 +265,8 @@
         var cols = [];
         cols.push({
             field: 'id', title: '建筑安装工程费明细', width: "20%", formatter: function (value, row, index) {
-                var str = '<button type="button" onclick="landEngineering.constructionInstallationEngineeringFeeEvent.detailsConstructionInstallation(' + row.id + ')" style="margin-left: 5px;" class="btn  btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="建筑安装工程费明细">';
-                str += '<i class="fa fa-pen"></i>';
+                var str = '<button type="button" onclick="landEngineering.constructionInstallationEngineeringFeeEvent.detailsConstructionInstallation(' + row.id + ')" style="margin-left: 5px;" class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="建筑安装工程费明细">';
+                str += '<i class="fa fa-cog"></i>';
                 str += '</button>';
                 return str;
             }
@@ -816,7 +814,7 @@
             resultHtml += "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"development.checkedFun(this,'parcelSettingOuter',true)\">";
             resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '反选' + "</span>";
             resultHtml += "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"development.checkedFun(this,'parcelSettingOuter',false)\">";
-            industrySupplyInfoContainer.append(resultHtml);
+            industrySupplyInfoContainer.empty().append(resultHtml);
         }, true);
         //宗地内设定
         AssessCommon.loadDataDicByKey(AssessDicKey.estateDevelopment_degreePrepared_land, '', function (html, resultData) {
@@ -842,7 +840,7 @@
             resultHtml += "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"development.checkedFun(this,'parcelSettingInner',true)\">";
             resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '反选' + "</span>";
             resultHtml += "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"development.checkedFun(this,'parcelSettingInner',false)\">";
-            developmentDegreeContentContainer.append(resultHtml);
+            developmentDegreeContentContainer.empty().append(resultHtml);
         });
     };
 

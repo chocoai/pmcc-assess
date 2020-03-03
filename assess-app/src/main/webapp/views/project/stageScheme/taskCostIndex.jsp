@@ -21,6 +21,14 @@
     construction.incomeCategoryFooterHtml = "#mdCostConstructionMdDevelopmentIncomeCategoryFooter";
     construction.type = 'engineering';
 
+    construction.handleJquery = function (obj) {
+        if (obj instanceof jQuery) {
+            return obj;
+        } else {
+            return $(obj.selector);
+        }
+    };
+
     construction.ajaxServerMethod = function (data, url, type, callback) {
         $.ajax({
             type: type,
@@ -33,32 +41,35 @@
                     }
                 } else {
                     if (result.errmsg) {
-                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
-                    }else {
-                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                        AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
+                    } else {
+                        AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 }
             },
             error: function (result) {
                 if (result.errmsg) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
-                }else {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
+                } else {
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             }
         });
     };
 
     construction.typeData = function () {
-        var target = $(construction.target.selector) ;
+        var target = $(construction.target.selector);
         return target.find("input[name='type']").val();
     };
 
     construction.selectFun = function (copyId, box) {
         var target = $("#" + box);
         AlertConfirm("是否确认引用", "引用后可继续根据实际情况来编辑", function () {
-            construction.ajaxServerMethod({copyId: copyId, masterId: '${mdCostVo.mdCostConstruction.pid}'},"/mdCostConstruction/copyConstructionById","post",function () {
-                notifySuccess("成功","引用数据成功!");
+            construction.ajaxServerMethod({
+                copyId: copyId,
+                masterId: '${mdCostVo.mdCostConstruction.pid}'
+            }, "/mdCostConstruction/copyConstructionById", "post", function () {
+                notifySuccess("成功", "引用数据成功!");
                 window.location.reload(true); //强制从服务器重新加载当前页面
                 target.modal("hide");
             });
@@ -67,7 +78,8 @@
 
     /**调用比较法**/
     construction.callCompareMethod = function (this_) {
-        var mcId = construction.target.find('[name=mcId]').val();
+        var target = $(construction.target.selector);
+        var mcId = target.find('[name=mcId]').val();
         var frame = layer.open({
             type: 2,
             title: '比较法',
@@ -79,7 +91,7 @@
             cancel: function (index, layero) {
                 var iframe = window[layero.find('iframe')[0]['name']];
                 if (iframe && iframe.marketCompare && iframe.marketCompare.mcId) {
-                    construction.target.find('[name=mcId]').val(iframe.marketCompare.mcId);
+                    target.find('[name=mcId]').val(iframe.marketCompare.mcId);
                 }
             },
             btnAlign: 'c',
@@ -87,15 +99,15 @@
             yes: function (index, layero) {
                 var iframe = window[layero.find('iframe')[0]['name']];
                 iframe.saveResult(function (mcId, price) {
-                    construction.target.find('[name=mcId]').val(mcId);
-                    construction.target.find('[name=landPurchasePrice]').val(price);
+                    target.find('[name=mcId]').val(mcId);
+                    target.find('[name=landPurchasePrice]').val(price);
                     layer.closeAll('iframe');
                 });
             },
             btn2: function (index, layero) {
                 var iframe = window[layero.find('iframe')[0]['name']];
                 if (iframe && iframe.marketCompare && iframe.marketCompare.mcId) {
-                    construction.target.find('[name=mcId]').val(iframe.marketCompare.mcId);
+                    target.find('[name=mcId]').val(iframe.marketCompare.mcId);
                 }
             }
         });
@@ -108,7 +120,10 @@
         var type = item.attr('data-type');
         var master = developmentCommon.isNotBlank('${mdCostVo.mdCostConstruction.id}') ? '${mdCostVo.mdCostConstruction.id}' : '0';
         if (pid) {
-            construction.ajaxServerMethod({pid: pid, type: type},"/dataInfrastructureChildren/getDataList","get",function (data) {
+            construction.ajaxServerMethod({
+                pid: pid,
+                type: type
+            }, "/dataInfrastructureChildren/getDataList", "get", function (data) {
                 var arr = [];
                 if (data.length == 0) {
                     return false;
@@ -125,9 +140,9 @@
                     $(construction.infrastructureChildrenTable).bootstrapTable('refresh');
                     construction.writeMdDevelopmentInfrastructureChildrenTable();
                 });
-            }) ;
+            });
         } else {
-            notifyWarning("警告","无子项!");
+            notifyWarning("警告", "无子项!");
         }
     };
 
@@ -158,7 +173,7 @@
             var table = target.find("table");
             var value = table.find("tfoot").find("input[name='totalPrice']").first().val();
             if (!$.isNumeric(value)) {
-                notifyWarning("警告","请重新填写!");
+                notifyWarning("警告", "请重新填写!");
                 return false;
             }
             var obj = {};
@@ -166,7 +181,7 @@
             obj.price = Number(value);
             obj.id = target.find("input[name='id']").val();
             developmentCommon.saveMdArchitecturalObj2(developmentCommon.architecturalB.getFomData(table), obj, function (item) {
-                notifySuccess("成功","保存成功!");
+                notifySuccess("成功", "保存成功!");
             });
             var mdCalculatingMethodEngineeringCost = $(construction.engineeringFeeInfoTarget).bootstrapTable('getRowByUniqueId', obj.masterId);
             try {
@@ -182,9 +197,10 @@
         },
         //树 加载并且树赋值
         appendHTML: function (data, price) {
-            var type = construction.target.prev().find("input[name='type']:checked").val();
+            var frm = $(construction.target.selector);
+            var type = construction.typeData() ;
             var target = $("#boxMdCostConstruction");
-            target.find(".panel-body").empty();
+            target.find(".card-body").empty();
             if (data == undefined) {
                 data = [];
             }
@@ -229,8 +245,8 @@
         var cols = [];
         cols.push({
             field: 'id', title: '建筑安装工程费明细', width: "20%", formatter: function (value, row, index) {
-                var str = '<button type="button" onclick="construction.constructionInstallationEngineeringFeeEvent.detailsConstructionInstallation(' + row.id + ')" style="margin-left: 5px;" class="btn  btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="建筑安装工程费明细">';
-                str += '<i class="fa fa-pen"></i>';
+                var str = '<button type="button" onclick="construction.constructionInstallationEngineeringFeeEvent.detailsConstructionInstallation(' + row.id + ')" style="margin-left: 5px;" class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="建筑安装工程费明细">';
+                str += '<i class="fa fa-cog"></i>';
                 str += '</button>';
                 return str;
             }
@@ -287,20 +303,20 @@
                 obj[arr[i].id] = true;
             }
         }
-        var price = math.bignumber(0);
+        var price = 0;
         var k = 0;
         $.each(result, function (i, n) {
             if ($.isNumeric(n.price)) {
                 k++;
-                price = math.add(price, math.bignumber(n.price));
+                price += parseFloat(n.price);
             }
         });
-        price = Number(price.toString());
         if (k != 0) {
             price = price / k;
         }
-        construction.target.find("input[name='constructionInstallationEngineeringFee']").val(price.toFixed(construction.fixed)).trigger('blur');
-        construction.target.find("input[name='reconnaissanceDesign']").trigger('blur');
+        var target = $(construction.target.selector);
+        target.find("input[name='constructionInstallationEngineeringFee']").val(price.toFixed(construction.fixed)).trigger('blur');
+        target.find("input[name='reconnaissanceDesign']").trigger('blur');
     };
 
     /**
@@ -326,7 +342,7 @@
      */
     construction.setMdCalculatingMethodEngineeringCost = function (flag) {
         var planDetailsId = '${projectPlanDetails.id}';
-        var json = {planDetailsId: planDetailsId, type: construction.typeData(), flag: flag} ;
+        var json = {planDetailsId: planDetailsId, type: construction.typeData(), flag: flag};
         $.ajax({
             type: "post",
             url: getContextPath() + "/mdCostConstruction/setMdCalculatingMethodEngineeringCost",
@@ -338,16 +354,17 @@
                 }
             },
             error: function (result) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     };
 
     //经济指标show
     construction.showMdDevelopmentIncomeCategory = function () {
+        var target = $(construction.target.selector);
         var economicId = '${mdCostVo.mdCostConstruction.economicId}';
         if (!economicId) {
-            economicId = construction.target.find("input[name='economicId']").val();
+            economicId = target.find("input[name='economicId']").val();
 
         }
         if (economicId) {
@@ -364,7 +381,7 @@
                     if (centerId) {
                         declareCommon.declareBuildCenterSaveAndUpdate({indicatorId: economicId, id: centerId});
                     }
-                    construction.target.find("input[name='economicId']").val(economicId).trigger('blur');
+                    target.find("input[name='economicId']").val(economicId).trigger('blur');
                 },
                 targetCallback: function () {
                     economicIndicators.autoSummary(true);
@@ -374,15 +391,16 @@
 
         $('#modalEconomicIndicators').find('.modal-footer').find('button').last().bind('click', function () {
             var data = economicIndicators.getFormData();
+            console.log(data) ;
             if (data) {
                 cost.initParcelSettingData(data);
                 var developLandAreaTax = data.developLandAreaTax;
                 if (developLandAreaTax) {
-                    construction.target.find("input[name='developLandAreaTax']").val(developLandAreaTax).trigger('blur');
+                    target.find("input[name='developLandAreaTax']").val(developLandAreaTax).trigger('blur');
                 }
                 var developBuildAreaTax = data.developBuildAreaTax;
                 if (developBuildAreaTax) {
-                    construction.target.find("input[name='developBuildAreaTax']").val(developBuildAreaTax).trigger('blur');
+                    target.find("input[name='developBuildAreaTax']").val(developBuildAreaTax).trigger('blur');
                 }
             }
         });
@@ -479,7 +497,8 @@
                     result += Number('${mdCostVo.mdCostConstruction.infrastructureCost}');
                 }
             }
-            construction.target.find("input[name='infrastructureCost']").val(result).trigger('blur');
+            var target = $(construction.target.selector);
+            target.find("input[name='infrastructureCost']").val(result).trigger('blur');
         });
     };
 
@@ -489,10 +508,11 @@
     construction.callResidueRatio = function (_this, readonly) {
         //获取已使用年限,当前评估基准日-楼栋的竣工时间
         //获取可用年限，根据建筑使用年限配置而来
+        var target = $(construction.target.selector);
         try {
             residueRatio.init({
                 readonly: readonly,
-                residueRatioId: construction.target.find("input[name='residueRatioId']").val(),
+                residueRatioId: target.find("input[name='residueRatioId']").val(),
 //                usedYear: 0,
 //                usableYear: 5,
                 houseId: '${basicHouseVo.id}',
@@ -781,11 +801,12 @@
                 resultHtml += "<span class='form-check-sign'>" + item.name + "</span>";
             });
             resultHtml += "</div>";
+
             resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '全选或全不选' + "</span>";
             resultHtml += "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"cost.checkedFun(this,'parcelSettingOuter',true)\">";
             resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '反选' + "</span>";
             resultHtml += "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"cost.checkedFun(this,'parcelSettingOuter',false)\">";
-            industrySupplyInfoContainer.append(resultHtml);
+            industrySupplyInfoContainer.empty().append(resultHtml);
         }, true);
         //宗地内设定
         AssessCommon.loadDataDicByKey(AssessDicKey.estateDevelopment_degreePrepared_land, '', function (html, resultData) {
@@ -811,7 +832,7 @@
             resultHtml += "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"cost.checkedFun(this,'parcelSettingInner',true)\">";
             resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '反选' + "</span>";
             resultHtml += "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"cost.checkedFun(this,'parcelSettingInner',false)\">";
-            developmentDegreeContentContainer.append(resultHtml);
+            developmentDegreeContentContainer.empty().append(resultHtml);
         });
     };
 
@@ -828,13 +849,14 @@
                 }
             },
             error: function (result) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     };
 
 
     $(document).ready(function () {
+        var target = $(construction.target.selector);
         var tool = $("#costCheckboxTool");
         //建筑安装工程费 估价时点完工程度的设置为100%
         var type = '${mdCostVo.type}';
@@ -848,7 +870,7 @@
                     element.removeAttr("checked");
                 }
             });
-            construction.target.find("input[name='type']").val(type) ;
+            target.find("input[name='type']").val(type);
             cost.writeValueEvent(type, function () {
                 construction.loadMdCalculatingMethodEngineeringCostTable();
             });
@@ -856,7 +878,7 @@
 
         tool.find("input[name='typeShow']:radio").change(function () {
             var value = $(this).attr('data-value');
-            construction.target.find("input[name='type']").val(value) ;
+            target.find("input[name='type']").val(value);
             cost.writeValueEvent(value, function () {
                 try {
                     construction.loadMdCalculatingMethodEngineeringCostTable();
@@ -900,11 +922,11 @@
                             });
                         }
                     } else {
-                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                        AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             });
         }

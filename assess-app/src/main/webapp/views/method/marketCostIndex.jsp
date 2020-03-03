@@ -35,7 +35,8 @@
                                     <label class="form-check-label">
                                         <c:choose>
                                             <c:when test="${empty mdCostVo.type}">
-                                                <input class="form-check-input" type="radio" name="typeShow" value="1" checked="checked"
+                                                <input class="form-check-input" type="radio" name="typeShow" value="1"
+                                                       checked="checked"
                                                        data-value="1">
                                             </c:when>
                                             <c:otherwise>
@@ -283,17 +284,23 @@
                                 <div id="toolbarMdCalculatingMethodEngineeringCost" style="display: none">
                                     <div class="input-group">
                                 <span class="input-group-btn">
-                                    <button type="button" class="btn btn-primary btn-sm"
-                                            onclick="construction.delMdCalculatingMethodEngineeringCost()">删除</button>
-                                    <button type="button" class="btn btn-primary btn-sm"
-                                            onclick="construction.showMdCalculatingMethodEngineeringCost();">添加</button>
+                                    <button type="button" class="btn btn-warning btn-sm"
+                                            onclick="construction.delMdCalculatingMethodEngineeringCost()">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-success btn-sm"
+                                            onclick="construction.showMdCalculatingMethodEngineeringCost();">
+                                        <span class="btn-label">
+                                            <i class="fa fa-plus"></i>
+                                        </span>
+                                    </button>
                                 </span>
                                         <span class="input-group-btn">
-                                    <button type="button" class="btn btn-primary btn-sm"
+                                    <button type="button" class="btn btn-info btn-sm"
                                             onclick="construction.setMdCalculatingMethodEngineeringCost(false)">同步假设开发法建筑安装工程费</button>
                                 </span>
                                         <span class="input-group-btn">
-                                    <button type="button" class="btn btn-primary btn-sm"
+                                    <button type="button" class="btn btn-info btn-sm"
                                             onclick="construction.setMdCalculatingMethodEngineeringCost(true)">同步查勘建筑安装工程费</button>
                                 </span>
                                     </div>
@@ -364,19 +371,23 @@
                             <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                                 <div id="toolbarMdCostConstructionChildrenTable" style="display: none">
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-primary btn-sm"
+                                        <button type="button" class="btn btn-warning btn-sm"
                                                 onclick="construction.deleteMdDevelopmentInfrastructureChildrenTable('#landMdCostConstructionChildrenTable')">
+                                            <i class="fa fa-minus"></i>
                                             删除
                                         </button>
-                                        <button type="button" class="btn btn-primary btn-sm"
+                                        <button type="button" class="btn btn-primary btn-sm "
                                                 onclick="construction.editMdDevelopmentInfrastructureChildrenTable('#landMdCostConstructionChildrenTable','#basicMdDevelopmentInfrastructureChildrenModalTool',true)">
+                                            <i class="fa fa-pen"></i>
                                             编辑
                                         </button>
-                                        <button type="button" class="btn btn-primary btn-sm"
+                                        <button type="button" class="btn btn-success btn-sm"
                                                 onclick="construction.editMdDevelopmentInfrastructureChildrenTable('#landMdCostConstructionChildrenTable','#basicMdDevelopmentInfrastructureChildrenModalTool',false)">
+                                            <span class="btn-label">
+												<i class="fa fa-plus"></i>
+											</span>
                                             添加
                                         </button>
-
                                     </div>
                                 </div>
                                 <table class="table table-bordered" id="landMdCostConstructionChildrenTable">
@@ -797,7 +808,7 @@
                 <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
                     关闭
                 </button>
-                <button type="button" class="btn btn-success btn-sm"
+                <button type="button" class="btn btn-primary btn-sm"
                         onclick="construction.constructionInstallationEngineeringFeeEvent.save();">
                     保存
                 </button>
@@ -854,7 +865,7 @@
                 <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
                     关闭
                 </button>
-                <button type="button" class="btn btn-success btn-sm"
+                <button type="button" class="btn btn-primary btn-sm"
                         onclick="construction.saveMdCalculatingMethodEngineeringCost();">
                     保存
                 </button>
