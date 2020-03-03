@@ -14,18 +14,15 @@
                 <div class="row mt--2">
                     <%@include file="/views/share/project/projectInfoSimple.jsp" %>
                     <%@include file="/views/share/project/projectPlanDetails.jsp" %>
-
-                    <!-- 公共模块end -->
-
                     <div class="col-md-12">
                         <div class="card full-height">
                             <div class="card-header collapse-link">
                                 <div class="card-head-row">
                                     <div class="card-title">
-                                        申报编辑文件
+                                        申报信息
                                     </div>
                                     <div class="card-tools">
-                                        <button class="btn  btn-link btn-primary btn-xs"><span
+                                        <button type="button" class="btn  btn-link btn-primary btn-xs"><span
                                                 class="fa fa-angle-down"></span>
                                         </button>
                                     </div>
@@ -40,20 +37,14 @@
                             </div>
                         </div>
                     </div>
-                    <!-- 公共尾部模块引用 -->
                     <%@include file="/views/share/form_approval.jsp" %>
-
                 </div>
             </div>
         </div>
         <%@include file="/views/share/main_footer.jsp" %>
     </div>
-
 </div>
-
-
 </body>
-
 <script type="application/javascript">
     //提交审批
     function saveform() {

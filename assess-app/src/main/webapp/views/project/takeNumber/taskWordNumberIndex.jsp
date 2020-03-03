@@ -13,9 +13,6 @@
                 <div class="row mt--2">
                     <%@include file="/views/share/project/projectInfoSimple.jsp" %>
                     <%@include file="/views/share/project/projectPlanDetails.jsp" %>
-
-                    <!-- 公共模块end -->
-
                     <div class="col-md-12">
                         <div class="card full-height">
                             <div class="card-header collapse-link">
@@ -24,7 +21,7 @@
                                         拿取文号
                                     </div>
                                     <div class="card-tools">
-                                        <button class="btn  btn-link btn-primary btn-xs"><span
+                                        <button type="button" class="btn  btn-link btn-primary btn-xs"><span
                                                 class="fa fa-angle-down"></span>
                                         </button>
                                     </div>
@@ -144,19 +141,12 @@
                                                 <label class="col-xs-4  col-sm-4  col-md-4  col-lg-4 control-label">
                                                     每个文件都可以生成自己的文号和二维码(可以一次性上传多个)
                                                 </label>
-
                                                 <div class="col-sm-3">
                                                     <input id="ProjectTakeNumber_DocumentHandle"
                                                            name="file" multiple="multiple" type="file"
                                                            style="display: none"
                                                            onchange="baseTakeNumber.upFileLoadReport(this)">
-
-                                                    <button type="button" class="btn btn-info btn-sm"
-                                                            onclick="$('#ProjectTakeNumber_DocumentHandle').trigger('click')">	<span
-                                                            class="btn-label">
-												<i class="fa fa-cloud-upload-alt"></i>
-											</span>上传报告
-                                                    </button>
+                                                    <button type="button" class="btn btn-info btn-sm" onclick="$('#ProjectTakeNumber_DocumentHandle').trigger('click')">	<span class="btn-label"><i class="fa fa-cloud-upload-alt"></i></span>上传报告</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -165,30 +155,18 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- 公共尾部模块引用 -->
                     <div class="col-md-12" style="text-align: center;padding-bottom: 1.25rem">
-
                         <div class="card-body">
-                            <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
+                            <button type="button" class="btn btn-default" onclick="window.close()">
                                 取消
                             </button>
                             <c:choose>
                                 <c:when test="${projectPhase.bisUseBox eq false}">
-                                    <button id="btn_submit" class="btn btn-success"
-                                            onclick="submit(false);">
-                                        直接提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
-                                    </button>
-                                    <button id="btn_submit" class="btn btn-primary"
-                                            onclick="submit(true);">
-                                        提交审批<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
-                                    </button>
+                                    <button type="button" class="btn btn-success" style="margin-left: 10px;" onclick="submit(false);">直接提交</button>
+                                    <button type="button" class="btn btn-primary" style="margin-left: 10px;" onclick="submit(true);">提交审批</button>
                                 </c:when>
                                 <c:otherwise>
-                                    <button id="btn_submit" class="btn btn-success"
-                                            onclick="submit();">
-                                        提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
-                                    </button>
+                                    <button type="button" class="btn btn-primary" style="margin-left: 10px;" onclick="submit();">提交</button>
                                 </c:otherwise>
                             </c:choose>
                         </div>
@@ -201,13 +179,11 @@
                             <%@include file="/views/share/form_edit.jsp" %>
                         </form>
                     </c:if>
-
                 </div>
             </div>
         </div>
         <%@include file="/views/share/main_footer.jsp" %>
     </div>
-
 </div>
 
 
@@ -223,11 +199,9 @@
             <div class="card-header collapse-link">
                 <div class="card-head-row">
                     <div class="card-title">
-                        <h2>第{index}拿号
-                            <button class="btn-primary btn btn-sm" type="button"
-                                    onclick="baseTakeNumber.removeProjectTakeNumberDetail(this);">移除<i
-                                    class="fa fa-minus-circle"></i></button>
-                        </h2>
+                        文件{index}
+                        <button class="btn-warning btn btn-sm" type="button"
+                                onclick="baseTakeNumber.removeProjectTakeNumberDetail(this);">移除</button>
                     </div>
                 </div>
             </div>
@@ -239,57 +213,47 @@
                         <div class="col-md-12">
                             <div class="form-inline x-valid">
                                 <div class=" col-md-1 control-label">
-                                    二维码
-                                </div>
-                                <div class=" col-md-5 ">
-                                    <div id="_ProjectTakeNumber_BaseOrCode{id}"></div>
-                                </div>
-                                <div class=" col-md-5 ">
-                                    <img src="">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row form-group">
-                        <div class="col-md-12">
-                            <div class="form-inline x-valid">
-                                <div class=" col-md-1 control-label">
-                                    报告类型<span class="symbol required"></span>
-                                </div>
-                                <div class=" col-md-5 ">
-                                    <select name="reportType" required="required"
-                                            class="form-control input-full search-select select2">
-                                    </select>
-                                </div>
-                                <label class="col-md-1  control-label">
-                                    文号
-                                </label>
-                                <div class="col-md-5">
-                                    <input type="text" class="form-control input-full" name="numberValue"
-                                           disabled="disabled">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row form-group">
-                        <div class="col-md-12">
-                            <div class="form-inline x-valid">
-                                <div class=" col-md-1 control-label">
                                     上传的文档
                                 </div>
-                                <div class=" col-md-5 ">
+                                <div class=" col-md-3 ">
                                     <input id="projectTakeNumberDetailSysAttachmentDto{id}" placeholder="继续上传待替换附件"
                                            type="file">
                                     <div id="_projectTakeNumberDetailSysAttachmentDto{id}"></div>
                                 </div>
-                                <div class="col-md-1 control-label">
-                                    拿取文号
+                                <div class=" col-md-1 control-label">
+                                    报告类型<span class="symbol required"></span>
                                 </div>
-                                <div class=" col-md-5 ">
+                                <div class=" col-md-3 ">
+                                    <select name="reportType" required="required"
+                                            class="form-control input-full search-select select2">
+                                    </select>
+                                </div>
+                                <div class=" col-md-4">
                                     <button type="button" class="btn-primary btn btn-sm"
-                                            onclick="baseTakeNumber.getReportNumber(this)"><i
-                                            class="fa fa-plus"></i></button>
+                                            onclick="baseTakeNumber.getReportNumber(this)">拿取文号</button>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <div class="form-inline x-valid">
+                                <label class="col-md-1  control-label">
+                                    文号
+                                </label>
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control input-full" name="numberValue"
+                                           disabled="disabled">
+                                </div>
+                                <div class=" col-md-1 control-label">
+                                    二维码
+                                </div>
+                                <div class=" col-md-3 ">
+                                    <div id="_ProjectTakeNumber_BaseOrCode{id}"></div>
+                                </div>
+<%--                                <div class=" col-md-4 ">--%>
+<%--                                    <img  width="100" height="100">--%>
+<%--                                </div>--%>
                             </div>
                         </div>
                     </div>

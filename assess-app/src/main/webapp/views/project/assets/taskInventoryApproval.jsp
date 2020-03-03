@@ -14,20 +14,15 @@
                 <div class="row mt--2">
                     <%@include file="/views/share/project/projectInfoSimple.jsp" %>
                     <%@include file="/views/share/project/projectPlanDetails.jsp" %>
-
-                    <!-- 公共模块end -->
-
                     <div class="col-md-12">
                         <div class="card full-height">
                             <div class="card-header collapse-link">
                                 <div class="card-head-row">
                                     <div class="card-title">
-                                        申报编辑文件
+                                        资产清查
                                     </div>
                                     <div class="card-tools">
-                                        <button class="btn  btn-link btn-primary btn-xs"><span
-                                                class="fa fa-angle-down"></span>
-                                        </button>
+                                        <button type="button" class="btn  btn-link btn-primary btn-xs"><span class="fa fa-angle-down"></span></button>
                                     </div>
                                 </div>
                             </div>

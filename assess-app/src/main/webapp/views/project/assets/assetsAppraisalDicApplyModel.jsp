@@ -108,21 +108,13 @@
         });
     </script>
 </c:if>
-
-
-<div class="x_title">自定义附件</div>
-
 <div class="row form-group">
     <div class="col-md-12">
         <div class="form-inline x-valid">
-            <label class="col-sm-1 control-label">
-                自定义操作
-            </label>
-            <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
-                <div class="btn  btn-success btn-sm" onclick="commonAssets.writeDeclarationHtml(0)"><i
-                        class="fa fa-plus"></i>
-                </div>
-            </div>
+            <label class="col-sm-1 control-label"></label>
+            <div class="col-sm-11"><button type="button" class="btn btn-success btn-sm" onclick="commonAssets.writeDeclarationHtml(0)">
+                <span class="btn-label"><i class="fa fa-plus"></i></span>添加附件
+            </button></div>
         </div>
     </div>
 </div>
@@ -194,8 +186,6 @@
         </div>
     </c:forEach>
 </div>
-
-
 <div class="row form-group">
     <div class="col-md-12">
         <div class="form-inline x-valid">

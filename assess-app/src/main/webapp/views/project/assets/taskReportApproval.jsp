@@ -15,9 +15,6 @@
                 <div class="row mt--2">
                     <%@include file="/views/share/project/projectInfoSimple.jsp" %>
                     <%@include file="/views/share/project/projectPlanDetails.jsp" %>
-
-                    <!-- 公共模块end -->
-
                     <div class="col-md-12">
                         <div class="card full-height">
                             <div class="card-header collapse-link">
@@ -43,7 +40,6 @@
                     </div>
                     <!-- 公共尾部模块引用 -->
                     <%@include file="/views/share/form_approval.jsp" %>
-
                 </div>
             </div>
         </div>

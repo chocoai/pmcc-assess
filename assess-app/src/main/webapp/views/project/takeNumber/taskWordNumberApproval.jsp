@@ -95,7 +95,6 @@
                             </div>
                         </div>
                     </div>
-
                     <c:forEach items="${projectTakeNumberDetailList}" var="projectTakeNumberDetail"
                                varStatus="userStatus">
                         <div class="col-md-12">
@@ -121,22 +120,20 @@
                                             <div class="col-md-12">
                                                 <div class="form-inline x-valid">
                                                     <div class=" col-md-1 control-label">
-                                                        二维码
-                                                    </div>
-                                                    <div class="col-sm-5 ">
-                                                        <div id="_ProjectTakeNumber_BaseOrCode${projectTakeNumberDetail.id}"></div>
-                                                    </div>
-
-                                                    <div class=" col-md-1 control-label">
                                                         文档
                                                     </div>
                                                     <div class="col-sm-5 ">
                                                         <div id="_projectTakeNumberDetailSysAttachmentDto${projectTakeNumberDetail.id}"></div>
                                                     </div>
+                                                    <div class=" col-md-1 control-label">
+                                                        报告类型
+                                                    </div>
+                                                    <div class="col-sm-5 ">
+                                                        <label class="form-control input-full">报告类型:${projectTakeNumberDetail.reportTypeName}</label>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-
                                         <div class="row form-group">
                                             <div class="col-md-12">
                                                 <div class="form-inline x-valid">
@@ -146,12 +143,11 @@
                                                     <div class="col-sm-5 ">
                                                         <label class="form-control input-full">${projectTakeNumberDetail.numberValue}</label>
                                                     </div>
-
                                                     <div class=" col-md-1 control-label">
-                                                        报告类型
+                                                        二维码
                                                     </div>
                                                     <div class="col-sm-5 ">
-                                                        <label class="form-control input-full">报告类型:${projectTakeNumberDetail.reportTypeName}</label>
+                                                        <div id="_ProjectTakeNumber_BaseOrCode${projectTakeNumberDetail.id}"></div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -169,18 +165,13 @@
                             </div>
                         </div>
                     </c:forEach>
-
-                    <!-- 公共尾部模块引用 -->
                     <%@include file="/views/share/form_approval.jsp" %>
-
                 </div>
             </div>
         </div>
         <%@include file="/views/share/main_footer.jsp" %>
     </div>
-
 </div>
-
 </body>
 
 
