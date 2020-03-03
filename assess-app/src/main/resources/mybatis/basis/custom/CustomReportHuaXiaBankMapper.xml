@@ -8,6 +8,7 @@
         <result column="report_type" property="reportType" jdbcType="INTEGER" />
         <result column="u_use_unit_name" property="unitName" jdbcType="VARCHAR"/>
         <result column="number_value" property="numberValue" jdbcType="VARCHAR"/>
+        <result column="project_name" property="projectName" jdbcType="VARCHAR"/>
         <result column="project_category_id" property="projectCategoryId" jdbcType="INTEGER" />
         <result column="contract_price" property="contractPrice" jdbcType="DECIMAL"/>
         <result column="area_id" property="areaId" jdbcType="INTEGER"/>
@@ -17,8 +18,8 @@
 
     <select id="getCustomReportHuaXiaBankList" parameterType="map" resultMap="BaseResultMap">
         select distinct
-        A.id,A.project_id, A.report_type,E.u_use_unit_name,A.number_value,B.project_category_id
-        ,B.contract_price,A.area_id, B.preaudit_number_date, B.result_number_date
+        A.id,A.project_id,A.gmt_created, A.report_type,E.u_use_unit_name,A.number_value,B.project_category_id
+        ,B.contract_price,A.area_id, B.preaudit_number_date, B.result_number_date, B.project_name
         from tb_project_number_record A
         LEFT JOIN tb_project_info B ON A.project_id = B.id
         LEFT JOIN tb_initiate_unit_information E ON A.project_id = E.project_id
@@ -38,17 +39,13 @@
         <if test="reportType!=null and consultationId!=null">
             AND (A.report_type = #{reportType} or A.report_type = #{consultationId})
         </if>
-        <if test="previewsStartDate!=null">
-            AND B.preaudit_number_date &gt;= #{previewsStartDate}
+        <if test="startDate!=null">
+            AND A.gmt_created &gt;= #{startDate}
         </if>
-        <if test="previewsEndDate!=null">
-            AND B.preaudit_number_date &lt;= #{previewsEndDate}
+        <if test="endDate!=null">
+            AND A.gmt_created &lt;= #{endDate}
         </if>
-        <if test="resultStartDate!=null">
-            AND B.result_number_date >= #{resultStartDate}
-        </if>
-        <if test="resultEndDate!=null">
-            AND B.result_number_date &lt;= #{resultEndDate}
-        </if>
+        GROUP BY A.project_id
+
     </select>
 </mapper>

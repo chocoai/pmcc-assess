@@ -30,8 +30,7 @@
                                     <div class="form-group form-inline">
                                         <label class="col-md-1 col-form-label">报告类型</label>
                                         <div class="col-md-2 p-0">
-                                            <select name="queryReportType" id="queryReportType" class="form-control input-full"
-                                                    onchange="ReportTianJinBank.prototype.showBtn()">
+                                            <select name="queryReportType" id="queryReportType" class="form-control input-full">
                                                 <option value="">--请选择--</option>
                                                 <c:forEach var="item" items="${reportTypeList}">
                                                     <option value="${item.id}">${item.name}</option>
@@ -50,48 +49,31 @@
                                                    class="form-control input-full">
                                         </div>
                                     </div>
-                                    <div class="form-group form-inline" style="display: none" id="queryPreauditBtn">
-
-                                        <label class="col-md-1 col-form-label">开始时间</label>
-                                        <div class="col-md-2 p-0">
-                                            <input id="queryPreviewsStartDate" name="queryPreviewsStartDate"
-                                                   class="form-control input-full date-picker dbdate"
-                                                   data-date-format="yyyy-mm-dd" placeholder="开始时间"/>
-                                        </div>
-                                        <label class="col-md-1 col-form-label">结束时间</label>
-                                        <div class="col-md-2 p-0">
-                                            <input id="queryPreviewsEndDate" name="queryPreviewsEndDate"
-                                                   class="form-control input-full date-picker dbdate"
-                                                   data-date-format="yyyy-mm-dd" placeholder="结束时间"/>
-                                        </div>
-                                    </div>
-                                    <div class="form-group form-inline" style="display: none" id="queryResultBtn">
-
-                                        <label class="col-md-1 col-form-label">开始时间</label>
-                                        <div class="col-md-2 p-0">
-                                            <input id="queryResultStartDate" name="queryResultStartDate"
-                                                   class="form-control input-full date-picker dbdate"
-                                                   data-date-format="yyyy-mm-dd" placeholder="开始时间"/>
-                                        </div>
-                                        <label class="col-md-1 col-form-label">结束时间</label>
-                                        <div class="col-md-2 p-0">
-                                            <input id="queryResultEndDate" name="queryResultEndDate"
-                                                   class="form-control input-full date-picker dbdate"
-                                                   data-date-format="yyyy-mm-dd" placeholder="结束时间"/>
-                                        </div>
-                                    </div>
                                     <div class="form-group form-inline">
-                                        <button style="margin-left: 10px" class="btn btn-info  btn-sm" type="button"
+
+                                        <label class="col-md-1 col-form-label">开始时间</label>
+                                        <div class="col-md-2 p-0">
+                                            <input id="queryStartDate" name="queryStartDate"
+                                                   class="form-control input-full date-picker dbdate"
+                                                   data-date-format="yyyy-mm-dd" placeholder="开始时间"/>
+                                        </div>
+                                        <label class="col-md-1 col-form-label">结束时间</label>
+                                        <div class="col-md-2 p-0">
+                                            <input id="queryEndDate" name="queryEndDate"
+                                                   class="form-control input-full date-picker dbdate"
+                                                   data-date-format="yyyy-mm-dd" placeholder="结束时间"/>
+                                        </div>
+                                        <button class="btn btn-info  btn-sm" type="button" style="margin-left: 10px"
                                                 onclick="ReportTianJinBank.prototype.loadDataDicList()">
 											<span class="btn-label">
 												<i class="fa fa-search"></i>
 											</span>
                                             查询
                                         </button>
-                                        <button type="button" class="btn btn-success btn-sm" onclick="$('#frmQuery').clearAll()">
+                                        <button type="button" class="btn btn-success btn-sm" style="margin-left: 5px" onclick="$('#frmQuery').clearAll()">
                                             重置
                                         </button>
-                                        <button type="button" class="btn btn-info btn-sm"
+                                        <button type="button" class="btn btn-info btn-sm" style="margin-left: 5px"
                                                 onclick="ReportTianJinBank.prototype.showModel()"
                                                 data-toggle="modal" href="#divBox">
                                             <span class="btn-label">
@@ -99,7 +81,7 @@
 											</span>
                                             上传附件
                                         </button>
-                                        <button type="button" class="btn btn-success btn-sm"
+                                        <button type="button" class="btn btn-success btn-sm" style="margin-left: 5px"
                                                 onclick="ReportTianJinBank.prototype.exportData()">
                                             <span class="btn-label">
 												<i class="fa fa-cloud-download-alt"></i>
@@ -144,36 +126,34 @@
 
         loadDataDicList: function () {
             var cols = [];
-            cols.push({field: 'pledger', title: '抵押人'});
-            cols.push({field: 'loanTypeName', title: '抵押物'});
-            cols.push({field: 'seat', title: '位置'});
+            cols.push({field: 'pledger', width: '5%',title: '抵押人'});
+            cols.push({field: 'loanTypeName',width: '5%', title: '抵押物'});
+            cols.push({field: 'seat',width: '10%', title: '位置'});
             cols.push({
-                field: 'valuationDate', title: '价值时点', formatter: function (value, row, index) {
+                field: 'valuationDate',width: '5%', title: '价值时点', formatter: function (value, row, index) {
                     return formatDate(row.valuationDate, false);
                 }
             });cols.push({
-                field: 'reportIssuanceDate', title: '报告日', formatter: function (value, row, index) {
+                field: 'reportIssuanceDate',width: '5%', title: '报告日', formatter: function (value, row, index) {
                     return formatDate(row.reportIssuanceDate, false);
                 }
             });
 
-            cols.push({field: 'area', title: '面积'});
-            cols.push({field: 'assessTotal', title: '评估总价'});
-            cols.push({field: 'previewsNumber', title: '预估文号'});
-            cols.push({field: 'resultNumber', title: '正式报告文号'});
-            cols.push({field: 'assessCost', title: '评估费用'});
-            cols.push({field: 'standardCost', title: '标准收费'});
-            cols.push({field: 'discount', title: '折扣'});
-            cols.push({field: 'remark', title: '备注'});
+            //cols.push({field: 'area', title: '面积'});
+            cols.push({field: 'assessTotal', width: '5%',title: '评估总价'});
+            cols.push({field: 'previewsNumber',width: '10%', title: '预估文号'});
+            cols.push({field: 'resultNumber',width: '10%', title: '正式报告文号'});
+            cols.push({field: 'assessCost',width: '5%', title: '评估费用'});
+            cols.push({field: 'standardCost',width: '5%', title: '标准收费'});
+            //cols.push({field: 'discount', title: '折扣'});
+            //cols.push({field: 'remark', title: '备注'});
             $("#" + ReportTianJinBank.prototype.config().table).bootstrapTable('destroy');
             TableInit(ReportTianJinBank.prototype.config().table, "${pageContext.request.contextPath}/customReportTianJinBank/getCustomReportTianJinBankList", cols, {
                 numberValue: $("#queryNumberValue").val(),
                 unitName: $("#queryUnitName").val(),
                 reportType: $("#queryReportType").val(),
-                queryPreviewsStartDate: $("#queryPreviewsStartDate").val(),
-                queryPreviewsEndDate: $("#queryPreviewsEndDate").val(),
-                queryResultStartDate: $("#queryResultStartDate").val(),
-                queryResultEndDate: $("#queryResultEndDate").val()
+                queryStartDate: $("#queryStartDate").val(),
+                queryEndDate: $("#queryEndDate").val()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -239,18 +219,14 @@
             var numberValue = $("#queryNumberValue").val();
             var unitName = $("#queryUnitName").val();
             var reportType = $("#queryReportType").val();
-            var queryPreviewsStartDate = $("#queryPreviewsStartDate").val();
-            var queryPreviewsEndDate = $("#queryPreviewsEndDate").val();
-            var queryResultStartDate = $("#queryResultStartDate").val();
-            var queryResultEndDate = $("#queryResultEndDate").val();
+            var queryStartDate = $("#queryStartDate").val();
+            var queryEndDate = $("#queryEndDate").val();
             var href = "${pageContext.request.contextPath}/customReportTianJinBank/export";
             href += "?numberValue=" + numberValue;
             href += "&unitName=" + unitName;
             href += "&reportType=" + reportType;
-            href += "&queryPreviewsStartDate=" + queryPreviewsStartDate;
-            href += "&queryPreviewsEndDate=" + queryPreviewsEndDate;
-            href += "&queryResultStartDate=" + queryResultStartDate;
-            href += "&queryResultEndDate=" + queryResultEndDate;
+            href += "&queryStartDate=" + queryStartDate;
+            href += "&queryEndDate=" + queryEndDate;
             window.open(href, "");
         }
 

@@ -4,9 +4,11 @@ import com.copower.pmcc.ad.api.provider.AdRpcQualificationsService;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.custom.entity.CustomReportTianFuBank;
 import com.copower.pmcc.assess.dal.basis.custom.mapper.CustomReportTianFuBankMapper;
+import com.copower.pmcc.assess.dal.basis.dao.project.ProjectNumberRecordDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.initiate.InitiateContactsDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.InitiateContacts;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectNumberRecord;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
 import com.copower.pmcc.assess.dto.output.project.initiate.InitiateConsignorVo;
 import com.copower.pmcc.assess.dto.output.project.initiate.InitiateUnitInformationVo;
@@ -74,28 +76,22 @@ public class CustomReportTianFuBankService {
     private InitiatePossessorService initiatePossessorService;
     @Autowired
     private InitiateUnitInformationService initiateUnitInformationService;
+    @Autowired
+    private ProjectNumberRecordDao projectNumberRecordDao;
 
 
-    public BootstrapTableVo getCustomReportTianFuBankList(String numberValue, String unitName, Integer reportType, String queryPreviewsStartDate,
-                                                          String queryPreviewsEndDate, String queryResultStartDate, String queryResultEndDate) {
+    public BootstrapTableVo getCustomReportTianFuBankList(String numberValue, String unitName, Integer reportType, String queryStartDate,
+                                                          String queryPreviewsEndDate) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        Date previewsStartDate = null;
-        if (StringUtils.isNotEmpty(queryPreviewsStartDate)) {
-            previewsStartDate = DateUtils.parse(queryPreviewsStartDate);
+        Date startDate = null;
+        if (StringUtils.isNotEmpty(queryStartDate)) {
+            startDate = DateUtils.parse(queryStartDate);
         }
-        Date previewsEndDate = null;
-        if (StringUtils.isNotEmpty(queryPreviewsStartDate)) {
-            previewsEndDate = DateUtils.parse(queryPreviewsEndDate);
-        }
-        Date resultStartDate = null;
-        if (StringUtils.isNotEmpty(queryResultStartDate)) {
-            resultStartDate = DateUtils.parse(queryResultStartDate);
-        }
-        Date resultEndDate = null;
-        if (StringUtils.isNotEmpty(queryResultEndDate)) {
-            resultEndDate = DateUtils.parse(queryResultEndDate);
+        Date endDate = null;
+        if (StringUtils.isNotEmpty(queryPreviewsEndDate)) {
+            endDate = DateUtils.parse(queryPreviewsEndDate);
         }
         List<CustomReportTianFuBank> customNumberRecordList = null;
         //结果报告
@@ -105,9 +101,9 @@ public class CustomReportTianFuBankService {
         BaseDataDic consultationReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_CONSULTATION);
         Integer consultationId = consultationReport.getId();
         if (reportType == resultId) {
-            customNumberRecordList = customReportTianFuBankMapper.getCustomReportTianFuBankList(numberValue, unitName, reportType, consultationId, previewsStartDate, previewsEndDate, resultStartDate, resultEndDate);
+            customNumberRecordList = customReportTianFuBankMapper.getCustomReportTianFuBankList(numberValue, unitName, reportType, consultationId, startDate, endDate);
         } else {
-            customNumberRecordList = customReportTianFuBankMapper.getCustomReportTianFuBankList(numberValue, unitName, reportType, null, previewsStartDate, previewsEndDate, resultStartDate, resultEndDate);
+            customNumberRecordList = customReportTianFuBankMapper.getCustomReportTianFuBankList(numberValue, unitName, reportType, null, startDate, endDate);
         }
         List<CustomReportTianFuBank> vos = LangUtils.transform(customNumberRecordList, o -> getCustomReportTianFuBank(o));
         vo.setTotal(page.getTotal());
@@ -121,6 +117,22 @@ public class CustomReportTianFuBankService {
         }
         CustomReportTianFuBank vo = new CustomReportTianFuBank();
         BeanUtils.copyProperties(data, vo);
+        //文号
+        ProjectNumberRecord where = new ProjectNumberRecord();
+        where.setBisDelete(false);
+        where.setProjectId(data.getProjectId());
+        List<ProjectNumberRecord> numberList = projectNumberRecordDao.getProjectNumberRecordList(where);
+        StringBuilder numberStr = new StringBuilder();
+
+
+        if (CollectionUtils.isNotEmpty(numberList)) {
+            for (ProjectNumberRecord item : numberList) {
+                numberStr.append(item.getNumberValue()).append("/");
+            }
+        }
+        if (StringUtils.isNotEmpty(numberStr.toString())) {
+            vo.setNumberValue(numberStr.deleteCharAt(numberStr.length() - 1).toString());
+        }
 
         if (data.getAreaId() != null && data.getAreaId() != 0) {
             //借款金额
@@ -153,25 +165,18 @@ public class CustomReportTianFuBankService {
      *
      * @param response
      */
-    public void export(HttpServletResponse response, String numberValue, String unitName, Integer reportType, String queryPreviewsStartDate,
-                       String queryPreviewsEndDate, String queryResultStartDate, String queryResultEndDate) throws BusinessException, IOException {
+    public void export(HttpServletResponse response, String numberValue, String unitName, Integer reportType, String queryStartDate,
+                       String queryEndDate) throws BusinessException, IOException {
         //获取数据
-        Date previewsStartDate = null;
-        if (StringUtils.isNotEmpty(queryPreviewsStartDate)) {
-            previewsStartDate = DateUtils.parse(queryPreviewsStartDate);
+        Date startDate = null;
+        if (StringUtils.isNotEmpty(queryStartDate)) {
+            startDate = DateUtils.parse(queryStartDate);
         }
-        Date previewsEndDate = null;
-        if (StringUtils.isNotEmpty(queryPreviewsStartDate)) {
-            previewsEndDate = DateUtils.parse(queryPreviewsEndDate);
+        Date endDate = null;
+        if (StringUtils.isNotEmpty(queryEndDate)) {
+            endDate = DateUtils.parse(queryEndDate);
         }
-        Date resultStartDate = null;
-        if (StringUtils.isNotEmpty(queryResultStartDate)) {
-            resultStartDate = DateUtils.parse(queryResultStartDate);
-        }
-        Date resultEndDate = null;
-        if (StringUtils.isNotEmpty(queryResultEndDate)) {
-            resultEndDate = DateUtils.parse(queryResultEndDate);
-        }
+
         List<CustomReportTianFuBank> customNumberRecordList = null;
         //结果报告
         BaseDataDic resultReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_RESULT);
@@ -180,9 +185,9 @@ public class CustomReportTianFuBankService {
         BaseDataDic consultationReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_CONSULTATION);
         Integer consultationId = consultationReport.getId();
         if (reportType == resultId) {
-            customNumberRecordList = customReportTianFuBankMapper.getCustomReportTianFuBankList(numberValue, unitName, reportType, consultationId, previewsStartDate, previewsEndDate, resultStartDate, resultEndDate);
+            customNumberRecordList = customReportTianFuBankMapper.getCustomReportTianFuBankList(numberValue, unitName, reportType, consultationId, startDate, endDate);
         } else {
-            customNumberRecordList = customReportTianFuBankMapper.getCustomReportTianFuBankList(numberValue, unitName, reportType, null, previewsStartDate, previewsEndDate, resultStartDate, resultEndDate);
+            customNumberRecordList = customReportTianFuBankMapper.getCustomReportTianFuBankList(numberValue, unitName, reportType, null, startDate, endDate);
         }
         if (CollectionUtils.isEmpty(customNumberRecordList)) {
             throw new BusinessException("没有获取到有效的数据");

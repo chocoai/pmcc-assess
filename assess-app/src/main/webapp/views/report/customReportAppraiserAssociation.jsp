@@ -35,8 +35,8 @@
                                         </div>
                                         <label class="col-md-1 col-form-label">报告类型</label>
                                         <div class="col-md-2 p-0">
-                                            <select name="queryReportType" id="queryReportType" class="form-control input-full"
-                                                    onchange="ReportAppraiserAssociation.prototype.showBtn()">
+                                            <select name="queryReportType" id="queryReportType"
+                                                    class="form-control input-full">
                                                 <option value="">--请选择--</option>
                                                 <c:forEach var="item" items="${reportTypeList}">
                                                     <option value="${item.id}">${item.name}</option>
@@ -55,48 +55,32 @@
                                                    class="form-control input-full">
                                         </div>
                                     </div>
-                                    <div class="form-group form-inline" style="display: none" id="queryPreauditBtn">
-
-                                            <label class="col-md-1 col-form-label">开始时间</label>
-                                            <div class="col-md-2 p-0">
-                                                <input id="queryPreviewsStartDate" name="queryPreviewsStartDate"
-                                                       class="form-control input-full date-picker dbdate"
-                                                       data-date-format="yyyy-mm-dd" placeholder="开始时间"/>
-                                            </div>
-                                            <label class="col-md-1 col-form-label">结束时间</label>
-                                            <div class="col-md-2 p-0">
-                                                <input id="queryPreviewsEndDate" name="queryPreviewsEndDate"
-                                                       class="form-control input-full date-picker dbdate"
-                                                       data-date-format="yyyy-mm-dd" placeholder="结束时间"/>
-                                            </div>
-                                        </div>
-                                    <div class="form-group form-inline" style="display: none" id="queryResultBtn">
-
-                                            <label class="col-md-1 col-form-label">开始时间</label>
-                                            <div class="col-md-2 p-0">
-                                                <input id="queryResultStartDate" name="queryResultStartDate"
-                                                       class="form-control input-full date-picker dbdate"
-                                                       data-date-format="yyyy-mm-dd" placeholder="开始时间"/>
-                                            </div>
-                                            <label class="col-md-1 col-form-label">结束时间</label>
-                                            <div class="col-md-2 p-0">
-                                                <input id="queryResultEndDate" name="queryResultEndDate"
-                                                       class="form-control input-full date-picker dbdate"
-                                                       data-date-format="yyyy-mm-dd" placeholder="结束时间"/>
-                                            </div>
-                                        </div>
                                     <div class="form-group form-inline">
-                                        <button style="margin-left: 10px" class="btn btn-info  btn-sm" type="button"
+
+                                        <label class="col-md-1 col-form-label">开始时间</label>
+                                        <div class="col-md-2 p-0">
+                                            <input id="queryStartDate" name="queryStartDate"
+                                                   class="form-control input-full date-picker dbdate"
+                                                   data-date-format="yyyy-mm-dd" placeholder="开始时间"/>
+                                        </div>
+                                        <label class="col-md-1 col-form-label">结束时间</label>
+                                        <div class="col-md-2 p-0">
+                                            <input id="queryEndDate" name="queryEndDate"
+                                                   class="form-control input-full date-picker dbdate"
+                                                   data-date-format="yyyy-mm-dd" placeholder="结束时间"/>
+                                        </div>
+                                        <button class="btn btn-info  btn-sm" type="button"style="margin-left: 10px"
                                                 onclick="ReportAppraiserAssociation.prototype.loadDataDicList()">
 											<span class="btn-label">
 												<i class="fa fa-search"></i>
 											</span>
                                             查询
                                         </button>
-                                        <button type="button" class="btn btn-success btn-sm" onclick="$('#frmQuery').clearAll()">
+                                        <button type="button" class="btn btn-success btn-sm" style="margin-left: 5px"
+                                                onclick="$('#frmQuery').clearAll()">
                                             重置
                                         </button>
-                                        <button type="button" class="btn btn-info btn-sm"
+                                        <button type="button" class="btn btn-info btn-sm" style="margin-left: 5px"
                                                 onclick="ReportAppraiserAssociation.prototype.showModel()"
                                                 data-toggle="modal" href="#divBox">
                                             <span class="btn-label">
@@ -104,7 +88,7 @@
 											</span>
                                             上传附件
                                         </button>
-                                        <button type="button" class="btn btn-success btn-sm"
+                                        <button type="button" class="btn btn-success btn-sm" style="margin-left: 5px"
                                                 onclick="ReportAppraiserAssociation.prototype.export()">
                                             <span class="btn-label">
 												<i class="fa fa-cloud-download-alt"></i>
@@ -151,50 +135,54 @@
 
         loadDataDicList: function () {
             var cols = [];
-            cols.push({field: 'numberValue',width: '5%', title: '估价报告编号'});
-            cols.push({field: 'projectName',width: '5%', title: '项目名称'});
-            cols.push({field: 'serviceComeFromName', width: '3%',title: '业务来源'});
-            cols.push({field: 'entrustPurposeName', width: '3%',title: '估价目的'});
-            cols.push({field: 'methodNames', width: '3%',title: '评估方法'});
+            //报表显示数据字段，项目名称、文号、报告使用单位、总价、单价、价值时点、报告日
+            cols.push({field: 'projectName', width: '5%', title: '项目名称'});
+            cols.push({field: 'numberValue', width: '5%', title: '文号'});
+            cols.push({field: 'serviceComeFromName', width: '3%', title: '业务来源'});
+            //cols.push({field: 'entrustPurposeName', width: '3%', title: '估价目的'});
+            cols.push({field: 'methodNames', width: '5%', title: '评估方法'});
+            cols.push({field: 'unitName', width: '5%', title: '使用单位'});
+            // cols.push({
+            //     field: 'investigationsStartDate',
+            //     width: '5%',
+            //     title: '估价作业开始日',
+            //     formatter: function (value, row, index) {
+            //         return formatDate(row.investigationsStartDate, false);
+            //     }
+            // });
+            // cols.push({
+            //     field: 'homeWorkEndTime', width: '5%', title: '估价作业结束日', formatter: function (value, row, index) {
+            //         return formatDate(row.homeWorkEndTime, false);
+            //     }
+            // });
             cols.push({
-                field: 'investigationsStartDate',width: '5%', title: '估价作业开始日', formatter: function (value, row, index) {
-                    return formatDate(row.investigationsStartDate, false);
-                }
-            });
-            cols.push({
-                field: 'homeWorkEndTime', width: '5%',title: '估价作业结束日', formatter: function (value, row, index) {
-                    return formatDate(row.homeWorkEndTime, false);
-                }
-            });
-            cols.push({
-                field: 'valuationDate',width: '5%', title: '估价时点', formatter: function (value, row, index) {
+                field: 'valuationDate', width: '5%', title: '估价时点', formatter: function (value, row, index) {
                     return formatDate(row.valuationDate, false);
                 }
             });
-            cols.push({field: 'landArea', width: '5%',title: '土地面积'});
-            cols.push({field: 'evaluationArea',width: '5%', title: '建筑面积'});
-            cols.push({field: 'assessTotal',width: '5%', title: '评估总值'});
-            cols.push({field: 'price', width: '5%',title: '评估单价'});
-            cols.push({field: 'seat',width: '5%', title: '估价对象位置'});
-            cols.push({field: 'consignor',width: '5%', title: '委托人'});
-            cols.push({field: 'csAddress',width: '5%', title: '委托人地址'});
-            cols.push({field: 'csPostcode',width: '5%', title: '委托人邮编'});
-            cols.push({field: 'csPhnoe',width: '5%', title: '委托人电话'});
-            cols.push({field: 'firstAppraiser', width: '5%',title: '第一报告人'});
-            cols.push({field: 'firstRegistrationNumber',width: '5%', title: '第一报告人注册号'});
-            cols.push({field: 'participationAppraiser',width: '5%', title: '参与报告人'});
-            cols.push({field: 'registrationNumber',width: '5%', title: '注册号'});
-            cols.push({field: 'contractPrice',width: '5%', title: '收费'});
+            //cols.push({field: 'landArea', width: '5%', title: '土地面积'});
+            //cols.push({field: 'evaluationArea', width: '5%', title: '建筑面积'});
+            cols.push({field: 'assessTotal', width: '5%', title: '评估总值'});
+            cols.push({field: 'price', width: '5%', title: '评估单价'});
+
+            //cols.push({field: 'seat', width: '5%', title: '估价对象位置'});
+            cols.push({field: 'consignor', width: '5%', title: '委托人'});
+            //cols.push({field: 'csAddress', width: '5%', title: '委托人地址'});
+            //cols.push({field: 'csPostcode', width: '5%', title: '委托人邮编'});
+            //cols.push({field: 'csPhnoe', width: '5%', title: '委托人电话'});
+            //cols.push({field: 'firstAppraiser', width: '5%', title: '第一报告人'});
+            //cols.push({field: 'firstRegistrationNumber', width: '5%', title: '第一报告人注册号'});
+            //cols.push({field: 'participationAppraiser', width: '5%', title: '参与报告人'});
+            //cols.push({field: 'registrationNumber', width: '5%', title: '注册号'});
+            //cols.push({field: 'contractPrice', width: '5%', title: '收费'});
             $("#" + ReportAppraiserAssociation.prototype.config().table).bootstrapTable('destroy');
             TableInit(ReportAppraiserAssociation.prototype.config().table, "${pageContext.request.contextPath}/customReportAppraiserAssociation/getCustomReportAppraiserAssociationList", cols, {
                 projectName: $("#queryProjectName").val(),
                 reportType: $("#queryReportType").val(),
                 numberValue: $("#queryNumberValue").val(),
                 unitName: $("#queryUnitName").val(),
-                queryPreviewsStartDate: $("#queryPreviewsStartDate").val(),
-                queryPreviewsEndDate: $("#queryPreviewsEndDate").val(),
-                queryResultStartDate: $("#queryResultStartDate").val(),
-                queryResultEndDate: $("#queryResultEndDate").val(),
+                queryStartDate: $("#queryStartDate").val(),
+                queryEndDate: $("#queryEndDate").val()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -261,19 +249,15 @@
             var reportType = $("#queryReportType").val();
             var numberValue = $("#queryNumberValue").val();
             var unitName = $("#queryUnitName").val();
-            var queryPreviewsStartDate = $("#queryPreviewsStartDate").val();
-            var queryPreviewsEndDate = $("#queryPreviewsEndDate").val();
-            var queryResultStartDate = $("#queryResultStartDate").val();
-            var queryResultEndDate = $("#queryResultEndDate").val();
+            var queryStartDate = $("#queryStartDate").val();
+            var queryEndDate = $("#queryEndDate").val();
             var href = "${pageContext.request.contextPath}/customReportAppraiserAssociation/export";
             href += "?projectName=" + projectName;
             href += "&reportType=" + reportType;
             href += "&numberValue=" + numberValue;
             href += "&unitName=" + unitName;
-            href += "&queryPreviewsStartDate=" + queryPreviewsStartDate;
-            href += "&queryPreviewsEndDate=" + queryPreviewsEndDate;
-            href += "&queryResultStartDate=" + queryResultStartDate;
-            href += "&queryResultEndDate=" + queryResultEndDate;
+            href += "&queryStartDate=" + queryStartDate;
+            href += "&queryEndDate=" + queryEndDate;
             window.open(href, "");
         }
 

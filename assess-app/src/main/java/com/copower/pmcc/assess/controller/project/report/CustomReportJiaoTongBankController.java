@@ -49,10 +49,10 @@ public class CustomReportJiaoTongBankController {
     @ResponseBody
     @RequestMapping(value = "/getCustomReportJiaoTongBankList", method = {RequestMethod.GET}, name = "获取列表")
     public BootstrapTableVo getCustomReportJiaoTongBankList(String numberValue, String unitName, Integer reportType,
-                                                            String queryPreviewsStartDate, String queryPreviewsEndDate, String queryResultStartDate, String queryResultEndDate) {
+                                                            String queryStartDate, String queryEndDate) {
         BootstrapTableVo vo = null;
         try {
-            vo = customReportJiaoTongBankService.getCustomReportJiaoTongBankList(numberValue, unitName, reportType,queryPreviewsStartDate,queryPreviewsEndDate,queryResultStartDate,queryResultEndDate);
+            vo = customReportJiaoTongBankService.getCustomReportJiaoTongBankList(numberValue, unitName, reportType,queryStartDate,queryEndDate);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s", e1.getMessage()), e1);
             return null;
@@ -62,9 +62,9 @@ public class CustomReportJiaoTongBankController {
 
     @RequestMapping(value = "/export", name = "导出")
     public void export(HttpServletResponse response, String numberValue, String unitName, Integer reportType,
-                       String queryPreviewsStartDate, String queryPreviewsEndDate, String queryResultStartDate, String queryResultEndDate) throws Exception {
+                       String queryStartDate, String queryEndDate) throws Exception {
         try {
-            customReportJiaoTongBankService.export(response, numberValue, unitName, reportType,queryPreviewsStartDate,queryPreviewsEndDate,queryResultStartDate,queryResultEndDate);
+            customReportJiaoTongBankService.export(response, numberValue, unitName, reportType,queryStartDate,queryEndDate);
         } catch (Exception e) {
             e.printStackTrace();
         }

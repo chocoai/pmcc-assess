@@ -11,7 +11,6 @@ import java.util.List;
 public interface CustomReportHuaXiaBankMapper {
     //查询任务
     List<CustomReportHuaXiaBank> getCustomReportHuaXiaBankList(@Param("numberValue") String numberValue, @Param("unitName") String unitName, @Param("reportType") Integer reportType,@Param("consultationId") Integer consultationId,
-                                                               @Param("previewsStartDate") Date previewsStartDate,@Param("previewsEndDate") Date previewsEndDate,
-                                                               @Param("resultStartDate") Date resultStartDate,@Param("resultEndDate") Date resultEndDate);//查询
+                                                               @Param("startDate") Date startDate,@Param("endDate") Date endDate);//查询
 
 }

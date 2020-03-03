@@ -30,8 +30,7 @@
                                     <div class="form-group form-inline">
                                         <label class="col-md-1 col-form-label">报告类型</label>
                                         <div class="col-md-2 p-0">
-                                            <select name="queryReportType" id="queryReportType" class="form-control input-full"
-                                                    onchange="ReportJiaoTongBank.prototype.showBtn()">
+                                            <select name="queryReportType" id="queryReportType" class="form-control input-full">
                                                 <option value="">--请选择--</option>
                                                 <c:forEach var="item" items="${reportTypeList}">
                                                     <option value="${item.id}">${item.name}</option>
@@ -50,37 +49,20 @@
                                                    class="form-control input-full">
                                         </div>
                                     </div>
-                                    <div class="form-group form-inline" style="display: none" id="queryPreauditBtn">
-
-                                        <label class="col-md-1 col-form-label">开始时间</label>
-                                        <div class="col-md-2 p-0">
-                                            <input id="queryPreviewsStartDate" name="queryPreviewsStartDate"
-                                                   class="form-control input-full date-picker dbdate"
-                                                   data-date-format="yyyy-mm-dd" placeholder="开始时间"/>
-                                        </div>
-                                        <label class="col-md-1 col-form-label">结束时间</label>
-                                        <div class="col-md-2 p-0">
-                                            <input id="queryPreviewsEndDate" name="queryPreviewsEndDate"
-                                                   class="form-control input-full date-picker dbdate"
-                                                   data-date-format="yyyy-mm-dd" placeholder="结束时间"/>
-                                        </div>
-                                    </div>
-                                    <div class="form-group form-inline" style="display: none" id="queryResultBtn">
-
-                                        <label class="col-md-1 col-form-label">开始时间</label>
-                                        <div class="col-md-2 p-0">
-                                            <input id="queryResultStartDate" name="queryResultStartDate"
-                                                   class="form-control input-full date-picker dbdate"
-                                                   data-date-format="yyyy-mm-dd" placeholder="开始时间"/>
-                                        </div>
-                                        <label class="col-md-1 col-form-label">结束时间</label>
-                                        <div class="col-md-2 p-0">
-                                            <input id="queryResultEndDate" name="queryResultEndDate"
-                                                   class="form-control input-full date-picker dbdate"
-                                                   data-date-format="yyyy-mm-dd" placeholder="结束时间"/>
-                                        </div>
-                                    </div>
                                     <div class="form-group form-inline">
+
+                                        <label class="col-md-1 col-form-label">开始时间</label>
+                                        <div class="col-md-2 p-0">
+                                            <input id="queryStartDate" name="queryStartDate"
+                                                   class="form-control input-full date-picker dbdate"
+                                                   data-date-format="yyyy-mm-dd" placeholder="开始时间"/>
+                                        </div>
+                                        <label class="col-md-1 col-form-label">结束时间</label>
+                                        <div class="col-md-2 p-0">
+                                            <input id="queryEndDate" name="queryEndDate"
+                                                   class="form-control input-full date-picker dbdate"
+                                                   data-date-format="yyyy-mm-dd" placeholder="结束时间"/>
+                                        </div>
                                         <button style="margin-left: 10px" class="btn btn-info  btn-sm" type="button"
                                                 onclick="ReportJiaoTongBank.prototype.loadDataDicList()">
 											<span class="btn-label">
@@ -88,10 +70,10 @@
 											</span>
                                             查询
                                         </button>
-                                        <button type="button" class="btn btn-success btn-sm" onclick="$('#frmQuery').clearAll()">
+                                        <button type="button" class="btn btn-success btn-sm" style="margin-left: 5px" onclick="$('#frmQuery').clearAll()">
                                             重置
                                         </button>
-                                        <button type="button" class="btn btn-info btn-sm"
+                                        <button type="button" class="btn btn-info btn-sm" style="margin-left: 5px"
                                                 onclick="ReportJiaoTongBank.prototype.showModel()"
                                                 data-toggle="modal" href="#divBox">
                                             <span class="btn-label">
@@ -99,7 +81,7 @@
 											</span>
                                             上传附件
                                         </button>
-                                        <button type="button" class="btn btn-success btn-sm"
+                                        <button type="button" class="btn btn-success btn-sm" style="margin-left: 5px"
                                                 onclick="ReportJiaoTongBank.prototype.exportData()">
                                             <span class="btn-label">
 												<i class="fa fa-cloud-download-alt"></i>
@@ -144,40 +126,38 @@
 
         loadDataDicList: function () {
             var cols = [];
-            cols.push({field: 'previewsNumber', title: '预估号'});
-            cols.push({field: 'resultNumber', title: '报告号'});
-            cols.push({field: 'projectCategoryName', title: '类型'});
+            cols.push({field: 'previewsNumber',width: '10%', title: '预估号'});
+            cols.push({field: 'resultNumber', width: '10%',title: '报告号'});
+            cols.push({field: 'projectCategoryName',width: '5%', title: '类型'});
             cols.push({
-                field: 'reportIssuanceDate', title: '报告日', formatter: function (value, row, index) {
+                field: 'reportIssuanceDate',width: '5%', title: '报告日', formatter: function (value, row, index) {
                     return formatDate(row.reportIssuanceDate, false);
                 }
             });
             cols.push({
-                field: 'valuationDate', title: '基准日', formatter: function (value, row, index) {
+                field: 'valuationDate',width: '5%', title: '基准日', formatter: function (value, row, index) {
                     return formatDate(row.valuationDate, false);
                 }
             });
-            cols.push({field: 'unitName', title: '细分2'});
-            cols.push({field: 'consignor', title: '委托方'});
-            cols.push({field: 'possessor', title: '产权人'});
-            cols.push({field: 'seat', title: '地址'});
-            cols.push({field: 'area', title: '面积'});
-            cols.push({field: 'assessPrice', title: '单价'});
-            cols.push({field: 'assessTotal', title: '总价'});
-            cols.push({field: 'methodNames', title: '方法'});
-            cols.push({field: 'assessCost', title: '收费金额'});
-            cols.push({field: 'assessOrganization', title: '评估公司'});
-            cols.push({field: 'firstAppraiser', title: '签字估价师1'});
-            cols.push({field: 'secondAppraiser', title: '签字估价师2'});
+            //cols.push({field: 'unitName', title: '细分2'});
+            cols.push({field: 'consignor',width: '5%', title: '委托方'});
+            cols.push({field: 'possessor', width: '5%',title: '产权人'});
+            cols.push({field: 'seat', width: '10%',title: '地址'});
+            //cols.push({field: 'area', title: '面积'});
+            cols.push({field: 'assessPrice',width: '5%', title: '单价'});
+            cols.push({field: 'assessTotal',width: '5%', title: '总价'});
+            //cols.push({field: 'methodNames', title: '方法'});
+            //cols.push({field: 'assessCost', width: '5%',title: '收费金额'});
+            //cols.push({field: 'assessOrganization', title: '评估公司'});
+            //cols.push({field: 'firstAppraiser', title: '签字估价师1'});
+            //cols.push({field: 'secondAppraiser', title: '签字估价师2'});
             $("#" + ReportJiaoTongBank.prototype.config().table).bootstrapTable('destroy');
             TableInit(ReportJiaoTongBank.prototype.config().table, "${pageContext.request.contextPath}/customReportJiaoTongBank/getCustomReportJiaoTongBankList", cols, {
                 numberValue: $("#queryNumberValue").val(),
                 unitName: $("#queryUnitName").val(),
                 reportType: $("#queryReportType").val(),
-                queryPreviewsStartDate: $("#queryPreviewsStartDate").val(),
-                queryPreviewsEndDate: $("#queryPreviewsEndDate").val(),
-                queryResultStartDate: $("#queryResultStartDate").val(),
-                queryResultEndDate: $("#queryResultEndDate").val()
+                queryStartDate: $("#queryStartDate").val(),
+                queryEndDate: $("#queryEndDate").val()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -243,18 +223,14 @@
             var numberValue = $("#queryNumberValue").val();
             var unitName = $("#queryUnitName").val();
             var reportType = $("#queryReportType").val();
-            var queryPreviewsStartDate = $("#queryPreviewsStartDate").val();
-            var queryPreviewsEndDate = $("#queryPreviewsEndDate").val();
-            var queryResultStartDate = $("#queryResultStartDate").val();
-            var queryResultEndDate = $("#queryResultEndDate").val();
+            var queryStartDate = $("#queryStartDate").val();
+            var queryEndDate = $("#queryEndDate").val();
             var href = "${pageContext.request.contextPath}/customReportJiaoTongBank/export";
             href += "?numberValue=" + numberValue;
             href += "&unitName=" + unitName;
             href += "&reportType=" + reportType;
-            href += "&queryPreviewsStartDate=" + queryPreviewsStartDate;
-            href += "&queryPreviewsEndDate=" + queryPreviewsEndDate;
-            href += "&queryResultStartDate=" + queryResultStartDate;
-            href += "&queryResultEndDate=" + queryResultEndDate;
+            href += "&queryStartDate=" + queryStartDate;
+            href += "&queryEndDate=" + queryEndDate;
             window.open(href, "");
         }
 

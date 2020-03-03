@@ -32,6 +32,15 @@ public class CustomReportHuaXiaBank {
     private Integer areaId;//
     private Date preauditNumberDate;//预评时间
     private Date resultNumberDate;//结果时间
+    private String projectName;
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
 
     public Date getPreauditNumberDate() {
         return preauditNumberDate;

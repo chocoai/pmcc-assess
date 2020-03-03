@@ -5,11 +5,9 @@ import com.copower.pmcc.ad.api.provider.AdRpcQualificationsService;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.custom.entity.CustomReportAppraiserAssociation;
 import com.copower.pmcc.assess.dal.basis.custom.mapper.CustomReportAppraiserAssociationMapper;
+import com.copower.pmcc.assess.dal.basis.dao.project.ProjectNumberRecordDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.initiate.InitiateContactsDao;
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.basis.entity.InitiateContacts;
-import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeFunction;
-import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.initiate.InitiateConsignorVo;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.PublicService;
@@ -70,28 +68,22 @@ public class CustomReportAppraiserAssociationService {
     private BaseService baseService;
     @Autowired
     private CustomReportAppraiserAssociationMapper customReportAppraiserAssociationMapper;
+    @Autowired
+    private ProjectNumberRecordDao projectNumberRecordDao;
 
 
     public BootstrapTableVo getCustomReportAppraiserAssociationList(String projectName, Integer reportType, String numberValue, String unitName,
-                                                                    String queryPreviewsStartDate, String queryPreviewsEndDate, String queryResultStartDate, String queryResultEndDate) {
+                                                                    String queryStartDate, String queryEndDate,Integer limit,Integer offset) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
-        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        Date previewsStartDate = null;
-        if (StringUtils.isNotEmpty(queryPreviewsStartDate)) {
-            previewsStartDate = DateUtils.parse(queryPreviewsStartDate);
+        Page<PageInfo> page = PageHelper.startPage(offset, limit);
+        Date startDate = null;
+        if (StringUtils.isNotEmpty(queryStartDate)) {
+            startDate = DateUtils.parse(queryStartDate);
         }
-        Date previewsEndDate = null;
-        if (StringUtils.isNotEmpty(queryPreviewsStartDate)) {
-            previewsEndDate = DateUtils.parse(queryPreviewsEndDate);
-        }
-        Date resultStartDate = null;
-        if (StringUtils.isNotEmpty(queryResultStartDate)) {
-            resultStartDate = DateUtils.parse(queryResultStartDate);
-        }
-        Date resultEndDate = null;
-        if (StringUtils.isNotEmpty(queryResultEndDate)) {
-            resultEndDate = DateUtils.parse(queryResultEndDate);
+        Date endDate = null;
+        if (StringUtils.isNotEmpty(queryEndDate)) {
+            endDate = DateUtils.parse(queryEndDate);
         }
         List<CustomReportAppraiserAssociation> customNumberRecordList = null;
         //结果报告
@@ -101,9 +93,9 @@ public class CustomReportAppraiserAssociationService {
         BaseDataDic consultationReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_CONSULTATION);
         Integer consultationId = consultationReport.getId();
         if (reportType == resultId) {
-            customNumberRecordList = customReportAppraiserAssociationMapper.getCustomReportAppraiserAssociationList(projectName, reportType, consultationId, numberValue, unitName, previewsStartDate, previewsEndDate, resultStartDate, resultEndDate);
+            customNumberRecordList = customReportAppraiserAssociationMapper.getCustomReportAppraiserAssociationList(projectName, reportType, consultationId, numberValue, unitName, startDate, endDate);
         } else {
-            customNumberRecordList = customReportAppraiserAssociationMapper.getCustomReportAppraiserAssociationList(projectName, reportType, null, numberValue, unitName, previewsStartDate, previewsEndDate, resultStartDate, resultEndDate);
+            customNumberRecordList = customReportAppraiserAssociationMapper.getCustomReportAppraiserAssociationList(projectName, reportType, null, numberValue, unitName, startDate, endDate);
         }
         List<CustomReportAppraiserAssociation> vos = LangUtils.transform(customNumberRecordList, o -> getCustomReportAppraiserAssociation(o));
         vo.setTotal(page.getTotal());
@@ -117,6 +109,23 @@ public class CustomReportAppraiserAssociationService {
         }
         CustomReportAppraiserAssociation vo = new CustomReportAppraiserAssociation();
         BeanUtils.copyProperties(data, vo);
+
+        ProjectNumberRecord where = new ProjectNumberRecord();
+        where.setBisDelete(false);
+        where.setProjectId(data.getProjectId());
+        List<ProjectNumberRecord> numberList = projectNumberRecordDao.getProjectNumberRecordList(where);
+        StringBuilder numberStr = new StringBuilder();
+
+
+        if (CollectionUtils.isNotEmpty(numberList)) {
+            for (ProjectNumberRecord item : numberList) {
+                numberStr.append(item.getNumberValue()).append("/");
+            }
+        }
+        if (StringUtils.isNotEmpty(numberStr.toString())) {
+            vo.setNumberValue(numberStr.deleteCharAt(numberStr.length() - 1).toString());
+        }
+
         if (data.getServiceComeFrom() != null) {
             vo.setServiceComeFromName(baseDataDicService.getNameById(data.getServiceComeFrom()));
         }
@@ -188,24 +197,17 @@ public class CustomReportAppraiserAssociationService {
      * @param response
      */
     public void export(HttpServletResponse response, String projectName, Integer reportType, String numberValue, String unitName,
-                       String queryPreviewsStartDate, String queryPreviewsEndDate, String queryResultStartDate, String queryResultEndDate) throws BusinessException, IOException {
+                       String queryStartDate, String queryEndDate) throws BusinessException, IOException {
         //获取数据
-        Date previewsStartDate = null;
-        if (StringUtils.isNotEmpty(queryPreviewsStartDate)) {
-            previewsStartDate = DateUtils.parse(queryPreviewsStartDate);
+        Date startDate = null;
+        if (StringUtils.isNotEmpty(queryStartDate)) {
+            startDate = DateUtils.parse(queryStartDate);
         }
-        Date previewsEndDate = null;
-        if (StringUtils.isNotEmpty(queryPreviewsStartDate)) {
-            previewsEndDate = DateUtils.parse(queryPreviewsEndDate);
+        Date endDate = null;
+        if (StringUtils.isNotEmpty(queryEndDate)) {
+            endDate = DateUtils.parse(queryEndDate);
         }
-        Date resultStartDate = null;
-        if (StringUtils.isNotEmpty(queryResultStartDate)) {
-            resultStartDate = DateUtils.parse(queryResultStartDate);
-        }
-        Date resultEndDate = null;
-        if (StringUtils.isNotEmpty(queryResultEndDate)) {
-            resultEndDate = DateUtils.parse(queryResultEndDate);
-        }
+
         List<CustomReportAppraiserAssociation> customNumberRecordList = null;
         //结果报告
         BaseDataDic resultReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_RESULT);
@@ -214,9 +216,9 @@ public class CustomReportAppraiserAssociationService {
         BaseDataDic consultationReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_CONSULTATION);
         Integer consultationId = consultationReport.getId();
         if (reportType == resultId) {
-            customNumberRecordList = customReportAppraiserAssociationMapper.getCustomReportAppraiserAssociationList(projectName, reportType, consultationId, numberValue, unitName, previewsStartDate, previewsEndDate, resultStartDate, resultEndDate);
+            customNumberRecordList = customReportAppraiserAssociationMapper.getCustomReportAppraiserAssociationList(projectName, reportType, consultationId, numberValue, unitName, startDate, endDate);
         } else {
-            customNumberRecordList = customReportAppraiserAssociationMapper.getCustomReportAppraiserAssociationList(projectName, reportType, null, numberValue, unitName, previewsStartDate, previewsEndDate, resultStartDate, resultEndDate);
+            customNumberRecordList = customReportAppraiserAssociationMapper.getCustomReportAppraiserAssociationList(projectName, reportType, null, numberValue, unitName, startDate, endDate);
         }
 
         if (CollectionUtils.isEmpty(customNumberRecordList)) {

@@ -4,7 +4,9 @@ import com.copower.pmcc.ad.api.provider.AdRpcQualificationsService;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.custom.entity.CustomReportHengFengBank;
 import com.copower.pmcc.assess.dal.basis.custom.mapper.CustomReportHengFengBankMapper;
+import com.copower.pmcc.assess.dal.basis.dao.project.ProjectNumberRecordDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectNumberRecord;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeFunction;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
 import com.copower.pmcc.assess.dto.output.project.initiate.InitiateConsignorVo;
@@ -71,29 +73,24 @@ public class CustomReportHengFengBankService {
     private SurveyCommonService surveyCommonService;
     @Autowired
     private SchemeJudgeFunctionService schemeJudgeFunctionService;
+    @Autowired
+    private ProjectNumberRecordDao projectNumberRecordDao;
 
 
-    public BootstrapTableVo getCustomReportHengFengBankList(String numberValue, String unitName, Integer reportType, String queryPreviewsStartDate,
-                                                            String queryPreviewsEndDate, String queryResultStartDate, String queryResultEndDate) {
+    public BootstrapTableVo getCustomReportHengFengBankList(String numberValue, String unitName, Integer reportType, String queryStartDate,
+                                                            String queryEndDate) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        Date previewsStartDate = null;
-        if (StringUtils.isNotEmpty(queryPreviewsStartDate)) {
-            previewsStartDate = DateUtils.parse(queryPreviewsStartDate);
+        Date startDate = null;
+        if (StringUtils.isNotEmpty(queryStartDate)) {
+            startDate = DateUtils.parse(queryStartDate);
         }
-        Date previewsEndDate = null;
-        if (StringUtils.isNotEmpty(queryPreviewsStartDate)) {
-            previewsEndDate = DateUtils.parse(queryPreviewsEndDate);
+        Date endDate = null;
+        if (StringUtils.isNotEmpty(queryEndDate)) {
+            endDate = DateUtils.parse(queryEndDate);
         }
-        Date resultStartDate = null;
-        if (StringUtils.isNotEmpty(queryResultStartDate)) {
-            resultStartDate = DateUtils.parse(queryResultStartDate);
-        }
-        Date resultEndDate = null;
-        if (StringUtils.isNotEmpty(queryResultEndDate)) {
-            resultEndDate = DateUtils.parse(queryResultEndDate);
-        }
+
         //结果报告
         BaseDataDic resultReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_RESULT);
         Integer resultId = resultReport.getId();
@@ -102,9 +99,9 @@ public class CustomReportHengFengBankService {
         Integer consultationId = consultationReport.getId();
         List<CustomReportHengFengBank> customNumberRecordList = null;
         if (reportType == resultId) {
-            customNumberRecordList = customReportHengFengBankMapper.getCustomReportHengFengBankList(numberValue, unitName, reportType, consultationId, previewsStartDate, previewsEndDate, resultStartDate, resultEndDate);
+            customNumberRecordList = customReportHengFengBankMapper.getCustomReportHengFengBankList(numberValue, unitName, reportType, consultationId, startDate, endDate);
         } else {
-            customNumberRecordList = customReportHengFengBankMapper.getCustomReportHengFengBankList(numberValue, unitName, reportType, null, previewsStartDate, previewsEndDate, resultStartDate, resultEndDate);
+            customNumberRecordList = customReportHengFengBankMapper.getCustomReportHengFengBankList(numberValue, unitName, reportType, null, startDate, endDate);
         }
         List<CustomReportHengFengBank> vos = LangUtils.transform(customNumberRecordList, o -> getCustomReportHengFengBank(o));
         vo.setTotal(page.getTotal());
@@ -178,7 +175,22 @@ public class CustomReportHengFengBankService {
             String accountList = publicService.getUserNameByAccountList(names);
             vo.setAppraiser(accountList);
         }
+        //文号
+        ProjectNumberRecord where = new ProjectNumberRecord();
+        where.setBisDelete(false);
+        where.setProjectId(data.getProjectId());
+        List<ProjectNumberRecord> numberList = projectNumberRecordDao.getProjectNumberRecordList(where);
+        StringBuilder numberStr = new StringBuilder();
 
+
+        if (CollectionUtils.isNotEmpty(numberList)) {
+            for (ProjectNumberRecord item : numberList) {
+                numberStr.append(item.getNumberValue()).append("/");
+            }
+        }
+        if (StringUtils.isNotEmpty(numberStr.toString())) {
+            vo.setNumberValue(numberStr.deleteCharAt(numberStr.length() - 1).toString());
+        }
         return vo;
 
     }
@@ -188,25 +200,18 @@ public class CustomReportHengFengBankService {
      *
      * @param response
      */
-    public void export(HttpServletResponse response, String numberValue, String unitName, Integer reportType, String queryPreviewsStartDate,
-                       String queryPreviewsEndDate, String queryResultStartDate, String queryResultEndDate) throws BusinessException, IOException {
+    public void export(HttpServletResponse response, String numberValue, String unitName, Integer reportType, String queryStartDate,
+                       String queryEndDate) throws BusinessException, IOException {
         //获取数据
-        Date previewsStartDate = null;
-        if (StringUtils.isNotEmpty(queryPreviewsStartDate)) {
-            previewsStartDate = DateUtils.parse(queryPreviewsStartDate);
+        Date startDate = null;
+        if (StringUtils.isNotEmpty(queryStartDate)) {
+            startDate = DateUtils.parse(queryStartDate);
         }
-        Date previewsEndDate = null;
-        if (StringUtils.isNotEmpty(queryPreviewsStartDate)) {
-            previewsEndDate = DateUtils.parse(queryPreviewsEndDate);
+        Date endDate = null;
+        if (StringUtils.isNotEmpty(queryEndDate)) {
+            endDate = DateUtils.parse(queryEndDate);
         }
-        Date resultStartDate = null;
-        if (StringUtils.isNotEmpty(queryResultStartDate)) {
-            resultStartDate = DateUtils.parse(queryResultStartDate);
-        }
-        Date resultEndDate = null;
-        if (StringUtils.isNotEmpty(queryResultEndDate)) {
-            resultEndDate = DateUtils.parse(queryResultEndDate);
-        }
+
         //结果报告
         BaseDataDic resultReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_RESULT);
         Integer resultId = resultReport.getId();
@@ -215,9 +220,9 @@ public class CustomReportHengFengBankService {
         Integer consultationId = consultationReport.getId();
         List<CustomReportHengFengBank> customNumberRecordList = null;
         if (reportType == resultId) {
-            customNumberRecordList = customReportHengFengBankMapper.getCustomReportHengFengBankList(numberValue, unitName, reportType, consultationId, previewsStartDate, previewsEndDate, resultStartDate, resultEndDate);
+            customNumberRecordList = customReportHengFengBankMapper.getCustomReportHengFengBankList(numberValue, unitName, reportType, consultationId, startDate, endDate);
         } else {
-            customNumberRecordList = customReportHengFengBankMapper.getCustomReportHengFengBankList(numberValue, unitName, reportType, null, previewsStartDate, previewsEndDate, resultStartDate, resultEndDate);
+            customNumberRecordList = customReportHengFengBankMapper.getCustomReportHengFengBankList(numberValue, unitName, reportType, null, startDate, endDate);
         }
         if (CollectionUtils.isEmpty(customNumberRecordList)) {
             throw new BusinessException("没有获取到有效的数据");

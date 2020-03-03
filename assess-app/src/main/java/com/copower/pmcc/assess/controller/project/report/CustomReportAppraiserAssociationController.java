@@ -55,11 +55,11 @@ public class CustomReportAppraiserAssociationController {
     @ResponseBody
     @RequestMapping(value = "/getCustomReportAppraiserAssociationList", method = {RequestMethod.GET}, name = "获取列表")
     public BootstrapTableVo getCustomReportAppraiserAssociationList(String projectName, Integer reportType, String numberValue, String unitName,
-                                                                    String queryPreviewsStartDate, String queryPreviewsEndDate, String queryResultStartDate, String queryResultEndDate) {
+                                                                    String queryStartDate, String queryEndDate,Integer limit,Integer offset) {
         BootstrapTableVo vo = null;
         try {
             vo = customReportAppraiserAssociationService.getCustomReportAppraiserAssociationList(projectName, reportType, numberValue, unitName,
-                    queryPreviewsStartDate, queryPreviewsEndDate, queryResultStartDate, queryResultEndDate);
+                    queryStartDate, queryEndDate,limit,offset);
         } catch (Exception e1) {
             logger.error(String.format("exception: %s", e1.getMessage()), e1);
             return null;
@@ -69,10 +69,10 @@ public class CustomReportAppraiserAssociationController {
 
     @RequestMapping(value = "/export", name = "导出")
     public void export(HttpServletRequest request, HttpServletResponse response, String projectName, Integer reportType, String numberValue, String unitName,
-                       String queryPreviewsStartDate, String queryPreviewsEndDate, String queryResultStartDate, String queryResultEndDate) throws Exception {
+                       String queryStartDate, String queryEndDate) throws Exception {
         try {
             customReportAppraiserAssociationService.export(response, projectName, reportType, numberValue, unitName,
-                    queryPreviewsStartDate, queryPreviewsEndDate, queryResultStartDate, queryResultEndDate);
+                    queryStartDate, queryEndDate);
         } catch (Exception e) {
             e.printStackTrace();
         }

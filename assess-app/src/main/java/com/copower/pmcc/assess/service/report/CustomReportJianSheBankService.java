@@ -5,10 +5,8 @@ import com.copower.pmcc.ad.api.provider.AdRpcQualificationsService;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.custom.entity.CustomReportJianSheBank;
 import com.copower.pmcc.assess.dal.basis.custom.mapper.CustomReportJianSheBankMapper;
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.basis.entity.BasicApply;
-import com.copower.pmcc.assess.dal.basis.entity.BasicEstate;
-import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
+import com.copower.pmcc.assess.dal.basis.dao.project.ProjectNumberRecordDao;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.initiate.InitiateConsignorVo;
 import com.copower.pmcc.assess.dto.output.project.initiate.InitiatePossessorVo;
 import com.copower.pmcc.assess.service.BaseService;
@@ -74,29 +72,24 @@ public class CustomReportJianSheBankService {
     private SurveyCommonService surveyCommonService;
     @Autowired
     private BasicEstateService basicEstateService;
+    @Autowired
+    private ProjectNumberRecordDao projectNumberRecordDao;
 
 
-    public BootstrapTableVo getCustomReportJianSheBankList(String numberValue, String unitName, Integer reportType, String queryPreviewsStartDate,
-                                                           String queryPreviewsEndDate, String queryResultStartDate, String queryResultEndDate) {
+    public BootstrapTableVo getCustomReportJianSheBankList(String numberValue, String unitName, Integer reportType, String queryStartDate,
+                                                           String queryEndDate) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        Date previewsStartDate = null;
-        if (StringUtils.isNotEmpty(queryPreviewsStartDate)) {
-            previewsStartDate = DateUtils.parse(queryPreviewsStartDate);
+        Date startDate = null;
+        if (StringUtils.isNotEmpty(queryStartDate)) {
+            startDate = DateUtils.parse(queryStartDate);
         }
-        Date previewsEndDate = null;
-        if (StringUtils.isNotEmpty(queryPreviewsStartDate)) {
-            previewsEndDate = DateUtils.parse(queryPreviewsEndDate);
+        Date endDate = null;
+        if (StringUtils.isNotEmpty(queryEndDate)) {
+            endDate = DateUtils.parse(queryEndDate);
         }
-        Date resultStartDate = null;
-        if (StringUtils.isNotEmpty(queryResultStartDate)) {
-            resultStartDate = DateUtils.parse(queryResultStartDate);
-        }
-        Date resultEndDate = null;
-        if (StringUtils.isNotEmpty(queryResultEndDate)) {
-            resultEndDate = DateUtils.parse(queryResultEndDate);
-        }
+
         List<CustomReportJianSheBank> customNumberRecordList = null;
         //结果报告
         BaseDataDic resultReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_RESULT);
@@ -105,9 +98,9 @@ public class CustomReportJianSheBankService {
         BaseDataDic consultationReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_CONSULTATION);
         Integer consultationId = consultationReport.getId();
         if (reportType == resultId) {
-            customNumberRecordList = customReportJianSheBankMapper.getCustomReportJianSheBankList(numberValue, unitName, reportType, consultationId, previewsStartDate, previewsEndDate, resultStartDate, resultEndDate);
+            customNumberRecordList = customReportJianSheBankMapper.getCustomReportJianSheBankList(numberValue, unitName, reportType, consultationId, startDate, endDate);
         } else {
-            customNumberRecordList = customReportJianSheBankMapper.getCustomReportJianSheBankList(numberValue, unitName, reportType, null, previewsStartDate, previewsEndDate, resultStartDate, resultEndDate);
+            customNumberRecordList = customReportJianSheBankMapper.getCustomReportJianSheBankList(numberValue, unitName, reportType, null, startDate, endDate);
         }
         List<CustomReportJianSheBank> vos = LangUtils.transform(customNumberRecordList, o -> getCustomReportJianSheBank(o));
         vo.setTotal(page.getTotal());
@@ -121,6 +114,23 @@ public class CustomReportJianSheBankService {
         }
         CustomReportJianSheBank vo = new CustomReportJianSheBank();
         BeanUtils.copyProperties(data, vo);
+        //文号
+        ProjectNumberRecord where = new ProjectNumberRecord();
+        where.setBisDelete(false);
+        where.setProjectId(data.getProjectId());
+        List<ProjectNumberRecord> numberList = projectNumberRecordDao.getProjectNumberRecordList(where);
+        StringBuilder numberStr = new StringBuilder();
+
+
+        if (CollectionUtils.isNotEmpty(numberList)) {
+            for (ProjectNumberRecord item : numberList) {
+                numberStr.append(item.getNumberValue()).append("/");
+            }
+        }
+        if (StringUtils.isNotEmpty(numberStr.toString())) {
+            vo.setNumberValue(numberStr.deleteCharAt(numberStr.length() - 1).toString());
+        }
+
 
         if (data.getAreaId() != null && data.getAreaId() != 0) {
             //评估总价
@@ -185,25 +195,18 @@ public class CustomReportJianSheBankService {
      *
      * @param response
      */
-    public void export(HttpServletResponse response, String numberValue, String unitName, Integer reportType, String queryPreviewsStartDate,
-                       String queryPreviewsEndDate, String queryResultStartDate, String queryResultEndDate) throws BusinessException, IOException {
+    public void export(HttpServletResponse response, String numberValue, String unitName, Integer reportType, String queryStartDate,
+                       String queryEndDate) throws BusinessException, IOException {
         //获取数据
-        Date previewsStartDate = null;
-        if (StringUtils.isNotEmpty(queryPreviewsStartDate)) {
-            previewsStartDate = DateUtils.parse(queryPreviewsStartDate);
+        Date startDate = null;
+        if (StringUtils.isNotEmpty(queryStartDate)) {
+            startDate = DateUtils.parse(queryStartDate);
         }
-        Date previewsEndDate = null;
-        if (StringUtils.isNotEmpty(queryPreviewsStartDate)) {
-            previewsEndDate = DateUtils.parse(queryPreviewsEndDate);
+        Date endDate = null;
+        if (StringUtils.isNotEmpty(queryEndDate)) {
+            endDate = DateUtils.parse(queryEndDate);
         }
-        Date resultStartDate = null;
-        if (StringUtils.isNotEmpty(queryResultStartDate)) {
-            resultStartDate = DateUtils.parse(queryResultStartDate);
-        }
-        Date resultEndDate = null;
-        if (StringUtils.isNotEmpty(queryResultEndDate)) {
-            resultEndDate = DateUtils.parse(queryResultEndDate);
-        }
+
         List<CustomReportJianSheBank> customNumberRecordList = null;
         //结果报告
         BaseDataDic resultReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_RESULT);
@@ -212,9 +215,9 @@ public class CustomReportJianSheBankService {
         BaseDataDic consultationReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_CONSULTATION);
         Integer consultationId = consultationReport.getId();
         if (reportType == resultId) {
-            customNumberRecordList = customReportJianSheBankMapper.getCustomReportJianSheBankList(numberValue, unitName, reportType, consultationId, previewsStartDate, previewsEndDate, resultStartDate, resultEndDate);
+            customNumberRecordList = customReportJianSheBankMapper.getCustomReportJianSheBankList(numberValue, unitName, reportType, consultationId, startDate, endDate);
         } else {
-            customNumberRecordList = customReportJianSheBankMapper.getCustomReportJianSheBankList(numberValue, unitName, reportType, null, previewsStartDate, previewsEndDate, resultStartDate, resultEndDate);
+            customNumberRecordList = customReportJianSheBankMapper.getCustomReportJianSheBankList(numberValue, unitName, reportType, null, startDate, endDate);
         }
 
         if (CollectionUtils.isEmpty(customNumberRecordList)) {

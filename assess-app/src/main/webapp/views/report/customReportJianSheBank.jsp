@@ -30,8 +30,7 @@
                                     <div class="form-group form-inline">
                                         <label class="col-md-1 col-form-label">报告类型</label>
                                         <div class="col-md-2 p-0">
-                                            <select name="queryReportType" id="queryReportType" class="form-control input-full"
-                                                    onchange="ReportJianSheBank.prototype.showBtn()">
+                                            <select name="queryReportType" id="queryReportType" class="form-control input-full">
                                                 <option value="">--请选择--</option>
                                                 <c:forEach var="item" items="${reportTypeList}">
                                                     <option value="${item.id}">${item.name}</option>
@@ -50,37 +49,20 @@
                                                    class="form-control input-full">
                                         </div>
                                     </div>
-                                    <div class="form-group form-inline" style="display: none" id="queryPreauditBtn">
-
-                                        <label class="col-md-1 col-form-label">开始时间</label>
-                                        <div class="col-md-2 p-0">
-                                            <input id="queryPreviewsStartDate" name="queryPreviewsStartDate"
-                                                   class="form-control input-full date-picker dbdate"
-                                                   data-date-format="yyyy-mm-dd" placeholder="开始时间"/>
-                                        </div>
-                                        <label class="col-md-1 col-form-label">结束时间</label>
-                                        <div class="col-md-2 p-0">
-                                            <input id="queryPreviewsEndDate" name="queryPreviewsEndDate"
-                                                   class="form-control input-full date-picker dbdate"
-                                                   data-date-format="yyyy-mm-dd" placeholder="结束时间"/>
-                                        </div>
-                                    </div>
-                                    <div class="form-group form-inline" style="display: none" id="queryResultBtn">
-
-                                        <label class="col-md-1 col-form-label">开始时间</label>
-                                        <div class="col-md-2 p-0">
-                                            <input id="queryResultStartDate" name="queryResultStartDate"
-                                                   class="form-control input-full date-picker dbdate"
-                                                   data-date-format="yyyy-mm-dd" placeholder="开始时间"/>
-                                        </div>
-                                        <label class="col-md-1 col-form-label">结束时间</label>
-                                        <div class="col-md-2 p-0">
-                                            <input id="queryResultEndDate" name="queryResultEndDate"
-                                                   class="form-control input-full date-picker dbdate"
-                                                   data-date-format="yyyy-mm-dd" placeholder="结束时间"/>
-                                        </div>
-                                    </div>
                                     <div class="form-group form-inline">
+
+                                        <label class="col-md-1 col-form-label">开始时间</label>
+                                        <div class="col-md-2 p-0">
+                                            <input id="queryStartDate" name="queryStartDate"
+                                                   class="form-control input-full date-picker dbdate"
+                                                   data-date-format="yyyy-mm-dd" placeholder="开始时间"/>
+                                        </div>
+                                        <label class="col-md-1 col-form-label">结束时间</label>
+                                        <div class="col-md-2 p-0">
+                                            <input id="queryEndDate" name="queryEndDate"
+                                                   class="form-control input-full date-picker dbdate"
+                                                   data-date-format="yyyy-mm-dd" placeholder="结束时间"/>
+                                        </div>
                                         <button style="margin-left: 10px" class="btn btn-info  btn-sm" type="button"
                                                 onclick="ReportJianSheBank.prototype.loadDataDicList()">
 											<span class="btn-label">
@@ -88,10 +70,10 @@
 											</span>
                                             查询
                                         </button>
-                                        <button type="button" class="btn btn-success btn-sm" onclick="$('#frmQuery').clearAll()">
+                                        <button type="button" class="btn btn-success btn-sm" style="margin-left: 5px" onclick="$('#frmQuery').clearAll()">
                                             重置
                                         </button>
-                                        <button type="button" class="btn btn-info btn-sm"
+                                        <button type="button" class="btn btn-info btn-sm" style="margin-left: 5px"
                                                 onclick="ReportJianSheBank.prototype.showModel()"
                                                 data-toggle="modal" href="#divBox">
                                             <span class="btn-label">
@@ -99,7 +81,7 @@
 											</span>
                                             上传附件
                                         </button>
-                                        <button type="button" class="btn btn-success btn-sm"
+                                        <button type="button" class="btn btn-success btn-sm" style="margin-left: 5px"
                                                 onclick="ReportJianSheBank.prototype.exportData()">
                                             <span class="btn-label">
 												<i class="fa fa-cloud-download-alt"></i>
@@ -107,6 +89,7 @@
                                             导出
                                         </button>
                                     </div>
+
                                 </form>
                                 <table class="table table-bordered" id="tb_FatherList">
                                     <!-- cerare document add ajax data-->
@@ -146,36 +129,36 @@
 
         loadDataDicList: function () {
             var cols = [];
-            cols.push({field: 'unitName',width: '5%', title: '经办行'});
+            cols.push({field: 'unitName',width: '5%', title: '使用单位'});
             cols.push({field: 'consignor',width: '5%', title: '委托人'});
             cols.push({field: 'pledger', width: '5%',title: '抵押人'});
             cols.push({field: 'loanTypeName',width: '5%', title: '业务类型'});
             cols.push({field: 'projectCategoryName',width: '5%', title: '评估类型'});
             cols.push({field: 'areaName', width: '10%',title: '估价对象所处区域'});
-            cols.push({field: 'estateName',width: '5%', title: '小区名称'});
-            cols.push({field: 'seat', width: '5%',title: '估价对象坐落位置'});
-            cols.push({
-                field: 'handleTieme', width: '5%',title: '业务受理时间', formatter: function (value, row, index) {
-                    return formatDate(row.handleTieme, false);
-                }
-            });
-            cols.push({
-                field: 'preauditNumberDate',width: '5%', title: '预评出具时间', formatter: function (value, row, index) {
-                    return formatDate(row.preauditNumberDate, false);
-                }
-            });
-            cols.push({
-                field: 'reportIssuanceDate',width: '5%', title: '报告出具时间', formatter: function (value, row, index) {
-                    return formatDate(row.reportIssuanceDate, false);
-                }
-            });
-            cols.push({field: 'area',width: '5%', title: '面积'});
+            //cols.push({field: 'estateName',width: '5%', title: '小区名称'});
+            //cols.push({field: 'seat', width: '5%',title: '估价对象坐落位置'});
+            // cols.push({
+            //     field: 'handleTieme', width: '5%',title: '业务受理时间', formatter: function (value, row, index) {
+            //         return formatDate(row.handleTieme, false);
+            //     }
+            // });
+            // cols.push({
+            //     field: 'preauditNumberDate',width: '5%', title: '预评出具时间', formatter: function (value, row, index) {
+            //         return formatDate(row.preauditNumberDate, false);
+            //     }
+            // });
+            // cols.push({
+            //     field: 'reportIssuanceDate',width: '5%', title: '报告出具时间', formatter: function (value, row, index) {
+            //         return formatDate(row.reportIssuanceDate, false);
+            //     }
+            // });
+            //cols.push({field: 'area',width: '5%', title: '面积'});
             cols.push({field: 'assessTotal',width: '5%', title: '评估总价'});
             cols.push({field: 'assessPrice',width: '5%', title: '评估单价'});
-            cols.push({field: 'assessCost',width: '5%', title: '评估费用'});
-            cols.push({field: 'assessOrganization',width: '5%', title: '评估机构'});
+            //cols.push({field: 'assessCost',width: '5%', title: '评估费用'});
+            //cols.push({field: 'assessOrganization',width: '5%', title: '评估机构'});
             cols.push({field: 'appraiser', width: '5%',title: '评估师'});
-            cols.push({field: 'remark',width: '5%', title: '备注'});
+            //cols.push({field: 'remark',width: '5%', title: '备注'});
             cols.push({field: 'numberValue',width: '5%', title: ' 报告文号'});
 
             $("#" + ReportJianSheBank.prototype.config().table).bootstrapTable('destroy');
@@ -183,10 +166,8 @@
                 numberValue: $("#queryNumberValue").val(),
                 unitName: $("#queryUnitName").val(),
                 reportType: $("#queryReportType").val(),
-                queryPreviewsStartDate: $("#queryPreviewsStartDate").val(),
-                queryPreviewsEndDate: $("#queryPreviewsEndDate").val(),
-                queryResultStartDate: $("#queryResultStartDate").val(),
-                queryResultEndDate: $("#queryResultEndDate").val()
+                queryStartDate: $("#queryStartDate").val(),
+                queryEndDate: $("#queryEndDate").val()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -252,18 +233,14 @@
             var numberValue = $("#queryNumberValue").val();
             var unitName = $("#queryUnitName").val();
             var reportType = $("#queryReportType").val();
-            var queryPreviewsStartDate = $("#queryPreviewsStartDate").val();
-            var queryPreviewsEndDate = $("#queryPreviewsEndDate").val();
-            var queryResultStartDate = $("#queryResultStartDate").val();
-            var queryResultEndDate = $("#queryResultEndDate").val();
+            var queryStartDate = $("#queryStartDate").val();
+            var queryEndDate = $("#queryEndDate").val();
             var href = "${pageContext.request.contextPath}/customReportJianSheBank/export";
             href += "?numberValue=" + numberValue;
             href += "&unitName=" + unitName;
             href += "&reportType=" + reportType;
-            href += "&queryPreviewsStartDate=" + queryPreviewsStartDate;
-            href += "&queryPreviewsEndDate=" + queryPreviewsEndDate;
-            href += "&queryResultStartDate=" + queryResultStartDate;
-            href += "&queryResultEndDate=" + queryResultEndDate;
+            href += "&queryStartDate=" + queryStartDate;
+            href += "&queryEndDate=" + queryEndDate;
             window.open(href, "");
         }
 

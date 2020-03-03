@@ -19,14 +19,12 @@
         <result column="real_estate_appraiser" property="realEstateAppraiser" jdbcType="VARCHAR"/>
         <result column="contract_price" property="contractPrice" jdbcType="DECIMAL"/>
         <result column="area_id" property="areaId" jdbcType="INTEGER"/>
-        <result column="preaudit_number_date" property="preauditNumberDate" jdbcType="TIMESTAMP"/>
-        <result column="result_number_date" property="resultNumberDate" jdbcType="TIMESTAMP"/>
-
+        <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <select id="getCustomReportAppraiserAssociationList" parameterType="map" resultMap="BaseResultMap">
         select distinct
-        A.id,A.project_id, A.report_type,E.u_use_unit_name,A.number_value,B.project_name,B.service_come_from,B.entrust_purpose_name,C.investigations_start_date,
+        A.id,A.gmt_created,A.project_id, A.report_type,E.u_use_unit_name,A.number_value,B.project_name,B.service_come_from,B.entrust_purpose_name,C.investigations_start_date,
         C.home_work_end_time,
         B.valuation_date,D.cs_address,C.qualification_type,C.real_estate_appraiser,B.contract_price, A.area_id, B.preaudit_number_date, B.result_number_date
         from tb_project_number_record A
@@ -54,17 +52,12 @@
             AND (E.u_use_unit_name LIKE
             CONCAT(CONCAT('%',#{unitName}), '%'))
         </if>
-        <if test="previewsStartDate!=null">
-            AND B.preaudit_number_date &gt;= #{previewsStartDate}
+        <if test="startDate!=null">
+            AND A.gmt_created &gt;= #{startDate}
         </if>
-        <if test="previewsEndDate!=null">
-            AND B.preaudit_number_date &lt;= #{previewsEndDate}
+        <if test="endDate!=null">
+            AND A.gmt_created &lt;= #{endDate}
         </if>
-        <if test="resultStartDate!=null">
-            AND B.result_number_date >= #{resultStartDate}
-        </if>
-        <if test="resultEndDate!=null">
-            AND B.result_number_date &lt;= #{resultEndDate}
-        </if>
+        GROUP BY A.project_id
     </select>
 </mapper>

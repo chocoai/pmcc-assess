@@ -30,8 +30,7 @@
                                     <div class="form-group form-inline">
                                         <label class="col-md-1 col-form-label">报告类型</label>
                                         <div class="col-md-2 p-0">
-                                            <select name="queryReportType" id="queryReportType" class="form-control input-full"
-                                                    onchange="ReportGongShangBank.prototype.showBtn()">
+                                            <select name="queryReportType" id="queryReportType" class="form-control input-full">
                                                 <option value="">--请选择--</option>
                                                 <c:forEach var="item" items="${reportTypeList}">
                                                     <option value="${item.id}">${item.name}</option>
@@ -50,37 +49,21 @@
                                                    class="form-control input-full">
                                         </div>
                                     </div>
-                                    <div class="form-group form-inline" style="display: none" id="queryPreauditBtn">
 
-                                        <label class="col-md-1 col-form-label">开始时间</label>
-                                        <div class="col-md-2 p-0">
-                                            <input id="queryPreviewsStartDate" name="queryPreviewsStartDate"
-                                                   class="form-control input-full date-picker dbdate"
-                                                   data-date-format="yyyy-mm-dd" placeholder="开始时间"/>
-                                        </div>
-                                        <label class="col-md-1 col-form-label">结束时间</label>
-                                        <div class="col-md-2 p-0">
-                                            <input id="queryPreviewsEndDate" name="queryPreviewsEndDate"
-                                                   class="form-control input-full date-picker dbdate"
-                                                   data-date-format="yyyy-mm-dd" placeholder="结束时间"/>
-                                        </div>
-                                    </div>
-                                    <div class="form-group form-inline" style="display: none" id="queryResultBtn">
-
-                                        <label class="col-md-1 col-form-label">开始时间</label>
-                                        <div class="col-md-2 p-0">
-                                            <input id="queryResultStartDate" name="queryResultStartDate"
-                                                   class="form-control input-full date-picker dbdate"
-                                                   data-date-format="yyyy-mm-dd" placeholder="开始时间"/>
-                                        </div>
-                                        <label class="col-md-1 col-form-label">结束时间</label>
-                                        <div class="col-md-2 p-0">
-                                            <input id="queryResultEndDate" name="queryResultEndDate"
-                                                   class="form-control input-full date-picker dbdate"
-                                                   data-date-format="yyyy-mm-dd" placeholder="结束时间"/>
-                                        </div>
-                                    </div>
                                     <div class="form-group form-inline">
+
+                                        <label class="col-md-1 col-form-label">开始时间</label>
+                                        <div class="col-md-2 p-0">
+                                            <input id="queryStartDate" name="queryStartDate"
+                                                   class="form-control input-full date-picker dbdate"
+                                                   data-date-format="yyyy-mm-dd" placeholder="开始时间"/>
+                                        </div>
+                                        <label class="col-md-1 col-form-label">结束时间</label>
+                                        <div class="col-md-2 p-0">
+                                            <input id="queryEndDate" name="queryEndDate"
+                                                   class="form-control input-full date-picker dbdate"
+                                                   data-date-format="yyyy-mm-dd" placeholder="结束时间"/>
+                                        </div>
                                         <button style="margin-left: 10px" class="btn btn-info  btn-sm" type="button"
                                                 onclick="ReportGongShangBank.prototype.loadDataDicList()">
 											<span class="btn-label">
@@ -88,10 +71,10 @@
 											</span>
                                             查询
                                         </button>
-                                        <button type="button" class="btn btn-success btn-sm" onclick="$('#frmQuery').clearAll()">
+                                        <button style="margin-left: 5px" type="button" class="btn btn-success btn-sm" onclick="$('#frmQuery').clearAll()">
                                             重置
                                         </button>
-                                        <button type="button" class="btn btn-info btn-sm"
+                                        <button style="margin-left: 5px" type="button" class="btn btn-info btn-sm"
                                                 onclick="ReportGongShangBank.prototype.showModel()"
                                                 data-toggle="modal" href="#divBox">
                                             <span class="btn-label">
@@ -99,7 +82,7 @@
 											</span>
                                             上传附件
                                         </button>
-                                        <button type="button" class="btn btn-success btn-sm"
+                                        <button style="margin-left: 5px" type="button" class="btn btn-success btn-sm"
                                                 onclick="ReportGongShangBank.prototype.exportData()">
                                             <span class="btn-label">
 												<i class="fa fa-cloud-download-alt"></i>
@@ -145,41 +128,39 @@
 
         loadDataDicList: function () {
             var cols = [];
-            cols.push({field: 'unitName', title: '支行'});
-            cols.push({
-                field: 'pushTime', title: '工行系统最终推送日期', formatter: function (value, row, index) {
-                    return formatDate(row.pushTime, false);
-                }
-            });
-            cols.push({field: 'pushNumber', title: '工行系统推送项目编号'});
-            cols.push({field: 'clientManager', title: '客户经理'});
-            cols.push({field: 'phone', title: '联系电话'});
-            cols.push({field: 'consignor', title: '委托方'});
-            cols.push({field: 'projectCategoryName', title: '评估标的'});
-            cols.push({
-                field: 'checkTime', title: '现场查看时间', formatter: function (value, row, index) {
-                    return formatDate(row.checkTime, false);
-                }
-            });
-            cols.push({field: 'assessTotal', title: '评估价值'});
-            cols.push({field: 'previewsNumber', title: '预估号'});
-            cols.push({field: 'resultNumber', title: '报告号'});
-            cols.push({field: 'assessCost', title: '收费金额'});
-            cols.push({
-                field: 'makeOutDate', title: '开票时间', formatter: function (value, row, index) {
-                    return formatDate(row.makeOutDate, false);
-                }
-            });
-            cols.push({field: 'remark', title: '备注'});
+            cols.push({field: 'unitName',width: '5%', title: '单位'});
+            // cols.push({
+            //     field: 'pushTime', title: '工行系统最终推送日期', formatter: function (value, row, index) {
+            //         return formatDate(row.pushTime, false);
+            //     }
+            // });
+            //cols.push({field: 'pushNumber', title: '工行系统推送项目编号'});
+            cols.push({field: 'clientManager',width: '5%', title: '客户经理'});
+            //cols.push({field: 'phone', title: '联系电话'});
+            cols.push({field: 'consignor',width: '5%', title: '委托方'});
+            cols.push({field: 'projectCategoryName', width: '5%',title: '评估标的'});
+            // cols.push({
+            //     field: 'checkTime', title: '现场查看时间', formatter: function (value, row, index) {
+            //         return formatDate(row.checkTime, false);
+            //     }
+            // });
+            cols.push({field: 'assessTotal', width: '5%',title: '评估价值'});
+            cols.push({field: 'previewsNumber', width: '10%',title: '预估号'});
+            cols.push({field: 'resultNumber', width: '10%',title: '报告号'});
+            cols.push({field: 'assessCost',width: '5%', title: '收费金额'});
+            // cols.push({
+            //     field: 'makeOutDate', title: '开票时间', formatter: function (value, row, index) {
+            //         return formatDate(row.makeOutDate, false);
+            //     }
+            // });
+            //cols.push({field: 'remark', title: '备注'});
             $("#" + ReportGongShangBank.prototype.config().table).bootstrapTable('destroy');
             TableInit(ReportGongShangBank.prototype.config().table, "${pageContext.request.contextPath}/customReportGongShangBank/getCustomReportGongShangBankList", cols, {
                 numberValue: $("#queryNumberValue").val(),
                 unitName: $("#queryUnitName").val(),
                 reportType: $("#queryReportType").val(),
-                queryPreviewsStartDate: $("#queryPreviewsStartDate").val(),
-                queryPreviewsEndDate: $("#queryPreviewsEndDate").val(),
-                queryResultStartDate: $("#queryResultStartDate").val(),
-                queryResultEndDate: $("#queryResultEndDate").val()
+                queryStartDate: $("#queryStartDate").val(),
+                queryEndDate: $("#queryEndDate").val()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -245,18 +226,14 @@
             var numberValue = $("#queryNumberValue").val();
             var unitName = $("#queryUnitName").val();
             var reportType = $("#queryReportType").val();
-            var queryPreviewsStartDate = $("#queryPreviewsStartDate").val();
-            var queryPreviewsEndDate = $("#queryPreviewsEndDate").val();
-            var queryResultStartDate = $("#queryResultStartDate").val();
-            var queryResultEndDate = $("#queryResultEndDate").val();
+            var queryStartDate = $("#queryStartDate").val();
+            var queryEndDate = $("#queryEndDate").val();
             var href = "${pageContext.request.contextPath}/customReportGongShangBank/export";
             href += "?numberValue=" + numberValue;
             href += "&unitName=" + unitName;
             href += "&reportType=" + reportType;
-            href += "&queryPreviewsStartDate=" + queryPreviewsStartDate;
-            href += "&queryPreviewsEndDate=" + queryPreviewsEndDate;
-            href += "&queryResultStartDate=" + queryResultStartDate;
-            href += "&queryResultEndDate=" + queryResultEndDate;
+            href += "&queryStartDate=" + queryStartDate;
+            href += "&queryEndDate=" + queryEndDate;
             window.open(href, "");
         }
 

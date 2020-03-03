@@ -23,7 +23,7 @@
 
     <select id="getCustomReportJiaoTongBankList" parameterType="map" resultMap="BaseResultMap">
         select distinct
-        A.id,A.project_id,A.number_value, A.report_type, B.project_category_id,D.report_issuance_date,
+        A.id,A.project_id,A.gmt_created,A.number_value, A.report_type, B.project_category_id,D.report_issuance_date,
         E.u_use_unit_name,B.valuation_date,B.contract_price,C.assess_organization,A.area_id,
         D.qualification_type,D.real_estate_appraiser, B.preaudit_number_date, B.result_number_date
         from tb_project_number_record A
@@ -48,17 +48,12 @@
         <if test="reportType!=null and consultationId!=null">
             AND (A.report_type = #{reportType} or A.report_type = #{consultationId})
         </if>
-        <if test="previewsStartDate!=null">
-            AND B.preaudit_number_date &gt;= #{previewsStartDate}
+        <if test="startDate!=null">
+            AND A.gmt_created &gt;= #{startDate}
         </if>
-        <if test="previewsEndDate!=null">
-            AND B.preaudit_number_date &lt;= #{previewsEndDate}
+        <if test="endDate!=null">
+            AND A.gmt_created &lt;= #{endDate}
         </if>
-        <if test="resultStartDate!=null">
-            AND B.result_number_date >= #{resultStartDate}
-        </if>
-        <if test="resultEndDate!=null">
-            AND B.result_number_date &lt;= #{resultEndDate}
-        </if>
+        GROUP BY A.project_id
     </select>
 </mapper>

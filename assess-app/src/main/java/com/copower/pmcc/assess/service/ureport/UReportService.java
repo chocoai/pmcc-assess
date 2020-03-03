@@ -2,10 +2,13 @@ package com.copower.pmcc.assess.service.ureport;
 
 import com.bstek.ureport.build.BeanPageDataSet;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
+import com.copower.pmcc.assess.dal.basis.dao.project.ProjectNumberRecordDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectNumberRecord;
 import com.copower.pmcc.assess.dto.output.ureport.UProjectFinanceVo;
 import com.copower.pmcc.assess.service.assist.DdlMySqlAssist;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.project.ProjectNumberRecordService;
 import com.copower.pmcc.crm.api.dto.CrmCustomerDto;
 import com.copower.pmcc.crm.api.provider.CrmRpcCustomerService;
 import com.copower.pmcc.erp.api.dto.SysUserDto;
@@ -51,6 +54,8 @@ public class UReportService {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private ErpRpcDepartmentService erpRpcDepartmentService;
+    @Autowired
+    private ProjectNumberRecordDao projectNumberRecordDao;
 
     /**
      * 项目开票收款报表
@@ -125,30 +130,27 @@ public class UReportService {
         Integer consultationId = consultationReport.getId();
 
         StringBuilder sql = new StringBuilder();
-        sql.append("SELECT A.id,A.public_project_id,A.project_name,A.contract_name,A.contract_price,A.entrust_purpose,A.loan_type,A.department_id,A.service_come_from_explain," +
-                " A.result_number_date,B.user_account_manager,C.cs_entrustment_unit,C.cs_name,D.u_use_unit," +
-                " E.number_value as preaudit_number,F.number_value as technology_number,G.number_value as result_number,H.number_value as consultation_number,A.gmt_created" +
-                " FROM tb_project_info A " +
-                " LEFT JOIN tb_project_member B ON A.id=B.project_id" +
-                " LEFT JOIN tb_initiate_consignor C ON A.id=C.project_id" +
-                " LEFT JOIN tb_initiate_unit_information D ON A.id=D.project_id");
-        sql.append(String.format(" LEFT JOIN tb_project_number_record E ON (A.id=E.project_id and E.report_type = %s AND E.bis_delete = 0)", preauditId));
-        sql.append(String.format(" LEFT JOIN tb_project_number_record F ON (A.id=F.project_id and F.report_type = %s AND F.bis_delete = 0)", technologyId));
-        sql.append(String.format(" LEFT JOIN tb_project_number_record G ON (A.id=G.project_id and G.report_type = %s AND G.bis_delete = 0)", resultId));
-        sql.append(String.format(" LEFT JOIN tb_project_number_record H ON (A.id=H.project_id and H.report_type = %s AND H.bis_delete = 0)", consultationId));
-        sql.append(" WHERE 1=1");
+        sql.append("SELECT A.id,A.number_value,A.gmt_created,A.project_id,A.report_type,P.public_project_id,P.project_name,P.contract_name,P.contract_price,P.entrust_purpose,P.loan_type,P.department_id,P.service_come_from_explain," +
+                " P.gmt_created as projectCreated,B.user_account_manager,C.cs_entrustment_unit,C.cs_name,D.u_use_unit" +
+                " FROM tb_project_number_record A " +
+                " LEFT JOIN tb_project_info P ON P.id=A.project_id" +
+                " LEFT JOIN tb_project_member B ON B.project_id=A.project_id" +
+                " LEFT JOIN tb_initiate_consignor C ON C.project_id=A.project_id" +
+                " LEFT JOIN tb_initiate_unit_information D ON D.project_id=A.project_id");
+
+        sql.append(" WHERE 1=1 AND A.bis_delete = 0");
 
         if (StringUtil.isNotEmpty(queryProjectName)) {
-            sql.append(String.format(" AND A.project_name LIKE '%s%s%s'", "%", queryProjectName, "%"));
+            sql.append(String.format(" AND P.project_name LIKE '%s%s%s'", "%", queryProjectName, "%"));
         }
         if (queryEntrustment != null && !queryEntrustment.equals(0)) {
-            sql.append(String.format(" AND A.entrust_purpose = '%s'", queryEntrustment));
+            sql.append(String.format(" AND P.entrust_purpose = '%s'", queryEntrustment));
         }
         if (queryLoanType != null && !queryLoanType.equals(0)) {
-            sql.append(String.format(" AND A.loan_type = '%s'", queryLoanType));
+            sql.append(String.format(" AND P.loan_type = '%s'", queryLoanType));
         }
         if (queryDepartmentId != null && !queryDepartmentId.equals(0)) {
-            sql.append(String.format(" AND A.department_id = '%s'", queryDepartmentId));
+            sql.append(String.format(" AND P.department_id = '%s'", queryDepartmentId));
         }
 
         if (StringUtil.isNotEmpty(queryConsignorName)) {
@@ -158,16 +160,13 @@ public class UReportService {
             sql.append(String.format(" AND D.u_use_unit = %s", queryReportUseUnitName));
         }
         if (StringUtil.isNotEmpty(queryReportNumber)) {
-            sql.append(String.format(" AND (E.number_value LIKE '%s%s%s'", "%", queryReportNumber, "%"));
-            sql.append(String.format(" OR F.number_value LIKE '%s%s%s'", "%", queryReportNumber, "%"));
-            sql.append(String.format(" OR G.number_value LIKE '%s%s%s'", "%", queryReportNumber, "%"));
-            sql.append(String.format(" OR H.number_value LIKE '%s%s%s')", "%", queryReportNumber, "%"));
+            sql.append(String.format(" AND A.number_value LIKE '%s%s%s'", "%", queryReportNumber, "%"));
         }
         if (StringUtil.isNotEmpty(queryStartTime)) {
-            sql.append(String.format(" AND Date(A.result_number_date) >= '%s'", queryStartTime));
+            sql.append(String.format(" AND Date(A.gmt_created) >= '%s'", queryStartTime));
         }
         if (StringUtil.isNotEmpty(queryEndTime)) {
-            sql.append(String.format(" AND Date(A.result_number_date) <= '%s'", queryEndTime));
+            sql.append(String.format(" AND Date(A.gmt_created) <= '%s'", queryEndTime));
         }
         if (StringUtils.isNotBlank(userAccount)) {
             sql.append(String.format(" AND B.user_account_manager = '%s'", userAccount));
@@ -177,9 +176,9 @@ public class UReportService {
             }
         }
         if (StringUtil.isNotEmpty(queryServiceExplain)) {
-            sql.append(String.format(" AND A.service_come_from_explain LIKE '%s%s%s'", "%", queryServiceExplain, "%"));
+            sql.append(String.format(" AND P.service_come_from_explain LIKE '%s%s%s'", "%", queryServiceExplain, "%"));
         }
-        sql.append(" order by G.number,H.number,E.number,F.number");
+        sql.append(" GROUP BY A.project_id");
         List<UProjectFinanceVo> list = Lists.newArrayList();
         Page<PageInfo> page = PageHelper.startPage(pageIndex, fixRows);
         List<Map> mapList = ddlMySqlAssist.customTableSelect(sql.toString());
@@ -199,6 +198,10 @@ public class UReportService {
                 try {
                     UProjectFinanceVo vo = new UProjectFinanceVo();
                     vo.setId(objectToInteger(map.get("id")));
+                    Object projectCreated = map.get("projectCreated");
+                    if (projectCreated != null) {
+                        vo.setProjectCreated(DateUtils.convertDate(String.valueOf(projectCreated)));
+                    }
                     vo.setProjectName(objectToString(map.get("project_name")));
                     vo.setServiceComeFromExplain(objectToString(map.get("service_come_from_explain")));
                     //委托目的
@@ -211,7 +214,7 @@ public class UReportService {
                         vo.setDepartmentName(erpRpcDepartmentService.getDepartmentById(Integer.valueOf(departmentId)).getName());
 
                     vo.setProjectName(objectToString(map.get("project_name")));
-                    vo.setProjectName(objectToString(map.get("project_name")));
+
                     String userAccountManager = objectToString(map.get("user_account_manager"));
                     if (StringUtil.isNotEmpty(userAccountManager)) {
                         SysUserDto sysUser = erpRpcUserService.getSysUser(userAccountManager);
@@ -231,17 +234,39 @@ public class UReportService {
                         }
                     }
                     vo.setReportUseUnitName(useUnit);
-                    vo.setPreauditNumber(objectToString(map.get("preaudit_number")));
-                    vo.setTechnologyNumber(objectToString(map.get("technology_number")));
-                    vo.setResultNumber(String.format("%s/%s", objectToString(map.get("consultation_number")), objectToString(map.get("result_number"))));
-                    Object gmt_created = map.get("gmt_created");
-                    if (gmt_created != null) {
-                        vo.setProjectCreated(DateUtils.convertDate(String.valueOf(gmt_created)));
+                    //报告编号
+                    Integer projectId = Integer.valueOf(objectToString(map.get("project_id")));
+                    ProjectNumberRecord where = new ProjectNumberRecord();
+                    where.setBisDelete(false);
+                    where.setProjectId(projectId);
+                    List<ProjectNumberRecord> numberList = projectNumberRecordDao.getProjectNumberRecordList(where);
+                    StringBuilder strPreaudit = new StringBuilder();
+                    StringBuilder strTechnology = new StringBuilder();
+                    StringBuilder strResult = new StringBuilder();
+
+                    if (CollectionUtils.isNotEmpty(numberList)) {
+                        for (ProjectNumberRecord item : numberList) {
+                            if (item.getReportType() == preauditId) {
+                                strPreaudit.append(item.getNumberValue()).append("/");
+                            }
+                            if (item.getReportType() == technologyId) {
+                                strTechnology.append(item.getNumberValue()).append("/");
+                            }
+                            if (item.getReportType() == resultId || item.getReportType() == consultationId) {
+                                strResult.append(item.getNumberValue()).append("/");
+                            }
+                        }
                     }
-                    Object result_number_date = map.get("result_number_date");
-                    if (result_number_date != null) {
-                        vo.setResultNumberDate(DateUtils.convertDate(String.valueOf(result_number_date)));
+                    if (StringUtils.isNotEmpty(strPreaudit.toString())) {
+                        vo.setPreauditNumber(strPreaudit.deleteCharAt(strPreaudit.length() - 1).toString());
                     }
+                    if (StringUtils.isNotEmpty(strTechnology.toString())) {
+                        vo.setTechnologyNumber(strTechnology.deleteCharAt(strTechnology.length() - 1).toString());
+                    }
+                    if (StringUtils.isNotEmpty(strResult.toString())) {
+                        vo.setResultNumber(strResult.deleteCharAt(strResult.length() - 1).toString());
+                    }
+
                     vo.setContractName(objectToString(map.get("contract_name")));
                     vo.setContractPrice(objectToBigDecimal(map.get("contract_price")));
                     Integer publicProjectId = objectToInteger(map.get("public_project_id"));
@@ -263,8 +288,8 @@ public class UReportService {
                         vo.setActualAmount(actualAmount);
                         vo.setPayAmount(payAmount);
                     }
-                    if(objectToBigDecimal(map.get("contract_price"))!=null) {
-                        vo.setDebtAmount(objectToBigDecimal(map.get("contract_price")).subtract(vo.getPayAmount()==null?new BigDecimal("0"):vo.getPayAmount()));
+                    if (objectToBigDecimal(map.get("contract_price")) != null) {
+                        vo.setDebtAmount(objectToBigDecimal(map.get("contract_price")).subtract(vo.getPayAmount() == null ? new BigDecimal("0") : vo.getPayAmount()));
                     }
                     list.add(vo);
                 } catch (Exception ex) {

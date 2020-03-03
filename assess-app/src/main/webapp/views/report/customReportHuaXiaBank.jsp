@@ -30,8 +30,7 @@
                                     <div class="form-group form-inline">
                                         <label class="col-md-1 col-form-label">报告类型</label>
                                         <div class="col-md-2 p-0">
-                                            <select name="queryReportType" id="queryReportType" class="form-control input-full"
-                                                    onchange="ReportHuaXiaBank.prototype.showBtn()">
+                                            <select name="queryReportType" id="queryReportType" class="form-control input-full">
                                                 <option value="">--请选择--</option>
                                                 <c:forEach var="item" items="${reportTypeList}">
                                                     <option value="${item.id}">${item.name}</option>
@@ -50,48 +49,32 @@
                                                    class="form-control input-full">
                                         </div>
                                     </div>
-                                    <div class="form-group form-inline" style="display: none" id="queryPreauditBtn">
-
-                                        <label class="col-md-1 col-form-label">开始时间</label>
-                                        <div class="col-md-2 p-0">
-                                            <input id="queryPreviewsStartDate" name="queryPreviewsStartDate"
-                                                   class="form-control input-full date-picker dbdate"
-                                                   data-date-format="yyyy-mm-dd" placeholder="开始时间"/>
-                                        </div>
-                                        <label class="col-md-1 col-form-label">结束时间</label>
-                                        <div class="col-md-2 p-0">
-                                            <input id="queryPreviewsEndDate" name="queryPreviewsEndDate"
-                                                   class="form-control input-full date-picker dbdate"
-                                                   data-date-format="yyyy-mm-dd" placeholder="结束时间"/>
-                                        </div>
-                                    </div>
-                                    <div class="form-group form-inline" style="display: none" id="queryResultBtn">
-
-                                        <label class="col-md-1 col-form-label">开始时间</label>
-                                        <div class="col-md-2 p-0">
-                                            <input id="queryResultStartDate" name="queryResultStartDate"
-                                                   class="form-control input-full date-picker dbdate"
-                                                   data-date-format="yyyy-mm-dd" placeholder="开始时间"/>
-                                        </div>
-                                        <label class="col-md-1 col-form-label">结束时间</label>
-                                        <div class="col-md-2 p-0">
-                                            <input id="queryResultEndDate" name="queryResultEndDate"
-                                                   class="form-control input-full date-picker dbdate"
-                                                   data-date-format="yyyy-mm-dd" placeholder="结束时间"/>
-                                        </div>
-                                    </div>
                                     <div class="form-group form-inline">
-                                        <button style="margin-left: 10px" class="btn btn-info  btn-sm" type="button"
+
+                                        <label class="col-md-1 col-form-label">开始时间</label>
+                                        <div class="col-md-2 p-0">
+                                            <input id="queryStartDate" name="queryStartDate"
+                                                   class="form-control input-full date-picker dbdate"
+                                                   data-date-format="yyyy-mm-dd" placeholder="开始时间"/>
+                                        </div>
+                                        <label class="col-md-1 col-form-label">结束时间</label>
+                                        <div class="col-md-2 p-0">
+                                            <input id="queryEndDate" name="queryEndDate"
+                                                   class="form-control input-full date-picker dbdate"
+                                                   data-date-format="yyyy-mm-dd" placeholder="结束时间"/>
+                                        </div>
+                                        <button class="btn btn-info  btn-sm" type="button" style="margin-left: 10px"
                                                 onclick="ReportHuaXiaBank.prototype.loadDataDicList()">
 											<span class="btn-label">
 												<i class="fa fa-search"></i>
 											</span>
                                             查询
                                         </button>
-                                        <button type="button" class="btn btn-success btn-sm" onclick="$('#frmQuery').clearAll()">
+                                        <button type="button" class="btn btn-success btn-sm" style="margin-left: 5px"
+                                                onclick="$('#frmQuery').clearAll()">
                                             重置
                                         </button>
-                                        <button type="button" class="btn btn-info btn-sm"
+                                        <button type="button" class="btn btn-info btn-sm" style="margin-left: 5px"
                                                 onclick="ReportHuaXiaBank.prototype.showModel()"
                                                 data-toggle="modal" href="#divBox">
                                             <span class="btn-label">
@@ -99,7 +82,7 @@
 											</span>
                                             上传附件
                                         </button>
-                                        <button type="button" class="btn btn-success btn-sm"
+                                        <button type="button" class="btn btn-success btn-sm" style="margin-left: 5px"
                                                 onclick="ReportHuaXiaBank.prototype.exportData()">
                                             <span class="btn-label">
 												<i class="fa fa-cloud-download-alt"></i>
@@ -107,6 +90,7 @@
                                             导出
                                         </button>
                                     </div>
+
                                 </form>
                                 <table class="table table-bordered" id="tb_FatherList">
                                     <!-- cerare document add ajax data-->
@@ -146,38 +130,38 @@
 
         loadDataDicList: function () {
             var cols = [];
-            cols.push({field: 'unitName',width: '5%', title: '支行'});
+            //，项目名称、文号、报告使用单位、总价、单价、价值时点、报告日
+            cols.push({field: 'projectName',width: '5%', title: '项目名称'});
+            cols.push({field: 'unitName',width: '5%', title: '使用单位'});
             cols.push({field: 'consignor',width: '5%', title: '委托企业名称'});
             cols.push({field: 'projectCategoryName',width: '5%', title: '评估标的'});
             cols.push({field: 'seat', width: '10%',title: '项目具体地址及位置'});
             cols.push({field: 'pledger', width: '5%',title: '抵押人名称'});
-            cols.push({field: 'acquirePrice', width: '5%',title: '抵押人取得项目所有权时支付的价格'});
-            cols.push({
-                field: 'acquireTieme', width: '5%',title: '抵押人取得项目所有权时间', formatter: function (value, row, index) {
-                    return formatDate(row.acquireTieme, false);
-                }
-            });
+            //cols.push({field: 'acquirePrice', width: '5%',title: '抵押人取得项目所有权时支付的价格'});
+            // cols.push({
+            //     field: 'acquireTieme', width: '5%',title: '抵押人取得项目所有权时间', formatter: function (value, row, index) {
+            //         return formatDate(row.acquireTieme, false);
+            //     }
+            // });
             cols.push({field: 'assessTotal', width: '5%',title: '评估价值'});
-            cols.push({field: 'hasPreviews',width: '5%', title: '是否出具预评估报告'});
+            //cols.push({field: 'hasPreviews',width: '5%', title: '是否出具预评估报告'});
             cols.push({field: 'previewsNumber', width: '7%',title: '预评报告文号'});
-            cols.push({field: 'hasResult', width: '5%',title: '是否出具正式报告'});
+            //cols.push({field: 'hasResult', width: '5%',title: '是否出具正式报告'});
             cols.push({field: 'resultNumber',width: '7%', title: '正式报告编号'});
 
-            cols.push({field: 'contractPrice',width: '5%', title: '实际收费金额'});
-            cols.push({field: 'standardPrice',width: '5%', title: '标准收费金额'});
-            cols.push({field: 'discount', width: '5%',title: '实际收费折扣'});
-            cols.push({field: 'reason', width: '5%',title: '未出具正式评估报告的详细原因'});
-            cols.push({field: 'remark', width: '5%',title: '备注'});
+            //cols.push({field: 'contractPrice',width: '5%', title: '实际收费金额'});
+            //cols.push({field: 'standardPrice',width: '5%', title: '标准收费金额'});
+            //cols.push({field: 'discount', width: '5%',title: '实际收费折扣'});
+            //cols.push({field: 'reason', width: '5%',title: '未出具正式评估报告的详细原因'});
+            //cols.push({field: 'remark', width: '5%',title: '备注'});
 
             $("#" + ReportHuaXiaBank.prototype.config().table).bootstrapTable('destroy');
             TableInit(ReportHuaXiaBank.prototype.config().table, "${pageContext.request.contextPath}/customReportHuaXiaBank/getCustomReportHuaXiaBankList", cols, {
                 numberValue: $("#queryNumberValue").val(),
                 unitName: $("#queryUnitName").val(),
                 reportType: $("#queryReportType").val(),
-                queryPreviewsStartDate: $("#queryPreviewsStartDate").val(),
-                queryPreviewsEndDate: $("#queryPreviewsEndDate").val(),
-                queryResultStartDate: $("#queryResultStartDate").val(),
-                queryResultEndDate: $("#queryResultEndDate").val()
+                queryStartDate: $("#queryStartDate").val(),
+                queryEndDate: $("#queryEndDate").val()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -243,18 +227,14 @@
             var numberValue = $("#queryNumberValue").val();
             var unitName = $("#queryUnitName").val();
             var reportType = $("#queryReportType").val();
-            var queryPreviewsStartDate = $("#queryPreviewsStartDate").val();
-            var queryPreviewsEndDate = $("#queryPreviewsEndDate").val();
-            var queryResultStartDate = $("#queryResultStartDate").val();
-            var queryResultEndDate = $("#queryResultEndDate").val();
+            var queryStartDate = $("#queryStartDate").val();
+            var queryEndDate = $("#queryEndDate").val();
             var href = "${pageContext.request.contextPath}/customReportHuaXiaBank/export";
             href += "?numberValue=" + numberValue;
             href += "&unitName=" + unitName;
             href += "&reportType=" + reportType;
-            href += "&queryPreviewsStartDate=" + queryPreviewsStartDate;
-            href += "&queryPreviewsEndDate=" + queryPreviewsEndDate;
-            href += "&queryResultStartDate=" + queryResultStartDate;
-            href += "&queryResultEndDate=" + queryResultEndDate;
+            href += "&queryStartDate=" + queryStartDate;
+            href += "&queryEndDate=" + queryEndDate;
             window.open(href, "");
         }
 

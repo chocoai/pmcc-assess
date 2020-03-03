@@ -19,7 +19,7 @@
 
     <select id="getCustomReportTianFuBankList" parameterType="map" resultMap="BaseResultMap">
         select distinct
-        A.id,A.project_id, A.report_type,B.valuation_date,E.u_use_unit_name,A.number_value,B.project_category_id,
+        A.id,A.project_id,A.gmt_created, A.report_type,B.valuation_date,E.u_use_unit_name,A.number_value,B.project_category_id,
         C.assess_organization,B.contract_price,A.area_id, B.preaudit_number_date, B.result_number_date
         from tb_project_number_record A
         LEFT JOIN tb_project_info B ON A.project_id = B.id
@@ -41,17 +41,12 @@
         <if test="reportType!=null and consultationId!=null">
             AND (A.report_type = #{reportType} or A.report_type = #{consultationId})
         </if>
-        <if test="previewsStartDate!=null">
-            AND B.preaudit_number_date &gt;= #{previewsStartDate}
+        <if test="startDate!=null">
+            AND A.gmt_created &gt;= #{startDate}
         </if>
-        <if test="previewsEndDate!=null">
-            AND B.preaudit_number_date &lt;= #{previewsEndDate}
+        <if test="endDate!=null">
+            AND A.gmt_created &lt;= #{endDate}
         </if>
-        <if test="resultStartDate!=null">
-            AND B.result_number_date >= #{resultStartDate}
-        </if>
-        <if test="resultEndDate!=null">
-            AND B.result_number_date &lt;= #{resultEndDate}
-        </if>
+        GROUP BY A.project_id
     </select>
 </mapper>

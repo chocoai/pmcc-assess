@@ -20,6 +20,7 @@ public class CustomReportAppraiserAssociation {
     private Date investigationsStartDate;//估价作业开始日
     private Date homeWorkEndTime;//估价作业结束日
     private Date valuationDate;//估价时点
+    private Date gmtCreated;
     private BigDecimal landArea;//土地面积
     private BigDecimal evaluationArea;//建筑面积
     private BigDecimal assessTotal;//评估总值
@@ -43,6 +44,14 @@ public class CustomReportAppraiserAssociation {
 
     private Date preauditNumberDate;//预评时间
     private Date resultNumberDate;//结果时间
+
+    public Date getGmtCreated() {
+        return gmtCreated;
+    }
+
+    public void setGmtCreated(Date gmtCreated) {
+        this.gmtCreated = gmtCreated;
+    }
 
     public BigDecimal getPrice() {
         return price;

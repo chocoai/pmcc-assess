@@ -28,6 +28,15 @@ public class UProjectFinanceVo {
     private Date projectCreated;//立项时间 -查询
     private Date resultNumberDate;//结果文号时间
     private BigDecimal debtAmount;//欠款金额
+    private Integer count;//数量
+
+    public Integer getCount() {
+        return count;
+    }
+
+    public void setCount(Integer count) {
+        this.count = count;
+    }
 
     public Integer getId() {
         return id;
