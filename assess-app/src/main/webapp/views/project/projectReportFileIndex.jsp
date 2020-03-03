@@ -685,8 +685,8 @@
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
                 <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
-                str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="明细" onclick="showTemplateModel(' + row.id + ')"><i class="fa fa-search fa-white"></i></a>';
-                str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="选择" onclick="affirmPictureTemplate(' + row.id + ')"><i class="fa fa-check fa-white"></i></a>';
+                str += '<button type="button" class="btn btn-xs btn-info tooltips" style="margin-left: 5px;" data-placement="top" data-original-title="明细" onclick="showTemplateModel(' + row.id + ')"><i class="fa fa-search fa-white"></i></button>';
+                str += '<button type="button" class="btn btn-xs btn-primary tooltips" style="margin-left: 5px;" data-placement="top" data-original-title="选择" onclick="affirmPictureTemplate(' + row.id + ')"><i class="fa fa-check fa-white"></i></button>';
                 str += '</div>';
                 return str;
             }
@@ -990,9 +990,9 @@
                         html += '<tr><td><input type="text" name="fileName" value="' + item.fileName + '"  onblur="reportFileEditName(' + item.id + ',this);"></td>' +
                             '<td><input type="text" name="sorting"  value="' + AssessCommon.toString(item.sorting) + '" onblur="reportFileEditName(' + item.id + ',this,' + declareRecordId + ');" ></td>' +
                             '<td>' + item.fileViewName + '</td>' + '<td>' + item.certifyPartName + '</td>' + '<td>' + item.certifyPartCategoryName + '</td>' + '<td>' + item.bisEnableName + '</td><td>' +
-                            '<input type="button" class="btn btn-xs btn-primary" value="上传照片" onclick="addPicture(' + item.id + ');">' +
-                            '<input type="button" class="btn btn-xs btn-primary" value="编辑" onclick="getAndInit(' + item.id + ');">' +
-                            '<input type="button" class="btn btn-xs btn-warning" value="移除" onclick="removeLiveSituation(' + item.id + ',this)"></td></tr>';
+                            '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-info" data-original-title="上传照片" onclick="addPicture(' + item.id + ');"><span class="btn-label"><i class="fa fa-cloud-upload-alt"></i></span></button>' +
+                            '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-primary" data-original-title="编辑" onclick="getAndInit(' + item.id + ');"><span class="btn-label"><i class="fa fa-pen"></i></span></button>' +
+                            '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-warning" data-original-title="移除" onclick="removeLiveSituation(' + item.id + ',this)"><span class="btn-label"><i class="fa fa-minus"></i></span></button></td></tr>';
                     })
                     tbody.empty().append(html);
                 } else {
@@ -1051,8 +1051,8 @@
                         $.each(result.data, function (i, item) {
                             ++i;
                             html += '<tr><th scope="row">' + i + '</th><td>' + item.reName + '</td><td>' + item.fileName + '</td><td>' +
-                                '<input type="button" class="btn btn-xs btn-primary" value="查看" onclick="FileUtils.showAttachment(' + item.id + ',\'' + item.fileExtension + '\');">' +
-                                '<input type="button" class="btn btn-xs btn-primary" value="选择" onclick="selectLiveSituation(' + item.id + ',' + declareRecordId + ',\'' + item.reName + '\');"></td></tr>';
+                                '<button type="button" class="btn btn-xs btn-info" style="margin-left: 5px;" data-original-title="查看" onclick="FileUtils.showAttachment(' + item.id + ',\'' + item.fileExtension + '\');"><span class="btn-label"><i class="fa fa-search"></i></span></button>' +
+                                '<button type="button" class="btn btn-xs btn-primary" style="margin-left: 5px;" data-original-title="选择" onclick="selectLiveSituation(' + item.id + ',' + declareRecordId + ',\'' + item.reName + '\');"><span class="btn-label"><i class="fa fa-check"></i></span></button></td></tr>';
                         })
                         $("#allExamineFileFrm").find('tbody[data-id=all_live_situation]').empty().append(html);
                     }
@@ -1107,8 +1107,8 @@
                         $.each(result.data, function (i, item) {
                             ++i;
                             html += '<tr><th scope="row">' + i + '</th><td>' + item.reName + '</td><td>' + item.fileName + '</td><td>' +
-                                '<input type="button" class="btn btn-xs btn-primary" value="查看" onclick="FileUtils.showAttachment(' + item.id + ',\'' + item.fileExtension + '\');">' +
-                                '<input type="button" class="btn btn-xs btn-primary" value="选择" onclick="selectLiveSituationByCertifyPart(' + item.id + ');"></td></tr>';
+                                '<button type="button" class="btn btn-xs btn-info" style="margin-left: 5px;" data-original-title="查看" onclick="FileUtils.showAttachment(' + item.id + ',\'' + item.fileExtension + '\');"><span class="btn-label"><i class="fa fa-search"></i></span></button>' +
+                                '<button type="button" class="btn btn-xs btn-primary" style="margin-left: 5px;" data-original-title="选择" onclick="selectLiveSituationByCertifyPart(' + item.id + ');"><span class="btn-label"><i class="fa fa-check"></i></span></button></td></tr>';
                         })
                         $("#examineFileFrmByCertifyPart").find('tbody[data-id=certifyPart_file]').empty().append(html);
                     }
@@ -1416,8 +1416,8 @@
                             $.each(result.data, function (i, item) {
                                 ++i;
                                 html += '<tr><th scope="row">' + i + '</th><td>' + item.reName + '</td><td>' + item.fileName + '</td><td>' +
-                                    '<input type="button" class="btn btn-xs btn-primary" value="查看" onclick="FileUtils.showAttachment(' + item.id + ',\'' + item.fileExtension + '\');">' +
-                                    '<input type="button" class="btn btn-xs btn-primary" value="选择" onclick="selectCorrespondingSitePic(' + item.id + ',' + reportFileItemId + ');"></td></tr>';
+                                    '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-info" data-original-title="查看" onclick="FileUtils.showAttachment(' + item.id + ',\'' + item.fileExtension + '\');"><span class="btn-label"><i class="fa fa-search"></i></span></button>' +
+                                    '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-primary" data-original-title="选择" onclick="selectCorrespondingSitePic(' + item.id + ',' + reportFileItemId + ');"><span class="btn-label"><i class="fa fa-check"></i></span></button></td></tr>';
                             })
                             $("#allExamineFileFrm").find('tbody[data-id=all_live_situation]').empty().append(html);
                         }
@@ -1469,7 +1469,7 @@
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = "";
-                str += "<button type='button'  style='margin-left: 5px;' data-placement='top' data-original-title='选择' class='btn btn-xs btn-primary tooltips' >选择</button>";
+                str += "<button type='button'  style='margin-left: 5px;' data-placement='top' data-original-title='选择' class='btn btn-xs btn-primary tooltips' ><span class='btn-label'><i class='fa fa-check'></i></span></button>";
                 return str;
             }
         });
@@ -1538,15 +1538,15 @@
         var html = '';
         html += '<div class="row">';
         html += '<input type="hidden" name="declareRecordId" value="' + declareRecord.id + '">';
-        html += '<div class=" col-xs-10  col-sm-10  col-md-10  col-lg-10  col-sm-10 col-xs-10">';
+        html += '<div class=" col-sm-12">';
         html += '<div class="x_panel">';
         html += '<div class="x_title"><h4>';
         html += '<strong>' + declareRecord.name + '</strong>';
         html += '<small style="margin-left: 5px;"><button type="button" value="新增照片" onclick="addLiveSituationFile(' + declareRecord.id + ')" class="btn btn-success btn-xs">新增照片</button></small>';
-        html += '<small style="margin-left: 5px;><button type="button" value="选择查勘中图片" onclick="getLiveSituationAll(' + declareRecord.id + ')" class="btn btn-primary btn-xs">选择查勘中图片</button></small>';
-        html += '<small style="margin-left: 5px;><button type="button" value="选择模板" onclick="selectPictureTempale(' + declareRecord.id + ')" class="btn btn-primary btn-xs">选择模板</button></small>';
-        html += '<small style="margin-left: 5px;><button type="button" value="保存到模板" onclick="saveToTemplateModal(' + declareRecord.id + ')" class="btn btn-primary btn-xs">保存到模板</button></small>';
-        html += '<small style="margin-left: 5px;><button type="button" value="预览实况图片" onclick="generateLiveSituation(' + declareRecord.id + ')" class="btn btn-primary btn-xs">预览实况图片</button></small></h4>';
+        html += '<small style="margin-left: 5px;"><button type="button" value="选择查勘中图片" onclick="getLiveSituationAll(' + declareRecord.id + ')" class="btn btn-primary btn-xs">选择查勘中图片</button></small>';
+        html += '<small style="margin-left: 5px;"><button type="button" value="选择模板" onclick="selectPictureTempale(' + declareRecord.id + ')" class="btn btn-primary btn-xs">选择模板</button></small>';
+        html += '<small style="margin-left: 5px;"><button type="button" value="保存到模板" onclick="saveToTemplateModal(' + declareRecord.id + ')" class="btn btn-primary btn-xs">保存到模板</button></small>';
+        html += '<small style="margin-left: 5px;"><button type="button" value="预览实况图片" onclick="generateLiveSituation(' + declareRecord.id + ')" class="btn btn-primary btn-xs">预览实况图片</button></small></h4>';
         html += '</div><table class="table table-hover"><thead><tr><th width="10%">文件名称</th><th width="10%">排序</th><th width="20%">附件</th><th width="15%">对应查勘部位</th><th width="10%">附件类别</th><th width="10%">是否上报告</th><th width="20%">操作</th></tr></thead>';
         html += '<tbody data-id="' + declareRecord.id + '" data-name="live_situation_select"></tbody></table>';
         html += '</div></div></div>';
