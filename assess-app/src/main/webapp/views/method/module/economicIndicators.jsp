@@ -235,7 +235,7 @@
                                     <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                                         <div class="form-inline x-valid">
                                             <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
-                                                <table class="table tree" id="frmEconomicIndicatorsItemTable">
+                                                <table class=" tree" id="frmEconomicIndicatorsItemTable">
                                                     <thead>
                                                     <tr>
                                                         <th>规划项目名称</th>
@@ -408,7 +408,9 @@
             <input type="hidden" name="mcId" value="{mcId}">
             <c:if test="${!empty projectPlanDetails.judgeObjectId}">
 
-                <button type="button"  class="btn btn-info btn-sm" onclick="economicIndicators.callCompareMethod(this);">市场比较法</button>
+                <button type="button" class="btn btn-info btn-sm" onclick="economicIndicators.callCompareMethod(this);">
+                    市场比较法
+                </button>
 
             </c:if>
         </td>
@@ -442,15 +444,15 @@
             }
             resultHtml += "<div class='form-check' style='justify-content:left'>";
             $.each(resultData, function (i, item) {
-                resultHtml += "<label class='form-check-label'>" ;
+                resultHtml += "<label class='form-check-label'>";
                 resultHtml += "<input class='form-check-input' type='checkbox' name='parcelSettingOuter' ";
                 if ($.inArray(item.id.toString(), array) > -1) {
                     resultHtml += ' checked="checked" ';
                 }
                 resultHtml += 'value="' + item.id + '">';
-                resultHtml += "<span class='form-check-sign'>"+item.name+"</span>";
+                resultHtml += "<span class='form-check-sign'>" + item.name + "</span>";
             });
-            resultHtml += "</div>" ;
+            resultHtml += "</div>";
 
             resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '全选或全不选' + "</span>";
             resultHtml += "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"economicIndicators.checkedFun(this,'parcelSettingOuter',true)\">";
@@ -467,15 +469,15 @@
             }
             resultHtml += "<div class='form-check' style='justify-content:left'>";
             $.each(resultData, function (i, item) {
-                resultHtml += "<label class='form-check-label'>" ;
+                resultHtml += "<label class='form-check-label'>";
                 resultHtml += "<input class='form-check-input' type='checkbox' name='parcelSettingInner' ";
                 if ($.inArray(item.id.toString(), array) > -1) {
                     resultHtml += ' checked="checked" ';
                 }
                 resultHtml += 'value="' + item.id + '">';
-                resultHtml += "<span class='form-check-sign'>"+item.name+"</span>";
+                resultHtml += "<span class='form-check-sign'>" + item.name + "</span>";
             });
-            resultHtml += "</div>" ;
+            resultHtml += "</div>";
 
             resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '全选或全不选' + "</span>";
             resultHtml += "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"economicIndicators.checkedFun(this,'parcelSettingInner',true)\">";
@@ -602,8 +604,9 @@
             dataType: 'json',
             success: function (result) {
                 if (result.ret) {
-                    if (economicIndicators.saveCallback)
+                    if (economicIndicators.saveCallback) {
                         economicIndicators.saveCallback(result.data.id);
+                    }
                     economicIndicators.model.modal('hide');
                     if (data.economicIndicatorsItemList.length >= 1) {
 
@@ -628,6 +631,7 @@
         html = html.replace(/{assessArea}/g, '');
         html = html.replace(/{mcId}/g, '');
         economicIndicators.frmItem.find('[data-key=' + dataKey + ']').last().after(html);
+        $(_this).closest('tr').closest('table').treegrid();
     };
 
     /**

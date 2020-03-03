@@ -18,12 +18,13 @@
         </td>
         <td>
             <input type="text" onblur="developmentCommon.architecturalB.totalResult(this,'{reckon}')" placeholder=""
-                   name="area" style="width: 50%;"  class="form-control input-full">
+                   name="area" style="width: 50%;" class="form-control input-full">
         </td>
-        <td><input type="text" class="x-percent form-control input-full" onblur="developmentCommon.architecturalB.totalResult(this,'{reckon}')"
+        <td><input type="text" class="x-percent form-control input-full"
+                   onblur="developmentCommon.architecturalB.totalResult(this,'{reckon}')"
                    placeholder="" name="valuationDateDegreeCompletion" style="width: 50%;">
         </td>
-        <td><input type="text" name="remark" placeholder="描述" style="width: 80%;"  class="form-control input-full"></td>
+        <td><input type="text" name="remark" placeholder="描述" style="width: 80%;" class="form-control input-full"></td>
         <td name="result"></td>
     </tr>
 </script>
@@ -43,28 +44,7 @@
         <code>单价 ✖ 面积 <code data-view-name="valuationDateDegreeCompletion"> ✖ 估价时点完工程度</code>
         </code>
     </div>
-    <table class="table tree">
-
-        <%--<caption>
-
-            <div data-view-name="b">
-                <label class="label-info label">计算方式 ==></label>
-                <code>单价 ✖ 面积 ✖ (1-估价时点完工程度)</code>
-            </div>
-
-            <div data-view-name="a" style="display: none;">
-                <label class="label-info label">计算方式 ==></label>
-                <code>单价 ✖ 面积</code>
-            </div>
-
-            <div data-view-name="c" style="display: none;">
-                <label class="label-info label">计算方式 ==></label>
-                <code>单价 ✖ 面积 <code data-view-name="valuationDateDegreeCompletion"> ✖ 估价时点完工程度</code>
-                </code>
-            </div>
-
-        </caption>--%>
-
+    <table class=" tree">
         <thead>
         <tr>
             <th name="name">工程名称</th>
@@ -80,7 +60,7 @@
         <tfoot>
         <tr class="treegrid-99" data-key="architecturalEngineering" data-role="parent">
             <td>合计</td>
-            <td><input type="text"  name="totalPrice" disabled="disabled" class="form-control input-full"></td>
+            <td><input type="text" name="totalPrice" class="form-control input-full" readonly="readonly"></td>
         </tr>
         </tfoot>
     </table>
@@ -100,19 +80,19 @@
         <td>{name}</td>
         <td style="width: 20%;"><input type="text"
                                        onblur="developmentCommon.architecturalB.totalResult(this,'{reckon}')"
-                                       placeholder="单价(数字)" name="price"  class="form-control input-full"></td>
+                                       placeholder="单价(数字)" name="price" class="form-control input-full"></td>
         <td style="width: 10%;">
             <input type="text" onblur="developmentCommon.architecturalB.totalResult(this,'{reckon}')" placeholder="面积"
-                   name="area"  class="form-control input-full">
+                   name="area" class="form-control input-full">
         </td>
-        <td><input type="text" name="remark" placeholder="描述"  class="form-control input-full"></td>
+        <td><input type="text" name="remark" placeholder="描述" class="form-control input-full"></td>
         <td name="result"></td>
     </tr>
 </script>
 
 
-
-<div id="basicMdDevelopmentInfrastructureChildrenModalTool" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+<div id="basicMdDevelopmentInfrastructureChildrenModalTool" class="modal fade bs-example-modal-lg"
+     data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -121,7 +101,6 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
             </div>
-
             <div class="modal-body">
                 <form id="basicMdDevelopmentInfrastructureChildrenModalFrm" class="form-horizontal">
                     <input type="hidden" name="pid">
@@ -136,7 +115,8 @@
                                                 名称<span class="symbol required"></span>
                                             </label>
                                             <div class="col-sm-10 col-md-10">
-                                                <input type="text" name="name" class="form-control input-full" required="required"
+                                                <input type="text" name="name" class="form-control input-full"
+                                                       required="required"
                                                        placeholder="名称">
                                             </div>
                                         </div>
@@ -149,7 +129,8 @@
                                                 价钱(元/㎡)
                                             </label>
                                             <div class="col-sm-10 col-md-10">
-                                                <input type="text" name="number" placeholder="价钱" class="form-control input-full"
+                                                <input type="text" name="number" placeholder="价钱"
+                                                       class="form-control input-full"
                                                        data-rule-number='true'
                                                        required="required">
                                             </div>
@@ -169,7 +150,6 @@
         </div>
     </div>
 </div>
-
 
 
 <script type="text/html" id="landEngineeringMdDevelopmentInfrastructureFooter">
@@ -227,8 +207,6 @@
         </div>
     </div>
 </div>
-
-
 
 
 <div id="boxSchemeInfoModel" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"

@@ -26,7 +26,8 @@
                                     <label class="form-check-label">
                                         <c:choose>
                                             <c:when test="${empty mdDevelopment.type}">
-                                                <input class="form-check-input" type="radio" name="typeShow" value="1" checked="checked"
+                                                <input class="form-check-input" type="radio" name="typeShow" value="1"
+                                                       checked="checked"
                                                        data-value="1">
                                             </c:when>
                                             <c:otherwise>
@@ -37,7 +38,8 @@
                                         <span class="form-check-sign">土地</span>
                                     </label>
                                     <label class="form-check-label">
-                                        <input class="form-check-input" type="radio" name="typeShow" value="2" data-value="2">
+                                        <input class="form-check-input" type="radio" name="typeShow" value="2"
+                                               data-value="2">
                                         <span class="form-check-sign">在建工程</span>
                                     </label>
                                 </div>
@@ -231,7 +233,6 @@
                 </div>
 
 
-
                 <div class="row form-group">
                     <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                         <div class="form-inline x-valid">
@@ -296,9 +297,23 @@
                             <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                                 <div id="toolbarMdDevelopmentInfrastructureChildrenTable" style="display: none">
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-primary btn-sm" onclick="landEngineering.deleteMdDevelopmentInfrastructureChildrenTable('#landMdDevelopmentInfrastructureChildrenTable')">删除</button>
-                                        <button type="button" class="btn btn-primary btn-sm" onclick="landEngineering.editMdDevelopmentInfrastructureChildrenTable('#landMdDevelopmentInfrastructureChildrenTable','#basicMdDevelopmentInfrastructureChildrenModalTool',true)">编辑</button>
-                                        <button type="button" class="btn btn-primary btn-sm" onclick="landEngineering.editMdDevelopmentInfrastructureChildrenTable('#landMdDevelopmentInfrastructureChildrenTable','#basicMdDevelopmentInfrastructureChildrenModalTool',false)">添加</button>
+                                        <button type="button" class="btn btn-warning btn-sm"
+                                                onclick="landEngineering.deleteMdDevelopmentInfrastructureChildrenTable('#landMdDevelopmentInfrastructureChildrenTable')">
+                                            <i class="fa fa-minus"></i>
+                                            删除
+                                        </button>
+                                        <button type="button" class="btn btn-primary btn-sm "
+                                                onclick="landEngineering.editMdDevelopmentInfrastructureChildrenTable('#landMdDevelopmentInfrastructureChildrenTable','#basicMdDevelopmentInfrastructureChildrenModalTool',true)">
+                                            <i class="fa fa-pen"></i>
+                                            编辑
+                                        </button>
+                                        <button type="button" class="btn btn-success btn-sm"
+                                                onclick="landEngineering.editMdDevelopmentInfrastructureChildrenTable('#landMdDevelopmentInfrastructureChildrenTable','#basicMdDevelopmentInfrastructureChildrenModalTool',false)">
+                                            <span class="btn-label">
+												<i class="fa fa-plus"></i>
+											</span>
+                                            添加
+                                        </button>
                                     </div>
                                 </div>
                                 <table class="table table-bordered" id="landMdDevelopmentInfrastructureChildrenTable">
@@ -847,7 +862,7 @@
 <div id="boxLandEngineering" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg" style="max-width: 70%;">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">建筑安装工程费</h4>
@@ -861,16 +876,6 @@
                     <div class="row">
                         <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
                             <div class="card-body">
-                                <div class="row form-group">
-                                    <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
-                                        <div class="form-inline x-valid">
-                                            <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12 "
-                                                 data-title="boxLandEngineering">
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -880,7 +885,7 @@
                 <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
                     关闭
                 </button>
-                <button type="button" class="btn btn-success btn-sm"
+                <button type="button" class="btn btn-primary btn-sm"
                         onclick="landEngineering.constructionInstallationEngineeringFeeEvent.save()">
                     保存
                 </button>
@@ -890,9 +895,8 @@
 </div>
 
 
-
-
-<div id="boxMdCalculatingMethodEngineeringCost" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+<div id="boxMdCalculatingMethodEngineeringCost" class="modal fade bs-example-modal-lg" data-backdrop="static"
+     tabindex="-1"
      role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -939,7 +943,7 @@
                 <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
                     关闭
                 </button>
-                <button type="button" class="btn btn-success btn-sm"
+                <button type="button" class="btn btn-primary btn-sm"
                         onclick="landEngineering.saveMdCalculatingMethodEngineeringCost();">
                     保存
                 </button>
@@ -950,20 +954,28 @@
 
 <div id="toolbarMdCalculatingMethodEngineeringCostLand" style="display: none">
     <div class="input-group">
-                                <span class="input-group-btn">
-                                    <button type="button" class="btn btn-primary btn-sm"
-                                            onclick="landEngineering.delMdCalculatingMethodEngineeringCost()">删除</button>
-                                    <button type="button" class="btn btn-primary btn-sm"
-                                            onclick="landEngineering.showMdCalculatingMethodEngineeringCost();">添加</button>
-                                </span>
         <span class="input-group-btn">
-                                    <button type="button" class="btn btn-primary btn-sm"
-                                            onclick="landEngineering.setMdCalculatingMethodEngineeringCost(false)">同步成本法建筑安装工程费</button>
-                                </span>
+            <button type="button" class="btn btn-warning btn-sm"
+                    onclick="landEngineering.delMdCalculatingMethodEngineeringCost()">
+                <i class="fa fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-success btn-sm"
+                    onclick="landEngineering.showMdCalculatingMethodEngineeringCost();">
+                <span class="btn-label">
+                        <i class="fa fa-plus"></i>
+                    </span>
+            </button>
+        </span>
         <span class="input-group-btn">
-                                    <button type="button" class="btn btn-primary btn-sm"
-                                            onclick="landEngineering.setMdCalculatingMethodEngineeringCost(true)">同步查勘建筑安装工程费</button>
-                                </span>
+            <button type="button" class="btn btn-info btn-sm"
+                    onclick="landEngineering.setMdCalculatingMethodEngineeringCost(false)">
+                同步成本法建筑安装工程费</button>
+        </span>
+        <span class="input-group-btn">
+            <button type="button" class="btn btn-info btn-sm"
+                    onclick="landEngineering.setMdCalculatingMethodEngineeringCost(true)">
+                同步查勘建筑安装工程费</button>
+        </span>
     </div>
 </div>
 
