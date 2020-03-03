@@ -453,6 +453,12 @@
     estateCommon.autocompleteStart = function () {
         if ($("#txt_estate_search").size() >= 1) {
             $("#txt_estate_search").apEstate({
+                getProvince: function () {
+                    return $("#txt_estate_search").closest('form').find("select[name='province']").val();
+                },
+                getCity: function () {
+                    return $("#txt_estate_search").closest('form').find("select[name='city']").val();
+                },
                 onSelect: function (id, name) {
                     estateCommon.onSelect(name);
                 }

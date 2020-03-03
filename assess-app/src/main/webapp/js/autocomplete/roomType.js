@@ -8,7 +8,7 @@
             var defaults = {
                 offset: 0,
                 limit: 10,
-                practicalUseId:null,
+                practicalUseId: null,
                 onSelect: function (id, name) {
 
                 }
@@ -25,10 +25,10 @@
                         offset: defaults.offset,
                         limit: defaults.limit,
                         name: $(that).val(),
-                        pid:defaults.practicalUseId
+                        pid: defaults.practicalUseId
                     },
                     success: function (data) {
-                        if (data) {
+                        if (data && data.rows) {
                             var responseArray = [];
                             $.each(data.rows, function (i, item) {
                                 responseArray.push({

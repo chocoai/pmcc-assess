@@ -1,5 +1,3 @@
-
-
 /*自动补全控件*/
 
 ;(function ($) {
@@ -8,7 +6,7 @@
             var defaults = {
                 offset: 0,
                 limit: 10,
-                caseBuildingId:null,
+                caseBuildingId: null,
                 autoSelect: false,
                 onSelect: function (id, name) {
 
@@ -35,10 +33,10 @@
                         offset: defaults.offset,
                         limit: defaults.limit,
                         unitNumber: $(that).val(),
-                        caseBuildingId:caseBuildingId
+                        caseBuildingId: caseBuildingId
                     },
                     success: function (result) {
-                        if (result.ret) {
+                        if (result.ret && result.data) {
                             response($.map(result.data, function (item) {
                                 return {
                                     label: item.name,
@@ -46,8 +44,6 @@
                                     id: item.id
                                 }
                             }));
-                        } else {
-                            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                         }
                     }
                 });

@@ -36,7 +36,7 @@
                         estateId: estateId
                     },
                     success: function (result) {
-                        if (result.ret) {
+                        if (result.ret && result.data) {
                             response($.map(result.data, function (item) {
                                 return {
                                     label: item.name,
@@ -44,8 +44,6 @@
                                     id: item.id
                                 }
                             }));
-                        } else {
-                            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
                         }
                     }
                 });
