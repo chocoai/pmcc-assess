@@ -2,7 +2,7 @@
 
 <div id="divChksRecordModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg" style="max-width: 65%;">
+    <div class="modal-dialog modal-lg" style="max-width: 80%;">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">考核记录填写</h4>
@@ -20,7 +20,7 @@
                                     <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                                         <div class="form-inline x-valid">
                                             <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                                                <table class="table table-bordered" id="tableChkSpotAssessment">
+                                                <table class="table-bordered" id="tableChkSpotAssessment">
                                                     <thead>
                                                     <tr>
                                                         <th width="3%">序号</th>
@@ -57,11 +57,10 @@
 </div>
 
 
-
 <div id="divAssessmentProjectPerformanceBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg"  style="max-width: 80%;">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">考核记录填写</h4>
@@ -78,7 +77,8 @@
                                     <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                                         <div class="form-inline x-valid">
                                             <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                                                <table class="table table-bordered" id="tableAssessmentProjectPerformanceBox">
+                                                <table class="table-bordered"
+                                                       id="tableAssessmentProjectPerformanceBox">
                                                     <thead>
                                                     <tr>
                                                         <th width="3%">序号</th>
@@ -135,7 +135,8 @@
                                     <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                                         <div class="form-inline x-valid">
                                             <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                                                <table class="table table-bordered" id="tableAssessmentProjectPerformanceBoxDetail">
+                                                <table class="table table-bordered"
+                                                       id="tableAssessmentProjectPerformanceBoxDetail">
                                                     <thead>
                                                     <tr>
                                                         <th width="3%">序号</th>
@@ -166,8 +167,6 @@
         </div>
     </div>
 </div>
-
-
 
 
 <script type="text/html" id="assessmentItemTemplateHTML">
@@ -207,7 +206,7 @@
     var assessmentCommonHandle = {};
 
 
-    assessmentCommonHandle.run = function (data, url, type, callback, funParams,errorCallback) {
+    assessmentCommonHandle.run = function (data, url, type, callback, funParams, errorCallback) {
         Loading.progressShow();
         $.ajax({
             type: type,
@@ -242,8 +241,8 @@
                     } else {
                         AlertError("错误", "调用服务端方法失败，失败原因:" + result);
                     }
-                    if (errorCallback){
-                        errorCallback() ;
+                    if (errorCallback) {
+                        errorCallback();
                     }
                 }
             },
@@ -257,24 +256,24 @@
             }
         });
     };
-    assessmentCommonHandle.ajaxServerFun = function (data, url, type, callback, funParams,errorCallback) {
+    assessmentCommonHandle.ajaxServerFun = function (data, url, type, callback, funParams, errorCallback) {
         var deleteParams = false;
-        if (funParams){
+        if (funParams) {
             if (funParams == 'delete') {
                 deleteParams = true;
             }
         }
         if (deleteParams) {
             AlertConfirm("是否确认删除当前数据", "删除相应的数据后将不可恢复", function (flag) {
-                assessmentCommonHandle.run(data,url,type,callback,funParams,errorCallback) ;
+                assessmentCommonHandle.run(data, url, type, callback, funParams, errorCallback);
             });
-        }else {
-            assessmentCommonHandle.run(data,url,type,callback,funParams,errorCallback) ;
+        } else {
+            assessmentCommonHandle.run(data, url, type, callback, funParams, errorCallback);
         }
     };
 
-    assessmentCommonHandle.ajaxServerMethod = function (data, url,type,callback,errorCallback) {
-        assessmentCommonHandle.ajaxServerFun(data,url,type,callback,null,errorCallback) ;
+    assessmentCommonHandle.ajaxServerMethod = function (data, url, type, callback, errorCallback) {
+        assessmentCommonHandle.ajaxServerFun(data, url, type, callback, null, errorCallback);
     };
     /**
      * 范围校验
@@ -305,27 +304,27 @@
 
     assessmentCommonHandle.saveAssessmentServer = function (data, callback) {
         jQuery.extend(data, {planDetailsId: '${projectPlanDetails.id}'});
-        assessmentCommonHandle.ajaxServerMethod(data,"/chksAssessmentProjectPerformance/saveAssessmentServer","post",callback,null) ;
+        assessmentCommonHandle.ajaxServerMethod(data, "/chksAssessmentProjectPerformance/saveAssessmentServer", "post", callback, null);
     };
 
     assessmentCommonHandle.updateAssessmentProjectPerformance = function (data, callback) {
-        assessmentCommonHandle.ajaxServerMethod({fomData: JSON.stringify(data)},"/chksAssessmentProjectPerformance/updateAssessmentProjectPerformance","post",callback,null) ;
+        assessmentCommonHandle.ajaxServerMethod({fomData: JSON.stringify(data)}, "/chksAssessmentProjectPerformance/updateAssessmentProjectPerformance", "post", callback, null);
     };
 
     assessmentCommonHandle.getAssessmentProjectPerformanceDtoList = function (query, callback) {
-        assessmentCommonHandle.ajaxServerMethod(query,"/chksAssessmentProjectPerformance/getAssessmentProjectPerformanceDtoList","get",callback,null) ;
+        assessmentCommonHandle.ajaxServerMethod(query, "/chksAssessmentProjectPerformance/getAssessmentProjectPerformanceDtoList", "get", callback, null);
     };
 
     assessmentCommonHandle.getAssessmentProjectPerformanceDetailByPerformanceIdList = function (id, callback) {
-        assessmentCommonHandle.ajaxServerMethod({performanceId: id},"/chksAssessmentProjectPerformance/getAssessmentProjectPerformanceDetailByPerformanceIdList","get",callback,null) ;
+        assessmentCommonHandle.ajaxServerMethod({performanceId: id}, "/chksAssessmentProjectPerformance/getAssessmentProjectPerformanceDetailByPerformanceIdList", "get", callback, null);
     };
 
     assessmentCommonHandle.deleteResponsibilityById = function (id) {
-        assessmentCommonHandle.ajaxServerMethod({id: id},"/chksAssessmentProjectPerformance/deleteResponsibilityById","post",function () {
+        assessmentCommonHandle.ajaxServerMethod({id: id}, "/chksAssessmentProjectPerformance/deleteResponsibilityById", "post", function () {
             notifySuccess("成功", "任务删除成功");
             window.close();
 
-        },null) ;
+        }, null);
     };
 
     /*
@@ -369,15 +368,15 @@
     };
 
     assessmentCommonHandle.getAssessmentItemTemplate = function (query, callback) {
-        assessmentCommonHandle.ajaxServerMethod(query,"/chksAssessmentProjectPerformance/getAssessmentItemTemplate","get",callback,null) ;
+        assessmentCommonHandle.ajaxServerMethod(query, "/chksAssessmentProjectPerformance/getAssessmentItemTemplate", "get", callback, null);
     };
 
     assessmentCommonHandle.deleteSpotAssessment = function (id, callback) {
-        assessmentCommonHandle.ajaxServerMethod({id: id},"/chksAssessmentProjectPerformance/deleteAssessmentProjectPerformanceByIds","post",callback,null) ;
+        assessmentCommonHandle.ajaxServerMethod({id: id}, "/chksAssessmentProjectPerformance/deleteAssessmentProjectPerformanceByIds", "post", callback, null);
     };
 
     assessmentCommonHandle.getAssessmentProjectPerformanceById = function (id, callback) {
-        assessmentCommonHandle.ajaxServerMethod({id: id},"/chksAssessmentProjectPerformance/getAssessmentProjectPerformanceById","get",callback,null) ;
+        assessmentCommonHandle.ajaxServerMethod({id: id}, "/chksAssessmentProjectPerformance/getAssessmentProjectPerformanceById", "get", callback, null);
     };
 
     /**
@@ -404,7 +403,25 @@
      */
     assessmentCommonHandle.getChksBootstrapTableVoBase = function (table, query, data) {
         var cols = [];
-        cols.push({field: 'activityName', title: '考核节点'});
+        cols.push({
+            field: 'activityName', title: '考核节点', formatter: function (value, row, index) {
+                var s = value;
+                if (row.businessKey) {
+                    s += "【" + row.businessKey + "】";
+                }
+                return s;
+            }
+        });
+        cols.push({
+            field: 'examineStatus', title: '状态', formatter: function (value, row, index) {
+                if (value == 'runing') {
+                    return "<span class=\"label label-info\">进行中</span> ";
+                }
+                if (value == 'finish') {
+                    return "<span class=\"label label-success\">已完成</span>";
+                }
+            }
+        });
         cols.push({field: 'byExaminePeopleName', title: '被考核人'});
         cols.push({field: 'examinePeopleName', title: '考核人'});
         cols.push({field: 'examineScore', title: '考核得分'});
@@ -503,24 +520,13 @@
                 return str;
             }
         });
-        cols.push({
-            field: 'examineStatus', title: '考核状态', formatter: function (value, row, index) {
-                if (value == 'runing') {
-                    return "正在进行 !";
-                }
-                if (value == 'finish') {
-                    return "完成 !";
-                }
-                return "未知状态!";
-            }
-        });
-        cols.push({field: 'remarks', title: '综合评价'});
+
+        //cols.push({field: 'remarks', title: '综合评价'});
         if (data) {
             $.each(data, function (i, item) {
                 cols.push(item);
             });
         }
-        cols.push({field: 'businessKey', title: '业务类型'});
         var method = {
             showColumns: false,
             showRefresh: false,
