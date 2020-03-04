@@ -541,6 +541,11 @@ public class SchemeSurePriceService {
                 return false;
             }
         }
+        //因素
+        if (!StringUtils.isEmpty(PoiUtils.getCellValue(row.getCell(5)))) {
+            schemeJudgeObject.setFactor(PoiUtils.getCellValue(row.getCell(5)));
+        }
+        //显示处理
         SchemeSurePriceFactor schemeSurePriceFactor = null;
         List<SchemeSurePriceFactor> factorList = schemeSurePriceFactorDao.getFactorListByJudgeObjectId(schemeJudgeObject.getId());
         if (CollectionUtils.isNotEmpty(factorList)) {

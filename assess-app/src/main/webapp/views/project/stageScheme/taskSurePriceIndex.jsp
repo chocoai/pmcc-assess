@@ -13,10 +13,10 @@
             <%@include file="/views/share/project/projectInfoSimple.jsp" %>
             <%@include file="/views/share/project/projectPlanDetails.jsp" %>
             <div class="col-md-12">
-                <div class="x_panel card">
+                <div class="card full-height">
                     <div class="card-header collapse-link">
                         <div class="card-head-row">
-                            <div class="card-title" style="word-break: break-all">
+                            <div class="card-title">
                                 ${judgeObject.name}
                                 <small>(${judgeObject.evaluationArea}㎡)</small>
                             </div>
@@ -27,106 +27,132 @@
                             </div>
                         </div>
                     </div>
-                    <form class="form-horizontal" id="sure_price_form">
-                        <input type="hidden" name="id" value="${schemeSurePrice.id}">
-                        <table class="table">
-                            <thead>
-                            <tr>
-                                <th>方法名称</th>
-                                <th>试算价格</th>
-                                <th>权重</th>
-                            </tr>
-                            </thead>
-                            <tbody id="tbody_data_section">
-                            </tbody>
-                        </table>
-                        <div class="form-group">
-                            <div class="x-valid">
-                                <label class="col-sm-1 control-label">
-                                    权重说明<span class="symbol required"></span>
-                                </label>
-                                <div class="col-sm-11">
+                    <div class="card-body">
+                        <form class="form-horizontal" id="sure_price_form">
+                            <input type="hidden" name="id" value="${schemeSurePrice.id}">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>方法名称</th>
+                                    <th>试算价格</th>
+                                    <th>权重</th>
+                                </tr>
+                                </thead>
+                                <tbody id="tbody_data_section">
+                                </tbody>
+                            </table>
+                            <div class="form-group">
+                                <div class="x-valid">
+                                    <label class="col-sm-1 control-label">
+                                        权重说明<span class="symbol required"></span>
+                                    </label>
+                                    <div class="col-sm-11">
                                 <textarea name="weightExplain" required
                                           class="form-control">${schemeSurePrice.weightExplain}</textarea>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row form-group form-inline">
-                            <label class="col-sm-1 control-label">
-                                最终单价
-                            </label>
-                            <div class="col-sm-3">
-                                <input type="text" name="price" class="form-control" readonly="readonly"
-                                       value="${schemeSurePrice.price}">
-                            </div>
-                            <div class="col-sm-3">
-                                <button type="button" class="btn btn-success btn-sm" onclick="updatePrice(this)">更新单价</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <div class="col-md-12">
-                <div class="x_panel card">
-                    <div class="card full-height">
-                        <div class="card-header collapse-link">
-                            <div class="card-head-row">
-                                <div class="card-title">
-                                    调整单价
-                                    <small>
-                                        <div class="btn btn-xs btn-warning"
-                                             onclick="surePrice.pasteBatch();">粘贴
-                                        </div>
-                                        <div class="btn btn-xs btn-warning"
-                                             onclick="surePrice.exportData();">生成下载模板
-                                        </div>
-                                        <div class="btn btn-xs btn-warning"
-                                             onclick="$('#ajaxFileUploadBtn').val('').trigger('click')">导入
-                                        </div>
-                                    </small>
+                            <div class="row form-group form-inline">
+                                <label class="col-sm-1 control-label">
+                                    最终单价
+                                </label>
+                                <div class="col-sm-3">
+                                    <input type="text" name="price" class="form-control" readonly="readonly"
+                                           value="${schemeSurePrice.price}">
                                 </div>
-                                <div class="card-tools">
-                                    <button class="btn  btn-link btn-primary btn-xs"><span
-                                            class="fa fa-angle-down"></span>
-                                    </button>
+                                <div class="col-sm-3">
+                                    <button type="button" class="btn btn-success btn-sm" onclick="updatePrice(this)">更新单价</button>
                                 </div>
                             </div>
-                        </div>
+                        </form>
                     </div>
-
-                    <table id="adjust_factor_table" class="table">
-                        <thead>
-                        <tr>
-                            <th width="5%"><input type="checkbox" onclick="surePrice.checkboxToggle(this);"></th>
-                            <th width="10%">权证号</th>
-                            <th width="10%">证载面积</th>
-                            <th width="10%">评估面积</th>
-                            <th width="10%">楼层</th>
-                            <th width="10%">房号</th>
-                            <th width="10%">价格</th>
-                            <th width="50%">因素</th>
-                            <th>操作</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
                 </div>
             </div>
+
             <div class="col-md-12">
-                <div class="x_panel card">
-                    <div class="x_title card-header collapse-link">
-                        <div class="card-header-row">
-                            <div class="card-title">确认单价记录</div>
+                <div class="card full-height">
+                    <div class="card-header collapse-link">
+                        <div class="card-head-row">
+                            <div class="card-title">
+                                调整单价
+                            </div>
                             <div class="card-tools">
-                                <button class="btn  btn-link btn-primary btn-xs"><span class="fa fa-angle-down"></span>
+                                <button class="btn  btn-link btn-primary btn-xs"><span
+                                        class="fa fa-angle-down"></span>
                                 </button>
                             </div>
                         </div>
                     </div>
-                    <div class="x_content card-body collapse">
-                        <table class="table table-bordered" id="tb_surePriceRecordList">
-                        </table>
+                    <div class="card-body">
+                        <form class="form-horizontal">
+                            <div class="row form-group">
+                                <div class="col-md-12">
+                                    <button style="margin-left: 10px" type="button" class="btn btn-sm btn-warning"
+                                            onclick="surePrice.pasteBatch();"><span class="btn-label">
+												<i class="fa fa-paste"></i>
+											</span>粘贴
+                                    </button>
+                                    <button style="margin-left: 5px" type="button"  class="btn btn-sm btn-success"
+                                            onclick="surePrice.exportData();"><span class="btn-label">
+												<i class="fa fa-cloud-download-alt"></i>
+											</span>生成下载模板
+                                    </button>
+                                    <button style="margin-left: 5px" type="button"  class="btn btn-sm btn-info"
+                                            onclick="$('#ajaxFileUploadBtn').val('').trigger('click')"><span class="btn-label">
+												<i class="fa fa-cloud-upload-alt"></i>
+											</span>导入
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <div class="col-md-12">
+                                    <table id="adjust_factor_table" class="table">
+                                        <thead>
+                                        <tr>
+                                            <th width="5%"><input type="checkbox" onclick="surePrice.checkboxToggle(this);"></th>
+                                            <th width="10%">权证号</th>
+                                            <th width="10%">证载面积</th>
+                                            <th width="10%">评估面积</th>
+                                            <th width="10%">楼层</th>
+                                            <th width="10%">房号</th>
+                                            <th width="10%">价格</th>
+                                            <th width="50%">因素</th>
+                                            <th>操作</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="card full-height">
+                    <div class="card-header collapse-link">
+                        <div class="card-head-row">
+                            <div class="card-title">
+                                确认单价记录
+                            </div>
+                            <div class="card-tools">
+                                <button class="btn  btn-link btn-primary btn-xs"><span
+                                        class="fa fa-angle-down"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <form class="form-horizontal">
+                            <div class="row form-group">
+                                <div class="col-md-12">
+                                    <table class="table table-bordered" id="tb_surePriceRecordList">
+                                    </table>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
