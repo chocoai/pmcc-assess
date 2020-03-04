@@ -111,8 +111,8 @@ examineCommon.blockSelect = function (this_) {
         province: $form.find('[name=province]').val(),
         city: $form.find('[name=city]').val(),
         success: function (row) {
-            $(this_).parent().prev().val(row.name);
-            $(this_).parent().prev().prev().val(row.id);
+            $(this_).closest('.input-group').find("input[name='blockId']").val(row.id);
+            $(this_).closest('.input-group').find("input[name='blockName']").val(row.name);
             estateCommon.estateForm.find("#blockDescription").val(row.remark);
         }
     })

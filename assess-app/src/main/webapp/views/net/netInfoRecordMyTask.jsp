@@ -158,27 +158,21 @@
 											</span>
                                     新增
                                 </button>
-                                <div class="x_title">
-                                    <h3>房产
-                                    </h3>
-                                    <div class="clearfix"></div>
-                                </div>
+                                <div class="x_title">房产</div>
                                 <div class="x_content">
-                                    <div class="row">
-                                        <div class="panel-body">
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
                                             <table class="table table-bordered" id="houseHistory">
                                                 <!-- cerare document add ajax data-->
                                             </table>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="x_title">
-                                    <h3>土地</h3>
-                                    <div class="clearfix"></div>
-                                </div>
+                                <div class="x_title">土地</div>
+
                                 <div class="x_content">
-                                    <div class="row">
-                                        <div class="panel-body">
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
                                             <table class="table table-bordered" id="landHistory">
                                                 <!-- cerare document add ajax data-->
                                             </table>
@@ -288,7 +282,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group landContent" style="display: none">
+                                <div class="landContent" style="display: none">
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
@@ -374,11 +368,14 @@
                                                         <datalist id="landUseList">
 
                                                         </datalist>
-                                                        <button type="button" class="btn btn-warning docs-tooltip"
-                                                                onclick="$(this).closest('.input-group').find('input').val('');"
-                                                                data-toggle="tooltip" data-original-title="清除">
-                                                            <i class="fa fa-minus"></i>
-                                                        </button>
+                                                        <div class="input-group-prepend">
+                                                            <button class="btn btn-warning btn-sm "
+                                                                    style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                                    type="button"
+                                                                    onclick="$(this).closest('.input-group').find('input').val('');">
+                                                                清空
+                                                            </button>
+                                                        </div>
 
                                                     </div>
                                                 </div>
@@ -392,11 +389,14 @@
                                                         <datalist id="landUseCategoryList">
 
                                                         </datalist>
-                                                        <button type="button" class="btn btn-warning docs-tooltip"
-                                                                onclick="$(this).closest('.input-group').find('input').val('');"
-                                                                data-toggle="tooltip" data-original-title="清除">
-                                                            <i class="fa fa-minus"></i>
-                                                        </button>
+                                                        <div class="input-group-prepend">
+                                                            <button class="btn btn-warning btn-sm "
+                                                                    style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                                    type="button"
+                                                                    onclick="$(this).closest('.input-group').find('input').val('');">
+                                                                清空
+                                                            </button>
+                                                        </div>
 
                                                     </div>
                                                 </div>
@@ -437,7 +437,8 @@
                                                     单位
                                                 </label>
                                                 <div class="col-sm-2">
-                                                    <input type="text" name="areaUnit" placeholder="平方米、亩" class="form-control input-full">
+                                                    <input type="text" name="areaUnit" id="areaUnit" placeholder="平方米、亩"
+                                                           class="form-control input-full" onblur="detailInfo.prototype.getUnitPrice()">
                                                 </div>
                                                 <label class="col-sm-1 col-form-label">
                                                     净用地面积
@@ -450,7 +451,8 @@
                                                     净用地面积单位
                                                 </label>
                                                 <div class="col-sm-2">
-                                                    <input type="text" name="landAreaUnit" placeholder="平方米、亩" class="form-control input-full">
+                                                    <input type="text" name="landAreaUnit" placeholder="平方米、亩"
+                                                           class="form-control input-full">
                                                 </div>
                                             </div>
                                         </div>
@@ -473,7 +475,8 @@
                                                 <div class="col-sm-2">
                                                     <input type="text" data-rule-number="true" data-rule-maxlength="50"
                                                            name="unitPrice" class="form-control input-full"
-                                                           id="landUnitPrice" onblur="detailInfo.prototype.getHouseRealizationRatios()">
+                                                           id="landUnitPrice"
+                                                           onblur="detailInfo.prototype.getHouseRealizationRatios()">
                                                 </div>
                                                 <label class="col-sm-1 col-form-label">
                                                     成交单价（万元/每亩）
@@ -658,7 +661,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group houseContent" style="display: none">
+                                <div class="houseContent" style="display: none">
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
@@ -697,11 +700,14 @@
 
                                                         </datalist>
 
-                                                        <button type="button" class="btn btn-warning docs-tooltip"
-                                                                onclick="$(this).closest('.input-group').find('input').val('');"
-                                                                data-toggle="tooltip" data-original-title="清除">
-                                                            <i class="fa fa-minus"></i>
-                                                        </button>
+                                                        <div class="input-group-prepend">
+                                                            <button class="btn btn-warning btn-sm "
+                                                                    style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                                    type="button"
+                                                                    onclick="$(this).closest('.input-group').find('input').val('');">
+                                                                清空
+                                                            </button>
+                                                        </div>
 
                                                     </div>
                                                 </div>
@@ -721,11 +727,14 @@
                                                         <datalist id="houseUseCategoryList">
 
                                                         </datalist>
-                                                        <button type="button" class="btn btn-warning docs-tooltip"
-                                                                onclick="$(this).closest('.input-group').find('input').val('');"
-                                                                data-toggle="tooltip" data-original-title="清除">
-                                                            <i class="fa fa-minus"></i>
-                                                        </button>
+                                                        <div class="input-group-prepend">
+                                                            <button class="btn btn-warning btn-sm "
+                                                                    style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                                    type="button"
+                                                                    onclick="$(this).closest('.input-group').find('input').val('');">
+                                                                清空
+                                                            </button>
+                                                        </div>
 
                                                     </div>
                                                 </div>
@@ -1305,7 +1314,7 @@
                 href += "?ids=" + ids;
                 window.open(href, "");
             } else {
-                notifyInfo('提示','请选择要审批的数据');
+                notifyInfo('提示', '请选择要审批的数据');
             }
         },
         loadOnclickData: function (id) {
@@ -1379,50 +1388,90 @@
         loadLandHistoryList: function (masterId) {
             var cols = [];
             cols.push({
-                field: 'provinceName', title: '区域', formatter: function (value, row, index) {
+                field: 'info1', title: '信息1', formatter: function (value, row, index) {
+                    var result = '';
                     var str = AssessCommon.getAreaFullName(row.provinceName, row.cityName, row.districtName);
                     if (row.street) {
                         str += row.street;
                     }
-                    return str;
-                }
-            });
-            cols.push({field: 'area', title: '面积'});
-            cols.push({field: 'name', title: '地块名称'});
-            cols.push({field: 'dealTypeName', title: '交易方式'});
-            cols.push({field: 'currentPrice', title: '成交价'});
-            cols.push({
-                field: 'other', title: '其他', formatter: function (value, row, index) {
-                    var result = '';
-                    if (row.parcelNumber) {
-                        result += '宗地编号：' + row.parcelNumber + '<br/>';
+                    if (str) {
+                        result += '位置：' + str + '<br/>';
                     }
                     if (row.parcelSite) {
                         result += '宗地位置：' + row.parcelSite + '<br/>';
                     }
+                    if (row.name) {
+                        result += '地块名称：' + row.name + '<br/>';
+                    }
+                    if (row.parcelNumber) {
+                        result += '宗地编号：' + row.parcelNumber + '<br/>';
+                    }
+                    if (row.landPurpose) {
+                        result += '土地性质：' + row.landPurpose + '<br/>';
+                    }
+                    if (row.belongType) {
+                        result += '土地类型：' + row.belongType + '<br/>';
+                    }
+                    if (row.belongCategory) {
+                        result += '土地类别：' + row.belongCategory + '<br/>';
+                    }
+                    if (row.dealType) {
+                        result += '交易方式：' + row.dealTypeName + '<br/>';
+                    }
+                    return result;
+                }
+            });
+
+            cols.push({
+                field: 'info2', title: '信息2', formatter: function (value, row, index) {
+                    var result = '';
                     if (row.negotiatedDate) {
                         result += '成交(协商)日期：' + formatDate(row.negotiatedDate) + '<br/>';
                     }
-                    if (row.consultPrice) {
-                        result += '评估价：' + row.consultPrice + '<br/>';
-                    }
-                    if (row.assessStandardDate) {
-                        result += '评估基准日：' + formatDate(row.assessStandardDate) + '<br/>';
+                    if (row.area) {
+                        result += '面积：' + formatDate(row.area) + '<br/>';
                     }
                     if (row.unitPrice) {
                         result += '单价：' + row.unitPrice + '<br/>';
                     }
-                    if (row.houseRealizationRatios) {
-                        result += '变现率：' + row.houseRealizationRatios + '<br/>';
+                    if (row.landArea) {
+                        result += '净用地面积：' + row.landArea + '<br/>';
+                    }
+                    if (row.landAreaUnit) {
+                        result += '净用地面积单位：' + row.landAreaUnit + '<br/>';
+                    }
+                    if (row.landCurrentPrice) {
+                        result += '成交总价（万元）：' + row.landCurrentPrice + '<br/>';
+                    }
+                    if (row.landUnitPrice) {
+                        result += '成交单价（元/㎡）：' + row.landUnitPrice + '<br/>';
+                    }
+                    if (row.unitPriceMu) {
+                        result += '成交单价（万元/每亩）：' + row.unitPriceMu + '<br/>';
+                    }
+                    return result;
+                }
+            });
+            cols.push({
+                field: 'info3', title: '信息3', formatter: function (value, row, index) {
+                    var result = '';
+                    if (row.floorPrice) {
+                        result += '成交楼面地价（元/㎡）：' + row.floorPrice + '<br/>';
+                    }
+                    if (row.assessStandardDate) {
+                        result += '评估基准日：' + formatDate(row.assessStandardDate) + '<br/>';
+                    }
+                    if (row.consultPrice) {
+                        result += '评估起拍单价（元/㎡）：' + formatDate(row.consultPrice) + '<br/>';
+                    }
+                    if (row.consultPriceMu) {
+                        result += '评估起拍单价（万元/每亩）：' + formatDate(row.consultPriceMu) + '<br/>';
                     }
                     if (row.realizationCycle) {
                         result += '变现周期：' + row.realizationCycle + '<br/>';
                     }
-                    if (row.floorPrice) {
-                        result += '楼面地价：' + row.floorPrice + '<br/>';
-                    }
-                    if (row.landArea) {
-                        result += '净用地面积：' + row.landArea + '<br/>';
+                    if (row.landRealizationRatios) {
+                        result += '变现率：' + row.landRealizationRatios* 100 + '%<br/>';
                     }
                     if (row.plotRatio) {
                         result += '容积率：' + row.plotRatio + '<br/>';
@@ -1430,6 +1479,12 @@
                     if (row.plotRatioRemark) {
                         result += '容积率说明：' + row.plotRatioRemark + '<br/>';
                     }
+                    return result;
+                }
+            });
+            cols.push({
+                field: 'info4', title: '信息4', formatter: function (value, row, index) {
+                    var result = '';
                     if (row.greeningRate) {
                         result += '绿化率：' + row.greeningRate * 100 + '%<br/>';
                     }
@@ -1443,7 +1498,7 @@
                         result += '建筑密度说明：' + row.buildDensityRemark + '<br/>';
                     }
                     if (row.buildHeight) {
-                        result += '建筑高度：' + row.buildHeight + '<br/>';
+                        result += '建筑高度(米)：' + row.buildHeight + '<br/>';
                     }
                     if (row.buildHeightRemark) {
                         result += '建筑高度说明：' + row.buildHeightRemark + '<br/>';
@@ -1454,13 +1509,15 @@
                     if (row.indexAmountRemark) {
                         result += '指标款(亩)说明：' + row.indexAmountRemark + '<br/>';
                     }
+                    if (row.dealPartInfo) {
+                        result += '成交对象概况：' + row.dealPartInfo + '<br/>';
+                    }
                     return result;
                 }
             });
-            cols.push({field: 'dealPartInfo', title: '成交对象概况'});
             cols.push({field: 'fileViewName', title: '附件'});
             cols.push({
-                field: 'id', width: '6%', title: '操作', formatter: function (value, row, index) {
+                field: 'id', title: '操作', formatter: function (value, row, index) {
                     if (row.status == 0) {
                         var str = '<div class="btn-margin">';
                         str += '<button type="button" class="btn btn-xs btn-primary tooltips"  data-placement="top" data-original-title="编辑" onclick="detailInfo.prototype.getAndInitLand(' + row.id + ')"><i class="fa fa-pen"></i></button>';
@@ -1495,7 +1552,7 @@
                 success: function (result) {
                     if (result.ret) {
                         $("#" + detailInfo.prototype.config().frm).clearAll();
-                        detailInfo.prototype.showContent(result.data.type, result, masterId)
+                        detailInfo.prototype.showContent(result.data.type, result, masterId);
                         $("#" + detailInfo.prototype.config().frm).find("select[name='type']").prop("disabled", true);
                         $('#' + detailInfo.prototype.config().box).modal("show");
                     }
@@ -1531,36 +1588,83 @@
         loadHouseHistoryList: function (masterId) {
             var cols = [];
             cols.push({
-                field: 'provinceName', title: '区域', formatter: function (value, row, index) {
+                field: 'info1', title: '信息1', formatter: function (value, row, index) {
+                    var result = '';
                     var str = AssessCommon.getAreaFullName(row.provinceName, row.cityName, row.districtName);
                     if (row.street) {
                         str += row.street;
                     }
-                    return str;
+                    if (str) {
+                        result += '位置：' + str + '<br/>';
+                    }
+                    if (row.belongType) {
+                        result += '房产类型：' + row.belongType + '<br/>';
+                    }
+                    if (row.belongCategory) {
+                        result += '房产类别：' + row.belongCategory + '<br/>';
+                    }
+                    if (row.area) {
+                        result += '面积：' + row.area + '<br/>';
+                    }
+
+                    return result;
                 }
             });
-            cols.push({field: 'area', title: '面积'});
-            cols.push({field: 'name', title: '楼盘名称'});
-            cols.push({field: 'dealTypeName', title: '交易方式'});
-            cols.push({field: 'currentPrice', title: '成交总价'});
             cols.push({
-                field: 'other', title: '其他', formatter: function (value, row, index) {
+                field: 'info2', title: '信息2', formatter: function (value, row, index) {
                     var result = '';
+                    var str = '';
+                    if (row.name) {
+                        str += row.name;
+                    }
+                    if (row.buildingNumber) {
+                        str += row.buildingNumber + "栋";
+                    }
+                    if (row.unitNumber) {
+                        str += row.unitNumber + "单元";
+                    }
+                    if (row.houseNumber) {
+                        str += row.houseNumber+ "号";
+                    }
+
+                    if (str) {
+                        result += '楼盘：' + str + '<br/>';
+                    }
+                    if (row.dealType) {
+                        result += '交易方式：' + row.dealTypeName + '<br/>';
+                    }
+                    if (row.houseCurrentPrice) {
+                        result += '成交总价：' + row.houseCurrentPrice + '<br/>';
+                    }
                     if (row.negotiatedDate) {
                         result += '成交(协商)日期：' + formatDate(row.negotiatedDate) + '<br/>';
                     }
-                    if (row.consultPrice) {
-                        result += '评估总价：' + row.consultPrice + '<br/>';
+                    return result;
+                }
+            });
+
+            cols.push({
+                field: 'other3', title: '信息3', formatter: function (value, row, index) {
+                    var result = '';
+
+                    if (row.houseConsultPrice) {
+                        result += '评估总价：' + row.houseConsultPrice + '<br/>';
                     }
                     if (row.assessStandardDate) {
-                        result += '评估基准日：' + formatDate(row.assessStandardDate) + '<br/>';
+                        result += '评估基准日期：' + formatDate(row.assessStandardDate) + '<br/>';
                     }
-                    if (row.unitPrice) {
-                        result += '成交单价：' + row.unitPrice + '<br/>';
+                    if (row.houseUnitPrice) {
+                        result += '成交单价：' + row.houseUnitPrice + '<br/>';
                     }
                     if (row.houseRealizationRatios) {
-                        result += '变现率：' + row.houseRealizationRatios + '<br/>';
+                        result += '变现率：' + row.houseRealizationRatios * 100 + '%<br/>';
                     }
+                    return result;
+                }
+            });
+            cols.push({
+                field: 'other4', title: '信息4', formatter: function (value, row, index) {
+                    var result = '';
                     if (row.realizationCycle) {
                         result += '变现周期：' + row.realizationCycle + '<br/>';
                     }
@@ -1570,13 +1674,15 @@
                     if (row.purchaseLimitStatus) {
                         result += '限购状态：' + row.purchaseLimitStatus + '<br/>';
                     }
+                    if (row.dealPartInfo) {
+                        result += '成交对象概况：' + row.dealPartInfo + '<br/>';
+                    }
                     return result;
                 }
             });
-            cols.push({field: 'dealPartInfo', title: '成交对象概况'});
             cols.push({field: 'fileViewName', title: '附件'});
             cols.push({
-                field: 'id', width: '6%', title: '操作', formatter: function (value, row, index) {
+                field: 'id', title: '操作', formatter: function (value, row, index) {
                     if (row.status == 0) {
                         var str = '<div class="btn-margin">';
                         str += '<button type="button" class="btn btn-xs btn-primary tooltips"  data-placement="top" data-original-title="编辑" onclick="detailInfo.prototype.getAndInitHouse(' + row.id + ')"><i class="fa fa-pen"></i></button>';
@@ -1647,6 +1753,8 @@
         getUnitPrice: function () {
             var landCurrentPrice = Number($("#landCurrentPrice").val());
             var landArea = Number($("#landArea").val());
+            var areaUnit = $("#areaUnit").val();
+
             var houseCurrentPrice = Number($("#houseCurrentPrice").val());
             var houseArea = Number($("#houseArea").val());
             if (houseCurrentPrice >= 0 && houseArea > 0) {
@@ -1656,17 +1764,27 @@
                 $("#houseUnitPrice").val("");
             }
             if (landCurrentPrice >= 0 && landArea > 0) {
-                var landUnitPrice = (landCurrentPrice / landArea).toFixed(2);
-                $("#landUnitPrice").val(landUnitPrice);
+                if(areaUnit&&areaUnit=="亩"){
+                    console.log(areaUnit+"=areaUnit")
+                    var landUnitPrice = (landCurrentPrice * 10000 / landArea).toFixed(2);
+                    $("#unitPriceMu").val(landUnitPrice);
+                    $("#landUnitPrice").val((landUnitPrice / AssessCommon.BHOU).toFixed(2));
+                }else {
+                    var landUnitPrice = (landCurrentPrice * 10000 / landArea).toFixed(2);
+                    $("#landUnitPrice").val(landUnitPrice);
+                    $("#unitPriceMu").val((landUnitPrice * AssessCommon.BHOU).toFixed(2));
+                }
+
             } else {
                 $("#landUnitPrice").val("");
+                $("#unitPriceMu").val("");
             }
             detailInfo.prototype.getHouseRealizationRatios();
         },
         getHouseRealizationRatios: function () {
             var landUnitPrice = Number($("#landUnitPrice").val());
             var landConsultPrice = Number($("#landConsultPrice").val());
-            console.log(landUnitPrice+"===="+landConsultPrice)
+
             var houseCurrentPrice = Number($("#houseCurrentPrice").val());
             var houseConsultPrice = Number($("#houseConsultPrice").val());
 
@@ -1713,7 +1831,7 @@
                 })
                 var ids = idArray.join();
                 if (!ids) {
-                    notifyInfo('提示','至少选择一条非审批中或审批通过的任务');
+                    notifyInfo('提示', '至少选择一条非审批中或审批通过的任务');
                     return false;
                 }
                 AlertConfirm("确认取消任务", "取消后任务将退回", function () {
@@ -1737,7 +1855,7 @@
                     })
                 });
             } else {
-                notifyInfo('提示','请选择要取消认领的任务');
+                notifyInfo('提示', '请选择要取消认领的任务');
             }
         }, closeModal: function (id) {
             $("#closeFrm").clearAll();

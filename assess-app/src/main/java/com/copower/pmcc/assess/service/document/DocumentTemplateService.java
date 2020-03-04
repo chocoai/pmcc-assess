@@ -157,7 +157,7 @@ public class DocumentTemplateService {
         }
         if(documentTemplate.getNumbetRuleId()!=null){
             DataNumberRule numberRule = dataNumberRuleDao.getDataNumberRuleById(documentTemplate.getNumbetRuleId());
-            if(numberRule.getReportType()!=null){
+            if(numberRule!=null&&numberRule.getReportType()!=null){
                 vo.setReportTypeName(baseDataDicService.getNameById(numberRule.getReportType()));
             }
         }

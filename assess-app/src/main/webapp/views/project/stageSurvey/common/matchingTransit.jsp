@@ -18,7 +18,7 @@
         </div>
         <div class="card-body " style="display: none">
             <form class="form-horizontal">
-                <div class="row row row row row form-group form-inline">
+                <div class="row form-group form-inline">
                     <button style="margin-left: 5px" class="btn btn-success btn-sm" type="button"
                             data-toggle="modal" onclick="matchingTransit.prototype.showModel()"
                             href="#divBoxTransit">
@@ -27,7 +27,7 @@
 											</span>
                         新增
                     </button>
-                    <button type="button" class="btn btn-warning btn-sm" onclick="matchingTransit.prototype.clear()"> 
+                    <button type="button" style="margin-left: 5px" class="btn btn-warning btn-sm" onclick="matchingTransit.prototype.clear()">
                         	<span class="btn-label">
 												<i class="fa fa-minus"></i>
 											</span>

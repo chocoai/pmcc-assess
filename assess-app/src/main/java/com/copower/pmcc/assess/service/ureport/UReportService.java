@@ -246,13 +246,13 @@ public class UReportService {
 
                     if (CollectionUtils.isNotEmpty(numberList)) {
                         for (ProjectNumberRecord item : numberList) {
-                            if (item.getReportType() == preauditId) {
+                            if (item.getReportType().equals(preauditId)) {
                                 strPreaudit.append(item.getNumberValue()).append("/");
                             }
-                            if (item.getReportType() == technologyId) {
+                            if (item.getReportType().equals(technologyId)) {
                                 strTechnology.append(item.getNumberValue()).append("/");
                             }
-                            if (item.getReportType() == resultId || item.getReportType() == consultationId) {
+                            if (item.getReportType().equals(resultId) || item.getReportType().equals(consultationId)) {
                                 strResult.append(item.getNumberValue()).append("/");
                             }
                         }

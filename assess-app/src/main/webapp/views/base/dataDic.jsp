@@ -187,7 +187,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">子项数据</h4>
+                <h4 class="modal-title" id="titleContent">子项数据</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
             </div>
@@ -468,7 +468,10 @@
         }, {
             showColumns: false,
             showRefresh: false,
-            search: false
+            search: false,
+            onLoadSuccess: function () {
+                $('.tooltips').tooltip();
+            }
         });
     }
     //刷新数据列表

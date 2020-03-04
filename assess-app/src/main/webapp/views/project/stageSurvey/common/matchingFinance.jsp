@@ -28,7 +28,7 @@
 											</span>
                         新增
                     </button>
-                    <button type="button" class="btn btn-warning btn-sm" onclick="matchingFinance.prototype.clear()"> 
+                    <button type="button" style="margin-left: 5px" class="btn btn-warning btn-sm" onclick="matchingFinance.prototype.clear()">
                         	<span class="btn-label">
 												<i class="fa fa-minus"></i>
 											</span>

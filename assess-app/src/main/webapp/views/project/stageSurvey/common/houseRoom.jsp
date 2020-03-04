@@ -56,12 +56,12 @@
                                     <div class="col-md-12">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-2 control-label">
-                                                房间类型<span class="symbol required"></span>
+                                                名称<span class="symbol required"></span>
                                             </label>
                                             <div class="col-sm-4">
-                                                <input type="text" placeholder="房间类型" class="form-control input-full"
+                                                <input type="text" placeholder="名称" class="form-control input-full"
                                                        name="roomType">
-                                                <input type="hidden" placeholder="房间类型" class="form-control input-full"
+                                                <input type="hidden" placeholder="名称" class="form-control input-full"
                                                        name="roomTypeId">
                                             </div>
                                             <label class="col-sm-2 control-label">
