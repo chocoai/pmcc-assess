@@ -211,34 +211,17 @@
         <%@include file="/views/share/main_footer.jsp" %>
     </div>
 </div>
-
 </body>
-
-
-<script type="text/javascript"
-        src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js?v=${assessVersion}"></script>
-
-<script type="text/javascript"
-        src="${pageContext.request.contextPath}/js/declare/declare.common.js?v=${assessVersion}"></script>
-
-<script type="text/javascript"
-        src="${pageContext.request.contextPath}/js/declare/house/realty.house.cert.js?v=${assessVersion}"></script>
-<script type="text/javascript"
-        src="${pageContext.request.contextPath}/js/declare/house/realty.real.estate.cert.js?v=${assessVersion}"></script>
-
-<script type="text/javascript"
-        src="${pageContext.request.contextPath}/js/declare/house/realty.land.cert.js?v=${assessVersion}"></script>
-
-
-<script type="text/javascript"
-        src="${pageContext.request.contextPath}/js/ajaxfileupload.js?v=${assessVersion}"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/map.position.js?v=1.0"></script>
-
+<script type="text/javascript" src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js?v=${assessVersion}"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/declare/declare.common.js?v=${assessVersion}"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/declare/house/realty.house.cert.js?v=${assessVersion}"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/declare/house/realty.real.estate.cert.js?v=${assessVersion}"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/declare/house/realty.land.cert.js?v=${assessVersion}"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/ajaxfileupload.js?v=${assessVersion}"></script>
 <input type="file" id="ajaxFileUpload" name="file" style="display: none;">
 
 
 <script type="text/javascript">
-
     $(document).ready(function () {
         var fileArr = [AssessUploadKey.PROJECT_PROXY, AssessUploadKey.ASSESS_REPORT_Enclosure];
         $.each(fileArr, function (i, n) {

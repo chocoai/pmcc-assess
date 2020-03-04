@@ -6,7 +6,6 @@
 <head>
     <%@include file="/views/share/main_css.jsp" %>
 </head>
-
 <script type="text/html" id="taskRightAssistDiv">
     <div class="col-md-12">
         <div class="card full-height">
@@ -16,7 +15,7 @@
                         他权分组（0{index}）
                     </div>
                     <div class="card-tools">
-                        <button class="btn  btn-link btn-primary btn-xs"><span
+                        <button type="button" class="btn  btn-link btn-primary btn-xs"><span
                                 class="fa fa-angle-down"></span>
                         </button>
                     </div>
@@ -57,9 +56,7 @@
         </div>
     </div>
 </script>
-
 <body>
-
 <div class="wrapper">
     <div class="main-panel" style="width: 100%">
         <div class="content" style="margin-top: 0px;">
@@ -68,7 +65,6 @@
                 <div class="row mt--2">
                     <%@include file="/views/share/project/projectInfoSimple.jsp" %>
                     <%@include file="/views/share/project/projectPlanDetails.jsp" %>
-
                     <div class="col-md-12">
                         <div class="card full-height">
                             <div class="card-header collapse-link">
@@ -83,20 +79,17 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="card-body">
                                 <div id="taskRightAssistAppend"></div>
                             </div>
                         </div>
                     </div>
-
                     <%@include file="/views/share/form_approval.jsp" %>
                 </div>
             </div>
         </div>
         <%@include file="/views/share/main_footer.jsp" %>
     </div>
-
 </div>
 
 </body>

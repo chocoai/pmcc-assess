@@ -326,6 +326,7 @@ public class DataLandLevelDetailService {
     //获取最上级明细
     public DataLandLevelDetail getPidByDataLandLevelDetail(Integer dataLandLevelDetailId) {
         DataLandLevelDetail dataLandLevelDetail = getDataLandLevelDetailById(dataLandLevelDetailId);
+        if (dataLandLevelDetail == null) return null;
         if (dataLandLevelDetail.getPid() == null || dataLandLevelDetail.getPid() == 0) {
             return dataLandLevelDetail;
         } else {

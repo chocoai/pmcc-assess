@@ -5,7 +5,6 @@
     <%@include file="/views/share/main_css.jsp" %>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/tree-grid/css/jquery.treegrid.css">
 </head>
-
 <body>
 <div class="wrapper">
     <div class="main-panel" style="width: 100%">
@@ -17,7 +16,6 @@
                     <%@include file="/views/share/project/projectPlanDetails.jsp" %>
                     <!-- 申报各种类型的html视图 -->
                     <%@include file="/views/project/stageDeclare/declareApprovalModel.jsp" %>
-
                     <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                         <div class="card full-height">
                             <div class="card-header">
@@ -31,7 +29,6 @@
                             </div>
                         </div>
                     </div>
-
 
                     <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                         <div class="card full-height">
@@ -210,19 +207,14 @@
         <%@include file="/views/share/main_footer.jsp" %>
     </div>
 </div>
-
 </body>
 
 <%@include file="/views/method/module/economicIndicators.jsp" %>
 <%@include file="/views/project/tool/declareApplyExtensionCumstomModelView.jsp" %>
-<script type="text/javascript"
-        src="${pageContext.request.contextPath}/js/declare/declare.common.js?v=${assessVersion}"></script>
-<script type="text/javascript"
-        src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js?v=${assessVersion}"></script>
-<script>
-
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/declare/declare.common.js?v=${assessVersion}"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js?v=${assessVersion}"></script>
+<script type="text/javascript">
     var declareApprovalFun = {};
-
     declareApprovalFun.houseConfig = {
         frm: declareCommon.config.house.frm,
         name: declareCommon.config.house.name,
@@ -734,16 +726,12 @@
 
 
 </script>
-
 <script type="application/javascript">
     //提交审批
     function saveform() {
         saveApprovalform("");
     }
-
 </script>
-
-
 <!--  房产证模块 房产证信息 -->
 <div id="boxDeclareRealtyHouseCert" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
@@ -774,8 +762,6 @@
         </div>
     </div>
 </div>
-
-
 <!--  房产证模块  土地证 -->
 <div id="boxSonDeclareRealtyLandCert" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
@@ -806,8 +792,6 @@
         </div>
     </div>
 </div>
-
-
 <!-- 不动产  -->
 <div id="boxDeclareRealtyRealEstateCert" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
@@ -837,8 +821,6 @@
         </div>
     </div>
 </div>
-
-
 <!-- 不动产 建设工程规划许可证 -->
 <div id="declareBuildingPermitRealtyRealBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
@@ -880,8 +862,6 @@
         </div>
     </div>
 </div>
-
-
 <!-- 不动产 建设用地规划许可证 -->
 <div id="declareLandUsePermitRealtyRealBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
@@ -923,8 +903,6 @@
         </div>
     </div>
 </div>
-
-
 <!-- 不动产 建筑工程施工许可证 -->
 <div id="declareBuildingConstructionPermitRealtyRealBox" class="modal fade bs-example-modal-lg" data-backdrop="static"
      tabindex="-1"
@@ -967,8 +945,6 @@
         </div>
     </div>
 </div>
-
-
 <!-- 不动产 商品房预售许可证 -->
 <div id="declarePreSalePermitRealtyRealBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
@@ -1010,8 +986,6 @@
         </div>
     </div>
 </div>
-
-
 <!--  土地证模块  土地证信息-->
 <div id="boxDeclareRealtyLandCert" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
@@ -1041,8 +1015,6 @@
         </div>
     </div>
 </div>
-
-
 <!-- 土地证模块 建设工程规划许可证 -->
 <div id="declareBuildingPermitLandBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
@@ -1084,8 +1056,6 @@
         </div>
     </div>
 </div>
-
-
 <!-- 土地证模块 建设用地规划许可证 -->
 <div id="declareLandUsePermitLandBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
@@ -1130,8 +1100,6 @@
         </div>
     </div>
 </div>
-
-
 <!-- 土地证模块 建筑工程施工许可证 -->
 <div id="declareBuildingConstructionPermitLandBox" class="modal fade bs-example-modal-lg" data-backdrop="static"
      tabindex="-1"
@@ -1177,7 +1145,6 @@
         </div>
     </div>
 </div>
-
 <!-- 土地证模块 商品房预售许可证 -->
 <div id="declarePreSalePermitLandBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
@@ -1225,7 +1192,6 @@
         </div>
     </div>
 </div>
-
 <!-- 土地证模块 关联房产证信息 -->
 <div id="declareRealtyLandCert_HouseCert_box" class="modal fade bs-example-modal-lg" data-backdrop="static"
      tabindex="-1"
@@ -1274,7 +1240,5 @@
         </div>
     </div>
 </div>
-
-
 </html>
 
