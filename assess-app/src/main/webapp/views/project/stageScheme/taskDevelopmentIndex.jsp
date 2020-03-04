@@ -16,16 +16,12 @@
                 <div class="row mt--2">
                     <%@include file="/views/share/project/projectInfoSimple.jsp" %>
                     <%@include file="/views/share/project/projectPlanDetails.jsp" %>
-
                     <!-- 引入假设开发法模块 -->
                     <%@include file="/views/method/marketDevelopmentIndex.jsp" %>
-
                     <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                         <div class="card full-height">
                             <div class="card-body">
-
                                 <input type="hidden" id="supportInfosJSON" value='${supportInfosJSON}'>
-
                                 <form class="form-horizontal" id="md_development_form">
                                     <input type="hidden" name="id" value="${mdDevelopment.id}">
                                     <div class="row form-group">
@@ -68,12 +64,8 @@
                             </div>
                         </div>
                     </div>
-
-
                     <%@include file="/views/share/form_log.jsp" %>
-
                     <%@include file="/views/method/module/economicIndicators.jsp" %>
-
                 </div>
             </div>
         </div>

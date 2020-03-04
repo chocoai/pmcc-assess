@@ -57,7 +57,7 @@
                                 ${judgeObject.name}
                                 <small>(${judgeObject.evaluationArea}㎡)</small>
                                 <small>
-                                    <button class="btn btn-xs btn-primary" data-toggle="modal" type="button"
+                                    <button class="btn btn-sm btn-primary" data-toggle="modal" type="button"
                                             href="#boxSchemeInfoModel"
                                             onclick="developmentCommon.loadSchemeInfoTableList({projectId:'${projectPlanDetails.projectId}',methodDataId:'${mdCostVo.id}',methodType:'${methodTypeObj.id}'},'construction.selectFun');">
                                         引用
@@ -72,6 +72,10 @@
                     <div class="card-head-row">
                         <div class="card-title">
                             开发信息
+                            <button type="button" class="btn btn-info btn-sm"
+                                    onclick="construction.showMdDevelopmentIncomeCategory('${mdCostVo.mdCostConstruction.economicId}');">
+                                经济规划指标
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -114,9 +118,7 @@
                     <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                         <div class="form-inline x-valid">
                             <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
-                                <button type="button" class="btn btn-info btn-sm"
-                                        onclick="construction.showMdDevelopmentIncomeCategory('${mdCostVo.mdCostConstruction.economicId}');">
-                                    经济规划指标 <i class="fa fa-search"></i></button>
+
                             </div>
                         </div>
                     </div>
@@ -282,28 +284,22 @@
                             </div>
                             <div class="col-xs-8  col-sm-8  col-md-8  col-lg-8">
                                 <div id="toolbarMdCalculatingMethodEngineeringCost" style="display: none">
-                                    <div class="input-group">
-                                <span class="input-group-btn">
                                     <button type="button" class="btn btn-warning btn-sm"
-                                            onclick="construction.delMdCalculatingMethodEngineeringCost()">
-                                        <i class="fa fa-minus"></i>
+                                            onclick="construction.delMdCalculatingMethodEngineeringCost()"><span
+                                            class="btn-label"><i class="fa fa-minus"></i></span>删除
                                     </button>
-                                    <button type="button" class="btn btn-success btn-sm"
-                                            onclick="construction.showMdCalculatingMethodEngineeringCost();">
-                                        <span class="btn-label">
-                                            <i class="fa fa-plus"></i>
-                                        </span>
+                                    <button type="button" class="btn btn-success btn-sm" style="margin-left: 5px;"
+                                            onclick="construction.showMdCalculatingMethodEngineeringCost();"><span
+                                            class="btn-label"><i class="fa fa-plus"></i></span>添加
                                     </button>
-                                </span>
-                                        <span class="input-group-btn">
-                                    <button type="button" class="btn btn-info btn-sm"
-                                            onclick="construction.setMdCalculatingMethodEngineeringCost(false)">同步假设开发法建筑安装工程费</button>
-                                </span>
-                                        <span class="input-group-btn">
-                                    <button type="button" class="btn btn-info btn-sm"
-                                            onclick="construction.setMdCalculatingMethodEngineeringCost(true)">同步查勘建筑安装工程费</button>
-                                </span>
-                                    </div>
+                                    <button type="button" class="btn btn-info btn-sm" style="margin-left: 5px;"
+                                            onclick="construction.setMdCalculatingMethodEngineeringCost(false)">
+                                        同步假设开发法建筑安装工程费
+                                    </button>
+                                    <button type="button" class="btn btn-info btn-sm" style="margin-left: 5px;"
+                                            onclick="construction.setMdCalculatingMethodEngineeringCost(true)">
+                                        同步查勘建筑安装工程费
+                                    </button>
                                 </div>
                                 <table class="table table-striped"
                                        id="engineeringConstructionInstallationEngineeringFeeInfoTarget">
@@ -659,9 +655,9 @@
                                            name="residueRatioShow"
                                            data-value="${mdCostVo.mdCostConstruction.residueRatio}">
                                     <div class="input-group-prepend">
-                                        <button class="btn btn-secondary " type="button"
+                                        <button class="btn btn-info " type="button"
                                                 onclick="construction.callResidueRatio(this,false)">
-                                            成新率控件
+                                            成新率
                                         </button>
                                     </div>
                                 </div>
@@ -775,7 +771,7 @@
 <div id="boxMdCostConstruction" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg" style="max-width: 80%;">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">建筑安装工程费</h4>
@@ -821,7 +817,7 @@
      tabindex="-1"
      role="dialog"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg" style="max-width: 80%;">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">建筑安装工程费</h4>

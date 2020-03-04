@@ -64,7 +64,7 @@
                 <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                     <div class="form-inline x-valid">
                         <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
-                            项目建设期(年)<span class="symbol required"></span>
+                            项目建设期(年)
                         </label>
                         <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                             <label class="form-control input-full">${mdDevelopment.projectConstructionPeriod}</label>
@@ -94,24 +94,13 @@
         <div class="card-header">
             <div class="card-head-row">
                 <div class="card-title">
-                    经济指标(参数)
+                    经济指标  <button type="button" class="btn btn-info btn-sm"
+                                  onclick="economicIndicators.init({economicId:'${mdDevelopment.economicId}',attribute:{readonly:'readonly','class':'form-control'} });">
+                    经济规划指标</button>
                 </div>
             </div>
         </div>
         <div class="card-body ">
-
-            <div class="row form-group">
-                <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
-                    <div class="form-inline x-valid">
-                        <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
-                            <button type="button" class="btn btn-info btn-sm"
-                                    onclick="economicIndicators.init({economicId:'${mdDevelopment.economicId}',attribute:{readonly:'readonly','class':'form-control'} });">
-                                经济规划指标 <i class="fa fa-search"></i></button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <div class="row form-group">
                 <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                     <div class="form-inline x-valid">
@@ -170,7 +159,7 @@
                 <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                     <div class="form-inline x-valid">
                         <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
-                            勘察设计和前期工程费率 <span class="symbol required"></span>
+                            勘察设计和前期工程费率 
                         </label>
                         <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                             <label class="form-control input-full">
@@ -192,20 +181,12 @@
                     <div class="form-inline x-valid">
                         <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                             <div id="toolbarMdCalculatingMethodEngineeringCostLand" style="display: none">
-                                <div class="input-group">
-                                <span class="input-group-btn">
-                                    <button type="button" class="btn btn-info disabled">
-                                        建筑安装工程费 (元/㎡) <span class="symbol required"></span>
-                                    </button>
-                                </span>
-                                    <span class="input-group-btn">
-                                   <label class="form-control">${mdDevelopment.constructionInstallationEngineeringFee}</label>
-                                </span>
-                                </div>
+                                <button type="button" class="btn btn-info btn-sm disabled">
+                                    建筑安装工程费 ${mdDevelopment.constructionInstallationEngineeringFee}(元/㎡) 
+                                </button>
                             </div>
                             <table class="table table-striped"
                                    id="landConstructionInstallationEngineeringFeeInfoTarget">
-
                             </table>
                         </div>
                     </div>
@@ -215,7 +196,7 @@
                 <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                     <div class="form-inline x-valid">
                         <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
-                            基础设施配套费 (元/㎡) <span class="symbol required"></span>
+                            基础设施配套费 (元/㎡) 
                         </label>
                         <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                             <label class="form-control input-full">
@@ -235,7 +216,7 @@
                 <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                     <div class="form-inline x-valid">
                         <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
-                            公共配套设施建设费 (元/㎡) <span class="symbol required"></span>
+                            公共配套设施建设费 (元/㎡) 
                         </label>
                         <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                             <label class="form-control input-full">
@@ -255,7 +236,7 @@
                 <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                     <div class="form-inline x-valid">
                         <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
-                            开发期间税费 (元/㎡) <span class="symbol required"></span>
+                            开发期间税费 (元/㎡) 
                         </label>
                         <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                             <label class="form-control input-full">
@@ -275,7 +256,7 @@
                 <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                     <div class="form-inline x-valid">
                         <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
-                            其它工程费率 (元/㎡) <span class="symbol required"></span>
+                            其它工程费率 (元/㎡) 
                         </label>
                         <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                             <label class="form-control input-full">
@@ -296,7 +277,7 @@
                 <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                     <div class="form-inline x-valid">
                         <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
-                            不可预见费率 <span class="symbol required"></span>
+                            不可预见费率 
                         </label>
                         <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                             <label class="form-control input-full">
@@ -343,7 +324,7 @@
                 <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                     <div class="form-inline x-valid">
                         <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
-                            契税率 <span class="symbol required"></span>
+                            契税率 
                         </label>
                         <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                             <label class="form-control input-full">
@@ -364,7 +345,7 @@
                 <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                     <div class="form-inline x-valid">
                         <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
-                            交易费率 <span class="symbol required"></span>
+                            交易费率 
                         </label>
                         <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                             <label class="form-control input-full">
@@ -393,7 +374,7 @@
                                 续建管理费率
                             </c:if>
 
-                            <span class="symbol required"></span>
+                            
                         </label>
                         <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                             <label class="form-control input-full">
@@ -422,7 +403,7 @@
                                 在建工程修复费用 (万元)
                             </c:if>
 
-                            <span class="symbol required"></span>
+                            
                         </label>
                         <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                             <label class="form-control input-full">
@@ -442,7 +423,7 @@
                 <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                     <div class="form-inline x-valid">
                         <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
-                            销售费用率 <span class="symbol required"></span>
+                            销售费用率 
                         </label>
                         <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                             <label class="form-control input-full">
@@ -471,7 +452,7 @@
                                 续建投资利息率
                             </c:if>
 
-                            <span class="symbol required"></span>
+                            
                         </label>
                         <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                             <label class="form-control input-full">
@@ -500,7 +481,7 @@
                                 续建投资利润率
                             </c:if>
 
-                            <span class="symbol required"></span>
+                            
                         </label>
                         <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                             <label class="form-control input-full">
@@ -523,7 +504,7 @@
                         <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
                             销售环节增值税及附加
 
-                            <span class="symbol required"></span>
+                            
                         </label>
                         <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                             <label class="form-control input-full">
@@ -546,7 +527,7 @@
                         <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
                             土地增值税
 
-                            <span class="symbol required"></span>
+                            
                         </label>
                         <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                             <label class="form-control input-full">
@@ -568,7 +549,7 @@
                     <div class="form-inline x-valid">
                         <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
                             项目开发所得税
-                            <span class="symbol required"></span>
+                            
                         </label>
                         <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                             <label class="form-control input-full">
@@ -603,7 +584,7 @@
                 <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                     <div class="form-inline x-valid">
                         <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
-                            土地还原率或者报酬率
+                            土地还原率
                         </label>
                         <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                             <div class="input-group">
@@ -611,17 +592,6 @@
                                     <fmt:formatNumber value="${mdDevelopment.remunerationRate}" type="percent"
                                                       maxFractionDigits="4"/>
                                 </label>
-                                <span class="input-group-btn">
-                                        <input type="hidden" name="rewardRateId" value="${mdDevelopment.rewardRateId}">
-                                <c:if test="${!empty mdDevelopment.rewardRateId}">
-                                      <input type="button" class="btn btn-primary" value="报酬率测算"
-                                             onclick="rewardRateDetail.calculationDetail('${mdDevelopment.rewardRateId}');"/>
-                                </c:if>
-                                <c:if test="${empty mdDevelopment.rewardRateId}">
-                                    <input type="button" class="btn btn-primary" value="报酬率测算"
-                                           onclick="notifyInfo('提示','未添加土地还原率!')"/>
-                                </c:if>
-                                </span>
                             </div>
                         </div>
                         <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
@@ -806,7 +776,7 @@
         cols.push({
             field: 'id', title: '建筑安装工程费明细', width: "20%", formatter: function (value, row, index) {
                 var str = '<button type="button" onclick="landEngineering.constructionInstallationEngineeringFeeEvent(' + row.architecturalObjId + ')" style="margin-left: 5px;" class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="建筑安装工程费明细">';
-                str += '建筑安装工程费明细 <i class="fa "></i>';
+                str += '<i class="fa fa-cog"></i>';
                 str += '</button>';
                 return str;
             }
@@ -834,7 +804,7 @@
 <div id="boxLandEngineering" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg" style="max-width: 80%;">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">建筑安装工程费</h4>

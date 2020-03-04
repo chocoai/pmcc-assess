@@ -4,7 +4,7 @@
 <div id="modalEconomicIndicators" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg" style="width: 900px;">
+    <div class="modal-dialog modal-lg" style="max-width: 80%;">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">经济指标</h4>
@@ -238,13 +238,13 @@
                                                 <table class=" tree" id="frmEconomicIndicatorsItemTable">
                                                     <thead>
                                                     <tr>
-                                                        <th>规划项目名称</th>
-                                                        <th>规划建筑面积</th>
-                                                        <th>可出售面积</th>
-                                                        <th>评估面积/个数</th>
+                                                        <th width="30%">规划项目名称</th>
+                                                        <th width="5%">规划建筑面积</th>
+                                                        <th width="5%">可出售面积</th>
+                                                        <th width="5%">评估面积/个数</th>
                                                         <%--<th>个数</th>--%>
-                                                        <th>单位售价(元/㎡)</th>
-                                                        <th>备注</th>
+                                                        <th width="20%">单位售价(元/㎡)</th>
+                                                        <th width="20%">备注</th>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
@@ -409,7 +409,7 @@
             <c:if test="${!empty projectPlanDetails.judgeObjectId}">
 
                 <button type="button" class="btn btn-info btn-sm" onclick="economicIndicators.callCompareMethod(this);">
-                    市场比较法
+                    比较法
                 </button>
 
             </c:if>
