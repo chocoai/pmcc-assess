@@ -1,33 +1,79 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<div class="x_content">
-    <c:if test="${!empty assessmentProjectPerformanceDto}">
 
-        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-            <table class="table" id="chksTableList">
-                <thead>
-                <tr>
-                    <th width="3%">序号</th>
-                    <th width="7%">节点名称</th>
-                    <th width="50%">考核标准</th>
-                    <th width="10%">打分(分值)</th>
-                    <th width="10%">说明</th>
-                </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
+<c:if test="${!empty assessmentProjectPerformanceDto}">
+
+    <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+        <div class="card full-height">
+            <div class="card-header collapse-link">
+                <div class="card-head-row">
+                    <div class="card-title">
+                        考核数据
+                    </div>
+                    <div class="card-tools">
+                        <button class="btn  btn-link btn-primary btn-xs"><span
+                                class="fa fa-angle-down"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="form-horizontal">
+                    <div class="row form-group">
+                        <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                            <div class="form-inline x-valid">
+                                <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                                    <table class="table table-bordered" id="chksTableList">
+                                        <thead>
+                                        <tr>
+                                            <th width="3%">序号</th>
+                                            <th width="7%">节点名称</th>
+                                            <th width="50%">考核标准</th>
+                                            <th width="10%">打分(分值)</th>
+                                            <th width="10%">说明</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <c:if test="${assessmentProjectPerformanceDto.examineStatus == 'runing'}">
+        <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+            <div class="card full-height">
+                <div class="card-body">
+                    <div class="form-horizontal">
+                        <div class="row form-group">
+                            <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                                <div class="form-inline x-valid">
+                                    <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
+                                    </div>
+                                    <div class=" col-xs-6  col-sm-6  col-md-6  col-lg-6 ">
+                                        <button class="btn btn-primary" type="button"
+                                                onclick="saveAssessmentSurveyItem(this);">
+                                            保存考核记录
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <c:if test="${assessmentProjectPerformanceDto.examineStatus == 'runing'}">
-            <div class=" col-xs-6  col-sm-6  col-md-6  col-lg-6 col-xs-offset-6 col-sm-offset-6 col-md-offset-6 col-lg-offset-6">
-                <button class="btn btn-success" onclick="saveAssessmentSurveyItem(this);">
-                    保存考核记录
-                </button>
-            </div>
-        </c:if>
-
     </c:if>
-</div>
+
+</c:if>
+
+
+
 
 <script type="text/javascript">
 
@@ -46,7 +92,7 @@
             }
         }
         if (filterData.length == 0) {
-            notifyWaring('警告',"考核需要填写全部数据!");
+            notifyWarning('警告', "考核需要填写全部数据!");
             return false;
         }
         var parentData = {
@@ -58,15 +104,20 @@
             chksScore: JSON.stringify(filterData),
             fomData: JSON.stringify(parentData)
         }, function (data) {
-            notifyWaring('警告',"考核成功!");
-            finishAssessmentSurveyItem() ;
-            $(_this).parent().hide() ;
+            AlertSuccess("成功", "考核成功", function () {
+                finishAssessmentSurveyItem();
+                $(_this).closest('.card').parent().hide();
+            });
         });
     };
 
     function finishAssessmentSurveyItem() {
         var target = $("#chksTableList").find("tbody");
-        var obj = {activityName: '${assessmentProjectPerformanceDto.activityName}',id:'${assessmentProjectPerformanceDto.id}',remarks:'${assessmentProjectPerformanceDto.remarks}'};
+        var obj = {
+            activityName: '${assessmentProjectPerformanceDto.activityName}',
+            id: '${assessmentProjectPerformanceDto.id}',
+            remarks: '${assessmentProjectPerformanceDto.remarks}'
+        };
         assessmentCommonHandle.getAssessmentProjectPerformanceDetailByPerformanceIdList(obj.id, function (data) {
             var restHtml = "";
             $.each(data, function (i, item) {
@@ -101,14 +152,12 @@
     $(document).ready(function () {
         var target = $("#chksTableList").find("tbody");
 
-        if ('${assessmentProjectPerformanceDto.examineStatus}' == 'runing'){
+        if ('${assessmentProjectPerformanceDto.examineStatus}' == 'runing') {
             assessmentCommonHandle.getAssessmentItemTemplate({
                 boxReActivitiId: '${assessmentProjectPerformanceDto.activityId}',
                 boxId: '${assessmentProjectPerformanceDto.boxId}',
                 assessmentKey: '${assessmentProjectPerformanceDto.assessmentKey}'
             }, function (data) {
-                console.log(data) ;
-
                 var restHtml = "";
                 $.each(data, function (i, item) {
                     var html = assessmentCommonHandle.replaceAssessmentItem($("#assessmentItemTemplateHTML").html(), {
@@ -135,11 +184,9 @@
             });
         }
 
-        if ('${assessmentProjectPerformanceDto.examineStatus}' == 'finish'){
-            finishAssessmentSurveyItem() ;
+        if ('${assessmentProjectPerformanceDto.examineStatus}' == 'finish') {
+            finishAssessmentSurveyItem();
         }
-
-
     });
 
 

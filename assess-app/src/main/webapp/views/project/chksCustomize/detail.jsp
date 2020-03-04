@@ -4,361 +4,411 @@
 <head>
     <%@include file="/views/share/main_css.jsp" %>
 </head>
-<body class="nav-md footer_fixed">
-<div class="container body">
-    <div class="main_container">
-        <div class="right_col" role="main" style="margin-left: 0">
-
+<body>
+<div class="wrapper">
+    <div class="main-panel" style="width: 100%">
+        <div class="content" style="margin-top: 0px;">
             <%@include file="/views/share/form_head.jsp" %>
-            <%@include file="/views/share/project/projectInfoSimple.jsp" %>
-            <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/tree-grid/css/jquery.treegrid.css">
-            <script type="text/javascript"
-                    src="${pageContext.request.contextPath}/js/declare/declare.common.js?v=${assessVersion}"></script>
-            <script type="text/javascript"
-                    src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js?v=${assessVersion}"></script>
-            <!-- 申报各种类型的html视图 -->
-            <%@include file="/views/project/stageDeclare/declareApprovalModel.jsp" %>
-            <%@include file="/views/method/module/economicIndicators.jsp" %>
-            <div class="x_panel area_panel">
+            <div class="page-inner mt--5">
+                <div class="row mt--2">
+                    <%@include file="/views/share/project/projectInfoSimple.jsp" %>
+                    <link rel="stylesheet"
+                          href="${pageContext.request.contextPath}/assets/tree-grid/css/jquery.treegrid.css">
+                    <script type="text/javascript"
+                            src="${pageContext.request.contextPath}/js/declare/declare.common.js?v=${assessVersion}"></script>
+                    <script type="text/javascript"
+                            src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js?v=${assessVersion}"></script>
+                    <!-- 申报各种类型的html视图 -->
+                    <%@include file="/views/project/stageDeclare/declareApprovalModel.jsp" %>
+                    <%@include file="/views/method/module/economicIndicators.jsp" %>
+                    <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                        <div class="card full-height">
+                            <div class="card-header collapse-link">
+                                <div class="card-head-row">
+                                    <div class="card-title">
+                                        申报考核
+                                    </div>
+                                    <div class="card-tools">
+                                        <button class="btn  btn-link btn-primary btn-xs"><span
+                                                class="fa fa-angle-down"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
 
-                <div class="x_title collapse-link">
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
-                    </ul>
-                    <h3>申报考核 详情</h3>
-                    <div class="clearfix"></div>
-                </div>
-
-                <div class="x_content">
-
-                    <div id="chksCustomerAssessmentPlanDetailSelector">
-
-                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                            <form class="form-horizontal">
-                            </form>
+                            <div class="card-body">
+                                <div id="chksCustomerAssessmentPlanDetailSelector">
+                                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                                        <form class="form-horizontal">
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                        <div class="x_panel">
-                            <div class="x_title">
-                                <h2><i class="fa fa-bars"></i>
-                                    <small>子数据</small>
-                                </h2>
-                                <ul class="nav navbar-right panel_toolbox">
-                                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12" style="display: none;" data-id="houseModel"
+                         data-title="房产证">
+                        <div class="card full-height">
+                            <div class="card-header collapse-link">
+                                <div class="card-head-row">
+                                    <div class="card-title">
+                                        房产证关联数据
+                                    </div>
+                                    <div class="card-tools">
+                                        <button class="btn  btn-link btn-primary btn-xs"><span
+                                                class="fa fa-angle-down"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <ul class="nav nav-pills nav-secondary" role="tablist">
+                                    <li class="nav-item submenu">
+                                        <!-- 设置为默认选中 -->
+                                        <a class="nav-link active show" data-toggle="pill"
+                                           href="#tab_content_house_land" role="tab" aria-selected="true">土地证</a>
+                                    </li>
+                                    <li class="nav-item submenu">
+                                        <a class="nav-link" data-toggle="pill"
+                                           href="#tab_content_house_economicIndicators" role="tab"
+                                           aria-selected="false">经济指标</a>
                                     </li>
                                 </ul>
-                                <div class="clearfix"></div>
-                            </div>
-
-                            <div class="x_content" style="display: none;" data-id="houseModel" data-title="房产证">
-                                <div role="tabpanel" data-example-id="togglable-tabs">
-
-                                    <ul class="nav nav-tabs bar_tabs" role="tablist">
-                                        <li role="presentation" class="active"><a href="#tab_content_house_land"
-                                                                                  role="tab" data-toggle="tab"
-                                                                                  aria-expanded="true">土地证</a>
-                                        </li>
-                                        <li role="presentation" class=""><a
-                                                href="#tab_content_house_economicIndicators" role="tab"
-                                                data-toggle="tab" aria-expanded="false">经济指标(暂不提供)</a>
-                                        </li>
-                                    </ul>
-
-                                    <div class="tab-content">
-
-                                        <div role="tabpanel" class="tab-pane fade active in"
-                                             id="tab_content_house_land">
-                                            <div class="row">
-
-                                                <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                                                    <form class="form-horizontal">
-                                                    </form>
-                                                </div>
-                                                <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                                                    <div class="row">
-                                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                                        </label>
-                                                        <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
-                                                            <div id="_declareRealtyHouseCert_land_FileId"></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                <div class="tab-content mt-2 mb-3">
+                                    <div class="tab-pane fade show active" id="tab_content_house_land" role="tabpanel">
+                                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                                            <form class="form-horizontal">
+                                            </form>
                                         </div>
-
-                                        <div role="tabpanel" class="tab-pane fade"
-                                             id="tab_content_house_economicIndicators">
-                                            <p>经济指标(无数据)</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="x_content" style="display: none;" data-id="landModel" data-title="土地证">
-                                <div role="tabpanel" data-example-id="togglable-tabs">
-
-                                    <ul class="nav nav-tabs bar_tabs" role="tablist">
-                                        <li role="presentation" class="active"><a
-                                                href="#tab_content_land_declareBuildingPermit"
-                                                role="tab" data-toggle="tab"
-                                                aria-expanded="true">建设工程规划许可证</a>
-                                        </li>
-                                        <li role="presentation" class=""><a
-                                                href="#tab_content_land_declareLandUsePermitLand" role="tab"
-                                                data-toggle="tab" aria-expanded="false">建设用地规划许可证</a>
-                                        </li>
-                                        <li role="presentation" class=""><a
-                                                href="#tab_content_land_declareBuildingConstructionPermitLand"
-                                                role="tab"
-                                                data-toggle="tab" aria-expanded="false">建筑工程施工许可证</a>
-                                        </li>
-                                        <li role="presentation" class=""><a
-                                                href="#tab_content_land_declarePreSalePermitLand" role="tab"
-                                                data-toggle="tab" aria-expanded="false">商品房预售许可证</a>
-                                        </li>
-                                    </ul>
-
-                                    <div class="tab-content">
-
-                                        <div role="tabpanel" class="tab-pane fade active in"
-                                             id="tab_content_land_declareBuildingPermit">
+                                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
                                             <div class="row">
-                                                <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                                                    <form class="form-horizontal">
-                                                    </form>
-                                                </div>
-                                                <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                                                    <div class="row">
-                                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                                            附件<span class="symbol required"></span>
-                                                        </label>
-                                                        <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
-                                                            <div id="_declareBuildingPermitFileId3"></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div role="tabpanel" class="tab-pane fade"
-                                             id="tab_content_land_declareLandUsePermitLand">
-                                            <div class="row">
-                                                <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                                                    <form class="form-horizontal">
-                                                    </form>
-                                                </div>
-                                                <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                                                    <div class="row">
-                                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                                            附件<span class="symbol required"></span>
-                                                        </label>
-                                                        <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
-                                                            <div id="_declareLandUsePermitFileId3"></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div role="tabpanel" class="tab-pane fade"
-                                             id="tab_content_land_declareBuildingConstructionPermitLand">
-                                            <div class="row">
-                                                <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                                                    <form class="form-horizontal">
-                                                    </form>
-                                                </div>
-                                                <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                                                    <div class="row">
-                                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                                            附件<span class="symbol required"></span>
-                                                        </label>
-                                                        <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
-                                                            <div id="_declareBuildingConstructionPermitFileId3"></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div role="tabpanel" class="tab-pane fade"
-                                             id="tab_content_land_declarePreSalePermitLand">
-                                            <div class="row">
-                                                <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                                                    <form class="form-horizontal">
-                                                    </form>
-                                                </div>
-                                                <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                                                    <div class="row">
-                                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                                            附件<span class="symbol required"></span>
-                                                        </label>
-                                                        <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
-                                                            <div id="_declarePreSalePermitFileId3"></div>
-                                                        </div>
-                                                    </div>
+                                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                                    附件
+                                                </label>
+                                                <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
+                                                    <div id="_declareRealtyHouseCert_land_FileId"></div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-
-                            <div class="x_content" style="display: none;" data-id="RealtyRealModel" data-title="不动产证">
-                                <div role="tabpanel" data-example-id="togglable-tabs">
-
-                                    <ul class="nav nav-tabs bar_tabs" role="tablist">
-                                        <li role="presentation" class="active"><a
-                                                href="#tab_content_RealtyReal_declareBuildingPermit"
-                                                role="tab" data-toggle="tab"
-                                                aria-expanded="true">建设工程规划许可证</a>
-                                        </li>
-                                        <li role="presentation" class=""><a
-                                                href="#tab_content_RealtyReal_declareLandUsePermitLand" role="tab"
-                                                data-toggle="tab" aria-expanded="false">建设用地规划许可证</a>
-                                        </li>
-                                        <li role="presentation" class=""><a
-                                                href="#tab_content_RealtyReal_declareBuildingConstructionPermitLand"
-                                                role="tab"
-                                                data-toggle="tab" aria-expanded="false">建筑工程施工许可证</a>
-                                        </li>
-                                        <li role="presentation" class=""><a
-                                                href="#tab_content_RealtyReal_declarePreSalePermitLand" role="tab"
-                                                data-toggle="tab" aria-expanded="false">商品房预售许可证</a>
-                                        </li>
-                                    </ul>
-
-                                    <div class="tab-content">
-
-                                        <div role="tabpanel" class="tab-pane fade active in"
-                                             id="tab_content_RealtyReal_declareBuildingPermit">
-                                            <div class="row">
-                                                <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                                                    <form class="form-horizontal">
-                                                    </form>
-                                                </div>
-                                                <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                                                    <div class="row">
-                                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                                            附件<span class="symbol required"></span>
-                                                        </label>
-                                                        <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
-                                                            <div id="_declareBuildingPermitFileId2"></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div role="tabpanel" class="tab-pane fade"
-                                             id="tab_content_RealtyReal_declareLandUsePermitLand">
-                                            <div class="row">
-                                                <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                                                    <form class="form-horizontal">
-                                                    </form>
-                                                </div>
-                                                <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                                                    <div class="row">
-                                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                                            附件<span class="symbol required"></span>
-                                                        </label>
-                                                        <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
-                                                            <div id="_declareLandUsePermitFileId2"></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div role="tabpanel" class="tab-pane fade"
-                                             id="tab_content_RealtyReal_declareBuildingConstructionPermitLand">
-                                            <div class="row">
-                                                <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                                                    <form class="form-horizontal">
-                                                    </form>
-                                                </div>
-                                                <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                                                    <div class="row">
-                                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                                            附件<span class="symbol required"></span>
-                                                        </label>
-                                                        <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
-                                                            <div id="_declareBuildingConstructionPermitFileId2"></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div role="tabpanel" class="tab-pane fade"
-                                             id="tab_content_RealtyReal_declarePreSalePermitLand">
-                                            <div class="row">
-                                                <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                                                    <form class="form-horizontal">
-                                                    </form>
-                                                </div>
-                                                <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                                                    <div class="row">
-                                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                                            附件<span class="symbol required"></span>
-                                                        </label>
-                                                        <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
-                                                            <div id="_declarePreSalePermitFileId2"></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                    <div class="tab-pane fade" id="tab_content_house_economicIndicators"
+                                         role="tabpanel">
+                                        <p>经济指标(无数据)</p>
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
-                </div>
 
-            </div>
+                    <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12" style="display: none;" data-id="landModel"
+                         data-title="土地证">
+                        <div class="card full-height">
+                            <div class="card-header collapse-link">
+                                <div class="card-head-row">
+                                    <div class="card-title">
+                                        土地证关联数据
+                                    </div>
+                                    <div class="card-tools">
+                                        <button class="btn  btn-link btn-primary btn-xs"><span
+                                                class="fa fa-angle-down"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <ul class="nav nav-pills nav-secondary" role="tablist">
+                                    <li class="nav-item submenu">
+                                        <!-- 设置为默认选中 -->
+                                        <a class="nav-link active show" data-toggle="pill"
+                                           href="#tab_content_land_declareBuildingPermit" role="tab"
+                                           aria-selected="true">建设工程规划许可证</a>
+                                    </li>
+                                    <li class="nav-item submenu">
+                                        <a class="nav-link" data-toggle="pill"
+                                           href="#tab_content_land_declareLandUsePermitLand" role="tab"
+                                           aria-selected="false">建设用地规划许可证</a>
+                                    </li>
+                                    <li class="nav-item submenu">
+                                        <a class="nav-link" data-toggle="pill"
+                                           href="#tab_content_land_declareBuildingConstructionPermitLand" role="tab"
+                                           aria-selected="false">建筑工程施工许可证</a>
+                                    </li>
+                                    <li class="nav-item submenu">
+                                        <a class="nav-link" data-toggle="pill"
+                                           href="#tab_content_land_declarePreSalePermitLand" role="tab"
+                                           aria-selected="false">商品房预售许可证</a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content mt-2 mb-3">
+                                    <div class="tab-pane fade show active" id="tab_content_land_declareBuildingPermit"
+                                         role="tabpanel">
+                                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                                            <form class="form-horizontal">
+                                            </form>
+                                        </div>
+                                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                                            <div class="row">
+                                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                                    附件
+                                                </label>
+                                                <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
+                                                    <div id="_declareBuildingPermitFileId3"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
-            <div class="x_panel">
-                <div class="x_content">
-                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                        <form>
-                            <table class="table" id="chksTableList">
-                                <thead>
-                                <tr>
-                                    <th width="3%">序号</th>
-                                    <th width="7%">节点名称</th>
-                                    <th width="50%">考核标准</th>
-                                    <th width="10%">打分</th>
-                                    <th width="10%">说明</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
-                        </form>
+                                    <div class="tab-pane fade " id="tab_content_land_declareLandUsePermitLand"
+                                         role="tabpanel">
+                                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                                            <form class="form-horizontal">
+                                            </form>
+                                        </div>
+                                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                                            <div class="row">
+                                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                                    附件
+                                                </label>
+                                                <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
+                                                    <div id="_declareLandUsePermitFileId3"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade "
+                                         id="tab_content_land_declareBuildingConstructionPermitLand" role="tabpanel">
+                                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                                            <form class="form-horizontal">
+                                            </form>
+                                        </div>
+                                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                                            <div class="row">
+                                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                                    附件
+                                                </label>
+                                                <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
+                                                    <div id="_declareBuildingConstructionPermitFileId3"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="tab-pane fade " id="tab_content_land_declarePreSalePermitLand"
+                                         role="tabpanel">
+                                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                                            <form class="form-horizontal">
+                                            </form>
+                                        </div>
+                                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                                            <div class="row">
+                                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                                    附件
+                                                </label>
+                                                <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
+                                                    <div id="_declarePreSalePermitFileId3"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
 
-            <div class="x_panel">
-                <div class="x_content">
-                    <div class=" col-xs-6  col-sm-6  col-md-6  col-lg-6 col-xs-offset-6 col-sm-offset-6 col-md-offset-6 col-lg-offset-6">
-                        <button class="btn btn-default" onclick="window.close()">
-                            关闭
-                        </button>
+
+                    <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12" style="display: none;"
+                         data-id="RealtyRealModel" data-title="不动产证">
+                        <div class="card full-height">
+                            <div class="card-header collapse-link">
+                                <div class="card-head-row">
+                                    <div class="card-title">
+                                        不动产证关联数据
+                                    </div>
+                                    <div class="card-tools">
+                                        <button class="btn  btn-link btn-primary btn-xs"><span
+                                                class="fa fa-angle-down"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <ul class="nav nav-pills nav-secondary" role="tablist">
+                                    <li class="nav-item submenu">
+                                        <!-- 设置为默认选中 -->
+                                        <a class="nav-link active show" data-toggle="pill"
+                                           href="#tab_content_RealtyReal_declareBuildingPermit" role="tab"
+                                           aria-selected="true">建设工程规划许可证</a>
+                                    </li>
+                                    <li class="nav-item submenu">
+                                        <a class="nav-link" data-toggle="pill"
+                                           href="#tab_content_RealtyReal_declareLandUsePermitLand" role="tab"
+                                           aria-selected="false">建设用地规划许可证</a>
+                                    </li>
+                                    <li class="nav-item submenu">
+                                        <a class="nav-link" data-toggle="pill"
+                                           href="#tab_content_RealtyReal_declareBuildingConstructionPermitLand"
+                                           role="tab"
+                                           aria-selected="false">建筑工程施工许可证</a>
+                                    </li>
+                                    <li class="nav-item submenu">
+                                        <a class="nav-link" data-toggle="pill"
+                                           href="#tab_content_RealtyReal_declarePreSalePermitLand" role="tab"
+                                           aria-selected="false">商品房预售许可证</a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content mt-2 mb-3">
+                                    <div class="tab-pane fade show active"
+                                         id="tab_content_RealtyReal_declareBuildingPermit"
+                                         role="tabpanel">
+                                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                                            <form class="form-horizontal">
+                                            </form>
+                                        </div>
+                                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                                            <div class="row">
+                                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                                    附件
+                                                </label>
+                                                <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
+                                                    <div id="_declareBuildingPermitFileId2"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="tab-pane fade " id="tab_content_RealtyReal_declareLandUsePermitLand"
+                                         role="tabpanel">
+                                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                                            <form class="form-horizontal">
+                                            </form>
+                                        </div>
+                                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                                            <div class="row">
+                                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                                    附件
+                                                </label>
+                                                <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
+                                                    <div id="_declareLandUsePermitFileId2"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade "
+                                         id="tab_content_RealtyReal_declareBuildingConstructionPermitLand"
+                                         role="tabpanel">
+                                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                                            <form class="form-horizontal">
+                                            </form>
+                                        </div>
+                                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                                            <div class="row">
+                                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                                    附件
+                                                </label>
+                                                <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
+                                                    <div id="_declareBuildingConstructionPermitFileId2"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="tab-pane fade " id="tab_content_RealtyReal_declarePreSalePermitLand"
+                                         role="tabpanel">
+                                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                                            <form class="form-horizontal">
+                                            </form>
+                                        </div>
+                                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                                            <div class="row">
+                                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                                    附件
+                                                </label>
+                                                <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
+                                                    <div id="_declarePreSalePermitFileId2"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
+                    <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                        <div class="card full-height">
+                            <div class="card-header collapse-link">
+                                <div class="card-head-row">
+                                    <div class="card-title">
+                                        考核数据
+                                    </div>
+                                    <div class="card-tools">
+                                        <button class="btn  btn-link btn-primary btn-xs"><span
+                                                class="fa fa-angle-down"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-horizontal">
+                                    <div class="row form-group">
+                                        <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                                            <div class="form-inline x-valid">
+                                                <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                                                    <table class="table table-bordered" id="chksTableList">
+                                                        <thead>
+                                                        <tr>
+                                                            <th width="3%">序号</th>
+                                                            <th width="7%">节点名称</th>
+                                                            <th width="50%">考核标准</th>
+                                                            <th width="10%">打分</th>
+                                                            <th width="10%">说明</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                        <div class="card full-height">
+                            <div class="card-body">
+                                <div class="form-horizontal">
+                                    <div class="row form-group">
+                                        <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                                            <div class="form-inline x-valid">
+                                                <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
+                                                </div>
+                                                <div class=" col-xs-6  col-sm-6  col-md-6  col-lg-6 ">
+                                                    <button class="btn btn-default" type="button"
+                                                            onclick="window.close()">
+                                                        关闭
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
-
         </div>
-
-
+        <%@include file="/views/share/main_footer.jsp" %>
     </div>
 </div>
+
 </body>
-<%@include file="/views/share/main_footer.jsp" %>
+
 <%@include file="/views/share/chksCommon.jsp" %>
 
 <input type="file" id="ajaxFileUpload" name="file" style="display: none;">
@@ -389,7 +439,11 @@
 
     chksCustomer.loadChksServerNew = function () {
         var target = $("#chksTableList").find("tbody");
-        var obj = {activityName: '${assessmentProjectPerformanceDto.activityName}',id:'${assessmentProjectPerformanceDto.id}',remarks:'${assessmentProjectPerformanceDto.remarks}'};
+        var obj = {
+            activityName: '${assessmentProjectPerformanceDto.activityName}',
+            id: '${assessmentProjectPerformanceDto.id}',
+            remarks: '${assessmentProjectPerformanceDto.remarks}'
+        };
         assessmentCommonHandle.getAssessmentProjectPerformanceDetailByPerformanceIdList(obj.id, function (data) {
             var restHtml = "";
             $.each(data, function (i, item) {
@@ -421,12 +475,11 @@
         });
     };
 
-
     chksCustomer.init = function () {
         var selector = $(chksCustomer.config.selector);
         var targetId = '${targetObjectInfo.id}';
         var tableName = '${assessmentProjectPerformanceDto.tableName}';
-        var parent = selector.closest(".x_content");
+        console.log(tableName) ;
         if (tableName == AssessDBKey.DeclareRealtyHouseCert) {
             var landId = $("#tab_content_house_land").find("form");
             var economicIndicators = $("#tab_content_house_economicIndicators");
@@ -455,7 +508,7 @@
 
                 });
             });
-            parent.find("[data-id=houseModel]").show();
+            $(document).find("[data-id=houseModel]").show();
         }
 
 
@@ -520,7 +573,7 @@
                 });
             });
 
-            parent.find("[data-id=landModel]").show();
+            $(document).find("[data-id=landModel]").show();
         }
 
         if (tableName == AssessDBKey.DeclareRealtyRealEstateCert) {
@@ -583,9 +636,7 @@
                     });
                 });
             });
-
-
-            parent.find("[data-id=RealtyRealModel]").show();
+            $(document).find("[data-id=RealtyRealModel]").show();
         }
 
     };
@@ -600,10 +651,6 @@
 
 </script>
 
-<script type="application/javascript">
-
-
-</script>
 
 </html>
 

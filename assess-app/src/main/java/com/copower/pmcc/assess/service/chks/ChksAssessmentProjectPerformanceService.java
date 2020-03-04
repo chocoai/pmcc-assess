@@ -108,6 +108,7 @@ public class ChksAssessmentProjectPerformanceService {
      * @param detailDtoList
      */
     public Integer saveAssessmentServer(AssessmentProjectPerformanceDto assessmentProjectPerformanceDto, List<AssessmentProjectPerformanceDetailDto> detailDtoList, Integer planDetailsId) {
+        //修改情况  处理
         if (assessmentProjectPerformanceDto.getId() != null && assessmentProjectPerformanceDto.getId() != 0) {
             AssessmentProjectPerformanceDto target = getAssessmentProjectPerformanceById(assessmentProjectPerformanceDto.getId());
             String remarks = assessmentProjectPerformanceDto.getRemarks();
@@ -146,13 +147,6 @@ public class ChksAssessmentProjectPerformanceService {
                 assessmentProjectPerformanceDto.setTableId(tableId);
             }
         }
-        if (assessmentProjectPerformanceDto.getProjectId() != null) {
-            ProjectInfo projectInfo = projectInfoService.getProjectInfoById(assessmentProjectPerformanceDto.getProjectId());
-            if (projectInfo != null) {
-                assessmentProjectPerformanceDto.setProjectName(projectInfo.getProjectName());
-            }
-        }
-        assessmentProjectPerformanceDto.setTableName(FormatUtils.entityNameConvertToTableName(ProjectPlanDetails.class));
         ProjectPlanDetails projectPlanDetails = null;
         if (StringUtils.isNotBlank(assessmentProjectPerformanceDto.getProcessInsId())) {
             projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsByProcessInsId(assessmentProjectPerformanceDto.getProcessInsId());
@@ -497,10 +491,12 @@ public class ChksAssessmentProjectPerformanceService {
         BoxReActivityDto boxReActivityDto = getSpotBoxReActivityDto(boxId);
         try {
             if (boxReActivityDto != null) {
-                List<String> userAccounts = Lists.newArrayList();
+
                 List<String> list = bpmRpcBoxService.getRoleUserByActivityId(boxReActivityDto.getId());
-                if (CollectionUtils.isNotEmpty(list)) userAccounts.addAll(list);
-                return userAccounts;
+                if (CollectionUtils.isNotEmpty(list)) {
+                    //String类可以使用默认的流去重，这里没问题的
+                    return list.stream().distinct().collect(Collectors.toList());
+                }
             }
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
@@ -553,8 +549,6 @@ public class ChksAssessmentProjectPerformanceService {
         return null;
         //return bpmRpcBoxService.getEndActivityByBoxId(boxId);
     }
-
-
 
 
     public BoxReDto getBoxReDto(String processInsId) {
@@ -715,7 +709,7 @@ public class ChksAssessmentProjectPerformanceService {
                 if (CollectionUtils.isNotEmpty(performanceDtos)) {
                     for (AssessmentProjectPerformanceDto performanceDto : performanceDtos) {
                         //当考核任务已经设置了考核人时此时此刻不再设置考核人
-                        if (StringUtils.isBlank(performanceDto.getExaminePeople())){
+                        if (StringUtils.isBlank(performanceDto.getExaminePeople())) {
                             performanceDto.setExaminePeople(processControllerComponent.getThisUser());
                             performanceDto.setExaminePeopleName(processControllerComponent.getThisUserInfo().getUserName());
                         }
