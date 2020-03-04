@@ -84,6 +84,7 @@ public class CustomReportAppraiserAssociationService {
         Date endDate = null;
         if (StringUtils.isNotEmpty(queryEndDate)) {
             endDate = DateUtils.parse(queryEndDate);
+            endDate = DateUtils.addDay(endDate, 1);
         }
         List<CustomReportAppraiserAssociation> customNumberRecordList = null;
         //结果报告
@@ -92,7 +93,7 @@ public class CustomReportAppraiserAssociationService {
         //咨评报告
         BaseDataDic consultationReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_CONSULTATION);
         Integer consultationId = consultationReport.getId();
-        if (reportType == resultId) {
+        if (resultId.equals(reportType)) {
             customNumberRecordList = customReportAppraiserAssociationMapper.getCustomReportAppraiserAssociationList(projectName, reportType, consultationId, numberValue, unitName, startDate, endDate);
         } else {
             customNumberRecordList = customReportAppraiserAssociationMapper.getCustomReportAppraiserAssociationList(projectName, reportType, null, numberValue, unitName, startDate, endDate);
@@ -215,7 +216,7 @@ public class CustomReportAppraiserAssociationService {
         //咨评报告
         BaseDataDic consultationReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_CONSULTATION);
         Integer consultationId = consultationReport.getId();
-        if (reportType == resultId) {
+        if (resultId.equals(reportType)) {
             customNumberRecordList = customReportAppraiserAssociationMapper.getCustomReportAppraiserAssociationList(projectName, reportType, consultationId, numberValue, unitName, startDate, endDate);
         } else {
             customNumberRecordList = customReportAppraiserAssociationMapper.getCustomReportAppraiserAssociationList(projectName, reportType, null, numberValue, unitName, startDate, endDate);

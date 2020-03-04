@@ -157,7 +157,9 @@ public class ProjectTaskBaseLandPriceAssist implements ProjectTaskInterface {
         modelAndView.addObject("landLevelContent", landStateByEstateId.getLandLevelContent());
         modelAndView.addObject("levelDetailId", landStateByEstateId.getLandLevel());
         DataLandLevelDetail levelDetail = dataLandLevelDetailService.getDataLandLevelDetailById(landStateByEstateId.getLandLevel());
-        modelAndView.addObject("landLevelId", levelDetail.getLandLevelId());
+        if (levelDetail != null){
+            modelAndView.addObject("landLevelId", levelDetail.getLandLevelId());
+        }
         //期日修正系数
         BigDecimal dateAmend = mdBaseLandPriceService.getBaseLandPriceDateAmend(schemeJudgeObject.getId());
         modelAndView.addObject("dateAmend", dateAmend);
@@ -170,11 +172,11 @@ public class ProjectTaskBaseLandPriceAssist implements ProjectTaskInterface {
         //基准地价、法定年限、容积率修正根据对应的土地级别明细表取值,只能在最上级取值
         Integer landLevelDetailId = landStateByEstateId.getLandLevel();
         modelAndView.addObject("landLevelDetailId", landLevelDetailId);
-        DataLandLevelDetail data  = dataLandLevelDetailService.getPidByDataLandLevelDetail(landLevelDetailId);
-        if(data!=null) {
+        DataLandLevelDetail data = dataLandLevelDetailService.getPidByDataLandLevelDetail(landLevelDetailId);
+        if (data != null) {
             modelAndView.addObject("standardPremium", data.getPrice());
             modelAndView.addObject("legalAge", data.getLegalAge());
-            BigDecimal amendValue = dataLandLevelDetailVolumeService.getAmendByVolumetricRate(levelDetail.getVolumeRate(),landLevelDetailId);
+            BigDecimal amendValue = dataLandLevelDetailVolumeService.getAmendByVolumetricRate(levelDetail.getVolumeRate(), landLevelDetailId);
             String volumeFractionAmend = "未配置";
             if (amendValue != null) {
                 volumeFractionAmend = String.format("%.2f", amendValue);

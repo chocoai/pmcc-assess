@@ -22,7 +22,7 @@ commonColumn.estateNetworkColumn = function () {
         field: 'name', title: '供应商名称', formatter: function (value, row, index) {
             var s = row.supplierName;
             if (row.creatorName) {
-                s += "<label style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</label>"
+                s += "<span style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</span>"
             }
 
             return s;
@@ -40,7 +40,7 @@ commonColumn.estateParkingColumn = function () {
         field: 'parkName', title: '停车场名称', formatter: function (value, row, index) {
             var s = row.name;
             if (row.creatorName) {
-                s += "<label style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</label>"
+                s += "<span style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</span>"
             }
             return s;
         }
@@ -526,7 +526,7 @@ commonColumn.unitElevatorColumn = function () {
 commonColumn.houseRoomColumn = function () {
     var cols = [];
     cols.push({
-        field: 'name', title: '房间类型', formatter: function (value, row, index) {
+        field: 'name', title: '名称', formatter: function (value, row, index) {
             var s = "";
             if (row.roomType) {
                 s += row.roomType;

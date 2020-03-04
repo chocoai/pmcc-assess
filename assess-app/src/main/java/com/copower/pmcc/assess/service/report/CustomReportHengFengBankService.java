@@ -98,7 +98,7 @@ public class CustomReportHengFengBankService {
         BaseDataDic consultationReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_CONSULTATION);
         Integer consultationId = consultationReport.getId();
         List<CustomReportHengFengBank> customNumberRecordList = null;
-        if (reportType == resultId) {
+        if (resultId.equals(reportType)) {
             customNumberRecordList = customReportHengFengBankMapper.getCustomReportHengFengBankList(numberValue, unitName, reportType, consultationId, startDate, endDate);
         } else {
             customNumberRecordList = customReportHengFengBankMapper.getCustomReportHengFengBankList(numberValue, unitName, reportType, null, startDate, endDate);
@@ -210,6 +210,7 @@ public class CustomReportHengFengBankService {
         Date endDate = null;
         if (StringUtils.isNotEmpty(queryEndDate)) {
             endDate = DateUtils.parse(queryEndDate);
+            endDate = DateUtils.addDay(endDate, 1);
         }
 
         //结果报告
@@ -219,7 +220,7 @@ public class CustomReportHengFengBankService {
         BaseDataDic consultationReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_CONSULTATION);
         Integer consultationId = consultationReport.getId();
         List<CustomReportHengFengBank> customNumberRecordList = null;
-        if (reportType == resultId) {
+        if (resultId.equals(reportType)) {
             customNumberRecordList = customReportHengFengBankMapper.getCustomReportHengFengBankList(numberValue, unitName, reportType, consultationId, startDate, endDate);
         } else {
             customNumberRecordList = customReportHengFengBankMapper.getCustomReportHengFengBankList(numberValue, unitName, reportType, null, startDate, endDate);

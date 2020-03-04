@@ -17,8 +17,26 @@ public class NetInfoRecordLandVo extends NetInfoRecordLand {
     private String districtName;
     private String fileViewName;
     private String sourceSiteUrl;
+    private String realizationRatiosStr;
+    private String greeningRateStr;
     private BigDecimal landAreaCentiare;
     private BigDecimal landAreaMu;
+
+    public String getRealizationRatiosStr() {
+        return realizationRatiosStr;
+    }
+
+    public void setRealizationRatiosStr(String realizationRatiosStr) {
+        this.realizationRatiosStr = realizationRatiosStr;
+    }
+
+    public String getGreeningRateStr() {
+        return greeningRateStr;
+    }
+
+    public void setGreeningRateStr(String greeningRateStr) {
+        this.greeningRateStr = greeningRateStr;
+    }
 
     public BigDecimal getLandAreaCentiare() {
         return landAreaCentiare;

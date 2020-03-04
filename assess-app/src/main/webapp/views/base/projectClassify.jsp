@@ -42,14 +42,16 @@
                                                            placeholder="字段名称" id="queryFieldName" name="queryFieldName"
                                                            class="form-control input-full">
                                                 </div>
-                                                <button style="margin-left: 10px" class="btn btn-info  btn-sm" type="button"
+                                                <button style="margin-left: 10px" class="btn btn-info  btn-sm"
+                                                        type="button"
                                                         onclick="reloadProjectClassifyList()">
 											<span class="btn-label">
 												<i class="fa fa-search"></i>
 											</span>
                                                     查询
                                                 </button>
-                                                <button style="margin-left: 5px" class="btn btn-success btn-sm" type="button"
+                                                <button style="margin-left: 5px" class="btn btn-success btn-sm"
+                                                        type="button"
                                                         data-toggle="modal" onclick="addProjectClassify()"
                                                         href="#divBox">
 											<span class="btn-label">
@@ -158,7 +160,7 @@
                                         </div>
                                     </div>
                                 </div>
-                      
+
 
                             </div>
                         </div>
@@ -180,12 +182,13 @@
 
 
 <!--子项管理-->
-<div id="divSubProjectClassify" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+<div id="divSubProjectClassify" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">子项数据</h4>
+                <h4 class="modal-title" id="titleContent">子项数据</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
             </div>
@@ -220,7 +223,8 @@
     </div>
 </div>
 
-<div id="divSubProjectClassifyManage" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+<div id="divSubProjectClassifyManage" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -256,7 +260,8 @@
                                             </label>
                                             <div class="col-sm-10">
                                                 <input type="text" data-rule-maxlength="100" placeholder="字段名称"
-                                                       id="subFieldName" name="fieldName" class="form-control input-full">
+                                                       id="subFieldName" name="fieldName"
+                                                       class="form-control input-full">
                                             </div>
                                         </div>
                                     </div>
@@ -306,7 +311,8 @@
                                             <div class="col-sm-10">
                                                 <div class="form-check" style="justify-content:left">
                                                     <label class="form-check-label">
-                                                        <input class="form-check-input" type="checkbox" id="subBisEnable"
+                                                        <input class="form-check-input" type="checkbox"
+                                                               id="subBisEnable"
                                                                name="bisEnable" value="true"
                                                                checked="checked">
                                                         <span class="form-check-sign">是否启用</span>
@@ -484,12 +490,14 @@
     </div>
 </div>
 --%>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/select/dynamic.form.select.js?v=${assessVersion}"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/select/dynamic.form.select.js?v=${assessVersion}"></script>
 
 <script type="application/javascript">
     $(function () {
         loadProjectClassifyList();
     })
+
     //加载代理数据列表
     function loadProjectClassifyList() {
         var cols = [];
@@ -522,9 +530,13 @@
         }, {
             showColumns: false,
             showRefresh: false,
-            search: false
+            search: false,
+            onLoadSuccess: function () {
+                $('.tooltips').tooltip();
+            }
         });
     }
+
     //刷新数据列表
     function reloadProjectClassifyList() {
         var opt = {
@@ -555,12 +567,12 @@
                         $('#divBox').modal('hide');
                     }
                     else {
-                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                        AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
                     Loading.progressHide();
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             })
         }
@@ -572,6 +584,7 @@
         $("#id").val("0");
         $("#bisEnable").prop("checked", true);
     }
+
     //编辑字典数据
     function editProjectClassify(id) {
         $("#frm").clearAll();
@@ -589,15 +602,16 @@
                     $('#divBox').modal();
                 }
                 else {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
                 Loading.progressHide();
-                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         })
     }
+
     //删除字典数据
     function delProjectClassify(id, tbId) {
         AlertConfirm("是否确认删除", "删除相应的数据后将不可恢复", function () {
@@ -614,12 +628,12 @@
                         $('#' + tbId).bootstrapTable("refresh");
                     }
                     else {
-                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                        AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
                     Loading.progressHide();
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             })
         })
@@ -674,6 +688,7 @@
                 }
             });
     }
+
     //新增子项
     function addSubProjectClassify() {
         $("#frmSub").clearAll();
@@ -711,16 +726,18 @@
                         $('#divSubProjectClassifyManage').modal('hide');
                     }
                     else {
-                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                        AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             })
         }
     }
+
     var strLevelHtml = "";
+
     //获取字典层级
     function getProjectClassifyLevel(id) {
         $.ajax({
@@ -740,14 +757,15 @@
                     }
                 }
                 else {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         })
     }
+
     //递归层级
     function getProjectClassifyLevelRecursion(keyValueDto) {
         if (keyValueDto) {
@@ -755,6 +773,7 @@
             strLevelHtml += '<a href="javascript:setSubProjectClassify(' + keyValueDto.key + ')">' + keyValueDto.value + '</a>' + ">";
         }
     }
+
     //选择动态表单
     function selectDynamicForm() {
         assessDynamicForm.select(function (row) {

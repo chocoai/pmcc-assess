@@ -23,59 +23,55 @@
                     <input type="hidden" id="id" name="id">
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="card-body">
-                                <div class="row form-group">
-                                    <div class="col-md-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-1 control-label">坐落</label>
-                                            <div class="col-sm-3">
-                                                <input class="form-control input-full" type="text" name="seat"
-                                                       placeholder="坐落">
-                                            </div>
-                                            <label class="col-sm-1 control-label">楼栋号</label>
-                                            <div class="col-sm-3">
-                                                <input class="form-control input-full" type="text" name="buildingNumber"
-                                                       placeholder="楼栋号">
-                                            </div>
-                                            <label class="col-sm-1 control-label">单元号</label>
-                                            <div class="col-sm-3">
-                                                <input class="form-control input-full" type="text" name="unit"
-                                                       placeholder="单元号">
-                                            </div>
-
+                            <div class="row form-group">
+                                <div class="col-md-12">
+                                    <div class="form-inline x-valid">
+                                        <label class="col-sm-1 control-label">坐落</label>
+                                        <div class="col-sm-3">
+                                            <input class="form-control input-full" type="text" name="seat"
+                                                   placeholder="坐落">
+                                        </div>
+                                        <label class="col-sm-1 control-label">楼栋号</label>
+                                        <div class="col-sm-3">
+                                            <input class="form-control input-full" type="text" name="buildingNumber"
+                                                   placeholder="楼栋号">
+                                        </div>
+                                        <label class="col-sm-1 control-label">单元号</label>
+                                        <div class="col-sm-3">
+                                            <input class="form-control input-full" type="text" name="unit"
+                                                   placeholder="单元号">
                                         </div>
 
                                     </div>
+
                                 </div>
-                                <div class="row form-group">
-                                    <div class="col-md-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-1 control-label">权证号</label>
-                                            <div class="col-sm-3">
-                                                <input class="form-control input-full" type="text" name="name"
-                                                       placeholder="权证号">
-                                            </div>
-                                            <button style="margin-left: 10px" class="btn btn-info  btn-sm" type="button"
-                                                    onclick="declareRecordModeObj.searchData(this)">
+                            </div>
+                            <div class="row form-group">
+                                <div class="col-md-12">
+                                    <div class="form-inline x-valid">
+                                        <label class="col-sm-1 control-label">权证号</label>
+                                        <div class="col-sm-3">
+                                            <input class="form-control input-full" type="text" name="name"
+                                                   placeholder="权证号">
+                                        </div>
+                                        <button style="margin-left: 10px" class="btn btn-info  btn-sm" type="button"
+                                                onclick="declareRecordModeObj.searchData(this)">
 											<span class="btn-label">
 												<i class="fa fa-search"></i>
 											</span>
-                                                搜索
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row form-group">
-                                    <div class="col-md-12">
-                                        <div class="col-sm-12">
-                                            <table class="table table-bordered" id="boxDeclareRecordModeObjList">
-                                            </table>
-                                        </div>
+                                            搜索
+                                        </button>
                                     </div>
                                 </div>
                             </div>
-
-
+                            <div class="row form-group">
+                                <div class="col-md-12">
+                                    <div class="col-sm-12">
+                                        <table class="table table-bordered" id="boxDeclareRecordModeObjList">
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -92,88 +88,8 @@
         </div>
     </div>
 </div>
-
-
-<%--
-<div id="boxDeclareRecordModeObj" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
-     role="dialog"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">权证选择控件</h3>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                        <div class="panel-body">
-                            <div class="form-horizontal">
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">坐落</label>
-                                        <div class="col-sm-2">
-                                            <input class="form-control input-full" type="text" name="seat"
-                                                   placeholder="坐落">
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">楼栋号</label>
-                                        <div class="col-sm-2">
-                                            <input class="form-control input-full" type="text" name="buildingNumber"
-                                                   placeholder="楼栋号">
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">单元号</label>
-                                        <div class="col-sm-2">
-                                            <input class="form-control input-full" type="text" name="unit"
-                                                   placeholder="单元号">
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <div class="x-valid">
-                                            <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                                                <div class="input-group">
-                                                    <input class="form-control input-full" type="text" name="name"
-                                                           placeholder="权证号">
-                                                    <span class="input-group-addon"
-                                                          onclick="declareRecordModeObj.searchData(this);">搜索<i
-                                                            class="fa fa-search"></i> </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                                        <table class="table table-bordered" id="boxDeclareRecordModeObjList">
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">
-                    关闭
-                </button>
-                <button type="button" class="btn btn-primary" onclick="declareRecordModeObj.select()">
-                    确定
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
---%>
-
 <script type="text/javascript">
-
     var declareRecordModeObj = {};
-
     declareRecordModeObj.targetTable = $("#boxDeclareRecordModeObjList");
     declareRecordModeObj.targetBox = $("#boxDeclareRecordModeObj");
 
@@ -204,14 +120,6 @@
         }
         declareRecordModeObj.loadDeclareRecordTable({projectId: defaultObj.projectId});
         box.modal('show');
-//        AssessCommon.initAreaInfo({
-//            provinceTarget: box.find("select[name='province']"),
-//            cityTarget: box.find("select[name='city']"),
-//            districtTarget: box.find("select[name='district']"),
-//            provinceValue: null,
-//            cityValue: null,
-//            districtValue: null
-//        });
     };
 
     /**
@@ -290,15 +198,15 @@
         var cols = [];
         cols.push({checkbox: true, width: "5%"});
         cols.push({field: 'name', title: '权证名称', width: "22%"});
-        cols.push({field: 'buildingNumber', title: '楼栋号', width: "9%"});
-        cols.push({field: 'unit', title: '单元号', width: "10%"});
-        cols.push({field: 'ownership', title: '所有权人', width: "10%"});
+        cols.push({field: 'buildingNumber', title: '楼栋号', width: "15%"});
+        cols.push({field: 'unit', title: '单元号', width: "15%"});
+        cols.push({field: 'ownership', title: '所有权人', width: "15%"});
         cols.push({field: 'seat', title: '坐落', width: "29%"});
 //        cols.push({field: 'floorArea', title: '证载面积', width: "9%"});
 //        cols.push({field: 'practicalArea', title: '实际面积', width: "9%"});
         var method = {
-            showColumns: true,
-            showRefresh: true,
+            showColumns: false,
+            showRefresh: false,
             search: false,
             onLoadSuccess: function () {//加载成功时执行
                 //对曾经选中过的依旧保持选中状态

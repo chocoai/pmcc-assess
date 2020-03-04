@@ -7,6 +7,7 @@ import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordLandDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecord;
 import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordLand;
+import com.copower.pmcc.assess.dto.output.net.NetInfoRecordLandVo;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.NetInfoRecordLandService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
@@ -127,7 +128,8 @@ public class NetInfoRecordLandController {
         try {
             if (id != null) {
                 NetInfoRecordLand recordLand = netInfoRecordLandService.getNetInfoRecordLandById(id);
-                return HttpResult.newCorrectResult(recordLand);
+                NetInfoRecordLandVo netInfoRecordLandVo = netInfoRecordLandService.getNetInfoRecordLandVo(recordLand, null);
+                return HttpResult.newCorrectResult(netInfoRecordLandVo);
             }
         } catch (Exception e) {
             return HttpResult.newErrorResult(String.format("异常! %s", e.getMessage()));

@@ -14,7 +14,6 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
             </div>
-
             <div class="modal-body">
                 <form class="form-horizontal">
                     <input type="hidden" name="projectId">
@@ -193,182 +192,10 @@
                     保存
                 </button>
             </div>
-
         </div>
     </div>
 </div>
 
-
-<%--
-<div id="divBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
-     role="dialog"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">他项权利</h3>
-            </div>
-            <div class="modal-body">
-                <form class="form-horizontal">
-                    <input type="hidden" name="projectId">
-                    <input type="hidden" name="planDetailsId">
-                    <input type="hidden" name="groupId">
-                    <input type="hidden" name="id" value="0">
-                    <div class="row form-group">
-                        <div class="form-inline x-valid">
-                            <label class="col-sm-1 control-label">
-                                类别<span class="symbol required"></span>
-                            </label>
-                            <div class="col-sm-5">
-                                <select class="form-control input-full" required name="category"
-                                        onchange="changeRemark(this)">
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row form-group">
-                        <div class="form-inline x-valid">
-                            <label class="col-sm-1 control-label">他项权力描述<span
-                                    class="symbol required"></span></label>
-                            <div class="col-sm-5">
-                                <textarea class="form-control input-full" required="required" name="remark"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                    <c:if test="${projectInfo.entrustPurpose == pledgeId}">
-                        <div class="row form-group">
-                            <div class="form-inline x-valid">
-                                <label class="col-sm-1 control-label">对变现能力的影响<span
-                                        class="symbol required"></span></label>
-                                <div class="col-sm-5">
-                                            <textarea class="form-control input-full" required="required"
-                                                      name="influence"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                    </c:if>
-                    <div class="row form-group">
-                        <div class="form-inline x-valid">
-                            <label class="col-sm-1 control-label">
-                                他权证编号
-                            </label>
-                            <div class="col-sm-5">
-                                <input type="text" placeholder="他权证编号" name="number" class="form-control input-full">
-                            </div>
-                        </div>
-                        <div class="form-inline x-valid">
-                            <label class="col-sm-1 control-label">登记日期</label>
-                            <div class="col-sm-5">
-                                <input placeholder="登记日期" name="registerDate"
-                                       data-date-format="yyyy-mm-dd"
-                                       class="form-control input-full date-picker dbdate" readonly="readonly">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row form-group">
-                        <div class="form-inline x-valid">
-                            <label class="col-sm-1 control-label">
-                                义务人
-                            </label>
-                            <div class="col-sm-5">
-                                <input type="text" placeholder="义务人" name="obligor" class="form-control input-full">
-                            </div>
-                        </div>
-                        <div class="form-inline x-valid">
-                            <label class="col-sm-1 control-label">
-                                权利人
-                            </label>
-                            <div class="col-sm-5">
-                                <input type="text" placeholder="权利人" name="obligee" class="form-control input-full">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row form-group">
-                        <div class="form-inline x-valid">
-                            <label class="col-sm-1 control-label">
-                                登记金额
-                            </label>
-                            <div class="col-sm-5">
-                                <input type="text" placeholder="登记金额" data-rule-number='true'
-                                       name="registerAmount" class="form-control input-full">
-                            </div>
-                        </div>
-                        <div class="form-inline x-valid">
-                            <label class="col-sm-1 control-label">
-                                行权金额
-                            </label>
-                            <div class="col-sm-5">
-                                <input type="text" placeholder="行权金额" data-rule-number='true'
-                                       name="actualAmount" class="form-control input-full">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row form-group">
-                        <div class="form-inline x-valid">
-                            <label class="col-sm-1 control-label">
-                                登记面积
-                            </label>
-                            <div class="col-sm-5">
-                                <input type="text" placeholder="登记面积" data-rule-number='true'
-                                       name="registerArea" class="form-control input-full">
-                            </div>
-                        </div>
-                        <div class="form-inline x-valid">
-                            <label class="col-sm-1 control-label">
-                                他权级次
-                            </label>
-                            <div class="col-sm-5">
-                                <input type="text" placeholder="他权级次"
-                                       name="rightRank" class="form-control input-full">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row form-group">
-                        <div class="form-inline x-valid">
-                            <label class="col-sm-1 control-label">开始日期</label>
-                            <div class="col-sm-5">
-                                <input placeholder="开始日期"
-                                       name="beginDate" data-date-format="yyyy-mm-dd"
-                                       class="form-control input-full date-picker dbdate" readonly="readonly">
-                            </div>
-                        </div>
-                        <div class="form-inline x-valid">
-                            <label class="col-sm-1 control-label">结束日期</label>
-                            <div class="col-sm-5">
-                                <input placeholder="结束日期"
-                                       name="endDate" data-date-format="yyyy-mm-dd"
-                                       class="form-control input-full date-picker dbdate" readonly="readonly">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row form-group">
-                        <div class="form-inline x-valid">
-                            <label class="col-sm-1 control-label">
-                                附件
-                            </label>
-                            <div class="col-sm-5">
-                                <input id="inventoryRightFile" type="file" multiple="false">
-                                <div id="_inventoryRightFile"></div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">
-                    取消
-                </button>
-                <button type="button" class="btn btn-primary" onclick="saveData(this)">
-                    保存
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
---%>
 <script type="text/html" id="taskRightAssistDiv">
     <div class="col-md-12">
         <div class="card full-height">
@@ -377,12 +204,13 @@
                     <div class="card-title">
                         他权分组（0{index}）
                         <small>
-                            <a href="javascript://;" class="btn btn-xs btn-warning"
-                               onclick="cleanHTMLData(this,'_number')">移除</a>
+                            <button type="button" class="btn btn-sm btn-warning"
+                                    onclick="cleanHTMLData(this,'_number')">移除
+                            </button>
                         </small>
                     </div>
                     <div class="card-tools">
-                        <button class="btn  btn-link btn-primary btn-xs"><span
+                        <button type="button" class="btn  btn-link btn-primary btn-xs"><span
                                 class="fa fa-angle-down"></span>
                         </button>
                     </div>
@@ -395,10 +223,7 @@
                             <div class="form-inline">
                                 <div class="btn-group">
                                     <input type="hidden" name="groupId" value="_number">
-                                    <button class="btn-primary btn btn-sm" type="button"
-                                            onclick="declareRecordModeObj.init({callback:selectRecord,this_:this});">
-                                        选择权证
-                                    </button>
+
                                 </div>
                                 <label class="col-sm-1 control-label">权证名称</label>
                                 <div class="col-sm-1">
@@ -433,10 +258,13 @@
 											</span>
                                     查询
                                 </button>
-
-                                <button type="button" class="btn btn-primary btn-sm"
+                                <button class="btn-primary btn btn-sm" style="margin-left: 5px;" type="button"
+                                        onclick="declareRecordModeObj.init({callback:selectRecord,this_:this});">
+                                    <span class="btn-label"><i class="fa fa-grip-vertical"></i></span>选择权证
+                                </button>
+                                <button type="button" class="btn btn-primary btn-sm" style="margin-left: 5px;"
                                         onclick="queryDeclareRecordTable(this,false);" aria-expanded="false">
-                                    重置 <i class="fa fa-paper-plane"></i>
+                                    <span class="btn-label"><i class="fa fa-undo-alt"></i></span>重置
                                 </button>
                             </div>
                         </div>
@@ -455,61 +283,46 @@
                             </div>
                         </div>
                     </div>
-
-                        <div class="row form-group">
-                            <div class="col-sm-12">
-                                <button style="margin-left: 5px" class="btn btn-success btn-sm" type="button"
-                                        data-toggle="modal" onclick="addData(this,'_number')">
-											<span class="btn-label">
-												<i class="fa fa-plus"></i>
-											</span>
-                                    新增
-                                </button>
-                                <button type="button" class="btn btn-primary btn-sm"
-                                        onclick="editData(this,'_number')" aria-expanded="false">
-                            <span class="btn-label">
-												<i class="fa fa-pen"></i>
-											</span>
-                                    编辑
-                                </button>
-                                <button type="button" class="btn btn-warning btn-sm"
-                                        onclick="delData(this,'_number')" aria-expanded="false">
-                            <span class="btn-label">
-												<i class="fa fa-minus"></i>
-											</span>删除
-                                </button>
-                                <button type="button" class="btn btn-success btn-sm"
-                                        onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftAssetInventoryRight)"
-                                        aria-expanded="false">
-                            <span class="btn-label">
-												<i class="fa fa-cloud-download-alt"></i>
-											</span>
-                                    下载模板
-                                </button>
-                                <button type="button" class="btn btn-primary btn-sm"
-                                        onclick="$('#ajaxFileUpload_number').val('').trigger('click')">
-                             <span class="btn-label">
-												<i class="fa fa-cloud-upload-alt"></i>
-											</span>导入
-                                </button>
-                            </div>
+                    <div class="row form-group">
+                        <label class="col-sm-1 control-label"></label>
+                        <div class="col-sm-11">
+                            <button style="margin-left: 5px" class="btn btn-success btn-sm" type="button"
+                                    data-toggle="modal" onclick="addData(this,'_number')"><span class="btn-label"><i
+                                    class="fa fa-plus"></i></span>新增
+                            </button>
+                            <button type="button" class="btn btn-primary btn-sm" onclick="editData(this,'_number')"
+                                    aria-expanded="false"><span class="btn-label"><i class="fa fa-pen"></i></span>编辑
+                            </button>
+                            <button type="button" class="btn btn-warning btn-sm" onclick="delData(this,'_number')"
+                                    aria-expanded="false"><span class="btn-label"><i class="fa fa-minus"></i></span>删除
+                            </button>
+                            <button type="button" class="btn btn-success btn-sm"
+                                    onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftAssetInventoryRight)"
+                                    aria-expanded="false"><span class="btn-label"><i
+                                    class="fa fa-cloud-download-alt"></i></span>下载模板
+                            </button>
+                            <button type="button" class="btn btn-primary btn-sm"
+                                    onclick="$('#ajaxFileUpload_number').val('').trigger('click')"><span
+                                    class="btn-label"><i class="fa fa-cloud-upload-alt"></i></span>导入
+                            </button>
                         </div>
-                            <div class="row form-group">
-                                <div class="col-sm-12">
-                                    <div class="form-inline x-valid">
-                                        <label class="col-sm-1 control-label">他权明细<span
-                                                class="symbol required"></span></label>
-                                        <div class="col-sm-11">
-                                            <table class="table table-bordered" id="tb_List_number">
-                                                <!-- cerare document add ajax data-->
-                                            </table>
-                                        </div>
-                                    </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-sm-12">
+                            <div class="form-inline x-valid">
+                                <label class="col-sm-1 control-label">他权明细<span
+                                        class="symbol required"></span></label>
+                                <div class="col-sm-11">
+                                    <table class="table table-bordered" id="tb_List_number">
+                                        <!-- cerare document add ajax data-->
+                                    </table>
                                 </div>
                             </div>
+                        </div>
+                    </div>
 
-                        <input type="file" id="ajaxFileUpload_number" name="file"
-                               onchange="importRightData('_number');" style="display: none;">
+                    <input type="file" id="ajaxFileUpload_number" name="file"
+                           onchange="importRightData('_number');" style="display: none;">
                 </form>
             </div>
         </div>
@@ -531,10 +344,7 @@
                                     <div class="card-title">
                                         他项权利
                                         <small>
-                                            <a href="javascript://;" class="btn btn-xs btn-success"
-                                               onclick="appendHtml(false)">添加分组<i
-                                                    class="fa fa-plus"></i>
-                                            </a>
+                                            <button type="button" class="btn btn-sm btn-success" onclick="appendHtml(false)">添加分组</button>
                                         </small>
                                     </div>
                                     <div class="card-tools">
@@ -559,39 +369,10 @@
         </div>
         <%@include file="/views/share/main_footer.jsp" %>
     </div>
-
 </div>
-
-<%--<div class="container body">
-    <div class="main_container">
-        <div class="right_col" role="main" style="margin-left: 0">
-            <%@include file="/views/share/form_head.jsp" %>
-            <%@include file="/views/share/project/projectInfoSimple.jsp" %>
-            <%@include file="/views/share/project/projectPlanDetails.jsp" %>
-            <!--填写表单-->
-            <div class="x_panel">
-                <div>
-                    <h3>他项权利
-                        <small>
-                            <a href="javascript://;" class="btn btn-xs btn-success" onclick="appendHtml(false)">添加分组<i
-                                    class="fa fa-plus"></i>
-                            </a>
-                        </small>
-                    </h3>
-                </div>
-            </div>
-            <div id="taskRightAssistAppend"></div>
-            <%@include file="/views/share/form_apply.jsp" %>
-            &lt;%&ndash;<%@include file="/views/share/form_log.jsp" %>&ndash;%&gt;
-        </div>
-    </div>
-</div>--%>
-
 </body>
-
 <%@include file="/views/project/tool/declareRecordModeView.jsp" %>
-<script type="text/javascript"
-        src="${pageContext.request.contextPath}/js/ajaxfileupload.js?v=${assessVersion}"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/ajaxfileupload.js?v=${assessVersion}"></script>
 <script type="text/javascript">
 
     var commonField = {
@@ -651,11 +432,11 @@
                         callback(result.data);
                     }
                 } else {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     }
@@ -674,11 +455,11 @@
                 } else {
                     console.log(data);
                     console.log(result.errmsg);
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     }
@@ -695,11 +476,11 @@
                         callback(result.data);
                     }
                 } else {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     }
@@ -717,11 +498,11 @@
                         callback(result.data);
                     }
                 } else {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     }
@@ -738,11 +519,11 @@
                         callback(result.data);
                     }
                 } else {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     }
@@ -759,11 +540,11 @@
                         callback(result.data);
                     }
                 } else {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     }
@@ -780,11 +561,11 @@
                         callback(result.data);
                     }
                 } else {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     }
@@ -816,11 +597,11 @@
                         });
                     }
                 } else {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     }
@@ -836,11 +617,11 @@
         var cols = [];
         cols.push({field: 'declareName', title: '权证名称', width: "22%"});
         cols.push({field: 'buildingNumber', title: '楼栋号', width: "16%"});
-        cols.push({field: 'unitNumber', title: '单元号', width: "6%"});
-        cols.push({field: 'ownership', title: '所有权人', width: "6%"});
+        cols.push({field: 'unitNumber', title: '单元号', width: "10%"});
+        cols.push({field: 'ownership', title: '所有权人', width: "10%"});
         cols.push({field: 'seat', title: '坐落', width: "29%"});
         cols.push({
-            field: 'id', title: '操作', width: 200, formatter: function (value, row, index) {
+            field: 'id', title: '操作', width: "10%", formatter: function (value, row, index) {
                 var str = '<button type="button" onclick="removeDataDeclareRecord(' + row.id + ",'" + row.groupId + "'" + ')"  style="margin-left: 5px;"  class="btn  btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
                 str += '<i class="fa fa-minus"></i>';
                 str += '</button>';
@@ -1010,12 +791,12 @@
         var box = $("#" + commonField.divBox);
         var rows = $("#" + commonField.tbList + value).bootstrapTable('getSelections');
         if (!rows || rows.length <= 0) {
-            notifyInfo('提示',"请选择要编辑的数据");
+            notifyInfo('提示', "请选择要编辑的数据");
         } else if (rows.length == 1) {
             box.modal("show");
             initForm(data = rows[0], box.find("form"));
         } else {
-            notifyInfo('提示',"只能选择一行数据进行编辑");
+            notifyInfo('提示', "只能选择一行数据进行编辑");
         }
     }
 
@@ -1032,7 +813,7 @@
     function delData(_this, value) {
         var rows = $("#" + commonField.tbList + value).bootstrapTable('getSelections');
         if (!rows || rows.length <= 0) {
-            notifyInfo('提示',"请选择要删除的数据");
+            notifyInfo('提示', "请选择要删除的数据");
         } else {
             var idArray = [];
             $.each(rows, function (i, item) {
@@ -1056,7 +837,7 @@
         var x_panel = $(_this).closest(".x_panel");
         deleteSurveyAssetRightGroupById(groupId, function () {
             x_panel.remove();
-            notifySuccess('成功','移除成功');
+            notifySuccess('成功', '移除成功');
         });
     }
 
@@ -1074,7 +855,7 @@
         data.projectId = '${projectInfo.id}';
         data.planDetailsId = '${projectPlanDetails.id}';
         saveSurveyAssetRightItem([data], function () {
-            notifySuccess('成功','保存成功');
+            notifySuccess('成功', '保存成功');
             box.modal("hide");
             loadAssetRightList(data.groupId);
         });
@@ -1098,15 +879,15 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    notifyInfo('提示',result.data);
+                    notifyInfo('提示', result.data);
                     loadAssetRightList(groupId);
                 } else {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result, status, e) {
                 Loading.progressHide();
-                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     }

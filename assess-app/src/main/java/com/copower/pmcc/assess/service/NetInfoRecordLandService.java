@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service;
 
+import com.copower.pmcc.assess.common.ArithmeticUtils;
 import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordDao;
 import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordLandDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
@@ -164,6 +165,12 @@ public class NetInfoRecordLandService {
         }
         if (StringUtils.isNotEmpty(netInfoRecordLand.getDistrict())) {
             vo.setDistrictName(erpAreaService.getSysAreaName(netInfoRecordLand.getDistrict()));
+        }
+        if(netInfoRecordLand.getLandRealizationRatios()!=null){
+            vo.setRealizationRatiosStr(ArithmeticUtils.getPercentileSystem(netInfoRecordLand.getLandRealizationRatios(), 4, BigDecimal.ROUND_HALF_UP));
+        }
+        if(netInfoRecordLand.getGreeningRate()!=null){
+            vo.setGreeningRateStr(ArithmeticUtils.getPercentileSystem(netInfoRecordLand.getGreeningRate(), 4, BigDecimal.ROUND_HALF_UP));
         }
         if (netInfoRecordLand.getLandArea() != null) {
 

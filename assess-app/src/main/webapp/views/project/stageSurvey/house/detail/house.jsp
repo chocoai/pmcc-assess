@@ -313,34 +313,30 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="x_title tradingCondition">融资条件</div>
                                     <div class="row form-group tradingCondition">
-                                        <div class="x_title">融资条件</div>
-                                        <div class="row form-group">
-                                            <div class="col-md-12">
-                                                <div class="form-inline x-valid">
-                                                    <label class="col-sm-1 control-label">首付款比例</label>
-                                                    <div class="col-sm-3">
-                                                        <label class="form-control input-full"
-                                                               name="downPaymentRatio">${basicHouseTrading.downPaymentRatio}</label>
-                                                    </div>
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1 control-label">首付款比例</label>
+                                                <div class="col-sm-3">
+                                                    <label class="form-control input-full"
+                                                           name="downPaymentRatio">${basicHouseTrading.downPaymentRatio}</label>
+                                                </div>
 
-                                                    <label class="col-sm-1 control-label">贷款利率</label>
-                                                    <div class="col-sm-3">
-                                                        <label class="form-control input-full"
-                                                               name="lendingRate">${basicHouseTrading.lendingRate}</label>
-                                                    </div>
-                                                    <label class="col-sm-1 control-label">贷款期限</label>
-                                                    <div class="col-sm-3">
-                                                        <label class="form-control input-full"
-                                                               name="loanPeriod">${basicHouseTrading.loanPeriod}</label>
-                                                    </div>
+                                                <label class="col-sm-1 control-label">贷款利率</label>
+                                                <div class="col-sm-3">
+                                                    <label class="form-control input-full"
+                                                           name="lendingRate">${basicHouseTrading.lendingRate}</label>
+                                                </div>
+                                                <label class="col-sm-1 control-label">贷款期限</label>
+                                                <div class="col-sm-3">
+                                                    <label class="form-control input-full"
+                                                           name="loanPeriod">${basicHouseTrading.loanPeriod}</label>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="x_title">
-                                            <div class="clearfix"></div>
-                                        </div>
                                     </div>
+
                                     <c:if test="${basicHouseTrading.tradingTypeName=='出售'}">
                                         <div class="row form-group">
                                             <div class="col-md-12">

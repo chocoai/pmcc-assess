@@ -100,7 +100,7 @@ public class CustomReportTianFuBankService {
         //咨评报告
         BaseDataDic consultationReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_CONSULTATION);
         Integer consultationId = consultationReport.getId();
-        if (reportType == resultId) {
+        if (resultId.equals(reportType)) {
             customNumberRecordList = customReportTianFuBankMapper.getCustomReportTianFuBankList(numberValue, unitName, reportType, consultationId, startDate, endDate);
         } else {
             customNumberRecordList = customReportTianFuBankMapper.getCustomReportTianFuBankList(numberValue, unitName, reportType, null, startDate, endDate);
@@ -175,6 +175,7 @@ public class CustomReportTianFuBankService {
         Date endDate = null;
         if (StringUtils.isNotEmpty(queryEndDate)) {
             endDate = DateUtils.parse(queryEndDate);
+            endDate = DateUtils.addDay(endDate, 1);
         }
 
         List<CustomReportTianFuBank> customNumberRecordList = null;
@@ -184,7 +185,7 @@ public class CustomReportTianFuBankService {
         //咨评报告
         BaseDataDic consultationReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_CONSULTATION);
         Integer consultationId = consultationReport.getId();
-        if (reportType == resultId) {
+        if (resultId.equals(reportType)) {
             customNumberRecordList = customReportTianFuBankMapper.getCustomReportTianFuBankList(numberValue, unitName, reportType, consultationId, startDate, endDate);
         } else {
             customNumberRecordList = customReportTianFuBankMapper.getCustomReportTianFuBankList(numberValue, unitName, reportType, null, startDate, endDate);

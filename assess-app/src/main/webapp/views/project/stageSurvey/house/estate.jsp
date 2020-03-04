@@ -62,19 +62,19 @@
                                        onchange="$(this).closest('.input-group').find('[name=blockId]').val('0');"
                                        placeholder="基础版块" class="form-control" name="blockName"
                                        value="${basicEstate.blockName}">
-                                <span class="input-group-btn">
-                                <button type="button" class="btn btn-primary docs-tooltip"
-                                data-toggle="tooltip"
-                                data-original-title="选择"
-                                onclick="examineCommon.blockSelect(this)">
-                                 <i class="fa fa-search"></i>
-                        </button>
-                        <button type="button" class="btn btn-warning docs-tooltip"
-                                onclick="$(this).closest('.input-group').find('input').val('');"
-                                data-toggle="tooltip" data-original-title="清除">
-                        <i class="fa fa-minus"></i>
-                        </button>
-                        </span>
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-warning btn-sm "
+                                            style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                            type="button" onclick="$(this).closest('.input-group').find('input').val('');">
+                                        清空
+                                    </button>
+                                </div>
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-primary btn-sm "
+                                            style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                            type="button" onclick="examineCommon.blockSelect(this);">选择
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -309,13 +309,13 @@
                         <datalist id="landUseTypeList">
 
                         </datalist>
-                        <span class="input-group-btn">
-                                                <button type="button" class="btn btn-warning docs-tooltip"
-                                                        onclick="$(this).closest('.input-group').find('input').val('');"
-                                                        data-toggle="tooltip" data-original-title="清除">
-                                                <i class="fa fa-minus"></i>
-                                                </button>
-                                            </span>
+                        <div class="input-group-prepend">
+                            <button class="btn btn-warning btn-sm "
+                                    style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                    type="button" onclick="$(this).closest('.input-group').find('input').val('');">
+                                清空
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <label class="col-sm-1">
@@ -329,13 +329,13 @@
                         <datalist id="landUseCategoryList">
 
                         </datalist>
-                        <span class="input-group-btn">
-                                                <button type="button" class="btn btn-warning docs-tooltip"
-                                                        onclick="$(this).closest('.input-group').find('input').val('');"
-                                                        data-toggle="tooltip" data-original-title="清除">
-                                                <i class="fa fa-minus"></i>
-                                                </button>
-                                            </span>
+                        <div class="input-group-prepend">
+                            <button class="btn btn-warning btn-sm "
+                                    style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                    type="button" onclick="$(this).closest('.input-group').find('input').val('');">
+                                清空
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -410,24 +410,26 @@
                         <input type="text" readonly="readonly" onclick="examineCommon.landLevelSelect(this);"
                                placeholder="土地级别" class="form-control" name="landLevelName" required
                                value="${basicEstateLandState.landLevelName}">
-                        <span class="input-group-btn">
-                        <button type="button" class="btn btn-primary docs-tooltip"
-                                data-toggle="tooltip"
-                                data-original-title="选择"
-                                onclick="examineCommon.landLevelSelect(this);">
-                        <i class="fa fa-search"></i>
-                        </button>
-                        <button type="button" class="btn btn-warning docs-tooltip"
-                                onclick="$(this).closest('.input-group').find('input').val('');"
-                                data-toggle="tooltip" data-original-title="清除">
-                        <i class="fa fa-minus"></i>
-                        </button>
-                            <button type="button" class="btn btn-info docs-tooltip"
-                                    onclick="estateCommon.openLevelDetailModal(this);"
-                                    data-toggle="tooltip" data-original-title="土地因素">
-                        <i class="fa fa-magic"></i>
-                        </button>
-                </span>
+                        <div class="input-group-prepend">
+                            <button class="btn btn-warning btn-sm "
+                                    style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                    type="button" onclick="$(this).closest('.input-group').find('input').val('');">
+                                清空
+                            </button>
+                        </div>
+                        <div class="input-group-prepend">
+                            <button class="btn btn-primary btn-sm "
+                                    style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                    type="button" onclick="examineCommon.landLevelSelect(this);">选择
+                            </button>
+                        </div>
+                        <div class="input-group-prepend">
+                            <button class="btn btn-info btn-sm "
+                                    style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                    type="button" onclick="estateCommon.openLevelDetailModal(this);">因素
+                            </button>
+                        </div>
+
                     </div>
                 </div>
                 <label class="col-sm-1">土地形状<span

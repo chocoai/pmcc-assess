@@ -76,6 +76,7 @@ public class CustomReportHuaXiaBankService {
         Date endDate = null;
         if (StringUtils.isNotEmpty(queryEndDate)) {
             endDate = DateUtils.parse(queryEndDate);
+            endDate = DateUtils.addDay(endDate, 1);
         }
 
         List<CustomReportHuaXiaBank> customNumberRecordList = null;
@@ -85,7 +86,7 @@ public class CustomReportHuaXiaBankService {
         //咨评报告
         BaseDataDic consultationReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_CONSULTATION);
         Integer consultationId = consultationReport.getId();
-        if (reportType == resultId) {
+        if (resultId.equals(reportType)) {
             customNumberRecordList = customReportHuaXiaBankMapper.getCustomReportHuaXiaBankList(numberValue, unitName, reportType, consultationId, startDate, endDate);
         } else {
             customNumberRecordList = customReportHuaXiaBankMapper.getCustomReportHuaXiaBankList(numberValue, unitName, reportType, null, startDate, endDate);
@@ -144,10 +145,10 @@ public class CustomReportHuaXiaBankService {
 
         if (CollectionUtils.isNotEmpty(numberList)) {
             for (ProjectNumberRecord item : numberList) {
-                if (item.getReportType() == preauditId) {
+                if (item.getReportType().equals(preauditId)) {
                     strPreaudit.append(item.getNumberValue()).append("/");
                 }
-                if (item.getReportType() == resultId || item.getReportType() == consultationId) {
+                if (item.getReportType().equals(resultId) || item.getReportType().equals(consultationId)) {
                     strResult.append(item.getNumberValue()).append("/");
                 }
             }
@@ -191,7 +192,7 @@ public class CustomReportHuaXiaBankService {
         //咨评报告
         BaseDataDic consultationReport = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_TYPE_CONSULTATION);
         Integer consultationId = consultationReport.getId();
-        if (reportType == resultId) {
+        if (resultId.equals(reportType)) {
             customNumberRecordList = customReportHuaXiaBankMapper.getCustomReportHuaXiaBankList(numberValue, unitName, reportType, consultationId, startDate, endDate);
         } else {
             customNumberRecordList = customReportHuaXiaBankMapper.getCustomReportHuaXiaBankList(numberValue, unitName, reportType, null, startDate, endDate);

@@ -1675,7 +1675,7 @@ var houseRoom;
                     practicalUseId:  practicalUse
                 });
             } else {
-                AlertError("请先选择房屋下的实际用途");
+                notifyInfo("提示","请先选择房屋下的实际用途")
             }
 
             FileUtils.uploadFiles({

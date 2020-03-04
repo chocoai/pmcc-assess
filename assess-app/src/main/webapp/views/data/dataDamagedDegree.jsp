@@ -194,7 +194,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">子项数据</h4>
+                <h4 class="modal-title" id="titleContent">子项数据</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
             </div>
@@ -451,7 +451,10 @@
         }, {
             showColumns: false,
             showRefresh: false,
-            search: false
+            search: false,
+            onLoadSuccess: function () {
+                $('.tooltips').tooltip();
+            }
         });
     }
 
@@ -572,13 +575,13 @@
         cols.push({field: 'remark', title: '备注'});
         cols.push({
             field: 'id', title: '操作', width: 200, formatter: function (value, row, index) {
-                var str = '<button onclick="setSubDamagedDegree(' + row.id + ')" style="margin-left: 5px;" class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看子项">';
+                var str = '<button type="button" onclick="setSubDamagedDegree(' + row.id + ')" style="margin-left: 5px;" class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看子项">';
                 str += '<i class="fa fa-search"></i>';
                 str += '</button>';
-                str += '<button onclick="editSubDamagedDegree(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
+                str += '<button type="button" onclick="editSubDamagedDegree(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
                 str += '<i class="fa fa-pen"></i>';
                 str += '</button>';
-                str += '<button onclick="delDamagedDegree(' + row.id + ',\'tbDamagedDegreeList\')"  style="margin-left: 5px;"  class="btn  btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
+                str += '<button type="button" onclick="delDamagedDegree(' + row.id + ',\'tbDamagedDegreeList\')"  style="margin-left: 5px;"  class="btn  btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
                 str += '<i class="fa fa-minus"></i>';
                 str += '</button>';
                 return str;
@@ -589,6 +592,8 @@
             cols, {pid: pid}, {
                 showRefresh: false,                  //是否显示刷新按钮
                 toolbar: '#toolbarSub',
+                showRefresh: false,
+                search: false,
                 uniqueId: "id",
                 onLoadSuccess: function () {
                     if (fn) {

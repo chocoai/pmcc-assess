@@ -170,7 +170,9 @@ public class ProjectTaskCostApproachAssist implements ProjectTaskInterface {
         modelAndView.addObject("landLevelContent", landStateByEstateId.getLandLevelContent());
         modelAndView.addObject("levelDetailId", landStateByEstateId.getLandLevel());
         DataLandLevelDetail levelDetail = dataLandLevelDetailService.getDataLandLevelDetailById(landStateByEstateId.getLandLevel());
-        modelAndView.addObject("landLevelId", levelDetail.getLandLevelId());
+        if(levelDetail!=null){
+            modelAndView.addObject("landLevelId", levelDetail.getLandLevelId());
+        }
     }
 
     public void initTaxeItem(MdCostApproach mdCostApproach) {
