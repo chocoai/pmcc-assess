@@ -139,7 +139,7 @@
                             </div>
                             <div class="card-body">
                                 <form id="frm_asset_inventory_content" class="form-horizontal">
-                                    <table class="table" id="tb_List">
+                                    <table id="tb_List">
                                         <thead>
                                         <tr>
                                             <th style="width: 10%">一致性内容</th>

@@ -174,7 +174,7 @@
                             </div>
                             <div class="card-body">
                                 <form id="frm_asset_inventory_content" class="form-horizontal">
-                                    <table class="table" id="tb_surveyList">
+                                    <table id="tb_surveyList">
                                         <thead>
                                         <tr>
                                             <th style="width: 10%">一致性内容</th>
@@ -286,7 +286,7 @@
                                                     })
                                                 </script>
                                                 <td>
-                                                    <a class="btn btn-xs btn-danger" onclick="emptyRefill(this)">清空</a>
+                                                    <button type="button" class="btn btn-xs btn-danger" onclick="emptyRefill(this)">清空</button>
                                                 </td>
                                             </tr>
                                             <script type="text/javascript">
