@@ -77,7 +77,7 @@ public class AssessmentTaskDeclareService implements AssessmentTaskInterface {
             Iterator<DeclareRealtyHouseCertVo> houseCertVoIterator = declareRealtyHouseCertVoList.iterator();
             while (houseCertVoIterator.hasNext()) {
                 DeclareRealtyHouseCertVo realtyHouseCertVo = houseCertVoIterator.next();
-                saveAssessmentProjectPerformanceDto(processInsId,activityId,taskId,byExamineUser,projectInfo,projectPlanDetails,boxReDto,FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class),realtyHouseCertVo.getId(),realtyHouseCert.getCertName());
+                saveAssessmentProjectPerformanceDto(processInsId,activityId,taskId,byExamineUser,projectInfo,projectPlanDetails,boxReDto,FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class),realtyHouseCertVo.getId(),realtyHouseCertVo.getCertName());
             }
         }
         if (CollectionUtils.isNotEmpty(declareRealtyLandCertVoList)) {

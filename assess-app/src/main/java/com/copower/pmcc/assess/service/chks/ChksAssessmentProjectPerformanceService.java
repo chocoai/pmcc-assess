@@ -202,20 +202,20 @@ public class ChksAssessmentProjectPerformanceService {
             if (StringUtils.isEmpty(projectPerformanceDto.getTableName())) {
                 projectPerformanceDto.setTableName(FormatUtils.entityNameConvertToTableName(ProjectPlanDetails.class));
             }
-            if (StringUtils.isNotBlank(projectPlanDetails.getProjectPhaseName())) {
-                projectPerformanceDto.setBusinessKey(projectPlanDetails.getProjectPhaseName());
-            }
-            //业务标识
-            if (projectPlanDetails.getProjectWorkStageId() != null) {
-                ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlanDetails.getProjectWorkStageId());
-                if (projectWorkStage != null) {
-                    if (StringUtils.isNotBlank(projectPerformanceDto.getBusinessKey())) {
-                        projectPerformanceDto.setBusinessKey(String.join("-", projectPerformanceDto.getBusinessKey(), projectWorkStage.getWorkStageName()));
-                    } else {
-                        projectPerformanceDto.setBusinessKey(projectWorkStage.getWorkStageName());
-                    }
-                }
-            }
+//            if (StringUtils.isNotBlank(projectPlanDetails.getProjectPhaseName())) {
+//                projectPerformanceDto.setBusinessKey(projectPlanDetails.getProjectPhaseName());
+//            }
+//            //业务标识
+//            if (projectPlanDetails.getProjectWorkStageId() != null) {
+//                ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlanDetails.getProjectWorkStageId());
+//                if (projectWorkStage != null) {
+//                    if (StringUtils.isNotBlank(projectPerformanceDto.getBusinessKey())) {
+//                        projectPerformanceDto.setBusinessKey(String.join("-", projectPerformanceDto.getBusinessKey(), projectWorkStage.getWorkStageName()));
+//                    } else {
+//                        projectPerformanceDto.setBusinessKey(projectWorkStage.getWorkStageName());
+//                    }
+//                }
+//            }
             ProjectInfo projectInfo = null;
             if (projectPlanDetails.getProjectId() != null) {
                 if (projectPerformanceDto.getProjectId() == null) {
