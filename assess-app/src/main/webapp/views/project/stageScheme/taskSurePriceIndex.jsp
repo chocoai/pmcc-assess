@@ -10,154 +10,156 @@
     <div class="main-panel" style="width: 100%">
         <div class="content" style="margin-top: 0px;">
             <%@include file="/views/share/form_head.jsp" %>
-            <%@include file="/views/share/project/projectInfoSimple.jsp" %>
-            <%@include file="/views/share/project/projectPlanDetails.jsp" %>
-            <div class="col-md-12">
-                <div class="card full-height">
-                    <div class="card-header collapse-link">
-                        <div class="card-head-row">
-                            <div class="card-title">
-                                ${judgeObject.name}
-                                <small>(${judgeObject.evaluationArea}㎡)</small>
-                            </div>
-                            <div class="card-tools">
-                                <button class="btn  btn-link btn-primary btn-xs"><span
-                                        class="fa fa-angle-down"></span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <form class="form-horizontal" id="sure_price_form">
-                            <input type="hidden" name="id" value="${schemeSurePrice.id}">
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <th>方法名称</th>
-                                    <th>试算价格</th>
-                                    <th>权重</th>
-                                </tr>
-                                </thead>
-                                <tbody id="tbody_data_section">
-                                </tbody>
-                            </table>
-                            <div class="form-group">
-                                <div class="x-valid">
-                                    <label class="col-sm-1 control-label">
-                                        权重说明<span class="symbol required"></span>
-                                    </label>
-                                    <div class="col-sm-11">
-                                <textarea name="weightExplain" required
-                                          class="form-control">${schemeSurePrice.weightExplain}</textarea>
+            <div class="page-inner mt--5">
+                <div class="row mt--2">
+                    <%@include file="/views/share/project/projectInfoSimple.jsp" %>
+                    <%@include file="/views/share/project/projectPlanDetails.jsp" %>
+                    <div class="col-md-12">
+                        <div class="card full-height">
+                            <div class="card-header collapse-link">
+                                <div class="card-head-row">
+                                    <div class="card-title">
+                                        ${judgeObject.name}
+                                        <small>(${judgeObject.evaluationArea}㎡)</small>
+                                    </div>
+                                    <div class="card-tools">
+                                        <button class="btn  btn-link btn-primary btn-xs"><span
+                                                class="fa fa-angle-down"></span>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
-                            <div class="row form-group form-inline">
-                                <label class="col-sm-1 control-label">
-                                    最终单价
-                                </label>
-                                <div class="col-sm-3">
-                                    <input type="text" name="price" class="form-control" readonly="readonly"
-                                           value="${schemeSurePrice.price}">
-                                </div>
-                                <div class="col-sm-3">
-                                    <button type="button" class="btn btn-success btn-sm" onclick="updatePrice(this)">更新单价</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-12">
-                <div class="card full-height">
-                    <div class="card-header collapse-link">
-                        <div class="card-head-row">
-                            <div class="card-title">
-                                调整单价
-                            </div>
-                            <div class="card-tools">
-                                <button class="btn  btn-link btn-primary btn-xs"><span
-                                        class="fa fa-angle-down"></span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <form class="form-horizontal">
-                            <div class="row form-group">
-                                <div class="col-md-12">
-                                    <button style="margin-left: 10px" type="button" class="btn btn-sm btn-warning"
-                                            onclick="surePrice.pasteBatch();"><span class="btn-label">
-												<i class="fa fa-paste"></i>
-											</span>粘贴
-                                    </button>
-                                    <button style="margin-left: 5px" type="button"  class="btn btn-sm btn-success"
-                                            onclick="surePrice.exportData();"><span class="btn-label">
-												<i class="fa fa-cloud-download-alt"></i>
-											</span>生成下载模板
-                                    </button>
-                                    <button style="margin-left: 5px" type="button"  class="btn btn-sm btn-info"
-                                            onclick="$('#ajaxFileUploadBtn').val('').trigger('click')"><span class="btn-label">
-												<i class="fa fa-cloud-upload-alt"></i>
-											</span>导入
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="row form-group">
-                                <div class="col-md-12">
-                                    <table id="adjust_factor_table" class="table">
+                            <div class="card-body">
+                                <form class="form-horizontal" id="sure_price_form">
+                                    <input type="hidden" name="id" value="${schemeSurePrice.id}">
+                                    <table class="table">
                                         <thead>
                                         <tr>
-                                            <th width="5%"><input type="checkbox" onclick="surePrice.checkboxToggle(this);"></th>
-                                            <th width="10%">权证号</th>
-                                            <th width="10%">证载面积</th>
-                                            <th width="10%">评估面积</th>
-                                            <th width="10%">楼层</th>
-                                            <th width="10%">房号</th>
-                                            <th width="10%">价格</th>
-                                            <th width="50%">因素</th>
-                                            <th>操作</th>
+                                            <th>方法名称</th>
+                                            <th>试算价格</th>
+                                            <th>权重</th>
                                         </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody id="tbody_data_section">
                                         </tbody>
                                     </table>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-12">
-                <div class="card full-height">
-                    <div class="card-header collapse-link">
-                        <div class="card-head-row">
-                            <div class="card-title">
-                                确认单价记录
-                            </div>
-                            <div class="card-tools">
-                                <button class="btn  btn-link btn-primary btn-xs"><span
-                                        class="fa fa-angle-down"></span>
-                                </button>
+                                    <div class="form-group">
+                                        <div class="x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                权重说明<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-11">
+                                <textarea name="weightExplain" required
+                                          class="form-control">${schemeSurePrice.weightExplain}</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group form-inline">
+                                        <label class="col-sm-1 control-label">
+                                            最终单价
+                                        </label>
+                                        <div class="col-sm-3">
+                                            <input type="text" name="price" class="form-control" readonly="readonly"
+                                                   value="${schemeSurePrice.price}">
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <button type="button" class="btn btn-success btn-sm" onclick="updatePrice(this)">更新单价</button>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
-                    <div class="card-body">
-                        <form class="form-horizontal">
-                            <div class="row form-group">
-                                <div class="col-md-12">
-                                    <table class="table table-bordered" id="tb_surePriceRecordList">
-                                    </table>
+                    <div class="col-md-12">
+                        <div class="card full-height">
+                            <div class="card-header collapse-link">
+                                <div class="card-head-row">
+                                    <div class="card-title">
+                                        调整单价
+                                    </div>
+                                    <div class="card-tools">
+                                        <button class="btn  btn-link btn-primary btn-xs"><span
+                                                class="fa fa-angle-down"></span>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-                        </form>
+                            <div class="card-body">
+                                <form class="form-horizontal">
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <button style="margin-left: 10px" type="button" class="btn btn-sm btn-warning"
+                                                    onclick="surePrice.pasteBatch();"><span class="btn-label">
+												<i class="fa fa-paste"></i>
+											</span>粘贴
+                                            </button>
+                                            <button style="margin-left: 5px" type="button"  class="btn btn-sm btn-success"
+                                                    onclick="surePrice.exportData();"><span class="btn-label">
+												<i class="fa fa-cloud-download-alt"></i>
+											</span>生成下载模板
+                                            </button>
+                                            <button style="margin-left: 5px" type="button"  class="btn btn-sm btn-info"
+                                                    onclick="$('#ajaxFileUploadBtn').val('').trigger('click')"><span class="btn-label">
+												<i class="fa fa-cloud-upload-alt"></i>
+											</span>导入
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <table id="adjust_factor_table" class="table">
+                                                <thead>
+                                                <tr>
+                                                    <th width="5%"><input type="checkbox" onclick="surePrice.checkboxToggle(this);"></th>
+                                                    <th width="10%">权证号</th>
+                                                    <th width="10%">证载面积</th>
+                                                    <th width="10%">评估面积</th>
+                                                    <th width="10%">楼层</th>
+                                                    <th width="10%">房号</th>
+                                                    <th width="10%">价格</th>
+                                                    <th width="50%">因素</th>
+                                                    <th>操作</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                     </div>
+                    <div class="col-md-12">
+                        <div class="card full-height">
+                            <div class="card-header collapse-link">
+                                <div class="card-head-row">
+                                    <div class="card-title">
+                                        确认单价记录
+                                    </div>
+                                    <div class="card-tools">
+                                        <button class="btn  btn-link btn-primary btn-xs"><span
+                                                class="fa fa-angle-down"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <form class="form-horizontal">
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <table class="table table-bordered" id="tb_surePriceRecordList">
+                                            </table>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <%@include file="/views/share/form_apply.jsp" %>
+                    <%@include file="/views/share/form_log.jsp" %>
                 </div>
             </div>
-            <%@include file="/views/share/form_apply.jsp" %>
-            <%@include file="/views/share/form_log.jsp" %>
         </div>
         <%@include file="/views/share/main_footer.jsp" %>
     </div>
@@ -240,9 +242,7 @@
             </div>
             <div class="modal-body">
                 <input type="hidden" name="judgeObjectId">
-                <a class="btn btn-xs btn-warning tooltips" data-placement="top"
-                   onclick="surePrice.addAdjustFactor();"><i
-                        class="fa fa-plus fa-white"></i></a>
+                <button type="button" class="btn btn-sm btn-success tooltips" data-placement="top" onclick="surePrice.addAdjustFactor();"><i class="fa fa-plus fa-white"></i>添加</button>
                 <table class="table">
                     <thead>
                     <tr>
@@ -428,7 +428,7 @@
                         html = html.replace(/{price}/g, item.price);
                         html = html.replace(/{roomNumber}/g, item.roomNumber);
                         html = html.replace(/{price}/g, item.price);
-                        html = html.replace(/{coefficient}/g, item.coefficient);
+                        html = html.replace(/{coefficient}/g, item.factor);
                         html = html.replace(/{declareRecordId}/g, item.declareRecordId);
                         ele.append(html);
                     });

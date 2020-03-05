@@ -258,7 +258,6 @@ public class SchemeJudgeObjectService {
         for (SchemeJudgeObject judgeObject : judgeObjectList) {
             SchemeJudgeObjectVo schemeJudgeObjectVo = new SchemeJudgeObjectVo();
             BeanUtils.copyProperties(judgeObject, schemeJudgeObjectVo);
-            schemeJudgeObjectVo.setCoefficient(getFactorListByJudgeObjectId(judgeObject.getId()));
             for (DeclareRecord declareRecord : declareRecords) {
                 if (declareRecord.getId().equals(judgeObject.getDeclareRecordId())) {
                     schemeJudgeObjectVo.setFloor(declareRecord.getFloor());
@@ -369,10 +368,6 @@ public class SchemeJudgeObjectService {
             DataBestUseDescription bestUseDescription = dataBestUseDescriptionService.getCacheBestUseDescriptionById(schemeJudgeObject.getBestUse());
             if (bestUseDescription != null)
                 schemeJudgeObjectVo.setBestUseName(bestUseDescription.getName());
-        }
-        String s = getFactorListByJudgeObjectId(schemeJudgeObjectVo.getId());
-        if (StringUtils.isNotBlank(s)) {
-            schemeJudgeObjectVo.setCoefficient(s);
         }
         return schemeJudgeObjectVo;
     }

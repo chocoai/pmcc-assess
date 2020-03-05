@@ -410,7 +410,7 @@ public class SchemeSurePriceService {
             row.createCell(2).setCellValue(schemeJudgeObjectVo.getFloor()); // 楼层
             row.createCell(3).setCellValue(schemeJudgeObjectVo.getRoomNumber()); // 房号
             row.createCell(4).setCellValue(String.valueOf(schemeJudgeObjectVo.getPrice() == null ? "" : schemeJudgeObjectVo.getPrice())); // 评估价格
-            row.createCell(5).setCellValue(schemeJudgeObjectVo.getCoefficient()); // 因素
+            row.createCell(5).setCellValue(schemeJudgeObjectVo.getFactor()); // 因素
         }
 
         OutputStream os = response.getOutputStream();
