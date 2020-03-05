@@ -49,17 +49,10 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="col-md-12" style="text-align: center;padding-bottom: 1.25rem">
-
                         <div class="card-body">
-                            <button id="cancel_btn btn-sm" class="btn btn-default" onclick="window.close()">
-                                关闭
-                            </button>
-                            <button class="btn btn-warning" onclick="saveDataInfo();">
-                                保存<i style="margin-left: 10px" class="fa fa-save"></i>
-                            </button>
-
+                            <button type="button" id="cancel_btn btn-sm" class="btn btn-default" onclick="window.close()">关闭</button>
+                            <button type="button" class="btn btn-warning" onclick="saveDataInfo();">保存</button>
                         </div>
                     </div>
                 </div>

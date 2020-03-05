@@ -647,58 +647,10 @@
     </div>
 </div>
 
-<%--
-<div id="detailAchievementModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
-     role="dialog"
-     aria-hidden="true" data-height="500">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">土地因素</h3>
-            </div>
-            <div class="modal-body">
-                <form class="form-horizontal" id="landLevelContentFrm">
-                    <div class="row form-group">
-                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                            <table class="table table-striped table-bordered">
-                                <thead>
-                                <tr>
-                                    <th width="10%">土地级别类别</th>
-                                    <th width="10%">土地级别类型</th>
-                                    <th width="10%">土地级别等级</th>
-                                    <th width="20%">说明</th>
-                                    <th width="10%">分值</th>
-                                    <th width="5%"></th>
-                                </tr>
-                                </thead>
-                                <tbody id="landLevelTabContent">
-
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" onclick="estateCommon.saveLandLevelTabContent()">
-                    保存
-                </button>
-                <button type="button" data-dismiss="modal" class="btn btn-default">
-                    关闭
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
---%>
 <script type="text/html" id="landLevelTabContentBody">
     <tr class="group">
         <td class="table-cell">
-            {landLevelTypeName}
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            {landLevelTypeName}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td>
             {landLevelCategoryName}

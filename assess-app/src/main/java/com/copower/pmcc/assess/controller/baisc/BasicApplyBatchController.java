@@ -338,14 +338,14 @@ public class BasicApplyBatchController extends BaseController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/verification", name = "验证楼盘是否已在案列库", method = {RequestMethod.POST})
-    public HttpResult verification(BasicApplyBatch basicApplyBatch) {
+    @RequestMapping(value = "/recordBatchApply", name = "批量申请", method = {RequestMethod.POST})
+    public HttpResult recordBatchApply(String province,String city,String estateName) {
         try {
-            Integer caseEstateId = basicApplyBatchService.verification(basicApplyBatch);
-            return HttpResult.newCorrectResult(caseEstateId);
+            Integer basicBatchId = basicApplyBatchService.recordBatchApply(province,city,estateName);
+            return HttpResult.newCorrectResult(basicBatchId);
         } catch (Exception e1) {
             logger.error(e1.getMessage(), e1);
-            return HttpResult.newErrorResult("保存数据异常");
+            return HttpResult.newErrorResult("批量申请异常");
         }
     }
 

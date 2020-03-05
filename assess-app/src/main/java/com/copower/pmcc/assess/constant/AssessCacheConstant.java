@@ -92,4 +92,7 @@ public class AssessCacheConstant {
     //土地级别
     public static final String PMCC_ASSESS_LAND_LEVEL = "pmcc:assess:land:level";
     public static final String PMCC_ASSESS_LAND_LEVEL_ID = "pmcc:assess:land:level:id";
+
+    //批量申请
+    public static final String PMCC_ASSESS_BASIC_BATCH_APPLY_ESTATE_ID = "pmcc:assess:basic:batch:apply:estate:id";
 }

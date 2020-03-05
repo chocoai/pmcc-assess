@@ -71,7 +71,6 @@ public class SchemeSurePriceFactorService {
 
         SchemeJudgeObjectVo schemeJudgeObjectVo = new SchemeJudgeObjectVo();
         schemeJudgeObjectVo.setPrice(resultPrice);
-        schemeJudgeObjectVo.setCoefficient(schemeJudgeObjectService.getFactorListByJudgeObjectId(judgeObjectId));
         return schemeJudgeObjectVo;
     }
 

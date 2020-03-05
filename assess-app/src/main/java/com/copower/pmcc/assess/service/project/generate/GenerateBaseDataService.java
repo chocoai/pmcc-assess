@@ -3191,8 +3191,8 @@ public class GenerateBaseDataService {
                     List<String> stringList = Lists.newArrayList();
                     judgeObjectList.stream().forEach(oo -> {
                         SchemeJudgeObjectVo schemeJudgeObjectVo = schemeJudgeObjectService.getSchemeJudgeObjectVo(oo);
-                        if (StringUtils.isNotBlank(schemeJudgeObjectVo.getCoefficient())) {
-                            stringList.add(String.format("%s标准价基础上经%s", generateCommonMethod.getSchemeJudgeObjectShowName(oo, schemeJudgeObjectList), schemeJudgeObjectVo.getCoefficient()));
+                        if (StringUtils.isNotBlank(schemeJudgeObjectVo.getFactor())) {
+                            stringList.add(String.format("%s标准价基础上经%s", generateCommonMethod.getSchemeJudgeObjectShowName(oo, schemeJudgeObjectList), schemeJudgeObjectVo.getFactor()));
                         }
                     });
                     stringBuilder.append(StringUtils.join(stringList, "，")).append("估价对象结果如下表");
@@ -3225,7 +3225,7 @@ public class GenerateBaseDataService {
             generateCommonMethod.writeWordTitle(builder, Lists.newLinkedList(Lists.newArrayList("估价编号", "因素", "评估面积", "评估单价", "评估总价")));
             for (SchemeJudgeObjectVo schemeJudgeObject : schemeJudgeObjectList) {
                 stringList.add(generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject, schemeJudgeObjectList.stream().map(poo -> (SchemeJudgeObject) poo).collect(Collectors.toList())));
-                stringList.add(StringUtils.isNotBlank(schemeJudgeObject.getCoefficient()) ? schemeJudgeObject.getCoefficient() : nullString);
+                stringList.add(StringUtils.isNotBlank(schemeJudgeObject.getFactor()) ? schemeJudgeObject.getFactor() : nullString);
                 if (schemeJudgeObject.getEvaluationArea() != null) {
                     stringList.add(String.format("%s%s", schemeJudgeObject.getEvaluationArea().toString(), "㎡"));
                 } else {
