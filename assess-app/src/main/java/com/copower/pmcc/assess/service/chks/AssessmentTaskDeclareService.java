@@ -7,6 +7,7 @@ import com.copower.pmcc.assess.dto.output.project.declare.DeclareRealtyHouseCert
 import com.copower.pmcc.assess.dto.output.project.declare.DeclareRealtyLandCertVo;
 import com.copower.pmcc.assess.dto.output.project.declare.DeclareRealtyRealEstateCertVo;
 import com.copower.pmcc.assess.proxy.face.AssessmentTaskInterface;
+import com.copower.pmcc.assess.service.project.ProjectPlanService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRealtyHouseCertService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRealtyLandCertService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRealtyRealEstateCertService;
@@ -19,6 +20,7 @@ import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -47,12 +49,13 @@ public class AssessmentTaskDeclareService implements AssessmentTaskInterface {
     private DeclareRealtyLandCertService declareRealtyLandCertService;
     @Autowired
     private DeclareRealtyRealEstateCertService declareRealtyRealEstateCertService;
-
-    private final String applyUrl = "/chksCustomerAssessmentPlanDetail/apply" ;
+    @Autowired
+    private ProjectPlanService projectPlanService;
+    private final String applyUrl = "/chksCustomerAssessmentPlanDetail/apply";
 
     @Override
-    public void createAssessmentTask(String processInsId, Integer activityId,String taskId, String byExamineUser, ProjectInfo projectInfo, ProjectPlanDetails projectPlanDetails) {
-        if (activityId == null){
+    public void createAssessmentTask(String processInsId, Integer activityId, String taskId, String byExamineUser, ProjectInfo projectInfo, ProjectPlanDetails projectPlanDetails) {
+        if (activityId == null) {
             return;
         }
         BoxReActivityDto activityDto = bpmRpcBoxService.getBoxreActivityInfoById(activityId);
@@ -77,26 +80,26 @@ public class AssessmentTaskDeclareService implements AssessmentTaskInterface {
             Iterator<DeclareRealtyHouseCertVo> houseCertVoIterator = declareRealtyHouseCertVoList.iterator();
             while (houseCertVoIterator.hasNext()) {
                 DeclareRealtyHouseCertVo realtyHouseCertVo = houseCertVoIterator.next();
-                saveAssessmentProjectPerformanceDto(processInsId,activityId,taskId,byExamineUser,projectInfo,projectPlanDetails,boxReDto,FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class),realtyHouseCertVo.getId(),realtyHouseCertVo.getCertName());
+                saveAssessmentProjectPerformanceDto(processInsId, activityId, taskId, byExamineUser, projectInfo, projectPlanDetails, boxReDto, FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class), realtyHouseCertVo.getId(), realtyHouseCertVo.getCertName());
             }
         }
         if (CollectionUtils.isNotEmpty(declareRealtyLandCertVoList)) {
             Iterator<DeclareRealtyLandCertVo> declareRealtyLandCertVoIterator = declareRealtyLandCertVoList.iterator();
             while (declareRealtyLandCertVoIterator.hasNext()) {
                 DeclareRealtyLandCertVo realtyLandCertVo = declareRealtyLandCertVoIterator.next();
-                saveAssessmentProjectPerformanceDto(processInsId,activityId,taskId,byExamineUser,projectInfo,projectPlanDetails,boxReDto,FormatUtils.entityNameConvertToTableName(DeclareRealtyLandCert.class),realtyLandCertVo.getId(),realtyLandCertVo.getLandCertName());
+                saveAssessmentProjectPerformanceDto(processInsId, activityId, taskId, byExamineUser, projectInfo, projectPlanDetails, boxReDto, FormatUtils.entityNameConvertToTableName(DeclareRealtyLandCert.class), realtyLandCertVo.getId(), realtyLandCertVo.getLandCertName());
             }
         }
         if (CollectionUtils.isNotEmpty(declareRealtyRealEstateCertVoList)) {
             ListIterator<DeclareRealtyRealEstateCertVo> realtyRealEstateCertVoListIterator = declareRealtyRealEstateCertVoList.listIterator();
             while (realtyRealEstateCertVoListIterator.hasNext()) {
                 DeclareRealtyRealEstateCertVo realEstateCertVo = realtyRealEstateCertVoListIterator.next();
-                saveAssessmentProjectPerformanceDto(processInsId,activityId,taskId,byExamineUser,projectInfo,projectPlanDetails,boxReDto,FormatUtils.entityNameConvertToTableName(DeclareRealtyRealEstateCert.class),realEstateCertVo.getId(),realEstateCertVo.getCertName());
+                saveAssessmentProjectPerformanceDto(processInsId, activityId, taskId, byExamineUser, projectInfo, projectPlanDetails, boxReDto, FormatUtils.entityNameConvertToTableName(DeclareRealtyRealEstateCert.class), realEstateCertVo.getId(), realEstateCertVo.getCertName());
             }
         }
     }
 
-    private void saveAssessmentProjectPerformanceDto(String processInsId, Integer activityId,String taskId, String byExamineUser, ProjectInfo projectInfo, ProjectPlanDetails projectPlanDetails,BoxReDto boxReDto,String tableName,Integer tableId,String businessKey){
+    private void saveAssessmentProjectPerformanceDto(String processInsId, Integer activityId, String taskId, String byExamineUser, ProjectInfo projectInfo, ProjectPlanDetails projectPlanDetails, BoxReDto boxReDto, String tableName, Integer tableId, String businessKey) {
         AssessmentProjectPerformanceDto dto = new AssessmentProjectPerformanceDto();
         dto.setProcessInsId(processInsId);
         dto.setAppKey(applicationConstant.getAppKey());
@@ -118,16 +121,22 @@ public class AssessmentTaskDeclareService implements AssessmentTaskInterface {
         dto.setExamineStatus(ProjectStatusEnum.RUNING.getKey());
         dto.setTableId(tableId);
         dto.setTableName(tableName);
-        if(projectPlanDetails!=null){
+        if (projectPlanDetails != null) {
             dto.setPlanId(projectPlanDetails.getPlanId());
             dto.setPlanDetailsId(projectPlanDetails.getId());
+            ProjectPlan projectPlan = projectPlanService.getProjectplanById(projectPlanDetails.getPlanId());
+            if (projectPlan != null && StringUtils.isNotBlank(projectPlan.getPlanName())) {
+                dto.setPlanName(String.join("-", projectPlan.getPlanName(), projectPlanDetails.getProjectPhaseName()));
+            } else {
+                dto.setPlanName(projectPlanDetails.getProjectPhaseName());
+            }
         }
         dto.setCreator(commonService.thisUserAccount());
         dto.setValidScore(new BigDecimal(0));
         dto.setExamineUrl(applyUrl);
         Integer id = chksRpcAssessmentService.saveAndUpdateAssessmentProjectPerformanceDto(dto, true);
-        if (id != null){
-            dto.setExamineUrl(String.join("",applyUrl,"?id=",id.toString()));
+        if (id != null) {
+            dto.setExamineUrl(String.join("", applyUrl, "?id=", id.toString()));
             dto.setId(id);
             chksRpcAssessmentService.saveAndUpdateAssessmentProjectPerformanceDto(dto, false);
         }

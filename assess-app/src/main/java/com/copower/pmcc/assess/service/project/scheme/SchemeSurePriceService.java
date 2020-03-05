@@ -560,27 +560,26 @@ public class SchemeSurePriceService {
                 List<String> coefficientList = Arrays.asList(coefficients);
                 for (String coefficientItem : coefficientList) {
                     //通过类型匹配
-                    String factor = coefficientItem.substring(0, coefficientItem.indexOf(":"));
-                    for (SchemeSurePriceFactor schemeSurePriceFactorItem : factorList) {
-                        StringBuilder temp = new StringBuilder();
-                        temp.append(schemeSurePriceFactorItem.getFactor()).append(schemeSurePriceFactorItem.getRemark());
-                        if (temp.toString().equals(factor)) {
-                            schemeSurePriceFactor = schemeSurePriceFactorItem;
-                            String coefficientData = coefficientItem.substring(coefficientItem.indexOf(":") + 1);
-                            if (coefficientData.contains("%")) {
-                                String coefficient = ArithmeticUtils.parseFormatString(coefficientData);
-                                schemeSurePriceFactor.setCoefficient(new BigDecimal(coefficient));
+                    if(coefficientItem.contains(":")){
+                        String factor = coefficientItem.substring(0, coefficientItem.indexOf(":"));
+                        for (SchemeSurePriceFactor schemeSurePriceFactorItem : factorList) {
+                            StringBuilder temp = new StringBuilder();
+                            temp.append(schemeSurePriceFactorItem.getFactor()).append(schemeSurePriceFactorItem.getRemark());
+                            if (temp.toString().equals(factor)) {
+                                schemeSurePriceFactor = schemeSurePriceFactorItem;
+                                String coefficientData = coefficientItem.substring(coefficientItem.indexOf(":") + 1);
+                                if (coefficientData.contains("%")) {
+                                    String coefficient = ArithmeticUtils.parseFormatString(coefficientData);
+                                    schemeSurePriceFactor.setCoefficient(new BigDecimal(coefficient));
+                                }
+                                if (this.isNumeric(coefficientData)) {
+                                    schemeSurePriceFactor.setCoefficient(new BigDecimal(coefficientData));
+                                }
+                                schemeSurePriceFactorDao.updateSurePriceFactor(schemeSurePriceFactor);
                             }
-                            if (this.isNumeric(coefficientData)) {
-                                schemeSurePriceFactor.setCoefficient(new BigDecimal(coefficientData));
-                            }
-                            schemeSurePriceFactorDao.updateSurePriceFactor(schemeSurePriceFactor);
                         }
-                    }
-
+                    };
                 }
-
-
             }
 
         }

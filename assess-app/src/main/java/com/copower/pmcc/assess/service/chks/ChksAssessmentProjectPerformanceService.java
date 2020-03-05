@@ -188,8 +188,12 @@ public class ChksAssessmentProjectPerformanceService {
             }
         }
         if (projectPlanDetails != null) {
-            projectPerformanceDto.setPlanDetailsId(projectPlanDetails.getId());
-            projectPerformanceDto.setPlanId(projectPlanDetails.getPlanId());
+            if (projectPerformanceDto.getPlanDetailsId() == null) {
+                projectPerformanceDto.setPlanDetailsId(projectPlanDetails.getId());
+            }
+            if (projectPerformanceDto.getPlanId() == null) {
+                projectPerformanceDto.setPlanId(projectPlanDetails.getPlanId());
+            }
             if (StringUtils.isEmpty(projectPerformanceDto.getByExaminePeople())) {
                 if (StringUtils.isNotBlank(projectPlanDetails.getExecuteUserAccount())) {
                     projectPerformanceDto.setByExaminePeople(projectPlanDetails.getExecuteUserAccount());
@@ -202,20 +206,6 @@ public class ChksAssessmentProjectPerformanceService {
             if (StringUtils.isEmpty(projectPerformanceDto.getTableName())) {
                 projectPerformanceDto.setTableName(FormatUtils.entityNameConvertToTableName(ProjectPlanDetails.class));
             }
-//            if (StringUtils.isNotBlank(projectPlanDetails.getProjectPhaseName())) {
-//                projectPerformanceDto.setBusinessKey(projectPlanDetails.getProjectPhaseName());
-//            }
-//            //业务标识
-//            if (projectPlanDetails.getProjectWorkStageId() != null) {
-//                ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlanDetails.getProjectWorkStageId());
-//                if (projectWorkStage != null) {
-//                    if (StringUtils.isNotBlank(projectPerformanceDto.getBusinessKey())) {
-//                        projectPerformanceDto.setBusinessKey(String.join("-", projectPerformanceDto.getBusinessKey(), projectWorkStage.getWorkStageName()));
-//                    } else {
-//                        projectPerformanceDto.setBusinessKey(projectWorkStage.getWorkStageName());
-//                    }
-//                }
-//            }
             ProjectInfo projectInfo = null;
             if (projectPlanDetails.getProjectId() != null) {
                 if (projectPerformanceDto.getProjectId() == null) {
@@ -223,8 +213,10 @@ public class ChksAssessmentProjectPerformanceService {
                 }
                 projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
             }
-            if (projectInfo != null) {
-                projectPerformanceDto.setProjectName(projectInfo.getProjectName());
+            if (StringUtils.isEmpty(projectPerformanceDto.getProjectName())) {
+                if (projectInfo != null) {
+                    projectPerformanceDto.setProjectName(projectInfo.getProjectName());
+                }
             }
         }
         if (CollectionUtils.isNotEmpty(detailDtos)) {
