@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.controller.project.declare;
 
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyHouseCert;
+import com.copower.pmcc.assess.dto.input.project.declare.AutomatedWarrants;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.project.declare.DeclarePublicService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRealtyHouseCertService;
@@ -151,7 +152,7 @@ public class DeclareRealtyHouseCertController {
 
     @ResponseBody
     @RequestMapping(value = "/attachmentAutomatedWarrants", name = "申报图片自动关联", method = RequestMethod.POST)
-    public HttpResult attachmentAutomatedWarrants(DeclarePublicService.AutomatedWarrants  automatedWarrants){
+    public HttpResult attachmentAutomatedWarrants(AutomatedWarrants automatedWarrants){
         try {
             declareRealtyHouseCertService.attachmentAutomatedWarrants(automatedWarrants);
             return HttpResult.newCorrectResult(500,"success");

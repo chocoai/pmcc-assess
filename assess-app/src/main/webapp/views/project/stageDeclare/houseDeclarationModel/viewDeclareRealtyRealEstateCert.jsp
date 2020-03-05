@@ -166,7 +166,7 @@
 <div id="boxDeclareRealtyRealEstateCert" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg" style="max-width: 68%;">
         <div class="modal-content">
 
             <div class="modal-header">
@@ -224,7 +224,7 @@
 <div id="declareBuildingPermitRealtyRealBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg" style="max-width: 65%;">
         <div class="modal-content">
 
             <div class="modal-header">
@@ -286,7 +286,7 @@
 <div id="declareLandUsePermitRealtyRealBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg" style="max-width: 65%;">
         <div class="modal-content">
 
             <div class="modal-header">
@@ -348,7 +348,7 @@
 <div id="declareBuildingConstructionPermitRealtyRealBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg" style="max-width: 65%;">
         <div class="modal-content">
 
             <div class="modal-header">
@@ -410,7 +410,7 @@
 <div id="declarePreSalePermitRealtyRealBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg" style="max-width: 65%;">
         <div class="modal-content">
 
             <div class="modal-header">

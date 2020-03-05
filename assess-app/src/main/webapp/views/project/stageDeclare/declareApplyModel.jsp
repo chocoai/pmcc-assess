@@ -24,8 +24,99 @@
         return false
     };
 
+    //权证号拼接
+    commonDeclareApplyModel.warrantJoin = function (this_, param) {
+        if (!param) {
+            return false;
+        }
+        var frm = $(this_).closest("form");
+        switch (param) {
+            case "house": {
+                var text = "";
+                if (commonDeclareApplyModel.isNotBlank(frm.find("input[name='certName']").val())) {
+                    return false;
+                }
+                var location = frm.find("input[name='location']").val();
+                var number = frm.find("input[name='number']").val();
+                var id = frm.find("select[name='type']").val();
+                if (!commonDeclareApplyModel.isNotBlank(location)) {
+                    location = "";
+                }
+                if (!commonDeclareApplyModel.isNotBlank(number)) {
+                    number = "";
+                }
+                if (!commonDeclareApplyModel.isNotBlank(id)) {
+                    id = "";
+                }
+                if (id == "0") {
+                    text = location + "字第" + number + "号";
+                    frm.find("input[name='certName']").val(text);
+                } else if (commonDeclareApplyModel.isNotBlank(id)) {
+                    AssessCommon.getDataDicInfo(id, function (data) {
+                        if (commonDeclareApplyModel.isNotBlank(data)) {
+                            text = location + data.name + "字第" + number + "号";
+                            frm.find("input[name='certName']").val(text);
+                        }
+                    });
+                }
+                break;
+            }
+            case "land": {
+                var text = "";
+                var id = frm.find("select.landRightType").val();
+                var location = frm.find("input[name='location']").val();
+                var year = frm.find("input[name='year']").val();
+                if (year) {
+                    year = "(" + frm.find("input[name='year']").val() + ")";
+                }
+                var number = frm.find("input[name='number']").val();
+                if (!commonDeclareApplyModel.isNotBlank(number)) {
+                    number = "";
+                } else {
+                    number = "第" + number + "号";
+                }
+                if (commonDeclareApplyModel.isNotBlank(id)) {
+                    AssessCommon.getDataDicInfo(id, function (data) {
+                        if (commonDeclareApplyModel.isNotBlank(data)) {
+                            text = location + data.name + year + number;
+                            frm.find("input[name='landCertName']").val(text);
+                        }
+                    });
+                }
+                break;
+            }
+            case "real": {
+                var text = "";
+                var province = frm.find("select[name='province']").find("option:selected").text();
+                var provinceShort = AssessCommon.provinceForShort(province);
+                var location = frm.find("input[name='location']").val();
+                var number = frm.find("input[name='number']").val();
+                var id = frm.find("select[name='type']").val();
+                var year = frm.find("input[name='year']").val();
+                if (year) {
+                    year = "(" + frm.find("input[name='year']").val() + ")";
+                }
+                if (!commonDeclareApplyModel.isNotBlank(location)) {
+                    location = "";
+                }
+                if (!commonDeclareApplyModel.isNotBlank(number)) {
+                    number = "";
+                }
+                if (commonDeclareApplyModel.isNotBlank(location) && commonDeclareApplyModel.isNotBlank(number)) {
+                    text = provinceShort + year + location + "不动产权" + "第" + number + "号";
+                    frm.find("input[name='certName']").val(text);
+                }
+                break;
+            }
+            default: {
+                break;
+            }
+        }
+    };
+
     //坐落拼接
-    commonDeclareApplyModel.seatJoin = function (engine) {
+    commonDeclareApplyModel.seatJoin = function (this_) {
+        var engine = $(this_).closest("form");
         if (engine.find("input[name='beLocated']").val()) return false;
         var district = engine.find("select[name='district'] option:selected").text();
         var city = engine.find("select[name='city'] option:selected").text();
@@ -136,48 +227,6 @@
         },
         getHtml2: function () {
             return $("#" + commonDeclareApplyModel.config.realEstateCert.id2).html();
-        },
-        //不动产权证号
-        CertNameSplicing: function (that) {
-            var text = "";
-            text = $(that).val();
-            if (commonDeclareApplyModel.isNotBlank(text)) {
-                var engine = $(that).closest("#" + commonDeclareApplyModel.config.realEstateCert.handleId);
-                if (engine.size() == 0) {
-                    // engine = $(that).closest("#" + commonDeclareApplyModel.config.realEstateCert.handleId2);
-                }
-                var province = engine.find("select[name='province']").find("option:selected").text();
-                var provinceShort = AssessCommon.provinceForShort(province);
-                var location = engine.find("input[name='location']").val();
-                var number = engine.find("input[name='number']").val();
-                var id = engine.find("select[name='type']").val();
-                var year = engine.find("input[name='year']").val();
-                if (year) {
-                    year = "(" + engine.find("input[name='year']").val() + ")";
-                }
-                if (!commonDeclareApplyModel.isNotBlank(location)) {
-                    location = "";
-                }
-                if (!commonDeclareApplyModel.isNotBlank(number)) {
-                    number = "";
-                }
-                if (commonDeclareApplyModel.isNotBlank(location) && commonDeclareApplyModel.isNotBlank(number)) {
-                    text = provinceShort + year + location + "不动产权" + "第" + number + "号";
-                    engine.find("input[name='certName']").val(text);
-                }
-            }
-        },
-        //不动产座落
-        beLocatedSplicing: function (that) {
-            var text = "";
-            text = $(that).val();
-            if (commonDeclareApplyModel.isNotBlank(text)) {
-                var engine = $(that).closest("#" + commonDeclareApplyModel.config.realEstateCert.handleId);
-                if (engine.size() == 0) {
-                    engine = $(that).closest("#" + commonDeclareApplyModel.config.realEstateCert.handleId2);
-                }
-                commonDeclareApplyModel.seatJoin(engine);
-            }
         }
     };
 
@@ -187,50 +236,6 @@
     commonDeclareApplyModel.house = {
         getHtml: function () {
             return $("#" + commonDeclareApplyModel.config.house.id).html();
-        },
-        //房产权证号
-        certNameSplicing: function (that) {
-            var text = "";
-            text = $(that).val();
-            if (commonDeclareApplyModel.isNotBlank(text)) {
-                var engine = $(that).closest("#" + commonDeclareApplyModel.config.house.handleId);
-                if (commonDeclareApplyModel.isNotBlank(engine.find("input[name='certName']").val())) {
-                    return false;
-                }
-                var location = engine.find("input[name='location']").val();
-                var number = engine.find("input[name='number']").val();
-                var id = engine.find("select[name='type']").val();
-                if (!commonDeclareApplyModel.isNotBlank(location)) {
-                    location = "";
-                }
-                if (!commonDeclareApplyModel.isNotBlank(number)) {
-                    number = "";
-                }
-                if (!commonDeclareApplyModel.isNotBlank(id)) {
-                    id = "";
-                }
-                if (id == "0") {
-                    text = location + "字第" + number + "号";
-                    engine.find("input[name='certName']").val(text);
-                } else if (commonDeclareApplyModel.isNotBlank(id)) {
-                    AssessCommon.getDataDicInfo(id, function (data) {
-                        if (commonDeclareApplyModel.isNotBlank(data)) {
-                            text = location + data.name + "字第" + number + "号";
-                            engine.find("input[name='certName']").val(text);
-                        }
-                    });
-                }
-            }
-        },
-
-        //房产坐落
-        beLocatedSplicing: function (that) {
-            var text = "";
-            text = $(that).val();
-            if (commonDeclareApplyModel.isNotBlank(text)) {
-                var engine = $(that).closest("#" + commonDeclareApplyModel.config.house.handleId);
-                commonDeclareApplyModel.seatJoin(engine);
-            }
         }
     };
 
@@ -238,49 +243,6 @@
      * 土地证
      */
     commonDeclareApplyModel.land = {
-        //土地权证号 拼接
-        landCertNameSplicing: function (that) {
-            var text = "";
-            text = $(that).val();
-            if (commonDeclareApplyModel.isNotBlank(text)) {
-                var engine = $(that).closest("#" + commonDeclareApplyModel.config.land.handleId);
-                if (engine.size() == 0) {
-                    // engine = $(that).closest("#" + commonDeclareApplyModel.config.land.handleId2);
-                }
-                var id = engine.find("select.landRightType").val();
-                var location = engine.find("input[name='location']").val();
-                var year = engine.find("input[name='year']").val();
-                if (year) {
-                    year = "(" + engine.find("input[name='year']").val() + ")";
-                }
-                var number = engine.find("input[name='number']").val();
-                if (!commonDeclareApplyModel.isNotBlank(number)) {
-                    number = "";
-                } else {
-                    number = "第" + number + "号";
-                }
-                if (commonDeclareApplyModel.isNotBlank(id)) {
-                    AssessCommon.getDataDicInfo(id, function (data) {
-                        if (commonDeclareApplyModel.isNotBlank(data)) {
-                            text = location + data.name + year + number;
-                            engine.find("input[name='landCertName']").val(text);
-                        }
-                    });
-                }
-            }
-        },
-        //土地坐落拼接
-        landBeLocatedSplicing: function (that) {
-            var text = "";
-            text = $(that).val();
-            if (commonDeclareApplyModel.isNotBlank(text)) {
-                var engine = $(that).closest("#" + commonDeclareApplyModel.config.land.handleId);
-                if (engine.size() == 0) {
-                    engine = $(that).closest("#" + commonDeclareApplyModel.config.land.handleId2);
-                }
-                commonDeclareApplyModel.seatJoin(engine);
-            }
-        },
         getHtml: function () {
             return $("#" + commonDeclareApplyModel.config.land.id).html();
         },
@@ -1076,8 +1038,6 @@
         </div>
 
 
-
-
         <div class="row form-group">
             <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                 <div class="form-inline x-valid">
@@ -1148,7 +1108,6 @@
                 </div>
             </div>
         </div>
-
 
 
         <div class="row form-group">
@@ -1239,8 +1198,6 @@
         </div>
 
 
-
-
         <div class="row form-group">
             <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                 <div class="form-inline x-valid">
@@ -1274,7 +1231,6 @@
                 </div>
             </div>
         </div>
-
 
 
         <div class="row form-group">
@@ -1386,7 +1342,6 @@
         </div>
 
 
-
         <div class="row form-group">
             <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                 <div class="form-inline x-valid">
@@ -1445,7 +1400,7 @@
                         <span class="symbol required"></span>
                     </label>
                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                        <select name="province" onchange="commonDeclareApplyModel.realEstateCert.CertNameSplicing(this)"
+                        <select name="province"
                                 class="form-control input-full search-select select2 province"
                                 required="required">
                             <option value="" name="province">-请选择-</option>
@@ -1458,8 +1413,7 @@
                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                         <select name="city"
                                 class="form-control input-full search-select select2"
-                                required="required"
-                                onchange="commonDeclareApplyModel.realEstateCert.beLocatedSplicing(this);">
+                                required="required">
                         </select>
                     </div>
                     <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
@@ -1467,8 +1421,7 @@
                     </label>
                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                         <select name="district"
-                                class="form-control input-full search-select select2 district"
-                                onchange="commonDeclareApplyModel.realEstateCert.beLocatedSplicing(this);commonDeclareApplyModel.realEstateCert.beLocatedSplicing(this);">
+                                class="form-control input-full search-select select2 district">
                         </select>
                     </div>
                 </div>
@@ -1484,13 +1437,18 @@
                             class="symbol required"></span>
                     </label>
                     <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
-                        <input type="text" placeholder="不动产权证号" name="certName" class="form-control input-full"
-                               required>
+                        <div class="input-group">
+                            <input type="text" placeholder="不动产权证号" name="certName" class="form-control form-control-sm" required>
+                            <div class="input-group-prepend ">
+                                <button class="btn btn-info btn-sm " style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                        type="button" onclick="commonDeclareApplyModel.warrantJoin(this,'real');">自动拼接
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
 
 
         <div class="row form-group">
@@ -1503,8 +1461,7 @@
                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                         <input type="text"
                                placeholder="所在地" name="location" class="form-control input-full"
-                               required="required"
-                               onblur="commonDeclareApplyModel.realEstateCert.CertNameSplicing(this)">
+                               required="required">
                     </div>
                     <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
                         编号
@@ -1513,8 +1470,7 @@
                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                         <input type="text" data-rule-maxlength="100" data-rule-number='true'
                                placeholder="编号(数字)" name="number" class="form-control input-full"
-                               required="required"
-                               onblur="commonDeclareApplyModel.realEstateCert.CertNameSplicing(this)">
+                               required="required">
                     </div>
                     <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
                         年份
@@ -1522,7 +1478,6 @@
                     </label>
                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                         <input type="text" required="required" data-rule-maxlength="100"
-                               onblur="commonDeclareApplyModel.realEstateCert.CertNameSplicing(this)"
                                data-rule-number='true' name="year" class="form-control input-full"
                                placeholder="年份(数字如:2018)">
                     </div>
@@ -1564,7 +1519,6 @@
         </div>
 
 
-
         <div class="row form-group">
             <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                 <div class="form-inline x-valid">
@@ -1591,7 +1545,6 @@
             color="#6f5499" size="10"/>
 
 
-
         <div class="row form-group">
             <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                 <div class="form-inline x-valid">
@@ -1601,8 +1554,7 @@
                     </label>
                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                         <input type="text" required
-                               placeholder="街道号" name="streetNumber" class="form-control input-full"
-                               onblur="commonDeclareApplyModel.realEstateCert.beLocatedSplicing(this)">
+                               placeholder="街道号" name="streetNumber" class="form-control input-full">
                     </div>
                     <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
                         附号
@@ -1610,8 +1562,7 @@
                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                         <input type="text"
                                placeholder="附号(数字)" name="attachedNumber" class="form-control input-full"
-                               data-rule-maxlength="100" data-rule-number='true'
-                               onblur="commonDeclareApplyModel.realEstateCert.beLocatedSplicing(this)">
+                               data-rule-maxlength="100" data-rule-number='true'>
                     </div>
                     <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
                         栋号
@@ -1619,13 +1570,11 @@
                     </label>
                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                         <input type="text" required
-                               placeholder="栋号" name="buildingNumber" class="form-control input-full"
-                               onblur="commonDeclareApplyModel.realEstateCert.beLocatedSplicing(this)">
+                               placeholder="栋号" name="buildingNumber" class="form-control input-full">
                     </div>
                 </div>
             </div>
         </div>
-
 
 
         <div class="row form-group">
@@ -1637,16 +1586,14 @@
                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                         <input type="text"
                                placeholder="单元(数字)" name="unit" class="form-control input-full"
-                               data-rule-maxlength="100" data-rule-number='true'
-                               onblur="commonDeclareApplyModel.realEstateCert.beLocatedSplicing(this)">
+                               data-rule-maxlength="100" data-rule-number='true'>
                     </div>
                     <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
                         楼层
                     </label>
                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                         <input type="text"
-                               placeholder="楼层" name="floor" class="form-control input-full"
-                               onblur="commonDeclareApplyModel.realEstateCert.beLocatedSplicing(this)">
+                               placeholder="楼层" name="floor" class="form-control input-full">
                     </div>
                     <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
                         房号
@@ -1654,12 +1601,11 @@
                     </label>
                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                         <input type="text" placeholder="房号" name="roomNumber" class="form-control input-full"
-                               onblur="commonDeclareApplyModel.realEstateCert.beLocatedSplicing(this)" required="required">
+                               required="required">
                     </div>
                 </div>
             </div>
         </div>
-
 
 
         <div class="row form-group">
@@ -1670,8 +1616,14 @@
                             class="symbol required"></span>
                     </label>
                     <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
-                        <input type="text" placeholder="坐落" name="beLocated" class="form-control input-full"
-                               required="required">
+                        <div class="input-group">
+                            <input type="text" placeholder="坐落" name="beLocated" class="form-control form-control-sm" required>
+                            <div class="input-group-prepend ">
+                                <button class="btn btn-info btn-sm " style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                        type="button" onclick="commonDeclareApplyModel.seatJoin(this);">自动拼接
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1679,8 +1631,6 @@
 
         <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%"
             color="#6f5499" size="10"/>
-
-
 
 
         <div class="row form-group">
@@ -1698,11 +1648,12 @@
                     </label>
                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                         <div class="input-group">
-                            <input type="text" name="houseCertUse" class="form-control" list="realHouseUseList"
+                            <input type="text" name="houseCertUse" class="form-control form-control-sm"
+                                   list="realHouseUseList"
                                    required>
                             <datalist id="realHouseUseList"></datalist>
                             <div class="input-group-prepend ">
-                                <button class="btn btn-warning "
+                                <button class="btn btn-warning btn-sm"
                                         style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
                                         type="button"
                                         onclick="$(this).closest('.input-group').find('input').val('');">
@@ -1717,11 +1668,11 @@
                     </label>
                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                         <div class="input-group">
-                            <input type="text" name="houseCertUseCategory" class="form-control"
+                            <input type="text" name="houseCertUseCategory" class="form-control form-control-sm"
                                    list="houseCertUseCategoryList1" required>
                             <datalist id="houseCertUseCategoryList1"></datalist>
                             <div class="input-group-prepend ">
-                                <button class="btn btn-warning "
+                                <button class="btn btn-warning btn-sm"
                                         style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
                                         type="button"
                                         onclick="$(this).closest('.input-group').find('input').val('');">
@@ -1734,8 +1685,6 @@
                 </div>
             </div>
         </div>
-
-
 
 
         <div class="row form-group">
@@ -1771,7 +1720,6 @@
         </div>
 
 
-
         <div class="row form-group">
             <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                 <div class="form-inline x-valid">
@@ -1793,7 +1741,6 @@
                 </div>
             </div>
         </div>
-
 
 
         <div class="row form-group">
@@ -1842,12 +1789,13 @@
                     </label>
                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                         <div class="input-group">
-                            <input type="text" name="landCertUse" class="form-control" list="landCertUseList" required>
+                            <input type="text" name="landCertUse" class="form-control form-control-sm"
+                                   list="landCertUseList" required>
                             <datalist id="landCertUseList">
 
                             </datalist>
                             <div class="input-group-prepend ">
-                                <button class="btn btn-warning "
+                                <button class="btn btn-warning btn-sm"
                                         style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
                                         type="button"
                                         onclick="$(this).closest('.input-group').find('input').val('');">
@@ -1871,12 +1819,12 @@
                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                         <div class="input-group">
                             <input type="text" name="landCertUseCategory" list="landCertUseCategoryList" required
-                                   class="form-control">
+                                   class="form-control form-control-sm">
                             <datalist id="landCertUseCategoryList">
 
                             </datalist>
                             <div class="input-group-prepend ">
-                                <button class="btn btn-warning "
+                                <button class="btn btn-warning btn-sm"
                                         style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
                                         type="button"
                                         onclick="$(this).closest('.input-group').find('input').val('');">
@@ -1941,8 +1889,6 @@
         </div>
 
 
-
-
         <div class="row form-group">
             <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                 <div class="form-inline x-valid">
@@ -1965,7 +1911,6 @@
                 </div>
             </div>
         </div>
-
 
 
         <div class="row form-group">
@@ -2524,7 +2469,7 @@
                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                         <select name="city"
                                 class="form-control input-full search-select select2"
-                                required="required" onchange="commonDeclareApplyModel.house.beLocatedSplicing(this)">
+                                required="required" >
                         </select>
                     </div>
                     <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
@@ -2532,8 +2477,7 @@
                     </label>
                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                         <select name="district"
-                                class="form-control input-full search-select select2 district"
-                                onchange="commonDeclareApplyModel.house.beLocatedSplicing(this)">
+                                class="form-control input-full search-select select2 district">
                         </select>
                     </div>
                 </div>
@@ -2547,7 +2491,14 @@
                         房产权证号<span class="symbol required"></span>
                     </label>
                     <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
-                        <input type="text" placeholder="房产权证号" name="certName" class="form-control input-full" required>
+                        <div class="input-group">
+                            <input type="text" placeholder="房产权证号" name="certName" class="form-control form-control-sm" required>
+                            <div class="input-group-prepend ">
+                                <button class="btn btn-info btn-sm " style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                        type="button" onclick="commonDeclareApplyModel.warrantJoin(this,'house');">自动拼接
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -2563,7 +2514,7 @@
                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                         <input type="text"
                                placeholder="所在地" name="location" class="form-control input-full"
-                               required="required" onblur="commonDeclareApplyModel.house.certNameSplicing(this)">
+                               required="required" >
                     </div>
                     <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
                         编号
@@ -2572,15 +2523,14 @@
                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                         <input type="text" data-rule-maxlength="100" data-rule-number='true'
                                placeholder="编号(数字)" name="number" class="form-control input-full"
-                               required="required" onblur="commonDeclareApplyModel.house.certNameSplicing(this)">
+                               required="required" >
                     </div>
                     <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
                         类型
                         <span class="symbol required"></span>
                     </label>
                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                        <select class="form-control input-full" name="type" required="required"
-                                onchange="commonDeclareApplyModel.house.certNameSplicing(this)">
+                        <select class="form-control input-full" name="type" required="required">
                             <option value="0">--请选择--</option>
                             <c:if test="${not empty certificateTypes}">
                                 <c:forEach items="${certificateTypes}" var="item">
@@ -2667,8 +2617,7 @@
                     </label>
                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                         <input type="text" required
-                               placeholder="街道号" name="streetNumber" class="form-control input-full"
-                               onblur="commonDeclareApplyModel.house.beLocatedSplicing(this)">
+                               placeholder="街道号" name="streetNumber" class="form-control input-full">
                     </div>
                     <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
                         附号
@@ -2676,8 +2625,7 @@
                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                         <input type="text"
                                placeholder="附号(数字)" name="attachedNumber" class="form-control input-full"
-                               data-rule-maxlength="100" data-rule-number='true'
-                               onblur="commonDeclareApplyModel.house.beLocatedSplicing(this)">
+                               data-rule-maxlength="100" data-rule-number='true'>
                     </div>
                     <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
                         栋号
@@ -2685,13 +2633,11 @@
                     </label>
                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                         <input type="text" required="required"
-                               placeholder="栋号" name="buildingNumber" class="form-control input-full"
-                               onblur="commonDeclareApplyModel.house.beLocatedSplicing(this)">
+                               placeholder="栋号" name="buildingNumber" class="form-control input-full">
                     </div>
                 </div>
             </div>
         </div>
-
 
 
         <div class="row form-group">
@@ -2703,24 +2649,21 @@
                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                         <input type="text"
                                placeholder="单元(数字)" name="unit" class="form-control input-full"
-                               data-rule-maxlength="100" data-rule-number='true'
-                               onblur="commonDeclareApplyModel.house.beLocatedSplicing(this)">
+                               data-rule-maxlength="100" data-rule-number='true'>
                     </div>
                     <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
                         楼层
                     </label>
                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                         <input type="text"
-                               placeholder="楼层" name="floor" class="form-control input-full"
-                               onblur="commonDeclareApplyModel.house.beLocatedSplicing(this)">
+                               placeholder="楼层" name="floor" class="form-control input-full">
                     </div>
                     <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
                         房号
                         <span class="symbol required"></span>
                     </label>
                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                        <input type="text" placeholder="房号" name="roomNumber" class="form-control input-full"
-                               onblur="commonDeclareApplyModel.house.beLocatedSplicing(this)" required="required">
+                        <input type="text" placeholder="房号" name="roomNumber" class="form-control input-full" required="required">
                     </div>
                 </div>
             </div>
@@ -2734,8 +2677,14 @@
                             class="symbol required"></span>
                     </label>
                     <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
-                        <input type="text" placeholder="坐落" name="beLocated" class="form-control input-full"
-                               required="required">
+                        <div class="input-group">
+                            <input type="text" placeholder="坐落" name="beLocated" class="form-control form-control-sm" required>
+                            <div class="input-group-prepend ">
+                                <button class="btn btn-info btn-sm " style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                        type="button" onclick="commonDeclareApplyModel.seatJoin(this);">自动拼接
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -2759,11 +2708,11 @@
                     </label>
                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                         <div class="input-group">
-                            <input type="text" name="certUse" class="form-control" list="houseUseList"
+                            <input type="text" name="certUse" class="form-control form-control-sm" list="houseUseList"
                                    required="required">
                             <datalist id="houseUseList"></datalist>
                             <div class="input-group-prepend ">
-                                <button class="btn btn-warning "
+                                <button class="btn btn-warning btn-sm "
                                         style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
                                         type="button"
                                         onclick="$(this).closest('.input-group').find('input').val('');">
@@ -2778,12 +2727,12 @@
                     </label>
                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                         <div class="input-group">
-                            <input type="text" name="certUseCategory" class="form-control"
+                            <input type="text" name="certUseCategory" class="form-control form-control-sm"
                                    list="housecertUseCategoryList"
                                    required>
                             <datalist id="housecertUseCategoryList"></datalist>
                             <div class="input-group-prepend ">
-                                <button class="btn btn-warning "
+                                <button class="btn btn-warning btn-sm"
                                         style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
                                         type="button"
                                         onclick="$(this).closest('.input-group').find('input').val('');">
@@ -2949,7 +2898,7 @@
                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                         <select name="city"
                                 class="form-control input-full search-select select2"
-                                required="required" onchange="commonDeclareApplyModel.land.landBeLocatedSplicing(this)">
+                                required="required" >
                         </select>
                     </div>
                     <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
@@ -2957,8 +2906,7 @@
                     </label>
                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                         <select name="district"
-                                class="form-control input-full search-select select2 district"
-                                onchange="commonDeclareApplyModel.land.landBeLocatedSplicing(this)">
+                                class="form-control input-full search-select select2 district">
                         </select>
                     </div>
                 </div>
@@ -2973,7 +2921,6 @@
                     </label>
                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                         <input type="text" name="location" required="required" class="form-control input-full"
-                               onblur="commonDeclareApplyModel.land.landCertNameSplicing(this)"
                                placeholder="所在地">
                     </div>
                     <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
@@ -2982,7 +2929,6 @@
                     </label>
                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                         <select required="required" name="landRightType"
-                                onchange="commonDeclareApplyModel.land.landCertNameSplicing(this)"
                                 class="form-control input-full search-select select2 landRightType">
                         </select>
                     </div>
@@ -2992,7 +2938,6 @@
                     </label>
                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                         <input type="text" required="required" data-rule-maxlength="100"
-                               onblur="commonDeclareApplyModel.land.landCertNameSplicing(this)"
                                data-rule-number='true' name="year" class="form-control input-full"
                                placeholder="年份(数字如:2018)">
                     </div>
@@ -3009,7 +2954,6 @@
                     </label>
                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                         <input type="text" name="number" class="form-control input-full"
-                               onblur="commonDeclareApplyModel.land.landCertNameSplicing(this)"
                                placeholder="编号">
                     </div>
                     <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
@@ -3033,7 +2977,6 @@
         </div>
 
 
-
         <div class="row form-group">
             <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                 <div class="form-inline x-valid">
@@ -3042,13 +2985,18 @@
                             class="symbol required"></span>
                     </label>
                     <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
-                        <input type="text" name="landCertName" class="form-control input-full" placeholder="土地权证号"
-                               required="required">
+                        <div class="input-group">
+                            <input type="text" placeholder="土地权证号" name="landCertName" class="form-control form-control-sm" required>
+                            <div class="input-group-prepend ">
+                                <button class="btn btn-info btn-sm " style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                        type="button" onclick="commonDeclareApplyModel.warrantJoin(this,'land');">自动拼接
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
 
 
         <div class="row form-group">
@@ -3076,8 +3024,6 @@
             color="#6f5499" size="10"/>
 
 
-
-
         <div class="row form-group">
             <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                 <div class="form-inline x-valid">
@@ -3087,8 +3033,7 @@
                     </label>
                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                         <input type="text" required
-                               placeholder="街道号" name="streetNumber" class="form-control input-full"
-                               onblur="commonDeclareApplyModel.land.landBeLocatedSplicing(this)">
+                               placeholder="街道号" name="streetNumber" class="form-control input-full">
                     </div>
                     <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
                         附号
@@ -3096,8 +3041,7 @@
                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                         <input type="text"
                                placeholder="附号(数字)" name="attachedNumber" class="form-control input-full"
-                               data-rule-maxlength="100" data-rule-number='true'
-                               onblur="commonDeclareApplyModel.land.landBeLocatedSplicing(this)">
+                               data-rule-maxlength="100" data-rule-number='true'>
                     </div>
                     <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
                         栋号
@@ -3105,14 +3049,11 @@
                     </label>
                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                         <input type="text" required="required"
-                               placeholder="栋号" name="buildingNumber" class="form-control input-full"
-                               onblur="commonDeclareApplyModel.land.landBeLocatedSplicing(this)">
+                               placeholder="栋号" name="buildingNumber" class="form-control input-full">
                     </div>
                 </div>
             </div>
         </div>
-
-
 
 
         <div class="row form-group">
@@ -3124,24 +3065,21 @@
                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                         <input type="text"
                                placeholder="单元(数字)" name="unit" class="form-control input-full"
-                               data-rule-maxlength="100" data-rule-number='true'
-                               onblur="commonDeclareApplyModel.land.landBeLocatedSplicing(this)">
+                               data-rule-maxlength="100" data-rule-number='true'>
                     </div>
                     <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
                         楼层
                     </label>
                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                         <input type="text"
-                               placeholder="楼层" name="floor" class="form-control input-full"
-                               onblur="commonDeclareApplyModel.land.landBeLocatedSplicing(this)">
+                               placeholder="楼层" name="floor" class="form-control input-full">
                     </div>
                     <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
                         房号
                         <span class="symbol required"></span>
                     </label>
                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                        <input type="text" placeholder="房号" name="roomNumber" class="form-control input-full"
-                               onblur="commonDeclareApplyModel.land.landBeLocatedSplicing(this)" required="required">
+                        <input type="text" placeholder="房号" name="roomNumber" class="form-control input-full" required="required">
                     </div>
                 </div>
             </div>
@@ -3156,16 +3094,20 @@
                             class="symbol required"></span>
                     </label>
                     <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
-                        <input type="text" placeholder="坐落" name="beLocated" class="form-control input-full"
-                               required="required">
+                        <div class="input-group">
+                            <input type="text" placeholder="坐落" name="beLocated" class="form-control form-control-sm" required>
+                            <div class="input-group-prepend ">
+                                <button class="btn btn-info btn-sm " style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                        type="button" onclick="commonDeclareApplyModel.seatJoin(this);">自动拼接
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
         <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%"
             color="#6f5499" size="10"/>
-
-
 
 
         <div class="row form-group">
@@ -3188,11 +3130,12 @@
                     </label>
                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                         <div class="input-group">
-                            <input type="text" id="certUse" name="certUse" class="form-control" list="certUseList"
+                            <input type="text" id="certUse" name="certUse" class="form-control form-control-sm"
+                                   list="certUseList"
                                    required>
                             <datalist id="certUseList"></datalist>
                             <div class="input-group-prepend ">
-                                <button class="btn btn-warning "
+                                <button class="btn btn-warning btn-sm "
                                         style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
                                         type="button"
                                         onclick="$(this).closest('.input-group').find('input').val('');">
@@ -3215,12 +3158,12 @@
                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                         <div class="input-group">
                             <input type="text" id="certUseCategory" name="certUseCategory" list="certUseCategoryList"
-                                   class="form-control" required>
+                                   class="form-control form-control-sm" required>
                             <datalist id="certUseCategoryList">
 
                             </datalist>
                             <div class="input-group-prepend ">
-                                <button class="btn btn-warning "
+                                <button class="btn btn-warning btn-sm"
                                         style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
                                         type="button"
                                         onclick="$(this).closest('.input-group').find('input').val('');">
@@ -3250,7 +3193,6 @@
                 </div>
             </div>
         </div>
-
 
 
         <div class="row form-group">

@@ -29,14 +29,6 @@ public class DeclareRealtyHouseCertDao {
         return declareRealtyHouseCertMapper.selectByPrimaryKey(id);
     }
 
-    public Integer getCountByExample(String enable,Integer planDetailsId,Integer autoInitNumber){
-        DeclareRealtyHouseCertExample example = new DeclareRealtyHouseCertExample();
-        DeclareRealtyHouseCertExample.Criteria criteria = example.createCriteria();
-        criteria.andEnableEqualTo(enable);
-        criteria.andPlanDetailsIdEqualTo(planDetailsId);
-        criteria.andAutoInitNumberEqualTo(autoInitNumber);
-        return declareRealtyHouseCertMapper.countByExample(example) ;
-    }
 
     public boolean updateDeclareRealtyHouseCert(DeclareRealtyHouseCert declareRealtyHouseCert, boolean updateNull) {
         if (updateNull){

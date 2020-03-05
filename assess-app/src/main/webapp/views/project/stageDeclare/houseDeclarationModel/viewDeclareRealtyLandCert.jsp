@@ -100,7 +100,7 @@
                             <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
                                 <div class="form-check" style="justify-content:left">
                                     <label class="form-check-label">
-                                        <input class="form-check-input" type="checkbox" name="isSource" value="false">
+                                        <input class="form-check-input" type="checkbox" name="isSource" value="isSource">
                                         <span class="form-check-sign">房产证</span>
                                     </label>
                                 </div>
@@ -195,7 +195,7 @@
 <div id="boxDeclareRealtyLandCert" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg" style="max-width: 65%;">
         <div class="modal-content">
 
             <div class="modal-header">
@@ -253,7 +253,7 @@
 <div id="declareRealtyLandCert_HouseCert_box" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg" style="max-width: 65%;">
         <div class="modal-content">
 
             <div class="modal-header">
@@ -313,7 +313,7 @@
 <div id="declareBuildingPermitLandBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg" style="max-width: 65%;">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">建设工程规划许可证</h4>
@@ -371,7 +371,7 @@
 <div id="declareLandUsePermitLandBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg" style="max-width: 65%;">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">建设用地规划许可证</h4>
@@ -429,7 +429,7 @@
 <div id="declareBuildingConstructionPermitLandBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg" style="max-width: 65%;">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">建筑工程施工许可证</h4>
@@ -487,7 +487,7 @@
 <div id="declarePreSalePermitLandBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg" style="max-width: 65%;">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">商品房预售许可证</h4>

@@ -108,26 +108,9 @@ declareRealtyRealEstateCert.enclosure = function (id) {
  * @date:2018-09-21
  **/
 declareRealtyRealEstateCert.inputFile = function () {
-    $.ajaxFileUpload({
-        type: "POST",
-        url: getContextPath() + "/declareRealtyRealEstateCert/importData",
-        data: {
-            planDetailsId: declareCommon.getPlanDetailsId()
-        },//要传到后台的参数，没有可以不写
-        secureuri: false,//是否启用安全提交，默认为false
-        fileElementId: 'ajaxFileUploadRealEstate',//文件选择框的id属性
-        dataType: 'json',//服务器返回的格式
-        async: false,
-        success: function (result) {
-            if (result.ret) {
-                declareRealtyRealEstateCert.loadList();
-            }
-        },
-        error: function (result, status, e) {
-            Loading.progressHide();
-            AlertError("错误", "调用服务端方法失败，失败原因:" + result);
-        }
-    });
+    declareCommon.ajaxFileUploadCommon({planDetailsId: declareCommon.getPlanDetailsId()},'ajaxFileUploadRealEstate',"/declareRealtyRealEstateCert/importData",function () {
+        declareRealtyRealEstateCert.loadList();
+    }) ;
 };
 
 
@@ -614,33 +597,28 @@ declareRealtyRealEstateCert.saveAndUpdateData = function () {
 
 /*自动关联编号的附件*/
 declareRealtyRealEstateCert.attachmentAutomatedWarrants = function (_this) {
-    var group = $(_this).closest(".form-group");
-    var prefixNumber = group.find("[name='prefixNumber']").val();
-    var startNumber = group.find("[name='startNumber']").val();
-    var endNumber = group.find("[name='endNumber']").val();
-    var step = group.find("[name='step']").val();
-    if (!$.isNumeric(startNumber)) {
-        notifyWarning("警告", "启始编号非数字请重新填写!");
-        return false;
-    }
-    if (!$.isNumeric(endNumber)) {
-        notifyWarning("警告", "截至编号非数字请重新填写!");
-        return false;
-    }
-    if (!$.isNumeric(step)) {
-        notifyWarning("警告", "步长非数字请重新填写!");
-        return false;
-    }
+    var frm = $(_this).closest("form");
+    var options = formSerializeArray(frm);
     var data = {
-        prefixNumber: prefixNumber,
-        startNumber: startNumber,
-        endNumber: endNumber,
-        step: step,
         fieldsName: declareRealtyRealEstateCert.config.newFileId,
         tableName: AssessDBKey.DeclareRealtyRealEstateCert,
         planDetailsId: declareCommon.getPlanDetailsId()
     };
-    if (startNumber > endNumber) {
+    jQuery.extend(data, options);
+    if (!$.isNumeric(data.startNumber)) {
+        notifyWarning("警告", "启始编号非数字请重新填写!");
+        return false;
+    }
+    if (!$.isNumeric(data.endNumber)) {
+        notifyWarning("警告", "截至编号非数字请重新填写!");
+        return false;
+    }
+    if (!$.isNumeric(data.step)) {
+        notifyWarning("警告", "步长非数字请重新填写!");
+        return false;
+    }
+
+    if (data.startNumber > data.endNumber) {
         notifyWarning("警告", "截至编号 必须大于 启始编号!");
         return false;
     }
@@ -656,18 +634,13 @@ declareRealtyRealEstateCert.attachmentAutomatedWarrants = function (_this) {
         }
         if (array.length == 1) {
             data.attachmentId = array[0].id;
-            Loading.progressShow();
             declareCommon.ajaxServerMethod(data, "/declareRealtyRealEstateCert/attachmentAutomatedWarrants", "post", function () {
-                Loading.progressHide();
                 (function (id, FileId, tableName) {
                     declareCommon.fileUpload(FileId, tableName, id, true);
                     declareCommon.showFile(FileId, tableName, id, true);
                 }(query.tableId, query.fieldsName, query.tableName));
                 declareRealtyRealEstateCert.loadList();
                 notifyInfo('提示', "操作成功!");
-            }, function (message) {
-                Loading.progressHide();
-                AlertError("错误", "调用服务端方法失败，失败原因:" + message);
             });
         } else {
             notifyWarning("警告", "请上传pdf或者word一个!");

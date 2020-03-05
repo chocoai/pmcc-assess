@@ -309,9 +309,6 @@ public class DeclareBuildEngineeringAndEquipmentCenterService {
         return true;
     }
 
-    public Integer getCountByPlanDetailsId(Integer planDetailsId){
-        return declareBuildEngineeringAndEquipmentCenterDao.getCountByPlanDetailsId(planDetailsId);
-    }
 
     /**
      * 一个校验方法

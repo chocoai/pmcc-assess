@@ -102,7 +102,7 @@
                             <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
                                 <div class="form-check" style="justify-content:left">
                                     <label class="form-check-label">
-                                        <input class="form-check-input" type="checkbox" name="isSource" value="false">
+                                        <input class="form-check-input" type="checkbox" name="isSource" value="isSource">
                                         <span class="form-check-sign">土地证</span>
                                     </label>
                                 </div>
@@ -193,7 +193,7 @@
 <div id="boxDeclareRealtyHouseCert" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg" style="max-width: 65%;">
         <div class="modal-content">
 
             <div class="modal-header">
@@ -251,7 +251,7 @@
 <div id="boxSonDeclareRealtyLandCert" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg" style="max-width: 65%;">
         <div class="modal-content">
 
             <div class="modal-header">

@@ -8,6 +8,7 @@ import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareApplyDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dto.input.project.declare.AutomatedWarrants;
 import com.copower.pmcc.assess.dto.output.project.declare.DeclareRealtyHouseCertVo;
 import com.copower.pmcc.assess.dto.output.project.declare.DeclareRealtyLandCertVo;
 import com.copower.pmcc.assess.dto.output.project.declare.DeclareRealtyRealEstateCertVo;
@@ -35,7 +36,6 @@ import org.apache.poi.ss.usermodel.Row;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.function.BiConsumer;
@@ -908,6 +908,88 @@ public class DeclarePublicService {
     }
 
     /**
+     * 获取某个自动编号在申报里的数量
+     *
+     * @param planDetailsId
+     * @param autoInitNumber
+     * @return
+     */
+    public int getCountByPlanDetailsIdGetAutoInitNumberSize(Integer planDetailsId, Integer autoInitNumber) {
+        TreeSet<Integer> treeSet = getCountByPlanDetailsIdAndAutoInitNumberList(planDetailsId, autoInitNumber, DeclareTypeEnum.MasterData);
+        return treeSet.size();
+    }
+
+    /**
+     * 获取自动编号 的最大数
+     *
+     * @param planDetailsId
+     * @return
+     */
+    public Integer getCountByPlanDetailsIdGetMaxAutoInitNumber(Integer planDetailsId) {
+        TreeSet<Integer> treeSet = getCountByPlanDetailsIdAndAutoInitNumberList(planDetailsId, null, null);
+        int size = 1;
+        if (CollectionUtils.isNotEmpty(treeSet)) {
+            Integer last = treeSet.last();
+            size += last.intValue();
+        }
+        return size;
+    }
+
+    private TreeSet<Integer> getCountByPlanDetailsIdAndAutoInitNumberList(Integer planDetailsId, Integer autoInitNumber, DeclareTypeEnum declareTypeEnum) {
+        TreeSet<Integer> integerTreeSet = new TreeSet<>();
+        DeclareRealtyHouseCert house = new DeclareRealtyHouseCert();
+        DeclareRealtyLandCert land = new DeclareRealtyLandCert();
+        DeclareRealtyRealEstateCert estateCert = new DeclareRealtyRealEstateCert();
+        if (autoInitNumber != null) {
+            house.setAutoInitNumber(autoInitNumber);
+            land.setAutoInitNumber(autoInitNumber);
+            estateCert.setAutoInitNumber(autoInitNumber);
+        }
+        if (declareTypeEnum != null) {
+            house.setEnable(declareTypeEnum.getKey());
+            land.setEnable(declareTypeEnum.getKey());
+            estateCert.setEnable(declareTypeEnum.getKey());
+        }
+        house.setPlanDetailsId(planDetailsId);
+        land.setPlanDetailsId(planDetailsId);
+        estateCert.setPlanDetailsId(planDetailsId);
+        List<DeclareRealtyHouseCertVo> declareRealtyHouseCertVoList = declareRealtyHouseCertService.lists(house);
+        if (CollectionUtils.isNotEmpty(declareRealtyHouseCertVoList)) {
+            Iterator<DeclareRealtyHouseCertVo> iterator = declareRealtyHouseCertVoList.iterator();
+            while (iterator.hasNext()) {
+                DeclareRealtyHouseCertVo houseCertVo = iterator.next();
+                if (houseCertVo.getAutoInitNumber() == null) {
+                    continue;
+                }
+                integerTreeSet.add(houseCertVo.getAutoInitNumber());
+            }
+        }
+        List<DeclareRealtyLandCertVo> declareRealtyLandCertVoList = declareRealtyLandCertService.lists(land);
+        if (CollectionUtils.isNotEmpty(declareRealtyLandCertVoList)) {
+            Iterator<DeclareRealtyLandCertVo> iterator = declareRealtyLandCertVoList.iterator();
+            while (iterator.hasNext()) {
+                DeclareRealtyLandCertVo landCertVo = iterator.next();
+                if (landCertVo.getAutoInitNumber() == null) {
+                    continue;
+                }
+                integerTreeSet.add(landCertVo.getAutoInitNumber());
+            }
+        }
+        List<DeclareRealtyRealEstateCertVo> declareRealtyRealEstateCertList = declareRealtyRealEstateCertService.landLevels(estateCert);
+        if (CollectionUtils.isNotEmpty(declareRealtyRealEstateCertList)) {
+            Iterator<DeclareRealtyRealEstateCertVo> iterator = declareRealtyRealEstateCertList.iterator();
+            while (iterator.hasNext()) {
+                DeclareRealtyRealEstateCertVo estateCertVo = iterator.next();
+                if (estateCertVo.getAutoInitNumber() == null) {
+                    continue;
+                }
+                integerTreeSet.add(estateCertVo.getAutoInitNumber());
+            }
+        }
+        return integerTreeSet;
+    }
+
+    /**
      * 获取主数据的从数据
      *
      * @param tableName
@@ -934,7 +1016,7 @@ public class DeclarePublicService {
                     if (landCertById == null) {
                         continue;
                     }
-                    if (landCertById.getAutoInitNumber() == null){
+                    if (landCertById.getAutoInitNumber() == null) {
                         continue;
                     }
                     entry = new MyEntry<>(landCertById.getId(), landCertById.getAutoInitNumber());
@@ -956,7 +1038,7 @@ public class DeclarePublicService {
                     if (houseCertById == null) {
                         continue;
                     }
-                    if (houseCertById.getAutoInitNumber() == null){
+                    if (houseCertById.getAutoInitNumber() == null) {
                         continue;
                     }
                     entry = new MyEntry<>(houseCertById.getId(), houseCertById.getAutoInitNumber());
@@ -981,7 +1063,7 @@ public class DeclarePublicService {
         } else if (filterSuffix.stream().anyMatch(s -> s.equalsIgnoreCase(fileExtension))) {
             AsposeUtils.extractImages(localPath, linkedList);
         } else {
-            throw new Exception("传入的文档只能说doc,docx,dotx,pdf这四种格式的文档,其它的暂时不支持哦!");
+            throw new Exception("传入的文档只能是doc,docx,dotx,pdf这四种格式的文档,其它的暂时不支持哦!");
         }
         if (CollectionUtils.isEmpty(linkedList)) {
             throw new Exception("传入的文档没有图片");
@@ -994,10 +1076,10 @@ public class DeclarePublicService {
             List<DeclareRealtyHouseCertVo> declareRealtyHouseCertVoList = declareRealtyHouseCertService.lists(query);
             if (CollectionUtils.isNotEmpty(declareRealtyHouseCertVoList)) {
                 for (DeclareRealtyHouseCertVo declareRealtyHouseCertVo : declareRealtyHouseCertVoList) {
-                    if (Objects.equal(automatedWarrants.getIsSource(), Boolean.TRUE.toString())) {
+                    if (StringUtils.isBlank(automatedWarrants.getIsSource())) {
                         linkedHashMap.put(declareRealtyHouseCertVo.getAutoInitNumber(), declareRealtyHouseCertVo.getId());
                     }
-                    if (Objects.equal(automatedWarrants.getIsSource(), Boolean.FALSE.toString())) {
+                    if (StringUtils.isNotBlank(automatedWarrants.getIsSource())) {
                         Map.Entry<Integer, Integer> entry = auxiliaryAttachmentAutomatedWarrants(FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class), declareRealtyHouseCertVo.getId(), declareRealtyHouseCertVo.getPlanDetailsId());
                         if (entry != null) {
                             automatedWarrants.setTableName(FormatUtils.entityNameConvertToTableName(DeclareRealtyLandCert.class));
@@ -1027,12 +1109,12 @@ public class DeclarePublicService {
             List<DeclareRealtyLandCertVo> declareRealtyLandCertVoList = declareRealtyLandCertService.lists(query);
             if (CollectionUtils.isNotEmpty(declareRealtyLandCertVoList)) {
                 for (DeclareRealtyLandCertVo realtyLandCertVo : declareRealtyLandCertVoList) {
-                    if (Objects.equal(automatedWarrants.getIsSource(), Boolean.TRUE.toString())) {
+                    if (StringUtils.isBlank(automatedWarrants.getIsSource())) {
                         linkedHashMap.put(realtyLandCertVo.getAutoInitNumber(), realtyLandCertVo.getId());
                     }
-                    if (Objects.equal(automatedWarrants.getIsSource(), Boolean.FALSE.toString())) {
+                    if (StringUtils.isNotBlank(automatedWarrants.getIsSource())) {
                         Map.Entry<Integer, Integer> entry = auxiliaryAttachmentAutomatedWarrants(FormatUtils.entityNameConvertToTableName(DeclareRealtyLandCert.class), realtyLandCertVo.getId(), realtyLandCertVo.getPlanDetailsId());
-                        if (entry != null){
+                        if (entry != null) {
                             automatedWarrants.setTableName(FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class));
                             linkedHashMap.put(entry.getValue(), entry.getKey());
                         }
@@ -1040,11 +1122,11 @@ public class DeclarePublicService {
                 }
             }
         }
-        if (!linkedHashMap.isEmpty()){
+        if (!linkedHashMap.isEmpty()) {
             Iterator<Map.Entry<Integer, Integer>> entryIterator = linkedHashMap.entrySet().iterator();
-            while (entryIterator.hasNext()){
+            while (entryIterator.hasNext()) {
                 Map.Entry<Integer, Integer> integerIntegerEntry = entryIterator.next();
-                if (integerIntegerEntry.getKey() == null || integerIntegerEntry.getKey() == 0 || integerIntegerEntry.getValue() == null || integerIntegerEntry.getValue() == 0){
+                if (integerIntegerEntry.getKey() == null || integerIntegerEntry.getKey() == 0 || integerIntegerEntry.getValue() == null || integerIntegerEntry.getValue() == 0) {
                     entryIterator.remove();
                 }
             }
@@ -1151,90 +1233,6 @@ public class DeclarePublicService {
         return newList;
     }
 
-    public static class AutomatedWarrants implements Serializable {
-        private String prefixNumber;
-        private Integer startNumber;
-        private Integer endNumber;
-        private Integer step;
-        Integer attachmentId;
-        private String tableName;
-        private String fieldsName;
-        private Integer planDetailsId;
-
-        private String isSource;
-
-        public String getPrefixNumber() {
-            return prefixNumber;
-        }
-
-        public void setPrefixNumber(String prefixNumber) {
-            this.prefixNumber = prefixNumber;
-        }
-
-        public Integer getStartNumber() {
-            return startNumber;
-        }
-
-        public void setStartNumber(Integer startNumber) {
-            this.startNumber = startNumber;
-        }
-
-        public Integer getEndNumber() {
-            return endNumber;
-        }
-
-        public void setEndNumber(Integer endNumber) {
-            this.endNumber = endNumber;
-        }
-
-        public Integer getStep() {
-            return step;
-        }
-
-        public void setStep(Integer step) {
-            this.step = step;
-        }
-
-        public Integer getAttachmentId() {
-            return attachmentId;
-        }
-
-        public void setAttachmentId(Integer attachmentId) {
-            this.attachmentId = attachmentId;
-        }
-
-        public String getTableName() {
-            return tableName;
-        }
-
-        public void setTableName(String tableName) {
-            this.tableName = tableName;
-        }
-
-        public Integer getPlanDetailsId() {
-            return planDetailsId;
-        }
-
-        public void setPlanDetailsId(Integer planDetailsId) {
-            this.planDetailsId = planDetailsId;
-        }
-
-        public String getFieldsName() {
-            return fieldsName;
-        }
-
-        public void setFieldsName(String fieldsName) {
-            this.fieldsName = fieldsName;
-        }
-
-        public String getIsSource() {
-            return isSource;
-        }
-
-        public void setIsSource(String isSource) {
-            this.isSource = isSource;
-        }
-    }
 
     /**
      * @param c   匹配的对象模板即class

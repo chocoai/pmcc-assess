@@ -20,14 +20,7 @@ public class DeclareRealtyLandCertDao {
     @Autowired
     private DeclareRealtyLandCertMapper declareRealtyLandCertMapper;
 
-    public Integer getCountByExample(String enable,Integer planDetailsId,Integer autoInitNumber){
-        DeclareRealtyLandCertExample example = new DeclareRealtyLandCertExample();
-        DeclareRealtyLandCertExample.Criteria criteria = example.createCriteria();
-        criteria.andEnableEqualTo(enable);
-        criteria.andPlanDetailsIdEqualTo(planDetailsId);
-        criteria.andAutoInitNumberEqualTo(autoInitNumber);
-        return declareRealtyLandCertMapper.countByExample(example) ;
-    }
+
 
     public Integer addDeclareRealtyLandCert(DeclareRealtyLandCert declareRealtyLandCert){
         declareRealtyLandCertMapper.insertSelective(declareRealtyLandCert);

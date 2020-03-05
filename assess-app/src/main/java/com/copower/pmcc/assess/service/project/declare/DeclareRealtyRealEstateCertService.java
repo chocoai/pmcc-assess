@@ -7,6 +7,7 @@ import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareRealtyRealEstateCertDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.dto.input.project.declare.AutomatedWarrants;
 import com.copower.pmcc.assess.dto.output.project.declare.DeclareRealtyRealEstateCertVo;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.ErpAreaService;
@@ -19,6 +20,7 @@ import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -40,7 +42,6 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileInputStream;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -77,13 +78,10 @@ public class DeclareRealtyRealEstateCertService {
     @Autowired
     private BaseService baseService;
 
-    public void attachmentAutomatedWarrants(DeclarePublicService.AutomatedWarrants automatedWarrants)throws Exception{
+    public void attachmentAutomatedWarrants(AutomatedWarrants automatedWarrants) throws Exception {
         declarePublicService.attachmentAutomatedWarrants(automatedWarrants);
     }
 
-    public Integer getCountByExample(String enable,Integer planDetailsId,Integer autoInitNumber){
-        return declareRealtyRealEstateCertDao.getCountByExample(enable, planDetailsId, autoInitNumber);
-    }
 
     public String importData(DeclareRealtyRealEstateCert declareRealtyRealEstateCert, MultipartFile multipartFile) throws Exception {
         Workbook workbook = null;
@@ -113,9 +111,9 @@ public class DeclareRealtyRealEstateCertService {
             stringBuilder.append("没有数据!");
             return stringBuilder.toString();
         }
-        Multimap<String, Map.Entry<Class<?>, Integer>> classArrayListMultimap = declarePublicService.getMultimapByClass(DeclareRealtyRealEstateCert.class,row) ;
+        Multimap<String, Map.Entry<Class<?>, Integer>> classArrayListMultimap = declarePublicService.getMultimapByClass(DeclareRealtyRealEstateCert.class, row);
         //----------------------------||----------------------
-        for (int i = startRowNumber; i < startRowNumber + rowLength; i++)  {
+        for (int i = startRowNumber; i < startRowNumber + rowLength; i++) {
             DeclareRealtyRealEstateCert realtyRealEstateCert = null;
             try {
                 row = sheet.getRow(i);
@@ -128,18 +126,17 @@ public class DeclareRealtyRealEstateCertService {
                 realtyRealEstateCert.setEnable(DeclareTypeEnum.MasterData.getKey());
                 realtyRealEstateCert.setId(null);
                 //excel处理
-                if (!declarePublicService.realEstateCert(classArrayListMultimap,realtyRealEstateCert, stringBuilder, row)) {
+                if (!declarePublicService.realEstateCert(classArrayListMultimap, realtyRealEstateCert, stringBuilder, row)) {
                     continue;
                 }
                 realtyRealEstateCert.setCreator(commonService.thisUserAccount());
 
-                int count = getCountByExample(DeclareTypeEnum.MasterData.getKey(), realtyRealEstateCert.getPlanDetailsId(), realtyRealEstateCert.getAutoInitNumber());
+                int count = declarePublicService.getCountByPlanDetailsIdGetAutoInitNumberSize(realtyRealEstateCert.getPlanDetailsId(), realtyRealEstateCert.getAutoInitNumber());
                 if (count > 0) {
                     declarePublicService.excelImportWriteErrorInfo(i, "编号重复", stringBuilder);
                     continue;
                 }
-
-                declareRealtyRealEstateCertDao.addDeclareRealtyRealEstateCert(realtyRealEstateCert);
+                saveAndUpdateDeclareRealtyRealEstateCert(realtyRealEstateCert,true) ;
                 DeclareBuildEngineeringAndEquipmentCenter center = new DeclareBuildEngineeringAndEquipmentCenter();
                 center.setPlanDetailsId(realtyRealEstateCert.getPlanDetailsId());
                 center.setRealEstateId(realtyRealEstateCert.getId());
@@ -158,9 +155,13 @@ public class DeclareRealtyRealEstateCertService {
     }
 
     public Integer saveAndUpdateDeclareRealtyRealEstateCert(DeclareRealtyRealEstateCert declareRealtyRealEstateCert, boolean updateNull) {
-        if (declareRealtyRealEstateCert.getId() == null) {
-            declareRealtyRealEstateCert.setCreator(commonService.thisUserAccount());
-            declareRealtyRealEstateCert.setAutoInitNumber(declareBuildEngineeringAndEquipmentCenterService.getCountByPlanDetailsId(declareRealtyRealEstateCert.getPlanDetailsId()) + 1);
+        if (declareRealtyRealEstateCert.getId() == null || declareRealtyRealEstateCert.getId() == 0) {
+            if (StringUtils.isBlank(declareRealtyRealEstateCert.getCreator())) {
+                declareRealtyRealEstateCert.setCreator(commonService.thisUserAccount());
+            }
+            if (declareRealtyRealEstateCert.getAutoInitNumber() == null && com.google.common.base.Objects.equal(DeclareTypeEnum.MasterData.getKey(), declareRealtyRealEstateCert.getEnable())) {
+                declareRealtyRealEstateCert.setAutoInitNumber(declarePublicService.getCountByPlanDetailsIdGetMaxAutoInitNumber(declareRealtyRealEstateCert.getPlanDetailsId()));
+            }
             Integer id = declareRealtyRealEstateCertDao.addDeclareRealtyRealEstateCert(declareRealtyRealEstateCert);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(DeclareRealtyRealEstateCert.class), id);
             return id;
@@ -252,15 +253,14 @@ public class DeclareRealtyRealEstateCertService {
         }
         DeclareRealtyRealEstateCertVo vo = new DeclareRealtyRealEstateCertVo();
         BeanUtils.copyProperties(declareRealtyRealEstateCert, vo);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         if (declareRealtyRealEstateCert.getUseEndDate() != null) {
-            vo.setUseEndDateFmt(sdf.format(declareRealtyRealEstateCert.getUseEndDate()));
+            vo.setUseEndDateFmt(DateUtils.format(declareRealtyRealEstateCert.getUseEndDate(),DateUtils.DATE_CHINESE_PATTERN));
         }
         if (declareRealtyRealEstateCert.getRegistrationTime() != null) {
-            vo.setRegistrationTimeFmt(sdf.format(declareRealtyRealEstateCert.getRegistrationTime()));
+            vo.setRegistrationTimeFmt(DateUtils.format(declareRealtyRealEstateCert.getRegistrationTime(),DateUtils.DATE_CHINESE_PATTERN));
         }
         if (declareRealtyRealEstateCert.getUseStartDate() != null) {
-            vo.setUseStartDateFmt(sdf.format(declareRealtyRealEstateCert.getUseStartDate()));
+            vo.setUseStartDateFmt(DateUtils.format(declareRealtyRealEstateCert.getUseStartDate(),DateUtils.DATE_CHINESE_PATTERN));
         }
 //        if (declareRealtyRealEstateCert.getHouseCertUseCategory() != null) {
 //            vo.setHouseCertUseCategoryName(baseDataDicService.getNameById(declareRealtyRealEstateCert.getHouseCertUseCategory()));

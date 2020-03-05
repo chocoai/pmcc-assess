@@ -83,7 +83,7 @@ declareCommon.declareCenterData = {
     realEstateId: {name: "不动产", field: "realEstateId", type: "DeclareRealtyRealEstateCert"},
     indicatorId: {name: "经济指标", field: "indicatorId", type: "MdEconomicIndicators"},
     indicatorIdOld: {name: "待删除经济指标", field: "indicatorId", type: "DeclareBuildEconomicIndicatorsCenter"},
-    indicatorIdDelHtml:"<input type=\"button\" class=\"btn btn-warning btn-sm\" value=\"删除\" onclick=\"{method}('{frm}','{box}');\">"
+    indicatorIdDelHtml: "<input type=\"button\" class=\"btn btn-warning btn-sm\" value=\"删除\" onclick=\"{method}('{frm}','{box}');\">"
 };
 
 declareCommon.declareApplyForm = $('#declareApplyForm');
@@ -176,51 +176,50 @@ declareCommon.showHtmlMastInit = function (target, callback) {
 };
 
 declareCommon.removeStyleFun = function (target) {
-    var card = target.find(".card-body") ;
-    if (card.size() == 0){
-        return false ;
+    var card = target.find(".card-body");
+    if (card.size() == 0) {
+        return false;
     }
-    var nodes = card.children(".form-group") ;
-    if (nodes.size() == 0){
-        return false ;
+    var nodes = card.children(".form-group");
+    if (nodes.size() == 0) {
+        return false;
     }
-    $.each(nodes,function (i,node) {
-        var element = $(node).find("input[type=file]") ;
-        var size = element.size() ;
-        if (size == 0){
-            $(node).remove() ;
+    $.each(nodes, function (i, node) {
+        var element = $(node).find("input[type=file]");
+        var size = element.size();
+        if (size == 0) {
+            $(node).remove();
         }
-    }) ;
+    });
 };
 
 
-
 //公共  赋值 方法
-declareCommon.initFormData = function (form,item,fileArr,bisDetail,tableName,inputArr) {
+declareCommon.initFormData = function (form, item, fileArr, bisDetail, tableName, inputArr) {
     var frm = $(form.selector);
     frm.clearAll();
     frm.initForm(item);
     frm.validate();
     if (fileArr) {
         $.each(fileArr, function (i, n) {
-            if(bisDetail==false){
-                declareCommon.showFile(n,tableName, declareCommon.isNotBlank(item.id) ? item.id : '0', false);
+            if (bisDetail == false) {
+                declareCommon.showFile(n, tableName, declareCommon.isNotBlank(item.id) ? item.id : '0', false);
                 declareCommon.fileUpload(n, tableName, declareCommon.isNotBlank(item.id) ? item.id : '0', false);
-            }else{
+            } else {
                 declareCommon.showFile(n, tableName, declareCommon.isNotBlank(item.id) ? item.id : '0', true);
                 declareCommon.fileUpload(n, tableName, declareCommon.isNotBlank(item.id) ? item.id : '0', true);
             }
         });
     }
-    if (inputArr){
-        $.each(inputArr,function (i,n) {
-            frm.find("input[name='"+n+"']").val(formatDate(item[n]));
-            frm.find("label[name='"+n+"']").html(formatDate(item[n]));
+    if (inputArr) {
+        $.each(inputArr, function (i, n) {
+            frm.find("input[name='" + n + "']").val(formatDate(item[n]));
+            frm.find("label[name='" + n + "']").html(formatDate(item[n]));
         });
     }
 };
 
-declareCommon.run = function (data, url, type, callback, funParams,errorCallback) {
+declareCommon.run = function (data, url, type, callback, funParams, errorCallback) {
     Loading.progressShow();
     $.ajax({
         type: type,
@@ -255,8 +254,8 @@ declareCommon.run = function (data, url, type, callback, funParams,errorCallback
                 } else {
                     AlertError("错误", "调用服务端方法失败，失败原因:" + result);
                 }
-                if (errorCallback){
-                    errorCallback() ;
+                if (errorCallback) {
+                    errorCallback();
                 }
             }
         },
@@ -270,24 +269,68 @@ declareCommon.run = function (data, url, type, callback, funParams,errorCallback
         }
     });
 };
-declareCommon.ajaxServerFun = function (data, url, type, callback, funParams,errorCallback) {
+declareCommon.ajaxServerFun = function (data, url, type, callback, funParams, errorCallback) {
     var deleteParams = false;
-    if (funParams){
+    if (funParams) {
         if (funParams == 'delete') {
             deleteParams = true;
         }
     }
     if (deleteParams) {
         AlertConfirm("是否确认删除当前数据", "删除相应的数据后将不可恢复", function (flag) {
-            declareCommon.run(data,url,type,callback,funParams,errorCallback) ;
+            declareCommon.run(data, url, type, callback, funParams, errorCallback);
         });
-    }else {
-        declareCommon.run(data,url,type,callback,funParams,errorCallback) ;
+    } else {
+        declareCommon.run(data, url, type, callback, funParams, errorCallback);
     }
 };
 
-declareCommon.ajaxServerMethod = function (data, url,type,callback,errorCallback) {
-    declareCommon.ajaxServerFun(data,url,type,callback,null,errorCallback) ;
+declareCommon.ajaxServerMethod = function (data, url, type, callback, errorCallback) {
+    declareCommon.ajaxServerFun(data, url, type, callback, null, errorCallback);
+};
+
+declareCommon.ajaxFileUploadCommon = function (data, fileElementId, url, callback, flag) {
+    Loading.progressShow();
+    $.ajaxFileUpload({
+        type: "POST",
+        url: getContextPath() + url,
+        data: data,//要传到后台的参数，没有可以不写
+        secureuri: false,//是否启用安全提交，默认为false
+        fileElementId: fileElementId,//文件选择框的id属性
+        dataType: 'json',//服务器返回的格式
+        async: false,
+        success: function (result) {
+            Loading.progressHide();
+            if (result.ret) {
+                if (callback) {
+                    callback(result.data);
+                }
+                if (flag) {
+
+                } else {
+                    AlertSuccess("导入情况", result.data);
+                }
+            } else {
+                if (result.errmsg) {
+                    AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
+                } else {
+                    AlertError("错误", "调用服务端方法失败，失败原因:" + result);
+                }
+            }
+        },
+        error: function (result, status, e) {
+            Loading.progressHide();
+            if (result.errmsg) {
+                AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
+            } else {
+                AlertError("错误", "调用服务端方法失败，失败原因:" + result);
+            }
+        }
+    });
+};
+
+declareCommon.ajaxFileUploadCommonFun = function (data, fileElementId, url, callback) {
+    declareCommon.ajaxFileUploadCommon(data,fileElementId,url,callback,true) ;
 };
 
 //土地
@@ -380,20 +423,20 @@ declareCommon.getEquipmentInstallationColumn = function () {
  * @param item
  * @param callback
  */
-declareCommon.declareBuildCenterSaveAndUpdateBase = function (item, updateNull,callback) {
-    if (updateNull == null){
+declareCommon.declareBuildCenterSaveAndUpdateBase = function (item, updateNull, callback) {
+    if (updateNull == null) {
         updateNull = false;
     }
-    if (updateNull == undefined){
+    if (updateNull == undefined) {
         updateNull = false;
     }
-    if (updateNull == ''){
+    if (updateNull == '') {
         updateNull = false;
     }
     $.ajax({
         type: "POST",
         url: getContextPath() + "/declareBuildEngineeringAndEquipmentCenter/saveDeclareBuildEngineeringAndEquipmentCenter",
-        data: {formData:JSON.stringify(item),updateNull:updateNull},
+        data: {formData: JSON.stringify(item), updateNull: updateNull},
         success: function (result) {
             if (result.ret) {
                 if (callback) {
@@ -404,13 +447,13 @@ declareCommon.declareBuildCenterSaveAndUpdateBase = function (item, updateNull,c
             }
         },
         error: function (result) {
-            AlertError("错误", "调用服务端方法失败，失败原因:" +e);
+            AlertError("错误", "调用服务端方法失败，失败原因:" + e);
         }
     });
 };
 
 declareCommon.declareBuildCenterSaveAndUpdate = function (item, callback) {
-    declareCommon.declareBuildCenterSaveAndUpdateBase(item,false,callback) ;
+    declareCommon.declareBuildCenterSaveAndUpdateBase(item, false, callback);
 };
 
 /**
@@ -511,20 +554,20 @@ declareCommon.copyDeclareBuildCenter = function (copyId, ids, callback) {
 };
 
 
-declareCommon.saveLandDataBase = function (data, updateNull,callback) {
-    if (updateNull == null){
+declareCommon.saveLandDataBase = function (data, updateNull, callback) {
+    if (updateNull == null) {
         updateNull = false;
     }
-    if (updateNull == undefined){
+    if (updateNull == undefined) {
         updateNull = false;
     }
-    if (updateNull == ''){
+    if (updateNull == '') {
         updateNull = false;
     }
     $.ajax({
         type: "POST",
         url: getContextPath() + "/declareRealtyLandCert/saveAndUpdateDeclareRealtyLandCert",
-        data: {formData: JSON.stringify(data),updateNull:updateNull},
+        data: {formData: JSON.stringify(data), updateNull: updateNull},
         success: function (result) {
             if (result.ret) {
                 callback(result.data);
@@ -539,7 +582,7 @@ declareCommon.saveLandDataBase = function (data, updateNull,callback) {
 };
 
 declareCommon.saveLandData = function (data, callback) {
-    declareCommon.saveLandDataBase(data,false,callback) ;
+    declareCommon.saveLandDataBase(data, false, callback);
 };
 
 declareCommon.getLandData = function (id, callback, errCallback) {
@@ -607,20 +650,20 @@ declareCommon.deleteLandData = function (ids, callback) {
     });
 };
 
-declareCommon.saveHouseDataBase = function (data,updateNull, callback) {
-    if (updateNull == null){
+declareCommon.saveHouseDataBase = function (data, updateNull, callback) {
+    if (updateNull == null) {
         updateNull = false;
     }
-    if (updateNull == undefined){
+    if (updateNull == undefined) {
         updateNull = false;
     }
-    if (updateNull == ''){
+    if (updateNull == '') {
         updateNull = false;
     }
     $.ajax({
         type: "POST",
         url: getContextPath() + "/declareRealtyHouseCert/saveAndUpdateDeclareRealtyHouseCert",
-        data: {formData: JSON.stringify(data),updateNull:updateNull},
+        data: {formData: JSON.stringify(data), updateNull: updateNull},
         success: function (result) {
             if (result.ret) {
                 callback(result.data);
@@ -635,7 +678,7 @@ declareCommon.saveHouseDataBase = function (data,updateNull, callback) {
 };
 
 declareCommon.saveHouseData = function (data, callback) {
-    declareCommon.saveHouseDataBase(data,false,callback) ;
+    declareCommon.saveHouseDataBase(data, false, callback);
 };
 
 declareCommon.getHouseData = function (id, callback) {
@@ -693,20 +736,20 @@ declareCommon.deleteDeclareRealtyData = function (ids, callback) {
 };
 
 //不动产save
-declareCommon.saveDeclareRealtyDataBase = function (data, updateNull,callback) {
-    if (updateNull == null){
+declareCommon.saveDeclareRealtyDataBase = function (data, updateNull, callback) {
+    if (updateNull == null) {
         updateNull = false;
     }
-    if (updateNull == undefined){
+    if (updateNull == undefined) {
         updateNull = false;
     }
-    if (updateNull == ''){
+    if (updateNull == '') {
         updateNull = false;
     }
     $.ajax({
         type: "POST",
         url: getContextPath() + "/declareRealtyRealEstateCert/saveAndUpdateDeclareRealtyRealEstateCert",
-        data: {formData: JSON.stringify(data),updateNull:updateNull},
+        data: {formData: JSON.stringify(data), updateNull: updateNull},
         success: function (result) {
             if (result.ret) {
                 callback(result.data);
@@ -721,7 +764,7 @@ declareCommon.saveDeclareRealtyDataBase = function (data, updateNull,callback) {
 };
 
 declareCommon.saveDeclareRealtyData = function (data, callback) {
-    declareCommon.saveDeclareRealtyDataBase(data,false,callback) ;
+    declareCommon.saveDeclareRealtyDataBase(data, false, callback);
 };
 
 //房产初始化并且赋值
@@ -746,7 +789,7 @@ declareCommon.initHouse = function (item, form, fileArr, callback, bisDetail) {
     });
     AssessCommon.loadDataListHtml(AssessDicKey.examineHouseLoadUtility, item.certUse, function (html, data) {
         frm.find("#houseUseList").empty().html(html).trigger('change');
-    },true);
+    }, true);
     AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareRoomType, item.nature, function (html, data) {
         frm.find("select[name='nature']").empty().html(html).trigger('change');
     });
@@ -754,7 +797,7 @@ declareCommon.initHouse = function (item, form, fileArr, callback, bisDetail) {
         frm.find("select[name='landAcquisition']").empty().html(html).trigger('change');
     });
     frm.find("input[name='certUse']").off('change').on('change', function () {
-        AssessCommon.getSonDataList(AssessDicKey.examineHouseLoadUtility,$(this).val(),item.certUseCategory, function (html, data) {
+        AssessCommon.getSonDataList(AssessDicKey.examineHouseLoadUtility, $(this).val(), item.certUseCategory, function (html, data) {
             frm.find("#housecertUseCategoryList").empty().html(html).trigger('change');
         });
     });
@@ -811,10 +854,10 @@ declareCommon.initHouse = function (item, form, fileArr, callback, bisDetail) {
 
     if (fileArr) {
         $.each(fileArr, function (i, n) {
-            if(bisDetail==false){
+            if (bisDetail == false) {
                 declareCommon.showFile(n, AssessDBKey.DeclareRealtyHouseCert, declareCommon.isNotBlank(item.id) ? item.id : '0', false);
                 declareCommon.fileUpload(n, AssessDBKey.DeclareRealtyHouseCert, declareCommon.isNotBlank(item.id) ? item.id : '0', false);
-            }else{
+            } else {
                 declareCommon.showFile(n, AssessDBKey.DeclareRealtyHouseCert, declareCommon.isNotBlank(item.id) ? item.id : '0', true);
                 declareCommon.fileUpload(n, AssessDBKey.DeclareRealtyHouseCert, declareCommon.isNotBlank(item.id) ? item.id : '0', true);
             }
@@ -831,7 +874,7 @@ declareCommon.initHouse = function (item, form, fileArr, callback, bisDetail) {
 };
 
 //土地初始化并且赋值
-declareCommon.initLand = function (item, form, fileArr, callback,bisDetail) {
+declareCommon.initLand = function (item, form, fileArr, callback, bisDetail) {
     var frm = $(form.selector);
     frm.clearAll();
     frm.initForm(item);
@@ -853,12 +896,12 @@ declareCommon.initLand = function (item, form, fileArr, callback,bisDetail) {
     AssessCommon.loadDataListHtml(AssessDicKey.estate_total_land_use, item.certUse, function (html, data) {
         frm.find("#certUseList").empty().html(html).trigger('change');
         frm.find("#certUseList2").empty().html(html).trigger('change');
-    },true);
+    }, true);
     AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareCommonSituation, item.publicSituation, function (html, data) {
         frm.find("select[name='publicSituation']").empty().html(html).trigger('change');
     });
     frm.find("input[name='certUse']").off('change').on('change', function () {
-        AssessCommon.getSonDataList(AssessDicKey.estate_total_land_use,$(this).val(),item.certUseCategory, function (html, data) {
+        AssessCommon.getSonDataList(AssessDicKey.estate_total_land_use, $(this).val(), item.certUseCategory, function (html, data) {
             frm.find("#certUseCategoryList").empty().html(html).trigger('change');
             frm.find("#certUseCategoryList2").empty().html(html).trigger('change');
         });
@@ -903,10 +946,10 @@ declareCommon.initLand = function (item, form, fileArr, callback,bisDetail) {
     }
     if (fileArr) {
         $.each(fileArr, function (i, n) {
-            if(bisDetail==false){
+            if (bisDetail == false) {
                 declareCommon.showFile(n, AssessDBKey.DeclareRealtyLandCert, declareCommon.isNotBlank(item.id) ? item.id : '0', false);
                 declareCommon.fileUpload(n, AssessDBKey.DeclareRealtyLandCert, declareCommon.isNotBlank(item.id) ? item.id : '0', false);
-            }else {
+            } else {
                 declareCommon.showFile(n, AssessDBKey.DeclareRealtyLandCert, declareCommon.isNotBlank(item.id) ? item.id : '0', true);
                 declareCommon.fileUpload(n, AssessDBKey.DeclareRealtyLandCert, declareCommon.isNotBlank(item.id) ? item.id : '0', true);
             }
@@ -922,7 +965,7 @@ declareCommon.initLand = function (item, form, fileArr, callback,bisDetail) {
 };
 
 //不动产初始化并且赋值
-declareCommon.initDeclareRealty = function (item, form, fileArr, callback,bisDetail) {
+declareCommon.initDeclareRealty = function (item, form, fileArr, callback, bisDetail) {
     var frm = $(form.selector);
     frm.clearAll();
     frm.initForm(item);
@@ -938,7 +981,7 @@ declareCommon.initDeclareRealty = function (item, form, fileArr, callback,bisDet
     AssessCommon.loadDataListHtml(AssessDicKey.estate_total_land_use, item.landCertUse, function (html, data) {
         frm.find("#landCertUseList").empty().html(html).trigger('change');
         frm.find("#landCertUseList2").empty().html(html).trigger('change');
-    },true);
+    }, true);
     AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareLandCertificateType, item.landRightType, function (html, data) {
         frm.find("select[name='landRightType']").empty().html(html).trigger('change');
     });
@@ -951,9 +994,9 @@ declareCommon.initDeclareRealty = function (item, form, fileArr, callback,bisDet
     AssessCommon.loadDataListHtml(AssessDicKey.examineHouseLoadUtility, item.houseCertUse, function (html, data) {
         frm.find("#realHouseUseList").empty().html(html).trigger('change');
         frm.find("#realHouseUseList2").empty().html(html).trigger('change');
-    },true);
+    }, true);
     frm.find("input[name='houseCertUse']").off('change').on('change', function () {
-        AssessCommon.getSonDataList(AssessDicKey.examineHouseLoadUtility,$(this).val(),item.houseCertUseCategory, function (html, data) {
+        AssessCommon.getSonDataList(AssessDicKey.examineHouseLoadUtility, $(this).val(), item.houseCertUseCategory, function (html, data) {
             frm.find("#houseCertUseCategoryList1").empty().html(html).trigger('change');
             frm.find("#houseCertUseCategoryList2").empty().html(html).trigger('change');
         });
@@ -963,7 +1006,7 @@ declareCommon.initDeclareRealty = function (item, form, fileArr, callback,bisDet
     });
 
     frm.find("input[name='landCertUse']").off('change').on('change', function () {
-        AssessCommon.getSonDataList(AssessDicKey.estate_total_land_use,$(this).val(),item.landCertUseCategory, function (html, data) {
+        AssessCommon.getSonDataList(AssessDicKey.estate_total_land_use, $(this).val(), item.landCertUseCategory, function (html, data) {
             frm.find("#landCertUseCategoryList").empty().html(html).trigger('change');
             frm.find("#landCertUseCategoryList2").empty().html(html).trigger('change');
         });
@@ -1020,10 +1063,10 @@ declareCommon.initDeclareRealty = function (item, form, fileArr, callback,bisDet
     }
     if (fileArr) {
         $.each(fileArr, function (i, n) {
-            if(bisDetail==false){
+            if (bisDetail == false) {
                 declareCommon.showFile(n, AssessDBKey.DeclareRealtyRealEstateCert, declareCommon.isNotBlank(item.id) ? item.id : '0', false);
                 declareCommon.fileUpload(n, AssessDBKey.DeclareRealtyRealEstateCert, declareCommon.isNotBlank(item.id) ? item.id : '0', false);
-            }else{
+            } else {
                 declareCommon.showFile(n, AssessDBKey.DeclareRealtyRealEstateCert, declareCommon.isNotBlank(item.id) ? item.id : '0', true);
                 declareCommon.fileUpload(n, AssessDBKey.DeclareRealtyRealEstateCert, declareCommon.isNotBlank(item.id) ? item.id : '0', true);
             }
@@ -1039,20 +1082,20 @@ declareCommon.initDeclareRealty = function (item, form, fileArr, callback,bisDet
 };
 
 //save 设备安装
-declareCommon.saveDeclareBuildEquipmentInstall = function (data, updateNull,callback) {
-    if (updateNull == null){
+declareCommon.saveDeclareBuildEquipmentInstall = function (data, updateNull, callback) {
+    if (updateNull == null) {
         updateNull = false;
     }
-    if (updateNull == undefined){
+    if (updateNull == undefined) {
         updateNull = false;
     }
-    if (updateNull == ''){
+    if (updateNull == '') {
         updateNull = false;
     }
     $.ajax({
         type: "POST",
         url: getContextPath() + "/declareBuildEquipmentInstall/saveDeclareBuildEquipmentInstall",
-        data: {formData: JSON.stringify(data),updateNull:updateNull},
+        data: {formData: JSON.stringify(data), updateNull: updateNull},
         success: function (result) {
             if (result.ret) {
                 callback(result.data);
@@ -1066,7 +1109,7 @@ declareCommon.saveDeclareBuildEquipmentInstall = function (data, updateNull,call
     });
 };
 //initForm 设备安装
-declareCommon.initFormDeclareBuildEquipmentInstall = function (form,item) {
+declareCommon.initFormDeclareBuildEquipmentInstall = function (form, item) {
     var frm = $(form.selector);
     frm.clearAll();
     frm.initForm(item);
@@ -1124,20 +1167,20 @@ declareCommon.getDeclareBuildEquipmentInstallById = function (id, callback) {
     });
 };
 //save 土建
-declareCommon.saveDeclareBuildEngineering = function (data, updateNull,callback) {
-    if (updateNull == null){
+declareCommon.saveDeclareBuildEngineering = function (data, updateNull, callback) {
+    if (updateNull == null) {
         updateNull = false;
     }
-    if (updateNull == undefined){
+    if (updateNull == undefined) {
         updateNull = false;
     }
-    if (updateNull == ''){
+    if (updateNull == '') {
         updateNull = false;
     }
     $.ajax({
         type: "POST",
         url: getContextPath() + "/declareBuildEngineering/saveDeclareBuildEngineering",
-        data: {formData: JSON.stringify(data),updateNull:updateNull},
+        data: {formData: JSON.stringify(data), updateNull: updateNull},
         success: function (result) {
             if (result.ret) {
                 callback(result.data);
@@ -1151,7 +1194,7 @@ declareCommon.saveDeclareBuildEngineering = function (data, updateNull,callback)
     });
 };
 //initForm 土建
-declareCommon.initFormDeclareBuildEngineering = function (form,item) {
+declareCommon.initFormDeclareBuildEngineering = function (form, item) {
     var frm = $(form.selector);
     frm.clearAll();
     frm.initForm(item);
@@ -1207,7 +1250,7 @@ declareCommon.deleteDeclareBuildEngineeringById = function (id, callback) {
             }
         },
         error: function (result) {
-            AlertError("错误", "调用服务端方法失败，失败原因:" +e);
+            AlertError("错误", "调用服务端方法失败，失败原因:" + e);
         }
     });
 };
@@ -1233,20 +1276,20 @@ declareCommon.getDeclareBuildEngineeringById = function (id, callback) {
     });
 };
 //save 建筑工程施工许可证
-declareCommon.saveDeclareBuildingConstructionPermit = function (data, updateNull,callback) {
-    if (updateNull == null){
+declareCommon.saveDeclareBuildingConstructionPermit = function (data, updateNull, callback) {
+    if (updateNull == null) {
         updateNull = false;
     }
-    if (updateNull == undefined){
+    if (updateNull == undefined) {
         updateNull = false;
     }
-    if (updateNull == ''){
+    if (updateNull == '') {
         updateNull = false;
     }
     $.ajax({
         type: "POST",
         url: getContextPath() + "/declareBuildingConstructionPermit/saveDeclareBuildingConstructionPermit",
-        data: {formData: JSON.stringify(data),updateNull:updateNull},
+        data: {formData: JSON.stringify(data), updateNull: updateNull},
         success: function (result) {
             if (result.ret) {
                 callback(result.data);
@@ -1304,20 +1347,20 @@ declareCommon.getDeclareBuildingConstructionPermitById = function (id, callback)
 
 
 //save 建设工程规划许可证
-declareCommon.saveDeclareBuildingPermit = function (data, updateNull,callback) {
-    if (updateNull == null){
+declareCommon.saveDeclareBuildingPermit = function (data, updateNull, callback) {
+    if (updateNull == null) {
         updateNull = false;
     }
-    if (updateNull == undefined){
+    if (updateNull == undefined) {
         updateNull = false;
     }
-    if (updateNull == ''){
+    if (updateNull == '') {
         updateNull = false;
     }
     $.ajax({
         type: "POST",
         url: getContextPath() + "/declareBuildingPermit/saveDeclareBuildingPermit",
-        data: {formData: JSON.stringify(data),updateNull:updateNull},
+        data: {formData: JSON.stringify(data), updateNull: updateNull},
         success: function (result) {
             if (result.ret) {
                 callback(result.data);
@@ -1375,63 +1418,69 @@ declareCommon.getDeclareBuildingPermitById = function (id, callback) {
 
 
 //save 建设用地规划许可证
-declareCommon.saveDeclareLandUsePermit = function (data, updateNull,callback) {
-    if (updateNull == null){
+declareCommon.saveDeclareLandUsePermit = function (data, updateNull, callback) {
+    if (updateNull == null) {
         updateNull = false;
     }
-    if (updateNull == undefined){
+    if (updateNull == undefined) {
         updateNull = false;
     }
-    if (updateNull == ''){
+    if (updateNull == '') {
         updateNull = false;
     }
-    declareCommon.ajaxServerMethod({formData: JSON.stringify(data),updateNull:updateNull},"/declareLandUsePermit/saveDeclareLandUsePermit","POST",callback,function (message) {
-        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+    declareCommon.ajaxServerMethod({
+        formData: JSON.stringify(data),
+        updateNull: updateNull
+    }, "/declareLandUsePermit/saveDeclareLandUsePermit", "POST", callback, function (message) {
+        AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
     });
 };
 
 //delete 建设用地规划许可证
 declareCommon.deleteDeclareLandUsePermitById = function (id, callback) {
-    declareCommon.ajaxServerMethod({id: id},"/declareLandUsePermit/deleteDeclareLandUsePermitById","POST",callback,function (message) {
-        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+    declareCommon.ajaxServerMethod({id: id}, "/declareLandUsePermit/deleteDeclareLandUsePermitById", "POST", callback, function (message) {
+        AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
     });
 };
 
 //get 建设用地规划许可证
 declareCommon.getDeclareLandUsePermitById = function (id, callback) {
-    declareCommon.ajaxServerMethod({id: id},"/declareLandUsePermit/getDeclareLandUsePermitById","get",callback,function (message) {
-        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+    declareCommon.ajaxServerMethod({id: id}, "/declareLandUsePermit/getDeclareLandUsePermitById", "get", callback, function (message) {
+        AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
     });
 };
 
 //
 
 //save 商品房预售许可证
-declareCommon.saveDeclarePreSalePermit = function (data, updateNull,callback) {
-    if (updateNull == null){
+declareCommon.saveDeclarePreSalePermit = function (data, updateNull, callback) {
+    if (updateNull == null) {
         updateNull = false;
     }
-    if (updateNull == undefined){
+    if (updateNull == undefined) {
         updateNull = false;
     }
-    if (updateNull == ''){
+    if (updateNull == '') {
         updateNull = false;
     }
-    declareCommon.ajaxServerMethod({formData: JSON.stringify(data),updateNull:updateNull},"/declarePreSalePermit/saveDeclarePreSalePermit","POST",callback,function (message) {
-        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+    declareCommon.ajaxServerMethod({
+        formData: JSON.stringify(data),
+        updateNull: updateNull
+    }, "/declarePreSalePermit/saveDeclarePreSalePermit", "POST", callback, function (message) {
+        AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
     });
 };
 
 //delete 商品房预售许可证
 declareCommon.deleteDeclarePreSalePermitById = function (id, callback) {
-    declareCommon.ajaxServerMethod({id: id},"/declarePreSalePermit/deleteDeclarePreSalePermitById","POST",callback,function (message) {
-        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+    declareCommon.ajaxServerMethod({id: id}, "/declarePreSalePermit/deleteDeclarePreSalePermitById", "POST", callback, function (message) {
+        AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
     });
 };
 
 //get 商品房预售许可证
 declareCommon.getDeclarePreSalePermitById = function (id, callback) {
-    declareCommon.ajaxServerMethod({id: id},"/declarePreSalePermit/getDeclarePreSalePermitById","get",callback,function (message) {
-        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+    declareCommon.ajaxServerMethod({id: id}, "/declarePreSalePermit/getDeclarePreSalePermitById", "get", callback, function (message) {
+        AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
     });
 };

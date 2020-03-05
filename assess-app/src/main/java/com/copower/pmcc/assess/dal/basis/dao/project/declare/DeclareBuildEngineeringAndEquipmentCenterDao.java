@@ -117,10 +117,5 @@ public class DeclareBuildEngineeringAndEquipmentCenterDao {
         return declareBuildEngineeringAndEquipmentCenterMapper.selectByExample(example);
     }
 
-    public Integer getCountByPlanDetailsId(Integer planDetailsId){
-        DeclareBuildEngineeringAndEquipmentCenterExample example = new DeclareBuildEngineeringAndEquipmentCenterExample();
-        example.createCriteria().andPlanDetailsIdEqualTo(planDetailsId);
-        return declareBuildEngineeringAndEquipmentCenterMapper.countByExample(example);
-    }
 
 }

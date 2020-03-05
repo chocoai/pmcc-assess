@@ -326,53 +326,15 @@ assessCommonLand.saveAndUpdateLand = function () {
  * @date:2018-09-21
  **/
 assessCommonLand.inputFile = function () {
-    $.ajaxFileUpload({
-        type: "POST",
-        url: getContextPath() + "/declareRealtyLandCert/importData",
-        data: {
-            planDetailsId: declareCommon.getPlanDetailsId()
-        },//要传到后台的参数，没有可以不写
-        secureuri: false,//是否启用安全提交，默认为false
-        fileElementId: 'ajaxFileUploadLand',//文件选择框的id属性
-        dataType: 'json',//服务器返回的格式
-        async: false,
-        success: function (result) {
-            if (result.ret) {
-                assessCommonLand.loadList();
-                AlertSuccess("导入消息", result.data);
-            }
-        },
-        error: function (result, status, e) {
-            console.log(result);
-            Loading.progressHide();
-            AlertError("错误", "调用服务端方法失败，失败原因:" + result);
-        }
-    });
+    declareCommon.ajaxFileUploadCommon({planDetailsId: declareCommon.getPlanDetailsId()},'ajaxFileUploadLand',"/declareRealtyLandCert/importData",function () {
+        assessCommonLand.loadList();
+    }) ;
 };
 
 assessCommonLand.importDataHouse = function () {
-    $.ajaxFileUpload({
-        type: "POST",
-        url: getContextPath() + "/declareRealtyLandCert/importDataHouse",
-        data: {
-            planDetailsId: declareCommon.getPlanDetailsId()
-        },//要传到后台的参数，没有可以不写
-        secureuri: false,//是否启用安全提交，默认为false
-        fileElementId: 'ajaxFileUploadLandHouse',//文件选择框的id属性
-        dataType: 'json',//服务器返回的格式
-        async: false,
-        success: function (result) {
-            if (result.ret) {
-                assessCommonLand.loadList();
-                AlertSuccess("导入消息", result.data);
-            }
-        },
-        error: function (result, status, e) {
-            console.log(result);
-            Loading.progressHide();
-            AlertError("错误", "调用服务端方法失败，失败原因:" + result);
-        }
-    });
+    declareCommon.ajaxFileUploadCommon({planDetailsId: declareCommon.getPlanDetailsId()},'ajaxFileUploadLandHouse',"/declareRealtyLandCert/importDataHouse",function () {
+        assessCommonLand.loadList();
+    }) ;
 };
 
 assessCommonLand.showAddModelHouse = function (id) {
@@ -381,6 +343,22 @@ assessCommonLand.showAddModelHouse = function (id) {
         notifyWarning("警告","不合符调整后的数据约定,请联系管理员!");
         return false;
     }
+    var data = {
+        centerId: item.centerId,
+        autoInitNumber: item.autoInitNumber,
+        beLocated: item.beLocated,
+        streetNumber: item.streetNumber,
+        attachedNumber: item.attachedNumber,
+        buildingNumber: item.buildingNumber,
+        unit: item.unit,
+        roomNumber: item.roomNumber,
+        floor: item.floor,
+        province: item.province,
+        city: item.city,
+        district: item.district,
+        ownership: item.ownership
+    };
+
     var box = $("#" + assessCommonLand.config.houseBox);
     var frm = box.find("form");
     box.find("#" + commonDeclareApplyModel.config.house.handleId).remove();
@@ -394,8 +372,7 @@ assessCommonLand.showAddModelHouse = function (id) {
                     declareCommon.initHouse(data, frm, fileArr, null, false);
                 });
             } else {//未关联情况
-                area.centerId = centerData.id;
-                declareCommon.initHouse(area, frm, fileArr, null, false);
+                declareCommon.initHouse(data, frm, fileArr, null, false);
             }
         });
     });
@@ -682,39 +659,30 @@ assessCommonLand.declarePreSalePermitSaveAndUpdate = function () {
 
 /*自动关联编号的附件*/
 assessCommonLand.attachmentAutomatedWarrants = function (_this) {
-    var group = $(_this).closest(".form-group");
-    var prefixNumber = group.find("[name='prefixNumber']").val();
-    var startNumber = group.find("[name='startNumber']").val();
-    var endNumber = group.find("[name='endNumber']").val();
-    var step = group.find("[name='step']").val();
-    var isSource = group.find("[name='isSource']").val();
-    if (!$.isNumeric(startNumber)) {
-        notifyWarning("警告", "启始编号非数字请重新填写!");
-        return false;
-    }
-    if (!$.isNumeric(endNumber)) {
-        notifyWarning("警告", "截至编号非数字请重新填写!");
-        return false;
-    }
-    if (!$.isNumeric(step)) {
-        notifyWarning("警告", "步长非数字请重新填写!");
-        return false;
-    }
+    var frm = $(_this).closest("form");
+    var options = formSerializeArray(frm);
     var data = {
-        prefixNumber: prefixNumber,
-        startNumber: startNumber,
-        endNumber: endNumber,
-        step: step,
-        isSource: 'true',
         fieldsName: assessCommonLand.config.fileId,
         tableName: AssessDBKey.DeclareRealtyLandCert,
         planDetailsId: declareCommon.getPlanDetailsId()
     };
-    if (isSource != undefined && isSource != null && isSource != '') {
-        data.isSource = isSource;
+    jQuery.extend(data, options);
+    if (data.isSource) {
         data.fieldsName = assessCommonLand.config.houseFile;
     }
-    if (startNumber > endNumber) {
+    if (!$.isNumeric(data.startNumber)) {
+        notifyWarning("警告", "启始编号非数字请重新填写!");
+        return false;
+    }
+    if (!$.isNumeric(data.endNumber)) {
+        notifyWarning("警告", "截至编号非数字请重新填写!");
+        return false;
+    }
+    if (!$.isNumeric(data.step)) {
+        notifyWarning("警告", "步长非数字请重新填写!");
+        return false;
+    }
+    if (data.startNumber > data.endNumber) {
         notifyWarning("警告", "截至编号 必须大于 启始编号!");
         return false;
     }
@@ -730,18 +698,13 @@ assessCommonLand.attachmentAutomatedWarrants = function (_this) {
         }
         if (array.length == 1) {
             data.attachmentId = array[0].id;
-            Loading.progressShow();
             declareCommon.ajaxServerMethod(data, "/declareRealtyLandCert/attachmentAutomatedWarrants", "post", function () {
-                Loading.progressHide();
                 (function (id, FileId, tableName) {
                     declareCommon.fileUpload(FileId, tableName, id, true);
                     declareCommon.showFile(FileId, tableName, id, true);
                 }(query.tableId, query.fieldsName, query.tableName));
                 assessCommonLand.loadList();
                 notifyInfo('提示', "操作成功!");
-            }, function (message) {
-                Loading.progressHide();
-                AlertError("错误", "调用服务端方法失败，失败原因:" + message);
             });
         } else {
             notifyWarning("警告", "请上传pdf或者word一个!");
