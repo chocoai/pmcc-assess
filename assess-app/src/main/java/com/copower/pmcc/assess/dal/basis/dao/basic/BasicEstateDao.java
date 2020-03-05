@@ -68,6 +68,40 @@ public class BasicEstateDao {
         return basicEstateMapper.selectByExample(example);
     }
 
+    public Integer getBasicEstateCount(String province,String city,String name){
+        BasicEstateExample example = new BasicEstateExample();
+        BasicEstateExample.Criteria criteria = example.createCriteria();
+        criteria.andIdIsNotNull().andBisDeleteEqualTo(false).andBisCaseEqualTo(true);
+        if (!StringUtils.isEmpty(name)) {
+            criteria.andNameEqualTo(name);
+        }
+        if (!StringUtils.isEmpty(province)) {
+            criteria.andProvinceEqualTo(province);
+        }
+        if (!StringUtils.isEmpty(city)) {
+            criteria.andCityEqualTo(city);
+        }
+        return basicEstateMapper.countByExample(example);
+    }
+
+    public BasicEstate getLatestVersionEstate(String province,String city,String name){
+        BasicEstateExample example = new BasicEstateExample();
+        BasicEstateExample.Criteria criteria = example.createCriteria();
+        criteria.andBisDeleteEqualTo(false).andBisCaseEqualTo(true);
+        if (!StringUtils.isEmpty(name)) {
+            criteria.andNameEqualTo(name);
+        }
+        if (!StringUtils.isEmpty(province)) {
+            criteria.andProvinceEqualTo(province);
+        }
+        if (!StringUtils.isEmpty(city)) {
+            criteria.andCityEqualTo(city);
+        }
+        example.setOrderByClause("version desc");
+        List<BasicEstate> basicEstateList = basicEstateMapper.selectByExample(example);
+        return basicEstateList.get(0);
+    }
+
 
     public List<BasicEstate> getBasicEstateList(BasicEstate basicEstate) {
         BasicEstateExample example = new BasicEstateExample();

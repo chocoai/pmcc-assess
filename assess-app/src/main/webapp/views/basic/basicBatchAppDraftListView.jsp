@@ -9,7 +9,6 @@
         .ui-autocomplete { z-index: 215000000 !important; }
     </style>
 </head>
-
 <body>
 <div class="wrapper">
     <%@include file="/views/share/main_navigation.jsp" %>
@@ -22,7 +21,6 @@
             </div>
             <div class="page-inner mt--5">
                 <div class="row mt--2">
-
                     <div class="col-md-12">
                         <div class="card full-height">
                             <div class="card-header">
@@ -41,7 +39,7 @@
                                         </div>
 
                                         <button style="margin-left: 10px" class="btn btn-info  btn-sm" type="button"
-                                                onclick="dataObjFun.loadDataList()">
+                                                onclick="dataObjFun.loadBatchApplyList()">
 											<span class="btn-label">
 												<i class="fa fa-search"></i>
 											</span>
@@ -65,15 +63,12 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
         <%@include file="/views/share/main_footer.jsp" %>
     </div>
-
 </div>
-
 </body>
 <div id="divBoxFather" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
@@ -84,7 +79,6 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
             </div>
-
             <div class="modal-body">
                 <form id="frmFather" class="form-horizontal">
                     <input type="hidden" id="id" name="id">
@@ -151,7 +145,7 @@
 <script src='${pageContext.request.contextPath}/js/autocomplete/estate.case.js?v=${assessVersion}'></script>
 <script type="text/javascript">
     $(function () {
-        dataObjFun.loadDataList();
+        dataObjFun.loadBatchApplyList();
         $("#" + dataObjFun.config.father.frm() + " input[name='estateName']").apEstate({
             getProvince: function () {
                 return $("#" + dataObjFun.config.father.frm()).find("select[name='province']").val();
@@ -224,14 +218,16 @@
         }
         var data = formParams(dataObjFun.config.father.frm());
         $.ajax({
-            url: "${pageContext.request.contextPath}/basicApplyBatch/verification",
+            url: "${pageContext.request.contextPath}/basicApplyBatch/recordBatchApply",
             type: "post",
             dataType: "json",
             data: data,
             success: function (result) {
                 if (result.ret) {
                     $('#' + dataObjFun.config.father.box()).modal('hide');
-                    dataObjFun.applyIndex(result.data,data.estateName);
+                    var href = "${pageContext.request.contextPath}/basicApplyBatch/applyAgain?id=" + result.data;
+                    openWin(href);
+                    dataObjFun.loadBatchApplyList();
                 }
                 else {
                     AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
@@ -241,14 +237,6 @@
                 AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
             }
         })
-    };
-
-
-    //jin申请
-    dataObjFun.applyIndex = function (estateId,estateName) {
-        var id = estateId ? estateId : 0;
-        var href = "${pageContext.request.contextPath}/basicApplyBatch/basicBatchApplyIndex?estateId=" + id+"&estateName="+encodeURI(estateName);
-        window.open(href, "");
     };
 
     //删除
@@ -262,7 +250,7 @@
                     Loading.progressHide();
                     if (result.ret) {
                         notifySuccess("成功", "删除数据成功");
-                        dataObjFun.loadDataList();
+                        dataObjFun.loadBatchApplyList();
                     }
                     else {
                         AlertError("删除数据失败，失败原因:" + result.errmsg);
@@ -272,7 +260,7 @@
         })
     }
 
-    dataObjFun.loadDataList = function () {
+    dataObjFun.loadBatchApplyList = function () {
         var cols = [];
         cols.push({field: 'fullName', title: '名称'});
         cols.push({
@@ -287,6 +275,11 @@
                 }else{
                     return "草稿";
                 }
+            }
+        });
+        cols.push({
+            field: 'gmtCreated', title: '时间', formatter: function (value, row, index) {
+                return formatDate(value,true);
             }
         });
         cols.push({
