@@ -200,6 +200,12 @@ public class BasicHouseService extends BasicEntityAbstract {
         if (basicHouse.getDecorateSituation() != null) {
             vo.setDecorateSituationName(baseDataDicService.getNameById(basicHouse.getDecorateSituation()));
         }
+        if (basicHouse.getOrientation() != null) {
+            vo.setOrientationName(baseDataDicService.getNameById(basicHouse.getOrientation()));
+        }
+        if (basicHouse.getSpatialDistribution() != null) {
+            vo.setSpatialDistributionName(baseDataDicService.getNameById(basicHouse.getSpatialDistribution()));
+        }
         vo.setCreatorName(publicService.getUserNameByAccount(basicHouse.getCreator()));
         return vo;
     }
