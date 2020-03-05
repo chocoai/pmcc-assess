@@ -463,7 +463,7 @@ assessCommonHouse.inputFileLand = function () {
         success: function (result) {
             if (result.ret) {
                 assessCommonHouse.loadList();
-                AlertConfirm("导入消息",result.data,function () { }) ;
+                AlertConfirm("提示",result.data) ;
             }
         },
         error: function (result, status, e) {
@@ -490,7 +490,7 @@ assessCommonHouse.inputFile = function () {
         success: function (result) {
             if (result.ret) {
                 assessCommonHouse.loadList();
-                AlertConfirm("导入消息",result.data,function () { }) ;
+                AlertSuccess("提示",result.data) ;
             }
         },
         error: function (result, status, e) {

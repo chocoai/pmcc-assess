@@ -1,24 +1,31 @@
 package com.copower.pmcc.assess.common.enums.basic;
 
+import com.google.common.collect.Lists;
+
+import java.util.List;
+
 /**
  * 描述:查勘表单大类
  *
- * @author: Calvin(qiudong@copowercpa.com)
+ * @author: Calvin(qiudong @ copowercpa.com)
  * @data: 2017/11/2
  * @time: 15:46
  */
 public enum BasicFormClassifyEnum {
-    ESTATE("estate", "楼盘", "tb_basic_estate", "basicEstateService"),
-    BUILDING("building", "楼栋", "tb_basic_building", "basicBuildingService"),
-    UNIT("unit", "单元", "tb_basic_unit", "basicUnitService"),
-    HOUSE("house", "房屋", "tb_basic_house", "basicHouseService");
+    ESTATE(0, "estate", "楼盘", "tb_basic_estate", "basicEstateService"),
+    BUILDING(1, "building", "楼栋", "tb_basic_building", "basicBuildingService"),
+    UNIT(2, "unit", "单元", "tb_basic_unit", "basicUnitService"),
+    HOUSE(3, "house", "房屋", "tb_basic_house", "basicHouseService");
 
+    private Integer level;
     private String key;
     private String value;
     private String tableName;
     private String serviceName;
 
-    private BasicFormClassifyEnum(String key, String value, String tableName, String serviceName) {
+
+    private BasicFormClassifyEnum(Integer level, String key, String value, String tableName, String serviceName) {
+        this.level = level;
         this.key = key;
         this.value = value;
         this.tableName = tableName;
@@ -41,6 +48,45 @@ public enum BasicFormClassifyEnum {
             }
         }
         return null;
+    }
+
+    /**
+     * 获取低等级表单类型
+     *
+     * @param level
+     * @return
+     */
+    public static List<BasicFormClassifyEnum> getLowLevelEnumsByLevel(Integer level) {
+        List<BasicFormClassifyEnum> list = Lists.newArrayList();
+        for (BasicFormClassifyEnum e : BasicFormClassifyEnum.values()) {
+            if (e.getLevel() < level) {
+                list.add(e);
+            }
+        }
+        return list;
+    }
+
+    /**
+     * 获取高等级表单类型
+     * @param level
+     * @return
+     */
+    public static List<BasicFormClassifyEnum> getHighLevelEnumsByLevel(Integer level) {
+        List<BasicFormClassifyEnum> list = Lists.newArrayList();
+        for (BasicFormClassifyEnum e : BasicFormClassifyEnum.values()) {
+            if (e.getLevel() > level) {
+                list.add(e);
+            }
+        }
+        return list;
+    }
+
+    public Integer getLevel() {
+        return level;
+    }
+
+    public void setLevel(Integer level) {
+        this.level = level;
     }
 
     public String getKey() {

@@ -143,7 +143,7 @@
                                                 <div class="col-xs-10  col-sm-10  col-md-10  col-lg-10">
                                                     <button type="button" class="btn btn-success btn-sm"
                                                             onclick="declareApplyExtensionCumstom.appendHTML('${declare.id}','${projectPlanDetails.projectId}',this)">
-                                                        <span class="btn-label"><i class="fa fa-plus"></i></span>添加申报名称
+                                                        <span class="btn-label"><i class="fa fa-plus"></i></span>添加附件
                                                     </button>
                                                 </div>
                                             </div>
@@ -155,12 +155,12 @@
                                             <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
                                                 <div class="form-inline x-valid">
                                                     <label class="col-xs-2  col-sm-2  col-md-2  col-lg-2 col-form-label">
-                                                        申报名称<span class="symbol required"></span>
+                                                        附件名称<span class="symbol required"></span>
                                                     </label>
                                                     <div class="col-xs-10  col-sm-10  col-md-10  col-lg-10">
                                                         <input type="hidden" name="id" value="${itemData.id}">
                                                         <input name="name" class="form-control input-full"
-                                                               placeholder="申报名称" value="${itemData.name}"
+                                                               placeholder="附件名称" value="${itemData.name}"
                                                                onblur="declareApplyExtensionCumstom.targetSave(this);"/>
                                                     </div>
                                                 </div>

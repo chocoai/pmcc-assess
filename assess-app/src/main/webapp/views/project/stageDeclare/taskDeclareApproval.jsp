@@ -162,7 +162,7 @@
                                             <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
                                                 <div class="form-inline x-valid">
                                                     <label class="col-xs-2  col-sm-2  col-md-2  col-lg-2 col-form-label">
-                                                        申报名称<span class="symbol required"></span>
+                                                        附件名称<span class="symbol required"></span>
                                                     </label>
                                                     <div class="col-xs-10  col-sm-10  col-md-10  col-lg-10">
                                                         <label class="form-control input-full">${itemData.name}</label>
@@ -419,7 +419,7 @@
                 str += '</button>';
 
                 str += '<div class="dropdown" style="display: inline;margin-left: 5px;">';
-                str += "<button type='button' class='btn btn-info btn-xs dropdown-toggle' data-toggle='dropdown'>许可证信息</button>";
+                str += "<button type='button' class='btn btn-info btn-xs dropdown-toggle'  style=\"margin-left: 5px;\" data-toggle='dropdown'>许可证信息</button>";
                 str += "<div class='dropdown-menu' role='menu' aria-labelledby='dropdownMenu2'>";
                 str += "<a  class='dropdown-item' onclick='declareApprovalFun.realtyRealDeclaredeclareLandUsePermitView(" + row.id + ")'" + ">" + "建设用地规划许可证" + "<i class='fa fa-navicon'></i></a>";
                 str += "<a  class='dropdown-item' onclick='declareApprovalFun.realtyRealDeclaredeclareBuildingPermitView(" + row.id + ")'" + ">" + "建设工程规划许可证" + "<i class='fa fa-navicon'></i></a>";
@@ -569,7 +569,7 @@
                 str += '</button>';
 
                 str += '<div class="dropdown" style="display: inline;margin-left: 5px;">';
-                str += "<button type='button' class='btn btn-info btn-xs dropdown-toggle' data-toggle='dropdown'>许可证信息</button>";
+                str += "<button type='button' class='btn btn-info btn-xs dropdown-toggle'  style=\"margin-left: 5px;\" data-toggle='dropdown'>许可证信息</button>";
                 str += "<div class='dropdown-menu' role='menu' aria-labelledby='dropdownMenu2'>";
                 str += "<a  class='dropdown-item' onclick='declareApprovalFun.LanddeclareLandUsePermitView(" + row.id + ")'" + ">" + "建设用地规划许可证" + "<i class='fa fa-navicon'></i></a>";
                 str += "<a  class='dropdown-item' onclick='declareApprovalFun.LanddeclareBuildingPermitView(" + row.id + ")'" + ">" + "建设工程规划许可证" + "<i class='fa fa-navicon'></i></a>";

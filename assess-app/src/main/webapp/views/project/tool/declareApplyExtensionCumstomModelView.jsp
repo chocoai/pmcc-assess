@@ -5,10 +5,10 @@
         <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
             <div class="form-inline x-valid">
                 <label class="col-xs-2  col-sm-2  col-md-2  col-lg-2 col-form-label">
-                    申报名称<span class="symbol required"></span>
+                    附件名称<span class="symbol required"></span>
                 </label>
                 <div class="col-xs-10  col-sm-10  col-md-10  col-lg-10">
-                    <input name="name" class="form-control input-full" placeholder="申报名称" value="${itemData.name}"
+                    <input name="name" class="form-control input-full" placeholder="附件名称" value="${itemData.name}"
                            onblur="declareApplyExtensionCumstom.targetSave(this);"/>
                 </div>
             </div>

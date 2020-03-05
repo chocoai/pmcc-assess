@@ -260,7 +260,7 @@ assessCommonLand.loadList = function () {
             str += '<button type="button" onclick="assessCommonLand.landImportEvent(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="土地证附件">土地证附件</button>';
 
             str += '<div class="dropdown">';
-            str += "<button class='btn btn-info btn-xs dropdown-toggle' data-toggle='dropdown'>许可证信息</button>";
+            str += "<button class='btn btn-info btn-xs dropdown-toggle'  style=\"margin-left: 5px;\" data-toggle='dropdown'>许可证信息</button>";
             str += "<div class='dropdown-menu' role='menu' aria-labelledby='dropdownMenu2'>";
             str += "<a class='dropdown-item'  onclick='assessCommonLand.declareBuildingPermitView(" + row.id + ")'>" + "建设工程规划许可证</a>";
             str += "<a class='dropdown-item'  onclick='assessCommonLand.declareLandUsePermitView(" + row.id + ")'>" + "建设用地规划许可证</a>";

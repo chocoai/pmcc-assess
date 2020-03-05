@@ -1,29 +1,19 @@
 package com.copower.pmcc.assess.service.project;
 
 import com.alibaba.fastjson.JSON;
-import com.copower.pmcc.assess.common.enums.ProjectPlanSetEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.common.enums.ResponsibileModelEnum;
-import com.copower.pmcc.assess.constant.AssessCacheConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectInfoDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPlanDetailsDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.ProjectPlanDetailsDto;
-import com.copower.pmcc.assess.dto.input.project.ProjectPlanDto;
 import com.copower.pmcc.assess.dto.input.project.ProjectPlanSetDto;
 import com.copower.pmcc.assess.proxy.face.ProjectPlanExecuteInterface;
 import com.copower.pmcc.assess.service.assist.DdlMySqlAssist;
-import com.copower.pmcc.assess.service.event.project.ProjectPlanApprovalEvent;
 import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
-import com.copower.pmcc.bpm.api.dto.ProcessUserDto;
 import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
-import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
-import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
-import com.copower.pmcc.bpm.api.dto.model.ProcessInfo;
-import com.copower.pmcc.bpm.api.enums.ProcessActivityEnum;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
-import com.copower.pmcc.bpm.api.enums.TaskHandleStateEnum;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxRoleUserService;
@@ -182,94 +172,6 @@ public class ProjectPlanService {
             }
         }
         return true;
-    }
-
-    public void fastSetPlan(String fields, Integer planId, String detailsSoring) throws BusinessException {
-        updateDetailsSorting(detailsSoring);
-        if (StringUtils.isNotBlank(fields)) {
-            List<ProjectPlanSetDto> planSetDtos = JSON.parseArray(fields, ProjectPlanSetDto.class);
-            StringBuilder sb = new StringBuilder();
-            for (ProjectPlanSetDto item : planSetDtos) {
-                String value = "";
-                CustomTableTypeEnum fieldsType = CustomTableTypeEnum.TEXT;
-                if (StringUtils.isNotBlank(item.getFastValue())) {
-                    switch (item.getFastFileds()) {
-                        case "planStartDate":
-                        case "planEndDate": {
-                            Date planStartDate = DateUtils.getDateFromShortString(item.getFastValue());
-                            if (planStartDate != null) {
-                                value = DateUtils.format(planStartDate, DateUtils.DATETIME_PATTERN);
-                            }
-
-                            break;
-                        }
-                        case "planHours":
-                        case "proportion": {
-                            value = item.getFastValue();
-                            fieldsType = CustomTableTypeEnum.DECIMAL;
-                            break;
-                        }
-                        case "executeUserAccount": {
-                            value = item.getFastValue();
-                            break;
-                        }
-                        case "executeDepartmentId": {
-                            value = item.getFastValue();
-                            fieldsType = CustomTableTypeEnum.INT;
-                            break;
-                        }
-                    }
-                }
-
-                if (StringUtils.isNotBlank(value)) {
-                    String dbFields = FormatUtils.camelToUnderline(item.getFastFileds());
-                    ProjectPlanSetEnum planSetEnum = ProjectPlanSetEnum.create(item.getFastRange());
-                    String where = String.format("plan_id=%s and bis_last_layer=1", planId);
-                    switch (planSetEnum) {
-                        case NULL: {
-                            where += String.format(" and (%s is null or %s='')", dbFields, dbFields);
-                            break;
-                        }
-                    }
-
-                    String sql = String.format("UPDATE tb_project_plan_details SET %s='%s' WHERE %s;", dbFields, value, where);
-                    if (!fieldsType.equals(CustomTableTypeEnum.TEXT)) {
-                        sql = String.format("UPDATE tb_project_plan_details SET %s=%s WHERE %s;", dbFields, value, where);
-                    }
-                    sb.append(String.format("UPDATE tb_project_plan_details SET %s=NULL WHERE plan_id=%s and bis_last_layer=0;", dbFields, planId));
-                    sb.append(sql);
-
-                }
-            }
-            if (StringUtils.isNotBlank(sb.toString())) {
-                ddlMySqlAssist.customTableDdl(sb.toString());//更新数据
-            }
-        }
-
-    }
-
-    public void saveProjectPlanDetails(String ds) throws BusinessException {
-        ProjectPlanDetailsDto projectPlanDetailsDto = JSON.parseObject(ds, ProjectPlanDetailsDto.class);
-        ProjectPlanDetails projectPlanDetails = new ProjectPlanDetails();
-        BeanUtils.copyProperties(projectPlanDetailsDto, projectPlanDetails);
-        if (projectPlanDetails.getId() != null && projectPlanDetails.getId() > 0) {
-            projectPlanDetailsDao.updateProjectPlanDetails(projectPlanDetails);
-        } else {
-
-            Integer planChildCount = projectPlanDetailsDao.getPlanChildCount(projectPlanDetails.getPid(), projectPlanDetails.getProjectId(), projectPlanDetails.getProjectWorkStageId());
-            projectPlanDetails.setSorting(planChildCount + 1);
-            projectPlanDetails.setBisLastLayer(true);
-            projectPlanDetails.setStatus(ProcessStatusEnum.NOPROCESS.getValue());
-            if (projectPlanDetails.getFirstPid() == 0) {
-                projectPlanDetails.setFirstPid(projectPlanDetails.getPid());
-            }
-            projectPlanDetailsDao.addProjectPlanDetails(projectPlanDetails);
-        }
-
-        //更新计划明细的顺序
-        String detailsSoring = projectPlanDetailsDto.getDetailsSoring();
-        updateDetailsSorting(detailsSoring);
-        updatePid(projectPlanDetails.getPid());
     }
 
     public void updateDetailsSorting(String detailsSoring) {
