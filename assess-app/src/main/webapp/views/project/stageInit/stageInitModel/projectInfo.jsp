@@ -210,7 +210,8 @@
                             <div class="input-group-prepend">
                                 <button class="btn btn-warning btn-sm "
                                         style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                        type="button" onclick="$(this).closest('.input-group').find('input').val('');">
+                                        type="button"
+                                        onclick="$(this).closest('.input-group').find('input').val('').end().closest('.input-group').find('label[name=contractNameView]').html('').end();">
                                     清空
                                 </button>
                             </div>
