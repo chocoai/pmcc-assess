@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.proxy.face.AssessmentTaskInterface;
 import com.copower.pmcc.assess.service.basic.BasicApplyBatchDetailService;
 import com.copower.pmcc.assess.service.basic.BasicApplyBatchService;
+import com.copower.pmcc.assess.service.project.ProjectPlanService;
 import com.copower.pmcc.bpm.api.dto.model.BoxReActivityDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
@@ -43,6 +44,8 @@ public class AssessmentTaskExploreService implements AssessmentTaskInterface {
     private BasicApplyBatchDetailService basicApplyBatchDetailService;
     @Autowired
     private BasicApplyBatchService basicApplyBatchService;
+    @Autowired
+    private ProjectPlanService projectPlanService;
 
     @Override
     public void createAssessmentTask(String processInsId, Integer activityId, String taskId, String byExamineUser, ProjectInfo projectInfo, ProjectPlanDetails projectPlanDetails) {
@@ -89,31 +92,31 @@ public class AssessmentTaskExploreService implements AssessmentTaskInterface {
             linkedList.add(String.join("=", "tableId", basicApplyBatchDetail.getTableId().toString()));
             linkedList.add(String.join("=", "tableName", basicApplyBatchDetail.getTableName()));
             linkedList.add(String.join("=", "isHistory", Boolean.FALSE.toString()));
-            String tbType = "" ;
+            String tbType = "";
             String businessKey = null;
             if (Objects.equal(basicApplyBatchDetail.getTableName(), FormatUtils.entityNameConvertToTableName(BasicBuilding.class))) {
-                tbType = "building" ;
-                businessKey = "楼栋" ;
+                tbType = "building";
+                businessKey = "楼栋";
             }
             if (Objects.equal(basicApplyBatchDetail.getTableName(), FormatUtils.entityNameConvertToTableName(BasicHouse.class))) {
-                tbType = "house" ;
-                businessKey = "房屋" ;
+                tbType = "house";
+                businessKey = "房屋";
             }
             if (Objects.equal(basicApplyBatchDetail.getTableName(), FormatUtils.entityNameConvertToTableName(BasicUnit.class))) {
-                tbType = "unit" ;
-                businessKey = "单元" ;
+                tbType = "unit";
+                businessKey = "单元";
             }
             if (Objects.equal(basicApplyBatchDetail.getTableName(), FormatUtils.entityNameConvertToTableName(BasicEstate.class))) {
-                tbType = "estate" ;
-                businessKey = "楼盘" ;
+                tbType = "estate";
+                businessKey = "楼盘";
             }
             linkedList.add(String.join("=", "tbType", tbType));
-            saveAssessmentProjectPerformanceDto(processInsId, activityId, taskId, byExamineUser, projectInfo, projectPlanDetails, boxReDto, basicApplyBatchDetail.getTableName(), basicApplyBatchDetail.getTableId(),tbType ,StringUtils.join(linkedList, "&"),businessKey);
+            saveAssessmentProjectPerformanceDto(processInsId, activityId, taskId, byExamineUser, projectInfo, projectPlanDetails, boxReDto, basicApplyBatchDetail.getTableName(), basicApplyBatchDetail.getTableId(), tbType, StringUtils.join(linkedList, "&"), businessKey);
         }
 
     }
 
-    private void saveAssessmentProjectPerformanceDto(String processInsId, Integer activityId, String taskId, String byExamineUser, ProjectInfo projectInfo, ProjectPlanDetails projectPlanDetails, BoxReDto boxReDto, String tableName, Integer tableId, String assessmentKey,String examineUrl,String businessKey) {
+    private void saveAssessmentProjectPerformanceDto(String processInsId, Integer activityId, String taskId, String byExamineUser, ProjectInfo projectInfo, ProjectPlanDetails projectPlanDetails, BoxReDto boxReDto, String tableName, Integer tableId, String assessmentKey, String examineUrl, String businessKey) {
         AssessmentProjectPerformanceDto dto = new AssessmentProjectPerformanceDto();
         dto.setProcessInsId(processInsId);
         dto.setAppKey(applicationConstant.getAppKey());
@@ -134,6 +137,12 @@ public class AssessmentTaskExploreService implements AssessmentTaskInterface {
         if (projectPlanDetails != null) {
             dto.setPlanId(projectPlanDetails.getPlanId());
             dto.setPlanDetailsId(projectPlanDetails.getId());
+            ProjectPlan projectPlan = projectPlanService.getProjectplanById(projectPlanDetails.getPlanId());
+            if (projectPlan != null && StringUtils.isNotBlank(projectPlan.getPlanName())) {
+                dto.setPlanName(String.join("-", projectPlan.getPlanName(), projectPlanDetails.getProjectPhaseName()));
+            } else {
+                dto.setPlanName(projectPlanDetails.getProjectPhaseName());
+            }
         }
         dto.setExaminePeople(commonService.thisUserAccount());
         dto.setCreator(commonService.thisUserAccount());
