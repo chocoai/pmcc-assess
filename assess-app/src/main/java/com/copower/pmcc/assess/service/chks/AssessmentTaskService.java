@@ -2,8 +2,10 @@ package com.copower.pmcc.assess.service.chks;
 
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectPlan;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.proxy.face.AssessmentTaskInterface;
+import com.copower.pmcc.assess.service.project.ProjectPlanService;
 import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReActivityDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
@@ -15,6 +17,7 @@ import com.copower.pmcc.chks.api.dto.AssessmentProjectPerformanceDto;
 import com.copower.pmcc.chks.api.provider.ChksRpcAssessmentService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -34,8 +37,11 @@ public class AssessmentTaskService implements AssessmentTaskInterface {
     private ChksRpcAssessmentService chksRpcAssessmentService;
     @Autowired
     private CommonService commonService;
+    @Autowired
+    private ProjectPlanService projectPlanService;
+
     @Override
-    public void createAssessmentTask(String processInsId, Integer activityId,String taskId, String byExamineUser, ProjectInfo projectInfo, ProjectPlanDetails projectPlanDetails) {
+    public void createAssessmentTask(String processInsId, Integer activityId, String taskId, String byExamineUser, ProjectInfo projectInfo, ProjectPlanDetails projectPlanDetails) {
         BoxRuDto boxRuDto = bpmRpcBoxService.getBoxRuByProcessInstId(processInsId);
         if (boxRuDto == null) return;
         BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(boxRuDto.getBoxId());
@@ -56,8 +62,14 @@ public class AssessmentTaskService implements AssessmentTaskInterface {
         dto.setByExaminePeople(byExamineUser);
         dto.setExaminePeople(commonService.thisUserAccount());
         dto.setExamineStatus(ProjectStatusEnum.RUNING.getKey());
-        if(projectPlanDetails!=null){
+        if (projectPlanDetails != null) {
             dto.setPlanId(projectPlanDetails.getPlanId());
+            ProjectPlan projectPlan = projectPlanService.getProjectplanById(projectPlanDetails.getPlanId());
+            if (projectPlan != null && StringUtils.isNotBlank(projectPlan.getPlanName())) {
+                dto.setPlanName(String.join("-", projectPlan.getPlanName(), projectPlanDetails.getProjectPhaseName()));
+            } else {
+                dto.setPlanName(projectPlanDetails.getProjectPhaseName());
+            }
             dto.setPlanDetailsId(projectPlanDetails.getId());
         }
         dto.setCreator(commonService.thisUserAccount());
