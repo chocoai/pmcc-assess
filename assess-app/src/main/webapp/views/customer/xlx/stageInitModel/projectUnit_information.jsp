@@ -39,7 +39,7 @@
                         <div class="col-sm-3">
                             <input type="text" name="uCertificateNumber"
                                    value="${projectInfo.unitInformationVo.uCertificateNumber}"
-                                   class="form-control input-full" required="required">
+                                   class="form-control input-full" >
                         </div>
                     </div>
                 </div>
@@ -52,8 +52,7 @@
                             单位性质<span class="symbol required"></span>
                         </label>
                         <div class="col-sm-3">
-                            <select name="uUnitProperties" class="form-control input-full"
-                                    required>
+                            <select name="uUnitProperties" class="form-control input-full">
                                 <c:forEach items="${ProjectAFFILIATED}" var="item">
                                     <c:choose>
                                         <c:when test="${item.id == projectInfo.unitInformationVo.uUnitProperties}">

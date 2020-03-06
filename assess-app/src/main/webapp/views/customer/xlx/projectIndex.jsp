@@ -168,7 +168,7 @@
 
     //项目提交立项
     function projectApply(mustUseBox) {
-        if (!objProject.valid()) {
+        if (!objProject.baseValid()) {
             return false;
         }
         var data = {};
