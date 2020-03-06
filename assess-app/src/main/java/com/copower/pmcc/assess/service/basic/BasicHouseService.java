@@ -456,26 +456,32 @@ public class BasicHouseService extends BasicEntityAbstract {
                     houseDetail.setDisplayName(basicHouse.getHouseNumber());
                     basicApplyBatchDetailService.saveBasicApplyBatchDetail(houseDetail);
 
-                    BasicApply where = new BasicApply();
-                    where.setPlanDetailsId(planDetailsId);
-                    where.setBasicHouseId(houseDetail.getTableId());
-                    BasicApply basicApply = basicApplyService.getBasicApply(where);
-                    Map<BasicFormClassifyEnum, BasicApplyBatchDetail> map = basicApplyBatchDetailService.getApplyBatchDetailMap(houseDetail);
-                    basicApply.setArea(basicHouse.getArea());
-                    BasicApplyBatchDetail unitBatchDetail = map.get(BasicFormClassifyEnum.UNIT);//单元
-                    BasicApplyBatchDetail buildBatchDetail = map.get(BasicFormClassifyEnum.BUILDING); //楼栋
-                    BasicApplyBatchDetail estateBatchDetail = map.get(BasicFormClassifyEnum.ESTATE);//楼盘
-                    basicApply.setName(basicApplyService.getFullName(estateBatchDetail.getName(), buildBatchDetail.getName(), unitBatchDetail.getName(), houseDetail.getName()));
-                    basicApplyService.saveBasicApply(basicApply);
+                    if (planDetailsId != null && planDetailsId > 0) {
+                        BasicApply where = new BasicApply();
+                        where.setPlanDetailsId(planDetailsId);
+                        where.setBasicHouseId(houseDetail.getTableId());
+                        BasicApply basicApply = basicApplyService.getBasicApply(where);
+                        if (basicApply != null) {
+                            Map<BasicFormClassifyEnum, BasicApplyBatchDetail> map = basicApplyBatchDetailService.getApplyBatchDetailMap(houseDetail);
+                            basicApply.setArea(basicHouse.getArea());
+                            BasicApplyBatchDetail unitBatchDetail = map.get(BasicFormClassifyEnum.UNIT);//单元
+                            BasicApplyBatchDetail buildBatchDetail = map.get(BasicFormClassifyEnum.BUILDING); //楼栋
+                            BasicApplyBatchDetail estateBatchDetail = map.get(BasicFormClassifyEnum.ESTATE);//楼盘
+                            basicApply.setName(basicApplyService.getFullName(estateBatchDetail.getName(), buildBatchDetail.getName(), unitBatchDetail.getName(), houseDetail.getName()));
+                            basicApplyService.saveBasicApply(basicApply);
+                        }
+                    }
                 }
                 //交易信息
                 jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_TRADING.getVar());
                 BasicHouseTrading basicTrading = JSONObject.parseObject(jsonContent, BasicHouseTrading.class);
                 if (basicTrading != null) {
                     BasicHouseTrading houseTradingOld = basicHouseTradingService.getTradingByHouseId(basicHouse.getId());
-                    basicTrading.setId(houseTradingOld.getId());
-                    basicTrading.setHouseId(houseId);
-                    basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicTrading, true);
+                    if(houseTradingOld!=null){
+                        basicTrading.setId(houseTradingOld.getId());
+                        basicTrading.setHouseId(houseId);
+                        basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicTrading, true);
+                    }
                 }
                 //完损度
                 jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_DAMAGED_DEGREE.getVar());
