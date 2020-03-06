@@ -151,7 +151,9 @@ public class DeclareRealtyLandCertService {
             DeclareRealtyLandCert select = new DeclareRealtyLandCert();
             select.setPlanDetailsId(planDetailsId);
             select.setAutoInitNumber(houseCert.getAutoInitNumber());
+            select.setEnable(DeclareTypeEnum.MasterData.getKey());
             List<DeclareRealtyLandCert> landCertList = declareRealtyLandCertDao.getDeclareRealtyLandCertList(select);
+            boolean yes = false;
             if (CollectionUtils.isNotEmpty(landCertList)) {
                 ListIterator<DeclareRealtyLandCert> declareRealtyLandCertListIterator = landCertList.listIterator();
                 while (declareRealtyLandCertListIterator.hasNext()) {
@@ -159,6 +161,7 @@ public class DeclareRealtyLandCertService {
                     DeclareBuildEngineeringAndEquipmentCenter query = new DeclareBuildEngineeringAndEquipmentCenter();
                     query.setLandId(realtyLandCert.getId());
                     query.setPlanDetailsId(realtyLandCert.getPlanDetailsId());
+                    query.setType(DeclareRealtyLandCert.class.getSimpleName());
                     List<DeclareBuildEngineeringAndEquipmentCenter> centerList = declareBuildEngineeringAndEquipmentCenterService.declareBuildEngineeringAndEquipmentCenterList(query);
                     if (CollectionUtils.isEmpty(centerList)) {
                         continue;
@@ -166,15 +169,24 @@ public class DeclareRealtyLandCertService {
                     Iterator<DeclareBuildEngineeringAndEquipmentCenter> iterator = centerList.iterator();
                     while (iterator.hasNext()) {
                         DeclareBuildEngineeringAndEquipmentCenter equipmentCenter = iterator.next();
-                        relatedMap.put(equipmentCenter, realtyLandCert);
+                        if (equipmentCenter.getHouseId() == null || equipmentCenter.getHouseId() == 0) {
+                            relatedMap.put(equipmentCenter, realtyLandCert);
+                        }
+                        if (equipmentCenter.getHouseId() != null && equipmentCenter.getHouseId() != 0) {
+                            yes = true ;
+                        }
                     }
                 }
+            }
+            if (yes){
+                relatedMap.clear();
+                declarePublicService.excelImportWriteErrorInfo(i, "此编号已经有匹配的土地证了,请修改编号再行匹配", stringBuilder);
+                continue;
             }
             if (relatedMap.isEmpty()) {
                 declarePublicService.excelImportWriteErrorInfo(i, "未找到匹配的土地证", stringBuilder);
                 continue;
             }
-
             Integer id = declareRealtyHouseCertDao.addDeclareRealtyHouseCert(houseCert);
             successCount++;
             Iterator<Map.Entry<DeclareBuildEngineeringAndEquipmentCenter, DeclareRealtyLandCert>> entryIterator = relatedMap.entrySet().iterator();
@@ -250,7 +262,7 @@ public class DeclareRealtyLandCertService {
                     declarePublicService.excelImportWriteErrorInfo(i, "编号重复", stringBuilder);
                     continue;
                 }
-                saveAndUpdateDeclareRealtyLandCert(realtyLandCert,true) ;
+                saveAndUpdateDeclareRealtyLandCert(realtyLandCert, true);
                 DeclareBuildEngineeringAndEquipmentCenter center = new DeclareBuildEngineeringAndEquipmentCenter();
                 center.setPlanDetailsId(declareRealtyLandCert.getPlanDetailsId());
                 center.setLandId(realtyLandCert.getId());

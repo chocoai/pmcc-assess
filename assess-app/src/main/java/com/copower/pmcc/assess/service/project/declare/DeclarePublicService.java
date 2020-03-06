@@ -669,7 +669,7 @@ public class DeclarePublicService {
             stringBuilder.append("列");
         }
         stringBuilder.append(StringUtils.isNotBlank(info) ? info : "校验出错");
-        stringBuilder.append("请检查!");
+        stringBuilder.append("请检查");
         if (required) {
             stringBuilder.append("(必填项)");
         }

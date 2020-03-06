@@ -279,7 +279,7 @@
     declareApprovalFun.houseFindData = function (id) {
         var item = $("#" + declareApprovalFun.houseConfig.table).bootstrapTable('getRowByUniqueId', id);
         $('#' + declareApprovalFun.houseConfig.box).find("#" + commonDeclareApprovalModel.config.house.handleId).remove();
-        $('#' + declareApprovalFun.houseConfig.box).find(".card-body").append(commonDeclareApprovalModel.house.getHtml());
+        $('#' + declareApprovalFun.houseConfig.box).find(".card-body").prepend(commonDeclareApprovalModel.house.getHtml());
         declareCommon.showHtmlMastInit($("#" + declareApprovalFun.houseConfig.frm), function (area) {
             declareCommon.initHouse(item, $("#" + declareApprovalFun.houseConfig.frm), [declareApprovalFun.houseConfig.fileId], null, false);
             $('#' + declareApprovalFun.houseConfig.box).modal("show");
@@ -298,7 +298,7 @@
                 declareCommon.getLandData(centerData.landId, function (data) {
                     if (declareCommon.isNotBlank(data)) {
                         $('#' + declareApprovalFun.houseConfig.son.declareRealtyLandCert.box).find("#" + commonDeclareApprovalModel.config.land.handleId).remove();
-                        $('#' + declareApprovalFun.houseConfig.son.declareRealtyLandCert.box).find(".card-body").append(commonDeclareApprovalModel.land.getHtml());
+                        $('#' + declareApprovalFun.houseConfig.son.declareRealtyLandCert.box).find(".card-body").prepend(commonDeclareApprovalModel.land.getHtml());
                         declareCommon.initLand(data, $("#" + declareApprovalFun.houseConfig.son.declareRealtyLandCert.frm), [declareCommon.config.house.landFileId], null, false);
                         $('#' + declareApprovalFun.houseConfig.son.declareRealtyLandCert.box).modal("show");
                     } else {
@@ -374,7 +374,7 @@
     declareApprovalFun.realtyRealEstatefindData = function (id) {
         var item = $("#" + declareApprovalFun.declareRealtyRealEstateCertConfig.table).bootstrapTable('getRowByUniqueId', id);
         $('#' + declareApprovalFun.declareRealtyRealEstateCertConfig.box).find("#" + commonDeclareApprovalModel.config.realEstateCert.handleId).remove();
-        $('#' + declareApprovalFun.declareRealtyRealEstateCertConfig.box).find(".card-body").append(commonDeclareApprovalModel.realEstateCert.getHtml());
+        $('#' + declareApprovalFun.declareRealtyRealEstateCertConfig.box).find(".card-body").prepend(commonDeclareApprovalModel.realEstateCert.getHtml());
         declareCommon.showHtmlMastInit($("#" + declareApprovalFun.declareRealtyRealEstateCertConfig.frm), function (area) {
             declareCommon.initDeclareRealty(item, $("#" + declareApprovalFun.declareRealtyRealEstateCertConfig.frm), [declareApprovalFun.declareRealtyRealEstateCertConfig.newFileId], null, false);
             $('#' + declareApprovalFun.declareRealtyRealEstateCertConfig.box).modal("show");
@@ -547,9 +547,9 @@
     declareApprovalFun.landFindData = function (id) {
         var item = $("#" + declareApprovalFun.landConfig.table).bootstrapTable('getRowByUniqueId', id);
         $('#' + declareApprovalFun.landConfig.box).find("#" + commonDeclareApprovalModel.config.land.handleId).remove();
-        $('#' + declareApprovalFun.landConfig.box).find(".card-body").append(commonDeclareApprovalModel.land.getHtml());
+        $('#' + declareApprovalFun.landConfig.box).find(".card-body").prepend(commonDeclareApprovalModel.land.getHtml());
         declareCommon.showHtmlMastInit($("#" + declareApprovalFun.landConfig.frm), function (area) {
-            declareCommon.initLand(item, $("#" + declareApprovalFun.landConfig.frm), [declareApprovalFun.landConfig.fileId], null);
+            declareCommon.initLand(item, $("#" + declareApprovalFun.landConfig.frm), [declareApprovalFun.landConfig.fileId], null,false);
             $('#' + declareApprovalFun.landConfig.box).modal("show");
         });
     };
@@ -566,6 +566,10 @@
 
                 str += '<button type="button" onclick="declareApprovalFun.landFindData(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="土地证">';
                 str += '土地证';
+                str += '</button>';
+
+                str += '<button type="button" onclick="declareApprovalFun.LanddeclareEconomicIndicators(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="经济指标">';
+                str += '经济指标';
                 str += '</button>';
 
                 str += '<div class="dropdown" style="display: inline;margin-left: 5px;">';
@@ -594,6 +598,30 @@
             }
         });
     };
+
+    //土地证 经济指标
+    declareApprovalFun.LanddeclareEconomicIndicators = function (id) {
+        var item = $("#" + declareApprovalFun.landConfig.table).bootstrapTable('getRowByUniqueId', id);
+        if (!declareCommon.isNotBlank(item.centerId)) {
+            notifyWarning("警告", "不合符调整后的数据约定,请联系管理员!");
+            return false;
+        }
+        var attribute = {readonly: "readonly", 'class': 'form-control'};
+        declareCommon.getDeclareBuildCenter(item.centerId, function (centerData) {
+            if (declareCommon.isNotBlank(centerData.indicatorId)) {//关联情况
+                economicIndicators.init({
+                    planDetailsId: declareCommon.getPlanDetailsId(),
+                    economicId: centerData.indicatorId,
+                    centerId: item.centerId,
+                    attribute: attribute
+                });
+            } else {
+                notifyWarning("警告", "经济指标无!");
+
+            }
+        });
+    };
+
     //土地证 建设工程规划许可证
     declareApprovalFun.LanddeclareBuildingPermitView = function (id) {
         var item = $("#" + declareApprovalFun.landConfig.table).bootstrapTable('getRowByUniqueId', id);
@@ -736,7 +764,7 @@
 <div id="boxDeclareRealtyHouseCert" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg" style="max-width: 65%;">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">房产证信息</h4>
@@ -748,7 +776,18 @@
                     <div class="row">
                         <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
                             <div class="card-body">
-
+                                <div class="row form-group">
+                                    <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
+                                                附件
+                                            </label>
+                                            <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
+                                                <div id="_declareRealtyHouseCertFileId"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -766,7 +805,7 @@
 <div id="boxSonDeclareRealtyLandCert" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg" style="max-width: 65%;">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">关联土地证信息</h4>
@@ -778,7 +817,18 @@
                     <div class="row">
                         <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
                             <div class="card-body">
-
+                                <div class="row form-group">
+                                    <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
+                                                附件
+                                            </label>
+                                            <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
+                                                <div id="_declareRealtyHouseCert_land_FileId"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -796,7 +846,7 @@
 <div id="boxDeclareRealtyRealEstateCert" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg" style="max-width: 65%;">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">不动产证信息</h4>
@@ -808,6 +858,18 @@
                     <div class="row">
                         <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
                             <div class="card-body">
+                                <div class="row form-group">
+                                    <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
+                                                附件
+                                            </label>
+                                            <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
+                                                <div id="_declareRealtyRealEstateCertNewFileId"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -825,7 +887,7 @@
 <div id="declareBuildingPermitRealtyRealBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg" style="max-width: 65%;">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">建设工程规划许可证</h4>
@@ -866,7 +928,7 @@
 <div id="declareLandUsePermitRealtyRealBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg" style="max-width: 65%;">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">建设用地规划许可证</h4>
@@ -908,7 +970,7 @@
      tabindex="-1"
      role="dialog"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg" style="max-width: 65%;">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">建筑工程施工许可证</h4>
@@ -949,7 +1011,7 @@
 <div id="declarePreSalePermitRealtyRealBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg" style="max-width: 65%;">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">商品房预售许可证</h4>
@@ -990,7 +1052,7 @@
 <div id="boxDeclareRealtyLandCert" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg" style="max-width: 65%;">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">土地证信息</h4>
@@ -1002,6 +1064,18 @@
                     <div class="row">
                         <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
                             <div class="card-body">
+                                <div class="row form-group">
+                                    <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
+                                                附件
+                                            </label>
+                                            <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
+                                                <div id="_declareRealtyLandCertFileId"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1019,7 +1093,7 @@
 <div id="declareBuildingPermitLandBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg" style="max-width: 65%;">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">建设工程规划许可证</h4>
@@ -1060,7 +1134,7 @@
 <div id="declareLandUsePermitLandBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg" style="max-width: 65%;">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">建设用地规划许可证</h4>
@@ -1105,7 +1179,7 @@
      tabindex="-1"
      role="dialog"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg" style="max-width: 65%;">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">建筑工程施工许可证</h4>
@@ -1149,7 +1223,7 @@
 <div id="declarePreSalePermitLandBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg" style="max-width: 65%;">
         <div class="modal-content">
 
             <div class="modal-header">
@@ -1197,7 +1271,7 @@
      tabindex="-1"
      role="dialog"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg" style="max-width: 65%;">
         <div class="modal-content">
 
             <div class="modal-header">

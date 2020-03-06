@@ -207,6 +207,7 @@
             <div class="modal-body">
                 <form id="frmDeclareRealtyLandCert" class="form-horizontal">
                     <input type="hidden" name="id">
+                    <input type="hidden" name="autoInitNumber">
                     <div class="row">
                         <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
 
@@ -266,6 +267,7 @@
                 <form  class="form-horizontal">
                     <input type="hidden" name="id">
                     <input type="hidden" name="centerId">
+                    <input type="hidden" name="autoInitNumber">
                     <div class="row">
                         <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
 
@@ -298,7 +300,9 @@
                 <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
                     关闭
                 </button>
-
+                <button type="button" class="btn btn-warning btn-sm" onclick="assessCommonLand.declareHouseRemove()">
+                    删除
+                </button>
                 <button type="button" class="btn btn-primary btn-sm"
                         onclick="assessCommonLand.saveHouseData();">
                     保存

@@ -79,7 +79,6 @@ public class DeclareRealtyHouseCertService {
     }
 
 
-
     /**
      * 功能描述: 导入土地证 并且和房产证关联
      *
@@ -148,7 +147,9 @@ public class DeclareRealtyHouseCertService {
             DeclareRealtyHouseCert select = new DeclareRealtyHouseCert();
             select.setPlanDetailsId(planDetailsId);
             select.setAutoInitNumber(landCert.getAutoInitNumber());
+            select.setEnable(DeclareTypeEnum.MasterData.getKey());
             List<DeclareRealtyHouseCert> houseCertList = declareRealtyHouseCertDao.getDeclareRealtyHouseCertList(select);
+            boolean yes = false ;
             if (CollectionUtils.isNotEmpty(houseCertList)) {
                 ListIterator<DeclareRealtyHouseCert> declareRealtyHouseCertListIterator = houseCertList.listIterator();
                 while (declareRealtyHouseCertListIterator.hasNext()) {
@@ -156,6 +157,7 @@ public class DeclareRealtyHouseCertService {
                     DeclareBuildEngineeringAndEquipmentCenter query = new DeclareBuildEngineeringAndEquipmentCenter();
                     query.setHouseId(declareRealtyHouseCert.getId());
                     query.setPlanDetailsId(declareRealtyHouseCert.getPlanDetailsId());
+                    query.setType(DeclareRealtyHouseCert.class.getSimpleName());
                     List<DeclareBuildEngineeringAndEquipmentCenter> centerList = declareBuildEngineeringAndEquipmentCenterService.declareBuildEngineeringAndEquipmentCenterList(query);
                     if (CollectionUtils.isEmpty(centerList)) {
                         continue;
@@ -163,9 +165,19 @@ public class DeclareRealtyHouseCertService {
                     Iterator<DeclareBuildEngineeringAndEquipmentCenter> iterator = centerList.iterator();
                     while (iterator.hasNext()) {
                         DeclareBuildEngineeringAndEquipmentCenter equipmentCenter = iterator.next();
-                        relatedMap.put(equipmentCenter, declareRealtyHouseCert);
+                        if (equipmentCenter.getLandId() != null && equipmentCenter.getLandId() != 0) {
+                            yes = true ;//此编号已经有匹配的房产证了 但是不能够匹配
+                        }
+                        if (equipmentCenter.getLandId() == null || equipmentCenter.getLandId() == 0) {
+                            relatedMap.put(equipmentCenter, declareRealtyHouseCert);
+                        }
                     }
                 }
+            }
+            if (yes){
+                relatedMap.clear();
+                declarePublicService.excelImportWriteErrorInfo(i, "此编号已经有匹配的房产证了,请修改编号再行匹配", stringBuilder);
+                continue;
             }
             if (relatedMap.isEmpty()) {
                 declarePublicService.excelImportWriteErrorInfo(i, "未找到匹配的房产证", stringBuilder);
@@ -242,12 +254,12 @@ public class DeclareRealtyHouseCertService {
                 realtyHouseCert.setCreator(commonService.thisUserAccount());
                 realtyHouseCert.setEnable(DeclareTypeEnum.MasterData.getKey());
 
-                int count = declarePublicService.getCountByPlanDetailsIdGetAutoInitNumberSize(realtyHouseCert.getPlanDetailsId(),realtyHouseCert.getAutoInitNumber());
+                int count = declarePublicService.getCountByPlanDetailsIdGetAutoInitNumberSize(realtyHouseCert.getPlanDetailsId(), realtyHouseCert.getAutoInitNumber());
                 if (count > 0) {
                     declarePublicService.excelImportWriteErrorInfo(i, "编号重复", stringBuilder);
                     continue;
                 }
-                saveAndUpdateDeclareRealtyHouseCert(realtyHouseCert,true) ;
+                saveAndUpdateDeclareRealtyHouseCert(realtyHouseCert, true);
                 DeclareBuildEngineeringAndEquipmentCenter center = new DeclareBuildEngineeringAndEquipmentCenter();
                 center.setPlanDetailsId(realtyHouseCert.getPlanDetailsId());
                 center.setHouseId(realtyHouseCert.getId());
