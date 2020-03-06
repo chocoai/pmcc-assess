@@ -96,24 +96,12 @@
                             <button type="button" id="cancel_btn" class="btn btn-default" onclick="window.close()">
                                 取消
                             </button>
-                            <c:choose>
-                                <c:when test="${processInsId == '0' || processInsId == null || processInsId == 0}">
-                                    <button type="button" id="draft_btn" class="btn btn-warning" style="margin-left: 10px;" onclick="projectApplyDraft();">
-                                        保存草稿
-                                    </button>
-                                    <button type="button" id="commit_btn" class="btn btn-success" style="margin-left: 10px;" onclick="projectApply(false);">
-                                        直接提交
-                                    </button>
-                                    <button type="button" id="approval_btn" class="btn btn-primary" style="margin-left: 10px;" onclick="projectApply(true);">
-                                        提交审批
-                                    </button>
-                                </c:when>
-                                <c:otherwise>
-                                    <button type="button" class="btn btn-primary" style="margin-left: 10px;" onclick="projectApply(true);">
-                                        提交审批
-                                    </button>
-                                </c:otherwise>
-                            </c:choose>
+                            <button type="button" id="draft_btn" class="btn btn-warning" style="margin-left: 10px;" onclick="projectApplyDraft();">
+                                保存草稿
+                            </button>
+                            <button type="button" id="commit_btn" class="btn btn-success" style="margin-left: 10px;" onclick="projectApply(false);">
+                                直接提交
+                            </button>
                         </div>
                     </div>
                     <c:if test="${processInsId ne '0'}">
@@ -153,12 +141,6 @@
     //保存草稿
     function projectApplyDraft() {
         var projectInfo = formParams(objProject.config.info.frm);//projectName
-        var html = "<span class='help-block' for='for'>" + "该字段为必填项" + "</span>";
-        if (!objProject.isNotBlank(projectInfo.projectName)) {
-            $("#" + objProject.config.info.frm).find("input[name='projectName']").after(html.replace(/for/g, "projectName"));
-            return false;
-        }
-
         var data = {};
         data.formData = JSON.stringify(objProject.getFormData());
         var url = "${pageContext.request.contextPath}/projectInfo/projectApplyDraft";

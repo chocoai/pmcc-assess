@@ -37,21 +37,20 @@
                                    value="${projectInfo.consignorVo.csEntrustmentUnit}">
                         </div>
                         <label class="col-sm-1 col-form-label">
-                            法定代表<span class="symbol required"></span>
+                            法定代表
                         </label>
                         <div class="col-sm-3">
                             <input type="text" name="csLegalRepresentative" placeholder="法定代表人"
-                                   class="form-control input-full" required="required"
+                                   class="form-control input-full"
                                    value="${projectInfo.consignorVo.csLegalRepresentative}">
                         </div>
                         <label class="col-sm-1 col-form-label">
-                            社会统一信用代码<span class="symbol required"></span>
+                            社会统一信用代码
                         </label>
                         <div class="col-sm-3">
                             <input type="text" name="csSociologyCode"
                                    value="${projectInfo.consignorVo.csSociologyCode}"
-                                   placeholder="社会统一信用代码" class="form-control input-full" name="number"
-                                   required="required">
+                                   placeholder="社会统一信用代码" class="form-control input-full" name="number">
                         </div>
                     </div>
                 </div>
@@ -60,27 +59,25 @@
                 <div class="col-md-12">
                     <div class="form-inline x-valid">
                         <label class="col-sm-1 col-form-label">
-                            经营范围<span class="symbol required"></span>
+                            经营范围
                         </label>
                         <div class="col-sm-3">
                             <input type="text" name="csScopeOperation"
-                                   placeholder="经营范围" class="form-control input-full" required="required"
+                                   placeholder="经营范围" class="form-control input-full"
                                    value="${projectInfo.consignorVo.csScopeOperation}">
                         </div>
                         <label class="col-sm-1 col-form-label">
-                            单位地址<span class="symbol required"></span>
+                            单位地址
                         </label>
                         <div class="col-sm-3">
-                            <input type="text" name="csAddress" placeholder="单位地址"
-                                   class="form-control input-full" required="required"
+                            <input type="text" name="csAddress" placeholder="单位地址" class="form-control input-full"
                                    value="${projectInfo.consignorVo.csAddress}">
                         </div>
                         <label class="col-sm-1 col-form-label">
-                            单位性质<span class="symbol required"></span>
+                            单位性质
                         </label>
                         <div class="col-sm-3">
-                            <select class="form-control input-full" name="csUnitProperties"
-                                    required>
+                            <select class="form-control input-full" name="csUnitProperties">
                                 <c:forEach items="${ProjectAFFILIATED}" var="item">
                                     <c:choose>
                                         <c:when test="${item.id == projectInfo.consignorVo.csUnitProperties}">
@@ -111,15 +108,14 @@
                                    required="required">
                         </div>
                         <label class="col-sm-1 col-form-label">
-                            身份证号<span class="symbol required"></span>
+                            身份证号
                         </label>
                         <div class="col-sm-3">
                             <input type="text" name="csIdcard" placeholder="身份证号"
-                                   value="${projectInfo.consignorVo.csIdcard}" class="form-control input-full"
-                                   required="required">
+                                   value="${projectInfo.consignorVo.csIdcard}" class="form-control input-full">
                         </div>
                         <label class="col-sm-1 col-form-label">
-                            住址<span class="symbol required"></span>
+                            住址
                         </label>
                         <div class="col-sm-3">
                             <input type="text" name="csAddress"

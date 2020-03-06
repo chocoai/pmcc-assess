@@ -14,11 +14,10 @@
                                value="${projectInfo.projectName}" class="form-control input-full">
                     </div>
                     <label class="col-sm-1 col-form-label">
-                        紧急程度<span class="symbol required"></span>
+                        紧急程度
                     </label>
                     <div class="col-sm-3 ">
-                        <select name="urgency" class="form-control input-full search-select select2 urgency"
-                                required="required">
+                        <select name="urgency" class="form-control input-full search-select select2 urgency">
                         </select>
                     </div>
                 </div>
@@ -39,7 +38,7 @@
             <div class="col-md-12">
                 <div class="form-inline">
                     <label class="col-sm-1 col-form-label">
-                        委托目的<span class="symbol required"></span>
+                        委托目的
                     </label>
                     <div class="col-sm-3 x-valid">
                         <input type="text" name="entrustPurposeName" class="form-control input-full" placeholder="委托目的">

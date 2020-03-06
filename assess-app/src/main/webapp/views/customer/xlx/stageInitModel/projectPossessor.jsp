@@ -23,27 +23,27 @@
                 <div class="col-md-12">
                     <div class="form-inline x-valid">
                         <label class="col-sm-1 col-form-label">
-                            单位<span class="symbol required"></span>
+                            单位
                         </label>
                         <div class="col-sm-3">
                             <input type="text" name="pEntrustmentUnit"
-                                   class="form-control input-full" required="required" placeholder="单位"
+                                   class="form-control input-full"  placeholder="单位"
                                    value="${projectInfo.possessorVo.pEntrustmentUnit}">
                         </div>
                         <label class="col-sm-1 col-form-label">
-                            法定代表<span class="symbol required"></span>
+                            法定代表
                         </label>
                         <div class="col-sm-3">
                             <input type="text" name="pLegalRepresentative"
-                                   value="${projectInfo.possessorVo.pLegalRepresentative}" class="form-control input-full" required="required">
+                                   value="${projectInfo.possessorVo.pLegalRepresentative}" class="form-control input-full">
                         </div>
                         <label class="col-sm-1 col-form-label">
-                            社会统一信用代码<span class="symbol required"></span>
+                            社会统一信用代码
                         </label>
                         <div class="col-sm-3">
                             <input type="text" name="pSociologyCode"
                                    value="${projectInfo.possessorVo.pSociologyCode}"
-                                   class="form-control input-full"  name="number" required="required">
+                                   class="form-control input-full"  name="number">
                         </div>
                     </div>
                 </div>
@@ -52,15 +52,15 @@
                 <div class="col-md-12">
                     <div class="form-inline x-valid">
                         <label class="col-sm-1 col-form-label">
-                            经营范围<span class="symbol required"></span>
+                            经营范围
                         </label>
                         <div class="col-sm-3">
                             <input type="text" name="pScopeOperation"
                                    value="${projectInfo.possessorVo.pScopeOperation}"
-                                   class="form-control input-full" required="required">
+                                   class="form-control input-full">
                         </div>
                         <label class="col-sm-1 col-form-label">
-                            单位地址<span class="symbol required"></span>
+                            单位地址
                         </label>
                         <div class="col-sm-3">
                             <input type="text" name="pAddress"
@@ -68,11 +68,10 @@
                                    required="required">
                         </div>
                         <label class="col-sm-1 col-form-label">
-                            单位性质<span class="symbol required"></span>
+                            单位性质
                         </label>
                         <div class="col-sm-3">
-                            <select class="form-control input-full" name="pUnitProperties"
-                                    required>
+                            <select class="form-control input-full" name="pUnitProperties">
                                 <option value="">请选择</option>
                                 <c:forEach items="${ProjectAFFILIATED}" var="item">
                                     <c:choose>
@@ -105,19 +104,16 @@
                                    required="required">
                         </div>
                         <label class="col-sm-1 col-form-label">
-                            身份证号<span class="symbol required"></span>
+                            身份证号
                         </label>
                         <div class="col-sm-3">
-                            <input type="text" name="pIdcard"
-                                   value="${projectInfo.possessorVo.pIdcard}" class="form-control input-full"
-                                   required="required">
+                            <input type="text" name="pIdcard" value="${projectInfo.possessorVo.pIdcard}" class="form-control input-full">
                         </div>
                         <label class="col-sm-1 col-form-label">
-                            住址<span class="symbol required"></span>
+                            住址
                         </label>
                         <div class="col-sm-3">
-                            <input type="text" name="pAddress"
-                                   value="${projectInfo.possessorVo.pAddress}" class="form-control input-full">
+                            <input type="text" name="pAddress" value="${projectInfo.possessorVo.pAddress}" class="form-control input-full">
                         </div>
                     </div>
                 </div>

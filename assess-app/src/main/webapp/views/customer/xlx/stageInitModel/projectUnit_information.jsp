@@ -28,15 +28,13 @@
                             </div>
                         </div>
                         <label class="col-sm-1 col-form-label">
-                            法定代表人<span class="symbol required"></span>
+                            法定代表人
                         </label>
                         <div class="col-sm-3">
-                            <input type="text" name="uLegalRepresentative"
-                                   value="${projectInfo.unitInformationVo.uLegalRepresentative}"
-                                   class="form-control input-full" required="required">
+                            <input type="text" name="uLegalRepresentative" value="${projectInfo.unitInformationVo.uLegalRepresentative}" class="form-control input-full" >
                         </div>
                         <label class="col-sm-1 col-form-label">
-                            证照号<span class="symbol required"></span>
+                            证照号
                         </label>
                         <div class="col-sm-3">
                             <input type="text" name="uCertificateNumber"
@@ -70,20 +68,20 @@
                             </select>
                         </div>
                         <label class="col-sm-1 col-form-label">
-                            经营范围<span class="symbol required"></span>
+                            经营范围
                         </label>
                         <div class="col-sm-3">
                             <input type="text" name="uScopeOperation"
                                    value="${projectInfo.unitInformationVo.uScopeOperation}"
-                                   class="form-control input-full" required="required">
+                                   class="form-control input-full">
                         </div>
                         <label class="col-sm-1 col-form-label">
-                            地址<span class="symbol required"></span>
+                            地址
                         </label>
                         <div class="col-sm-3">
                             <input type="text" name="uAddress"
                                    value="${projectInfo.unitInformationVo.uAddress}"
-                                   class="form-control input-full" required="required">
+                                   class="form-control input-full">
                         </div>
                     </div>
                 </div>
@@ -94,10 +92,10 @@
                      style="display: ${empty projectInfo.unitInformationVo.businessType?'none':'block'}">
                     <div class="form-inline x-valid">
                         <label class="col-sm-1 col-form-label">
-                            业务类型<span class="symbol required"></span>
+                            业务类型
                         </label>
                         <div class="col-sm-3">
-                            <select name="businessType" required="required" class="form-control input-full businessType">
+                            <select name="businessType" class="form-control input-full businessType">
                                 <c:if test="${projectInfo.unitInformationVo.businessType != null}">
                                     <option value="${projectInfo.unitInformationVo.businessType}"
                                             selected="selected">${projectInfo.unitInformationVo.businessType}</option>
@@ -105,10 +103,10 @@
                             </select>
                         </div>
                         <label class="col-sm-1 col-form-label">
-                            评估类型<span class="symbol required"></span>
+                            评估类型
                         </label>
                         <div class="col-sm-3">
-                            <select name="assessType" required="required" class="form-control input-full  assessType">
+                            <select name="assessType" class="form-control input-full  assessType">
                                 <c:if test="${projectInfo.unitInformationVo.assessType != null}">
                                     <option value="${projectInfo.unitInformationVo.assessType}"
                                             selected="selected">${projectInfo.unitInformationVo.assessType}</option>
