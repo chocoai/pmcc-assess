@@ -187,10 +187,10 @@ public class BasicApplyBatchService {
         BasicApplyBatch applyBatch = null;
         //先清除已生成的数据
         BasicApplyBatch where = new BasicApplyBatch();
-        where.setEstateId(estateId);
+        where.setCaseEstateId(estateId);
         where.setBisCase(true);
         BasicApplyBatch basicApplyBatch = basicApplyBatchDao.getBasicApplyBatch(where);
-
+        if (basicApplyBatch == null) return null;
         if (basicApplyBatch != null && DateUtils.diffMinute(DateUtils.now(), basicApplyBatch.getGmtCreated()) > 30) {
             List<BasicApplyBatchDetail> applyBatchDetailList = basicApplyBatchDetailService.getBasicApplyBatchDetailByApplyBatchId(basicApplyBatch.getId());
             if (CollectionUtils.isNotEmpty(applyBatchDetailList))
@@ -309,6 +309,7 @@ public class BasicApplyBatchService {
         if (existEstateCase) {
             BasicEstate latestVersionEstate = basicEstateDao.getLatestVersionEstate(province, city, estateName);
             if (latestVersionEstate != null) {
+                basicApplyBatch.setBisCase(true);
                 basicApplyBatch.setClassify(latestVersionEstate.getClassify());
                 basicApplyBatch.setType(latestVersionEstate.getType());
                 basicApplyBatch.setCaseEstateId(latestVersionEstate.getId());
@@ -405,6 +406,7 @@ public class BasicApplyBatchService {
         }
         if (applyBatch != null) {
             deleteBatchAllById(applyBatch.getId());
+            basicApplyBatchDao.deleteInfo(applyBatch.getId());
         }
     }
 
@@ -422,7 +424,6 @@ public class BasicApplyBatchService {
                 basicApplyBatchDetailService.deleteBasicApplyBatchDetail(basicApplyBatchDetail.getId());
             }
         }
-        basicApplyBatchDao.deleteInfo(basicApplyBatchId);
     }
 
     public void addBasicApplyBatch(BasicApplyBatch applyBatch) {
