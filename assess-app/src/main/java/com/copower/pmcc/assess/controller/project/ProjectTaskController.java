@@ -180,11 +180,11 @@ public class ProjectTaskController extends BaseController {
         modelAndView.addObject("viewUrl", viewUrl);
         modelAndView.addObject("projectId", projectPlanDetails.getProjectId());
         modelAndView.addObject("projectFlog", "1");
-        if (modelAndView.getModel().containsKey(activityId)) {
-            setCheckParams(boxId, (Integer) modelAndView.getModel().get(activityId), projectPlanDetails.getProcessInsId(), projectPlanDetails.getProjectId(), modelAndView);
-        } else {
-            setCheckParams(boxId, null, projectPlanDetails.getProcessInsId(), projectPlanDetails.getProjectId(), modelAndView);
-        }
+//        if (modelAndView.getModel().containsKey(activityId)) {
+//            setCheckParams(boxId, (Integer) modelAndView.getModel().get(activityId), projectPlanDetails.getProcessInsId(), projectPlanDetails.getProjectId(), modelAndView);
+//        } else {
+//            setCheckParams(boxId, null, projectPlanDetails.getProcessInsId(), projectPlanDetails.getProjectId(), modelAndView);
+//        }
         return modelAndView;
     }
 
@@ -284,11 +284,11 @@ public class ProjectTaskController extends BaseController {
                 }
             }
         }
-        if (modelAndView.getModel().containsKey(activityId)) {
-            setCheckParams(boxId, (Integer) modelAndView.getModel().get(activityId), projectPlanDetails.getProcessInsId(), projectPlanDetails.getProjectId(), modelAndView);
-        } else {
-            setCheckParams(boxId, null, projectPlanDetails.getProcessInsId(), projectPlanDetails.getProjectId(), modelAndView);
-        }
+//        if (modelAndView.getModel().containsKey(activityId)) {
+//            setCheckParams(boxId, (Integer) modelAndView.getModel().get(activityId), projectPlanDetails.getProcessInsId(), projectPlanDetails.getProjectId(), modelAndView);
+//        } else {
+//            setCheckParams(boxId, null, projectPlanDetails.getProcessInsId(), projectPlanDetails.getProjectId(), modelAndView);
+//        }
         return modelAndView;
     }
 

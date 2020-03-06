@@ -401,7 +401,7 @@
                 }
             });
             cols.push({
-                field: 'opt', title: '操作', formatter: function (value, row, index) {
+                field: 'opt', title: '操作', width: '7%', formatter: function (value, row, index) {
                     var str = "";
                     if (row.canReplay) {
                         str += "<button type='button' onclick='projectStagePlan.replyTask(" + row.id + ")' style='margin-left: 5px;' data-placement='top' data-original-title='重启' class='btn btn-xs btn-primary tooltips'  ><i class='fa fa-reply fa-white'></i></button>";

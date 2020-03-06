@@ -243,7 +243,7 @@
             }
         });
         cols.push({
-            field: 'id', title: '操作', formatter: function (value, row, index) {
+            field: 'id', title: '操作', width: '7%', formatter: function (value, row, index) {
                 var str = "";
                 if (row.projectStatus) {
                     if (row.projectStatus == '草稿') {
