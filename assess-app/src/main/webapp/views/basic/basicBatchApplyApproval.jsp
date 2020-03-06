@@ -21,29 +21,6 @@
                     <div class=" card-body">
                         <div class="row col-md-12">
                             <div class="col-md-8">
-                                <button type="button" class="btn btn-sm btn-primary baseTool" style="margin-left: 5px;"
-                                        onclick=" batchTreeTool.expandAll(true);">全部展开
-                                </button>
-                                <button type="button" class="btn btn-sm btn-primary baseTool" style="margin-left: 5px;"
-                                        onclick=" batchTreeTool.expandAll(false);">全部收起
-                                </button>
-                                <span id="btnGroup">
-                                                <button type="button" class="btn btn-sm btn-success baseTool"
-                                                        style="margin-left: 5px;"
-                                                        onclick="batchTreeTool.showAddModal()">新增</button>
-                                            <button type="button" class="btn btn-sm btn-warning"
-                                                    style="margin-left: 5px;"
-                                                    onclick=" batchTreeTool.deleteDetail();">删除</button>
-                                            <button type="button" class="btn btn-sm btn-primary fillInformation"
-                                                    style="margin-left: 5px;"
-                                                    onclick="batchTreeTool.fillInformation();">填写信息</button>
-                                            <button type="button" class="btn btn-sm btn-info copy"
-                                                    style="margin-left: 5px;"
-                                                    onclick="batchTreeTool.copy();">复制</button>
-                                            <button type="button" class="btn btn-sm btn-warning paste"
-                                                    style="margin-left: 5px;"
-                                                    onclick="batchTreeTool.paste();">粘贴</button>
-                                            </span>
                                 <ul id="ztree" class="ztree"></ul>
                             </div>
                             <div class="col-md-4">
@@ -59,7 +36,7 @@
                                                 大类<span class="symbol required"></span>
                                             </label>
                                             <div class="col-xs-10  col-sm-10  col-md-10  col-lg-10">
-                                                <select class="form-control input-full" name="classify" ${applyBatch.caseEstateId > 0?'disabled="disabled"':''} onchange="formClassifyChange();" required>
+                                                <select class="form-control input-full" name="classify" disabled="disabled" onchange="formClassifyChange();" required>
                                                     <option value="">-请选择-</option>
                                                     <c:if test="${not empty formClassifyList}">
                                                         <c:forEach var="item" items="${formClassifyList}">
@@ -78,7 +55,7 @@
                                                 类型<span class="symbol required"></span>
                                             </label>
                                             <div class="col-xs-10  col-sm-10  col-md-10  col-lg-10">
-                                                <select class="form-control input-full" name="type" ${applyBatch.caseEstateId > 0?'disabled="disabled"':''}
+                                                <select class="form-control input-full" name="type" disabled="disabled"
                                                         onchange="saveBasicApplyBatch();" required>
                                                     <option value="">-请选择-</option>
                                                     <c:if test="${not empty examineFormTypeList}">

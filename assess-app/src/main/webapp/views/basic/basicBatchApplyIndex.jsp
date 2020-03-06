@@ -56,7 +56,7 @@
                                         <button type="button" class="btn btn-sm btn-primary baseTool" style="margin-left: 5px;"
                                                 onclick=" batchTreeTool.expandAll(false);">全部收起
                                         </button>
-                                        <span id="btnGroup">
+                                        <span id="btnGroup" style="display: none;">
                                                 <button type="button" class="btn btn-sm btn-success baseTool"
                                                         style="margin-left: 5px;"
                                                         onclick="batchTreeTool.showAddModal()">新增</button>

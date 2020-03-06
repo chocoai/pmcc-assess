@@ -85,11 +85,13 @@ public class BasicApplyBatchEvent extends BaseProcessEvent {
                             entityAbstract.copyBasicEntity(latestVersionEstate.getId(), null, true);
                             basicEstate = (BasicEstate) entityAbstract.copyBasicEntityIgnore(batchDetail.getTableId(), latestVersionEstate.getId(), true, ignoreList);
                             basicEstate.setVersion(latestVersionEstate.getVersion() + 1);
+                            basicEstate.setCreator(batchDetail.getCreator());
+                            basicEstate.setGmtCreated(DateUtils.now());
                         } else {
                             basicEstate.setVersion(1);
                         }
                         basicEstate.setBisCase(true);
-                        basicEstateDao.addBasicEstate(basicEstate);
+                        basicEstateDao.updateBasicEstate(basicEstate,false);
                         break;
                     case BUILDING:
                         BasicBuilding basicBuilding = basicBuildingDao.getBasicBuildingById(batchDetail.getTableId());
@@ -99,12 +101,14 @@ public class BasicApplyBatchEvent extends BaseProcessEvent {
                                 entityAbstract.copyBasicEntity(latestVersionBuilding.getId(), null, true);
                                 basicBuilding = (BasicBuilding) entityAbstract.copyBasicEntityIgnore(batchDetail.getTableId(), latestVersionBuilding.getId(), true, ignoreList);
                                 basicBuilding.setVersion(latestVersionBuilding.getVersion() + 1);
+                                basicBuilding.setCreator(batchDetail.getCreator());
+                                basicBuilding.setGmtCreated(DateUtils.now());
                             }
                         } else {
                             basicBuilding.setVersion(1);
                         }
                         basicBuilding.setBisCase(true);
-                        basicBuildingDao.addBasicBuilding(basicBuilding);
+                        basicBuildingDao.updateBasicBuilding(basicBuilding,false);
                         break;
                     case UNIT:
                         BasicUnit basicUnit = basicUnitDao.getBasicUnitById(batchDetail.getTableId());
@@ -114,12 +118,14 @@ public class BasicApplyBatchEvent extends BaseProcessEvent {
                                 entityAbstract.copyBasicEntity(latestVersionUnit.getId(), null, true);
                                 basicUnit = (BasicUnit) entityAbstract.copyBasicEntityIgnore(batchDetail.getTableId(), latestVersionUnit.getId(), true, ignoreList);
                                 basicUnit.setVersion(latestVersionUnit.getVersion() + 1);
+                                basicUnit.setCreator(batchDetail.getCreator());
+                                basicUnit.setGmtCreated(DateUtils.now());
                             }
                         } else {
                             basicUnit.setVersion(1);
                         }
                         basicUnit.setBisCase(true);
-                        basicUnitDao.addBasicUnit(basicUnit);
+                        basicUnitDao.updateBasicUnit(basicUnit,false);
                         break;
                     case HOUSE:
                         BasicHouse basicHouse = basicHouseDao.getBasicHouseById(batchDetail.getTableId());
@@ -129,12 +135,14 @@ public class BasicApplyBatchEvent extends BaseProcessEvent {
                                 entityAbstract.copyBasicEntity(latestVersionHouse.getId(), null, true);
                                 basicHouse = (BasicHouse) entityAbstract.copyBasicEntityIgnore(batchDetail.getTableId(), latestVersionHouse.getId(), true, ignoreList);
                                 basicHouse.setVersion(latestVersionHouse.getVersion() + 1);
+                                basicHouse.setCreator(batchDetail.getCreator());
+                                basicHouse.setGmtCreated(DateUtils.now());
                             }
                         } else {
                             basicHouse.setVersion(1);
                         }
                         basicHouse.setBisCase(true);
-                        basicHouseDao.addBasicHouse(basicHouse);
+                        basicHouseDao.updateBasicHouse(basicHouse,false);
                         break;
                 }
             }
