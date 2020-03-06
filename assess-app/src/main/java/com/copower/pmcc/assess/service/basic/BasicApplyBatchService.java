@@ -193,7 +193,8 @@ public class BasicApplyBatchService {
 
         if (basicApplyBatch != null && DateUtils.diffMinute(DateUtils.now(), basicApplyBatch.getGmtCreated()) > 30) {
             List<BasicApplyBatchDetail> applyBatchDetailList = basicApplyBatchDetailService.getBasicApplyBatchDetailByApplyBatchId(basicApplyBatch.getId());
-            if (CollectionUtils.isNotEmpty(applyBatchDetailList)) applyBatchDetailList.forEach(o -> basicApplyBatchDetailDao.deleteInfo(o.getId()));
+            if (CollectionUtils.isNotEmpty(applyBatchDetailList))
+                applyBatchDetailList.forEach(o -> basicApplyBatchDetailDao.deleteInfo(o.getId()));
             basicApplyBatchDao.deleteInfo(basicApplyBatch.getId());
 
             applyBatch = new BasicApplyBatch();
@@ -266,8 +267,8 @@ public class BasicApplyBatchService {
                     }
                 }
             }
-        }else{
-            applyBatch=basicApplyBatch;
+        } else {
+            applyBatch = basicApplyBatch;
         }
 
         List<ZtreeDto> list = Lists.newArrayList();
@@ -403,14 +404,25 @@ public class BasicApplyBatchService {
             });
         }
         if (applyBatch != null) {
-            List<BasicApplyBatchDetail> batchDetailList = basicApplyBatchDetailService.getBasicApplyBatchDetailByApplyBatchId(applyBatch.getId());
-            if (CollectionUtils.isNotEmpty(batchDetailList)) {
-                for (BasicApplyBatchDetail basicApplyBatchDetail : batchDetailList) {
-                    basicApplyBatchDetailService.deleteBasicApplyBatchDetail(basicApplyBatchDetail.getId());
-                }
-            }
-            basicApplyBatchDao.deleteInfo(applyBatch.getId());
+            deleteBatchAllById(applyBatch.getId());
         }
+    }
+
+    /**
+     * 删除批量树结构信息
+     *
+     * @param basicApplyBatchId
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteBatchAllById(Integer basicApplyBatchId) throws Exception {
+        if (basicApplyBatchId == null) return;
+        List<BasicApplyBatchDetail> batchDetailList = basicApplyBatchDetailService.getBasicApplyBatchDetailByApplyBatchId(basicApplyBatchId);
+        if (CollectionUtils.isNotEmpty(batchDetailList)) {
+            for (BasicApplyBatchDetail basicApplyBatchDetail : batchDetailList) {
+                basicApplyBatchDetailService.deleteBasicApplyBatchDetail(basicApplyBatchDetail.getId());
+            }
+        }
+        basicApplyBatchDao.deleteInfo(basicApplyBatchId);
     }
 
     public void addBasicApplyBatch(BasicApplyBatch applyBatch) {
@@ -426,8 +438,9 @@ public class BasicApplyBatchService {
      */
     @Transactional(rollbackFor = Exception.class)
     public BasicApplyBatch initBasicApplyBatchInfo(BasicApplyBatch basicApplyBatch) throws Exception {
+        if (basicApplyBatch == null) return null;
         //1.根据不同情况初始化不同的信息结构 2.初始化之前需先将原初始化信息删除
-        deleteBatchByPlanDetailsId(basicApplyBatch.getPlanDetailsId());
+        deleteBatchAllById(basicApplyBatch.getId());
         if (basicApplyBatch.getClassify() == null) return basicApplyBatch;
         BaseDataDic classifyDataDic = baseDataDicService.getCacheDataDicById(basicApplyBatch.getClassify());
         //楼盘

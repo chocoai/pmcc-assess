@@ -536,6 +536,76 @@ public class BasicHouseExample {
             return (Criteria) this;
         }
 
+        public Criteria andFullNameIsNull() {
+            addCriterion("full_name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFullNameIsNotNull() {
+            addCriterion("full_name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFullNameEqualTo(String value) {
+            addCriterion("full_name =", value, "fullName");
+            return (Criteria) this;
+        }
+
+        public Criteria andFullNameNotEqualTo(String value) {
+            addCriterion("full_name <>", value, "fullName");
+            return (Criteria) this;
+        }
+
+        public Criteria andFullNameGreaterThan(String value) {
+            addCriterion("full_name >", value, "fullName");
+            return (Criteria) this;
+        }
+
+        public Criteria andFullNameGreaterThanOrEqualTo(String value) {
+            addCriterion("full_name >=", value, "fullName");
+            return (Criteria) this;
+        }
+
+        public Criteria andFullNameLessThan(String value) {
+            addCriterion("full_name <", value, "fullName");
+            return (Criteria) this;
+        }
+
+        public Criteria andFullNameLessThanOrEqualTo(String value) {
+            addCriterion("full_name <=", value, "fullName");
+            return (Criteria) this;
+        }
+
+        public Criteria andFullNameLike(String value) {
+            addCriterion("full_name like", value, "fullName");
+            return (Criteria) this;
+        }
+
+        public Criteria andFullNameNotLike(String value) {
+            addCriterion("full_name not like", value, "fullName");
+            return (Criteria) this;
+        }
+
+        public Criteria andFullNameIn(List<String> values) {
+            addCriterion("full_name in", values, "fullName");
+            return (Criteria) this;
+        }
+
+        public Criteria andFullNameNotIn(List<String> values) {
+            addCriterion("full_name not in", values, "fullName");
+            return (Criteria) this;
+        }
+
+        public Criteria andFullNameBetween(String value1, String value2) {
+            addCriterion("full_name between", value1, value2, "fullName");
+            return (Criteria) this;
+        }
+
+        public Criteria andFullNameNotBetween(String value1, String value2) {
+            addCriterion("full_name not between", value1, value2, "fullName");
+            return (Criteria) this;
+        }
+
         public Criteria andFloorIsNull() {
             addCriterion("floor is null");
             return (Criteria) this;

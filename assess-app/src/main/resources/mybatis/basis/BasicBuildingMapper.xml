@@ -10,6 +10,7 @@
     <result column="industry_use_year" property="industryUseYear" jdbcType="INTEGER" />
     <result column="building_number" property="buildingNumber" jdbcType="VARCHAR" />
     <result column="building_name" property="buildingName" jdbcType="VARCHAR" />
+    <result column="full_name" property="fullName" jdbcType="VARCHAR" />
     <result column="floor_count" property="floorCount" jdbcType="VARCHAR" />
     <result column="location" property="location" jdbcType="VARCHAR" />
     <result column="builder" property="builder" jdbcType="INTEGER" />
@@ -122,15 +123,16 @@
   </sql>
   <sql id="Base_Column_List" >
     id, apply_id, estate_id, quote_id, residence_use_year, industry_use_year, building_number, 
-    building_name, floor_count, location, builder, builder_name, property, property_name, 
-    unit_interval, property_fee, facilities_use_fee, building_height, building_area, 
-    cover_an_area, property_type, property_category, open_time, room_time, completed_time_type, 
-    be_completed_time, floor_height, diameter_depth, land_use_year, net_height, building_structure_type, 
-    building_structure_category, first_floor, max_floor, in_jacket_area, use_area, construction_quality, 
-    appearance_style, appearance_new_and_old, between_distance, between_distance_description, 
-    v_structura, v_specifications, v_structural_construction, v_basic_practice, v_structural_practice, 
-    property_social_prestige, property_company_nature, map_id, remark, display_case_id, 
-    relevance_id, version, bis_case, bis_enable, bis_delete, creator, gmt_created, gmt_modified
+    building_name, full_name, floor_count, location, builder, builder_name, property, 
+    property_name, unit_interval, property_fee, facilities_use_fee, building_height, 
+    building_area, cover_an_area, property_type, property_category, open_time, room_time, 
+    completed_time_type, be_completed_time, floor_height, diameter_depth, land_use_year, 
+    net_height, building_structure_type, building_structure_category, first_floor, max_floor, 
+    in_jacket_area, use_area, construction_quality, appearance_style, appearance_new_and_old, 
+    between_distance, between_distance_description, v_structura, v_specifications, v_structural_construction, 
+    v_basic_practice, v_structural_practice, property_social_prestige, property_company_nature, 
+    map_id, remark, display_case_id, relevance_id, version, bis_case, bis_enable, bis_delete, 
+    creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicBuildingExample" >
     select
@@ -168,18 +170,18 @@
     </selectKey>
     insert into tb_basic_building (apply_id, estate_id, quote_id, 
       residence_use_year, industry_use_year, building_number, 
-      building_name, floor_count, location, 
-      builder, builder_name, property, 
-      property_name, unit_interval, property_fee, 
-      facilities_use_fee, building_height, building_area, 
-      cover_an_area, property_type, property_category, 
-      open_time, room_time, completed_time_type, 
-      be_completed_time, floor_height, diameter_depth, 
-      land_use_year, net_height, building_structure_type, 
-      building_structure_category, first_floor, 
-      max_floor, in_jacket_area, use_area, 
-      construction_quality, appearance_style, appearance_new_and_old, 
-      between_distance, between_distance_description, 
+      building_name, full_name, floor_count, 
+      location, builder, builder_name, 
+      property, property_name, unit_interval, 
+      property_fee, facilities_use_fee, building_height, 
+      building_area, cover_an_area, property_type, 
+      property_category, open_time, room_time, 
+      completed_time_type, be_completed_time, floor_height, 
+      diameter_depth, land_use_year, net_height, 
+      building_structure_type, building_structure_category, 
+      first_floor, max_floor, in_jacket_area, 
+      use_area, construction_quality, appearance_style, 
+      appearance_new_and_old, between_distance, between_distance_description, 
       v_structura, v_specifications, v_structural_construction, 
       v_basic_practice, v_structural_practice, property_social_prestige, 
       property_company_nature, map_id, remark, 
@@ -189,18 +191,18 @@
       )
     values (#{applyId,jdbcType=INTEGER}, #{estateId,jdbcType=INTEGER}, #{quoteId,jdbcType=INTEGER}, 
       #{residenceUseYear,jdbcType=INTEGER}, #{industryUseYear,jdbcType=INTEGER}, #{buildingNumber,jdbcType=VARCHAR}, 
-      #{buildingName,jdbcType=VARCHAR}, #{floorCount,jdbcType=VARCHAR}, #{location,jdbcType=VARCHAR}, 
-      #{builder,jdbcType=INTEGER}, #{builderName,jdbcType=VARCHAR}, #{property,jdbcType=INTEGER}, 
-      #{propertyName,jdbcType=VARCHAR}, #{unitInterval,jdbcType=VARCHAR}, #{propertyFee,jdbcType=DECIMAL}, 
-      #{facilitiesUseFee,jdbcType=DECIMAL}, #{buildingHeight,jdbcType=VARCHAR}, #{buildingArea,jdbcType=DECIMAL}, 
-      #{coverAnArea,jdbcType=DECIMAL}, #{propertyType,jdbcType=INTEGER}, #{propertyCategory,jdbcType=INTEGER}, 
-      #{openTime,jdbcType=TIMESTAMP}, #{roomTime,jdbcType=TIMESTAMP}, #{completedTimeType,jdbcType=INTEGER}, 
-      #{beCompletedTime,jdbcType=TIMESTAMP}, #{floorHeight,jdbcType=VARCHAR}, #{diameterDepth,jdbcType=DECIMAL}, 
-      #{landUseYear,jdbcType=DECIMAL}, #{netHeight,jdbcType=DECIMAL}, #{buildingStructureType,jdbcType=INTEGER}, 
-      #{buildingStructureCategory,jdbcType=INTEGER}, #{firstFloor,jdbcType=INTEGER}, 
-      #{maxFloor,jdbcType=INTEGER}, #{inJacketArea,jdbcType=VARCHAR}, #{useArea,jdbcType=VARCHAR}, 
-      #{constructionQuality,jdbcType=INTEGER}, #{appearanceStyle,jdbcType=INTEGER}, #{appearanceNewAndOld,jdbcType=INTEGER}, 
-      #{betweenDistance,jdbcType=INTEGER}, #{betweenDistanceDescription,jdbcType=VARCHAR}, 
+      #{buildingName,jdbcType=VARCHAR}, #{fullName,jdbcType=VARCHAR}, #{floorCount,jdbcType=VARCHAR}, 
+      #{location,jdbcType=VARCHAR}, #{builder,jdbcType=INTEGER}, #{builderName,jdbcType=VARCHAR}, 
+      #{property,jdbcType=INTEGER}, #{propertyName,jdbcType=VARCHAR}, #{unitInterval,jdbcType=VARCHAR}, 
+      #{propertyFee,jdbcType=DECIMAL}, #{facilitiesUseFee,jdbcType=DECIMAL}, #{buildingHeight,jdbcType=VARCHAR}, 
+      #{buildingArea,jdbcType=DECIMAL}, #{coverAnArea,jdbcType=DECIMAL}, #{propertyType,jdbcType=INTEGER}, 
+      #{propertyCategory,jdbcType=INTEGER}, #{openTime,jdbcType=TIMESTAMP}, #{roomTime,jdbcType=TIMESTAMP}, 
+      #{completedTimeType,jdbcType=INTEGER}, #{beCompletedTime,jdbcType=TIMESTAMP}, #{floorHeight,jdbcType=VARCHAR}, 
+      #{diameterDepth,jdbcType=DECIMAL}, #{landUseYear,jdbcType=DECIMAL}, #{netHeight,jdbcType=DECIMAL}, 
+      #{buildingStructureType,jdbcType=INTEGER}, #{buildingStructureCategory,jdbcType=INTEGER}, 
+      #{firstFloor,jdbcType=INTEGER}, #{maxFloor,jdbcType=INTEGER}, #{inJacketArea,jdbcType=VARCHAR}, 
+      #{useArea,jdbcType=VARCHAR}, #{constructionQuality,jdbcType=INTEGER}, #{appearanceStyle,jdbcType=INTEGER}, 
+      #{appearanceNewAndOld,jdbcType=INTEGER}, #{betweenDistance,jdbcType=INTEGER}, #{betweenDistanceDescription,jdbcType=VARCHAR}, 
       #{vStructura,jdbcType=VARCHAR}, #{vSpecifications,jdbcType=VARCHAR}, #{vStructuralConstruction,jdbcType=VARCHAR}, 
       #{vBasicPractice,jdbcType=VARCHAR}, #{vStructuralPractice,jdbcType=VARCHAR}, #{propertySocialPrestige,jdbcType=INTEGER}, 
       #{propertyCompanyNature,jdbcType=INTEGER}, #{mapId,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, 
@@ -235,6 +237,9 @@
       </if>
       <if test="buildingName != null" >
         building_name,
+      </if>
+      <if test="fullName != null" >
+        full_name,
       </if>
       <if test="floorCount != null" >
         floor_count,
@@ -411,6 +416,9 @@
       </if>
       <if test="buildingName != null" >
         #{buildingName,jdbcType=VARCHAR},
+      </if>
+      <if test="fullName != null" >
+        #{fullName,jdbcType=VARCHAR},
       </if>
       <if test="floorCount != null" >
         #{floorCount,jdbcType=VARCHAR},
@@ -600,6 +608,9 @@
       <if test="record.buildingName != null" >
         building_name = #{record.buildingName,jdbcType=VARCHAR},
       </if>
+      <if test="record.fullName != null" >
+        full_name = #{record.fullName,jdbcType=VARCHAR},
+      </if>
       <if test="record.floorCount != null" >
         floor_count = #{record.floorCount,jdbcType=VARCHAR},
       </if>
@@ -768,6 +779,7 @@
       industry_use_year = #{record.industryUseYear,jdbcType=INTEGER},
       building_number = #{record.buildingNumber,jdbcType=VARCHAR},
       building_name = #{record.buildingName,jdbcType=VARCHAR},
+      full_name = #{record.fullName,jdbcType=VARCHAR},
       floor_count = #{record.floorCount,jdbcType=VARCHAR},
       location = #{record.location,jdbcType=VARCHAR},
       builder = #{record.builder,jdbcType=INTEGER},
@@ -846,6 +858,9 @@
       </if>
       <if test="buildingName != null" >
         building_name = #{buildingName,jdbcType=VARCHAR},
+      </if>
+      <if test="fullName != null" >
+        full_name = #{fullName,jdbcType=VARCHAR},
       </if>
       <if test="floorCount != null" >
         floor_count = #{floorCount,jdbcType=VARCHAR},
@@ -1012,6 +1027,7 @@
       industry_use_year = #{industryUseYear,jdbcType=INTEGER},
       building_number = #{buildingNumber,jdbcType=VARCHAR},
       building_name = #{buildingName,jdbcType=VARCHAR},
+      full_name = #{fullName,jdbcType=VARCHAR},
       floor_count = #{floorCount,jdbcType=VARCHAR},
       location = #{location,jdbcType=VARCHAR},
       builder = #{builder,jdbcType=INTEGER},

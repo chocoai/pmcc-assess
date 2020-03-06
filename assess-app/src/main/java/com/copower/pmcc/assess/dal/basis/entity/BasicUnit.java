@@ -15,6 +15,8 @@ public class BasicUnit {
 
     private String unitNumber;
 
+    private String fullName;
+
     private String elevatorHouseholdRatio;
 
     private String huxingExplain;
@@ -85,6 +87,14 @@ public class BasicUnit {
 
     public void setUnitNumber(String unitNumber) {
         this.unitNumber = unitNumber == null ? null : unitNumber.trim();
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName == null ? null : fullName.trim();
     }
 
     public String getElevatorHouseholdRatio() {

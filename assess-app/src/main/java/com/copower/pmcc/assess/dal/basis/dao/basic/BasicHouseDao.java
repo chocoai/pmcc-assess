@@ -4,8 +4,12 @@ import com.copower.pmcc.assess.dal.basis.custom.entity.CustomCaseEntity;
 import com.copower.pmcc.assess.dal.basis.custom.mapper.CustomCaseMapper;
 import com.copower.pmcc.assess.dal.basis.entity.BasicHouse;
 import com.copower.pmcc.assess.dal.basis.entity.BasicHouseExample;
+import com.copower.pmcc.assess.dal.basis.entity.BasicUnit;
+import com.copower.pmcc.assess.dal.basis.entity.BasicUnitExample;
 import com.copower.pmcc.assess.dal.basis.mapper.BasicHouseMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -44,10 +48,10 @@ public class BasicHouseDao {
         return basicHouseMapper.updateByPrimaryKeySelective(basicHouse) == 1;
     }
 
-    public List<BasicHouse> getBasicHouseIds(List<Integer> ids){
+    public List<BasicHouse> getBasicHouseIds(List<Integer> ids) {
         BasicHouseExample example = new BasicHouseExample();
         BasicHouseExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
-        criteria.andIdIn(ids) ;
+        criteria.andIdIn(ids);
         return basicHouseMapper.selectByExample(example);
     }
 
@@ -58,7 +62,7 @@ public class BasicHouseDao {
         return basicHouseMapper.selectByExample(example);
     }
 
-    public Integer getCountByBasicHouse(BasicHouse basicHouse){
+    public Integer getCountByBasicHouse(BasicHouse basicHouse) {
         BasicHouseExample example = new BasicHouseExample();
         BasicHouseExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
         MybatisUtils.convertObj2Criteria(basicHouse, criteria);
@@ -73,5 +77,16 @@ public class BasicHouseDao {
      */
     public List<CustomCaseEntity> getLatestVersionHouseList(String houseNumber, Integer unitId) {
         return customCaseMapper.getCaseHouseList(houseNumber, unitId);
+    }
+
+    public BasicHouse getLatestVersionHouseByFullName(String fullName, Integer estateId) {
+        if (StringUtils.isBlank(fullName) || estateId == null) return null;
+        BasicHouseExample example = new BasicHouseExample();
+        BasicHouseExample.Criteria criteria = example.createCriteria();
+        criteria.andBisDeleteEqualTo(false).andBisCaseEqualTo(true).andEstateIdEqualTo(estateId).andFullNameEqualTo(fullName);
+        example.setOrderByClause("version desc");
+        List<BasicHouse> basicHouseList = basicHouseMapper.selectByExample(example);
+        if (CollectionUtils.isEmpty(basicHouseList)) return null;
+        return basicHouseList.get(0);
     }
 }

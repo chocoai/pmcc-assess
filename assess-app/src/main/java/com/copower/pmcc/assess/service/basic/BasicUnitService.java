@@ -69,6 +69,8 @@ public class BasicUnitService extends BasicEntityAbstract {
     private BasicEstateTaggingDao basicEstateTaggingDao;
     @Autowired
     private BasicApplyBatchDetailService basicApplyBatchDetailService;
+    @Autowired
+    private BasicBuildingService basicBuildingService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -261,6 +263,9 @@ public class BasicUnitService extends BasicEntityAbstract {
             }
 
             if (basicUnit != null) {
+                BasicBuilding basicBuilding = basicBuildingService.getBasicBuildingById(basicUnit.getBuildingId());
+                if (basicBuilding != null)
+                    basicUnit.setFullName(basicBuilding.getFullName() + basicUnit.getUnitNumber());
                 saveAndUpdate(basicUnit, true);
                 BasicApplyBatchDetail unitDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(FormatUtils.entityNameConvertToTableName(BasicUnit.class), basicUnit.getId());
                 if (unitDetail != null) {

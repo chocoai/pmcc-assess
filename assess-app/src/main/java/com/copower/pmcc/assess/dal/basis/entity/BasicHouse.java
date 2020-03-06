@@ -18,6 +18,8 @@ public class BasicHouse {
 
     private String houseNumber;
 
+    private String fullName;
+
     private String floor;
 
     private String floorDesc;
@@ -146,6 +148,14 @@ public class BasicHouse {
 
     public void setHouseNumber(String houseNumber) {
         this.houseNumber = houseNumber == null ? null : houseNumber.trim();
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName == null ? null : fullName.trim();
     }
 
     public String getFloor() {

@@ -82,6 +82,8 @@ public class BasicBuildingService extends BasicEntityAbstract {
     private BasicEstateTaggingDao basicEstateTaggingDao;
     @Autowired
     private BasicApplyBatchDetailService basicApplyBatchDetailService;
+    @Autowired
+    private BasicEstateService basicEstateService;
 
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -324,6 +326,9 @@ public class BasicBuildingService extends BasicEntityAbstract {
             }
 
             if (basicBuilding != null) {
+                BasicEstate basicEstate = basicEstateService.getBasicEstateById(basicBuilding.getEstateId());
+                if (basicEstate != null)
+                    basicBuilding.setFullName(basicEstate.getName() + basicBuilding.getBuildingNumber());
                 saveAndUpdate(basicBuilding, true);
                 BasicApplyBatchDetail buildingDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(FormatUtils.entityNameConvertToTableName(BasicBuilding.class), basicBuilding.getId());
                 if (buildingDetail != null) {

@@ -20,6 +20,8 @@ public class BasicBuilding {
 
     private String buildingName;
 
+    private String fullName;
+
     private String floorCount;
 
     private String location;
@@ -184,6 +186,14 @@ public class BasicBuilding {
 
     public void setBuildingName(String buildingName) {
         this.buildingName = buildingName == null ? null : buildingName.trim();
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName == null ? null : fullName.trim();
     }
 
     public String getFloorCount() {
