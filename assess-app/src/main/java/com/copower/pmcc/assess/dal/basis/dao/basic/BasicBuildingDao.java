@@ -4,10 +4,14 @@ import com.copower.pmcc.assess.dal.basis.custom.entity.CustomCaseEntity;
 import com.copower.pmcc.assess.dal.basis.custom.mapper.CustomCaseMapper;
 import com.copower.pmcc.assess.dal.basis.entity.BasicBuilding;
 import com.copower.pmcc.assess.dal.basis.entity.BasicBuildingExample;
+import com.copower.pmcc.assess.dal.basis.entity.BasicEstate;
+import com.copower.pmcc.assess.dal.basis.entity.BasicEstateExample;
 import com.copower.pmcc.assess.dal.basis.mapper.BasicBuildingMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -28,11 +32,11 @@ public class BasicBuildingDao {
         return basicBuildingMapper.selectByPrimaryKey(id);
     }
 
-    public List<BasicBuilding> getBasicBuildingIds(List<Integer> ids){
+    public List<BasicBuilding> getBasicBuildingIds(List<Integer> ids) {
         BasicBuildingExample example = new BasicBuildingExample();
         BasicBuildingExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
-        criteria.andIdIn(ids) ;
-        return basicBuildingMapper.selectByExample(example) ;
+        criteria.andIdIn(ids);
+        return basicBuildingMapper.selectByExample(example);
     }
 
     public Integer addBasicBuilding(BasicBuilding basicBuilding) {
@@ -67,5 +71,16 @@ public class BasicBuildingDao {
      */
     public List<CustomCaseEntity> getLatestVersionBuildingList(String buildingNumber, Integer estateId) {
         return customCaseMapper.getCaseBuildingList(buildingNumber, estateId);
+    }
+
+    public BasicBuilding getLatestVersionBuildingByFullName(String fullName, Integer estateId) {
+        if (org.apache.commons.lang3.StringUtils.isBlank(fullName) || estateId == null) return null;
+        BasicBuildingExample example = new BasicBuildingExample();
+        BasicBuildingExample.Criteria criteria = example.createCriteria();
+        criteria.andBisDeleteEqualTo(false).andBisCaseEqualTo(true).andFullNameEqualTo(fullName).andEstateIdEqualTo(estateId);
+        example.setOrderByClause("version desc");
+        List<BasicBuilding> basicBuildingList = basicBuildingMapper.selectByExample(example);
+        if (CollectionUtils.isEmpty(basicBuildingList)) return null;
+        return basicBuildingList.get(0);
     }
 }

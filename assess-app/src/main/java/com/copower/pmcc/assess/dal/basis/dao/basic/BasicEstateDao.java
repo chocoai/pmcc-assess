@@ -10,6 +10,7 @@ import com.copower.pmcc.assess.dal.cases.entity.CaseEstateExample;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
@@ -68,7 +69,7 @@ public class BasicEstateDao {
         return basicEstateMapper.selectByExample(example);
     }
 
-    public Integer getBasicEstateCount(String province,String city,String name){
+    public Integer getBasicEstateCount(String province, String city, String name) {
         BasicEstateExample example = new BasicEstateExample();
         BasicEstateExample.Criteria criteria = example.createCriteria();
         criteria.andIdIsNotNull().andBisDeleteEqualTo(false).andBisCaseEqualTo(true);
@@ -84,7 +85,7 @@ public class BasicEstateDao {
         return basicEstateMapper.countByExample(example);
     }
 
-    public BasicEstate getLatestVersionEstate(String province,String city,String name){
+    public BasicEstate getLatestVersionEstate(String province, String city, String name) {
         BasicEstateExample example = new BasicEstateExample();
         BasicEstateExample.Criteria criteria = example.createCriteria();
         criteria.andBisDeleteEqualTo(false).andBisCaseEqualTo(true);
@@ -99,6 +100,7 @@ public class BasicEstateDao {
         }
         example.setOrderByClause("version desc");
         List<BasicEstate> basicEstateList = basicEstateMapper.selectByExample(example);
+        if (CollectionUtils.isEmpty(basicEstateList)) return null;
         return basicEstateList.get(0);
     }
 

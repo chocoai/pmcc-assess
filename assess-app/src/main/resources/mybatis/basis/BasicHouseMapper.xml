@@ -9,6 +9,7 @@
     <result column="building_id" property="buildingId" jdbcType="INTEGER" />
     <result column="unit_id" property="unitId" jdbcType="INTEGER" />
     <result column="house_number" property="houseNumber" jdbcType="VARCHAR" />
+    <result column="full_name" property="fullName" jdbcType="VARCHAR" />
     <result column="floor" property="floor" jdbcType="VARCHAR" />
     <result column="floor_desc" property="floorDesc" jdbcType="VARCHAR" />
     <result column="huxing_id" property="huxingId" jdbcType="INTEGER" />
@@ -106,13 +107,14 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, apply_id, quote_id, estate_id, building_id, unit_id, house_number, floor, floor_desc, 
-    huxing_id, huxing_name, new_huxing_name, spatial_distribution, spatial_distribution_desc, 
-    cert_use, practical_use, orientation, area, area_desc, research_type, right_interests_restriction, 
-    use_environment, description, case_date, use_year, floor_price, land_location, new_degree, 
-    use_condition, use_condition_description, decorate_situation, price_connotation, 
-    decorate_situation_description, map_id, huxing_data, relevance_id, display_case_id, 
-    version, bis_case, bis_enable, bis_delete, creator, gmt_created, gmt_modified
+    id, apply_id, quote_id, estate_id, building_id, unit_id, house_number, full_name, 
+    floor, floor_desc, huxing_id, huxing_name, new_huxing_name, spatial_distribution, 
+    spatial_distribution_desc, cert_use, practical_use, orientation, area, area_desc, 
+    research_type, right_interests_restriction, use_environment, description, case_date, 
+    use_year, floor_price, land_location, new_degree, use_condition, use_condition_description, 
+    decorate_situation, price_connotation, decorate_situation_description, map_id, huxing_data, 
+    relevance_id, display_case_id, version, bis_case, bis_enable, bis_delete, creator, 
+    gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseExample" >
     select
@@ -150,14 +152,15 @@
     </selectKey>
     insert into tb_basic_house (apply_id, quote_id, estate_id, 
       building_id, unit_id, house_number, 
-      floor, floor_desc, huxing_id, 
-      huxing_name, new_huxing_name, spatial_distribution, 
-      spatial_distribution_desc, cert_use, practical_use, 
-      orientation, area, area_desc, 
-      research_type, right_interests_restriction, 
-      use_environment, description, case_date, 
-      use_year, floor_price, land_location, 
-      new_degree, use_condition, use_condition_description, 
+      full_name, floor, floor_desc, 
+      huxing_id, huxing_name, new_huxing_name, 
+      spatial_distribution, spatial_distribution_desc, 
+      cert_use, practical_use, orientation, 
+      area, area_desc, research_type, 
+      right_interests_restriction, use_environment, 
+      description, case_date, use_year, 
+      floor_price, land_location, new_degree, 
+      use_condition, use_condition_description, 
       decorate_situation, price_connotation, decorate_situation_description, 
       map_id, huxing_data, relevance_id, 
       display_case_id, version, bis_case, 
@@ -165,14 +168,15 @@
       gmt_created, gmt_modified)
     values (#{applyId,jdbcType=INTEGER}, #{quoteId,jdbcType=INTEGER}, #{estateId,jdbcType=INTEGER}, 
       #{buildingId,jdbcType=INTEGER}, #{unitId,jdbcType=INTEGER}, #{houseNumber,jdbcType=VARCHAR}, 
-      #{floor,jdbcType=VARCHAR}, #{floorDesc,jdbcType=VARCHAR}, #{huxingId,jdbcType=INTEGER}, 
-      #{huxingName,jdbcType=VARCHAR}, #{newHuxingName,jdbcType=VARCHAR}, #{spatialDistribution,jdbcType=INTEGER}, 
-      #{spatialDistributionDesc,jdbcType=VARCHAR}, #{certUse,jdbcType=VARCHAR}, #{practicalUse,jdbcType=VARCHAR}, 
-      #{orientation,jdbcType=INTEGER}, #{area,jdbcType=DECIMAL}, #{areaDesc,jdbcType=VARCHAR}, 
-      #{researchType,jdbcType=INTEGER}, #{rightInterestsRestriction,jdbcType=VARCHAR}, 
-      #{useEnvironment,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}, #{caseDate,jdbcType=TIMESTAMP}, 
-      #{useYear,jdbcType=INTEGER}, #{floorPrice,jdbcType=DECIMAL}, #{landLocation,jdbcType=VARCHAR}, 
-      #{newDegree,jdbcType=VARCHAR}, #{useCondition,jdbcType=INTEGER}, #{useConditionDescription,jdbcType=VARCHAR}, 
+      #{fullName,jdbcType=VARCHAR}, #{floor,jdbcType=VARCHAR}, #{floorDesc,jdbcType=VARCHAR}, 
+      #{huxingId,jdbcType=INTEGER}, #{huxingName,jdbcType=VARCHAR}, #{newHuxingName,jdbcType=VARCHAR}, 
+      #{spatialDistribution,jdbcType=INTEGER}, #{spatialDistributionDesc,jdbcType=VARCHAR}, 
+      #{certUse,jdbcType=VARCHAR}, #{practicalUse,jdbcType=VARCHAR}, #{orientation,jdbcType=INTEGER}, 
+      #{area,jdbcType=DECIMAL}, #{areaDesc,jdbcType=VARCHAR}, #{researchType,jdbcType=INTEGER}, 
+      #{rightInterestsRestriction,jdbcType=VARCHAR}, #{useEnvironment,jdbcType=INTEGER}, 
+      #{description,jdbcType=VARCHAR}, #{caseDate,jdbcType=TIMESTAMP}, #{useYear,jdbcType=INTEGER}, 
+      #{floorPrice,jdbcType=DECIMAL}, #{landLocation,jdbcType=VARCHAR}, #{newDegree,jdbcType=VARCHAR}, 
+      #{useCondition,jdbcType=INTEGER}, #{useConditionDescription,jdbcType=VARCHAR}, 
       #{decorateSituation,jdbcType=INTEGER}, #{priceConnotation,jdbcType=INTEGER}, #{decorateSituationDescription,jdbcType=VARCHAR}, 
       #{mapId,jdbcType=INTEGER}, #{huxingData,jdbcType=VARCHAR}, #{relevanceId,jdbcType=INTEGER}, 
       #{displayCaseId,jdbcType=INTEGER}, #{version,jdbcType=INTEGER}, #{bisCase,jdbcType=BIT}, 
@@ -202,6 +206,9 @@
       </if>
       <if test="houseNumber != null" >
         house_number,
+      </if>
+      <if test="fullName != null" >
+        full_name,
       </if>
       <if test="floor != null" >
         floor,
@@ -333,6 +340,9 @@
       </if>
       <if test="houseNumber != null" >
         #{houseNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="fullName != null" >
+        #{fullName,jdbcType=VARCHAR},
       </if>
       <if test="floor != null" >
         #{floor,jdbcType=VARCHAR},
@@ -477,6 +487,9 @@
       <if test="record.houseNumber != null" >
         house_number = #{record.houseNumber,jdbcType=VARCHAR},
       </if>
+      <if test="record.fullName != null" >
+        full_name = #{record.fullName,jdbcType=VARCHAR},
+      </if>
       <if test="record.floor != null" >
         floor = #{record.floor,jdbcType=VARCHAR},
       </if>
@@ -602,6 +615,7 @@
       building_id = #{record.buildingId,jdbcType=INTEGER},
       unit_id = #{record.unitId,jdbcType=INTEGER},
       house_number = #{record.houseNumber,jdbcType=VARCHAR},
+      full_name = #{record.fullName,jdbcType=VARCHAR},
       floor = #{record.floor,jdbcType=VARCHAR},
       floor_desc = #{record.floorDesc,jdbcType=VARCHAR},
       huxing_id = #{record.huxingId,jdbcType=INTEGER},
@@ -663,6 +677,9 @@
       </if>
       <if test="houseNumber != null" >
         house_number = #{houseNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="fullName != null" >
+        full_name = #{fullName,jdbcType=VARCHAR},
       </if>
       <if test="floor != null" >
         floor = #{floor,jdbcType=VARCHAR},
@@ -786,6 +803,7 @@
       building_id = #{buildingId,jdbcType=INTEGER},
       unit_id = #{unitId,jdbcType=INTEGER},
       house_number = #{houseNumber,jdbcType=VARCHAR},
+      full_name = #{fullName,jdbcType=VARCHAR},
       floor = #{floor,jdbcType=VARCHAR},
       floor_desc = #{floorDesc,jdbcType=VARCHAR},
       huxing_id = #{huxingId,jdbcType=INTEGER},

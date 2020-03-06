@@ -90,6 +90,8 @@ public class BasicHouseService extends BasicEntityAbstract {
     private BasicApplyBatchDetailService basicApplyBatchDetailService;
     @Autowired
     private ResidueRatioService residueRatioService;
+    @Autowired
+    private BasicUnitService basicUnitService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -444,6 +446,9 @@ public class BasicHouseService extends BasicEntityAbstract {
             }
 
             if (basicHouse != null) {
+                BasicUnit basicUnit = basicUnitService.getBasicUnitById(basicHouse.getUnitId());
+                if (basicUnit != null)
+                    basicHouse.setFullName(basicUnit.getFullName() + basicHouse.getHouseNumber());
                 Integer houseId = saveAndUpdate(basicHouse, true);
                 BasicApplyBatchDetail houseDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(FormatUtils.entityNameConvertToTableName(BasicHouse.class), basicHouse.getId());
                 if (houseDetail != null) {

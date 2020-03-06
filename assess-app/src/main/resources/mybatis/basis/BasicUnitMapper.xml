@@ -8,6 +8,7 @@
     <result column="estate_id" property="estateId" jdbcType="INTEGER" />
     <result column="building_id" property="buildingId" jdbcType="INTEGER" />
     <result column="unit_number" property="unitNumber" jdbcType="VARCHAR" />
+    <result column="full_name" property="fullName" jdbcType="VARCHAR" />
     <result column="elevator_household_ratio" property="elevatorHouseholdRatio" jdbcType="VARCHAR" />
     <result column="huxing_explain" property="huxingExplain" jdbcType="VARCHAR" />
     <result column="map_id" property="mapId" jdbcType="INTEGER" />
@@ -80,7 +81,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, apply_id, quote_id, estate_id, building_id, unit_number, elevator_household_ratio, 
+    id, apply_id, quote_id, estate_id, building_id, unit_number, full_name, elevator_household_ratio, 
     huxing_explain, map_id, relevance_id, display_case_id, version, bis_case, bis_enable, 
     bis_delete, creator, gmt_created, gmt_modified
   </sql>
@@ -119,17 +120,19 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_basic_unit (apply_id, quote_id, estate_id, 
-      building_id, unit_number, elevator_household_ratio, 
-      huxing_explain, map_id, relevance_id, 
-      display_case_id, version, bis_case, 
-      bis_enable, bis_delete, creator, 
-      gmt_created, gmt_modified)
+      building_id, unit_number, full_name, 
+      elevator_household_ratio, huxing_explain, 
+      map_id, relevance_id, display_case_id, 
+      version, bis_case, bis_enable, 
+      bis_delete, creator, gmt_created, 
+      gmt_modified)
     values (#{applyId,jdbcType=INTEGER}, #{quoteId,jdbcType=INTEGER}, #{estateId,jdbcType=INTEGER}, 
-      #{buildingId,jdbcType=INTEGER}, #{unitNumber,jdbcType=VARCHAR}, #{elevatorHouseholdRatio,jdbcType=VARCHAR}, 
-      #{huxingExplain,jdbcType=VARCHAR}, #{mapId,jdbcType=INTEGER}, #{relevanceId,jdbcType=INTEGER}, 
-      #{displayCaseId,jdbcType=INTEGER}, #{version,jdbcType=INTEGER}, #{bisCase,jdbcType=BIT}, 
-      #{bisEnable,jdbcType=BIT}, #{bisDelete,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+      #{buildingId,jdbcType=INTEGER}, #{unitNumber,jdbcType=VARCHAR}, #{fullName,jdbcType=VARCHAR}, 
+      #{elevatorHouseholdRatio,jdbcType=VARCHAR}, #{huxingExplain,jdbcType=VARCHAR}, 
+      #{mapId,jdbcType=INTEGER}, #{relevanceId,jdbcType=INTEGER}, #{displayCaseId,jdbcType=INTEGER}, 
+      #{version,jdbcType=INTEGER}, #{bisCase,jdbcType=BIT}, #{bisEnable,jdbcType=BIT}, 
+      #{bisDelete,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicUnit" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -151,6 +154,9 @@
       </if>
       <if test="unitNumber != null" >
         unit_number,
+      </if>
+      <if test="fullName != null" >
+        full_name,
       </if>
       <if test="elevatorHouseholdRatio != null" >
         elevator_household_ratio,
@@ -204,6 +210,9 @@
       </if>
       <if test="unitNumber != null" >
         #{unitNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="fullName != null" >
+        #{fullName,jdbcType=VARCHAR},
       </if>
       <if test="elevatorHouseholdRatio != null" >
         #{elevatorHouseholdRatio,jdbcType=VARCHAR},
@@ -270,6 +279,9 @@
       <if test="record.unitNumber != null" >
         unit_number = #{record.unitNumber,jdbcType=VARCHAR},
       </if>
+      <if test="record.fullName != null" >
+        full_name = #{record.fullName,jdbcType=VARCHAR},
+      </if>
       <if test="record.elevatorHouseholdRatio != null" >
         elevator_household_ratio = #{record.elevatorHouseholdRatio,jdbcType=VARCHAR},
       </if>
@@ -319,6 +331,7 @@
       estate_id = #{record.estateId,jdbcType=INTEGER},
       building_id = #{record.buildingId,jdbcType=INTEGER},
       unit_number = #{record.unitNumber,jdbcType=VARCHAR},
+      full_name = #{record.fullName,jdbcType=VARCHAR},
       elevator_household_ratio = #{record.elevatorHouseholdRatio,jdbcType=VARCHAR},
       huxing_explain = #{record.huxingExplain,jdbcType=VARCHAR},
       map_id = #{record.mapId,jdbcType=INTEGER},
@@ -352,6 +365,9 @@
       </if>
       <if test="unitNumber != null" >
         unit_number = #{unitNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="fullName != null" >
+        full_name = #{fullName,jdbcType=VARCHAR},
       </if>
       <if test="elevatorHouseholdRatio != null" >
         elevator_household_ratio = #{elevatorHouseholdRatio,jdbcType=VARCHAR},
@@ -399,6 +415,7 @@
       estate_id = #{estateId,jdbcType=INTEGER},
       building_id = #{buildingId,jdbcType=INTEGER},
       unit_number = #{unitNumber,jdbcType=VARCHAR},
+      full_name = #{fullName,jdbcType=VARCHAR},
       elevator_household_ratio = #{elevatorHouseholdRatio,jdbcType=VARCHAR},
       huxing_explain = #{huxingExplain,jdbcType=VARCHAR},
       map_id = #{mapId,jdbcType=INTEGER},

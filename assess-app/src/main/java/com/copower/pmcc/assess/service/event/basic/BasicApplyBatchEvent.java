@@ -1,5 +1,10 @@
 package com.copower.pmcc.assess.service.event.basic;
 
+import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicBuildingDao;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateDao;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicHouseDao;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicUnitDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.proxy.face.BasicEntityAbstract;
 import com.copower.pmcc.assess.service.basic.*;
@@ -30,6 +35,21 @@ public class BasicApplyBatchEvent extends BaseProcessEvent {
     private BasicApplyBatchDetailService basicApplyBatchDetailService;
     @Autowired
     private BasicEstateService basicEstateService;
+    @Autowired
+    private BasicEstateDao basicEstateDao;
+    @Autowired
+    private BasicBuildingDao basicBuildingDao;
+    @Autowired
+    private BasicUnitDao basicUnitDao;
+    @Autowired
+    private BasicHouseDao basicHouseDao;
+
+    @Autowired
+    private BasicBuildingService basicBuildingService;
+    @Autowired
+    private BasicUnitService basicUnitService;
+    @Autowired
+    private BasicHouseService basicHouseService;
 
 
     @Override
@@ -47,75 +67,75 @@ public class BasicApplyBatchEvent extends BaseProcessEvent {
      */
     @Transactional(rollbackFor = Exception.class)
     public void writeToCase(BasicApplyBatch applyBatch) throws Exception {
-        if (applyBatch.getCaseEstateId() != null && applyBatch.getCaseEstateId() > 0) {
-            //1.找出新增或升级的数据 2.如果为新增则将相关数据挂到对于的案例数据下
-            //3.如果为升级数据将原数据存为老版本，将新数据更新过去并更新版本号
-            BasicApplyBatchDetail where = new BasicApplyBatchDetail();
-            where.setBisFromCase(false);
-            where.setApplyBatchId(applyBatch.getId());
-            List<BasicApplyBatchDetail> list = basicApplyBatchDetailService.getBasicApplyBatchDetailList(where);
-            if (CollectionUtils.isNotEmpty(list)) {
-                List<String> ignoreList = Lists.newArrayList("version");
-                for (BasicApplyBatchDetail batchDetail : list) {
-                    try {
-                        if (batchDetail.getUpgradeTableId() != null && batchDetail.getUpgradeTableId() > 0) {//升级
-                            BasicEntityAbstract entityAbstract = publicBasicService.getServiceBeanByTableName(batchDetail.getTableName());
-                            entityAbstract.copyBasicEntity(batchDetail.getUpgradeTableId(), null, true);
-                            Object o = entityAbstract.copyBasicEntityIgnore(batchDetail.getTableId(), batchDetail.getUpgradeTableId(), true, ignoreList);
-                            entityAbstract.setProperty(o,"bisCase",true);
-                            entityAbstract.setProperty(o,"creator",batchDetail.getCreator());
-                            entityAbstract.setProperty(o,"gmtCreated",DateUtils.now());
-                            entityAbstract.setProperty(o,"version",((Integer)entityAbstract.getProperty(o,"version")+1));
-                            entityAbstract.saveAndUpdate(o,false);
-                            basicEstateService.saveAndUpdate(o, false);
-                        } else {//新增
-                            BasicEntityAbstract entityAbstract = publicBasicService.getServiceBeanByTableName(batchDetail.getTableName());
-                            Object o = entityAbstract.getBasicEntityById(batchDetail.getTableId());
-                            if (o != null) {
-                                entityAbstract.setProperty(o, "bisCase", true);
-                                entityAbstract.setProperty(o, "version", 1);
-                                if (batchDetail.getPid() != null && batchDetail.getPid() > 0) {
-                                    BasicApplyBatchDetail parent = basicApplyBatchDetailService.getDataById(batchDetail.getPid());
-                                    BasicEntityAbstract parentEntityAbstract = publicBasicService.getServiceBeanByTableName(parent.getTableName());
-                                    Object parentObject = parentEntityAbstract.getBasicEntityById(parent.getTableId());
-                                    if (parentObject != null) {
-                                        Object estateId = parentEntityAbstract.getProperty(parentObject, "estateId");
-                                        if (estateId == null && parentObject instanceof BasicEstate) {
-                                            estateId = parentEntityAbstract.getProperty(parentObject, "id");
-                                        }
-                                        Object buldingId = parentEntityAbstract.getProperty(parentObject, "buldingId");
-                                        if (buldingId == null && parentObject instanceof BasicBuilding) {
-                                            buldingId = parentEntityAbstract.getProperty(parentObject, "id");
-                                        }
-                                        Object unitId = parentEntityAbstract.getProperty(parentObject, "unitId");
-                                        if (unitId == null && parentObject instanceof BasicUnit) {
-                                            unitId = parentEntityAbstract.getProperty(parentObject, "id");
-                                        }
-                                        entityAbstract.setProperty(o, "estateId", estateId);
-                                        entityAbstract.setProperty(o, "buldingId", buldingId);
-                                        entityAbstract.setProperty(o, "unitId", unitId);
-                                    }
-                                }
-                                entityAbstract.saveAndUpdate(o, false);
-                            }
+        //找出有效数据，每条有效数据处理时，查看案例是否有相关数据，有则升级版本，没有则直接作为新增
+        BasicApplyBatchDetail where = new BasicApplyBatchDetail();
+        where.setBisFromCase(false);
+        where.setApplyBatchId(applyBatch.getId());
+        List<BasicApplyBatchDetail> list = basicApplyBatchDetailService.getBasicApplyBatchDetailList(where);
+        if (CollectionUtils.isNotEmpty(list)) {
+            BasicEstate latestVersionEstate = basicEstateDao.getLatestVersionEstate(applyBatch.getProvince(), applyBatch.getCity(), applyBatch.getEstateName());//确定楼盘案例库是否已存在
+            List<String> ignoreList = Lists.newArrayList("version");
+            for (BasicApplyBatchDetail batchDetail : list) {
+                BasicFormClassifyEnum anEnum = BasicFormClassifyEnum.getEnumByTableName(batchDetail.getTableName());
+                BasicEntityAbstract entityAbstract = publicBasicService.getServiceBeanByTableName(batchDetail.getTableName());
+                switch (anEnum) {
+                    case ESTATE:
+                        BasicEstate basicEstate = basicEstateDao.getBasicEstateById(batchDetail.getTableId());
+                        if (latestVersionEstate != null) {//表示需要升级，先将案例库中最新版本拷贝一份存档，再将本次申请的新版本存入上个版本原id数据中，保证如楼栋等从数据关联无影响
+                            entityAbstract.copyBasicEntity(latestVersionEstate.getId(), null, true);
+                            basicEstate = (BasicEstate) entityAbstract.copyBasicEntityIgnore(batchDetail.getTableId(), latestVersionEstate.getId(), true, ignoreList);
+                            basicEstate.setVersion(latestVersionEstate.getVersion() + 1);
+                        } else {
+                            basicEstate.setVersion(1);
                         }
-                    } catch (Exception e) {
-                        logger.error(e.getMessage(),e);
-                    }
-                }
-            }
-        } else {
-            //1.直接将相关联的数据转换为案例数据
-            List<BasicApplyBatchDetail> batchDetailList = basicApplyBatchDetailService.getBasicApplyBatchDetailByApplyBatchId(applyBatch.getId());
-            if (CollectionUtils.isNotEmpty(batchDetailList)) {
-                for (BasicApplyBatchDetail batchDetail : batchDetailList) {
-                    BasicEntityAbstract entityAbstract = publicBasicService.getServiceBeanByTableName(batchDetail.getTableName());
-                    Object o = entityAbstract.getBasicEntityById(batchDetail.getTableId());
-                    if (o != null) {
-                        entityAbstract.setProperty(o, "bisCase", true);
-                        entityAbstract.setProperty(o, "version", 1);
-                        entityAbstract.saveAndUpdate(o, false);
-                    }
+                        basicEstate.setBisCase(true);
+                        basicEstateDao.addBasicEstate(basicEstate);
+                        break;
+                    case BUILDING:
+                        BasicBuilding basicBuilding = basicBuildingDao.getBasicBuildingById(batchDetail.getTableId());
+                        if (latestVersionEstate != null) {
+                            BasicBuilding latestVersionBuilding = basicBuildingDao.getLatestVersionBuildingByFullName(basicBuilding.getFullName(), latestVersionEstate.getId());
+                            if (latestVersionBuilding != null) {//表示需要升级，先将案例库中最新版本拷贝一份存档，再将本次申请的新版本存入上个版本原id数据中，保证如楼栋等从数据关联无影响
+                                entityAbstract.copyBasicEntity(latestVersionBuilding.getId(), null, true);
+                                basicBuilding = (BasicBuilding) entityAbstract.copyBasicEntityIgnore(batchDetail.getTableId(), latestVersionBuilding.getId(), true, ignoreList);
+                                basicBuilding.setVersion(latestVersionBuilding.getVersion() + 1);
+                            }
+                        } else {
+                            basicBuilding.setVersion(1);
+                        }
+                        basicBuilding.setBisCase(true);
+                        basicBuildingDao.addBasicBuilding(basicBuilding);
+                        break;
+                    case UNIT:
+                        BasicUnit basicUnit = basicUnitDao.getBasicUnitById(batchDetail.getTableId());
+                        if (latestVersionEstate != null) {
+                            BasicUnit latestVersionUnit = basicUnitDao.getLatestVersionUnitByFullName(basicUnit.getFullName(), latestVersionEstate.getId());
+                            if (latestVersionUnit != null) {//表示需要升级，先将案例库中最新版本拷贝一份存档，再将本次申请的新版本存入上个版本原id数据中，保证如楼栋等从数据关联无影响
+                                entityAbstract.copyBasicEntity(latestVersionUnit.getId(), null, true);
+                                basicUnit = (BasicUnit) entityAbstract.copyBasicEntityIgnore(batchDetail.getTableId(), latestVersionUnit.getId(), true, ignoreList);
+                                basicUnit.setVersion(latestVersionUnit.getVersion() + 1);
+                            }
+                        } else {
+                            basicUnit.setVersion(1);
+                        }
+                        basicUnit.setBisCase(true);
+                        basicUnitDao.addBasicUnit(basicUnit);
+                        break;
+                    case HOUSE:
+                        BasicHouse basicHouse = basicHouseDao.getBasicHouseById(batchDetail.getTableId());
+                        if (latestVersionEstate != null) {
+                            BasicHouse latestVersionHouse = basicHouseDao.getLatestVersionHouseByFullName(basicHouse.getFullName(), latestVersionEstate.getId());
+                            if (latestVersionHouse != null) {//表示需要升级，先将案例库中最新版本拷贝一份存档，再将本次申请的新版本存入上个版本原id数据中，保证如楼栋等从数据关联无影响
+                                entityAbstract.copyBasicEntity(latestVersionHouse.getId(), null, true);
+                                basicHouse = (BasicHouse) entityAbstract.copyBasicEntityIgnore(batchDetail.getTableId(), latestVersionHouse.getId(), true, ignoreList);
+                                basicHouse.setVersion(latestVersionHouse.getVersion() + 1);
+                            }
+                        } else {
+                            basicHouse.setVersion(1);
+                        }
+                        basicHouse.setBisCase(true);
+                        basicHouseDao.addBasicHouse(basicHouse);
+                        break;
                 }
             }
         }

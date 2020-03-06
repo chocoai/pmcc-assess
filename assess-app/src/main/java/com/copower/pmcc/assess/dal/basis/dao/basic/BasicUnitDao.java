@@ -2,12 +2,17 @@ package com.copower.pmcc.assess.dal.basis.dao.basic;
 
 import com.copower.pmcc.assess.dal.basis.custom.entity.CustomCaseEntity;
 import com.copower.pmcc.assess.dal.basis.custom.mapper.CustomCaseMapper;
+import com.copower.pmcc.assess.dal.basis.entity.BasicBuilding;
+import com.copower.pmcc.assess.dal.basis.entity.BasicBuildingExample;
 import com.copower.pmcc.assess.dal.basis.entity.BasicUnit;
 import com.copower.pmcc.assess.dal.basis.entity.BasicUnitExample;
 import com.copower.pmcc.assess.dal.basis.mapper.BasicUnitMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
 
 import java.util.List;
 
@@ -69,5 +74,16 @@ public class BasicUnitDao {
      */
     public List<CustomCaseEntity> getLatestVersionUnitList(String unitNumber, Integer buildingId) {
         return customCaseMapper.getCaseUnitList(unitNumber, buildingId);
+    }
+
+    public BasicUnit getLatestVersionUnitByFullName(String fullName,Integer estateId) {
+        if (StringUtils.isBlank(fullName) || estateId == null) return null;
+        BasicUnitExample example = new BasicUnitExample();
+        BasicUnitExample.Criteria criteria = example.createCriteria();
+        criteria.andBisDeleteEqualTo(false).andBisCaseEqualTo(true).andFullNameEqualTo(fullName).andEstateIdEqualTo(estateId);
+        example.setOrderByClause("version desc");
+        List<BasicUnit> basicUnitList = basicUnitMapper.selectByExample(example);
+        if (CollectionUtils.isEmpty(basicUnitList)) return null;
+        return basicUnitList.get(0);
     }
 }
