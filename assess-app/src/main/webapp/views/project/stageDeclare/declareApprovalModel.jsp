@@ -520,18 +520,6 @@
             </div>
         </div>
 
-        <div class="row form-group">
-            <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
-                <div class="form-inline x-valid">
-                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
-                        附件
-                    </label>
-                    <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
-                        <div id="_declareRealtyHouseCertFileId"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </script>
 
@@ -841,19 +829,6 @@
                     </label>
                     <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
                         <label class="form-control input-full" name="memo"></label>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row form-group">
-            <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
-                <div class="form-inline x-valid">
-                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
-                        附件
-                    </label>
-                    <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
-                        <div id="_declareRealtyHouseCert_land_FileId"></div>
                     </div>
                 </div>
             </div>
@@ -1315,19 +1290,6 @@
                     </label>
                     <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
                         <label placeholder="记事" name="memo" class="form-control input-full"></label>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row form-group">
-            <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
-                <div class="form-inline x-valid">
-                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
-                        附件
-                    </label>
-                    <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
-                        <div id="_declareRealtyRealEstateCertNewFileId"></div>
                     </div>
                 </div>
             </div>

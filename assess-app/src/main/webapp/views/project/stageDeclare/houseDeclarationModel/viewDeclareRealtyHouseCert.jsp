@@ -205,6 +205,7 @@
             <div class="modal-body">
                 <form id="frmDeclareRealtyHouseCert" class="form-horizontal">
                     <input type="hidden" name="id">
+                    <input type="hidden" name="autoInitNumber">
                     <div class="row">
                         <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
 
@@ -264,6 +265,7 @@
                 <form id="frmSonDeclareRealtyLandCert" class="form-horizontal">
                     <input type="hidden" name="id">
                     <input type="hidden" name="centerId">
+                    <input type="hidden" name="autoInitNumber">
                     <div class="row">
                         <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
 

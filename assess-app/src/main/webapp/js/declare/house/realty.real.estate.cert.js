@@ -62,35 +62,18 @@ declareRealtyRealEstateCert.enclosureFun = function () {
     if (!declareCommon.isNotBlank(value)) {
         return false;
     }
-    $.ajaxFileUpload({
-        type: "POST",
-        url: getContextPath() + "/public/importAjaxFile",
-        data: {
-            planDetailsId: declareCommon.getPlanDetailsId(),
-            tableName: AssessDBKey.DeclareRealtyRealEstateCert,
-            tableId: id,
-            fieldsName: declareRealtyRealEstateCert.config.newFileId
-        },//要传到后台的参数，没有可以不写
-        secureuri: false,//是否启用安全提交，默认为false
-        fileElementId: target.attr("id"),//文件选择框的id属性
-        dataType: 'json',//服务器返回的格式
-        async: false,
-        success: function (result) {
-            if (result.ret) {
-                declareCommon.getDeclareRealtyData(id, function (row) {
-                    notifyInfo('提示', "操作成功!");
-                    $("#" + declareRealtyRealEstateCert.config.table).bootstrapTable('updateByUniqueId', {
-                        id: id,
-                        row: row
-                    });
-                });
-            }
-        },
-        error: function (result, status, e) {
-            Loading.progressHide();
-            AlertError("错误", "调用服务端方法失败，失败原因:" + result);
-        }
-    });
+    declareCommon.ajaxFileUploadCommonFun({ planDetailsId: declareCommon.getPlanDetailsId(),
+        tableName: AssessDBKey.DeclareRealtyRealEstateCert,
+        tableId: id,
+        fieldsName: declareRealtyRealEstateCert.config.newFileId},target.attr("id"),"/public/importAjaxFile",function () {
+        declareCommon.getDeclareRealtyData(id, function (row) {
+            notifyInfo('提示', "操作成功!");
+            $("#" + declareRealtyRealEstateCert.config.table).bootstrapTable('updateByUniqueId', {
+                id: id,
+                row: row
+            });
+        });
+    }) ;
 };
 /**
  * @author:  zch
