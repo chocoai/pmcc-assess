@@ -2122,16 +2122,18 @@
                             class="symbol required"></span>
                     </label>
                     <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
-                        <div class="input-group">
-                            <input type="text" placeholder="坐落" name="beLocated" class="form-control form-control-sm"
-                                   required>
-                            <div class="input-group-prepend ">
-                                <button class="btn btn-info btn-sm "
-                                        style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                        type="button" onclick="commonDeclareApplyModel.seatJoin(this);">自动拼接
-                                </button>
-                            </div>
-                        </div>
+                        <input type="text" placeholder="坐落" name="beLocated" class="form-control input-full"
+                               required>
+                        <%--<div class="input-group">--%>
+                            <%--<input type="text" placeholder="坐落" name="beLocated" class="form-control form-control-sm"--%>
+                                   <%--required>--%>
+                            <%--<div class="input-group-prepend ">--%>
+                                <%--<button class="btn btn-info btn-sm "--%>
+                                        <%--style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"--%>
+                                        <%--type="button" onclick="commonDeclareApplyModel.seatJoin(this);">自动拼接--%>
+                                <%--</button>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
                     </div>
                 </div>
             </div>
@@ -2386,30 +2388,30 @@
             </div>
         </div>
 
+
         <div class="row form-group">
-            <div class="col-md-4">
+            <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                 <div class="form-inline x-valid">
-                    <label class="col-sm-2 col-form-label">分摊面积</label>
-                    <div class="col-sm-10">
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        分摊面积
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                         <input type="text"
                                placeholder="分摊面积(数字)" name="apportionmentArea" class="form-control input-full"
                                data-rule-maxlength="100" data-rule-number='true'>
                     </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-inline x-valid">
-                    <label class="col-sm-2 col-form-label">登记机关</label>
-                    <div class="col-sm-10">
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        登记机关
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                         <input type="text"
-                               placeholder="登记机关" name="registrationAuthority" class="form-control input-full">
+                               placeholder="登记机关" name="registrationAuthority" class="form-control input-full"
+                               data-rule-number='true'>
                     </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-inline x-valid">
-                    <label class="col-sm-2 col-form-label">其它</label>
-                    <div class="col-sm-10">
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        其它
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                         <input type="text"
                                placeholder="其它" name="other" class="form-control input-full">
                     </div>
@@ -2417,19 +2419,19 @@
             </div>
         </div>
         <div class="row form-group">
-            <div class="col-md-4">
+            <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                 <div class="form-inline x-valid">
-                    <label class="col-sm-2 col-form-label">附记其它</label>
-                    <div class="col-sm-10">
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        附记其它
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                         <input type="text"
                                placeholder="附记其它" name="otherNote" class="form-control input-full">
                     </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-inline x-valid">
-                    <label class="col-sm-2 col-form-label">总层数</label>
-                    <div class="col-sm-10">
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        总层数
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                         <input type="text"
                                placeholder="总层数(数字)" name="floorCount" class="form-control input-full"
                                data-rule-maxlength="100"
