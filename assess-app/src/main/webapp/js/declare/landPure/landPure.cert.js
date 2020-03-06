@@ -725,12 +725,14 @@ declareRealtyRealEstateCert.inputFile = function (flag) {
 declareRealtyRealEstateCert.loadList = function () {
     var cols = declareCommon.getRealEstateColumn();
     cols.push({field: 'fileViewName', title: '不动产附件'});
+
     cols.push({
-        field: 'id', title: '操作', formatter: function (value, row, index) {
-            var str = '<div class="btn-margin">';
-            str += '<a class="btn btn-xs btn-success" href="javascript:declareRealtyRealEstateCert.showAddModelDeclareEconomicIndicators(' + row.id + ');" ><i class="fa fa-themeisle">经济指标</i></a>';
-            str += "<a class='btn btn-xs btn-success tooltips' data-placement='top' data-original-title='不动产附件' onclick='declareRealtyRealEstateCert.enclosure(" + row.id + ")'" + ">" + "<i class='fa'>" + "不动产附件" + "</a>";
-            str += '</div>';
+        field: 'id', title: '操作', width: "20%", formatter: function (value, row, index) {
+            var str = "";
+            str += '<button type="button" onclick="declareRealtyRealEstateCert.showAddModelDeclareEconomicIndicators(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="经济指标">经济指标</button>';
+
+            str += '<button type="button" onclick="declareRealtyRealEstateCert.enclosure(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="不动产附件">不动产附件</button>';
+
             return str;
         }
     });
