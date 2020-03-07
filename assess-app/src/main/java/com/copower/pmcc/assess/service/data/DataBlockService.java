@@ -2,7 +2,7 @@ package com.copower.pmcc.assess.service.data;
 
 import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
 import com.copower.pmcc.assess.constant.BaseConstant;
-import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateLandStateDao;
+import com.copower.pmcc.assess.dal.basis.dao.basic.*;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataBlockDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dal.cases.entity.*;
@@ -113,6 +113,28 @@ public class DataBlockService {
     private CaseEstateService caseEstateService;
     @Autowired
     private CaseEstateLandStateService caseEstateLandStateService;
+    @Autowired
+    private BasicEstateDao basicEstateDao;
+    @Autowired
+    private BasicBuildingDao basicBuildingDao;
+    @Autowired
+    private BasicUnitDao basicUnitDao;
+    @Autowired
+    private BasicHouseDao basicHouseDao;
+    @Autowired
+    private BasicEstateParkingDao basicEstateParkingDao;
+    @Autowired
+    private BasicUnitHuxingDao basicUnitHuxingDao;
+    @Autowired
+    private BasicHouseTradingDao basicHouseTradingDao;
+    @Autowired
+    private BasicHouseRoomDecorateDao basicHouseRoomDecorateDao;
+    @Autowired
+    private BasicHouseCorollaryEquipmentDao basicHouseCorollaryEquipmentDao;
+    @Autowired
+    private BasicHouseDamagedDegreeDao basicHouseDamagedDegreeDao;
+    @Autowired
+    private BasicHouseDamagedDegreeDetailDao basicHouseDamagedDegreeDetailDao;
 
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -241,7 +263,7 @@ public class DataBlockService {
                 BeanUtils.copyProperties(caseEstate, basicEstate);
                 basicEstate.setId(null);
                 basicEstate.setBisCase(true);
-                basicEstateService.saveAndUpdate(basicEstate,false);
+                basicEstateDao.addBasicEstate(basicEstate);
 
                 //附件拷贝
                 SysAttachmentDto example = new SysAttachmentDto();
@@ -285,7 +307,7 @@ public class DataBlockService {
                             BeanUtils.copyProperties(oldCaseEstateParking, basicEstateParking);
                             basicEstateParking.setId(null);
                             basicEstateParking.setEstateId(basicEstate.getId());
-                            Integer estateParkingId = basicEstateParkingService.saveAndUpdateBasicEstateParking(basicEstateParking,false);
+                            Integer estateParkingId = basicEstateParkingDao.saveBasicEstateParking(basicEstateParking);
 
                             example = new SysAttachmentDto();
                             example.setTableId(oldCaseEstateParking.getId());
@@ -304,7 +326,7 @@ public class DataBlockService {
                 SynchronousDataDto synchronousDataDto = new SynchronousDataDto();
                 HashMap<String, String> map = Maps.newHashMap();
                 map.put("estate_id", String.valueOf(basicEstate.getId()));
-                map.put("creator", commonService.thisUserAccount());
+                map.put("creator", caseEstate.getCreator());
                 synchronousDataDto.setFieldDefaultValue(map);
                 synchronousDataDto.setSourceDataBase(BaseConstant.DATABASE_PMCC_ASSESS_CASE);
                 synchronousDataDto.setWhereSql("estate_id=" + caseEstate.getId());
@@ -357,7 +379,8 @@ public class DataBlockService {
                         basicBuilding.setId(null);
                         basicBuilding.setEstateId(basicEstate.getId());
                         basicBuilding.setBisCase(true);
-                        basicBuildingService.saveAndUpdate(basicBuilding, false);
+                        basicBuilding.setFullName(basicEstate.getName()+basicBuilding.getBuildingNumber());
+                        basicBuildingDao.addBasicBuilding(basicBuilding);
 
                         oldCaseEstateTagging = new CaseEstateTagging();
                         oldCaseEstateTagging.setTableId(caseBuilding.getId());
@@ -375,7 +398,7 @@ public class DataBlockService {
                         synchronousDataDto = new SynchronousDataDto();
                         map = Maps.newHashMap();
                         map.put("building_id", String.valueOf(basicBuilding.getId()));
-                        map.put("creator", commonService.thisUserAccount());
+                        map.put("creator", caseBuilding.getCreator());
                         synchronousDataDto.setFieldDefaultValue(map);
                         synchronousDataDto.setWhereSql("building_id=" + caseBuilding.getId());
                         synchronousDataDto.setSourceDataBase(BaseConstant.DATABASE_PMCC_ASSESS_CASE);
@@ -409,7 +432,8 @@ public class DataBlockService {
                                 basicUnit.setEstateId(basicEstate.getId());
                                 basicUnit.setBuildingId(basicBuilding.getId());
                                 basicUnit.setBisCase(true);
-                                basicUnitService.saveAndUpdate(basicUnit, false);
+                                basicUnit.setFullName(basicBuilding.getFullName()+basicUnit.getUnitNumber());
+                                basicUnitDao.addBasicUnit(basicUnit);
 
                                 //附件拷贝
                                 example = new SysAttachmentDto();
@@ -442,7 +466,7 @@ public class DataBlockService {
                                             BeanUtils.copyProperties(oldCaseUnitHuxing, basicUnitHuxing);
                                             basicUnitHuxing.setId(null);
                                             basicUnitHuxing.setUnitId(basicUnit.getId());
-                                            Integer huxingId = basicUnitHuxingService.saveAndUpdateBasicUnitHuxing(basicUnitHuxing, false);
+                                            Integer huxingId = basicUnitHuxingDao.addBasicUnitHuxing(basicUnitHuxing);
 
                                             //附件拷贝
                                             example = new SysAttachmentDto();
@@ -489,7 +513,8 @@ public class DataBlockService {
                                         basicHouse.setBuildingId(basicBuilding.getId());
                                         basicHouse.setUnitId(basicUnit.getId());
                                         basicHouse.setBisCase(true);
-                                        basicHouseService.saveAndUpdate(basicHouse, false);
+                                        basicHouse.setFullName(basicUnit.getFullName()+basicHouse.getHouseNumber());
+                                        basicHouseDao.addBasicHouse(basicHouse);
 
                                         CaseHouseTrading queryTrading = new CaseHouseTrading();
                                         queryTrading.setHouseId(caseHouse.getId());
@@ -505,7 +530,7 @@ public class DataBlockService {
                                                 BeanUtils.copyProperties(oldCaseHouseTradings.get(0), basicHouseTrading);
                                                 basicHouseTrading.setHouseId(basicHouse.getId());
                                                 basicHouseTrading.setId(null);
-                                                basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicHouseTrading, false);
+                                                basicHouseTradingDao.addBasicHouseTrading(basicHouseTrading);
                                             }
                                         }
 
@@ -523,7 +548,7 @@ public class DataBlockService {
                                         synchronousDataDto = new SynchronousDataDto();
                                         map = Maps.newHashMap();
                                         map.put("house_id", String.valueOf(basicHouse.getId()));
-                                        map.put("creator", commonService.thisUserAccount());
+                                        map.put("creator", caseHouse.getCreator());
                                         synchronousDataDto.setFieldDefaultValue(map);
                                         synchronousDataDto.setWhereSql("house_id=" + caseHouse.getId());
                                         synchronousDataDto.setSourceDataBase(BaseConstant.DATABASE_PMCC_ASSESS_CASE);
@@ -583,7 +608,7 @@ public class DataBlockService {
                                                             BeanUtils.copyProperties(po, basicHouseRoomDecorate);
                                                             basicHouseRoomDecorate.setRoomId(room.getId());
                                                             basicHouseRoomDecorate.setId(null);
-                                                            basicHouseRoomDecorateService.saveAndUpdateBasicHouseRoomDecorate(basicHouseRoomDecorate, false);
+                                                            basicHouseRoomDecorateDao.addBasicHouseRoomDecorate(basicHouseRoomDecorate);
                                                         }
                                                     }
                                                 }
@@ -603,7 +628,7 @@ public class DataBlockService {
                                                     BeanUtils.copyProperties(oo, po);
                                                     po.setId(null);
                                                     po.setHouseId(basicHouse.getId());
-                                                    Integer EquipmentId = basicHouseCorollaryEquipmentService.saveAndUpdateBasicHouseCorollaryEquipment(po, false);
+                                                    Integer EquipmentId = basicHouseCorollaryEquipmentDao.saveBasicHouseCorollaryEquipment(po);
                                                     if (!ObjectUtils.isEmpty(sysAttachmentDtoList1)) {
                                                         for (SysAttachmentDto sysAttachmentDto : sysAttachmentDtoList1) {
                                                             attachmentDto = new SysAttachmentDto();
@@ -625,7 +650,7 @@ public class DataBlockService {
                                                     BeanUtils.copyProperties(caseHouseDamagedDegree, basicHouseDamagedDegree);
                                                     basicHouseDamagedDegree.setId(null);
                                                     basicHouseDamagedDegree.setHouseId(basicHouse.getId());
-                                                    basicHouseDamagedDegreeService.saveAndUpdateDamagedDegree(basicHouseDamagedDegree, false);
+                                                    basicHouseDamagedDegreeDao.saveBasicHouseDamagedDegree(basicHouseDamagedDegree);
                                                     List<CaseHouseDamagedDegreeDetail> damagedDegreeDetailList = caseHouseDamagedDegreeService.getDamagedDegreeDetails(caseHouseDamagedDegree.getId());
                                                     if (CollectionUtils.isNotEmpty(damagedDegreeDetailList)) {
                                                         for (CaseHouseDamagedDegreeDetail caseHouseDamagedDegreeDetail : damagedDegreeDetailList) {
@@ -634,7 +659,7 @@ public class DataBlockService {
                                                             basicHouseDamagedDegreeDetail.setDamagedDegreeId(basicHouseDamagedDegree.getId());
                                                             basicHouseDamagedDegreeDetail.setId(null);
                                                             basicHouseDamagedDegreeDetail.setHouseId(basicHouse.getId());
-                                                            basicHouseDamagedDegreeService.saveAndUpdateDamagedDegreeDetail(basicHouseDamagedDegreeDetail, false);
+                                                            basicHouseDamagedDegreeDetailDao.addBasicHouseDamagedDegreeDetail(basicHouseDamagedDegreeDetail);
                                                         }
                                                     }
                                                 }
