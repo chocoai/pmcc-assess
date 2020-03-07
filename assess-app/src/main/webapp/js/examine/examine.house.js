@@ -46,51 +46,34 @@
         return houseCommon.houseForm.find('[name=id]').val() != null ? houseCommon.houseForm.find('[name=id]').val() : houseCommon.tableId;
     };
 
-    houseCommon.getUnitId = function (callback) {
-        examineCommon.getBasicApplyBatchDetailList({
-            tableId: houseCommon.getHouseId(),
-            applyBatchId: houseCommon.houseForm.find("input[name='applyBatchId']").val()
-        }, function (itemA) {
-            if (itemA.length == 0) {
-                return false;
-            }
-            examineCommon.getBasicApplyBatchDetailList({id: itemA[0].pid}, function (itemB) {
-                if (itemB.length == 0) {
-                    return false;
-                }
-                if (callback) {
-                    callback(itemB[0]);
-                }
-            });
-        });
+    houseCommon.getUnitId = function () {
+         return houseCommon.houseForm.find('[name=unitId]').val();
     };
 
     //户型选择
     houseCommon.selectHuxing = function (_this) {
-        houseCommon.getUnitId(function (data) {
-            assessHuxing.selectByBasicUnitId({
-                basicUnitId: data.tableId,
-                success: function (row) {
-                    //1.赋值 2.拷贝附件并显示附件数据
-                    $(_this).closest('.input-group').find('[name=huxingId]').val(row.id);
-                    $(_this).closest('.input-group').find(':text').val(row.name);
-                    houseCommon.houseForm.find('[name=area]').val(row.area);
-                    houseCommon.houseForm.find('[name=orientation]').val(row.orientation).trigger('change');
-                    $.ajax({
-                        url: getContextPath() + '/basicHouse/copyHuxingPlan',
-                        data: {
-                            sourceTableId: row.id,
-                            sourceTableName: row.tableName,
-                            targetTableId: houseCommon.getHouseId(),
-                            fieldsName: houseCommon.houseFileControlIdArray[0]
-                        },
-                        success: function (result) {
-                            houseCommon.fileShow(houseCommon.houseFileControlIdArray[0], false);
-                        }
-                    })
-                }
-            })
-        });
+        assessHuxing.selectByBasicUnitId({
+            basicUnitId:houseCommon.getUnitId(),
+            success: function (row) {
+                //1.赋值 2.拷贝附件并显示附件数据
+                $(_this).closest('.input-group').find('[name=huxingId]').val(row.id);
+                $(_this).closest('.input-group').find(':text').val(row.name);
+                houseCommon.houseForm.find('[name=area]').val(row.area);
+                houseCommon.houseForm.find('[name=orientation]').val(row.orientation).trigger('change');
+                $.ajax({
+                    url: getContextPath() + '/basicHouse/copyHuxingPlan',
+                    data: {
+                        sourceTableId: row.id,
+                        sourceTableName: row.tableName,
+                        targetTableId: houseCommon.getHouseId(),
+                        fieldsName: houseCommon.houseFileControlIdArray[0]
+                    },
+                    success: function (result) {
+                        houseCommon.fileShow(houseCommon.houseFileControlIdArray[0], false);
+                    }
+                })
+            }
+        })
     };
 
     //户型选择
@@ -731,70 +714,68 @@
 
 
     houseCommon.orientationFun = function (readonly) {
-        houseCommon.getUnitId(function (unitInfo) {
-            var select = {tableId: unitInfo.tableId, type: "unit"};
-            examineCommon.getApplyBatchEstateTaggingsByTableId(select, function (unitMarkerArray) {
-                if (unitMarkerArray.length == 0) {
-                    Alert("请先标注单元");
-                    return false;
+        var select = {tableId: unitInfo.tableId, type: "unit"};
+        examineCommon.getApplyBatchEstateTaggingsByTableId(select, function (unitMarkerArray) {
+            if (unitMarkerArray.length == 0) {
+                Alert("请先标注单元");
+                return false;
+            }
+            var unitMarker = unitMarkerArray[0];
+            if (!unitMarker) {
+                notifyInfo('提示',"还未标注单元位置信息");
+                return;
+            }
+            var attachmentId = houseCommon.getMarkersysAttachmentId();
+            if (!attachmentId) {
+                notifyInfo('提示',"未找到相关户型图片");
+                return;
+            }
+            examineCommon.getApplyBatchEstateTaggingsByTableId({
+                tableId: houseCommon.getHouseId(), type: "house"
+            }, function (result) {
+                var data = {
+                    attachmentId: attachmentId,
+                    lng: unitMarker.lng,
+                    lat: unitMarker.lat,
+                    deg: 0,
+                    readonly: readonly
+                };
+                if (result.length > 0) {
+                    if (result[0].deg) {
+                        data.deg = result[0].deg;
+                    }
+                    if (result[0].attachmentId) {
+                        data.attachmentId = result[0].attachmentId;
+                    }
                 }
-                var unitMarker = unitMarkerArray[0];
-                if (!unitMarker) {
-                    notifyInfo('提示',"还未标注单元位置信息");
-                    return;
-                }
-                var attachmentId = houseCommon.getMarkersysAttachmentId();
-                if (!attachmentId) {
-                    notifyInfo('提示',"未找到相关户型图片");
-                    return;
-                }
-                examineCommon.getApplyBatchEstateTaggingsByTableId({
-                    tableId: houseCommon.getHouseId(), type: "house"
-                }, function (result) {
-                    var data = {
-                        attachmentId: attachmentId,
-                        lng: unitMarker.lng,
-                        lat: unitMarker.lat,
-                        deg: 0,
-                        readonly: readonly
-                    };
-                    if (result.length > 0) {
-                        if (result[0].deg) {
-                            data.deg = result[0].deg;
-                        }
-                        if (result[0].attachmentId) {
-                            data.attachmentId = result[0].attachmentId;
+                var contentUrl = getContextPath() + '/map/houseTagging?' + examineCommon.parseParam(data);
+                layer.open({
+                    type: 2,
+                    title: '房屋标注',
+                    shade: true,
+                    maxmin: true, //开启最大化最小化按钮
+                    area: [examineCommon.getMarkerAreaInWidth, examineCommon.getMarkerAreaInHeight],
+                    content: contentUrl,
+                    success: function (layero) {
+                        houseCommon.houseMapiframe = window[layero.find('iframe')[0]['name']];
+                    },
+                    cancel: function () {
+                        if (!readonly) {
+                            //到iframe中获取数据
+                            var resultData = {
+                                tableId: houseCommon.getHouseId(),
+                                type: "house",
+                                lng: houseCommon.houseMapiframe.config.position.lng,
+                                lat: houseCommon.houseMapiframe.config.position.lat,
+                                deg: houseCommon.houseMapiframe.config.deg,
+                                attachmentId: houseCommon.houseMapiframe.config.attachmentId,
+                                name: houseCommon.houseForm.find('[name=houseNumber]').val()
+                            };
+                            examineCommon.addBasicEstateTagging(resultData, function () {
+                                notifyInfo('提示',"标注成功信息!");
+                            });
                         }
                     }
-                    var contentUrl = getContextPath() + '/map/houseTagging?' + examineCommon.parseParam(data);
-                    layer.open({
-                        type: 2,
-                        title: '房屋标注',
-                        shade: true,
-                        maxmin: true, //开启最大化最小化按钮
-                        area: [examineCommon.getMarkerAreaInWidth, examineCommon.getMarkerAreaInHeight],
-                        content: contentUrl,
-                        success: function (layero) {
-                            houseCommon.houseMapiframe = window[layero.find('iframe')[0]['name']];
-                        },
-                        cancel: function () {
-                            if (!readonly) {
-                                //到iframe中获取数据
-                                var resultData = {
-                                    tableId: houseCommon.getHouseId(),
-                                    type: "house",
-                                    lng: houseCommon.houseMapiframe.config.position.lng,
-                                    lat: houseCommon.houseMapiframe.config.position.lat,
-                                    deg: houseCommon.houseMapiframe.config.deg,
-                                    attachmentId: houseCommon.houseMapiframe.config.attachmentId,
-                                    name: houseCommon.houseForm.find('[name=houseNumber]').val()
-                                };
-                                examineCommon.addBasicEstateTagging(resultData, function () {
-                                    notifyInfo('提示',"标注成功信息!");
-                                });
-                            }
-                        }
-                    });
                 });
             });
         });
@@ -804,68 +785,66 @@
      * 户型地图朝向
      */
     houseCommon.orientationFun2 = function (readonly) {
-        houseCommon.getUnitId(function (unitInfo) {
+        toolMapHandleFun.getToolMapHandleListByExample({
+            tableId: houseCommon.getUnitId(),
+            type: "unit"
+        }, function (unitMarker) {
+            if (!unitMarker) {
+                notifyInfo('提示',"还未标注单元位置信息");
+                return;
+            }
             toolMapHandleFun.getToolMapHandleListByExample({
-                tableId: unitInfo.tableId,
-                type: "unit"
-            }, function (unitMarker) {
-                if (!unitMarker) {
-                    notifyInfo('提示',"还未标注单元位置信息");
+                tableId: houseCommon.getHouseId(),
+                type: "house"
+            }, function (result) {
+                var attachmentId = houseCommon.getMarkersysAttachmentId();
+                if (!attachmentId) {
+                    notifyInfo('提示',"未找到相关户型图片");
                     return;
                 }
-                toolMapHandleFun.getToolMapHandleListByExample({
-                    tableId: houseCommon.getHouseId(),
-                    type: "house"
-                }, function (result) {
-                    var attachmentId = houseCommon.getMarkersysAttachmentId();
-                    if (!attachmentId) {
-                        notifyInfo('提示',"未找到相关户型图片");
-                        return;
-                    }
-                    var data = {
-                        attachmentId: attachmentId,
-                        lng: unitMarker[0].lng,
-                        lat: unitMarker[0].lat,
-                        deg: 0,
-                        readonly: readonly
-                    };
-                    if (result.length != 0) {
-                        data.deg = result[0].deg;
-                        data.attachmentId = result[0].attachmentId;
-                    }
-                    var contentUrl = getContextPath() + '/map/houseTagging?' + examineCommon.parseParam(data);
-                    layer.open({
-                        type: 2,
-                        title: '房屋标注',
-                        shade: true,
-                        maxmin: true, //开启最大化最小化按钮
-                        area: [examineCommon.getMarkerAreaInWidth, examineCommon.getMarkerAreaInHeight],
-                        content: contentUrl,
-                        success: function (layero) {
-                            houseCommon.houseMapiframe = window[layero.find('iframe')[0]['name']];
-                        },
-                        cancel: function () {
-                            if (!readonly) {
-                                //到iframe中获取数据
-                                var saveData = {
-                                    tableId: houseCommon.getHouseId(),
-                                    type: "house",
-                                    lng: houseCommon.houseMapiframe.config.position.lng,
-                                    lat: houseCommon.houseMapiframe.config.position.lat,
-                                    deg: houseCommon.houseMapiframe.config.deg,
-                                    attachmentId: houseCommon.houseMapiframe.config.attachmentId
-                                };
-                                toolMapHandleFun.removeToolMapHandle({
-                                    type: saveData.type,
-                                    tableId: saveData.tableId
-                                }, function () {
-                                    toolMapHandleFun.saveData(saveData, function () {
-                                        notifyInfo('提示',"成功！");
-                                    });
+                var data = {
+                    attachmentId: attachmentId,
+                    lng: unitMarker[0].lng,
+                    lat: unitMarker[0].lat,
+                    deg: 0,
+                    readonly: readonly
+                };
+                if (result.length != 0) {
+                    data.deg = result[0].deg;
+                    data.attachmentId = result[0].attachmentId;
+                }
+                var contentUrl = getContextPath() + '/map/houseTagging?' + examineCommon.parseParam(data);
+                layer.open({
+                    type: 2,
+                    title: '房屋标注',
+                    shade: true,
+                    maxmin: true, //开启最大化最小化按钮
+                    area: [examineCommon.getMarkerAreaInWidth, examineCommon.getMarkerAreaInHeight],
+                    content: contentUrl,
+                    success: function (layero) {
+                        houseCommon.houseMapiframe = window[layero.find('iframe')[0]['name']];
+                    },
+                    cancel: function () {
+                        if (!readonly) {
+                            //到iframe中获取数据
+                            var saveData = {
+                                tableId: houseCommon.getHouseId(),
+                                type: "house",
+                                lng: houseCommon.houseMapiframe.config.position.lng,
+                                lat: houseCommon.houseMapiframe.config.position.lat,
+                                deg: houseCommon.houseMapiframe.config.deg,
+                                attachmentId: houseCommon.houseMapiframe.config.attachmentId
+                            };
+                            toolMapHandleFun.removeToolMapHandle({
+                                type: saveData.type,
+                                tableId: saveData.tableId
+                            }, function () {
+                                toolMapHandleFun.saveData(saveData, function () {
+                                    notifyInfo('提示',"成功！");
                                 });
-                            }
+                            });
                         }
-                    });
+                    }
                 });
             });
         });
