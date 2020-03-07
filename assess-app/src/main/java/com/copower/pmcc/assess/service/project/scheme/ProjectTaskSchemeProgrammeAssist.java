@@ -127,7 +127,10 @@ public class ProjectTaskSchemeProgrammeAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView detailsView(ProjectPlanDetails projectPlanDetails, Integer boxId) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/schemeProgrammeApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
-        setDetailParams(modelAndView, projectPlanDetails.getProjectId(), projectPlanDetails.getPlanId(), projectPlanDetails.getProcessInsId());
+        List<SchemeAreaGroupVo> areaGroups = schemeAreaGroupService.getSchemeAreaGroupVos(projectPlanDetails.getProjectId());//获取分组信息
+        ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId()));
+        modelAndView.addObject("projectInfo", projectInfoVo);
+        modelAndView.addObject("areaGroups", areaGroups);
         return modelAndView;
     }
 
@@ -201,27 +204,6 @@ public class ProjectTaskSchemeProgrammeAssist implements ProjectTaskInterface {
         BaseDataDic entrustPurposeData = baseDataDicService.getDataDicById(projectInfoVo.getEntrustPurpose());
         String valueDateExplain = baseDataDicService.getValueByKey("valueDateExplain", entrustPurposeData);
         modelAndView.addObject("valueDateExplain", valueDateExplain);
-        if (StringUtils.isNotBlank(processInsId)) {
-            modelAndView.addObject("processInsId", processInsId);
-        }
-    }
-
-    /**
-     * 详情 参数
-     *
-     * @param modelAndView
-     * @param projectId
-     * @param planId
-     */
-    private void setDetailParams(ModelAndView modelAndView, Integer projectId, Integer planId, String processInsId) {
-        List<SchemeAreaGroupVo> areaGroups = schemeAreaGroupService.getSchemeAreaGroupVos(projectId);//获取分组信息
-        ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(projectId));
-        modelAndView.addObject("projectInfo", projectInfoVo);
-        modelAndView.addObject("areaGroups", areaGroups);
-        modelAndView.addObject("bestUseList", dataBestUseDescriptionService.dataBestUseDescriptionList(projectInfoVo.getProjectTypeId(), projectInfoVo.getProjectCategoryId()));
-        modelAndView.addObject("setUseList", baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.EXAMINE_HOUSE_PRACTICAL_USE));
-        modelAndView.addObject("dataDicMethodList", baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_EVALUATION_METHOD));
-        modelAndView.addObject("planId", planId);
         if (StringUtils.isNotBlank(processInsId)) {
             modelAndView.addObject("processInsId", processInsId);
         }

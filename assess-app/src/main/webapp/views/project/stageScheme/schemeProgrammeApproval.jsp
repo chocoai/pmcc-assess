@@ -100,7 +100,7 @@
                                             </div>
                                         </div>
 
-                                        <table>
+                                        <table class="table">
                                             <thead>
                                             <tr>
                                                 <th style="width: 5%;word-break: break-all;">编号</th>
