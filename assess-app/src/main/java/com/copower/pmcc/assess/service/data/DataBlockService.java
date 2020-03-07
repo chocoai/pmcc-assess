@@ -34,6 +34,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
 import java.util.HashMap;
@@ -230,6 +231,7 @@ public class DataBlockService {
     }
 
     //将案例库的数据拷贝到Basic，包含对应的附件
+    @Transactional(rollbackFor = Exception.class)
     public void caseAllToBasic() throws Exception {
         //拷贝 楼盘 楼栋 单元 房屋 拷贝房屋时注意将 houseCaseSummary数据处理掉
         List<CaseEstate> caseEstateList = caseEstateService.getCaseEstateList(new CaseEstate());
