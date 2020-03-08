@@ -38,7 +38,10 @@
                                         <i class="far fa-calendar" aria-hidden="true"></i>
                                     </c:otherwise>
                                 </c:choose>
-                                    ${projectPlan.planName}
+                                <p>
+                                        ${projectPlan.planName}
+                                </p>
+
                             </a>
                         </li>
                     </c:forEach>
