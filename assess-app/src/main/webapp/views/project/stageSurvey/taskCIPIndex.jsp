@@ -99,48 +99,44 @@
                                                 <ul id="ztree" class="ztree"></ul>
                                             </div>
                                             <div class="col-md-8 pull-left" id="btnGroup">
-                                                <button class="btn btn-sm btn-success deserveTool"
+                                                <button type="button" class="btn btn-sm btn-success deserveTool"
                                                    onclick="batchTreeTool.showAddModal()">
                                                     新增
                                                 </button>
-                                                <button class="btn btn-sm btn-primary masterTool"
-                                                   onclick=" batchTreeTool.getAndEditDetail();">
-                                                    编辑
-                                                </button>
-                                                <button class="btn btn-sm btn-warning deleteTool"
+                                                <button type="button" class="btn btn-sm btn-warning deleteTool"
                                                    onclick=" batchTreeTool.deleteDetail();">
                                                     删除
                                                 </button>
-                                                <button class="btn btn-sm btn-primary"
+                                                <button type="button" class="btn btn-sm btn-primary"
                                                    onclick=" batchTreeTool.expandAll(true);">
                                                     全部展开
                                                 </button>
-                                                <button class="btn btn-sm btn-primary"
+                                                <button type="button" class="btn btn-sm btn-primary"
                                                    onclick=" batchTreeTool.expandAll(false);">
                                                     全部收起
                                                 </button>
-                                                <button class="btn btn-sm btn-primary fillInformation deserveTool"
+                                                <button type="button" class="btn btn-sm btn-primary fillInformation deserveTool"
                                                    onclick="batchTreeTool.fillInformation();">
                                                     填写信息
                                                 </button>
-                                                <button style="display: none"
+                                                <button type="button" style="display: none"
                                                    class="btn btn-sm btn-primary fillInformation limitTool"
                                                    onclick="batchTreeTool.checkInfo();">
                                                     查看信息
                                                 </button>
-                                                <button class="btn btn-sm btn-warning copy" onclick="batchTreeTool.copy();">
+                                                <button type="button" class="btn btn-sm btn-warning copy" onclick="batchTreeTool.copy();">
                                                     复制
                                                 </button>
-                                                <button class="btn btn-sm btn-warning paste deserveTool"
+                                                <button type="button" class="btn btn-sm btn-warning paste deserveTool"
                                                    onclick="batchTreeTool.paste();">
                                                     粘贴
                                                 </button>
-                                                <button class="btn btn-sm btn-warning paste masterTool"
+                                                <button type="button" class="btn btn-sm btn-warning paste masterTool"
                                                    onclick="batchTreeTool.deepCopy();">
                                                     深复制
                                                 </button>
                                                 <c:if test="${not empty declareRecord}">
-                                                    <button class="btn btn-sm btn-warning paste alternativeCase"
+                                                    <button type="button" class="btn btn-sm btn-warning paste alternativeCase"
                                                        style="display: none"
                                                        onclick="batchTreeTool.addToAlternative();">
                                                         添加到备选案例
@@ -947,31 +943,29 @@
     //删除明细
     batchTreeTool.deleteDetail = function () {
         AlertConfirm("是否确认删除", "删除相应的数据后将不可恢复", function () {
-            if (result) {
-                var node = zTreeObj.getSelectedNodes()[0];
-                if (node.id == 0) {
-                    notifyInfo('提示',"无法删除，请重新选择。");
-                    return false;
-                }
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/basicApplyBatch/deleteDetail",
-                    data: {id: node.id},
-                    type: "post",
-                    dataType: "json",
-                    success: function (result) {
-                        if (result.ret) {
-                            //刷新树 如果存在同级节点 则移除当前节点 否则刷新上上级节点  最后默认选中上级节点
-                            var parentNode = node.getParentNode();
-                            zTreeObj.removeNode(node);
-                            if (parentNode) {
-                                zTreeObj.selectNode(parentNode);
-                            }
-                        } else {
-                            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
-                        }
-                    }
-                })
+            var node = zTreeObj.getSelectedNodes()[0];
+            if (node.id == 0) {
+                notifyInfo('提示',"无法删除，请重新选择。");
+                return false;
             }
+            $.ajax({
+                url: "${pageContext.request.contextPath}/basicApplyBatch/deleteDetail",
+                data: {id: node.id},
+                type: "post",
+                dataType: "json",
+                success: function (result) {
+                    if (result.ret) {
+                        //刷新树 如果存在同级节点 则移除当前节点 否则刷新上上级节点  最后默认选中上级节点
+                        var parentNode = node.getParentNode();
+                        zTreeObj.removeNode(node);
+                        if (parentNode) {
+                            zTreeObj.selectNode(parentNode);
+                        }
+                    } else {
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                    }
+                }
+            })
         });
     }
 
