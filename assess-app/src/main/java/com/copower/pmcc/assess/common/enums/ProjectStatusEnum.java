@@ -23,6 +23,7 @@ public enum ProjectStatusEnum {
     FINISH("finish", "完成"),
     PLAN("planExecute", "安排计划"),
     TASK("task", "提交成果"),
+    HANGUP("hangup", "挂起"),
     RUNING("runing","正在进行中");
 
     private String key;
