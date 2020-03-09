@@ -118,41 +118,6 @@
         </div>
     </div>
 </div>
-
-
-<%--
-<div id="divBoxRightItem" class="modal fade bs-example-modal-lg" data-backdrop="static"
-     tabindex="-1"
-     role="dialog"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">他权信息</h3>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <form class="form-horizontal">
-                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                            <table class="table table-bordered" id="RightItemList">
-                                <!-- cerare document add ajax data-->
-                            </table>
-
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">
-                    关闭
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
---%>
 <script type="application/javascript">
     $(function () {
         getItemHtml();
@@ -247,7 +212,7 @@
                         html += "</td>";
 
                         html += "<td class='hidden-xs'>";
-                        html += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="查看" onclick="checkRightItem(' + item.inventoryRightRecordId + ')"><i class="fa fa-search fa-white"></i></a>';
+                        html += '<button type="button" class="btn btn-xs btn-info tooltips"  data-placement="top" data-original-title="查看" onclick="checkRightItem(' + item.inventoryRightRecordId + ')"><i class="fa fa-search fa-white"></i></button>';
                         html += "</td>";
 
                         html += "</tr>";

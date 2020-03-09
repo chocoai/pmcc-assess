@@ -168,7 +168,7 @@
                         html += "</td>";
 
                         html += "<td class='hidden-xs'>";
-                        html += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="查看" onclick="checkRightItem('+item.inventoryRightRecordId+')"><i class="fa fa-search fa-white"></i></a>';
+                        html += '<button type="button" class="btn btn-xs btn-info tooltips"  data-placement="top" data-original-title="查看" onclick="checkRightItem('+item.inventoryRightRecordId+')"><i class="fa fa-search fa-white"></i></button>';
                         html += "</td>";
                         html += "</tr>";
                     });

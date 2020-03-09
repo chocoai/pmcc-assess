@@ -5,8 +5,6 @@
     <%@include file="/views/share/main_css.jsp" %>
 </head>
 <script type="text/html" id="taskLiquidationAnalysisDiv">
-
-
     <div class="col-md-12">
         <div class="card full-height">
             <div class="card-header collapse-link">
@@ -37,7 +35,7 @@
                             <div class="col-sm-5">
 
                                 <input type="hidden" name="judgeObjectIds">
-                                <button class="btn-primary btn btn-sm"
+                                <button type="button" class="btn-primary btn btn-sm"
                                      onclick="schemeJudgeObj.init({callback:selectRecord,this_:this});">
                                     选择估价对象
                                     <span class="glyphicon  glyphicon-new-window" aria-hidden="true"></span>
@@ -71,7 +69,7 @@
                                     <input class="form-control" type="text" name="seat"
                                            placeholder="坐落">
                             </div>
-                            <button class="btn btn-info btn-sm"
+                            <button type="button" class="btn btn-info btn-sm"
                                     onclick="searchLiquidationJudgeData(this);"><span class="btn-label">
 												<i class="fa fa-search"></i>
 											</span>搜索</button>

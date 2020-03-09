@@ -42,7 +42,7 @@ public class SchemeJudgeObjectDao {
 
     public List<SchemeJudgeObject> getJudgeObjectListByQuery(String name,String certName, String seat,String ownership,Integer areaGroupId,List<Integer> ids) {
         SchemeJudgeObjectExample example = new SchemeJudgeObjectExample();
-        SchemeJudgeObjectExample.Criteria criteria = example.createCriteria();
+        SchemeJudgeObjectExample.Criteria criteria = example.createCriteria().andBisEnableEqualTo(true);
         if(areaGroupId!=null){
             criteria.andAreaGroupIdEqualTo(areaGroupId);
         }

@@ -615,6 +615,7 @@ public class SchemeJudgeObjectService {
         schemeAreaGroup.setEntrustPurpose(schemeProgrammeDto.getEntrustmentPurpose());
         schemeAreaGroup.setRemarkEntrustPurpose(schemeProgrammeDto.getRemarkEntrustPurpose());
         schemeAreaGroup.setValueDefinition(schemeProgrammeDto.getValueDefinition());
+        schemeAreaGroup.setValueDefinitionDesc(schemeProgrammeDto.getValueDefinitionDesc());
         schemeAreaGroup.setPropertyScope(schemeProgrammeDto.getPropertyScope());
         schemeAreaGroup.setScopeInclude(schemeProgrammeDto.getScopeInclude());
         schemeAreaGroup.setScopeNotInclude(schemeProgrammeDto.getScopeNotInclude());

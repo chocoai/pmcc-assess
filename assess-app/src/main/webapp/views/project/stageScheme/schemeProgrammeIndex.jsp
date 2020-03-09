@@ -1285,6 +1285,8 @@
         data.remarkEntrustPurpose = $(areaPanel).find('[name="remarkEntrustPurpose"]').val();
 
         data.valueDefinition = $(areaPanel).find('[name="valueDefinition"]').val();
+        data.valueDefinitionDesc = $(areaPanel).find('[name="valueDefinitionDesc"]').val();
+
         data.propertyScope = $(areaPanel).find('[name="propertyScope"]').val();
         data.scopeInclude = $(areaPanel).find('[name="scopeInclude"]').val();
         data.scopeNotInclude = $(areaPanel).find('[name="scopeNotInclude"]').val();

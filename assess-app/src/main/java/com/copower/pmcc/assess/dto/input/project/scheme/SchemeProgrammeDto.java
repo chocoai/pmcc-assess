@@ -18,6 +18,7 @@ public class SchemeProgrammeDto {
     private Integer entrustmentPurpose;
     private String remarkEntrustPurpose;
     private Integer valueDefinition;
+    private String valueDefinitionDesc;
     private Integer propertyScope;
     private String scopeInclude;
     private String scopeNotInclude;
@@ -70,6 +71,14 @@ public class SchemeProgrammeDto {
 
     public void setValueDefinition(Integer valueDefinition) {
         this.valueDefinition = valueDefinition;
+    }
+
+    public String getValueDefinitionDesc() {
+        return valueDefinitionDesc;
+    }
+
+    public void setValueDefinitionDesc(String valueDefinitionDesc) {
+        this.valueDefinitionDesc = valueDefinitionDesc;
     }
 
     public Integer getPropertyScope() {

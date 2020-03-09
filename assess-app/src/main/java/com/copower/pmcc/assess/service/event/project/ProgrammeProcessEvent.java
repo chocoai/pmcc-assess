@@ -2,9 +2,11 @@ package com.copower.pmcc.assess.service.event.project;
 
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlan;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectWorkStage;
 import com.copower.pmcc.assess.service.event.BaseProcessEvent;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
+import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.ProjectPlanService;
 import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
@@ -28,6 +30,8 @@ public class ProgrammeProcessEvent extends BaseProcessEvent {
     private ProjectInfoService projectInfoService;
     @Autowired
     private ProjectWorkStageService projectWorkStageService;
+    @Autowired
+    private ProjectPlanDetailsService projectPlanDetailsService;
 
     @Override
     public void processFinishExecuteExtend(ProcessExecution processExecution, Date executeDate, String beans) {
@@ -38,13 +42,12 @@ public class ProgrammeProcessEvent extends BaseProcessEvent {
     @Override
     public void processFinishExecute(ProcessExecution processExecution) throws Exception {
         super.processFinishExecute(processExecution);
-        ProjectPlan projectPlan = projectPlanService.getProjectplanByProcessInsId(processExecution.getProcessInstanceId());
-        if (projectPlan == null){
-            return;
-        }
+        ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsByProcessInsId(processExecution.getProcessInstanceId());
+        if (projectPlanDetails == null) return;
+        ProjectPlan projectPlan = projectPlanService.getProjectplanById(projectPlanDetails.getPlanId());
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlan.getProjectId());
         ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlan.getWorkStageId());
-        schemeJudgeObjectService.submitProgrammeHandle(projectInfo,projectPlan,projectWorkStage) ;
+        schemeJudgeObjectService.submitProgrammeHandle(projectInfo, projectPlan, projectWorkStage);
 
     }
 }
