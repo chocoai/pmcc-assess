@@ -129,6 +129,9 @@
                         str += '<button onclick="editHref(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="继续填写">';
                         str += '<i class="fa fa-pen"></i>';
                         str += '</button>';
+                        str += '<button onclick="projectClearData (' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-warning btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
+                        str += '<i class="fa fa-minus"></i>';
+                        str += '</button>';
                     } else {
                         str += '<button onclick="checkDetail(' + row.id + ')" style="margin-left: 5px;" class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看详情">';
                         str += '<i class="fa fa-search"></i>';
@@ -162,6 +165,30 @@
         var href = "${pageContext.request.contextPath}/projectInfo/projectInfoEdit";
         href += "?projectId=" + id;
         window.open(href, "");
+    }
+
+    //项目清除
+    function projectClearData(id) {
+        AlertConfirm("确认删除么","删除后数据将不可恢复", function () {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/projectInfo/projectClearData",
+                type: "post",
+                dataType: "json",
+                data: {id: id},
+                success: function (result) {
+                    if (result.ret) {
+                        notifySuccess('成功','删除成功');
+                        loadProjectList();
+                    }
+                    else {
+                        Alert("失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        });
     }
 </script>
 </body>

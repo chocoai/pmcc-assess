@@ -400,20 +400,22 @@ public class BaseDataDicService {
      * @return
      */
     public String getValueByKey(String key,BaseDataDic data){
-        List<KeyValueDto> keyValueDtos = JSON.parseArray(data.getKeyValue(), KeyValueDto.class);
-        if(CollectionUtils.isNotEmpty(keyValueDtos)) {
-            for (KeyValueDto dto : keyValueDtos) {
-                if (key.equals(dto.getKey())) {
-                    return dto.getValue();
-                }
-            }
-        }else{
-            BaseDataDic parentData = this.getDataDicById(data.getPid());
-            keyValueDtos = JSON.parseArray(parentData.getKeyValue(), KeyValueDto.class);
+        if(StringUtils.isNotBlank(key)&&data!=null){
+            List<KeyValueDto> keyValueDtos = JSON.parseArray(data.getKeyValue(), KeyValueDto.class);
             if(CollectionUtils.isNotEmpty(keyValueDtos)) {
                 for (KeyValueDto dto : keyValueDtos) {
                     if (key.equals(dto.getKey())) {
                         return dto.getValue();
+                    }
+                }
+            }else{
+                BaseDataDic parentData = this.getDataDicById(data.getPid());
+                keyValueDtos = JSON.parseArray(parentData.getKeyValue(), KeyValueDto.class);
+                if(CollectionUtils.isNotEmpty(keyValueDtos)) {
+                    for (KeyValueDto dto : keyValueDtos) {
+                        if (key.equals(dto.getKey())) {
+                            return dto.getValue();
+                        }
                     }
                 }
             }

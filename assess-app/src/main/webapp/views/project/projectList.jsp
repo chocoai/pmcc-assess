@@ -245,17 +245,9 @@
         cols.push({
             field: 'id', title: '操作', width: '7%', formatter: function (value, row, index) {
                 var str = "";
-                if (row.projectStatus) {
-                    if (row.projectStatus == '草稿') {
-                        str += '<button type="button" onclick="editHref(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="继续填写">';
-                        str += '<i class="fa fa-pen"></i>';
-                        str += '</button>';
-                    } else {
-                        str += '<button type="button" onclick="checkDetail(' + row.id + ')" style="margin-left: 5px;" class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看详情">';
-                        str += '<i class="fa fa-search"></i>';
-                        str += '</button>';
-                    }
-                }
+                str += '<button type="button" onclick="checkDetail(' + row.id + ')" style="margin-left: 5px;" class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看详情">';
+                str += '<i class="fa fa-search"></i>';
+                str += '</button>';
                 return str;
             }
         });
@@ -269,31 +261,6 @@
             }
         });
     }
-
-    //项目清除
-    function projectClearData(id) {
-        Alert("确认删除!", 2, null, function () {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/projectInfo/projectClearData",
-                type: "post",
-                dataType: "json",
-                data: {id: id},
-                success: function (result) {
-                    if (result.ret) {
-                        notifySuccess('成功','删除成功');
-                        loadProjectList();
-                    }
-                    else {
-                        Alert("失败，失败原因:" + result.errmsg);
-                    }
-                },
-                error: function (result) {
-                    AlertError("失败", "调用服务端方法失败，失败原因:" + result);
-                }
-            })
-        });
-    }
-
 
     function selectCreate(_this) {
         var div = $(_this).closest("div");

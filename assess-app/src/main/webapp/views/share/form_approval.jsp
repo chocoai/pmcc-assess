@@ -40,12 +40,10 @@
                                             <span class="form-radio-sign">不同意，退回申请人</span>
                                         </label>
                                     </div>
-
                                 </div>
                                 <c:if test="${bisSelectUser!='1'}">
                                     <c:if test="${lastNodes==0}"> <%--如果有下级节点--%>
                                         <div class="col-md-5" id="div_bisNext">
-
                                             <div class="form-check">
                                                 <label class="form-check-label">
                                                     <input id="chk_bisNext" name="chk_bisNext"
@@ -54,14 +52,12 @@
                                                     <span class="form-check-sign">跳过多级审批</span>
                                                 </label>
                                             </div>
-
                                         </div>
                                     </c:if>
                                 </c:if>
                             </div>
                         </div>
                     </div>
-
                     <c:if test="${bisSelectUser=='1'}">
                         <div class="row form-group">
                             <div class="col-md-12">
