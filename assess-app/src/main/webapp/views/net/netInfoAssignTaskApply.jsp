@@ -1054,7 +1054,6 @@
             $("#" + detailInfo.prototype.config().frm).find("select[name='type']").val(type);
             //附件tableId
             var tableId = result.data.id ? result.data.id : 0;
-            console.log(type+"===")
             if (type == '房产') {
                 $("#" + detailInfo.prototype.config().box).find(".houseContent").show();
                 $("#" + detailInfo.prototype.config().frm).find(".houseContent").find("input").attr("disabled", false);
@@ -1124,8 +1123,8 @@
                     });
                 }
             } else {
-                $("#" + detailInfo.prototype.config().frm).find(".houseContent").hide();
-                $("#" + detailInfo.prototype.config().frm).find(".landContent").hide();
+                $("#" + detailInfo.prototype.config().box).find(".houseContent").hide();
+                $("#" + detailInfo.prototype.config().box).find(".landContent").hide();
             }
             //加载附件
             detailInfo.prototype.showFile("uploadLandFile", "tb_net_info_record_land", tableId);
@@ -1452,6 +1451,8 @@
         getUnitPrice: function () {
             var landCurrentPrice = Number($("#landCurrentPrice").val());
             var landArea = Number($("#landArea").val());
+            var areaUnit = $("#areaUnit").val();
+
             var houseCurrentPrice = Number($("#houseCurrentPrice").val());
             var houseArea = Number($("#houseArea").val());
             if (houseCurrentPrice >= 0 && houseArea > 0) {
@@ -1461,16 +1462,27 @@
                 $("#houseUnitPrice").val("");
             }
             if (landCurrentPrice >= 0 && landArea > 0) {
-                var landUnitPrice = (landCurrentPrice / landArea).toFixed(2);
-                $("#landUnitPrice").val(landUnitPrice);
+                if(areaUnit&&areaUnit=="亩"){
+                    console.log(areaUnit+"=areaUnit")
+                    var landUnitPrice = (landCurrentPrice / landArea).toFixed(2);
+                    $("#unitPriceMu").val(landUnitPrice);
+                    $("#landUnitPrice").val((landUnitPrice* 10000 / AssessCommon.BHOU).toFixed(2));
+                }else {
+                    var landUnitPrice = (landCurrentPrice * 10000/ landArea).toFixed(2);
+                    $("#landUnitPrice").val(landUnitPrice);
+                    $("#unitPriceMu").val((landUnitPrice * AssessCommon.BHOU/10000).toFixed(2));
+                }
+
             } else {
                 $("#landUnitPrice").val("");
+                $("#unitPriceMu").val("");
             }
             detailInfo.prototype.getHouseRealizationRatios();
         },
         getHouseRealizationRatios: function () {
-            var landCurrentPrice = Number($("#landCurrentPrice").val());
+            var landUnitPrice = Number($("#landUnitPrice").val());
             var landConsultPrice = Number($("#landConsultPrice").val());
+
             var houseCurrentPrice = Number($("#houseCurrentPrice").val());
             var houseConsultPrice = Number($("#houseConsultPrice").val());
 
@@ -1481,8 +1493,8 @@
             } else {
                 $("#" + detailInfo.prototype.config().frm).find('[name=houseRealizationRatios]').val('');
             }
-            if (landCurrentPrice >= 0 && landConsultPrice > 0) {
-                var landRealizationRatios = (landCurrentPrice / landConsultPrice).toFixed(2);
+            if (landUnitPrice >= 0 && landConsultPrice > 0) {
+                var landRealizationRatios = (landUnitPrice / landConsultPrice).toFixed(2);
                 $("#" + detailInfo.prototype.config().frm).find('[name=landRealizationRatios]').attr('data-value', landRealizationRatios);
                 AssessCommon.elementParsePercent($("#" + detailInfo.prototype.config().frm).find('[name=landRealizationRatios]'));
             } else {

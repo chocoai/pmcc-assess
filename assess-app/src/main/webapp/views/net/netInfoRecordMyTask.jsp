@@ -1766,13 +1766,13 @@
             if (landCurrentPrice >= 0 && landArea > 0) {
                 if(areaUnit&&areaUnit=="亩"){
                     console.log(areaUnit+"=areaUnit")
-                    var landUnitPrice = (landCurrentPrice * 10000 / landArea).toFixed(2);
+                    var landUnitPrice = (landCurrentPrice / landArea).toFixed(2);
                     $("#unitPriceMu").val(landUnitPrice);
-                    $("#landUnitPrice").val((landUnitPrice / AssessCommon.BHOU).toFixed(2));
+                    $("#landUnitPrice").val((landUnitPrice* 10000 / AssessCommon.BHOU).toFixed(2));
                 }else {
-                    var landUnitPrice = (landCurrentPrice * 10000 / landArea).toFixed(2);
+                    var landUnitPrice = (landCurrentPrice * 10000/ landArea).toFixed(2);
                     $("#landUnitPrice").val(landUnitPrice);
-                    $("#unitPriceMu").val((landUnitPrice * AssessCommon.BHOU).toFixed(2));
+                    $("#unitPriceMu").val((landUnitPrice * AssessCommon.BHOU/10000).toFixed(2));
                 }
 
             } else {

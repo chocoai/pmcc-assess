@@ -30,28 +30,34 @@
                         <div class="col-md-12">
                             <div class="form-inline x-valid">
                                 <label class="col-sm-1 control-label">估价对象名称</label>
-                                <div class="col-sm-2">
+                                <div class="col-sm-3">
                                     <input class="form-control input-full" type="text" name="name"
                                            placeholder="估价对象名称">
                                 </div>
 
                                 <label class="col-sm-1 control-label">权证名称</label>
-                                <div class="col-sm-2">
+                                <div class="col-sm-3">
                                     <input class="form-control input-full" type="text" name="certName"
                                            placeholder="权证名称">
                                 </div>
 
                                 <label class="col-sm-1 control-label">所有权人</label>
-                                <div class="col-sm-2">
+                                <div class="col-sm-3">
                                     <input class="form-control input-full" type="text" name="ownership"
                                            placeholder="所有权人">
                                 </div>
-
-                                <div class="col-sm-2">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <div class="form-inline x-valid">
+                                <label class="col-sm-1 control-label">坐落</label>
+                                <div class="col-sm-3">
                                     <input class="form-control input-full" type="text" name="seat"
                                            placeholder="坐落">
                                 </div>
-                                <button class="btn btn-info btn-sm"
+                                <button class="btn btn-info btn-sm" type="button"
                                         onclick="searchLiquidationJudgeData(this);"><span class="btn-label">
 												<i class="fa fa-search"></i>
 											</span>搜索
@@ -245,7 +251,7 @@
                     }
                 },
                 error: function (result) {
-                    AlertError("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             });
         }
@@ -266,7 +272,7 @@
                 }
             },
             error: function (result) {
-                AlertError("调用服务端方法失败，失败原因:" + result);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result);
             }
         });
 
@@ -360,7 +366,7 @@
 
     //查询已选择估价对象
     function searchLiquidationJudgeData(_this) {
-        var group = $(_this).closest(".form-group");
+        var group = $(_this).closest(".form-horizontal");
         var groupId = $(_this).closest('.form-horizontal').find("input[name='id']").val();
         var name = group.find("[name='name']").val();
         var certName = group.find("[name='certName']").val();
