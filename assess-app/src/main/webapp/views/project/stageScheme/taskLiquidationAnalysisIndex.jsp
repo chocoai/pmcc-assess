@@ -4,20 +4,24 @@
 <head>
     <%@include file="/views/share/main_css.jsp" %>
 </head>
-<script type="text/html" id="taskLiquidationAnalysisDiv">
+<script type="text/html" id="taskLiquidationAnalysisDiv" >
     <div class="col-md-12">
         <div class="card full-height">
-            <div class="card-header collapse-link">
+            <div class="card-header">
                 <div class="card-head-row">
                     <div class="card-title">
                         变现分析税费（{index}）
                         <small>
-                            <button href="javascript://;" class="btn btn-sm btn-warning"
-                               onclick="saveAnalysisGroup(true,'taskLiquidationAnalysisFrm_number');">保存</button>
-                            <button href="javascript://;" class="btn btn-sm btn-warning" onclick="cleanHTMLData(this)">移除</button>
+                            <button href="javascript://;" class="btn btn-sm btn-warning" type="button"
+                                    onclick="saveAnalysisGroup(true,'taskLiquidationAnalysisFrm_number');">保存
+                            </button>
+                            <button type="button" href="javascript://;" class="btn btn-sm btn-warning"
+                                    onclick="cleanHTMLData(this)">
+                                移除
+                            </button>
                         </small>
                     </div>
-                    <div class="card-tools">
+                    <div class="card-tools collapse-link">
                         <button class="btn  btn-link btn-primary btn-xs"><span
                                 class="fa fa-angle-down"></span>
                         </button>
@@ -29,56 +33,65 @@
                     <input type="hidden" name="id">
                     <div class="row form-group">
                         <div class="col-md-12">
-                        <div class="form-inline x-valid">
-                            <label class="col-sm-1 control-label">估价对象信息<span
-                                    class="symbol required"></span></label>
-                            <div class="col-sm-5">
+                            <div class="form-inline x-valid">
+                                <label class="col-sm-1 control-label">估价对象信息<span
+                                        class="symbol required"></span></label>
+                                <div class="col-sm-5">
 
-                                <input type="hidden" name="judgeObjectIds">
-                                <button type="button" class="btn-primary btn btn-sm"
-                                     onclick="schemeJudgeObj.init({callback:selectRecord,this_:this});">
-                                    选择估价对象
-                                    <span class="glyphicon  glyphicon-new-window" aria-hidden="true"></span>
-                                </button>
+                                    <input type="hidden" name="judgeObjectIds">
+                                    <button class="btn-primary btn btn-sm" type="button"
+                                            onclick="schemeJudgeObj.init({callback:selectRecord,this_:this});">
+                                        选择估价对象
+                                    </button>
+                                </div>
                             </div>
-                        </div>
                         </div>
                     </div>
                     <div class="row form-group">
                         <div class="col-md-12">
-                        <div class="form-inline x-valid">
-                            <label class="col-sm-1 control-label">估价对象名称</label>
-                            <div class="col-sm-2">
-                                <input class="form-control input-full" type="text" name="name"
-                                       placeholder="估价对象名称">
+                            <div class="form-inline x-valid">
+                                <label class="col-sm-1 control-label">估价对象名称</label>
+                                <div class="col-sm-3">
+                                    <input class="form-control input-full" type="text" name="name"
+                                           placeholder="估价对象名称">
+                                </div>
+
+                                <label class="col-sm-1 control-label">权证名称</label>
+                                <div class="col-sm-3">
+                                    <input class="form-control input-full" type="text" name="certName"
+                                           placeholder="权证名称">
+                                </div>
+
+                                <label class="col-sm-1 control-label">所有权人</label>
+                                <div class="col-sm-3">
+                                    <input class="form-control input-full" type="text" name="ownership"
+                                           placeholder="所有权人">
+                                </div>
                             </div>
-                      
-                            <label class="col-sm-1 control-label">权证名称</label>
-                            <div class="col-sm-2">
-                                <input class="form-control input-full" type="text" name="certName"
-                                       placeholder="权证名称">
-                            </div>
-                        
-                            <label class="col-sm-1 control-label">所有权人</label>
-                            <div class="col-sm-2">
-                                <input class="form-control input-full" type="text" name="ownership"
-                                       placeholder="所有权人">
-                            </div>
-                        
-                            <div class="col-sm-2">
-                                    <input class="form-control" type="text" name="seat"
-                                           placeholder="坐落">
-                            </div>
-                            <button type="button" class="btn btn-info btn-sm"
-                                    onclick="searchLiquidationJudgeData(this);"><span class="btn-label">
-												<i class="fa fa-search"></i>
-											</span>搜索</button>
-                        </div>
                         </div>
                     </div>
                     <div class="row form-group">
-                        <input type="button" class="btn btn-sm btn-primary" value="批量删除"
-                                   onclick="deleteJudgeItemByIds(this);">
+                        <div class="col-md-12">
+                            <div class="form-inline x-valid">
+                                <label class="col-sm-1 control-label">坐落</label>
+                                <div class="col-sm-3">
+                                    <input class="form-control input-full" type="text" name="seat"
+                                           placeholder="坐落">
+                                </div>
+                                <button class="btn btn-info btn-sm" style="margin-left: 10px" type="button"
+                                        onclick="searchLiquidationJudgeData(this);"><span class="btn-label">
+												<i class="fa fa-search"></i>
+											</span>搜索
+                                </button>
+                                <button style="margin-left: 5px" class="btn btn-warning btn-sm" type="button"
+                                        onclick="deleteJudgeItemByIds(this)">
+											<span class="btn-label">
+												<i class="fa fa-minus"></i>
+											</span>
+                                    批量删除
+                                </button>
+                            </div>
+                        </div>
                     </div>
                     <div class="row form-group">
                         <div class="col-sm-12">
@@ -88,55 +101,55 @@
                     </div>
                     <div class="row form-group">
                         <div class="col-sm-12">
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th class="hidden-xs">物业类型</th>
-                            <th class="hidden-xs">税率</th>
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th class="hidden-xs">物业类型</th>
+                                    <th class="hidden-xs">税率</th>
 
-                            <th class="hidden-xs">计算基数</th>
-                            <th class="hidden-xs">计算公式</th>
-                            <th class="hidden-xs">税费负担方</th>
+                                    <th class="hidden-xs">计算基数</th>
+                                    <th class="hidden-xs">计算公式</th>
+                                    <th class="hidden-xs">税费负担方</th>
 
-                            <th class="hidden-xs">备注</th>
-                            <th class="hidden-xs">单位（面积/m² 金额/元）</th>
-                            <th class="hidden-xs">操作</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td class="hidden-xs">面积(平方米)</td>
-                            <td class="hidden-xs">/</td>
-                            <td class="hidden-xs">/</td>
-                            <td class="hidden-xs">/</td>
-                            <td class="hidden-xs">/</td>
-                            <td class="hidden-xs">/</td>
-                            <td class="hidden-xs" name="evaluationArea">0
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="hidden-xs">评估价(元)</td>
-                            <td class="hidden-xs">/</td>
-                            <td class="hidden-xs">/</td>
-                            <td class="hidden-xs">/</td>
-                            <td class="hidden-xs">/</td>
-                            <td class="hidden-xs">/</td>
-                            <td class="hidden-xs" name="evaluationPrice">0
-                            </td>
-                        </tr>
-                        </tbody>
-                        <tbody name="tbody_data_section">
+                                    <th class="hidden-xs">备注</th>
+                                    <th class="hidden-xs">单位（面积/m² 金额/元）</th>
+                                    <th class="hidden-xs">操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td class="hidden-xs">面积(平方米)</td>
+                                    <td class="hidden-xs">/</td>
+                                    <td class="hidden-xs">/</td>
+                                    <td class="hidden-xs">/</td>
+                                    <td class="hidden-xs">/</td>
+                                    <td class="hidden-xs">/</td>
+                                    <td class="hidden-xs" name="evaluationArea">0
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="hidden-xs">评估价(元)</td>
+                                    <td class="hidden-xs">/</td>
+                                    <td class="hidden-xs">/</td>
+                                    <td class="hidden-xs">/</td>
+                                    <td class="hidden-xs">/</td>
+                                    <td class="hidden-xs">/</td>
+                                    <td class="hidden-xs" name="evaluationPrice">0
+                                    </td>
+                                </tr>
+                                </tbody>
+                                <tbody name="tbody_data_section">
 
-                        </tbody>
-                        <tbody>
-                        <tr>
-                            <td class='hidden-xs' colspan='6' style='text-align:center;'>合计费用</td>
-                            <td class='hidden-xs'>
-                                <label class="form-control input-full" name="total"></label>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
+                                </tbody>
+                                <tbody>
+                                <tr>
+                                    <td class='hidden-xs' colspan='6' style='text-align:center;'>合计费用</td>
+                                    <td class='hidden-xs'>
+                                        <label class="form-control input-full" name="total"></label>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </form>
@@ -158,22 +171,21 @@
                     <!-- 填写表单 start -->
                     <div class="col-md-12">
                         <div class="card full-height">
-                            <div class="card-header collapse-link">
+                            <div class="card-header">
                                 <div class="card-head-row">
                                     <div class="card-title">
                                         ${projectPlanDetails.projectPhaseName}
-                                        <small>${areaGroup.areaName}</small>
-
-                                            <button href="javascript://;" class="btn btn-sm btn-success"
-                                               onclick="appendHtml(false)">
+                                        <small>${areaGroup.areaName}
+                                            <button class="btn btn-sm btn-success" style="margin-left: 5px"
+                                                    type="button" onclick="appendHtml(false)">
                                                 <span class="btn-label"><i
-                                                    class="fa fa-plus"></i>
+                                                        class="fa fa-plus"></i>
                                                 </span>
                                                 添加分组
                                             </button>
-
+                                        </small>
                                     </div>
-                                    <div class="card-tools">
+                                    <div class="card-tools collapse-link">
                                         <button class="btn  btn-link btn-primary btn-xs"><span
                                                 class="fa fa-angle-down"></span>
                                         </button>
@@ -202,10 +214,11 @@
                                     </div>
 
                                 </form>
+                                <div id="taskLiquidationAnalysisAppend"></div>
                             </div>
                         </div>
                     </div>
-                    <div id="taskLiquidationAnalysisAppend"></div>
+
                     <%@include file="/views/share/form_apply.jsp" %>
                     <%@include file="/views/share/form_log.jsp" %>
                 </div>
@@ -282,33 +295,41 @@
                             <div class="card-body">
                                 <div class="row form-group">
                                     <div class="col-md-12">
-                                    <div class="form-inline x-valid">
-                                        <label class="col-sm-1 control-label">估价对象名称</label>
-                                        <div class="col-sm-2">
-                                            <input class="form-control input-full" type="text" name="name"
-                                                   placeholder="估价对象名称">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1 control-label">估价对象名称</label>
+                                            <div class="col-sm-3">
+                                                <input class="form-control input-full" type="text" name="name"
+                                                       placeholder="估价对象名称">
+                                            </div>
+                                            <label class="col-sm-1 control-label">权证名称</label>
+                                            <div class="col-sm-3">
+                                                <input class="form-control input-full" type="text" name="certName"
+                                                       placeholder="权证名称">
+                                            </div>
+                                            <label class="col-sm-1 control-label">所有权人</label>
+                                            <div class="col-sm-3">
+                                                <input class="form-control input-full" type="text" name="ownership"
+                                                       placeholder="所有权人">
+                                            </div>
                                         </div>
-                                        <label class="col-sm-1 control-label">权证名称</label>
-                                        <div class="col-sm-2">
-                                            <input class="form-control input-full" type="text" name="certName"
-                                                   placeholder="权证名称">
-                                        </div>
-                                        <label class="col-sm-1 control-label">所有权人</label>
-                                        <div class="col-sm-2">
-                                            <input class="form-control input-full" type="text" name="ownership"
-                                                   placeholder="所有权人">
-                                        </div>
-                                        <div class="col-sm-2">
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1 control-label">坐落</label>
+                                            <div class="col-sm-3">
                                                 <input class="form-control input-full" type="text" name="seat"
                                                        placeholder="坐落">
 
-                                        </div>
+                                            </div>
 
-                                        <button class="btn btn-info btn-sm"
-                                                onclick="schemeJudgeObj.searchData(this);"><span class="btn-label">
+                                            <button class="btn btn-info btn-sm" type="button"
+                                                    onclick="schemeJudgeObj.searchData(this);"><span class="btn-label">
 												<i class="fa fa-search"></i>
-											</span>搜索</button>
-                                    </div>
+											</span>搜索
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="row form-group">
@@ -337,80 +358,6 @@
 </div>
 
 
-<%--
-<div id="boxSchemeJudgeObj" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
-     role="dialog"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">权证估价对象</h3>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                        <div class="panel-body">
-                            <div class="form-horizontal">
-                                <div class="row form-group">
-                                    <div class="form-inline x-valid">
-                                        <label class="col-sm-1 control-label">估价对象名称</label>
-                                        <div class="col-sm-2">
-                                            <input class="form-control input-full" type="text" name="name"
-                                                   placeholder="估价对象名称">
-                                        </div>
-                                    </div>
-                                    <div class="form-inline x-valid">
-                                        <label class="col-sm-1 control-label">权证名称</label>
-                                        <div class="col-sm-2">
-                                            <input class="form-control input-full" type="text" name="certName"
-                                                   placeholder="权证名称">
-                                        </div>
-                                    </div>
-                                    <div class="form-inline x-valid">
-                                        <label class="col-sm-1 control-label">所有权人</label>
-                                        <div class="col-sm-2">
-                                            <input class="form-control input-full" type="text" name="ownership"
-                                                   placeholder="所有权人">
-                                        </div>
-                                    </div>
-                                    <div class="form-inline x-valid">
-                                        <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                                            <div class="input-group">
-                                                <input class="form-control input-full" type="text" name="seat"
-                                                       placeholder="坐落">
-                                                <span class="input-group-addon"
-                                                      onclick="schemeJudgeObj.searchData(this);">搜索<i
-                                                        class="fa fa-search"></i> </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row form-group">
-                                    <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-                                        <table class="table table-bordered" id="boxSchemeJudgeObjList">
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">
-                    关闭
-                </button>
-                <button type="button" class="btn btn-primary" onclick="schemeJudgeObj.select()">
-                    确定
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
---%>
-
 <%@include file="/views/project/tool/declareRecordModeView.jsp" %>
 <script type="application/javascript">
     var commonField = {
@@ -421,7 +368,7 @@
     };
 
     function selectRecord(_this, id) {
-        var group = $(_this).closest(".form-group");
+        var group = $(_this).closest(".form-horizontal");
         group.find("input[name='judgeObjectIds']").val(id);
         getGroupAndPriceVo(_this);
     }
@@ -469,7 +416,7 @@
                     }
                 },
                 error: function (result) {
-                    AlertError("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result);
                 }
             });
         }
@@ -497,7 +444,7 @@
                     }
                 },
                 error: function (result) {
-                    AlertError("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result);
                 }
             });
         }
@@ -528,7 +475,7 @@
                     }
                 },
                 error: function (result) {
-                    AlertError("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result);
                 }
             });
         });
@@ -539,7 +486,7 @@
      * @param _this
      */
     function getGroupAndPriceVo(_this) {
-        var group = $(_this).closest(".form-group");
+        var group = $(_this).closest(".form-horizontal");
         var judgeObjectIds = group.find("input[name='judgeObjectIds']").val();
         var frmId = $(_this).closest('.form-horizontal').attr("id");
         var groupId = $(_this).closest('.form-horizontal').find("input[name='id']").val();
@@ -556,7 +503,7 @@
                 success: function (result) {
                     if (result.ret) {
                         if (result.data) {
-                            notifySuccess("成功","成功");
+                            notifySuccess("成功", "成功");
                             initResult(frmId, result.data.groupArea, result.data.groupPrice);
                             $("#" + frmId).find('[name=evaluationArea]').text(fmoney(Number(result.data.groupArea).toFixed(2), 2));
                             $("#" + frmId).find('[name=evaluationArea]').val(Number(result.data.groupArea));
@@ -567,7 +514,7 @@
                     }
                 },
                 error: function (result) {
-                    AlertError("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result);
                 }
             });
         }
@@ -583,12 +530,14 @@
                 if (result.ret) {
                     if (result.data) {
                         $("#" + frmId).find('[name=evaluationArea]').text(fmoney(Number(result.data.groupArea).toFixed(2), 2));
+                        $("#" + frmId).find('[name=evaluationArea]').val(Number(result.data.groupArea));
                         $("#" + frmId).find('[name=evaluationPrice]').text(fmoney(Number(result.data.groupPrice).toFixed(2), 2));
+                        $("#" + frmId).find('[name=evaluationPrice]').val(Number(result.data.groupPrice));
                     }
                 }
             },
             error: function (result) {
-                AlertError("调用服务端方法失败，失败原因:" + result);
+                AlertError("失败", "调用服务端方法失败，失败原因:" + result);
             }
         });
 
@@ -893,12 +842,12 @@
                         getTotal(frmId);
                     }
                     else {
-                        AlertError("删除数据失败，失败原因:" + result.errmsg);
+                        AlertError("失败", "删除数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
                     Loading.progressHide();
-                    AlertError("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result);
                 }
             })
         })
@@ -944,11 +893,11 @@
                         notifySuccess("成功", "保存成功");
                     }
                     else {
-                        AlertError("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("失败", "保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    AlertError("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result);
                 }
             });
         } else {
@@ -998,7 +947,7 @@
         cols.push({
             field: 'id', width: '6%', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="删除" onclick="deleteJudgeItem(' + row.id + ',\'' + groupId + '\')"><i class="fa fa-minus fa-white"></i></a>';
+                str += '<button type="button" class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="删除" onclick="deleteJudgeItem(' + row.id + ',\'' + groupId + '\')"><i class="fa fa-minus fa-white"></i></button>';
                 str += '</div>';
                 return str;
             }
@@ -1017,7 +966,7 @@
 
     //查询已选择估价对象
     function searchLiquidationJudgeData(_this) {
-        var group = $(_this).closest(".form-group");
+        var group = $(_this).closest(".form-horizontal");
         var groupId = $(_this).closest('.form-horizontal').find("input[name='id']").val();
         var name = group.find("[name='name']").val();
         var certName = group.find("[name='certName']").val();
@@ -1054,11 +1003,11 @@
                         loadSchemeLiquidationJudgeTable(groupId, {groupId: groupId});
                     }
                     else {
-                        AlertError("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("失败", "保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    AlertError("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result);
                 }
             })
         });
@@ -1085,17 +1034,17 @@
                             loadSchemeLiquidationJudgeTable(groupId, {groupId: groupId});
                         }
                         else {
-                            AlertError("保存数据失败，失败原因:" + result.errmsg);
+                            AlertError("失败", "保存数据失败，失败原因:" + result.errmsg);
                         }
                     },
                     error: function (result) {
-                        AlertError("调用服务端方法失败，失败原因:" + result);
+                        AlertError("失败", "调用服务端方法失败，失败原因:" + result);
                     }
                 })
             });
 
         } else {
-            notifyInfo('提示',"至少选择一个");
+            notifyInfo('提示', "至少选择一个");
         }
     }
 
@@ -1157,12 +1106,12 @@
             }
 
         } else {
-            notifyInfo('提示','至少选择一个');
+            notifyInfo('提示', '至少选择一个');
         }
     }
 
     schemeJudgeObj.searchData = function (_this) {
-        var group = $(_this).closest(".form-group");
+        var group = $(_this).closest(".form-horizontal");
         var name = group.find("[name='name']").val();
         var certName = group.find("[name='certName']").val();
         var ownership = group.find("[name='ownership']").val();

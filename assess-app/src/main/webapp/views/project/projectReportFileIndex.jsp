@@ -57,68 +57,57 @@
                             <div class="card-body">
                                 <form class="form-horizontal">
                                     <div class="row form-group">
-                                        <div class="col-md-3">
+                                        <div class="col-md-12">
                                             <div class="form-inline x-valid">
-                                                <label class="col-sm-2 col-form-label">
+                                                <label class="col-sm-1 col-form-label">
                                                     省
                                                 </label>
-                                                <div class="col-sm-10">
+                                                <div class="col-sm-2">
                                                     <select id="queryProvince" class="form-control input-full">
                                                     </select>
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-2 control-label">
+                                                <label class="col-sm-1 control-label">
                                                     市
                                                 </label>
-                                                <div class="col-sm-10">
+                                                <div class="col-sm-2">
                                                     <select id="queryCity" class="form-control input-full">
                                                     </select>
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-2 control-label">
+                                                <label class="col-sm-1 control-label">
                                                     区
                                                 </label>
-                                                <div class="col-sm-10">
+                                                <div class="col-sm-2">
                                                     <select id="queryDistrict" class="form-control input-full">
                                                     </select>
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-2 control-label">
+                                                <label class="col-sm-1 control-label">
                                                     名称
                                                 </label>
-                                                <div class="col-sm-10">
+                                                <div class="col-sm-2">
                                                     <input type="text" class="form-control input-full" id="queryName"/>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row form-group">
-                                        <div class="col-md-3">
+                                        <div class="col-md-12">
                                             <div class="form-inline x-valid">
-                                                <label class="col-sm-2 col-form-label">
+                                                <label class="col-sm-1 col-form-label">
                                                     坐落
                                                 </label>
-                                                <div class="col-sm-10">
+                                                <div class="col-sm-2">
                                                     <input type="text" class="form-control input-full" id="querySeat"/>
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <button style="margin-left: 10px" class="btn btn-info  btn-sm" type="button"
-                                                onclick="reloadDeclareList()">
+                                                <button style="margin-left: 10px" class="btn btn-info btn-sm" type="button"
+                                                        onclick="reloadDeclareList()">
 											<span class="btn-label">
 												<i class="fa fa-search"></i>
 											</span>
-                                            查询
-                                        </button>
+                                                    查询
+                                                </button>
+                                            </div>
+                                        </div>
+
                                     </div>
                                     <table class="table table-bordered" id="declareTable">
                                         <!-- cerare document add ajax data-->
@@ -239,32 +228,23 @@
                         <div class="col-md-12">
                             <div class="card-body">
                                 <div class="row form-group">
-                                    <div class="col-md-4">
+                                    <div class="col-md-12">
                                         <div class="form-inline x-valid">
-                                            <label class="col-sm-2 col-form-label">
+                                            <label class="col-sm-1 col-form-label">
                                                 名称<span class="symbol required"></span>
                                             </label>
-                                            <div class="col-sm-10">
+                                            <div class="col-sm-3">
                                                 <input type="text" class="form-control input-full" required
                                                        name="fileName" placeholder="名称">
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-2 col-form-label">
+                                            <label class="col-sm-1 col-form-label">
                                                 排序<span class="symbol required"></span>
                                             </label>
-                                            <div class="col-sm-10">
+                                            <div class="col-sm-3">
                                                 <input type="text" class="form-control input-full" required
                                                        name="sorting" placeholder="排序">
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-inline x-valid">
-
-                                            <div class="col-sm-10">
+                                            <div class="col-sm-4">
                                                 <div class="form-check" style="justify-content:left">
                                                     <label class="form-check-label">
                                                         <input class="form-check-input" type="checkbox" id="bisEnable"
@@ -278,37 +258,34 @@
                                     </div>
                                 </div>
                                 <div class="row form-group">
-                                    <div class="col-md-4">
+                                    <div class="col-md-12">
                                         <div class="form-inline x-valid">
-                                            <label class="col-sm-2 col-form-label">
+                                            <label class="col-sm-1 col-form-label">
                                                 对应查勘部位<span class="symbol required"></span>
                                             </label>
-                                            <div class="col-sm-10">
+                                            <div class="col-sm-3">
                                                 <select name="certifyPart"
                                                         class="form-control input-full search-select certifyPart select2"
                                                         required>
                                                 </select>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-2 col-form-label">
+                                            <label class="col-sm-1 col-form-label">
                                                 附件类别<span class="symbol required"></span>
                                             </label>
-                                            <div class="col-sm-10">
+                                            <div class="col-sm-3">
                                                 <select name="certifyPartCategory"
                                                         class="form-control input-full search-select certifyPartCategory select2"
                                                         required>
                                                 </select>
                                             </div>
+                                            <div class="col-sm-4">
+                                                <small><input type="button" value="选择查勘照片"
+                                                              onclick="getLiveSituationByCertifyPart()"
+                                                              class="btn btn-success btn-xs"></small>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
-                                        <small><input type="button" value="选择查勘照片"
-                                                      onclick="getLiveSituationByCertifyPart()"
-                                                      class="btn btn-success btn-xs"></small>
-                                    </div>
+
                                 </div>
                                 <div class="row form-group">
                                     <div class="col-md-12">
@@ -990,9 +967,9 @@
                         html += '<tr><td><input type="text" name="fileName" value="' + item.fileName + '"  onblur="reportFileEditName(' + item.id + ',this);"></td>' +
                             '<td><input type="text" name="sorting"  value="' + AssessCommon.toString(item.sorting) + '" onblur="reportFileEditName(' + item.id + ',this,' + declareRecordId + ');" ></td>' +
                             '<td>' + item.fileViewName + '</td>' + '<td>' + item.certifyPartName + '</td>' + '<td>' + item.certifyPartCategoryName + '</td>' + '<td>' + item.bisEnableName + '</td><td>' +
-                            '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-info" data-original-title="上传照片" onclick="addPicture(' + item.id + ');"><span class="btn-label"><i class="fa fa-cloud-upload-alt"></i></span></button>' +
-                            '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-primary" data-original-title="编辑" onclick="getAndInit(' + item.id + ');"><span class="btn-label"><i class="fa fa-pen"></i></span></button>' +
-                            '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-warning" data-original-title="移除" onclick="removeLiveSituation(' + item.id + ',this)"><span class="btn-label"><i class="fa fa-minus"></i></span></button></td></tr>';
+                            '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-info" data-original-title="上传照片" onclick="addPicture(' + item.id + ');"><i class="fa fa-cloud-upload-alt"></i></button>' +
+                            '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-primary" data-original-title="编辑" onclick="getAndInit(' + item.id + ');"><i class="fa fa-pen"></i></button>' +
+                            '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-warning" data-original-title="移除" onclick="removeLiveSituation(' + item.id + ',this)"><i class="fa fa-minus"></i></button></td></tr>';
                     })
                     tbody.empty().append(html);
                 } else {
@@ -1051,8 +1028,8 @@
                         $.each(result.data, function (i, item) {
                             ++i;
                             html += '<tr><th scope="row">' + i + '</th><td>' + item.reName + '</td><td>' + item.fileName + '</td><td>' +
-                                '<button type="button" class="btn btn-xs btn-info" style="margin-left: 5px;" data-original-title="查看" onclick="FileUtils.showAttachment(' + item.id + ',\'' + item.fileExtension + '\');"><span class="btn-label"><i class="fa fa-search"></i></span></button>' +
-                                '<button type="button" class="btn btn-xs btn-primary" style="margin-left: 5px;" data-original-title="选择" onclick="selectLiveSituation(' + item.id + ',' + declareRecordId + ',\'' + item.reName + '\');"><span class="btn-label"><i class="fa fa-check"></i></span></button></td></tr>';
+                                '<button type="button" class="btn btn-xs btn-info" style="margin-left: 5px;" data-original-title="查看" onclick="FileUtils.showAttachment(' + item.id + ',\'' + item.fileExtension + '\');"><i class="fa fa-search"></i></button>' +
+                                '<button type="button" class="btn btn-xs btn-primary" style="margin-left: 5px;" data-original-title="选择" onclick="selectLiveSituation(' + item.id + ',' + declareRecordId + ',\'' + item.reName + '\');"><i class="fa fa-check"></i></button></td></tr>';
                         })
                         $("#allExamineFileFrm").find('tbody[data-id=all_live_situation]').empty().append(html);
                     }
@@ -1107,8 +1084,8 @@
                         $.each(result.data, function (i, item) {
                             ++i;
                             html += '<tr><th scope="row">' + i + '</th><td>' + item.reName + '</td><td>' + item.fileName + '</td><td>' +
-                                '<button type="button" class="btn btn-xs btn-info" style="margin-left: 5px;" data-original-title="查看" onclick="FileUtils.showAttachment(' + item.id + ',\'' + item.fileExtension + '\');"><span class="btn-label"><i class="fa fa-search"></i></span></button>' +
-                                '<button type="button" class="btn btn-xs btn-primary" style="margin-left: 5px;" data-original-title="选择" onclick="selectLiveSituationByCertifyPart(' + item.id + ');"><span class="btn-label"><i class="fa fa-check"></i></span></button></td></tr>';
+                                '<button type="button" class="btn btn-xs btn-info" style="margin-left: 5px;" data-original-title="查看" onclick="FileUtils.showAttachment(' + item.id + ',\'' + item.fileExtension + '\');"><i class="fa fa-search"></i></button>' +
+                                '<button type="button" class="btn btn-xs btn-primary" style="margin-left: 5px;" data-original-title="选择" onclick="selectLiveSituationByCertifyPart(' + item.id + ');"><i class="fa fa-check"></i></button></td></tr>';
                         })
                         $("#examineFileFrmByCertifyPart").find('tbody[data-id=certifyPart_file]').empty().append(html);
                     }
@@ -1416,8 +1393,8 @@
                             $.each(result.data, function (i, item) {
                                 ++i;
                                 html += '<tr><th scope="row">' + i + '</th><td>' + item.reName + '</td><td>' + item.fileName + '</td><td>' +
-                                    '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-info" data-original-title="查看" onclick="FileUtils.showAttachment(' + item.id + ',\'' + item.fileExtension + '\');"><span class="btn-label"><i class="fa fa-search"></i></span></button>' +
-                                    '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-primary" data-original-title="选择" onclick="selectCorrespondingSitePic(' + item.id + ',' + reportFileItemId + ');"><span class="btn-label"><i class="fa fa-check"></i></span></button></td></tr>';
+                                    '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-info" data-original-title="查看" onclick="FileUtils.showAttachment(' + item.id + ',\'' + item.fileExtension + '\');"><i class="fa fa-search"></i></button>' +
+                                    '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-primary" data-original-title="选择" onclick="selectCorrespondingSitePic(' + item.id + ',' + reportFileItemId + ');"><i class="fa fa-check"></i></button></td></tr>';
                             })
                             $("#allExamineFileFrm").find('tbody[data-id=all_live_situation]').empty().append(html);
                         }
@@ -1469,7 +1446,7 @@
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = "";
-                str += "<button type='button'  style='margin-left: 5px;' data-placement='top' data-original-title='选择' class='btn btn-xs btn-primary tooltips' ><span class='btn-label'><i class='fa fa-check'></i></span></button>";
+                str += "<button type='button'  style='margin-left: 5px;' data-placement='top' data-original-title='选择' class='btn btn-xs btn-primary tooltips' ><i class='fa fa-check'></i></button>";
                 return str;
             }
         });
