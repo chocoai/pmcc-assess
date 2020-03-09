@@ -530,12 +530,12 @@
                         forecastRestaurant.loadHistoryList(type);
                     }
                     else {
-                        AlertError("删除数据失败，失败原因:" + result.errmsg);
+                        AlertError("失败","删除数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
                     Loading.progressHide();
-                    AlertError("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             })
         })
@@ -558,18 +558,18 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    notifySuccess('保存成功');
+                    notifySuccess('成功','保存成功');
                     var type = $("#frm_history_restaurant").find('[name=type]').val();
                     forecastRestaurant.loadHistoryList(type);
                     $('#modal_history_restaurant').modal('hide');
                 }
                 else {
-                    AlertError("保存数据失败，失败原因:" + result.errmsg);
+                    AlertError("失败","保存数据失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
                 Loading.progressHide();
-                AlertError("调用服务端方法失败，失败原因:" + result);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result);
             }
         })
     }
@@ -595,12 +595,12 @@
                     notifySuccess(result.data.replace(/\n/g, '<br/>'));
                     forecastRestaurant.loadHistoryList(type);
                 } else {
-                    AlertError("导入数据失败，失败原因:" + result.errmsg);
+                    AlertError("失败","导入数据失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result, status, e) {
                 Loading.progressHide();
-                AlertError("调用服务端方法失败，失败原因:" + result);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result);
             }
         });
     }
@@ -674,7 +674,7 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    notifySuccess('分析成功');
+                    notifySuccess('成功','分析成功');
                     $("#" + forecastRestaurant.getForecastAnalyseListId(type)).bootstrapTable('refresh');
                 }
             }

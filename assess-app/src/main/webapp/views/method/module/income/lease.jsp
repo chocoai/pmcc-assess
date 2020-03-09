@@ -703,7 +703,7 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    notifySuccess('保存成功');
+                    notifySuccess('成功','保存成功');
                     lease.loadLeaseList();
                     lease.loadCalculationResult();
                     $('#modal_lease_income').modal('hide');
@@ -834,7 +834,7 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    notifySuccess('保存成功');
+                    notifySuccess('成功','保存成功');
                     lease.loadLeaseCostList();
                     lease.loadCalculationResult();
                     $('#modal_lease_cost').modal('hide');
@@ -941,7 +941,7 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    notifySuccess('保存成功');
+                    notifySuccess('成功','保存成功');
                     lease.loadLeaseParameterList();
                     lease.loadCalculationResult();
                     $('#modal_lease_parameter').modal('hide');

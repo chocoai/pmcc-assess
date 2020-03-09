@@ -741,7 +741,7 @@
                         getLandFileAll(tbody, result.data);
                     }
                 } else {
-                    AlertError("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             }
         })
@@ -786,7 +786,7 @@
                         $('div[data-id=' + declareRecordId + '][data-name=land_file_btn]').empty().append(html);
                     }
                 } else {
-                    AlertError("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             }
         })
@@ -814,7 +814,7 @@
                         tbody.empty().append(html);
                     }
                 } else {
-                    AlertError("加载失败，失败原因:" + result);
+                    AlertError("失败","加载失败，失败原因:" + result);
                 }
             }
         })
@@ -858,7 +858,7 @@
                         tbody.empty().append(html);
                     }
                 } else {
-                    AlertError("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             }
         })
@@ -876,7 +876,7 @@
                     if (result.ret) {
                         $(_this).closest('tr').remove();
                     } else {
-                        AlertError("删除数据失败，失败原因:" + result.errmsg);
+                        AlertError("失败","删除数据失败，失败原因:" + result.errmsg);
                     }
                 }
             })
@@ -897,7 +897,7 @@
                         appendCustomHtml(item.id, item.name, declareRecordId);
                     })
                 } else {
-                    AlertError("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             }
         })
@@ -926,7 +926,7 @@
                         appendCustomHtml(result.data.id, result.data.name, declareRecordId);
                         layer.close(index);
                     } else {
-                        AlertError("调用服务端方法失败，失败原因:" + result);
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result);
                     }
                 }
             })
@@ -944,7 +944,7 @@
                 if (result.ret) {
                     $(_this).closest('.x_panel').parent().remove();
                 } else {
-                    AlertError("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             }
         })
@@ -970,7 +970,7 @@
                         window.close();
                     });
                 } else {
-                    AlertError("保存失败，失败原因:" + result);
+                    AlertError("失败","保存失败，失败原因:" + result);
                 }
             }
         })
@@ -996,7 +996,7 @@
                     })
                     tbody.empty().append(html);
                 } else {
-                    AlertError("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             }
         })
@@ -1014,7 +1014,7 @@
                     if (result.ret) {
                         $(_this).closest('tr').remove();
                     } else {
-                        AlertError("删除数据失败，失败原因:" + result.errmsg);
+                        AlertError("失败","删除数据失败，失败原因:" + result.errmsg);
                     }
                 }
             })
@@ -1058,7 +1058,7 @@
                     }
                     $("#allExamineFileModal").modal("show");
                 } else {
-                    AlertError("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             }
         })
@@ -1080,7 +1080,7 @@
                     }
 
                 } else {
-                    AlertError("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","失败原因:" + result);
                 }
             }
         })
@@ -1159,7 +1159,7 @@
                 }
             },
             error: function (result) {
-                AlertError("调用服务端方法失败，失败原因:" + result);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result);
             }
         })
     }
@@ -1188,7 +1188,7 @@
                 }
             },
             error: function (result) {
-                AlertError("调用服务端方法失败，失败原因:" + result);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result);
             }
         })
     }
@@ -1211,11 +1211,11 @@
                     loadLiveSituation($('tbody[data-id="' + data.declareRecordId + '"][data-name=live_situation_select]'), data.declareRecordId);
                 }
                 else {
-                    AlertError("保存数据失败，失败原因:" + result.errmsg);
+                    AlertError("失败","保存数据失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                AlertError("调用服务端方法失败，失败原因:" + result);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result);
             }
         })
     }
@@ -1235,7 +1235,7 @@
                 if (result.ret) {
                     loadLiveSituation($('tbody[data-id=' + declareRecordId + '][data-name=live_situation_select]'), declareRecordId);
                 } else {
-                    AlertError("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             }
         })
@@ -1301,11 +1301,11 @@
 
                 }
                 else {
-                    AlertError("保存数据失败，失败原因:" + result.errmsg);
+                    AlertError("失败","失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                AlertError("调用服务端方法失败，失败原因:" + result);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result);
             }
         })
 
@@ -1341,11 +1341,11 @@
                     loadLiveSituation($('tbody[data-id="' + declareRecordId + '"][data-name=live_situation_select]'), declareRecordId);
                 }
                 else {
-                    AlertError("保存数据失败，失败原因:" + result.errmsg);
+                    AlertError("失败","模板添加失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                AlertError("调用服务端方法失败，失败原因:" + result);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result);
             }
         })
     }
@@ -1367,7 +1367,7 @@
                 }
             },
             error: function (result) {
-                AlertError("调用服务端方法失败，失败原因:" + result);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result);
             }
         })
     }
@@ -1387,11 +1387,11 @@
                     loadLiveSituation($('tbody[data-id="' + data.declareRecordId + '"][data-name=live_situation_select]'), data.declareRecordId);
                 }
                 else {
-                    AlertError("保存数据失败，失败原因:" + result.errmsg);
+                    AlertError("失败","保存数据失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                AlertError("调用服务端方法失败，失败原因:" + result);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result);
             }
         })
     }
@@ -1450,7 +1450,7 @@
                 }
             },
             error: function (result) {
-                AlertError("调用服务端方法失败，失败原因:" + result);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result);
             }
         })
     }
@@ -1517,7 +1517,7 @@
                 }
             },
             error: function (result) {
-                AlertError("调用服务端方法失败，失败原因:" + result);
+                AlertError("失败","调用服务端方法失败，失败原因:" + result);
             }
         })
     }
@@ -1580,12 +1580,12 @@
                         $('#divBoxSaveTemplate').modal('hide');
                     }
                     else {
-                        AlertError("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("失败","保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
                     Loading.progressHide();
-                    AlertError("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             })
         }
@@ -1662,7 +1662,7 @@
                         $("#ReportFileCustom").empty().append(html);
                         loadReportFileCustomList(declareRecord.id);
                     } else {
-                        AlertError("调用服务端方法失败，失败原因:" + result);
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result);
                     }
                 }
             })
