@@ -411,9 +411,7 @@ public class SchemeLiquidationAnalysisService {
             }
         }
         groupAndPriceVo.setGroupArea(groupArea);
-        groupAndPriceVo.setGroupArea(new BigDecimal("100"));
         groupAndPriceVo.setGroupPrice(groupPrice);
-        groupAndPriceVo.setGroupPrice(new BigDecimal("10000"));
         return groupAndPriceVo;
     }
 
