@@ -60,7 +60,7 @@
 <div id="divAssessmentProjectPerformanceBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg"  style="max-width: 80%;">
+    <div class="modal-dialog modal-lg" style="max-width: 80%;">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">考核记录填写</h4>
@@ -367,6 +367,10 @@
         return html;
     };
 
+    assessmentCommonHandle.getActivityIdByUserAccountList = function (activityId, callback) {
+        assessmentCommonHandle.ajaxServerMethod({activityId: activityId}, "/chksAssessmentProjectPerformance/getActivityIdByUserAccountList", "get", callback, null);
+    };
+
     assessmentCommonHandle.getAssessmentItemTemplate = function (query, callback) {
         assessmentCommonHandle.ajaxServerMethod(query, "/chksAssessmentProjectPerformance/getAssessmentItemTemplate", "get", callback, null);
     };
@@ -495,7 +499,7 @@
                     if (show) {
                         if (row.examineUrl) {
                             //进入一个地址查看考核内容
-                            str = "<button type='button' onclick='assessmentCommonHandle.taskOpenWin(\"" + row.examineUrl + "\")' href='javascript://' style='margin-left: 5px;' data-placement='top' data-original-title='考核查看' class='btn btn-xs btn-info tooltips'  ><i class='fa fa-search fa-white'></i></button>";
+                            str = "<button type='button' onclick='assessmentCommonHandle.taskOpenWin(\"" + row.examineUrl + "\")'  style='margin-left: 5px;' data-placement='top' data-original-title='考核查看' class='btn btn-xs btn-info tooltips'  ><i class='fa fa-search fa-white'></i></button>";
                         } else {
                             //使用弹窗查看考核
                             str = "<button type='button' onclick='assessmentCommonHandle.findAssessmentProjectPerformanceBox(" + row.id + ")' style='margin-left: 5px;' data-placement='top' data-original-title='考核查看' class='btn btn-xs btn-info tooltips'  ><i class='fa fa-search fa-white'></i></button>";
@@ -505,16 +509,12 @@
 
                 //考核未完成
                 if (value == 'runing') {
-
-                    //考核人与当前人账户相同的时候才能考核
-                    if ('${sysUserDto.userAccount}' == row.examinePeople) {
-                        //进入一个地址来考核
-                        if (row.examineUrl) {
-                            str = "<button type='button' onclick='assessmentCommonHandle.taskOpenWin(\"" + row.examineUrl + "\")' href='javascript://' style='margin-left: 5px;' data-placement='top' data-original-title='考核填写' class='btn btn-xs " + btnClass + " tooltips'  ><i class='fa fa-arrow-right fa-white'></i></button>";
-                        } else {
-                            //使用弹窗考核
-                            str = "<button type='button' onclick='assessmentCommonHandle.openAssessmentProjectPerformanceBox(" + row.id + ")' style='margin-left: 5px;' data-placement='top' data-original-title='考核填写' class='btn btn-xs btn-primary tooltips'  ><i class='fa fa-edit fa-white'></i></button>";
-                        }
+                    //进入一个地址来考核
+                    if (row.examineUrl) {
+                        str += '<button type="button" class="btn  btn-xs btn-success tooltips" style="margin-left: 5px;" data-placement="bottom" data-original-title="考核填写" onclick="assessmentCommonHandle.taskOpenWin2(' + "'" + row.id + "'" + "," + "'" + table.selector + "'" + ')" > <i class="fa fa-arrow-right fa-white"></i></button>';
+                    } else {
+                        //使用弹窗考核
+                        str += '<button type="button" class="btn  btn-xs btn-success tooltips" style="margin-left: 5px;" data-placement="bottom" data-original-title="考核填写" onclick="assessmentCommonHandle.openAssessmentProjectPerformanceBox(' + "'" + row.id + "'" + "," + "'" + table.selector + "'" + ')" > <i class="fa fa-arrow-right fa-white"></i></button>';
                     }
                 }
                 return str;
@@ -532,7 +532,7 @@
             showRefresh: false,
             search: false,
             onLoadSuccess: function () {
-
+                $(".tooltips").tooltip();
             }
         };
         table.bootstrapTable('destroy');
@@ -625,11 +625,33 @@
         });
     };
 
+    //废弃
     assessmentCommonHandle.taskOpenWin = function (url) {
         url = "${pageContext.request.contextPath}" + url;
         openWin(url, function () {
             $("#assessmentTableList").bootstrapTable('refresh');
         })
+    };
+
+    assessmentCommonHandle.taskOpenWin2 = function (id, selector) {
+        var target = $(selector);
+        var item = target.bootstrapTable('getRowByUniqueId', id);
+        assessmentCommonHandle.getActivityIdByUserAccountList(item.activityId, function (accountList) {
+            var url = "${pageContext.request.contextPath}" + item.examineUrl;
+            var examinePeople = '${sysUserDto.userAccount}';
+            if (examinePeople){
+                if (jQuery.inArray(examinePeople,accountList) != -1){
+                    try {
+                        openWin(url, function () {
+                            target.bootstrapTable('refresh');
+                        })
+                    } catch (e) {
+                    }
+                }else {
+                    notifyWarning('警告', "当前用户不属于此节点组的考核人员!");
+                }
+            }
+        });
     };
 
     /**
@@ -675,6 +697,7 @@
      * @param id
      */
     assessmentCommonHandle.openAssessmentProjectPerformanceBox = function (id) {
+
         var target = $("#assessmentTableList");
         var box = $("#divAssessmentProjectPerformanceBox");
         var table = $("#tableAssessmentProjectPerformanceBox").find("tbody");

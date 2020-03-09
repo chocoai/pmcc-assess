@@ -144,11 +144,12 @@ public class AssessmentTaskExploreService implements AssessmentTaskInterface {
                 dto.setPlanName(projectPlanDetails.getProjectPhaseName());
             }
         }
-        dto.setExaminePeople(commonService.thisUserAccount());
+//        dto.setExaminePeople(commonService.thisUserAccount());
         dto.setCreator(commonService.thisUserAccount());
         dto.setValidScore(new BigDecimal(0));
         dto.setExamineUrl(examineUrl);
         dto.setAssessmentKey(assessmentKey);
+        dto.setBusinessKey(businessKey);
         Integer id = chksRpcAssessmentService.saveAndUpdateAssessmentProjectPerformanceDto(dto, true);
         if (id != null) {
             examineUrl = String.join("", examineUrl, "&", "assessmentPerformanceId=", id.toString());
