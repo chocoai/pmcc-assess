@@ -404,17 +404,17 @@
                 field: 'opt', title: '操作', width: '7%', formatter: function (value, row, index) {
                     var str = "";
                     if (row.canReplay) {
-                        str += "<button type='button' onclick='projectStagePlan.replyTask(" + row.id + ")' style='margin-left: 5px;' title='重启' class='btn btn-xs btn-primary tooltips'  ><i class='fa fa-reply fa-white'></i></button>";
+                        str += "<button type='button' onclick='projectStagePlan.replyTask(" + row.id + ")' style='margin-left: 5px;' title='重启' class='btn btn-xs btn-primary'  ><i class='fa fa-reply fa-white'></i></button>";
                     }
                     if (row.excuteUrl) {
                         var btnClass = 'btn-success';
                         if (/processInsId/.test(row.excuteUrl)) {
                             btnClass = 'btn-primary';
                         }
-                        str += "<button type='button' onclick='projectStagePlan.taskOpenWin(\"" + row.excuteUrl + "\")' href='javascript://' style='margin-left: 5px;' title='提交' class='btn btn-xs " + btnClass + " tooltips'  ><i class='fa fa-arrow-right fa-white'></i></button>";
+                        str += "<button type='button' onclick='projectStagePlan.taskOpenWin(\"" + row.excuteUrl + "\")' href='javascript://' style='margin-left: 5px;' title='提交' class='btn btn-xs " + btnClass + "'  ><i class='fa fa-arrow-right fa-white'></i></button>";
                     }
                     if (row.displayUrl) {
-                        str += "<button type='button' onclick='projectStagePlan.taskOpenWin(\"" + row.displayUrl + "\")' href='javascript://' style='margin-left: 5px;' title='查看' class='btn btn-xs btn-warning tooltips'  ><i class='fa fa-search fa-white'></i></button>";
+                        str += "<button type='button' onclick='projectStagePlan.taskOpenWin(\"" + row.displayUrl + "\")' href='javascript://' style='margin-left: 5px;' title='查看' class='btn btn-xs btn-warning'  ><i class='fa fa-search fa-white'></i></button>";
                     }
                     if (row.canCopy) {
                         str += "<button type='button'  onclick='projectStagePlan.taskCopy(this," + row.id + ");' data-planDetailsId='" + row.id + "' title='复制' class='btn btn-xs btn-warning btn-copy' ><i class='fa fa-copy fa-white'></i> <span>复制</span></button>";
