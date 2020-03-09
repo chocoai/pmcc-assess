@@ -17,6 +17,7 @@ import com.copower.pmcc.assess.service.project.ProjectTaskService;
 import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReActivityDto;
+import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxRuDto;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.api.provider.*;
@@ -180,11 +181,17 @@ public class ProjectTaskController extends BaseController {
         modelAndView.addObject("viewUrl", viewUrl);
         modelAndView.addObject("projectId", projectPlanDetails.getProjectId());
         modelAndView.addObject("projectFlog", "1");
-//        if (modelAndView.getModel().containsKey(activityId)) {
-//            setCheckParams(boxId, (Integer) modelAndView.getModel().get(activityId), projectPlanDetails.getProcessInsId(), projectPlanDetails.getProjectId(), modelAndView);
-//        } else {
-//            setCheckParams(boxId, null, projectPlanDetails.getProcessInsId(), projectPlanDetails.getProjectId(), modelAndView);
-//        }
+        //获取相应的考核项
+        if (boxId != null && boxId > 0) {
+            BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(boxId);
+            if (boxReDto.getBisLaunchCheck() != null && boxReDto.getBisLaunchCheck()) {
+                if (modelAndView.getModel().containsKey(activityId)) {
+                    setCheckParams(boxId, (Integer) modelAndView.getModel().get(activityId), projectPlanDetails.getProcessInsId(), projectPlanDetails.getProjectId(), modelAndView);
+                } else {
+                    setCheckParams(boxId, null, projectPlanDetails.getProcessInsId(), projectPlanDetails.getProjectId(), modelAndView);
+                }
+            }
+        }
         return modelAndView;
     }
 
@@ -284,11 +291,17 @@ public class ProjectTaskController extends BaseController {
                 }
             }
         }
-//        if (modelAndView.getModel().containsKey(activityId)) {
-//            setCheckParams(boxId, (Integer) modelAndView.getModel().get(activityId), projectPlanDetails.getProcessInsId(), projectPlanDetails.getProjectId(), modelAndView);
-//        } else {
-//            setCheckParams(boxId, null, projectPlanDetails.getProcessInsId(), projectPlanDetails.getProjectId(), modelAndView);
-//        }
+        //获取相应的考核项
+        if (boxId != null && boxId > 0) {
+            BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(boxId);
+            if (boxReDto.getBisLaunchCheck() != null && boxReDto.getBisLaunchCheck()) {
+                if (modelAndView.getModel().containsKey(activityId)) {
+                    setCheckParams(boxId, (Integer) modelAndView.getModel().get(activityId), projectPlanDetails.getProcessInsId(), projectPlanDetails.getProjectId(), modelAndView);
+                } else {
+                    setCheckParams(boxId, null, projectPlanDetails.getProcessInsId(), projectPlanDetails.getProjectId(), modelAndView);
+                }
+            }
+        }
         return modelAndView;
     }
 
@@ -314,6 +327,7 @@ public class ProjectTaskController extends BaseController {
 
     /**
      * 考核参数设置
+     *
      * @param boxId
      * @param boxReActivitiId
      * @param processInsId
@@ -322,25 +336,13 @@ public class ProjectTaskController extends BaseController {
      */
     private void setCheckParams(Integer boxId, Integer boxReActivitiId, String processInsId, Integer projectId, ModelAndView modelAndView) {
         //当前节点  可以查看的权限节点信息列表
-        try{
+        try {
             modelAndView.addObject(StringUtils.uncapitalize(SysUserDto.class.getSimpleName()), processControllerComponent.getThisUserInfo());
-            BoxReActivityDto spotReActivityDto = null;
-            if (boxId == null || boxId == 0) {
-                if (boxReActivitiId != null) {
-                    spotReActivityDto = chksAssessmentProjectPerformanceService.getSpotBoxReActivityDto(bpmRpcBoxService.getBoxreActivityInfoById(boxReActivitiId).getBoxId());
-                } else {
-                    BoxReActivityDto boxReActivityDto = chksAssessmentProjectPerformanceService.getBoxReActivityDtoByProcessInsId(processInsId, projectId, boxId);
-                    spotReActivityDto = chksAssessmentProjectPerformanceService.getSpotBoxReActivityDto(boxReActivityDto.getBoxId());
-                }
-            } else {
-                spotReActivityDto = chksAssessmentProjectPerformanceService.getSpotBoxReActivityDto(boxId);
-            }
             modelAndView.addObject("activityDtoList", chksAssessmentProjectPerformanceService.getAssessmentProjectPerformanceNext(boxId, boxReActivitiId));
-            modelAndView.addObject("spotReActivityDto", spotReActivityDto);//抽查考核节点
-            modelAndView.addObject("spotUserAccounts", chksAssessmentProjectPerformanceService.getSpotCheckUserAccounts(spotReActivityDto.getBoxId()));//抽查考核节点账户 list
+            modelAndView.addObject("spotReActivityDto", chksAssessmentProjectPerformanceService.getSpotBoxReActivityDto(boxId));//抽查考核节点
             modelAndView.addObject("userAdmin", processControllerComponent.userIsAdmin(processControllerComponent.getThisUser()));//是否为超级管理员
-        }catch (Exception e){
-            logger.error(e.getMessage(),e);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
         }
     }
 

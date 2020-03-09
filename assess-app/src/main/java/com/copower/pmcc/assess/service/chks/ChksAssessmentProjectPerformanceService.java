@@ -90,6 +90,9 @@ public class ChksAssessmentProjectPerformanceService {
         if (StringUtils.isNotBlank(activityIds)) {
             activityList = FormatUtils.transformString2Integer(activityIds);
         }
+        if (where.getActivityId() == null && CollectionUtils.isEmpty(activityList)){
+            where.setExaminePeople(processControllerComponent.getThisUser());
+        }
         where.setAppKey(applicationConstant.getAppKey());
         ChksBootstrapTableVo chksBootstrapTableVo = new ChksBootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
@@ -309,14 +312,10 @@ public class ChksAssessmentProjectPerformanceService {
      * @return
      */
     public List<BoxReActivityDto> getAssessmentProjectPerformanceNext(Integer boxId, Integer boxReActivitiId) {
-        boolean spotCheck = getSpotCheck(boxId, commonService.thisUserAccount());
         List<BoxReActivityDto> targetList = new ArrayList<>(0);
         List<BoxReActivityDto> boxReActivityDtoList = bpmRpcBoxService.getBoxReActivityByBoxId(boxId);
         if (CollectionUtils.isEmpty(boxReActivityDtoList)) {
             return targetList;
-        }
-        if (spotCheck) {//巡查或者抽查人员可以看到目标模型下的所有节点
-            return boxReActivityDtoList;
         }
         BoxReActivityDto boxReActivityDto = null;
         if (boxReActivitiId != null) {
@@ -465,36 +464,18 @@ public class ChksAssessmentProjectPerformanceService {
         if (StringUtils.isEmpty(creator)) {
             return false;
         }
-        List<String> creates = getSpotCheckUserAccounts(boxId);
+        BoxReActivityDto boxReActivityDto = getSpotBoxReActivityDto(boxId);
+        List<String> creates = null;
+        try {
+            creates = bpmRpcBoxService.getRoleUserByActivityId(boxReActivityDto.getId());
+        } catch (BpmException e) {
+        }
         if (CollectionUtils.isEmpty(creates)) {
             return false;
         }
         return creates.contains(creator);
     }
 
-
-    /**
-     * 获取流程抽查人员账号
-     *
-     * @param boxId
-     * @return
-     */
-    public List<String> getSpotCheckUserAccounts(Integer boxId) {
-        BoxReActivityDto boxReActivityDto = getSpotBoxReActivityDto(boxId);
-        try {
-            if (boxReActivityDto != null) {
-
-                List<String> list = bpmRpcBoxService.getRoleUserByActivityId(boxReActivityDto.getId());
-                if (CollectionUtils.isNotEmpty(list)) {
-                    //String类可以使用默认的流去重，这里没问题的
-                    return list.stream().distinct().collect(Collectors.toList());
-                }
-            }
-        } catch (Exception e) {
-            baseService.writeExceptionInfo(e);
-        }
-        return null;
-    }
 
     public void updateAssessmentProjectPerformanceDto(AssessmentProjectPerformanceDto assessmentProjectPerformanceDto, boolean updateNull) {
         chksRpcAssessmentService.updateAssessmentProjectPerformanceDto(assessmentProjectPerformanceDto, updateNull);
@@ -526,20 +507,20 @@ public class ChksAssessmentProjectPerformanceService {
      * @return
      */
     public BoxReActivityDto getSpotBoxReActivityDto(Integer boxId) {
-        List<BoxReActivityDto> boxReActivityDtoList = bpmRpcBoxService.getBoxReActivityByBoxId(boxId);
-        if (CollectionUtils.isNotEmpty(boxReActivityDtoList)) {
-            Iterator<BoxReActivityDto> iterator = boxReActivityDtoList.iterator();
-            while (iterator.hasNext()) {
-                BoxReActivityDto boxReActivityDto = iterator.next();
-                if (boxReActivityDto.getBisSpotCheck() != null) {
-                    if (boxReActivityDto.getBisSpotCheck()) {
-                        return boxReActivityDto;
-                    }
-                }
-            }
-        }
-        return null;
-        //return bpmRpcBoxService.getEndActivityByBoxId(boxId);
+//        List<BoxReActivityDto> boxReActivityDtoList = bpmRpcBoxService.getBoxReActivityByBoxId(boxId);
+//        if (CollectionUtils.isNotEmpty(boxReActivityDtoList)) {
+//            Iterator<BoxReActivityDto> iterator = boxReActivityDtoList.iterator();
+//            while (iterator.hasNext()) {
+//                BoxReActivityDto boxReActivityDto = iterator.next();
+//                if (boxReActivityDto.getBisSpotCheck() != null) {
+//                    if (boxReActivityDto.getBisSpotCheck()) {
+//                        return boxReActivityDto;
+//                    }
+//                }
+//            }
+//        }
+//        return null;
+        return bpmRpcBoxService.getEndActivityByBoxId(boxId);
     }
 
 
