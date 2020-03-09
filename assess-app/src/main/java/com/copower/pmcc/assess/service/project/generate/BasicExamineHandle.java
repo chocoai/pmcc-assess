@@ -570,7 +570,7 @@ public class BasicExamineHandle implements Serializable {
     }
 
     private List<BasicApplyBatchDetail> getBasicApplyBatchDetailList() {
-        if (CollectionUtils.isEmpty(basicApplyBatchDetailList)) {
+        if (CollectionUtils.isEmpty(basicApplyBatchDetailList) && this.basicApplyBatch != null) {
             basicApplyBatchDetailList = basicApplyBatchDetailService.getBasicApplyBatchDetailByApplyBatchId(this.basicApplyBatch.getId());
         }
         return basicApplyBatchDetailList;

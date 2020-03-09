@@ -27,7 +27,8 @@ public class AdRpcQualificationsAppService {
     ///公司资质
     //根据公司编号取得公司执业资质 3
     public AdCompanyQualificationDto getCompanyQualificationForPractising(Integer companyId) {
-        return adRpcQualificationsService.getCompanyQualificationForPractising(companyId);
+        AdCompanyQualificationDto companyQualificationDto = adRpcQualificationsService.getCompanyQualificationForPractising(companyId);
+        return companyQualificationDto;
     }
 
     //根据公司编号取得公司营业执照

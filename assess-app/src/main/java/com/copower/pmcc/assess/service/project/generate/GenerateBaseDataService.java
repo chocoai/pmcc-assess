@@ -149,6 +149,8 @@ public class GenerateBaseDataService {
     private List<SchemeJudgeObject> schemeJudgeObjectFullList = null;
     private List<SchemeJudgeObject> schemeJudgeObjectDeclareList = null;
     private Map<Integer, SchemeJudgeObject> schemeJudgeObjectMap = null;
+    private AdCompanyQualificationDto companyQualificationForLicense = null;//营业执照
+    private AdCompanyQualificationDto companyQualificationForPractising = null;//执业资格
     //===========================================获取的值===============================
 
     /**
@@ -193,7 +195,7 @@ public class GenerateBaseDataService {
         if (qrcodeRecode != null) {
             qrCode = qrcodeRecode.getQrcode();//更新部分信息
             ProjectDocumentDto projectDocumentDto = erpRpcToolsService.getProjectDocumentById(qrcodeRecode.getProjectDocumentId());
-            if(projectDocumentDto!=null){
+            if (projectDocumentDto != null) {
                 projectDocumentDto.setReportDate(DateUtils.formatDate(generateReportInfo.getReportIssuanceDate(), DateUtils.DATE_CHINESE_PATTERN));
                 projectDocumentDto.setReportMember(publicService.getUserNameByAccount(generateReportInfo.getRealEstateAppraiser()));
                 erpRpcToolsService.saveProjectDocument(projectDocumentDto);
@@ -2470,7 +2472,9 @@ public class GenerateBaseDataService {
      * @return
      * @throws Exception
      */
-    public String getXIEHE_organizationInfo(AdCompanyQualificationDto qualificationDto) throws Exception {
+    public String getXIEHE_organizationInfo() throws Exception {
+        AdCompanyQualificationDto qualificationDto = getCompanyQualificationForPractising();
+        if (qualificationDto == null) return null;
         String localPath = getLocalPath();
         Document doc = new Document();
         DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(doc);
@@ -2495,7 +2499,10 @@ public class GenerateBaseDataService {
      * @return
      */
     public AdCompanyQualificationDto getCompanyQualificationForLicense() {
-        return adRpcQualificationsService.getCompanyQualificationForLicense(publicService.getCurrentCompany().getCompanyId());
+        if (companyQualificationForLicense == null) {
+            companyQualificationForPractising = adRpcQualificationsService.getCompanyQualificationForLicense(publicService.getCurrentCompany().getCompanyId());
+        }
+        return companyQualificationForLicense;
     }
 
     /**
@@ -2504,18 +2511,22 @@ public class GenerateBaseDataService {
      * @return
      */
     public AdCompanyQualificationDto getCompanyQualificationForPractising() {
-        return adRpcQualificationsService.getCompanyQualificationForPractising(publicService.getCurrentCompany().getCompanyId());
+        if (companyQualificationForPractising == null) {
+            companyQualificationForPractising = adRpcQualificationsService.getCompanyQualificationForPractising(publicService.getCurrentCompany().getCompanyId());
+        }
+        return companyQualificationForPractising;
     }
 
     /**
      * 经营范围
      *
-     * @param qualificationDto
      * @return
      * @throws Exception
      */
-    public String getBusinessScope(AdCompanyQualificationDto qualificationDto) throws Exception {
-        return StringUtils.isEmpty(qualificationDto.getBusinessScopeName()) ? "" : qualificationDto.getBusinessScopeName();
+    public String getBusinessScope() throws Exception {
+        AdCompanyQualificationDto qualificationForPractising = getCompanyQualificationForPractising();
+        if (qualificationForPractising == null) return "";
+        return qualificationForPractising.getBusinessScopeName();
     }
 
     /**
@@ -3576,13 +3587,13 @@ public class GenerateBaseDataService {
 //                                total = total.add(declareRecord.getPracticalArea().multiply(declareRecord.getPrice()));
 //                            }
 
-                            if (schemeJudgeObject.getEvaluationArea() != null){
+                            if (schemeJudgeObject.getEvaluationArea() != null) {
                                 evaluationArea = evaluationArea.add(schemeJudgeObject.getEvaluationArea());
                             }
-                            if (schemeJudgeObject.getPrice() != null){
+                            if (schemeJudgeObject.getPrice() != null) {
                                 price = price.add(schemeJudgeObject.getPrice());
                             }
-                            if (schemeJudgeObject.getEvaluationArea() != null && schemeJudgeObject.getPrice() != null){
+                            if (schemeJudgeObject.getEvaluationArea() != null && schemeJudgeObject.getPrice() != null) {
                                 total = total.add(schemeJudgeObject.getEvaluationArea().multiply(schemeJudgeObject.getPrice()));
                             }
                             writeJudgeObjectResultSurveyInCell(integerEntry.getKey(), schemeJudgeObject, builder, doubleLinkedList, seat, mortgageFlag, schemeJudgeObjectList.size() <= 20);
