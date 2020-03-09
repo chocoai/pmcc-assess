@@ -240,10 +240,10 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    notifySuccess("成功,添加成功");
+                    notifySuccess("成功","添加成功");
                 }
                 else {
-                    AlertError("添加失败，失败原因:" + result.errmsg, 1, null, null);
+                    AlertError("添加失败","失败原因:" + result.errmsg, 1, null, null);
                 }
             }
         });
