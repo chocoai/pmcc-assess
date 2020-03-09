@@ -1466,11 +1466,11 @@
                     console.log(areaUnit+"=areaUnit")
                     var landUnitPrice = (landCurrentPrice / landArea).toFixed(2);
                     $("#unitPriceMu").val(landUnitPrice);
-                    $("#landUnitPrice").val((landUnitPrice* 10000 / AssessCommon.BHOU).toFixed(2));
+                    $("#landUnitPrice").val((landCurrentPrice* 10000 / landArea / AssessCommon.BHOU).toFixed(2));
                 }else {
                     var landUnitPrice = (landCurrentPrice * 10000/ landArea).toFixed(2);
                     $("#landUnitPrice").val(landUnitPrice);
-                    $("#unitPriceMu").val((landUnitPrice * AssessCommon.BHOU/10000).toFixed(2));
+                    $("#unitPriceMu").val((landCurrentPrice / landArea * AssessCommon.BHOU).toFixed(2));
                 }
 
             } else {
