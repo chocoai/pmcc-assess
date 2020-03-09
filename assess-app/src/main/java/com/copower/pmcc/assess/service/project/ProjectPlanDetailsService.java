@@ -280,10 +280,8 @@ public class ProjectPlanDetailsService {
         //获取该阶段下正在运行的待审批
         List<String> processInsIds = Lists.newArrayList();
         for (ProjectPlanDetails projectPlanDetail : projectPlanDetails) {
-            if (StringUtils.equals(projectPlanDetail.getStatus(), SysProjectEnum.RUNING.getValue())) {
-                if (!StringUtils.equals(projectPlanDetail.getProcessInsId(), "0")) {
-                    processInsIds.add(projectPlanDetail.getProcessInsId());
-                }
+            if (!StringUtils.equals(projectPlanDetail.getProcessInsId(), "0")) {
+                processInsIds.add(projectPlanDetail.getProcessInsId());
             }
         }
         List<ActivitiTaskNodeDto> activitiTaskNodeDtos = null;
@@ -312,59 +310,51 @@ public class ProjectPlanDetailsService {
             //如果任务是在审批或完成状态可查看详情
             //如果为待提交状态 当前人与任务执行人相同 可提交任务
             //如果为待审批状态 当前人与审批人相同 可审批该任务
-            SysProjectEnum sysProjectEnum = SysProjectEnum.getEnumByName(SysProjectEnum.getNameByKey(projectPlanDetailsVo.getStatus()));
-            if (sysProjectEnum != null) {
-                switch (sysProjectEnum) {
-                    case NONE:
-                    case CLOSE://业务异常关闭流程错误更新状态的数据
-                    case RUNING:
-                        if (StringUtils.equals(projectPlanDetailsVo.getProcessInsId(), "0")) {
-                            if (CollectionUtils.isNotEmpty(projectTaskList)) {
-                                for (ProjectResponsibilityDto responsibilityDto : projectTaskList) {
-                                    if (projectPlanDetailsVo.getId().intValue() == responsibilityDto.getPlanDetailsId().intValue()) {
-                                        String executeUrl = String.format(responsibilityDto.getUrl().contains("?") ? "%s&responsibilityId=%s" : "%s?responsibilityId=%s", responsibilityDto.getUrl(), responsibilityDto.getId());
-                                        projectPlanDetailsVo.setExcuteUrl(executeUrl);
-                                        //设置粘贴
-                                        if (CollectionUtils.isNotEmpty(phaseFullIds) && phaseFullIds.contains(projectPlanDetailsVo.getProjectPhaseId())) {
-                                            projectPlanDetailsVo.setCanPaste(true);
-                                        }
-                                    }
-                                }
-                            }
-                        } else {
-                            if (CollectionUtils.isNotEmpty(activitiTaskNodeDtos)) {
-                                String processInsId = projectPlanDetailsVo.getProcessInsId();
-                                String taskId = new String();
-                                //根据情况获取对应的审批节点数据activitiTaskNodeDto
-                                ActivitiTaskNodeDto activitiTaskNodeDto = null;
-                                for (ActivitiTaskNodeDto taskNodeDto : activitiTaskNodeDtos) {
-                                    if (StringUtils.equals(taskNodeDto.getProcessInstanceId(), processInsId)) {
-                                        activitiTaskNodeDto = taskNodeDto;
-                                        taskId = taskNodeDto.getTaskId();
-                                    }
-                                }
-                                if (activitiTaskNodeDto != null) {
-                                    BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(Integer.parseInt(activitiTaskNodeDto.getBusinessKey()));
-                                    String approvalUrl = boxReDto.getProcessApprovalUrl();
-                                    if (StringUtils.equals(ProcessActivityEnum.EDIT.getValue(), activitiTaskNodeDto.getTaskKey())) {
-                                        approvalUrl = boxReDto.getProcessEditUrl();
-                                    }
-                                    approvalUrl = String.format("/%s%s?boxId=%s&processInsId=%s&taskId=%s", boxReDto.getGroupName(), approvalUrl, boxReDto.getId(), processInsId, taskId);
-                                    //找出代理人
-                                    List<String> assignorList = bpmRpcToolsService.getAssignorListByAgent(commonService.thisUserAccount());
-                                    List<String> userList = Lists.newArrayList(commonService.thisUserAccount());
-                                    userList.addAll(assignorList);
-                                    Collection intersection = CollectionUtils.intersection(activitiTaskNodeDto.getUsers(), userList);
-                                    if (CollectionUtils.isNotEmpty(intersection)) {
-                                        String agentUserAccount = String.valueOf(Lists.newArrayList(intersection).get(0));
-                                        approvalUrl = approvalUrl + String.format("&agentUserAccount=%s", agentUserAccount);
-                                        projectPlanDetailsVo.setExcuteUrl(approvalUrl);
-                                    }
-                                    projectPlanDetailsVo.setApproverUserName(publicService.getUserNameByAccountList(activitiTaskNodeDto.getUsers()));
-                                }
+            ProjectStatusEnum sysProjectEnum = ProjectStatusEnum.getEnumByKey(projectPlanDetailsVo.getStatus());
+            if (StringUtils.equals(projectPlanDetailsVo.getProcessInsId(), "0")) {
+                if (CollectionUtils.isNotEmpty(projectTaskList)) {
+                    for (ProjectResponsibilityDto responsibilityDto : projectTaskList) {
+                        if (projectPlanDetailsVo.getId().intValue() == responsibilityDto.getPlanDetailsId().intValue()) {
+                            String executeUrl = String.format(responsibilityDto.getUrl().contains("?") ? "%s&responsibilityId=%s" : "%s?responsibilityId=%s", responsibilityDto.getUrl(), responsibilityDto.getId());
+                            projectPlanDetailsVo.setExcuteUrl(executeUrl);
+                            //设置粘贴
+                            if (CollectionUtils.isNotEmpty(phaseFullIds) && phaseFullIds.contains(projectPlanDetailsVo.getProjectPhaseId())) {
+                                projectPlanDetailsVo.setCanPaste(true);
                             }
                         }
-                        break;
+                    }
+                }
+            } else {
+                if (CollectionUtils.isNotEmpty(activitiTaskNodeDtos)) {
+                    String processInsId = projectPlanDetailsVo.getProcessInsId();
+                    String taskId = new String();
+                    //根据情况获取对应的审批节点数据activitiTaskNodeDto
+                    ActivitiTaskNodeDto activitiTaskNodeDto = null;
+                    for (ActivitiTaskNodeDto taskNodeDto : activitiTaskNodeDtos) {
+                        if (StringUtils.equals(taskNodeDto.getProcessInstanceId(), processInsId)) {
+                            activitiTaskNodeDto = taskNodeDto;
+                            taskId = taskNodeDto.getTaskId();
+                        }
+                    }
+                    if (activitiTaskNodeDto != null) {
+                        BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(Integer.parseInt(activitiTaskNodeDto.getBusinessKey()));
+                        String approvalUrl = boxReDto.getProcessApprovalUrl();
+                        if (StringUtils.equals(ProcessActivityEnum.EDIT.getValue(), activitiTaskNodeDto.getTaskKey())) {
+                            approvalUrl = boxReDto.getProcessEditUrl();
+                        }
+                        approvalUrl = String.format("/%s%s?boxId=%s&processInsId=%s&taskId=%s", boxReDto.getGroupName(), approvalUrl, boxReDto.getId(), processInsId, taskId);
+                        //找出代理人
+                        List<String> assignorList = bpmRpcToolsService.getAssignorListByAgent(commonService.thisUserAccount());
+                        List<String> userList = Lists.newArrayList(commonService.thisUserAccount());
+                        userList.addAll(assignorList);
+                        Collection intersection = CollectionUtils.intersection(activitiTaskNodeDto.getUsers(), userList);
+                        if (CollectionUtils.isNotEmpty(intersection)) {
+                            String agentUserAccount = String.valueOf(Lists.newArrayList(intersection).get(0));
+                            approvalUrl = approvalUrl + String.format("&agentUserAccount=%s", agentUserAccount);
+                            projectPlanDetailsVo.setExcuteUrl(approvalUrl);
+                        }
+                        projectPlanDetailsVo.setApproverUserName(publicService.getUserNameByAccountList(activitiTaskNodeDto.getUsers()));
+                    }
                 }
             }
             if (projectPlanDetailsVo.getBisLastLayer() == Boolean.TRUE)
@@ -376,7 +366,7 @@ public class ProjectPlanDetailsService {
             boolean isMember = projectMemberService.isProjectMember(projectId, commonService.thisUserAccount());
             boolean isOperable = projectInfoService.isProjectOperable(projectId);
 
-            if (isMember && isOperable && sysProjectEnum.getValue().equals(ProcessStatusEnum.FINISH.getValue())) {
+            if (isMember && isOperable &&ProjectStatusEnum.FINISH.getKey().equals(sysProjectEnum.getKey())) {
                 if (StringUtils.isNotBlank(projectPlanDetailsVo.getExecuteUserAccount()) && projectPlanDetailsVo.getBisStart()) {
                     ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseById(projectPlanDetailsVo.getProjectPhaseId());
                     if (projectPhase != null) {

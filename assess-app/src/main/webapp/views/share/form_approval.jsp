@@ -26,17 +26,17 @@
                                     <div class="form-check">
                                         <label class="form-radio-label">
                                             <input class="form-radio-input" type="radio" name="conclusion"
-                                                   value="Approval" checked="checked" onclick="chkRadioClick()">
+                                                   value="Approval" checked="checked" onclick="formApproval.chkRadioClick()">
                                             <span>同意</span>
                                         </label>
                                         <label class="form-radio-label ml-3">
                                             <input class="form-radio-input" type="radio" name="conclusion"
-                                                   value="Decline" onclick="chkRadioClick()">
+                                                   value="Decline" onclick="formApproval.chkRadioClick()">
                                             <span class="form-radio-sign">不同意，退回上一级</span>
                                         </label>
                                         <label class="form-radio-label ml-3">
                                             <input class="form-radio-input" type="radio" name="conclusion" value="Back"
-                                                   onclick="chkRadioClick()">
+                                                   onclick="formApproval.chkRadioClick()">
                                             <span class="form-radio-sign">不同意，退回申请人</span>
                                         </label>
                                     </div>
@@ -170,14 +170,11 @@
         chkbisNextClick: function () {
             if ($("#chk_bisNext").is(":checked")) {
                 $("#bisNext").val(1);
-                $("#div_nextApproval").hide();
+                $('#nextApproval').closest('.form-group').hide();//隐藏选择下级审批人
             }
             else {
                 $("#bisNext").val(0);
-                $("#div_nextApproval").show();
-            }
-            if (window.cutomNextClick) {
-                cutomNextClick();
+                $('#nextApproval').closest('.form-group').show();//显示选择下级审批人
             }
         },
 
@@ -185,9 +182,11 @@
             var rdoValue = $("input[name='conclusion']:checked").val();
             if (rdoValue == "Approval") {
                 $("#opinions").attr("required", false);//审批意见不必填
+                $('#nextApproval').closest('.form-group').show();//显示选择下级审批人
             }
             else {
                 $("#opinions").attr("required", true);//审批意见必填
+                $('#nextApproval').closest('.form-group').hide();//隐藏选择下级审批人
             }
         },
 
