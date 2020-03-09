@@ -879,7 +879,7 @@
                     notifySuccess("成功","添加成功");
                 }
                 else {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                    AlertError("失败","失败原因:" + result.errmsg);
                 }
             }
         });

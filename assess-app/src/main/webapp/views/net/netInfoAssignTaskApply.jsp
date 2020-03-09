@@ -891,7 +891,7 @@
                     });
                 }
                 else {
-                    AlertError("提交数据失败","失败原因:" + result.errmsg);
+                    AlertError("失败","提交数据失败","失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
@@ -925,7 +925,7 @@
                     });
                 }
                 else {
-                    AlertError("提交数据失败，失败原因:" + result.errmsg);
+                    AlertError("失败","提交数据失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {

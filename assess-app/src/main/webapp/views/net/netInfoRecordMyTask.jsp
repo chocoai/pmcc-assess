@@ -1081,7 +1081,7 @@
                     }
                 },
                 error: function (result) {
-                    AlertError("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -1210,11 +1210,11 @@
                         detailInfo.prototype.updateLandStatus(result.data.id);
                     }
                     else {
-                        AlertError("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("失败","保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    AlertError("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -1234,11 +1234,11 @@
                         });
                     }
                     else {
-                        AlertError("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("失败","保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    AlertError("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -1266,11 +1266,11 @@
                         detailInfo.prototype.updateHouseStatus(result.data.id);
                     }
                     else {
-                        AlertError("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("失败","保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    AlertError("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -1290,11 +1290,11 @@
                         });
                     }
                     else {
-                        AlertError("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("失败","保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    AlertError("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -1558,7 +1558,7 @@
                     }
                 },
                 error: function (result) {
-                    AlertError("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -1576,11 +1576,11 @@
                             detailInfo.prototype.loadLandHistoryList(masterId);
                         }
                         else {
-                            AlertError("删除数据失败，失败原因:" + result.errmsg);
+                            AlertError("失败","删除数据失败，失败原因:" + result.errmsg);
                         }
                     },
                     error: function (result) {
-                        AlertError("调用服务端方法失败，失败原因:" + result);
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result);
                     }
                 })
             });
@@ -1723,7 +1723,7 @@
                     }
                 },
                 error: function (result) {
-                    AlertError("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -1741,11 +1741,11 @@
                             detailInfo.prototype.loadHouseHistoryList(masterId);
                         }
                         else {
-                            AlertError("保存数据失败，失败原因:" + result.errmsg);
+                            AlertError("失败","保存数据失败，失败原因:" + result.errmsg);
                         }
                     },
                     error: function (result) {
-                        AlertError("调用服务端方法失败，失败原因:" + result);
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result);
                     }
                 })
             });
@@ -1846,11 +1846,11 @@
                                 detailInfo.prototype.loadDataDicList();
                             }
                             else {
-                                AlertError("取消认领任务失败，失败原因:" + result.errmsg);
+                                AlertError("失败","取消认领任务失败，失败原因:" + result.errmsg);
                             }
                         },
                         error: function (result) {
-                            AlertError("调用服务端方法失败，失败原因:" + result);
+                            AlertError("失败","调用服务端方法失败，失败原因:" + result);
                         }
                     })
                 });
@@ -1884,11 +1884,11 @@
                             detailInfo.prototype.loadDataDicList();
                         }
                         else {
-                            AlertError("保存数据失败，失败原因:" + result.errmsg);
+                            AlertError("失败","保存数据失败，失败原因:" + result.errmsg);
                         }
                     },
                     error: function (result) {
-                        AlertError("调用服务端方法失败，失败原因:" + result);
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result);
                     }
                 })
             });

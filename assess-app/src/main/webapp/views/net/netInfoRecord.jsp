@@ -365,7 +365,7 @@
                     }
                 },
                 error: function (result) {
-                    AlertError("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -386,11 +386,11 @@
                         detailInfo.prototype.loadDataDicList();
                     }
                     else {
-                        AlertError("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("失败","保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    AlertError("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -406,11 +406,11 @@
                         notifySuccess("成功","获取数据成功");
                     }
                     else {
-                        AlertError("获取数据失败，失败原因:" + result.errmsg);
+                        AlertError("失败","获取数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    AlertError("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -461,12 +461,12 @@
                         detailInfo.prototype.loadDataDicList();
                     }
                     else {
-                        AlertError("分派失败,失败原因:" + result.errmsg);
+                        AlertError("失败","分派失败,失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
                     Loading.progressHide();
-                    AlertError("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -497,11 +497,11 @@
                             detailInfo.prototype.loadDataDicList();
                         }
                         else {
-                            AlertError("保存数据失败，失败原因:" + result.errmsg);
+                            AlertError("失败","删除数据失败，失败原因:" + result.errmsg);
                         }
                     },
                     error: function (result) {
-                        AlertError("调用服务端方法失败，失败原因:" + result);
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result);
                     }
                 })
             });
