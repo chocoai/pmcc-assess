@@ -241,6 +241,14 @@
                                                             </c:forEach>
                                                         </select>
                                                     </div>
+                                                    <label class="col-sm-1 control-label">
+                                                        价值类型描述<span class="symbol required"></span>
+                                                    </label>
+                                                    <div class="col-sm-2 x-valid">
+                                                        <input type="text" name="valueDefinitionDesc" required="required"
+                                                               placeholder="价值类型描述" class="form-control input-full"
+                                                               value="${item.valueDefinitionDesc}">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
