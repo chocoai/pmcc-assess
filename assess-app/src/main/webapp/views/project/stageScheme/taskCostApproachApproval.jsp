@@ -4,144 +4,474 @@
 <head>
     <%@include file="/views/share/main_css.jsp" %>
 </head>
-<body class="nav-md footer_fixed">
-<div class="container body">
-    <div class="main_container">
-        <div class="right_col" role="main" style="margin-left: 0">
+<body>
+<div class="wrapper">
+    <div class="main-panel" style="width: 100%">
+        <div class="content" style="margin-top: 0px;">
             <%@include file="/views/share/form_head.jsp" %>
-            <%@include file="/views/share/project/projectInfoSimple.jsp" %>
-            <%@include file="/views/share/project/projectPlanDetails.jsp" %>
-            <div class="x_panel">
-                <div class="x_title collapse-link">
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                    </ul>
-                    <h3 style="word-break: break-all">
-                        ${judgeObject.name}
-                        <small>(${judgeObject.evaluationArea}㎡)</small>
-                    </h3>
-                    <div class="clearfix"></div>
-                </div>
+            <div class="page-inner mt--5">
+                <div class="row mt--2">
+                    <%@include file="/views/share/project/projectInfoSimple.jsp" %>
+                    <%@include file="/views/share/project/projectPlanDetails.jsp" %>
 
-                <div class="x_content">
-                    <form class="form-horizontal" id="master">
-                        <div class="x_panel">
-                            <div class="x_title collapse-link">
-                                <ul class="nav navbar-right panel_toolbox">
-                                    <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                                </ul>
-                                <h3>年平均产值调查</h3>
-                                <div class="clearfix"></div>
-                            </div>
-                            <div class="x_content">
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            农用地总面积(亩)
-                                        </label>
-                                        <div class="col-sm-3">
-                                            <label class="form-control">${master.farmlandArea}</label>
-                                        </div>
+                    <div class="col-md-12">
+                        <div class="card full-height">
+                            <div class="card-header collapse-link">
+                                <div class="card-head-row">
+                                    <div class="card-title">
+                                        ${judgeObject.name}
+                                        <small>(${judgeObject.evaluationArea}㎡)</small>
                                     </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            耕地面积(亩)
-                                        </label>
-                                        <div class="col-sm-3">
-                                            <label class="form-control">${master.ploughArea}</label>
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            人口数(人)
-                                        </label>
-                                        <div class="col-sm-3">
-                                            <label class="form-control">${master.populationNumber}</label>
-                                        </div>
+                                    <div class="card-tools">
+                                        <button class="btn  btn-link btn-primary btn-xs"><span
+                                                class="fa fa-angle-down"></span>
+                                        </button>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">宗地外设定</label>
-                                        <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                                            <label class="form-control">${master.parcelSettingOuterName}</label>
+                            </div>
+                            <div class="card-body">
+                                <form class="form-horizontal" id="master">
+                                    <div class="col-md-12">
+                                        <div class="card full-height">
+                                            <div class="card-header collapse-link">
+                                                <div class="card-head-row">
+                                                    <div class="card-title">
+                                                        年平均产值调查
+                                                    </div>
+                                                    <div class="card-tools">
+                                                        <button class="btn  btn-link btn-primary btn-xs"><span
+                                                                class="fa fa-angle-down"></span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row form-group">
+                                                    <div class="col-md-12">
+                                                    <div class="form-inline x-valid">
+                                                        <label class="col-sm-1 control-label">
+                                                            农用地总面积(亩)
+                                                        </label>
+                                                        <div class="col-sm-3">
+                                                            <label class="form-control input-full">${master.farmlandArea}</label>
+                                                        </div>
+                                                        <label class="col-sm-1 control-label">
+                                                            耕地面积(亩)
+                                                        </label>
+                                                        <div class="col-sm-3">
+                                                            <label class="form-control input-full">${master.ploughArea}</label>
+                                                        </div>
+                                                        <label class="col-sm-1 control-label">
+                                                            人口数(人)
+                                                        </label>
+                                                        <div class="col-sm-3">
+                                                            <label class="form-control input-full">${master.populationNumber}</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                </div>
+                                                <div class="row form-group">
+                                                    <div class="col-md-12">
+                                                    <div class="form-inline x-valid">
+                                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">宗地外设定</label>
+                                                        <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                                                            <label class="form-control input-full">${master.parcelSettingOuterName}</label>
+                                                        </div>
+                                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">宗地内设定</label>
+                                                        <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
+                                                            <label class="form-control input-full">${master.parcelSettingInnerName}</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                </div>
+                                                <div class="row form-group">
+                                                    <div class="col-md-12">
+                                                        <table class="table table-bordered" id="tb_research_list">
+                                                            <!-- cerare document add ajax data-->
+                                                        </table>
+                                                    </div>
+                                                </div>
+
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="x-valid">
-                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">宗地内设定</label>
-                                        <div class=" col-xs-3  col-sm-3  col-md-3  col-lg-3 ">
-                                            <label class="form-control">${master.parcelSettingInnerName}</label>
+
+                                    <div class="col-md-12">
+                                        <div class="card full-height">
+                                            <div class="card-header collapse-link">
+                                                <div class="card-head-row">
+                                                    <div class="card-title">
+                                                        土地取得费及相关税费
+                                                    </div>
+                                                    <div class="card-tools">
+                                                        <button class="btn  btn-link btn-primary btn-xs"><span
+                                                                class="fa fa-angle-down"></span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <form class="form-horizontal" id="approachTaxesForm">
+                                                    <table class="table" id="tb_taxesList">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>类型</th>
+                                                            <th>耕地标准</th>
+                                                            <th>非耕地标准</th>
+                                                            <th>价格(元/亩)</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody id="tbodyContent">
+                                                        <c:forEach items="${taxesVos}" var="approachTaxe" varStatus="s">
+                                                            <tr id="content${approachTaxe.id}">
+
+
+                                                            </tr>
+                                                            <script type="text/javascript">
+                                                                $(function () {
+                                                                    var html = uploadTaxeHtml("${approachTaxe.id}", "${approachTaxe.typeKey}", "${approachTaxe.typeName}", "${approachTaxe.standardFirst}", "${approachTaxe.standardSecond}", "${approachTaxe.price}");
+                                                                    $("#content${approachTaxe.id}").append(html);
+                                                                })
+                                                            </script>
+                                                        </c:forEach>
+                                                        </tbody>
+                                                    </table>
+                                                </form>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <table class="table table-bordered" id="tb_research_list">
-                                    <!-- cerare document add ajax data-->
-                                </table>
-                            </div>
-                        </div>
 
-                        <div class="x_panel">
-                            <div class="x_title collapse-link">
-                                <ul class="nav navbar-right panel_toolbox">
-                                    <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                                </ul>
-                                <h3>土地取得费及相关税费</h3>
-                                <div class="clearfix"></div>
-                            </div>
-                            <div class="x_content">
-                                <form class="form-horizontal" id="approachTaxesForm">
-                                    <table class="table" id="tb_taxesList">
-                                        <thead>
-                                        <tr>
-                                            <th>类型</th>
-                                            <th>耕地标准</th>
-                                            <th>非耕地标准</th>
-                                            <th>价格(元/亩)</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody id="tbodyContent">
-                                        <c:forEach items="${taxesVos}" var="approachTaxe" varStatus="s">
-                                            <tr id="content${approachTaxe.id}">
+                                    <div class="col-md-12">
+                                        <div class="card full-height">
+                                            <div class="card-header collapse-link">
+                                                <div class="card-head-row">
+                                                    <div class="card-title">
+                                                        因素条件说明及修正系数
+                                                    </div>
+                                                    <div class="card-tools">
+                                                        <button class="btn  btn-link btn-primary btn-xs"><span
+                                                                class="fa fa-angle-down"></span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <form class="form-horizontal" id="areaAndSeveralAmendForm">
+                                                    <div class="row form-group">
+                                                        <div class="col-md-12">
+                                                        <div class="form-inline x-valid">
+                                                            <label class="col-sm-1 control-label">区域及个别修正系数</label>
+                                                            <div class="col-sm-3">
+                                                                <div class="input-group">
+                                                                    <input type="text" readonly="readonly" class="form-control"
+                                                                           id="plotRatioElementAmend">
+                                                                    <div class="input-group-prepend">
+                                                                        <button class="btn btn-info btn-sm "
+                                                                                style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                                                type="button"
+                                                                                onclick="getLandLevelTabContent();">土地因素
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
 
+                                    <div class="col-md-12">
+                                        <div class="card full-height">
+                                            <div class="card-header collapse-link">
+                                                <div class="card-head-row">
+                                                    <div class="card-title">
+                                                        土地开发因素
+                                                    </div>
+                                                    <div class="card-tools">
+                                                        <button class="btn  btn-link btn-primary btn-xs"><span
+                                                                class="fa fa-angle-down"></span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <form class="form-horizontal" id="master_other">
+                                                    <div class="row form-group">
+                                                        <div class="col-md-12">
+                                                        <div class="form-inline x-valid">
+                                                            <label class="col-sm-1 control-label">
+                                                                宗地外六通费用(元/㎡)
+                                                            </label>
+                                                            <div class="col-sm-3">
+                                                                <label class="form-control input-full">${master.circulationExpense}</label>
+                                                            </div>
+                                                            <label class="col-sm-1 control-label">
+                                                                说明
+                                                            </label>
+                                                            <div class="col-sm-3">
+                                                                <label class="form-control input-full">${master.circulationExpenseRemark}</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    </div>
+                                                    <div class="row form-group">
+                                                        <div class="col-md-12">
+                                                        <div class="form-inline x-valid">
+                                                            <label class="col-sm-1 control-label">
+                                                                场平费用(元/㎡)
+                                                            </label>
+                                                            <div class="col-sm-3">
+                                                                <label class="form-control input-full">${master.flatExpense}</label>
+                                                            </div>
+                                                            <label class="col-sm-1 control-label">
+                                                                说明
+                                                            </label>
+                                                            <div class="col-sm-3">
+                                                                <label class="form-control input-full">${master.flatExpenseRemark}</label>
+                                                            </div>
+                                                        </div>
+                                                        </div>
 
-                                            </tr>
-                                            <script type="text/javascript">
-                                                $(function () {
-                                                    var html = uploadTaxeHtml("${approachTaxe.id}", "${approachTaxe.typeKey}", "${approachTaxe.typeName}", "${approachTaxe.standardFirst}", "${approachTaxe.standardSecond}", "${approachTaxe.price}");
-                                                    $("#content${approachTaxe.id}").append(html);
-                                                })
-                                            </script>
-                                        </c:forEach>
-                                        </tbody>
-                                    </table>
-                                </form>
-                            </div>
-                        </div>
+                                                    </div>
+                                                    <div class="row form-group">
+                                                        <div class="col-md-12">
+                                                        <div class="form-inline x-valid">
+                                                            <label class="col-sm-1 control-label">
+                                                                计息周期
+                                                            </label>
+                                                            <div class="col-sm-3">
+                                                                <label class="form-control input-full">${master.machineCycle}</label>
+                                                            </div>
+                                                            <label class="col-sm-1 control-label">
+                                                                说明
+                                                            </label>
+                                                            <div class="col-sm-3">
+                                                                <label class="form-control input-full">${master.machineCycleRemark}</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    </div>
+                                                    <div class="row form-group">
+                                                        <div class="col-md-12">
+                                                        <div class="form-inline x-valid">
+                                                            <label class="col-sm-1 control-label">
+                                                                计息利率
+                                                            </label>
+                                                            <div class="col-sm-3">
+                                                                <label class="form-control input-full">${master.calculatedInterest}</label>
+                                                            </div>
+                                                            <label class="col-sm-1 control-label">
+                                                                说明
+                                                            </label>
+                                                            <div class="col-sm-3">
+                                                                <label class="form-control input-full">${master.calculatedInterestRemark}</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    </div>
+                                                    <div class="row form-group">
+                                                        <div class="col-md-12">
+                                                        <div class="form-inline x-valid">
+                                                            <label class="col-sm-1 control-label">
+                                                                开发利润率
+                                                            </label>
+                                                            <div class="col-sm-3">
+                                                                <label class="form-control input-full">${master.profitMargin}</label>
+                                                            </div>
+                                                            <label class="col-sm-1 control-label">
+                                                                说明
+                                                            </label>
+                                                            <div class="col-sm-3">
+                                                                <label class="form-control input-full">${master.profitMarginRemark}</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    </div>
+                                                    <div class="row form-group">
+                                                        <div class="col-md-12">
+                                                        <div class="form-inline x-valid">
+                                                            <label class="col-sm-1 control-label">
+                                                                土地增值率
+                                                            </label>
+                                                            <div class="col-sm-3">
+                                                                <label class="form-control input-full">${master.incrementalBenefit}</label>
+                                                            </div>
+                                                            <label class="col-sm-1 control-label">
+                                                                说明
+                                                            </label>
+                                                            <div class="col-sm-3">
+                                                                <label class="form-control input-full">${master.incrementalBenefitRemark}</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    </div>
+                                                    <div class="row form-group">
+                                                        <div class="col-md-12">
+                                                        <div class="form-inline x-valid">
+                                                            <label class="col-sm-1 control-label">
+                                                                容积率调整
+                                                            </label>
+                                                            <div class="col-sm-3">
+                                                                <label class="form-control input-full">${master.plotRatioAdjust}</label>
+                                                            </div>
+                                                            <label class="col-sm-1 control-label">
+                                                                说明
+                                                            </label>
+                                                            <div class="col-sm-3">
+                                                                <label class="form-control input-full">${master.plotRatioAdjustRemark}</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    </div>
+                                                    <div class="row form-group">
+                                                        <div class="col-md-12">
+                                                        <div class="form-inline x-valid">
+                                                            <label class="col-sm-1 control-label">
+                                                                剩余年限
+                                                            </label>
+                                                            <div class="col-sm-3">
+                                                                <label class="form-control input-full">${master.landRemainingYear}</label>
+                                                            </div>
+                                                            <label class="col-sm-1 control-label">
+                                                                说明
+                                                            </label>
+                                                            <div class="col-sm-3">
+                                                                <label class="form-control input-full">${master.landRemainingYearRemark}</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    </div>
+                                                    <div class="row form-group">
+                                                        <div class="col-md-12">
+                                                            <div class="form-inline x-valid">
+                                                        <label class="col-sm-1 control-label">
+                                                            还原利率
+                                                        </label>
+                                                        <div class="col-sm-3">
+                                                            <label class="form-control input-full">${master.rewardRate}</label>
+                                                        </div>
+                                                        </div>
+                                                    </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
 
-                        <div class="x_panel">
-                            <div class="x_title collapse-link">
-                                <ul class="nav navbar-right panel_toolbox">
-                                    <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                                </ul>
-                                <h3>因素条件说明及修正系数</h3>
-                                <div class="clearfix"></div>
-                            </div>
-                            <div class="x_content">
-                                <form class="form-horizontal" id="areaAndSeveralAmendForm">
-                                    <div class="form-group">
-                                        <div class="x-valid">
-                                            <label class="col-sm-1 control-label">宗地个别因素修正</label>
-                                            <div class="col-sm-3">
-                                                <div class="input-group">
-                                                    <input type="text" readonly="readonly" class="form-control"
-                                                           id="plotRatioElementAmend">
-                                                    <span class="input-group-btn">
-                            <button type="button" class="btn btn-default docs-tooltip"
-                                    onclick="getLandLevelTabContent();"
-                                    data-toggle="tooltip" data-original-title="土地因素">
-                        <i class="fa fa-magic"></i>
-                        </button>
-                </span>
+                                    <div class="col-md-12">
+                                        <div class="card full-height">
+                                            <div class="card-header collapse-link">
+                                                <div class="card-head-row">
+                                                    <div class="card-title">
+                                                        测算结果
+                                                    </div>
+                                                    <div class="card-tools">
+                                                        <button class="btn  btn-link btn-primary btn-xs"><span
+                                                                class="fa fa-angle-down"></span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row form-group">
+                                                    <div class="col-md-12">
+                                                        <table class="table table-bordered">
+                                                            <tbody>
+                                                            <tr>
+                                                                <td> 耕地比例</td>
+                                                                <td id="ploughArearatio"></td>
+                                                                <td> 非耕地比例</td>
+                                                                <td id="noPloughArearatio">
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td> 土地取得费及相关税费(元/亩)</td>
+                                                                <td id="landAcquisitionBhou"></td>
+                                                                <td> 土地取得费及相关税费(元/㎡)</td>
+                                                                <td id="landAcquisitionUnit"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td> 土地开发费(元/亩)</td>
+                                                                <td id="landProductionBhou">
+                                                                </td>
+                                                                <td> 土地开发费(元/㎡)</td>
+                                                                <td id="landProductionUnit">
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td> 土地开发利息(元/亩)</td>
+                                                                <td id="landProductionInterestBhou">
+                                                                </td>
+                                                                <td> 土地开发利息(元/㎡)</td>
+                                                                <td id="landProductionInterestUnit">
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td> 土地开发利润(元/亩)</td>
+                                                                <td id="landProductionProfitBhou">
+                                                                </td>
+                                                                <td> 土地开发利润(元/㎡)</td>
+                                                                <td id="landProductionProfitUnit">
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td> 土地取得成本（元/亩）</td>
+                                                                <td id="landCostPriceBhou">
+                                                                </td>
+                                                                <td> 土地取得成本（元/㎡）</td>
+                                                                <td id="landCostPriceUnit">
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td> 无限年期土地使用权价格(元/亩)</td>
+                                                                <td id="landUseBhou">
+                                                                </td>
+                                                                <td> 无限年期土地使用权价格(元/㎡)</td>
+                                                                <td id="landUseUnit">
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td> 年期修正（万元/亩）</td>
+                                                                <td id="priceCorrectionBhou">
+                                                                </td>
+                                                                <td> 年期修正（元/㎡）</td>
+                                                                <td id="priceCorrectionUnit">
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td> 宗地个别因素修正(万元/亩)</td>
+                                                                <td id="plotRatioElementAmendBhou">
+                                                                </td>
+                                                                <td> 宗地个别因素修正(元/㎡)</td>
+                                                                <td id="plotRatioElementAmendUnit">
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td> 容积率修正(万元/亩)</td>
+                                                                <td id="plotRatioAdjustBhou">
+                                                                </td>
+                                                                <td> 容积率修正(元/㎡)</td>
+                                                                <td id="plotRatioAdjustUnit">
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td> 委估宗地价格(万元/亩)</td>
+                                                                <td id="parcelBhou">
+                                                                </td>
+                                                                <td> 委估宗地价格(元/㎡)</td>
+                                                                <td id="parcelUnit">
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td> 年期修正系数</td>
+                                                                <td id="yearFixed">
+                                                                </td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -149,308 +479,17 @@
                                 </form>
                             </div>
                         </div>
-                        <div class="x_panel">
-                            <div class="x_title collapse-link">
-                                <ul class="nav navbar-right panel_toolbox">
-                                    <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                                </ul>
-                                <h3>土地开发因素</h3>
-                                <div class="clearfix"></div>
-                            </div>
-                            <div class="x_content">
-                                <form class="form-horizontal" id="master_other">
-                                    <div class="form-group">
-                                        <div class="x-valid">
-                                            <label class="col-sm-1 control-label">
-                                                宗地外六通费用(元/㎡)
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <label class="form-control">${master.circulationExpense}</label>
-                                            </div>
-                                        </div>
-                                        <div class="x-valid">
-                                            <label class="col-sm-1 control-label">
-                                                说明
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <label class="form-control">${master.circulationExpenseRemark}</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="x-valid">
-                                            <label class="col-sm-1 control-label">
-                                                场平费用(元/㎡)
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <label class="form-control">${master.flatExpense}</label>
-                                            </div>
-                                        </div>
-                                        <div class="x-valid">
-                                            <label class="col-sm-1 control-label">
-                                                说明
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <label class="form-control">${master.flatExpenseRemark}</label>
-                                            </div>
-                                        </div>
+                    </div>
 
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="x-valid">
-                                            <label class="col-sm-1 control-label">
-                                                计息周期
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <label class="form-control">${master.machineCycle}</label>
-                                            </div>
-                                        </div>
-                                        <div class="x-valid">
-                                            <label class="col-sm-1 control-label">
-                                                说明
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <label class="form-control">${master.machineCycleRemark}</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="x-valid">
-                                            <label class="col-sm-1 control-label">
-                                                计息利率
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <label class="form-control">${master.calculatedInterest}</label>
-                                            </div>
-                                        </div>
-                                        <div class="x-valid">
-                                            <label class="col-sm-1 control-label">
-                                                说明
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <label class="form-control">${master.calculatedInterestRemark}</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="x-valid">
-                                            <label class="col-sm-1 control-label">
-                                                开发利润率
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <label class="form-control">${master.profitMargin}</label>
-                                            </div>
-                                        </div>
-                                        <div class="x-valid">
-                                            <label class="col-sm-1 control-label">
-                                                说明
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <label class="form-control">${master.profitMarginRemark}</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="x-valid">
-                                            <label class="col-sm-1 control-label">
-                                                土地增值率
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <label class="form-control">${master.incrementalBenefit}</label>
-                                            </div>
-                                        </div>
-                                        <div class="x-valid">
-                                            <label class="col-sm-1 control-label">
-                                                说明
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <label class="form-control">${master.incrementalBenefitRemark}</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <%--<div class="form-group">--%>
-                                    <%--<div class="x-valid">--%>
-                                    <%--<label class="col-sm-1 control-label">--%>
-                                    <%--宗地个别因素修正--%>
-                                    <%--</label>--%>
-                                    <%--<div class="col-sm-3">--%>
-                                    <%--<label class="form-control">${master.plotRatioElementAmend}</label>--%>
-                                    <%--</div>--%>
-                                    <%--</div>--%>
-                                    <%--<div class="x-valid">--%>
-                                    <%--<label class="col-sm-1 control-label">--%>
-                                    <%--说明--%>
-                                    <%--</label>--%>
-                                    <%--<div class="col-sm-3">--%>
-                                    <%--<label class="form-control">${master.plotRatioElementAmendRemark}</label>--%>
-                                    <%--</div>--%>
-                                    <%--</div>--%>
-                                    <%--</div>--%>
-                                    <div class="form-group">
-                                        <div class="x-valid">
-                                            <label class="col-sm-1 control-label">
-                                                容积率调整
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <label class="form-control">${master.plotRatioAdjust}</label>
-                                            </div>
-                                        </div>
-                                        <div class="x-valid">
-                                            <label class="col-sm-1 control-label">
-                                                说明
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <label class="form-control">${master.plotRatioAdjustRemark}</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="x-valid">
-                                            <label class="col-sm-1 control-label">
-                                                剩余年限
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <label class="form-control">${master.landRemainingYear}</label>
-                                            </div>
-                                        </div>
-                                        <div class="x-valid">
-                                            <label class="col-sm-1 control-label">
-                                                说明
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <label class="form-control">${master.landRemainingYearRemark}</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-1 control-label">
-                                            还原利率
-                                        </label>
-                                        <div class="col-sm-3">
-                                            <label class="form-control">${master.rewardRate}</label>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                        <div class="x_panel">
-                            <div class="x_title collapse-link">
-                                <ul class="nav navbar-right panel_toolbox">
-                                    <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                                </ul>
-                                <h3>测算结果</h3>
-                                <div class="clearfix"></div>
-                            </div>
-                            <div class="x_content">
-                                <div class="form-group">
-                                    <div class="col-md-12 col-sm-12">
-                                        <table class="table table-bordered">
-                                            <tbody>
-                                            <tr>
-                                                <td> 耕地比例</td>
-                                                <td id="ploughArearatio"></td>
-                                                <td> 非耕地比例</td>
-                                                <td id="noPloughArearatio">
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td> 土地取得费及相关税费(元/亩)</td>
-                                                <td id="landAcquisitionBhou"></td>
-                                                <td> 土地取得费及相关税费(元/㎡)</td>
-                                                <td id="landAcquisitionUnit"></td>
-                                            </tr>
-                                            <tr>
-                                                <td> 土地开发费(元/亩)</td>
-                                                <td id="landProductionBhou">
-                                                </td>
-                                                <td> 土地开发费(元/㎡)</td>
-                                                <td id="landProductionUnit">
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td> 土地开发利息(元/亩)</td>
-                                                <td id="landProductionInterestBhou">
-                                                </td>
-                                                <td> 土地开发利息(元/㎡)</td>
-                                                <td id="landProductionInterestUnit">
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td> 土地开发利润(元/亩)</td>
-                                                <td id="landProductionProfitBhou">
-                                                </td>
-                                                <td> 土地开发利润(元/㎡)</td>
-                                                <td id="landProductionProfitUnit">
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td> 土地取得成本（元/亩）</td>
-                                                <td id="landCostPriceBhou">
-                                                </td>
-                                                <td> 土地取得成本（元/㎡）</td>
-                                                <td id="landCostPriceUnit">
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td> 无限年期土地使用权价格(元/亩)</td>
-                                                <td id="landUseBhou">
-                                                </td>
-                                                <td> 无限年期土地使用权价格(元/㎡)</td>
-                                                <td id="landUseUnit">
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td> 年期修正（万元/亩）</td>
-                                                <td id="priceCorrectionBhou">
-                                                </td>
-                                                <td> 年期修正（元/㎡）</td>
-                                                <td id="priceCorrectionUnit">
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td> 宗地个别因素修正(万元/亩)</td>
-                                                <td id="plotRatioElementAmendBhou">
-                                                </td>
-                                                <td> 宗地个别因素修正(元/㎡)</td>
-                                                <td id="plotRatioElementAmendUnit">
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td> 容积率修正(万元/亩)</td>
-                                                <td id="plotRatioAdjustBhou">
-                                                </td>
-                                                <td> 容积率修正(元/㎡)</td>
-                                                <td id="plotRatioAdjustUnit">
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td> 委估宗地价格(万元/亩)</td>
-                                                <td id="parcelBhou">
-                                                </td>
-                                                <td> 委估宗地价格(元/㎡)</td>
-                                                <td id="parcelUnit">
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td> 年期修正系数</td>
-                                                <td id="yearFixed">
-                                                </td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
+                    <%@include file="/views/share/form_approval.jsp" %>
                 </div>
             </div>
-            <%@include file="/views/share/form_approval.jsp" %>
         </div>
+        <%@include file="/views/share/main_footer.jsp" %>
     </div>
 </div>
+
 </body>
-<%@include file="/views/share/main_footer.jsp" %>
 <script type="text/html" id="landLevelTabContentBody">
     <tr class="group">
         <td class="table-cell">
@@ -465,57 +504,40 @@
             {gradeName}
         </td>
         <td>
-            <label name="reamark" class="form-control">{reamark}</label>
+            {reamark}
         </td>
         <td>
-            <label name="landFactorTotalScore" class="form-control">{landFactorTotalScore}</label>
+            <label name="landFactorTotalScore" class="form-control input-full">{landFactorTotalScore}</label>
         </td>
     </tr>
 </script>
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/js/examine/examine.estate.js?v=${assessVersion}"></script>
-<script type="text/html" id="landLevelTabContentBody">
-    <tr class="group">
-        <td class="table-cell">
-            {landLevelTypeName}
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        </td>
-        <td>
-            {landLevelCategoryName}
-        </td>
-        <td>
-            {gradeName}
-        </td>
-        <td>
-            <label name="reamark" class="form-control">{reamark}</label>
-        </td>
-        <td>
-            <label name="landFactorTotalScore" class="form-control">{landFactorTotalScore}</label>
-        </td>
-    </tr>
-</script>
+
 <div id="detailAchievementModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
-     aria-hidden="true" data-height="500">
-    <div class="modal-dialog modal-lg">
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="max-width: 90%">
         <div class="modal-content">
             <div class="modal-header">
+                <h4 class="modal-title">土地因素</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">土地因素</h3>
             </div>
+
             <div class="modal-body">
                 <form class="form-horizontal" id="landLevelContentFrm">
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                <div id="_select_land_level_file"></div>
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <div class="form-inline x-valid">
+                                <div class="col-sm-12">
+                                    <div id="_select_land_level_file"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                    <div class="row form-group">
+                        <div class="col-md-12">
                             <table class="table table-striped table-bordered">
                                 <thead>
                                 <tr>
@@ -533,12 +555,14 @@
                         </div>
                     </div>
                 </form>
+
             </div>
             <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
                     关闭
                 </button>
             </div>
+
         </div>
     </div>
 </div>
@@ -970,6 +994,6 @@
         }
     }
 </script>
-</body>
+
 </html>
 
