@@ -335,7 +335,7 @@
                         result += '绿化率说明：' + row.greeningRateRemark + '<br/>';
                     }
                     if (row.buildDensity) {
-                        result += '建筑密度：' + row.buildDensity + '<br/>';
+                        result += '建筑密度：' + row.buildDensity * 100 + '%<br/>';
                     }
                     if (row.buildDensityRemark) {
                         result += '建筑密度说明：' + row.buildDensityRemark + '<br/>';

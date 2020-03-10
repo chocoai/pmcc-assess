@@ -223,6 +223,7 @@
                         $("#frmFather").find("input").attr("disabled", true);
                         $("#frmFather").find("select").attr("disabled", true);
                         $("#frmFather").find("textarea").attr("disabled", true);
+                        $("#frmFather").find('[name=buildDensityStr]').text(AssessCommon.pointToPercent(result.data.buildDensity));
                         detailInfo.prototype.showFile("uploadLandFile", "tb_net_info_record_land", id);
                         $('#divBoxFather').modal("show");
                     }
@@ -520,9 +521,8 @@
                                                 建筑密度
                                             </label>
                                             <div class="col-sm-2">
-                                                <label type="text" name="buildDensity"
-                                                       class="form-control input-full"
-                                                       data-rule-number="true" data-rule-maxlength="50"></label></div>
+                                                <label type="text" name="buildDensityStr"
+                                                       class="form-control input-full"></label></div>
                                             <label class="col-sm-1 col-form-label">
                                                 建筑密度说明
                                             </label>

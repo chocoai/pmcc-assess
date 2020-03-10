@@ -484,8 +484,7 @@
                                                 </label>
                                                 <div class="col-sm-2">
                                                     <input type="text" name="buildDensity"
-                                                           class="form-control input-full"
-                                                           data-rule-number="true" data-rule-maxlength="50"></div>
+                                                           class="form-control input-full x-percent"></div>
                                                 <label class="col-sm-1 col-form-label">
                                                     建筑密度说明
                                                 </label>
@@ -1111,6 +1110,9 @@
                     //百分字段
                     $("#" + detailInfo.prototype.config().frm).find('[name=greeningRate]').attr('data-value', result.data.greeningRate);
                     AssessCommon.elementParsePercent($("#" + detailInfo.prototype.config().frm).find('[name=greeningRate]'));
+                    $("#" + detailInfo.prototype.config().frm).find('[name=buildDensity]').attr('data-value', result.data.buildDensity);
+                    AssessCommon.elementParsePercent($("#" + detailInfo.prototype.config().frm).find('[name=buildDensity]'));
+
                     $("#" + detailInfo.prototype.config().frm).find('[name=landRealizationRatios]').attr('data-value', result.data.landRealizationRatios);
                     AssessCommon.elementParsePercent($("#" + detailInfo.prototype.config().frm).find('[name=landRealizationRatios]'));
                     //初始化选项
