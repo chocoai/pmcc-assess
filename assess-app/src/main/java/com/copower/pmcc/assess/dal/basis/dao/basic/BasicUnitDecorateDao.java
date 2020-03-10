@@ -30,7 +30,6 @@ public class BasicUnitDecorateDao {
     }
 
     public boolean updateBasicUnitDecorate(BasicUnitDecorate basicUnitDecorate, boolean updateNull) {
-        basicUnitDecorate.setBisDelete(false);
         return updateNull ? basicUnitDecorateMapper.updateByPrimaryKey(basicUnitDecorate) == 1 : basicUnitDecorateMapper.updateByPrimaryKeySelective(basicUnitDecorate) == 1;
     }
 

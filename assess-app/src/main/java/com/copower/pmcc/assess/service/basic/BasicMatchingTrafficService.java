@@ -10,6 +10,7 @@ import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
@@ -75,8 +76,10 @@ public class BasicMatchingTrafficService {
             if(updateNull){
                 BasicMatchingTraffic matchingTraffic = basicMatchingTrafficDao.getBasicMatchingTrafficById(basicMatchingTraffic.getId());
                 if(matchingTraffic!=null){
+                    basicMatchingTraffic.setBisDelete(matchingTraffic.getBisDelete());
                     basicMatchingTraffic.setCreator(matchingTraffic.getCreator());
                     basicMatchingTraffic.setGmtCreated(matchingTraffic.getGmtCreated());
+                    basicMatchingTraffic.setGmtModified(DateUtils.now());
                 }
             }
             basicMatchingTrafficDao.updateBasicMatchingTraffic(basicMatchingTraffic,updateNull);

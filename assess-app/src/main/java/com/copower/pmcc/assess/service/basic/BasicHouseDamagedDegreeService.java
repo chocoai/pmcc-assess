@@ -14,6 +14,7 @@ import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -85,8 +86,10 @@ public class BasicHouseDamagedDegreeService {
             if (updateNull) {
                 BasicHouseDamagedDegree damagedDegree = basicHouseDamagedDegreeDao.getBasicHouseDamagedDegreeById(basicHouseDamagedDegree.getId());
                 if (damagedDegree != null) {
+                    basicHouseDamagedDegree.setBisDelete(damagedDegree.getBisDelete());
                     basicHouseDamagedDegree.setCreator(damagedDegree.getCreator());
                     basicHouseDamagedDegree.setGmtCreated(damagedDegree.getGmtCreated());
+                    basicHouseDamagedDegree.setGmtModified(DateUtils.now());
                 }
             }
             basicHouseDamagedDegreeDao.updateBasicHouseDamagedDegree(basicHouseDamagedDegree, updateNull);
@@ -176,8 +179,10 @@ public class BasicHouseDamagedDegreeService {
             if (updateNull) {
                 BasicHouseDamagedDegreeDetail damagedDegreeDetail = basicHouseDamagedDegreeDetailDao.getBasicHouseDamagedDegreeDetailById(basicHouseDamagedDegreeDetail.getId());
                 if (damagedDegreeDetail != null) {
+                    basicHouseDamagedDegreeDetail.setBisDelete(damagedDegreeDetail.getBisDelete());
                     basicHouseDamagedDegreeDetail.setCreator(damagedDegreeDetail.getCreator());
                     basicHouseDamagedDegreeDetail.setGmtCreated(damagedDegreeDetail.getGmtCreated());
+                    basicHouseDamagedDegreeDetail.setGmtModified(DateUtils.now());
                 }
             }
             basicHouseDamagedDegreeDetailDao.updateBasicHouseDamagedDegreeDetail(basicHouseDamagedDegreeDetail, updateNull);

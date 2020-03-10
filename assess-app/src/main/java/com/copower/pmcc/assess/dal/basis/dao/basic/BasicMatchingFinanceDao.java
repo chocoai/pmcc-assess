@@ -31,7 +31,6 @@ public class BasicMatchingFinanceDao {
     }
 
     public boolean updateBasicMatchingFinance(BasicMatchingFinance basicMatchingFinance, boolean updateNull) {
-        basicMatchingFinance.setBisDelete(false);
         return updateNull ? basicMatchingFinanceMapper.updateByPrimaryKey(basicMatchingFinance) == 1 : basicMatchingFinanceMapper.updateByPrimaryKeySelective(basicMatchingFinance) == 1;
     }
 

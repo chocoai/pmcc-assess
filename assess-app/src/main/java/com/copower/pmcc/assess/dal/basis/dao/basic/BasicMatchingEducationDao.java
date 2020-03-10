@@ -31,7 +31,6 @@ public class BasicMatchingEducationDao {
     }
 
     public boolean updateBasicMatchingEducation(BasicMatchingEducation basicMatchingEducation, boolean updateNull) {
-        basicMatchingEducation.setBisDelete(false);
         return updateNull ? basicMatchingEducationMapper.updateByPrimaryKey(basicMatchingEducation) == 1 : basicMatchingEducationMapper.updateByPrimaryKeySelective(basicMatchingEducation) == 1;
     }
 

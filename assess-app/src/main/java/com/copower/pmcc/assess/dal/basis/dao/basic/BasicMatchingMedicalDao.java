@@ -31,7 +31,6 @@ public class BasicMatchingMedicalDao {
     }
 
     public boolean updateBasicMatchingMedical(BasicMatchingMedical basicMatchingMedical, boolean updateNull) {
-        basicMatchingMedical.setBisDelete(false);
         return updateNull ? basicMatchingMedicalMapper.updateByPrimaryKey(basicMatchingMedical) == 1 : basicMatchingMedicalMapper.updateByPrimaryKeySelective(basicMatchingMedical) == 1;
     }
 

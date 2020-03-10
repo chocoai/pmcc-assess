@@ -31,7 +31,6 @@ public class BasicHouseEquipmentDao {
     }
 
     public boolean updateBasicHouseEquipment(BasicHouseEquipment basicHouseEquipment, boolean updateNull) {
-        basicHouseEquipment.setBisDelete(false);
         return updateNull ? basicHouseEquipmentMapper.updateByPrimaryKey(basicHouseEquipment) == 1 : basicHouseEquipmentMapper.updateByPrimaryKeySelective(basicHouseEquipment) == 1;
     }
 

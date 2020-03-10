@@ -10,6 +10,7 @@ import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -72,8 +73,10 @@ public class BasicBuildingFunctionService {
             if (updateNull) {
                 BasicBuildingFunction buildingFunction = basicBuildingFunctionDao.getBasicBuildingFunctionById(basicBuildingFunction.getId());
                 if(buildingFunction!=null){
+                    basicBuildingFunction.setBisDelete(buildingFunction.getBisDelete());
                     basicBuildingFunction.setCreator(buildingFunction.getCreator());
                     basicBuildingFunction.setGmtCreated(buildingFunction.getGmtCreated());
+                    basicBuildingFunction.setGmtModified(DateUtils.now());
                 }
             }
             basicBuildingFunctionDao.updateBasicBuildingFunction(basicBuildingFunction, updateNull);

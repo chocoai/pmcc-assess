@@ -914,7 +914,7 @@ public class BasicApplyBatchService {
                     //楼栋数据修改
                     BasicBuilding building = basicBuildingService.getBasicBuildingById(buildApplyBatchDetailItem.getTableId());
                     building.setEstateId(estateApplyBatchDetailItem.getTableId());
-                    basicBuildingService.saveAndUpdate(building,true);
+                    basicBuildingService.saveAndUpdate(building,false);
                     //获取对应的单元节点
                     List<BasicApplyBatchDetail> unitApplyBatchDetailList = basicApplyBatchDetailService.getBasicApplyBatchDetailByPid(buildApplyBatchDetailItem.getId(), estateApplyBatchDetailItem.getApplyBatchId());
                     if(CollectionUtils.isNotEmpty(unitApplyBatchDetailList)){
@@ -923,7 +923,7 @@ public class BasicApplyBatchService {
                             BasicUnit unit = basicUnitService.getBasicUnitById(unitApplyBatchDetailItem.getTableId());
                             unit.setBuildingId(buildApplyBatchDetailItem.getTableId());
                             unit.setEstateId(estateApplyBatchDetailItem.getTableId());
-                            basicUnitService.saveAndUpdate(unit,true);
+                            basicUnitService.saveAndUpdate(unit,false);
 
                             //获取对应的房屋节点
                             List<BasicApplyBatchDetail> houseApplyBatchDetailList = basicApplyBatchDetailService.getBasicApplyBatchDetailByPid(unitApplyBatchDetailItem.getId(), estateApplyBatchDetailItem.getApplyBatchId());
@@ -934,7 +934,7 @@ public class BasicApplyBatchService {
                                     house.setUnitId(unitApplyBatchDetailItem.getTableId());
                                     house.setBuildingId(buildApplyBatchDetailItem.getTableId());
                                     house.setEstateId(estateApplyBatchDetail.getTableId());
-                                    basicHouseService.saveAndUpdate(house,true);
+                                    basicHouseService.saveAndUpdate(house,false);
                                 }
                             }
                         }

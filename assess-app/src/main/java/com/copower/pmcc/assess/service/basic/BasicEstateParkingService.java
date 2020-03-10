@@ -11,6 +11,7 @@ import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -74,8 +75,10 @@ public class BasicEstateParkingService {
             if (updateNull) {
                 BasicEstateParking estateParking = basicEstateParkingDao.getBasicEstateParkingById(basicEstateParking.getId());
                 if (estateParking != null) {
+                    basicEstateParking.setBisDelete(estateParking.getBisDelete());
                     basicEstateParking.setCreator(estateParking.getCreator());
                     basicEstateParking.setGmtCreated(estateParking.getGmtCreated());
+                    basicEstateParking.setGmtModified(DateUtils.now());
                 }
             }
             basicEstateParkingDao.updateBasicEstateParking(basicEstateParking, updateNull);

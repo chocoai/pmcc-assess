@@ -10,6 +10,7 @@ import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -75,8 +76,10 @@ public class BasicMatchingEducationService {
             if (updateNull) {
                 BasicMatchingEducation matchingEducation = basicMatchingEducationDao.getBasicMatchingEducationById(basicMatchingEducation.getId());
                 if (matchingEducation != null) {
+                    basicMatchingEducation.setBisDelete(matchingEducation.getBisDelete());
                     basicMatchingEducation.setCreator(matchingEducation.getCreator());
                     basicMatchingEducation.setGmtCreated(matchingEducation.getGmtCreated());
+                    basicMatchingEducation.setGmtModified(DateUtils.now());
                 }
             }
             basicMatchingEducationDao.updateBasicMatchingEducation(basicMatchingEducation, updateNull);

@@ -31,7 +31,6 @@ public class BasicEstateTaggingDao {
     }
 
     public boolean updateBasicEstateTagging(BasicEstateTagging basicEstateTagging, boolean updateNull) {
-        basicEstateTagging.setBisDelete(false);
         return updateNull ? basicEstateTaggingMapper.updateByPrimaryKey(basicEstateTagging) == 1 : basicEstateTaggingMapper.updateByPrimaryKeySelective(basicEstateTagging) == 1;
     }
 

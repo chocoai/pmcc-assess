@@ -8,6 +8,7 @@ import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -40,8 +41,10 @@ public class BasicBuildingPropertyServiceItemService {
             if(updateNull){
                BasicBuildingPropertyServiceItem propertyServiceItem = serviceItemDao.getBasicBuildingPropertyServiceItemById(basicBuildingPropertyServiceItem.getId());
                if(propertyServiceItem!=null){
+                   basicBuildingPropertyServiceItem.setBisDelete(propertyServiceItem.getBisDelete());
                    basicBuildingPropertyServiceItem.setCreator(propertyServiceItem.getCreator());
                    basicBuildingPropertyServiceItem.setGmtCreated(propertyServiceItem.getGmtCreated());
+                   basicBuildingPropertyServiceItem.setGmtModified(DateUtils.now());
                }
             }
             return serviceItemDao.updateBasicBuildingPropertyServiceItem(basicBuildingPropertyServiceItem,updateNull);

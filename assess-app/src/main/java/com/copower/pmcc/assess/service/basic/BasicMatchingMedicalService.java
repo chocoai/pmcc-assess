@@ -10,6 +10,7 @@ import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -75,8 +76,10 @@ public class BasicMatchingMedicalService {
             if (updateNull) {
                 BasicMatchingMedical matchingMedical = basicMatchingMedicalDao.getBasicMatchingMedicalById(basicMatchingMedical.getId());
                 if (matchingMedical != null) {
+                    basicMatchingMedical.setBisDelete(matchingMedical.getBisDelete());
                     basicMatchingMedical.setCreator(matchingMedical.getCreator());
                     basicMatchingMedical.setGmtCreated(matchingMedical.getGmtCreated());
+                    basicMatchingMedical.setGmtModified(DateUtils.now());
                 }
             }
             basicMatchingMedicalDao.updateBasicMatchingMedical(basicMatchingMedical, updateNull);

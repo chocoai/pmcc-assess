@@ -31,7 +31,6 @@ public class BasicMatchingMaterialDao {
     }
 
     public boolean updateBasicMatchingMaterial(BasicMatchingMaterial basicMatchingMaterial, boolean updateNull)  {
-        basicMatchingMaterial.setBisDelete(false);
         return updateNull ? basicMatchingMaterialMapper.updateByPrimaryKey(basicMatchingMaterial) == 1 : basicMatchingMaterialMapper.updateByPrimaryKeySelective(basicMatchingMaterial) == 1;
     }
 

@@ -31,7 +31,6 @@ public class BasicHouseFaceStreetDao {
     }
 
     public boolean updateBasicHouseFaceStreet(BasicHouseFaceStreet basicHouseFaceStreet, boolean updateNull) {
-        basicHouseFaceStreet.setBisDelete(false);
         return updateNull ? basicHouseFaceStreetMapper.updateByPrimaryKey(basicHouseFaceStreet) == 1 : basicHouseFaceStreetMapper.updateByPrimaryKeySelective(basicHouseFaceStreet) == 1;
     }
 

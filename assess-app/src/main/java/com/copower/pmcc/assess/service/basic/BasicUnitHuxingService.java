@@ -130,8 +130,10 @@ public class BasicUnitHuxingService {
             if (updateNull) {
                 BasicUnitHuxing unitHuxing = basicUnitHuxingDao.getBasicUnitHuxingById(basicUnitHuxing.getId());
                 if (unitHuxing != null) {
+                    basicUnitHuxing.setBisDelete(unitHuxing.getBisDelete());
                     basicUnitHuxing.setCreator(unitHuxing.getCreator());
                     basicUnitHuxing.setGmtCreated(unitHuxing.getGmtCreated());
+                    basicUnitHuxing.setGmtModified(unitHuxing.getGmtModified());
                 }
             }
             basicUnitHuxingDao.updateBasicUnitHuxing(basicUnitHuxing, updateNull);

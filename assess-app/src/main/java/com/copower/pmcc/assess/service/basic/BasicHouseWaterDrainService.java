@@ -10,6 +10,7 @@ import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
@@ -74,8 +75,10 @@ public class BasicHouseWaterDrainService {
             if(updateNull){
                 BasicHouseWaterDrain houseWaterDrain = basicHouseWaterDrainDao.getBasicHouseWaterDrainById(basicHouseWaterDrain.getId());
                 if(houseWaterDrain!=null){
+                    basicHouseWaterDrain.setBisDelete(houseWaterDrain.getBisDelete());
                     basicHouseWaterDrain.setCreator(houseWaterDrain.getCreator());
                     basicHouseWaterDrain.setGmtCreated(houseWaterDrain.getGmtCreated());
+                    basicHouseWaterDrain.setGmtModified(DateUtils.now());
                 }
             }
             basicHouseWaterDrainDao.updateBasicHouseWaterDrain(basicHouseWaterDrain,updateNull);

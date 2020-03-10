@@ -31,7 +31,6 @@ public class BasicHouseTradingDao {
     }
 
     public boolean updateBasicHouseTrading(BasicHouseTrading basicHouseTrading, boolean updateNull)  {
-        basicHouseTrading.setBisDelete(false);
         return updateNull ? basicHouseTradingMapper.updateByPrimaryKey(basicHouseTrading) == 1 : basicHouseTradingMapper.updateByPrimaryKeySelective(basicHouseTrading) == 1;
     }
 
