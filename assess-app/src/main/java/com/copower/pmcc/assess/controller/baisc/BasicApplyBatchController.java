@@ -389,7 +389,7 @@ public class BasicApplyBatchController extends BaseController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/saveItemData", name = "保存一条明细", method = {RequestMethod.POST})
+    @RequestMapping(value = "/saveItemData", name = "保存数据", method = {RequestMethod.POST})
     public HttpResult saveItemData(String formData, Integer planDetailsId) {
         try {
             BasicApplyBatchDetail basicApplyBatchDetail = JSON.parseObject(formData, BasicApplyBatchDetail.class);
