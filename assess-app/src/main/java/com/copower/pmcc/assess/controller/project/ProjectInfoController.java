@@ -17,6 +17,7 @@ import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
+import com.copower.pmcc.assess.service.chks.ChksAssessmentProjectPerformanceService;
 import com.copower.pmcc.assess.service.data.DataValueDefinitionService;
 import com.copower.pmcc.assess.service.document.DocumentTemplateService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
@@ -27,6 +28,7 @@ import com.copower.pmcc.assess.service.project.change.ProjectFollowService;
 import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
+import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -35,6 +37,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -87,6 +90,8 @@ public class ProjectInfoController {
     private ProjectWorkStageService projectWorkStageService;
     @Autowired
     private ProjectPhaseService projectPhaseService;
+    @Autowired
+    private ChksAssessmentProjectPerformanceService chksAssessmentProjectPerformanceService;
 
     @RequestMapping(value = "/projectIndex", name = "项目立项", method = RequestMethod.GET)
     public ModelAndView view(Integer projectClassId, Integer projectTypeId, Integer projectCategoryId) {
@@ -153,30 +158,20 @@ public class ProjectInfoController {
     }
 
     @RequestMapping(value = "/projectApproval", name = "项目审批页面")
-    public ModelAndView projectApproval(String processInsId, String taskId, Integer boxId, String agentUserAccount) {
+    public ModelAndView projectApproval(String processInsId, String taskId, Integer boxId, String agentUserAccount) throws BpmException {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageInit/projectApproval", processInsId, boxId, taskId, agentUserAccount);
         ProjectInfo projectInfo = projectInfoService.getProjectInfoByProcessInsId(processInsId);
         ProjectInfoVo vo = projectInfoService.getSimpleProjectInfoVo(projectInfo);
         modelAndView.addObject("projectInfo", vo);
         modelAndView.addObject("projectId", vo.getId());
         modelAndView.addObject("sysUrl", baseParameterService.getParameterValues(BaseParameterEnum.SYS_URL_KEY.getParameterKey()));
-        return modelAndView;
-    }
-
-    @RequestMapping(value = "/projectAssignApproval", name = "任务分派审批页面")
-    public ModelAndView projectAssignApproval(String processInsId, String taskId, Integer boxId, String agentUserAccount) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageInit/projectAssignApproval", processInsId, boxId, taskId, agentUserAccount);
-        ProjectInfo projectInfo = new ProjectInfo();
-        projectInfo.setAssignProcessInsId(processInsId);
-        List<ProjectInfo> projectInfoList = projectInfoService.getProjectInfoList(projectInfo);
-        ProjectInfoVo vo = projectInfoService.getSimpleProjectInfoVo(projectInfoList.get(0));
-        modelAndView.addObject("projectInfo", vo);
-        modelAndView.addObject("projectId", vo.getId());
+        //生成考核任务
+        chksAssessmentProjectPerformanceService.generateAssessmentTask(processInsId, boxId, taskId, vo, null);
         return modelAndView;
     }
 
     @ResponseBody
-    @RequestMapping(value = "/projectApplySubmit", name = "项目立项", method = RequestMethod.POST)
+    @RequestMapping(value = "/projectApplySubmit", name = "项目立项提交", method = RequestMethod.POST)
     public HttpResult projectApplySubmit(String formData, Boolean bisNextUser, @RequestParam(defaultValue = "false") boolean mustUseBox) {
         try {
             projectInfoService.projectApply(projectInfoService.format(formData), true, mustUseBox);
@@ -225,7 +220,7 @@ public class ProjectInfoController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/projectEditSubmit", name = "项目立项返回修改", method = RequestMethod.POST)
+    @RequestMapping(value = "/projectEditSubmit", name = "项目立项返回修改提交", method = RequestMethod.POST)
     public HttpResult projectEditSubmit(ApprovalModelDto approvalModelDto, String formData, Integer projectInfoId) {
         try {
             projectInfoService.projectEditApproval(approvalModelDto, formData, projectInfoId);
@@ -237,7 +232,7 @@ public class ProjectInfoController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/projectApprovalSubmit", name = "项目立项审批", method = RequestMethod.POST)
+    @RequestMapping(value = "/projectApprovalSubmit", name = "项目立项审批提交", method = RequestMethod.POST)
     public HttpResult projectApprovalSubmit(ApprovalModelDto approvalModelDto) {
         try {
             projectInfoService.projectApproval(approvalModelDto);
@@ -246,26 +241,6 @@ public class ProjectInfoController {
             baseService.writeExceptionInfo(e, "项目立项审批");
             return HttpResult.newErrorResult(e.getMessage());
         }
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/projectApprovalAssignSubmit", name = "分派项目经理审批", method = RequestMethod.POST)
-    public HttpResult projectApprovalAssignSubmit(ApprovalModelDto approvalModelDto) {
-        try {
-            projectInfoService.projectAssignApproval(approvalModelDto);
-            return HttpResult.newCorrectResult();
-        } catch (Exception e) {
-            baseService.writeExceptionInfo(e, "分派项目经理审批");
-            return HttpResult.newErrorResult(e.getMessage());
-        }
-    }
-
-    @RequestMapping(value = "/projectAssignDetails", name = "分派项目经理详情")
-    public Object projectAssignDetails(String processInsId) {
-        ProjectInfo projectInfo = new ProjectInfo();
-        projectInfo.setAssignProcessInsId(processInsId);
-        List<ProjectInfo> projectInfoList = projectInfoService.getProjectInfoList(projectInfo);
-        return projectDetails(projectInfoList.get(0).getId());
     }
 
     @RequestMapping(value = "/projectApprovalDetails", name = "项目审批详情")
@@ -292,16 +267,8 @@ public class ProjectInfoController {
      */
     @RequestMapping(value = "/projectDetails", name = "项目详情")
     public Object projectDetails(Integer projectId) {
-        ModelAndView modelAndView = new ModelAndView("/project/projectDetails");
+        ModelAndView modelAndView = new ModelAndView("/project/stageInit/projectApproval");
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
-        //获取请求地址，并确定最终请求的路径
-        BaseProjectClassify baseProjectClassify = baseProjectClassifyService.getCacheProjectClassifyById(projectInfo.getProjectTypeId());
-        String uri = request.getRequestURI().replace(request.getContextPath(), "").replaceAll("^/", "");
-        String detailUri = baseProjectClassify.getDetailUrl().replaceAll("^/", "");
-        if (!StringUtils.equals(detailUri, uri)) {
-            String forwardUrl = String.format("/%s?projectId=%s", baseProjectClassify.getDetailUrl(), projectId);
-            return "forward:" + forwardUrl;//跳转到其它请求地址
-        }
         ProjectStatusEnum enumByName = ProjectStatusEnum.getEnumByName(projectInfo.getProjectStatus());
         if (enumByName != null) {
             modelAndView.addObject("projectStatusEnum", enumByName.getKey());
@@ -326,28 +293,6 @@ public class ProjectInfoController {
         modelAndView.addObject("documentTemplateList", documentTemplateList);
         modelAndView.addObject("sysUrl", baseParameterService.getParameterValues(BaseParameterEnum.SYS_URL_KEY.getParameterKey()));
         modelAndView.addObject("companyId", publicService.getCurrentCompany().getCompanyId());
-        return modelAndView;
-    }
-
-    @RequestMapping(value = "/csrProjectDetails", name = "不良债权项目详情")
-    public ModelAndView csrProjectDetails(Integer projectId) {
-        ModelAndView modelAndView = new ModelAndView("/project/projectCsrDetails");
-        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
-        ProjectStatusEnum enumByName = ProjectStatusEnum.getEnumByName(projectInfo.getProjectStatus());
-        if (enumByName != null) {
-            modelAndView.addObject("projectStatusEnum", enumByName.getKey());
-        }
-        ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfo);
-        modelAndView.addObject("projectInfo", projectInfoVo);
-        modelAndView.addObject("thisTitle", projectInfo.getProjectName());
-        modelAndView.addObject("projectFlog", "1");
-        modelAndView.addObject("projectId", projectInfo.getId());
-        //取项目成员
-        ProjectMemberVo projectMemberVo = projectMemberService.getProjectMember(projectInfo.getId());
-        modelAndView.addObject("projectMemberVo", projectMemberVo);
-        //判断当前人员是否关注项目
-        ProjectFollow projectFollow = projectFollowService.getProjectFollowByUser(projectInfo.getId());
-        modelAndView.addObject("projectFollowFlog", projectFollow == null ? 0 : 1);
         return modelAndView;
     }
 
