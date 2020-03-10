@@ -11,12 +11,11 @@ import com.copower.pmcc.bpm.api.dto.model.BoxReActivityDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxRuDto;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
-import com.copower.pmcc.bpm.api.provider.BpmRpcProcessInsManagerService;
-import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
 import com.copower.pmcc.chks.api.dto.AssessmentProjectPerformanceDto;
 import com.copower.pmcc.chks.api.provider.ChksRpcAssessmentService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
+import com.google.common.base.Objects;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -39,6 +38,8 @@ public class AssessmentTaskService implements AssessmentTaskInterface {
     private CommonService commonService;
     @Autowired
     private ProjectPlanService projectPlanService;
+    @Autowired
+    private ChksAssessmentProjectPerformanceService chksAssessmentProjectPerformanceService;
 
     @Override
     public void createAssessmentTask(String processInsId, Integer activityId, String taskId, String byExamineUser, ProjectInfo projectInfo, ProjectPlanDetails projectPlanDetails) {
@@ -53,9 +54,16 @@ public class AssessmentTaskService implements AssessmentTaskInterface {
             dto.setProjectName(projectInfo.getProjectName());
         }
         dto.setTaskId(taskId);
-
         dto.setBoxId(boxReDto.getId());
         BoxReActivityDto activityDto = bpmRpcBoxService.getBoxreActivityInfoById(activityId);
+        if (activityDto.getBisSpotCheck() != null) {
+            //当发现该节点是被抽查节点,那么写入抽查节点的节点id
+            if (Objects.equal(activityDto.getBisSpotCheck(), Boolean.TRUE)) {
+                BoxReActivityDto spotReActivityDto = chksAssessmentProjectPerformanceService.getSpotBoxReActivityDto(activityDto.getBoxId());
+                dto.setSpotActivityId(spotReActivityDto.getId());
+                //这里不考虑 获取的 BoxReActivityDto 是否存在boxId问题
+            }
+        }
         dto.setActivityId(activityId);
         dto.setActivityName(activityDto.getCnName());
         dto.setSorting(activityDto.getSortMultilevel());

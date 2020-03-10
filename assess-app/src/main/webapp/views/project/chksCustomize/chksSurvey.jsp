@@ -113,40 +113,37 @@
 
     function finishAssessmentSurveyItem() {
         var target = $("#chksTableList").find("tbody");
-        var obj = {
-            activityName: '${assessmentProjectPerformanceDto.activityName}',
-            id: '${assessmentProjectPerformanceDto.id}',
-            remarks: '${assessmentProjectPerformanceDto.remarks}'
-        };
-        assessmentCommonHandle.getAssessmentProjectPerformanceDetailByPerformanceIdList(obj.id, function (data) {
-            var restHtml = "";
-            $.each(data, function (i, item) {
-                var htmlB = assessmentCommonHandle.replaceAssessmentItem($("#assessmentItemTemplateHTML").html(), {
-                    index: i + 1,
-                    contentId: item.contentId,
-                    id: item.id,
-                    performanceId: obj.id,
-                    name: obj.activityName,
-                    assessmentDes: item.content,
-                    actualScore: item.actualScore,
-                    minScore: item.minScore,
-                    maxScore: item.maxScore,
-                    standardScore: item.standardScore,
-                    remark: item.remark
+        assessmentCommonHandle.getAssessmentProjectPerformanceById('${assessmentProjectPerformanceDto.id}',function (obj) {
+            assessmentCommonHandle.getAssessmentProjectPerformanceDetailByPerformanceIdList(obj.id, function (data) {
+                var restHtml = "";
+                $.each(data, function (i, item) {
+                    var htmlB = assessmentCommonHandle.replaceAssessmentItem($("#assessmentItemTemplateHTML").html(), {
+                        index: i + 1,
+                        contentId: item.contentId,
+                        id: item.id,
+                        performanceId: obj.id,
+                        name: obj.activityName,
+                        assessmentDes: item.content,
+                        actualScore: item.actualScore,
+                        minScore: item.minScore,
+                        maxScore: item.maxScore,
+                        standardScore: item.standardScore,
+                        remark: item.remark
+                    });
+                    restHtml += htmlB;
                 });
-                restHtml += htmlB;
+                var remarksHtml = $("#assessmentItemTemplateRemarksHTML").html();
+                if (obj.remarks) {
+                    remarksHtml = remarksHtml.replace(/{remarks}/g, obj.remarks);
+                } else {
+                    remarksHtml = remarksHtml.replace(/{remarks}/g, '');
+                }
+                restHtml += remarksHtml;
+                target.empty().append(restHtml);
+                target.find("input").attr({readonly: 'readonly'});
+                target.find("textarea").attr({readonly: 'readonly'});
             });
-            var remarksHtml = $("#assessmentItemTemplateRemarksHTML").html();
-            if (obj.remarks) {
-                remarksHtml = remarksHtml.replace(/{remarks}/g, obj.remarks);
-            } else {
-                remarksHtml = remarksHtml.replace(/{remarks}/g, '');
-            }
-            restHtml += remarksHtml;
-            target.empty().append(restHtml);
-            target.find("input").attr({readonly: 'readonly'});
-            target.find("textarea").attr({readonly: 'readonly'});
-        });
+        }) ;
     }
 
     $(document).ready(function () {

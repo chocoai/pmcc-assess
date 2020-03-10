@@ -74,20 +74,7 @@
                     json.activityIds = activityIds.join(",");
                 }
             }
-
-            //这里涉及到权限,如果要优化请慎重操作
-            //抽查组人员  可以对任务进行抽查
-            var array = [];
-            if ('${spotReActivityDto}') {
-                assessmentCommonHandle.getActivityIdByUserAccountList('${spotReActivityDto.id}', function (accountList) {
-                    if (jQuery.inArray('${sysUserDto.userAccount}', accountList) != -1) {
-                        array.push(assessmentCommonHandle.getSpotCol());
-                    }
-                    assessmentCommonHandle.getChksBootstrapTableVoBase($("#assessmentTableList"), json, array);
-                });
-            } else {
-                assessmentCommonHandle.getChksBootstrapTableVoBase($("#assessmentTableList"), json, array);
-            }
+            assessmentCommonHandle.getChksBootstrapTableVoBase($("#assessmentTableList"), json, []);
         }({processInsId: '${processInsId}'}));
     });
 

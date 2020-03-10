@@ -46,6 +46,8 @@ public class AssessmentTaskExploreService implements AssessmentTaskInterface {
     private BasicApplyBatchService basicApplyBatchService;
     @Autowired
     private ProjectPlanService projectPlanService;
+    @Autowired
+    private ChksAssessmentProjectPerformanceService chksAssessmentProjectPerformanceService;
 
     @Override
     public void createAssessmentTask(String processInsId, Integer activityId, String taskId, String byExamineUser, ProjectInfo projectInfo, ProjectPlanDetails projectPlanDetails) {
@@ -73,6 +75,14 @@ public class AssessmentTaskExploreService implements AssessmentTaskInterface {
         List<BasicApplyBatchDetail> basicApplyBatchDetailList = basicApplyBatchDetailService.getBasicApplyBatchDetailByApplyBatchId(basicApplyBatch.getId());
         if (CollectionUtils.isEmpty(basicApplyBatchDetailList)) {
             return;
+        }
+        Integer spotActivityId = null;
+        if (activityDto.getBisSpotCheck() != null) {
+            //当发现该节点是被抽查节点,那么写入抽查节点的节点id
+            if (Objects.equal(activityDto.getBisSpotCheck(), Boolean.TRUE)) {
+                BoxReActivityDto spotReActivityDto = chksAssessmentProjectPerformanceService.getSpotBoxReActivityDto(activityDto.getBoxId());
+                spotActivityId = spotReActivityDto.getId();
+            }
         }
         Integer tempId = basicApplyBatch.getEstateId();
         if (!basicApplyBatchDetailList.stream().anyMatch(basicApplyBatchDetail -> Objects.equal(basicApplyBatchDetail.getTableId(), tempId))) {
@@ -111,12 +121,11 @@ public class AssessmentTaskExploreService implements AssessmentTaskInterface {
                 businessKey = "楼盘";
             }
             linkedList.add(String.join("=", "tbType", tbType));
-            saveAssessmentProjectPerformanceDto(processInsId, activityId, taskId, byExamineUser, projectInfo, projectPlanDetails, boxReDto, basicApplyBatchDetail.getTableName(), basicApplyBatchDetail.getTableId(), tbType, StringUtils.join(linkedList, "&"), businessKey);
+            saveAssessmentProjectPerformanceDto(processInsId, activityId, taskId, byExamineUser, projectInfo, projectPlanDetails, boxReDto, basicApplyBatchDetail.getTableName(), basicApplyBatchDetail.getTableId(), tbType, StringUtils.join(linkedList, "&"), businessKey, spotActivityId);
         }
-
     }
 
-    private void saveAssessmentProjectPerformanceDto(String processInsId, Integer activityId, String taskId, String byExamineUser, ProjectInfo projectInfo, ProjectPlanDetails projectPlanDetails, BoxReDto boxReDto, String tableName, Integer tableId, String assessmentKey, String examineUrl, String businessKey) {
+    private void saveAssessmentProjectPerformanceDto(String processInsId, Integer activityId, String taskId, String byExamineUser, ProjectInfo projectInfo, ProjectPlanDetails projectPlanDetails, BoxReDto boxReDto, String tableName, Integer tableId, String assessmentKey, String examineUrl, String businessKey, Integer spotActivityId) {
         AssessmentProjectPerformanceDto dto = new AssessmentProjectPerformanceDto();
         dto.setProcessInsId(processInsId);
         dto.setAppKey(applicationConstant.getAppKey());
@@ -150,6 +159,9 @@ public class AssessmentTaskExploreService implements AssessmentTaskInterface {
         dto.setExamineUrl(examineUrl);
         dto.setAssessmentKey(assessmentKey);
         dto.setBusinessKey(businessKey);
+        if (spotActivityId != null) {
+            dto.setSpotActivityId(spotActivityId);
+        }
         Integer id = chksRpcAssessmentService.saveAndUpdateAssessmentProjectPerformanceDto(dto, true);
         if (id != null) {
             examineUrl = String.join("", examineUrl, "&", "assessmentPerformanceId=", id.toString());

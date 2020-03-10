@@ -16,7 +16,6 @@ import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.ProjectTaskService;
 import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
-import com.copower.pmcc.bpm.api.dto.model.BoxReActivityDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxRuDto;
 import com.copower.pmcc.bpm.api.exception.BpmException;
@@ -186,9 +185,7 @@ public class ProjectTaskController extends BaseController {
             BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(boxId);
             if (boxReDto.getBisLaunchCheck() != null && boxReDto.getBisLaunchCheck()) {
                 if (modelAndView.getModel().containsKey(activityId)) {
-                    setCheckParams(boxId, (Integer) modelAndView.getModel().get(activityId), projectPlanDetails.getProcessInsId(), projectPlanDetails.getProjectId(), modelAndView);
-                } else {
-                    setCheckParams(boxId, null, projectPlanDetails.getProcessInsId(), projectPlanDetails.getProjectId(), modelAndView);
+                    setCheckParams(boxId, (Integer) modelAndView.getModel().get(activityId), processInsId, modelAndView);
                 }
             }
         }
@@ -295,11 +292,7 @@ public class ProjectTaskController extends BaseController {
         if (boxId != null && boxId > 0) {
             BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(boxId);
             if (boxReDto.getBisLaunchCheck() != null && boxReDto.getBisLaunchCheck()) {
-                if (modelAndView.getModel().containsKey(activityId)) {
-                    setCheckParams(boxId, (Integer) modelAndView.getModel().get(activityId), projectPlanDetails.getProcessInsId(), projectPlanDetails.getProjectId(), modelAndView);
-                } else {
-                    setCheckParams(boxId, null, projectPlanDetails.getProcessInsId(), projectPlanDetails.getProjectId(), modelAndView);
-                }
+                setCheckParams(boxId, null, projectPlanDetails.getProcessInsId(),modelAndView);
             }
         }
         return modelAndView;
@@ -330,19 +323,24 @@ public class ProjectTaskController extends BaseController {
      *
      * @param boxId
      * @param boxReActivitiId
-     * @param processInsId
-     * @param projectId
      * @param modelAndView
      */
-    private void setCheckParams(Integer boxId, Integer boxReActivitiId, String processInsId, Integer projectId, ModelAndView modelAndView) {
+    private void setCheckParams(Integer boxId, Integer boxReActivitiId, String processInsId,ModelAndView modelAndView) {
         //当前节点  可以查看的权限节点信息列表
         try {
-            modelAndView.addObject(StringUtils.uncapitalize(SysUserDto.class.getSimpleName()), processControllerComponent.getThisUserInfo());
-            modelAndView.addObject("activityDtoList", chksAssessmentProjectPerformanceService.getAssessmentProjectPerformanceNext(boxId, boxReActivitiId));
-            modelAndView.addObject("spotReActivityDto", chksAssessmentProjectPerformanceService.getSpotBoxReActivityDto(boxId));//抽查考核节点
-            modelAndView.addObject("userAdmin", processControllerComponent.userIsAdmin(processControllerComponent.getThisUser()));//是否为超级管理员
+            if (!modelAndView.getModelMap().containsAttribute(StringUtils.uncapitalize(SysUserDto.class.getSimpleName()))) {
+                modelAndView.addObject(StringUtils.uncapitalize(SysUserDto.class.getSimpleName()), processControllerComponent.getThisUserInfo());
+            }
+            if (!modelAndView.getModelMap().containsAttribute(StringUtils.uncapitalize(BoxReDto.class.getSimpleName()))) {
+                modelAndView.addObject(StringUtils.uncapitalize(BoxReDto.class.getSimpleName()), bpmRpcBoxService.getBoxReInfoByBoxId(boxId));
+            }
+            if (boxReActivitiId != null) {
+                modelAndView.addObject("activityDtoList", chksAssessmentProjectPerformanceService.getAssessmentProjectPerformanceNext(boxId, boxReActivitiId));
+            }else {
+                modelAndView.addObject("activityDtoList", chksAssessmentProjectPerformanceService.getActivityDtoListByProcessInsId(processInsId,boxId));
+            }
         } catch (Exception e) {
-            logger.error(e.getMessage(), e);
+            baseService.writeExceptionInfo(e);
         }
     }
 

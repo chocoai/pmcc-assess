@@ -86,12 +86,52 @@ public class ChksAssessmentProjectPerformanceService {
     private CommonService commonService;
 
     public ChksBootstrapTableVo getChksBootstrapTableVo(AssessmentProjectPerformanceDto where, String activityIds) {
-        List<Integer> activityList = null;
+        List<Integer> activityList = new ArrayList<>();
         if (StringUtils.isNotBlank(activityIds)) {
-            activityList = FormatUtils.transformString2Integer(activityIds);
+            activityList.addAll(FormatUtils.transformString2Integer(activityIds));
         }
-        if (where.getActivityId() == null && CollectionUtils.isEmpty(activityList)){
+        //超级管理员的情况
+        boolean isAdmin = processControllerComponent.userIsAdmin(processControllerComponent.getThisUser());
+        isAdmin = false;
+        if (isAdmin) {
+            if (StringUtils.isNotBlank(where.getProcessInsId())) {
+                BoxReDto boxReDto = getBoxReDtoByProcessInsId(where.getProcessInsId());
+                if (boxReDto != null) {
+                    List<BoxReActivityDto> boxReActivityDtoList = null;
+                    if (where.getActivityId() != null) {
+                        boxReActivityDtoList = getAssessmentProjectPerformanceNext(boxReDto.getId(), where.getActivityId());
+                    } else {
+                        boxReActivityDtoList = bpmRpcBoxService.getBoxReActivityByBoxId(boxReDto.getId());
+                    }
+                    if (CollectionUtils.isNotEmpty(boxReActivityDtoList)) {
+                        activityList.addAll(boxReActivityDtoList.stream().map(boxReActivityDto -> boxReActivityDto.getActivityId()).collect(Collectors.toList()));
+                    }
+                }
+            }
+        }
+        //抽查人员 把 被抽查组的流程id取出来
+        if (where.getBoxId() != null) {
+            boolean spotCheck = getSpotCheck(where.getBoxId(), processControllerComponent.getThisUser());
+            if (spotCheck) {
+                List<AssessmentProjectPerformanceDto> assessmentProjectPerformanceDtoList = getAssessmentProjectPerformanceDtoList(new AssessmentProjectPerformanceQuery(where.getBoxId()));
+                if (CollectionUtils.isNotEmpty(assessmentProjectPerformanceDtoList)) {
+                    Iterator<AssessmentProjectPerformanceDto> iterator = assessmentProjectPerformanceDtoList.iterator();
+                    while (iterator.hasNext()) {
+                        AssessmentProjectPerformanceDto projectPerformanceDto = iterator.next();
+                        if (projectPerformanceDto.getSpotActivityId() == null || projectPerformanceDto.getSpotActivityId() == 0) {
+                            continue;
+                        }
+                        activityList.add(projectPerformanceDto.getActivityId());
+                    }
+                }
+            }
+        }
+        if (where.getActivityId() == null && CollectionUtils.isEmpty(activityList)) {
             where.setExaminePeople(processControllerComponent.getThisUser());
+        }
+        //去重
+        if (CollectionUtils.isNotEmpty(activityList)) {
+            activityList = activityList.stream().distinct().collect(Collectors.toList());
         }
         where.setAppKey(applicationConstant.getAppKey());
         ChksBootstrapTableVo chksBootstrapTableVo = new ChksBootstrapTableVo();
@@ -102,6 +142,32 @@ public class ChksAssessmentProjectPerformanceService {
             chksBootstrapTableVo = dtoAndDetail.getChksBootstrapTableVo();
         }
         return chksBootstrapTableVo;
+    }
+
+    /**
+     * 获取当前登陆人是否是巡查或者抽查 对象
+     *
+     * @param boxId   模型 id
+     * @param creator 当前登陆人
+     * @return
+     */
+    private boolean getSpotCheck(Integer boxId, String creator) {
+        if (boxId == null) {
+            return false;
+        }
+        if (StringUtils.isEmpty(creator)) {
+            return false;
+        }
+        BoxReActivityDto boxReActivityDto = getSpotBoxReActivityDto(boxId);
+        List<String> creates = null;
+        try {
+            creates = bpmRpcBoxService.getRoleUserByActivityId(boxReActivityDto.getId());
+        } catch (BpmException e) {
+        }
+        if (CollectionUtils.isEmpty(creates)) {
+            return false;
+        }
+        return creates.contains(creator);
     }
 
     /**
@@ -261,48 +327,6 @@ public class ChksAssessmentProjectPerformanceService {
         return saveAssessmentProjectPerformanceBase(dto, JSONObject.parseArray(chksScore, AssessmentProjectPerformanceDetailDto.class), projectPlanDetails);
     }
 
-    public List<BoxReActivityDto> getAssessmentProjectPerformanceNext(Integer boxId, Integer boxReActivitiId, List<BoxReActivityDto> boxReActivityDtoList, boolean spotCheck) {
-        if (spotCheck) {
-            return getAssessmentProjectPerformanceNext(boxId, boxReActivityDtoList);
-        }
-        if (!spotCheck) {
-            if (boxReActivitiId != null) {
-                return getAssessmentProjectPerformanceNext(boxId, boxReActivitiId);
-            }
-            if (CollectionUtils.isNotEmpty(boxReActivityDtoList)) {
-                return getAssessmentProjectPerformanceNext(boxId, boxReActivityDtoList);
-            }
-        }
-        return new ArrayList<>();
-    }
-
-
-    /**
-     * 获取目标节点可以查看的节点  (筛选根据bpm中排序顺序来判断,即当低于他的顺序视为可以查看[相当于下级])
-     *
-     * @param boxId
-     * @param boxReActivityDtos
-     * @return
-     */
-    public List<BoxReActivityDto> getAssessmentProjectPerformanceNext(Integer boxId, List<BoxReActivityDto> boxReActivityDtos) {
-        Integer boxReActivitiId = null;
-        if (CollectionUtils.isNotEmpty(boxReActivityDtos)) {
-            Ordering<BoxReActivityDto> ordering = Ordering.from(new Comparator<BoxReActivityDto>() {
-                @Override
-                public int compare(BoxReActivityDto o1, BoxReActivityDto o2) {
-                    if (o1.getSortMultilevel() == null || o2.getSortMultilevel() == null) {
-                        return 0;
-                    }
-                    return o1.getSortMultilevel().compareTo(o2.getSortMultilevel());
-                }
-            });
-            Collections.sort(boxReActivityDtos, ordering.reverse());
-            //取列表中最大的
-            BoxReActivityDto boxReActivityDto = boxReActivityDtos.get(0);
-            boxReActivitiId = boxReActivityDto.getId();
-        }
-        return getAssessmentProjectPerformanceNext(boxId, boxReActivitiId);
-    }
 
     /**
      * 获取目标节点可以查看的节点  (筛选根据bpm中排序顺序来判断,即当低于他的顺序视为可以查看[相当于下级])
@@ -326,6 +350,12 @@ public class ChksAssessmentProjectPerformanceService {
         }
         if (boxReActivityDto.getSortMultilevel() == null) {
             return targetList;
+        }
+        //节点是被抽查节点  那么可以查看所有的节点
+        if (boxReActivityDto.getBisSpotCheck() != null) {
+            if (Objects.equal(boxReActivityDto.getBisSpotCheck(), Boolean.TRUE)) {
+//                return boxReActivityDtoList;
+            }
         }
         // 将 模型下所有节点中的我们目标节点给删除,并且对列表中的进行排序筛选
         Iterator<BoxReActivityDto> boxReActivityDtoIterator = boxReActivityDtoList.iterator();
@@ -377,23 +407,6 @@ public class ChksAssessmentProjectPerformanceService {
         }
     }
 
-    public BoxReActivityDto getBoxReActivityDtoByProcessInsId(String processInsId, Integer projectId, Integer boxId) {
-        AssessmentProjectPerformanceQuery query = new AssessmentProjectPerformanceQuery();
-        if (boxId != null && boxId != 0) {
-            query.setBoxId(boxId);
-        }
-        query.setProcessInsId(processInsId);
-        query.setProjectId(projectId);
-        query.setAppKey(applicationConstant.getAppKey());
-        List<AssessmentProjectPerformanceDto> assessmentProjectPerformanceDtoList = getAssessmentProjectPerformanceDtoList(query);
-        if (CollectionUtils.isNotEmpty(assessmentProjectPerformanceDtoList)) {
-            List<AssessmentProjectPerformanceDto> collect = assessmentProjectPerformanceDtoList.stream().filter(assessmentProjectPerformanceDto -> assessmentProjectPerformanceDto.getActivityId() != null && Objects.equal(commonService.thisUserAccount(), assessmentProjectPerformanceDto.getExaminePeople())).collect(Collectors.toList());
-            if (CollectionUtils.isNotEmpty(collect)) {
-                return bpmRpcBoxService.getBoxreActivityInfoById(collect.stream().findFirst().get().getActivityId());
-            }
-        }
-        return null;
-    }
 
     /**
      * 获取考核数据
@@ -450,33 +463,6 @@ public class ChksAssessmentProjectPerformanceService {
     }
 
 
-    /**
-     * 获取当前登陆人是否是巡查或者抽查 对象
-     *
-     * @param boxId   模型 id
-     * @param creator 当前登陆人
-     * @return
-     */
-    public boolean getSpotCheck(Integer boxId, String creator) {
-        if (boxId == null) {
-            return false;
-        }
-        if (StringUtils.isEmpty(creator)) {
-            return false;
-        }
-        BoxReActivityDto boxReActivityDto = getSpotBoxReActivityDto(boxId);
-        List<String> creates = null;
-        try {
-            creates = bpmRpcBoxService.getRoleUserByActivityId(boxReActivityDto.getId());
-        } catch (BpmException e) {
-        }
-        if (CollectionUtils.isEmpty(creates)) {
-            return false;
-        }
-        return creates.contains(creator);
-    }
-
-
     public void updateAssessmentProjectPerformanceDto(AssessmentProjectPerformanceDto assessmentProjectPerformanceDto, boolean updateNull) {
         chksRpcAssessmentService.updateAssessmentProjectPerformanceDto(assessmentProjectPerformanceDto, updateNull);
     }
@@ -524,7 +510,7 @@ public class ChksAssessmentProjectPerformanceService {
     }
 
 
-    public BoxReDto getBoxReDto(String processInsId) {
+    public BoxReDto getBoxReDtoByProcessInsId(String processInsId) {
         List<BoxApprovalLogVo> boxApprovalLogVoList = getBoxApprovalLogVoList(processInsId);
         if (CollectionUtils.isNotEmpty(boxApprovalLogVoList)) {
             Iterator<BoxApprovalLogVo> boxApprovalLogVoIterator = boxApprovalLogVoList.iterator();
@@ -541,6 +527,55 @@ public class ChksAssessmentProjectPerformanceService {
             }
         }
         return null;
+    }
+
+    /**
+     * 当处于详情的时候对于流程节点列表的获取
+     *
+     * @param processInsId
+     * @return
+     */
+    public List<BoxReActivityDto> getActivityDtoListByProcessInsId(String processInsId, Integer boxId) {
+        List<BoxReActivityDto> boxReActivityDtoList = new ArrayList<>();
+        AssessmentProjectPerformanceQuery query = new AssessmentProjectPerformanceQuery();
+        query.setProcessInsId(processInsId);
+        List<AssessmentProjectPerformanceDto> assessmentProjectPerformanceDtoList = getAssessmentProjectPerformanceDtoList(query);
+        if (CollectionUtils.isNotEmpty(assessmentProjectPerformanceDtoList)) {
+            Iterator<AssessmentProjectPerformanceDto> iterator = assessmentProjectPerformanceDtoList.iterator();
+            while (iterator.hasNext()) {
+                AssessmentProjectPerformanceDto performanceDto = iterator.next();
+                if (Objects.equal(performanceDto.getExaminePeople(), processControllerComponent.getThisUser())) {
+                    Integer activityId = performanceDto.getActivityId();
+                    if (activityId == null) {
+                        continue;
+                    }
+                    BoxReActivityDto boxReActivityDto = bpmRpcBoxService.getBoxreActivityInfoById(activityId);
+                    if (boxReActivityDto == null) {
+                        continue;
+                    }
+                    if (boxId == null) {
+                        boxId = boxReActivityDto.getBoxId();
+                    }
+                    //目标人能够查看的下级节点绩效数据
+                    List<BoxReActivityDto> boxReActivityDtos = getAssessmentProjectPerformanceNext(boxId, activityId);
+                    if (CollectionUtils.isNotEmpty(boxReActivityDtos)) {
+                        boxReActivityDtoList.addAll(boxReActivityDtos);
+                    }
+                    boxReActivityDtoList.add(boxReActivityDto);
+                }
+            }
+        }
+        //去重
+        if (CollectionUtils.isNotEmpty(boxReActivityDtoList)) {
+            Map<Integer, BoxReActivityDto> map = new HashMap<>();
+            Iterator<BoxReActivityDto> iterator = boxReActivityDtoList.iterator();
+            while (iterator.hasNext()) {
+                BoxReActivityDto boxReActivityDto = iterator.next();
+                map.put(boxReActivityDto.getId(), boxReActivityDto);
+            }
+            boxReActivityDtoList = map.values().stream().collect(Collectors.toList());
+        }
+        return boxReActivityDtoList;
     }
 
 
