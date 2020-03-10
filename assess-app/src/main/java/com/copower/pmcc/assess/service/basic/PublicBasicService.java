@@ -89,6 +89,17 @@ public class PublicBasicService {
         BasicBuilding basicBuilding = (BasicBuilding)basicBuildingService.copyBasicEntity(basicBuildingSource.getId(),null, true);//处理楼栋
         BasicUnit basicUnit = (BasicUnit)basicUnitService.copyBasicEntity(basicUnitSource.getId(),null, true);//处理单元
         BasicHouse basicHouse = (BasicHouse)basicHouseService.copyBasicEntity(basicHouseSource.getId(),null, true);//处理房屋
+
+        basicBuilding.setEstateId(basicEstateNew.getId());
+        basicBuildingService.saveAndUpdate(basicBuilding,false);
+        basicUnit.setEstateId(basicBuilding.getEstateId());
+        basicUnit.setBuildingId(basicBuilding.getId());
+        basicUnitService.saveAndUpdate(basicUnit,false);
+        basicHouse.setEstateId(basicUnit.getEstateId());
+        basicHouse.setBuildingId(basicUnit.getBuildingId());
+        basicHouse.setUnitId(basicUnit.getId());
+        basicHouseService.saveAndUpdate(basicHouse,false);
+
         targetBasicApply.setBasicEstateId(basicEstateNew.getId());
         targetBasicApply.setBasicBuildingId(basicBuilding.getId());
         targetBasicApply.setBasicUnitId(basicUnit.getId());
