@@ -159,8 +159,8 @@
                     if (row.dealType) {
                         result += '交易方式：' + row.dealTypeName + '<br/>';
                     }
-                    if (row.houseCurrentPrice) {
-                        result += '成交总价：' + row.houseCurrentPrice + '<br/>';
+                    if (row.currentPrice) {
+                        result += '成交总价：' + row.currentPrice + '<br/>';
                     }
                     if (row.negotiatedDate) {
                         result += '成交(协商)日期：' + formatDate(row.negotiatedDate) + '<br/>';
@@ -173,14 +173,14 @@
                 field: 'other3', title: '信息3', formatter: function (value, row, index) {
                     var result = '';
 
-                    if (row.houseConsultPrice) {
-                        result += '评估总价：' + row.houseConsultPrice + '<br/>';
+                    if (row.consultPrice) {
+                        result += '评估总价：' + row.consultPrice + '<br/>';
                     }
                     if (row.assessStandardDate) {
                         result += '评估基准日期：' + formatDate(row.assessStandardDate) + '<br/>';
                     }
-                    if (row.houseUnitPrice) {
-                        result += '成交单价：' + row.houseUnitPrice + '<br/>';
+                    if (row.unitPrice) {
+                        result += '成交单价：' + row.unitPrice + '<br/>';
                     }
                     if (row.houseRealizationRatios) {
                         result += '变现率：' + row.houseRealizationRatios * 100 + '%<br/>';
@@ -272,10 +272,10 @@
                         result += '成交(协商)日期：' + formatDate(row.negotiatedDate) + '<br/>';
                     }
                     if (row.area) {
-                        result += '面积：' + formatDate(row.area) + '<br/>';
+                        result += '面积：' + row.area + '<br/>';
                     }
-                    if (row.unitPrice) {
-                        result += '单价：' + row.unitPrice + '<br/>';
+                    if (row.areaUnit) {
+                        result += '单位：' + row.areaUnit + '<br/>';
                     }
                     if (row.landArea) {
                         result += '净用地面积：' + row.landArea + '<br/>';
@@ -283,11 +283,11 @@
                     if (row.landAreaUnit) {
                         result += '净用地面积单位：' + row.landAreaUnit + '<br/>';
                     }
-                    if (row.landCurrentPrice) {
-                        result += '成交总价（万元）：' + row.landCurrentPrice + '<br/>';
+                    if (row.currentPrice) {
+                        result += '成交总价（万元）：' + row.currentPrice + '<br/>';
                     }
-                    if (row.landUnitPrice) {
-                        result += '成交单价（元/㎡）：' + row.landUnitPrice + '<br/>';
+                    if (row.unitPrice) {
+                        result += '成交单价（元/㎡）：' + row.unitPrice + '<br/>';
                     }
                     if (row.unitPriceMu) {
                         result += '成交单价（万元/每亩）：' + row.unitPriceMu + '<br/>';
@@ -305,10 +305,10 @@
                         result += '评估基准日：' + formatDate(row.assessStandardDate) + '<br/>';
                     }
                     if (row.consultPrice) {
-                        result += '评估起拍单价（元/㎡）：' + formatDate(row.consultPrice) + '<br/>';
+                        result += '评估起拍单价（元/㎡）：' + row.consultPrice + '<br/>';
                     }
                     if (row.consultPriceMu) {
-                        result += '评估起拍单价（万元/每亩）：' + formatDate(row.consultPriceMu) + '<br/>';
+                        result += '评估起拍单价（万元/每亩）：' + row.consultPriceMu + '<br/>';
                     }
                     if (row.realizationCycle) {
                         result += '变现周期：' + row.realizationCycle + '<br/>';
