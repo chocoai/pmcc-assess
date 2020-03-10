@@ -900,7 +900,6 @@ public class BasicApplyBatchService {
 
 
     //老数据写入楼盘,楼栋,单元Id
-    @Transactional(rollbackFor = Exception.class)
     public void writeRelevanceId() {
         //获取所有楼盘节点
         String estateTableName = BasicFormClassifyEnum.ESTATE.getTableName();
