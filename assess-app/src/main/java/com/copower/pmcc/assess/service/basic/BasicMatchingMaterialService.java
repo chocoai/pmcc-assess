@@ -11,6 +11,7 @@ import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -74,8 +75,10 @@ public class BasicMatchingMaterialService {
             if (updateNull) {
                 BasicMatchingMaterial matchingMaterial = basicMatchingMaterialDao.getBasicMatchingMaterialById(basicMatchingMaterial.getId());
                 if (matchingMaterial != null) {
+                    basicMatchingMaterial.setBisDelete(matchingMaterial.getBisDelete());
                     basicMatchingMaterial.setCreator(matchingMaterial.getCreator());
                     basicMatchingMaterial.setGmtCreated(matchingMaterial.getGmtCreated());
+                    basicMatchingMaterial.setGmtModified(DateUtils.now());
                 }
             }
             basicMatchingMaterialDao.updateBasicMatchingMaterial(basicMatchingMaterial, updateNull);

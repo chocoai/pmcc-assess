@@ -40,8 +40,10 @@ public class BasicHouseTradingLeaseService {
             if(updateNull){
                 BasicHouseTradingLease houseTradingLease = basicHouseTradingLeaseDao.getBasicHouseTradingLeaseById(basicHouseTradingLease.getId());
                 if(houseTradingLease!=null){
+                    basicHouseTradingLease.setBisDelete(houseTradingLease.getBisDelete());
                     basicHouseTradingLease.setCreator(houseTradingLease.getCreator());
                     basicHouseTradingLease.setGmtCreated(houseTradingLease.getGmtCreated());
+                    basicHouseTradingLease.setGmtModified(DateUtils.now());
                 }
             }
             basicHouseTradingLeaseDao.updateBasicHouseTradingLease(basicHouseTradingLease,updateNull);

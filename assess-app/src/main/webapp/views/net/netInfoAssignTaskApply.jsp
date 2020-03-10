@@ -484,8 +484,7 @@
                                                 </label>
                                                 <div class="col-sm-2">
                                                     <input type="text" name="buildDensity"
-                                                           class="form-control input-full"
-                                                           data-rule-number="true" data-rule-maxlength="50"></div>
+                                                           class="form-control input-full x-percent"></div>
                                                 <label class="col-sm-1 col-form-label">
                                                     建筑密度说明
                                                 </label>
@@ -1111,6 +1110,9 @@
                     //百分字段
                     $("#" + detailInfo.prototype.config().frm).find('[name=greeningRate]').attr('data-value', result.data.greeningRate);
                     AssessCommon.elementParsePercent($("#" + detailInfo.prototype.config().frm).find('[name=greeningRate]'));
+                    $("#" + detailInfo.prototype.config().frm).find('[name=buildDensity]').attr('data-value', result.data.buildDensity);
+                    AssessCommon.elementParsePercent($("#" + detailInfo.prototype.config().frm).find('[name=buildDensity]'));
+
                     $("#" + detailInfo.prototype.config().frm).find('[name=landRealizationRatios]').attr('data-value', result.data.landRealizationRatios);
                     AssessCommon.elementParsePercent($("#" + detailInfo.prototype.config().frm).find('[name=landRealizationRatios]'));
                     //初始化选项
@@ -1386,7 +1388,7 @@
             cols.push({
                 field: 'id', width: '6%', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
-                    str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="detailInfo.prototype.getAndInitHouse(' + row.id + ')"><i class="fa fa-pen fa-white"></i></button>';
+                    str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-primary tooltips"  data-placement="top" data-original-title="编辑" onclick="detailInfo.prototype.getAndInitHouse(' + row.id + ')"><i class="fa fa-pen fa-white"></i></button>';
                     str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="删除" onclick="detailInfo.prototype.deleteHouseItem(' + row.id + ')"><i class="fa fa-minus fa-white"></i></button>';
                     str += '</div>';
                     return str;

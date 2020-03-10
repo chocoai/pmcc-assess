@@ -7,650 +7,776 @@
 </head>
 
 
-<body class="nav-md footer_fixed">
-<div class="container body">
-    <div class="main_container">
-        <div class="right_col" role="main" style="margin-left: 0">
+<body>
+<div class="wrapper">
+    <div class="main-panel" style="width: 100%">
+        <div class="content" style="margin-top: 0px;">
             <%@include file="/views/share/form_head.jsp" %>
-            <%@include file="/views/share/project/projectInfoSimple.jsp" %>
-            <%@include file="/views/share/project/projectPlanDetails.jsp" %>
-            <jsp:include page="/views/project/tool/rewardRate.jsp"></jsp:include>
-            <div class="x_panel">
-                <div class="x_title collapse-link">
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                    </ul>
-                    <h3 style="word-break: break-all">
-                        ${judgeObject.name}
-                        <small>(${judgeObject.evaluationArea}㎡)</small>
-                    </h3>
-                    <div class="clearfix"></div>
-                </div>
+            <div class="page-inner mt--5">
+                <div class="row mt--2">
+                    <%@include file="/views/share/project/projectInfoSimple.jsp" %>
+                    <%@include file="/views/share/project/projectPlanDetails.jsp" %>
+                    <jsp:include page="/views/project/tool/rewardRate.jsp"></jsp:include>
 
-                <div class="x_content">
-                    <form class="form-horizontal" id="master">
-                        <input type="hidden" name="id" value="${master.id}">
-
-                        <div class="x_panel">
-                            <div class="x_title collapse-link">
-                                <ul class="nav navbar-right panel_toolbox">
-                                    <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                                </ul>
-                                <h3>年平均产值调查</h3>
-                                <div class="clearfix"></div>
-                            </div>
-                            <div class="x_content">
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            农用地总面积(亩)
-                                        </label>
-                                        <div class="col-sm-3">
-                                            <input type="text" placeholder="农用地总面积" class="form-control"
-                                                   name="farmlandArea" required onblur="getPloughArearatio()"
-                                                   value="${master.farmlandArea}" data-rule-number="true"
-                                                   id="farmlandArea">
-                                        </div>
+                    <div class="col-md-12">
+                        <div class="card full-height">
+                            <div class="card-header collapse-link">
+                                <div class="card-head-row">
+                                    <div class="card-title">
+                                        ${judgeObject.name}
+                                        <small>(${judgeObject.evaluationArea}㎡)</small>
                                     </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            耕地面积(亩)
-                                        </label>
-                                        <div class="col-sm-3">
-                                            <input type="text" value="${master.ploughArea}" data-rule-number="true"
-                                                   required onblur="getPloughArearatio()"
-                                                   placeholder="耕地面积" class="form-control" name="ploughArea"
-                                                   id="ploughArea">
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            人口数(人)
-                                        </label>
-                                        <div class="col-sm-3">
-                                            <input type="text" value="${master.populationNumber}"
-                                                   data-rule-number="true" required
-                                                   placeholder="人口数" class="form-control" name="populationNumber"
-                                                   id="populationNumber">
-                                        </div>
+                                    <div class="card-tools">
+                                        <button class="btn  btn-link btn-primary btn-xs"><span
+                                                class="fa fa-angle-down"></span>
+                                        </button>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">宗地外设定</label>
-                                        <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5"
-                                             id="industrySupplyInfoContainer_BBBBB">
-
-                                        </div>
-                                    </div>
-
-                                    <div class="x-valid">
-                                        <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">宗地内设定</label>
-                                        <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5  "
-                                             id="developmentDegreeContentContainer_BBBBB">
-                                        </div>
-                                    </div>
-                                </div>
-                                <button type="button" class="btn btn-success"
-                                        onclick="research.prototype.showModel()"
-                                        data-toggle="modal" href="#divBox"> 新增
-                                </button>
-                                <table class="table table-bordered" id="tb_research_list">
-                                    <!-- cerare document add ajax data-->
-                                </table>
                             </div>
-                        </div>
+                            <div class="card-body">
+                                <form class="form-horizontal" id="master">
+                                    <input type="hidden" name="id" value="${master.id}">
 
-                        <div class="x_panel">
-                            <div class="x_title collapse-link">
-                                <ul class="nav navbar-right panel_toolbox">
-                                    <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                                </ul>
-                                <h3>土地取得费及相关税费</h3>
-                                <div class="clearfix"></div>
-                            </div>
-                            <div class="x_content">
-                                <form class="form-horizontal" id="approachTaxesForm">
-                                    <button type="button" class="btn btn-success"
-                                            onclick="taxes.prototype.showModel()"
-                                            data-toggle="modal" href="#divBox"> 新增
-                                    </button>
-                                    <table class="table" id="tb_taxesList">
-                                        <thead>
-                                        <tr>
-                                            <th>类型</th>
-                                            <th>耕地标准</th>
-                                            <th>非耕地标准</th>
-                                            <th>价格(元/亩)</th>
-                                            <th>操作</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody id="tbodyContent">
-                                        <c:forEach items="${taxesVos}" var="approachTaxe" varStatus="s">
-                                            <tr id="content${approachTaxe.id}">
+                                    <div class="col-md-12">
+                                        <div class="card full-height">
+                                            <div class="card-header collapse-link">
+                                                <div class="card-head-row">
+                                                    <div class="card-title">
+                                                        年平均产值调查
+                                                    </div>
+                                                    <div class="card-tools">
+                                                        <button class="btn  btn-link btn-primary btn-xs"><span
+                                                                class="fa fa-angle-down"></span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row form-group">
+                                                    <div class="col-md-12">
+                                                        <div class="form-inline x-valid">
+                                                            <label class="col-sm-1 control-label">
+                                                                农用地总面积(亩)
+                                                            </label>
+                                                            <div class="col-sm-3">
+                                                                <input type="text" placeholder="农用地总面积"
+                                                                       class="form-control input-full"
+                                                                       name="farmlandArea" required
+                                                                       onblur="getPloughArearatio()"
+                                                                       value="${master.farmlandArea}"
+                                                                       data-rule-number="true"
+                                                                       id="farmlandArea">
+                                                            </div>
+                                                            <label class="col-sm-1 control-label">
+                                                                耕地面积(亩)
+                                                            </label>
+                                                            <div class="col-sm-3">
+                                                                <input type="text" value="${master.ploughArea}"
+                                                                       data-rule-number="true"
+                                                                       required onblur="getPloughArearatio()"
+                                                                       placeholder="耕地面积"
+                                                                       class="form-control input-full" name="ploughArea"
+                                                                       id="ploughArea">
+                                                            </div>
+                                                            <label class="col-sm-1 control-label">
+                                                                人口数(人)
+                                                            </label>
+                                                            <div class="col-sm-3">
+                                                                <input type="text" value="${master.populationNumber}"
+                                                                       data-rule-number="true" required
+                                                                       placeholder="人口数" class="form-control input-full"
+                                                                       name="populationNumber"
+                                                                       id="populationNumber">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row form-group">
+                                                    <div class="col-md-12">
+                                                        <div class="form-inline x-valid">
+                                                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">宗地外设定</label>
+                                                            <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5"
+                                                                 id="industrySupplyInfoContainer_BBBBB">
 
-
-                                            </tr>
-                                            <script type="text/javascript">
-                                                $(function () {
-                                                    var html = uploadTaxeHtml("${approachTaxe.id}", "${approachTaxe.typeKey}", "${approachTaxe.typeName}", "${approachTaxe.standardFirst}", "${approachTaxe.standardSecond}", "${approachTaxe.price}");
-                                                    $("#content${approachTaxe.id}").append(html);
-                                                })
-                                            </script>
-                                        </c:forEach>
-                                        </tbody>
-                                    </table>
-
-                                </form>
-                                <%--<table class="table table-bordered" id="tb_taxes_list">--%>
-                                <%--<!-- cerare document add ajax data-->--%>
-                                <%--</table>--%>
-                            </div>
-                        </div>
-                        <div class="x_panel">
-                            <div class="x_title collapse-link">
-                                <ul class="nav navbar-right panel_toolbox">
-                                    <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                                </ul>
-                                <h3>因素条件说明及修正系数</h3>
-                                <div class="clearfix"></div>
-                            </div>
-                            <div class="x_content">
-                                <form class="form-horizontal" id="areaAndSeveralAmendForm">
-                                    <div class="form-group">
-                                        <div class="x-valid">
-                                            <input type="hidden" name="landLevelContent" id="landLevelContent"
-                                                   value='${master.landLevelContent}'>
-                                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">区域及个别修正系数</label>
-                                            <div class="col-sm-3">
-                                                <div class="input-group">
-                                                    <input type="text" readonly="readonly"
-                                                           class="form-control x-percent"
-                                                           name="plotRatioElementAmend" id="plotRatioElementAmend">
-                                                    <span class="input-group-btn">
-                            <button type="button" class="btn btn-default docs-tooltip"
-                                    onclick="getLandLevelTabContent();"
-                                    data-toggle="tooltip" data-original-title="土地因素">
-                        <i class="fa fa-magic"></i>
-                        </button>
-                </span>
+                                                            </div>
+                                                            <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">宗地内设定</label>
+                                                            <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5  "
+                                                                 id="developmentDegreeContentContainer_BBBBB">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <p>
+                                                    <button style="margin-left: 5px" class="btn btn-success btn-sm"
+                                                            type="button"
+                                                            data-toggle="modal"
+                                                            onclick="research.prototype.showModel()">
+											<span class="btn-label">
+												<i class="fa fa-plus"></i>
+											</span>
+                                                        新增
+                                                    </button>
+                                                </p>
+                                                <div class="row form-group">
+                                                    <div class="col-md-12">
+                                                        <table class="table table-bordered" id="tb_research_list">
+                                                            <!-- cerare document add ajax data-->
+                                                        </table>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
 
+                                    <div class="col-md-12">
+                                        <div class="card full-height">
+                                            <div class="card-header collapse-link">
+                                                <div class="card-head-row">
+                                                    <div class="card-title">
+                                                        土地取得费及相关税费
+                                                    </div>
+                                                    <div class="card-tools">
+                                                        <button class="btn  btn-link btn-primary btn-xs"><span
+                                                                class="fa fa-angle-down"></span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <form class="form-horizontal" id="approachTaxesForm">
+                                                    <p>
+                                                        <button style="margin-left: 5px" class="btn btn-success btn-sm"
+                                                                type="button"
+                                                                data-toggle="modal"
+                                                                onclick="taxes.prototype.showModel()">
+											<span class="btn-label">
+												<i class="fa fa-plus"></i>
+											</span>
+                                                            新增
+                                                        </button>
+                                                    </p>
+                                                    <div class="row form-group">
+                                                        <div class="col-md-12">
+                                                            <table class="table" id="tb_taxesList">
+                                                                <thead>
+                                                                <tr>
+                                                                    <th>类型</th>
+                                                                    <th>耕地标准</th>
+                                                                    <th>非耕地标准</th>
+                                                                    <th>价格(元/亩)</th>
+                                                                    <th>操作</th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody id="tbodyContent">
+                                                                <c:forEach items="${taxesVos}" var="approachTaxe"
+                                                                           varStatus="s">
+                                                                    <tr id="content${approachTaxe.id}">
+
+
+                                                                    </tr>
+                                                                    <script type="text/javascript">
+                                                                        $(function () {
+                                                                            var html = uploadTaxeHtml("${approachTaxe.id}", "${approachTaxe.typeKey}", "${approachTaxe.typeName}", "${approachTaxe.standardFirst}", "${approachTaxe.standardSecond}", "${approachTaxe.price}");
+                                                                            $("#content${approachTaxe.id}").append(html);
+                                                                        })
+                                                                    </script>
+                                                                </c:forEach>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="card full-height">
+                                            <div class="card-header collapse-link">
+                                                <div class="card-head-row">
+                                                    <div class="card-title">
+                                                        因素条件说明及修正系数
+                                                    </div>
+                                                    <div class="card-tools">
+                                                        <button class="btn  btn-link btn-primary btn-xs"><span
+                                                                class="fa fa-angle-down"></span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <form class="form-horizontal" id="areaAndSeveralAmendForm">
+                                                    <div class="row form-group">
+                                                        <div class="col-md-12">
+                                                            <div class="form-inline x-valid">
+                                                                <input type="hidden" name="landLevelContent"
+                                                                       id="landLevelContent"
+                                                                       value='${master.landLevelContent}'>
+                                                                <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">区域及个别修正系数</label>
+                                                                <div class="col-sm-3">
+                                                                    <div class="input-group">
+                                                                        <input type="text" readonly="readonly"
+                                                                               class="form-control x-percent"
+                                                                               name="plotRatioElementAmend"
+                                                                               id="plotRatioElementAmend">
+                                                                        <div class="input-group-prepend">
+                                                                            <button class="btn btn-info btn-sm "
+                                                                                    style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                                                    type="button"
+                                                                                    onclick="getLandLevelTabContent();">土地因素
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="card full-height">
+                                            <div class="card-header collapse-link">
+                                                <div class="card-head-row">
+                                                    <div class="card-title">
+                                                        土地开发因素
+                                                    </div>
+                                                    <div class="card-tools">
+                                                        <button class="btn  btn-link btn-primary btn-xs"><span
+                                                                class="fa fa-angle-down"></span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <form class="form-horizontal" id="master_other">
+                                                    <div class="row form-group">
+                                                        <div class="col-md-12">
+                                                            <div class="form-inline x-valid">
+                                                                <label class="col-sm-1 control-label">
+                                                                    宗地外六通费用(元/㎡)
+                                                                </label>
+                                                                <div class="col-sm-3">
+                                                                    <input type="text" placeholder="农用地总面积"
+                                                                           class="form-control input-full"
+                                                                           id="circulationExpense"
+                                                                           name="circulationExpense" required
+                                                                           onblur="getLandProductionUnit()"
+                                                                           value="${master.circulationExpense}"
+                                                                           data-rule-number="true">
+                                                                </div>
+                                                                <label class="col-sm-1 control-label">
+                                                                    说明
+                                                                </label>
+                                                                <div class="col-sm-3">
+                                                                    <input type="text"
+                                                                           value="${master.circulationExpenseRemark}"
+                                                                           class="form-control input-full"
+                                                                           name="circulationExpenseRemark">
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="row form-group">
+                                                        <div class="col-md-12">
+                                                            <div class="form-inline x-valid">
+                                                                <label class="col-sm-1 control-label">
+                                                                    场平费用(元/㎡)
+                                                                </label>
+                                                                <div class="col-sm-3">
+                                                                    <input type="text" placeholder="场平费用"
+                                                                           class="form-control input-full"
+                                                                           id="flatExpense"
+                                                                           name="flatExpense" required
+                                                                           onblur="getLandProductionUnit()"
+                                                                           value="${master.flatExpense}"
+                                                                           data-rule-number="true">
+                                                                </div>
+                                                                <label class="col-sm-1 control-label">
+                                                                    说明
+                                                                </label>
+                                                                <div class="col-sm-3">
+                                                                    <input type="text"
+                                                                           value="${master.flatExpenseRemark}"
+                                                                           class="form-control input-full"
+                                                                           name="flatExpenseRemark">
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="row form-group">
+                                                        <div class="col-md-12">
+                                                            <div class="form-inline x-valid">
+                                                                <label class="col-sm-1 control-label">
+                                                                    计息周期
+                                                                </label>
+                                                                <div class="col-sm-3">
+                                                                    <input type="text" placeholder="计息周期"
+                                                                           class="form-control input-full"
+                                                                           id="machineCycle"
+                                                                           name="machineCycle" required
+                                                                           onblur="getLandProductionInterest()"
+                                                                           value="${master.machineCycle}"
+                                                                           data-rule-number="true">
+                                                                </div>
+                                                                <label class="col-sm-1 control-label">
+                                                                    说明
+                                                                </label>
+                                                                <div class="col-sm-3">
+                                                                    <input type="text"
+                                                                           value="${master.machineCycleRemark}"
+                                                                           class="form-control input-full"
+                                                                           name="machineCycleRemark">
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="row form-group">
+                                                        <div class="col-md-12">
+                                                            <div class="form-inline x-valid">
+                                                                <label class="col-sm-1 control-label">
+                                                                    计息利率
+                                                                </label>
+                                                                <div class="col-sm-3">
+                                                                    <input type="text" placeholder="计息利率"
+                                                                           class="form-control input-full x-percent"
+                                                                           id="calculatedInterest"
+                                                                           name="calculatedInterest" required
+                                                                           onblur="getLandProductionInterest()"
+                                                                           value="${master.calculatedInterest}">
+                                                                </div>
+                                                                <label class="col-sm-1 control-label">
+                                                                    说明
+                                                                </label>
+                                                                <div class="col-sm-3">
+                                                                    <input type="text"
+                                                                           value="${master.calculatedInterestRemark}"
+                                                                           class="form-control input-full"
+                                                                           name="calculatedInterestRemark">
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="row form-group">
+                                                        <div class="col-md-12">
+                                                            <div class="form-inline x-valid">
+                                                                <label class="col-sm-1 control-label">
+                                                                    开发利润率
+                                                                </label>
+                                                                <div class="col-sm-3">
+                                                                    <input type="text" placeholder="开发利润率"
+                                                                           class="form-control input-full x-percent"
+                                                                           id="profitMargin"
+                                                                           name="profitMargin" required
+                                                                           onblur="getLandProductionProfit()"
+                                                                           value="${master.profitMargin}">
+                                                                </div>
+                                                                <label class="col-sm-1 control-label">
+                                                                    说明
+                                                                </label>
+                                                                <div class="col-sm-3">
+                                                                    <input type="text"
+                                                                           value="${master.profitMarginRemark}"
+                                                                           class="form-control input-full"
+                                                                           name="profitMarginRemark">
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="row form-group">
+                                                        <div class="col-md-12">
+                                                            <div class="form-inline x-valid">
+                                                                <label class="col-sm-1 control-label">
+                                                                    土地增值率
+                                                                </label>
+                                                                <div class="col-sm-3">
+                                                                    <input type="text" placeholder="土地增值率"
+                                                                           class="form-control input-full x-percent"
+                                                                           id="incrementalBenefit"
+                                                                           name="incrementalBenefit" required
+                                                                           onblur="getLandAppreciation()"
+                                                                           value="${master.incrementalBenefit}">
+                                                                </div>
+                                                                <label class="col-sm-1 control-label">
+                                                                    说明
+                                                                </label>
+                                                                <div class="col-sm-3">
+                                                                    <input type="text"
+                                                                           value="${master.incrementalBenefitRemark}"
+                                                                           class="form-control input-full"
+                                                                           name="incrementalBenefitRemark">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row form-group">
+                                                        <div class="col-md-12">
+                                                            <div class="form-inline x-valid">
+                                                                <label class="col-sm-1 control-label">
+                                                                    容积率调整
+                                                                </label>
+                                                                <div class="col-sm-3">
+                                                                    <input type="text" placeholder="容积率调整"
+                                                                           class="form-control input-full x-percent"
+                                                                           id="plotRatioAdjust"
+                                                                           name="plotRatioAdjust" required
+                                                                           onblur="getYearFixed()"
+                                                                           value="${master.plotRatioAdjust}">
+                                                                </div>
+                                                                <label class="col-sm-1 control-label">
+                                                                    说明
+                                                                </label>
+                                                                <div class="col-sm-3">
+                                                                    <input type="text"
+                                                                           value="${master.plotRatioAdjustRemark}"
+                                                                           class="form-control input-full"
+                                                                           name="plotRatioAdjustRemark">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row form-group">
+                                                        <div class="col-md-12">
+                                                            <div class="form-inline x-valid">
+                                                                <label class="col-sm-1 control-label">
+                                                                    剩余年限
+                                                                </label>
+                                                                <div class="col-sm-3">
+                                                                    <input type="text" placeholder="剩余年限"
+                                                                           class="form-control input-full"
+                                                                           id="landRemainingYear"
+                                                                           data-rule-number="true"
+                                                                           name="landRemainingYear" required
+                                                                           onblur="getYearFixed()"
+                                                                           value="${master.landRemainingYear}">
+                                                                </div>
+                                                                <label class="col-sm-1 control-label">
+                                                                    说明
+                                                                </label>
+                                                                <div class="col-sm-3">
+                                                                    <input type="text"
+                                                                           value="${master.landRemainingYearRemark}"
+                                                                           class="form-control input-full"
+                                                                           name="landRemainingYearRemark">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row form-group">
+                                                        <div class="col-md-12">
+                                                            <div class="form-inline x-valid">
+                                                                <label class="col-sm-1 control-label">
+                                                                    还原利率
+                                                                </label>
+                                                                <div class="col-sm-3">
+                                                                    <div class="input-group">
+                                                                        <input type="text" required
+                                                                               class="form-control x-percent"
+                                                                               id="rewardRate"
+                                                                               name="rewardRate" placeholder="还原率"
+                                                                               readonly="readonly"
+                                                                               value="${master.rewardRate}">
+                                                                        <div class="input-group-prepend">
+                                                                            <input type="hidden" name="rewardRateId"
+                                                                                   value="${master.rewardRateId}">
+                                                                            <button class="btn btn-info btn-sm "
+                                                                                    style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                                                    type="button"
+                                                                                    onclick="getRewardRate(this);">还原率测算
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="card full-height">
+                                            <div class="card-header collapse-link">
+                                                <div class="card-head-row">
+                                                    <div class="card-title">
+                                                        测算结果
+                                                    </div>
+                                                    <div class="card-tools">
+                                                        <button class="btn  btn-link btn-primary btn-xs"><span
+                                                                class="fa fa-angle-down"></span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row form-group">
+                                                    <div class="col-md-12">
+                                                        <table class="table table-bordered">
+                                                            <tbody>
+                                                            <tr>
+                                                                <td> 耕地比例</td>
+                                                                <td id="ploughArearatio"></td>
+                                                                <td> 非耕地比例</td>
+                                                                <td id="noPloughArearatio">
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td> 土地取得费及相关税费(元/亩)</td>
+                                                                <td id="landAcquisitionBhou"></td>
+                                                                <td> 土地取得费及相关税费(元/㎡)</td>
+                                                                <td id="landAcquisitionUnit"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td> 土地开发费(元/亩)</td>
+                                                                <td id="landProductionBhou">
+                                                                </td>
+                                                                <td> 土地开发费(元/㎡)</td>
+                                                                <td id="landProductionUnit">
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td> 土地开发利息(元/亩)</td>
+                                                                <td id="landProductionInterestBhou">
+                                                                </td>
+                                                                <td> 土地开发利息(元/㎡)</td>
+                                                                <td id="landProductionInterestUnit">
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td> 土地开发利润(元/亩)</td>
+                                                                <td id="landProductionProfitBhou">
+                                                                </td>
+                                                                <td> 土地开发利润(元/㎡)</td>
+                                                                <td id="landProductionProfitUnit">
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td> 土地取得成本（元/亩）</td>
+                                                                <td id="landCostPriceBhou">
+                                                                </td>
+                                                                <td> 土地取得成本（元/㎡）</td>
+                                                                <td id="landCostPriceUnit">
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td> 无限年期土地使用权价格(元/亩)</td>
+                                                                <td id="landUseBhou">
+                                                                </td>
+                                                                <td> 无限年期土地使用权价格(元/㎡)</td>
+                                                                <td id="landUseUnit">
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td> 年期修正（万元/亩）</td>
+                                                                <td id="priceCorrectionBhou">
+                                                                </td>
+                                                                <td> 年期修正（元/㎡）</td>
+                                                                <td id="priceCorrectionUnit">
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td> 宗地个别因素修正(万元/亩)</td>
+                                                                <td id="plotRatioElementAmendBhou">
+                                                                </td>
+                                                                <td> 宗地个别因素修正(元/㎡)</td>
+                                                                <td id="plotRatioElementAmendUnit">
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td> 容积率修正(万元/亩)</td>
+                                                                <td id="plotRatioAdjustBhou">
+                                                                </td>
+                                                                <td> 容积率修正(元/㎡)</td>
+                                                                <td id="plotRatioAdjustUnit">
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td> 委估宗地价格(万元/亩)</td>
+                                                                <td id="parcelBhou">
+                                                                </td>
+                                                                <td> 委估宗地价格(元/㎡)</td>
+                                                                <td id="parcelUnit">
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td> 年期修正系数</td>
+                                                                <td id="yearFixed">
+                                                                </td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </form>
                             </div>
                         </div>
-                        <div class="x_panel">
-                            <div class="x_title collapse-link">
-                                <ul class="nav navbar-right panel_toolbox">
-                                    <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                                </ul>
-                                <h3>土地开发因素</h3>
-                                <div class="clearfix"></div>
-                            </div>
-                            <div class="x_content">
-                                <form class="form-horizontal" id="master_other">
-                                    <div class="form-group">
-                                        <div class="x-valid">
-                                            <label class="col-sm-1 control-label">
-                                                宗地外六通费用(元/㎡)
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" placeholder="农用地总面积" class="form-control"
-                                                       id="circulationExpense"
-                                                       name="circulationExpense" required
-                                                       onblur="getLandProductionUnit()"
-                                                       value="${master.circulationExpense}" data-rule-number="true">
-                                            </div>
-                                        </div>
-                                        <div class="x-valid">
-                                            <label class="col-sm-1 control-label">
-                                                说明
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" value="${master.circulationExpenseRemark}"
-                                                       class="form-control" name="circulationExpenseRemark">
-                                            </div>
-                                        </div>
+                    </div>
 
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="x-valid">
-                                            <label class="col-sm-1 control-label">
-                                                场平费用(元/㎡)
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" placeholder="场平费用" class="form-control"
-                                                       id="flatExpense"
-                                                       name="flatExpense" required onblur="getLandProductionUnit()"
-                                                       value="${master.flatExpense}" data-rule-number="true">
-                                            </div>
-                                        </div>
-                                        <div class="x-valid">
-                                            <label class="col-sm-1 control-label">
-                                                说明
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" value="${master.flatExpenseRemark}"
-                                                       class="form-control" name="flatExpenseRemark">
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="x-valid">
-                                            <label class="col-sm-1 control-label">
-                                                计息周期
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" placeholder="计息周期" class="form-control"
-                                                       id="machineCycle"
-                                                       name="machineCycle" required onblur="getLandProductionInterest()"
-                                                       value="${master.machineCycle}" data-rule-number="true">
-                                            </div>
-                                        </div>
-                                        <div class="x-valid">
-                                            <label class="col-sm-1 control-label">
-                                                说明
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" value="${master.machineCycleRemark}"
-                                                       class="form-control" name="machineCycleRemark">
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="x-valid">
-                                            <label class="col-sm-1 control-label">
-                                                计息利率
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" placeholder="计息利率" class="form-control x-percent"
-                                                       id="calculatedInterest"
-                                                       name="calculatedInterest" required
-                                                       onblur="getLandProductionInterest()"
-                                                       value="${master.calculatedInterest}">
-                                            </div>
-                                        </div>
-                                        <div class="x-valid">
-                                            <label class="col-sm-1 control-label">
-                                                说明
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" value="${master.calculatedInterestRemark}"
-                                                       class="form-control" name="calculatedInterestRemark">
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="x-valid">
-                                            <label class="col-sm-1 control-label">
-                                                开发利润率
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" placeholder="开发利润率" class="form-control x-percent"
-                                                       id="profitMargin"
-                                                       name="profitMargin" required onblur="getLandProductionProfit()"
-                                                       value="${master.profitMargin}">
-                                            </div>
-                                        </div>
-                                        <div class="x-valid">
-                                            <label class="col-sm-1 control-label">
-                                                说明
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" value="${master.profitMarginRemark}"
-                                                       class="form-control" name="profitMarginRemark">
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="x-valid">
-                                            <label class="col-sm-1 control-label">
-                                                土地增值率
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" placeholder="土地增值率" class="form-control x-percent"
-                                                       id="incrementalBenefit"
-                                                       name="incrementalBenefit" required onblur="getLandAppreciation()"
-                                                       value="${master.incrementalBenefit}">
-                                            </div>
-                                        </div>
-                                        <div class="x-valid">
-                                            <label class="col-sm-1 control-label">
-                                                说明
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" value="${master.incrementalBenefitRemark}"
-                                                       class="form-control" name="incrementalBenefitRemark">
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <div class="x-valid">
-                                            <label class="col-sm-1 control-label">
-                                                容积率调整
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" placeholder="容积率调整" class="form-control x-percent"
-                                                       id="plotRatioAdjust"
-                                                       name="plotRatioAdjust" required onblur="getYearFixed()"
-                                                       value="${master.plotRatioAdjust}">
-                                            </div>
-                                        </div>
-                                        <div class="x-valid">
-                                            <label class="col-sm-1 control-label">
-                                                说明
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" value="${master.plotRatioAdjustRemark}"
-                                                       class="form-control" name="plotRatioAdjustRemark">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="x-valid">
-                                            <label class="col-sm-1 control-label">
-                                                剩余年限
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" placeholder="剩余年限" class="form-control"
-                                                       id="landRemainingYear" data-rule-number="true"
-                                                       name="landRemainingYear" required onblur="getYearFixed()"
-                                                       value="${master.landRemainingYear}">
-                                            </div>
-                                        </div>
-                                        <div class="x-valid">
-                                            <label class="col-sm-1 control-label">
-                                                说明
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" value="${master.landRemainingYearRemark}"
-                                                       class="form-control" name="landRemainingYearRemark">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-1 control-label">
-                                            还原利率
-                                        </label>
-                                        <div class="col-sm-3">
-                                            <div class="input-group">
-                                                <input type="text" required class="form-control x-percent"
-                                                       id="rewardRate"
-                                                       name="rewardRate" placeholder="还原率" readonly="readonly"
-                                                       value="${master.rewardRate}">
-                                                <span class="input-group-btn">
-                                                     <input type="hidden" name="rewardRateId"
-                                                            value="${master.rewardRateId}">
-                                                     <input type="button" class="btn btn-primary" value="还原率测算"
-                                                            onclick="getRewardRate(this);"/>
-                                                     </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                        <div class="x_panel">
-                            <div class="x_title collapse-link">
-                                <ul class="nav navbar-right panel_toolbox">
-                                    <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-                                </ul>
-                                <h3>测算结果</h3>
-                                <div class="clearfix"></div>
-                            </div>
-                            <div class="x_content">
-                                <div class="form-group">
-                                    <div class="col-md-12 col-sm-12">
-                                        <table class="table table-bordered">
-                                            <tbody>
-                                            <tr>
-                                                <td> 耕地比例</td>
-                                                <td id="ploughArearatio"></td>
-                                                <td> 非耕地比例</td>
-                                                <td id="noPloughArearatio">
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td> 土地取得费及相关税费(元/亩)</td>
-                                                <td id="landAcquisitionBhou"></td>
-                                                <td> 土地取得费及相关税费(元/㎡)</td>
-                                                <td id="landAcquisitionUnit"></td>
-                                            </tr>
-                                            <tr>
-                                                <td> 土地开发费(元/亩)</td>
-                                                <td id="landProductionBhou">
-                                                </td>
-                                                <td> 土地开发费(元/㎡)</td>
-                                                <td id="landProductionUnit">
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td> 土地开发利息(元/亩)</td>
-                                                <td id="landProductionInterestBhou">
-                                                </td>
-                                                <td> 土地开发利息(元/㎡)</td>
-                                                <td id="landProductionInterestUnit">
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td> 土地开发利润(元/亩)</td>
-                                                <td id="landProductionProfitBhou">
-                                                </td>
-                                                <td> 土地开发利润(元/㎡)</td>
-                                                <td id="landProductionProfitUnit">
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td> 土地取得成本（元/亩）</td>
-                                                <td id="landCostPriceBhou">
-                                                </td>
-                                                <td> 土地取得成本（元/㎡）</td>
-                                                <td id="landCostPriceUnit">
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td> 无限年期土地使用权价格(元/亩)</td>
-                                                <td id="landUseBhou">
-                                                </td>
-                                                <td> 无限年期土地使用权价格(元/㎡)</td>
-                                                <td id="landUseUnit">
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td> 年期修正（万元/亩）</td>
-                                                <td id="priceCorrectionBhou">
-                                                </td>
-                                                <td> 年期修正（元/㎡）</td>
-                                                <td id="priceCorrectionUnit">
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td> 宗地个别因素修正(万元/亩)</td>
-                                                <td id="plotRatioElementAmendBhou">
-                                                </td>
-                                                <td> 宗地个别因素修正(元/㎡)</td>
-                                                <td id="plotRatioElementAmendUnit">
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td> 容积率修正(万元/亩)</td>
-                                                <td id="plotRatioAdjustBhou">
-                                                </td>
-                                                <td> 容积率修正(元/㎡)</td>
-                                                <td id="plotRatioAdjustUnit">
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td> 委估宗地价格(万元/亩)</td>
-                                                <td id="parcelBhou">
-                                                </td>
-                                                <td> 委估宗地价格(元/㎡)</td>
-                                                <td id="parcelUnit">
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td> 年期修正系数</td>
-                                                <td id="yearFixed">
-                                                </td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
+                    <%@include file="/views/share/form_apply.jsp" %>
+                    <%@include file="/views/share/form_log.jsp" %>
                 </div>
             </div>
-            <%@include file="/views/share/form_apply.jsp" %>
-            <%@include file="/views/share/form_log.jsp" %>
         </div>
+        <%@include file="/views/share/main_footer.jsp" %>
     </div>
 </div>
-</body>
 
+
+</body>
 <div id="modal_research" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
+                <h4 class="modal-title">年平均产值调查</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">年平均产值调查</h3>
             </div>
-            <form id="frm_research" class="form-horizontal">
-                <input type="hidden" name="id">
-                <div class="modal-body">
-                    <div class="row">
+
+            <div class="modal-body">
+                <form id="frm_research" class="form-horizontal">
+                    <input type="hidden" name="id">
+                    <div class="row form-group">
                         <div class="col-md-12">
-                            <div class="panel-body">
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            年份描述<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-3">
-                                            <input type="text" name="yearDescribe" class="form-control"
-                                                   required="required">
-                                        </div>
-                                    </div>
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            平均产值(元)<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-3">
-                                            <input type="text" name="averageProduction" class="form-control"
-                                                   data-rule-number="true"
-                                                   required="required">
-                                        </div>
-                                    </div>
+                            <div class="form-inline x-valid">
+                                <label class="col-sm-2 control-label">
+                                    年份描述<span class="symbol required"></span>
+                                </label>
+                                <div class="col-sm-4">
+                                    <input type="text" name="yearDescribe" class="form-control input-full"
+                                           required="required">
+                                </div>
+                                <label class="col-sm-2 control-label">
+                                    平均产值(元)<span class="symbol required"></span>
+                                </label>
+                                <div class="col-sm-4">
+                                    <input type="text" name="averageProduction" class="form-control input-full"
+                                           data-rule-number="true"
+                                           required="required">
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-default">
-                        取消
-                    </button>
-                    <button type="button" class="btn btn-primary" onclick="research.prototype.saveData()">
-                        保存
-                    </button>
-                </div>
-            </form>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="research.prototype.saveData()">
+                    保存
+                </button>
+            </div>
+
         </div>
     </div>
 </div>
+
 <div id="modal_taxes" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
+                <h4 class="modal-title">税率配置</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">税率配置</h3>
             </div>
-            <form id="frm_taxes" class="form-horizontal">
-                <input type="hidden" name="id">
-                <div class="modal-body">
+
+            <div class="modal-body">
+                <form id="frm_taxes" class="form-horizontal">
+                    <input type="hidden" name="id">
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="panel-body">
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-1 control-label">
-                                            类型
-                                        </label>
-                                        <div class="col-sm-4">
-                                            <div class="input-group">
-                                                <input type="text" id="typeName" name="typeName" list="itemList"
-                                                       class="form-control">
-                                                <datalist id="itemList">
-                                                    <c:forEach var="item" items="${taxesTypes}">
-                                                        <option value="${item.name}">${item.name}</option>
-                                                    </c:forEach>
-                                                </datalist>
-                                                <span class="input-group-btn">
-                                                <button type="button" class="btn btn-default docs-tooltip"
-                                                        onclick="$(this).closest('.input-group').find('input').val('');"
-                                                        data-toggle="tooltip" data-original-title="清除">
-                                                <i class="fa fa-minus"></i>
-                                                </button>
-                                            </span>
+                            <div class="card-body">
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                类型
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <div class="input-group">
+                                                    <input type="text" id="typeName" name="typeName" list="itemList"
+                                                           class="form-control">
+                                                    <datalist id="itemList">
+                                                        <c:forEach var="item" items="${taxesTypes}">
+                                                            <option value="${item.name}">${item.name}</option>
+                                                        </c:forEach>
+                                                    </datalist>
+                                                    <div class="input-group-prepend">
+                                                        <button class="btn btn-warning btn-sm "
+                                                                style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                                type="button"
+                                                                onclick="$(this).closest('.input-group').find('input').val('');">
+                                                            清空
+                                                        </button>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div id="StandardContent">
+                                </div>
+                                <div id="StandardContent">
 
-                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-default">
-                        取消
-                    </button>
-                    <button type="button" class="btn btn-primary" onclick="taxes.prototype.saveData()">
-                        保存
-                    </button>
-                </div>
-            </form>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="taxes.prototype.saveData()">
+                    保存
+                </button>
+            </div>
+
         </div>
     </div>
 </div>
 <div id="detailAchievementModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
-     aria-hidden="true" data-height="500">
-    <div class="modal-dialog modal-lg">
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="max-width: 90%">
         <div class="modal-content">
             <div class="modal-header">
+                <h4 class="modal-title">土地因素</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">土地因素</h3>
             </div>
+
             <div class="modal-body">
                 <form class="form-horizontal" id="landLevelContentFrm">
-                    <div class="form-group">
-                        <div class="x-valid">
-                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                <div id="_select_land_level_file"></div>
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <div class="form-inline x-valid">
+                                <div class="col-sm-12">
+                                    <div id="_select_land_level_file"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                    <div class="row form-group">
+                        <div class="col-md-12">
                             <table class="table table-striped table-bordered">
                                 <thead>
                                 <tr>
@@ -669,18 +795,22 @@
                         </div>
                     </div>
                 </form>
+
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" onclick="getPlotRatioElementAmend()">
-                    保存
-                </button>
-                <button type="button" data-dismiss="modal" class="btn btn-default">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
                     关闭
                 </button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="getPlotRatioElementAmend()">
+                    保存
+                </button>
             </div>
+
         </div>
     </div>
 </div>
+
+
 <script type="text/html" id="landLevelTabContentBody">
     <tr class="group">
         <td class="table-cell">
@@ -690,17 +820,18 @@
             {landLevelCategoryName}
         </td>
         <td>
-            <select class="form-control" name="landLevelGrade" onchange="estateCommon.landLevelHandle(this);">
+            <select class="form-control input-full" name="landLevelGrade"
+                    onchange="estateCommon.landLevelHandle(this);">
                 {landLevelGradeHTML}
             </select>
         </td>
         <td>
-            <label name="reamark" class="form-control">{reamark}</label>
+            <label name="reamark" class="form-control input-full">{reamark}</label>
         </td>
         <td>
-            <input type="hidden" class="form-control" name="dataLandLevelAchievement"
+            <input type="hidden" class="form-control input-full" name="dataLandLevelAchievement"
                    value="{dataLandLevelAchievement}">
-            <input type="text" class="form-control  x-percent" name="landFactorTotalScore"
+            <input type="text" class="form-control input-full  x-percent" name="landFactorTotalScore"
                    value="{landFactorTotalScore}">
             <input type="hidden" name="landLevelContent" value='{landLevelContent}'>
         </td>
@@ -710,7 +841,6 @@
         </td>
     </tr>
 </script>
-<%@include file="/views/share/main_footer.jsp" %>
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js?v=${assessVersion}"></script>
 <script type="text/javascript"
@@ -820,11 +950,11 @@
                     }
                 }
                 else {
-                    AlertError("失败","保存数据失败，失败原因:" + result.errmsg);
+                    AlertError("失败", "保存数据失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         })
     }
@@ -983,26 +1113,28 @@
         developmentDegreeContentContainer.empty();
         //宗地外设定
         AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estateLandInfrastructure, '', function (html, resultData) {
-            var resultHtml = '<div>';
+            var resultHtml = '';
             var array = [];
             if (data) {
                 if (data.parcelSettingOuter) {
                     array = data.parcelSettingOuter.split(',');
                 }
             }
+            resultHtml += "<div class='form-check' style='justify-content:left'>";
             $.each(resultData, function (i, item) {
-                resultHtml += '<span class="checkbox-inline"><input type="checkbox" ';
+                resultHtml += "<label class='form-check-label'>";
+                resultHtml += "<input class='form-check-input' type='checkbox' name='parcelSettingOuter' ";
                 if ($.inArray(item.id.toString(), array) > -1) {
                     resultHtml += ' checked="checked" ';
                 }
-                resultHtml += ' id="parcelSettingOuterBBBBB' + item.id + '" name="parcelSettingOuter" value="' + item.id + '">';
-                resultHtml += '<label for="parcelSettingOuterBBBBB' + item.id + '">' + item.name + '</label></span>';
+                resultHtml += 'value="' + item.id + '">';
+                resultHtml += "<span class='form-check-sign'>" + item.name + "</span>";
             });
-            resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '全选或全不选' + "</span>";
-            resultHtml += "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"development.checkedFun(this,'parcelSettingOuter',true)\">";
-            resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '反选' + "</span>";
-            resultHtml += "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"development.checkedFun(this,'parcelSettingOuter',false)\">";
             resultHtml += "</div>";
+            resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '全选或全不选' + "</span>";
+            resultHtml += "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"checkedFun(this,'parcelSettingOuter',true)\">";
+            resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '反选' + "</span>";
+            resultHtml += "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"checkedFun(this,'parcelSettingOuter',false)\">";
             if (industrySupplyInfoContainer.find("div").size() == 0) {
                 industrySupplyInfoContainer.append(resultHtml);
             } else {
@@ -1019,26 +1151,30 @@
         }, true);
         //宗地内设定
         AssessCommon.loadDataDicByKey(AssessDicKey.estateDevelopment_degreePrepared_land, '', function (html, resultData) {
-            var resultHtml = '<div>';
+            var resultHtml = '';
             var array = [];
             if (data) {
                 if (data.parcelSettingInner) {
                     array = data.parcelSettingInner.split(',');
                 }
             }
+
+            resultHtml += "<div class='form-check' style='justify-content:left'>";
             $.each(resultData, function (i, item) {
-                resultHtml += '<span class="checkbox-inline"><input type="checkbox" ';
+                resultHtml += "<label class='form-check-label'>";
+                resultHtml += "<input class='form-check-input' type='checkbox' name='parcelSettingInner' ";
                 if ($.inArray(item.id.toString(), array) > -1) {
                     resultHtml += ' checked="checked" ';
                 }
-                resultHtml += ' id="parcelSettingInnerBBBBB' + item.id + '" name="parcelSettingInner" value="' + item.id + '">';
-                resultHtml += '<label for="parcelSettingInnerBBBBB' + item.id + '">' + item.name + '</label></span>';
+                resultHtml += 'value="' + item.id + '">';
+                resultHtml += "<span class='form-check-sign'>" + item.name + "</span>";
             });
-            resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '全选或全不选' + "</span>";
-            resultHtml += "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"development.checkedFun(this,'parcelSettingInner',true)\">";
-            resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '反选' + "</span>";
-            resultHtml += "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"development.checkedFun(this,'parcelSettingInner',false)\">";
             resultHtml += "</div>";
+
+            resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '全选或全不选' + "</span>";
+            resultHtml += "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"checkedFun(this,'parcelSettingInner',true)\">";
+            resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '反选' + "</span>";
+            resultHtml += "<input type=\"radio\" name=\"infrastructureSelect\"  onclick=\"checkedFun(this,'parcelSettingInner',false)\">";
             if (developmentDegreeContentContainer.find("div").size() == 0) {
                 developmentDegreeContentContainer.append(resultHtml);
             } else {
@@ -1053,6 +1189,44 @@
                 });
             }
         });
+    };
+
+    function checkedFun(that, name, flag) {
+        var form = $(that).closest("form");
+        var target = form.find("[name='" + name + "']:checkbox");
+        if (flag) {//全选或者全不选
+            var number = 1;
+            target.each(function (i, n) {
+                if ($(this).prop("checked")) {
+                    number++;
+                }
+            });
+            if (number == 1) {
+                target.prop("checked", true);
+            } else {
+                target.prop("checked", false);
+            }
+        } else {
+            //首先让选中的失效
+            target.each(function (i, n) {
+                if ($(this).prop("checked")) {
+                    $(this).prop("disabled", true);
+                }
+            });
+            //然后让没有选中的元素设置为选中
+            target.each(function (i, n) {
+                if (!$(this).prop("checked")) {
+                    $(this).prop("checked", true);
+                }
+            });
+            //最后是让失效的元素恢复,并且使其不选中
+            target.each(function (i, n) {
+                if ($(this).prop("disabled")) {
+                    $(this).prop("disabled", false);
+                    $(this).prop("checked", false);
+                }
+            });
+        }
     };
 
 
@@ -1219,8 +1393,8 @@
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
-                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="research.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
-                    str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="research.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
+                    str += '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-primary tooltips"  data-placement="top" data-original-title="编辑" onclick="research.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen fa-white"></i></button>';
+                    str += '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="research.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></button>';
                     str += '</div>';
                     return str;
                 }
@@ -1246,15 +1420,15 @@
                     data: {id: id},
                     success: function (result) {
                         if (result.ret) {
-                            notifySuccess('成功','删除成功');
+                            notifySuccess('成功', '删除成功');
                             research.prototype.loadDataList(${master.id});
                         }
                         else {
-                            AlertError("失败","保存数据失败，失败原因:" + result.errmsg);
+                            AlertError("失败", "保存数据失败，失败原因:" + result.errmsg);
                         }
                     },
                     error: function (result) {
-                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                        AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 })
             });
@@ -1276,16 +1450,16 @@
                 data: data,
                 success: function (result) {
                     if (result.ret) {
-                        notifySuccess('成功','保存成功');
+                        notifySuccess('成功', '保存成功');
                         $('#' + research.prototype.config().box).modal('hide');
                         research.prototype.loadDataList(${master.id});
                     }
                     else {
-                        AlertError("失败","保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("失败", "保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             })
         },
@@ -1303,7 +1477,7 @@
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             })
         }
@@ -1336,8 +1510,8 @@
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
-                    str += '<a class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="编辑" onclick="taxes.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-edit fa-white"></i></a>';
-                    str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="taxes.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus fa-white"></i></a>';
+                    str += '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-primary tooltips"  data-placement="top" data-original-title="编辑" onclick="taxes.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
+                    str += '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="taxes.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
                     str += '</div>';
                     return str;
                 }
@@ -1364,16 +1538,16 @@
                     data: {id: id},
                     success: function (result) {
                         if (result.ret) {
-                            notifySuccess('成功','删除成功');
+                            notifySuccess('成功', '删除成功');
                             $(this_).parent().parent().remove();
 
                         }
                         else {
-                            AlertError("失败","保存数据失败，失败原因:" + result.errmsg);
+                            AlertError("失败", "保存数据失败，失败原因:" + result.errmsg);
                         }
                     },
                     error: function (result) {
-                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                        AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 })
             });
@@ -1398,18 +1572,18 @@
                 },
                 success: function (result) {
                     if (result.ret) {
-                        notifySuccess('成功','保存成功');
+                        notifySuccess('成功', '保存成功');
                         $('#' + taxes.prototype.config().box).modal('hide');
                         var html = "<tr>"
                         html += uploadTaxeHtml(result.data.id, result.data.typeKey, result.data.typeName, "", "", "");
                         html += "</tr>"
                         $("#tbodyContent").append(html);
                     } else {
-                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                        notifyInfo("失败", "失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             })
         },
@@ -1439,46 +1613,46 @@
                                 case"data.land.approximation.method.plough.reclaim": {
                                 }
                                 case"data.land.approximation.method.occupation.land": {
-                                    html += '<div class="x-valid">';
+                                    html += '<div class="form-inline x-valid">';
                                     html += '<label class="col-sm-1 control-label">耕地标准</label>';
                                     html += '<div class="col-sm-3">';
                                     if (result.data.standardFirst != null) {
-                                        html += '<input type="text" name="standardFirst" value="' + result.data.standardFirst + '" class="form-control" data-rule-number="true">';
+                                        html += '<input type="text" name="standardFirst" value="' + result.data.standardFirst + '" class="form-control input-full" data-rule-number="true">';
                                     } else {
-                                        html += '<input type="text" name="standardFirst" value="" class="form-control" data-rule-number="true">';
+                                        html += '<input type="text" name="standardFirst" value="" class="form-control input-full" data-rule-number="true">';
                                     }
                                     html += '</div>';
                                     html += '</div>';
-                                    html += '<div class="x-valid">';
+                                    html += '<div class="form-inline x-valid">';
                                     html += '<label class="col-sm-1 control-label">非耕地标准</label>';
                                     html += '<div class="col-sm-3">';
                                     if (result.data.standardSecond != null) {
-                                        html += '<input type="text" name="standardSecond" value="' + result.data.standardSecond + '" class="form-control" data-rule-number="true">';
+                                        html += '<input type="text" name="standardSecond" value="' + result.data.standardSecond + '" class="form-control input-full" data-rule-number="true">';
                                     } else {
-                                        html += '<input type="text" name="standardSecond" value="" class="form-control" data-rule-number="true">';
+                                        html += '<input type="text" name="standardSecond" value="" class="form-control input-full" data-rule-number="true">';
                                     }
                                     html += '</div>';
                                     html += '</div>';
                                     break;
                                 }
                                 case"data.land.approximation.method.crops.compensate": {
-                                    html += '<div class="x-valid">';
+                                    html += '<div class="form-inline x-valid">';
                                     html += '<label class="col-sm-1 control-label">耕地标准</label>';
                                     html += '<div class="col-sm-3">';
                                     if (result.data.standardFirst != null) {
-                                        html += '<input type="text" name="standardFirst" class="form-control x-percent" value="' + AssessCommon.pointToPercent(result.data.standardFirst) + '">';
+                                        html += '<input type="text" name="standardFirst" class="form-control input-full x-percent" value="' + AssessCommon.pointToPercent(result.data.standardFirst) + '">';
                                     } else {
-                                        html += '<input type="text" name="standardFirst" value="" class="form-control" data-rule-number="true">';
+                                        html += '<input type="text" name="standardFirst" value="" class="form-control input-full" data-rule-number="true">';
                                     }
                                     html += '</div>';
                                     html += '</div>';
-                                    html += '<div class="x-valid">';
+                                    html += '<div class="form-inline x-valid">';
                                     html += '<label class="col-sm-1 control-label">非耕地标准</label>';
                                     html += '<div class="col-sm-3">';
                                     if (result.data.standardSecond != null) {
-                                        html += '<input type="text" name="standardSecond" value="' + result.data.standardSecond + '" class="form-control" data-rule-number="true">';
+                                        html += '<input type="text" name="standardSecond" value="' + result.data.standardSecond + '" class="form-control input-full" data-rule-number="true">';
                                     } else {
-                                        html += '<input type="text" name="standardSecond" value="" class="form-control" data-rule-number="true">';
+                                        html += '<input type="text" name="standardSecond" value="" class="form-control input-full" data-rule-number="true">';
                                     }
                                     html += '</div>';
                                     html += '</div>';
@@ -1489,13 +1663,13 @@
                                 case "data.land.approximation.method.cannot.foresee": {
                                 }
                                 case "data.land.approximation.method.land.acquisition": {
-                                    html += '<div class="x-valid">';
+                                    html += '<div class="form-inline x-valid">';
                                     html += '<label class="col-sm-1 control-label">标准</label>';
                                     html += '<div class="col-sm-3">';
                                     if (result.data.standardFirst != null) {
-                                        html += '<input type="text" name="standardFirst" class="form-control x-percent" value="' + AssessCommon.pointToPercent(result.data.standardFirst) + '">';
+                                        html += '<input type="text" name="standardFirst" class="form-control input-full x-percent" value="' + AssessCommon.pointToPercent(result.data.standardFirst) + '">';
                                     } else {
-                                        html += '<input type="text" name="standardFirst" value="" class="form-control" data-rule-number="true">';
+                                        html += '<input type="text" name="standardFirst" value="" class="form-control input-full" data-rule-number="true">';
                                     }
                                     html += '</div>';
                                     html += '</div>';
@@ -1507,7 +1681,7 @@
                         }
                     },
                     error: function (result) {
-                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                        AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 }
             )
@@ -1534,18 +1708,18 @@
             }
             case"data.land.approximation.method.occupation.land": {
                 html += '<td>';
-                html += '<div class="x-valid">';
-                html += '<input type="text" data-rule-number="true" name="standardFirst" class="form-control " value="' + standardFirst + '">';
+                html += '<div class="form-inline x-valid">';
+                html += '<input type="text" data-rule-number="true" name="standardFirst" class="form-control input-full " value="' + standardFirst + '">';
                 html += '</div>';
                 html += '</td>';
                 html += '<td>';
-                html += '<div class="x-valid">';
-                html += '<input type="text"  data-rule-number="true"  name="standardSecond" class="form-control " value="' + standardSecond + '">';
+                html += '<div class="form-inline x-valid">';
+                html += '<input type="text"  data-rule-number="true"  name="standardSecond" class="form-control input-full " value="' + standardSecond + '">';
                 html += '</div>';
                 html += '</td>';
                 html += '<td>';
-                html += '<div class="x-valid">';
-                html += '<input type="text" data-rule-number="true" name="price" class="form-control " value="' + price + '" readonly>';
+                html += '<div class="form-inline x-valid">';
+                html += '<input type="text" data-rule-number="true" name="price" class="form-control input-full " value="' + price + '" readonly>';
                 html += '</div>';
                 html += '</td>';
                 html += '<td>';
@@ -1563,11 +1737,11 @@
             }
             case "data.land.approximation.method.land.acquisition": {
                 html += '<td>';
-                html += '<div class="x-valid">';
+                html += '<div class="form-inline x-valid">';
                 if (standardFirst) {
-                    html += '<input type="text" data-rule-number="true" name="standardFirst"  class="form-control x-percent" value="' + AssessCommon.pointToPercent(standardFirst) + '">';
+                    html += '<input type="text" data-rule-number="true" name="standardFirst"  class="form-control input-full x-percent" value="' + AssessCommon.pointToPercent(standardFirst) + '">';
                 } else {
-                    html += '<input type="text" data-rule-number="true" name="standardFirst"  class="form-control x-percent">';
+                    html += '<input type="text" data-rule-number="true" name="standardFirst"  class="form-control input-full x-percent">';
                 }
                 html += '</div>';
                 html += '</td>';
@@ -1575,8 +1749,8 @@
                 html += '/';
                 html += '</td>';
                 html += '<td>';
-                html += '<div class="x-valid">';
-                html += '<input type="text" data-rule-number="true" name="price" class="form-control " value="' + price + '" readonly>';
+                html += '<div class="form-inline x-valid">';
+                html += '<input type="text" data-rule-number="true" name="price" class="form-control input-full " value="' + price + '" readonly>';
                 html += '</div>';
                 html += '</td>';
                 html += '<td>';
@@ -1594,8 +1768,8 @@
                 html += '/';
                 html += '</td>';
                 html += '<td>';
-                html += '<div class="x-valid">';
-                html += '<input type="text" onblur="getThisPrice(this);" data-rule-number="true" name="price" class="form-control " value="' + price + '">';
+                html += '<div class="form-inline x-valid">';
+                html += '<input type="text" onblur="getThisPrice(this);" data-rule-number="true" name="price" class="form-control input-full " value="' + price + '">';
                 html += '</div>';
                 html += '</td>';
                 html += '<td>';
@@ -1635,17 +1809,17 @@
         data.price = price;
         var farmlandArea = $("#farmlandArea").val();
         if (!farmlandArea) {
-            alert("请填写农用地总面积");
+            notifyInfo("提示","请填写农用地总面积");
             return false;
         }
         var ploughArea = $("#ploughArea").val();
         if (!ploughArea) {
-            alert("请填耕地面积");
+            notifyInfo("提示","请填耕地面积");
             return false;
         }
         var populationNumber = $("#populationNumber").val();
         if (!populationNumber) {
-            alert("请填人口数");
+            notifyInfo("提示","请填人口数");
             return false;
         }
         if (!$("#" + taxes.prototype.config().frm).valid()) {
@@ -1669,7 +1843,7 @@
                 }
             },
             error: function (result) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         })
     }

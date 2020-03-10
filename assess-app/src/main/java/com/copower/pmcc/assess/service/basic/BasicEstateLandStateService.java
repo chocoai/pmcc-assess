@@ -10,6 +10,7 @@ import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -72,8 +73,10 @@ public class BasicEstateLandStateService {
             if (updateNull) {
                 BasicEstateLandState landState = basicEstateLandStateDao.getBasicEstateLandStateById(basicEstateLandState.getId());
                 if (landState != null) {
+                    basicEstateLandState.setBisDelete(landState.getBisDelete());
                     basicEstateLandState.setCreator(landState.getCreator());
                     basicEstateLandState.setGmtCreated(landState.getGmtCreated());
+                    basicEstateLandState.setGmtModified(DateUtils.now());
                 }
             }
             basicEstateLandStateDao.updateBasicEstateLandState(basicEstateLandState, updateNull);

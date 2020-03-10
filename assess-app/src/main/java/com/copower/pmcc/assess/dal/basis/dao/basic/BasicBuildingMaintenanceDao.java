@@ -30,7 +30,6 @@ public class BasicBuildingMaintenanceDao {
     }
 
     public boolean updateBasicBuildingMaintenance(BasicBuildingMaintenance basicBuildingMaintenance, boolean updateNull) {
-        basicBuildingMaintenance.setBisDelete(false);
         return updateNull ? basicBuildingMaintenanceMapper.updateByPrimaryKey(basicBuildingMaintenance) == 1 : basicBuildingMaintenanceMapper.updateByPrimaryKeySelective(basicBuildingMaintenance) == 1;
     }
 

@@ -31,7 +31,6 @@ public class BasicBuildingOutfitDao {
     }
 
     public boolean updateBasicBuildingOutfit(BasicBuildingOutfit basicBuildingOutfit, boolean updateNull) {
-        basicBuildingOutfit.setBisDelete(false);
         return updateNull ? basicBuildingOutfitMapper.updateByPrimaryKey(basicBuildingOutfit) == 1 : basicBuildingOutfitMapper.updateByPrimaryKeySelective(basicBuildingOutfit) == 1;
     }
 

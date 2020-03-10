@@ -6,6 +6,7 @@ import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -39,6 +40,7 @@ public class BasicUnitHuxingPriceService {
                 if (unitHuxingPrice != null) {
                     basicUnitHuxingPrice.setCreator(unitHuxingPrice.getCreator());
                     basicUnitHuxingPrice.setGmtCreated(unitHuxingPrice.getGmtCreated());
+                    basicUnitHuxingPrice.setGmtModified(DateUtils.now());
                 }
             }
             basicUnitHuxingPriceDao.updateBasicUnitHuxingPrice(basicUnitHuxingPrice, updateNull);

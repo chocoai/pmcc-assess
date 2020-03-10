@@ -38,13 +38,13 @@ public class BasicHouseDao {
     }
 
     public boolean updateBasicHouse(BasicHouse basicHouse, boolean updateNull) {
-        basicHouse.setBisDelete(false);
         return updateNull ? basicHouseMapper.updateByPrimaryKey(basicHouse) == 1 : basicHouseMapper.updateByPrimaryKeySelective(basicHouse) == 1;
     }
 
     public boolean deleteBasicHouse(Integer id) {
         BasicHouse basicHouse = getBasicHouseById(id);
         if (basicHouse == null) return false;
+        basicHouse.setBisDelete(false);
         return basicHouseMapper.updateByPrimaryKeySelective(basicHouse) == 1;
     }
 

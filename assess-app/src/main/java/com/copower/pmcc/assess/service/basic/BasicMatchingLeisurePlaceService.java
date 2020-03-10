@@ -10,6 +10,7 @@ import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -75,8 +76,10 @@ public class BasicMatchingLeisurePlaceService {
             if (updateNull) {
                 BasicMatchingLeisurePlace matchingLeisurePlace = basicMatchingLeisurePlaceDao.getBasicMatchingLeisurePlaceById(basicMatchingLeisurePlace.getId());
                 if (matchingLeisurePlace != null) {
+                    basicMatchingLeisurePlace.setBisDelete(matchingLeisurePlace.getBisDelete());
                     basicMatchingLeisurePlace.setCreator(matchingLeisurePlace.getCreator());
                     basicMatchingLeisurePlace.setGmtCreated(matchingLeisurePlace.getGmtCreated());
+                    basicMatchingLeisurePlace.setGmtModified(DateUtils.now());
                 }
             }
             basicMatchingLeisurePlaceDao.updateBasicMatchingLeisurePlace(basicMatchingLeisurePlace, updateNull);

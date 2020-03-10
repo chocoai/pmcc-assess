@@ -10,6 +10,7 @@ import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
@@ -73,8 +74,10 @@ public class BasicEstateNetworkService {
             if (updateNull) {
                 BasicEstateNetwork estateNetwork = basicEstateNetworkDao.getBasicEstateNetworkById(basicEstateNetwork.getId());
                 if (estateNetwork != null) {
+                    basicEstateNetwork.setBisDelete(estateNetwork.getBisDelete());
                     basicEstateNetwork.setCreator(estateNetwork.getCreator());
                     basicEstateNetwork.setGmtCreated(estateNetwork.getGmtCreated());
+                    basicEstateNetwork.setGmtModified(DateUtils.now());
                 }
             }
             basicEstateNetworkDao.updateBasicEstateNetwork(basicEstateNetwork, updateNull);

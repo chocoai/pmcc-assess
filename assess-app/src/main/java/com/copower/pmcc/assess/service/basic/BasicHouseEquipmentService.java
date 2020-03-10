@@ -11,6 +11,7 @@ import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
@@ -75,8 +76,10 @@ public class BasicHouseEquipmentService {
             if (updateNull) {
                 BasicHouseEquipment houseEquipment = basicHouseEquipmentDao.getBasicHouseEquipmentById(basicHouseEquipment.getId());
                 if (houseEquipment != null) {
+                    basicHouseEquipment.setBisDelete(houseEquipment.getBisDelete());
                     basicHouseEquipment.setCreator(houseEquipment.getCreator());
                     basicHouseEquipment.setGmtCreated(houseEquipment.getGmtCreated());
+                    basicHouseEquipment.setGmtModified(DateUtils.now());
                 }
             }
             basicHouseEquipmentDao.updateBasicHouseEquipment(basicHouseEquipment, updateNull);

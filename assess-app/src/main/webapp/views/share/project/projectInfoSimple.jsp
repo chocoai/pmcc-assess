@@ -50,7 +50,7 @@
                                 委托目的类别
                             </label>
                             <div class="col-sm-3 x-valid">
-                                <label class="form-control input-full">${projectInfo.entrustAimType}</label>
+                                <label class="form-control input-full">${projectInfo.entrustAimTypeName}</label>
                             </div>
                             <label class="col-sm-1 col-form-label">
                                 委托目的描述

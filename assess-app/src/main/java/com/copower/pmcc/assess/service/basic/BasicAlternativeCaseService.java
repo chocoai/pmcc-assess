@@ -105,4 +105,8 @@ public class BasicAlternativeCaseService {
         basicAlternativeCaseDto.setPlanDetailsId(basicApplyBatch.getPlanDetailsId());
         return basicAlternativeCaseDto;
     }
+
+    public boolean deleteDataById(Integer id) {
+        return basicAlternativeCaseDao.deleteInfo(id);
+    }
 }

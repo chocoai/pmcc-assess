@@ -12,6 +12,7 @@ import com.copower.pmcc.assess.dto.output.basic.BasicEstateTaggingGaoDe;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateTaggingVo;
 import com.copower.pmcc.assess.service.cases.CaseEstateTaggingService;
 import com.copower.pmcc.erp.common.CommonService;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
@@ -108,8 +109,10 @@ public class BasicEstateTaggingService {
         if(updateNull){
             BasicEstateTagging estateTagging = basicEstateTaggingDao.getBasicEstateTaggingById(basicEstateTagging.getId());
             if(estateTagging!=null){
+                basicEstateTagging.setBisDelete(estateTagging.getBisDelete());
                 basicEstateTagging.setCreator(estateTagging.getCreator());
                 basicEstateTagging.setGmtCreated(estateTagging.getGmtCreated());
+                basicEstateTagging.setGmtModified(DateUtils.now());
             }
         }
         return basicEstateTaggingDao.updateBasicEstateTagging(basicEstateTagging,updateNull);

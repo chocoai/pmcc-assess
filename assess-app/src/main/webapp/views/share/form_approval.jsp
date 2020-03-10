@@ -170,11 +170,11 @@
         chkbisNextClick: function () {
             if ($("#chk_bisNext").is(":checked")) {
                 $("#bisNext").val(1);
-                $('#nextApproval').closest('.form-group').hide();//隐藏选择下级审批人
+                $('#nextApproval').attr('required',false).closest('.form-group').hide();//隐藏选择下级审批人
             }
             else {
                 $("#bisNext").val(0);
-                $('#nextApproval').closest('.form-group').show();//显示选择下级审批人
+                $('#nextApproval').attr('required',true).closest('.form-group').show();//显示选择下级审批人
             }
         },
 
@@ -182,11 +182,11 @@
             var rdoValue = $("input[name='conclusion']:checked").val();
             if (rdoValue == "Approval") {
                 $("#opinions").attr("required", false);//审批意见不必填
-                $('#nextApproval').closest('.form-group').show();//显示选择下级审批人
+                $('#nextApproval').attr('required',true).closest('.form-group').show();//显示选择下级审批人
             }
             else {
                 $("#opinions").attr("required", true);//审批意见必填
-                $('#nextApproval').closest('.form-group').hide();//隐藏选择下级审批人
+                $('#nextApproval').attr('required',false).closest('.form-group').hide();//隐藏选择下级审批人
             }
         },
 

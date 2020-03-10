@@ -30,7 +30,6 @@ public class BasicUnitHuxingDao {
     }
 
     public boolean updateBasicUnitHuxing(BasicUnitHuxing basicUnitHuxing, boolean updateNull) {
-        basicUnitHuxing.setBisDelete(false);
         return updateNull ? basicUnitHuxingMapper.updateByPrimaryKey(basicUnitHuxing) == 1 : basicUnitHuxingMapper.updateByPrimaryKeySelective(basicUnitHuxing) == 1;
     }
 

@@ -39,8 +39,10 @@ public class BasicHouseTradingSellService {
             if (updateNull) {
                 BasicHouseTradingSell houseTradingSell = basicHouseTradingSellDao.getBasicHouseTradingSellById(basicHouseTradingSell.getId());
                 if (houseTradingSell != null) {
+                    basicHouseTradingSell.setBisDelete(houseTradingSell.getBisDelete());
                     basicHouseTradingSell.setCreator(houseTradingSell.getCreator());
                     basicHouseTradingSell.setGmtCreated(houseTradingSell.getGmtCreated());
+                    basicHouseTradingSell.setGmtModified(DateUtils.now());
                 }
             }
             basicHouseTradingSellDao.updateBasicHouseTradingSell(basicHouseTradingSell, updateNull);

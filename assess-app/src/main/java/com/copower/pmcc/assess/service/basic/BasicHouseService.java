@@ -416,6 +416,7 @@ public class BasicHouseService extends BasicEntityAbstract {
             if (updateNull) {
                 BasicHouse house = basicHouseDao.getBasicHouseById(basicHouse.getId());
                 if (house != null) {
+                    basicHouse.setBisDelete(house.getBisDelete());
                     basicHouse.setCreator(house.getCreator());
                     basicHouse.setGmtCreated(house.getGmtCreated());
                     basicHouse.setGmtModified(DateUtils.now());

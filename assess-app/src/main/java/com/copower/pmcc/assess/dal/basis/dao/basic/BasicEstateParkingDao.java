@@ -30,7 +30,6 @@ public class BasicEstateParkingDao {
     }
 
     public boolean updateBasicEstateParking(BasicEstateParking basicEstateParking, boolean updateNull) {
-        basicEstateParking.setBisDelete(false);
         return updateNull ? basicEstateParkingMapper.updateByPrimaryKey(basicEstateParking) == 1 : basicEstateParkingMapper.updateByPrimaryKeySelective(basicEstateParking) == 1;
     }
 

@@ -234,6 +234,7 @@ public class BasicUnitService extends BasicEntityAbstract {
             if (updateNull) {
                 BasicUnit unit = basicUnitDao.getBasicUnitById(basicUnit.getId());
                 if (unit != null) {
+                    basicUnit.setBisDelete(unit.getBisDelete());
                     basicUnit.setCreator(unit.getCreator());
                     basicUnit.setGmtCreated(unit.getGmtCreated());
                     basicUnit.setGmtModified(DateUtils.now());

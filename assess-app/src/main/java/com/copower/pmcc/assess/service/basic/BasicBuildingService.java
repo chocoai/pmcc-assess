@@ -298,6 +298,7 @@ public class BasicBuildingService extends BasicEntityAbstract {
             if (updateNull) {
                 BasicBuilding building = basicBuildingDao.getBasicBuildingById(basicBuilding.getId());
                 if (building != null) {
+                    basicBuilding.setBisDelete(building.getBisDelete());
                     basicBuilding.setCreator(building.getCreator());
                     basicBuilding.setGmtCreated(building.getGmtCreated());
                     basicBuilding.setGmtModified(DateUtils.now());

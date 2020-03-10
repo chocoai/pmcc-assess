@@ -31,7 +31,6 @@ public class BasicEstateSupplyDao {
     }
 
     public boolean updateBasicEstateSupply(BasicEstateSupply basicEstateSupply, boolean updateNull)  {
-        basicEstateSupply.setBisDelete(false);
         return updateNull ? basicEstateSupplyMapper.updateByPrimaryKey(basicEstateSupply) == 1 : basicEstateSupplyMapper.updateByPrimaryKeySelective(basicEstateSupply) == 1;
     }
 

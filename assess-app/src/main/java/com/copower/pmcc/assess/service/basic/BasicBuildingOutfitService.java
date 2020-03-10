@@ -10,6 +10,7 @@ import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
@@ -74,8 +75,10 @@ public class BasicBuildingOutfitService {
             if (updateNull) {
                 BasicBuildingOutfit buildingOutfit = basicBuildingOutfitDao.getBasicBuildingOutfitById(basicBuildingOutfit.getId());
                 if (buildingOutfit != null) {
+                    basicBuildingOutfit.setBisDelete(buildingOutfit.getBisDelete());
                     basicBuildingOutfit.setCreator(buildingOutfit.getCreator());
                     basicBuildingOutfit.setGmtCreated(buildingOutfit.getGmtCreated());
+                    basicBuildingOutfit.setGmtModified(DateUtils.now());
                 }
             }
             basicBuildingOutfitDao.updateBasicBuildingOutfit(basicBuildingOutfit, updateNull);

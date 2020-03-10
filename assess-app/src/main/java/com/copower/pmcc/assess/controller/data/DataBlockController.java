@@ -1,10 +1,12 @@
 package com.copower.pmcc.assess.controller.data;
 
 import com.copower.pmcc.assess.controller.BaseController;
+import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatch;
 import com.copower.pmcc.assess.dal.basis.entity.DataBlock;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.NetInfoRecordService;
 import com.copower.pmcc.assess.service.NetUrlConfigService;
+import com.copower.pmcc.assess.service.basic.BasicApplyBatchService;
 import com.copower.pmcc.assess.service.data.DataBlockService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -33,7 +35,7 @@ public class DataBlockController extends BaseController {
     @Autowired
     private NetUrlConfigService netUrlConfigService;
     @Autowired
-    private NetInfoRecordService netInfoRecordService;
+    private BasicApplyBatchService basicApplyBatchService;
 
 
     @RequestMapping(value = "/view", name = "转到index页面 ", method = {RequestMethod.GET})
@@ -147,14 +149,14 @@ public class DataBlockController extends BaseController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/caseAllToBasic", method = {RequestMethod.GET}, name = "案例数据迁移")
+    @RequestMapping(value = "/updateOldData", method = {RequestMethod.GET}, name = "更新数据")
     public HttpResult updateOldData() {
         try {
-            dataBlockService.caseAllToBasic();
+            basicApplyBatchService.writeRelevanceId();
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             logger.error(String.format("exception: %s", e.getMessage()), e);
-            return HttpResult.newErrorResult("案例数据迁移异常");
+            return HttpResult.newErrorResult("更新数据异常");
         }
     }
 

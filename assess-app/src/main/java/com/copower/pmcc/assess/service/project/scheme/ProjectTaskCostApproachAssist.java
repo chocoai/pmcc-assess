@@ -113,6 +113,9 @@ public class ProjectTaskCostApproachAssist implements ProjectTaskInterface {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskCostApproachApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
         MdCostApproach data = mdCostApproachService.getMdCostApproachVo(mdCostApproachService.getDataByPlanDetailsId(projectPlanDetails.getId()));
         modelAndView.addObject("master", data);
+        List<MdCostApproachTaxes> list = mdCostApproachService.getMdCostApproachTaxesListByMasterId(data.getId());
+        modelAndView.addObject("taxesVos", list);
+        setViewParam(data, projectPlanDetails, modelAndView);
         return modelAndView;
     }
 

@@ -10,6 +10,7 @@ import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
@@ -74,8 +75,10 @@ public class BasicHouseFaceStreetService {
             if (updateNull) {
                 BasicHouseFaceStreet houseFaceStreet = basicHouseFaceStreetDao.getBasicHouseFaceStreetById(basicHouseFaceStreet.getId());
                 if (houseFaceStreet != null) {
+                    basicHouseFaceStreet.setBisDelete(houseFaceStreet.getBisDelete());
                     basicHouseFaceStreet.setCreator(houseFaceStreet.getCreator());
                     basicHouseFaceStreet.setGmtCreated(houseFaceStreet.getGmtCreated());
+                    basicHouseFaceStreet.setGmtModified(DateUtils.now());
                 }
             }
             basicHouseFaceStreetDao.updateBasicHouseFaceStreet(basicHouseFaceStreet, updateNull);

@@ -10,6 +10,7 @@ import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
@@ -73,8 +74,10 @@ public class BasicUnitDecorateService {
             if (updateNull) {
                 BasicUnitDecorate unitDecorate = basicUnitDecorateDao.getBasicUnitDecorateById(basicUnitDecorate.getId());
                 if (unitDecorate != null) {
+                    basicUnitDecorate.setBisDelete(unitDecorate.getBisDelete());
                     basicUnitDecorate.setCreator(unitDecorate.getCreator());
                     basicUnitDecorate.setGmtCreated(unitDecorate.getGmtCreated());
+                    basicUnitDecorate.setGmtModified(DateUtils.now());
                 }
             }
             basicUnitDecorateDao.updateBasicUnitDecorate(basicUnitDecorate, updateNull);

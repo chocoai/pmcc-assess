@@ -11,6 +11,7 @@ import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -74,8 +75,10 @@ public class BasicHouseCorollaryEquipmentService {
             if (updateNull) {
                 BasicHouseCorollaryEquipment corollaryEquipment = basicHouseCorollaryEquipmentDao.getBasicHouseCorollaryEquipmentById(basicHouseCorollaryEquipment.getId());
                 if (corollaryEquipment != null) {
+                    basicHouseCorollaryEquipment.setBisDelete(corollaryEquipment.getBisDelete());
                     basicHouseCorollaryEquipment.setCreator(corollaryEquipment.getCreator());
                     basicHouseCorollaryEquipment.setGmtCreated(corollaryEquipment.getGmtCreated());
+                    basicHouseCorollaryEquipment.setGmtModified(DateUtils.now());
                 }
             }
             basicHouseCorollaryEquipmentDao.updateBasicHouseCorollaryEquipment(basicHouseCorollaryEquipment, updateNull);
