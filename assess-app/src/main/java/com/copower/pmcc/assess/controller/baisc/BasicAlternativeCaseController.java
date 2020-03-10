@@ -60,4 +60,19 @@ public class BasicAlternativeCaseController {
         }
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/deleteDataById", method = {RequestMethod.POST}, name = "删除")
+    public HttpResult delete(Integer id) {
+        try {
+            if (id != null) {
+                return HttpResult.newCorrectResult(basicAlternativeCaseService.deleteDataById(id));
+            }
+        } catch (Exception e1) {
+            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
+            return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
+        }
+        return null;
+    }
+
+
 }

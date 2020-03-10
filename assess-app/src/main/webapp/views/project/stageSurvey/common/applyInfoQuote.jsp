@@ -481,8 +481,11 @@
                 field: 'id', title: '查询', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
                     <!-- 这的tb_List不作为数据显示的table以config配置的为主 -->
-                    str += '<button type="button" class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="查看" onclick="projectData.prototype.findData(' + row.id + ',\'estate\')"><i class="fa fa-search fa-white"></i></button>';
-                    str += '<button type="button" class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="引用" onclick="projectData.prototype.quote(' + row.id + ')"><i class="fa fa-check"></i></button>';
+                    str += '<button type="button" style="margin-left: 10px;" class="btn btn-xs btn-info tooltips"  data-placement="top" data-original-title="查看" onclick="projectData.prototype.findData(' + row.id + ',\'estate\')"><i class="fa fa-search fa-white"></i></button>';
+                    str += '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-success tooltips"  data-placement="top" data-original-title="引用" onclick="projectData.prototype.quote(' + row.id + ')"><i class="fa fa-check"></i></button>';
+                    str += '<button type="button" onclick="projectData.prototype.removeData(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn  btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
+                    str += '<i class="fa fa-minus"></i>';
+                    str += '</button>';
                     str += '</div>';
                     return str;
                 }
@@ -501,7 +504,28 @@
             });
 
         },
-        findData: function (id, buildType, estateId) {
+        removeData: function (id) {
+            AlertConfirm("是否确认删除", "删除相应的数据后将不可恢复", function () {
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/basicAlternativeCase/deleteDataById",
+                    type: "post",
+                    dataType: "json",
+                    data: {id: id},
+                    success: function (result) {
+                        if (result.ret) {
+                            notifySuccess("成功", "删除数据成功");
+                            projectData.prototype.loadDataList();
+                        }
+                        else {
+                            AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                        }
+                    },
+                    error: function (result) {
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                    }
+                })
+            })
+        }, findData: function (id, buildType, estateId) {
             infoDetail(id, buildType);
         },
         quote: function (id) {
