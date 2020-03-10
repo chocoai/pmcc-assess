@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.controller.chks;
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.chks.ChksAssessmentProjectPerformanceService;
+import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.chks.api.dto.AssessmentProjectPerformanceDetailDto;
 import com.copower.pmcc.chks.api.dto.AssessmentProjectPerformanceDto;
 import com.copower.pmcc.chks.api.dto.AssessmentProjectPerformanceQuery;
@@ -26,6 +27,8 @@ public class ChksAssessmentProjectPerformanceController {
     private BaseService baseService;
     @Autowired
     private ChksAssessmentProjectPerformanceService chksAssessmentProjectPerformanceService;
+    @Autowired
+    private BpmRpcBoxService bpmRpcBoxService;
 
 
     @GetMapping(value = "/getChksBootstrapTableVo", name = "获取考核 bootstrap table")
@@ -67,7 +70,6 @@ public class ChksAssessmentProjectPerformanceController {
     }
 
 
-
     @GetMapping(value = "/getAssessmentItemTemplate", name = "获取模板数据")
     public HttpResult getAssessmentItemTemplate(Integer boxId, Integer boxReActivitiId, String assessmentKey) {
         try {
@@ -77,6 +79,16 @@ public class ChksAssessmentProjectPerformanceController {
             return HttpResult.newErrorResult(500, e.getMessage());
         }
 
+    }
+
+    @GetMapping(value = "/getActivityIdByUserAccountList", name = "获取节点下的审批人")
+    public HttpResult getActivityIdByUserAccountList(Integer activityId) {
+        try {
+            return HttpResult.newCorrectResult(200, bpmRpcBoxService.getRoleUserByActivityId(activityId));
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e, "获取数据出错");
+            return HttpResult.newErrorResult(500, e.getMessage());
+        }
     }
 
     @PostMapping(value = "/saveAssessmentServer", name = "保存考核信息")

@@ -54,7 +54,7 @@
                     json.activityId = '${activityId}';
                 }
             }
-            if ('${boxReDto}'){
+            if ('${boxReDto}') {
                 json.boxId = '${boxReDto.id}';
             }
             if ('${activityDtoList}') {
@@ -78,16 +78,16 @@
             //这里涉及到权限,如果要优化请慎重操作
             //抽查组人员  可以对任务进行抽查
             var array = [];
-            if ('${spotUserAccounts}') {
-                var spotUserAccounts = JSON.parse('${el:toJsonString(spotUserAccounts)}');
-                $.each(spotUserAccounts, function (i, account) {
-                    if (account == '${sysUserDto.userAccount}') {
+            if ('${spotReActivityDto}') {
+                assessmentCommonHandle.getActivityIdByUserAccountList('${spotReActivityDto.id}', function (accountList) {
+                    if (jQuery.inArray('${sysUserDto.userAccount}', accountList) != -1) {
                         array.push(assessmentCommonHandle.getSpotCol());
                     }
+                    assessmentCommonHandle.getChksBootstrapTableVoBase($("#assessmentTableList"), json, array);
                 });
-
+            } else {
+                assessmentCommonHandle.getChksBootstrapTableVoBase($("#assessmentTableList"), json, array);
             }
-            assessmentCommonHandle.getChksBootstrapTableVoBase($("#assessmentTableList"), json, array);
         }({processInsId: '${processInsId}'}));
     });
 
