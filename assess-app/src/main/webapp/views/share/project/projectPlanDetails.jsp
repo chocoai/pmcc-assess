@@ -132,6 +132,7 @@
                 processInsId: "${processInsId}",
                 taskId: "${taskId}",
                 activityId: "${activityId}",
+                reActivityName: "${reActivityName}",
                 activityName: "${activityName}",
                 activityCnName: "${activityCnName}",
                 CurrentStep: "${CurrentStep}",
