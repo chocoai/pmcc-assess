@@ -487,13 +487,18 @@ public class SchemeJudgeObjectService {
             if (schemeJudgeObject.getSplitNumber() != null && schemeJudgeObject.getSplitNumber() > 0)
                 numberBuilder.append("-").append(schemeJudgeObject.getSplitNumber());
             numberBuilder.append(",");
-            if (schemeJudgeObject.getFloorArea() != null)
-                floorAreaTotal = floorAreaTotal.add(schemeJudgeObject.getFloorArea());
             if (schemeJudgeObject.getEvaluationArea() != null)
                 evaluationAreaTotal = evaluationAreaTotal.add(schemeJudgeObject.getEvaluationArea());
             ownershipList.add(schemeJudgeObject.getOwnership());
             seatList.add(schemeJudgeObject.getSeat());
         }
+        Map<Integer, BigDecimal> mappingSingleEntity = FormatUtils.mappingSingleEntity(judgeObjectList, o -> o.getDeclareRecordId(), o -> o.getFloorArea());
+        if(mappingSingleEntity!=null&&!mappingSingleEntity.isEmpty()){//证载面积的合计应取权证上的
+            for (Map.Entry<Integer, BigDecimal> entry : mappingSingleEntity.entrySet()) {
+                floorAreaTotal = floorAreaTotal.add(entry.getValue());
+            }
+        }
+
         mergeJudgeObject.setId(null);
         mergeJudgeObject.setPid(0);
         mergeJudgeObject.setSplitNumber(null);
