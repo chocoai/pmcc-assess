@@ -286,7 +286,9 @@
                                                     })
                                                 </script>
                                                 <td>
-                                                    <button type="button" class="btn btn-xs btn-danger" onclick="emptyRefill(this)">清空</button>
+                                                    <button type="button" class="btn btn-xs btn-danger"
+                                                            onclick="emptyRefill(this)">清空
+                                                    </button>
                                                 </td>
                                             </tr>
                                             <script type="text/javascript">
@@ -506,6 +508,24 @@
                                             <div class="col-md-12">
                                                 <div class="form-inline x-valid">
                                                     <label class="col-sm-1  col-form-label">
+                                                        是否有转让限制
+                                                    </label>
+                                                    <div class="col-sm-3">
+                                                        <select id="bisLimit"
+                                                                class='form-control input-full'
+                                                                onchange="showLimit()">
+                                                            <option value="请选择">-请选择-</option>
+                                                            <option value="是">是</option>
+                                                            <option value="否">否</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row form-group showLimit">
+                                            <div class="col-md-12">
+                                                <div class="form-inline x-valid">
+                                                    <label class="col-sm-1  col-form-label">
                                                         转让限制
                                                     </label>
                                                     <div class="col-sm-11">
@@ -540,7 +560,12 @@
 
     $(function () {
         loadAssetRightList();
-
+        if("${surveyAssetInventory.transferLimit}"){
+            $("#bisLimit").val("是");
+        }else{
+            $("#bisLimit").val("否");
+        }
+        showLimit();
         FileUtils.uploadFiles({
             target: "checkOriginalFile",
             disabledTarget: "btn_submit",
@@ -838,6 +863,16 @@
         } else {
             $(".showCertificate").hide();
             $(".showUse").hide();
+        }
+    }
+
+
+    function showLimit() {
+        if ($("#bisLimit").val() == "是") {
+            $(".showLimit").show();
+        } else {
+            $(".showLimit").hide();
+            $("#transferLimit").val("");
         }
     }
 

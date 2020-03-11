@@ -215,7 +215,7 @@
                     }
                     if (!readonly){
                         if (objArray.length == 0) {
-                            Alert("请先标注楼栋");
+                            notifyInfo("提示","请先标注楼栋");
                             return false;
                         }
                     }
@@ -286,7 +286,7 @@
                 var select = {tableId:itemB[0].tableId,type:"building"} ;
                 examineCommon.getApplyBatchEstateTaggingsByTableId(select,function (data) {
                     if (data.length == 0){
-                        Alert("请先标注楼栋");
+                        notifyInfo("提示","请先标注楼栋");
                         return false;
                     }
                     var item = data[0] ;
