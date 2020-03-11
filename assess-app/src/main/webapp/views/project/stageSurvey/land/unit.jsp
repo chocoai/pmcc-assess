@@ -68,6 +68,8 @@
         src="${pageContext.request.contextPath}/js/examine/sonUnitView.js?v=${assessVersion}"></script>
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/js/ajaxfileupload.js?v=${assessVersion}"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/basic/basic.common.js?v=${assessVersion}"></script>
 <script type="text/javascript">
     $(function () {
         unitCommon.initById('${basicUnit.id}');
