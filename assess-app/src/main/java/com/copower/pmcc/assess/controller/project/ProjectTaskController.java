@@ -339,6 +339,7 @@ public class ProjectTaskController extends BaseController {
             }else {
                 modelAndView.addObject("activityDtoList", chksAssessmentProjectPerformanceService.getActivityDtoListByProcessInsId(processInsId,boxId));
             }
+            modelAndView.addObject("chksExaminePeopleList", chksAssessmentProjectPerformanceService.getExaminePeopleList(processInsId,boxId));
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
         }

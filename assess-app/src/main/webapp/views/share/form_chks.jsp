@@ -24,22 +24,6 @@
     </div>
 </div>
 
-<%--<div class="x_panel">
-    <div class="x_title collapse-link">
-        <ul class="nav navbar-right panel_toolbox">
-            <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a></li>
-        </ul>
-        <h3>考核信息</h3>
-        <div class="clearfix"></div>
-    </div>
-    <div class="x_content">
-        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-            <table class="table" id="assessmentTableList">
-            </table>
-        </div>
-    </div>
-</div>--%>
-
 
 <script type="text/javascript">
 
