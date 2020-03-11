@@ -169,6 +169,9 @@ public class MdMarketCompareService {
         mdMarketCompare.setValueTimePoint(areaGroup.getValueTimePoint());
         mdMarketCompare.setCreator(commonService.thisUserAccount());
         mdMarketCompareDao.addMarketCompare(mdMarketCompare);
+        //如果对象是合并的估价对象，则取该合并估价对象的标准估价对象
+        if (schemeJudgeObject.getBisMerge() == Boolean.TRUE)
+            schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(schemeJudgeObject.getStandardJudgeId());
 
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(schemeJudgeObject.getProjectId());
         ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.SCENE_EXPLORE, projectInfo.getProjectCategoryId());
@@ -176,7 +179,7 @@ public class MdMarketCompareService {
         List<BasicApply> basicApplyList = basicApplyService.getBasicApplyListByPlanDetailsId(planDetails.getId());
         String setUseFieldType = isLand ? BaseConstant.ASSESS_DATA_SET_USE_FIELD_LAND : BaseConstant.ASSESS_DATA_SET_USE_FIELD_HOUSE;
         List<DataSetUseField> setUseFieldList = getSetUseFieldList(setUseFieldType);
-        if (schemeJudgeObject.getBasicApplyId() == null) {
+        if (schemeJudgeObject.getBasicApplyId() != null) {
             setJudgeCompareItem(areaGroup, schemeJudgeObject, basicApplyService.getByBasicApplyId(schemeJudgeObject.getBasicApplyId()), mdMarketCompare.getId(), setUseFieldList, isLand);
         } else {
             if (CollectionUtils.isNotEmpty(basicApplyList)) {//检查估价对象是否有多个标准 如果有多个标准则不处理 由前端选择后初始化
@@ -309,6 +312,7 @@ public class MdMarketCompareService {
 
     /**
      * 选择案例
+     *
      * @param mcId
      * @param planDetailsIdList
      * @param judgeObjectId
@@ -330,7 +334,7 @@ public class MdMarketCompareService {
         String setUseFieldType = isLand ? BaseConstant.ASSESS_DATA_SET_USE_FIELD_LAND : BaseConstant.ASSESS_DATA_SET_USE_FIELD_HOUSE;
         List<DataSetUseField> setUseFieldList = getSetUseFieldList(setUseFieldType);
         //添加选择后的案例信息
-        if(StringUtils.isBlank(planDetailsIdList))
+        if (StringUtils.isBlank(planDetailsIdList))
             throw new BusinessException("请选择有效案例");
         List<Integer> integers = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(planDetailsIdList));
         int i = 1;

@@ -72,7 +72,7 @@ public class ProjectTaskLiquidationAnalysisAssist implements ProjectTaskInterfac
      * @param areaId
      */
     @Transactional(rollbackFor = Exception.class)
-    private void refreshAnalysisJudge(Integer areaId){
+    public void refreshAnalysisJudge(Integer areaId){
         List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectService.getJudgeObjectApplicableListByAreaGroupId(areaId);
         List<Integer> list = LangUtils.transform(judgeObjectList, o -> o.getId());
         List<SchemeLiquidationAnalysisJudge> analysisJudgeList = schemeLiquidationAnalysisJudgeDao.getListByAreaId(areaId);
@@ -82,7 +82,7 @@ public class ProjectTaskLiquidationAnalysisAssist implements ProjectTaskInterfac
                     schemeLiquidationAnalysisJudgeDao.deleteInfo(o.getId());
                     return;
                 }
-                SchemeJudgeObject judgeObject = schemeJudgeObjectService.getCacheJudgeObject(o.getJudgeObjectId());
+                SchemeJudgeObject judgeObject = schemeJudgeObjectService.getSchemeJudgeObject(o.getJudgeObjectId());
                 if(judgeObject!=null){
                     o.setName(judgeObject.getName());
                     schemeLiquidationAnalysisJudgeDao.updateSchemeLiquidationAnalysisJudge(o);

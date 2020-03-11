@@ -1143,22 +1143,6 @@ public class SchemeJudgeObjectService {
     }
 
     /**
-     * 获取缓存的估价对象
-     *
-     * @param id
-     * @return
-     */
-    public SchemeJudgeObject getCacheJudgeObject(Integer id) {
-        String rdsKey = CacheConstant.getCostsKeyPrefix(AssessCacheConstant.PMCC_ASSESS_JUDGE_OBJECT_ID, String.valueOf(id));
-        try {
-            SchemeJudgeObject sysDataDic = LangUtils.singleCache(rdsKey, id, SchemeJudgeObject.class, o -> schemeJudgeObjectDao.getSchemeJudgeObject(o));
-            return sysDataDic;
-        } catch (Exception e) {
-            return schemeJudgeObjectDao.getSchemeJudgeObject(id);
-        }
-    }
-
-    /**
      * 清除项目下估价对象缓存数据
      *
      * @param projectId
