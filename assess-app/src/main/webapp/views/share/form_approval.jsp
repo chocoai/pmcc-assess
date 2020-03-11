@@ -41,19 +41,17 @@
                                         </label>
                                     </div>
                                 </div>
-                                <c:if test="${bisSelectUser!='1'}">
-                                    <c:if test="${lastNodes==0}"> <%--如果有下级节点--%>
-                                        <div class="col-md-5" id="div_bisNext">
-                                            <div class="form-check">
-                                                <label class="form-check-label">
-                                                    <input id="chk_bisNext" name="chk_bisNext"
-                                                           onclick="formApproval.chkbisNextClick()" class="form-check-input"
-                                                           type="checkbox" value="">
-                                                    <span class="form-check-sign">跳过多级审批</span>
-                                                </label>
-                                            </div>
+                                <c:if test="${lastNodes==0}"> <%--如果有下级节点--%>
+                                    <div class="col-md-5" id="div_bisNext">
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input id="chk_bisNext" name="chk_bisNext"
+                                                       onclick="formApproval.chkbisNextClick()" class="form-check-input"
+                                                       type="checkbox" value="">
+                                                <span class="form-check-sign">跳过多级审批</span>
+                                            </label>
                                         </div>
-                                    </c:if>
+                                    </div>
                                 </c:if>
                             </div>
                         </div>
