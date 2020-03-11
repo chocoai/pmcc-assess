@@ -841,4 +841,40 @@ public class ChksAssessmentProjectPerformanceService {
             projectTaskList.forEach(o -> bpmRpcProjectTaskService.deleteProjectTask(o.getId()));
         }
     }
+
+    public String pasteAll(Integer copyId, String ids) {
+        StringBuilder stringBuilder = new StringBuilder(8);
+        AssessmentProjectPerformanceDto copyObj = chksRpcAssessmentService.getAssessmentProjectPerformanceById(copyId);
+        if (copyObj == null) {
+            stringBuilder.append("拷贝的模板数据不存在,因此无法继续粘贴,请咨询管理员.");
+            return stringBuilder.toString();
+        }
+        List<AssessmentProjectPerformanceDetailDto> assessmentProjectPerformanceDetailDtoList = chksRpcAssessmentService.getAssessmentProjectPerformanceDetailByPerformanceIdList(copyId);
+        if (CollectionUtils.isEmpty(assessmentProjectPerformanceDetailDtoList)) {
+            stringBuilder.append("拷贝的模板数据的明细被删除,因此无法继续粘贴,请咨询管理员");
+            return stringBuilder.toString();
+        }
+        List<Integer> integerList = FormatUtils.transformString2Integer(ids);
+        Iterator<Integer> iterator = integerList.iterator();
+        //索引 用作日志的书写
+        int index = 0;
+        while (iterator.hasNext()) {
+            Integer id = iterator.next();
+            boolean check = pasteData(copyObj, assessmentProjectPerformanceDetailDtoList, chksRpcAssessmentService.getAssessmentProjectPerformanceById(id));
+            index++;
+            if (check) {
+                stringBuilder.append("第").append(index).append("条数据粘贴失败");
+            } else {
+
+            }
+        }
+        return stringBuilder.toString();
+    }
+
+    private boolean pasteData(AssessmentProjectPerformanceDto copy, List<AssessmentProjectPerformanceDetailDto> copyList, AssessmentProjectPerformanceDto projectPerformanceDto) {
+        if (copy == null || projectPerformanceDto == null) {
+            return false;
+        }
+        return true;
+    }
 }

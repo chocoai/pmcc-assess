@@ -200,7 +200,7 @@
     </tr>
 </script>
 
-<div id="assessmentItemToolbar" class=" col-xs-12  col-sm-12  col-md-12  col-lg-12">
+<div id="assessmentItemToolbar" class=" col-xs-12  col-sm-12  col-md-12  col-lg-12" style="display: none;">
     <form class="form-horizontal">
         <div class="row form-group">
             <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
@@ -239,12 +239,15 @@
                     </label>
                     <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
                         <select name="examinePeople" class="form-control input-full search-select select2">
-                            <option>请选择</option>
+                            <option value="">请选择</option>
                             <c:forEach items="${chksExaminePeopleList}" var="item">
                                 <option value="${item.key}">${item.value}</option>
                             </c:forEach>
                         </select>
                     </div>
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        状态
+                    </label>
                     <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
                         <div class="form-check" style="justify-content:left">
                             <label class="form-check-label">
@@ -257,12 +260,61 @@
                             </label>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                <div class="form-inline x-valid">
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        业务名称
+                    </label>
+                    <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
+                        <input type="text" placeholder="业务名称" name="businessKey" class="form-control input-full">
+                    </div>
+
+
                     <div class="col-xs-1  col-sm-1  col-md-1  col-lg-1">
-                        <div class="btn-group" role="group">
-                            <button type="button" onclick="assessmentCommonHandle.queryChksAssessmentProjectPerformance(this);" class="btn btn-info btn-sm">查询<i class="fa fa-search"></i></button>
-                            <button type="button" class="btn btn-primary btn-sm" onclick="$(this).closest('form').clearAll()">清空</button>
+                        <button type="button"
+                                onclick="assessmentCommonHandle.queryChksAssessmentProjectPerformance(this);"
+                                class="btn btn-info btn-sm">查询<i class="fa fa-search"></i></button>
+                    </div>
+                    <div class="col-xs-1  col-sm-1  col-md-1  col-lg-1">
+                        <button type="button" class="btn btn-primary btn-sm"
+                                onclick="$(this).closest('form').clearAll()">清空查询
+                        </button>
+                    </div>
+
+                    <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
+                        <button type="button" class="btn btn-info btn-sm"
+                                onclick="assessmentCommonHandle.copyData(this);"><i
+                                class="fa fa-copy" aria-hidden="true"></i> 拷贝
+                        </button>
+                        <button type="button" class="btn btn-warning btn-sm"
+                                onclick="assessmentCommonHandle.pasteAll(this);"><i
+                                class="fa fa-clipboard" aria-hidden="true"></i>粘贴
+                        </button>
+                    </div>
+
+                    <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
+                        <div class="input-group ">
+                            <input type="hidden" name="id">
+                            <input type="text" readonly="readonly" name="name"
+                                   class="form-control form-control-sm"
+                                   placeholder="无拷贝数据">
+                            <div class="input-group-prepend ">
+                                <button class="btn btn-warning btn-sm"
+                                        style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                        type="button"
+                                        onclick="$(this).closest('.input-group').find('input').val('');">
+                                    <i class="fa "></i>
+                                    清空拷贝
+                                </button>
+                            </div>
                         </div>
                     </div>
+
+
                 </div>
             </div>
         </div>
@@ -470,28 +522,72 @@
         assessmentCommonHandle.ajaxServerMethod({id: id}, "/chksAssessmentProjectPerformance/getAssessmentProjectPerformanceById", "get", callback, null);
     };
 
-    /**
-     * 抽查列表 单元项
-     */
-    assessmentCommonHandle.getSpotCol = function () {
-        var col = {
-            field: 'spotActivityId', title: '抽查考核', formatter: function (value, row, index) {
-                var str = "";
-                if (row.spotActivityId) {
-                    if (row.spotId) {
-                        //使用弹窗查看考核
-                        str += "<button type='button' onclick='assessmentCommonHandle.findAssessmentProjectPerformanceBox(" + value + ")' style='margin-left: 5px;' data-placement='top' data-original-title='考核查看' class='btn btn-xs btn-info tooltips'  ><i class='fa fa-search fa-white'></i></button>";
-                    } else {
-                        str += "<button type='button' onclick='assessmentCommonHandle.showChkSpotAssessmentParent(" + row.id + ")' style='margin-left: 5px;' data-placement='top' data-original-title='抽查考核填写' class='btn btn-xs btn-primary tooltips'  ><i class='fa fa-arrow-right fa-white'></i></button>";
-                    }
 
-                }
-                return str;
+    //拷贝
+    assessmentCommonHandle.copyData = function (_this) {
+        var table = $("#assessmentTableList");
+        var form = $(_this).closest("form");
+        var rows = table.bootstrapTable('getSelections');
+        if (!rows || rows.length <= 0) {
+            notifyInfo("提示", "请选择要拷贝的数据!");
+        } else if (rows.length == 1) {
+            if (rows[0].examineStatus != 'finish'){
+                notifyWarning("警告", "此条考核数据没有填写!");
+                table.bootstrapTable('uncheckAll');
+                return false;
             }
-        };
-        return col
+            AlertConfirm("是否确认要拷贝", "", function () {
+                form.find("input[name='name']").val(rows[0].activityName + " " + rows[0].businessKey);
+                form.find("input[name='id']").val(rows[0].id);
+                notifySuccess("成功", "拷贝数据成功!");
+                table.bootstrapTable('uncheckAll');
+            });
+        } else {
+            notifyWarning("警告", "只能选择一行数据进行拷贝!");
+        }
     };
 
+    assessmentCommonHandle.pasteAll = function (_this) {
+        var form = $(_this).closest("form");
+        var data = formSerializeArray(form);
+        var table = $("#assessmentTableList");
+        var copyId = data.id;
+        if (!copyId){
+            notifyWarning("警告", "请先拷贝一个数据作为被粘贴的模板!");
+            return false;
+        }
+        var rows = table.bootstrapTable('getSelections');
+        if (!rows || rows.length <= 0) {
+            notifyWarning("警告", "请选择要粘贴的数据!");
+        } else if (rows.length >= 1) {
+            var idArray = [];
+            rows.forEach(function (ele, index) {
+                idArray.push(ele.id);
+            });
+            //过滤一次
+            var filtered = idArray.filter(function (element, index, array) {
+                return element == copyId;
+            });
+            //判断
+            if (filtered.length == 1) {
+                notifyWarning("警告", "需要粘贴的从数据包含了自身,这样情况是不被允许的!");
+                table.bootstrapTable('uncheckAll');
+                return false;
+            }
+            AlertConfirm("确认要粘贴", "", function () {
+                assessmentCommonHandle.ajaxServerFun({copyId:copyId,ids:idArray.join(",")},"/chksAssessmentProjectPerformance/pasteAll","post",function (message) {
+                    AlertSuccess("粘贴清空 ", message);
+                    notifySuccess("成功", "粘贴数据成功!");
+                    table.bootstrapTable('uncheckAll');
+                    form.clearAll();
+                }) ;
+            });
+        }
+    };
+
+    /**
+     * 查询
+     */
     assessmentCommonHandle.queryChksAssessmentProjectPerformance = function (_this) {
         var frm = $(_this).closest("form");
         var data = formSerializeArray(frm);
@@ -540,6 +636,10 @@
     assessmentCommonHandle.getChksBootstrapTableVoBase = function (table, query) {
         var cols = [];
         cols.push({
+            field: 'ckeckbox',
+            checkbox: true
+        });
+        cols.push({
             field: 'activityName', title: '考核节点', formatter: function (value, row, index) {
                 var s = value;
                 if (row.businessKey) {
@@ -548,6 +648,7 @@
                 return s;
             }
         });
+        cols.push({field: 'businessKey', title: '业务名称'});
         cols.push({
             field: 'examineStatus', title: '状态', formatter: function (value, row, index) {
                 if (value == 'runing') {
@@ -611,6 +712,7 @@
         });
 
         //cols.push({field: 'remarks', title: '综合评价'});
+        var toolbar = $("#assessmentItemToolbar") ;
         var method = {
             showColumns: false,
             showRefresh: false,
@@ -618,8 +720,9 @@
             onLoadSuccess: function () {
                 $(".tooltips").tooltip();
             },
-            toolbar: '#assessmentItemToolbar'
+            toolbar: toolbar.selector
         };
+        toolbar.show() ;
         table.bootstrapTable('destroy');
         TableInit(table, "${pageContext.request.contextPath}/chksAssessmentProjectPerformance/getChksBootstrapTableVo", cols, query, method);
     };

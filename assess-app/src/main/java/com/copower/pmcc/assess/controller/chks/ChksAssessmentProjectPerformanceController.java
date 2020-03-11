@@ -161,5 +161,15 @@ public class ChksAssessmentProjectPerformanceController {
         }
     }
 
+    @PostMapping(value = "/pasteAll", name = "粘贴数据")
+    public HttpResult pasteAll(Integer copyId,String ids){
+        try {
+            return HttpResult.newCorrectResult(200, chksAssessmentProjectPerformanceService.pasteAll(copyId,ids));
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e, "粘贴数据 出错");
+            return HttpResult.newErrorResult(500, e.getMessage());
+        }
+    }
+
 }
 
