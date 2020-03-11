@@ -7,6 +7,7 @@
                 <label class="col-xs-2  col-sm-2  col-md-2  col-lg-2 col-form-label">
                     附件名称<span class="symbol required"></span>
                 </label>
+                <input type="hidden" name="id" value="{id}">
                 <div class="col-xs-10  col-sm-10  col-md-10  col-lg-10">
                     <input name="name" class="form-control input-full" placeholder="附件名称" value="${itemData.name}"
                            onblur="declareApplyExtensionCumstom.targetSave(this);"/>
@@ -108,10 +109,9 @@
             if (!id) {
                 return false;
             }
-            declareApplyExtensionCumstom.saveTempData([{
-                id: id,
-                name: name
-            }], null);
+            var data = {id: id, name: name} ;
+            console.log(data) ;
+            declareApplyExtensionCumstom.saveTempData([data], null);
         }(target.find("[name='name']").val(), target.find("[name='id']").val()));
     };
 

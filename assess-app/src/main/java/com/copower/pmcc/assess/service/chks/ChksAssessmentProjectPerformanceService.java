@@ -863,9 +863,9 @@ public class ChksAssessmentProjectPerformanceService {
             boolean check = pasteData(copyObj, assessmentProjectPerformanceDetailDtoList, chksRpcAssessmentService.getAssessmentProjectPerformanceById(id));
             index++;
             if (check) {
-                stringBuilder.append("第").append(index).append("条数据粘贴失败");
+                stringBuilder.append("第").append(index).append("条数据粘贴成功 \r");
             } else {
-
+                stringBuilder.append("第").append(index).append("条数据粘贴失败 \r");
             }
         }
         return stringBuilder.toString();
@@ -875,6 +875,38 @@ public class ChksAssessmentProjectPerformanceService {
         if (copy == null || projectPerformanceDto == null) {
             return false;
         }
+        if (Objects.equal(projectPerformanceDto.getExamineStatus(), ProjectStatusEnum.FINISH.getKey())) {
+            return false;
+        }
+        List<AssessmentItemDto> assessmentItemDtoList = getAssessmentItemTemplate(projectPerformanceDto.getBoxId(), projectPerformanceDto.getActivityId(), projectPerformanceDto.getAssessmentKey());
+        if (CollectionUtils.isEmpty(assessmentItemDtoList)) {
+            return false;
+        }
+        if (copyList.size() != assessmentItemDtoList.size()) {
+            return false;
+        }
+        List<AssessmentProjectPerformanceDetailDto> detailByPerformanceIdList = chksRpcAssessmentService.getAssessmentProjectPerformanceDetailByPerformanceIdList(projectPerformanceDto.getId());
+        if (CollectionUtils.isNotEmpty(detailByPerformanceIdList)){
+            List<Integer> integerList = detailByPerformanceIdList.stream().map(oo -> oo.getId()).collect(Collectors.toList());
+            chksRpcAssessmentService.deleteAssessmentProjectPerformanceDetailByIds(integerList);
+        }
+        List<AssessmentProjectPerformanceDetailDto> detailDtoList = new ArrayList<>(copyList.size());
+        for (int i = 0; i < copyList.size(); i++) {
+            AssessmentItemDto assessmentItemDto = assessmentItemDtoList.get(i);
+            AssessmentProjectPerformanceDetailDto assessmentProjectPerformanceDetailDto = copyList.get(i);
+            AssessmentProjectPerformanceDetailDto detailDto = new AssessmentProjectPerformanceDetailDto();
+            BeanUtils.copyProperties(assessmentProjectPerformanceDetailDto, detailDto);
+            detailDto.setId(null);
+            detailDto.setPerformanceId(projectPerformanceDto.getId());
+            detailDto.setContentId(assessmentItemDto.getId());
+            detailDto.setCreator(processControllerComponent.getThisUser());
+            Integer integer = chksRpcAssessmentService.saveAssessmentProjectPerformanceDetailDto(detailDto);
+            detailDto.setId(integer);
+            detailDtoList.add(detailDto);
+        }
+        projectPerformanceDto.setRemarks(copy.getRemarks());
+        projectPerformanceDto.setExaminePeople(processControllerComponent.getThisUser());
+        saveAssessmentServer(projectPerformanceDto, detailDtoList, projectPerformanceDto.getPlanDetailsId());
         return true;
     }
 }
