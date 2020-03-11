@@ -273,6 +273,7 @@
     unitCommon.mapMarker = function (readonly) {
         examineCommon.getBasicApplyBatchDetailList({
             tableId: unitCommon.getUnitId(),
+            tableName: 'tb_basic_unit',
             applyBatchId: unitCommon.unitForm.find("input[name='applyBatchId']").val()
         }, function (itemA) {
             if (itemA.length == 0) {
