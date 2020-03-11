@@ -714,10 +714,10 @@
 
 
     houseCommon.orientationFun = function (readonly) {
-        var select = {tableId: unitInfo.tableId, type: "unit"};
+        var select = {tableId: houseCommon.getUnitId(), type: "unit"};
         examineCommon.getApplyBatchEstateTaggingsByTableId(select, function (unitMarkerArray) {
             if (unitMarkerArray.length == 0) {
-                Alert("请先标注单元");
+                notifyInfo("请先标注单元");
                 return false;
             }
             var unitMarker = unitMarkerArray[0];
