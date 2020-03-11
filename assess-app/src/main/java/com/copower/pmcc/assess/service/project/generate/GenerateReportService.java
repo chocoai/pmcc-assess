@@ -38,9 +38,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -78,8 +76,6 @@ public class GenerateReportService {
     private GenerateReportInfoService generateReportInfoService;
     @Autowired
     private GenerateCommonMethod generateCommonMethod;
-    @Autowired
-    private TaskExecutor executor;
     @Autowired
     private BaseService baseService;
     @Autowired
@@ -302,17 +298,13 @@ public class GenerateReportService {
         }
         if (CollectionUtils.isNotEmpty(compareHashSet)) {
             count++;
-            final int factor = 65;
-            List<List<String>> listList = splitsList(new ArrayList<>(compareHashSet), factor);
-            for (int i = 0; i < listList.size(); i++) {
-                if (CollectionUtils.isEmpty(listList.get(i))) {
+            Iterator<String> iterator = compareHashSet.iterator();
+            while (iterator.hasNext()){
+                String next = iterator.next();
+                if (StringUtils.isBlank(next)){
                     continue;
                 }
-                Iterator<String> stringIterator = listList.get(i).iterator();
-                //调试把这段开启,如果  方法发生了线程安全问题 那么也请把上面的注释,下面的开启
-                while (stringIterator.hasNext()) {
-                    handleReport(stringIterator.next(), textMap, bookmarkMap, fileMap, generateBaseDataService, generateReportInfo, reportType);
-                }
+                handleReport(next, textMap, bookmarkMap, fileMap, generateBaseDataService, generateReportInfo, reportType);
             }
             replaceWord(tempDir, textMap, bookmarkMap, fileMap);
             if (count >= max) {
@@ -1274,41 +1266,5 @@ public class GenerateReportService {
         baseAttachmentService.addAttachment(sysAttachmentDto);
     }
 
-    /**
-     * 按指定大小对列表分组
-     *
-     * @param list
-     * @param splitSize
-     * @return
-     */
-    private List<List<String>> splitsList(List<String> list, int splitSize) {
-        if (null == list) {
-            return null;
-        }
-        int listSize = list.size();
-        List<List<String>> newList = new ArrayList<List<String>>();
-        if (listSize < splitSize) {
-            newList.add(list);
-            return newList;
-        }
-        int addLength = splitSize;
-        int times = listSize / splitSize;
-        if (listSize % splitSize != 0) {
-            times += 1;
-        }
-        int start = 0;
-        int end = 0;
-        int last = times - 1;
-        for (int i = 0; i < times; i++) {
-            start = i * splitSize;
-            if (i < last) {
-                end = start + addLength;
-            } else {
-                end = listSize;
-            }
-            newList.add(list.subList(start, end));
-        }
-        return newList;
-    }
 
 }
