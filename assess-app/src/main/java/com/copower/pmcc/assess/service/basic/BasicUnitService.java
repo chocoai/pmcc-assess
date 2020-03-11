@@ -295,7 +295,7 @@ public class BasicUnitService extends BasicEntityAbstract {
         if (sourceId == null) return null;
         BasicUnit sourceBasicUnit = getBasicUnitById(sourceId);
         if (sourceBasicUnit == null) return null;
-        BasicUnit targetBasicUnit = getBasicUnitById(targetId);
+        BasicUnit targetBasicUnit = (targetId == null || targetId <= 0) ? null :getBasicUnitById(targetId);
         if (CollectionUtils.isEmpty(ignoreList)) ignoreList = Lists.newArrayList();
         ignoreList.addAll(Lists.newArrayList(BaseConstant.ASSESS_IGNORE_ARRAY));
         if (targetBasicUnit == null) {

@@ -356,6 +356,19 @@
                                             <div class="col-md-12">
                                                 <div class="form-inline x-valid">
                                                     <label class="col-sm-1  col-form-label">
+                                                        是否有转让限制
+                                                    </label>
+                                                    <div class="col-sm-3">
+                                                        <label class="form-control input-full" id="bisLimit">
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row form-group showLimit">
+                                            <div class="col-md-12">
+                                                <div class="form-inline x-valid">
+                                                    <label class="col-sm-1  col-form-label">
                                                         转让限制
                                                     </label>
                                                     <div class="col-sm-11">
@@ -384,7 +397,7 @@
 <script type="application/javascript">
     $(function () {
         loadAssetOtherRightList();
-
+        showLimit();
         FileUtils.getFileShows({
             target: "checkOriginalFile",
             formData: {
@@ -521,6 +534,16 @@
             $("#showUploadFile").show();
         } else {
             $("#showUploadFile").hide();
+        }
+    }
+
+    function showLimit() {
+        if("${surveyAssetInventory.transferLimit}"){
+            $("#bisLimit").text("是");
+            $(".showLimit").show();
+        }else{
+            $("#bisLimit").text("否");
+            $(".showLimit").hide();
         }
     }
 

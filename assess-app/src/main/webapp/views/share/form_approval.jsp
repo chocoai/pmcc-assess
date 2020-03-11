@@ -67,19 +67,11 @@
                                         <select class='form-control  input-full search-select select2'
                                                 placeholder='下级审批人' id='nextApproval' name='nextApproval' required>
                                             <option value="">请选择</option>
-                                            <c:forEach items="${nextUsers}" var="item">
-                                                <option value="${item.userAccount}">${item.userName}</option>
-                                            </c:forEach>
                                         </select>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <script type="application/javascript">
-                            $(function () {
-                                $("#nextApproval").select2();
-                            })
-                        </script>
                     </c:if>
                     <c:if test="${approvalReview==1}">
                         <c:forEach var="item" items="${boxReviewTemplate}">
