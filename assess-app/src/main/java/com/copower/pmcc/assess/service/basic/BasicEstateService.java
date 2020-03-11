@@ -444,7 +444,7 @@ public class BasicEstateService extends BasicEntityAbstract {
         if (sourceId == null) return null;
         BasicEstate sourceBasicEstate = getBasicEstateById(sourceId);
         if (sourceBasicEstate == null) return null;
-        BasicEstate targetBasicEstate = getBasicEstateById(targetId);
+        BasicEstate targetBasicEstate = (targetId == null || targetId <= 0) ? null :getBasicEstateById(targetId);
         if (CollectionUtils.isEmpty(ignoreList)) ignoreList = Lists.newArrayList();
         ignoreList.addAll(Lists.newArrayList(BaseConstant.ASSESS_IGNORE_ARRAY));
         if (targetBasicEstate == null) {

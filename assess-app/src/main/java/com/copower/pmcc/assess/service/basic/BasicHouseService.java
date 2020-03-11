@@ -478,7 +478,7 @@ public class BasicHouseService extends BasicEntityAbstract {
                 BasicHouseTrading basicTrading = JSONObject.parseObject(jsonContent, BasicHouseTrading.class);
                 if (basicTrading != null) {
                     BasicHouseTrading houseTradingOld = basicHouseTradingService.getTradingByHouseId(basicHouse.getId());
-                    if(houseTradingOld!=null){
+                    if (houseTradingOld != null) {
                         basicTrading.setId(houseTradingOld.getId());
                         basicTrading.setHouseId(houseId);
                         basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicTrading, true);
@@ -521,7 +521,7 @@ public class BasicHouseService extends BasicEntityAbstract {
     public Object copyBasicEntityIgnore(Integer sourceId, Integer targetId, Boolean containChild, List<String> ignoreList) throws Exception {
         BasicHouse sourceBasicHouse = getBasicHouseById(sourceId);
         if (sourceBasicHouse == null) return null;
-        BasicHouse targetBasicHouse = getBasicHouseById(targetId);
+        BasicHouse targetBasicHouse = (targetId == null || targetId <= 0) ? null : getBasicHouseById(targetId);
         if (CollectionUtils.isEmpty(ignoreList)) ignoreList = Lists.newArrayList();
         ignoreList.addAll(Lists.newArrayList(BaseConstant.ASSESS_IGNORE_ARRAY));
         if (targetBasicHouse == null) {
@@ -534,7 +534,7 @@ public class BasicHouseService extends BasicEntityAbstract {
         this.saveAndUpdate(targetBasicHouse, true);
         BasicHouseTrading sourceBasicHouseTrading = basicHouseTradingService.getTradingByHouseId(sourceId);
         if (sourceBasicHouseTrading != null) {
-            BasicHouseTrading targetBasicHouseTrading = basicHouseTradingService.getTradingByHouseId(targetId);
+            BasicHouseTrading targetBasicHouseTrading =  basicHouseTradingService.getTradingByHouseId(targetBasicHouse.getId());
             if (targetBasicHouseTrading == null) {
                 targetBasicHouseTrading = new BasicHouseTrading();
                 BeanUtils.copyProperties(sourceBasicHouseTrading, targetBasicHouseTrading);
