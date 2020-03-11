@@ -359,7 +359,7 @@ public class BasicBuildingService extends BasicEntityAbstract {
         if (sourceId == null) return null;
         BasicBuilding sourceBasicBuilding = getBasicBuildingById(sourceId);
         if (sourceBasicBuilding == null) return null;
-        BasicBuilding targetBasicBuilding = getBasicBuildingById(targetId);
+        BasicBuilding targetBasicBuilding =(targetId == null || targetId <= 0) ? null : getBasicBuildingById(targetId);
         if (CollectionUtils.isEmpty(ignoreList)) ignoreList = Lists.newArrayList();
         ignoreList.addAll(Lists.newArrayList(BaseConstant.ASSESS_IGNORE_ARRAY));
         if (targetBasicBuilding == null) {

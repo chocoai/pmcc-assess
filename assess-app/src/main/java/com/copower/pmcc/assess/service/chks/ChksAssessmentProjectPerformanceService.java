@@ -407,6 +407,35 @@ public class ChksAssessmentProjectPerformanceService {
         }
     }
 
+    public List<KeyValueDto> getExaminePeopleList(String processInsId, Integer boxId) {
+        List<String> accountList = new ArrayList<>();
+        AssessmentProjectPerformanceQuery query = new AssessmentProjectPerformanceQuery(boxId);
+        query.setProcessInsId(processInsId);
+        List<AssessmentProjectPerformanceDto> assessmentProjectPerformanceDtoList = getAssessmentProjectPerformanceDtoList(query);
+        if (CollectionUtils.isNotEmpty(assessmentProjectPerformanceDtoList)) {
+            Iterator<AssessmentProjectPerformanceDto> iterator = assessmentProjectPerformanceDtoList.iterator();
+            while (iterator.hasNext()) {
+                AssessmentProjectPerformanceDto next = iterator.next();
+                String examinePeople = next.getExaminePeople();
+                if (StringUtils.isBlank(examinePeople)) {
+                    continue;
+                }
+                if (!accountList.contains(examinePeople)) {
+                    accountList.add(examinePeople);
+                }
+            }
+        }
+        List<KeyValueDto> keyValueDtoList = new ArrayList<>();
+        if (CollectionUtils.isNotEmpty(accountList)) {
+            Iterator<String> iterator = accountList.iterator();
+            while (iterator.hasNext()) {
+                String s = iterator.next();
+                keyValueDtoList.add(new KeyValueDto(s, publicService.getUserNameByAccount(s)));
+            }
+        }
+        return keyValueDtoList;
+    }
+
 
     /**
      * 获取考核数据

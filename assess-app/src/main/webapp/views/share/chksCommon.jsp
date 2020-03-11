@@ -215,13 +215,35 @@
                         被考核人
                     </label>
                     <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                        <input type="text" placeholder="被考核人" name="byExaminePeople" class="form-control input-full">
+                        <div class="input-group">
+                            <input type="hidden" name="byExaminePeople">
+                            <input type="text" class="form-control" readonly="readonly" name="byExaminePeopleName"
+                                   onclick="assessmentCommonHandle.selectUserAccountMember(this);">
+                            <div class="input-group-prepend">
+                                <button class="btn btn-warning btn-sm "
+                                        style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                        type="button" onclick="$(this).closest('.input-group').find('input').val('');">
+                                    清空
+                                </button>
+                            </div>
+                            <div class="input-group-prepend">
+                                <button class="btn btn-primary btn-sm "
+                                        style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                        type="button" onclick="assessmentCommonHandle.selectUserAccountMember(this);">选择
+                                </button>
+                            </div>
+                        </div>
                     </div>
                     <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
                         考核人
                     </label>
                     <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                        <input type="text" placeholder="考核人" name="examinePeople" class="form-control input-full">
+                        <select name="examinePeople" class="form-control input-full search-select select2">
+                            <option>请选择</option>
+                            <c:forEach items="${chksExaminePeopleList}" var="item">
+                                <option value="${item.key}">${item.value}</option>
+                            </c:forEach>
+                        </select>
                     </div>
                     <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
                         <div class="form-check" style="justify-content:left">
@@ -236,15 +258,9 @@
                         </div>
                     </div>
                     <div class="col-xs-1  col-sm-1  col-md-1  col-lg-1">
-                        <div class="input-group">
-                            <div class="input-group-prepend ">
-                                <button class="btn btn-info btn-sm"
-                                        style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                        type="button"
-                                        onclick="assessmentCommonHandle.queryChksAssessmentProjectPerformance(this);">
-                                    查询<i class="fa fa-search"></i>
-                                </button>
-                            </div>
+                        <div class="btn-group" role="group">
+                            <button type="button" onclick="assessmentCommonHandle.queryChksAssessmentProjectPerformance(this);" class="btn btn-info btn-sm">查询<i class="fa fa-search"></i></button>
+                            <button type="button" class="btn btn-primary btn-sm" onclick="$(this).closest('form').clearAll()">清空</button>
                         </div>
                     </div>
                 </div>
@@ -381,6 +397,23 @@
         }, null);
     };
 
+    assessmentCommonHandle.selectUserAccountMember = function (this_) {
+        erpEmployee.select({
+            currOrgId: '${baseViewDto.thisUser.companyId}',
+            onSelected: function (data) {
+                var target = $(this_).closest('.input-group');
+                if (target.find("input[name='byExaminePeople']").size() != 0) {
+                    target.find("input[name='byExaminePeople']").val(data.account);
+                    target.find("input[name='byExaminePeopleName']").val(data.name);
+                }
+                if (target.find("input[name='examinePeople']").size() != 0) {
+                    target.find("input[name='examinePeople']").val(data.account);
+                    target.find("input[name='examinePeopleName']").val(data.name);
+                }
+            }
+        });
+    };
+
     /*
      考核收集数据
      */
@@ -491,14 +524,14 @@
             }
         }
         var keys = Object.keys(data);
-        var newObj = {} ;
+        var newObj = {};
         $.each(keys, function (i, key) {
-            if (data[key]){
-                newObj[key] = data[key] ;
+            if (data[key]) {
+                newObj[key] = data[key];
             }
         });
-        console.log(newObj) ;
-        assessmentCommonHandle.getChksBootstrapTableVoBase($("#assessmentTableList"),newObj) ;
+        console.log(newObj);
+        assessmentCommonHandle.getChksBootstrapTableVoBase($("#assessmentTableList"), newObj);
     };
 
     /*
