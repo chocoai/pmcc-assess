@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeInfoDao;
 import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecord;
+import com.copower.pmcc.assess.dal.cases.dao.CaseNetInfoRecordDao;
+import com.copower.pmcc.assess.dal.cases.entity.CaseNetInfoRecord;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.NetInfoRecordBackupService;
 import com.copower.pmcc.assess.service.NetInfoRecordService;
@@ -11,6 +13,7 @@ import com.copower.pmcc.assess.service.basic.BasicApplyBatchService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,6 +36,8 @@ import java.util.List;
 public class NetInfoRecordController {
     @Autowired
     private NetInfoRecordDao netInfoRecordDao;
+    @Autowired
+    private CaseNetInfoRecordDao caseNetInfoRecordDao;
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
@@ -97,7 +102,7 @@ public class NetInfoRecordController {
         NetInfoRecord netInfoRecord = JSON.parseObject(formData, NetInfoRecord.class);
         try {
             if (netInfoRecord.getId() != null && !netInfoRecord.getId().equals(0)) {
-                netInfoRecordDao.updateInfo(netInfoRecord);
+                netInfoRecordService.updateInfo(netInfoRecord);
             }
             return HttpResult.newCorrectResult("保存 success!");
         } catch (Exception e) {
@@ -129,7 +134,8 @@ public class NetInfoRecordController {
             NetInfoRecord record = netInfoRecordDao.getInfoById(id);
             record.setCloseReason(closeReason);
             record.setBisDelete(true);
-            netInfoRecordDao.updateInfo(record);
+            netInfoRecordService.updateInfo(record);
+
             return HttpResult.newCorrectResult("关闭成功");
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());

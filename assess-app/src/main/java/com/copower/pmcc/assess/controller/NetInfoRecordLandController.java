@@ -10,6 +10,7 @@ import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordLand;
 import com.copower.pmcc.assess.dto.output.net.NetInfoRecordLandVo;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.NetInfoRecordLandService;
+import com.copower.pmcc.assess.service.NetInfoRecordService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
@@ -48,6 +49,8 @@ public class NetInfoRecordLandController {
     private BaseAttachmentService baseAttachmentService;
     @Autowired
     private BaseService baseService;
+    @Autowired
+    private NetInfoRecordService netInfoRecordService;
 
     @RequestMapping(value = "/index", name = "拍卖详细信息视图")
     public ModelAndView index() {
@@ -88,7 +91,7 @@ public class NetInfoRecordLandController {
                 record.setBelongType(netInfoRecordLand.getType());
                 if(record.getStatus()==1||record.getStatus()==2)
                 record.setStatus(2);
-                netInfoRecordDao.updateInfo(record);
+                netInfoRecordService.updateInfo(record);
             }
             return HttpResult.newCorrectResult(netInfoRecordLandService.getNetInfoRecordLandVo(landData, attachmentDtos));
         } catch (Exception e) {

@@ -61,9 +61,16 @@ public enum BaseReportFieldMdIncomeEnum implements Serializable {
     OtherIncome("收益法其它收入"),
     ReplacementCost("收益法重置成本"),
     GrossIncome("收益法年有效毛收入"),
+    GrossIncomeValue("收益法年有效毛收入金额"),
     MonthRentalIncome("收益法确定客观月租金"),
     AnnualOperatingCost("收益法年运营费"),
     AnnualNetIncome("收益法年净收益"),
+
+    MaintenanceCostFormula("收益法年维修费公式"),
+    ManagementCostFormula("收益法年管理费公式"),
+    InsurancePremiumCostFormula("收益法年保险费公式"),
+    IncomeAdditionalRatioCostFormula("收益法租赁税费公式"),
+    IncomeCalculateFormulaValue("收益法测算公式带值"),
 
     IncomeOpportunityCostReamrk("收益法机会成本说明"),
     IncomeRiskCompensation("收益法投资风险补偿"),

@@ -81,6 +81,8 @@ public class NetInfoAssignTaskService {
     private BaseAttachmentService baseAttachmentService;
     @Autowired
     private PublicService publicService;
+    @Autowired
+    private NetInfoRecordService netInfoRecordService;
 
 
     private final Logger log = LoggerFactory.getLogger(getClass());
@@ -114,7 +116,7 @@ public class NetInfoAssignTaskService {
             if (CollectionUtils.isNotEmpty(infoRecords)) {
                 for (NetInfoRecord netInfo : infoRecords) {
                     netInfo.setStatus(3);
-                    netInfoRecordDao.updateInfo(netInfo);
+                    netInfoRecordService.updateInfo(netInfo);
                 }
             }
 

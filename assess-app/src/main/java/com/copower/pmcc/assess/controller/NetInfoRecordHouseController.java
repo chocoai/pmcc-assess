@@ -9,6 +9,7 @@ import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecord;
 import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordHouse;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.NetInfoRecordHouseService;
+import com.copower.pmcc.assess.service.NetInfoRecordService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
@@ -39,6 +40,8 @@ public class NetInfoRecordHouseController {
     private NetInfoRecordHouseService netInfoRecordHouseService;
     @Autowired
     private NetInfoRecordDao netInfoRecordDao;
+    @Autowired
+    private NetInfoRecordService netInfoRecordService;
     @Autowired
     private BaseDataDicService baseDataDicService;
     @Autowired
@@ -80,7 +83,7 @@ public class NetInfoRecordHouseController {
                 record.setBelongType(netInfoRecordHouse.getType());
                 if(record.getStatus()==1||record.getStatus()==2)
                 record.setStatus(2);
-                netInfoRecordDao.updateInfo(record);
+                netInfoRecordService.updateInfo(record);
             }
             return HttpResult.newCorrectResult(netInfoRecordHouseService.getNetInfoRecordHouseVo(houseData, attachmentDtos));
         } catch (Exception e) {

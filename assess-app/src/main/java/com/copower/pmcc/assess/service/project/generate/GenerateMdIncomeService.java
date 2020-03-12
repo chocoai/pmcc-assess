@@ -7,6 +7,7 @@ import com.copower.pmcc.assess.common.ArithmeticUtils;
 import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.enums.report.BaseReportFieldMdIncomeEnum;
 import com.copower.pmcc.assess.common.enums.DeclareTypeEnum;
+import com.copower.pmcc.assess.common.enums.report.BaseReportFieldMdIncomeSelfEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdIncomeLeaseCostDao;
@@ -202,6 +203,31 @@ public class GenerateMdIncomeService implements Serializable {
                 if (Objects.equal(name, BaseReportFieldMdIncomeEnum.GrossIncome.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCostOtherCommon(BaseReportFieldMdIncomeEnum.GrossIncome));
                 }
+
+                //收益法年维修费公式
+                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.MaintenanceCostFormula.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getSimpleFormula(BaseReportFieldMdIncomeEnum.ReplacementCost,BaseReportFieldMdIncomeEnum.MaintenanceCostRatio));
+                }
+                //收益法年管理费公式
+                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.ManagementCostFormula.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getSimpleFormula(BaseReportFieldMdIncomeEnum.GrossIncomeValue,BaseReportFieldMdIncomeEnum.ManagementCostTax));
+                }
+                //收益法年保险费公式
+                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.InsurancePremiumCostFormula.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getSimpleFormula(BaseReportFieldMdIncomeEnum.ReplacementCost,BaseReportFieldMdIncomeEnum.InsurancePremiumTax));
+                }
+                //收益法租赁税费公式
+                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeAdditionalRatioCostFormula.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getSimpleFormula(BaseReportFieldMdIncomeEnum.GrossIncomeValue,BaseReportFieldMdIncomeEnum.IncomeAdditionalRatio));
+                }
+
+                //收益法测算公式带值
+                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeCalculateFormulaValue.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomeCalculateFormulaValue());
+                }
+
+
+
                 //重置成本/重置价格
                 if (Objects.equal(name, BaseReportFieldMdIncomeEnum.ReplacementCost.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCostOtherCommon(BaseReportFieldMdIncomeEnum.ReplacementCost));
@@ -366,15 +392,15 @@ public class GenerateMdIncomeService implements Serializable {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomeYears());
                 }
                 //收益法中的比较法
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeGetMdCompare.getName())) {
-                    String path = getIncomeGetMdCompare();
-                    File file = new File(path);
-                    if (file.isFile()) {
-                        if (StringUtils.isNotBlank(path)) {
-                            generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, path);
-                        }
-                    }
-                }
+//                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeGetMdCompare.getName())) {
+//                    String path = getIncomeGetMdCompare();
+//                    File file = new File(path);
+//                    if (file.isFile()) {
+//                        if (StringUtils.isNotBlank(path)) {
+//                            generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, path);
+//                        }
+//                    }
+//                }
                 //收益法区域城市
                 if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeRegionalCities.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomeRegionalCities());
@@ -448,7 +474,6 @@ public class GenerateMdIncomeService implements Serializable {
         }
         if (!fileMap.isEmpty()) {
             AsposeUtils.replaceTextToFile(localPath, fileMap);
-            AsposeUtils.replaceBookmarkToFile(localPath, fileMap);
         }
         return localPath;
     }
@@ -664,13 +689,15 @@ public class GenerateMdIncomeService implements Serializable {
                 stringBuilder.append(dateRangeBuilder.toString());
 
                 StringBuilder priceExplainBuilder = new StringBuilder(8);
+                String singleKey = new String();
                 if (vo.getMcId() != null) {
                     String path = getMdComparePath(vo.getMcId());
                     if (StringUtils.isNotBlank(path)) {
-                        String key = RandomStringUtils.randomNumeric(12);
+                        String key = String.format("%s%s","compareMethod",RandomStringUtils.randomNumeric(12));
                         priceExplainBuilder.append("调用比较法测算");
                         priceExplainBuilder.append(String.join("",StringUtils.repeat(ControlChar.LINE_BREAK, 1)));
                         priceExplainBuilder.append(key);
+                        singleKey = key;
                         fileMap.put(key,path) ;
                     }
                 } else {//没有调用市场比较法则说出收入来源说明
@@ -681,7 +708,12 @@ public class GenerateMdIncomeService implements Serializable {
                     priceExplainBuilder.append(vo.getRentalIncome().toString()).append("元/㎡月");
                 }
                 stringBuilder.append(priceExplainBuilder.toString());
-                linkedList.add(stringBuilder.toString());
+
+                if(leaseVoList.size()>1){
+                    linkedList.add(stringBuilder.toString());
+                }else {
+                    linkedList.add(singleKey);
+                }
             }
         }
         if (CollectionUtils.isNotEmpty(linkedList)) {
@@ -905,7 +937,7 @@ public class GenerateMdIncomeService implements Serializable {
                     break;
                 case IncomeDepositCost:
                     if (mdIncomeLeaseVo.getDeposit() != null && mdIncomeLeaseVo.getDepositRate() != null) {
-                        value = String.join("", mdIncomeLeaseVo.getDeposit().toString(), " * ", mdIncomeLeaseVo.getDepositRate().multiply(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_DOWN).toString(), "%", " = ", mdIncomeLeaseVo.getDeposit().multiply(mdIncomeLeaseVo.getDepositRate()).setScale(2, BigDecimal.ROUND_UP).toString());
+                        value = String.join("", mdIncomeLeaseVo.getDeposit().toString(), " * ", mdIncomeLeaseVo.getDepositRate().multiply(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_HALF_UP).toString(), "%", " = ", mdIncomeLeaseVo.getDeposit().multiply(mdIncomeLeaseVo.getDepositRate()).setScale(2, BigDecimal.ROUND_UP).toString(),"元/㎡");
                     }
                     break;
                 case Rentals:
@@ -980,6 +1012,12 @@ public class GenerateMdIncomeService implements Serializable {
                         cost = mdIncomeLeaseCostVo.getReplacementValue();
                     }
                     break;
+                case GrossIncomeValue:
+                    mdIncomeDateSection = mdIncomeDateSectionService.getDateSectionById(mdIncomeLeaseCostVo.getSectionId());
+                    if (mdIncomeDateSection.getIncomeTotal() != null) {
+                        cost = mdIncomeDateSection.getIncomeTotal();
+                    }
+                    break;
                 case GrossIncome: {
                     mdIncomeDateSection = mdIncomeDateSectionService.getDateSectionById(mdIncomeLeaseCostVo.getSectionId());
                     if (mdIncomeDateSection != null) {
@@ -990,10 +1028,10 @@ public class GenerateMdIncomeService implements Serializable {
                             stringBuilder.append(" * ");
                             stringBuilder.append(mdIncomeLeaseVo.getMonthNumber().toString());
                             stringBuilder.append(" * ");
-                            stringBuilder.append(mdIncomeLeaseVo.getRentals().multiply(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_DOWN).toString()).append("%");
+                            stringBuilder.append(mdIncomeLeaseVo.getRentals().multiply(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_HALF_UP).toString()).append("%");
                             stringBuilder.append(" * ");
                             if (NumberUtils.isNumber(mdIncomeLeaseVo.getAdditionalCapture())) {
-                                stringBuilder.append(new BigDecimal(mdIncomeLeaseVo.getAdditionalCapture()).multiply(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_DOWN)).append("%");
+                                stringBuilder.append(new BigDecimal(mdIncomeLeaseVo.getAdditionalCapture()).multiply(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_HALF_UP)).append("%");
                             } else {
                                 stringBuilder.append("0");
                             }
@@ -1001,6 +1039,7 @@ public class GenerateMdIncomeService implements Serializable {
                             stringBuilder.append(mdIncomeLeaseVo.getOtherIncome().toString());
                             stringBuilder.append(" = ");
                             stringBuilder.append(mdIncomeDateSection.getIncomeTotal());
+                            stringBuilder.append("元/㎡");
                             value = stringBuilder.toString();
                         }
                     }
@@ -1012,41 +1051,42 @@ public class GenerateMdIncomeService implements Serializable {
                     StringBuilder stringBuilder = new StringBuilder(8);
                     //年维修费
                     if (mdIncomeLeaseCostVo.getReplacementValue() != null && mdIncomeLeaseCostVo.getMaintenanceCostRatio() != null) {
-                        stringBuilder.append(mdIncomeLeaseCostVo.getReplacementValue().multiply(mdIncomeLeaseCostVo.getMaintenanceCostRatio()).setScale(2, BigDecimal.ROUND_DOWN).toString());
+                        stringBuilder.append(mdIncomeLeaseCostVo.getReplacementValue().multiply(mdIncomeLeaseCostVo.getMaintenanceCostRatio()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
                     } else {
                         stringBuilder.append("0");
                     }
                     stringBuilder.append(" + ");
                     //年管理费
                     if (mdIncomeDateSection.getIncomeTotal() != null && mdIncomeLeaseCostVo.getManagementCostRatio() != null) {
-                        stringBuilder.append(mdIncomeDateSection.getIncomeTotal().multiply(mdIncomeLeaseCostVo.getManagementCostRatio()).setScale(2, BigDecimal.ROUND_DOWN).toString());
+                        stringBuilder.append(mdIncomeDateSection.getIncomeTotal().multiply(mdIncomeLeaseCostVo.getManagementCostRatio()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
                     } else {
                         stringBuilder.append("0");
                     }
                     stringBuilder.append(" + ");
                     //年保险费
                     if (mdIncomeLeaseCostVo.getReplacementValue() != null && mdIncomeLeaseCostVo.getInsurancePremiumRatio() != null) {
-                        stringBuilder.append(mdIncomeLeaseCostVo.getReplacementValue().multiply(mdIncomeLeaseCostVo.getInsurancePremiumRatio()).setScale(2, BigDecimal.ROUND_DOWN).toString());
+                        stringBuilder.append(mdIncomeLeaseCostVo.getReplacementValue().multiply(mdIncomeLeaseCostVo.getInsurancePremiumRatio()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
                     } else {
                         stringBuilder.append("0");
                     }
                     stringBuilder.append(" + ");
                     //租赁税费
                     if (mdIncomeDateSection.getIncomeTotal() != null && mdIncomeLeaseCostVo.getAdditionalRatio() != null) {
-                        stringBuilder.append(mdIncomeDateSection.getIncomeTotal().multiply(mdIncomeLeaseCostVo.getAdditionalRatio()).setScale(2, BigDecimal.ROUND_DOWN).toString());
+                        stringBuilder.append(mdIncomeDateSection.getIncomeTotal().multiply(mdIncomeLeaseCostVo.getAdditionalRatio()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
                     } else {
                         stringBuilder.append("0");
                     }
-                    stringBuilder.append(" + ");
+                    //stringBuilder.append(" + ");
                     //土地使用税
-                    stringBuilder.append(mdIncomeLeaseCostVo.getLandUseTax());
+                    //stringBuilder.append(mdIncomeLeaseCostVo.getLandUseTax());
                     //其它相关费用
-                    stringBuilder.append(" + ");
-                    if (mdIncomeLeaseVo.getRentalIncome() != null && mdIncomeLeaseVo.getMonthNumber() != null && mdIncomeLeaseCostVo.getTransactionTaxeFeeRatio() != null) {
-                        stringBuilder.append(mdIncomeLeaseVo.getRentalIncome().multiply(new BigDecimal(mdIncomeLeaseVo.getMonthNumber())).multiply(mdIncomeLeaseCostVo.getTransactionTaxeFeeRatio()).setScale(2, BigDecimal.ROUND_DOWN).toString());
-                    }
+//                    stringBuilder.append(" + ");
+//                    if (mdIncomeLeaseVo.getRentalIncome() != null && mdIncomeLeaseVo.getMonthNumber() != null && mdIncomeLeaseCostVo.getTransactionTaxeFeeRatio() != null) {
+//                        stringBuilder.append(mdIncomeLeaseVo.getRentalIncome().multiply(new BigDecimal(mdIncomeLeaseVo.getMonthNumber())).multiply(mdIncomeLeaseCostVo.getTransactionTaxeFeeRatio()).setScale(2, BigDecimal.ROUND_DOWN).toString());
+//                    }
                     stringBuilder.append(" = ");
                     stringBuilder.append(mdIncomeDateSection.getCostTotal().toString());
+                    stringBuilder.append("元/㎡");
                     value = stringBuilder.toString();
                 }
                 break;
@@ -1065,6 +1105,7 @@ public class GenerateMdIncomeService implements Serializable {
                     stringBuilder.append(" - ");
                     stringBuilder.append(mdIncomeDateSection.getCostTotal());
                     stringBuilder.append(" = ").append(mdIncomeDateSection.getNetProfit());
+                    stringBuilder.append("元/㎡");
                     value = stringBuilder.toString();
                 }
                 break;
@@ -1084,6 +1125,10 @@ public class GenerateMdIncomeService implements Serializable {
                                 value += mdIncomeDateSection.getRentalGrowthRateExplainSupplement();
                             else
                                 value += "，" + mdIncomeDateSection.getRentalGrowthRateExplainSupplement();
+                        }
+                        if(mdIncomeDateSection.getRentalGrowthRate()!=null){
+                            String s = ArithmeticUtils.getPercentileSystem(mdIncomeDateSection.getRentalGrowthRate(), 4, BigDecimal.ROUND_HALF_UP);
+                            value += String.format("本次结合估价对象的实际情况，取收益年递增率为%s。",s );
                         }
                         if (atomicInteger.get() != 0){
                             value = String.join("",StringUtils.repeat(" ",2),value);
@@ -1122,6 +1167,28 @@ public class GenerateMdIncomeService implements Serializable {
         }
         String value = this.toEachDesc(map, "", "", separator,repeat) ;
         return value;
+    }
+
+
+    /**
+     * 获取简单计算公式
+     *
+     * @param incomeEnum
+     * @return
+     */
+    private synchronized String getSimpleFormula(BaseReportFieldMdIncomeEnum incomeEnum,BaseReportFieldMdIncomeEnum incomeEnumTax) throws Exception{
+        String moneyStr = getMdIncomeLeaseCostOtherCommon(incomeEnum);
+        String taxStr = getMdIncomeLeaseCostCommonTax(incomeEnumTax);
+        BigDecimal money = new BigDecimal("0");
+        BigDecimal tax = new BigDecimal("0");
+        if(StringUtils.isNotEmpty(moneyStr)){
+            money = new BigDecimal(moneyStr);
+        }
+        if(StringUtils.isNotEmpty(taxStr)){
+            tax = new BigDecimal(ArithmeticUtils.parseFormatString(taxStr));
+        }
+        String value = money.multiply(tax).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+        return String.format("%s * %s = %s元/㎡",money,ArithmeticUtils.getPercentileSystem(tax, 4, BigDecimal.ROUND_HALF_UP),value);
     }
 
 
@@ -1508,6 +1575,69 @@ public class GenerateMdIncomeService implements Serializable {
         }
         return errorStr;
     }
+
+    /**
+     * 收益法测算公式带值
+     *
+     * @return
+     * @throws Exception
+     */
+    public String getIncomeCalculateFormulaValue() throws Exception {
+        List<MdIncomeDateSection> mdIncomeDateSectionList = getMdIncomeDateSectionList();
+        //排序
+        Comparator<MdIncomeDateSection> comparator = new Comparator<MdIncomeDateSection>() {
+            @Override
+            public int compare(MdIncomeDateSection o1, MdIncomeDateSection o2) {
+                return o1.getBeginDate().compareTo(o2.getBeginDate());
+            }
+        };
+        Collections.sort(mdIncomeDateSectionList, comparator);
+
+        StringBuilder s = new StringBuilder();
+        if (CollectionUtils.isNotEmpty(mdIncomeDateSectionList)) {
+            BigDecimal t = new BigDecimal("0");
+            for (MdIncomeDateSection section : mdIncomeDateSectionList) {
+                StringBuilder s2 = new StringBuilder();
+                s2.append(DateUtils.format(section.getBeginDate(), DateUtils.DATE_CHINESE_PATTERN)).append("至").append(DateUtils.format(section.getEndDate(), DateUtils.DATE_CHINESE_PATTERN));
+                s.append(s2.toString());
+                BigDecimal yearCount = section.getYearCount();
+                t = t.add(yearCount);
+                String formula = new String();
+                if (yearCount.compareTo(new BigDecimal("1")) < 1) {
+                    formula = ":At×(1 + g)/(1 + Y)^t]";
+                } else {
+                    formula = ":At×(1+Y)^-(T+1)×(1-((1+g)/(1+Y))^n)/(1-(1+g)/(1+Y))";
+                }
+
+                if (StringUtils.isNoneEmpty(section.getNetProfit())) {
+                    formula = formula.replace("At", section.getNetProfit());
+                }
+                if (mdIncome.getRewardRate() != null) {
+                    formula = formula.replace("Y", ArithmeticUtils.getPercentileSystem(mdIncome.getRewardRate(), 4, BigDecimal.ROUND_HALF_UP));
+                }
+                if (section.getRentalGrowthRate() != null) {
+                    formula = formula.replace("g", ArithmeticUtils.getPercentileSystem(section.getRentalGrowthRate(), 4, BigDecimal.ROUND_HALF_UP));
+                }
+                if (t.compareTo(new BigDecimal("1")) != 0) {
+                    formula = formula.replace("t", t.toString());
+                    if (formula.contains("T")) {
+                        formula = formula.replace("T", t.subtract(yearCount).toString());
+                    }
+                } else {
+                    formula = formula.replace("^t", "");
+                }
+                if (section.getYearCount() != null) {
+                    formula = formula.replace("n", section.getYearCount().toString());
+                }
+                s.append(formula);
+                s.append(";");
+            }
+            s.deleteCharAt(s.length() - 1).append("。");
+        }
+        return s.toString();
+    }
+
+
 
     private List<MdIncomeDateSection> getMdIncomeDateSectionList() {
         if (CollectionUtils.isEmpty(this.mdIncomeDateSectionList)) {
