@@ -138,7 +138,7 @@
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         <!--</table>-->
 
-        <table tableName="tb_project_take_number_detail" domainObjectName="ProjectTakeNumberDetail">
+        <table tableName="tb_declare_realty_check_list" domainObjectName="DeclareRealtyCheckList">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 

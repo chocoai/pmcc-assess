@@ -4,6 +4,7 @@ import com.aspose.words.*;
 import com.copower.pmcc.assess.common.ArithmeticUtils;
 import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.FileUtils;
+import com.copower.pmcc.assess.common.MyEntry;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.MergeCellModel;
@@ -181,6 +182,7 @@ public class GenerateCommonMethod {
      * @param areaId
      * @return
      */
+    @Deprecated
     public LinkedHashMap<BasicEstate, List<SchemeJudgeObject>> getEstateGroupByAreaId(Integer areaId) throws Exception {
         LinkedHashMap<BasicEstate, List<SchemeJudgeObject>> listLinkedHashMap = Maps.newLinkedHashMap();
         List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaId);
@@ -201,6 +203,48 @@ public class GenerateCommonMethod {
                 GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
                 BasicEstate basicEstate = generateBaseExamineService.getEstate();
                 listLinkedHashMap.put(basicEstate, schemeJudgeObjectService.getListByDeclareIds(stringListEntry.getValue()));
+            }
+        }
+        return listLinkedHashMap;
+    }
+
+    public LinkedHashMap<BasicEstate, List<SchemeJudgeObject>> getEstateGroupByAreaId2(Integer areaId) throws Exception {
+        LinkedHashMap<BasicEstate, List<SchemeJudgeObject>> listLinkedHashMap = Maps.newLinkedHashMap();
+        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaId);
+        List<DeclareRecord> declareRecords = declareRecordService.getDeclareRecordListByIds(LangUtils.transform(schemeJudgeObjectList, o -> o.getDeclareRecordId()));
+        if (CollectionUtils.isNotEmpty(declareRecords)) {
+            Map<String, List<Integer>> map = Maps.newHashMap();
+            for (DeclareRecord declareRecord : declareRecords) {
+                if (map.containsKey(declareRecord.getStreetNumber())) {
+                    List<Integer> list = map.get(declareRecord.getStreetNumber());
+                    list.add(declareRecord.getId());
+                    map.put(declareRecord.getStreetNumber(), list);
+                } else {
+                    map.put(declareRecord.getStreetNumber(), Lists.newArrayList(declareRecord.getId()));
+                }
+            }
+            for (Map.Entry<String, List<Integer>> stringListEntry : map.entrySet()) {
+                Iterator<Integer> iterator = stringListEntry.getValue().iterator();
+                Map<String,Map.Entry<BasicEstate,List<Integer>>> stringEntryMap = new HashMap<>() ;
+                while (iterator.hasNext()){
+                    Integer declareId = iterator.next();
+                    BasicApplyBatch basicApplyBatch = surveyCommonService.getBasicApplyBatchById(declareId) ;
+                    if (basicApplyBatch == null){
+                        continue;
+                    }
+                    BasicExamineHandle basicExamineHandle = new BasicExamineHandle(basicApplyBatch.getId()) ;
+                    BasicEstate basicEstate = basicExamineHandle.getEstate();
+                    //当街道名称和楼盘名称一致的时候 归为一类
+                    String key = String.join("",stringListEntry.getKey(),basicEstate.getName()) ;
+                    stringEntryMap.put(key,new MyEntry<>(basicEstate,stringListEntry.getValue())) ;
+                }
+                if (!stringEntryMap.isEmpty()){
+                    Iterator<Map.Entry<String, Map.Entry<BasicEstate, List<Integer>>>> entryIterator = stringEntryMap.entrySet().iterator();
+                    while (entryIterator.hasNext()){
+                        Map.Entry<String, Map.Entry<BasicEstate, List<Integer>>> stringEntryEntry = entryIterator.next();
+                        listLinkedHashMap.put(stringEntryEntry.getValue().getKey(), schemeJudgeObjectService.getListByDeclareIds(stringEntryEntry.getValue().getValue()));
+                    }
+                }
             }
         }
         return listLinkedHashMap;
@@ -299,60 +343,64 @@ public class GenerateCommonMethod {
 
     /**
      * 类似于⑲号或者21号
+     *
      * @param schemeJudgeObject
      * @param schemeJudgeObjectList
      * @return
      */
-    public String getSchemeJudgeObjectShowName(SchemeJudgeObject schemeJudgeObject,List<SchemeJudgeObject> schemeJudgeObjectList) {
+    public String getSchemeJudgeObjectShowName(SchemeJudgeObject schemeJudgeObject, List<SchemeJudgeObject> schemeJudgeObjectList) {
         List<Integer> integerList = Lists.newArrayList();
         for (int i = 0; i < schemeJudgeObjectList.size(); i++) {
-            SchemeJudgeObject object = schemeJudgeObjectList.get(i) ;
-            integerList.add(parseIntJudgeNumber(object.getNumber())) ;
+            SchemeJudgeObject object = schemeJudgeObjectList.get(i);
+            integerList.add(parseIntJudgeNumber(object.getNumber()));
         }
-       return getSchemeJudgeObjectShowHandleName(schemeJudgeObject,integerList) ;
+        return getSchemeJudgeObjectShowHandleName(schemeJudgeObject, integerList);
     }
 
 
     /**
      * 类似于⑲或者21
+     *
      * @param schemeJudgeObject
      * @param schemeJudgeObjectList
      * @return
      */
-    public String getSchemeJudgeObjectShowName2(SchemeJudgeObject schemeJudgeObject,List<SchemeJudgeObject> schemeJudgeObjectList) {
+    public String getSchemeJudgeObjectShowName2(SchemeJudgeObject schemeJudgeObject, List<SchemeJudgeObject> schemeJudgeObjectList) {
         List<Integer> integerList = Lists.newArrayList();
         for (int i = 0; i < schemeJudgeObjectList.size(); i++) {
-            SchemeJudgeObject object = schemeJudgeObjectList.get(i) ;
-            integerList.add(parseIntJudgeNumber(object.getNumber())) ;
+            SchemeJudgeObject object = schemeJudgeObjectList.get(i);
+            integerList.add(parseIntJudgeNumber(object.getNumber()));
         }
-       return StringUtils.remove(getSchemeJudgeObjectShowHandleName(schemeJudgeObject,integerList),"号") ;
+        return StringUtils.remove(getSchemeJudgeObjectShowHandleName(schemeJudgeObject, integerList), "号");
     }
 
     /**
      * 类似于⑲号或者21号
+     *
      * @param schemeJudgeObject
      * @param integerList
      * @return
      */
-    public String getSchemeJudgeObjectShowHandleName(SchemeJudgeObject schemeJudgeObject,List<Integer> integerList) {
-        if (checkSchemeJudgeObjectNumberOverloadTwenty(integerList)){
-            return getSchemeJudgeObjectShowName(schemeJudgeObject) ;
-        }else {
-            return String.join("",parseIntJudgeNumber(schemeJudgeObject.getNumber()).toString(),"号") ;
+    public String getSchemeJudgeObjectShowHandleName(SchemeJudgeObject schemeJudgeObject, List<Integer> integerList) {
+        if (checkSchemeJudgeObjectNumberOverloadTwenty(integerList)) {
+            return getSchemeJudgeObjectShowName(schemeJudgeObject);
+        } else {
+            return String.join("", parseIntJudgeNumber(schemeJudgeObject.getNumber()).toString(), "号");
         }
     }
 
     /**
      * 校验是否超过word 的编号
+     *
      * @param integerList
      * @return
      */
-    public boolean checkSchemeJudgeObjectNumberOverloadTwenty(List<Integer> integerList){
+    public boolean checkSchemeJudgeObjectNumberOverloadTwenty(List<Integer> integerList) {
         final int twenty = 20;
         boolean flag = true;
-        if (CollectionUtils.isNotEmpty(integerList)){
+        if (CollectionUtils.isNotEmpty(integerList)) {
             integerList = integerList.stream().distinct().collect(Collectors.toList());
-            if (integerList.stream().reduce(Integer::max).get() > twenty || integerList.size() > twenty){
+            if (integerList.stream().reduce(Integer::max).get() > twenty || integerList.size() > twenty) {
                 flag = false;
             }
         }
@@ -496,7 +544,7 @@ public class GenerateCommonMethod {
         StringBuilder stringBuilder = new StringBuilder(8);
         if (CollectionUtils.isNotEmpty(numbers)) {
             numbers = numbers.stream().distinct().sorted().collect(Collectors.toList());
-            if (!checkSchemeJudgeObjectNumberOverloadTwenty(numbers)){
+            if (!checkSchemeJudgeObjectNumberOverloadTwenty(numbers)) {
                 return StringUtils.join(numbers, ",");
             }
             Integer[] ints = new Integer[numbers.size()];
@@ -1121,32 +1169,32 @@ public class GenerateCommonMethod {
             number = number.split("-")[0];
         }
         if (number.length() < ten) {
-            return Integer.valueOf(number) ;
-        }else {
-            return Integer.valueOf(number.substring(0,ten-1)) ;
+            return Integer.valueOf(number);
+        } else {
+            return Integer.valueOf(number.substring(0, ten - 1));
         }
     }
 
-    public List<Integer> splitIntegerListJudgeNumber(String number){
-        List<Integer> integerList = new ArrayList<>() ;
-        if (StringUtils.isEmpty(number)){
+    public List<Integer> splitIntegerListJudgeNumber(String number) {
+        List<Integer> integerList = new ArrayList<>();
+        if (StringUtils.isEmpty(number)) {
             return integerList;
         }
-        List<String> stringList = FormatUtils.transformString2List(number) ;
-        if (CollectionUtils.isEmpty(stringList)){
+        List<String> stringList = FormatUtils.transformString2List(number);
+        if (CollectionUtils.isEmpty(stringList)) {
             return integerList;
         }
-        for (String s:stringList){
-            if (NumberUtils.isNumber(s)){
-                integerList.add(Integer.parseInt(s)) ;
-            }else {
-                List<String> strings = FormatUtils.transformString2List(s) ;
-                if (CollectionUtils.isEmpty(strings)){
+        for (String s : stringList) {
+            if (NumberUtils.isNumber(s)) {
+                integerList.add(Integer.parseInt(s));
+            } else {
+                List<String> strings = FormatUtils.transformString2List(s);
+                if (CollectionUtils.isEmpty(strings)) {
                     continue;
                 }
-                for (String ss:strings){
-                    if (NumberUtils.isNumber(ss)){
-                        integerList.add(Integer.parseInt(ss)) ;
+                for (String ss : strings) {
+                    if (NumberUtils.isNumber(ss)) {
+                        integerList.add(Integer.parseInt(ss));
                     }
                 }
             }

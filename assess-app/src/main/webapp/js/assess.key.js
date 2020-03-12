@@ -69,6 +69,7 @@ AssessDBKey.DeclareBuildingConstructionPermit = "tb_declare_building_constructio
 AssessDBKey.DeclarePreSalePermit = "tb_declare_pre_sale_permit";
 AssessDBKey.DeclareLandUsePermit = "tb_declare_land_use_permit";
 AssessDBKey.DeclareBuildingPermit = "tb_declare_building_permit";
+AssessDBKey.DeclareRealtyCheckList = "tb_declare_realty_check_list";
 
 AssessDBKey.MdCalculatingMethodEngineeringCost = "tb_md_calculating_method_engineering_cost";
 AssessDBKey.MdCost = "tb_md_cost";
@@ -310,6 +311,7 @@ AssessDicKey.projectDeclareCertificateIsnull = "project.declare.certificate.isNu
  */
 var AssessFTKey = {}
 AssessFTKey.ftAssetInventoryRight = "ft.asset.inventory.right";//他项权利
+AssessFTKey.ftRealDeclareRealtyCheckList = "ft.real.declareRealtyCheckList";//不动产清单
 AssessFTKey.ftHouseOwnershipCertificate = "ft.house.ownership.certificate";//房产证数据导入模型
 AssessFTKey.ftLandOwnershipCertificate = "ft.land.ownership.certificate";//土地证数据导入模型
 AssessFTKey.ftRealEstateOwnershipCertificate = "ft.real.estate.ownership.certificate";//不动产模板 (有权证)

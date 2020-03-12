@@ -29,7 +29,8 @@ assessCommonHouse.config = {
         name: declareCommon.config.declareEconomicIndicatorsContent.name
     },
     handleCopy: "#houseHandleInputGroup",
-    autoPDFFileId: "houseAttachmentAutomatedWarrantsPDF"
+    autoPDFFileId: "houseAttachmentAutomatedWarrantsPDF",
+    declareRealtyCheckListModel:"#declareRealtyCheckListHouseModelBox"
 };
 
 /**
@@ -229,6 +230,65 @@ assessCommonHouse.pasteAll = function () {
         notifyWarning("警告", "只能选择一行数据进行复制!");
     }
 };
+
+
+//不动产清单
+assessCommonHouse.showDeclareRealtyCheckListModel = function (id) {
+    var item = $("#" + assessCommonHouse.config.table).bootstrapTable('getRowByUniqueId', id);
+    if (!declareCommon.isNotBlank(item.centerId)) {
+        notifyWarning("警告", "不合符调整后的数据约定,请联系管理员!");
+        return false;
+    }
+    var box = $(this.config.declareRealtyCheckListModel) ;
+    var arr = [];
+    var inputArr = [];
+    var frm = box.find("form");
+    box.find("#" + commonDeclareApplyModel.config.declareRealtyCheckList.handleId).remove();
+    box.find(".card-body").append(commonDeclareApplyModel.declareRealtyCheckList.getHtml());
+    declareCommon.showHtmlMastInit(frm, function (area) {
+        box.modal("show");
+        declareCommon.getDeclareRealtyCheckListListByExample({marsterId:id,planDetailsId:declareCommon.getPlanDetailsId()} ,function (data) {
+            console.log(data) ;
+            if (data.length > 0){
+                declareCommon.initFormData(frm, data[0], arr, false, AssessDBKey.DeclareRealtyCheckList, inputArr);
+            }else {
+                area.marsterId =  id;
+                declareCommon.initFormData(frm, area, arr, false, AssessDBKey.DeclareRealtyCheckList, inputArr);
+            }
+        }) ;
+
+    });
+};
+assessCommonHouse.declareRealtyCheckListSaveAndUpdate = function () {
+    var box = $(this.config.declareRealtyCheckListModel) ;
+    var frm = box.find("form");
+    var data = formSerializeArray(frm);
+    data.planDetailsId = declareCommon.getPlanDetailsId();
+    if (!frm.valid()) {
+        return false;
+    }
+    declareCommon.saveAndUpdateDeclareRealtyCheckList(data,function () {
+        box.modal("hide");
+    }) ;
+} ;
+assessCommonHouse.declareRealtyCheckListRemove = function () {
+    var box = $(this.config.declareRealtyCheckListModel) ;
+    var frm = box.find("form");
+    var data = formSerializeArray(frm);
+    if (data.id){
+        declareCommon.deleteDeclareRealtyCheckListById(data.id,function () {
+            box.modal("hide");
+        }) ;
+    }else {
+        notifyWarning("操作失败", "此条数据不存在");
+    }
+};
+assessCommonHouse.inputRealDeclareRealtyCheckList = function () {
+    declareCommon.ajaxFileUploadCommon({planDetailsId: declareCommon.getPlanDetailsId()},'ajaxFileUploadRealDeclareRealtyCheckListHouse',"/declareRealtyCheckList/importData",function () {
+        assessCommonHouse.loadList();
+    }) ;
+};
+
 
 /**
  * 经济指标
@@ -608,6 +668,8 @@ assessCommonHouse.loadList = function () {
             var str = '<button type="button" onclick="assessCommonHouse.showAddModelLand(' + row.id + ')" style="margin-left: 5px;" class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="土地证">土地证</button>';
 
             str += '<button type="button" onclick="assessCommonHouse.showAddModelDeclareEconomicIndicators(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="经济指标">经济指标</button>';
+
+            str += '<button type="button" onclick="assessCommonHouse.showDeclareRealtyCheckListModel(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="不动产清单">不动产清单</button>';
 
             str += '<button type="button" onclick="assessCommonHouse.houseImportEvent(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="房产证附件">房产证附件</button>';
 
