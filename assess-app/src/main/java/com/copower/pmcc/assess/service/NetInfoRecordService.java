@@ -7,6 +7,8 @@ import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordContentDao;
 import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordDao;
 import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecord;
 import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordContent;
+import com.copower.pmcc.assess.dal.cases.dao.CaseNetInfoRecordDao;
+import com.copower.pmcc.assess.dal.cases.entity.CaseNetInfoRecord;
 import com.copower.pmcc.assess.dto.input.net.JDSFDto;
 import com.copower.pmcc.assess.dto.input.net.JDZCDto;
 import com.copower.pmcc.assess.dto.input.net.TBSFDto;
@@ -66,6 +68,8 @@ public class NetInfoRecordService {
     private final static Logger logger = LoggerFactory.getLogger(NetInfoRecordService.class);
     @Autowired
     private NetInfoRecordDao netInfoRecordDao;
+    @Autowired
+    private CaseNetInfoRecordDao caseNetInfoRecordDao;
     @Autowired
     private NetInfoRecordContentDao netInfoRecordContentDao;
     @Autowired
@@ -190,7 +194,7 @@ public class NetInfoRecordService {
                         netInfoRecord.setBeginTime(tbsfDto.getStart());
                         netInfoRecord.setEndTime(tbsfDto.getEnd());
                         netInfoRecord.setSourceSiteName("淘宝司法拍卖网");
-                        netInfoRecordDao.addInfo(netInfoRecord);
+                        this.addInfo(netInfoRecord);
 
                         Elements noticeEles = getContent(String.format("%s" + tbsfDto.getItemUrl(), "https:"), "#J_ItemNotice", "GBK");
                         if (noticeEles.size() == 0) {
@@ -299,7 +303,7 @@ public class NetInfoRecordService {
                                 , DateUtils.format(jdsfDto.getEndTime(), DateUtils.DATE_CHINESE_PATTERN), DateUtils.format(jdsfDto.getStartTime(), DateUtils.DATE_CHINESE_PATTERN));
                         netInfoRecord.setContent(content);
                         netInfoRecord.setSourceSiteName("京东司法拍卖网");
-                        netInfoRecordDao.addInfo(netInfoRecord);
+                        this.addInfo(netInfoRecord);
                     }
                 }
             }
@@ -368,7 +372,7 @@ public class NetInfoRecordService {
                                 , DateUtils.format(jdzcDto.getEndTime(), DateUtils.DATE_CHINESE_PATTERN), DateUtils.format(jdzcDto.getStartTime(), DateUtils.DATE_CHINESE_PATTERN));
                         netInfoRecord.setContent(content);
                         netInfoRecord.setSourceSiteName("京东资产拍卖网");
-                        netInfoRecordDao.addInfo(netInfoRecord);
+                        this.addInfo(netInfoRecord);
                     }
                 }
             }
@@ -474,7 +478,7 @@ public class NetInfoRecordService {
                                 , DateUtils.format(zgsfDto.getEndTime(), DateUtils.DATE_CHINESE_PATTERN), DateUtils.format(zgsfDto.getStartTime(), DateUtils.DATE_CHINESE_PATTERN));
                         netInfoRecord.setContent(content);
                         netInfoRecord.setSourceSiteName("中国拍卖行业协会网-司法");
-                        netInfoRecordDao.addInfo(netInfoRecord);
+                        this.addInfo(netInfoRecord);
 
                         String contentHref = itemHref.replace("lot", "caa-web-ws/ws/0.1/notice/lot");
                         contentHref = contentHref.replace(".html", "");
@@ -591,7 +595,7 @@ public class NetInfoRecordService {
                                 , DateUtils.format(zgsfDto.getEndTime(), DateUtils.DATE_CHINESE_PATTERN), DateUtils.format(zgsfDto.getStartTime(), DateUtils.DATE_CHINESE_PATTERN));
                         netInfoRecord.setContent(content);
                         netInfoRecord.setSourceSiteName("中国拍卖行业协会网-标的");
-                        netInfoRecordDao.addInfo(netInfoRecord);
+                        this.addInfo(netInfoRecord);
 
                         String contentHref = itemHref.replace("pages/lots/profession.html?lotId=", "wt-web-ws/ws/0.1/lot/");
                         contentHref = contentHref.replace(String.format("%s%s", "&meetId=", zgsfDto.getMeetId()), "/introduction");
@@ -715,7 +719,8 @@ public class NetInfoRecordService {
                             String content = getContent(titleName, netInfoRecord.getType(), currentPrice, consultPrice, initPrice
                                     , DateUtils.format(endTime, DateUtils.DATE_CHINESE_PATTERN), "");
                             netInfoRecord.setContent(content);
-                            netInfoRecordDao.addInfo(netInfoRecord);
+                            this.addInfo(netInfoRecord);
+
 
                             Elements contentBody = getContent(itemHref, ".d-article", "");
                             if (contentBody.size() != 0 && contentBody != null) {
@@ -797,7 +802,8 @@ public class NetInfoRecordService {
                         netInfoRecord.setContent(netInfoRecord.getTitle());
                         netInfoRecord.setSourceSiteName("公共资源交易平台-成都");
                         netInfoRecord.setCreator("admin");
-                        netInfoRecordDao.addInfo(netInfoRecord);
+                        this.addInfo(netInfoRecord);
+
                     }
                 }
             }
@@ -906,7 +912,8 @@ public class NetInfoRecordService {
                         netInfoRecord.setContent(netInfoRecord.getTitle());
                         netInfoRecord.setSourceSiteName("公共资源交易平台-成都");
                         netInfoRecord.setCreator("admin");
-                        netInfoRecordDao.addInfo(netInfoRecord);
+                        this.addInfo(netInfoRecord);
+
                     }
                 }
             }
@@ -1021,7 +1028,7 @@ public class NetInfoRecordService {
                             , DateUtils.format(netInfoRecord.getEndTime(), DateUtils.DATE_CHINESE_PATTERN), DateUtils.format(netInfoRecord.getBeginTime(), DateUtils.DATE_CHINESE_PATTERN));
                     netInfoRecord.setSourceSiteName("土流网");
                     netInfoRecord.setContent(content);
-                    netInfoRecordDao.addInfo(netInfoRecord);
+                    this.addInfo(netInfoRecord);
                 }
             }
         } catch (Exception e) {
@@ -1070,7 +1077,7 @@ public class NetInfoRecordService {
                     netInfoRecord.setEndTime(publishtime);
                     netInfoRecord.setSourceSiteName("农村产权交易中心");
                     netInfoRecord.setContent(String.format("%s%s", content, "..."));
-                    netInfoRecordDao.addInfo(netInfoRecord);
+                    this.addInfo(netInfoRecord);
                 }
             }
         } catch (Exception e) {
@@ -1405,7 +1412,7 @@ public class NetInfoRecordService {
         for (NetInfoRecord netInfo : infoRecords) {
             netInfo.setStatus(1);
             netInfo.setExecutor(executor);
-            netInfoRecordDao.updateInfo(netInfo);
+            this.updateInfo(netInfo);
         }
 
     }
@@ -1421,5 +1428,21 @@ public class NetInfoRecordService {
         bootstrapTableVo.setTotal(page.getTotal());
         bootstrapTableVo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<NetInfoRecord>() : vos);
         return bootstrapTableVo;
+    }
+
+    public void addInfo(NetInfoRecord netInfo){
+        netInfoRecordDao.addInfo(netInfo);
+        //备份数据
+        CaseNetInfoRecord caseNetInfoRecord = new CaseNetInfoRecord();
+        BeanUtils.copyProperties(netInfo, caseNetInfoRecord);
+        caseNetInfoRecordDao.addInfo(caseNetInfoRecord);
+    }
+
+    public void updateInfo(NetInfoRecord netInfo){
+        netInfoRecordDao.updateInfo(netInfo);
+        //备份数据
+        CaseNetInfoRecord caseNetInfoRecord = new CaseNetInfoRecord();
+        BeanUtils.copyProperties(netInfo, caseNetInfoRecord);
+        caseNetInfoRecordDao.updateInfo(caseNetInfoRecord);
     }
 }

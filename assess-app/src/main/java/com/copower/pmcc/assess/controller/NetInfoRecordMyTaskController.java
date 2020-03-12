@@ -91,7 +91,7 @@ public class NetInfoRecordMyTaskController {
         NetInfoRecord netInfoRecord = JSON.parseObject(formData, NetInfoRecord.class);
         try {
             if (netInfoRecord.getId() != null && !netInfoRecord.getId().equals(0)) {
-                netInfoRecordDao.updateInfo(netInfoRecord);
+                netInfoRecordService.updateInfo(netInfoRecord);
             }
             return HttpResult.newCorrectResult("保存 success!");
         } catch (Exception e) {

@@ -11,6 +11,7 @@ import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecord;
 import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordHouse;
 import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordLand;
 import com.copower.pmcc.assess.service.NetInfoAssignTaskService;
+import com.copower.pmcc.assess.service.NetInfoRecordService;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
@@ -52,6 +53,8 @@ public class NetInfoAssignTaskController extends BaseController {
     private CommonService commonService;
     @Autowired
     private NetInfoRecordDao netInfoRecordDao;
+    @Autowired
+    private NetInfoRecordService netInfoRecordService;
     @Autowired
     private NetInfoAssignTaskService netInfoAssignTaskService;
     @Autowired
@@ -131,7 +134,7 @@ public class NetInfoAssignTaskController extends BaseController {
             if (CollectionUtils.isNotEmpty(infoRecords)) {
                 for (NetInfoRecord netInfo : infoRecords) {
                     netInfo.setStatus(3);
-                    netInfoRecordDao.updateInfo(netInfo);
+                    netInfoRecordService.updateInfo(netInfo);
                 }
             }
             netInfoAssignTaskService.processEditSubmit(approvalModelDto);
@@ -166,7 +169,7 @@ public class NetInfoAssignTaskController extends BaseController {
                     NetInfoRecord infoRecord = netInfoRecordDao.getInfoById(id);
                     infoRecord.setStatus(0);
                     infoRecord.setExecutor("");
-                    netInfoRecordDao.updateInfo(infoRecord);
+                    netInfoRecordService.updateInfo(infoRecord);
                 }
                 //删除子数据
                 List<NetInfoRecordHouse> netInfoRecordHouses = netInfoRecordHouseDao.getHouseListByMasterIds(integers);

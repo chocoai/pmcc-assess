@@ -118,7 +118,7 @@ public class NetUrlConfigService {
                             netInfoRecord.setContent(netInfoRecord.getTitle());
                             netInfoRecord.setBeginTime(publishtime);
                             netInfoRecord.setCreator("admin");
-                            netInfoRecordDao.addInfo(netInfoRecord);
+                            netInfoRecordService.addInfo(netInfoRecord);
 
                         } catch (Exception e) {
                             logger.error(MessageFormat.format("抓举具体内容异常；网址{0}，页码{1},异常原因：{2}", config.getUrl(), String.valueOf(i), e.getMessage()));
@@ -161,7 +161,7 @@ public class NetUrlConfigService {
                 netInfoRecord.setContent(netInfoRecord.getTitle());
                 netInfoRecord.setBeginTime(DateUtils.convertDate(date));
                 netInfoRecord.setCreator("admin");
-                netInfoRecordDao.addInfo(netInfoRecord);
+                netInfoRecordService.addInfo(netInfoRecord);
             }
         }
     }
@@ -196,7 +196,7 @@ public class NetUrlConfigService {
                 netInfoRecord.setContent(netInfoRecord.getTitle());
                 netInfoRecord.setBeginTime(publishDate);
                 netInfoRecord.setCreator("admin");
-                netInfoRecordDao.addInfo(netInfoRecord);
+                netInfoRecordService.addInfo(netInfoRecord);
             }
         }
     }
@@ -231,7 +231,7 @@ public class NetUrlConfigService {
                 netInfoRecord.setContent(netInfoRecord.getTitle());
                 netInfoRecord.setBeginTime(publishDate);
                 netInfoRecord.setCreator("admin");
-                netInfoRecordDao.addInfo(netInfoRecord);
+                netInfoRecordService.addInfo(netInfoRecord);
             }
         }
     }
@@ -307,7 +307,7 @@ public class NetUrlConfigService {
                     netInfoRecord.setContent(netInfoRecord.getTitle());
                     netInfoRecord.setBeginTime(publishDate);
                     netInfoRecord.setCreator("admin");
-                    netInfoRecordDao.addInfo(netInfoRecord);
+                    netInfoRecordService.addInfo(netInfoRecord);
                 }
 
             } catch (Exception e) {
