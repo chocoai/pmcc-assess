@@ -9,6 +9,7 @@ import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
+import com.copower.pmcc.assess.service.chks.AssessmentCommonService;
 import com.copower.pmcc.assess.service.chks.ChksAssessmentProjectPerformanceService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
@@ -77,7 +78,7 @@ public class ProjectTaskController extends BaseController {
     @Autowired
     private BaseService baseService;
     @Autowired
-    private ChksAssessmentProjectPerformanceService chksAssessmentProjectPerformanceService;
+    private AssessmentCommonService assessmentCommonService;
     @Autowired
     private ProcessControllerComponent processControllerComponent;
 
@@ -162,9 +163,6 @@ public class ProjectTaskController extends BaseController {
         ModelAndView modelAndView = bean.approvalView(processInsId, taskId, boxId, projectPlanDetails, agentUserAccount);
         ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId()));
         modelAndView.addObject("projectInfo", projectInfoVo);
-        //生成考核任务
-        chksAssessmentProjectPerformanceService.generateAssessmentTask(processInsId, boxId, taskId, projectInfoVo, projectPlanDetails);
-
         modelAndView.addObject("projectPlanDetails", projectPlanDetails);
         List<SysAttachmentDto> projectPhaseProcessTemplate = baseAttachmentService.getProjectPhaseProcessTemplate(projectPhase.getId());
         modelAndView.addObject("projectPhaseProcessTemplate", projectPhaseProcessTemplate);
@@ -180,15 +178,7 @@ public class ProjectTaskController extends BaseController {
         modelAndView.addObject("viewUrl", viewUrl);
         modelAndView.addObject("projectId", projectPlanDetails.getProjectId());
         modelAndView.addObject("projectFlog", "1");
-        //获取相应的考核项
-        if (boxId != null && boxId > 0) {
-            BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(boxId);
-            if (boxReDto.getBisLaunchCheck() != null && boxReDto.getBisLaunchCheck()) {
-                if (modelAndView.getModel().containsKey(activityId)) {
-                    setCheckParams(boxId, (Integer) modelAndView.getModel().get(activityId), processInsId, modelAndView);
-                }
-            }
-        }
+        assessmentCommonService.generateAssessmentTask(processInsId, boxId, taskId, projectInfoVo, projectPlanDetails);//生成考核任务
         return modelAndView;
     }
 
@@ -335,11 +325,11 @@ public class ProjectTaskController extends BaseController {
                 modelAndView.addObject(StringUtils.uncapitalize(BoxReDto.class.getSimpleName()), bpmRpcBoxService.getBoxReInfoByBoxId(boxId));
             }
             if (boxReActivitiId != null) {
-                modelAndView.addObject("activityDtoList", chksAssessmentProjectPerformanceService.getAssessmentProjectPerformanceNext(boxId, boxReActivitiId));
+                //modelAndView.addObject("activityDtoList", chksAssessmentProjectPerformanceService.getAssessmentProjectPerformanceNext(boxId, boxReActivitiId));
             }else {
-                modelAndView.addObject("activityDtoList", chksAssessmentProjectPerformanceService.getActivityDtoListByProcessInsId(processInsId,boxId));
+                //modelAndView.addObject("activityDtoList", chksAssessmentProjectPerformanceService.getActivityDtoListByProcessInsId(processInsId,boxId));
             }
-            modelAndView.addObject("chksExaminePeopleList", chksAssessmentProjectPerformanceService.getExaminePeopleList(processInsId,boxId));
+            //modelAndView.addObject("chksExaminePeopleList", chksAssessmentProjectPerformanceService.getExaminePeopleList(processInsId,boxId));
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
         }

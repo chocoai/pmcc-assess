@@ -231,11 +231,9 @@ public class ProjectTaskService {
             approvalModelDto.setWorkPhaseId(projectPhase.getId());
             approvalModelDto.setWorkPhase(projectPhase.getProjectPhaseName());
         }
-        //创建考核ProjectTask任务
-        chksAssessmentProjectPerformanceService.createAssessmentProjectTask(approvalModelDto, projectInfo, projectPlanDetails);
-
         try {
             processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
+            chksAssessmentProjectPerformanceService.createAssessmentProjectTask(approvalModelDto, projectInfo, projectPlanDetails);//创建考核ProjectTask任务
         } catch (BpmException e) {
             throw new BusinessException(e.getMessage());
         }

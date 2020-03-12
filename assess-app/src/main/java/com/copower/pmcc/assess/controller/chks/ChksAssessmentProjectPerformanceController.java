@@ -1,8 +1,13 @@
 package com.copower.pmcc.assess.controller.chks;
 
 import com.alibaba.fastjson.JSONObject;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.service.BaseService;
+import com.copower.pmcc.assess.service.chks.AssessmentCommonService;
 import com.copower.pmcc.assess.service.chks.ChksAssessmentProjectPerformanceService;
+import com.copower.pmcc.assess.service.project.ProjectInfoService;
+import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.chks.api.dto.AssessmentProjectPerformanceDetailDto;
 import com.copower.pmcc.chks.api.dto.AssessmentProjectPerformanceDto;
@@ -29,11 +34,17 @@ public class ChksAssessmentProjectPerformanceController {
     private ChksAssessmentProjectPerformanceService chksAssessmentProjectPerformanceService;
     @Autowired
     private BpmRpcBoxService bpmRpcBoxService;
+    @Autowired
+    private AssessmentCommonService assessmentCommonService;
+    @Autowired
+    private ProjectInfoService projectInfoService;
+    @Autowired
+    private ProjectPlanDetailsService projectPlanDetailsService;
 
 
     @GetMapping(value = "/getChksBootstrapTableVo", name = "获取考核 bootstrap table")
-    public ChksBootstrapTableVo getChksBootstrapTableVo(AssessmentProjectPerformanceDto where, String activityIds) {
-        return chksAssessmentProjectPerformanceService.getChksBootstrapTableVo(where, activityIds);
+    public ChksBootstrapTableVo getChksBootstrapTableVo(AssessmentProjectPerformanceDto where, Integer boxId, Integer activityId) {
+        return chksAssessmentProjectPerformanceService.getChksBootstrapTableVo(where, boxId, activityId);
     }
 
     @GetMapping(value = "/getAssessmentProjectPerformanceDtoList", name = "获取考核后的数据")
@@ -162,11 +173,24 @@ public class ChksAssessmentProjectPerformanceController {
     }
 
     @PostMapping(value = "/pasteAll", name = "粘贴数据")
-    public HttpResult pasteAll(Integer copyId,String ids){
+    public HttpResult pasteAll(Integer copyId, String ids) {
         try {
-            return HttpResult.newCorrectResult(200, chksAssessmentProjectPerformanceService.pasteAll(copyId,ids));
+            return HttpResult.newCorrectResult(200, chksAssessmentProjectPerformanceService.pasteAll(copyId, ids));
         } catch (Exception e) {
             baseService.writeExceptionInfo(e, "粘贴数据 出错");
+            return HttpResult.newErrorResult(500, e.getMessage());
+        }
+    }
+
+    @PostMapping(value = "/generateAssessmentTask", name = "生成考核任务")
+    public HttpResult generateAssessmentTask(String processInsId, Integer boxId, String taskId, Integer projectId, Integer planDetailsId) {
+        try {
+            ProjectInfo projectInfo = projectId == null ? null : projectInfoService.getProjectInfoById(projectId);
+            ProjectPlanDetails projectPlanDetails = planDetailsId == null ? null : projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
+            assessmentCommonService.generateAssessmentTask(processInsId, boxId, taskId, projectInfo, projectPlanDetails);
+            return HttpResult.newCorrectResult();
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e, "生成考核任务异常");
             return HttpResult.newErrorResult(500, e.getMessage());
         }
     }

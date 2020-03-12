@@ -629,6 +629,8 @@
                 newObj[key] = data[key];
             }
         });
+        newObj.boxId='${boxId}';
+        newObj.activityId='${activityId}';
         assessmentCommonHandle.getChksBootstrapTableVoBase($("#assessmentTableList"), newObj);
     };
 

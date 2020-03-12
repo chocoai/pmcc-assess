@@ -4,9 +4,7 @@ import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlan;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
-import com.copower.pmcc.assess.proxy.face.AssessmentTaskInterface;
 import com.copower.pmcc.assess.service.project.ProjectPlanService;
-import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReActivityDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxRuDto;
@@ -56,19 +54,11 @@ public class AssessmentTaskService implements AssessmentTaskInterface {
         dto.setTaskId(taskId);
         dto.setBoxId(boxReDto.getId());
         BoxReActivityDto activityDto = bpmRpcBoxService.getBoxreActivityInfoById(activityId);
-        if (activityDto.getBisSpotCheck() != null) {
-            //当发现该节点是被抽查节点,那么写入抽查节点的节点id
-            if (Objects.equal(activityDto.getBisSpotCheck(), Boolean.TRUE)) {
-                BoxReActivityDto spotReActivityDto = chksAssessmentProjectPerformanceService.getSpotBoxReActivityDto(activityDto.getBoxId());
-                dto.setSpotActivityId(spotReActivityDto.getId());
-                //这里不考虑 获取的 BoxReActivityDto 是否存在boxId问题
-            }
-        }
         dto.setActivityId(activityId);
+        dto.setReActivityName(activityDto.getName());
         dto.setActivityName(activityDto.getCnName());
         dto.setSorting(activityDto.getSortMultilevel());
         dto.setByExaminePeople(byExamineUser);
-//        dto.setExaminePeople(commonService.thisUserAccount());
         dto.setExamineStatus(ProjectStatusEnum.RUNING.getKey());
         if (projectPlanDetails != null) {
             dto.setPlanId(projectPlanDetails.getPlanId());
@@ -82,7 +72,6 @@ public class AssessmentTaskService implements AssessmentTaskInterface {
         }
         dto.setCreator(commonService.thisUserAccount());
         dto.setValidScore(new BigDecimal(0));
-        dto.setBusinessKey("默认考核类型");
         chksRpcAssessmentService.saveAndUpdateAssessmentProjectPerformanceDto(dto, true);
     }
 }

@@ -1,4 +1,4 @@
-package com.copower.pmcc.assess.proxy.face;
+package com.copower.pmcc.assess.service.chks;
 
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;

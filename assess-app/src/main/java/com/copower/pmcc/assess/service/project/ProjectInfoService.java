@@ -24,6 +24,7 @@ import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
+import com.copower.pmcc.assess.service.chks.AssessmentCommonService;
 import com.copower.pmcc.assess.service.chks.ChksAssessmentProjectPerformanceService;
 import com.copower.pmcc.assess.service.event.project.ProjectAssignEvent;
 import com.copower.pmcc.assess.service.event.project.ProjectInfoEvent;
@@ -136,7 +137,7 @@ public class ProjectInfoService {
     @Autowired
     private BaseParameterService baseParameterService;
     @Autowired
-    private ChksAssessmentProjectPerformanceService chksAssessmentProjectPerformanceService;
+    private AssessmentCommonService assessmentCommonService;
 
 
     /**
@@ -343,9 +344,9 @@ public class ProjectInfoService {
      */
     @Transactional(rollbackFor = Exception.class)
     public void projectApproval(ApprovalModelDto approvalModelDto) throws BusinessException, BpmException {
-        ProjectInfo projectInfo = projectInfoDao.getProjectInfoById(approvalModelDto.getProjectId());
-        chksAssessmentProjectPerformanceService.createAssessmentProjectTask(approvalModelDto,projectInfo,null);
         processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
+        ProjectInfo projectInfo = projectInfoDao.getProjectInfoById(approvalModelDto.getProjectId());
+        assessmentCommonService.createProjectTask(approvalModelDto,projectInfo,null);
     }
 
     /**

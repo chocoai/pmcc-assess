@@ -17,6 +17,7 @@ import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
+import com.copower.pmcc.assess.service.chks.AssessmentCommonService;
 import com.copower.pmcc.assess.service.chks.ChksAssessmentProjectPerformanceService;
 import com.copower.pmcc.assess.service.data.DataValueDefinitionService;
 import com.copower.pmcc.assess.service.document.DocumentTemplateService;
@@ -91,7 +92,7 @@ public class ProjectInfoController {
     @Autowired
     private ProjectPhaseService projectPhaseService;
     @Autowired
-    private ChksAssessmentProjectPerformanceService chksAssessmentProjectPerformanceService;
+    private AssessmentCommonService assessmentCommonService;
 
     @RequestMapping(value = "/projectIndex", name = "项目立项", method = RequestMethod.GET)
     public ModelAndView view(Integer projectClassId, Integer projectTypeId, Integer projectCategoryId) {
@@ -165,8 +166,7 @@ public class ProjectInfoController {
         modelAndView.addObject("projectInfo", vo);
         modelAndView.addObject("projectId", vo.getId());
         modelAndView.addObject("sysUrl", baseParameterService.getParameterValues(BaseParameterEnum.SYS_URL_KEY.getParameterKey()));
-        //生成考核任务
-        chksAssessmentProjectPerformanceService.generateAssessmentTask(processInsId, boxId, taskId, vo, null);
+        assessmentCommonService.generateAssessmentTask(processInsId, boxId, taskId, projectInfo, null);
         return modelAndView;
     }
 

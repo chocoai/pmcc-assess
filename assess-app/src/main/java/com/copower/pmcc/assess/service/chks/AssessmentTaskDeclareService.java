@@ -6,7 +6,6 @@ import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.declare.DeclareRealtyHouseCertVo;
 import com.copower.pmcc.assess.dto.output.project.declare.DeclareRealtyLandCertVo;
 import com.copower.pmcc.assess.dto.output.project.declare.DeclareRealtyRealEstateCertVo;
-import com.copower.pmcc.assess.proxy.face.AssessmentTaskInterface;
 import com.copower.pmcc.assess.service.project.ProjectPlanService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRealtyHouseCertService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRealtyLandCertService;
@@ -79,38 +78,30 @@ public class AssessmentTaskDeclareService implements AssessmentTaskInterface {
         if (sizeTotal == 0) {
             return;
         }
-        Integer spotActivityId = null;
-        if (activityDto.getBisSpotCheck() != null) {
-            //当发现该节点是被抽查节点,那么写入抽查节点的节点id
-            if (Objects.equal(activityDto.getBisSpotCheck(), Boolean.TRUE)) {
-                BoxReActivityDto spotReActivityDto = chksAssessmentProjectPerformanceService.getSpotBoxReActivityDto(activityDto.getBoxId());
-                spotActivityId = spotReActivityDto.getId();
-            }
-        }
         if (CollectionUtils.isNotEmpty(declareRealtyHouseCertVoList)) {
             Iterator<DeclareRealtyHouseCertVo> houseCertVoIterator = declareRealtyHouseCertVoList.iterator();
             while (houseCertVoIterator.hasNext()) {
                 DeclareRealtyHouseCertVo realtyHouseCertVo = houseCertVoIterator.next();
-                saveAssessmentProjectPerformanceDto(processInsId, activityId, taskId, byExamineUser, projectInfo, projectPlanDetails, boxReDto, FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class), realtyHouseCertVo.getId(), realtyHouseCertVo.getCertName(), spotActivityId);
+                saveAssessmentProjectPerformanceDto(processInsId, activityId, taskId, byExamineUser, projectInfo, projectPlanDetails, boxReDto, FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class), realtyHouseCertVo.getId(), realtyHouseCertVo.getCertName());
             }
         }
         if (CollectionUtils.isNotEmpty(declareRealtyLandCertVoList)) {
             Iterator<DeclareRealtyLandCertVo> declareRealtyLandCertVoIterator = declareRealtyLandCertVoList.iterator();
             while (declareRealtyLandCertVoIterator.hasNext()) {
                 DeclareRealtyLandCertVo realtyLandCertVo = declareRealtyLandCertVoIterator.next();
-                saveAssessmentProjectPerformanceDto(processInsId, activityId, taskId, byExamineUser, projectInfo, projectPlanDetails, boxReDto, FormatUtils.entityNameConvertToTableName(DeclareRealtyLandCert.class), realtyLandCertVo.getId(), realtyLandCertVo.getLandCertName(), spotActivityId);
+                saveAssessmentProjectPerformanceDto(processInsId, activityId, taskId, byExamineUser, projectInfo, projectPlanDetails, boxReDto, FormatUtils.entityNameConvertToTableName(DeclareRealtyLandCert.class), realtyLandCertVo.getId(), realtyLandCertVo.getLandCertName());
             }
         }
         if (CollectionUtils.isNotEmpty(declareRealtyRealEstateCertVoList)) {
             ListIterator<DeclareRealtyRealEstateCertVo> realtyRealEstateCertVoListIterator = declareRealtyRealEstateCertVoList.listIterator();
             while (realtyRealEstateCertVoListIterator.hasNext()) {
                 DeclareRealtyRealEstateCertVo realEstateCertVo = realtyRealEstateCertVoListIterator.next();
-                saveAssessmentProjectPerformanceDto(processInsId, activityId, taskId, byExamineUser, projectInfo, projectPlanDetails, boxReDto, FormatUtils.entityNameConvertToTableName(DeclareRealtyRealEstateCert.class), realEstateCertVo.getId(), realEstateCertVo.getCertName(), spotActivityId);
+                saveAssessmentProjectPerformanceDto(processInsId, activityId, taskId, byExamineUser, projectInfo, projectPlanDetails, boxReDto, FormatUtils.entityNameConvertToTableName(DeclareRealtyRealEstateCert.class), realEstateCertVo.getId(), realEstateCertVo.getCertName());
             }
         }
     }
 
-    private void saveAssessmentProjectPerformanceDto(String processInsId, Integer activityId, String taskId, String byExamineUser, ProjectInfo projectInfo, ProjectPlanDetails projectPlanDetails, BoxReDto boxReDto, String tableName, Integer tableId, String businessKey, Integer spotActivityId) {
+    private void saveAssessmentProjectPerformanceDto(String processInsId, Integer activityId, String taskId, String byExamineUser, ProjectInfo projectInfo, ProjectPlanDetails projectPlanDetails, BoxReDto boxReDto, String tableName, Integer tableId, String businessKey) {
         AssessmentProjectPerformanceDto dto = new AssessmentProjectPerformanceDto();
         dto.setProcessInsId(processInsId);
         dto.setAppKey(applicationConstant.getAppKey());
@@ -123,12 +114,10 @@ public class AssessmentTaskDeclareService implements AssessmentTaskInterface {
         BoxReActivityDto activityDto = bpmRpcBoxService.getBoxreActivityInfoById(activityId);
         dto.setActivityId(activityId);
         dto.setBusinessKey(businessKey);
+        dto.setReActivityName(activityDto.getName());
         dto.setActivityName(activityDto.getCnName());
         dto.setSorting(activityDto.getSortMultilevel());
         dto.setByExaminePeople(byExamineUser);
-
-//        dto.setExaminePeople(commonService.thisUserAccount());
-
         dto.setExamineStatus(ProjectStatusEnum.RUNING.getKey());
         dto.setTableId(tableId);
         dto.setTableName(tableName);
@@ -145,9 +134,6 @@ public class AssessmentTaskDeclareService implements AssessmentTaskInterface {
         dto.setCreator(commonService.thisUserAccount());
         dto.setValidScore(new BigDecimal(0));
         dto.setExamineUrl(applyUrl);
-        if (spotActivityId != null) {
-            dto.setSpotActivityId(spotActivityId);
-        }
         Integer id = chksRpcAssessmentService.saveAndUpdateAssessmentProjectPerformanceDto(dto, true);
         if (id != null) {
             dto.setExamineUrl(String.join("", applyUrl, "?id=", id.toString()));

@@ -2,7 +2,6 @@ package com.copower.pmcc.assess.service.chks;
 
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.dal.basis.entity.*;
-import com.copower.pmcc.assess.proxy.face.AssessmentTaskInterface;
 import com.copower.pmcc.assess.service.basic.BasicApplyBatchDetailService;
 import com.copower.pmcc.assess.service.basic.BasicApplyBatchService;
 import com.copower.pmcc.assess.service.project.ProjectPlanService;
@@ -137,6 +136,7 @@ public class AssessmentTaskExploreService implements AssessmentTaskInterface {
         dto.setBoxId(boxReDto.getId());
         BoxReActivityDto activityDto = bpmRpcBoxService.getBoxreActivityInfoById(activityId);
         dto.setActivityId(activityId);
+        dto.setReActivityName(activityDto.getName());
         dto.setSorting(activityDto.getSortMultilevel());
         dto.setActivityName(activityDto.getCnName());
         dto.setByExaminePeople(byExamineUser);
@@ -153,7 +153,6 @@ public class AssessmentTaskExploreService implements AssessmentTaskInterface {
                 dto.setPlanName(projectPlanDetails.getProjectPhaseName());
             }
         }
-//        dto.setExaminePeople(commonService.thisUserAccount());
         dto.setCreator(commonService.thisUserAccount());
         dto.setValidScore(new BigDecimal(0));
         dto.setExamineUrl(examineUrl);
