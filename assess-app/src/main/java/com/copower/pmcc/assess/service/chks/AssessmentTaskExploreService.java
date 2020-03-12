@@ -106,19 +106,19 @@ public class AssessmentTaskExploreService implements AssessmentTaskInterface {
             String businessKey = null;
             if (Objects.equal(basicApplyBatchDetail.getTableName(), FormatUtils.entityNameConvertToTableName(BasicBuilding.class))) {
                 tbType = "building";
-                businessKey = "楼栋";
+                businessKey = String.join("-","楼栋",basicApplyBatchDetail.getName());
             }
             if (Objects.equal(basicApplyBatchDetail.getTableName(), FormatUtils.entityNameConvertToTableName(BasicHouse.class))) {
                 tbType = "house";
-                businessKey = "房屋";
+                businessKey = String.join("-","房屋",basicApplyBatchDetail.getName());
             }
             if (Objects.equal(basicApplyBatchDetail.getTableName(), FormatUtils.entityNameConvertToTableName(BasicUnit.class))) {
                 tbType = "unit";
-                businessKey = "单元";
+                businessKey = String.join("-","单元",basicApplyBatchDetail.getName());
             }
             if (Objects.equal(basicApplyBatchDetail.getTableName(), FormatUtils.entityNameConvertToTableName(BasicEstate.class))) {
                 tbType = "estate";
-                businessKey = "楼盘";
+                businessKey = String.join("-","楼盘",basicApplyBatchDetail.getName());
             }
             linkedList.add(String.join("=", "tbType", tbType));
             saveAssessmentProjectPerformanceDto(processInsId, activityId, taskId, byExamineUser, projectInfo, projectPlanDetails, boxReDto, basicApplyBatchDetail.getTableName(), basicApplyBatchDetail.getTableId(), tbType, StringUtils.join(linkedList, "&"), businessKey, spotActivityId);
