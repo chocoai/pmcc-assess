@@ -5082,6 +5082,71 @@ public class GenerateBaseDataService {
         return localPath;
     }
 
+    /**
+     * 估价对象权益状况表
+     *
+     * @return
+     * @throws Exception
+     */
+    @Deprecated
+    public String getJudgeObjectEquitySheet() throws Exception {
+        Document doc = new Document();
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
+        //1.先根据楼盘分组，再分别获取到楼盘下的权益信息
+        generateCommonMethod.setDefaultDocumentBuilderSetting(builder);
+        LinkedHashMap<BasicEstate, List<SchemeJudgeObject>> linkedHashMap = generateCommonMethod.getEstateGroupByAreaId(areaId);
+        if (!linkedHashMap.isEmpty()) {
+            for (Map.Entry<BasicEstate, List<SchemeJudgeObject>> entry : linkedHashMap.entrySet()) {
+                //根据不同项目类别确定获取数据的方法
+                if (linkedHashMap.size() > 1) {//添加楼盘或估价对象编号作区分
+                    builder.insertHtml(generateCommonMethod.getWarpCssHtml("<div style='text-align:center;;font-size:16.0pt;'>" + entry.getKey().getName() + "</div>"));
+                }
+                if (projectInfo.getProjectCategoryName().contains("房产")) {
+                    {
+                        String s = null;
+                        try {
+                            s = generateEquityService.getLandEquity(entry.getKey(), entry.getValue());
+                        } catch (Exception e) {
+                            baseService.writeExceptionInfo(e, "土地权益状况未获取到");
+                        }
+                        if (StringUtils.isNotBlank(s)) {
+                            builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml("1、土地权益状况")));
+                            builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml(s)), false);
+                        }
+                    }
+                    {
+                        String s = null;
+                        try {
+                            s = generateEquityService.getHouseEquity(entry.getValue(), projectId);
+                        } catch (Exception e) {
+                            baseService.writeExceptionInfo(e, "房屋权益状况未获取到");
+                        }
+                        if (StringUtils.isNotBlank(s)) {
+                            builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml("2、房屋权益状况")));
+                            builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml(s)), false);
+                        }
+                    }
+                } else if (projectInfo.getProjectCategoryName().contains("土地")) {
+                    {
+                        String s = null;
+                        try {
+                            s = generateEquityService.getLandEquityFull(entry.getKey(), entry.getValue(), projectId);
+                        } catch (Exception e) {
+                            baseService.writeExceptionInfo(e, "土地权益状况未获取到");
+                        }
+                        if (StringUtils.isNotBlank(s)) {
+                            builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml("1、土地权益状况")));
+                            builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml(s)), false);
+                        }
+                    }
+                }
+            }
+        }
+        String localPath = getLocalPath();
+        doc.save(localPath);
+        return localPath;
+    }
+
 
     /**
      * 估价对象权益状况表
