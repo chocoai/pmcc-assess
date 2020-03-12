@@ -1154,7 +1154,7 @@ public class GenerateMdCompareService {
             num = num.divide(new BigDecimal(String.valueOf(caseItemList.size())), 2, RoundingMode.CEILING);
             String result = String.format("%.2f", num);
             content.deleteCharAt(content.length() - 1);
-            content.append(")").append("÷").append(caseItemList.size()).append("=").append(result);
+            content.append(")").append("÷").append(caseItemList.size()).append("≈").append(result);
             content.append(unit).append("；").append("即,估价对象房地产的单价为").append(result).append(unit);
         } else {
             front.append(weightRemark).append("计算过程如下：");
