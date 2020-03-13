@@ -7,7 +7,7 @@ import java.util.Map;
  * Created by zch on 2020-2-3.
  */
 
-public class MyEntry<K, V> implements Map.Entry<K, V>,Serializable {
+public class MyEntry<K, V> implements Map.Entry<K, V>, Serializable, Comparable,Cloneable {
     private final K key;
     private V value;
 
@@ -49,5 +49,17 @@ public class MyEntry<K, V> implements Map.Entry<K, V>,Serializable {
         int result = key != null ? key.hashCode() : 0;
         result = 31 * result + (value != null ? value.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        Integer a = hashCode();
+        Integer b = o.hashCode();
+        return a.compareTo(b);
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }

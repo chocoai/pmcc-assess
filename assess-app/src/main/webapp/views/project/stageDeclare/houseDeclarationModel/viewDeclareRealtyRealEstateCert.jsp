@@ -21,7 +21,8 @@
                                     <i class="fa fa-plus"></i>
                                     新增
                                 </button>
-                                <button type="button" class="btn btn-primary btn-sm" onclick="declareRealtyRealEstateCert.editData()">
+                                <button type="button" class="btn btn-primary btn-sm"
+                                        onclick="declareRealtyRealEstateCert.editData()">
                                     <i class="fa fa-pen"></i>
                                     编辑
                                 </button>
@@ -43,6 +44,19 @@
                                            onclick="$('#ajaxFileUploadRealEstate').val('').attr('data-type',1).trigger('click');">导入数据</a>
                                     </div>
                                 </div>
+                                <div class="dropdown" style="display: inline;margin-left: 5px;">
+                                    <button type="button" class="btn btn-info dropdown-toggle btn-sm"
+                                            data-toggle="dropdown"
+                                            aria-expanded="false">
+                                        导入不动产清单
+                                    </button>
+                                    <div class="dropdown-menu" role="menu">
+                                        <a href="javascript://" class="dropdown-item"
+                                           onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftRealDeclareRealtyCheckList);">下载模板</a>
+                                        <a href="javascript://;" class="dropdown-item"
+                                           onclick="$('#ajaxFileUploadRealDeclareRealtyCheckList').val('').attr('data-type',1).trigger('click');">导入数据</a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -50,10 +64,12 @@
                     <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
                         <div class="form-inline x-valid">
                             <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
-                                <button type="button" class="btn btn-info btn-sm" onclick="declareRealtyRealEstateCert.copyData();"><i
+                                <button type="button" class="btn btn-info btn-sm"
+                                        onclick="declareRealtyRealEstateCert.copyData();"><i
                                         class="fa fa-copy" aria-hidden="true"></i> 复制
                                 </button>
-                                <button type="button" class="btn btn-warning btn-sm" onclick="declareRealtyRealEstateCert.pasteAll();"><i
+                                <button type="button" class="btn btn-warning btn-sm"
+                                        onclick="declareRealtyRealEstateCert.pasteAll();"><i
                                         class="fa fa-clipboard" aria-hidden="true"></i>粘贴
                                 </button>
                             </div>
@@ -65,12 +81,14 @@
                             <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                                 <div class="input-group " id="realtyRealEstateHandleInputGroup">
                                     <input type="hidden" name="id">
-                                    <input type="text" readonly="readonly" name="name" class="form-control form-control-sm"
+                                    <input type="text" readonly="readonly" name="name"
+                                           class="form-control form-control-sm"
                                            placeholder="暂无复制数据">
                                     <div class="input-group-prepend ">
                                         <button class="btn btn-warning btn-sm"
                                                 style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                type="button" onclick="$(this).closest('.input-group').find('input').val('');">
+                                                type="button"
+                                                onclick="$(this).closest('.input-group').find('input').val('');">
                                             清空
                                             <i class="fa "></i>
                                         </button>
@@ -91,7 +109,8 @@
                         <div class="x-valid form-inline">
                             <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">启始编号</label>
                             <div class=" col-xs-9  col-sm-9  col-md-9  col-lg-9 ">
-                                <input type="text" placeholder="必须数字" name="startNumber" class="form-control input-full">
+                                <input type="text" placeholder="必须数字" name="startNumber"
+                                       class="form-control input-full">
                             </div>
                         </div>
                     </div>
@@ -151,15 +170,15 @@
 </div>
 
 
-
-
 <input type="file" id="ajaxFileUploadRealEstate" name="file" style="display: none;"
        onchange="declareRealtyRealEstateCert.inputFile();">
+
+<input type="file" id="ajaxFileUploadRealDeclareRealtyCheckList" name="file" style="display: none;"
+       onchange="declareRealtyRealEstateCert.inputRealDeclareRealtyCheckList();">
 
 <input type="file" id="declareRealtyRealEstateCertFileId" name="declareRealtyRealEstateCertFileId"
        style="display: none;"
        onchange="declareRealtyRealEstateCert.enclosureFun();" multiple="multiple">
-
 
 
 <!-- 不动产 add -->
@@ -211,7 +230,8 @@
                 <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
                     关闭
                 </button>
-                <button type="button" class="btn btn-primary btn-sm" onclick="declareRealtyRealEstateCert.saveAndUpdateData()">
+                <button type="button" class="btn btn-primary btn-sm"
+                        onclick="declareRealtyRealEstateCert.saveAndUpdateData()">
                     保存
                 </button>
             </div>
@@ -235,7 +255,7 @@
             </div>
 
             <div class="modal-body">
-                <form  class="form-horizontal">
+                <form class="form-horizontal">
                     <input type="hidden" name="id">
                     <input type="hidden" name="centerId">
                     <div class="row">
@@ -270,7 +290,8 @@
                 <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
                     关闭
                 </button>
-                <button type="button" class="btn btn-warning btn-sm" onclick="declareRealtyRealEstateCert.declareBuildingPermitRemove()">
+                <button type="button" class="btn btn-warning btn-sm"
+                        onclick="declareRealtyRealEstateCert.declareBuildingPermitRemove()">
                     删除
                 </button>
                 <button type="button" class="btn btn-primary btn-sm"
@@ -297,7 +318,7 @@
             </div>
 
             <div class="modal-body">
-                <form  class="form-horizontal">
+                <form class="form-horizontal">
                     <input type="hidden" name="id">
                     <input type="hidden" name="centerId">
                     <div class="row">
@@ -332,7 +353,8 @@
                 <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
                     关闭
                 </button>
-                <button type="button" class="btn btn-warning btn-sm" onclick="declareRealtyRealEstateCert.declareLandUsePermitRemove()">
+                <button type="button" class="btn btn-warning btn-sm"
+                        onclick="declareRealtyRealEstateCert.declareLandUsePermitRemove()">
                     删除
                 </button>
                 <button type="button" class="btn btn-primary btn-sm"
@@ -346,7 +368,8 @@
 
 
 <!-- 建筑工程施工许可证 -->
-<div id="declareBuildingConstructionPermitRealtyRealBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+<div id="declareBuildingConstructionPermitRealtyRealBox" class="modal fade bs-example-modal-lg" data-backdrop="static"
+     tabindex="-1"
      role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg" style="max-width: 65%;">
@@ -359,7 +382,7 @@
             </div>
 
             <div class="modal-body">
-                <form  class="form-horizontal">
+                <form class="form-horizontal">
                     <input type="hidden" name="id">
                     <input type="hidden" name="centerId">
                     <div class="row">
@@ -394,7 +417,8 @@
                 <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
                     关闭
                 </button>
-                <button type="button" class="btn btn-warning btn-sm" onclick="declareRealtyRealEstateCert.declareBuildingConstructionPermitRemove()">
+                <button type="button" class="btn btn-warning btn-sm"
+                        onclick="declareRealtyRealEstateCert.declareBuildingConstructionPermitRemove()">
                     删除
                 </button>
                 <button type="button" class="btn btn-primary btn-sm"
@@ -421,7 +445,7 @@
             </div>
 
             <div class="modal-body">
-                <form  class="form-horizontal">
+                <form class="form-horizontal">
                     <input type="hidden" name="id">
                     <input type="hidden" name="centerId">
                     <div class="row">
@@ -456,7 +480,8 @@
                 <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
                     关闭
                 </button>
-                <button type="button" class="btn btn-warning btn-sm" onclick="declareRealtyRealEstateCert.declarePreSalePermitRemove()">
+                <button type="button" class="btn btn-warning btn-sm"
+                        onclick="declareRealtyRealEstateCert.declarePreSalePermitRemove()">
                     删除
                 </button>
                 <button type="button" class="btn btn-primary btn-sm"
@@ -467,6 +492,51 @@
         </div>
     </div>
 </div>
+
+<!-- 不动产清单 -->
+<div id="declareRealtyCheckListModelBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="max-width: 65%;">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title">不动产清单</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <input type="hidden" name="id">
+                    <input type="hidden" name="marsterId">
+                    <input type="hidden" name="autoInitNumber">
+                    <div class="row">
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+
+                            <div class="card-body">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-warning btn-sm"
+                        onclick="declareRealtyRealEstateCert.declareRealtyCheckListRemove()">
+                    删除
+                </button>
+                <button type="button" class="btn btn-primary btn-sm"
+                        onclick="declareRealtyRealEstateCert.declareRealtyCheckListSaveAndUpdate();">
+                    保存
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 
 

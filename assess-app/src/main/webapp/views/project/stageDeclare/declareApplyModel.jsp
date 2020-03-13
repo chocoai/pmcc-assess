@@ -214,6 +214,11 @@
             id: "buildingPermitCommon",
             handleId: "declareModelHandleBuildingPermitCommon",
             name: "建设工程规划许可证"
+        },
+        declareRealtyCheckList: {
+            id: "declareRealtyCheckListCommon",
+            handleId: "declareRealtyCheckListModelHandleCommon",
+            name: "建设工程规划许可证"
         }
     };
 
@@ -310,6 +315,13 @@
             return $("#" + commonDeclareApplyModel.config.buildingPermit.id).html();
         }
     };
+
+    //不动产清单
+    commonDeclareApplyModel.declareRealtyCheckList = {
+        getHtml: function () {
+            return $("#" + commonDeclareApplyModel.config.declareRealtyCheckList.id).html();
+        }
+    }
 
 
 </script>
@@ -1970,7 +1982,6 @@
         </div>
 
 
-
         <div class="row form-group">
             <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                 <div class="form-inline x-valid">
@@ -2125,14 +2136,14 @@
                         <input type="text" placeholder="坐落" name="beLocated" class="form-control input-full"
                                required>
                         <%--<div class="input-group">--%>
-                            <%--<input type="text" placeholder="坐落" name="beLocated" class="form-control form-control-sm"--%>
-                                   <%--required>--%>
-                            <%--<div class="input-group-prepend ">--%>
-                                <%--<button class="btn btn-info btn-sm "--%>
-                                        <%--style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"--%>
-                                        <%--type="button" onclick="commonDeclareApplyModel.seatJoin(this);">自动拼接--%>
-                                <%--</button>--%>
-                            <%--</div>--%>
+                        <%--<input type="text" placeholder="坐落" name="beLocated" class="form-control form-control-sm"--%>
+                        <%--required>--%>
+                        <%--<div class="input-group-prepend ">--%>
+                        <%--<button class="btn btn-info btn-sm "--%>
+                        <%--style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"--%>
+                        <%--type="button" onclick="commonDeclareApplyModel.seatJoin(this);">自动拼接--%>
+                        <%--</button>--%>
+                        <%--</div>--%>
                         <%--</div>--%>
                     </div>
                 </div>
@@ -2149,7 +2160,8 @@
                     </label>
                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                         <div class="input-group">
-                            <input type="text" name="landCertUse" class="form-control form-control-sm" list="landCertUseList2">
+                            <input type="text" name="landCertUse" class="form-control form-control-sm"
+                                   list="landCertUseList2">
                             <datalist id="landCertUseList2">
 
                             </datalist>
@@ -2199,9 +2211,6 @@
         </div>
 
 
-
-
-
         <div class="row form-group">
             <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                 <div class="form-inline x-valid">
@@ -2232,7 +2241,6 @@
                 </div>
             </div>
         </div>
-
 
 
         <div class="row form-group">
@@ -2279,7 +2287,8 @@
                         批文时间
                     </label>
                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                        <input placeholder="批文时间" name="approvalTime" data-date-format="yyyy-mm-dd" class="form-control input-full date-picker dbdate roomTime" readonly="readonly">
+                        <input placeholder="批文时间" name="approvalTime" data-date-format="yyyy-mm-dd"
+                               class="form-control input-full date-picker dbdate roomTime" readonly="readonly">
                     </div>
                 </div>
             </div>
@@ -2309,7 +2318,8 @@
                     </label>
                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                         <div class="input-group">
-                            <input type="text" name="houseCertUse" class="form-control form-control-sm" list="realHouseUseList2">
+                            <input type="text" name="houseCertUse" class="form-control form-control-sm"
+                                   list="realHouseUseList2">
                             <datalist id="realHouseUseList2"></datalist>
                             <div class="input-group-prepend ">
                                 <button class="btn btn-warning btn-sm"
@@ -2351,8 +2361,6 @@
                 </div>
             </div>
         </div>
-
-
 
 
         <div class="row form-group">
@@ -3441,14 +3449,14 @@
                                required>
 
                         <%--<div class="input-group">--%>
-                            <%--<input type="text" placeholder="坐落" name="beLocated" class="form-control form-control-sm"--%>
-                                   <%--required>--%>
-                            <%--<div class="input-group-prepend ">--%>
-                                <%--<button class="btn btn-info btn-sm "--%>
-                                        <%--style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"--%>
-                                        <%--type="button" onclick="commonDeclareApplyModel.seatJoin(this);">自动拼接--%>
-                                <%--</button>--%>
-                            <%--</div>--%>
+                        <%--<input type="text" placeholder="坐落" name="beLocated" class="form-control form-control-sm"--%>
+                        <%--required>--%>
+                        <%--<div class="input-group-prepend ">--%>
+                        <%--<button class="btn btn-info btn-sm "--%>
+                        <%--style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"--%>
+                        <%--type="button" onclick="commonDeclareApplyModel.seatJoin(this);">自动拼接--%>
+                        <%--</button>--%>
+                        <%--</div>--%>
                         <%--</div>--%>
                     </div>
                 </div>
@@ -3513,7 +3521,7 @@
                     </label>
                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                         <div class="input-group">
-                            <input type="text"  name="certUse" class="form-control form-control-sm"
+                            <input type="text" name="certUse" class="form-control form-control-sm"
                                    list="certUseList2"
                                    required>
                             <datalist id="certUseList2"></datalist>
@@ -3533,7 +3541,7 @@
                     </label>
                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                         <div class="input-group">
-                            <input type="text"  name="certUseCategory" list="certUseCategoryList2"
+                            <input type="text" name="certUseCategory" list="certUseCategoryList2"
                                    class="form-control form-control-sm" required>
                             <datalist id="certUseCategoryList2">
 
@@ -3586,7 +3594,6 @@
         </div>
 
 
-
         <div class="row form-group">
             <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                 <div class="form-inline x-valid">
@@ -3626,6 +3633,119 @@
                     </label>
                     <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
                         <textarea class="form-control input-full" name="memo"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/html" id="declareRealtyCheckListCommon" data-title="不动产清单">
+    <div id="declareRealtyCheckListModelHandleCommon">
+        <div class="row form-group">
+            <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                <div class="form-inline x-valid">
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        不动产单元号
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                        <input type="text"
+                               placeholder="不动产单元号" name="realEstateUnitNumber" class="form-control input-full">
+                    </div>
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        所在区
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                        <input type="text"
+                               placeholder="所在区" name="district" class="form-control input-full">
+                    </div>
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        门牌号
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                        <input type="text"
+                               placeholder="门牌号" name="houseNumber" class="form-control input-full">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                <div class="form-inline x-valid">
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        街道号<span class="symbol required"></span>
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                        <input type="text"
+                               placeholder="街道号" name="streetNumber" required="required" class="form-control input-full">
+                    </div>
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        附号
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                        <input type="text"
+                               placeholder="附号(数字)" name="attachedNumber" class="form-control input-full"
+                               data-rule-maxlength="100" data-rule-number='true'>
+                    </div>
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        栋号
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                        <input type="text"
+                               placeholder="栋号" name="buildingNumber" class="form-control input-full" >
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                <div class="form-inline x-valid">
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        单元
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                        <input type="text"
+                               placeholder="单元(数字)" name="unit" class="form-control input-full"
+                               data-rule-maxlength="100" data-rule-number='true'>
+                    </div>
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        楼层
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                        <input type="text"
+                               placeholder="楼层" name="floor" class="form-control input-full" data-rule-maxlength="100" data-rule-number='true'>
+                    </div>
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        房号
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                        <input type="text" placeholder="房号" name="roomNumber" class="form-control input-full">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                <div class="form-inline x-valid">
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        用途
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                        <input type="text"
+                               placeholder="用途" name="certUse" class="form-control input-full">
+                    </div>
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        房屋建筑面积
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                        <input type="text"
+                               placeholder="房屋建筑面积" name="floorArea" class="form-control input-full" data-rule-maxlength="100" data-rule-number='true'>
+                    </div>
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        分摊面积
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                        <input type="text" placeholder="分摊面积" name="apportionmentArea" class="form-control input-full" data-rule-maxlength="100" data-rule-number='true'>
                     </div>
                 </div>
             </div>

@@ -465,19 +465,19 @@ public class DeclarePublicService {
         return check;
     }
 
-    private boolean excelImportHelp(Multimap<String, Map.Entry<Class<?>, Integer>> classArrayListMultimap, Object target, StringBuilder stringBuilder, Row row, Multimap<String, List<BaseDataDic>> baseMap) {
+    public boolean excelImportHelp(Multimap<String, Map.Entry<Class<?>, Integer>> classArrayListMultimap, Object target, StringBuilder stringBuilder, Row row, Multimap<String, List<BaseDataDic>> baseMap) {
         return excelImportHelp(classArrayListMultimap, target, stringBuilder, row, baseMap, null);
     }
 
-    private boolean excelImportHelp(Multimap<String, Map.Entry<Class<?>, Integer>> classArrayListMultimap, Object target, StringBuilder stringBuilder, Row row, List<String> requiredList) {
+    public boolean excelImportHelp(Multimap<String, Map.Entry<Class<?>, Integer>> classArrayListMultimap, Object target, StringBuilder stringBuilder, Row row, List<String> requiredList) {
         return excelImportHelp(classArrayListMultimap, target, stringBuilder, row, null, requiredList);
     }
 
-    private boolean excelImportHelp(Multimap<String, Map.Entry<Class<?>, Integer>> classArrayListMultimap, Object target, StringBuilder stringBuilder, Row row) {
+    public boolean excelImportHelp(Multimap<String, Map.Entry<Class<?>, Integer>> classArrayListMultimap, Object target, StringBuilder stringBuilder, Row row) {
         return excelImportHelp(classArrayListMultimap, target, stringBuilder, row, null, null);
     }
 
-    private boolean excelImportHelp(Multimap<String, Map.Entry<Class<?>, Integer>> classArrayListMultimap, Object target, StringBuilder stringBuilder, Row row, Multimap<String, List<BaseDataDic>> baseMap, List<String> requiredList) {
+    public boolean excelImportHelp(Multimap<String, Map.Entry<Class<?>, Integer>> classArrayListMultimap, Object target, StringBuilder stringBuilder, Row row, Multimap<String, List<BaseDataDic>> baseMap, List<String> requiredList) {
         return excelImportHelp(classArrayListMultimap, target, stringBuilder, row, baseMap, requiredList, true);
     }
 
@@ -935,8 +935,35 @@ public class DeclarePublicService {
         return size;
     }
 
-    private TreeSet<Integer> getCountByPlanDetailsIdAndAutoInitNumberList(Integer planDetailsId, Integer autoInitNumber, DeclareTypeEnum declareTypeEnum) {
+    public TreeSet<Integer> getCountByPlanDetailsIdAndAutoInitNumberList(Integer planDetailsId, Integer autoInitNumber, DeclareTypeEnum declareTypeEnum) {
         TreeSet<Integer> integerTreeSet = new TreeSet<>();
+        TreeSet<Map.Entry<Integer, Class<?>>> countByPlanDetailsIdAndAutoInitNumberListHelp = getCountByPlanDetailsIdAndAutoInitNumberListHelp(planDetailsId, autoInitNumber, declareTypeEnum);
+        if (CollectionUtils.isNotEmpty(countByPlanDetailsIdAndAutoInitNumberListHelp)) {
+            Iterator<Map.Entry<Integer, Class<?>>> entryIterator = countByPlanDetailsIdAndAutoInitNumberListHelp.iterator();
+            while (entryIterator.hasNext()) {
+                Map.Entry<Integer, Class<?>> classEntry = entryIterator.next();
+                integerTreeSet.add(classEntry.getKey());
+            }
+        }
+        return integerTreeSet;
+    }
+
+    public TreeSet<Map.Entry<Integer, Class<?>>> getCountByPlanDetailsIdAndAutoInitNumberListHelp(Integer planDetailsId, Integer autoInitNumber, DeclareTypeEnum declareTypeEnum) {
+        TreeSet<Map.Entry<Integer, Class<?>>> integerTreeSet = new TreeSet<>();
+        TreeSet<Map.Entry<Integer, MyEntry<Integer, Class<?>>>> entryTreeSet = getCountByPlanDetailsIdAndAutoInitNumberListTool(planDetailsId, autoInitNumber, declareTypeEnum);
+        if (CollectionUtils.isNotEmpty(entryTreeSet)) {
+            Iterator<Map.Entry<Integer, MyEntry<Integer, Class<?>>>> entryIterator = entryTreeSet.iterator();
+            while (entryIterator.hasNext()) {
+                Map.Entry<Integer, MyEntry<Integer, Class<?>>> myEntryEntry = entryIterator.next();
+                MyEntry<Integer, Class<?>> myEntry = new MyEntry<>(myEntryEntry.getKey(), myEntryEntry.getValue().getValue());
+                integerTreeSet.add(myEntry);
+            }
+        }
+        return integerTreeSet;
+    }
+
+    public TreeSet<Map.Entry<Integer, MyEntry<Integer, Class<?>>>> getCountByPlanDetailsIdAndAutoInitNumberListTool(Integer planDetailsId, Integer autoInitNumber, DeclareTypeEnum declareTypeEnum) {
+        TreeSet<Map.Entry<Integer, MyEntry<Integer, Class<?>>>> integerTreeSet = new TreeSet<>();
         DeclareRealtyHouseCert house = new DeclareRealtyHouseCert();
         DeclareRealtyLandCert land = new DeclareRealtyLandCert();
         DeclareRealtyRealEstateCert estateCert = new DeclareRealtyRealEstateCert();
@@ -961,7 +988,8 @@ public class DeclarePublicService {
                 if (houseCertVo.getAutoInitNumber() == null) {
                     continue;
                 }
-                integerTreeSet.add(houseCertVo.getAutoInitNumber());
+                MyEntry<Integer, Class<?>> myEntry = new MyEntry<>(houseCertVo.getId(), DeclareRealtyHouseCert.class);
+                integerTreeSet.add(new MyEntry<>(houseCertVo.getAutoInitNumber(), myEntry));
             }
         }
         List<DeclareRealtyLandCertVo> declareRealtyLandCertVoList = declareRealtyLandCertService.lists(land);
@@ -972,7 +1000,8 @@ public class DeclarePublicService {
                 if (landCertVo.getAutoInitNumber() == null) {
                     continue;
                 }
-                integerTreeSet.add(landCertVo.getAutoInitNumber());
+                MyEntry<Integer, Class<?>> myEntry = new MyEntry<>(landCertVo.getId(), DeclareRealtyLandCert.class);
+                integerTreeSet.add(new MyEntry<>(landCertVo.getAutoInitNumber(), myEntry));
             }
         }
         List<DeclareRealtyRealEstateCertVo> declareRealtyRealEstateCertList = declareRealtyRealEstateCertService.landLevels(estateCert);
@@ -983,11 +1012,13 @@ public class DeclarePublicService {
                 if (estateCertVo.getAutoInitNumber() == null) {
                     continue;
                 }
-                integerTreeSet.add(estateCertVo.getAutoInitNumber());
+                MyEntry<Integer, Class<?>> myEntry = new MyEntry<>(estateCertVo.getId(), DeclareRealtyRealEstateCert.class);
+                integerTreeSet.add(new MyEntry<>(estateCertVo.getAutoInitNumber(), myEntry));
             }
         }
         return integerTreeSet;
     }
+
 
     /**
      * 获取主数据的从数据

@@ -330,7 +330,7 @@ declareCommon.ajaxFileUploadCommon = function (data, fileElementId, url, callbac
 };
 
 declareCommon.ajaxFileUploadCommonFun = function (data, fileElementId, url, callback) {
-    declareCommon.ajaxFileUploadCommon(data,fileElementId,url,callback,true) ;
+    declareCommon.ajaxFileUploadCommon(data, fileElementId, url, callback, true);
 };
 
 //土地
@@ -1484,3 +1484,18 @@ declareCommon.getDeclarePreSalePermitById = function (id, callback) {
         AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
     });
 };
+
+//save 不动产清单
+declareCommon.saveAndUpdateDeclareRealtyCheckList = function (data, callback) {
+    declareCommon.ajaxServerFun({formData: JSON.stringify(data),updateNull:true}, "/declareRealtyCheckList/saveAndUpdateDeclareRealtyCheckList", "post", callback,"save");
+};
+declareCommon.getDeclareRealtyCheckListListByExample = function (data, callback) {
+    declareCommon.ajaxServerFun(data, "/declareRealtyCheckList/getDeclareRealtyCheckListListByExample", "get", callback,null);
+};
+declareCommon.deleteDeclareRealtyCheckListById = function (id, callback) {
+    declareCommon.ajaxServerFun({id: id}, "/declareRealtyCheckList/deleteDeclareRealtyCheckListById", "post", callback,"delete");
+};
+declareCommon.getDeclareRealtyCheckListById = function (id, callback) {
+    declareCommon.ajaxServerFun({id: id}, "/declareRealtyCheckList/getDeclareRealtyCheckListById", "get", callback,null);
+};
+
