@@ -28,6 +28,8 @@ public class DeclareRealtyCheckList {
 
     private String roomNumber;
 
+    private String housingStructure;
+
     private String certUse;
 
     private BigDecimal floorArea;
@@ -136,6 +138,14 @@ public class DeclareRealtyCheckList {
 
     public void setRoomNumber(String roomNumber) {
         this.roomNumber = roomNumber == null ? null : roomNumber.trim();
+    }
+
+    public String getHousingStructure() {
+        return housingStructure;
+    }
+
+    public void setHousingStructure(String housingStructure) {
+        this.housingStructure = housingStructure == null ? null : housingStructure.trim();
     }
 
     public String getCertUse() {

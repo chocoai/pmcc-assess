@@ -65,10 +65,10 @@ declareCommon.config = {
         frm: "frmDeclareEconomicIndicatorsContentRealtyRealEstate",
         name: "经济指标2"
     },
-    declareRealtyCheckListModel:"#declareRealtyCheckListDataModelBox",
-    declareRealtyCheckListListBox:"#divDataDeclareRealtyCheckList",
-    declareRealtyCheckListToolBar:"#toolbarDeclareRealtyCheckList",
-    declareRealtyCheckListTable:"#tbDataDeclareRealtyCheckListList"
+    declareRealtyCheckListModel: "#declareRealtyCheckListDataModelBox",
+    declareRealtyCheckListListBox: "#divDataDeclareRealtyCheckList",
+    declareRealtyCheckListToolBar: "#toolbarDeclareRealtyCheckList",
+    declareRealtyCheckListTable: "#tbDataDeclareRealtyCheckListList"
 };
 
 declareCommon.declareCenterData = {
@@ -1491,25 +1491,28 @@ declareCommon.getDeclarePreSalePermitById = function (id, callback) {
 
 //save 不动产清单
 declareCommon.saveAndUpdateDeclareRealtyCheckList = function (data, callback) {
-    declareCommon.ajaxServerFun({formData: JSON.stringify(data),updateNull:true}, "/declareRealtyCheckList/saveAndUpdateDeclareRealtyCheckList", "post", callback,"save");
+    declareCommon.ajaxServerFun({
+        formData: JSON.stringify(data),
+        updateNull: true
+    }, "/declareRealtyCheckList/saveAndUpdateDeclareRealtyCheckList", "post", callback, "save");
 };
 declareCommon.getDeclareRealtyCheckListListByExample = function (data, callback) {
-    declareCommon.ajaxServerFun(data, "/declareRealtyCheckList/getDeclareRealtyCheckListListByExample", "get", callback,null);
+    declareCommon.ajaxServerFun(data, "/declareRealtyCheckList/getDeclareRealtyCheckListListByExample", "get", callback, null);
 };
 declareCommon.deleteDeclareRealtyCheckListById = function (id, callback) {
-    declareCommon.ajaxServerFun({id: id}, "/declareRealtyCheckList/deleteDeclareRealtyCheckListById", "post", callback,"delete");
+    declareCommon.ajaxServerFun({id: id}, "/declareRealtyCheckList/deleteDeclareRealtyCheckListById", "post", callback, "delete");
 };
 declareCommon.getDeclareRealtyCheckListById = function (id, callback) {
-    declareCommon.ajaxServerFun({id: id}, "/declareRealtyCheckList/getDeclareRealtyCheckListById", "get", callback,null);
+    declareCommon.ajaxServerFun({id: id}, "/declareRealtyCheckList/getDeclareRealtyCheckListById", "get", callback, null);
 };
-declareCommon.loadDeclareRealtyCheckListTable = function (marsterId,tableId) {
-    var box = $(declareCommon.config.declareRealtyCheckListListBox) ;
+declareCommon.loadDeclareRealtyCheckListTable = function (marsterId, tableId) {
+    var box = $(declareCommon.config.declareRealtyCheckListListBox);
     var frm = box.find("form");
-    var query = {marsterId:marsterId,tableId:tableId} ;
+    var query = {marsterId: marsterId, tableId: tableId};
     frm.clearAll();
     frm.initForm(query);
     var cols = [];
-    if (tableId){
+    if (tableId) {
         cols.push({
             field: 'id', title: '编辑', width: 200, formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
@@ -1520,7 +1523,7 @@ declareCommon.loadDeclareRealtyCheckListTable = function (marsterId,tableId) {
                 return str;
             }
         });
-    }else {
+    } else {
         cols.push({
             field: 'id', title: '详情', width: 200, formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
@@ -1544,9 +1547,9 @@ declareCommon.loadDeclareRealtyCheckListTable = function (marsterId,tableId) {
     cols.push({field: 'floorArea', title: '房屋建筑面积'});
     cols.push({field: 'apportionmentArea', title: '分摊面积'});
     cols.push({field: 'realEstateUnitNumber', title: '不动产单元号'});
-    var table = $(declareCommon.config.declareRealtyCheckListTable) ;
+    var table = $(declareCommon.config.declareRealtyCheckListTable);
     table.bootstrapTable('destroy');
-    TableInit(table, getContextPath() + "/declareRealtyCheckList/getBootstrapTableVo", cols,query, {
+    TableInit(table, getContextPath() + "/declareRealtyCheckList/getBootstrapTableVo", cols, query, {
         showColumns: false,
         showRefresh: false,
         search: false,
@@ -1558,28 +1561,28 @@ declareCommon.loadDeclareRealtyCheckListTable = function (marsterId,tableId) {
     box.modal("show");
 };
 declareCommon.editDeclareRealtyCheckList = function (id) {
-    var table = $(declareCommon.config.declareRealtyCheckListTable) ;
+    var table = $(declareCommon.config.declareRealtyCheckListTable);
     var item = table.bootstrapTable('getRowByUniqueId', id);
     declareCommon.addDeclareRealtyCheckList(function (frm) {
-        declareCommon.initFormDeclareRealtyCheckList(item,frm) ;
-    }) ;
-} ;
+        declareCommon.initFormDeclareRealtyCheckList(item, frm);
+    });
+};
 declareCommon.findDeclareRealtyCheckList = function (id) {
-    var table = $(declareCommon.config.declareRealtyCheckListTable) ;
+    var table = $(declareCommon.config.declareRealtyCheckListTable);
     var item = table.bootstrapTable('getRowByUniqueId', id);
-    var box = $(declareCommon.config.declareRealtyCheckListModel) ;
+    var box = $(declareCommon.config.declareRealtyCheckListModel);
     var frm = box.find("form");
     box.find("#" + commonDeclareApprovalModel.config.declareRealtyCheckList.handleId).remove();
     box.find(".card-body").append(commonDeclareApprovalModel.declareRealtyCheckList.getHtml());
     declareCommon.showHtmlMastInit(frm, function (area) {
         box.modal("show");
-        declareCommon.initFormDeclareRealtyCheckList(item,frm) ;
+        declareCommon.initFormDeclareRealtyCheckList(item, frm);
     });
 
 };
 declareCommon.delDeclareRealtyCheckList = function () {
-    var table = $(declareCommon.config.declareRealtyCheckListTable) ;
-    var box = $(declareCommon.config.declareRealtyCheckListListBox) ;
+    var table = $(declareCommon.config.declareRealtyCheckListTable);
+    var box = $(declareCommon.config.declareRealtyCheckListListBox);
     var rows = table.bootstrapTable('getSelections');
     if (!rows || rows.length <= 0) {
         notifyWarning("警告", "请选择要删除的数据!");
@@ -1589,55 +1592,61 @@ declareCommon.delDeclareRealtyCheckList = function () {
         $.each(rows, function (i, item) {
             idArray.push(item.id);
         });
-        declareCommon.deleteDeclareRealtyCheckListById(idArray.join(","),function () {
+        declareCommon.deleteDeclareRealtyCheckListById(idArray.join(","), function () {
             table.bootstrapTable('refresh');
-        }) ;
+        });
     }
 };
 declareCommon.declareRealtyCheckListSaveAndUpdate = function () {
-    var box = $(declareCommon.config.declareRealtyCheckListModel) ;
-    var table = $(declareCommon.config.declareRealtyCheckListTable) ;
+    var box = $(declareCommon.config.declareRealtyCheckListModel);
+    var table = $(declareCommon.config.declareRealtyCheckListTable);
     var frm = box.find("form");
     var data = formSerializeArray(frm);
     data.planDetailsId = declareCommon.getPlanDetailsId();
     if (!frm.valid()) {
         return false;
     }
-    declareCommon.saveAndUpdateDeclareRealtyCheckList(data,function () {
+    declareCommon.saveAndUpdateDeclareRealtyCheckList(data, function () {
         box.modal("hide");
         table.bootstrapTable('refresh');
         $(declareCommon.config.declareRealtyCheckListListBox).modal("show");// list box
-    }) ;
-} ;
+    });
+};
 declareCommon.addDeclareRealtyCheckList = function (callback) {
-    var box = $(declareCommon.config.declareRealtyCheckListModel) ;
+    var box = $(declareCommon.config.declareRealtyCheckListModel);
     var frm = box.find("form");
     box.find("#" + commonDeclareApplyModel.config.declareRealtyCheckList.handleId).remove();
     box.find(".card-body").append(commonDeclareApplyModel.declareRealtyCheckList.getHtml());
     declareCommon.showHtmlMastInit(frm, function (area) {
         box.modal("show");
-        declareCommon.initFormDeclareRealtyCheckList(area,frm) ;
-        // $(declareCommon.config.declareRealtyCheckListListBox).modal("hide");// list box
-        if (callback){
-            callback(frm) ;
+        declareCommon.initFormDeclareRealtyCheckList(area, frm);
+        var form = $(declareCommon.config.declareRealtyCheckListListBox).find("form");
+        var data = formSerializeArray(form);
+        var str = "" + data.tableId + "";
+        if (str == '#tableDeclareRealtyHouseCert') {
+            //说明是房产证
+            frm.find(".realEstateUnitNumber").empty();
+        }
+        if (callback) {
+            callback(frm);
         }
     });
-} ;
-declareCommon.initFormDeclareRealtyCheckList = function (data,frm) {
+};
+declareCommon.initFormDeclareRealtyCheckList = function (data, frm) {
     var arr = [];
     var inputArr = [];
-    var box = $(declareCommon.config.declareRealtyCheckListListBox) ;
-    var item = formSerializeArray(box.find("form")) ;
+    var box = $(declareCommon.config.declareRealtyCheckListListBox);
+    var item = formSerializeArray(box.find("form"));
     jQuery.extend(data, item);
     declareCommon.initFormData(frm, data, arr, false, AssessDBKey.DeclareRealtyCheckList, inputArr);
-} ;
+};
 declareCommon.inputRealDeclareRealtyCheckList = function () {
-    var box = $(declareCommon.config.declareRealtyCheckListListBox) ;
-    var table = $(declareCommon.config.declareRealtyCheckListTable) ;
-    var data = {planDetailsId: declareCommon.getPlanDetailsId()} ;
+    var box = $(declareCommon.config.declareRealtyCheckListListBox);
+    var table = $(declareCommon.config.declareRealtyCheckListTable);
+    var data = {planDetailsId: declareCommon.getPlanDetailsId()};
     jQuery.extend(data, formSerializeArray(box.find("form")));
-    declareCommon.ajaxFileUploadCommon(data,'ajaxFileUploadRealDeclareRealtyCheckList',"/declareRealtyCheckList/importData",function () {
+    declareCommon.ajaxFileUploadCommon(data, 'ajaxFileUploadRealDeclareRealtyCheckList', "/declareRealtyCheckList/importData", function () {
         table.bootstrapTable('refresh');
-    }) ;
+    });
 };
 

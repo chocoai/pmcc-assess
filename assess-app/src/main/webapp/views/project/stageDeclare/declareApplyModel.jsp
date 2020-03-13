@@ -3677,7 +3677,8 @@
                     </label>
                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                         <input type="text"
-                               placeholder="街道号" name="streetNumber" required="required" class="form-control input-full">
+                               placeholder="街道号" name="streetNumber" required="required"
+                               class="form-control input-full">
                     </div>
                     <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
                         附号
@@ -3692,7 +3693,7 @@
                     </label>
                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                         <input type="text"
-                               placeholder="栋号" name="buildingNumber" class="form-control input-full" >
+                               placeholder="栋号" name="buildingNumber" class="form-control input-full">
                     </div>
                 </div>
             </div>
@@ -3713,7 +3714,8 @@
                     </label>
                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                         <input type="text"
-                               placeholder="楼层" name="floor" class="form-control input-full" data-rule-maxlength="100" data-rule-number='true'>
+                               placeholder="楼层" name="floor" class="form-control input-full" data-rule-maxlength="100"
+                               data-rule-number='true'>
                     </div>
                     <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
                         房号
@@ -3739,13 +3741,28 @@
                     </label>
                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                         <input type="text"
-                               placeholder="房屋建筑面积" name="floorArea" class="form-control input-full" data-rule-maxlength="100" data-rule-number='true'>
+                               placeholder="房屋建筑面积" name="floorArea" class="form-control input-full"
+                               data-rule-maxlength="100" data-rule-number='true'>
                     </div>
                     <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
                         分摊面积
                     </label>
                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                        <input type="text" placeholder="分摊面积" name="apportionmentArea" class="form-control input-full" data-rule-maxlength="100" data-rule-number='true'>
+                        <input type="text" placeholder="分摊面积" name="apportionmentArea" class="form-control input-full"
+                               data-rule-maxlength="100" data-rule-number='true'>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                <div class="form-inline x-valid">
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        结构
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                        <input type="text"
+                               placeholder="结构" name="housingStructure" class="form-control input-full">
                     </div>
                 </div>
             </div>

@@ -904,6 +904,10 @@ public class GenerateReportService {
         if (Objects.equal(BaseReportFieldEnum.EquityStatusObjectSheet.getName(), name)) {
             generateCommonMethod.putValue(false, false, true, null, bookmarkMap, fileMap, name, generateBaseDataService.getEquityStatusObjectSheet());
         }
+        //估价对象权属明细清单
+        if (Objects.equal(BaseReportFieldEnum.EquityStatusObjectCheckListSheet.getName(), name)) {
+            generateCommonMethod.putValue(false, false, true, null, bookmarkMap, fileMap, name, generateBaseDataService.getEquityStatusObjectSheetCheckList());
+        }
         //权属证号
         if (Objects.equal(BaseReportFieldEnum.EquityStatusObjectNumber.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getEquityStatusObjectNumber());

@@ -824,6 +824,21 @@ public class AsposeUtils {
         }
     }
 
+    public static Cell insertCell(String name,DocumentBuilder builder)throws Exception{
+        Cell insertCell = builder.insertCell();
+        builder.write(name);
+        return insertCell;
+    }
+
+    public static void insertCell(DocumentBuilder builder, LinkedList<String> titles) throws Exception {
+        if (CollectionUtils.isNotEmpty(titles)) {
+            for (String title : titles) {
+                builder.insertCell();
+                builder.write(title);
+            }
+        }
+    }
+
     /**
      * <div style='font-family:仿宋_GB2312;font-size:14pt;line-height:100%;'>html</div>
      *

@@ -234,6 +234,10 @@ public class DeclareRealtyCheckListService {
         return vo;
     }
 
+    public List<DeclareRealtyCheckList> getDeclareRealtyCheckLists(Integer marsterId){
+        return declareRealtyCheckListDao.getDeclareRealtyCheckLists(marsterId) ;
+    }
+
 
     public List<DeclareRealtyCheckList> getDeclareRealtyCheckListByIds(List<Integer> ids) {
         return declareRealtyCheckListDao.getDeclareRealtyCheckListByIds(ids);
