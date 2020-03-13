@@ -14,6 +14,7 @@ import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.document.DocumentTemplateService;
 import com.copower.pmcc.assess.service.project.ProjectCenterService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
+import com.copower.pmcc.assess.service.project.ProjectMemberService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
@@ -60,6 +61,8 @@ public class ProjectCenterController {
     private ProjectWorkStageService projectWorkStageService;
     @Autowired
     private ProjectPhaseService projectPhaseService;
+    @Autowired
+    private ProjectMemberService projectMemberService;
 
     @RequestMapping(value = "/projectNew", name = "新建项目")
     public ModelAndView projectNew() {
@@ -162,6 +165,12 @@ public class ProjectCenterController {
         if (signBillDataDic != null) {
             signBill = documentTemplateService.getDocumentTemplateList("", signBillDataDic.getId());
             modelAndView.addObject("signBill", signBill);
+        }
+        //项目经理
+        String manager = projectMemberService.getProjectManager(projectId);
+        String thisUser = processControllerComponent.getThisUser();
+        if(manager.contains(thisUser)){
+            modelAndView.addObject("showLimitBtn", true);
         }
         return modelAndView;
     }

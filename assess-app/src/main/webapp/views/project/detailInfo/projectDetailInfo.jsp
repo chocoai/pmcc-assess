@@ -20,13 +20,15 @@
                                         项目管理
                                         <small>
                                             <div class="btn-group">
-                                                <div class="input-group-append">
-                                                    <button class="btn btn-info btn-sm" type="button"
-                                                            onclick="projectDetails.finishProject()"><span
-                                                            class="btn-label"><i class="fa fa-check"></i></span>完成
-                                                    </button>
-                                                </div>
-                                                <c:if test="${projectStatusEnum ne 'close' and projectStatusEnum ne 'finish'}">
+                                                <c:if test="${showLimitBtn eq true}">
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-info btn-sm" type="button"
+                                                                onclick="projectDetails.finishProject()"><span
+                                                                class="btn-label"><i class="fa fa-check"></i></span>完成
+                                                        </button>
+                                                    </div>
+                                                </c:if>
+                                                <c:if test="${projectStatusEnum ne 'close' and projectStatusEnum ne 'finish' and showLimitBtn eq true}">
                                                     <div class="input-group-append">
                                                         <button class="btn btn-info btn-sm" type="button"
                                                                 onclick="projectDetails.stopProject()"><span
@@ -40,12 +42,16 @@
                                                             aria-expanded="false">
                                                         项目变更
                                                     </button>
-                                                    <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(410px, 43px, 0px); top: 0px; left: 0px; will-change: transform;">
-                                                        <a class="dropdown-item" href="${pageContext.request.contextPath}/member.change/applyView?projectId=${projectInfo.id}"
+                                                    <div class="dropdown-menu" x-placement="bottom-start"
+                                                         style="position: absolute; transform: translate3d(410px, 43px, 0px); top: 0px; left: 0px; will-change: transform;">
+                                                        <a class="dropdown-item"
+                                                           href="${pageContext.request.contextPath}/member.change/applyView?projectId=${projectInfo.id}"
                                                            target="_blank">成员变更</a>
-                                                        <a class="dropdown-item" href="${pageContext.request.contextPath}/project.information.change/applyView?projectId=${projectInfo.id}"
+                                                        <a class="dropdown-item"
+                                                           href="${pageContext.request.contextPath}/project.information.change/applyView?projectId=${projectInfo.id}"
                                                            target="_blank">信息变更</a>
-                                                        <a class="dropdown-item" href="${pageContext.request.contextPath}/project.scheme.change/applyView?projectId=${projectInfo.id}"
+                                                        <a class="dropdown-item"
+                                                           href="${pageContext.request.contextPath}/project.scheme.change/applyView?projectId=${projectInfo.id}"
                                                            target="_blank">方案变更</a>
                                                     </div>
                                                 </div>
@@ -123,14 +129,39 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-2">
-                                        <div class="nav flex-column nav-pills nav-secondary" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                                            <a class="nav-link active" onclick="projectDetails.loadDocumentSend(this);" data-table-id="tb_documentSendList" data-toggle="pill" href="#div_documentSendList" role="tab" aria-controls="v-pills-home" aria-selected="true">发文信息</a>
-                                            <a class="nav-link" onclick="projectDetails.loadDocumentOpinion(this)" data-table-id="tb_documentOpinionList" data-toggle="pill" href="#div_documentOpinionList" role="tab" aria-controls="v-pills-profile" aria-selected="false">意见稿信息</a>
-                                            <a class="nav-link" onclick="projectDetails.loadSubsequent(this)" data-table-id="tb_subsequentList" data-toggle="pill" href="#div_subsequentList" role="tab" aria-controls="v-pills-messages" aria-selected="false">后续事项信息</a>
-                                            <a class="nav-link" onclick="projectDetails.loadTakeNumber(this)" data-table-id="tb_takeNumber" data-toggle="pill" href="#div_takeNumber" role="tab" aria-controls="v-pills-home" aria-selected="true">拿号信息</a>
-                                            <a class="nav-link" onclick="projectDetails.loadProjectLog(this)" data-table-id="tb_projectLogList" data-toggle="pill" href="#div_projectLogList" role="tab" aria-controls="v-pills-profile" aria-selected="false">日志信息</a>
-                                            <a class="nav-link" onclick="projectDetails.loadProjectLegwork(this)" data-table-id="tb_projectLegWorkList" data-toggle="pill" href="#div_projectLegWorkList" role="tab" aria-controls="v-pills-messages" aria-selected="false">外勤信息</a>
-                                            <a class="nav-link" onclick="projectDetails.loadProjectBill(this)" data-table-id="tb_projectBillList" data-toggle="pill" href="#div_projectBillList" role="tab" aria-controls="v-pills-messages" aria-selected="false">开票信息</a>
+                                        <div class="nav flex-column nav-pills nav-secondary" id="v-pills-tab"
+                                             role="tablist" aria-orientation="vertical">
+                                            <a class="nav-link active" onclick="projectDetails.loadDocumentSend(this);"
+                                               data-table-id="tb_documentSendList" data-toggle="pill"
+                                               href="#div_documentSendList" role="tab" aria-controls="v-pills-home"
+                                               aria-selected="true">发文信息</a>
+                                            <a class="nav-link" onclick="projectDetails.loadDocumentOpinion(this)"
+                                               data-table-id="tb_documentOpinionList" data-toggle="pill"
+                                               href="#div_documentOpinionList" role="tab"
+                                               aria-controls="v-pills-profile" aria-selected="false">意见稿信息</a>
+                                            <a class="nav-link" onclick="projectDetails.loadSubsequent(this)"
+                                               data-table-id="tb_subsequentList" data-toggle="pill"
+                                               href="#div_subsequentList" role="tab" aria-controls="v-pills-messages"
+                                               aria-selected="false">后续事项信息</a>
+                                            <a class="nav-link" onclick="projectDetails.loadTakeNumber(this)"
+                                               data-table-id="tb_takeNumber" data-toggle="pill" href="#div_takeNumber"
+                                               role="tab" aria-controls="v-pills-home" aria-selected="true">拿号信息</a>
+                                            <a class="nav-link" onclick="projectDetails.loadProjectLog(this)"
+                                               data-table-id="tb_projectLogList" data-toggle="pill"
+                                               href="#div_projectLogList" role="tab" aria-controls="v-pills-profile"
+                                               aria-selected="false">日志信息</a>
+                                            <a class="nav-link" onclick="projectDetails.loadProjectLegwork(this)"
+                                               data-table-id="tb_projectLegWorkList" data-toggle="pill"
+                                               href="#div_projectLegWorkList" role="tab"
+                                               aria-controls="v-pills-messages" aria-selected="false">外勤信息</a>
+                                            <a class="nav-link" onclick="projectDetails.loadProjectBill(this)"
+                                               data-table-id="tb_projectBillList" data-toggle="pill"
+                                               href="#div_projectBillList" role="tab" aria-controls="v-pills-messages"
+                                               aria-selected="false">开票信息</a>
+                                            <a class="nav-link" onclick="projectDetails.loadProjectStop(this)"
+                                               data-table-id="tb_projectStopList" data-toggle="pill"
+                                               href="#div_projectStopList" role="tab" aria-controls="v-pills-messages"
+                                               aria-selected="false">项目终止</a>
                                         </div>
                                     </div>
                                     <div class="col-md-10">
@@ -161,6 +192,10 @@
                                         </div>
                                         <div class="bootstrap-table-list" id="div_projectBillList">
                                             <table title="开票信息" class="table table-bordered" id="tb_projectBillList">
+                                            </table>
+                                        </div>
+                                        <div class="bootstrap-table-list" id="div_projectStopList">
+                                            <table title="项目终止" class="table table-bordered" id="tb_projectStopList">
                                             </table>
                                         </div>
                                     </div>
@@ -208,12 +243,12 @@
                         window.open(url, '_blank');
                     }
                     else {
-                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                        AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
                     Loading.progressHide();
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             });
         },
@@ -236,7 +271,7 @@
                 },
                 error: function (result) {
                     Loading.progressHide();
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             });
         },
@@ -435,6 +470,30 @@
             target.bootstrapTable('destroy');
             TableInit(target, "${pageContext.request.contextPath}/rpcFinanceService/getFinancialBillMakeOutList", cols, {
                 publicProjectId: '${projectInfo.publicProjectId}'
+            }, {
+                showColumns: false,
+                showRefresh: false,
+                search: false,
+                onLoadSuccess: function () {
+                    $('.tooltips').tooltip();
+                }
+            });
+        },
+
+        //项目终止
+        loadProjectStop: function (_this) {
+            var target = projectDetails.preLoadListFn(_this);
+            var cols = [];
+            cols.push({
+                field: 'stopTime', title: '关闭时间', formatter: function (value, row, index) {
+                    return formatDate(value, false);
+                }
+            });
+            cols.push({field: 'changeReason', title: '关闭原因'});
+            cols.push({field: 'influence', title: '可能影响'});
+            target.bootstrapTable('destroy');
+            TableInit(target, "${pageContext.request.contextPath}/projectStop/getProjectStopHistory", cols, {
+                projectId: '${projectInfo.id}'
             }, {
                 showColumns: false,
                 showRefresh: false,
