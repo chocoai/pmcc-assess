@@ -61,12 +61,15 @@ public class BasicExamineHandle implements Serializable {
     private BasicEstateParkingService basicEstateParkingService;
     private BasicMatchingMaterialService basicMatchingMaterialService;
     private DataBlockService dataBlockService;
+    private BasicEstateInvestigationService basicEstateInvestigationService;
 
 
     private BasicUnitService basicUnitService;
     private BasicUnitDecorateService basicUnitDecorateService;
     private BasicUnitElevatorService basicUnitElevatorService;
     private BasicUnitHuxingService basicUnitHuxingService;
+    private BasicHouseTradingLeaseAndSellDtoService basicHouseTradingLeaseAndSellDtoService;
+    private BasicBuildingPropertyServiceItemService basicBuildingPropertyServiceItemService;
 
     private BasicApplyBatch basicApplyBatch;
     private List<BasicApplyBatchDetail> basicApplyBatchDetailList;
@@ -567,6 +570,9 @@ public class BasicExamineHandle implements Serializable {
         this.basicMatchingMaterialService = SpringContextUtils.getBean(BasicMatchingMaterialService.class);
         this.dataBlockService = SpringContextUtils.getBean(DataBlockService.class);
         this.baseDataDicService = SpringContextUtils.getBean(BaseDataDicService.class);
+        this.basicHouseTradingLeaseAndSellDtoService = SpringContextUtils.getBean(BasicHouseTradingLeaseAndSellDtoService.class);
+        this.basicEstateInvestigationService = SpringContextUtils.getBean(BasicEstateInvestigationService.class);
+        this.basicBuildingPropertyServiceItemService = SpringContextUtils.getBean(BasicBuildingPropertyServiceItemService.class);
     }
 
     private List<BasicApplyBatchDetail> getBasicApplyBatchDetailList() {

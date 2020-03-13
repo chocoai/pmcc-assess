@@ -36,6 +36,12 @@ public class DeclareRealtyCheckListDao {
         return mapper.selectByPrimaryKey(id) ;
     }
 
+    public List<DeclareRealtyCheckList> getDeclareRealtyCheckLists(Integer marsterId){
+        DeclareRealtyCheckList query = new DeclareRealtyCheckList();
+        query.setMarsterId(marsterId);
+        return getDeclareRealtyCheckListListByExample(query) ;
+    }
+
     public boolean saveDeclareRealtyCheckList(DeclareRealtyCheckList oo){
         return mapper.insertSelective(oo) ==1;
     }

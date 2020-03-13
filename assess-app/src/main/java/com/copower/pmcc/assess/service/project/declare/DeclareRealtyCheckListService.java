@@ -67,60 +67,49 @@ public class DeclareRealtyCheckListService {
      */
     private boolean importExcelHelp(Multimap<String, Map.Entry<Class<?>, Integer>> classArrayListMultimap, DeclareRealtyCheckList target, StringBuilder builder, Row row) {
         //必填项
-        List<String> requiredList = new ArrayList<>(Arrays.asList("autoInitNumber", "streetNumber"));
+        List<String> requiredList = new ArrayList<>(Arrays.asList( "streetNumber"));
         boolean check = declarePublicService.excelImportHelp(classArrayListMultimap, target, builder, row, requiredList);
         if (!check) {
             return false;
         }
-        //从这开始excel 导入结束,下面是一些约束情况
-        TreeSet<Map.Entry<Integer, MyEntry<Integer, Class<?>>>> treeSet = declarePublicService.getCountByPlanDetailsIdAndAutoInitNumberListTool(target.getPlanDetailsId(), target.getAutoInitNumber(), DeclareTypeEnum.MasterData);
-        if (CollectionUtils.isEmpty(treeSet)) {
-            String errorInfo = String.join("", " 编号", target.getAutoInitNumber().toString(), "没有找到匹配的数据 ");
-            declarePublicService.excelImportWriteErrorInfo(row.getRowNum(), errorInfo, builder);
-            return false;
-        }
-        //匹配到了以后需要判断这个编号是否已经被使用过了的情况
-        List<MyEntry<Integer, Class<?>>> myEntryArrayList = new ArrayList<>(1);
-        if (CollectionUtils.isNotEmpty(treeSet)) {
-            Iterator<Map.Entry<Integer, MyEntry<Integer, Class<?>>>> iterator = treeSet.iterator();
-            while (iterator.hasNext()) {
-                Map.Entry<Integer, MyEntry<Integer, Class<?>>> myEntryEntry = iterator.next();
-                Integer marsterId = myEntryEntry.getValue().getKey();
-                Integer count = getCount(target.getAutoInitNumber(), marsterId, target.getPlanDetailsId());
-                if (count > 0) {
-                    continue;
-                }
-                myEntryArrayList.add(myEntryEntry.getValue());
-            }
-        }
-        //编号被使用
-        if (CollectionUtils.isEmpty(myEntryArrayList)) {
-            String errorInfo = String.join("", " 编号", target.getAutoInitNumber().toString(), "已经匹配过了 ， 请修改excel中的编号 ");
-            declarePublicService.excelImportWriteErrorInfo(row.getRowNum(), errorInfo, builder);
-            return false;
-        }
-        //正常匹配的情况
-        if (myEntryArrayList.size() == 1) {
-            MyEntry<Integer, Class<?>> myEntry = myEntryArrayList.get(0);
-            String simpleName = myEntry.getValue().getSimpleName();
-            builder.append("第").append(row.getRowNum()).append("行").append("编号").append(target.getAutoInitNumber()).append("匹配的") ;
-            if (com.google.common.base.Objects.equal(simpleName, DeclareRealtyHouseCert.class.getSimpleName())) {
-                builder.append(DeclareTypeEnum.HOUSE.getKey()) ;
-            }
-            if (com.google.common.base.Objects.equal(simpleName, DeclareRealtyLandCert.class.getSimpleName())) {
-                builder.append(DeclareTypeEnum.LAND.getKey()) ;
-            }
-            if (com.google.common.base.Objects.equal(simpleName, DeclareRealtyRealEstateCert.class.getSimpleName())) {
-                builder.append(DeclareTypeEnum.RealEstate.getKey()) ;
-            }
-            builder.append("\n \r") ;
-            target.setMarsterId(myEntry.getKey());
-        } else {
-            //这里是有多个匹配的情况  ,这种也是不允许的,这种情况一般不会发生  ,因为在房产证，土地证以及不动产 导入excel的时候已经做过判断,如果还出现了这种情况,那么可能是网络原因或者其它未知原因影响了
-            String errorInfo = String.join("", " 编号", target.getAutoInitNumber().toString(), "找到多个可以配过的主表数据 ， 请咨询管理员 ");
-            declarePublicService.excelImportWriteErrorInfo(row.getRowNum(), errorInfo, builder);
-            return false;
-        }
+//        //从这开始excel 导入结束,下面是一些约束情况
+//        TreeSet<Map.Entry<Integer, MyEntry<Integer, Class<?>>>> treeSet = declarePublicService.getCountByPlanDetailsIdAndAutoInitNumberListTool(target.getPlanDetailsId(), target.getAutoInitNumber(), DeclareTypeEnum.MasterData);
+//        if (CollectionUtils.isEmpty(treeSet)) {
+//            String errorInfo = String.join("", " 编号", target.getAutoInitNumber().toString(), "没有找到匹配的数据 ");
+//            declarePublicService.excelImportWriteErrorInfo(row.getRowNum(), errorInfo, builder);
+//            return false;
+//        }
+//        //匹配到了以后需要判断这个编号是否已经被使用过了的情况
+//        List<MyEntry<Integer, Class<?>>> myEntryArrayList = new ArrayList<>(1);
+//        if (CollectionUtils.isNotEmpty(treeSet)) {
+//            Iterator<Map.Entry<Integer, MyEntry<Integer, Class<?>>>> iterator = treeSet.iterator();
+//            while (iterator.hasNext()) {
+//                Map.Entry<Integer, MyEntry<Integer, Class<?>>> myEntryEntry = iterator.next();
+//                Integer marsterId = myEntryEntry.getValue().getKey();
+//                Integer count = getCount(target.getAutoInitNumber(), marsterId, target.getPlanDetailsId());
+//                if (count > 0) {
+//                    continue;
+//                }
+//                myEntryArrayList.add(myEntryEntry.getValue());
+//            }
+//        }
+//        //编号被使用
+//        if (CollectionUtils.isEmpty(myEntryArrayList)) {
+//            String errorInfo = String.join("", " 编号", target.getAutoInitNumber().toString(), "已经匹配过了 ， 请修改excel中的编号 ");
+//            declarePublicService.excelImportWriteErrorInfo(row.getRowNum(), errorInfo, builder);
+//            return false;
+//        }
+//        //正常匹配的情况
+//        if (myEntryArrayList.size() == 1) {
+//            MyEntry<Integer, Class<?>> myEntry = myEntryArrayList.get(0);
+//            String simpleName = myEntry.getValue().getSimpleName();
+//            target.setMarsterId(myEntry.getKey());
+//        } else {
+//            //这里是有多个匹配的情况  ,这种也是不允许的,这种情况一般不会发生  ,因为在房产证，土地证以及不动产 导入excel的时候已经做过判断,如果还出现了这种情况,那么可能是网络原因或者其它未知原因影响了
+//            String errorInfo = String.join("", " 编号", target.getAutoInitNumber().toString(), "找到多个可以配过的主表数据 ， 请咨询管理员 ");
+//            declarePublicService.excelImportWriteErrorInfo(row.getRowNum(), errorInfo, builder);
+//            return false;
+//        }
         return true;
     }
 
@@ -243,6 +232,10 @@ public class DeclareRealtyCheckListService {
         vo.setTotal(page.getTotal());
         vo.setRows(CollectionUtils.isNotEmpty(declareRealtyCheckLists) ? declareRealtyCheckLists : new ArrayList(0));
         return vo;
+    }
+
+    public List<DeclareRealtyCheckList> getDeclareRealtyCheckLists(Integer marsterId){
+        return declareRealtyCheckListDao.getDeclareRealtyCheckLists(marsterId) ;
     }
 
 

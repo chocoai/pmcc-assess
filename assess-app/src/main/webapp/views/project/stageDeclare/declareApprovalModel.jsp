@@ -69,6 +69,11 @@
             id: "buildingPermitCommon",
             handleId: "declareModelHandleBuildingPermitCommon",
             name: "建设工程规划许可证"
+        },
+        declareRealtyCheckList: {
+            id: "declareRealtyCheckListCommon",
+            handleId: "declareRealtyCheckListModelHandleCommon",
+            name: "不动产清单"
         }
     };
 
@@ -161,6 +166,13 @@
             return $("#" + commonDeclareApprovalModel.config.buildingPermit.id).html();
         }
     };
+
+    //不动产清单
+    commonDeclareApprovalModel.declareRealtyCheckList = {
+        getHtml: function () {
+            return $("#" + commonDeclareApprovalModel.config.declareRealtyCheckList.id).html();
+        }
+    }
 </script>
 
 <script id="declareModelHouse" type="text/html" data-title="房产证label">
@@ -2182,6 +2194,122 @@
         </div>
     </div>
 </script>
+
+<script type="text/html" id="declareRealtyCheckListCommon" data-title="不动产清单">
+    <div id="declareRealtyCheckListModelHandleCommon">
+        <div class="row form-group">
+            <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                <div class="form-inline x-valid">
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label realEstateUnitNumber">
+                        不动产单元号
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3 realEstateUnitNumber">
+                        <label  name="realEstateUnitNumber" class="form-control input-full "></label>
+                    </div>
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        所在区
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                        <label  name="district" class="form-control input-full"></label>
+                    </div>
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        门牌号
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                        <label name="houseNumber" class="form-control input-full"></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                <div class="form-inline x-valid">
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        街道号<span class="symbol required"></span>
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                        <label  name="streetNumber" required="required" class="form-control input-full"></label>
+                    </div>
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        附号
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                        <label  name="attachedNumber" class="form-control input-full"
+                               data-rule-maxlength="100" data-rule-number='true'></label>
+                    </div>
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        栋号
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                        <label name="buildingNumber" class="form-control input-full" ></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                <div class="form-inline x-valid">
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        单元
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                        <label  name="unit" class="form-control input-full"
+                               data-rule-maxlength="100" data-rule-number='true'></label>
+                    </div>
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        楼层
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                        <label  name="floor" class="form-control input-full" data-rule-maxlength="100" data-rule-number='true'></label>
+                    </div>
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        房号
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                        <label  name="roomNumber" class="form-control input-full"></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                <div class="form-inline x-valid">
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        用途
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                        <label  name="certUse" class="form-control input-full"></label>
+                    </div>
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        房屋建筑面积
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                        <label name="floorArea" class="form-control input-full" data-rule-maxlength="100" data-rule-number='true'></label>
+                    </div>
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        分摊面积
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                        <label  name="apportionmentArea" class="form-control input-full" data-rule-maxlength="100" data-rule-number='true'></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                <div class="form-inline x-valid">
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        结构
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                        <label  name="housingStructure" class="form-control input-full"></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
 
 </body>
 </html>

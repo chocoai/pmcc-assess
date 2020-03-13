@@ -14,6 +14,7 @@
     <result column="unit" property="unit" jdbcType="VARCHAR" />
     <result column="floor" property="floor" jdbcType="VARCHAR" />
     <result column="room_number" property="roomNumber" jdbcType="VARCHAR" />
+    <result column="housing_structure" property="housingStructure" jdbcType="VARCHAR" />
     <result column="cert_use" property="certUse" jdbcType="VARCHAR" />
     <result column="floor_area" property="floorArea" jdbcType="DECIMAL" />
     <result column="apportionment_area" property="apportionmentArea" jdbcType="DECIMAL" />
@@ -82,8 +83,8 @@
   </sql>
   <sql id="Base_Column_List" >
     id, auto_init_number, marster_id, plan_details_id, district, street_number, house_number, 
-    attached_number, building_number, unit, floor, room_number, cert_use, floor_area, 
-    apportionment_area, real_estate_unit_number, creator, gmt_created, gmt_modified
+    attached_number, building_number, unit, floor, room_number, housing_structure, cert_use, 
+    floor_area, apportionment_area, real_estate_unit_number, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyCheckListExample" >
     select
@@ -122,17 +123,17 @@
     insert into tb_declare_realty_check_list (auto_init_number, marster_id, plan_details_id, 
       district, street_number, house_number, 
       attached_number, building_number, unit, 
-      floor, room_number, cert_use, 
-      floor_area, apportionment_area, real_estate_unit_number, 
-      creator, gmt_created, gmt_modified
-      )
+      floor, room_number, housing_structure, 
+      cert_use, floor_area, apportionment_area, 
+      real_estate_unit_number, creator, gmt_created, 
+      gmt_modified)
     values (#{autoInitNumber,jdbcType=INTEGER}, #{marsterId,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, 
       #{district,jdbcType=VARCHAR}, #{streetNumber,jdbcType=VARCHAR}, #{houseNumber,jdbcType=VARCHAR}, 
       #{attachedNumber,jdbcType=VARCHAR}, #{buildingNumber,jdbcType=VARCHAR}, #{unit,jdbcType=VARCHAR}, 
-      #{floor,jdbcType=VARCHAR}, #{roomNumber,jdbcType=VARCHAR}, #{certUse,jdbcType=VARCHAR}, 
-      #{floorArea,jdbcType=DECIMAL}, #{apportionmentArea,jdbcType=DECIMAL}, #{realEstateUnitNumber,jdbcType=VARCHAR}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+      #{floor,jdbcType=VARCHAR}, #{roomNumber,jdbcType=VARCHAR}, #{housingStructure,jdbcType=VARCHAR}, 
+      #{certUse,jdbcType=VARCHAR}, #{floorArea,jdbcType=DECIMAL}, #{apportionmentArea,jdbcType=DECIMAL}, 
+      #{realEstateUnitNumber,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareRealtyCheckList" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -172,6 +173,9 @@
       </if>
       <if test="roomNumber != null" >
         room_number,
+      </if>
+      <if test="housingStructure != null" >
+        housing_structure,
       </if>
       <if test="certUse != null" >
         cert_use,
@@ -228,6 +232,9 @@
       </if>
       <if test="roomNumber != null" >
         #{roomNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="housingStructure != null" >
+        #{housingStructure,jdbcType=VARCHAR},
       </if>
       <if test="certUse != null" >
         #{certUse,jdbcType=VARCHAR},
@@ -297,6 +304,9 @@
       <if test="record.roomNumber != null" >
         room_number = #{record.roomNumber,jdbcType=VARCHAR},
       </if>
+      <if test="record.housingStructure != null" >
+        housing_structure = #{record.housingStructure,jdbcType=VARCHAR},
+      </if>
       <if test="record.certUse != null" >
         cert_use = #{record.certUse,jdbcType=VARCHAR},
       </if>
@@ -337,6 +347,7 @@
       unit = #{record.unit,jdbcType=VARCHAR},
       floor = #{record.floor,jdbcType=VARCHAR},
       room_number = #{record.roomNumber,jdbcType=VARCHAR},
+      housing_structure = #{record.housingStructure,jdbcType=VARCHAR},
       cert_use = #{record.certUse,jdbcType=VARCHAR},
       floor_area = #{record.floorArea,jdbcType=DECIMAL},
       apportionment_area = #{record.apportionmentArea,jdbcType=DECIMAL},
@@ -384,6 +395,9 @@
       <if test="roomNumber != null" >
         room_number = #{roomNumber,jdbcType=VARCHAR},
       </if>
+      <if test="housingStructure != null" >
+        housing_structure = #{housingStructure,jdbcType=VARCHAR},
+      </if>
       <if test="certUse != null" >
         cert_use = #{certUse,jdbcType=VARCHAR},
       </if>
@@ -421,6 +435,7 @@
       unit = #{unit,jdbcType=VARCHAR},
       floor = #{floor,jdbcType=VARCHAR},
       room_number = #{roomNumber,jdbcType=VARCHAR},
+      housing_structure = #{housingStructure,jdbcType=VARCHAR},
       cert_use = #{certUse,jdbcType=VARCHAR},
       floor_area = #{floorArea,jdbcType=DECIMAL},
       apportionment_area = #{apportionmentArea,jdbcType=DECIMAL},

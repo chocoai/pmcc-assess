@@ -29,8 +29,7 @@ assessCommonHouse.config = {
         name: declareCommon.config.declareEconomicIndicatorsContent.name
     },
     handleCopy: "#houseHandleInputGroup",
-    autoPDFFileId: "houseAttachmentAutomatedWarrantsPDF",
-    declareRealtyCheckListModel:"#declareRealtyCheckListHouseModelBox"
+    autoPDFFileId: "houseAttachmentAutomatedWarrantsPDF"
 };
 
 /**
@@ -229,64 +228,6 @@ assessCommonHouse.pasteAll = function () {
     } else {
         notifyWarning("警告", "只能选择一行数据进行复制!");
     }
-};
-
-
-//不动产清单
-assessCommonHouse.showDeclareRealtyCheckListModel = function (id) {
-    var item = $("#" + assessCommonHouse.config.table).bootstrapTable('getRowByUniqueId', id);
-    if (!declareCommon.isNotBlank(item.centerId)) {
-        notifyWarning("警告", "不合符调整后的数据约定,请联系管理员!");
-        return false;
-    }
-    var box = $(this.config.declareRealtyCheckListModel) ;
-    var arr = [];
-    var inputArr = [];
-    var frm = box.find("form");
-    box.find("#" + commonDeclareApplyModel.config.declareRealtyCheckList.handleId).remove();
-    box.find(".card-body").append(commonDeclareApplyModel.declareRealtyCheckList.getHtml());
-    declareCommon.showHtmlMastInit(frm, function (area) {
-        box.modal("show");
-        declareCommon.getDeclareRealtyCheckListListByExample({marsterId:id,planDetailsId:declareCommon.getPlanDetailsId()} ,function (data) {
-            console.log(data) ;
-            if (data.length > 0){
-                declareCommon.initFormData(frm, data[0], arr, false, AssessDBKey.DeclareRealtyCheckList, inputArr);
-            }else {
-                area.marsterId =  id;
-                declareCommon.initFormData(frm, area, arr, false, AssessDBKey.DeclareRealtyCheckList, inputArr);
-            }
-        }) ;
-
-    });
-};
-assessCommonHouse.declareRealtyCheckListSaveAndUpdate = function () {
-    var box = $(this.config.declareRealtyCheckListModel) ;
-    var frm = box.find("form");
-    var data = formSerializeArray(frm);
-    data.planDetailsId = declareCommon.getPlanDetailsId();
-    if (!frm.valid()) {
-        return false;
-    }
-    declareCommon.saveAndUpdateDeclareRealtyCheckList(data,function () {
-        box.modal("hide");
-    }) ;
-} ;
-assessCommonHouse.declareRealtyCheckListRemove = function () {
-    var box = $(this.config.declareRealtyCheckListModel) ;
-    var frm = box.find("form");
-    var data = formSerializeArray(frm);
-    if (data.id){
-        declareCommon.deleteDeclareRealtyCheckListById(data.id,function () {
-            box.modal("hide");
-        }) ;
-    }else {
-        notifyWarning("操作失败", "此条数据不存在");
-    }
-};
-assessCommonHouse.inputRealDeclareRealtyCheckList = function () {
-    declareCommon.ajaxFileUploadCommon({planDetailsId: declareCommon.getPlanDetailsId()},'ajaxFileUploadRealDeclareRealtyCheckListHouse',"/declareRealtyCheckList/importData",function () {
-        assessCommonHouse.loadList();
-    }) ;
 };
 
 
@@ -661,6 +602,7 @@ assessCommonHouse.attachmentAutomatedWarrants = function (_this) {
  * 房产证列表
  */
 assessCommonHouse.loadList = function () {
+    var table = $("#" + assessCommonHouse.config.table) ;
     var cols = declareCommon.getHouseColumn();
     cols.push({field: 'fileViewName', title: '附件'});
     cols.push({
@@ -669,7 +611,8 @@ assessCommonHouse.loadList = function () {
 
             str += '<button type="button" onclick="assessCommonHouse.showAddModelDeclareEconomicIndicators(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="经济指标">经济指标</button>';
 
-            str += '<button type="button" onclick="assessCommonHouse.showDeclareRealtyCheckListModel(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="不动产清单">不动产清单</button>';
+
+            str += '<button type="button" class="btn btn-xs btn-info tooltips" style="margin-left: 5px;" data-placement="bottom" data-original-title="不动产清单" onclick="declareCommon.loadDeclareRealtyCheckListTable(' + "'" + row.id + "'" + "," + "'" + table.selector + "'" + ')" > <i class="fa "></i>不动产清单</button>';
 
             str += '<button type="button" onclick="assessCommonHouse.houseImportEvent(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="房产证附件">房产证附件</button>';
 
@@ -678,9 +621,8 @@ assessCommonHouse.loadList = function () {
             return str;
         }
     });
-
-    $("#" + assessCommonHouse.config.table).bootstrapTable('destroy');
-    TableInit(assessCommonHouse.config.table, getContextPath() + "/declareRealtyHouseCert/getDeclareRealtyHouseCertList", cols, {
+    table.bootstrapTable('destroy');
+    TableInit(table, getContextPath() + "/declareRealtyHouseCert/getDeclareRealtyHouseCertList", cols, {
         planDetailsId: declareCommon.getPlanDetailsId(),
         enable: declareCommon.masterData
     }, {

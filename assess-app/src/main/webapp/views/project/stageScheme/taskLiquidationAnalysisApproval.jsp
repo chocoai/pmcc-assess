@@ -173,10 +173,11 @@
                                     </div>
 
                                 </form>
+                                <div id="taskLiquidationAnalysisAppend"></div>
                             </div>
                         </div>
                     </div>
-                    <div id="taskLiquidationAnalysisAppend"></div>
+
                     <%@include file="/views/share/form_approval.jsp" %>
                 </div>
             </div>

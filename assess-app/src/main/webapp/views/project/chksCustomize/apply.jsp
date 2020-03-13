@@ -477,57 +477,11 @@
                 boxReActivitiId: '${assessmentProjectPerformanceDto.activityId}',
                 boxId: '${assessmentProjectPerformanceDto.boxId}'
             }, function (data) {
-                var restHtml = "";
-                if (parentData.length == data.length){
-                    $.each(parentData, function (i, item) {
-                        if (! item.assessmentDes){
-                            item.assessmentDes = "" ;
-                        }
-                        var html = assessmentCommonHandle.replaceAssessmentItem($("#assessmentItemTemplateHTML").html(), {
-                            index: i + 1,
-                            contentId: item.contentId,
-                            id: item.id,
-                            actualScore: item.actualScore,
-                            remark: item.remark,
-                            performanceId: '${assessmentProjectPerformanceDto.id}',
-                            name: '${assessmentProjectPerformanceDto.activityName}',
-                            assessmentDes: item.assessmentDes,
-                            minScore: item.minScore,
-                            maxScore: item.maxScore,
-                            standardScore: item.standardScore
-                        });
-                        restHtml += html;
-                    });
-                    if (data.length >= 1) {
-                        var remarksHtml = $("#assessmentItemTemplateRemarksHTML").html();
-                        remarksHtml = remarksHtml.replace(/{remarks}/g, '${assessmentProjectPerformanceDto.remarks}');
-                        restHtml += remarksHtml;
-                    }
-                }
-                if (parentData.length != data.length){
-                    $.each(data, function (i, item) {
-                        var html = assessmentCommonHandle.replaceAssessmentItem($("#assessmentItemTemplateHTML").html(), {
-                            index: i + 1,
-                            contentId: item.id,
-                            id: 0,
-                            actualScore: '',
-                            remark: '',
-                            performanceId: 0,
-                            name: item.boxReActivitiNameCn,
-                            assessmentDes: item.assessmentDes,
-                            minScore: item.minScore,
-                            maxScore: item.maxScore,
-                            standardScore: item.standardScore
-                        });
-                        restHtml += html;
-                    });
-                    if (data.length >= 1) {
-                        var remarksHtml = $("#assessmentItemTemplateRemarksHTML").html();
-                        remarksHtml = remarksHtml.replace(/{remarks}/g, '');
-                        restHtml += remarksHtml;
-                    }
-                }
-                target.empty().append(restHtml);
+                assessmentCommonHandle.writeAssessmentItemHtml(target, {
+                    activityName: '${assessmentProjectPerformanceDto.activityName}',
+                    id: '${assessmentProjectPerformanceDto.id}',
+                    remarks: '${assessmentProjectPerformanceDto.remarks}'
+                }, parentData, data);
             });
         });
 

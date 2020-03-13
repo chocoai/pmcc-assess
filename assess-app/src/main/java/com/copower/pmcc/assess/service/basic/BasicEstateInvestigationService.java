@@ -57,6 +57,19 @@ public class BasicEstateInvestigationService {
     @Autowired
     private BasicUnitHuxingService BasicUnitHuxingService;
 
+    public List<BasicEstateInvestigation> getBasicEstateInvestigationList(BasicEstateInvestigation oo){
+        return basicEstateInvestigationDao.basicUnitHuxingList(oo) ;
+    }
+
+    public List<BasicEstateInvestigationVo> getBasicEstateInvestigationVoList(BasicEstateInvestigation oo){
+        List<BasicEstateInvestigation> investigationList = new ArrayList<>() ;
+        List<BasicEstateInvestigationVo> investigationVoList = new ArrayList<>() ;
+        if (CollectionUtils.isNotEmpty(investigationList)){
+            investigationList.forEach(basicEstateInvestigation -> investigationVoList.add(getBasicEstateInvestigationVo(basicEstateInvestigation)));
+        }
+        return investigationVoList;
+    }
+
 
     public Integer saveAndUpdateBasicEstateInvestigation(BasicEstateInvestigation basicEstateInvestigation, boolean updateNull) throws Exception {
         if (basicEstateInvestigation.getHuxingId() != null) {
