@@ -16,6 +16,7 @@ import java.util.List;
 
 @Service
 public class AssessmentCommonService {
+    public final static String BPM_ASSESSMENT_WORK_HOURS_KEY = "work.hours";
     public final static String PROJECT_TASK_BUSINESS_KEY_PERFORMANCE = "assessment.performance";
     public final static String PROJECT_TASK_BUSINESS_KEY_WORK_HOURS = "assessment.work.hours";
     @Autowired

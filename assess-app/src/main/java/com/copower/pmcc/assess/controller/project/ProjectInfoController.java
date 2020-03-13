@@ -244,9 +244,14 @@ public class ProjectInfoController {
     }
 
     @RequestMapping(value = "/projectApprovalDetails", name = "项目审批详情")
-    public Object projectApprovalDetails(String processInsId) {
+    public ModelAndView projectApprovalDetails(Integer boxId,String processInsId,String taskId) throws BpmException {
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageInit/projectApproval", processInsId, boxId, "-1", "");
         ProjectInfo projectInfo = projectInfoService.getProjectInfoByProcessInsId(processInsId);
-        return projectDetails(projectInfo.getId());
+        ProjectInfoVo vo = projectInfoService.getSimpleProjectInfoVo(projectInfo);
+        modelAndView.addObject("projectInfo", vo);
+        modelAndView.addObject("projectId", vo.getId());
+        modelAndView.addObject("sysUrl", baseParameterService.getParameterValues(BaseParameterEnum.SYS_URL_KEY.getParameterKey()));
+        return modelAndView;
     }
 
     @RequestMapping(value = "/projectInfoDetails", name = "项目详细信息")

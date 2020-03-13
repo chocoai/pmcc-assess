@@ -22,6 +22,7 @@ import com.copower.pmcc.chks.api.dto.AssessmentProjectWorkHoursDto;
 import com.copower.pmcc.chks.api.provider.ChksRpcAssessmentWorkHoursService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.common.utils.SpringContextUtils;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
@@ -33,6 +34,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -55,6 +57,21 @@ public class AssessmentWorkHoursService {
     @Autowired
     private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
 
+    /**
+     * 获取工时考核数据项
+     *
+     * @param processInsId
+     * @param userAccount
+     * @param reActivityName
+     * @return
+     */
+    public BootstrapTableVo getWorkingHoursList(String processInsId, String userAccount, String reActivityName, String flog) {
+        List<AssessmentProjectWorkHoursDto> hoursDtoList = getWorkingHoursListByProcessInsId(processInsId, userAccount, reActivityName, flog);
+        BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
+        bootstrapTableVo.setTotal((long) hoursDtoList.size());
+        bootstrapTableVo.setRows(hoursDtoList);
+        return bootstrapTableVo;
+    }
 
     /**
      * 生成工时考核任务
@@ -62,14 +79,14 @@ public class AssessmentWorkHoursService {
      * @param processInsId
      * @param boxId
      */
-    public void generateWorkHoursTask(String processInsId,Integer boxId, String taskId, String byExamineUser, ProjectInfo projectInfo, ProjectPlanDetails projectPlanDetails) throws BpmException {
+    public void generateWorkHoursTask(String processInsId, Integer boxId, String taskId, String byExamineUser, ProjectInfo projectInfo, ProjectPlanDetails projectPlanDetails) throws BpmException {
         //先清理比该节点序号大的节点工时考核任务
         BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(boxId);
         if (boxReDto != null && boxReDto.getBisLaunchCheck() == Boolean.TRUE) {
             ActivitiTaskNodeDto activitiTaskNodeDto = bpmRpcActivitiProcessManageService.queryCurrentTask(taskId, commonService.thisUserAccount());
             BoxReActivityDto currentActivity = bpmRpcBoxService.getBoxreActivityInfoByBoxIdSorting(boxId, activitiTaskNodeDto.getCurrentStep());
             if (currentActivity == null || currentActivity.getBisViewChk() == Boolean.FALSE) return;
-            List<AssessmentItemDto> assessmentItemList = bpmRpcBoxService.getAssessmentItemList(boxId, currentActivity.getId());
+            List<AssessmentItemDto> assessmentItemList = bpmRpcBoxService.getAssessmentItemListByKey(boxId, currentActivity.getId(), AssessmentCommonService.BPM_ASSESSMENT_WORK_HOURS_KEY);
             if (CollectionUtils.isEmpty(assessmentItemList)) return;
             //1.生成工时考核任务，先查看该节点是否生成了任务，有则直接返回
             //2.没有生成则为当前节点生成对应的任务
@@ -89,6 +106,7 @@ public class AssessmentWorkHoursService {
             dto.setActivityName(currentActivity.getCnName());
             dto.setSorting(currentActivity.getSortMultilevel());
             dto.setByExaminePeople(byExamineUser);
+            dto.setAssessmentKey(AssessmentCommonService.BPM_ASSESSMENT_WORK_HOURS_KEY);
             dto.setExamineStatus(ProjectStatusEnum.RUNING.getKey());
             if (projectPlanDetails != null) {
                 dto.setPlanId(projectPlanDetails.getPlanId());
@@ -112,7 +130,7 @@ public class AssessmentWorkHoursService {
     public void clearAssessmentWorkHoursAll(String processInsId) {
         List<AssessmentProjectWorkHoursDto> workHoursDtos = chksRpcAssessmentWorkHoursService.getWorkingHoursListByProcessInsId(processInsId);
         if (CollectionUtils.isNotEmpty(workHoursDtos)) {
-            chksRpcAssessmentWorkHoursService.deleteAssessmentWorkHoursByIds(LangUtils.transform(workHoursDtos, p -> p.getId()));;
+            chksRpcAssessmentWorkHoursService.deleteAssessmentWorkHoursByIds(LangUtils.transform(workHoursDtos, p -> p.getId()));
         }
         ProjectResponsibilityDto projectResponsibilityDto = new ProjectResponsibilityDto();
         projectResponsibilityDto.setProcessInsId(processInsId);
@@ -130,7 +148,7 @@ public class AssessmentWorkHoursService {
      * @param processInsId
      * @return
      */
-    public List<AssessmentProjectWorkHoursDto> getWorkingHoursListByProcessInsId(String processInsId, String userAccount, String reActivityName) {
+    public List<AssessmentProjectWorkHoursDto> getWorkingHoursListByProcessInsId(String processInsId, String userAccount, String reActivityName, String flog) {
         if (StringUtils.isBlank(processInsId) || StringUtils.isBlank(userAccount)) return null;
         //1.当前人为管理员，考核组人员可查看所有数据
         //2.详情页面，当前人为该考核数据参与人，取该人员在所有数据中最大的排序号，数据小于等于该排序号的数据
@@ -156,10 +174,16 @@ public class AssessmentWorkHoursService {
                 listIterator.remove();
             }
         }
-        BoxReActivityDto activityDto = bpmRpcBoxService.getBoxReActivityInfoByName(reActivityName, boxRuDto.getBoxId());
-        Integer currentStep = activityDto.getSortMultilevel();
-        if (StringUtils.isBlank(reActivityName)) {//详情
-            currentStep = list.stream().filter(o -> userAccount.equals(o.getByExaminePeople())).mapToInt(p -> p.getSorting()).max().getAsInt();
+        Integer currentStep = -1;
+        if ("details".equals(flog)) {//详情
+            for (AssessmentProjectWorkHoursDto dto : list) {
+                if (userAccount.equals(dto.getExaminePeople()) || userAccount.equals(dto.getByExaminePeople()) && dto.getSorting() >= currentStep) {
+                    currentStep = dto.getSorting();
+                }
+            }
+        } else {
+            BoxReActivityDto activityDto = bpmRpcBoxService.getBoxReActivityInfoByName(reActivityName, boxRuDto.getBoxId());
+            currentStep = activityDto.getSortMultilevel();
         }
         Integer finalCurrentStep = currentStep;
         List<AssessmentProjectWorkHoursDto> filter = LangUtils.filter(list, o -> o.getSorting() <= finalCurrentStep);
@@ -172,6 +196,7 @@ public class AssessmentWorkHoursService {
 
     /**
      * 提交流程时处理质量考核任务及待处理任务
+     *
      * @param approvalModelDto
      * @param projectInfo
      * @param projectPlanDetails
@@ -180,13 +205,20 @@ public class AssessmentWorkHoursService {
         BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(approvalModelDto.getBoxId());
         if (boxReDto.getBisLaunchCheck() == Boolean.TRUE) {
             if (TaskHandleStateEnum.AGREE.getValue().equalsIgnoreCase(approvalModelDto.getConclusion())) {
-                AssessmentProjectWorkHoursDto query=new AssessmentProjectWorkHoursDto();
+                AssessmentProjectWorkHoursDto query = new AssessmentProjectWorkHoursDto();
                 query.setProcessInsId(approvalModelDto.getProcessInsId());
                 query.setActivityId(approvalModelDto.getActivityId());
                 query.setTaskId(approvalModelDto.getTaskId());
                 query.setExamineStatus(ProjectStatusEnum.RUNING.getKey());
                 List<AssessmentProjectWorkHoursDto> workingHoursList = chksRpcAssessmentWorkHoursService.getWorkingHoursList(query);
-
+                if (CollectionUtils.isNotEmpty(workingHoursList)) {
+                    for (AssessmentProjectWorkHoursDto workHoursDto : workingHoursList) {
+                        if (StringUtils.isBlank(workHoursDto.getExaminePeople())) { //当考核任务已经设置了考核人时此时此刻不再设置考核人
+                            workHoursDto.setExaminePeople(processControllerComponent.getThisUser());
+                        }
+                        chksRpcAssessmentWorkHoursService.updateAssessmentWorkHours(workHoursDto);
+                    }
+                }
                 ProjectResponsibilityDto projectResponsibilityDto = new ProjectResponsibilityDto();
                 projectResponsibilityDto.setUserAccount(processControllerComponent.getThisUser());
                 projectResponsibilityDto.setProcessInsId(approvalModelDto.getProcessInsId());
@@ -199,10 +231,18 @@ public class AssessmentWorkHoursService {
                     if (CollectionUtils.isEmpty(projectTaskList)) {
                         ProjectResponsibilityDto projectPlanResponsibility = new ProjectResponsibilityDto();
                         projectPlanResponsibility.setProcessInsId(approvalModelDto.getProcessInsId());
-                        projectPlanResponsibility.setProjectId(projectPlanDetails.getProjectId());
-                        projectPlanResponsibility.setPlanId(projectPlanDetails.getPlanId());
-                        projectPlanResponsibility.setPlanDetailsId(projectPlanDetails.getId());
-                        projectPlanResponsibility.setPlanDetailsName(String.format("(考核)%s[%s]", approvalModelDto.getWorkStage(), approvalModelDto.getWorkPhase()));
+                        if (projectInfo != null)
+                            projectPlanResponsibility.setProjectId(projectInfo.getId());
+                        if (projectPlanDetails != null) {
+                            projectPlanResponsibility.setPlanId(projectPlanDetails.getPlanId());
+                            projectPlanResponsibility.setPlanDetailsId(projectPlanDetails.getId());
+                        }
+                        StringBuilder stringBuilder = new StringBuilder("(考核)");
+                        if (StringUtils.isNotBlank(approvalModelDto.getWorkStage()))
+                            stringBuilder.append(approvalModelDto.getWorkStage());
+                        if (StringUtils.isNotBlank(approvalModelDto.getWorkPhase()))
+                            stringBuilder.append("[").append(approvalModelDto.getWorkPhase()).append("]");
+                        projectPlanResponsibility.setPlanDetailsName(stringBuilder.toString());
                         projectPlanResponsibility.setProjectName(projectInfo.getProjectName());
                         projectPlanResponsibility.setUserAccount(processControllerComponent.getThisUser());
                         projectPlanResponsibility.setModel(ResponsibileModelEnum.TASK.getId());
@@ -255,16 +295,19 @@ public class AssessmentWorkHoursService {
 
     /**
      * 保存工时考核得分
+     *
      * @param id
      * @param examineScore
      * @param remarks
      */
-    public void saveAssessmentProjectWorkHours(Integer id,BigDecimal examineScore,String remarks){
-        AssessmentProjectWorkHoursDto dto=new AssessmentProjectWorkHoursDto();
+    public void saveAssessmentProjectWorkHours(Integer id, BigDecimal examineScore, String remarks) {
+        AssessmentProjectWorkHoursDto dto = new AssessmentProjectWorkHoursDto();
         dto.setId(id);
         dto.setExamineScore(examineScore);
         dto.setRemarks(remarks);
         dto.setExamineStatus(ProjectStatusEnum.FINISH.getKey());
+        dto.setExaminePeople(commonService.thisUserAccount());
+        dto.setExamineDate(DateUtils.now());
         chksRpcAssessmentWorkHoursService.updateAssessmentWorkHours(dto);
     }
 }

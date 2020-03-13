@@ -128,12 +128,13 @@
                     </div>
                 </form>
                     <%--流程可考核，並且不是事后考核--%>
-                <c:if test="${boxReDto.bisLaunchCheck eq true}">
-                    <%@include file="form_chks.jsp" %>
-                </c:if>
+
             </div>
         </div>
     </div>
+    <c:if test="${boxReDto.bisLaunchCheck eq true}">
+        <%@include file="form_chks.jsp" %>
+    </c:if>
     <div class="col-md-12" style="text-align: center;padding-bottom: 1.25rem">
         <button class="btn btn-default " style="margin-left: 10px;" onclick="window.close()">
             取消

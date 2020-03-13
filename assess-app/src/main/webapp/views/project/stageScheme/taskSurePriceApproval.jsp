@@ -122,7 +122,7 @@
                                                             <td>${item.floor}</td>
                                                             <td>${item.roomNumber}</td>
                                                             <td data-name="price">${item.price}</td>
-                                                            <td data-name="coefficient">${item.coefficient}</td>
+                                                            <td data-name="coefficient">${item.factor}</td>
                                                         </tr>
                                                     </c:forEach>
                                                     </tbody>

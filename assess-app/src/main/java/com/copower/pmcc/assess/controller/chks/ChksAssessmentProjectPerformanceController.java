@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.chks.AssessmentCommonService;
+import com.copower.pmcc.assess.service.chks.AssessmentWorkHoursService;
 import com.copower.pmcc.assess.service.chks.ChksAssessmentProjectPerformanceService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
@@ -13,12 +14,14 @@ import com.copower.pmcc.chks.api.dto.AssessmentProjectPerformanceDetailDto;
 import com.copower.pmcc.chks.api.dto.AssessmentProjectPerformanceDto;
 import com.copower.pmcc.chks.api.dto.AssessmentProjectPerformanceQuery;
 import com.copower.pmcc.chks.api.dto.ChksBootstrapTableVo;
+import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -40,11 +43,13 @@ public class ChksAssessmentProjectPerformanceController {
     private ProjectInfoService projectInfoService;
     @Autowired
     private ProjectPlanDetailsService projectPlanDetailsService;
+    @Autowired
+    private AssessmentWorkHoursService assessmentWorkHoursService;
 
 
     @GetMapping(value = "/getChksBootstrapTableVo", name = "获取考核 bootstrap table")
-    public ChksBootstrapTableVo getChksBootstrapTableVo(AssessmentProjectPerformanceDto where, Integer boxId, Integer activityId) {
-        return chksAssessmentProjectPerformanceService.getChksBootstrapTableVo(where, boxId, activityId);
+    public ChksBootstrapTableVo getChksBootstrapTableVo(AssessmentProjectPerformanceDto where, Integer boxId, String reActivityName, String flog) {
+        return chksAssessmentProjectPerformanceService.getChksBootstrapTableVo(where, boxId, reActivityName, flog);
     }
 
     @GetMapping(value = "/getAssessmentProjectPerformanceDtoList", name = "获取考核后的数据")
@@ -182,18 +187,20 @@ public class ChksAssessmentProjectPerformanceController {
         }
     }
 
-    @PostMapping(value = "/generateAssessmentTask", name = "生成考核任务")
-    public HttpResult generateAssessmentTask(String processInsId, Integer boxId, String taskId, Integer projectId, Integer planDetailsId) {
+    @GetMapping(value = "/getWorkingHoursList", name = "获取工时考核任务")
+    public BootstrapTableVo getWorkingHoursList(String processInsId, String userAccount, String reActivityName, String flog) {
+        return assessmentWorkHoursService.getWorkingHoursList(processInsId, userAccount, reActivityName, flog);
+    }
+
+    @PostMapping(value = "/saveWorkingHours", name = "保存工时考核任务")
+    public HttpResult saveWorkingHours(Integer id, BigDecimal examineScore, String remarks) {
         try {
-            ProjectInfo projectInfo = projectId == null ? null : projectInfoService.getProjectInfoById(projectId);
-            ProjectPlanDetails projectPlanDetails = planDetailsId == null ? null : projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
-            assessmentCommonService.generateAssessmentTask(processInsId, boxId, taskId, projectInfo, projectPlanDetails);
+            assessmentWorkHoursService.saveAssessmentProjectWorkHours(id, examineScore, remarks);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
-            baseService.writeExceptionInfo(e, "生成考核任务异常");
+            baseService.writeExceptionInfo(e, "保存工时考核任务出错");
             return HttpResult.newErrorResult(500, e.getMessage());
         }
     }
-
 }
 

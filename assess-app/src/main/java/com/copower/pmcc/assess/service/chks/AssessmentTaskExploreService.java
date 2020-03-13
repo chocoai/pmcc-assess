@@ -105,19 +105,19 @@ public class AssessmentTaskExploreService implements AssessmentTaskInterface {
             String businessKey = null;
             if (Objects.equal(basicApplyBatchDetail.getTableName(), FormatUtils.entityNameConvertToTableName(BasicBuilding.class))) {
                 tbType = "building";
-                businessKey = String.join("-","楼栋",basicApplyBatchDetail.getName());
+                businessKey = String.join("-", "楼栋", basicApplyBatchDetail.getName());
             }
             if (Objects.equal(basicApplyBatchDetail.getTableName(), FormatUtils.entityNameConvertToTableName(BasicHouse.class))) {
                 tbType = "house";
-                businessKey = String.join("-","房屋",basicApplyBatchDetail.getName());
+                businessKey = String.join("-", "房屋", basicApplyBatchDetail.getName());
             }
             if (Objects.equal(basicApplyBatchDetail.getTableName(), FormatUtils.entityNameConvertToTableName(BasicUnit.class))) {
                 tbType = "unit";
-                businessKey = String.join("-","单元",basicApplyBatchDetail.getName());
+                businessKey = String.join("-", "单元", basicApplyBatchDetail.getName());
             }
             if (Objects.equal(basicApplyBatchDetail.getTableName(), FormatUtils.entityNameConvertToTableName(BasicEstate.class))) {
                 tbType = "estate";
-                businessKey = String.join("-","楼盘",basicApplyBatchDetail.getName());
+                businessKey = String.join("-", "楼盘", basicApplyBatchDetail.getName());
             }
             linkedList.add(String.join("=", "tbType", tbType));
             saveAssessmentProjectPerformanceDto(processInsId, activityId, taskId, byExamineUser, projectInfo, projectPlanDetails, boxReDto, basicApplyBatchDetail.getTableName(), basicApplyBatchDetail.getTableId(), tbType, StringUtils.join(linkedList, "&"), businessKey, spotActivityId);
@@ -136,9 +136,12 @@ public class AssessmentTaskExploreService implements AssessmentTaskInterface {
         dto.setBoxId(boxReDto.getId());
         BoxReActivityDto activityDto = bpmRpcBoxService.getBoxreActivityInfoById(activityId);
         dto.setActivityId(activityId);
-        dto.setReActivityName(activityDto.getName());
-        dto.setSorting(activityDto.getSortMultilevel());
-        dto.setActivityName(activityDto.getCnName());
+        if (activityDto != null) {
+            dto.setReActivityName(activityDto.getName());
+            dto.setSorting(activityDto.getSortMultilevel());
+            dto.setActivityName(activityDto.getCnName());
+            dto.setBusinessKey(activityDto.getCnName() + "/" + businessKey);
+        }
         dto.setByExaminePeople(byExamineUser);
         dto.setExamineStatus(ProjectStatusEnum.RUNING.getKey());
         dto.setTableId(tableId);

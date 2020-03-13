@@ -79,23 +79,34 @@ public class ChksAssessmentProjectPerformanceService {
     @Autowired
     private CommonService commonService;
 
-    public ChksBootstrapTableVo getChksBootstrapTableVo(AssessmentProjectPerformanceDto where, Integer boxId, Integer activityId) {
+    public ChksBootstrapTableVo getChksBootstrapTableVo(AssessmentProjectPerformanceDto where, Integer boxId, String reActivityName, String flog) {
         //1.管理员与抽查组可查看所有质量考核数据
         //2.当前人只能查看排序比当前节点小的质量考核数据
+        ChksBootstrapTableVo chksBootstrapTableVo = new ChksBootstrapTableVo();
         List<Integer> activityList = Lists.newArrayList();
         if (!processControllerComponent.userIsAdmin(commonService.thisUserAccount()) && !isSpotGroupUser(boxId, commonService.thisUserAccount())) {
             List<BoxReActivityDto> activityDtos = bpmRpcBoxService.getBoxReActivityByBoxId(boxId);
-            BoxReActivityDto currActivity = bpmRpcBoxService.getBoxreActivityInfoById(activityId);
-            if (CollectionUtils.isNotEmpty(activityDtos) || currActivity != null) {
+            if (CollectionUtils.isEmpty(activityDtos)) return chksBootstrapTableVo;
+            if ("approval".equals(flog)) {
+                BoxReActivityDto currActivity = bpmRpcBoxService.getBoxReActivityInfoByName(reActivityName, boxId);
+                if (currActivity != null) {
+                    for (BoxReActivityDto activityDto : activityDtos) {
+                        if (activityDto.getSortMultilevel() <= currActivity.getSortMultilevel())
+                            activityList.add(activityDto.getId());
+                    }
+                }
+            } else {//找出该人员在该流程中排序号最大的数据
+                Integer sorting = chksRpcAssessmentService.getAssessmentMaxSortingByUserAccount(where.getProcessInsId(), commonService.thisUserAccount());
                 for (BoxReActivityDto activityDto : activityDtos) {
-                    if (activityDto.getSortMultilevel() <= currActivity.getSortMultilevel())
+                    if (activityDto.getSortMultilevel() <= sorting)
                         activityList.add(activityDto.getId());
                 }
             }
+            if (CollectionUtils.isEmpty(activityList)) return chksBootstrapTableVo;
         }
-        ChksBootstrapTableVo chksBootstrapTableVo = new ChksBootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        where.setActivityId(null);
         AssessmentProjectPerformanceDtoAndDetail dtoAndDetail = chksRpcAssessmentService.getAssessmentProjectPerformanceDtosByExample(where, activityList, requestBaseParam.getOffset(), requestBaseParam.getLimit());
         if (dtoAndDetail != null) {
             chksBootstrapTableVo = dtoAndDetail.getChksBootstrapTableVo();
@@ -341,18 +352,7 @@ public class ChksAssessmentProjectPerformanceService {
         if (StringUtils.isBlank(assessmentKey)) {
             return bpmRpcBoxService.getAssessmentItemList(boxId, boxReActivitiId);
         } else {
-            List<AssessmentItemDto> assessmentItemList = bpmRpcBoxService.getAssessmentItemList(boxId, boxReActivitiId, assessmentKey);
-            if (CollectionUtils.isNotEmpty(assessmentItemList)) {
-                return assessmentItemList;
-            }
-            assessmentItemList = bpmRpcBoxService.getAssessmentItemList(boxId, boxReActivitiId);
-            Iterator<AssessmentItemDto> iterator = assessmentItemList.iterator();
-            while (iterator.hasNext()) {
-                AssessmentItemDto next = iterator.next();
-                if (!Objects.equal(next.getAssessmentKey(), assessmentKey)) {
-                    iterator.remove();
-                }
-            }
+            List<AssessmentItemDto> assessmentItemList = bpmRpcBoxService.getAssessmentItemListByKey(boxId, boxReActivitiId, assessmentKey);
             return assessmentItemList;
         }
     }
@@ -544,6 +544,7 @@ public class ChksAssessmentProjectPerformanceService {
         BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(boxId);
         if (boxReDto != null && boxReDto.getBisLaunchCheck() == Boolean.TRUE) {
             ActivitiTaskNodeDto activitiTaskNodeDto = bpmRpcActivitiProcessManageService.queryCurrentTask(taskId, commonService.thisUserAccount());
+            if (activitiTaskNodeDto == null) return;
             BoxReActivityDto currentActivity = bpmRpcBoxService.getBoxreActivityInfoByBoxIdSorting(boxId, activitiTaskNodeDto.getCurrentStep());
             if (currentActivity == null || currentActivity.getBisViewChk() == Boolean.FALSE) return;
             List<AssessmentItemDto> assessmentItemList = bpmRpcBoxService.getAssessmentItemList(boxId, currentActivity.getId());
@@ -604,11 +605,19 @@ public class ChksAssessmentProjectPerformanceService {
                     if (CollectionUtils.isEmpty(projectTaskList)) {
                         ProjectResponsibilityDto projectPlanResponsibility = new ProjectResponsibilityDto();
                         projectPlanResponsibility.setProcessInsId(approvalModelDto.getProcessInsId());
-                        projectPlanResponsibility.setProjectId(projectPlanDetails.getProjectId());
-                        projectPlanResponsibility.setPlanId(projectPlanDetails.getPlanId());
-                        projectPlanResponsibility.setPlanDetailsId(projectPlanDetails.getId());
+                        if (projectInfo != null)
+                            projectPlanResponsibility.setProjectId(projectInfo.getId());
+                        if (projectPlanDetails != null) {
+                            projectPlanResponsibility.setPlanId(projectPlanDetails.getPlanId());
+                            projectPlanResponsibility.setPlanDetailsId(projectPlanDetails.getId());
+                        }
                         projectPlanResponsibility.setBusinessKey(AssessmentCommonService.PROJECT_TASK_BUSINESS_KEY_PERFORMANCE);
-                        projectPlanResponsibility.setPlanDetailsName(String.format("(考核)%s[%s]", approvalModelDto.getWorkStage(), approvalModelDto.getWorkPhase()));
+                        StringBuilder stringBuilder = new StringBuilder("(考核)");
+                        if (StringUtils.isNotBlank(approvalModelDto.getWorkStage()))
+                            stringBuilder.append(approvalModelDto.getWorkStage());
+                        if (StringUtils.isNotBlank(approvalModelDto.getWorkPhase()))
+                            stringBuilder.append("[").append(approvalModelDto.getWorkPhase()).append("]");
+                        projectPlanResponsibility.setPlanDetailsName(stringBuilder.toString());
                         projectPlanResponsibility.setProjectName(projectInfo.getProjectName());
                         projectPlanResponsibility.setUserAccount(processControllerComponent.getThisUser());
                         projectPlanResponsibility.setModel(ResponsibileModelEnum.TASK.getId());

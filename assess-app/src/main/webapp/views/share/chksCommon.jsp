@@ -56,7 +56,6 @@
     </div>
 </div>
 
-
 <div id="divAssessmentProjectPerformanceBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
@@ -114,7 +113,6 @@
     </div>
 </div>
 
-
 <div id="divAssessmentProjectPerformanceBoxDetail" class="modal fade bs-example-modal-lg" data-backdrop="static"
      tabindex="-1" role="dialog"
      aria-hidden="true">
@@ -125,7 +123,6 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
             </div>
-
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-12">
@@ -168,6 +165,70 @@
     </div>
 </div>
 
+<div id="divAssessmentWorkHoursModal" class="modal fade bs-example-modal-lg" data-backdrop="static"
+     tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="max-width: 65%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">工时考核</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form id="assessmentWorkHoursForm" class="form-horizontal">
+                    <input type="hidden" name="id">
+                    <div class="row form-group">
+                        <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                            <div class="form-inline x-valid">
+                                <label class="col-xs-2  col-sm-2  col-md-2  col-lg-2 col-form-label">
+                                    考核标准
+                                </label>
+                                <div class="col-xs-10  col-sm-10  col-md-10  col-lg-10">
+                                    <span data-name="examineStandard" class="form-control"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                            <div class="form-inline x-valid">
+                                <label class="col-xs-2  col-sm-2  col-md-2  col-lg-2 col-form-label">
+                                    工时得分<span class="symbol required"></span>
+                                </label>
+                                <div class="col-xs-10  col-sm-10  col-md-10  col-lg-10">
+                                    <input type="text" class="form-control input-full" name="examineScore"
+                                           data-rule-number="true" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                            <div class="form-inline x-valid">
+                                <label class="col-xs-2  col-sm-2  col-md-2  col-lg-2 col-form-label">
+                                    得分说明
+                                </label>
+                                <div class="col-xs-10  col-sm-10  col-md-10  col-lg-10">
+                                    <textarea class="form-control input-full" name="remarks"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-primary btn-sm"
+                        onclick="assessmentCommonHandle.saveWorkingHours()">
+                    保存
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script type="text/html" id="assessmentItemTemplateHTML">
     <tr>
@@ -200,133 +261,9 @@
     </tr>
 </script>
 
-<div id="assessmentItemToolbar" class=" col-xs-12  col-sm-12  col-md-12  col-lg-12" style="display: none;">
-    <form class="form-horizontal">
-        <div class="row form-group">
-            <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
-                <div class="form-inline x-valid">
-                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
-                        节点名称
-                    </label>
-                    <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                        <input type="text" placeholder="节点名称" name="activityName" class="form-control input-full">
-                    </div>
-                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
-                        被考核人
-                    </label>
-                    <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                        <div class="input-group">
-                            <input type="hidden" name="byExaminePeople">
-                            <input type="text" class="form-control" readonly="readonly" name="byExaminePeopleName"
-                                   onclick="assessmentCommonHandle.selectUserAccountMember(this);">
-                            <div class="input-group-prepend">
-                                <button class="btn btn-warning btn-sm "
-                                        style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                        type="button" onclick="$(this).closest('.input-group').find('input').val('');">
-                                    清空
-                                </button>
-                            </div>
-                            <div class="input-group-prepend">
-                                <button class="btn btn-primary btn-sm "
-                                        style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                        type="button" onclick="assessmentCommonHandle.selectUserAccountMember(this);">选择
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
-                        考核人
-                    </label>
-                    <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                        <select name="examinePeople" class="form-control input-full search-select select2">
-                            <option value="">请选择</option>
-                            <c:forEach items="${chksExaminePeopleList}" var="item">
-                                <option value="${item.key}">${item.value}</option>
-                            </c:forEach>
-                        </select>
-                    </div>
-                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
-                        状态
-                    </label>
-                    <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                        <div class="form-check" style="justify-content:left">
-                            <label class="form-check-label">
-                                <input class="form-check-input" type="checkbox" name="examineStatus" value="finish">
-                                <span class="form-check-sign">完成</span>
-                            </label>
-                            <label class="form-check-label">
-                                <input class="form-check-input" type="checkbox" name="examineStatus" value="runing">
-                                <span class="form-check-sign">进行中</span>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row form-group">
-            <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
-                <div class="form-inline x-valid">
-                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
-                        业务名称
-                    </label>
-                    <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                        <input type="text" placeholder="业务名称" name="businessKey" class="form-control input-full">
-                    </div>
-
-
-                    <div class="col-xs-1  col-sm-1  col-md-1  col-lg-1">
-                        <button type="button"
-                                onclick="assessmentCommonHandle.queryChksAssessmentProjectPerformance(this);"
-                                class="btn btn-info btn-sm">查询<i class="fa fa-search"></i></button>
-                    </div>
-                    <div class="col-xs-1  col-sm-1  col-md-1  col-lg-1">
-                        <button type="button" class="btn btn-primary btn-sm"
-                                onclick="$(this).closest('form').clearAll()">清空查询
-                        </button>
-                    </div>
-
-                    <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                        <button type="button" class="btn btn-info btn-sm"
-                                onclick="assessmentCommonHandle.copyData(this);"><i
-                                class="fa fa-copy" aria-hidden="true"></i> 拷贝
-                        </button>
-                        <button type="button" class="btn btn-warning btn-sm"
-                                onclick="assessmentCommonHandle.pasteAll(this);"><i
-                                class="fa fa-clipboard" aria-hidden="true"></i>粘贴
-                        </button>
-                    </div>
-
-                    <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
-                        <div class="input-group ">
-                            <input type="hidden" name="id">
-                            <input type="text" readonly="readonly" name="name"
-                                   class="form-control form-control-sm"
-                                   placeholder="无拷贝数据">
-                            <div class="input-group-prepend ">
-                                <button class="btn btn-warning btn-sm"
-                                        style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                        type="button"
-                                        onclick="$(this).closest('.input-group').find('input').val('');">
-                                    <i class="fa "></i>
-                                    清空拷贝
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-
-                </div>
-            </div>
-        </div>
-    </form>
-</div>
-
 
 <script type="text/javascript">
-
-
     var assessmentCommonHandle = {};
-
     assessmentCommonHandle.run = function (data, url, type, callback, funParams, errorCallback) {
         Loading.progressShow();
         $.ajax({
@@ -392,7 +329,6 @@
             assessmentCommonHandle.run(data, url, type, callback, funParams, errorCallback);
         }
     };
-
     assessmentCommonHandle.ajaxServerMethod = function (data, url, type, callback, errorCallback) {
         assessmentCommonHandle.ajaxServerFun(data, url, type, callback, null, errorCallback);
     };
@@ -524,7 +460,7 @@
 
     //拷贝
     assessmentCommonHandle.copyData = function (_this) {
-        var table = $("#assessmentTableList");
+        var table = $("#assessmentQualityTableList");
         var form = $(_this).closest("form");
         var rows = table.bootstrapTable('getSelections');
         if (!rows || rows.length <= 0) {
@@ -550,7 +486,7 @@
     assessmentCommonHandle.pasteAll = function (_this) {
         var form = $(_this).closest("form");
         var data = formSerializeArray(form);
-        var table = $("#assessmentTableList");
+        var table = $("#assessmentQualityTableList");
         var copyId = data.id;
         if (!copyId) {
             notifyWarning("警告", "请先拷贝一个数据作为被粘贴的模板!");
@@ -588,71 +524,17 @@
         }
     };
 
-    /**
-     * 查询
-     */
-    assessmentCommonHandle.queryChksAssessmentProjectPerformance = function (_this) {
-        var frm = $(_this).closest("form");
-        var data = formSerializeArray(frm);
-        if ('${processInsId}') {
-            data.processInsId = '${processInsId}';
-        }
-        if (!data.processInsId) {
-            if ('${projectPlanDetails.processInsId}') {
-                data.processInsId = '${projectPlanDetails.processInsId}';
-            }
-            if ('${activityId}') {
-                data.activityId = '${activityId}';
-            }
-        }
-        if ('${activityDtoList}') {
-            var activityIds = [];
-            var obj = null;
-            try {
-                obj = JSON.parse('${el:toJsonString(activityDtoList)}');
-            } catch (e) {
-                console.log(e);
-            }
-            if (obj) {
-                $.each(obj, function (i, item) {
-                    activityIds.push(item.id);
-                });
-            }
-            if (activityIds.length != 0) {
-                data.activityIds = activityIds.join(",");
-            }
-        }
-        var keys = Object.keys(data);
-        var newObj = {};
-        $.each(keys, function (i, key) {
-            if (data[key]) {
-                newObj[key] = data[key];
-            }
-        });
-        newObj.boxId='${boxId}';
-        newObj.activityId='${activityId}';
-        assessmentCommonHandle.getChksBootstrapTableVoBase($("#assessmentTableList"), newObj);
-    };
-
     /*
      考核列表
      */
-    assessmentCommonHandle.getChksBootstrapTableVoBase = function (table, query) {
+    assessmentCommonHandle.loadAssessmentQualityList = function (form) {
+        var table = $("#assessmentQualityTableList");
         var cols = [];
         cols.push({
             field: 'ckeckbox',
             checkbox: true
         });
-        cols.push({
-            field: 'activityName', title: '考核节点', formatter: function (value, row, index) {
-                var s = value;
-                if (row.businessKey) {
-                    s += "【" + row.businessKey + "】";
-                }
-                return s;
-            }
-        });
-        cols.push({field: 'businessKey', title: '业务名称'});
+        cols.push({field: 'businessKey', title: '名称'});
         cols.push({
             field: 'examineStatus', title: '状态', formatter: function (value, row, index) {
                 if (value == 'runing') {
@@ -663,8 +545,15 @@
                 }
             }
         });
-        cols.push({field: 'byExaminePeopleName', title: '被考核人'});
-        cols.push({field: 'examinePeopleName', title: '考核人'});
+        cols.push({
+            field: 'byExaminePeopleName', title: '被考核人/考核人', formatter: function (value, row, index) {
+                var str = value;
+                if (row.examinePeopleName) {
+                    str += "/" + row.examinePeopleName;
+                }
+                return str;
+            }
+        });
         cols.push({field: 'examineScore', title: '考核得分'});
         cols.push({
             field: 'examineDate', title: '考核时间', formatter: function (value, row, index) {
@@ -680,32 +569,27 @@
             field: 'examineStatus', title: '考核操作', formatter: function (value, row, index) {
                 var str = "";
                 var btnClass = 'btn-success';
-//                str = "<button type='button' style='margin-left: 5px;' data-placement='top' data-original-title='无权限' class='btn btn-xs btn-primary tooltips'  ><i class='fa fa-unlock-alt fa-white'></i></button>";
-                //这里涉及到权限,如果要优化请慎重操作
                 //完成之后查看
                 if (value == 'finish') {
-                    if (row.examineUrl) {
-                        //进入一个地址查看考核内容
+                    if (row.examineUrl) { //进入一个地址查看考核内容
                         str = "<button type='button' onclick='assessmentCommonHandle.taskOpenWin(\"" + row.examineUrl + "\")'  style='margin-left: 5px;' data-placement='top' data-original-title='考核查看' class='btn btn-xs btn-info tooltips'  ><i class='fa fa-search fa-white'></i></button>";
-                    } else {
-                        //使用弹窗查看考核
+                    } else { //使用弹窗查看考核
                         str = "<button type='button' onclick='assessmentCommonHandle.findAssessmentProjectPerformanceBox(" + row.id + ")' style='margin-left: 5px;' data-placement='top' data-original-title='考核查看' class='btn btn-xs btn-info tooltips'  ><i class='fa fa-search fa-white'></i></button>";
                     }
                 }
+                var detailsFlag = row.examinePeople === '${currUserAccount}' && 'details' === '${flog}';//详情页面权限控制
+                var approvalFlag = (row.examinePeople === '${currUserAccount}' || !row.examinePeople) && 'approval' === '${flog}';//审批页面权限控制
                 //考核未完成
-                if (value == 'runing') {
-                    //进入一个地址来考核
+                if (value == 'runing' && (detailsFlag || approvalFlag)) { //进入一个地址来考核
                     if (row.examineUrl) {
-                        str += '<button type="button" class="btn  btn-xs btn-success tooltips" style="margin-left: 5px;" data-placement="bottom" data-original-title="考核填写" onclick="assessmentCommonHandle.taskOpenWin2(' + "'" + row.id + "'" + "," + "'" + table.selector + "'" + ')" > <i class="fa fa-arrow-right fa-white"></i></button>';
-                    } else {
-                        //使用弹窗考核
-                        str += '<button type="button" class="btn  btn-xs btn-success tooltips" style="margin-left: 5px;" data-placement="bottom" data-original-title="考核填写" onclick="assessmentCommonHandle.openAssessmentProjectPerformanceBox(' + "'" + row.id + "'" + "," + "'" + table.selector + "'" + ')" > <i class="fa fa-arrow-right fa-white"></i></button>';
+                        str += '<button type="button" class="btn  btn-xs btn-primary tooltips" style="margin-left: 5px;" data-placement="bottom" data-original-title="考核填写" onclick="assessmentCommonHandle.taskOpenWin2(' + "'" + row.id + "'" + "," + "'" + table.selector + "'" + ')" > <i class="fa fa-pen fa-white"></i></button>';
+                    } else { //使用弹窗考核
+                        str += '<button type="button" class="btn  btn-xs btn-primary tooltips" style="margin-left: 5px;" data-placement="bottom" data-original-title="考核填写" onclick="assessmentCommonHandle.openAssessmentProjectPerformanceBox(' + row.id + ',\'' + table.selector + '\')" > <i class="fa fa-pen fa-white"></i></button>';
                     }
                 }
                 //抽查考核
                 if (row.spotActivityId) {
-                    if (row.spotId) {
-                        //使用弹窗查看考核
+                    if (row.spotId) {//使用弹窗查看考核
                         str += "<button type='button' onclick='assessmentCommonHandle.findAssessmentProjectPerformanceBox(" + row.spotId + ")' style='margin-left: 5px;' data-placement='top' data-original-title='抽查考核查看' class='btn btn-xs btn-primary tooltips'  ><i class='fa fa-search fa-white'></i></button>";
                     } else {
                         str += '<button type="button" class="btn btn-xs btn-primary tooltips" style="margin-left: 5px;" data-placement="bottom" data-original-title="抽查考核填写" onclick="assessmentCommonHandle.showChkSpotAssessmentParent(' + "'" + row.id + "'" + "," + "'" + table.selector + "'" + ')" > <i class="fa fa-arrow-right fa-white"></i></button>';
@@ -715,18 +599,23 @@
             }
         });
 
-        //cols.push({field: 'remarks', title: '综合评价'});
-        var toolbar = $("#assessmentItemToolbar");
+        var query = {
+            processInsId: '${processInsId}',
+            activityId: '${activityId}',
+            userAccount: '${currUserAccount}',
+            reActivityName: '${reActivityName}',
+            flog: '${flog}',
+            boxId: '${boxId}'
+        }
+        query = $.extend({}, query, formSerializeArray($(form)));
         var method = {
             showColumns: false,
             showRefresh: false,
             search: false,
             onLoadSuccess: function () {
                 $(".tooltips").tooltip();
-            },
-            toolbar: toolbar.selector
+            }
         };
-        toolbar.show();
         table.bootstrapTable('destroy');
         TableInit(table, "${pageContext.request.contextPath}/chksAssessmentProjectPerformance/getChksBootstrapTableVo", cols, query, method);
     };
@@ -737,7 +626,7 @@
     assessmentCommonHandle.saveChkSpotAssessment = function () {
         var target = $("#tableChkSpotAssessment").find("tbody");
         var box = $("#divChksRecordModal");
-        var table = $("#assessmentTableList");
+        var table = $("#assessmentQualityTableList");
         if (!vaildChksData(target)) {
             return false;
         }
@@ -839,7 +728,7 @@
     assessmentCommonHandle.taskOpenWin = function (url) {
         url = "${pageContext.request.contextPath}" + url;
         openWin(url, function () {
-            $("#assessmentTableList").bootstrapTable('refresh');
+            $("#assessmentQualityTableList").bootstrapTable('refresh');
         })
     };
 
@@ -849,7 +738,6 @@
         assessmentCommonHandle.getActivityIdByUserAccountList(item.activityId, function (accountList) {
             var url = "${pageContext.request.contextPath}" + item.examineUrl;
             var examinePeople = '${sysUserDto.userAccount}';
-            console.log(accountList);
             if (examinePeople) {
                 if (jQuery.inArray(examinePeople, accountList) != -1) {
                     try {
@@ -898,7 +786,7 @@
         }, function (data) {
             notifySuccess("成功", "考核成功!");
             box.modal("hide");
-            $("#assessmentTableList").bootstrapTable('refresh');
+            $("#assessmentQualityTableList").bootstrapTable('refresh');
         });
     };
 
@@ -908,69 +796,39 @@
      * @param id
      */
     assessmentCommonHandle.openAssessmentProjectPerformanceBox = function (id) {
-        var target = $("#assessmentTableList");
+        var target = $("#assessmentQualityTableList");
         var box = $("#divAssessmentProjectPerformanceBox");
         var table = $("#tableAssessmentProjectPerformanceBox").find("tbody");
         var itemA = target.bootstrapTable('getRowByUniqueId', id);
         box.modal("show");
         box.find("input[name=id]").val(id);
-        assessmentCommonHandle.getAssessmentProjectPerformanceDetailByPerformanceIdList(id, function (parentData) {
-            assessmentCommonHandle.getAssessmentItemTemplate({
-                boxReActivitiId: itemA.activityId,
-                boxId: itemA.boxId
-            }, function (data) {
-                var restHtml = "";
-                if (parentData.length == data.length){
-                    $.each(parentData, function (i, item) {
-                        if (! item.assessmentDes){
-                            item.assessmentDes = "" ;
-                        }
-                        var html = assessmentCommonHandle.replaceAssessmentItem($("#assessmentItemTemplateHTML").html(), {
-                            index: i + 1,
-                            contentId: item.contentId,
-                            id: item.id,
-                            actualScore: item.actualScore,
-                            remark: item.remark,
-                            performanceId: id,
-                            name: itemA.activityName,
-                            assessmentDes: item.assessmentDes,
-                            minScore: item.minScore,
-                            maxScore: item.maxScore,
-                            standardScore: item.standardScore
-                        });
-                        restHtml += html;
-                    });
-                    if (data.length >= 1) {
-                        var remarksHtml = $("#assessmentItemTemplateRemarksHTML").html();
-                        remarksHtml = remarksHtml.replace(/{remarks}/g, itemA.remarks);
-                        restHtml += remarksHtml;
-                    }
-                }
-                if (parentData.length != data.length) {
-                    $.each(data, function (i, item) {
-                        var html = assessmentCommonHandle.replaceAssessmentItem($("#assessmentItemTemplateHTML").html(), {
-                            index: i + 1,
-                            contentId: item.id,
-                            id: 0,
-                            actualScore: '',
-                            remark: '',
-                            performanceId: 0,
-                            name: item.boxReActivitiNameCn,
-                            assessmentDes: item.assessmentDes,
-                            minScore: item.minScore,
-                            maxScore: item.maxScore,
-                            standardScore: item.standardScore
-                        });
-                        restHtml += html;
-                    });
-                    if (data.length >= 1) {
-                        var remarksHtml = $("#assessmentItemTemplateRemarksHTML").html();
-                        remarksHtml = remarksHtml.replace(/{remarks}/g, '');
-                        restHtml += remarksHtml;
-                    }
-                }
-                table.empty().append(restHtml);
+        assessmentCommonHandle.getAssessmentItemTemplate({
+            boxReActivitiId: itemA.activityId,
+            boxId: itemA.boxId
+        }, function (data) {
+            var restHtml = "";
+            $.each(data, function (i, item) {
+                var html = assessmentCommonHandle.replaceAssessmentItem($("#assessmentItemTemplateHTML").html(), {
+                    index: i + 1,
+                    contentId: item.id,
+                    id: 0,
+                    actualScore: '',
+                    remark: '',
+                    performanceId: 0,
+                    name: item.boxReActivitiNameCn,
+                    assessmentDes: item.assessmentDes,
+                    minScore: item.minScore,
+                    maxScore: item.maxScore,
+                    standardScore: item.standardScore
+                });
+                restHtml += html;
             });
+            if (data.length >= 1) {
+                var remarksHtml = $("#assessmentItemTemplateRemarksHTML").html();
+                remarksHtml = remarksHtml.replace(/{remarks}/g, '');
+                restHtml += remarksHtml;
+            }
+            table.empty().append(restHtml);
         });
     };
 
@@ -1015,6 +873,110 @@
         });
     };
 
+    assessmentCommonHandle.loadAssessmentWorkHoursList = function () {
+        var cols = [];
+        cols.push({
+            field: 'activityName', title: '名称', formatter: function (value, row, index) {
+                var s = value;
+                return s;
+            }
+        });
+        cols.push({
+            field: 'examineStatus', title: '状态', formatter: function (value, row, index) {
+                if (value == 'runing') {
+                    return "<span class=\"label label-info\">进行中</span> ";
+                }
+                if (value == 'finish') {
+                    return "<span class=\"label label-success\">已完成</span>";
+                }
+            }
+        });
+        cols.push({
+            field: 'byExaminePeopleName', title: '被考核人/考核人', formatter: function (value, row, index) {
+                var str = value;
+                if (row.examinePeopleName) {
+                    str += "/" + row.examinePeopleName;
+                }
+                return str;
+            }
+        });
+        cols.push({field: 'examineScore', title: '得分'});
+        cols.push({
+            field: 'examineDate', title: '考核时间', formatter: function (value, row, index) {
+                if (value) {
+                    return formatDate(value, true);
+                }
+                return "";
+            }
+        });
+        cols.push({field: 'remarks', title: '说明'});
+        //下面涉及到权限,如果要优化请慎重操作
+        cols.push({
+            field: 'examineStatus', title: '操作', formatter: function (value, row, index) {
+                var str = "";
+                var detailsFlag = row.examinePeople === '${currUserAccount}' && 'details' === '${flog}';//详情页面权限控制
+                var approvalFlag = (row.examinePeople === '${currUserAccount}' || !row.examinePeople) && 'approval' === '${flog}';//审批页面权限控制
+                if (value == 'runing' && (detailsFlag || approvalFlag)) {
+                    str = "<button type='button' onclick='assessmentCommonHandle.workingHoursModal(" + row.id + "," + row.boxId + "," + row.activityId + ");'  style='margin-left: 5px;' data-placement='top' data-original-title='工时考核' class='btn btn-xs btn-primary tooltips'  ><i class='fa fa-pen fa-white'></i></button>";
+                }
+                return str;
+            }
+        });
+        var query = {
+            processInsId: '${processInsId}',
+            userAccount: '${currUserAccount}',
+            reActivityName: '${reActivityName}',
+            flog: '${flog}'
+        };
+        var method = {
+            showColumns: false,
+            showRefresh: false,
+            search: false,
+            onLoadSuccess: function () {
+                $(".tooltips").tooltip();
+            }
+        };
+        $("#assessmentWorkHoursTableList").bootstrapTable('destroy');
+        TableInit($("#assessmentWorkHoursTableList"), "${pageContext.request.contextPath}/chksAssessmentProjectPerformance/getWorkingHoursList", cols, query, method);
+    }
+
+    assessmentCommonHandle.workingHoursModal = function (id, boxId, boxReActivitiId) {
+        //需先获取考核标准
+        assessmentCommonHandle.getAssessmentItemTemplate({
+            boxId: boxId,
+            boxReActivitiId: boxReActivitiId,
+            assessmentKey: 'work.hours'
+        }, function (data) {
+            $("#assessmentWorkHoursForm").clearAll().find('[data-name="examineStandard"]').text('');
+            if (data && data.length > 0) {
+                $("#assessmentWorkHoursForm").find('[data-name="examineStandard"]').text(data[0].assessmentDes);
+            }
+            $("#assessmentWorkHoursForm").find('[name=id]').val(id);
+            $('#divAssessmentWorkHoursModal').modal();
+        })
+    }
+
+    //保存工时考核
+    assessmentCommonHandle.saveWorkingHours = function () {
+        if (!$("#assessmentWorkHoursForm").valid()) {
+            return false;
+        }
+        $.ajax({
+            url: '${pageContext.request.contextPath}/chksAssessmentProjectPerformance/saveWorkingHours',
+            data: formSerializeArray($('#assessmentWorkHoursForm')),
+            type: 'post',
+            dataType: 'json',
+            success: function (result) {
+                if (result.ret) {
+                    notifySuccess('成功', "保存成果");
+                    $('#divAssessmentWorkHoursModal').modal('hide');
+                    assessmentCommonHandle.loadAssessmentWorkHoursList();
+                } else {
+                    AlertError("失败", "保存异常：" + result.errmsg)
+                }
+            }
+        })
+    }
 
     /**
      * 考核验证
@@ -1064,6 +1026,4 @@
         }
         return true;
     }
-
-
 </script>

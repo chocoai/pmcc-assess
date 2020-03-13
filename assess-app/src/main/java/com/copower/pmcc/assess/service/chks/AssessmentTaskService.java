@@ -55,9 +55,12 @@ public class AssessmentTaskService implements AssessmentTaskInterface {
         dto.setBoxId(boxReDto.getId());
         BoxReActivityDto activityDto = bpmRpcBoxService.getBoxreActivityInfoById(activityId);
         dto.setActivityId(activityId);
-        dto.setReActivityName(activityDto.getName());
-        dto.setActivityName(activityDto.getCnName());
-        dto.setSorting(activityDto.getSortMultilevel());
+        if (activityDto != null) {
+            dto.setReActivityName(activityDto.getName());
+            dto.setActivityName(activityDto.getCnName());
+            dto.setSorting(activityDto.getSortMultilevel());
+            dto.setBusinessKey(activityDto.getCnName());
+        }
         dto.setByExaminePeople(byExamineUser);
         dto.setExamineStatus(ProjectStatusEnum.RUNING.getKey());
         if (projectPlanDetails != null) {
