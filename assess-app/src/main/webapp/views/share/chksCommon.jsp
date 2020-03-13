@@ -505,6 +505,58 @@
         return html;
     };
 
+    assessmentCommonHandle.writeAssessmentItemHtml = function (target, parentData, childData, templateData) {
+        var restHtml = "";
+        if (childData.length == templateData.length) {
+            $.each(childData, function (i, item) {
+                if (!item.assessmentDes) {
+                    item.assessmentDes = "";
+                }
+                restHtml += assessmentCommonHandle.replaceAssessmentItem($("#assessmentItemTemplateHTML").html(), {
+                    index: i + 1,
+                    contentId: item.contentId,
+                    id: item.id,
+                    actualScore: item.actualScore,
+                    remark: item.remark,
+                    performanceId: parentData.id,
+                    name: parentData.activityName,
+                    assessmentDes: item.assessmentDes,
+                    minScore: item.minScore,
+                    maxScore: item.maxScore,
+                    standardScore: item.standardScore
+                });
+            });
+            if (childData.length >= 1) {
+                var remarksHtml = $("#assessmentItemTemplateRemarksHTML").html();
+                remarksHtml = remarksHtml.replace(/{remarks}/g, parentData.remarks);
+                restHtml += remarksHtml;
+            }
+        }
+        if (childData.length != templateData.length) {
+            $.each(templateData, function (i, item) {
+                restHtml += assessmentCommonHandle.replaceAssessmentItem($("#assessmentItemTemplateHTML").html(), {
+                    index: i + 1,
+                    contentId: item.id,
+                    id: 0,
+                    actualScore: '',
+                    remark: '',
+                    performanceId: 0,
+                    name: item.boxReActivitiNameCn,
+                    assessmentDes: item.assessmentDes,
+                    minScore: item.minScore,
+                    maxScore: item.maxScore,
+                    standardScore: item.standardScore
+                });
+            });
+            if (templateData.length >= 1) {
+                var remarksHtml = $("#assessmentItemTemplateRemarksHTML").html();
+                remarksHtml = remarksHtml.replace(/{remarks}/g, '');
+                restHtml += remarksHtml;
+            }
+        }
+        target.empty().append(restHtml);
+    };
+
     assessmentCommonHandle.getActivityIdByUserAccountList = function (activityId, callback) {
         assessmentCommonHandle.ajaxServerMethod({activityId: activityId}, "/chksAssessmentProjectPerformance/getActivityIdByUserAccountList", "get", callback, null);
     };
@@ -796,35 +848,12 @@
         }
         assessmentCommonHandle.getActivityIdByUserAccountList(itemObj.spotActivityId, function (accountList) {
             var examinePeople = '${sysUserDto.userAccount}';
-            console.log(accountList);
             if (examinePeople) {
                 if (jQuery.inArray(examinePeople, accountList) != -1) {
                     box.modal("show");
                     box.find("input[name=marsterId]").val(id);
                     assessmentCommonHandle.getAssessmentItemTemplate(query, function (data) {
-                        var restHtml = "";
-                        $.each(data, function (i, item) {
-                            var html = assessmentCommonHandle.replaceAssessmentItem($("#assessmentItemTemplateHTML").html(), {
-                                index: i + 1,
-                                contentId: item.id,
-                                id: 0,
-                                actualScore: '',
-                                remark: '',
-                                performanceId: 0,
-                                name: item.boxReActivitiNameCn,
-                                assessmentDes: item.assessmentDes,
-                                minScore: item.minScore,
-                                maxScore: item.maxScore,
-                                standardScore: item.standardScore
-                            });
-                            restHtml += html;
-                        });
-                        if (data.length >= 1) {
-                            var remarksHtml = $("#assessmentItemTemplateRemarksHTML").html();
-                            remarksHtml = remarksHtml.replace(/{remarks}/g, '');
-                            restHtml += remarksHtml;
-                        }
-                        table.empty().append(restHtml);
+                        assessmentCommonHandle.writeAssessmentItemHtml(table, {}, [], data);
                     });
                 } else {
                     notifyWarning('警告', "当前用户不属于此节点组的考核人员!");
@@ -917,57 +946,11 @@
                 boxReActivitiId: itemA.activityId,
                 boxId: itemA.boxId
             }, function (data) {
-                var restHtml = "";
-                if (parentData.length == data.length){
-                    $.each(parentData, function (i, item) {
-                        if (! item.assessmentDes){
-                            item.assessmentDes = "" ;
-                        }
-                        var html = assessmentCommonHandle.replaceAssessmentItem($("#assessmentItemTemplateHTML").html(), {
-                            index: i + 1,
-                            contentId: item.contentId,
-                            id: item.id,
-                            actualScore: item.actualScore,
-                            remark: item.remark,
-                            performanceId: id,
-                            name: itemA.activityName,
-                            assessmentDes: item.assessmentDes,
-                            minScore: item.minScore,
-                            maxScore: item.maxScore,
-                            standardScore: item.standardScore
-                        });
-                        restHtml += html;
-                    });
-                    if (data.length >= 1) {
-                        var remarksHtml = $("#assessmentItemTemplateRemarksHTML").html();
-                        remarksHtml = remarksHtml.replace(/{remarks}/g, itemA.remarks);
-                        restHtml += remarksHtml;
-                    }
-                }
-                if (parentData.length != data.length) {
-                    $.each(data, function (i, item) {
-                        var html = assessmentCommonHandle.replaceAssessmentItem($("#assessmentItemTemplateHTML").html(), {
-                            index: i + 1,
-                            contentId: item.id,
-                            id: 0,
-                            actualScore: '',
-                            remark: '',
-                            performanceId: 0,
-                            name: item.boxReActivitiNameCn,
-                            assessmentDes: item.assessmentDes,
-                            minScore: item.minScore,
-                            maxScore: item.maxScore,
-                            standardScore: item.standardScore
-                        });
-                        restHtml += html;
-                    });
-                    if (data.length >= 1) {
-                        var remarksHtml = $("#assessmentItemTemplateRemarksHTML").html();
-                        remarksHtml = remarksHtml.replace(/{remarks}/g, '');
-                        restHtml += remarksHtml;
-                    }
-                }
-                table.empty().append(restHtml);
+                assessmentCommonHandle.writeAssessmentItemHtml(table, {
+                    activityName: itemA.activityName,
+                    id: itemA.id,
+                    remarks: itemA.remarks
+                }, parentData, data);
             });
         });
     };
@@ -982,32 +965,7 @@
         assessmentCommonHandle.getAssessmentProjectPerformanceById(id, function (obj) {
             box.modal("show");
             var restHtml = "";
-            if (obj.detailList) {
-                $.each(obj.detailList, function (i, item) {
-                    var htmlB = assessmentCommonHandle.replaceAssessmentItem($("#assessmentItemTemplateHTML").html(), {
-                        index: i + 1,
-                        contentId: item.contentId,
-                        id: item.id,
-                        performanceId: obj.id,
-                        name: obj.activityName,
-                        assessmentDes: item.content,
-                        actualScore: item.actualScore,
-                        minScore: item.minScore,
-                        maxScore: item.maxScore,
-                        standardScore: item.standardScore,
-                        remark: item.remark
-                    });
-                    restHtml += htmlB;
-                });
-            }
-            var remarksHtml = $("#assessmentItemTemplateRemarksHTML").html();
-            if (obj.remarks) {
-                remarksHtml = remarksHtml.replace(/{remarks}/g, obj.remarks);
-            } else {
-                remarksHtml = remarksHtml.replace(/{remarks}/g, '');
-            }
-            restHtml += remarksHtml;
-            table.empty().append(restHtml);
+            assessmentCommonHandle.writeAssessmentItemHtml(table, obj, obj.detailList, obj.detailList);
             table.find("input").attr({readonly: 'readonly'});
             table.find("textarea").attr({readonly: 'readonly'});
         });

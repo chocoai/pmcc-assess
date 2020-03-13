@@ -73,8 +73,6 @@
 </c:if>
 
 
-
-
 <script type="text/javascript">
 
     function saveAssessmentSurveyItem(_this) {
@@ -113,105 +111,32 @@
 
     function finishAssessmentSurveyItem() {
         var target = $("#chksTableList").find("tbody");
-        assessmentCommonHandle.getAssessmentProjectPerformanceById('${assessmentProjectPerformanceDto.id}',function (obj) {
+        assessmentCommonHandle.getAssessmentProjectPerformanceById('${assessmentProjectPerformanceDto.id}', function (obj) {
             assessmentCommonHandle.getAssessmentProjectPerformanceDetailByPerformanceIdList(obj.id, function (data) {
-                var restHtml = "";
-                $.each(data, function (i, item) {
-                    var htmlB = assessmentCommonHandle.replaceAssessmentItem($("#assessmentItemTemplateHTML").html(), {
-                        index: i + 1,
-                        contentId: item.contentId,
-                        id: item.id,
-                        performanceId: obj.id,
-                        name: obj.activityName,
-                        assessmentDes: item.content,
-                        actualScore: item.actualScore,
-                        minScore: item.minScore,
-                        maxScore: item.maxScore,
-                        standardScore: item.standardScore,
-                        remark: item.remark
-                    });
-                    restHtml += htmlB;
-                });
-                var remarksHtml = $("#assessmentItemTemplateRemarksHTML").html();
-                if (obj.remarks) {
-                    remarksHtml = remarksHtml.replace(/{remarks}/g, obj.remarks);
-                } else {
-                    remarksHtml = remarksHtml.replace(/{remarks}/g, '');
-                }
-                restHtml += remarksHtml;
-                target.empty().append(restHtml);
+                assessmentCommonHandle.writeAssessmentItemHtml(target, obj, data, data);
                 target.find("input").attr({readonly: 'readonly'});
                 target.find("textarea").attr({readonly: 'readonly'});
             });
-        }) ;
+        });
     }
 
     $(document).ready(function () {
         var target = $("#chksTableList").find("tbody");
-
         if ('${assessmentProjectPerformanceDto.examineStatus}' == 'runing') {
-
             assessmentCommonHandle.getAssessmentProjectPerformanceDetailByPerformanceIdList('${assessmentProjectPerformanceDto.id}', function (parentData) {
                 assessmentCommonHandle.getAssessmentItemTemplate({
                     boxReActivitiId: '${assessmentProjectPerformanceDto.activityId}',
-                    boxId: '${assessmentProjectPerformanceDto.boxId}' ,
+                    boxId: '${assessmentProjectPerformanceDto.boxId}',
                     assessmentKey: '${assessmentProjectPerformanceDto.assessmentKey}'
                 }, function (data) {
-                    var restHtml = "";
-                    if (parentData.length == data.length){
-                        $.each(parentData, function (i, item) {
-                            if (! item.assessmentDes){
-                                item.assessmentDes = "" ;
-                            }
-                            var html = assessmentCommonHandle.replaceAssessmentItem($("#assessmentItemTemplateHTML").html(), {
-                                index: i + 1,
-                                contentId: item.contentId,
-                                id: item.id,
-                                actualScore: item.actualScore,
-                                remark: item.remark,
-                                performanceId: '${assessmentProjectPerformanceDto.id}',
-                                name: '${assessmentProjectPerformanceDto.activityName}',
-                                assessmentDes: item.assessmentDes,
-                                minScore: item.minScore,
-                                maxScore: item.maxScore,
-                                standardScore: item.standardScore
-                            });
-                            restHtml += html;
-                        });
-                        if (data.length >= 1) {
-                            var remarksHtml = $("#assessmentItemTemplateRemarksHTML").html();
-                            remarksHtml = remarksHtml.replace(/{remarks}/g, '${assessmentProjectPerformanceDto.remarks}');
-                            restHtml += remarksHtml;
-                        }
-                    }
-                    if (parentData.length != data.length){
-                        $.each(data, function (i, item) {
-                            var html = assessmentCommonHandle.replaceAssessmentItem($("#assessmentItemTemplateHTML").html(), {
-                                index: i + 1,
-                                contentId: item.id,
-                                id: 0,
-                                actualScore: '',
-                                remark: '',
-                                performanceId: 0,
-                                name: item.boxReActivitiNameCn,
-                                assessmentDes: item.assessmentDes,
-                                minScore: item.minScore,
-                                maxScore: item.maxScore,
-                                standardScore: item.standardScore
-                            });
-                            restHtml += html;
-                        });
-                        if (data.length >= 1) {
-                            var remarksHtml = $("#assessmentItemTemplateRemarksHTML").html();
-                            remarksHtml = remarksHtml.replace(/{remarks}/g, '');
-                            restHtml += remarksHtml;
-                        }
-                    }
-                    target.empty().append(restHtml);
+                    assessmentCommonHandle.writeAssessmentItemHtml(target, {
+                        activityName: '${assessmentProjectPerformanceDto.activityName}',
+                        id: '${assessmentProjectPerformanceDto.id}',
+                        remarks: '${assessmentProjectPerformanceDto.remarks}'
+                    }, parentData, data);
                 });
             });
         }
-
         if ('${assessmentProjectPerformanceDto.examineStatus}' == 'finish') {
             finishAssessmentSurveyItem();
         }
