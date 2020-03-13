@@ -64,7 +64,11 @@ declareCommon.config = {
     declareEconomicIndicatorsContent2: {
         frm: "frmDeclareEconomicIndicatorsContentRealtyRealEstate",
         name: "经济指标2"
-    }
+    },
+    declareRealtyCheckListModel:"#declareRealtyCheckListDataModelBox",
+    declareRealtyCheckListListBox:"#divDataDeclareRealtyCheckList",
+    declareRealtyCheckListToolBar:"#toolbarDeclareRealtyCheckList",
+    declareRealtyCheckListTable:"#tbDataDeclareRealtyCheckListList"
 };
 
 declareCommon.declareCenterData = {
@@ -1497,5 +1501,143 @@ declareCommon.deleteDeclareRealtyCheckListById = function (id, callback) {
 };
 declareCommon.getDeclareRealtyCheckListById = function (id, callback) {
     declareCommon.ajaxServerFun({id: id}, "/declareRealtyCheckList/getDeclareRealtyCheckListById", "get", callback,null);
+};
+declareCommon.loadDeclareRealtyCheckListTable = function (marsterId,tableId) {
+    var box = $(declareCommon.config.declareRealtyCheckListListBox) ;
+    var frm = box.find("form");
+    var query = {marsterId:marsterId,tableId:tableId} ;
+    frm.clearAll();
+    frm.initForm(query);
+    var cols = [];
+    if (tableId){
+        cols.push({
+            field: 'id', title: '编辑', width: 200, formatter: function (value, row, index) {
+                var str = '<div class="btn-margin">';
+                str += '<button onclick="declareCommon.editDeclareRealtyCheckList(' + row.id + ')"  style="margin-left: 5px;"  class="btn   btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
+                str += '<i class="fa fa-pen"></i>';
+                str += '</button>';
+                str += '</div>';
+                return str;
+            }
+        });
+    }else {
+        cols.push({
+            field: 'id', title: '详情', width: 200, formatter: function (value, row, index) {
+                var str = '<div class="btn-margin">';
+                str += '<button onclick="declareCommon.findDeclareRealtyCheckList(' + row.id + ')"  style="margin-left: 5px;"  class="btn   btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="详情">';
+                str += '<i class="fa fa-search"></i>';
+                str += '</button>';
+                str += '</div>';
+                return str;
+            }
+        });
+    }
+    cols.push({field: 'district', title: '所在区'});
+    cols.push({field: 'streetNumber', title: '街道号'});
+    cols.push({field: 'houseNumber', title: '门牌号'});
+    // cols.push({field: 'attachedNumber', title: '附号'});
+    // cols.push({field: 'buildingNumber', title: '栋号'});
+    // cols.push({field: 'unit', title: '单元'});
+    // cols.push({field: 'floor', title: '楼层'});
+    // cols.push({field: 'roomNumber', title: '房号'});
+    cols.push({field: 'certUse', title: '用途'});
+    cols.push({field: 'floorArea', title: '房屋建筑面积'});
+    cols.push({field: 'apportionmentArea', title: '分摊面积'});
+    cols.push({field: 'realEstateUnitNumber', title: '不动产单元号'});
+    var table = $(declareCommon.config.declareRealtyCheckListTable) ;
+    table.bootstrapTable('destroy');
+    TableInit(table, getContextPath() + "/declareRealtyCheckList/getBootstrapTableVo", cols,query, {
+        showColumns: false,
+        showRefresh: false,
+        search: false,
+        toolbar: declareCommon.config.declareRealtyCheckListToolBar,
+        onLoadSuccess: function () {
+            $('.tooltips').tooltip();
+        }
+    }, true, false);
+    box.modal("show");
+};
+declareCommon.editDeclareRealtyCheckList = function (id) {
+    var table = $(declareCommon.config.declareRealtyCheckListTable) ;
+    var item = table.bootstrapTable('getRowByUniqueId', id);
+    declareCommon.addDeclareRealtyCheckList(function (frm) {
+        declareCommon.initFormDeclareRealtyCheckList(item,frm) ;
+    }) ;
+} ;
+declareCommon.findDeclareRealtyCheckList = function (id) {
+    var table = $(declareCommon.config.declareRealtyCheckListTable) ;
+    var item = table.bootstrapTable('getRowByUniqueId', id);
+    var box = $(declareCommon.config.declareRealtyCheckListModel) ;
+    var frm = box.find("form");
+    box.find("#" + commonDeclareApprovalModel.config.declareRealtyCheckList.handleId).remove();
+    box.find(".card-body").append(commonDeclareApprovalModel.declareRealtyCheckList.getHtml());
+    declareCommon.showHtmlMastInit(frm, function (area) {
+        box.modal("show");
+        declareCommon.initFormDeclareRealtyCheckList(item,frm) ;
+    });
+
+};
+declareCommon.delDeclareRealtyCheckList = function () {
+    var table = $(declareCommon.config.declareRealtyCheckListTable) ;
+    var box = $(declareCommon.config.declareRealtyCheckListListBox) ;
+    var rows = table.bootstrapTable('getSelections');
+    if (!rows || rows.length <= 0) {
+        notifyWarning("警告", "请选择要删除的数据!");
+
+    } else {
+        var idArray = [];
+        $.each(rows, function (i, item) {
+            idArray.push(item.id);
+        });
+        declareCommon.deleteDeclareRealtyCheckListById(idArray.join(","),function () {
+            table.bootstrapTable('refresh');
+        }) ;
+    }
+};
+declareCommon.declareRealtyCheckListSaveAndUpdate = function () {
+    var box = $(declareCommon.config.declareRealtyCheckListModel) ;
+    var table = $(declareCommon.config.declareRealtyCheckListTable) ;
+    var frm = box.find("form");
+    var data = formSerializeArray(frm);
+    data.planDetailsId = declareCommon.getPlanDetailsId();
+    if (!frm.valid()) {
+        return false;
+    }
+    declareCommon.saveAndUpdateDeclareRealtyCheckList(data,function () {
+        box.modal("hide");
+        table.bootstrapTable('refresh');
+        $(declareCommon.config.declareRealtyCheckListListBox).modal("show");// list box
+    }) ;
+} ;
+declareCommon.addDeclareRealtyCheckList = function (callback) {
+    var box = $(declareCommon.config.declareRealtyCheckListModel) ;
+    var frm = box.find("form");
+    box.find("#" + commonDeclareApplyModel.config.declareRealtyCheckList.handleId).remove();
+    box.find(".card-body").append(commonDeclareApplyModel.declareRealtyCheckList.getHtml());
+    declareCommon.showHtmlMastInit(frm, function (area) {
+        box.modal("show");
+        declareCommon.initFormDeclareRealtyCheckList(area,frm) ;
+        // $(declareCommon.config.declareRealtyCheckListListBox).modal("hide");// list box
+        if (callback){
+            callback(frm) ;
+        }
+    });
+} ;
+declareCommon.initFormDeclareRealtyCheckList = function (data,frm) {
+    var arr = [];
+    var inputArr = [];
+    var box = $(declareCommon.config.declareRealtyCheckListListBox) ;
+    var item = formSerializeArray(box.find("form")) ;
+    jQuery.extend(data, item);
+    declareCommon.initFormData(frm, data, arr, false, AssessDBKey.DeclareRealtyCheckList, inputArr);
+} ;
+declareCommon.inputRealDeclareRealtyCheckList = function () {
+    var box = $(declareCommon.config.declareRealtyCheckListListBox) ;
+    var table = $(declareCommon.config.declareRealtyCheckListTable) ;
+    var data = {planDetailsId: declareCommon.getPlanDetailsId()} ;
+    jQuery.extend(data, formSerializeArray(box.find("form")));
+    declareCommon.ajaxFileUploadCommon(data,'ajaxFileUploadRealDeclareRealtyCheckList',"/declareRealtyCheckList/importData",function () {
+        table.bootstrapTable('refresh');
+    }) ;
 };
 

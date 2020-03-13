@@ -44,19 +44,7 @@
                                            onclick="$('#ajaxFileUploadRealEstate').val('').attr('data-type',1).trigger('click');">导入数据</a>
                                     </div>
                                 </div>
-                                <div class="dropdown" style="display: inline;margin-left: 5px;">
-                                    <button type="button" class="btn btn-info dropdown-toggle btn-sm"
-                                            data-toggle="dropdown"
-                                            aria-expanded="false">
-                                        导入不动产清单
-                                    </button>
-                                    <div class="dropdown-menu" role="menu">
-                                        <a href="javascript://" class="dropdown-item"
-                                           onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftRealDeclareRealtyCheckList);">下载模板</a>
-                                        <a href="javascript://;" class="dropdown-item"
-                                           onclick="$('#ajaxFileUploadRealDeclareRealtyCheckList').val('').attr('data-type',1).trigger('click');">导入数据</a>
-                                    </div>
-                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -173,8 +161,7 @@
 <input type="file" id="ajaxFileUploadRealEstate" name="file" style="display: none;"
        onchange="declareRealtyRealEstateCert.inputFile();">
 
-<input type="file" id="ajaxFileUploadRealDeclareRealtyCheckList" name="file" style="display: none;"
-       onchange="declareRealtyRealEstateCert.inputRealDeclareRealtyCheckList();">
+
 
 <input type="file" id="declareRealtyRealEstateCertFileId" name="declareRealtyRealEstateCertFileId"
        style="display: none;"
@@ -493,48 +480,7 @@
     </div>
 </div>
 
-<!-- 不动产清单 -->
-<div id="declareRealtyCheckListModelBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
-     role="dialog"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg" style="max-width: 65%;">
-        <div class="modal-content">
 
-            <div class="modal-header">
-                <h4 class="modal-title">不动产清单</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-            </div>
-            <div class="modal-body">
-                <form class="form-horizontal">
-                    <input type="hidden" name="id">
-                    <input type="hidden" name="marsterId">
-                    <input type="hidden" name="autoInitNumber">
-                    <div class="row">
-                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-
-                            <div class="card-body">
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
-                    关闭
-                </button>
-                <button type="button" class="btn btn-warning btn-sm"
-                        onclick="declareRealtyRealEstateCert.declareRealtyCheckListRemove()">
-                    删除
-                </button>
-                <button type="button" class="btn btn-primary btn-sm"
-                        onclick="declareRealtyRealEstateCert.declareRealtyCheckListSaveAndUpdate();">
-                    保存
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
 
 
 
