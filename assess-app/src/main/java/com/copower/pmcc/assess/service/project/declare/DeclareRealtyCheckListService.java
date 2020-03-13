@@ -103,17 +103,17 @@ public class DeclareRealtyCheckListService {
         if (myEntryArrayList.size() == 1) {
             MyEntry<Integer, Class<?>> myEntry = myEntryArrayList.get(0);
             String simpleName = myEntry.getValue().getSimpleName();
-            builder.append("第").append(row.getRowNum()).append("行").append("编号").append(target.getAutoInitNumber()).append("匹配的") ;
-            if (com.google.common.base.Objects.equal(simpleName, DeclareRealtyHouseCert.class.getSimpleName())) {
-                builder.append(DeclareTypeEnum.HOUSE.getKey()) ;
-            }
-            if (com.google.common.base.Objects.equal(simpleName, DeclareRealtyLandCert.class.getSimpleName())) {
-                builder.append(DeclareTypeEnum.LAND.getKey()) ;
-            }
-            if (com.google.common.base.Objects.equal(simpleName, DeclareRealtyRealEstateCert.class.getSimpleName())) {
-                builder.append(DeclareTypeEnum.RealEstate.getKey()) ;
-            }
-            builder.append("\n \r") ;
+//            builder.append("第").append(row.getRowNum()).append("行").append("编号").append(target.getAutoInitNumber()).append("匹配的") ;
+//            if (com.google.common.base.Objects.equal(simpleName, DeclareRealtyHouseCert.class.getSimpleName())) {
+//                builder.append(DeclareTypeEnum.HOUSE.getKey()) ;
+//            }
+//            if (com.google.common.base.Objects.equal(simpleName, DeclareRealtyLandCert.class.getSimpleName())) {
+//                builder.append(DeclareTypeEnum.LAND.getKey()) ;
+//            }
+//            if (com.google.common.base.Objects.equal(simpleName, DeclareRealtyRealEstateCert.class.getSimpleName())) {
+//                builder.append(DeclareTypeEnum.RealEstate.getKey()) ;
+//            }
+//            builder.append("\n \r") ;
             target.setMarsterId(myEntry.getKey());
         } else {
             //这里是有多个匹配的情况  ,这种也是不允许的,这种情况一般不会发生  ,因为在房产证，土地证以及不动产 导入excel的时候已经做过判断,如果还出现了这种情况,那么可能是网络原因或者其它未知原因影响了

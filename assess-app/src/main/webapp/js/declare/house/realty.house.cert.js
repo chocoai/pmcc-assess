@@ -247,8 +247,8 @@ assessCommonHouse.showDeclareRealtyCheckListModel = function (id) {
     box.find(".card-body").append(commonDeclareApplyModel.declareRealtyCheckList.getHtml());
     declareCommon.showHtmlMastInit(frm, function (area) {
         box.modal("show");
+        frm.find(".realEstateUnitNumber").empty() ;
         declareCommon.getDeclareRealtyCheckListListByExample({marsterId:id,planDetailsId:declareCommon.getPlanDetailsId()} ,function (data) {
-            console.log(data) ;
             if (data.length > 0){
                 declareCommon.initFormData(frm, data[0], arr, false, AssessDBKey.DeclareRealtyCheckList, inputArr);
             }else {

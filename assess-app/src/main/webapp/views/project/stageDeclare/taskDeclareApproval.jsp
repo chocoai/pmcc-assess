@@ -335,6 +335,26 @@
         });
     };
 
+    //不动产清单
+    declareApprovalFun.houseDeclareRealtyCheckListModel = function (id) {
+        var box = $("#declareRealtyCheckListHouseModelBox") ;
+        var arr = [];
+        var inputArr = [];
+        var frm = box.find("form");
+        box.find("#" + commonDeclareApprovalModel.config.declareRealtyCheckList.handleId).remove();
+        box.find(".card-body").append(commonDeclareApprovalModel.declareRealtyCheckList.getHtml());
+        declareCommon.showHtmlMastInit(frm, function (area) {
+            box.modal("show");
+            frm.find(".realEstateUnitNumber").empty() ;
+            declareCommon.getDeclareRealtyCheckListListByExample({marsterId:id,planDetailsId: '${empty projectPlanDetails.id?0:projectPlanDetails.id}'} ,function (data) {
+                if (data.length > 0){
+                    declareCommon.initFormData(frm, data[0], arr, false, AssessDBKey.DeclareRealtyCheckList, inputArr);
+                }
+            }) ;
+
+        });
+    };
+
     //房产 table list
     declareApprovalFun.houseLoadList = function () {
         var cols = declareCommon.getHouseColumn();
@@ -352,6 +372,9 @@
                 str += '<button type="button" onclick="declareApprovalFun.houseRelationDeclareEconomicIndicatorsData(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="经济指标">';
                 str += '经济指标';
                 str += '</button>';
+
+                str += '<button type="button" onclick="declareApprovalFun.houseDeclareRealtyCheckListModel(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="不动产清单">不动产清单</button>';
+
 
                 return str;
             }
@@ -381,6 +404,8 @@
         });
     };
 
+
+
     //不动产 经济指标
     declareApprovalFun.realtyRealDeclareEconomicIndicators = function (id) {
         var item = $("#" + declareApprovalFun.declareRealtyRealEstateCertConfig.table).bootstrapTable('getRowByUniqueId', id);
@@ -403,6 +428,24 @@
             }
         });
     };
+    //不动产清单
+    declareApprovalFun.realtyRealDeclareRealtyCheckListModel = function (id) {
+        var box = $("#declareRealtyCheckListModelBox") ;
+        var arr = [];
+        var inputArr = [];
+        var frm = box.find("form");
+        box.find("#" + commonDeclareApprovalModel.config.declareRealtyCheckList.handleId).remove();
+        box.find(".card-body").append(commonDeclareApprovalModel.declareRealtyCheckList.getHtml());
+        declareCommon.showHtmlMastInit(frm, function (area) {
+            box.modal("show");
+            declareCommon.getDeclareRealtyCheckListListByExample({marsterId:id,planDetailsId: '${empty projectPlanDetails.id?0:projectPlanDetails.id}'} ,function (data) {
+                if (data.length > 0){
+                    declareCommon.initFormData(frm, data[0], arr, false, AssessDBKey.DeclareRealtyCheckList, inputArr);
+                }
+            }) ;
+
+        });
+    };
 
     //不动产
     declareApprovalFun.realEstateloadList = function () {
@@ -417,6 +460,9 @@
                 str += '<button type="button" onclick="declareApprovalFun.realtyRealDeclareEconomicIndicators(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="经济指标">';
                 str += '经济指标';
                 str += '</button>';
+
+                str += '<button type="button" onclick="declareApprovalFun.realtyRealDeclareRealtyCheckListModel(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="不动产清单">不动产清单</button>';
+
 
                 str += '<div class="dropdown" style="display: inline;margin-left: 5px;">';
                 str += "<button type='button' class='btn btn-info btn-xs dropdown-toggle'  style=\"margin-left: 5px;\" data-toggle='dropdown'>许可证信息</button>";
@@ -801,6 +847,41 @@
         </div>
     </div>
 </div>
+<!-- 房产证模块 不动产清单 -->
+<div id="declareRealtyCheckListHouseModelBox" class="modal fade bs-example-modal-lg" data-backdrop="static"
+     tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="max-width: 65%;">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title">不动产清单</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <input type="hidden" name="id">
+                    <input type="hidden" name="marsterId">
+                    <input type="hidden" name="autoInitNumber">
+                    <div class="row">
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+
+                            <div class="card-body">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 <!--  房产证模块  土地证 -->
 <div id="boxSonDeclareRealtyLandCert" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
@@ -1035,6 +1116,40 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--不动产 不动产清单 -->
+<div id="declareRealtyCheckListModelBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="max-width: 65%;">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title">不动产清单</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <input type="hidden" name="id">
+                    <input type="hidden" name="marsterId">
+                    <input type="hidden" name="autoInitNumber">
+                    <div class="row">
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+
+                            <div class="card-body">
                             </div>
                         </div>
                     </div>

@@ -218,7 +218,7 @@
         declareRealtyCheckList: {
             id: "declareRealtyCheckListCommon",
             handleId: "declareRealtyCheckListModelHandleCommon",
-            name: "建设工程规划许可证"
+            name: "不动产清单"
         }
     };
 
@@ -3645,12 +3645,12 @@
         <div class="row form-group">
             <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                 <div class="form-inline x-valid">
-                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label realEstateUnitNumber">
                         不动产单元号
                     </label>
-                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3 realEstateUnitNumber">
                         <input type="text"
-                               placeholder="不动产单元号" name="realEstateUnitNumber" class="form-control input-full">
+                               placeholder="不动产单元号" name="realEstateUnitNumber" class="form-control input-full ">
                     </div>
                     <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
                         所在区
