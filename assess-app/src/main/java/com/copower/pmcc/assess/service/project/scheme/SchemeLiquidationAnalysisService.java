@@ -402,10 +402,12 @@ public class SchemeLiquidationAnalysisService {
         //应该获取最终测算好的价格与面积
         if (CollectionUtils.isNotEmpty(listByDeclareIds)) {
             for (SchemeJudgeObject judgeObject : listByDeclareIds) {
-                if (judgeObject.getEvaluationArea() != null) {
-                    groupArea = groupArea.add(judgeObject.getEvaluationArea());
-                    if (judgeObject.getPrice() != null) {
-                        groupPrice = groupPrice.add(judgeObject.getEvaluationArea().multiply(judgeObject.getPrice()));
+                if(judgeObject.getBisMerge()==false){
+                    if (judgeObject.getEvaluationArea() != null) {
+                        groupArea = groupArea.add(judgeObject.getEvaluationArea());
+                        if (judgeObject.getPrice() != null) {
+                            groupPrice = groupPrice.add(judgeObject.getEvaluationArea().multiply(judgeObject.getPrice()));
+                        }
                     }
                 }
             }
