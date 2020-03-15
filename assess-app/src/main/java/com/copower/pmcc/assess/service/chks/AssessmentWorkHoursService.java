@@ -90,8 +90,9 @@ public class AssessmentWorkHoursService {
             if (CollectionUtils.isEmpty(assessmentItemList)) return;
             //1.生成工时考核任务，先查看该节点是否生成了任务，有则直接返回
             //2.没有生成则为当前节点生成对应的任务
-            Integer count = chksRpcAssessmentWorkHoursService.getAssessmentWorkHoursCount(processInsId, currentActivity.getName());
+            Integer count = chksRpcAssessmentWorkHoursService.getAssessmentWorkHoursCount(processInsId, currentActivity.getName(),ProjectStatusEnum.RUNING.getKey());
             if (count > 0) return;
+            chksRpcAssessmentWorkHoursService.deleteAssessmentWorkHoursByProcessInsId(processInsId,currentActivity.getId());
             AssessmentProjectWorkHoursDto dto = new AssessmentProjectWorkHoursDto();
             dto.setProcessInsId(processInsId);
             dto.setAppKey(applicationConstant.getAppKey());
@@ -215,8 +216,8 @@ public class AssessmentWorkHoursService {
                     for (AssessmentProjectWorkHoursDto workHoursDto : workingHoursList) {
                         if (StringUtils.isBlank(workHoursDto.getExaminePeople())) { //当考核任务已经设置了考核人时此时此刻不再设置考核人
                             workHoursDto.setExaminePeople(processControllerComponent.getThisUser());
+                            chksRpcAssessmentWorkHoursService.updateAssessmentWorkHours(workHoursDto);
                         }
-                        chksRpcAssessmentWorkHoursService.updateAssessmentWorkHours(workHoursDto);
                     }
                 }
                 ProjectResponsibilityDto projectResponsibilityDto = new ProjectResponsibilityDto();

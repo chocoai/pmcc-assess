@@ -10,6 +10,7 @@ import com.copower.pmcc.assess.dto.output.project.ProjectTaskReturnRecordVo;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
+import com.copower.pmcc.assess.service.chks.AssessmentCommonService;
 import com.copower.pmcc.assess.service.chks.ChksAssessmentProjectPerformanceService;
 import com.copower.pmcc.assess.service.event.EmptyProcessEvent;
 import com.copower.pmcc.assess.service.event.project.ProjectTaskEvent;
@@ -99,7 +100,7 @@ public class ProjectTaskService {
     @Autowired
     private PublicService publicService;
     @Autowired
-    private ChksAssessmentProjectPerformanceService chksAssessmentProjectPerformanceService;
+    private AssessmentCommonService assessmentCommonService;
 
     @Transactional(rollbackFor = Exception.class)
     public void submitTask(ProjectTaskDto projectTaskDto) throws Exception {
@@ -233,7 +234,7 @@ public class ProjectTaskService {
         }
         try {
             processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
-            chksAssessmentProjectPerformanceService.createAssessmentProjectTask(approvalModelDto, projectInfo, projectPlanDetails);//创建考核ProjectTask任务
+            assessmentCommonService.createProjectTask(approvalModelDto,projectInfo,projectPlanDetails);
         } catch (BpmException e) {
             throw new BusinessException(e.getMessage());
         }

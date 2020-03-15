@@ -94,23 +94,20 @@
                                 <button type="button"
                                         onclick="assessmentCommonHandle.loadAssessmentQualityList($(this).closest('form'));"
                                         class="btn btn-info btn-sm"><i class="fa fa-search"></i>查询</button>
-                                <button style="margin-left: 10px" class="btn btn-info  btn-sm" type="button" onclick="$(this).closest('form').clearAll();">
+                                <button style="margin-left: 5px" class="btn btn-info  btn-sm" type="button" onclick="$(this).closest('form').clearAll();">
                                     <span class="fa fa-undo-alt" aria-hidden="true"></span>
                                     重置
                                 </button>
-                            </div>
-                            <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                                <button type="button" class="btn btn-info btn-sm"
+                                <button type="button" class="btn btn-info btn-sm"  style="margin-left: 5px"
                                         onclick="assessmentCommonHandle.copyData(this);"><i
                                         class="fa fa-copy" aria-hidden="true"></i> 拷贝
                                 </button>
-                                <button type="button" class="btn btn-warning btn-sm" style="margin-left: 10px;"
+                                <button type="button" class="btn btn-warning btn-sm" style="margin-left: 5px;"
                                         onclick="assessmentCommonHandle.pasteAll(this);"><i
                                         class="fa fa-clipboard" aria-hidden="true"></i>粘贴
                                 </button>
                             </div>
-
-                            <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
+                            <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
                                 <div class="input-group ">
                                     <input type="hidden" name="id">
                                     <input type="text" readonly="readonly" name="name"

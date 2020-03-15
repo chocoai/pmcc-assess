@@ -84,7 +84,8 @@ public class ChksAssessmentProjectPerformanceService {
         //2.当前人只能查看排序比当前节点小的质量考核数据
         ChksBootstrapTableVo chksBootstrapTableVo = new ChksBootstrapTableVo();
         List<Integer> activityList = Lists.newArrayList();
-        if (!processControllerComponent.userIsAdmin(commonService.thisUserAccount()) && !isSpotGroupUser(boxId, commonService.thisUserAccount())) {
+        boolean spotGroupUser = isSpotGroupUser(boxId, commonService.thisUserAccount());
+        if (!processControllerComponent.userIsAdmin(commonService.thisUserAccount()) && !spotGroupUser) {
             List<BoxReActivityDto> activityDtos = bpmRpcBoxService.getBoxReActivityByBoxId(boxId);
             if (CollectionUtils.isEmpty(activityDtos)) return chksBootstrapTableVo;
             if ("approval".equals(flog)) {
@@ -110,6 +111,14 @@ public class ChksAssessmentProjectPerformanceService {
         AssessmentProjectPerformanceDtoAndDetail dtoAndDetail = chksRpcAssessmentService.getAssessmentProjectPerformanceDtosByExample(where, activityList, requestBaseParam.getOffset(), requestBaseParam.getLimit());
         if (dtoAndDetail != null) {
             chksBootstrapTableVo = dtoAndDetail.getChksBootstrapTableVo();
+            List<AssessmentProjectPerformanceDto> rows = chksBootstrapTableVo.getRows();
+            if (CollectionUtils.isNotEmpty(rows)) {
+                BoxReActivityDto endActivity = bpmRpcBoxService.getEndActivityByBoxId(boxId);
+                for (AssessmentProjectPerformanceDto row : rows) {
+                    row.setCanSpot(ProjectStatusEnum.FINISH.getKey().equalsIgnoreCase(row.getExamineStatus()) && bpmRpcBoxService.getBoxreActivityInfoById(row.getActivityId()).getBisSpotCheck() && spotGroupUser);
+                    row.setSpotActivityId(endActivity.getId());
+                }
+            }
         }
         return chksBootstrapTableVo;
     }
@@ -187,10 +196,8 @@ public class ChksAssessmentProjectPerformanceService {
         if (StringUtils.isNotBlank(assessmentProjectPerformanceDto.getProcessInsId())) {
             projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsByProcessInsId(assessmentProjectPerformanceDto.getProcessInsId());
         }
-        if (projectPlanDetails == null) {
-            if (planDetailsId != null) {
-                projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
-            }
+        if (projectPlanDetails == null && planDetailsId != null) {
+            projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
         }
         return saveAssessmentProjectPerformanceBase(assessmentProjectPerformanceDto, detailDtoList, projectPlanDetails);
     }
@@ -549,8 +556,9 @@ public class ChksAssessmentProjectPerformanceService {
             if (currentActivity == null || currentActivity.getBisViewChk() == Boolean.FALSE) return;
             List<AssessmentItemDto> assessmentItemList = bpmRpcBoxService.getAssessmentItemList(boxId, currentActivity.getId());
             if (CollectionUtils.isEmpty(assessmentItemList)) return;
-            Integer count = chksRpcAssessmentService.getAssessmentProjectPerformanceCount(applicationConstant.getAppKey(), projectInfo.getId(), processInsId, currentActivity.getId(), taskId);
+            Integer count = chksRpcAssessmentService.getAssessmentProjectPerformanceCount(processInsId, currentActivity.getId(), ProjectStatusEnum.RUNING.getKey());
             if (count > 0) return;
+            chksRpcAssessmentService.deleteAssessmentProjectPerformanceByProcessInsId(processInsId, currentActivity.getId());
             String checkBean = StringUtils.uncapitalize(AssessmentTaskService.class.getSimpleName());//默认生成考核任务服务方法
             checkBean = StringUtils.isNoneBlank(boxReDto.getCheckBean()) ? boxReDto.getCheckBean() : checkBean;
             checkBean = StringUtils.isNoneBlank(currentActivity.getCheckBean()) ? currentActivity.getCheckBean() : checkBean;

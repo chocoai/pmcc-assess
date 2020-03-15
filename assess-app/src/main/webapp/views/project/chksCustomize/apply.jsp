@@ -11,7 +11,6 @@
             <%@include file="/views/share/form_head.jsp" %>
             <div class="page-inner mt--5">
                 <div class="row mt--2">
-                    <%@include file="/views/share/project/projectInfoSimple.jsp" %>
                     <link rel="stylesheet"
                           href="${pageContext.request.contextPath}/assets/tree-grid/css/jquery.treegrid.css">
                     <script type="text/javascript"
@@ -26,7 +25,7 @@
                             <div class="card-header collapse-link">
                                 <div class="card-head-row">
                                     <div class="card-title">
-                                        申报考核
+                                        权证信息
                                     </div>
                                     <div class="card-tools">
                                         <button class="btn  btn-link btn-primary btn-xs"><span
@@ -53,7 +52,7 @@
                             <div class="card-header collapse-link">
                                 <div class="card-head-row">
                                     <div class="card-title">
-                                        房产证关联数据
+                                        其他信息
                                     </div>
                                     <div class="card-tools">
                                         <button class="btn  btn-link btn-primary btn-xs"><span
@@ -107,7 +106,7 @@
                             <div class="card-header collapse-link">
                                 <div class="card-head-row">
                                     <div class="card-title">
-                                        土地证关联数据
+                                        其他信息
                                     </div>
                                     <div class="card-tools">
                                         <button class="btn  btn-link btn-primary btn-xs"><span
@@ -223,7 +222,7 @@
                             <div class="card-header collapse-link">
                                 <div class="card-head-row">
                                     <div class="card-title">
-                                        不动产证关联数据
+                                        其他信息
                                     </div>
                                     <div class="card-tools">
                                         <button class="btn  btn-link btn-primary btn-xs"><span
@@ -377,29 +376,10 @@
                         </div>
                     </div>
 
-                    <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
-                        <div class="card full-height">
-                            <div class="card-body">
-                                <div class="form-horizontal">
-                                    <div class="row form-group">
-                                        <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
-                                            <div class="form-inline x-valid">
-                                                <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
-                                                </div>
-                                                <div class=" col-xs-6  col-sm-6  col-md-6  col-lg-6 ">
-                                                    <button class="btn btn-primary" type="button"
-                                                            onclick="chksCustomer.saveAssessmentItem();">
-                                                        保存考核记录
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12" style="text-align: center;">
+                        <button class="btn btn-primary" type="button" onclick="chksCustomer.saveAssessmentItem();">保存
+                        </button>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -457,12 +437,14 @@
         var parentData = {
             id: '${assessmentProjectPerformanceDto.id}',
             remarks: remarks,
+
             examineStatus: 'finish',
             examineUrl: "/chksCustomerAssessmentPlanDetail/detail?id=${assessmentProjectPerformanceDto.id}"
         };
         assessmentCommonHandle.saveAssessmentServer({
             chksScore: JSON.stringify(filterData),
-            fomData: JSON.stringify(parentData)
+            fomData: JSON.stringify(parentData),
+            processInsId: '${assessmentProjectPerformanceDto.processInsId}'
         }, function (data) {
             AlertSuccess("成功", "考核成功", function () {
                 window.close();

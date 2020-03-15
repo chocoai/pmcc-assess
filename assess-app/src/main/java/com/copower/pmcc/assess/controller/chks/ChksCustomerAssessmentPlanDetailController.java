@@ -83,7 +83,7 @@ public class ChksCustomerAssessmentPlanDetailController {
         if (projectInfo != null) {
             modelAndView.addObject(StringUtils.uncapitalize(ProjectInfo.class.getSimpleName()), projectInfoService.getSimpleProjectInfoVo(projectInfo));
         }
-
+        modelAndView.addObject("processInsId",assessmentProjectPerformanceDto.getProcessInsId());
         modelAndView.addObject(org.apache.commons.lang3.StringUtils.uncapitalize(SysUserDto.class.getSimpleName()),processControllerComponent.getThisUserInfo()) ;
         modelAndView.addObject(StringUtils.uncapitalize(AssessmentProjectPerformanceDto.class.getSimpleName()), assessmentProjectPerformanceDto);
 

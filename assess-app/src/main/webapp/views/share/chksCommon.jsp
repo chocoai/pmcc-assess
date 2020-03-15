@@ -185,7 +185,7 @@
                                     考核标准
                                 </label>
                                 <div class="col-xs-10  col-sm-10  col-md-10  col-lg-10">
-                                    <span data-name="examineStandard" class="form-control"></span>
+                                    <span data-name="examineStandard" class="form-control input-full"></span>
                                 </div>
                             </div>
                         </div>
@@ -361,6 +361,7 @@
 
     assessmentCommonHandle.saveAssessmentServer = function (data, callback) {
         jQuery.extend(data, {planDetailsId: '${projectPlanDetails.id}'});
+        data.processInsId='${processInsId}';
         assessmentCommonHandle.ajaxServerMethod(data, "/chksAssessmentProjectPerformance/saveAssessmentServer", "post", callback, null);
     };
 
@@ -441,6 +442,58 @@
         return html;
     };
 
+    assessmentCommonHandle.writeAssessmentItemHtml = function (target, parentData, childData, templateData) {
+        var restHtml = "";
+        if (childData.length == templateData.length) {
+            $.each(childData, function (i, item) {
+                if (!item.assessmentDes) {
+                    item.assessmentDes = "";
+                }
+                restHtml += assessmentCommonHandle.replaceAssessmentItem($("#assessmentItemTemplateHTML").html(), {
+                    index: i + 1,
+                    contentId: item.contentId,
+                    id: item.id,
+                    actualScore: item.actualScore,
+                    remark: item.remark,
+                    performanceId: parentData.id,
+                    name: parentData.activityName,
+                    assessmentDes: item.assessmentDes,
+                    minScore: item.minScore,
+                    maxScore: item.maxScore,
+                    standardScore: item.standardScore
+                });
+            });
+            if (childData.length >= 1) {
+                var remarksHtml = $("#assessmentItemTemplateRemarksHTML").html();
+                remarksHtml = remarksHtml.replace(/{remarks}/g, parentData.remarks);
+                restHtml += remarksHtml;
+            }
+        }
+        if (childData.length != templateData.length) {
+            $.each(templateData, function (i, item) {
+                restHtml += assessmentCommonHandle.replaceAssessmentItem($("#assessmentItemTemplateHTML").html(), {
+                    index: i + 1,
+                    contentId: item.id,
+                    id: 0,
+                    actualScore: '',
+                    remark: '',
+                    performanceId: 0,
+                    name: item.boxReActivitiNameCn,
+                    assessmentDes: item.assessmentDes,
+                    minScore: item.minScore,
+                    maxScore: item.maxScore,
+                    standardScore: item.standardScore
+                });
+            });
+            if (templateData.length >= 1) {
+                var remarksHtml = $("#assessmentItemTemplateRemarksHTML").html();
+                remarksHtml = remarksHtml.replace(/{remarks}/g, '');
+                restHtml += remarksHtml;
+            }
+        }
+        target.empty().append(restHtml);
+    };
+
     assessmentCommonHandle.getActivityIdByUserAccountList = function (activityId, callback) {
         assessmentCommonHandle.ajaxServerMethod({activityId: activityId}, "/chksAssessmentProjectPerformance/getActivityIdByUserAccountList", "get", callback, null);
     };
@@ -457,7 +510,6 @@
         assessmentCommonHandle.ajaxServerMethod({id: id}, "/chksAssessmentProjectPerformance/getAssessmentProjectPerformanceById", "get", callback, null);
     };
 
-
     //拷贝
     assessmentCommonHandle.copyData = function (_this) {
         var table = $("#assessmentQualityTableList");
@@ -472,7 +524,7 @@
                 return false;
             }
             AlertConfirm("是否确认要拷贝", "", function () {
-                form.find("input[name='name']").val(rows[0].activityName + " " + rows[0].businessKey);
+                form.find("input[name='name']").val(rows[0].businessKey);
                 form.find("input[name='id']").val(rows[0].id);
                 notifySuccess("成功", "拷贝数据成功!");
                 table.bootstrapTable('uncheckAll');
@@ -566,15 +618,15 @@
 
         //下面涉及到权限,如果要优化请慎重操作
         cols.push({
-            field: 'examineStatus', title: '考核操作', formatter: function (value, row, index) {
+            field: 'examineStatus', title: '操作', formatter: function (value, row, index) {
                 var str = "";
                 var btnClass = 'btn-success';
                 //完成之后查看
                 if (value == 'finish') {
                     if (row.examineUrl) { //进入一个地址查看考核内容
-                        str = "<button type='button' onclick='assessmentCommonHandle.taskOpenWin(\"" + row.examineUrl + "\")'  style='margin-left: 5px;' data-placement='top' data-original-title='考核查看' class='btn btn-xs btn-info tooltips'  ><i class='fa fa-search fa-white'></i></button>";
+                        str = "<button type='button' onclick='assessmentCommonHandle.taskOpenWin(\"" + row.examineUrl + "\")'  style='margin-left: 5px;' data-placement='top' data-original-title='考核查看' class='btn btn-xs btn-info'  ><i class='fa fa-search fa-white'></i></button>";
                     } else { //使用弹窗查看考核
-                        str = "<button type='button' onclick='assessmentCommonHandle.findAssessmentProjectPerformanceBox(" + row.id + ")' style='margin-left: 5px;' data-placement='top' data-original-title='考核查看' class='btn btn-xs btn-info tooltips'  ><i class='fa fa-search fa-white'></i></button>";
+                        str = "<button type='button' onclick='assessmentCommonHandle.findAssessmentProjectPerformanceBox(" + row.id + ")' style='margin-left: 5px;' data-placement='top' data-original-title='考核查看' class='btn btn-xs btn-info'  ><i class='fa fa-search fa-white'></i></button>";
                     }
                 }
                 var detailsFlag = row.examinePeople === '${currUserAccount}' && 'details' === '${flog}';//详情页面权限控制
@@ -582,17 +634,17 @@
                 //考核未完成
                 if (value == 'runing' && (detailsFlag || approvalFlag)) { //进入一个地址来考核
                     if (row.examineUrl) {
-                        str += '<button type="button" class="btn  btn-xs btn-primary tooltips" style="margin-left: 5px;" data-placement="bottom" data-original-title="考核填写" onclick="assessmentCommonHandle.taskOpenWin2(' + "'" + row.id + "'" + "," + "'" + table.selector + "'" + ')" > <i class="fa fa-pen fa-white"></i></button>';
+                        str += '<button type="button" class="btn  btn-xs btn-primary" style="margin-left: 5px;" data-placement="bottom" data-original-title="考核填写" onclick="assessmentCommonHandle.taskOpenWin2(' + "'" + row.id + "'" + "," + "'" + table.selector + "'" + ')" > <i class="fa fa-pen fa-white"></i></button>';
                     } else { //使用弹窗考核
-                        str += '<button type="button" class="btn  btn-xs btn-primary tooltips" style="margin-left: 5px;" data-placement="bottom" data-original-title="考核填写" onclick="assessmentCommonHandle.openAssessmentProjectPerformanceBox(' + row.id + ',\'' + table.selector + '\')" > <i class="fa fa-pen fa-white"></i></button>';
+                        str += '<button type="button" class="btn  btn-xs btn-primary" style="margin-left: 5px;" data-placement="bottom" data-original-title="考核填写" onclick="assessmentCommonHandle.openAssessmentProjectPerformanceBox(' + row.id + ',\'' + table.selector + '\')" > <i class="fa fa-pen fa-white"></i></button>';
                     }
                 }
                 //抽查考核
-                if (row.spotActivityId) {
-                    if (row.spotId) {//使用弹窗查看考核
-                        str += "<button type='button' onclick='assessmentCommonHandle.findAssessmentProjectPerformanceBox(" + row.spotId + ")' style='margin-left: 5px;' data-placement='top' data-original-title='抽查考核查看' class='btn btn-xs btn-primary tooltips'  ><i class='fa fa-search fa-white'></i></button>";
-                    } else {
-                        str += '<button type="button" class="btn btn-xs btn-primary tooltips" style="margin-left: 5px;" data-placement="bottom" data-original-title="抽查考核填写" onclick="assessmentCommonHandle.showChkSpotAssessmentParent(' + "'" + row.id + "'" + "," + "'" + table.selector + "'" + ')" > <i class="fa fa-arrow-right fa-white"></i></button>';
+                if (row.canSpot) {
+                    if(row.spotId){
+                        str += "<button type='button' onclick='assessmentCommonHandle.findAssessmentProjectPerformanceBox(" + row.spotId + ")' style='margin-left: 5px;' data-placement='top' data-original-title='抽查考核查看' class='btn btn-xs btn-info'  ><i class='fa fa-envelope-open fa-white'></i></button>";
+                    }else {
+                        str += '<button type="button" class="btn btn-xs btn-primary" style="margin-left: 5px;" data-placement="bottom" data-original-title="抽查考核填写" onclick="assessmentCommonHandle.showChkSpotAssessmentParent('+row.id+','+row.boxId+','+row.spotActivityId+')" > <i class="fa fa-envelope fa-white"></i></button>';
                     }
                 }
                 return str;
@@ -672,55 +724,40 @@
      * @param id
      * @param selector
      */
-    assessmentCommonHandle.showChkSpotAssessmentParent = function (id, selector) {
-        var target = $(selector);
-        var itemObj = target.bootstrapTable('getRowByUniqueId', id);
+    assessmentCommonHandle.showChkSpotAssessmentParent = function (id,boxId,spotActivityId) {
         var box = $("#divChksRecordModal");
         var table = $("#tableChkSpotAssessment").find("tbody");
-        var query = {
-            boxReActivitiId: itemObj.spotActivityId,
-            boxId: itemObj.boxId
-        };
-        if (!itemObj.examineScore) {
-            notifyWarning('警告', "此条记录未考核,暂时不能抽查!");
-            return false;
-        }
-        assessmentCommonHandle.getActivityIdByUserAccountList(itemObj.spotActivityId, function (accountList) {
-            var examinePeople = '${sysUserDto.userAccount}';
-            console.log(accountList);
-            if (examinePeople) {
-                if (jQuery.inArray(examinePeople, accountList) != -1) {
-                    box.modal("show");
-                    box.find("input[name=marsterId]").val(id);
-                    assessmentCommonHandle.getAssessmentItemTemplate(query, function (data) {
-                        var restHtml = "";
-                        $.each(data, function (i, item) {
-                            var html = assessmentCommonHandle.replaceAssessmentItem($("#assessmentItemTemplateHTML").html(), {
-                                index: i + 1,
-                                contentId: item.id,
-                                id: 0,
-                                actualScore: '',
-                                remark: '',
-                                performanceId: 0,
-                                name: item.boxReActivitiNameCn,
-                                assessmentDes: item.assessmentDes,
-                                minScore: item.minScore,
-                                maxScore: item.maxScore,
-                                standardScore: item.standardScore
-                            });
-                            restHtml += html;
-                        });
-                        if (data.length >= 1) {
-                            var remarksHtml = $("#assessmentItemTemplateRemarksHTML").html();
-                            remarksHtml = remarksHtml.replace(/{remarks}/g, '');
-                            restHtml += remarksHtml;
-                        }
-                        table.empty().append(restHtml);
+        assessmentCommonHandle.getActivityIdByUserAccountList(spotActivityId, function (accountList) {
+            box.modal("show");
+            box.find("input[name=marsterId]").val(id);
+            assessmentCommonHandle.getAssessmentItemTemplate({
+                boxReActivitiId: spotActivityId,
+                boxId: boxId
+            }, function (data) {
+                var restHtml = "";
+                $.each(data, function (i, item) {
+                    var html = assessmentCommonHandle.replaceAssessmentItem($("#assessmentItemTemplateHTML").html(), {
+                        index: i + 1,
+                        contentId: item.id,
+                        id: 0,
+                        actualScore: '',
+                        remark: '',
+                        performanceId: 0,
+                        name: item.boxReActivitiNameCn,
+                        assessmentDes: item.assessmentDes,
+                        minScore: item.minScore,
+                        maxScore: item.maxScore,
+                        standardScore: item.standardScore
                     });
-                } else {
-                    notifyWarning('警告', "当前用户不属于此节点组的考核人员!");
+                    restHtml += html;
+                });
+                if (data.length >= 1) {
+                    var remarksHtml = $("#assessmentItemTemplateRemarksHTML").html();
+                    remarksHtml = remarksHtml.replace(/{remarks}/g, '');
+                    restHtml += remarksHtml;
                 }
-            }
+                table.empty().append(restHtml);
+            });
         });
     };
 
@@ -737,18 +774,15 @@
         var item = target.bootstrapTable('getRowByUniqueId', id);
         assessmentCommonHandle.getActivityIdByUserAccountList(item.activityId, function (accountList) {
             var url = "${pageContext.request.contextPath}" + item.examineUrl;
-            var examinePeople = '${sysUserDto.userAccount}';
-            if (examinePeople) {
-                if (jQuery.inArray(examinePeople, accountList) != -1) {
-                    try {
-                        openWin(url, function () {
-                            target.bootstrapTable('refresh');
-                        })
-                    } catch (e) {
-                    }
-                } else {
-                    notifyWarning('警告', "当前用户不属于此节点组的考核人员!");
+            if (jQuery.inArray('${currUserAccount}', accountList) != -1) {
+                try {
+                    openWin(url, function () {
+                        target.bootstrapTable('refresh');
+                    })
+                } catch (e) {
                 }
+            } else {
+                notifyWarning('警告', "当前用户不属于此节点组的考核人员!");
             }
         });
     };
@@ -961,9 +995,11 @@
         if (!$("#assessmentWorkHoursForm").valid()) {
             return false;
         }
+        var data = formSerializeArray($('#assessmentWorkHoursForm'));
+        data.processInsId = '${processInsId}';
         $.ajax({
             url: '${pageContext.request.contextPath}/chksAssessmentProjectPerformance/saveWorkingHours',
-            data: formSerializeArray($('#assessmentWorkHoursForm')),
+            data: data,
             type: 'post',
             dataType: 'json',
             success: function (result) {

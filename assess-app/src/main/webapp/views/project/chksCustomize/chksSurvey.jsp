@@ -1,7 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <c:if test="${!empty assessmentProjectPerformanceDto}">
-
     <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
         <div class="card full-height">
             <div class="card-header collapse-link">
@@ -40,41 +39,16 @@
                         </div>
                     </div>
                 </div>
+                <c:if test="${assessmentProjectPerformanceDto.examineStatus == 'runing'}">
+                    <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12" style="text-align: center;">
+                        <button class="btn btn-primary" type="button" onclick="saveAssessmentSurveyItem(this);">保存考核</button>
+                    </div>
+                </c:if>
             </div>
         </div>
     </div>
-
-    <c:if test="${assessmentProjectPerformanceDto.examineStatus == 'runing'}">
-        <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
-            <div class="card full-height">
-                <div class="card-body">
-                    <div class="form-horizontal">
-                        <div class="row form-group">
-                            <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
-                                <div class="form-inline x-valid">
-                                    <div class=" col-xs-5  col-sm-5  col-md-5  col-lg-5 ">
-                                    </div>
-                                    <div class=" col-xs-6  col-sm-6  col-md-6  col-lg-6 ">
-                                        <button class="btn btn-primary" type="button"
-                                                onclick="saveAssessmentSurveyItem(this);">
-                                            保存考核记录
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </c:if>
-
 </c:if>
-
-
 <script type="text/javascript">
-
     function saveAssessmentSurveyItem(_this) {
         var target = $("#chksTableList").find("tbody");
         if (!vaildChksData(target)) {
