@@ -148,5 +148,25 @@
         }
 
     };
+
+    function showProjectQuoteModal() {
+        //打开楼盘modal
+        if ("estate" == "${tbType}") {
+            projectData.prototype.showModel();
+        }
+
+        //打开楼栋modal
+        if ("building" == "${tbType}") {
+            projectBuild.prototype.showModel();
+        }
+        //打开单元modal
+        if ("unit" == "${tbType}") {
+            projectUnit.prototype.showModel();
+        }
+        //打开房屋modal
+        if ("house" == "${tbType}") {
+            projectHouse.prototype.showModel();
+        }
+    }
 </script>
 

@@ -52,11 +52,11 @@ var unitDecorate;
                         unitDecorate.prototype.loadDataDicList();
                     }
                     else {
-                        AlertError("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("失败","保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    AlertError("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -82,11 +82,11 @@ var unitDecorate;
                         unitDecorate.prototype.loadDataDicList();
                     }
                     else {
-                        AlertError("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("失败","保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    AlertError("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -107,7 +107,7 @@ var unitDecorate;
                     }
                 },
                 error: function (result) {
-                    AlertError("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -192,11 +192,11 @@ var unitHuxing;
                         unitHuxing.prototype.loadDataDicList();
                     }
                     else {
-                        AlertError("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("失败","保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    AlertError("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -236,11 +236,11 @@ var unitHuxing;
                         unitHuxing.prototype.loadDataDicList();
                     }
                     else {
-                        AlertError("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("失败","保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    AlertError("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -342,7 +342,7 @@ var unitHuxing;
                     }
                 },
                 error: function (result) {
-                    AlertError("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -434,12 +434,12 @@ var unitHuxing;
                 success: function (result) {
                     Loading.progressHide();
                     if (result.ret) {
-                        AlertError(result.data);
+                        notifySuccess("成功", result.data);
                     }
                 },
                 error: function (result, status, e) {
                     Loading.progressHide();
-                    AlertError("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             });
         }
@@ -500,11 +500,11 @@ var unitHuxingPrice;
                         unitHuxingPrice.prototype.loadDataDicList(unitHuxingId);
                     }
                     else {
-                        AlertError("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("失败","保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    AlertError("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -540,11 +540,11 @@ var unitHuxingPrice;
                         unitHuxingPrice.prototype.loadDataDicList(unitHuxingId);
                     }
                     else {
-                        AlertError("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("失败","保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    AlertError("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -572,7 +572,7 @@ var unitHuxingPrice;
                     }
                 },
                 error: function (result) {
-                    AlertError("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -599,12 +599,12 @@ var unitHuxingPrice;
                 success: function (result) {
                     if (result.ret) {
                         unitHuxingPrice.prototype.loadDataDicList(unitHuxingId);
-                        AlertError(result.data);
+                        notifySuccess("成功", result.data);
                     }
                 },
                 error: function (result, status, e) {
                     Loading.progressHide();
-                    AlertError("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             });
         }
@@ -667,11 +667,11 @@ var unitElevator;
                         unitElevator.prototype.loadDataDicList();
                     }
                     else {
-                        AlertError("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("失败","保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    AlertError("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -697,11 +697,11 @@ var unitElevator;
                         unitElevator.prototype.loadDataDicList();
                     }
                     else {
-                        AlertError("保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("失败","保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    AlertError("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -718,7 +718,7 @@ var unitElevator;
                     }
                 },
                 error: function (result) {
-                    AlertError("调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
