@@ -92,6 +92,12 @@ public class NetInfoRecordLand {
 
     private Date gmtModified;
 
+    private Boolean bisNewest;
+
+    private Integer beUpgradeId;
+
+    private Integer version;
+
     public Integer getId() {
         return id;
     }
@@ -442,5 +448,29 @@ public class NetInfoRecordLand {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public Boolean getBisNewest() {
+        return bisNewest;
+    }
+
+    public void setBisNewest(Boolean bisNewest) {
+        this.bisNewest = bisNewest;
+    }
+
+    public Integer getBeUpgradeId() {
+        return beUpgradeId;
+    }
+
+    public void setBeUpgradeId(Integer beUpgradeId) {
+        this.beUpgradeId = beUpgradeId;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
     }
 }

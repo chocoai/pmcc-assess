@@ -58,6 +58,7 @@ public class NetInfoRecordLandDao {
         NetInfoRecordLandExample example = new NetInfoRecordLandExample();
         NetInfoRecordLandExample.Criteria criteria = example.createCriteria();
         criteria.andStatusEqualTo(status);
+        criteria.andBisNewestEqualTo(true);
         if (StringUtils.isNotBlank(province))
             criteria.andProvinceEqualTo(province);
         if (StringUtils.isNotBlank(city))

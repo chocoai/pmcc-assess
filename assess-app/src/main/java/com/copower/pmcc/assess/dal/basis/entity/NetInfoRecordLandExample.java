@@ -2975,6 +2975,186 @@ public class NetInfoRecordLandExample {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
             return (Criteria) this;
         }
+
+        public Criteria andBisNewestIsNull() {
+            addCriterion("bis_newest is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisNewestIsNotNull() {
+            addCriterion("bis_newest is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisNewestEqualTo(Boolean value) {
+            addCriterion("bis_newest =", value, "bisNewest");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisNewestNotEqualTo(Boolean value) {
+            addCriterion("bis_newest <>", value, "bisNewest");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisNewestGreaterThan(Boolean value) {
+            addCriterion("bis_newest >", value, "bisNewest");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisNewestGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_newest >=", value, "bisNewest");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisNewestLessThan(Boolean value) {
+            addCriterion("bis_newest <", value, "bisNewest");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisNewestLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_newest <=", value, "bisNewest");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisNewestIn(List<Boolean> values) {
+            addCriterion("bis_newest in", values, "bisNewest");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisNewestNotIn(List<Boolean> values) {
+            addCriterion("bis_newest not in", values, "bisNewest");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisNewestBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_newest between", value1, value2, "bisNewest");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisNewestNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_newest not between", value1, value2, "bisNewest");
+            return (Criteria) this;
+        }
+
+        public Criteria andBeUpgradeIdIsNull() {
+            addCriterion("be_upgrade_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBeUpgradeIdIsNotNull() {
+            addCriterion("be_upgrade_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBeUpgradeIdEqualTo(Integer value) {
+            addCriterion("be_upgrade_id =", value, "beUpgradeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBeUpgradeIdNotEqualTo(Integer value) {
+            addCriterion("be_upgrade_id <>", value, "beUpgradeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBeUpgradeIdGreaterThan(Integer value) {
+            addCriterion("be_upgrade_id >", value, "beUpgradeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBeUpgradeIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("be_upgrade_id >=", value, "beUpgradeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBeUpgradeIdLessThan(Integer value) {
+            addCriterion("be_upgrade_id <", value, "beUpgradeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBeUpgradeIdLessThanOrEqualTo(Integer value) {
+            addCriterion("be_upgrade_id <=", value, "beUpgradeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBeUpgradeIdIn(List<Integer> values) {
+            addCriterion("be_upgrade_id in", values, "beUpgradeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBeUpgradeIdNotIn(List<Integer> values) {
+            addCriterion("be_upgrade_id not in", values, "beUpgradeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBeUpgradeIdBetween(Integer value1, Integer value2) {
+            addCriterion("be_upgrade_id between", value1, value2, "beUpgradeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBeUpgradeIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("be_upgrade_id not between", value1, value2, "beUpgradeId");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionIsNull() {
+            addCriterion("version is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionIsNotNull() {
+            addCriterion("version is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionEqualTo(Integer value) {
+            addCriterion("version =", value, "version");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionNotEqualTo(Integer value) {
+            addCriterion("version <>", value, "version");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionGreaterThan(Integer value) {
+            addCriterion("version >", value, "version");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionGreaterThanOrEqualTo(Integer value) {
+            addCriterion("version >=", value, "version");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionLessThan(Integer value) {
+            addCriterion("version <", value, "version");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionLessThanOrEqualTo(Integer value) {
+            addCriterion("version <=", value, "version");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionIn(List<Integer> values) {
+            addCriterion("version in", values, "version");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionNotIn(List<Integer> values) {
+            addCriterion("version not in", values, "version");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionBetween(Integer value1, Integer value2) {
+            addCriterion("version between", value1, value2, "version");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionNotBetween(Integer value1, Integer value2) {
+            addCriterion("version not between", value1, value2, "version");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

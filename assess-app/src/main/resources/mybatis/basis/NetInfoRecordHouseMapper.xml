@@ -32,6 +32,9 @@
     <result column="approver" property="approver" jdbcType="VARCHAR" />
     <result column="trading_type" property="tradingType" jdbcType="INTEGER" />
     <result column="purchase_limit_status" property="purchaseLimitStatus" jdbcType="VARCHAR" />
+    <result column="bis_newest" property="bisNewest" jdbcType="BIT" />
+    <result column="be_upgrade_id" property="beUpgradeId" jdbcType="INTEGER" />
+    <result column="version" property="version" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -96,7 +99,7 @@
     area, name, deal_type, current_price, negotiated_date, consult_price, assess_standard_date, 
     unit_price, house_realization_ratios, realization_cycle, deal_part_info, status, 
     creator, gmt_created, gmt_modified, building_number, unit_number, house_number, approver, 
-    trading_type, purchase_limit_status
+    trading_type, purchase_limit_status, bis_newest, be_upgrade_id, version
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordHouseExample" >
     select
@@ -141,7 +144,8 @@
       deal_part_info, status, creator, 
       gmt_created, gmt_modified, building_number, 
       unit_number, house_number, approver, 
-      trading_type, purchase_limit_status)
+      trading_type, purchase_limit_status, bis_newest, 
+      be_upgrade_id, version)
     values (#{masterId,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, 
       #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, #{belongType,jdbcType=VARCHAR}, 
       #{belongCategory,jdbcType=VARCHAR}, #{street,jdbcType=VARCHAR}, #{area,jdbcType=DECIMAL}, 
@@ -151,7 +155,8 @@
       #{dealPartInfo,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
       #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{buildingNumber,jdbcType=VARCHAR}, 
       #{unitNumber,jdbcType=VARCHAR}, #{houseNumber,jdbcType=VARCHAR}, #{approver,jdbcType=VARCHAR}, 
-      #{tradingType,jdbcType=INTEGER}, #{purchaseLimitStatus,jdbcType=VARCHAR})
+      #{tradingType,jdbcType=INTEGER}, #{purchaseLimitStatus,jdbcType=VARCHAR}, #{bisNewest,jdbcType=BIT}, 
+      #{beUpgradeId,jdbcType=INTEGER}, #{version,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordHouse" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -246,6 +251,15 @@
       <if test="purchaseLimitStatus != null" >
         purchase_limit_status,
       </if>
+      <if test="bisNewest != null" >
+        bis_newest,
+      </if>
+      <if test="beUpgradeId != null" >
+        be_upgrade_id,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="masterId != null" >
@@ -334,6 +348,15 @@
       </if>
       <if test="purchaseLimitStatus != null" >
         #{purchaseLimitStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="bisNewest != null" >
+        #{bisNewest,jdbcType=BIT},
+      </if>
+      <if test="beUpgradeId != null" >
+        #{beUpgradeId,jdbcType=INTEGER},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -436,6 +459,15 @@
       <if test="record.purchaseLimitStatus != null" >
         purchase_limit_status = #{record.purchaseLimitStatus,jdbcType=VARCHAR},
       </if>
+      <if test="record.bisNewest != null" >
+        bis_newest = #{record.bisNewest,jdbcType=BIT},
+      </if>
+      <if test="record.beUpgradeId != null" >
+        be_upgrade_id = #{record.beUpgradeId,jdbcType=INTEGER},
+      </if>
+      <if test="record.version != null" >
+        version = #{record.version,jdbcType=INTEGER},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -472,7 +504,10 @@
       house_number = #{record.houseNumber,jdbcType=VARCHAR},
       approver = #{record.approver,jdbcType=VARCHAR},
       trading_type = #{record.tradingType,jdbcType=INTEGER},
-      purchase_limit_status = #{record.purchaseLimitStatus,jdbcType=VARCHAR}
+      purchase_limit_status = #{record.purchaseLimitStatus,jdbcType=VARCHAR},
+      bis_newest = #{record.bisNewest,jdbcType=BIT},
+      be_upgrade_id = #{record.beUpgradeId,jdbcType=INTEGER},
+      version = #{record.version,jdbcType=INTEGER}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -567,6 +602,15 @@
       <if test="purchaseLimitStatus != null" >
         purchase_limit_status = #{purchaseLimitStatus,jdbcType=VARCHAR},
       </if>
+      <if test="bisNewest != null" >
+        bis_newest = #{bisNewest,jdbcType=BIT},
+      </if>
+      <if test="beUpgradeId != null" >
+        be_upgrade_id = #{beUpgradeId,jdbcType=INTEGER},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -600,7 +644,10 @@
       house_number = #{houseNumber,jdbcType=VARCHAR},
       approver = #{approver,jdbcType=VARCHAR},
       trading_type = #{tradingType,jdbcType=INTEGER},
-      purchase_limit_status = #{purchaseLimitStatus,jdbcType=VARCHAR}
+      purchase_limit_status = #{purchaseLimitStatus,jdbcType=VARCHAR},
+      bis_newest = #{bisNewest,jdbcType=BIT},
+      be_upgrade_id = #{beUpgradeId,jdbcType=INTEGER},
+      version = #{version,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

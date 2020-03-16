@@ -43,6 +43,7 @@ public enum BaseParameterEnum {
     PROJECT_TAKE_NUMBER_PROCESS_KEY("project.take.number.process.key", "项目拿号", "box"),
 
     NET_INFO_COMPLEMENT_PROCESS_KEY("net.info.complement.process.key", "拍卖信息补全", "box"),
+    NET_INFO_UPGRADE_PROCESS_KEY("net.info.upgrade.process.key", "拍卖信息升级", "box"),
 
     CASE_BASE_INFO_APPLY_KEY("case.base.info.apply.key", "案例信息申请key", "box"),
 

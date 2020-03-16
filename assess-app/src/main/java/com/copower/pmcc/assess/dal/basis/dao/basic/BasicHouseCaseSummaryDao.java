@@ -75,4 +75,14 @@ public class BasicHouseCaseSummaryDao {
         return basicHouseCaseSummaryMapper.countByExample(example);
     }
 
+    public List<BasicHouseCaseSummary> getByCaseHouseId(Integer caseHouseId){
+        BasicHouseCaseSummaryExample example = new BasicHouseCaseSummaryExample();
+        BasicHouseCaseSummaryExample.Criteria criteria = example.createCriteria();
+        criteria.andDealTypeIsNotNull();
+        if (caseHouseId != null) {
+            criteria.andCaseHouseIdEqualTo(caseHouseId);
+        }
+        return basicHouseCaseSummaryMapper.selectByExample(example);
+    }
+
 }

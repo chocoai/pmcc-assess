@@ -179,8 +179,11 @@
             cols.push({field: 'unitPriceMu', title: '成交单价（元/亩）'});
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
-                    var str = '<button onclick="detailInfo.prototype.getAndInit(' + row.id + ')" style="margin-left: 5px;" class="btn   btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看">';
+                    var str = '<button onclick="detailInfo.prototype.getAndInit(' + row.id + ')" style="margin-left: 5px;" class="btn btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看">';
                     str += '<i class="fa fa-search"></i>';
+                    str += '</button>';
+                    str += '<button onclick="detailInfo.prototype.upgradeApply(' + index + ')" style="margin-left: 5px;" class="btn btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="升级">';
+                    str += '升级';
                     str += '</button>';
                     return str;
                 }
@@ -242,6 +245,12 @@
                 deleteFlag: true
             })
         },
+        upgradeApply: function (index) {
+            var row = $("#transaction_List").bootstrapTable('getData')[index];
+            var href = "${pageContext.request.contextPath}/netInfoUpgrade/apply";
+            href += "?dataId=" + row.id + "&type=" + row.type + "&masterDataId=" + row.masterId;
+            window.open(href, "");
+        }
     }
 
 </script>

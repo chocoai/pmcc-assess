@@ -56,6 +56,7 @@ public class NetInfoRecordHouseDao {
         NetInfoRecordHouseExample example = new NetInfoRecordHouseExample();
         NetInfoRecordHouseExample.Criteria criteria = example.createCriteria();
         criteria.andStatusEqualTo(status);
+        criteria.andBisNewestEqualTo(true);
         if (StringUtils.isNotBlank(province))
             criteria.andProvinceEqualTo(province);
         if (StringUtils.isNotBlank(city))
