@@ -2174,7 +2174,7 @@ public class GenerateBaseDataService {
             }
             //统计行
             BigDecimal bigDecimal = ArithmeticUtils.add(areas);
-            linkedLists.addAll(Arrays.asList("总套数（套/间）", "", String.valueOf(checkListList.size() + 1), "", "", "", "总面积", "", "", "", "", ArithmeticUtils.round(bigDecimal.toString(), 2), ""));
+            linkedLists.addAll(Arrays.asList("总套数（套/间）", "", String.valueOf(checkListList.size()), "", "", "", "总面积", "", "", "", "", ArithmeticUtils.round(bigDecimal.toString(), 2), ""));
             AsposeUtils.writeWordTitle(documentBuilder, linkedLists);
             linkedLists.clear();
             mergeCellModelList.add(new MergeCellModel(5 + checkListList.size(), 0, 5 + checkListList.size(), 1));
