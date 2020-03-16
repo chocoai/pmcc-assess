@@ -333,25 +333,25 @@ public class BasicExamineHandle implements Serializable {
 
 
     public BasicEstateVoAndLandStateVo getBasicEstateVoAndLandStateVo() {
-        BasicEstate examineEstate = null;
-        BasicEstateLandState estateLandState = null;
+        BasicEstate estate = null;
+        BasicEstateLandState land = null;
         BasicApplyBatch basicApplyBatch = this.basicApplyBatch;
         if (basicApplyBatch != null && basicApplyBatch.getEstateId() != null) {
-            examineEstate = basicEstateService.getBasicEstateById(basicApplyBatch.getEstateId());
+            estate = basicEstateService.getBasicEstateById(basicApplyBatch.getEstateId());
         }
-        if (examineEstate == null) {
-            examineEstate = new BasicEstate();
+        if (estate == null) {
+            estate = new BasicEstate();
             baseService.writeInfo(BaseService.Type.Throw, "获取数据异常!");
         }
-        BasicEstateVoAndLandStateVo target = new BasicEstateVoAndLandStateVo(basicEstateService.getBasicEstateVo(examineEstate));
-        if (target.getBasicEstateVo() != null && target.getBasicEstateVo().getId() != null) {
-            estateLandState = basicEstateLandStateService.getLandStateByEstateId(target.getBasicEstateVo().getId());
+        if (estate != null && estate.getId() != null) {
+            land = basicEstateLandStateService.getLandStateByEstateId(estate.getId());
         }
-        if (estateLandState == null) {
-            estateLandState = new BasicEstateLandState();
+        if (land == null) {
+            land = new BasicEstateLandState();
             baseService.writeInfo(BaseService.Type.Throw, "获取数据异常!");
         }
-        BasicEstateLandStateVo vo = basicEstateLandStateService.getBasicEstateLandStateVo(estateLandState);
+        BasicEstateVoAndLandStateVo target = new BasicEstateVoAndLandStateVo(basicEstateService.getBasicEstateVo(estate));
+        BasicEstateLandStateVo vo = basicEstateLandStateService.getBasicEstateLandStateVo(land);
         target.setBasicEstateLandStateVo(vo);
         return target;
     }
@@ -515,6 +515,11 @@ public class BasicExamineHandle implements Serializable {
         this.basicApplyBatch = basicApplyBatchService.getBasicApplyBatchById(applyBatchId);
     }
 
+    public BasicExamineHandle(BasicApplyBatch applyBatch) {
+        beanInit();
+        this.basicApplyBatch = applyBatch;
+    }
+
     private BasicExamineHandle() {
     }
 
@@ -668,8 +673,6 @@ public class BasicExamineHandle implements Serializable {
                     '}';
         }
     }
-
-
 
 
 }

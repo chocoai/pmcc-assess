@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.service.project.generate;
 
 import com.copower.pmcc.assess.dal.basis.entity.BasicApply;
+import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatch;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateLandStateVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.google.common.base.Objects;
@@ -34,14 +35,32 @@ public class GenerateLandEntityService {
      * @return
      * @throws Exception
      */
-    public String getContent(BasicApply basicApply)throws Exception  {
+    @Deprecated
+    public String getContent(BasicApply basicApply) throws Exception {
         if (basicApply == null) return null;
         GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
         BasicEstateLandStateVo landStateVo = generateBaseExamineService.getBasicEstateLandState();
-        if (landStateVo == null || landStateVo.getId() == null){
-            return "" ;
+        if (landStateVo == null || landStateVo.getId() == null) {
+            return "";
         }
-       return getContent2(generateBaseExamineService.getBasicEstateLandState()) ;
+        return getContent2(generateBaseExamineService.getBasicEstateLandState());
+    }
+
+    /**
+     * 综上所述
+     *
+     * @param basicApply
+     * @return
+     * @throws Exception
+     */
+    public String getContent(BasicApplyBatch basicApply) throws Exception {
+        if (basicApply == null) return null;
+        BasicExamineHandle basicExamineHandle = new BasicExamineHandle(basicApply) ;
+        BasicEstateLandStateVo landStateVo = basicExamineHandle.getBasicEstateLandState();
+        if (landStateVo == null || landStateVo.getId() == null) {
+            return "";
+        }
+        return getContent2(basicExamineHandle.getBasicEstateLandState());
     }
 
     public String getContent2(BasicEstateLandStateVo landStateVo) {

@@ -28,6 +28,7 @@ import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseReportFieldService;
+import com.copower.pmcc.assess.service.basic.BasicApplyBatchService;
 import com.copower.pmcc.assess.service.basic.BasicApplyService;
 import com.copower.pmcc.assess.service.basic.BasicHouseTradingService;
 import com.copower.pmcc.assess.service.basic.BasicUnitHuxingService;
@@ -67,6 +68,8 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
 import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.regex.Matcher;
@@ -118,6 +121,7 @@ public class GenerateBaseDataService {
     private ErpAreaService erpAreaService;
     private MdCommonService mdCommonService;
     private BasicApplyService basicApplyService;
+    private BasicApplyBatchService basicApplyBatchService;
 
     private SurveyAssetRightGroupService surveyAssetRightGroupService;
     private SurveyAssetRightService surveyAssetRightService;
@@ -2189,10 +2193,10 @@ public class GenerateBaseDataService {
             mergeCellModelList.add(new MergeCellModel(6 + checkListList.size(), 0, 6 + checkListList.size(), 1));
             mergeCellModelList.add(new MergeCellModel(6 + checkListList.size(), 2, 6 + checkListList.size(), 4));
             mergeCellModelList.add(new MergeCellModel(6 + checkListList.size(), 5, 6 + checkListList.size(), 6));
-            mergeCellModelList.add(new MergeCellModel(6 + checkListList.size(), 7, 6+ checkListList.size(), 10));
+            mergeCellModelList.add(new MergeCellModel(6 + checkListList.size(), 7, 6 + checkListList.size(), 10));
 
             //debug行
-            if (false){
+            if (false) {
                 linkedLists.addAll(Arrays.asList("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"));//后面维护人员可以使用  ， 线上环境注释掉
                 AsposeUtils.writeWordTitle(documentBuilder, linkedLists);
                 linkedLists.clear();
@@ -4740,16 +4744,17 @@ public class GenerateBaseDataService {
     /**
      * 估价对象区位状况表
      */
-    @Deprecated
     public String getJudgeObjectAreaStatusSheet() throws Exception {
         Document doc = new Document();
         DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(doc);
         String localPath = getLocalPath();
-
         LinkedHashMap<BasicEstate, List<SchemeJudgeObject>> linkedHashMap = generateCommonMethod.getEstateGroupByAreaId(areaId);
         if (!linkedHashMap.isEmpty()) {
             for (Map.Entry<BasicEstate, List<SchemeJudgeObject>> entry : linkedHashMap.entrySet()) {
                 if (CollectionUtils.isEmpty(entry.getValue())) {
+                    continue;
+                }
+                if (entry.getKey().getId() == null || entry.getKey().getId() == 0) {
                     continue;
                 }
                 List<Integer> judgeObjectIds = Lists.newArrayList(entry.getValue().stream().map(oo -> oo.getId()).collect(Collectors.toList()));
@@ -4757,54 +4762,60 @@ public class GenerateBaseDataService {
                     continue;
                 }
                 BasicEstate basicEstate = entry.getKey();
-                BasicApply basicApply = basicApplyService.getByBasicApplyByEstateId(basicEstate.getId());
+                BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchByEstateId(basicEstate.getId());
                 List<SchemeJudgeObject> judgeObjects = entry.getValue();
-                if (linkedHashMap.size() > 1)
+                if (linkedHashMap.size() > 1) {
                     documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml("<div style='text-align:center;;font-size:16.0pt;'>" + basicEstate.getName() + "</div>"), true);
+                }
                 StringBuilder stringBuilder = new StringBuilder(8);
                 stringBuilder.append(generateCommonMethod.getIndentHtml("1、位置状况"));
                 stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("坐落:%s", generateCommonMethod.trim(generateLoactionService.getSeat(basicEstate, judgeObjects)))));
                 stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("方位:%s", generateCommonMethod.trim(generateLoactionService.getPosition(basicEstate)))));
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("与重要场所的距离:%s", generateCommonMethod.trim(generateLoactionService.getWithImportantLocationDistance(basicApply)))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("与重要场所的距离:%s", generateCommonMethod.trim(generateLoactionService.getWithImportantLocationDistance(basicApplyBatch)))));
                 String faceStreet = generateLoactionService.getFaceStreet(judgeObjects);
                 if (StringUtils.isNotBlank(faceStreet.trim())) {
                     stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("临街（路）状况:%s", generateCommonMethod.trim(faceStreet))));
                 }
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("楼层:%s", generateCommonMethod.trim(generateLoactionService.getFloor(judgeObjects)))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("楼层:%s", generateCommonMethod.trim(generateLoactionService.getFloorNew(judgeObjects)))));
                 stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("朝向:%s", generateCommonMethod.trim(generateLoactionService.getOrientation(judgeObjects)))));
                 stringBuilder.append(generateCommonMethod.getIndentHtml("2、交通状况包括"));
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("道路状况:%s", generateCommonMethod.trim(generateLoactionService.getRoadCondition(judgeObjects)))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("道路状况:%s", generateCommonMethod.trim(generateLoactionService.getRoadConditionNew(judgeObjects)))));
 
-                String transport = generateLoactionService.getAccessAvailableMeansTransport(basicApply);
+                String transport = generateLoactionService.getAccessAvailableMeansTransport(basicApplyBatch);
                 if (StringUtils.isNotEmpty(transport)) {
                     stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("出入可利用的交通工具:%s", generateCommonMethod.trim(transport))));
                 }
 
-                String trafficControl = generateLoactionService.getTrafficControl(basicApply);
+                String trafficControl = generateLoactionService.getTrafficControl(basicApplyBatch);
                 if (StringUtils.isNotEmpty(trafficControl)) {
                     stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("交通管制情况:%s", generateCommonMethod.trim(trafficControl))));
                 }
 
-                String parkingConvenience = generateLoactionService.getParkingConvenience(basicApply);
+                String parkingConvenience = generateLoactionService.getParkingConvenience(basicApplyBatch);
                 if (StringUtils.isNotBlank(parkingConvenience))
                     stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("停车方便度:%s", generateCommonMethod.trim(parkingConvenience))));
 
-                String trafficCharges = generateLoactionService.getTrafficCharges(basicApply);
+                String trafficCharges = generateLoactionService.getTrafficCharges(basicApplyBatch);
                 if (StringUtils.isNotBlank(trafficCharges)) {
                     stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("交通收费情况:%s", generateCommonMethod.trim(trafficCharges))));
                 }
 
                 stringBuilder.append(generateCommonMethod.getIndentHtml("3、外部基础设施"));
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s", generateCommonMethod.trim(generateLoactionService.getExternalInfrastructure(basicApply)))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s", generateCommonMethod.trim(generateLoactionService.getExternalInfrastructure(judgeObjects)))));
                 stringBuilder.append(generateCommonMethod.getIndentHtml("4、外部公共服务设施"));
-                List<String> stringArrayList = generateLoactionService.getExternalPublicServiceFacilities(basicApply, true);
+                List<String> stringArrayList = generateLoactionService.getExternalPublicServiceFacilities(basicApplyBatch, true);
                 if (CollectionUtils.isNotEmpty(stringArrayList)) {
-                    stringArrayList.stream().forEach(s -> stringBuilder.append(generateCommonMethod.getIndentHtml(s)));
+                    stringArrayList.stream().forEach(s -> {
+                        if (StringUtils.isBlank(s)) {
+                            s = errorStr;
+                        }
+                        stringBuilder.append(generateCommonMethod.getIndentHtml(s));
+                    });
                 }
                 stringBuilder.append(generateCommonMethod.getIndentHtml("5、周围环境"));
-                String natural = generateLoactionService.getEnvironmentalScience(basicApply, EnvironmentalScienceEnum.NATURAL);
-                String humanity = generateLoactionService.getEnvironmentalScience(basicApply, EnvironmentalScienceEnum.HUMANITY);
-                String scenery = generateLoactionService.getEnvironmentalScience(basicApply, EnvironmentalScienceEnum.SCENERY);
+                String natural = generateLoactionService.getEnvironmentalScience(basicApplyBatch, EnvironmentalScienceEnum.NATURAL);
+                String humanity = generateLoactionService.getEnvironmentalScience(basicApplyBatch, EnvironmentalScienceEnum.HUMANITY);
+                String scenery = generateLoactionService.getEnvironmentalScience(basicApplyBatch, EnvironmentalScienceEnum.SCENERY);
                 stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("自然要素:%s", generateCommonMethod.trim(natural))));
                 stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("人文环境要素:%s", generateCommonMethod.trim(humanity))));
                 stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("景观:%s", generateCommonMethod.trim(scenery))));
@@ -4819,6 +4830,7 @@ public class GenerateBaseDataService {
     /**
      * 估价对象区位状况表
      */
+    @Deprecated
     public String getJudgeObjectAreaStatusSheet2() throws Exception {
         Document doc = new Document();
         DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(doc);
@@ -4934,6 +4946,7 @@ public class GenerateBaseDataService {
     /**
      * 估价土地实体状况表
      */
+    @Deprecated
     public String getJudgeObjectLandStateSheet2() throws Exception {
         Document doc = new Document();
         DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(doc);
@@ -5061,7 +5074,6 @@ public class GenerateBaseDataService {
      * @return
      * @throws Exception
      */
-    @Deprecated
     public String getJudgeObjectLandStateSheet() throws Exception {
         Document doc = new Document();
         DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(doc);
@@ -5069,76 +5081,34 @@ public class GenerateBaseDataService {
         Map<BasicEstate, List<SchemeJudgeObject>> map = generateCommonMethod.getEstateGroupByAreaId(areaId);
         for (Map.Entry<BasicEstate, List<SchemeJudgeObject>> schemeJudgeObjectEntry : map.entrySet()) {
             BasicEstate basicEstate = schemeJudgeObjectEntry.getKey();
-            BasicApply basicApply = basicApplyService.getByBasicApplyByEstateId(basicEstate.getId());
+            BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchByEstateId(basicEstate.getId());
+            BasicExamineHandle basicExamineHandle = new BasicExamineHandle(basicApplyBatch);
+            BasicEstateLandStateVo landStateVo = basicExamineHandle.getBasicEstateLandState();
+            if (landStateVo.getId() == null || landStateVo.getId() == 0) {
+                continue;
+            }
             StringBuilder stringBuilder = new StringBuilder();
-            if (map.size() > 1)
+            if (map.size() > 1) {
                 documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml("<div style='text-align:center;;font-size:16.0pt;'>" + basicEstate.getName() + "</div>"), true);
-            GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
-            BasicEstateLandStateVo landStateVo = generateBaseExamineService.getBasicEstateLandState();
+            }
+            BiFunction<String, String, String> biFunction = ((name, value) -> {
+                String string = String.join(":", name, StringUtils.isBlank(value) ? errorStr : value);
+                return generateCommonMethod.getIndentHtml(string);
+            });
             int index = 0;
-            {
-                String s = generateLandEntityService.getLandName(landStateVo);
-                if (StringUtils.isNotBlank(s.trim())) {
-                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%d、名称:%s", ++index, generateCommonMethod.trim(s))));
-                }
-            }
-            {
-                String s = generateLandEntityService.fourTheFor(landStateVo);
-                if (StringUtils.isNotBlank(s.trim())) {
-                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%d、四至:%s", ++index, generateCommonMethod.trim(s))));
-                }
-            }
-            {
-                String s = generateLandEntityService.getLandArea(landStateVo);
-                if (StringUtils.isNotBlank(s.trim())) {
-                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%d、土地面积:%s", ++index, generateCommonMethod.trim(s))));
-                }
-            }
-            {
-                String s = generateLandEntityService.getLandUse(landStateVo);
-                if (StringUtils.isNotBlank(s.trim())) {
-                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%d、用途:%s", ++index, generateCommonMethod.trim(s))));
-                }
-            }
-            {
-                String s = generateLandEntityService.getShapeState(landStateVo);
-                if (StringUtils.isNotBlank(s.trim())) {
-                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%d、形状:%s", ++index, generateCommonMethod.trim(s))));
-                }
-            }
-            {
-                String s = generateLandEntityService.getTopographicTerrain(landStateVo);
-                if (StringUtils.isNotBlank(s.trim())) {
-                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%d、地势:%s", ++index, generateCommonMethod.trim(s))));
-                }
-            }
-            {
-                String s = generateLandEntityService.getSoil(landStateVo);
-                if (StringUtils.isNotBlank(s.trim())) {
-                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%d、土壤与地质:%s", ++index, generateCommonMethod.trim(s))));
-                }
-            }
-            {
-                String s = baseDataDicService.getNameById(basicEstate.getInfrastructureCompleteness());
-                if (StringUtils.isNotBlank(s.trim())) {
-                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%d、基础设施完备度:%s", ++index, generateCommonMethod.trim(s))));
-                }
-            }
-            {
-                String s = generateLandEntityService.getDevelopmentDegree(landStateVo);
-                if (StringUtils.isNotBlank(s.trim())) {
-                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%d、开发程度:%s", ++index, generateCommonMethod.trim(s))));
-                }
-            }
-            {
-                String s = generateLandEntityService.getContent(basicApply);
-                if (StringUtils.isNotBlank(s.trim())) {
-                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("综上所述:%s", generateCommonMethod.trim(s))));
-                }
-            }
+            stringBuilder.append(biFunction.apply(String.format("%d、名称", ++index), generateLandEntityService.getLandName(landStateVo)));
+            stringBuilder.append(biFunction.apply(String.format("%d、四至", ++index), generateLandEntityService.fourTheFor(landStateVo)));
+            stringBuilder.append(biFunction.apply(String.format("%d、土地面积", ++index), generateLandEntityService.getLandArea(landStateVo)));
+            stringBuilder.append(biFunction.apply(String.format("%d、用途", ++index), generateLandEntityService.getLandUse(landStateVo)));
+            stringBuilder.append(biFunction.apply(String.format("%d、形状", ++index), generateLandEntityService.getShapeState(landStateVo)));
+            stringBuilder.append(biFunction.apply(String.format("%d、地势", ++index), generateLandEntityService.getTopographicTerrain(landStateVo)));
+            stringBuilder.append(biFunction.apply(String.format("%d、土壤与地质", ++index), generateLandEntityService.getSoil(landStateVo)));
+            stringBuilder.append(biFunction.apply(String.format("%d、基础设施完备度", ++index), generateLandEntityService.getInfrastructureCompleteness(landStateVo)));
+            stringBuilder.append(biFunction.apply(String.format("%d、开发程度", ++index), generateLandEntityService.getDevelopmentDegree(landStateVo)));
+            stringBuilder.append(biFunction.apply("综上所述", generateLandEntityService.getContent(basicApplyBatch)));
             documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml(stringBuilder.toString()), true);
         }
-        doc.save(localPath);
+        AsposeUtils.saveWord(localPath, doc);
         return localPath;
     }
 
@@ -5172,60 +5142,52 @@ public class GenerateBaseDataService {
      * @return
      * @throws Exception
      */
-    @Deprecated
     public String getJudgeBuildLandStateSheet() throws Exception {
+        BiFunction<String, String, String> biFunction = ((name, value) -> {
+            if (StringUtils.isBlank(value)) {
+                value = errorStr;
+            }
+            return generateCommonMethod.getIndentHtml(String.join(":", name, generateCommonMethod.trim(value)));
+        });
+        BiConsumer<String, StringBuilder> biConsumer = ((value, builderBiConsumer) -> {
+            if (StringUtils.isNotBlank(value)) {
+                builderBiConsumer.append(value);
+            }
+        });
         Document doc = new Document();
         DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(doc);
         String localPath = getLocalPath();
         Map<BasicEstate, List<SchemeJudgeObject>> linkedHashMap = generateCommonMethod.getEstateGroupByAreaId(areaId);
-        LinkedHashMap<String, String> stringLinkedHashMap = Maps.newLinkedHashMap();
         if (!linkedHashMap.isEmpty()) {
             for (Map.Entry<BasicEstate, List<SchemeJudgeObject>> listEntry : linkedHashMap.entrySet()) {
                 BasicEstate basicEstate = listEntry.getKey();
                 List<SchemeJudgeObject> judgeObjects = listEntry.getValue();
-                if (linkedHashMap.size() > 1)
+                if (linkedHashMap.size() > 1) {
                     documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml("<div style='text-align:center;;font-size:16.0pt;'>" + basicEstate.getName() + "</div>"), true);
+                }
                 StringBuilder stringBuilder = new StringBuilder();
                 stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("1、楼盘名称:%s", generateCommonMethod.trim(basicEstate.getName()))));
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("2、建筑年份:%s", generateCommonMethod.trim(generateHouseEntityService.getBuildingYear(judgeObjects)))));
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("3、工程质量:%s", generateCommonMethod.trim(generateHouseEntityService.getConstructionQuality(judgeObjects)))));
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("4、建筑结构:%s", generateCommonMethod.trim(generateHouseEntityService.getBuildingStructure(judgeObjects)))));
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("5、建筑规模:%s", generateCommonMethod.trim(generateHouseEntityService.getBuildingScale(judgeObjects)))));
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("6、层高:%s", generateCommonMethod.trim(generateHouseEntityService.getFloorHeight(judgeObjects)))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("2、建筑年份:%s", generateCommonMethod.trim(generateHouseEntityService.getBuildingYearNew(judgeObjects)))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("3、工程质量:%s", generateCommonMethod.trim(generateHouseEntityService.getConstructionQualityNews(judgeObjects)))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("4、建筑结构:%s", generateCommonMethod.trim(generateHouseEntityService.getBuildingStructureNews(judgeObjects)))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("5、建筑规模:%s", generateCommonMethod.trim(generateHouseEntityService.getBuildingScaleNews(judgeObjects)))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("6、层高:%s", generateCommonMethod.trim(generateHouseEntityService.getFloorHeightNews(judgeObjects)))));
                 stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("7、空间布局:%s", generateCommonMethod.trim(generateHouseEntityService.getSpatialDistribution(judgeObjects)))));
                 stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("8、装饰装修:%s", generateCommonMethod.trim(generateHouseEntityService.getDecoration(judgeObjects)))));
                 stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("9、外观:%s", generateCommonMethod.trim(generateHouseEntityService.getAppearance(judgeObjects)))));
                 stringBuilder.append(generateCommonMethod.getIndentHtml("10、设施设备"));
-                String unitElevator = generateCommonMethod.trim(generateHouseEntityService.getUnitElevator(judgeObjects));
-                if (StringUtils.isNotEmpty(unitElevator))
-                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("电梯:%s", unitElevator)));
-                {
-                    stringLinkedHashMap.put(generateHouseEntityService.getHouseEquipment(judgeObjects, ExamineHouseEquipmentTypeEnum.houseAirConditioner), "空调:");
-                    stringLinkedHashMap.put(generateHouseEntityService.getHouseEquipment(judgeObjects, ExamineHouseEquipmentTypeEnum.houseNewWind), "新风:");
-                    stringLinkedHashMap.put(generateHouseEntityService.getHouseEquipment(judgeObjects, ExamineHouseEquipmentTypeEnum.houseHeating), "新风:");
-                    stringLinkedHashMap.put(generateHouseEntityService.getIntelligent(judgeObjects), "电力通讯网络:");
-                    stringLinkedHashMap.put(generateHouseEntityService.getHouseWater(judgeObjects), "供水:");
-                    stringLinkedHashMap.put(generateHouseEntityService.getHouseWaterDrain(judgeObjects), "排水:");
-                    if (!stringLinkedHashMap.isEmpty()) {
-                        stringLinkedHashMap.entrySet().stream().forEach(entry -> {
-                            if (StringUtils.isNotBlank(entry.getKey().trim())) {
-                                stringBuilder.append(generateCommonMethod.getIndentHtml((String.format("%s%s", entry.getValue(), generateCommonMethod.trim(entry.getKey())))));
-                            }
-                        });
-                        stringLinkedHashMap.clear();
-                    }
-                }
-                String matchingEquipment = generateHouseEntityService.getMatchingEquipment(judgeObjects);
-                if (StringUtils.isNotBlank(matchingEquipment)) {
-                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("房屋配套设备设施工:%s", generateCommonMethod.trim(matchingEquipment))));
-                }
+                biConsumer.accept(biFunction.apply("电梯", generateHouseEntityService.getUnitElevator(judgeObjects)), stringBuilder);
+                biConsumer.accept(biFunction.apply("空调", generateHouseEntityService.getHouseEquipment(judgeObjects, ExamineHouseEquipmentTypeEnum.houseAirConditioner)), stringBuilder);
+                biConsumer.accept(biFunction.apply("新风", generateHouseEntityService.getHouseEquipment(judgeObjects, ExamineHouseEquipmentTypeEnum.houseNewWind)), stringBuilder);
+                biConsumer.accept(biFunction.apply("供暖", generateHouseEntityService.getHouseEquipment(judgeObjects, ExamineHouseEquipmentTypeEnum.houseHeating)), stringBuilder);
+                biConsumer.accept(biFunction.apply("电力通讯网络", generateHouseEntityService.getIntelligent(judgeObjects)), stringBuilder);
+                biConsumer.accept(biFunction.apply("供水", generateHouseEntityService.getHouseWater(judgeObjects)), stringBuilder);
+                biConsumer.accept(biFunction.apply("排水", generateHouseEntityService.getHouseWaterDrain(judgeObjects)), stringBuilder);
+                biConsumer.accept(biFunction.apply("房屋配套设备设施工", generateHouseEntityService.getMatchingEquipment(judgeObjects)), stringBuilder);
                 stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("11、建筑功能:%s", generateCommonMethod.trim(generateHouseEntityService.getBuildingFunction(judgeObjects)))));
                 stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("12、新旧程度及维护使用情况")));
                 stringBuilder.append(generateCommonMethod.getIndentHtml(generateHouseEntityService.getDamagedDegree(judgeObjects)));
-
-                String stringOther = generateHouseEntityService.getOther(judgeObjects);
-                if (StringUtils.isNotBlank(stringOther))
-                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("13、其它:%s", generateCommonMethod.trim(stringOther))));
+                biConsumer.accept(biFunction.apply("13、其它", generateHouseEntityService.getOther(judgeObjects)), stringBuilder);
                 stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("建筑实体分析:%s", generateCommonMethod.trim(generateHouseEntityService.getBuildEntityAnalysis(judgeObjects, schemeAreaGroup)))));
                 documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml(stringBuilder.toString()), true);
             }
@@ -7070,6 +7032,7 @@ public class GenerateBaseDataService {
         this.surveyAssetRightService = SpringContextUtils.getBean(SurveyAssetRightService.class);
         this.basicHouseTradingService = SpringContextUtils.getBean(BasicHouseTradingService.class);
         this.declareRealtyCheckListService = SpringContextUtils.getBean(DeclareRealtyCheckListService.class);
+        this.basicApplyBatchService = SpringContextUtils.getBean(BasicApplyBatchService.class);
         //必须在bean之后
         SchemeAreaGroup areaGroup = schemeAreaGroupService.getSchemeAreaGroup(areaId);
         if (areaGroup == null) {

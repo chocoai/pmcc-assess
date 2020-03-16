@@ -69,6 +69,7 @@ public class GenerateHouseEntityService {
      * @param judgeObjectList
      * @return
      */
+    @Deprecated
     public String getBuildingYear(List<SchemeJudgeObject> judgeObjectList) {
         Map<Integer, String> map = Maps.newHashMap();
         for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
@@ -82,11 +83,83 @@ public class GenerateHouseEntityService {
     }
 
     /**
+     * 获取建造年份
+     *
+     * @param judgeObjectList
+     * @return
+     */
+    public String getBuildingYearNew(List<SchemeJudgeObject> judgeObjectList) {
+        Map<Integer, String> map = Maps.newHashMap();
+        for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
+            BasicApplyBatch basicApplyBatch = surveyCommonService.getBasicApplyBatchById(schemeJudgeObject.getDeclareRecordId());
+            if (basicApplyBatch == null) {
+                continue;
+            }
+            BasicExamineHandle basicExamineHandle = new BasicExamineHandle(basicApplyBatch);
+            BasicEstateVo estate = basicExamineHandle.getEstate();
+            List<BasicBuilding> basicBuildingList = basicExamineHandle.getBasicBuildingList(estate.getId());
+            List<Integer> years = Lists.newArrayList();
+            if (CollectionUtils.isNotEmpty(basicBuildingList)) {
+                Iterator<BasicBuilding> iterator = basicBuildingList.iterator();
+                while (iterator.hasNext()) {
+                    BasicBuilding basicBuilding = iterator.next();
+                    if (basicBuilding.getBeCompletedTime() == null) {
+                        continue;
+                    }
+                    years.add(DateUtils.getYear(basicBuilding.getBeCompletedTime()));
+                }
+            }
+            if (CollectionUtils.isNotEmpty(years)) {
+//                String value = StringUtils.join(years, "、");
+                String value = years.stream().findFirst().get().toString();
+                map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), String.format("%s年", value));
+            }
+        }
+        return generateCommonMethod.judgeEachDesc(map, "", "，", false);
+    }
+
+    /**
      * 获取工程质量
      *
      * @param judgeObjectList
      * @return
      */
+    public String getConstructionQualityNews(List<SchemeJudgeObject> judgeObjectList) {
+        Map<Integer, String> map = Maps.newHashMap();
+        for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
+            BasicApplyBatch basicApplyBatch = surveyCommonService.getBasicApplyBatchById(schemeJudgeObject.getDeclareRecordId());
+            if (basicApplyBatch == null) {
+                continue;
+            }
+            BasicExamineHandle basicExamineHandle = new BasicExamineHandle(basicApplyBatch);
+            BasicEstateVo estate = basicExamineHandle.getEstate();
+            List<BasicBuilding> basicBuildingList = basicExamineHandle.getBasicBuildingList(estate.getId());
+            Set<String> stringSet = Sets.newLinkedHashSet();
+            if (CollectionUtils.isNotEmpty(basicBuildingList)) {
+                Iterator<BasicBuilding> iterator = basicBuildingList.iterator();
+                while (iterator.hasNext()) {
+                    BasicBuilding basicBuilding = iterator.next();
+                    Integer constructionQuality = basicBuilding.getConstructionQuality();
+                    if (constructionQuality != null && constructionQuality > 0) {
+                        stringSet.add(baseDataDicService.getNameById(constructionQuality));
+                    }
+                }
+            }
+            if (CollectionUtils.isNotEmpty(stringSet)) {
+//                map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), StringUtils.join(stringSet, "、"));
+                map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), stringSet.stream().findFirst().get());
+            }
+        }
+        return generateCommonMethod.judgeEachDesc(map, "", "，", false);
+    }
+
+    /**
+     * 获取工程质量
+     *
+     * @param judgeObjectList
+     * @return
+     */
+    @Deprecated
     public String getConstructionQuality(List<SchemeJudgeObject> judgeObjectList) {
         Map<Integer, String> map = Maps.newHashMap();
         for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
@@ -106,6 +179,48 @@ public class GenerateHouseEntityService {
      * @param judgeObjectList
      * @return
      */
+    public String getBuildingStructureNews(List<SchemeJudgeObject> judgeObjectList) {
+        Map<Integer, String> map = Maps.newHashMap();
+        StringBuilder builder = new StringBuilder(8);
+        for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
+            BasicApplyBatch basicApplyBatch = surveyCommonService.getBasicApplyBatchById(schemeJudgeObject.getDeclareRecordId());
+            if (basicApplyBatch == null) {
+                continue;
+            }
+            BasicExamineHandle basicExamineHandle = new BasicExamineHandle(basicApplyBatch);
+            BasicEstateVo estate = basicExamineHandle.getEstate();
+            List<BasicBuilding> basicBuildingList = basicExamineHandle.getBasicBuildingList(estate.getId());
+            Set<String> stringSet = Sets.newLinkedHashSet();
+            if (CollectionUtils.isNotEmpty(basicBuildingList)) {
+                Iterator<BasicBuilding> iterator = basicBuildingList.iterator();
+                while (iterator.hasNext()) {
+                    BasicBuilding basicBuilding = iterator.next();
+                    String v1 = baseDataDicService.getNameById(basicBuilding.getBuildingStructureType());
+                    String v2 = baseDataDicService.getNameById(basicBuilding.getBuildingStructureCategory());
+                    if (basicBuilding.getBuildingStructureType() != null && basicBuilding.getBuildingStructureCategory() != null) {
+                        builder.append("按").append(v1).append("划分").append(v2);
+                    } else if (basicBuilding.getBuildingStructureType() != null) {
+                        builder.append(v1);
+                    } else if (basicBuilding.getBuildingStructureCategory() != null) {
+                        builder.append(v2);
+                    }
+                    stringSet.add(builder.toString());
+                    builder.delete(0, builder.toString().length());
+                }
+            }
+//            map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), StringUtils.join(stringSet, "、"));
+            map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), stringSet.stream().findFirst().get());
+        }
+        return generateCommonMethod.judgeEachDesc(map, "", ";", false);
+    }
+
+    /**
+     * 获取建筑结构
+     *
+     * @param judgeObjectList
+     * @return
+     */
+    @Deprecated
     public String getBuildingStructure(List<SchemeJudgeObject> judgeObjectList) {
         Map<Integer, String> map = Maps.newHashMap();
         StringBuilder builder = new StringBuilder(8);
@@ -135,6 +250,7 @@ public class GenerateHouseEntityService {
      * @param judgeObjectList
      * @return
      */
+    @Deprecated
     public String getBuildingScale(List<SchemeJudgeObject> judgeObjectList) {
         Map<Integer, String> map = Maps.newHashMap();
         for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
@@ -146,6 +262,55 @@ public class GenerateHouseEntityService {
         return generateCommonMethod.judgeEachDesc(map, "", ";", false);
     }
 
+    /**
+     * 获取建筑规模
+     *
+     * @param judgeObjectList
+     * @return
+     */
+    public String getBuildingScaleNews(List<SchemeJudgeObject> judgeObjectList) {
+        Map<Integer, String> map = Maps.newHashMap();
+        for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
+            BasicApplyBatch basicApplyBatch = surveyCommonService.getBasicApplyBatchById(schemeJudgeObject.getDeclareRecordId());
+            String s = getBuildingScaleExtend(basicApplyBatch);
+            if (StringUtils.isNotBlank(s))
+                map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), s);
+        }
+        return generateCommonMethod.judgeEachDesc(map, "", ";", false);
+    }
+
+    public String getBuildingScaleExtend(BasicApplyBatch basicApply) {
+        if (basicApply == null) return "";
+        BasicExamineHandle basicExamineHandle = new BasicExamineHandle(basicApply);
+        BasicEstateVo estate = basicExamineHandle.getEstate();
+        List<BasicBuilding> basicBuildingList = basicExamineHandle.getBasicBuildingList(estate.getId());
+        Iterator<BasicBuilding> basicBuildingIterator = basicBuildingList.iterator();
+        Set<String> stringSet = Sets.newLinkedHashSet();
+        while (basicBuildingIterator.hasNext()) {
+            BasicBuilding basicBuilding = basicBuildingIterator.next();
+            StringBuilder builder = new StringBuilder();
+            if (basicBuilding.getBuildingArea() != null)
+                builder.append(String.format("建筑面积%s平方米，", basicBuilding.getBuildingArea()));
+            if (StringUtils.isNotBlank(basicBuilding.getInJacketArea()))
+                builder.append(String.format("套内面积%s平方米，", basicBuilding.getInJacketArea()));
+            if (StringUtils.isNotBlank(basicBuilding.getUseArea()))
+                builder.append(String.format("使用面积%s平方米，", basicBuilding.getUseArea()));
+            if (StringUtils.isNotBlank(basicBuilding.getBuildingHeight()))
+                builder.append(String.format("建筑高度%s米，", basicBuilding.getBuildingHeight()));
+            if (basicBuilding.getFirstFloor() != null)
+                builder.append(String.format("首层%s至", basicBuilding.getFirstFloor()));
+            if (basicBuilding.getMaxFloor() != null)
+                builder.append(String.format("最高层%s是", basicBuilding.getMaxFloor()));
+            if (basicBuilding.getPropertyType() != null)
+                builder.append(String.format("%s，", baseDataDicService.getNameById(basicBuilding.getPropertyType())));
+            if (StringUtils.isNotBlank(basicBuilding.getFloorHeight()))
+                builder.append(String.format("层高%s米", basicBuilding.getFloorHeight()));
+            stringSet.add(builder.toString());
+        }
+        return StringUtils.join(stringSet, "；");
+    }
+
+    @Deprecated
     public String getBuildingScaleExtend(BasicApply basicApply) {
         if (basicApply == null) return "";
         BasicBuilding basicBuilding = basicBuildingService.getBasicBuildingByApplyId(basicApply.getId());
@@ -176,6 +341,29 @@ public class GenerateHouseEntityService {
      * @param judgeObjectList
      * @return
      */
+    public String getFloorHeightNews(List<SchemeJudgeObject> judgeObjectList) {
+        Map<Integer, String> map = Maps.newHashMap();
+        for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
+            BasicApplyBatch basicApplyBatch = surveyCommonService.getBasicApplyBatchById(schemeJudgeObject.getDeclareRecordId());
+            if (basicApplyBatch == null){
+                continue;
+            }
+            BasicExamineHandle basicExamineHandle = new BasicExamineHandle(basicApplyBatch);
+            List<BasicHouseRoom> houseRoomList = basicExamineHandle.getBasicHouseRoomAll();
+            if (CollectionUtils.isNotEmpty(houseRoomList)) {
+                map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), String.format("%s米", houseRoomList.get(0).getLayerHeight()));
+            }
+        }
+        return generateCommonMethod.judgeEachDesc(map, "", "，", false);
+    }
+
+    /**
+     * 获取层高
+     *
+     * @param judgeObjectList
+     * @return
+     */
+    @Deprecated
     public String getFloorHeight(List<SchemeJudgeObject> judgeObjectList) {
         Map<Integer, String> map = Maps.newHashMap();
         for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
@@ -195,7 +383,7 @@ public class GenerateHouseEntityService {
      * @param judgeObjectList
      * @return
      */
-    public String getSpatialDistribution(List<SchemeJudgeObject> judgeObjectList)  {
+    public String getSpatialDistribution(List<SchemeJudgeObject> judgeObjectList) {
         Map<Integer, String> map = Maps.newHashMap();
         BaseDataDic production = baseDataDicService.getCacheDataDicByFieldName(AssessExamineTaskConstant.EXAMINE_UNIT_HUXING_TYPE_PRODUCTION);
         BaseDataDic office = baseDataDicService.getCacheDataDicByFieldName(AssessExamineTaskConstant.EXAMINE_UNIT_HUXING_TYPE_OFFICE);
@@ -248,7 +436,7 @@ public class GenerateHouseEntityService {
      * @param judgeObjectList
      * @return
      */
-    public String getDecoration(List<SchemeJudgeObject> judgeObjectList)  {
+    public String getDecoration(List<SchemeJudgeObject> judgeObjectList) {
         Map<Integer, String> outfitMap = Maps.newHashMap();
         Map<Integer, String> unitDecorateMap = Maps.newHashMap();
         Map<Integer, String> roomDecorateMap = Maps.newHashMap();
@@ -276,7 +464,7 @@ public class GenerateHouseEntityService {
             }
             List<BasicHouseRoom> basicHouseRoomList = generateBaseExamineService.getBasicHouseRoomList();
             BasicHouseVo basicHouse = generateBaseExamineService.getBasicHouse();
-            if (CollectionUtils.isNotEmpty(basicHouseRoomList)){
+            if (CollectionUtils.isNotEmpty(basicHouseRoomList)) {
                 Map<BasicHouseRoom, List<BasicHouseRoomDecorateVo>> basicHouseRoomListMap = Maps.newHashMap();
                 basicHouseRoomList.forEach(oo -> {
                     List<BasicHouseRoomDecorateVo> decorateVos = generateBaseExamineService.getBasicHouseRoomDecorateList(oo.getId());
@@ -284,7 +472,7 @@ public class GenerateHouseEntityService {
                         basicHouseRoomListMap.put(oo, decorateVos);
                     }
                 });
-                if (!basicHouseRoomListMap.isEmpty()){
+                if (!basicHouseRoomListMap.isEmpty()) {
                     if (basicHouseRoomListMap.entrySet().stream().anyMatch(obj -> {
                         if (StringUtils.isNotEmpty(obj.getKey().getRoomType())) {
                             return obj.getValue().stream().anyMatch(oo -> {
@@ -302,7 +490,7 @@ public class GenerateHouseEntityService {
                         return false;
                     })) {
                         Set<String> stringSet = Sets.newHashSet();
-                        StringBuilder stringBuilder = new StringBuilder(8) ;
+                        StringBuilder stringBuilder = new StringBuilder(8);
                         basicHouseRoomListMap.forEach((basicHouseRoom, basicHouseRoomDecorateVos) -> {
                             List<String> stringList = Lists.newArrayList();
                             basicHouseRoomDecorateVos.forEach(obj -> {
@@ -348,7 +536,7 @@ public class GenerateHouseEntityService {
      * @param judgeObjectList
      * @return
      */
-    public String getAppearance(List<SchemeJudgeObject> judgeObjectList)  {
+    public String getAppearance(List<SchemeJudgeObject> judgeObjectList) {
         Map<String, List<Integer>> map = groupByBuilding(judgeObjectList);
         Map<Integer, String> stringMap = Maps.newHashMap();
         for (Map.Entry<String, List<Integer>> entry : map.entrySet()) {
@@ -379,7 +567,7 @@ public class GenerateHouseEntityService {
      * @return
      * @throws Exception
      */
-    public String getOther(List<SchemeJudgeObject> judgeObjectList)  {
+    public String getOther(List<SchemeJudgeObject> judgeObjectList) {
         Map<Integer, String> map = Maps.newHashMap();
         for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
             BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
@@ -395,7 +583,7 @@ public class GenerateHouseEntityService {
         return StringUtils.strip(stringBuilder.toString(), ";");
     }
 
-    public String getOtherExtend(BasicApply basicApply)  {
+    public String getOtherExtend(BasicApply basicApply) {
         GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
         BasicEstateVo basicEstate = basicEstateService.getBasicEstateVo(generateBaseExamineService.getEstate());
         BasicBuildingVo basicBuilding = basicBuildingService.getBasicBuildingVo(generateBaseExamineService.getBasicBuilding());
@@ -422,7 +610,7 @@ public class GenerateHouseEntityService {
      * @return
      * @throws Exception
      */
-    public String getDamagedDegree(List<SchemeJudgeObject> judgeObjectList)  {
+    public String getDamagedDegree(List<SchemeJudgeObject> judgeObjectList) {
         return getDamagedDegreeBase(judgeObjectList, true);
     }
 
@@ -710,7 +898,7 @@ public class GenerateHouseEntityService {
     public String getHouseWater(List<SchemeJudgeObject> judgeObjectList) {
         if (CollectionUtils.isNotEmpty(judgeObjectList)) {
             judgeObjectList = judgeObjectList.stream().filter(schemeJudgeObject -> {
-                if (schemeJudgeObject.getDeclareRecordId() == null)  return false;
+                if (schemeJudgeObject.getDeclareRecordId() == null) return false;
                 BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
                 if (basicApply == null || basicApply.getType() == 1) return false;
                 return true;
@@ -810,7 +998,7 @@ public class GenerateHouseEntityService {
             judgeObjectList = judgeObjectList.stream().filter(schemeJudgeObject -> {
                 if (schemeJudgeObject.getDeclareRecordId() == null) return false;
                 BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(schemeJudgeObject.getDeclareRecordId());
-                if (basicApply == null || basicApply.getType() == 1)  return false;
+                if (basicApply == null || basicApply.getType() == 1) return false;
                 return true;
             }).collect(Collectors.toList());
         }
@@ -962,7 +1150,7 @@ public class GenerateHouseEntityService {
      * @return
      * @throws Exception
      */
-    public String getHouseEquipment(List<SchemeJudgeObject> judgeObjectList, ExamineHouseEquipmentTypeEnum equipmentTypeEnum)  {
+    public String getHouseEquipment(List<SchemeJudgeObject> judgeObjectList, ExamineHouseEquipmentTypeEnum equipmentTypeEnum) {
         if (CollectionUtils.isNotEmpty(judgeObjectList)) {
             judgeObjectList = judgeObjectList.stream().filter(schemeJudgeObject -> {
                 if (schemeJudgeObject.getDeclareRecordId() == null) {
@@ -1049,7 +1237,7 @@ public class GenerateHouseEntityService {
      * @param judgeObjectList
      * @return
      */
-    public String getUnitElevator(List<SchemeJudgeObject> judgeObjectList)  {
+    public String getUnitElevator(List<SchemeJudgeObject> judgeObjectList) {
         Map<String, List<Integer>> unitMap = groupByUnit(judgeObjectList);
         LinkedHashSet<String> newLinkedHashSet = Sets.newLinkedHashSet();
         Map<String, String> map = Maps.newHashMap();
