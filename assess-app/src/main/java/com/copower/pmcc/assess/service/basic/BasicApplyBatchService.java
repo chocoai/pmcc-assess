@@ -123,6 +123,7 @@ public class BasicApplyBatchService {
             ZtreeDto ztreeDto = new ZtreeDto();
             ztreeDto.setId(item.getId());
             ztreeDto.setName(item.getName());
+            ztreeDto.setTextName(item.getDisplayName());
             if (basicApplyBatch.getPlanDetailsId() == null) {
                 ztreeDto.setDisplayName(item.getDisplayName());
             } else {

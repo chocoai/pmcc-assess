@@ -64,6 +64,12 @@ public class NetInfoRecordHouse {
 
     private String purchaseLimitStatus;
 
+    private Boolean bisNewest;
+
+    private Integer beUpgradeId;
+
+    private Integer version;
+
     public Integer getId() {
         return id;
     }
@@ -302,5 +308,29 @@ public class NetInfoRecordHouse {
 
     public void setPurchaseLimitStatus(String purchaseLimitStatus) {
         this.purchaseLimitStatus = purchaseLimitStatus == null ? null : purchaseLimitStatus.trim();
+    }
+
+    public Boolean getBisNewest() {
+        return bisNewest;
+    }
+
+    public void setBisNewest(Boolean bisNewest) {
+        this.bisNewest = bisNewest;
+    }
+
+    public Integer getBeUpgradeId() {
+        return beUpgradeId;
+    }
+
+    public void setBeUpgradeId(Integer beUpgradeId) {
+        this.beUpgradeId = beUpgradeId;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
     }
 }

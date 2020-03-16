@@ -41,6 +41,8 @@ public class BasicApplyBatchDetail {
 
     private Date gmtModified;
 
+    private String fullName;
+
     public Integer getId() {
         return id;
     }
@@ -191,5 +193,13 @@ public class BasicApplyBatchDetail {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName == null ? null : fullName.trim();
     }
 }

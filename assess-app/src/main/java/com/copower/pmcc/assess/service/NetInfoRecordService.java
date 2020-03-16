@@ -7,8 +7,10 @@ import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordContentDao;
 import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordDao;
 import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecord;
 import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordContent;
+import com.copower.pmcc.assess.dal.cases.dao.CaseNetInfoRecordContentDao;
 import com.copower.pmcc.assess.dal.cases.dao.CaseNetInfoRecordDao;
 import com.copower.pmcc.assess.dal.cases.entity.CaseNetInfoRecord;
+import com.copower.pmcc.assess.dal.cases.entity.CaseNetInfoRecordContent;
 import com.copower.pmcc.assess.dto.input.net.JDSFDto;
 import com.copower.pmcc.assess.dto.input.net.JDZCDto;
 import com.copower.pmcc.assess.dto.input.net.TBSFDto;
@@ -72,6 +74,8 @@ public class NetInfoRecordService {
     private CaseNetInfoRecordDao caseNetInfoRecordDao;
     @Autowired
     private NetInfoRecordContentDao netInfoRecordContentDao;
+    @Autowired
+    private CaseNetInfoRecordContentDao caseNetInfoRecordContentDao;
     @Autowired
     private PublicService publicService;
     @Autowired
@@ -210,7 +214,7 @@ public class NetInfoRecordService {
                             } else {
                                 netInfoRecordContent.setFullDescription(body.html());
                             }
-                            netInfoRecordContentDao.addInfo(netInfoRecordContent);
+                            addInfoContent(netInfoRecordContent);
                         }
                     }
                 }
@@ -491,7 +495,7 @@ public class NetInfoRecordService {
                             } else {
                                 netInfoRecordContent.setFullDescription(contentBody.html());
                             }
-                            netInfoRecordContentDao.addInfo(netInfoRecordContent);
+                            addInfoContent(netInfoRecordContent);
                         }
                     }
                 }
@@ -608,7 +612,7 @@ public class NetInfoRecordService {
                             } else {
                                 netInfoRecordContent.setFullDescription(contentBody.html());
                             }
-                            netInfoRecordContentDao.addInfo(netInfoRecordContent);
+                            addInfoContent(netInfoRecordContent);
                         }
                     }
                 }
@@ -731,7 +735,7 @@ public class NetInfoRecordService {
                                 } else {
                                     netInfoRecordContent.setFullDescription(contentBody.get(1).html());
                                 }
-                                netInfoRecordContentDao.addInfo(netInfoRecordContent);
+                                addInfoContent(netInfoRecordContent);
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -1444,5 +1448,13 @@ public class NetInfoRecordService {
         CaseNetInfoRecord caseNetInfoRecord = new CaseNetInfoRecord();
         BeanUtils.copyProperties(netInfo, caseNetInfoRecord);
         caseNetInfoRecordDao.updateInfo(caseNetInfoRecord);
+    }
+
+    public void addInfoContent(NetInfoRecordContent netInfoContent){
+        netInfoRecordContentDao.addInfo(netInfoContent);
+        //备份数据
+        CaseNetInfoRecordContent caseNetInfoRecordContent = new CaseNetInfoRecordContent();
+        BeanUtils.copyProperties(netInfoContent, caseNetInfoRecordContent);
+        caseNetInfoRecordContentDao.addInfo(caseNetInfoRecordContent);
     }
 }

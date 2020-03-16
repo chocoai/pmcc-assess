@@ -372,6 +372,9 @@
                     str += '<button onclick="houseSearch.showItem(' + row.id + ')" style="margin-left: 5px;" class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看">';
                     str += '<i class="fa fa-search"></i>';
                     str += '</button>';
+                    str += '<button onclick="houseSearch.upgradeApply(' + index + ')" style="margin-left: 5px;" class="btn btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="升级">';
+                    str += '升级';
+                    str += '</button>';
                 }
                 str += '</div>';
                 return str;
@@ -410,6 +413,28 @@
         })
     };
 
+    houseSearch.upgradeApply = function (index) {
+        var row = $("#tbCaseBaseHouseList").bootstrapTable('getData')[index];
+            $.ajax({
+                url: "${pageContext.request.contextPath}/netInfoRecordHouse/getDataById",
+                type: "get",
+                dataType: "json",
+                data: {id: row.caseHouseId},
+                success: function (result) {
+                    if (result.ret) {
+                        var href = "${pageContext.request.contextPath}/netInfoUpgrade/apply";
+                        href += "?dataId=" + result.data.id + "&type=" + result.data.type + "&masterDataId=" + result.data.masterId;
+                        window.open(href, "");
+                    }
+                },
+                error: function (result) {
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                }
+            })
+
+
+
+    };
 
     houseSearch.showFile = function (id) {
         FileUtils.getFileShows({

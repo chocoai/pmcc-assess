@@ -9,6 +9,7 @@ public class ZtreeDto implements Serializable,Cloneable,Comparable<ZtreeDto> {
     private Integer id;
     private Integer pid;
     private String name;
+    private String textName;
     private String displayName;
     private String key;
     private Integer _parentId;
@@ -23,6 +24,14 @@ public class ZtreeDto implements Serializable,Cloneable,Comparable<ZtreeDto> {
     private String creator;
     private String creatorName;
     private String executor;
+
+    public String getTextName() {
+        return textName;
+    }
+
+    public void setTextName(String textName) {
+        this.textName = textName;
+    }
 
     public Boolean getBisStructure() {
         return bisStructure;

@@ -415,6 +415,8 @@ public class BasicEstateService extends BasicEntityAbstract {
             if (estateDetail != null) {
                 estateDetail.setName(basicEstate.getName());
                 estateDetail.setDisplayName(basicEstate.getName());
+                estateDetail.setFullName(basicEstate.getName());
+
                 basicApplyBatchDetailService.saveBasicApplyBatchDetail(estateDetail);
 
                 BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchById(estateDetail.getApplyBatchId());

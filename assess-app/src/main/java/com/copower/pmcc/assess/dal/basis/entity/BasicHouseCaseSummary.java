@@ -62,6 +62,8 @@ public class BasicHouseCaseSummary {
 
     private Date gmtModified;
 
+    private Boolean bisNewest;
+
     public Integer getId() {
         return id;
     }
@@ -292,5 +294,13 @@ public class BasicHouseCaseSummary {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public Boolean getBisNewest() {
+        return bisNewest;
+    }
+
+    public void setBisNewest(Boolean bisNewest) {
+        this.bisNewest = bisNewest;
     }
 }

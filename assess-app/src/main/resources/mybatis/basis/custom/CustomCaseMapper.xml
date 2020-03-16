@@ -69,52 +69,51 @@
     practical_use, trading_type, trading_time, trading_unit_price, version, creator,
     gmt_created, gmt_modified, house_type, house_category, area, estate_name, deal_type,
     current_price, consult_price, assess_standard_date, realization_ratios, realization_cycle,
-    deal_part_info, approver
+    deal_part_info, approver,bis_newest
     </sql>
 
     <select id="findCaseBaseHouseList" parameterType="map"
             resultMap="com.copower.pmcc.assess.dal.basis.mapper.BasicHouseCaseSummaryMapper.BaseResultMap">
         select
         <include refid="Base_Column_ListCaseBaseHouse"/>
-        from tb_basic_house_case_summary
-        <where>
-            <if test="basicHouseCaseSummary.blockName != null and basicHouseCaseSummary.blockName!=''">
-                and block_name LIKE concat(concat('%',#{basicHouseCaseSummary.blockName}),'%')
-            </if>
-            <if test="basicHouseCaseSummary.fullName != null and basicHouseCaseSummary.fullName!=''">
-                and full_name LIKE concat(concat('%',#{basicHouseCaseSummary.fullName}),'%')
-            </if>
-            <if test="basicHouseCaseSummary.street != null and basicHouseCaseSummary.street!=''">
-                and street LIKE concat(concat('%',#{basicHouseCaseSummary.street}),'%')
-            </if>
-            <if test="basicHouseCaseSummary.province != null and basicHouseCaseSummary.province!=''">
-                and province = #{basicHouseCaseSummary.province}
-            </if>
-            <if test="basicHouseCaseSummary.city != null and basicHouseCaseSummary.city!=''">
-                and city = #{basicHouseCaseSummary.city}
-            </if>
-            <if test="basicHouseCaseSummary.district != null and basicHouseCaseSummary.district!=''">
-                and district = #{basicHouseCaseSummary.district}
-            </if>
-            <if test="basicHouseCaseSummary.houseType != null and basicHouseCaseSummary.houseType!=''">
-                and house_type = #{basicHouseCaseSummary.houseType}
-            </if>
-            <if test="basicHouseCaseSummary.tradingType != null">
-                and trading_type = #{basicHouseCaseSummary.tradingType}
-            </if>
-            <if test="tradingTimeStart != null">
-                and trading_time <![CDATA[ >= ]]> #{tradingTimeStart}
-            </if>
-            <if test="tradingTimeEnd != null">
-                and trading_time <![CDATA[ <= ]]> #{tradingTimeEnd}
-            </if>
-            <if test="areaStart != null">
-                and area <![CDATA[ >= ]]> #{areaStart}
-            </if>
-            <if test="areaEnd != null">
-                and area <![CDATA[ <= ]]> #{areaEnd}
-            </if>
-        </where>
+        from tb_basic_house_case_summary where 1=1 and bis_newest = true
+        <if test="basicHouseCaseSummary.blockName != null and basicHouseCaseSummary.blockName!=''">
+            and block_name LIKE concat(concat('%',#{basicHouseCaseSummary.blockName}),'%')
+        </if>
+        <if test="basicHouseCaseSummary.fullName != null and basicHouseCaseSummary.fullName!=''">
+            and full_name LIKE concat(concat('%',#{basicHouseCaseSummary.fullName}),'%')
+        </if>
+        <if test="basicHouseCaseSummary.street != null and basicHouseCaseSummary.street!=''">
+            and street LIKE concat(concat('%',#{basicHouseCaseSummary.street}),'%')
+        </if>
+        <if test="basicHouseCaseSummary.province != null and basicHouseCaseSummary.province!=''">
+            and province = #{basicHouseCaseSummary.province}
+        </if>
+        <if test="basicHouseCaseSummary.city != null and basicHouseCaseSummary.city!=''">
+            and city = #{basicHouseCaseSummary.city}
+        </if>
+        <if test="basicHouseCaseSummary.district != null and basicHouseCaseSummary.district!=''">
+            and district = #{basicHouseCaseSummary.district}
+        </if>
+        <if test="basicHouseCaseSummary.houseType != null and basicHouseCaseSummary.houseType!=''">
+            and house_type = #{basicHouseCaseSummary.houseType}
+        </if>
+        <if test="basicHouseCaseSummary.tradingType != null">
+            and trading_type = #{basicHouseCaseSummary.tradingType}
+        </if>
+        <if test="tradingTimeStart != null">
+            and trading_time <![CDATA[ >= ]]> #{tradingTimeStart}
+        </if>
+        <if test="tradingTimeEnd != null">
+            and trading_time <![CDATA[ <= ]]> #{tradingTimeEnd}
+        </if>
+        <if test="areaStart != null">
+            and area <![CDATA[ >= ]]> #{areaStart}
+        </if>
+        <if test="areaEnd != null">
+            and area <![CDATA[ <= ]]> #{areaEnd}
+        </if>
+
     </select>
 
     <sql id="Base_Column_ListCaseBuilding">

@@ -87,7 +87,7 @@ public class ProjectStateChangeService extends BaseService {
         ProjectChangeLog where = new ProjectChangeLog();
         where.setProjectId(projectId);
         where.setChangeType(changeTypeEnum.getValue());
-
+        where.setStatus(ProcessStatusEnum.FINISH.getValue());
         List<ProjectChangeLog> changeLogs = projectChangeLogMapper.getProjectChangeLog(where);
         if (CollectionUtils.isNotEmpty(changeLogs)) {
             return changeLogs;

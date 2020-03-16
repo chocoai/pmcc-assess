@@ -418,7 +418,6 @@
     batchTreeTool.showAddModal = function () {
         var node = zTreeObj.getSelectedNodes()[0];
         var level = node.level;
-        console.log(node.bisStructure + "=====bisStructure")
         if (node.bisStructure) {
             notifyInfo('提示',"构筑物下无法继续添加节点。");
             return false;
@@ -535,7 +534,34 @@
         if (!$("#frm_detail").valid()) {
             return false;
         }
+
+        var node = zTreeObj.getSelectedNodes()[0];
+        var level = node.level;
+        var name = $("#frm_detail").find("input[name='name']").val();
+        switch (level) {
+            case 0: {
+                name = name+"栋";
+                break;
+            }
+            case 1: {
+                name = name+"单元";
+                break;
+            }
+        }
+        var nodes = zTreeObj.getSelectedNodes();
+        if(nodes.length>0){
+            var allNode = nodes[0]['textName'];//获取当前选中节点
+            var node = nodes[0].getParentNode();
+            getParentNodes(node,allNode);
+        }
+        var location = "";
+        var nodeArrs = curLocation.split(">");
+        for(var i=nodeArrs.length-1;i>=0;i--){
+            location += nodeArrs[i];
+        }
+
         var formData = formParams("frm_detail");
+        formData.fullName = location+name;
         $.ajax({
             url: "${pageContext.request.contextPath}/basicApplyBatch/saveItemData",
             type: "post",
@@ -553,6 +579,7 @@
                         tableId: result.data.tableId,
                         type: result.data.tableName.replace('tb_basic_', ''),
                         displayName: result.data.displayName + '(' + result.data.executorName + ')',
+                        textName: result.data.displayName,
                         executor: result.data.executor,
                         executorName: result.data.executorName,
                         creator: result.data.creator,
@@ -566,6 +593,22 @@
                 }
             }
         });
+    }
+
+
+    batchTreeTool.getFullName= function(){
+
+    }
+
+    function getParentNodes(node,allNode){
+        if(node!=null){
+            allNode += ">"+node['textName'];
+            curNode = node.getParentNode();
+            getParentNodes(curNode,allNode);
+        }else{
+            //根节点
+            curLocation = allNode;
+        }
     }
 
     //编辑明细
@@ -709,6 +752,7 @@
                     node.id = result.data.id;
                     node.name = result.data.name;
                     node.displayName = result.data.displayName + '(' + result.data.executorName + ')';
+                    node.textName =  result.data.displayName;
                     node.pid = result.data.pid;
                     node.executor = result.data.executor;
                     node.creator = result.data.creator;

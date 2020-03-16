@@ -454,6 +454,9 @@ public class BasicHouseService extends BasicEntityAbstract {
                 BasicApplyBatchDetail houseDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(FormatUtils.entityNameConvertToTableName(BasicHouse.class), basicHouse.getId());
                 if (houseDetail != null) {
                     houseDetail.setName(basicHouse.getHouseNumber());
+
+                    String fullName = houseDetail.getFullName().replace(String.format("%s%s","单元",houseDetail.getDisplayName()),String.format("%s%s","单元",basicHouse.getHouseNumber()));
+                    houseDetail.setFullName(fullName);
                     houseDetail.setDisplayName(basicHouse.getHouseNumber());
                     basicApplyBatchDetailService.saveBasicApplyBatchDetail(houseDetail);
 
