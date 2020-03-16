@@ -183,7 +183,7 @@
                         notifyInfo('提示','只能填数字');
                         return;
                     }
-                    value = parseInt(value);
+                    value = parseFloat(value);
                     if (value < 80 || value > 120) {
                         notifyInfo('提示','分值只能在80至120之间');
                         return;
