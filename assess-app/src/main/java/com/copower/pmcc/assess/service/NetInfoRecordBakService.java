@@ -6,6 +6,8 @@ import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordContentDao;
 import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordDao;
 import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecord;
 import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordContent;
+import com.copower.pmcc.assess.dal.cases.dao.CaseNetInfoRecordContentDao;
+import com.copower.pmcc.assess.dal.cases.entity.CaseNetInfoRecordContent;
 import com.copower.pmcc.assess.dto.input.net.JDSFDto;
 import com.copower.pmcc.assess.dto.input.net.JDZCDto;
 import com.copower.pmcc.assess.dto.input.net.TBSFDto;
@@ -76,6 +78,8 @@ public class NetInfoRecordBakService {
     private ApplicationConstant applicationConstant;
     @Autowired
     private CommonService commonService;
+    @Autowired
+    private CaseNetInfoRecordContentDao caseNetInfoRecordContentDao;
 
 
     //抓取数据
@@ -205,7 +209,7 @@ public class NetInfoRecordBakService {
                             } else {
                                 netInfoRecordContent.setFullDescription(body.html());
                             }
-                            netInfoRecordContentDao.addInfo(netInfoRecordContent);
+                            addInfoContent(netInfoRecordContent);
                         }
                     }
                 }
@@ -486,7 +490,7 @@ public class NetInfoRecordBakService {
                             } else {
                                 netInfoRecordContent.setFullDescription(contentBody.html());
                             }
-                            netInfoRecordContentDao.addInfo(netInfoRecordContent);
+                            addInfoContent(netInfoRecordContent);
                         }
                     }
                 }
@@ -603,7 +607,7 @@ public class NetInfoRecordBakService {
                             } else {
                                 netInfoRecordContent.setFullDescription(contentBody.html());
                             }
-                            netInfoRecordContentDao.addInfo(netInfoRecordContent);
+                            addInfoContent(netInfoRecordContent);
                         }
                     }
                 }
@@ -725,7 +729,7 @@ public class NetInfoRecordBakService {
                                 } else {
                                     netInfoRecordContent.setFullDescription(contentBody.get(1).html());
                                 }
-                                netInfoRecordContentDao.addInfo(netInfoRecordContent);
+                                addInfoContent(netInfoRecordContent);
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -1873,5 +1877,14 @@ public class NetInfoRecordBakService {
         bootstrapTableVo.setTotal(page.getTotal());
         bootstrapTableVo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<NetInfoRecord>() : vos);
         return bootstrapTableVo;
+    }
+
+
+    public void addInfoContent(NetInfoRecordContent netInfoContent){
+        netInfoRecordContentDao.addInfo(netInfoContent);
+        //备份数据
+        CaseNetInfoRecordContent caseNetInfoRecordContent = new CaseNetInfoRecordContent();
+        BeanUtils.copyProperties(netInfoContent, caseNetInfoRecordContent);
+        caseNetInfoRecordContentDao.addInfo(caseNetInfoRecordContent);
     }
 }
