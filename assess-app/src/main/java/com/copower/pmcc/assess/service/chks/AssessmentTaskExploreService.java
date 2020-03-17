@@ -94,23 +94,7 @@ public class AssessmentTaskExploreService implements AssessmentTaskInterface {
             linkedList.add(String.join("=", "tableName", basicApplyBatchDetail.getTableName()));
             linkedList.add(String.join("=", "isHistory", Boolean.FALSE.toString()));
             String tbType = "";
-            String businessKey = null;
-            if (Objects.equal(basicApplyBatchDetail.getTableName(), FormatUtils.entityNameConvertToTableName(BasicBuilding.class))) {
-                tbType = "building";
-                businessKey = String.join("/", activityDto.getCnName(), basicApplyBatchDetail.getFullName());
-            }
-            if (Objects.equal(basicApplyBatchDetail.getTableName(), FormatUtils.entityNameConvertToTableName(BasicHouse.class))) {
-                tbType = "house";
-                businessKey = String.join("/", activityDto.getCnName(), basicApplyBatchDetail.getFullName());
-            }
-            if (Objects.equal(basicApplyBatchDetail.getTableName(), FormatUtils.entityNameConvertToTableName(BasicUnit.class))) {
-                tbType = "unit";
-                businessKey = String.join("/", activityDto.getCnName(), basicApplyBatchDetail.getFullName());
-            }
-            if (Objects.equal(basicApplyBatchDetail.getTableName(), FormatUtils.entityNameConvertToTableName(BasicEstate.class))) {
-                tbType = "estate";
-                businessKey = String.join("/", activityDto.getCnName(), basicApplyBatchDetail.getFullName());
-            }
+            String businessKey = basicApplyBatchDetailService.getFullNameByBatchDetailId(basicApplyBatchDetail.getId());
             linkedList.add(String.join("=", "tbType", tbType));
             saveAssessmentProjectPerformanceDto(processInsId, activityId, taskId, byExamineUser, projectInfo, projectPlanDetails, boxReDto, basicApplyBatchDetail.getTableName(), basicApplyBatchDetail.getTableId(), tbType, StringUtils.join(linkedList, "&"), businessKey, null);
         }

@@ -15,6 +15,7 @@ import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -290,17 +291,17 @@ public class BasicApplyBatchDetailService {
                 List<BasicApplyBatchDetail> buildingDetails = getBasicApplyBatchDetailByPid(basicApplyBatchDetail.getId(), basicApplyBatchDetail.getApplyBatchId());
                 if (CollectionUtils.isNotEmpty(buildingDetails)) {
                     for (BasicApplyBatchDetail building : buildingDetails) {
-                        deleteBuildingAndTask(applyBatch.getPlanDetailsId(),building);
+                        deleteBuildingAndTask(applyBatch.getPlanDetailsId(), building);
                     }
                 }
             case BUILDING://删除原来楼栋数据
-                deleteBuildingAndTask(applyBatch.getPlanDetailsId(),basicApplyBatchDetail);
+                deleteBuildingAndTask(applyBatch.getPlanDetailsId(), basicApplyBatchDetail);
                 break;
             case UNIT://删除原来单元数据
-                deleteUnitAndTask(applyBatch.getPlanDetailsId(),basicApplyBatchDetail);
+                deleteUnitAndTask(applyBatch.getPlanDetailsId(), basicApplyBatchDetail);
                 break;
             case HOUSE:
-                deleteHouseAndTask(applyBatch.getPlanDetailsId(),basicApplyBatchDetail.getTableId());
+                deleteHouseAndTask(applyBatch.getPlanDetailsId(), basicApplyBatchDetail.getTableId());
                 break;
         }
         basicApplyBatchDetailDao.deleteInfo(id);
@@ -308,11 +309,12 @@ public class BasicApplyBatchDetailService {
 
     /**
      * 删除楼栋及相关Task任务
+     *
      * @param planDetailsId
      * @param applyBatchDetail
      * @throws Exception
      */
-    public void deleteBuildingAndTask(Integer planDetailsId,BasicApplyBatchDetail applyBatchDetail) throws Exception {
+    public void deleteBuildingAndTask(Integer planDetailsId, BasicApplyBatchDetail applyBatchDetail) throws Exception {
         basicBuildingService.clearInvalidChildData(applyBatchDetail.getTableId());
         List<BasicApplyBatchDetail> unitDetails = getBasicApplyBatchDetailByPid(applyBatchDetail.getId(), applyBatchDetail.getApplyBatchId());
         if (CollectionUtils.isNotEmpty(unitDetails)) {
@@ -320,10 +322,10 @@ public class BasicApplyBatchDetailService {
                 List<BasicApplyBatchDetail> houseDetails = getBasicApplyBatchDetailByPid(unit.getId(), applyBatchDetail.getApplyBatchId());
                 if (CollectionUtils.isNotEmpty(houseDetails)) {
                     for (BasicApplyBatchDetail house : houseDetails) {
-                        deleteHouseAndTask(planDetailsId,house.getTableId());
+                        deleteHouseAndTask(planDetailsId, house.getTableId());
                     }
                 }
-                deleteUnitAndTask(planDetailsId,unit);
+                deleteUnitAndTask(planDetailsId, unit);
             }
         }
         deleteSonTask(planDetailsId, BasicFormClassifyEnum.BUILDING.getKey(), applyBatchDetail.getTableId());
@@ -331,17 +333,18 @@ public class BasicApplyBatchDetailService {
 
     /**
      * 删除单元及相关Task任务
+     *
      * @param planDetailsId
      * @param applyBatchDetail
      * @throws Exception
      */
-    public void deleteUnitAndTask(Integer planDetailsId,BasicApplyBatchDetail applyBatchDetail) throws Exception {
+    public void deleteUnitAndTask(Integer planDetailsId, BasicApplyBatchDetail applyBatchDetail) throws Exception {
         basicUnitService.deleteBasicUnit(applyBatchDetail.getTableId());
         basicUnitService.clearInvalidChildData(applyBatchDetail.getTableId());
         List<BasicApplyBatchDetail> houseDetails = getBasicApplyBatchDetailByPid(applyBatchDetail.getId(), applyBatchDetail.getApplyBatchId());
         if (CollectionUtils.isNotEmpty(houseDetails)) {
             for (BasicApplyBatchDetail house : houseDetails) {
-                deleteHouseAndTask(planDetailsId,house.getTableId());
+                deleteHouseAndTask(planDetailsId, house.getTableId());
             }
         }
         deleteSonTask(planDetailsId, BasicFormClassifyEnum.UNIT.getKey(), applyBatchDetail.getTableId());//删除单元子任务
@@ -350,11 +353,12 @@ public class BasicApplyBatchDetailService {
 
     /**
      * 删除房屋及相关Task任务
+     *
      * @param planDetailsId
      * @param houseId
      * @throws Exception
      */
-    public void deleteHouseAndTask(Integer planDetailsId,Integer houseId) throws Exception {
+    public void deleteHouseAndTask(Integer planDetailsId, Integer houseId) throws Exception {
         //删除原来房屋数据
         basicHouseService.deleteHousesAndBasicApply(houseId);
         basicHouseTradingService.deleteBasicHouseTradingByHouseId(houseId);
@@ -480,5 +484,19 @@ public class BasicApplyBatchDetailService {
         list.add(batchDetail);
         if (batchDetail.getPid() != null && batchDetail.getPid() > 0)
             collectionParentBatchDetails(batchDetail.getPid(), list);
+    }
+
+    /**
+     * 获取完整名称
+     * @param batchDetailId
+     * @return
+     */
+    public String getFullNameByBatchDetailId(Integer batchDetailId) {
+        List<BasicApplyBatchDetail> list = Lists.newArrayList();
+        collectionParentBatchDetails(batchDetailId, list);
+        if (CollectionUtils.isEmpty(list)) return null;
+        StringBuilder stringBuilder = new StringBuilder();
+        list.forEach(o -> stringBuilder.append(o));
+        return stringBuilder.toString();
     }
 }
