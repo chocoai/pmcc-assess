@@ -119,9 +119,15 @@ public class SurveyAssetInventoryService extends BaseService {
             if (CollectionUtils.isNotEmpty(contentList)) {
                 DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(surveyAssetInventory.getDeclareRecordId());
                 BaseDataDic areaDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_AREA);
+                BaseDataDic addressDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_ACTUAL_ADDRESS);
+
                 for (SurveyAssetInventoryContent content : contentList) {
                     if (content.getInventoryContent().equals(areaDic.getId()) && StringUtils.isNotBlank(content.getActual())) {
                         declareRecord.setPracticalArea(new BigDecimal(content.getActual()));
+                    }
+                    //反写实际地址
+                    if (content.getInventoryContent().equals(addressDic.getId()) && StringUtils.isNotBlank(content.getActual())) {
+                        declareRecord.setSeat(content.getActual());
                     }
                 }
                 declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
