@@ -19,6 +19,7 @@ import com.copower.pmcc.assess.dto.output.MergeCellModel;
 import com.copower.pmcc.assess.dto.output.basic.*;
 import com.copower.pmcc.assess.dto.output.data.DataPropertyVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectInfoVo;
+import com.copower.pmcc.assess.dto.output.project.ProjectMemberVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectPhaseVo;
 import com.copower.pmcc.assess.dto.output.project.scheme.SchemeJudgeObjectVo;
 import com.copower.pmcc.assess.dto.output.project.scheme.SchemeReimbursementItemVo;
@@ -2866,50 +2867,26 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getAssistanceStaff(GenerateReportInfo generateReportInfo) {
-        List<ProjectPhaseVo> projectPhaseVos = projectPhaseService.queryProjectPhaseByCategory(projectInfo.getProjectTypeId(),
-                projectInfo.getProjectCategoryId(), null).stream().filter(projectPhaseVo -> {
-            if (Objects.equal(AssessPhaseKeyConstant.SCENE_EXPLORE, projectPhaseVo.getPhaseKey())) {
-                return true;
-            }
-            if (Objects.equal(AssessPhaseKeyConstant.CASE_STUDY_EXTEND, projectPhaseVo.getPhaseKey())) {
-                return true;
-            }
-            return false;
-        }).collect(Collectors.toList());
-        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         Set<String> stringSet = Sets.newHashSet();
-        final List<String> stringList = new ArrayList<>();
+        List<String> strings = Lists.newArrayList();
         if (StringUtils.isNotBlank(generateReportInfo.getRealEstateAppraiser())) {
-            stringList.addAll(FormatUtils.transformString2List(generateReportInfo.getRealEstateAppraiser()));
-            List<String> stringList2 = stringList.stream().distinct().collect(Collectors.toList());
-            stringList.clear();
-            stringList.addAll(stringList2);
+            strings = FormatUtils.transformString2List(generateReportInfo.getRealEstateAppraiser());
         }
-        if (CollectionUtils.isNotEmpty(projectPhaseVos)) {
-            projectPhaseVos.stream().forEach(projectPhaseScene -> {
-                if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
-                    SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectList.get(0);
-                    ProjectPlanDetails query = new ProjectPlanDetails();
-                    query.setProjectId(projectId);
-                    query.setProjectPhaseId(projectPhaseScene.getId());
-                    query.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
-                    List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
-                    if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
-                        projectPlanDetailsList.stream().forEach(projectPlanDetails -> {
-                            String account = projectPlanDetails.getExecuteUserAccount();
-                            if (StringUtils.isNotBlank(account)) {
-                                if (!stringList.isEmpty()) {
-                                    if (!stringList.contains(account)) {
-                                        stringSet.add(publicService.getUserNameByAccount(account));
-                                    }
-                                }
-                            }
-                        });
-                    }
-                }
-            });
+        ProjectMemberVo projectMemberVo = projectInfo.getProjectMemberVo();
+        if (StringUtils.isNotBlank(projectMemberVo.getUserAccountManager())){
+            stringSet.add(projectMemberVo.getUserAccountManager()) ;
         }
-        return StringUtils.join(stringSet, "");
+        if (StringUtils.isNotBlank(projectMemberVo.getUserAccountMember())){
+            stringSet.addAll(FormatUtils.transformString2List(projectMemberVo.getUserAccountMember())) ;
+        }
+        Iterator<String> iterator = stringSet.iterator();
+        while (iterator.hasNext()){
+            if (strings.contains(iterator.next())){
+                iterator.remove();
+            }
+        }
+        Set<String> userLists = stringSet.stream().map(account -> publicService.getUserNameByAccount(account)).collect(Collectors.toSet());
+        return StringUtils.join(userLists, "");
     }
 
     /**
