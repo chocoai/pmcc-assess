@@ -106,27 +106,11 @@
                                             </div>
                                         </div>
 
-                                        <table class="table">
-                                            <thead>
-                                            <tr>
-                                                <th style="width: 5%;word-break: break-all;">编号</th>
-                                                    <%--<th style="width: 10%">权证号</th>--%>
-                                                <th style="width: 8%">所有权人</th>
-                                                <th style="width: 10%">坐落</th>
-                                                <th style="width: 6%">终止日期</th>
-                                                <th style="width: 6%">剩余年限</th>
-                                                <th style="width: 6%">证载用途</th>
-                                                <th style="width: 6%">实际用途</th>
-                                                <th style="width: 6%">设定用途</th>
-                                                <th style="width: 10%">最佳利用方式</th>
-                                                <th style="width: 5%">证载面积</th>
-                                                <th style="width: 5%">评估面积</th>
-                                                <th style="width: 10%">操作</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            </tbody>
-                                        </table>
+                                        <div class="x_title">
+                                            <h4>估价对象查询</h4>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <div class="judge-object-content"></div>
                                     </form>
                                 </div>
                             </div>
@@ -337,8 +321,8 @@
                             <table class="table">
                                 <thead>
                                 <tr>
-                                    <th width="20%">不适用方法</th>
-                                    <th width="60%">不适用原因</th>
+                                    <th width="30%">不适用方法</th>
+                                    <th width="70%">不适用原因</th>
                                 </tr>
                                 </thead>
                                 <tbody id="notApplicableTbody">
@@ -358,36 +342,136 @@
 </div>
 <!--评估对象-->
 <script type="text/html" id="judgeObjectHtml">
-    <tr>
-        <td>
-            <input type="hidden" data-name="id" value="{id}">
-            <input type="hidden" data-name="bisSplit" value="{bisSplit}">
-            <input type="hidden" data-name="bisMerge" value="{bisMerge}">
-            <input type="hidden" data-name="number" value="{number}">
-            <input type="hidden" data-name="splitNumber" value="{splitNumber}">
-            <input type="hidden" data-name="declareId" value="{declareId}">
-            <input type="hidden" data-name="rentalPossessionDesc" value="{rentalPossessionDesc}">
-           {mergeNumber}
-        </td>
-        <td>{ownership}
-            <button type="button" href="javascript://" onclick="programme.viewJudgeInfo(this);"
-               class="btn btn-xs btn-info tooltips"><i class="fa fa-white fa-search"></i></button>
-        </td>
-        <td>{seat}</td>
-        <td>{landUseEndDate}</td>
-        <td>{landRemainingYear}</td>
-        <td>{certUse}</td>
-        <td>{practicalUse}</td>
-        <td>{setUseName}</td>
-        <td>{bestUseName}</td>
-        <td>{floorArea}</td>
-        <td>{evaluationArea}</td>
-        <td>
-            <button type="button" onclick="programmeMethod.setMethod(this);"
-               class="btn btn-sm btn-info judge-method tooltips">评估方法</button>
-        </td>
-    </tr>
+    <div class="col-md-12">
+        <div class="card full-height">
+            <div class="card x_panel">
+                <div class="card-header">
+                    <div class="card-head-row">
+                        <div class="card-title">
+                            <input type="checkbox">
+                            <label style="word-break: break-all">{mergeNumber}</label>
+                            <button type="button" href="javascript://" onclick="programmeMethod.setMethod(this);"
+                                    class="btn btn-sm btn-info judge-method tooltips">评估方法</button>
+                        </div>
+                        <div class="card-tools">
+                            <button type="button" class="btn  btn-link btn-primary btn-xs collapse-link"><span
+                                    class="fa fa-angle-down"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body x_content">
+                    <div class="form-horizontal">
+                        <input type="hidden" data-name="id" value="{id}">
+                        <input type="hidden" data-name="bisSplit" value="{bisSplit}">
+                        <input type="hidden" data-name="bisMerge" value="{bisMerge}">
+                        <input type="hidden" data-name="number" value="{number}">
+                        <input type="hidden" data-name="splitNumber" value="{splitNumber}">
+                        <input type="hidden" data-name="declareId" value="{declareId}">
+                        <input type="hidden" data-name="rentalPossessionDesc" value="{rentalPossessionDesc}">
+                        <input type="hidden" data-name="mergeNumber" value="{mergeNumber}">
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                <div class="form-inline">
+                                    <label class="col-sm-1 control-label">
+                                        所有权人
+                                    </label>
+                                    <div class="col-sm-2">
+                                        <label class="form-control input-full" data-name="ownership">{ownership}
+                                        <button type="button" href="javascript://" onclick="programme.viewJudgeInfo(this);"
+                                                class="btn btn-xs btn-info tooltips"><i class="fa fa-white fa-search"></i></button>
+                                        </label>
+                                    </div>
+                                    <label class="col-sm-1 control-label">
+                                        坐落
+                                    </label>
+                                    <div class="col-sm-2">
+                                        <label class="form-control input-full" data-name="seat"><span>{seat}</span></label>
+                                    </div>
+                                    <label class="col-sm-1 control-label">
+                                        终止日期
+                                    </label>
+                                    <div class="col-sm-2">
+                                        <label class="form-control input-full"
+                                               data-name="landUseEndDate"><span>{landUseEndDate}</span></label>
+                                    </div>
+                                    <label class="col-sm-1 control-label">
+                                        剩余年限
+                                    </label>
+                                    <div class="col-sm-2">
+                                        <label class="form-control input-full"
+                                               data-name="landRemainingYear"><span>{landRemainingYear}</span></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                <div class="form-inline">
+                                    <label class="col-sm-1 control-label">
+                                        证载用途
+                                    </label>
+                                    <div class="col-sm-2 x-valid">
+                                        <label class="form-control input-full" data-name="certUse">{certUse}</label>
+                                    </div>
+                                    <label class="col-sm-1 control-label">
+                                        实际用途
+                                    </label>
+                                    <div class="col-sm-2 x-valid">
+                                        <label class="form-control input-full" data-name="practicalUse">{practicalUse}</label>
+                                    </div>
+                                    <label class="col-sm-1 control-label">
+                                        设定用途
+                                    </label>
+                                    <div class="col-sm-2 x-valid">
+                                        <label class="form-control input-full">{setUseName}</label>
+                                    </div>
+                                    <label class="col-sm-1 control-label">
+                                        最佳利用方式
+                                    </label>
+                                    <div class="col-sm-2 x-valid">
+                                        <label class="form-control input-full">{bestUseName}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                <div class="form-inline">
+                                    <label class="col-sm-1 control-label">
+                                        证载面积
+                                    </label>
+                                    <div class="col-sm-2">
+                                        <label class="form-control input-full">{floorArea}</label>
+                                    </div>
+                                    <label class="col-sm-1 control-label">
+                                        评估面积
+                                    </label>
+                                    <div class="col-sm-2 x-valid">
+                                        <label class="form-control input-full">{evaluationArea}</label>
+                                    </div>
+                                    <label class="col-sm-1 control-label" data-name="mergeExplainContainer{id}" style="display: none;">
+                                        合并对象说明
+                                    </label>
+                                    <div class="col-sm-2 x-valid" data-name="mergeExplainContainer{id}" style="display: none;">
+                                        <label class="form-control input-full">{mergeExplain}</label>
+                                    </div>
+                                    <label class="col-sm-1 control-label"  data-name="splitExplainContainer{id}" style="display: none;">
+                                        拆分对象说明
+                                    </label>
+                                    <div class="col-sm-2 x-valid"  data-name="splitExplainContainer{id}" style="display: none;">
+                                        <label class="form-control input-full">{splitExplain}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </script>
+
 
 
 <script src="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/jquery.easyui.min.js?v=${assessVersion}"></script>
@@ -416,15 +500,67 @@
     };
 
     //加载区域下的委估对象列表
+    <%--programme.loadJudgeObjectList = function (_this) {--%>
+        <%--var tbody = $(_this).closest(".area_panel").find(".table").find("tbody");--%>
+        <%--tbody.empty();--%>
+        <%--var areaGroupId = $(_this).closest('.area_panel').find('[name=areaGroupId]').val();--%>
+        <%--$.ajax({--%>
+            <%--url: "${pageContext.request.contextPath}/schemeProgramme/getSchemeJudgeObjectList",--%>
+            <%--data: {--%>
+                <%--areaGroupId: areaGroupId--%>
+            <%--},--%>
+            <%--type: "post",--%>
+            <%--dataType: "json",--%>
+            <%--success: function (result) {--%>
+                <%--if (result.ret) {--%>
+                    <%--$.each(result.data, function (i, item) {--%>
+                        <%--var html = $("#judgeObjectHtml").html();--%>
+                        <%--html = html.replace(/{id}/g, item.id == undefined ? "" : item.id);--%>
+                        <%--html = html.replace(/{bisSplit}/g, item.bisSplit == undefined ? false : item.bisSplit);--%>
+                        <%--html = html.replace(/{bisMerge}/g, item.bisMerge == undefined ? false : item.bisMerge);--%>
+                        <%--html = html.replace(/{number}/g, item.number == undefined ? "" : item.number);--%>
+                        <%--html = html.replace(/{splitNumber}/g, item.splitNumber == undefined ? "" : item.splitNumber);--%>
+                        <%--html = html.replace(/{rentalPossessionDesc}/g, item.rentalPossessionDesc == undefined ? "" : item.rentalPossessionDesc);--%>
+                        <%--if (item.splitNumber) {--%>
+                            <%--html = html.replace(/{mergeNumber}/g, item.number + "-" + item.splitNumber);--%>
+                        <%--} else {--%>
+                            <%--html = html.replace(/{mergeNumber}/g, item.number == undefined ? "" : item.number);--%>
+                        <%--}--%>
+                        <%--html = html.replace(/{name}/g, item.name == undefined ? "" : item.name);--%>
+                        <%--html = html.replace(/{declareId}/g, item.declareRecordId == undefined ? "" : item.declareRecordId);--%>
+                        <%--html = html.replace(/{ownership}/g, item.ownership == undefined ? "" : AssessCommon.substring(item.ownership, 100));--%>
+                        <%--html = html.replace(/{seat}/g, item.seat == undefined ? "" : AssessCommon.substring(item.seat, 100));--%>
+                        <%--html = html.replace(/{landUseEndDate}/g, item.landUseEndDate == undefined ? "" : formatDate(item.landUseEndDate));--%>
+                        <%--html = html.replace(/{landRemainingYear}/g, item.landRemainingYear == undefined ? "" : item.landRemainingYear);--%>
+                        <%--html = html.replace(/{certUse}/g, item.certUse == undefined ? "" : item.certUse);--%>
+                        <%--html = html.replace(/{practicalUse}/g, item.practicalUse == undefined ? "" : item.practicalUse);--%>
+                        <%--html = html.replace(/{setUseName}/g, item.setUseName == undefined ? "" : item.setUseName);--%>
+                        <%--html = html.replace(/{bestUseName}/g, item.bestUseName == undefined ? "" : item.bestUseName);--%>
+                        <%--html = html.replace(/{floorArea}/g, item.floorArea == undefined ? "" : item.floorArea);--%>
+                        <%--html = html.replace(/{evaluationArea}/g, item.evaluationArea == undefined ? "" : item.evaluationArea);--%>
+                        <%--tbody.append(html);--%>
+                        <%--//设值--%>
+                        <%--var lastTr = tbody.find("tr:last");--%>
+                        <%--if (item.bisSetFunction) {--%>
+                            <%--lastTr.find('td:last').find('.judge-method').removeClass('btn-success').addClass('btn-primary');--%>
+                        <%--}--%>
+                    <%--})--%>
+                <%--}--%>
+            <%--},--%>
+            <%--error: function (result) {--%>
+                <%--alert("调用服务端方法失败，失败原因:" + result);--%>
+            <%--}--%>
+        <%--});--%>
+    <%--};--%>
+
     programme.loadJudgeObjectList = function (_this) {
-        var tbody = $(_this).closest(".area_panel").find(".table").find("tbody");
+        var tbody = $(_this).closest(".area_panel").find(".judge-object-content");
         tbody.empty();
         var areaGroupId = $(_this).closest('.area_panel').find('[name=areaGroupId]').val();
+        var data = {areaGroupId: areaGroupId};
         $.ajax({
             url: "${pageContext.request.contextPath}/schemeProgramme/getSchemeJudgeObjectList",
-            data: {
-                areaGroupId: areaGroupId
-            },
+            data: data,
             type: "post",
             dataType: "json",
             success: function (result) {
@@ -450,25 +586,36 @@
                         html = html.replace(/{landRemainingYear}/g, item.landRemainingYear == undefined ? "" : item.landRemainingYear);
                         html = html.replace(/{certUse}/g, item.certUse == undefined ? "" : item.certUse);
                         html = html.replace(/{practicalUse}/g, item.practicalUse == undefined ? "" : item.practicalUse);
-                        html = html.replace(/{setUseName}/g, item.setUseName == undefined ? "" : item.setUseName);
-                        html = html.replace(/{bestUseName}/g, item.bestUseName == undefined ? "" : item.bestUseName);
                         html = html.replace(/{floorArea}/g, item.floorArea == undefined ? "" : item.floorArea);
                         html = html.replace(/{evaluationArea}/g, item.evaluationArea == undefined ? "" : item.evaluationArea);
+                        html = html.replace(/{setPlotRatio}/g, item.setPlotRatio == undefined ? "" : item.setPlotRatio);
+                        html = html.replace(/{planPlotRatio}/g, item.planPlotRatio == undefined ? "" : item.planPlotRatio);
+                        html = html.replace(/{actualPlotRatio}/g, item.actualPlotRatio == undefined ? "" : item.actualPlotRatio);
+                        html = html.replace(/{setUseName}/g, item.setUseName == undefined ? "" : item.setUseName);
+                        html = html.replace(/{bestUseName}/g, item.bestUseName == undefined ? "" : item.bestUseName);
+                        html = html.replace(/{mergeExplain}/g, item.mergeExplain == undefined ? "" : item.mergeExplain);
+                        html = html.replace(/{splitExplain}/g, item.splitExplain == undefined ? "" : item.splitExplain);
                         tbody.append(html);
                         //设值
-                        var lastTr = tbody.find("tr:last");
+                        var lastTr = tbody.find(".x_panel:last");
+
+                        if (item.bisMerge) {
+                            lastTr.find('[data-name=mergeExplainContainer' + item.id + ']').show();
+                        }
+                        if (!item.bisSplit && item.splitNumber) {
+                            lastTr.find('[data-name=splitExplainContainer' + item.id + ']').show();
+                        }
                         if (item.bisSetFunction) {
-                            lastTr.find('td:last').find('.judge-method').removeClass('btn-success').addClass('btn-primary');
+                            lastTr.find('.x_title').find('.judge-method').removeClass('btn-success').addClass('btn-primary');
                         }
                     })
                 }
             },
             error: function (result) {
-                alert("调用服务端方法失败，失败原因:" + result);
+                AlertError("调用服务端方法失败，失败原因:" + result);
             }
         });
     };
-
 
     //加载合并对象的明细
     programme.loadJudgeDetailList = function (pid) {
@@ -529,7 +676,7 @@
 
     //查看委估对象相关信息
     programme.viewJudgeInfo = function (_this) {
-        var tr = $(_this).closest('tr');
+        var tr = $(_this).closest('.x_panel');
         var bisMerge = tr.find('[data-name=bisMerge]').val();
         if (bisMerge == 'true') {
             var pid = tr.find('[data-name=id]').val();
@@ -655,7 +802,7 @@
 
     programmeMethod.setMethod = function (_this) {
         $('#applicableTbody,#notApplicableTbody').empty();
-        var judgeObjectId = $(_this).closest("tr").find('[data-name="id"]').val();
+        var judgeObjectId = $(_this).closest(".x_panel").find('[data-name="id"]').val();
         $.ajax({
             url: '${pageContext.request.contextPath}/schemeProgramme/getJudgeFunction',
             data: {
