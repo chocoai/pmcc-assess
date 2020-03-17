@@ -6,10 +6,13 @@ import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.ureport.ProjectDebtService;
+import com.copower.pmcc.assess.service.ureport.WorkLogService;
 import com.copower.pmcc.erp.api.dto.ReportProviderFileDto;
+import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.provider.ErpRpcReportProviderFileService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +20,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -36,6 +40,8 @@ public class ReportDesignerController {
     private BaseService baseService;
     @Autowired
     private PublicService publicService;
+    @Autowired
+    private WorkLogService workLogService;
 
 
     @GetMapping(value = "/index")
@@ -80,6 +86,20 @@ public class ReportDesignerController {
     public ModelAndView summary() {
         ModelAndView modelAndView = commonService.baseView("/report/workLog");
         return modelAndView;
+    }
+
+    @ResponseBody
+    @GetMapping(value = "/getWorkLogList",name = "日志列表")
+    public BootstrapTableVo getWorkLogList(String queryUserAccountName, String queryProjectName, String queryTitle, String queryStartTime, String queryEndTime) {
+        Date start = null;
+        Date end = null;
+        if (StringUtils.isNotBlank(queryStartTime)) {
+            start = DateUtils.convertDate(queryEndTime);
+        }
+        if (StringUtils.isNotBlank(queryEndTime)) {
+            end = DateUtils.convertDate(queryEndTime);
+        }
+        return workLogService.getBootstrapTableVo(queryUserAccountName, queryProjectName, queryTitle, start, end);
     }
 
     @GetMapping(value = "/projectFinance", name = "项目收款报表页面")

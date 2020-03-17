@@ -386,12 +386,9 @@
             var cols = [];
             cols.push({field: 'title', title: '标题'});
             cols.push({field: 'content', title: '内容'});
-            cols.push({field: 'creator', title: '创建人'});
-            cols.push({
-                field: 'created', title: '创建日期', formatter: function (value, row, index) {
-                    return formatDate(value, true);
-                }
-            });
+            cols.push({field: 'createdName', title: '创建时间'});
+            cols.push({field: 'creatorName', title: '创建人员'});
+            cols.push({field: 'fileHtml', title: '附件'});
             target.bootstrapTable('destroy');
             TableInit(target, "${pageContext.request.contextPath}/home/getWorkLogByProjectId", cols, {
                 publicProjectId: '${projectInfo.publicProjectId}'
