@@ -538,6 +538,7 @@
                             });
                             economicIndicators.autoSummary();
                         }
+                        economicIndicators.frmItem.find('table').treegrid();
                         if (defaluts.targetCallback) {
                             defaluts.targetCallback(economicIndicators.frmItem);
                         }
