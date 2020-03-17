@@ -1,10 +1,12 @@
 package com.copower.pmcc.assess.controller.method;
 
 import com.alibaba.fastjson.JSON;
+import com.copower.pmcc.assess.common.enums.basic.MethodCompareFieldEnum;
 import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.entity.MdMarketCompare;
 import com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareItem;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject;
+import com.copower.pmcc.assess.dto.input.method.MarketCompareItemDto;
 import com.copower.pmcc.assess.dto.input.method.MarketCompareResultDto;
 import com.copower.pmcc.assess.dto.output.basic.BasicApplyVo;
 import com.copower.pmcc.assess.dto.output.method.MdCompareInitParamVo;
@@ -92,9 +94,26 @@ public class MarketCompareController {
 
     @ResponseBody
     @RequestMapping(value = "/selectCase", name = "选择案例", method = RequestMethod.POST)
-    public HttpResult selectCase(Integer mcId, String planDetailsIdList, Integer judgeObjectId, Boolean isLand) {
+    public HttpResult selectCase(Integer mcId, String planDetailsIdList, Integer judgeObjectId, Boolean isLand,String jsonData) {
         try {
             MdCompareInitParamVo mdCompareInitParamVo = mdMarketCompareService.selectCase(mcId, planDetailsIdList, judgeObjectId, isLand);
+            List<MdMarketCompareItem> cases = mdCompareInitParamVo.getCases();
+            MarketCompareResultDto oldData = JSON.parseObject(jsonData, MarketCompareResultDto.class);
+            List<MdMarketCompareItem> oldCaseList = oldData.getCaseItemList();
+            if(CollectionUtils.isNotEmpty(oldCaseList)){
+                for (MdMarketCompareItem item:cases) {
+                    List<MarketCompareItemDto> marketCompareItemDtos = JSON.parseArray(item.getJsonContent(), MarketCompareItemDto.class);
+                    String name = mdMarketCompareService.getBaseValueData(marketCompareItemDtos,MethodCompareFieldEnum.ESTATE_NAME.getKey());
+                    for (MdMarketCompareItem oldItem: oldCaseList) {
+                        List<MarketCompareItemDto> oldDtos = JSON.parseArray(oldItem.getJsonContent(), MarketCompareItemDto.class);
+                        String tempName = mdMarketCompareService.getBaseValueData(oldDtos,MethodCompareFieldEnum.ESTATE_NAME.getKey());
+                        if(name.equals(tempName)){
+                            item.setJsonContent(oldItem.getJsonContent());
+                        }
+                    }
+                }
+            }
+
             return HttpResult.newCorrectResult(mdCompareInitParamVo);
         } catch (Exception e) {
             return HttpResult.newErrorResult("保存失败");

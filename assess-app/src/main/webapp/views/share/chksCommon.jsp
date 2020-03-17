@@ -9,7 +9,6 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
             </div>
-
             <div class="modal-body">
                 <input type="hidden" name="marsterId">
                 <div class="row">
@@ -24,7 +23,6 @@
                                                     <thead>
                                                     <tr>
                                                         <th width="3%">序号</th>
-                                                        <th width="7%">节点名称</th>
                                                         <th width="50%">考核标准</th>
                                                         <th width="10%">打分(分值)</th>
                                                         <th width="10%">说明</th>
@@ -51,7 +49,6 @@
                     保存
                 </button>
             </div>
-
         </div>
     </div>
 </div>
@@ -81,7 +78,6 @@
                                                     <thead>
                                                     <tr>
                                                         <th width="3%">序号</th>
-                                                        <th width="7%">节点名称</th>
                                                         <th width="50%">考核标准</th>
                                                         <th width="10%">打分(分值)</th>
                                                         <th width="10%">说明</th>
@@ -137,7 +133,6 @@
                                                     <thead>
                                                     <tr>
                                                         <th width="3%">序号</th>
-                                                        <th width="7%">节点名称</th>
                                                         <th width="50%">考核标准</th>
                                                         <th width="10%">打分(分值)</th>
                                                         <th width="10%">说明</th>
@@ -178,6 +173,7 @@
             <div class="modal-body">
                 <form id="assessmentWorkHoursForm" class="form-horizontal">
                     <input type="hidden" name="id">
+                    <input type="hidden" name="spotId">
                     <div class="row form-group">
                         <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                             <div class="form-inline x-valid">
@@ -237,7 +233,6 @@
             <input data-name="performanceId" type="hidden" name="performanceId{performanceId}" value="{performanceId}">
             <input data-name="contentId" type="hidden" name="contentId{contentId}" value="{contentId}">
         </td>
-        <td>{name}</td>
         <td>{assessmentDes} 范围:{minScore}~{maxScore} 标准值:{standardScore}</td>
         <td>
             <input type="text" required="required" data-rule-number='true'
@@ -361,7 +356,7 @@
 
     assessmentCommonHandle.saveAssessmentServer = function (data, callback) {
         jQuery.extend(data, {planDetailsId: '${projectPlanDetails.id}'});
-        data.processInsId='${processInsId}';
+        data.processInsId = '${processInsId}';
         assessmentCommonHandle.ajaxServerMethod(data, "/chksAssessmentProjectPerformance/saveAssessmentServer", "post", callback, null);
     };
 
@@ -639,12 +634,13 @@
                         str += '<button type="button" class="btn  btn-xs btn-primary" style="margin-left: 5px;" data-placement="bottom" data-original-title="考核填写" onclick="assessmentCommonHandle.openAssessmentProjectPerformanceBox(' + row.id + ',\'' + table.selector + '\')" > <i class="fa fa-pen fa-white"></i></button>';
                     }
                 }
+
                 //抽查考核
                 if (row.canSpot) {
-                    if(row.spotId){
+                    if (row.spotId) {
                         str += "<button type='button' onclick='assessmentCommonHandle.findAssessmentProjectPerformanceBox(" + row.spotId + ")' style='margin-left: 5px;' data-placement='top' data-original-title='抽查考核查看' class='btn btn-xs btn-info'  ><i class='fa fa-envelope-open fa-white'></i></button>";
-                    }else {
-                        str += '<button type="button" class="btn btn-xs btn-primary" style="margin-left: 5px;" data-placement="bottom" data-original-title="抽查考核填写" onclick="assessmentCommonHandle.showChkSpotAssessmentParent('+row.id+','+row.boxId+','+row.spotActivityId+')" > <i class="fa fa-envelope fa-white"></i></button>';
+                    } else {
+                        str += '<button type="button" class="btn btn-xs btn-primary" style="margin-left: 5px;" data-placement="bottom" data-original-title="抽查考核填写" onclick="assessmentCommonHandle.showChkSpotAssessmentParent(' + row.id + ',' + row.boxId + ',' + row.spotActivityId + ')" > <i class="fa fa-envelope fa-white"></i></button>';
                     }
                 }
                 return str;
@@ -724,7 +720,7 @@
      * @param id
      * @param selector
      */
-    assessmentCommonHandle.showChkSpotAssessmentParent = function (id,boxId,spotActivityId) {
+    assessmentCommonHandle.showChkSpotAssessmentParent = function (id, boxId, spotActivityId) {
         var box = $("#divChksRecordModal");
         var table = $("#tableChkSpotAssessment").find("tbody");
         assessmentCommonHandle.getActivityIdByUserAccountList(spotActivityId, function (accountList) {
@@ -823,6 +819,34 @@
             $("#assessmentQualityTableList").bootstrapTable('refresh');
         });
     };
+
+    //一键完成
+    assessmentCommonHandle.batchSetFinish = function () {
+        var table = $("#assessmentQualityTableList");
+        var rows = table.bootstrapTable('getSelections');
+        if (rows.length <= 0) {
+            notifyInfo("提示", "请选择要完成的数据");
+            return;
+        }
+        var ids = '';
+        $.each(rows, function (i,item) {
+            ids += item.id + ',';
+        })
+        $.ajax({
+            url: '${pageContext.request.contextPath}/chksAssessmentProjectPerformance/batchSetFinish',
+            data: {ids: ids.replace(/,$/, '')},
+            type: 'post',
+            dataType: 'json',
+            success: function (result) {
+                if (result.ret) {
+                    notifySuccess('成功','操作成功');
+                    assessmentCommonHandle.loadAssessmentQualityList($('#assessmentQualityForm'));
+                } else {
+                    AlertError("失败", result.errmsg);
+                }
+            }
+        })
+    }
 
 
     /**
@@ -944,7 +968,6 @@
             }
         });
         cols.push({field: 'remarks', title: '说明'});
-        //下面涉及到权限,如果要优化请慎重操作
         cols.push({
             field: 'examineStatus', title: '操作', formatter: function (value, row, index) {
                 var str = "";
@@ -952,6 +975,14 @@
                 var approvalFlag = (row.examinePeople === '${currUserAccount}' || !row.examinePeople) && 'approval' === '${flog}';//审批页面权限控制
                 if (value == 'runing' && (detailsFlag || approvalFlag)) {
                     str = "<button type='button' onclick='assessmentCommonHandle.workingHoursModal(" + row.id + "," + row.boxId + "," + row.activityId + ");'  style='margin-left: 5px;' data-placement='top' data-original-title='工时考核' class='btn btn-xs btn-primary tooltips'  ><i class='fa fa-pen fa-white'></i></button>";
+                }
+                //抽查考核
+                if (row.canSpot) {
+                    if (row.spotId) {
+                        str += "<button type='button' onclick='assessmentCommonHandle.findAssessmentProjectPerformanceBox(" + row.spotId + ")' style='margin-left: 5px;' data-placement='top' data-original-title='抽查考核查看' class='btn btn-xs btn-info'  ><i class='fa fa-envelope-open fa-white'></i></button>";
+                    } else {
+                        str += '<button type="button" class="btn btn-xs btn-primary" style="margin-left: 5px;" data-placement="bottom" data-original-title="抽查考核填写" onclick="assessmentCommonHandle.showChkSpotAssessmentParent(' + row.id + ',' + row.boxId + ',' + row.spotActivityId + ')" > <i class="fa fa-envelope fa-white"></i></button>';
+                    }
                 }
                 return str;
             }
@@ -974,7 +1005,7 @@
         TableInit($("#assessmentWorkHoursTableList"), "${pageContext.request.contextPath}/chksAssessmentProjectPerformance/getWorkingHoursList", cols, query, method);
     }
 
-    assessmentCommonHandle.workingHoursModal = function (id, boxId, boxReActivitiId) {
+    assessmentCommonHandle.workingHoursModal = function (id, boxId, boxReActivitiId,isSpot) {
         //需先获取考核标准
         assessmentCommonHandle.getAssessmentItemTemplate({
             boxId: boxId,
@@ -983,9 +1014,13 @@
         }, function (data) {
             $("#assessmentWorkHoursForm").clearAll().find('[data-name="examineStandard"]').text('');
             if (data && data.length > 0) {
-                $("#assessmentWorkHoursForm").find('[data-name="examineStandard"]').text(data[0].assessmentDes);
+                $("#assessmentWorkHoursForm").find('[data-name="examineStandard"]').text(data[0].assessmentDes + " (标准分：" + data[0].standardScore + ")");
             }
-            $("#assessmentWorkHoursForm").find('[name=id]').val(id);
+            if(isSpot){
+                $("#assessmentWorkHoursForm").find('[name=spotId]').val(id);
+            }else{
+                $("#assessmentWorkHoursForm").find('[name=id]').val(id);
+            }
             $('#divAssessmentWorkHoursModal').modal();
         })
     }
@@ -1013,6 +1048,8 @@
             }
         })
     }
+
+
 
     /**
      * 考核验证
@@ -1042,21 +1079,9 @@
                 filterData.push(data[i]);
             }
         }
-        //当填写 了说明，却又不填写考核分值 是不允许的
-        if (remarks) {
-            if (filterData.length == 0) {
-                AlertError("错误", "当填写了考核综合说明,那么就必须对考核子项进行打分，或者不填考核说明。");
-                return false;
-            }
-
-        }
         if (filterData.length != 0) {
             if (data.length != filterData.length) {
-                AlertError("错误", "请填写完整!");
-                return false;
-            }
-            if (!remarks) {
-                AlertError("错误", "请填写考核说明!");
+                notifyWarning("错误", "请填写完整!");
                 return false;
             }
         }

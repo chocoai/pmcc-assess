@@ -75,14 +75,6 @@ public class AssessmentTaskExploreService implements AssessmentTaskInterface {
         if (CollectionUtils.isEmpty(basicApplyBatchDetailList)) {
             return;
         }
-        Integer spotActivityId = null;
-        if (activityDto.getBisSpotCheck() != null) {
-            //当发现该节点是被抽查节点,那么写入抽查节点的节点id
-            if (Objects.equal(activityDto.getBisSpotCheck(), Boolean.TRUE)) {
-                BoxReActivityDto spotReActivityDto = chksAssessmentProjectPerformanceService.getSpotBoxReActivityDto(activityDto.getBoxId());
-                spotActivityId = spotReActivityDto.getId();
-            }
-        }
         Integer tempId = basicApplyBatch.getEstateId();
         if (!basicApplyBatchDetailList.stream().anyMatch(basicApplyBatchDetail -> Objects.equal(basicApplyBatchDetail.getTableId(), tempId))) {
             BasicApplyBatchDetail batchDetail = new BasicApplyBatchDetail();
@@ -102,25 +94,9 @@ public class AssessmentTaskExploreService implements AssessmentTaskInterface {
             linkedList.add(String.join("=", "tableName", basicApplyBatchDetail.getTableName()));
             linkedList.add(String.join("=", "isHistory", Boolean.FALSE.toString()));
             String tbType = "";
-            String businessKey = null;
-            if (Objects.equal(basicApplyBatchDetail.getTableName(), FormatUtils.entityNameConvertToTableName(BasicBuilding.class))) {
-                tbType = "building";
-                businessKey = String.join("-", "楼栋", basicApplyBatchDetail.getName());
-            }
-            if (Objects.equal(basicApplyBatchDetail.getTableName(), FormatUtils.entityNameConvertToTableName(BasicHouse.class))) {
-                tbType = "house";
-                businessKey = String.join("-", "房屋", basicApplyBatchDetail.getName());
-            }
-            if (Objects.equal(basicApplyBatchDetail.getTableName(), FormatUtils.entityNameConvertToTableName(BasicUnit.class))) {
-                tbType = "unit";
-                businessKey = String.join("-", "单元", basicApplyBatchDetail.getName());
-            }
-            if (Objects.equal(basicApplyBatchDetail.getTableName(), FormatUtils.entityNameConvertToTableName(BasicEstate.class))) {
-                tbType = "estate";
-                businessKey = String.join("-", "楼盘", basicApplyBatchDetail.getName());
-            }
+            String businessKey = basicApplyBatchDetailService.getFullNameByBatchDetailId(basicApplyBatchDetail.getId());
             linkedList.add(String.join("=", "tbType", tbType));
-            saveAssessmentProjectPerformanceDto(processInsId, activityId, taskId, byExamineUser, projectInfo, projectPlanDetails, boxReDto, basicApplyBatchDetail.getTableName(), basicApplyBatchDetail.getTableId(), tbType, StringUtils.join(linkedList, "&"), businessKey, spotActivityId);
+            saveAssessmentProjectPerformanceDto(processInsId, activityId, taskId, byExamineUser, projectInfo, projectPlanDetails, boxReDto, basicApplyBatchDetail.getTableName(), basicApplyBatchDetail.getTableId(), tbType, StringUtils.join(linkedList, "&"), businessKey, null);
         }
     }
 

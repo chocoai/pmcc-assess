@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Auther: zch
@@ -183,7 +184,8 @@ public class BasicHouseController {
             BasicApplyBatchDetail applyBatchDetail = basicApplyBatchDetailDao.getInfoById(alternativeCase.getBusinessId());
             List<String> ignoreList= Lists.newArrayList("estateId","buildingId","unitId");
             BasicHouse basicHouse = (BasicHouse)basicHouseService.copyBasicEntityIgnore(applyBatchDetail.getTableId(), tableId, true,ignoreList);
-            return HttpResult.newCorrectResult(basicHouse);
+            Map<String, Object> objectMap = basicHouseService.getBasicHouseMapById(basicHouse.getId());
+            return HttpResult.newCorrectResult(objectMap);
         } catch (Exception e) {
             logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
             return HttpResult.newErrorResult(e.getMessage());

@@ -572,4 +572,16 @@ public class MdMarketCompareService {
         mdCompareInitParamVo.setCases(getCaseListByMcId(mcId));
         return mdCompareInitParamVo;
     }
+
+    //获取jsonContent中基础数据value值
+    public String getBaseValueData(List<MarketCompareItemDto> marketCompareItemDtos, String fieldName) {
+        DataSetUseField cacheSetUseFieldList = dataSetUseFieldService.getCacheSetUseFieldByFieldName(fieldName);
+        String s = new String();
+        for (MarketCompareItemDto item : marketCompareItemDtos) {
+            if (cacheSetUseFieldList.getFieldName().equals(item.getName())) {
+                s = item.getValue();
+            }
+        }
+        return s;
+    }
 }

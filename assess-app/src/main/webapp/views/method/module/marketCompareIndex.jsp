@@ -913,6 +913,8 @@
                 AlertInfo("还未选择任何案例");
                 return false;
             }
+            var jsonData = JSON.stringify(marketCompare.getData());
+
             var planDetailsIdArray = [];
             $.each(rows, function (i, row) {
                 planDetailsIdArray.push(row.planDetailsId);
@@ -924,7 +926,8 @@
                     mcId: marketCompare.mcId,
                     isLand: marketCompare.isLand,
                     judgeObjectId: marketCompare.judgeObjectId,
-                    planDetailsIdList: planDetailsIdArray.join()
+                    planDetailsIdList: planDetailsIdArray.join(),
+                    jsonData:jsonData
                 },
                 type: 'post',
                 dataType: 'json',
