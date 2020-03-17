@@ -31,11 +31,25 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                    <div class="col-md-12" style="text-align: center;padding-bottom: 1.25rem">
                         <div class="card full-height">
-                            <div class="card-body">
-                                <%@include file="/views/share/form_apply.jsp" %>
-                            </div>
+                        <div class="card-body">
+                            <button type="button" style="margin-left: 10px;" class="btn btn-default" onclick="window.close()">
+                                取消
+                            </button>
+                            <button type="button" style="margin-left: 10px;" class="btn btn-warning" onclick="saveData()">
+                                保存
+                            </button>
+                            <c:choose>
+                                <c:when test="${projectPhase.bisUseBox eq false}">
+                                    <button type="button" class="btn btn-success" style="margin-left: 10px;" onclick="submit(false);">直接提交</button>
+                                    <button type="button" class="btn btn-primary" style="margin-left: 10px;" onclick="submit(true);">提交审批</button>
+                                </c:when>
+                                <c:otherwise>
+                                    <button type="button" class="btn btn-primary" style="margin-left: 10px;" onclick="submit();">提交</button>
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
                         </div>
                     </div>
                     <%@include file="/views/share/form_log.jsp" %>
@@ -79,9 +93,11 @@
             data: {formData: JSON.stringify(data)},
             success: function (result) {
                 if (result.ret) {
-                    notifySuccess("成功","保存成功");
+                    AlertSuccess("成功", "保存成功", function () {
+                        window.close();
+                    });
                 } else {
-                    AlertError("保存失败,失败原因:"+result.errmsg);
+                    AlertError("失败","保存失败,失败原因:"+result.errmsg);
                 }
             }
         })
