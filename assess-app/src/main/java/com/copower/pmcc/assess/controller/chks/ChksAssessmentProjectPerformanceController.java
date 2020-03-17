@@ -202,5 +202,17 @@ public class ChksAssessmentProjectPerformanceController {
             return HttpResult.newErrorResult(500, e.getMessage());
         }
     }
+
+    @PostMapping(value = "/batchSetFinish", name = "批量设置完成")
+    public HttpResult batchSetFinish(String ids) {
+        try {
+            List<Integer> list = FormatUtils.transformString2Integer(ids);
+            chksAssessmentProjectPerformanceService.batchSetFinish(list);
+            return HttpResult.newCorrectResult();
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e, "保存工时考核任务出错");
+            return HttpResult.newErrorResult(500, e.getMessage());
+        }
+    }
 }
 

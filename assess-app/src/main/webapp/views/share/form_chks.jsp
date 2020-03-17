@@ -18,7 +18,7 @@
             </div>
         </div>
         <div class="card-body">
-            <form class="form-horizontal">
+            <form id="assessmentQualityForm" class="form-horizontal">
                 <div class="row form-group">
                     <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                         <div class="form-inline x-valid">
@@ -90,7 +90,7 @@
                             <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                                 <input type="text" placeholder="名称" name="businessKey" class="form-control input-full">
                             </div>
-                            <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                            <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
                                 <button type="button"
                                         onclick="assessmentCommonHandle.loadAssessmentQualityList($(this).closest('form'));"
                                         class="btn btn-info btn-sm"><i class="fa fa-search"></i>查询</button>
@@ -106,6 +106,9 @@
                                         onclick="assessmentCommonHandle.pasteAll(this);"><i
                                         class="fa fa-clipboard" aria-hidden="true"></i>粘贴
                                 </button>
+                                <button type="button"
+                                        onclick="assessmentCommonHandle.batchSetFinish();"
+                                        class="btn btn-primary btn-sm"><i class="fa fa-tasks"></i>一键完成</button>
                             </div>
                             <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
                                 <div class="input-group ">

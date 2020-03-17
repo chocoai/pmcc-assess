@@ -147,6 +147,25 @@ public class ChksAssessmentProjectPerformanceService {
     }
 
     /**
+     * 批量设置完成
+     * @param ids
+     */
+    public void batchSetFinish(List<Integer> ids){
+        if(CollectionUtils.isEmpty(ids)) return;
+        List<AssessmentProjectPerformanceDto> list = chksRpcAssessmentService.getAssessmentProjectPerformancesByIds(ids);
+        if(CollectionUtils.isEmpty(list)) return;
+        for (AssessmentProjectPerformanceDto assessmentProjectPerformanceDto : list) {
+            if(ProjectStatusEnum.FINISH.getKey().equals(assessmentProjectPerformanceDto.getExamineStatus())){
+                continue;
+            }
+            if(commonService.thisUserAccount().equals(assessmentProjectPerformanceDto.getExaminePeople())){
+                assessmentProjectPerformanceDto.setExamineStatus(ProjectStatusEnum.FINISH.getKey());
+                chksRpcAssessmentService.updateAssessmentProjectPerformanceDto(assessmentProjectPerformanceDto,false);
+            }
+        }
+    }
+
+    /**
      * 保存考核信息
      *
      * @param assessmentProjectPerformanceDto
@@ -554,8 +573,6 @@ public class ChksAssessmentProjectPerformanceService {
             if (activitiTaskNodeDto == null) return;
             BoxReActivityDto currentActivity = bpmRpcBoxService.getBoxreActivityInfoByBoxIdSorting(boxId, activitiTaskNodeDto.getCurrentStep());
             if (currentActivity == null || currentActivity.getBisViewChk() == Boolean.FALSE) return;
-            List<AssessmentItemDto> assessmentItemList = bpmRpcBoxService.getAssessmentItemList(boxId, currentActivity.getId());
-            if (CollectionUtils.isEmpty(assessmentItemList)) return;
             Integer count = chksRpcAssessmentService.getAssessmentProjectPerformanceCount(processInsId, currentActivity.getId(), ProjectStatusEnum.RUNING.getKey());
             if (count > 0) return;
             chksRpcAssessmentService.deleteAssessmentProjectPerformanceByProcessInsId(processInsId, currentActivity.getId());
