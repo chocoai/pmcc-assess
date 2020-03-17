@@ -5,14 +5,12 @@ import com.copower.pmcc.assess.common.enums.AssessProjectTypeEnum;
 import com.copower.pmcc.assess.common.enums.DeclareCertificateTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInventoryContentDao;
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
-import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventoryContent;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.survey.SurveyAssetInventoryContentVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
+import com.copower.pmcc.assess.service.project.declare.DeclareBuildEngineeringAndEquipmentCenterService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.CommonService;
@@ -50,6 +48,8 @@ public class SurveyAssetInventoryContentService {
     private SurveyAssetInventoryContentService surveyAssetInventoryContentService;
     @Autowired
     private ProjectInfoService projectInfoService;
+    @Autowired
+    private DeclareBuildEngineeringAndEquipmentCenterService declareBuildEngineeringAndEquipmentCenterService;
 
     public BootstrapTableVo getList(Integer planDetailsId) {
         BootstrapTableVo vo = new BootstrapTableVo();
@@ -103,7 +103,7 @@ public class SurveyAssetInventoryContentService {
      */
     public List<SurveyAssetInventoryContent> initAssetInventoryContent(ProjectPlanDetails projectPlanDetails, DeclareRecord declareRecord) {
         List<SurveyAssetInventoryContent> inventoryContents = getContentListByPlanDetailsId(projectPlanDetails.getId());
-        if(CollectionUtils.isNotEmpty(inventoryContents)) return inventoryContents;
+        if (CollectionUtils.isNotEmpty(inventoryContents)) return inventoryContents;
         List<SurveyAssetInventoryContent> inventoryContentList = Lists.newArrayList();
         if (declareRecord == null) return inventoryContentList;
         List<BaseDataDic> baseDataDicList = baseDataDicService.getCacheDataDicList(declareRecord.getInventoryContentKey());
@@ -140,8 +140,24 @@ public class SurveyAssetInventoryContentService {
             }
             if (AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_HOUSE_LAND_ADDRESS.equals(baseDataDic.getFieldName())) {//房产证与土地证证载地址
                 if (DeclareCertificateTypeEnum.HOUSE.getKey().equals(declareRecord.getType()) || DeclareCertificateTypeEnum.LAND.getKey().equals(declareRecord.getType())) {
-                    surveyAssetInventoryContent.setRegistration(declareRecord.getSeat());
-                    inventoryContentList.add(surveyAssetInventoryContent);
+                    DeclareBuildEngineeringAndEquipmentCenter query = new DeclareBuildEngineeringAndEquipmentCenter();
+                    if (DeclareCertificateTypeEnum.HOUSE.getKey().equals(declareRecord.getType())) {
+                        query.setHouseId(declareRecord.getDataTableId());
+                        query.setType(DeclareRealtyHouseCert.class.getSimpleName());
+                    }
+                    if (DeclareCertificateTypeEnum.LAND.getKey().equals(declareRecord.getType())) {
+                        query.setLandId(declareRecord.getDataTableId());
+                        query.setType(DeclareRealtyLandCert.class.getSimpleName());
+                    }
+                    if (query.getHouseId() != null || query.getLandId() != null) {
+                        List<DeclareBuildEngineeringAndEquipmentCenter> centers = declareBuildEngineeringAndEquipmentCenterService.declareBuildEngineeringAndEquipmentCenterList(query);
+                        if (CollectionUtils.isNotEmpty(centers)) {
+                            if (centers.get(0).getLandId() != null && centers.get(0).getHouseId() != null) {
+                                surveyAssetInventoryContent.setRegistration(declareRecord.getSeat());
+                                inventoryContentList.add(surveyAssetInventoryContent);
+                            }
+                        }
+                    }
                 }
             }
             if (AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_AREA.equals(baseDataDic.getFieldName())) {//登记面积与实际面积
