@@ -2413,8 +2413,7 @@
                     </label>
                     <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                         <input type="text"
-                               placeholder="登记机关" name="registrationAuthority" class="form-control input-full"
-                               data-rule-number='true'>
+                               placeholder="登记机关" name="registrationAuthority" class="form-control input-full">
                     </div>
                     <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
                         其它
@@ -3209,6 +3208,20 @@
         </div>
 
 
+        <div class="row form-group">
+            <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                <div class="form-inline x-valid">
+                    <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
+                        终止日期
+                    </label>
+                    <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                        <input placeholder="终止日期" name="terminationDate" data-date-format="yyyy-mm-dd"
+                               class="form-control input-full date-picker dbdate ">
+                    </div>
+
+                </div>
+            </div>
+        </div>
         <div class="row form-group">
             <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                 <div class="form-inline x-valid">

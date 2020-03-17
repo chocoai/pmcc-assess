@@ -16,7 +16,6 @@
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-success btn-sm dropdown-toggle"
                                             data-toggle="dropdown">新增
-                                        <span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu" role="menu">
                                         <li><a class="btn"
@@ -204,6 +203,7 @@
                 <form id="frmDeclareRealtyRealEstateCert" class="form-horizontal">
                     <input type="hidden" name="id">
                     <input type="hidden" name="autoInitNumber">
+                    <input type="hidden" name="landCertGetQuestion">
                     <div class="row">
                         <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
 

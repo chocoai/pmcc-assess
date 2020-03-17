@@ -15,8 +15,8 @@
                         <div class="form-inline x-valid">
                             <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown">新增
-                                        <span class="caret"></span>
+                                    <button type="button" class="btn btn-success btn-sm dropdown-toggle"
+                                            data-toggle="dropdown">新增
                                     </button>
                                     <ul class="dropdown-menu" role="menu">
                                         <li><a class="btn"
@@ -44,8 +44,11 @@
                                     </button>
                                     <div class="dropdown-menu" role="menu">
                                         <a href="javascript://" class="dropdown-item"
-                                           onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftLandOwnershipCertificate);">下载模板</a>
-
+                                           onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftLandOwnershipCertificate);">下载模板
+                                            有权证</a>
+                                        <a href="javascript://" class="dropdown-item"
+                                           onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftLandOwnershipCertificateNot);">下载模板
+                                            无权证</a>
                                         <a href="javascript://;" class="dropdown-item"
                                            onclick="$('#ajaxFileUploadLand').val('').trigger('click')">导入 有权证</a>
                                         <a href="javascript://;" class="dropdown-item"
@@ -88,12 +91,14 @@
                             <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                                 <div class="input-group " id="landHandleInputGroup">
                                     <input type="hidden" name="id">
-                                    <input type="text" readonly="readonly" name="name" class="form-control form-control-sm"
+                                    <input type="text" readonly="readonly" name="name"
+                                           class="form-control form-control-sm"
                                            placeholder="暂无复制数据">
                                     <div class="input-group-prepend ">
                                         <button class="btn btn-warning btn-sm"
                                                 style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                type="button" onclick="$(this).closest('.input-group').find('input').val('');">
+                                                type="button"
+                                                onclick="$(this).closest('.input-group').find('input').val('');">
                                             清空
                                             <i class="fa "></i>
                                         </button>
@@ -111,7 +116,8 @@
                             <div class=" col-xs-2  col-sm-2  col-md-2  col-lg-2 ">
                                 <div class="form-check" style="justify-content:left">
                                     <label class="form-check-label">
-                                        <input class="form-check-input" type="checkbox" name="isSource" value="isSource">
+                                        <input class="form-check-input" type="checkbox" name="isSource"
+                                               value="isSource">
                                         <span class="form-check-sign">房产证</span>
                                     </label>
                                 </div>
@@ -123,7 +129,8 @@
                         <div class="x-valid form-inline">
                             <label class=" col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">启始编号</label>
                             <div class=" col-xs-9  col-sm-9  col-md-9  col-lg-9 ">
-                                <input type="text" placeholder="必须数字" name="startNumber" class="form-control input-full">
+                                <input type="text" placeholder="必须数字" name="startNumber"
+                                       class="form-control input-full">
                             </div>
                         </div>
                     </div>
@@ -184,7 +191,6 @@
 </div>
 
 
-
 <input type="file" id="ajaxFileUploadLand" name="file" style="display: none;"
        onchange="assessLand.inputFile(true);">
 <input type="file" id="ajaxFileUploadLandA" name="file" style="display: none;"
@@ -214,6 +220,7 @@
                 <form id="frmDeclareRealtyLandCert" class="form-horizontal">
                     <input type="hidden" name="id">
                     <input type="hidden" name="autoInitNumber">
+                    <input type="hidden" name="landCertGetQuestion">
                     <div class="row">
                         <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
 
@@ -256,12 +263,9 @@
 </div>
 
 
-
-
-
-
 <!-- 关联房产证信息 -->
-<div id="declareRealtyLandCert_HouseCert_box" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+<div id="declareRealtyLandCert_HouseCert_box" class="modal fade bs-example-modal-lg" data-backdrop="static"
+     tabindex="-1"
      role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg" style="max-width: 65%;">
@@ -274,7 +278,7 @@
             </div>
 
             <div class="modal-body">
-                <form  class="form-horizontal" id="declareRealtyLandCert_HouseCert_frm">
+                <form class="form-horizontal" id="declareRealtyLandCert_HouseCert_frm">
                     <input type="hidden" name="id">
                     <input type="hidden" name="centerId">
                     <input type="hidden" name="autoInitNumber">

@@ -18,17 +18,18 @@ assessLand.config = {
 };
 //分为有权证和无权证的情况
 assessLand.showAddModelLandFun = function (flag, item) {
-    $(assessLand.config.box).find("#" + commonDeclareApplyModel.config.land.handleId).remove();
-    $(assessLand.config.box).find("#" + commonDeclareApplyModel.config.land.handleId2).remove();
+    var box = $(assessLand.config.box) ;
+    box.find("#" + commonDeclareApplyModel.config.land.handleId).remove();
+    box.find("#" + commonDeclareApplyModel.config.land.handleId2).remove();
     var landCertGetQuestion = null;
     if (flag) {
         landCertGetQuestion = "有权证";
-        $(assessLand.config.box).find(".card-body").prepend(commonDeclareApplyModel.land.getHtml());
+        box.find(".card-body").prepend(commonDeclareApplyModel.land.getHtml());
     } else {
         landCertGetQuestion = "无权证";
-        $(assessLand.config.box).find(".card-body").prepend(commonDeclareApplyModel.land.getHtml2());
+        box.find(".card-body").prepend(commonDeclareApplyModel.land.getHtml2());
     }
-    $(assessLand.config.box).modal("show");
+    box.modal("show");
     declareCommon.showHtmlMastInit($(assessLand.config.frm), function (area) {
         var fileArr = [$(assessLand.config.fileId).prop("id")];
         AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareCertificateIsnull, null, function (html, data) {
@@ -40,9 +41,9 @@ assessLand.showAddModelLandFun = function (flag, item) {
             });
             area.landCertGetQuestion = id;
             if (jQuery.isEmptyObject(item)) {
-                declareCommon.initLand(area, $(assessLand.config.frm), fileArr, null);
+                declareCommon.initLand(area, box.find("form"), fileArr, null);
             } else {
-                declareCommon.initLand(item, $(assessLand.config.frm), fileArr, null);
+                declareCommon.initLand(item, box.find("form"), fileArr, null);
             }
         });
         if (landCertGetQuestion == '无权证') {
@@ -56,22 +57,22 @@ assessLand.showAddModelLandFun = function (flag, item) {
                 parent.find(".col-sm-1").text("土地证附件");
             });
         }
-        $(assessLand.config.box).find("input[name='unit']").parent().parent().hide();
-        $(assessLand.config.box).find("input[name='attachedNumber']").parent().parent().hide();
-        $(assessLand.config.box).find("input[name='buildingNumber']").parent().parent().hide();
-        $(assessLand.config.box).find("input[name='streetNumber']").parent().parent().hide();
-        $(assessLand.config.box).find("input[name='floor']").parent().parent().hide();
-        $(assessLand.config.box).find("input[name='roomNumber']").parent().parent().hide();
-        $(assessLand.config.box).find("input[name='beLocated']").removeAttr('readonly');
+        box.find("input[name='unit']").parent().parent().hide();
+        box.find("input[name='attachedNumber']").parent().parent().hide();
+        box.find("input[name='buildingNumber']").parent().parent().hide();
+        box.find("input[name='streetNumber']").parent().parent().hide();
+        box.find("input[name='floor']").parent().parent().hide();
+        box.find("input[name='roomNumber']").parent().parent().hide();
+        box.find("input[name='beLocated']").removeAttr('readonly');
 
-        $(assessLand.config.box).find("input[name='location']").removeAttr('required');
-        $(assessLand.config.box).find("input[name='location']").parent().parent().find("span").remove();
-        $(assessLand.config.box).find("input[name='number']").removeAttr('required');
-        $(assessLand.config.box).find("input[name='number']").parent().parent().find("span").remove();
-        $(assessLand.config.box).find("select[name='landRightType']").removeAttr('required');
-        $(assessLand.config.box).find("select[name='landRightType']").parent().prev().find("span").remove();
-        $(assessLand.config.box).find("input[name='year']").removeAttr('required');
-        $(assessLand.config.box).find("input[name='year']").parent().parent().find("span").remove();
+        box.find("input[name='location']").removeAttr('required');
+        box.find("input[name='location']").parent().parent().find("span").remove();
+        box.find("input[name='number']").removeAttr('required');
+        box.find("input[name='number']").parent().parent().find("span").remove();
+        box.find("select[name='landRightType']").removeAttr('required');
+        box.find("select[name='landRightType']").parent().prev().find("span").remove();
+        box.find("input[name='year']").removeAttr('required');
+        box.find("input[name='year']").parent().parent().find("span").remove();
     });
 };
 //分为有权证和无权证的情况
@@ -526,17 +527,18 @@ declareRealtyRealEstateCert.config = {
 
 //显示不动产模型（分有证和无证情况）
 declareRealtyRealEstateCert.showAddModelFun = function (flag, item) {
-    $('#' + declareRealtyRealEstateCert.config.box).find("#" + commonDeclareApplyModel.config.realEstateCert.handleId2).remove();
-    $('#' + declareRealtyRealEstateCert.config.box).find("#" + commonDeclareApplyModel.config.realEstateCert.handleId).remove();
+    var box = $('#' + declareRealtyRealEstateCert.config.box) ;
+    box.find("#" + commonDeclareApplyModel.config.realEstateCert.handleId2).remove();
+    box.find("#" + commonDeclareApplyModel.config.realEstateCert.handleId).remove();
     var landCertGetQuestion = null;
     if (flag) {
         landCertGetQuestion = "有权证";
-        $('#' + declareRealtyRealEstateCert.config.box).find(".card-body").prepend(commonDeclareApplyModel.realEstateCert.getHtml());
+        box.find(".card-body").prepend(commonDeclareApplyModel.realEstateCert.getHtml());
     } else {
         landCertGetQuestion = "无权证";
-        $('#' + declareRealtyRealEstateCert.config.box).find(".card-body").prepend(commonDeclareApplyModel.realEstateCert.getHtml2());
+        box.find(".card-body").prepend(commonDeclareApplyModel.realEstateCert.getHtml2());
     }
-    $('#' + declareRealtyRealEstateCert.config.box).modal("show");
+    box.modal("show");
     declareCommon.showHtmlMastInit($("#" + declareRealtyRealEstateCert.config.frm), function (area) {
         var fileArr = [declareRealtyRealEstateCert.config.newFileId];
         AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareCertificateIsnull, null, function (html, data) {
@@ -548,9 +550,9 @@ declareRealtyRealEstateCert.showAddModelFun = function (flag, item) {
             });
             area.landCertGetQuestion = id;
             if (jQuery.isEmptyObject(item)) {
-                declareCommon.initDeclareRealty(area, $("#" + declareRealtyRealEstateCert.config.frm), fileArr, null);
+                declareCommon.initDeclareRealty(area, box.find("form"), fileArr, null);
             } else {
-                declareCommon.initDeclareRealty(item, $("#" + declareRealtyRealEstateCert.config.frm), fileArr, null);
+                declareCommon.initDeclareRealty(item, box.find("form"), fileArr, null);
             }
         });
         $.each(fileArr, function (i, n) {
@@ -562,18 +564,18 @@ declareRealtyRealEstateCert.showAddModelFun = function (flag, item) {
                 parent.find(".col-sm-1").text("批文附件");
             }
         });
-        $('#' + declareRealtyRealEstateCert.config.box).find("input[name='unit']").parent().parent().hide();
-        $('#' + declareRealtyRealEstateCert.config.box).find("input[name='attachedNumber']").parent().parent().hide();
-        $('#' + declareRealtyRealEstateCert.config.box).find("input[name='buildingNumber']").parent().parent().hide();
-        $('#' + declareRealtyRealEstateCert.config.box).find("input[name='streetNumber']").parent().parent().hide();
-        $('#' + declareRealtyRealEstateCert.config.box).find("input[name='floor']").parent().parent().hide();
-        $('#' + declareRealtyRealEstateCert.config.box).find("input[name='roomNumber']").parent().parent().hide();
-        $('#' + declareRealtyRealEstateCert.config.box).find("input[name='beLocated']").removeAttr('readonly');
+        box.find("input[name='unit']").parent().parent().hide();
+        box.find("input[name='attachedNumber']").parent().parent().hide();
+        box.find("input[name='buildingNumber']").parent().parent().hide();
+        box.find("input[name='streetNumber']").parent().parent().hide();
+        box.find("input[name='floor']").parent().parent().hide();
+        box.find("input[name='roomNumber']").parent().parent().hide();
+        box.find("input[name='beLocated']").removeAttr('readonly');
 
-        $('#' + declareRealtyRealEstateCert.config.box).find("input[name='location']").removeAttr('required');
-        $('#' + declareRealtyRealEstateCert.config.box).find("input[name='location']").parent().parent().find("span").remove();
-        $('#' + declareRealtyRealEstateCert.config.box).find("input[name='number']").removeAttr('required');
-        $('#' + declareRealtyRealEstateCert.config.box).find("input[name='number']").parent().parent().find("span").remove();
+        box.find("input[name='location']").removeAttr('required');
+        box.find("input[name='location']").parent().parent().find("span").remove();
+        box.find("input[name='number']").removeAttr('required');
+        box.find("input[name='number']").parent().parent().find("span").remove();
     });
 };
 

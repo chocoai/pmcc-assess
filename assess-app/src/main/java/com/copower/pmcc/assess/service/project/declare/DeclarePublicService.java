@@ -192,6 +192,27 @@ public class DeclarePublicService {
     }
 
     /**
+     * 确定是否为  权证
+     *
+     * @param id
+     * @return
+     */
+    public boolean checkLandCertGetQuestion(Integer id) {
+        if (id != null || id != 0) {
+            BaseDataDic dataDicById = baseDataDicService.getDataDicById(id);
+            BaseDataDic dicYes = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.projectDeclareCertificate_YES);
+            if (Objects.equal(dicYes.getId(), dataDicById.getId())) {
+                return true;
+            }
+            BaseDataDic dicNo = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.projectDeclareCertificate_NO);
+            if (Objects.equal(dicNo.getId(), dataDicById.getId())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
      * 不动产证导入
      *
      * @param classArrayListMultimap
@@ -205,11 +226,16 @@ public class DeclarePublicService {
         Map<String, String> map = new HashMap<>();
         //必填项
         List<String> requiredList = new ArrayList<>();
-        requiredList.add("province");
-        requiredList.add("city");
-        requiredList.add("beLocated");
-        requiredList.add("landRightType");
-        requiredList.add("useStartDate");
+        boolean getQuestion = checkLandCertGetQuestion(target.getLandCertGetQuestion());
+//            requiredList.addAll(Arrays.asList("province","city","beLocated","landRightType","useStartDate"));
+        if (getQuestion) {
+            requiredList.addAll(Arrays.asList("autoInitNumber", "province", "city", "certName", "location", "number", "year", "ownership", "publicSituation", "beLocated", "houseCertUse", "houseCertUseCategory", "nature", "evidenceArea", "landCertUse", "landCertUseCategory",
+                    "landRightNature", "landRightType"));
+//            requiredList.addAll(Arrays.asList("streetNumber", "buildingNumber", "roomNumber"));
+        } else {
+            requiredList.addAll(Arrays.asList("autoInitNumber", "province", "city", "publicSituation", "beLocated", "landCertUse",
+                    "landRightNature", "landCertUseCategory", "landRightType", "useEndDate", "houseCertUse", "houseCertUseCategory", "evidenceArea"));
+        }
         //数据字典 map
         Multimap<String, List<BaseDataDic>> baseMap = ArrayListMultimap.create();
         baseMap.put("nature", baseDataDicService.getCacheDataDicList("project.declare.room.type"));
@@ -285,9 +311,14 @@ public class DeclarePublicService {
         Map<String, String> map = new HashMap<>();
         //必填项
         List<String> requiredList = new ArrayList<>();
-        requiredList.add("ownership");
-        requiredList.add("province");
-        requiredList.add("city");
+        boolean getQuestion = checkLandCertGetQuestion(declareRealtyLandCert.getLandCertGetQuestion());
+        requiredList.addAll(Arrays.asList("ownership", "province", "city"));
+        if (getQuestion) {
+            requiredList.addAll(Arrays.asList("autoInitNumber", "province", "city", "landRightType", "year", "ownership", "publicSituation", "landCertName", "beLocated", "certUse", "certUseCategory", "landRightNature", "registrationAuthority"));
+//            requiredList.addAll(Arrays.asList("streetNumber", "buildingNumber", "roomNumber"));
+        } else {
+            requiredList.addAll(Arrays.asList("autoInitNumber", "province", "city", "publicSituation", "beLocated", "certUse", "certUseCategory", "landRightNature", "terminationDate", "registrationAuthority"));
+        }
         //数据字典 map
         Multimap<String, List<BaseDataDic>> baseMap = ArrayListMultimap.create();
         baseMap.put("landRightNature", baseDataDicService.getCacheDataDicList("project.declare.use.right.type"));
@@ -383,16 +414,12 @@ public class DeclarePublicService {
         Map<String, String> map = new HashMap<>();
         //必填项
         List<String> requiredList = new ArrayList<>();
-        requiredList.add("certName");
-        requiredList.add("useEndDate");
-        requiredList.add("apportionmentArea");
-        requiredList.add("evidenceArea");
-        requiredList.add("certUse");
-        requiredList.add("beLocated");
-        requiredList.add("publicSituation");
-        requiredList.add("ownership");
-        requiredList.add("province");
-        requiredList.add("city");
+        //old required
+//        requiredList.addAll(Arrays.asList("province", "city", "certName", "useEndDate", "apportionmentArea", "evidenceArea", "certUse", "beLocated", "publicSituation", "ownership")); //old required
+        //new required
+        requiredList.addAll(Arrays.asList("autoInitNumber", "province", "city", "certName", "type", "ownership", "floorArea", "publicSituation", "beLocated", "certUse", "certUseCategory"));
+        requiredList.addAll(Arrays.asList("nature", "evidenceArea", "registrationAuthority", "useEndDate"));
+
         //数据字典 map
         Multimap<String, List<BaseDataDic>> baseMap = ArrayListMultimap.create();
         baseMap.put("type", baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.PROJECT_DECLARE_HOUSE_CERTIFICATE_TYPE));

@@ -197,6 +197,28 @@ declareCommon.removeStyleFun = function (target) {
     });
 };
 
+declareCommon.handleLandCertGetQuestion = function (flag, data, callback) {
+    if (flag) {
+    console.log(flag) ;
+        AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareCertificate_YES,null,function (retHtml,array) {
+            console.log(AssessDicKey.projectDeclareCertificate_YES) ;
+            console.log(array) ;
+            console.log(retHtml) ;
+            // data.landCertGetQuestion = array[0].id;
+            // if (callback) {
+            //     callback();
+            // }
+        }) ;
+    } else {
+        AssessCommon.loadDataDicByKey(AssessDicKey.projectDeclareCertificate_NO,null,function (retHtml,array) {
+            data.landCertGetQuestion = array[0].id;
+            if (callback) {
+                callback();
+            }
+        }) ;
+    }
+};
+
 
 //公共  赋值 方法
 declareCommon.initFormData = function (form, item, fileArr, bisDetail, tableName, inputArr) {
@@ -911,31 +933,19 @@ declareCommon.initLand = function (item, form, fileArr, callback, bisDetail) {
         });
     });
     //绑定变更事件
-    frm.find("select.landRightNature").off('change').on('change', function () {
-        var landRightNatureId = frm.find("select.landRightNature").val();
+    frm.find("select[name=landRightNature]").off('change').on('change', function () {
+        var landRightNatureId = $(this).val();
+        console.log("landRightNatureId:" + landRightNatureId);
         if (landRightNatureId) {
             AssessCommon.getDataDicInfo(landRightNatureId, function (landRightNatureData) {
-                console.log(landRightNatureData.name)
                 if (landRightNatureData.name == "划拨") {
-                    frm.find("input[name='terminationDate']").parent().parent().hide();
+                    frm.find("input[name='terminationDate']").closest(".form-group").hide();
                 } else {
-                    frm.find("input[name='terminationDate']").parent().parent().show();
+                    frm.find("input[name='terminationDate']").closest(".form-group").show();
                 }
             });
         }
     });
-    if (item.landRightNature) {
-        var landRightNatureId = item.landRightNature;
-        AssessCommon.getDataDicInfo(landRightNatureId, function (landRightNatureData) {
-            if (landRightNatureData.name == "划拨") {
-                $("#terminationDate_d").parent().parent().hide();
-                frm.find("input[name='terminationDate']").parent().parent().hide();
-            } else {
-                $("#terminationDate_d").parent().parent().show();
-                frm.find("input[name='terminationDate']").parent().parent().show();
-            }
-        });
-    }
     try {
         //在这加了时间的input 请在下面的label[name='xxx'] 加上 谢谢
         frm.find("input[name='terminationDate']").val(formatDate(item.terminationDate));

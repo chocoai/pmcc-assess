@@ -303,7 +303,9 @@ AssessDicKey.programmeMarketCostapproachGrade = "programme.market.costApproach.g
 AssessDicKey.programmeMarketCostapproachFactor = "programme.market.costApproach.factor";//土地地价因素
 AssessDicKey.dataLandApproximationMethodSetting = "data.land.approximation.method.setting";//土地逼近法补偿配置
 AssessDicKey.dataTypeIndex = "data.index.type";//指数类型
-AssessDicKey.projectDeclareCertificateIsnull = "project.declare.certificate.isNull";//有权证有无
+AssessDicKey.projectDeclareCertificateIsnull = "project.declare.certificate.isNull";//有权证以及无权证
+AssessDicKey.projectDeclareCertificate_YES = "project.declare.certificate.yes";//有权证
+AssessDicKey.projectDeclareCertificate_NO = "project.declare.certificate.not";//无权证
 
 
 /**
@@ -313,7 +315,8 @@ var AssessFTKey = {}
 AssessFTKey.ftAssetInventoryRight = "ft.asset.inventory.right";//他项权利
 AssessFTKey.ftRealDeclareRealtyCheckList = "ft.real.declareRealtyCheckList";//不动产清单
 AssessFTKey.ftHouseOwnershipCertificate = "ft.house.ownership.certificate";//房产证数据导入模型
-AssessFTKey.ftLandOwnershipCertificate = "ft.land.ownership.certificate";//土地证数据导入模型
+AssessFTKey.ftLandOwnershipCertificate = "ft.land.ownership.certificate";//土地证数据导入模型 (有权证)
+AssessFTKey.ftLandOwnershipCertificateNot = "ft.land.ownership.certificate.not";//土地证数据导入模型 (无权证)
 AssessFTKey.ftRealEstateOwnershipCertificate = "ft.real.estate.ownership.certificate";//不动产模板 (有权证)
 AssessFTKey.ftRealEstateOwnershipCertificate2 = "ft.real.estate.ownership.certificate2";//不动产模板 (无权证)
 AssessFTKey.ftMethodIncomeHistory = "ft.method.income.history";//收益法历史数据模板

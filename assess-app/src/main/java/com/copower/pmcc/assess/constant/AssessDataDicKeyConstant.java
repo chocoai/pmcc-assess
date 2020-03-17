@@ -88,6 +88,9 @@ public class AssessDataDicKeyConstant {
     public static final String PROJECT_DECLARE_LAND_BASE_LEASE = "project.declare.land.base.lease";//纯土地(出租)
     public static final String PROJECT_DECLARE_LAND_INCLUDE_HOUSE_TRANSACTION = "project.declare.land.includeHouse.transaction";//	非纯土地(交易)  包含房产
     public static final String PROJECT_DECLARE_LAND_INCLUDE_HOUSE_LEASE = "project.declare.land.includeHouse.lease";//	非纯土地(出租) 包含房产
+    public static final String projectDeclareCertificate_YES = "project.declare.certificate.yes";//	有权证
+    public static final String projectDeclareCertificate_NO = "project.declare.certificate.not";//	无权证
+
 
     /*
      * 项目查勘
