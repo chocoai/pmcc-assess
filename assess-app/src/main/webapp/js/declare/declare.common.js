@@ -950,12 +950,14 @@ declareCommon.initLand = function (item, form, fileArr, callback, bisDetail) {
         //在这加了时间的input 请在下面的label[name='xxx'] 加上 谢谢
         frm.find("input[name='terminationDate']").val(formatDate(item.terminationDate));
         frm.find("input[name='registrationDate']").val(formatDate(item.registrationDate));
+        frm.find("input[name='approvalTime']").val(formatDate(item.approvalTime));
     } catch (e) {
     }
 
     try {
         frm.find("label[name='terminationDate']").html(formatDate(item.terminationDate));
         frm.find("label[name='registrationDate']").html(formatDate(item.registrationDate));
+        frm.find("label[name='approvalTime']").html(formatDate(item.approvalTime));
     } catch (e) {
     }
     if (fileArr) {
@@ -1073,6 +1075,7 @@ declareCommon.initDeclareRealty = function (item, form, fileArr, callback, bisDe
         frm.find("label[name='useStartDate']").html(formatDate(item.useStartDate));
         frm.find("label[name='registrationDate']").html(formatDate(item.registrationDate));
         frm.find("label[name='terminationDate']").html(formatDate(item.terminationDate));
+        frm.find("label[name='approvalTime']").html(formatDate(item.approvalTime));
     } catch (e) {
     }
     if (fileArr) {

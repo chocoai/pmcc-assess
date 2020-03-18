@@ -181,13 +181,7 @@
                         </div>
                     </div>
 
-                    <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
-                        <div class="card full-height">
-                            <div class="card-body">
 
-                            </div>
-                        </div>
-                    </div>
                     <%@include file="/views/share/form_approval.jsp" %>
                 </div>
             </div>
@@ -199,8 +193,10 @@
 
 <%@include file="/views/method/module/economicIndicators.jsp" %>
 <%@include file="/views/project/tool/declareApplyExtensionCumstomModelView.jsp" %>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/declare/declare.common.js?v=${assessVersion}"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js?v=${assessVersion}"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/declare/declare.common.js?v=${assessVersion}"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js?v=${assessVersion}"></script>
 <script type="text/javascript">
     var declareApprovalFun = {};
 
@@ -236,16 +232,29 @@
     };
 
 
-
-
     //不动产
     declareApprovalFun.realtyRealEstatefindData = function (id) {
         var item = $("#" + declareApprovalFun.declareRealtyRealEstateCertConfig.table).bootstrapTable('getRowByUniqueId', id);
-        $('#' + declareApprovalFun.declareRealtyRealEstateCertConfig.box).find("#" + commonDeclareApprovalModel.config.realEstateCert.handleId).remove();
-        $('#' + declareApprovalFun.declareRealtyRealEstateCertConfig.box).find(".card-body").prepend(commonDeclareApprovalModel.realEstateCert.getHtml());
-        declareCommon.showHtmlMastInit($("#" + declareApprovalFun.declareRealtyRealEstateCertConfig.frm), function (area) {
-            declareCommon.initDeclareRealty(item, $("#" + declareApprovalFun.declareRealtyRealEstateCertConfig.frm), [declareApprovalFun.declareRealtyRealEstateCertConfig.newFileId], null, false);
-            $('#' + declareApprovalFun.declareRealtyRealEstateCertConfig.box).modal("show");
+        var box = $('#' + declareApprovalFun.declareRealtyRealEstateCertConfig.box);
+        AssessCommon.getDataDicInfo(item.landCertGetQuestion, function (dicData) {
+            box.find("#" + commonDeclareApprovalModel.config.realEstateCert.handleId).remove();
+            box.find("#" + commonDeclareApprovalModel.config.realEstateCert.handleId2).remove();
+            if (dicData.fieldName == AssessDicKey.projectDeclareCertificate_YES) {
+                box.find(".card-body").prepend(commonDeclareApprovalModel.realEstateCert.getHtml());
+            }
+            if (dicData.fieldName == AssessDicKey.projectDeclareCertificate_NO) {
+                box.find(".card-body").prepend(commonDeclareApprovalModel.realEstateCert.getHtml2());
+            }
+            box.find("label[name='unit']").closest(".form-group").hide();
+            box.find("label[name='attachedNumber']").closest(".form-group").hide();
+            box.find("label[name='buildingNumber']").closest(".form-group").hide();
+            box.find("label[name='streetNumber']").closest(".form-group").hide();
+            box.find("label[name='floor']").closest(".form-group").hide();
+            box.find("label[name='roomNumber']").closest(".form-group").hide();
+            declareCommon.showHtmlMastInit($("#" + declareApprovalFun.declareRealtyRealEstateCertConfig.frm), function (area) {
+                declareCommon.initDeclareRealty(item, $("#" + declareApprovalFun.declareRealtyRealEstateCertConfig.frm), [declareApprovalFun.declareRealtyRealEstateCertConfig.newFileId], null, false);
+                $('#' + declareApprovalFun.declareRealtyRealEstateCertConfig.box).modal("show");
+            });
         });
     };
 
@@ -307,12 +316,28 @@
     //土地证
     declareApprovalFun.landFindData = function (id) {
         var item = $("#" + declareApprovalFun.landConfig.table).bootstrapTable('getRowByUniqueId', id);
-        $('#' + declareApprovalFun.landConfig.box).find("#" + commonDeclareApprovalModel.config.land.handleId).remove();
-        $('#' + declareApprovalFun.landConfig.box).find(".card-body").prepend(commonDeclareApprovalModel.land.getHtml());
-        declareCommon.showHtmlMastInit($("#" + declareApprovalFun.landConfig.frm), function (area) {
-            declareCommon.initLand(item, $("#" + declareApprovalFun.landConfig.frm), [declareApprovalFun.landConfig.fileId], null,false);
-            $('#' + declareApprovalFun.landConfig.box).modal("show");
+        var box = $('#' + declareApprovalFun.landConfig.box);
+        AssessCommon.getDataDicInfo(item.landCertGetQuestion, function (dicData) {
+            box.find("#" + commonDeclareApprovalModel.config.land.handleId).remove();
+            box.find("#" + commonDeclareApprovalModel.config.land.handleId1).remove();
+            if (dicData.fieldName == AssessDicKey.projectDeclareCertificate_YES) {
+                box.find(".card-body").prepend(commonDeclareApprovalModel.land.getHtml());
+            }
+            if (dicData.fieldName == AssessDicKey.projectDeclareCertificate_NO) {
+                box.find(".card-body").prepend(commonDeclareApprovalModel.land.getHtml2());
+            }
+            box.find("label[name='unit']").closest(".form-group").hide();
+            box.find("label[name='attachedNumber']").closest(".form-group").hide();
+            box.find("label[name='buildingNumber']").closest(".form-group").hide();
+            box.find("label[name='streetNumber']").closest(".form-group").hide();
+            box.find("label[name='floor']").closest(".form-group").hide();
+            box.find("label[name='roomNumber']").closest(".form-group").hide();
+            declareCommon.showHtmlMastInit($("#" + declareApprovalFun.landConfig.frm), function (area) {
+                declareCommon.initLand(item, $("#" + declareApprovalFun.landConfig.frm), [declareApprovalFun.landConfig.fileId], null, false);
+                $('#' + declareApprovalFun.landConfig.box).modal("show");
+            });
         });
+
     };
 
     //土地 table list
@@ -321,7 +346,7 @@
         cols.push({field: 'fileViewName', title: '附件'});
         cols.push({
             field: 'id', title: '操作', width: "20%", formatter: function (value, row, index) {
-                var str = "" ;
+                var str = "";
 
                 str += '<button type="button" onclick="declareApprovalFun.LandModelHouseView(' + row.id + ')" style="margin-left: 5px;" class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="关联的房产证">';
                 str += '房产证';
@@ -395,8 +420,8 @@
                         declareCommon.initHouse(data, frm, fileArr, null, false);
                         box.modal("show");
                     });
-                }else {
-                    notifyInfo("没有目标数据","没有关联房产证!");
+                } else {
+                    notifyInfo("没有目标数据", "没有关联房产证!");
                 }
             });
         });

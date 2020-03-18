@@ -57,22 +57,22 @@ assessLand.showAddModelLandFun = function (flag, item) {
                 parent.find(".col-sm-1").text("土地证附件");
             });
         }
-        box.find("input[name='unit']").parent().parent().hide();
-        box.find("input[name='attachedNumber']").parent().parent().hide();
-        box.find("input[name='buildingNumber']").parent().parent().hide();
-        box.find("input[name='streetNumber']").parent().parent().hide();
-        box.find("input[name='floor']").parent().parent().hide();
-        box.find("input[name='roomNumber']").parent().parent().hide();
+        box.find("input[name='unit']").closest(".form-group").hide();
+        box.find("input[name='attachedNumber']").closest(".form-group").hide();
+        box.find("input[name='buildingNumber']").closest(".form-group").hide();
+        box.find("input[name='streetNumber']").closest(".form-group").hide();
+        box.find("input[name='floor']").closest(".form-group").hide();
+        box.find("input[name='roomNumber']").closest(".form-group").hide();
         box.find("input[name='beLocated']").removeAttr('readonly');
 
         box.find("input[name='location']").removeAttr('required');
-        box.find("input[name='location']").parent().parent().find("span").remove();
+        box.find("input[name='location']").closest(".form-group").find("span").remove();
         box.find("input[name='number']").removeAttr('required');
-        box.find("input[name='number']").parent().parent().find("span").remove();
+        box.find("input[name='number']").closest(".form-group").find("span").remove();
         box.find("select[name='landRightType']").removeAttr('required');
         box.find("select[name='landRightType']").parent().prev().find("span").remove();
         box.find("input[name='year']").removeAttr('required');
-        box.find("input[name='year']").parent().parent().find("span").remove();
+        box.find("input[name='year']").closest(".form-group").find("span").remove();
     });
 };
 //分为有权证和无权证的情况
@@ -564,18 +564,18 @@ declareRealtyRealEstateCert.showAddModelFun = function (flag, item) {
                 parent.find(".col-sm-1").text("批文附件");
             }
         });
-        box.find("input[name='unit']").parent().parent().hide();
-        box.find("input[name='attachedNumber']").parent().parent().hide();
-        box.find("input[name='buildingNumber']").parent().parent().hide();
-        box.find("input[name='streetNumber']").parent().parent().hide();
-        box.find("input[name='floor']").parent().parent().hide();
-        box.find("input[name='roomNumber']").parent().parent().hide();
+        box.find("input[name='unit']").closest(".form-group").hide();
+        box.find("input[name='attachedNumber']").closest(".form-group").hide();
+        box.find("input[name='buildingNumber']").closest(".form-group").hide();
+        box.find("input[name='streetNumber']").closest(".form-group").hide();
+        box.find("input[name='floor']").closest(".form-group").hide();
+        box.find("input[name='roomNumber']").closest(".form-group").hide();
         box.find("input[name='beLocated']").removeAttr('readonly');
 
         box.find("input[name='location']").removeAttr('required');
-        box.find("input[name='location']").parent().parent().find("span").remove();
+        box.find("input[name='location']").closest(".form-group").find("span").remove();
         box.find("input[name='number']").removeAttr('required');
-        box.find("input[name='number']").parent().parent().find("span").remove();
+        box.find("input[name='number']").closest(".form-group").find("span").remove();
     });
 };
 

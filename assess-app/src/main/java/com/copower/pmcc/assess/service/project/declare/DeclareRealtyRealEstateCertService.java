@@ -328,6 +328,8 @@ public class DeclareRealtyRealEstateCertService {
         if (CollectionUtils.isNotEmpty(centerList)) {
             vo.setCenterId(centerList.stream().findFirst().get().getId());
         }
+        vo.setLandRightNatureName(baseDataDicService.getNameById(declareRealtyRealEstateCert.getLandRightNature()));
+        vo.setLandRightTypeName(baseDataDicService.getNameById(declareRealtyRealEstateCert.getLandRightType()));
         return vo;
     }
 
