@@ -155,7 +155,59 @@
                     关闭
                 </button>
             </div>
+        </div>
+    </div>
+</div>
 
+<div id="divAssessmentWorkHoursSpotListModal" class="modal fade bs-example-modal-lg" data-backdrop="static"
+     tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="max-width: 65%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">工时抽查记录</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" name="id">
+                <input type="hidden" name="boxId">
+                <input type="hidden" name="boxReActivitiId">
+                <button type="button" data-toggle="modal" class="btn btn-success btn-sm"
+                        onclick="assessmentCommonHandle.workingHoursModal(
+                        $(this).closest('.modal-body').find('[name=id]').val(),
+                        $(this).closest('.modal-body').find('[name=boxId]').val(),
+                        $(this).closest('.modal-body').find('[name=boxReActivitiId]').val(),'spot');">新增
+                </button>
+                <table id="tbAssessmentWorkHoursSpotList"></table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="divAssessmentWorkHoursHistoryListModal" class="modal fade bs-example-modal-lg" data-backdrop="static"
+     tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="max-width: 65%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">历史记录</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <table id="tbAssessmentWorkHoursHistoryList"></table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+            </div>
         </div>
     </div>
 </div>
@@ -174,6 +226,7 @@
                 <form id="assessmentWorkHoursForm" class="form-horizontal">
                     <input type="hidden" name="id">
                     <input type="hidden" name="spotId">
+                    <input type="hidden" name="adjustId">
                     <div class="row form-group">
                         <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                             <div class="form-inline x-valid">
@@ -260,7 +313,6 @@
 <script type="text/javascript">
     var assessmentCommonHandle = {};
     assessmentCommonHandle.run = function (data, url, type, callback, funParams, errorCallback) {
-        Loading.progressShow();
         $.ajax({
             type: type,
             url: '${pageContext.request.contextPath}' + url,
@@ -665,7 +717,7 @@
             }
         };
         table.bootstrapTable('destroy');
-        TableInit(table, "${pageContext.request.contextPath}/chksAssessmentProjectPerformance/getChksBootstrapTableVo", cols, query, method);
+        TableInit(table, "${pageContext.request.contextPath}/chksAssessmentProjectPerformance/getBootstrapTableVo", cols, query, method);
     };
 
     /**
@@ -829,7 +881,7 @@
             return;
         }
         var ids = '';
-        $.each(rows, function (i,item) {
+        $.each(rows, function (i, item) {
             ids += item.id + ',';
         })
         $.ajax({
@@ -839,7 +891,7 @@
             dataType: 'json',
             success: function (result) {
                 if (result.ret) {
-                    notifySuccess('成功','操作成功');
+                    notifySuccess('成功', '操作成功');
                     assessmentCommonHandle.loadAssessmentQualityList($('#assessmentQualityForm'));
                 } else {
                     AlertError("失败", result.errmsg);
@@ -955,6 +1007,9 @@
                 if (row.examinePeopleName) {
                     str += "/" + row.examinePeopleName;
                 }
+                if(row.adjustId){
+                    str += "<button type='button'  class='btn btn-xs btn-primary'  style='margin-left: 5px;' data-placement='top' title='历史'  onclick='assessmentCommonHandle.workingHoursHistoryListModal(\"" + row.processInsId + "\"," + row.activityId +");'><i class='fa fa-history fa-white'></i></button>";
+                }
                 return str;
             }
         });
@@ -971,18 +1026,14 @@
         cols.push({
             field: 'examineStatus', title: '操作', formatter: function (value, row, index) {
                 var str = "";
-                var detailsFlag = row.examinePeople === '${currUserAccount}' && 'details' === '${flog}';//详情页面权限控制
-                var approvalFlag = (row.examinePeople === '${currUserAccount}' || !row.examinePeople) && 'approval' === '${flog}';//审批页面权限控制
-                if (value == 'runing' && (detailsFlag || approvalFlag)) {
-                    str = "<button type='button' onclick='assessmentCommonHandle.workingHoursModal(" + row.id + "," + row.boxId + "," + row.activityId + ");'  style='margin-left: 5px;' data-placement='top' data-original-title='工时考核' class='btn btn-xs btn-primary tooltips'  ><i class='fa fa-pen fa-white'></i></button>";
+                if (row.canFill) {//填写
+                    str = "<button type='button'  class='btn btn-xs btn-primary'  style='margin-left: 5px;' data-placement='top' title='填写'  onclick='assessmentCommonHandle.workingHoursModal(" + row.id + "," + row.boxId + "," + row.activityId + ");'><i class='fa fa-pen fa-white'></i></button>";
                 }
-                //抽查考核
-                if (row.canSpot) {
-                    if (row.spotId) {
-                        str += "<button type='button' onclick='assessmentCommonHandle.findAssessmentProjectPerformanceBox(" + row.spotId + ")' style='margin-left: 5px;' data-placement='top' data-original-title='抽查考核查看' class='btn btn-xs btn-info'  ><i class='fa fa-envelope-open fa-white'></i></button>";
-                    } else {
-                        str += '<button type="button" class="btn btn-xs btn-primary" style="margin-left: 5px;" data-placement="bottom" data-original-title="抽查考核填写" onclick="assessmentCommonHandle.showChkSpotAssessmentParent(' + row.id + ',' + row.boxId + ',' + row.spotActivityId + ')" > <i class="fa fa-envelope fa-white"></i></button>';
-                    }
+                if (row.canAdjust) {//调整
+                    str += '<button type="button" class="btn btn-xs btn-primary" style="margin-left: 5px;" data-placement="bottom" title="调整" onclick="assessmentCommonHandle.workingHoursModal(' + row.id + ',' + row.boxId + ',' + row.spotActivityId + ',\'adjust\')" > <i class="fa fa-pen-nib fa-white"></i></button>';
+                }
+                if (row.canSpot) {//抽查
+                    str += '<button type="button" class="btn btn-xs btn-primary" style="margin-left: 5px;" data-placement="bottom" title="抽查" onclick="assessmentCommonHandle.workingHoursSpotListModal(' + row.id + ',' + row.boxId + ',' + row.spotActivityId + ')" > <i class="fa fa-pencil-ruler fa-white"></i></button>';
                 }
                 return str;
             }
@@ -1005,7 +1056,95 @@
         TableInit($("#assessmentWorkHoursTableList"), "${pageContext.request.contextPath}/chksAssessmentProjectPerformance/getWorkingHoursList", cols, query, method);
     }
 
-    assessmentCommonHandle.workingHoursModal = function (id, boxId, boxReActivitiId,isSpot) {
+    //加载工时抽查列表数据
+    assessmentCommonHandle.loadAssessmentWorkHoursSpotList = function (id) {
+        var cols = [];
+        cols.push({
+            field: 'byExaminePeopleName', title: '被抽查人/抽查人', formatter: function (value, row, index) {
+                var str = value;
+                if (row.examinePeopleName) {
+                    str += "/" + row.examinePeopleName;
+                }
+                return str;
+            }
+        });
+        cols.push({field: 'examineScore', title: '得分'});
+        cols.push({
+            field: 'examineDate', title: '抽查时间', formatter: function (value, row, index) {
+                if (value) {
+                    return formatDate(value, true);
+                }
+                return "";
+            }
+        });
+        cols.push({field: 'remarks', title: '说明'});
+        var query = {
+            id: id
+        };
+        var method = {
+            showColumns: false,
+            showRefresh: false,
+            search: false,
+            onLoadSuccess: function () {
+                $(".tooltips").tooltip();
+            }
+        };
+        $("#tbAssessmentWorkHoursSpotList").bootstrapTable('destroy');
+        TableInit($("#tbAssessmentWorkHoursSpotList"), "${pageContext.request.contextPath}/chksAssessmentProjectPerformance/getAssessmentProjectWorkHoursSpotListById", cols, query, method);
+    }
+
+    assessmentCommonHandle.workingHoursSpotListModal = function (id, boxId, boxReActivitiId) {
+        assessmentCommonHandle.loadAssessmentWorkHoursSpotList(id);
+        $('#divAssessmentWorkHoursSpotListModal').find('[name=id]').val(id);
+        $('#divAssessmentWorkHoursSpotListModal').find('[name=boxId]').val(boxId);
+        $('#divAssessmentWorkHoursSpotListModal').find('[name=boxReActivitiId]').val(boxReActivitiId);
+        $('#divAssessmentWorkHoursSpotListModal').modal();
+    }
+
+    //加载工时历史列表数据
+    assessmentCommonHandle.loadAssessmentWorkHoursHistoryList = function (processInsId,activityId) {
+        var cols = [];
+        cols.push({
+            field: 'byExaminePeopleName', title: '被考核人/考核人', formatter: function (value, row, index) {
+                var str = value;
+                if (row.examinePeopleName) {
+                    str += "/" + row.examinePeopleName;
+                }
+                return str;
+            }
+        });
+        cols.push({field: 'examineScore', title: '得分'});
+        cols.push({
+            field: 'examineDate', title: '抽查时间', formatter: function (value, row, index) {
+                if (value) {
+                    return formatDate(value, true);
+                }
+                return "";
+            }
+        });
+        cols.push({field: 'remarks', title: '说明'});
+        var query = {
+            processInsId: processInsId,
+            activityId:activityId
+        };
+        var method = {
+            showColumns: false,
+            showRefresh: false,
+            search: false,
+            onLoadSuccess: function () {
+                $(".tooltips").tooltip();
+            }
+        };
+        $("#tbAssessmentWorkHoursHistoryList").bootstrapTable('destroy');
+        TableInit($("#tbAssessmentWorkHoursHistoryList"), "${pageContext.request.contextPath}/chksAssessmentProjectPerformance/getAssessmentProjectWorkHoursHistoryList", cols, query, method);
+    }
+
+    assessmentCommonHandle.workingHoursHistoryListModal = function (processInsId, activityId) {
+        assessmentCommonHandle.loadAssessmentWorkHoursHistoryList(processInsId,activityId);
+        $('#divAssessmentWorkHoursHistoryListModal').modal();
+    }
+
+    assessmentCommonHandle.workingHoursModal = function (id, boxId, boxReActivitiId, type) {
         //需先获取考核标准
         assessmentCommonHandle.getAssessmentItemTemplate({
             boxId: boxId,
@@ -1016,10 +1155,10 @@
             if (data && data.length > 0) {
                 $("#assessmentWorkHoursForm").find('[data-name="examineStandard"]').text(data[0].assessmentDes + " (标准分：" + data[0].standardScore + ")");
             }
-            if(isSpot){
+            if (type == 'spot') {
                 $("#assessmentWorkHoursForm").find('[name=spotId]').val(id);
-            }else{
-                $("#assessmentWorkHoursForm").find('[name=id]').val(id);
+            } else if (type == 'adjust') {
+                $("#assessmentWorkHoursForm").find('[name=adjustId]').val(id);
             }
             $('#divAssessmentWorkHoursModal').modal();
         })
@@ -1041,14 +1180,17 @@
                 if (result.ret) {
                     notifySuccess('成功', "保存成果");
                     $('#divAssessmentWorkHoursModal').modal('hide');
-                    assessmentCommonHandle.loadAssessmentWorkHoursList();
+                    if (data.spotId) {
+                        assessmentCommonHandle.loadAssessmentWorkHoursSpotList(data.spotId);
+                    } else {
+                        assessmentCommonHandle.loadAssessmentWorkHoursList();
+                    }
                 } else {
                     AlertError("失败", "保存异常：" + result.errmsg)
                 }
             }
         })
     }
-
 
 
     /**

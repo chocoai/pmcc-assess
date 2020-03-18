@@ -78,13 +78,15 @@ public class ChksAssessmentProjectPerformanceService {
     private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
     @Autowired
     private CommonService commonService;
+    @Autowired
+    private AssessmentCommonService assessmentCommonService;
 
-    public ChksBootstrapTableVo getChksBootstrapTableVo(AssessmentProjectPerformanceDto where, Integer boxId, String reActivityName, String flog) {
+    public BootstrapTableVo getBootstrapTableVo(AssessmentProjectPerformanceDto where, Integer boxId, String reActivityName, String flog) {
         //1.管理员与抽查组可查看所有质量考核数据
         //2.当前人只能查看排序比当前节点小的质量考核数据
-        ChksBootstrapTableVo chksBootstrapTableVo = new ChksBootstrapTableVo();
+        BootstrapTableVo chksBootstrapTableVo = new BootstrapTableVo();
         List<Integer> activityList = Lists.newArrayList();
-        boolean spotGroupUser = isSpotGroupUser(boxId, commonService.thisUserAccount());
+        boolean spotGroupUser = assessmentCommonService.isSpotGroupUser(boxId, commonService.thisUserAccount());
         if (!processControllerComponent.userIsAdmin(commonService.thisUserAccount()) && !spotGroupUser) {
             List<BoxReActivityDto> activityDtos = bpmRpcBoxService.getBoxReActivityByBoxId(boxId);
             if (CollectionUtils.isEmpty(activityDtos)) return chksBootstrapTableVo;
@@ -97,7 +99,7 @@ public class ChksAssessmentProjectPerformanceService {
                     }
                 }
             } else {//找出该人员在该流程中排序号最大的数据
-                Integer sorting = chksRpcAssessmentService.getAssessmentMaxSortingByUserAccount(where.getProcessInsId(), commonService.thisUserAccount());
+                Integer sorting = chksRpcAssessmentService.getMaxSortingByProcessInsId(where.getProcessInsId(), commonService.thisUserAccount(),commonService.thisUserAccount());
                 for (BoxReActivityDto activityDto : activityDtos) {
                     if (activityDto.getSortMultilevel() <= sorting)
                         activityList.add(activityDto.getId());
@@ -106,44 +108,21 @@ public class ChksAssessmentProjectPerformanceService {
             if (CollectionUtils.isEmpty(activityList)) return chksBootstrapTableVo;
         }
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
-        PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         where.setActivityId(null);
         AssessmentProjectPerformanceDtoAndDetail dtoAndDetail = chksRpcAssessmentService.getAssessmentProjectPerformanceDtosByExample(where, activityList, requestBaseParam.getOffset(), requestBaseParam.getLimit());
         if (dtoAndDetail != null) {
-            chksBootstrapTableVo = dtoAndDetail.getChksBootstrapTableVo();
+            chksBootstrapTableVo = dtoAndDetail.getBootstrapTableVo();
             List<AssessmentProjectPerformanceDto> rows = chksBootstrapTableVo.getRows();
             if (CollectionUtils.isNotEmpty(rows)) {
                 BoxReActivityDto endActivity = bpmRpcBoxService.getEndActivityByBoxId(boxId);
+                List<Integer> spotBoxReActivityIds = assessmentCommonService.getSpotBoxReActivityIds(boxId);
                 for (AssessmentProjectPerformanceDto row : rows) {
-                    row.setCanSpot(ProjectStatusEnum.FINISH.getKey().equalsIgnoreCase(row.getExamineStatus()) && bpmRpcBoxService.getBoxreActivityInfoById(row.getActivityId()).getBisSpotCheck() && spotGroupUser);
+                    row.setCanSpot(ProjectStatusEnum.FINISH.getKey().equalsIgnoreCase(row.getExamineStatus()) && spotBoxReActivityIds.contains(row.getActivityId()) && spotGroupUser);
                     row.setSpotActivityId(endActivity.getId());
                 }
             }
         }
         return chksBootstrapTableVo;
-    }
-
-    /**
-     * 是否为抽查组成员
-     *
-     * @param boxId       模型 id
-     * @param userAccount 当前登陆人
-     * @return
-     */
-    private boolean isSpotGroupUser(Integer boxId, String userAccount) {
-        if (boxId == null || StringUtils.isEmpty(userAccount)) {
-            return false;
-        }
-        try {
-            BoxReActivityDto boxReActivityDto = bpmRpcBoxService.getEndActivityByBoxId(boxId);
-            List<String> list = bpmRpcBoxService.getRoleUserByActivityId(boxReActivityDto.getId());
-            if (CollectionUtils.isEmpty(list)) {
-                return false;
-            }
-            return list.contains(userAccount);
-        } catch (BpmException e) {
-            return false;
-        }
     }
 
     /**
@@ -786,5 +765,15 @@ public class ChksAssessmentProjectPerformanceService {
         projectPerformanceDto.setExaminePeople(processControllerComponent.getThisUser());
         saveAssessmentServer(projectPerformanceDto, detailDtoList, projectPerformanceDto.getPlanDetailsId());
         return true;
+    }
+
+    /**
+     * 获取抽查数据
+     * @param id
+     * @return
+     */
+    public BootstrapTableVo getAssessmentProjectPerformanceSpotListById(Integer id){
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        return chksRpcAssessmentService.getAssessmentProjectPerformanceSpotListById(id,requestBaseParam.getLimit(),requestBaseParam.getLimit());
     }
 }

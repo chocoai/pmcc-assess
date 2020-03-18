@@ -13,7 +13,6 @@ import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.chks.api.dto.AssessmentProjectPerformanceDetailDto;
 import com.copower.pmcc.chks.api.dto.AssessmentProjectPerformanceDto;
 import com.copower.pmcc.chks.api.dto.AssessmentProjectPerformanceQuery;
-import com.copower.pmcc.chks.api.dto.ChksBootstrapTableVo;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
@@ -44,9 +43,9 @@ public class ChksAssessmentProjectPerformanceController {
     private CommonService commonService;
 
 
-    @GetMapping(value = "/getChksBootstrapTableVo", name = "获取考核 bootstrap table")
-    public ChksBootstrapTableVo getChksBootstrapTableVo(AssessmentProjectPerformanceDto where, Integer boxId, String reActivityName, String flog) {
-        return chksAssessmentProjectPerformanceService.getChksBootstrapTableVo(where, boxId, reActivityName, flog);
+    @GetMapping(value = "/getBootstrapTableVo", name = "获取考核 bootstrap table")
+    public BootstrapTableVo getBootstrapTableVo(AssessmentProjectPerformanceDto where, Integer boxId, String reActivityName, String flog) {
+        return chksAssessmentProjectPerformanceService.getBootstrapTableVo(where, boxId, reActivityName, flog);
     }
 
     @GetMapping(value = "/getAssessmentProjectPerformanceDtoList", name = "获取考核后的数据")
@@ -105,13 +104,13 @@ public class ChksAssessmentProjectPerformanceController {
     }
 
     @PostMapping(value = "/saveAssessmentServer", name = "保存质量考核信息")
-    public HttpResult saveAssessmentServer(String fomData, String chksScore,String processInsId, Integer planDetailsId) {
+    public HttpResult saveAssessmentServer(String fomData, String chksScore, String processInsId, Integer planDetailsId) {
         try {
             AssessmentProjectPerformanceDto assessmentProjectPerformanceDto = JSONObject.parseObject(fomData, AssessmentProjectPerformanceDto.class);
             List<AssessmentProjectPerformanceDetailDto> detailDtoList = JSONObject.parseArray(chksScore, AssessmentProjectPerformanceDetailDto.class);
             Integer id = chksAssessmentProjectPerformanceService.saveAssessmentServer(assessmentProjectPerformanceDto, detailDtoList, planDetailsId);
             //清理ProjectTask任务，根据流程id
-            chksAssessmentProjectPerformanceService.clearAssessmentProjectTask(processInsId,commonService.thisUserAccount());
+            chksAssessmentProjectPerformanceService.clearAssessmentProjectTask(processInsId, commonService.thisUserAccount());
             return HttpResult.newCorrectResult(200, id);
         } catch (Exception e) {
             baseService.writeExceptionInfo(e, "保存质量数据出错");
@@ -192,10 +191,11 @@ public class ChksAssessmentProjectPerformanceController {
     }
 
     @PostMapping(value = "/saveWorkingHours", name = "保存工时考核任务")
-    public HttpResult saveWorkingHours(Integer id, BigDecimal examineScore, String remarks,String processInsId) {
+    public HttpResult saveWorkingHours(Integer id, Integer spotId, Integer adjustId, BigDecimal examineScore, String remarks, String processInsId) {
         try {
-            assessmentWorkHoursService.saveAssessmentProjectWorkHours(id, examineScore, remarks);
-            assessmentWorkHoursService.clearAssessmentProjectTask(processInsId,commonService.thisUserAccount());
+            assessmentWorkHoursService.saveAssessmentProjectWorkHours(id, spotId, adjustId, examineScore, remarks);
+            if (spotId == null || spotId <= 0)
+                assessmentWorkHoursService.clearAssessmentProjectTask(processInsId, commonService.thisUserAccount());
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             baseService.writeExceptionInfo(e, "保存工时考核任务出错");
@@ -203,16 +203,31 @@ public class ChksAssessmentProjectPerformanceController {
         }
     }
 
-    @PostMapping(value = "/batchSetFinish", name = "批量设置完成")
+    @PostMapping(value = "/batchSetFinish", name = "批量设置完成质量考核")
     public HttpResult batchSetFinish(String ids) {
         try {
             List<Integer> list = FormatUtils.transformString2Integer(ids);
             chksAssessmentProjectPerformanceService.batchSetFinish(list);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
-            baseService.writeExceptionInfo(e, "保存工时考核任务出错");
+            baseService.writeExceptionInfo(e, "批量设置完成质量考核出错");
             return HttpResult.newErrorResult(500, e.getMessage());
         }
+    }
+
+    @GetMapping(value = "/getAssessmentProjectPerformanceSpotListById", name = "获取抽查数据")
+    public BootstrapTableVo getAssessmentProjectPerformanceSpotListById(Integer id) {
+        return chksAssessmentProjectPerformanceService.getAssessmentProjectPerformanceSpotListById(id);
+    }
+
+    @GetMapping(value = "/getAssessmentProjectWorkHoursSpotListById", name = "获取抽查数据")
+    public BootstrapTableVo getAssessmentProjectWorkHoursSpotListById(Integer id) {
+        return assessmentWorkHoursService.getAssessmentProjectWorkHoursSpotListById(id);
+    }
+
+    @GetMapping(value = "/getAssessmentProjectWorkHoursHistoryList", name = "获取历史数据")
+    public BootstrapTableVo getAssessmentProjectWorkHoursHistoryList(String processInsId,Integer activityId) {
+        return assessmentWorkHoursService.getAssessmentProjectWorkHoursHistoryList(processInsId,activityId);
     }
 }
 
