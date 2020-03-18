@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.aspose.words.*;
 import com.copower.pmcc.assess.common.ArithmeticUtils;
 import com.copower.pmcc.assess.common.AsposeUtils;
+import com.copower.pmcc.assess.common.PoiUtils;
 import com.copower.pmcc.assess.common.enums.data.DataBuildingInstallCostTypeEnum;
 import com.copower.pmcc.assess.common.enums.report.BaseReportMarketCostEnum;
 import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
@@ -165,12 +166,14 @@ public class GenerateMdCostService {
         //替换
         if (!textMap.isEmpty()) {
             AsposeUtils.replaceText(localPath, textMap);
+            PoiUtils.replaceText(textMap, localPath);
         }
         if (!bookmarkMap.isEmpty()) {
             AsposeUtils.replaceBookmark(localPath, bookmarkMap, true);
         }
         try {
             if (!fileMap.isEmpty()) {
+                Document fileDoc = new Document(localPath) ;
                 for (Map.Entry<String, String> stringStringEntry : fileMap.entrySet()) {
                     Pattern compile = Pattern.compile(AsposeUtils.escapeExprSpecialWord(stringStringEntry.getKey()));
                     IReplacingCallback callback = new IReplacingCallback() {
@@ -183,9 +186,9 @@ public class GenerateMdCostService {
                             return ReplaceAction.REPLACE;
                         }
                     };
-                    document.getRange().replace(compile, callback, false);
+                    fileDoc.getRange().replace(compile, callback, false);
                 }
-                AsposeUtils.saveWord(localPath, document);
+                AsposeUtils.saveWord(localPath, fileDoc);
             }
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);

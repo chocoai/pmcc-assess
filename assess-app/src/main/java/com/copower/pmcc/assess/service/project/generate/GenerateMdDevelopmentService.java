@@ -109,7 +109,6 @@ public class GenerateMdDevelopmentService {
         }
         String localPath = baseAttachmentService.downloadFtpFileToLocal(dtoList.get(0).getId());
         Document document = new Document(localPath);
-        AsposeUtils.saveWord(localPath,document);
         Map<BaseReportDevelopmentEnum, String> map = Maps.newHashMap();
         final ConcurrentHashMap<String, String> textMap = new ConcurrentHashMap<String, String>(0);
         final ConcurrentHashMap<String, String> fileMap = new ConcurrentHashMap<String, String>(0);
@@ -164,21 +163,22 @@ public class GenerateMdDevelopmentService {
         }
         try {
             if (!fileMap.isEmpty()) {
+                Document fileDoc = new Document(localPath) ;
                 for (Map.Entry<String, String> stringStringEntry : fileMap.entrySet()) {
                     Pattern compile = Pattern.compile(AsposeUtils.escapeExprSpecialWord(stringStringEntry.getKey()));
                     IReplacingCallback callback = new IReplacingCallback() {
                         @Override
                         public int replacing(ReplacingArgs e) throws Exception {
-                            DocumentBuilder builder = new DocumentBuilder((Document) e.getMatchNode().getDocument());
-                            builder.moveTo(e.getMatchNode());
+                            DocumentBuilder iReplacingCallback = new DocumentBuilder((Document) e.getMatchNode().getDocument());
+                            iReplacingCallback.moveTo(e.getMatchNode());
                             Document doc = new Document(stringStringEntry.getValue());
-                            builder.insertDocument(doc, ImportFormatMode.KEEP_SOURCE_FORMATTING);
+                            iReplacingCallback.insertDocument(doc, ImportFormatMode.KEEP_SOURCE_FORMATTING);
                             return ReplaceAction.REPLACE;
                         }
                     };
-                    document.getRange().replace(compile, callback, false);
+                    fileDoc.getRange().replace(compile, callback, false);
                 }
-                AsposeUtils.saveWord(localPath, document);
+                AsposeUtils.saveWord(localPath, fileDoc);
             }
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
