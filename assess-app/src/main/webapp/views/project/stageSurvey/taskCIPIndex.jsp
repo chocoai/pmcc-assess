@@ -561,7 +561,7 @@
         }
 
         var formData = formParams("frm_detail");
-        formData.fullName = location+name;
+        //formData.fullName = location+name;
         $.ajax({
             url: "${pageContext.request.contextPath}/basicApplyBatch/saveItemData",
             type: "post",
