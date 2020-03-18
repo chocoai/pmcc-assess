@@ -559,4 +559,13 @@ public class BasicEstateService extends BasicEntityAbstract {
         }
         return targetBasicEstate;
     }
+
+    @Override
+    public String getFullName(Integer tableId){
+        BasicApplyBatchDetail batchDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(FormatUtils.entityNameConvertToTableName(BasicEstate.class), tableId);
+        if(batchDetail!=null){
+            return batchDetail.getDisplayName();
+        }
+        return null;
+    }
 }

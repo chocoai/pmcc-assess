@@ -454,9 +454,10 @@ public class BasicHouseService extends BasicEntityAbstract {
                 BasicApplyBatchDetail houseDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(FormatUtils.entityNameConvertToTableName(BasicHouse.class), basicHouse.getId());
                 if (houseDetail != null) {
                     houseDetail.setName(basicHouse.getHouseNumber());
-
-                    String fullName = houseDetail.getFullName().replace(String.format("%s%s","单元",houseDetail.getDisplayName()),String.format("%s%s","单元",basicHouse.getHouseNumber()));
-                    houseDetail.setFullName(fullName);
+                    if (houseDetail.getFullName() != null) {
+                        String fullName = houseDetail.getFullName().replace(String.format("%s%s", "单元", houseDetail.getDisplayName()), String.format("%s%s", "单元", basicHouse.getHouseNumber()));
+                        houseDetail.setFullName(fullName);
+                    }
                     houseDetail.setDisplayName(basicHouse.getHouseNumber());
                     basicApplyBatchDetailService.saveBasicApplyBatchDetail(houseDetail);
 
@@ -537,7 +538,7 @@ public class BasicHouseService extends BasicEntityAbstract {
         this.saveAndUpdate(targetBasicHouse, true);
         BasicHouseTrading sourceBasicHouseTrading = basicHouseTradingService.getTradingByHouseId(sourceId);
         if (sourceBasicHouseTrading != null) {
-            BasicHouseTrading targetBasicHouseTrading =  basicHouseTradingService.getTradingByHouseId(targetBasicHouse.getId());
+            BasicHouseTrading targetBasicHouseTrading = basicHouseTradingService.getTradingByHouseId(targetBasicHouse.getId());
             if (targetBasicHouseTrading == null) {
                 targetBasicHouseTrading = new BasicHouseTrading();
                 BeanUtils.copyProperties(sourceBasicHouseTrading, targetBasicHouseTrading);
@@ -691,5 +692,23 @@ public class BasicHouseService extends BasicEntityAbstract {
             }
         }
         return targetBasicHouse;
+    }
+
+    @Override
+    public String getFullName(Integer tableId) {
+        BasicApplyBatchDetail houseBatchDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(FormatUtils.entityNameConvertToTableName(BasicHouse.class), tableId);
+        if (houseBatchDetail != null) {
+            BasicApplyBatchDetail unitBatchDetail = basicApplyBatchDetailService.getDataById(houseBatchDetail.getPid());
+            if (unitBatchDetail != null) {
+                BasicApplyBatchDetail buildBatchDetail = basicApplyBatchDetailService.getDataById(unitBatchDetail.getPid());
+                if (buildBatchDetail != null) {
+                    BasicApplyBatchDetail estateBatchDetail = basicApplyBatchDetailService.getDataById(buildBatchDetail.getPid());
+                    if (estateBatchDetail != null) {
+                        return String.format("%s%s%s", estateBatchDetail.getDisplayName(), buildBatchDetail.getDisplayName(), unitBatchDetail.getDisplayName(), houseBatchDetail.getDisplayName());
+                    }
+                }
+            }
+        }
+        return null;
     }
 }
