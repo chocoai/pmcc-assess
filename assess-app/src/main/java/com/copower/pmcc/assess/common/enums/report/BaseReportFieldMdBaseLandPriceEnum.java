@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * @author: HH
  * @date: 2019/2/14 16:11
- * @description:报告模板字段(收益法)
+ * @description:报告模板字段(基准地价)
  */
 public enum BaseReportFieldMdBaseLandPriceEnum implements Serializable {
     BaseLandPriceProfile("基准地价概要"),

@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.ArithmeticUtils;
 import com.copower.pmcc.assess.common.BeanCopyHelp;
-import com.copower.pmcc.assess.common.enums.report.BaseReportFieldEnum;
+import com.copower.pmcc.assess.common.enums.report.BaseReportMarketCostEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdCostConstructionDao;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdCostDao;
@@ -344,7 +344,7 @@ public class MdMarketCostService {
 
     public String calculationNumeric(MdCostConstruction target) {
         mdCostConstructionDao.updateEstateNetwork(target);
-        String value = getFieldObjectValue(BaseReportFieldEnum.MarketCost_constructionAssessmentPriceCorrecting, target);
+        String value = getFieldObjectValue(BaseReportMarketCostEnum.MarketCost_constructionAssessmentPriceCorrecting, target);
         if (target.getId() != null && target.getId() != 0) {
             mdCostConstructionDao.updateEstateNetwork(target);
         }
@@ -358,7 +358,7 @@ public class MdMarketCostService {
      * @param target
      * @return
      */
-    public synchronized String getFieldObjectValue(BaseReportFieldEnum key, MdCostConstruction target) {
+    public synchronized String getFieldObjectValue(BaseReportMarketCostEnum key, MdCostConstruction target) {
         if (target.getLandPurchasePrice() == null){
             target.setLandPurchasePrice(ArithmeticUtils.createBigDecimal(0));
         }
@@ -373,7 +373,7 @@ public class MdMarketCostService {
                 return ArithmeticUtils.getBigDecimalString(target.getDevelopYearNumberTax());
             }
             case MarketCost_UnitAreaLandPrice: {
-                String start = getFieldObjectValue(BaseReportFieldEnum.MarketCost_landPurchasePrice, target);
+                String start = getFieldObjectValue(BaseReportMarketCostEnum.MarketCost_landPurchasePrice, target);
                 if (!ArithmeticUtils.checkNotNull(start)) {
                     return "";
                 }
@@ -391,7 +391,7 @@ public class MdMarketCostService {
                 return ArithmeticUtils.getBigDecimalString(start);
             }
             case MarketCost_landGetRelevant: {
-                String start = getFieldObjectValue(BaseReportFieldEnum.MarketCost_landPurchasePrice, target);
+                String start = getFieldObjectValue(BaseReportMarketCostEnum.MarketCost_landPurchasePrice, target);
                 if (!ArithmeticUtils.checkNotNull(start)) {
                     return "";
                 }
@@ -415,7 +415,7 @@ public class MdMarketCostService {
                 return ArithmeticUtils.getBigDecimalString(target.getReconnaissanceDesign());
             }
             case MarketCost_reconnaissanceDesign: {
-                String start = getFieldObjectValue(BaseReportFieldEnum.MarketCost_constructionInstallationEngineeringFee, target);
+                String start = getFieldObjectValue(BaseReportMarketCostEnum.MarketCost_constructionInstallationEngineeringFee, target);
                 if (!ArithmeticUtils.checkNotNull(start)) {
                     return "";
                 }
@@ -461,12 +461,12 @@ public class MdMarketCostService {
                 return ArithmeticUtils.div(two, "10000", 2);
             }
             case MarketCost_constructionSubtotal: {
-                String v1 = getFieldObjectValue(BaseReportFieldEnum.MarketCost_reconnaissanceDesign, target);
-                String v2 = getFieldObjectValue(BaseReportFieldEnum.MarketCost_constructionInstallationEngineeringFee, target);
-                String v3 = getFieldObjectValue(BaseReportFieldEnum.MarketCost_infrastructureCost, target);
-                String v4 = getFieldObjectValue(BaseReportFieldEnum.MarketCost_infrastructureMatchingCost, target);
-                String v5 = getFieldObjectValue(BaseReportFieldEnum.MarketCost_devDuring, target);
-                String v6 = getFieldObjectValue(BaseReportFieldEnum.MarketCost_otherEngineeringCost, target);
+                String v1 = getFieldObjectValue(BaseReportMarketCostEnum.MarketCost_reconnaissanceDesign, target);
+                String v2 = getFieldObjectValue(BaseReportMarketCostEnum.MarketCost_constructionInstallationEngineeringFee, target);
+                String v3 = getFieldObjectValue(BaseReportMarketCostEnum.MarketCost_infrastructureCost, target);
+                String v4 = getFieldObjectValue(BaseReportMarketCostEnum.MarketCost_infrastructureMatchingCost, target);
+                String v5 = getFieldObjectValue(BaseReportMarketCostEnum.MarketCost_devDuring, target);
+                String v6 = getFieldObjectValue(BaseReportMarketCostEnum.MarketCost_otherEngineeringCost, target);
                 String[] strings = new String[]{v1, v2, v3, v4, v5, v6};
                 if (!ArithmeticUtils.checkNotNull(strings)) {
                     return "";
@@ -476,7 +476,7 @@ public class MdMarketCostService {
                 return value;
             }
             case MarketCost_unforeseenExpenses: {
-                String v = getFieldObjectValue(BaseReportFieldEnum.MarketCost_constructionSubtotal, target);
+                String v = getFieldObjectValue(BaseReportMarketCostEnum.MarketCost_constructionSubtotal, target);
                 if (!ArithmeticUtils.checkNotNull(v)) {
                     return "";
                 }
@@ -487,15 +487,15 @@ public class MdMarketCostService {
                 return value;
             }
             case MarketCost_unforeseenExpenses2: {
-                return getFieldObjectValue(BaseReportFieldEnum.MarketCost_unforeseenExpenses, target);
+                return getFieldObjectValue(BaseReportMarketCostEnum.MarketCost_unforeseenExpenses, target);
             }
             case MarketCost_unforeseenExpensesRate: {
                 return ArithmeticUtils.getBigDecimalString(target.getUnforeseenExpenses());
             }
             case MarketCost_managementExpense: {
-                String e17 = getFieldObjectValue(BaseReportFieldEnum.MarketCost_constructionSubtotal, target);
-                String e18 = getFieldObjectValue(BaseReportFieldEnum.MarketCost_unforeseenExpenses, target);
-                String e9 = getFieldObjectValue(BaseReportFieldEnum.MarketCost_landGetCostTotal, target);
+                String e17 = getFieldObjectValue(BaseReportMarketCostEnum.MarketCost_constructionSubtotal, target);
+                String e18 = getFieldObjectValue(BaseReportMarketCostEnum.MarketCost_unforeseenExpenses, target);
+                String e9 = getFieldObjectValue(BaseReportMarketCostEnum.MarketCost_landGetCostTotal, target);
                 String[] strings = new String[]{e17, e18, e9};
                 if (!ArithmeticUtils.checkNotNull(strings)) {
                     return "";
@@ -511,15 +511,15 @@ public class MdMarketCostService {
                 return ArithmeticUtils.getBigDecimalString(target.getManagementExpense());
             }
             case MarketCost_salesFee: {
-                String v = getFieldObjectValue(BaseReportFieldEnum.MarketCost_constructionAssessmentValue, target);
-                String v1 = getFieldObjectValue(BaseReportFieldEnum.MarketCost_salesFeeRate, target);
+                String v = getFieldObjectValue(BaseReportMarketCostEnum.MarketCost_constructionAssessmentValue, target);
+                String v1 = getFieldObjectValue(BaseReportMarketCostEnum.MarketCost_salesFeeRate, target);
                 if (!ArithmeticUtils.checkNotNull(new String[]{v, v1})) {
                     return "";
                 }
                 return ArithmeticUtils.mul(v, v1, 2);
             }
             case MarketCost_salesTaxAndAdditionalTotal: {
-                String v = getFieldObjectValue(BaseReportFieldEnum.MarketCost_constructionAssessmentValue, target);
+                String v = getFieldObjectValue(BaseReportMarketCostEnum.MarketCost_constructionAssessmentValue, target);
                 if (!ArithmeticUtils.checkNotNull(v)) {
                     return "";
                 }
@@ -534,18 +534,18 @@ public class MdMarketCostService {
             }
             case MarketCost_interestInvestment: {
                 try {
-                    double e9 = Double.valueOf(getFieldObjectValue(BaseReportFieldEnum.MarketCost_landGetCostTotal, target));
-                    double e11 = Double.valueOf(getFieldObjectValue(BaseReportFieldEnum.MarketCost_reconnaissanceDesign, target));
-                    double e12 = Double.valueOf(getFieldObjectValue(BaseReportFieldEnum.MarketCost_constructionInstallationEngineeringFee, target));
-                    double e13 = Double.valueOf(getFieldObjectValue(BaseReportFieldEnum.MarketCost_infrastructureCost, target));
-                    double e14 = Double.valueOf(getFieldObjectValue(BaseReportFieldEnum.MarketCost_infrastructureMatchingCost, target));
-                    double e15 = Double.valueOf(getFieldObjectValue(BaseReportFieldEnum.MarketCost_devDuring, target));
-                    double e16 = Double.valueOf(getFieldObjectValue(BaseReportFieldEnum.MarketCost_otherEngineeringCost, target));
-                    double e18 = Double.valueOf(getFieldObjectValue(BaseReportFieldEnum.MarketCost_unforeseenExpenses, target));
-                    double d21 = Double.valueOf(getFieldObjectValue(BaseReportFieldEnum.MarketCost_interestInvestmentRate, target));
+                    double e9 = Double.valueOf(getFieldObjectValue(BaseReportMarketCostEnum.MarketCost_landGetCostTotal, target));
+                    double e11 = Double.valueOf(getFieldObjectValue(BaseReportMarketCostEnum.MarketCost_reconnaissanceDesign, target));
+                    double e12 = Double.valueOf(getFieldObjectValue(BaseReportMarketCostEnum.MarketCost_constructionInstallationEngineeringFee, target));
+                    double e13 = Double.valueOf(getFieldObjectValue(BaseReportMarketCostEnum.MarketCost_infrastructureCost, target));
+                    double e14 = Double.valueOf(getFieldObjectValue(BaseReportMarketCostEnum.MarketCost_infrastructureMatchingCost, target));
+                    double e15 = Double.valueOf(getFieldObjectValue(BaseReportMarketCostEnum.MarketCost_devDuring, target));
+                    double e16 = Double.valueOf(getFieldObjectValue(BaseReportMarketCostEnum.MarketCost_otherEngineeringCost, target));
+                    double e18 = Double.valueOf(getFieldObjectValue(BaseReportMarketCostEnum.MarketCost_unforeseenExpenses, target));
+                    double d21 = Double.valueOf(getFieldObjectValue(BaseReportMarketCostEnum.MarketCost_interestInvestmentRate, target));
                     double h3 = target.getDevelopYearNumberTax().doubleValue();
 
-                    double e19 = Double.valueOf(getFieldObjectValue(BaseReportFieldEnum.MarketCost_managementExpense, target));
+                    double e19 = Double.valueOf(getFieldObjectValue(BaseReportMarketCostEnum.MarketCost_managementExpense, target));
                     double a = Math.pow(1 + d21, h3);
                     double c1 = ArithmeticUtils.mul(e9 + e11 + e13, a - 1);
                     double b = Math.pow(1 + d21, h3 / 2);
@@ -560,7 +560,7 @@ public class MdMarketCostService {
             case MarketCost_interestInvestmentCorrectRate: {//G21
                 try {
                     double d20 = target.getSalesFee().doubleValue();
-                    double d21 = Double.valueOf(getFieldObjectValue(BaseReportFieldEnum.MarketCost_interestInvestmentRate, target));
+                    double d21 = Double.valueOf(getFieldObjectValue(BaseReportMarketCostEnum.MarketCost_interestInvestmentRate, target));
                     double h3 = target.getDevelopYearNumberTax().doubleValue();
                     double a = Math.pow(1 + d21, h3 / 2);
                     double c = ArithmeticUtils.mul(d20, a - 1, 5);
@@ -580,7 +580,7 @@ public class MdMarketCostService {
             }
             case MarketCost_investmentProfitCorrectRate: {//G23
                 try {
-                    String v = ArithmeticUtils.mul(getFieldObjectValue(BaseReportFieldEnum.MarketCost_investmentProfitRate, target), target.getSalesFee().toString(), 5).toString();
+                    String v = ArithmeticUtils.mul(getFieldObjectValue(BaseReportMarketCostEnum.MarketCost_investmentProfitRate, target), target.getSalesFee().toString(), 5).toString();
                     return v;
                 } catch (Exception e) {
                     return "";
@@ -590,8 +590,8 @@ public class MdMarketCostService {
                 try {
                     double d20 = target.getSalesFee().doubleValue();
                     double d22 = target.getSalesTaxAndAdditional().doubleValue();
-                    double g21 = Double.valueOf(getFieldObjectValue(BaseReportFieldEnum.MarketCost_interestInvestmentCorrectRate, target));
-                    double g23 = Double.valueOf(getFieldObjectValue(BaseReportFieldEnum.MarketCost_investmentProfitCorrectRate, target));
+                    double g21 = Double.valueOf(getFieldObjectValue(BaseReportMarketCostEnum.MarketCost_interestInvestmentCorrectRate, target));
+                    double g23 = Double.valueOf(getFieldObjectValue(BaseReportMarketCostEnum.MarketCost_investmentProfitCorrectRate, target));
                     double[] doubles = new double[]{Double.valueOf(d20), Double.valueOf(d22), Double.valueOf(g21), Double.valueOf(g23)};
                     return String.valueOf(ArithmeticUtils.add(doubles));
                 } catch (Exception e) {
@@ -604,10 +604,10 @@ public class MdMarketCostService {
             case MarketCost_investmentProfit: {//E23
                 try {
                     double d23 = target.getInvestmentProfitTax().doubleValue();
-                    double e9 = Double.valueOf(getFieldObjectValue(BaseReportFieldEnum.MarketCost_landGetCostTotal, target));
-                    double e17 = Double.valueOf(getFieldObjectValue(BaseReportFieldEnum.MarketCost_constructionSubtotal, target));
-                    double e18 = Double.valueOf(getFieldObjectValue(BaseReportFieldEnum.MarketCost_unforeseenExpenses, target));
-                    double e19 = Double.valueOf(getFieldObjectValue(BaseReportFieldEnum.MarketCost_managementExpense, target));
+                    double e9 = Double.valueOf(getFieldObjectValue(BaseReportMarketCostEnum.MarketCost_landGetCostTotal, target));
+                    double e17 = Double.valueOf(getFieldObjectValue(BaseReportMarketCostEnum.MarketCost_constructionSubtotal, target));
+                    double e18 = Double.valueOf(getFieldObjectValue(BaseReportMarketCostEnum.MarketCost_unforeseenExpenses, target));
+                    double e19 = Double.valueOf(getFieldObjectValue(BaseReportMarketCostEnum.MarketCost_managementExpense, target));
                     String value = String.valueOf(ArithmeticUtils.mul(d23, ArithmeticUtils.add(new double[]{e9, e17, e18, e19}), 2));
                     target.setInvestmentProfit(value);
                     return value;
@@ -617,12 +617,12 @@ public class MdMarketCostService {
             }
             case MarketCost_constructionAssessmentValue2: {//E24
                 try {
-                    double e21 = Double.valueOf(getFieldObjectValue(BaseReportFieldEnum.MarketCost_interestInvestment, target));
-                    double e23 = Double.valueOf(getFieldObjectValue(BaseReportFieldEnum.MarketCost_investmentProfit, target));
-                    double e9 = Double.valueOf(getFieldObjectValue(BaseReportFieldEnum.MarketCost_landGetCostTotal, target));
-                    double e17 = Double.valueOf(getFieldObjectValue(BaseReportFieldEnum.MarketCost_constructionSubtotal, target));
-                    double e18 = Double.valueOf(getFieldObjectValue(BaseReportFieldEnum.MarketCost_unforeseenExpenses, target));
-                    double e19 = Double.valueOf(getFieldObjectValue(BaseReportFieldEnum.MarketCost_managementExpense, target));
+                    double e21 = Double.valueOf(getFieldObjectValue(BaseReportMarketCostEnum.MarketCost_interestInvestment, target));
+                    double e23 = Double.valueOf(getFieldObjectValue(BaseReportMarketCostEnum.MarketCost_investmentProfit, target));
+                    double e9 = Double.valueOf(getFieldObjectValue(BaseReportMarketCostEnum.MarketCost_landGetCostTotal, target));
+                    double e17 = Double.valueOf(getFieldObjectValue(BaseReportMarketCostEnum.MarketCost_constructionSubtotal, target));
+                    double e18 = Double.valueOf(getFieldObjectValue(BaseReportMarketCostEnum.MarketCost_unforeseenExpenses, target));
+                    double e19 = Double.valueOf(getFieldObjectValue(BaseReportMarketCostEnum.MarketCost_managementExpense, target));
                     double value = ArithmeticUtils.add(new double[]{e9, e17, e18, e19, e21, e23});
                     target.setConstructionAssessmentValue2(ArithmeticUtils.createBigDecimal(value));
                     return String.valueOf(value);
@@ -632,8 +632,8 @@ public class MdMarketCostService {
             }
             case MarketCost_constructionAssessmentValue: {//e25
                 try {
-                    double e24 = Double.valueOf(getFieldObjectValue(BaseReportFieldEnum.MarketCost_constructionAssessmentValue2, target));
-                    double g24 = Double.valueOf(getFieldObjectValue(BaseReportFieldEnum.MarketCost_constructionAssessmentValue2Rate, target));
+                    double e24 = Double.valueOf(getFieldObjectValue(BaseReportMarketCostEnum.MarketCost_constructionAssessmentValue2, target));
+                    double g24 = Double.valueOf(getFieldObjectValue(BaseReportMarketCostEnum.MarketCost_constructionAssessmentValue2Rate, target));
                     double value = ArithmeticUtils.div(e24, 1 - g24, 2);
                     target.setConstructionAssessmentValue(String.valueOf(value));
                     return String.valueOf(value);
@@ -652,9 +652,9 @@ public class MdMarketCostService {
             }
             case MarketCost_landGetCostTotal: {
                 try {
-                    String v1 = getFieldObjectValue(BaseReportFieldEnum.MarketCost_landPurchasePrice, target);
-                    String v2 = getFieldObjectValue(BaseReportFieldEnum.MarketCost_landGetRelevant, target);
-                    String v3 = getFieldObjectValue(BaseReportFieldEnum.MarketCost_additionalCostLandAcquisition, target);
+                    String v1 = getFieldObjectValue(BaseReportMarketCostEnum.MarketCost_landPurchasePrice, target);
+                    String v2 = getFieldObjectValue(BaseReportMarketCostEnum.MarketCost_landGetRelevant, target);
+                    String v3 = getFieldObjectValue(BaseReportMarketCostEnum.MarketCost_additionalCostLandAcquisition, target);
                     double[] doubles = new double[]{Double.valueOf(v1), Double.valueOf(v2), Double.valueOf(v3)};
                     String value = String.valueOf(ArithmeticUtils.add(doubles));
                     target.setLandGetCostTotal(ArithmeticUtils.round(value, 2));
@@ -665,7 +665,7 @@ public class MdMarketCostService {
             }
             case MarketCost_constructionAssessmentPriceCorrecting: {
                 try {
-                    String e25 = getFieldObjectValue(BaseReportFieldEnum.MarketCost_constructionAssessmentValue, target);
+                    String e25 = getFieldObjectValue(BaseReportMarketCostEnum.MarketCost_constructionAssessmentValue, target);
                     String f3 = target.getDevelopBuildAreaTax().toString();
                     BigDecimal v = ArithmeticUtils.multiply(ArithmeticUtils.createBigDecimal(e25), ArithmeticUtils.createBigDecimal(10000));
                     BigDecimal decimal = ArithmeticUtils.divide(v, ArithmeticUtils.createBigDecimal(f3), 2);

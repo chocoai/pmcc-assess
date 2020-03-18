@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.ArithmeticUtils;
 import com.copower.pmcc.assess.common.BeanCopyHelp;
 import com.copower.pmcc.assess.common.enums.method.MdDevelopmentTypeEnum;
-import com.copower.pmcc.assess.common.enums.report.BaseReportFieldEnum;
+import com.copower.pmcc.assess.common.enums.report.BaseReportDevelopmentEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdDevelopmentDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
@@ -196,7 +196,7 @@ public class MdDevelopmentService {
      * @param target
      * @return
      */
-    public synchronized String getFieldObjectValue(BaseReportFieldEnum key, MdDevelopment target) {
+    public synchronized String getFieldObjectValue(BaseReportDevelopmentEnum key, MdDevelopment target) {
         try {
             return getFieldObjectValueHandle(key, target);
         } catch (Exception e) {
@@ -204,7 +204,7 @@ public class MdDevelopmentService {
         }
     }
 
-    public synchronized String getFieldObjectValueReport(BaseReportFieldEnum key, MdDevelopment target) {
+    public synchronized String getFieldObjectValueReport(BaseReportDevelopmentEnum key, MdDevelopment target) {
         try {
             return getFieldObjectValueHandle(key, target);
         } catch (Exception e) {
@@ -217,7 +217,7 @@ public class MdDevelopmentService {
             return;
         }
         saveAndUpdateMdDevelopment(target) ;
-        getFieldObjectValueHandle(BaseReportFieldEnum.Development_Price, target);
+        getFieldObjectValueHandle(BaseReportDevelopmentEnum.Development_Price, target);
         saveAndUpdateMdDevelopment(target) ;
     }
 
@@ -230,7 +230,7 @@ public class MdDevelopmentService {
      * @param target
      * @return
      */
-    private String getFieldObjectValueHandle(BaseReportFieldEnum key, MdDevelopment target) {
+    private String getFieldObjectValueHandle(BaseReportDevelopmentEnum key, MdDevelopment target) {
         switch (key) {
             case Development_projectConstructionPeriod: {
                 if (!ArithmeticUtils.checkNotNull(new BigDecimal[]{target.getDevelopedYear(), target.getRemainingDevelopmentYear()})) {
@@ -252,7 +252,7 @@ public class MdDevelopmentService {
                 return ArithmeticUtils.getBigDecimalString(bigDecimal);
             }
             case Development_constructionInstallationEngineeringFee: {//d21 or e21
-                String f18 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_total_saleableArea, target);
+                String f18 = getFieldObjectValueHandle(BaseReportDevelopmentEnum.Development_total_saleableArea, target);
                 if (!ArithmeticUtils.checkNotNull(f18)) {
                     return "";
                 }
@@ -265,7 +265,7 @@ public class MdDevelopmentService {
             }
             case Development_reconnaissanceDesignTotal: {//d20 or e20
                 //=F18*F21*F20/10000
-                String f18 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_total_saleableArea, target);
+                String f18 = getFieldObjectValueHandle(BaseReportDevelopmentEnum.Development_total_saleableArea, target);
                 if (!ArithmeticUtils.checkNotNull(f18)) {
                     return "";
                 }
@@ -282,7 +282,7 @@ public class MdDevelopmentService {
             }
             case Development_infrastructureCostTotal: {//d22 or e22
                 //F18*F22/10000
-                String f18 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_total_saleableArea, target);
+                String f18 = getFieldObjectValueHandle(BaseReportDevelopmentEnum.Development_total_saleableArea, target);
                 if (!ArithmeticUtils.checkNotNull(f18)) {
                     return "";
                 }
@@ -295,7 +295,7 @@ public class MdDevelopmentService {
             }
             case Development_infrastructureMatchingCostTotal: {//d23 or e23
                 //F18*F23/10000
-                String f18 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_total_saleableArea, target);
+                String f18 = getFieldObjectValueHandle(BaseReportDevelopmentEnum.Development_total_saleableArea, target);
                 if (!ArithmeticUtils.checkNotNull(f18)) {
                     return "";
                 }
@@ -308,7 +308,7 @@ public class MdDevelopmentService {
             }
             case Development_devDuringTotal: {//d24 or e24
                 //F18*F24/10000
-                String f18 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_total_saleableArea, target);
+                String f18 = getFieldObjectValueHandle(BaseReportDevelopmentEnum.Development_total_saleableArea, target);
                 if (!ArithmeticUtils.checkNotNull(f18)) {
                     return "";
                 }
@@ -321,7 +321,7 @@ public class MdDevelopmentService {
             }
             case Development_otherEngineeringCostTotal: {//d25 or e25
                 //F18*F25/10000
-                String f18 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_total_saleableArea, target);
+                String f18 = getFieldObjectValueHandle(BaseReportDevelopmentEnum.Development_total_saleableArea, target);
                 if (!ArithmeticUtils.checkNotNull(f18)) {
                     return "";
                 }
@@ -334,12 +334,12 @@ public class MdDevelopmentService {
             }
             case Development_constructionSubTotal: {//d26或者 e26
                 //ROUND(SUM(D20:E25),2)
-                String d20 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_reconnaissanceDesignTotal, target);
-                String d21 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_constructionInstallationEngineeringFee, target);
-                String d22 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_infrastructureCostTotal, target);
-                String d23 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_infrastructureMatchingCostTotal, target);
-                String d24 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_devDuringTotal, target);
-                String d25 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_otherEngineeringCostTotal, target);
+                String d20 = getFieldObjectValueHandle(BaseReportDevelopmentEnum.Development_reconnaissanceDesignTotal, target);
+                String d21 = getFieldObjectValueHandle(BaseReportDevelopmentEnum.Development_constructionInstallationEngineeringFee, target);
+                String d22 = getFieldObjectValueHandle(BaseReportDevelopmentEnum.Development_infrastructureCostTotal, target);
+                String d23 = getFieldObjectValueHandle(BaseReportDevelopmentEnum.Development_infrastructureMatchingCostTotal, target);
+                String d24 = getFieldObjectValueHandle(BaseReportDevelopmentEnum.Development_devDuringTotal, target);
+                String d25 = getFieldObjectValueHandle(BaseReportDevelopmentEnum.Development_otherEngineeringCostTotal, target);
                 String[] strings = new String[]{d20, d21, d22, d23, d24, d25};
                 if (!ArithmeticUtils.checkNotNull(strings)) {
                     return "";
@@ -360,7 +360,7 @@ public class MdDevelopmentService {
             }
             case Development_unforeseenExpensesTotal: {//d27 or e27
                 //SUM(D20:E25)*F27
-                String d26 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_constructionSubTotal, target);
+                String d26 = getFieldObjectValueHandle(BaseReportDevelopmentEnum.Development_constructionSubTotal, target);
                 if (!ArithmeticUtils.checkNotNull(d26)) {
                     return "";
                 }
@@ -381,7 +381,7 @@ public class MdDevelopmentService {
             }
             case Development_managementExpenseCorrectRate: {//d32
                 //=G32*D28
-                String d28 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_LandGetCost, target);
+                String d28 = getFieldObjectValueHandle(BaseReportDevelopmentEnum.Development_LandGetCost, target);
                 if (!ArithmeticUtils.checkNotNull(d28)) {
                     return "";
                 }
@@ -393,8 +393,8 @@ public class MdDevelopmentService {
             }
             case Development_managementExpenseTotal: {//f32
                 //(SUM(D26+D27)+F31)*G32
-                String d26 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_constructionSubTotal, target);
-                String d27 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_unforeseenExpensesTotal, target);
+                String d26 = getFieldObjectValueHandle(BaseReportDevelopmentEnum.Development_constructionSubTotal, target);
+                String d27 = getFieldObjectValueHandle(BaseReportDevelopmentEnum.Development_unforeseenExpensesTotal, target);
                 if (!ArithmeticUtils.checkNotNull(Arrays.asList(d26, d27))) {
                     return "";
                 }
@@ -424,9 +424,9 @@ public class MdDevelopmentService {
             case Development_interestInvestmentCorrectRate: {//d34
                 //=ROUND(((1+G34)^D3-1)*D28+((1+G34)^(D3/2)-1)*D32,4)
                 BigDecimal g34 = target.getInterestInvestmentTax();
-                String d3 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_projectConstructionPeriod, target);
-                String d28 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_LandGetCost, target);
-                String d32 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_managementExpenseCorrectRate, target);
+                String d3 = getFieldObjectValueHandle(BaseReportDevelopmentEnum.Development_projectConstructionPeriod, target);
+                String d28 = getFieldObjectValueHandle(BaseReportDevelopmentEnum.Development_LandGetCost, target);
+                String d32 = getFieldObjectValueHandle(BaseReportDevelopmentEnum.Development_managementExpenseCorrectRate, target);
                 if (!ArithmeticUtils.checkNotNull(Arrays.asList(d3, d28, d32))) {
                     return "";
                 }
@@ -441,16 +441,16 @@ public class MdDevelopmentService {
             case Development_interestInvestment: {//f34
                 //D21+D23+D24+D25+D27+F32+F33)  *  ( (1+G34)^(D3/2)-1)   +(SUM(D20+D22)+E31) * (  (1+G34)^(D3)-1 )    )
                 BigDecimal g34 = target.getInterestInvestmentTax();
-                String d20 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_reconnaissanceDesignTotal, target);
-                String d21 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_constructionInstallationEngineeringFee, target);
-                String d22 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_infrastructureCostTotal, target);
-                String d23 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_infrastructureMatchingCostTotal, target);
-                String d24 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_devDuringTotal, target);
-                String d25 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_otherEngineeringCostTotal, target);
-                String d27 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_unforeseenExpensesTotal, target);
-                String f33 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_salesFeeTotal, target);
-                String f32 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_managementExpenseTotal, target);
-                String d3 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_projectConstructionPeriod, target);
+                String d20 = getFieldObjectValueHandle(BaseReportDevelopmentEnum.Development_reconnaissanceDesignTotal, target);
+                String d21 = getFieldObjectValueHandle(BaseReportDevelopmentEnum.Development_constructionInstallationEngineeringFee, target);
+                String d22 = getFieldObjectValueHandle(BaseReportDevelopmentEnum.Development_infrastructureCostTotal, target);
+                String d23 = getFieldObjectValueHandle(BaseReportDevelopmentEnum.Development_infrastructureMatchingCostTotal, target);
+                String d24 = getFieldObjectValueHandle(BaseReportDevelopmentEnum.Development_devDuringTotal, target);
+                String d25 = getFieldObjectValueHandle(BaseReportDevelopmentEnum.Development_otherEngineeringCostTotal, target);
+                String d27 = getFieldObjectValueHandle(BaseReportDevelopmentEnum.Development_unforeseenExpensesTotal, target);
+                String f33 = getFieldObjectValueHandle(BaseReportDevelopmentEnum.Development_salesFeeTotal, target);
+                String f32 = getFieldObjectValueHandle(BaseReportDevelopmentEnum.Development_managementExpenseTotal, target);
+                String d3 = getFieldObjectValueHandle(BaseReportDevelopmentEnum.Development_projectConstructionPeriod, target);
                 if (Objects.equal(target.getType(), MdDevelopmentTypeEnum.developmentEngineering.getKey())) {
                     d3 = target.getRemainingDevelopmentYear().toString();
                 }
@@ -485,8 +485,8 @@ public class MdDevelopmentService {
             }
             case Development_investmentProfitCorrectRate: {//d35
                 //(D28+D32)*G35
-                String d28 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_LandGetCost, target);
-                String d32 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_managementExpenseCorrectRate, target);
+                String d28 = getFieldObjectValueHandle(BaseReportDevelopmentEnum.Development_LandGetCost, target);
+                String d32 = getFieldObjectValueHandle(BaseReportDevelopmentEnum.Development_managementExpenseCorrectRate, target);
                 BigDecimal g35 = target.getInvestmentProfitTax();
                 if (!ArithmeticUtils.checkNotNull(Arrays.asList(d28, d32))) {
                     return "";
@@ -500,10 +500,10 @@ public class MdDevelopmentService {
             }
             case Development_investmentProfit: {//f35
                 //(D26+D27+F32+F33+E31)*G35
-                String d26 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_constructionSubTotal, target);
-                String d27 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_unforeseenExpensesTotal, target);
-                String f33 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_salesFeeTotal, target);
-                String f32 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_managementExpenseTotal, target);
+                String d26 = getFieldObjectValueHandle(BaseReportDevelopmentEnum.Development_constructionSubTotal, target);
+                String d27 = getFieldObjectValueHandle(BaseReportDevelopmentEnum.Development_unforeseenExpensesTotal, target);
+                String f33 = getFieldObjectValueHandle(BaseReportDevelopmentEnum.Development_salesFeeTotal, target);
+                String f32 = getFieldObjectValueHandle(BaseReportDevelopmentEnum.Development_managementExpenseTotal, target);
                 BigDecimal f31 = target.getLandGetRelevant();
                 BigDecimal g35 = target.getInvestmentProfitTax();
                 if (!ArithmeticUtils.checkNotNull(f31)) {
@@ -544,7 +544,7 @@ public class MdDevelopmentService {
             }
             case Development_projectDevelopmentIncomeValue: {//f36
                 //E16*D36
-                String d36 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_projectDevelopmentIncomeCorrectRate, target);
+                String d36 = getFieldObjectValueHandle(BaseReportDevelopmentEnum.Development_projectDevelopmentIncomeCorrectRate, target);
                 BigDecimal e16 = target.getTotalSaleableAreaPrice();
                 if (!ArithmeticUtils.checkNotNull(d36)) {
                     return "";
@@ -559,9 +559,9 @@ public class MdDevelopmentService {
                 //=D29+D30+D32+D35+D34
                 BigDecimal d29 = target.getDeedTaxRate();
                 BigDecimal d30 = target.getTransactionTaxRate();
-                String d32 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_managementExpenseCorrectRate, target);
-                String d34 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_interestInvestmentCorrectRate, target);
-                String d35 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_investmentProfitCorrectRate, target);
+                String d32 = getFieldObjectValueHandle(BaseReportDevelopmentEnum.Development_managementExpenseCorrectRate, target);
+                String d34 = getFieldObjectValueHandle(BaseReportDevelopmentEnum.Development_interestInvestmentCorrectRate, target);
+                String d35 = getFieldObjectValueHandle(BaseReportDevelopmentEnum.Development_investmentProfitCorrectRate, target);
                 if (!ArithmeticUtils.checkNotNull(new BigDecimal[]{d29, d30})) {
                     return "";
                 }
@@ -579,14 +579,14 @@ public class MdDevelopmentService {
             case Development_LandPriceCorrectValue: {// f40
                 //=E16-D26-D27-E31-SUM(F32:F35)-F36)
                 BigDecimal e16 = target.getTotalSaleableAreaPrice();
-                String d26 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_constructionSubTotal, target);
-                String d27 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_unforeseenExpensesTotal, target);
-                String f32 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_managementExpenseTotal, target);
+                String d26 = getFieldObjectValueHandle(BaseReportDevelopmentEnum.Development_constructionSubTotal, target);
+                String d27 = getFieldObjectValueHandle(BaseReportDevelopmentEnum.Development_unforeseenExpensesTotal, target);
+                String f32 = getFieldObjectValueHandle(BaseReportDevelopmentEnum.Development_managementExpenseTotal, target);
                 BigDecimal f31 = target.getLandGetRelevant();
-                String f33 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_salesFeeTotal, target);
-                String f36 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_projectDevelopmentIncomeValue, target);
-                String f34 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_interestInvestment, target);
-                String f35 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_investmentProfit, target);
+                String f33 = getFieldObjectValueHandle(BaseReportDevelopmentEnum.Development_salesFeeTotal, target);
+                String f36 = getFieldObjectValueHandle(BaseReportDevelopmentEnum.Development_projectDevelopmentIncomeValue, target);
+                String f34 = getFieldObjectValueHandle(BaseReportDevelopmentEnum.Development_interestInvestment, target);
+                String f35 = getFieldObjectValueHandle(BaseReportDevelopmentEnum.Development_investmentProfit, target);
                 if (!ArithmeticUtils.checkNotNull(new String[]{d26, d27, f32, f33, f36, f34, f35})) {
                     return "";
                 }
@@ -608,8 +608,8 @@ public class MdDevelopmentService {
             }
             case Development_LandPriceValue: {//e40
                 //=F40/(1+H40)
-                String f40 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_LandPriceCorrectValue, target);
-                String h40 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_LandPriceCorrectRate, target);
+                String f40 = getFieldObjectValueHandle(BaseReportDevelopmentEnum.Development_LandPriceCorrectValue, target);
+                String h40 = getFieldObjectValueHandle(BaseReportDevelopmentEnum.Development_LandPriceCorrectRate, target);
                 if (!ArithmeticUtils.checkNotNull(new String[]{f40, h40})) {
                     return "";
                 }
@@ -619,8 +619,8 @@ public class MdDevelopmentService {
             }
             case Development_assessPrice: {//d41
                 //=E40/F18*10000
-                String e40 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_LandPriceValue, target);
-                String f18 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_total_saleableArea, target);
+                String e40 = getFieldObjectValueHandle(BaseReportDevelopmentEnum.Development_LandPriceValue, target);
+                String f18 = getFieldObjectValueHandle(BaseReportDevelopmentEnum.Development_total_saleableArea, target);
                 if (!ArithmeticUtils.checkNotNull(new String[]{e40, f18})) {
                     target.setAssessPrice(ArithmeticUtils.createBigDecimal(0));
                     return "";
@@ -660,8 +660,8 @@ public class MdDevelopmentService {
             }
             case Development_Price: {//d47
                 //=D41*D43*D44*D45+D46
-                String d41 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_assessPrice, target);
-                String d43 = getFieldObjectValueHandle(BaseReportFieldEnum.Development_LandPriceCoefficient, target);
+                String d41 = getFieldObjectValueHandle(BaseReportDevelopmentEnum.Development_assessPrice, target);
+                String d43 = getFieldObjectValueHandle(BaseReportDevelopmentEnum.Development_LandPriceCoefficient, target);
                 BigDecimal d44 = target.getAmendmentStatusRights();
                 BigDecimal d45 = target.getOtherAmendments();
                 BigDecimal d46 = target.getDevelopmentDegreeRevision();

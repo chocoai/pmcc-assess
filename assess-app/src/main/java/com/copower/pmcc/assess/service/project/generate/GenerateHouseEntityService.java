@@ -209,7 +209,9 @@ public class GenerateHouseEntityService {
                 }
             }
 //            map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), StringUtils.join(stringSet, "、"));
-            map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), stringSet.stream().findFirst().get());
+            if (CollectionUtils.isNotEmpty(stringSet)) {
+                map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), stringSet.stream().findFirst().get());
+            }
         }
         return generateCommonMethod.judgeEachDesc(map, "", ";", false);
     }
@@ -345,7 +347,7 @@ public class GenerateHouseEntityService {
         Map<Integer, String> map = Maps.newHashMap();
         for (SchemeJudgeObject schemeJudgeObject : judgeObjectList) {
             BasicApplyBatch basicApplyBatch = surveyCommonService.getBasicApplyBatchById(schemeJudgeObject.getDeclareRecordId());
-            if (basicApplyBatch == null){
+            if (basicApplyBatch == null) {
                 continue;
             }
             BasicExamineHandle basicExamineHandle = new BasicExamineHandle(basicApplyBatch);
