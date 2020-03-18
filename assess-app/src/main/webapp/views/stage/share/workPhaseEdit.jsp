@@ -565,12 +565,12 @@
             });
         });
 
-        $("#modify_project_phase_form").find('[name=boxName]').click(function () {
+        /*$("#modify_project_phase_form").find('[name=boxName]').click(function () {
             var _this = this;
             bpmBoxRe.select(function (row) {
                 $(_this).val(row.name);
             });
-        })
+        })*/
 
     });
 </script>
