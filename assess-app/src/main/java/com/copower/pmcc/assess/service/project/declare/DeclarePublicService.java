@@ -198,7 +198,7 @@ public class DeclarePublicService {
      * @return
      */
     public boolean checkLandCertGetQuestion(Integer id) {
-        if (id != null || id != 0) {
+        if (id != null && id != 0) {
             BaseDataDic dataDicById = baseDataDicService.getDataDicById(id);
             BaseDataDic dicYes = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.projectDeclareCertificate_YES);
             if (Objects.equal(dicYes.getId(), dataDicById.getId())) {
