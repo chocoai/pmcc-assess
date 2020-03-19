@@ -9,7 +9,10 @@ import com.copower.pmcc.assess.common.*;
 import com.copower.pmcc.assess.common.enums.*;
 import com.copower.pmcc.assess.common.enums.basic.*;
 import com.copower.pmcc.assess.common.enums.method.MethodIncomeOperationModeEnum;
+import com.copower.pmcc.assess.common.enums.report.BaseReportBankEnum;
 import com.copower.pmcc.assess.common.enums.report.BaseReportEnum;
+import com.copower.pmcc.assess.common.enums.report.BaseReportFieldConstructionBankEnum;
+import com.copower.pmcc.assess.common.enums.report.BaseReportField_INDUSTRIAL_AND_COMMERCIAL_BANKEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
@@ -943,7 +946,8 @@ public class GenerateBaseDataService {
      * @param baseReportEnum
      * @return
      */
-    public String getLandCertificateFieldValue(BaseReportEnum baseReportEnum) {
+    public String getLandCertificateFieldValue(String enumName) {
+        BaseReportBankEnum baseReportEnum = BaseReportBankEnum.getEnumByName(enumName) ;
         Map<Integer, String> map = Maps.newHashMap();
         for (SchemeJudgeObject schemeJudgeObject : getSchemeJudgeObjectList()) {
             if (schemeJudgeObject.getDeclareRecordId() == null) {
@@ -986,7 +990,7 @@ public class GenerateBaseDataService {
                 declareRealtyHouseCert = new DeclareRealtyHouseCert();
             }
             switch (baseReportEnum) {
-                case LandCertificateField1: {
+                case landNumber: {
                     String value = declareRealtyLandCert.getLandCertName();
                     if (StringUtils.isEmpty(value)) {
                         value = declareRealtyRealEstateCert.getCertName();
@@ -999,7 +1003,7 @@ public class GenerateBaseDataService {
                     }
                 }
                 break;
-                case LandCertificateField2: {
+                case landownership: {
                     String value = declareRealtyLandCert.getOwnership();
                     if (StringUtils.isEmpty(value)) {
                         value = declareRealtyRealEstateCert.getOwnership();
@@ -1012,7 +1016,7 @@ public class GenerateBaseDataService {
                     }
                 }
                 break;
-                case LandCertificateField3: {
+                case landcert_use: {
                     String value = null;
                     if (declareRealtyLandCert.getCertUseCategory() != null) {
                         value = baseDataDicService.getNameById(declareRealtyLandCert.getCertUseCategory());
@@ -1032,7 +1036,7 @@ public class GenerateBaseDataService {
                     }
                 }
                 break;
-                case LandCertificateField4: {
+                case land_right_nature: {
                     String value = null;
                     if (declareRealtyLandCert.getLandRightNature() != null) {
                         value = baseDataDicService.getNameById(declareRealtyLandCert.getLandRightNature());
@@ -1047,7 +1051,7 @@ public class GenerateBaseDataService {
                     }
                 }
                 break;
-                case LandCertificateField5: {
+                case landapportionment_area: {
                     BigDecimal apportionmentArea = null;
                     if (apportionmentArea == null) {
                         if (declareRealtyLandCert.getApportionmentArea() != null) {
@@ -1069,7 +1073,7 @@ public class GenerateBaseDataService {
                     }
                 }
                 break;
-                case LandCertificateField6: {
+                case landendTime: {
                     Date useEndDate = null;
                     if (declareRealtyLandCert.getTerminationDate() != null) {
                         useEndDate = declareRealtyLandCert.getTerminationDate();
@@ -1094,7 +1098,7 @@ public class GenerateBaseDataService {
                     }
                 }
                 break;
-                case LandCertificateField7: {
+                case landregistration_authority: {
                     String value = null;
                     if (StringUtils.isEmpty(value)) {
                         if (StringUtils.isNotEmpty(declareRealtyLandCert.getRegistrationAuthority())) {
@@ -1116,7 +1120,7 @@ public class GenerateBaseDataService {
                     }
                 }
                 break;
-                case LandCertificateField8: {
+                case landregistration_date: {
                     Date registrationDate = null;
                     if (registrationDate == null) {
                         if (declareRealtyLandCert.getRegistrationDate() != null) {
@@ -3962,13 +3966,14 @@ public class GenerateBaseDataService {
      * @return
      * @throws Exception
      */
-    public String getJudgeObjectOtherFieldValue(BaseReportEnum reportFieldEnum) throws Exception {
+    public String getJudgeObjectOtherFieldValue(String enumName) throws Exception {
+        BaseReportBankEnum reportFieldEnum = BaseReportBankEnum.getEnumByName(enumName) ;
         Map<Integer, String> map = Maps.newHashMap();
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         String value = "/";
         inner:
         switch (reportFieldEnum) {
-            case JudgeObjectOtherField1: {
+            case BankGenerallandscape: {
                 for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                     BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
                     if (basicApply == null || basicApply.getId() == null) {
@@ -3981,14 +3986,14 @@ public class GenerateBaseDataService {
                 }
             }
             break;
-            case JudgeObjectOtherField2: {
+            case BankGeneralFrontage: {
                 String text = generateLoactionService.getFaceStreet(schemeJudgeObjectList);
                 if (StringUtils.isNotBlank(text)) {
                     value = text;
                 }
             }
             break;
-            case JudgeObjectOtherField3: {
+            case BankGeneralFloorSpacing: {
                 for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                     BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
                     if (basicApply == null) {
@@ -4006,7 +4011,7 @@ public class GenerateBaseDataService {
                 }
             }
             break;
-            case JudgeObjectOtherField4: {
+            case BankGeneralGreenlandRate: {
                 for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                     BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
                     if (basicApply == null) {
@@ -4028,7 +4033,7 @@ public class GenerateBaseDataService {
                 }
             }
             break;
-            case JudgeObjectOtherField5: {
+            case BankGeneralBuildingCoverage: {
                 for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                     BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
                     if (basicApply == null) {
@@ -4053,7 +4058,7 @@ public class GenerateBaseDataService {
                 }
             }
             break;
-            case JudgeObjectOtherField6: {
+            case BankGeneralParkingLot: {
                 for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                     BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
                     if (basicApply == null) {
@@ -4066,7 +4071,7 @@ public class GenerateBaseDataService {
                 }
             }
             break;
-            case JudgeObjectOtherField7: {
+            case BankGeneralPropertyManagement: {
                 for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                     BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
                     if (basicApply == null) {
@@ -4099,7 +4104,7 @@ public class GenerateBaseDataService {
                 }
             }
             break;
-            case JudgeObjectOtherField8: {
+            case BankGeneralSuccessRate: {
                 for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
                     BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
                     if (basicApply == null) {
@@ -4197,14 +4202,15 @@ public class GenerateBaseDataService {
      * @param reportFieldEnum
      * @return
      */
-    public String getJudgeObjectDamagedDegreeFieldB(BaseReportEnum reportFieldEnum) throws Exception {
+    public String getJudgeObjectDamagedDegreeFieldB(String enumName) throws Exception {
+        BaseReportBankEnum reportFieldEnum = BaseReportBankEnum.getEnumByName(enumName) ;
         String name = null;
         switch (reportFieldEnum) {
-            case JudgeObjectDamagedDegreeField6: {
+            case renovation_condition_bathroom: {
                 name = "卫生间";
             }
             break;
-            case JudgeObjectDamagedDegreeField7: {
+            case renovation_condition_kitchen: {
                 name = "厨房";
             }
             break;
@@ -4253,26 +4259,27 @@ public class GenerateBaseDataService {
         return value;
     }
 
-    public String getJudgeObjectDamagedDegreeFieldA(BaseReportEnum reportFieldEnum) throws Exception {
+    public String getJudgeObjectDamagedDegreeFieldA(String enumName) throws Exception {
+        BaseReportBankEnum reportFieldEnum = BaseReportBankEnum.getEnumByName(enumName) ;
         String name = null;
         switch (reportFieldEnum) {
-            case JudgeObjectDamagedDegreeField1: {
+            case renovation_condition_door: {
                 name = "门";
             }
             break;
-            case JudgeObjectDamagedDegreeField2: {
+            case renovation_condition_window: {
                 name = "窗";
             }
             break;
-            case JudgeObjectDamagedDegreeField3: {
+            case renovation_condition_land: {
                 name = "地面";
             }
             break;
-            case JudgeObjectDamagedDegreeField4: {
+            case renovation_condition_wall: {
                 name = "墙";
             }
             break;
-            case JudgeObjectDamagedDegreeField5: {
+            case renovation_condition_Canopy: {
                 name = "天棚";
             }
             break;
@@ -4338,7 +4345,8 @@ public class GenerateBaseDataService {
      * @return
      * @throws Exception
      */
-    public String getJudgeObjectLocationValue(BaseReportEnum reportFieldEnum) throws Exception {
+    public String getJudgeObjectLocationValue(String enumName) throws Exception {
+        BaseReportBankEnum reportFieldEnum = BaseReportBankEnum.getEnumByName(enumName) ;
         StringBuilder stringBuilder = new StringBuilder(8);
         LinkedList<String> stringLinkedList = Lists.newLinkedList();
         Map<Integer, String> map = Maps.newHashMap();
@@ -4357,7 +4365,7 @@ public class GenerateBaseDataService {
             BasicHouseVo basicHouseVo = generateBaseExamineService.getBasicHouse();
             BasicEstateLandStateVo basicEstateLandStateVo = generateBaseExamineService.getBasicEstateLandState();
             switch (reportFieldEnum) {
-                case JudgeObjectLoactionField1:
+                case BankGeneralLocation:
                     if (StringUtils.isNotEmpty(declareRecord.getSeat())) {
                         stringBuilder.append("估价对象位于");
                         stringBuilder.append(basicEstateVo.getCityName()).append(basicEstateVo.getDistrictName()).append(declareRecord.getSeat());
@@ -4410,7 +4418,7 @@ public class GenerateBaseDataService {
                     }
                     stringLinkedList.clear();
                     break;
-                case JudgeObjectLoactionField2: {
+                case BankGeneralShoppingConditions: {
                     List<BasicMatchingLeisurePlace> basicMatchingLeisurePlaceList = generateBaseExamineService.getBasicMatchingLeisurePlaceList();
                     String value = generateLoactionService.getMatchingLeisurePlacePrivate(basicMatchingLeisurePlaceList, ExamineMatchingLeisurePlaceTypeEnum.MATCHINGMARKET, "区域内", false);
                     if (StringUtils.isNotEmpty(value)) {
@@ -4418,7 +4426,7 @@ public class GenerateBaseDataService {
                     }
                 }
                 break;
-                case JudgeObjectLoactionField3: {
+                case Bus_Convenience: {
                     List<BasicMatchingTrafficVo> basicMatchingTrafficList = generateBaseExamineService.getBasicMatchingTrafficList();
                     String value = generateLoactionService.getTrafficConditionsPrivate(basicMatchingTrafficList, ExamineMatchingTrafficTypeEnum.TRANSIT, "", false);
                     if (StringUtils.isNotEmpty(value)) {
@@ -4426,7 +4434,7 @@ public class GenerateBaseDataService {
                     }
                 }
                 break;
-                case JudgeObjectLoactionField4: {
+                case BankGeneralTraffic_accessibility: {
                     List<BasicMatchingTrafficVo> basicMatchingTrafficList = generateBaseExamineService.getBasicMatchingTrafficList();
                     String value = generateLoactionService.getTrafficConditionsPrivate(basicMatchingTrafficList, ExamineMatchingTrafficTypeEnum.MainRoad, "区域内", false);
                     if (StringUtils.isNotEmpty(value)) {
@@ -4434,7 +4442,7 @@ public class GenerateBaseDataService {
                     }
                 }
                 break;
-                case JudgeObjectLoactionField5: {
+                case BankGeneralsubway: {
                     List<BasicMatchingTrafficVo> basicMatchingTrafficList = generateBaseExamineService.getBasicMatchingTrafficList();
                     String value = generateLoactionService.getTrafficConditionsPrivate(basicMatchingTrafficList, ExamineMatchingTrafficTypeEnum.METRO, "区域内", false);
                     if (StringUtils.isNotEmpty(value)) {
@@ -4442,7 +4450,7 @@ public class GenerateBaseDataService {
                     }
                 }
                 break;
-                case JudgeObjectLoactionField6: {
+                case BankGeneralinfrastructure: {
                     if (StringUtils.isNotBlank(basicEstateVo.getInfrastructureName())) {
                         map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), basicEstateVo.getInfrastructureName());
                     }
@@ -4451,13 +4459,13 @@ public class GenerateBaseDataService {
 //                    }
                 }
                 break;
-                case JudgeObjectLoactionField6B: {
+                case BankGeneralExternal_facilities: {
                     if (StringUtils.isNotBlank(basicEstateVo.getInfrastructureName())) {
                         map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), basicEstateVo.getInfrastructureName());
                     }
                 }
                 break;
-                case JudgeObjectLoactionField7: {
+                case BankGeneraleducational_facility: {
                     List<BasicMatchingEducation> basicMatchingEducationList = generateBaseExamineService.getBasicMatchingEducatioListn();
                     String value = generateLoactionService.getFinanceAndMedicalAndEducation(null, null,
                             basicMatchingEducationList, "区域内");
@@ -4467,7 +4475,7 @@ public class GenerateBaseDataService {
                     }
                 }
                 break;
-                case JudgeObjectLoactionField8: {
+                case BankGeneralMedical_Facilities: {
                     List<BasicMatchingMedical> basicMatchingMedicalList = generateBaseExamineService.getBasicMatchingMedicalList();
                     String value = generateLoactionService.getFinanceAndMedicalAndEducation(null, basicMatchingMedicalList,
                             null, "区域内");
@@ -4477,14 +4485,14 @@ public class GenerateBaseDataService {
                     }
                 }
                 break;
-                case JudgeObjectLoactionField9: {
+                case BankGeneralNatural_environment: {
                     String value = generateLoactionService.getEnvironmentalScience(basicApply, EnvironmentalScienceEnum.NATURAL);
                     if (StringUtils.isNotEmpty(value)) {
                         map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), value);
                     }
                 }
                 break;
-                case JudgeObjectLoactionField10: {
+                case BankGeneralcultural_environment: {
                     String value = generateLoactionService.getEnvironmentalScience(basicApply, EnvironmentalScienceEnum.HUMANITY);
                     if (StringUtils.isNotEmpty(value)) {
                         map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), value);
@@ -5534,7 +5542,7 @@ public class GenerateBaseDataService {
             {
                 String val = "";
                 try {
-                    val = getNetAssessmentNumber2(BaseReportEnum.NetAssessmentOne, liquidationAnalysisItemList, schemeJudgeObjectList, schemeJudgeObject, 10);
+                    val = getNetAssessmentNumber2(BaseReportFieldConstructionBankEnum.NetAssessmentOne, liquidationAnalysisItemList, schemeJudgeObjectList, schemeJudgeObject, 10);
                 } catch (Exception e) {
                 }
                 ccb_Pre_Evaluation_Data_FormWriteWord2(documentBuilder, stringLinkedList, "抵押净值1(元)", val);
@@ -5542,7 +5550,7 @@ public class GenerateBaseDataService {
             {
                 String val = "";
                 try {
-                    val = getNetAssessmentNumber2(BaseReportEnum.NetAssessmentTwo, liquidationAnalysisItemList, schemeJudgeObjectList, schemeJudgeObject, 10);
+                    val = getNetAssessmentNumber2(BaseReportFieldConstructionBankEnum.NetAssessmentTwo, liquidationAnalysisItemList, schemeJudgeObjectList, schemeJudgeObject, 10);
                 } catch (Exception e) {
                 }
                 ccb_Pre_Evaluation_Data_FormWriteWord2(documentBuilder, stringLinkedList, "抵押净值2(元)", val);
@@ -5578,7 +5586,8 @@ public class GenerateBaseDataService {
      * @param reportFieldEnum
      * @return
      */
-    public String getNetAssessmentNumber(BaseReportEnum reportFieldEnum) {
+    public String getNetAssessmentNumber(String enumName) {
+        BaseReportFieldConstructionBankEnum reportFieldEnum = BaseReportFieldConstructionBankEnum.getEnumByName(enumName) ;
         Map<Integer, String> map = Maps.newHashMap();
         List<SchemeJudgeObject> schemeJudgeObjectList = Lists.newArrayList();
         schemeJudgeObjectService.getJudgeObjectListAllByAreaGroupId(areaId).forEach(schemeJudgeObject -> {
@@ -5606,15 +5615,15 @@ public class GenerateBaseDataService {
         return "/";
     }
 
-    public String getNetAssessmentNumber2(BaseReportEnum reportFieldEnum, List<SchemeLiquidationAnalysisItem> liquidationAnalysisItemList, List<SchemeJudgeObject> schemeJudgeObjectList, SchemeJudgeObject schemeJudgeObject, Integer newScalePrice) {
+    public String getNetAssessmentNumber2(BaseReportFieldConstructionBankEnum reportFieldEnum, List<SchemeLiquidationAnalysisItem> liquidationAnalysisItemList, List<SchemeJudgeObject> schemeJudgeObjectList, SchemeJudgeObject schemeJudgeObject, Integer newScalePrice) {
         final String sellerPayment = "卖方";
         final String tradingParties = "双方";
         final String buyerPayment = "买方";
         List<SchemeLiquidationAnalysisItem> schemeLiquidationAnalysisItemList = liquidationAnalysisItemList.stream().filter(oo -> {
-            if (Objects.equal(reportFieldEnum.name(), BaseReportEnum.NetAssessmentTwo.name())) {
+            if (Objects.equal(reportFieldEnum.name(), BaseReportFieldConstructionBankEnum.NetAssessmentTwo.name())) {
                 return StringUtils.contains(oo.getTaxesBurden(), sellerPayment);
             }
-            if (Objects.equal(reportFieldEnum.name(), BaseReportEnum.NetAssessmentOne.name())) {
+            if (Objects.equal(reportFieldEnum.name(), BaseReportFieldConstructionBankEnum.NetAssessmentOne.name())) {
                 return StringUtils.contains(oo.getTaxesBurden(), buyerPayment);
             }
             return StringUtils.contains(oo.getTaxesBurden(), tradingParties);

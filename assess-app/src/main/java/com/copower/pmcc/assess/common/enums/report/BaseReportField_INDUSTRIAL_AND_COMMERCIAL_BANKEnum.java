@@ -7,6 +7,9 @@ package com.copower.pmcc.assess.common.enums.report;
  */
 public enum BaseReportField_INDUSTRIAL_AND_COMMERCIAL_BANKEnum {
 
+    District_Analysis("工行区位分析"),
+    ICBCValuationCaseInformationSheet("工行估价案例情况表"),
+
     ;
     private String name;
     private BaseReportField_INDUSTRIAL_AND_COMMERCIAL_BANKEnum(String name) {
