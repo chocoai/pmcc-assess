@@ -17,6 +17,7 @@ import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,6 +45,7 @@ public class SurveyAssetInventoryService extends BaseService {
     private SurveyAssetInventoryContentService surveyAssetInventoryContentService;
     @Autowired
     private BaseAttachmentService baseAttachmentService;
+
     /**
      * 保存资产清查数据
      *
@@ -122,7 +124,8 @@ public class SurveyAssetInventoryService extends BaseService {
                 BaseDataDic addressDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_ACTUAL_ADDRESS);
 
                 for (SurveyAssetInventoryContent content : contentList) {
-                    if (content.getInventoryContent().equals(areaDic.getId()) && StringUtils.isNotBlank(content.getActual())) {
+                    //反写实际面积
+                    if (content.getInventoryContent().equals(areaDic.getId()) && StringUtils.isNotBlank(content.getActual()) && NumberUtils.isNumber(content.getActual())) {
                         declareRecord.setPracticalArea(new BigDecimal(content.getActual()));
                     }
                     //反写实际地址

@@ -105,11 +105,6 @@
                                                 <label class="form-control input-full">${item.scopeNotInclude}</label>
                                             </div>
                                         </div>
-
-                                        <div class="x_title">
-                                            <h4>估价对象查询</h4>
-                                            <div class="clearfix"></div>
-                                        </div>
                                         <div class="judge-object-content"></div>
                                     </form>
                                 </div>
@@ -472,8 +467,6 @@
     </div>
 </script>
 
-
-
 <script src="${pageContext.request.contextPath}/assets/jquery-easyui-1.5.4.1/jquery.easyui.min.js?v=${assessVersion}"></script>
 <script src="${pageContext.request.contextPath}/assets/layer/layer.js?v=${assessVersion}"></script>
 
@@ -498,60 +491,6 @@
         judgeItemHtml: '<li data-judgeId="{judgeId}"> <p> <label>{name}</label> <a href="javascript://" onclick="programme.mergeItemRemove(this);" class="btn btn-xs btn-warning tooltips" style="float: right;"><i class="fa fa-minus fa-white" ></i></a> </p> </li>',
         currJudgeMethodButton: undefined //当前评估方法button
     };
-
-    //加载区域下的委估对象列表
-    <%--programme.loadJudgeObjectList = function (_this) {--%>
-        <%--var tbody = $(_this).closest(".area_panel").find(".table").find("tbody");--%>
-        <%--tbody.empty();--%>
-        <%--var areaGroupId = $(_this).closest('.area_panel').find('[name=areaGroupId]').val();--%>
-        <%--$.ajax({--%>
-            <%--url: "${pageContext.request.contextPath}/schemeProgramme/getSchemeJudgeObjectList",--%>
-            <%--data: {--%>
-                <%--areaGroupId: areaGroupId--%>
-            <%--},--%>
-            <%--type: "post",--%>
-            <%--dataType: "json",--%>
-            <%--success: function (result) {--%>
-                <%--if (result.ret) {--%>
-                    <%--$.each(result.data, function (i, item) {--%>
-                        <%--var html = $("#judgeObjectHtml").html();--%>
-                        <%--html = html.replace(/{id}/g, item.id == undefined ? "" : item.id);--%>
-                        <%--html = html.replace(/{bisSplit}/g, item.bisSplit == undefined ? false : item.bisSplit);--%>
-                        <%--html = html.replace(/{bisMerge}/g, item.bisMerge == undefined ? false : item.bisMerge);--%>
-                        <%--html = html.replace(/{number}/g, item.number == undefined ? "" : item.number);--%>
-                        <%--html = html.replace(/{splitNumber}/g, item.splitNumber == undefined ? "" : item.splitNumber);--%>
-                        <%--html = html.replace(/{rentalPossessionDesc}/g, item.rentalPossessionDesc == undefined ? "" : item.rentalPossessionDesc);--%>
-                        <%--if (item.splitNumber) {--%>
-                            <%--html = html.replace(/{mergeNumber}/g, item.number + "-" + item.splitNumber);--%>
-                        <%--} else {--%>
-                            <%--html = html.replace(/{mergeNumber}/g, item.number == undefined ? "" : item.number);--%>
-                        <%--}--%>
-                        <%--html = html.replace(/{name}/g, item.name == undefined ? "" : item.name);--%>
-                        <%--html = html.replace(/{declareId}/g, item.declareRecordId == undefined ? "" : item.declareRecordId);--%>
-                        <%--html = html.replace(/{ownership}/g, item.ownership == undefined ? "" : AssessCommon.substring(item.ownership, 100));--%>
-                        <%--html = html.replace(/{seat}/g, item.seat == undefined ? "" : AssessCommon.substring(item.seat, 100));--%>
-                        <%--html = html.replace(/{landUseEndDate}/g, item.landUseEndDate == undefined ? "" : formatDate(item.landUseEndDate));--%>
-                        <%--html = html.replace(/{landRemainingYear}/g, item.landRemainingYear == undefined ? "" : item.landRemainingYear);--%>
-                        <%--html = html.replace(/{certUse}/g, item.certUse == undefined ? "" : item.certUse);--%>
-                        <%--html = html.replace(/{practicalUse}/g, item.practicalUse == undefined ? "" : item.practicalUse);--%>
-                        <%--html = html.replace(/{setUseName}/g, item.setUseName == undefined ? "" : item.setUseName);--%>
-                        <%--html = html.replace(/{bestUseName}/g, item.bestUseName == undefined ? "" : item.bestUseName);--%>
-                        <%--html = html.replace(/{floorArea}/g, item.floorArea == undefined ? "" : item.floorArea);--%>
-                        <%--html = html.replace(/{evaluationArea}/g, item.evaluationArea == undefined ? "" : item.evaluationArea);--%>
-                        <%--tbody.append(html);--%>
-                        <%--//设值--%>
-                        <%--var lastTr = tbody.find("tr:last");--%>
-                        <%--if (item.bisSetFunction) {--%>
-                            <%--lastTr.find('td:last').find('.judge-method').removeClass('btn-success').addClass('btn-primary');--%>
-                        <%--}--%>
-                    <%--})--%>
-                <%--}--%>
-            <%--},--%>
-            <%--error: function (result) {--%>
-                <%--alert("调用服务端方法失败，失败原因:" + result);--%>
-            <%--}--%>
-        <%--});--%>
-    <%--};--%>
 
     programme.loadJudgeObjectList = function (_this) {
         var tbody = $(_this).closest(".area_panel").find(".judge-object-content");

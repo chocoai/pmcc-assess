@@ -33,13 +33,7 @@ public class SchemeSurePriceEvent extends ProjectTaskEvent {
         if (processExecution.getProcessStatus().equals(ProcessStatusEnum.FINISH)) {
             ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsByProcessInsId(processExecution.getProcessInstanceId());
             //确定单价保存记录
-            SchemeSurePriceRecord schemeSurePriceRecord = new SchemeSurePriceRecord();
-            schemeSurePriceRecord.setPlanDetailsId(projectPlanDetails.getId());
-            schemeSurePriceRecord.setProjectId(projectPlanDetails.getProjectId());
-            SchemeSurePrice surePrice = schemeSurePriceService.getSurePriceByPlanDetailsId(projectPlanDetails.getId());
-            schemeSurePriceRecord.setRecordPrice(surePrice.getPrice());
-            schemeSurePriceRecord.setCreator(commonService.thisUserAccount());
-            schemeSurePriceRecordDao.addSchemeSurePriceRecord(schemeSurePriceRecord);
+            schemeSurePriceService.addSurePriceRecord(projectPlanDetails);
         }
     }
 }

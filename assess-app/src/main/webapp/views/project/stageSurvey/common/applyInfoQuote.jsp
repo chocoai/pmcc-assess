@@ -99,45 +99,34 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
             </div>
-
             <div class="modal-body">
-                <form class="form-horizontal">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="card-body">
-
-                                <div class="row form-group ">
-                                    <div class="col-md-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-1 control-label">
-                                                名称
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" data-rule-maxlength="50"
-                                                       placeholder="名称" id="queryEstateName" name="queryEstateName"
-                                                       class="form-control input-full">
-                                            </div>
-                                            <button style="margin-left: 10px" class="btn btn-info  btn-sm" type="button"
-                                                    onclick="projectData.prototype.loadDataList()">
+                <div class="row form-group ">
+                    <div class="col-md-12">
+                        <div class="form-inline x-valid">
+                            <label class="col-sm-1 control-label">
+                                名称
+                            </label>
+                            <div class="col-sm-3">
+                                <input type="text" data-rule-maxlength="50"
+                                       placeholder="名称" id="queryEstateName" name="queryEstateName"
+                                       class="form-control input-full">
+                            </div>
+                            <button style="margin-left: 10px" class="btn btn-info  btn-sm" type="button"
+                                    onclick="projectData.prototype.loadDataList()">
 											<span class="btn-label">
 												<i class="fa fa-search"></i>
 											</span>
-                                                查询
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row form-group ">
-                                    <div class="col-md-12">
-                                        <table class="table table-bordered" id="projectEstateTable">
-                                        </table>
-                                    </div>
-                                </div>
-
-                            </div>
+                                查询
+                            </button>
                         </div>
                     </div>
-                </form>
+                </div>
+                <div class="row form-group ">
+                    <div class="col-md-12">
+                        <table class="table table-bordered" id="projectEstateTable">
+                        </table>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
@@ -157,46 +146,35 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
             </div>
-
             <div class="modal-body">
-                <form class="form-horizontal">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="card-body">
-
-                                <div class="row form-group ">
-                                    <div class="col-md-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-1 control-label">
-                                                名称
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" data-rule-maxlength="50"
-                                                       placeholder="名称" id="queryBuildName" name="queryBuildName"
-                                                       class="form-control input-full">
-                                            </div>
-                                            <button style="margin-left: 10px" class="btn btn-info  btn-sm"
-                                                    type="button"
-                                                    onclick="projectBuild.prototype.loadDataList()">
+                <div class="row form-group ">
+                    <div class="col-md-12">
+                        <div class="form-inline x-valid">
+                            <label class="col-sm-1 control-label">
+                                名称
+                            </label>
+                            <div class="col-sm-3">
+                                <input type="text" data-rule-maxlength="50"
+                                       placeholder="名称" id="queryBuildName" name="queryBuildName"
+                                       class="form-control input-full">
+                            </div>
+                            <button style="margin-left: 10px" class="btn btn-info  btn-sm"
+                                    type="button"
+                                    onclick="projectBuild.prototype.loadDataList()">
 											<span class="btn-label">
 												<i class="fa fa-search"></i>
 											</span>
-                                                查询
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row form-group ">
-                                    <div class="col-md-12">
-                                        <table class="table table-bordered" id="projectBuildTable">
-                                        </table>
-                                    </div>
-                                </div>
-
-                            </div>
+                                查询
+                            </button>
                         </div>
                     </div>
-                </form>
+                </div>
+                <div class="row form-group ">
+                    <div class="col-md-12">
+                        <table class="table table-bordered" id="projectBuildTable">
+                        </table>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
@@ -216,53 +194,41 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
             </div>
-
             <div class="modal-body">
-                <form class="form-horizontal">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="card-body">
-
-                                <div class="row form-group ">
-                                    <div class="col-md-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-1 control-label">
-                                                名称
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" data-rule-maxlength="50"
-                                                       placeholder="名称" id="queryUnitName" name="queryUnitName"
-                                                       class="form-control input-full">
-                                            </div>
-                                            <button style="margin-left: 10px" class="btn btn-info  btn-sm"
-                                                    type="button"
-                                                    onclick="projectUnit.prototype.loadDataList()">
+                <div class="row form-group ">
+                    <div class="col-md-12">
+                        <div class="form-inline x-valid">
+                            <label class="col-sm-1 control-label">
+                                名称
+                            </label>
+                            <div class="col-sm-3">
+                                <input type="text" data-rule-maxlength="50"
+                                       placeholder="名称" id="queryUnitName" name="queryUnitName"
+                                       class="form-control input-full">
+                            </div>
+                            <button style="margin-left: 10px" class="btn btn-info  btn-sm"
+                                    type="button"
+                                    onclick="projectUnit.prototype.loadDataList()">
 											<span class="btn-label">
 												<i class="fa fa-search"></i>
 											</span>
-                                                查询
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row form-group ">
-                                    <div class="col-md-12">
-                                        <table class="table table-bordered" id="projectUnitTable">
-                                        </table>
-                                    </div>
-                                </div>
-
-                            </div>
+                                查询
+                            </button>
                         </div>
                     </div>
-                </form>
+                </div>
+                <div class="row form-group ">
+                    <div class="col-md-12">
+                        <table class="table table-bordered" id="projectUnitTable">
+                        </table>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
                     关闭
                 </button>
             </div>
-
         </div>
     </div>
 </div>
@@ -275,53 +241,41 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
             </div>
-
             <div class="modal-body">
-                <form class="form-horizontal">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="card-body">
-
-                                <div class="row form-group ">
-                                    <div class="col-md-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-1 control-label">
-                                                名称
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" data-rule-maxlength="50"
-                                                       placeholder="名称" id="queryHouseName" name="queryHouseName"
-                                                       class="form-control input-full">
-                                            </div>
-                                            <button style="margin-left: 10px" class="btn btn-info  btn-sm"
-                                                    type="button"
-                                                    onclick="projectHouse.prototype.loadDataList()">
+                <div class="row form-group ">
+                    <div class="col-md-12">
+                        <div class="form-inline x-valid">
+                            <label class="col-sm-1 control-label">
+                                名称
+                            </label>
+                            <div class="col-sm-3">
+                                <input type="text" data-rule-maxlength="50"
+                                       placeholder="名称" id="queryHouseName" name="queryHouseName"
+                                       class="form-control input-full">
+                            </div>
+                            <button style="margin-left: 10px" class="btn btn-info  btn-sm"
+                                    type="button"
+                                    onclick="projectHouse.prototype.loadDataList()">
 											<span class="btn-label">
 												<i class="fa fa-search"></i>
 											</span>
-                                                查询
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row form-group ">
-                                    <div class="col-md-12">
-                                        <table class="table table-bordered" id="projectHouseTable">
-                                        </table>
-                                    </div>
-                                </div>
-
-                            </div>
+                                查询
+                            </button>
                         </div>
                     </div>
-                </form>
+                </div>
+                <div class="row form-group ">
+                    <div class="col-md-12">
+                        <table class="table table-bordered" id="projectHouseTable">
+                        </table>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
                     关闭
                 </button>
             </div>
-
         </div>
     </div>
 </div>
@@ -474,6 +428,7 @@
             projectData.prototype.loadDataList();
             $('#' + projectData.prototype.config().houseBox).modal("show");
         },
+
         loadDataList: function () {
             var cols = [];
             cols.push({field: 'name', title: '名称'});
@@ -611,7 +566,7 @@
                     success: function (result) {
                         if (result.ret) {
                             notifySuccess("成功", "删除数据成功");
-                            projectData.prototype.loadDataList();
+                            projectBuild.prototype.loadDataList();
                         }
                         else {
                             AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
@@ -698,7 +653,7 @@
                     success: function (result) {
                         if (result.ret) {
                             notifySuccess("成功", "删除数据成功");
-                            projectData.prototype.loadDataList();
+                            projectUnit.prototype.loadDataList();
                         }
                         else {
                             AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
@@ -788,7 +743,7 @@
                     success: function (result) {
                         if (result.ret) {
                             notifySuccess("成功", "删除数据成功");
-                            projectData.prototype.loadDataList();
+                            projectHouse.prototype.loadDataList();
                         }
                         else {
                             AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
