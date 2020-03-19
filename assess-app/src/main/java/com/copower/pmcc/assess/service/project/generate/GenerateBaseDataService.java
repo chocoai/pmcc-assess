@@ -5061,7 +5061,7 @@ public class GenerateBaseDataService {
             BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchByEstateId(basicEstate.getId());
             BasicExamineHandle basicExamineHandle = new BasicExamineHandle(basicApplyBatch);
             BasicEstateLandStateVo landStateVo = basicExamineHandle.getBasicEstateLandState();
-            if (landStateVo.getId() == null || landStateVo.getId() == 0) {
+            if (landStateVo==null||landStateVo.getId() == null || landStateVo.getId() == 0) {
                 continue;
             }
             StringBuilder stringBuilder = new StringBuilder();

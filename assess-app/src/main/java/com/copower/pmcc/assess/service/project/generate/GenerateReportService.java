@@ -38,6 +38,8 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,6 +56,7 @@ import java.util.stream.Collectors;
  */
 @Service
 public class GenerateReportService {
+    private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private ProjectInfoService projectInfoService;
     @Autowired
@@ -304,7 +307,11 @@ public class GenerateReportService {
                 if (StringUtils.isBlank(next)){
                     continue;
                 }
-                handleReport(next, textMap, bookmarkMap, fileMap, generateBaseDataService, generateReportInfo, reportType);
+                try{
+                    handleReport(next, textMap, bookmarkMap, fileMap, generateBaseDataService, generateReportInfo, reportType);
+                }catch (Exception e){
+                    logger.error(e.getMessage(),e);
+                }
             }
             replaceWord(tempDir, textMap, bookmarkMap, fileMap);
             if (count >= max) {
