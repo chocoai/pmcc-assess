@@ -619,7 +619,7 @@ public class EvaluationHypothesisService {
                 stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s、%s", ++order2, basis.getName())));
                 stringBuilder.append(generateCommonMethod.getIndentHtml(basis.getTemplate()));
                 //评估基准日
-                Date valuationDate = projectInfo.getValuationDate();
+                Date valuationDate = schemeAreaGroup.getValueTimePoint();
                 //现场查勘结束日期
                 GenerateReportInfo generateReportGeneration = new GenerateReportInfo();
                 generateReportGeneration.setProjectId(projectInfo.getId());
