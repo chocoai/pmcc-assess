@@ -16,7 +16,7 @@
                 <div class="card-title" style="word-break: break-all">
                     ${judgeObject.name}(${judgeObject.evaluationArea}㎡)
                     <c:if test="${not empty standardJudgeObject}">
-                           <small>标准估价对象:[${standardJudgeObject.number}]评估面积:[${standardJudgeObject.evaluationArea}]㎡</small>
+                        <small>标准估价对象:[${standardJudgeObject.number}]评估面积:[${standardJudgeObject.evaluationArea}]㎡</small>
                     </c:if>
                     <span id="small_select_evaluation">
                     <input type="button" class="btn btn-primary btn-xs" value="选择估价对象"
@@ -403,6 +403,9 @@
                 for (var i = 1; i <= defaluts.cases.length; i++) {
                     headHtml += '<th width="20%" data-type="case" data-item-id="' + defaluts.cases[i - 1].id + '">';
                     headHtml += defaluts.cases[i - 1].name;
+                    if (defaluts.cases[i - 1].remark) {
+                        headHtml += "[" + defaluts.cases[i - 1].remark + "]";
+                    }
                     headHtml += '</th>';
                 }
             }
