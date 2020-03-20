@@ -43,7 +43,7 @@ public class SchemeSurePriceFactorService {
      * @throws BusinessException
      */
     @Transactional(rollbackFor = Exception.class)
-    public SchemeJudgeObjectVo saveSurePriceFactor(Integer judgeObjectId, BigDecimal price, List<SchemeSurePriceFactor> factors) throws BusinessException {
+    public SchemeJudgeObject saveSurePriceFactor(Integer judgeObjectId, BigDecimal price, List<SchemeSurePriceFactor> factors) throws BusinessException {
         if (CollectionUtils.isEmpty(factors))
             return null;
         SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
@@ -56,22 +56,20 @@ public class SchemeSurePriceFactorService {
         for (SchemeSurePriceFactor factor : factors) {
             if (factor.getType().equals(ComputeDataTypeEnum.ABSOLUTE.getId())) {
                 resultPrice = resultPrice.add(factor.getCoefficient());
+                factorBuilder.append(factor.getFactor()).append(":").append(factor.getCoefficient()).append(";");
             } else {
                 resultPrice = resultPrice.multiply(factor.getCoefficient().add(new BigDecimal("1")));
+                factorBuilder.append(factor.getFactor()).append(":").append(factor.getCoefficient().multiply(new BigDecimal("100"))).append("%;");
             }
-            factorBuilder.append(factor.getFactor()).append(":").append(factor.getCoefficient()).append(";");
             factor.setJudgeObjectId(schemeJudgeObject.getId());
             factor.setCreator(commonService.thisUserAccount());
             schemeSurePriceFactorDao.addSurePriceFactor(factor);
         }
         //更新调整后的价格
-        schemeJudgeObject.setPrice(resultPrice);
+        schemeJudgeObject.setPrice(resultPrice.setScale(0, BigDecimal.ROUND_HALF_UP));
         schemeJudgeObject.setFactor(factorBuilder.toString());
         schemeJudgeObjectService.updateSchemeJudgeObject(schemeJudgeObject);
-
-        SchemeJudgeObjectVo schemeJudgeObjectVo = new SchemeJudgeObjectVo();
-        schemeJudgeObjectVo.setPrice(resultPrice);
-        return schemeJudgeObjectVo;
+        return schemeJudgeObject;
     }
 
     public List<SchemeSurePriceFactor> getSurePriceFactors(Integer judgeObjectId) {

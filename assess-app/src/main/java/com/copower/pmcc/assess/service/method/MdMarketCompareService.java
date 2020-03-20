@@ -219,13 +219,13 @@ public class MdMarketCompareService {
      * @param schemeJudgeObject
      * @return
      */
-    public List<BasicApplyVo> getStandardJudgeList(SchemeJudgeObject schemeJudgeObject) {
+    public List<BasicApply> getStandardJudgeList(SchemeJudgeObject schemeJudgeObject) {
         if (schemeJudgeObject == null) return null;
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(schemeJudgeObject.getProjectId());
         ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.SCENE_EXPLORE, projectInfo.getProjectCategoryId());
         ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetails(schemeJudgeObject.getDeclareRecordId(), projectPhase.getId());
         List<BasicApply> basicApplyList = basicApplyService.getBasicApplyListByPlanDetailsId(planDetails.getId());
-        return LangUtils.transform(basicApplyList, o -> basicApplyService.getBasicApplyVo(o));
+        return basicApplyList;
     }
 
     /**

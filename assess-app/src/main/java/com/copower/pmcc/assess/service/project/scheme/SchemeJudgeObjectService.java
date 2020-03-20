@@ -130,6 +130,10 @@ public class SchemeJudgeObjectService {
     private BpmRpcBoxService bpmRpcBoxService;
     @Autowired
     private SchemeJudgeObjectHistoryDao schemeJudgeObjectHistoryDao;
+    @Autowired
+    private BasicApplyService basicApplyService;
+    @Autowired
+    private BasicHouseService basicHouseService;
 
     public boolean addSchemeJudgeObject(SchemeJudgeObject schemeJudgeObject) {
         return schemeJudgeObjectDao.addSchemeJudgeObject(schemeJudgeObject);
@@ -249,19 +253,21 @@ public class SchemeJudgeObjectService {
         return vo;
     }
 
-
-    public List<SchemeJudgeObjectVo> getListByPid(Integer pid) {
+    public List<SchemeJudgeObjectVo> getVoListByPid(Integer pid) {
         List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getListByPid(pid);
         if (CollectionUtils.isEmpty(judgeObjectList)) return null;
-        List<DeclareRecord> declareRecords = declareRecordService.getDeclareRecordListByIds(LangUtils.transform(judgeObjectList, o -> o.getDeclareRecordId()));
+        List<BasicApply> basicApplyList = basicApplyService.getBasicApplyListByIds(LangUtils.transform(judgeObjectList, o -> o.getBasicApplyId()));
         List<SchemeJudgeObjectVo> judgeObjectVoList = Lists.newArrayList();
         for (SchemeJudgeObject judgeObject : judgeObjectList) {
             SchemeJudgeObjectVo schemeJudgeObjectVo = new SchemeJudgeObjectVo();
             BeanUtils.copyProperties(judgeObject, schemeJudgeObjectVo);
-            for (DeclareRecord declareRecord : declareRecords) {
-                if (declareRecord.getId().equals(judgeObject.getDeclareRecordId())) {
-                    schemeJudgeObjectVo.setFloor(declareRecord.getFloor());
-                    schemeJudgeObjectVo.setRoomNumber(declareRecord.getRoomNumber());
+            for (BasicApply basicApply : basicApplyList) {
+                if (basicApply.getId().equals(judgeObject.getBasicApplyId()) && basicApply.getBasicHouseId() != null) {
+                    BasicHouse basicHouse = basicHouseService.getHouseByApplyId(basicApply.getId());
+                    if (basicHouse != null) {
+                        schemeJudgeObjectVo.setFloor(basicHouse.getFloor());
+                        schemeJudgeObjectVo.setRoomNumber(basicHouse.getHouseNumber());
+                    }
                 }
             }
             judgeObjectVoList.add(schemeJudgeObjectVo);
@@ -284,6 +290,12 @@ public class SchemeJudgeObjectService {
         return judgeObjectVoList;
     }
 
+    public List<SchemeJudgeObject> getListByPid(Integer pid) {
+        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getListByPid(pid);
+        if (CollectionUtils.isEmpty(judgeObjectList)) return null;
+        return judgeObjectList;
+    }
+
     /**
      * 获取待调整价格的估价对象
      *
@@ -292,27 +304,9 @@ public class SchemeJudgeObjectService {
      */
     public List<SchemeJudgeObjectVo> getAdjustObjectListByPid(Integer judgeObjectId) {
         SchemeJudgeObject judgeObject = getSchemeJudgeObject(judgeObjectId);
-        List<SchemeJudgeObjectVo> vos = getListByPid(judgeObjectId);
+        List<SchemeJudgeObjectVo> vos = getVoListByPid(judgeObjectId);
         if (CollectionUtils.isEmpty(vos)) return null;
         return vos.stream().filter(o -> !o.getId().equals(judgeObject.getStandardJudgeId())).collect(Collectors.toList());
-    }
-
-    public String getFactorListByJudgeObjectId(Integer declareId) {
-        List<SchemeSurePriceFactor> factorList = schemeSurePriceFactorDao.getFactorListByJudgeObjectId(declareId);
-        if (CollectionUtils.isNotEmpty(factorList)) {
-            StringBuilder coefficient = new StringBuilder();
-            for (SchemeSurePriceFactor schemeSurePriceFactor : factorList) {
-                coefficient.append(schemeSurePriceFactor.getFactor()).append(schemeSurePriceFactor.getRemark()).append(":");
-                if (schemeSurePriceFactor.getType().equals(ComputeDataTypeEnum.ABSOLUTE.getId())) {
-                    coefficient.append(schemeSurePriceFactor.getCoefficient().setScale(2));
-                } else {
-                    coefficient.append(schemeSurePriceFactor.getCoefficient().multiply(new BigDecimal("100")).setScale(2)).append("%");
-                }
-                coefficient.append(";\r\n");
-            }
-            return coefficient.toString();
-        }
-        return null;
     }
 
     public boolean removeSchemeJudgeObject(Integer id) {
@@ -493,7 +487,7 @@ public class SchemeJudgeObjectService {
             seatList.add(schemeJudgeObject.getSeat());
         }
         Map<Integer, BigDecimal> mappingSingleEntity = FormatUtils.mappingSingleEntity(judgeObjectList, o -> o.getDeclareRecordId(), o -> o.getFloorArea());
-        if(mappingSingleEntity!=null&&!mappingSingleEntity.isEmpty()){//证载面积的合计应取权证上的
+        if (mappingSingleEntity != null && !mappingSingleEntity.isEmpty()) {//证载面积的合计应取权证上的
             for (Map.Entry<Integer, BigDecimal> entry : mappingSingleEntity.entrySet()) {
                 floorAreaTotal = floorAreaTotal.add(entry.getValue());
             }

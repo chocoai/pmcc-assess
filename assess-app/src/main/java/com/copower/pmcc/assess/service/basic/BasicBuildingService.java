@@ -334,10 +334,6 @@ public class BasicBuildingService extends BasicEntityAbstract {
                 BasicApplyBatchDetail buildingDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(FormatUtils.entityNameConvertToTableName(BasicBuilding.class), basicBuilding.getId());
                 if (buildingDetail != null) {
                     buildingDetail.setName(basicBuilding.getBuildingNumber());
-                    if(buildingDetail.getFullName()!=null){
-                        String fullName = buildingDetail.getFullName().replace(buildingDetail.getDisplayName(), String.format("%s%s", basicBuilding.getBuildingNumber(), "栋"));
-                        buildingDetail.setFullName(fullName);
-                    }
                     buildingDetail.setDisplayName(basicBuilding.getBuildingName());
                     basicApplyBatchDetailService.saveBasicApplyBatchDetail(buildingDetail);
                 }
@@ -414,18 +410,5 @@ public class BasicBuildingService extends BasicEntityAbstract {
             ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
         }
         return targetBasicBuilding;
-    }
-
-
-    @Override
-    public String getFullName(Integer tableId) {
-        BasicApplyBatchDetail buildBatchDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(FormatUtils.entityNameConvertToTableName(BasicBuilding.class), tableId);
-        if(buildBatchDetail!=null){
-            BasicApplyBatchDetail estateBatchDetail = basicApplyBatchDetailService.getDataById(buildBatchDetail.getPid());
-            if(estateBatchDetail!=null){
-                return String.format("%s%s",estateBatchDetail.getDisplayName(),buildBatchDetail.getDisplayName());
-            }
-        }
-        return null;
     }
 }

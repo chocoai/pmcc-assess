@@ -26,7 +26,7 @@ import java.util.List;
 /**
  * 描述:
  *
- * @author: Calvin(qiudong@copowercpa.com)
+ * @author: Calvin(qiudong @ copowercpa.com)
  * @data: 2018/1/30
  * @time: 14:15
  */
@@ -57,7 +57,7 @@ public class ProjectTaskCompareAssist implements ProjectTaskInterface {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    private void applyInit(ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) {
+    public void applyInit(ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) {
         SchemeJudgeObject judgeObject = schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId());
         SchemeInfo info = schemeInfoService.getSchemeInfo(projectPlanDetails.getId());
         try {
@@ -119,13 +119,16 @@ public class ProjectTaskCompareAssist implements ProjectTaskInterface {
      */
     private void setViewParam(ProjectPlanDetails projectPlanDetails, SchemeInfo info, SchemeJudgeObject judgeObject, ModelAndView modelAndView) {
         //市场比较法相关
-        try{
-            ProjectInfo projectInfo=projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
+        try {
+            ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
             MdMarketCompare marketCompare = mdMarketCompareService.getMdMarketCompare(info.getMethodDataId());
             List<DataSetUseField> fieldList = mdMarketCompareService.getShowSetUseFieldList(projectInfoService.getAssessProjectType(projectInfo.getProjectCategoryId()));
             MdMarketCompareItem evaluationObject = mdMarketCompareService.getEvaluationByMcId(marketCompare.getId());
             List<MdMarketCompareItem> caseList = mdMarketCompareService.getCaseListByMcId(marketCompare.getId());
-            List<BasicApplyVo> standardJudgeList = mdMarketCompareService.getStandardJudgeList(judgeObject);
+            if (judgeObject.getStandardJudgeId() != null) {
+                modelAndView.addObject("standardJudgeObject", schemeJudgeObjectService.getSchemeJudgeObject(judgeObject.getStandardJudgeId()));
+            }
+            List<BasicApply> standardJudgeList = mdMarketCompareService.getStandardJudgeList(judgeObject);
             modelAndView.addObject("standardJudgesJSON", JSON.toJSONString(CollectionUtils.isEmpty(standardJudgeList) ? Lists.newArrayList() : standardJudgeList));
             modelAndView.addObject("marketCompareJSON", JSON.toJSONString(marketCompare));
             modelAndView.addObject("fieldsJSON", JSON.toJSONString(fieldList));
@@ -135,8 +138,8 @@ public class ProjectTaskCompareAssist implements ProjectTaskInterface {
             modelAndView.addObject("setUse", judgeObject.getSetUse());
             modelAndView.addObject("judgeObject", judgeObject);
             modelAndView.addObject("isLand", false);
-        }catch (Exception e){
-            logger.error(e.getMessage(),e);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
         }
     }
 

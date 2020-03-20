@@ -409,10 +409,10 @@ public class GenerateMdCostService {
             case MarketCost_Merge_JudgeObject: {
                 String v = "无合并对象";
                 if (schemeJudgeObject.getBisMerge() != null) {
-                    List<SchemeJudgeObjectVo> schemeJudgeObjectVoList = schemeJudgeObjectService.getListByPid(schemeJudgeObject.getId());
+                    List<SchemeJudgeObject> schemeJudgeObjectVoList = schemeJudgeObjectService.getListByPid(schemeJudgeObject.getId());
                     if (CollectionUtils.isNotEmpty(schemeJudgeObjectVoList)) {
                         List<Integer> integerList = Lists.newArrayList();
-                        for (SchemeJudgeObjectVo schemeJudgeObjectVo : schemeJudgeObjectVoList) {
+                        for (SchemeJudgeObject schemeJudgeObjectVo : schemeJudgeObjectVoList) {
                             integerList.add(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObjectVo.getNumber()));
                         }
                         v = generateCommonMethod.convertNumber(integerList);

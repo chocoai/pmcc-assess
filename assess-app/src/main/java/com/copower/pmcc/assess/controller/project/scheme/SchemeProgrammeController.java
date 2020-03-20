@@ -32,6 +32,7 @@ import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
@@ -266,7 +267,7 @@ public class SchemeProgrammeController {
     public HttpResult areaGroupSplit(Integer planId, Integer areaGroupId, String judgeObjectIds) {
         try {
             List<Integer> list = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(judgeObjectIds));
-            schemeAreaGroupService.areaGroupSplit(planId, areaGroupId,  list);
+            schemeAreaGroupService.areaGroupSplit(planId, areaGroupId, list);
             return HttpResult.newCorrectResult();
         } catch (BusinessException e) {
             return HttpResult.newErrorResult(e.getMessage());
@@ -334,9 +335,9 @@ public class SchemeProgrammeController {
     }
 
     @PostMapping(name = "调整合并的委估对象", value = "/mergeJudgeAdjust")
-    public HttpResult mergeJudgeAdjust(Integer id,String removeIds,String addIds) {
+    public HttpResult mergeJudgeAdjust(Integer id, String removeIds, String addIds) {
         try {
-            schemeJudgeObjectService.mergeJudgeAdjust(id,removeIds,addIds);
+            schemeJudgeObjectService.mergeJudgeAdjust(id, removeIds, addIds);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             logger.error("调整合并的委估对象", e);

@@ -28,6 +28,13 @@ public class BasicApplyDao {
         return basicApplyMapper.selectByPrimaryKey(id);
     }
 
+    public List<BasicApply> getBasicApplyListByIds(List<Integer> ids){
+        BasicApplyExample example = new BasicApplyExample();
+        BasicApplyExample.Criteria criteria = example.createCriteria();
+        criteria.andIdIn(ids);
+        return basicApplyMapper.selectByExample(example);
+    }
+
     /**
      * 获取数据列表
      *

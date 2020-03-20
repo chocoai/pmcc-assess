@@ -284,16 +284,9 @@ public class BasicHouseService extends BasicEntityAbstract {
 
     public BasicHouse getHouseByApplyId(Integer applyId) {
         if (applyId == null) return null;
-        BasicHouse where = new BasicHouse();
-        where.setApplyId(applyId);
-        where.setCreator(commonService.thisUserAccount());
-        List<BasicHouse> basicHouses = basicHouseDao.getBasicHouseList(where);
-        if (!CollectionUtils.isEmpty(basicHouses)) {
-            return basicHouses.get(0);
-        } else {
-            BasicApply basicApply = basicApplyService.getByBasicApplyId(applyId);
-            return basicHouseDao.getBasicHouseById(basicApply.getBasicHouseId());
-        }
+        BasicApply basicApply = basicApplyService.getByBasicApplyId(applyId);
+        if (basicApply == null) return null;
+        return basicHouseDao.getBasicHouseById(basicApply.getBasicHouseId());
     }
 
     /**
@@ -454,13 +447,8 @@ public class BasicHouseService extends BasicEntityAbstract {
                 BasicApplyBatchDetail houseDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(FormatUtils.entityNameConvertToTableName(BasicHouse.class), basicHouse.getId());
                 if (houseDetail != null) {
                     houseDetail.setName(basicHouse.getHouseNumber());
-                    if (houseDetail.getFullName() != null) {
-                        String fullName = houseDetail.getFullName().replace(String.format("%s%s", "单元", houseDetail.getDisplayName()), String.format("%s%s", "单元", basicHouse.getHouseNumber()));
-                        houseDetail.setFullName(fullName);
-                    }
                     houseDetail.setDisplayName(basicHouse.getHouseNumber());
                     basicApplyBatchDetailService.saveBasicApplyBatchDetail(houseDetail);
-
                     if (planDetailsId != null && planDetailsId > 0) {
                         BasicApply where = new BasicApply();
                         where.setPlanDetailsId(planDetailsId);
@@ -469,10 +457,7 @@ public class BasicHouseService extends BasicEntityAbstract {
                         if (basicApply != null) {
                             Map<BasicFormClassifyEnum, BasicApplyBatchDetail> map = basicApplyBatchDetailService.getApplyBatchDetailMap(houseDetail);
                             basicApply.setArea(basicHouse.getArea());
-                            BasicApplyBatchDetail unitBatchDetail = map.get(BasicFormClassifyEnum.UNIT);//单元
-                            BasicApplyBatchDetail buildBatchDetail = map.get(BasicFormClassifyEnum.BUILDING); //楼栋
-                            BasicApplyBatchDetail estateBatchDetail = map.get(BasicFormClassifyEnum.ESTATE);//楼盘
-                            basicApply.setName(basicApplyService.getFullName(estateBatchDetail.getName(), buildBatchDetail.getName(), unitBatchDetail.getName(), houseDetail.getName()));
+                            basicApply.setName(basicApplyBatchDetailService.getFullNameByBatchDetailId(houseDetail.getId()));
                             basicApplyService.saveBasicApply(basicApply);
                         }
                     }
@@ -692,23 +677,5 @@ public class BasicHouseService extends BasicEntityAbstract {
             }
         }
         return targetBasicHouse;
-    }
-
-    @Override
-    public String getFullName(Integer tableId) {
-        BasicApplyBatchDetail houseBatchDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(FormatUtils.entityNameConvertToTableName(BasicHouse.class), tableId);
-        if (houseBatchDetail != null) {
-            BasicApplyBatchDetail unitBatchDetail = basicApplyBatchDetailService.getDataById(houseBatchDetail.getPid());
-            if (unitBatchDetail != null) {
-                BasicApplyBatchDetail buildBatchDetail = basicApplyBatchDetailService.getDataById(unitBatchDetail.getPid());
-                if (buildBatchDetail != null) {
-                    BasicApplyBatchDetail estateBatchDetail = basicApplyBatchDetailService.getDataById(buildBatchDetail.getPid());
-                    if (estateBatchDetail != null) {
-                        return String.format("%s%s%s", estateBatchDetail.getDisplayName(), buildBatchDetail.getDisplayName(), unitBatchDetail.getDisplayName(), houseBatchDetail.getDisplayName());
-                    }
-                }
-            }
-        }
-        return null;
     }
 }

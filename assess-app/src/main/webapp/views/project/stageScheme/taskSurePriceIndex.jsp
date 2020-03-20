@@ -607,7 +607,7 @@
                     notifySuccess("成功","保存成功");
                     var tr = $('#adjust_factor_table').find('[data-id=' + judgeObjectId + ']');
                     tr.find('[data-name=price]').text(result.data.price);
-                    tr.find('[data-name=coefficient]').text(result.data.coefficient);
+                    tr.find('[data-name=coefficient]').text(result.data.factor);
                     $("#modal_factor").modal('hide');
                 }
                 else {

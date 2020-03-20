@@ -59,6 +59,8 @@ public class BasicApplyBatchDetailService {
     private PublicService publicService;
     @Autowired
     private BpmRpcProjectTaskService bpmRpcProjectTaskService;
+    @Autowired
+    private BasicApplyBatchDetailService basicApplyBatchDetailService;
 
     /**
      * 通过applyBatchId获取
@@ -234,7 +236,7 @@ public class BasicApplyBatchDetailService {
             }
             basicApply.setPlanDetailsId(planDetailsId);
             if (basicApply.getName() == null)
-                basicApply.setName(basicApplyService.getFullName(estateBatchDetail.getName(), buildBatchDetail.getName(), unitBatchDetail.getName(), houseBasicApplyBatchDetail.getName()));
+                basicApply.setName(basicApplyBatchDetailService.getFullNameByBatchDetailId(houseBasicApplyBatchDetail.getId()));
             basicApplyService.saveBasicApply(basicApply);
         }
     }
@@ -496,7 +498,9 @@ public class BasicApplyBatchDetailService {
         collectionParentBatchDetails(batchDetailId, list);
         if (CollectionUtils.isEmpty(list)) return null;
         StringBuilder stringBuilder = new StringBuilder();
-        list.forEach(o -> stringBuilder.append(o));
+        for (int i = list.size() - 1; i >= 0; i--) {
+            stringBuilder.append(list.get(i).getDisplayName());
+        }
         return stringBuilder.toString();
     }
 }

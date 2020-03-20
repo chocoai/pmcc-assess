@@ -271,12 +271,7 @@ public class BasicUnitService extends BasicEntityAbstract {
                 BasicApplyBatchDetail unitDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(FormatUtils.entityNameConvertToTableName(BasicUnit.class), basicUnit.getId());
                 if (unitDetail != null) {
                     unitDetail.setName(basicUnit.getUnitNumber());
-                    if (unitDetail.getFullName() != null) {
-                        String fullName = unitDetail.getFullName().replace(unitDetail.getDisplayName(), String.format("%s%s", basicUnit.getUnitNumber(), "单元"));
-                        unitDetail.setFullName(fullName);
-                    }
                     unitDetail.setDisplayName(String.format("%s%s", basicUnit.getUnitNumber(), "单元"));
-
                     basicApplyBatchDetailService.saveBasicApplyBatchDetail(unitDetail);
                 }
                 return basicUnit.getId();
@@ -363,20 +358,5 @@ public class BasicUnitService extends BasicEntityAbstract {
             ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
         }
         return targetBasicUnit;
-    }
-
-    @Override
-    public String getFullName(Integer tableId) {
-        BasicApplyBatchDetail unitBatchDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(FormatUtils.entityNameConvertToTableName(BasicUnit.class), tableId);
-        if (unitBatchDetail != null) {
-            BasicApplyBatchDetail buildBatchDetail = basicApplyBatchDetailService.getDataById(unitBatchDetail.getPid());
-            if (buildBatchDetail != null) {
-                BasicApplyBatchDetail estateBatchDetail = basicApplyBatchDetailService.getDataById(buildBatchDetail.getPid());
-                if (estateBatchDetail != null) {
-                    return String.format("%s%s%s", estateBatchDetail.getDisplayName(), buildBatchDetail.getDisplayName(), unitBatchDetail.getDisplayName());
-                }
-            }
-        }
-        return null;
     }
 }

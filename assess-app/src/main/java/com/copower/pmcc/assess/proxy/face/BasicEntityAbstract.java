@@ -64,6 +64,4 @@ public abstract class BasicEntityAbstract {
 
     public abstract Object copyBasicEntityIgnore(Integer sourceId, Integer targetId, Boolean containChild, List<String> ignoreList) throws Exception;//数据拷贝
 
-    public abstract String getFullName(Integer tableId);//获取完整名称
-
 }

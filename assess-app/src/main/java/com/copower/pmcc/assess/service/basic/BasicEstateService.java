@@ -415,10 +415,7 @@ public class BasicEstateService extends BasicEntityAbstract {
             if (estateDetail != null) {
                 estateDetail.setName(basicEstate.getName());
                 estateDetail.setDisplayName(basicEstate.getName());
-                estateDetail.setFullName(basicEstate.getName());
-
                 basicApplyBatchDetailService.saveBasicApplyBatchDetail(estateDetail);
-
                 BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchById(estateDetail.getApplyBatchId());
                 if (basicApplyBatch != null) {
                     basicApplyBatch.setEstateId(basicEstate.getId());
@@ -558,14 +555,5 @@ public class BasicEstateService extends BasicEntityAbstract {
             ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
         }
         return targetBasicEstate;
-    }
-
-    @Override
-    public String getFullName(Integer tableId){
-        BasicApplyBatchDetail batchDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(FormatUtils.entityNameConvertToTableName(BasicEstate.class), tableId);
-        if(batchDetail!=null){
-            return batchDetail.getDisplayName();
-        }
-        return null;
     }
 }

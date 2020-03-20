@@ -311,7 +311,8 @@ public class SchemeAreaGroupService {
         schemeJudgeObject.setPracticalUse(declareRecord.getPracticalUse());
         if (declareRecord.getLandUseEndDate() != null) {
             schemeJudgeObject.setLandUseEndDate(declareRecord.getLandUseEndDate());//计算出土地剩余年限
-            schemeJudgeObject.setLandRemainingYear(mdIncomeService.getLandSurplusYear(declareRecord.getLandUseEndDate(), areaGroup.getValueTimePoint()));
+            if (areaGroup.getValueTimePoint() != null)
+                schemeJudgeObject.setLandRemainingYear(mdIncomeService.getLandSurplusYear(declareRecord.getLandUseEndDate(), areaGroup.getValueTimePoint()));
         }
         schemeJudgeObject.setEvaluationArea(declareRecord.getPracticalArea());
         schemeJudgeObject.setPid(0);

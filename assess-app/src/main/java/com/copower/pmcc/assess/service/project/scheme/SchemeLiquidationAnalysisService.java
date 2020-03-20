@@ -404,9 +404,9 @@ public class SchemeLiquidationAnalysisService {
         if (CollectionUtils.isNotEmpty(listByDeclareIds)) {
             for (SchemeJudgeObject judgeObject : listByDeclareIds) {
                 if (judgeObject.getBisMerge() == Boolean.TRUE) {
-                    List<SchemeJudgeObjectVo> listByPid = schemeJudgeObjectService.getListByPid(judgeObject.getId());
+                    List<SchemeJudgeObject> listByPid = schemeJudgeObjectService.getListByPid(judgeObject.getId());
                     if(CollectionUtils.isNotEmpty(listByPid)){
-                        for (SchemeJudgeObjectVo schemeJudgeObjectVo : listByPid) {
+                        for (SchemeJudgeObject schemeJudgeObjectVo : listByPid) {
                             if (schemeJudgeObjectVo.getEvaluationArea() != null) {
                                 groupArea = groupArea.add(schemeJudgeObjectVo.getEvaluationArea());
                                 if (schemeJudgeObjectVo.getPrice() != null) {

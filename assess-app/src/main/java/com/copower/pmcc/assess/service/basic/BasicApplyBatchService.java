@@ -399,7 +399,7 @@ public class BasicApplyBatchService {
         if (CollectionUtils.isNotEmpty(basicApplyList)) {
             basicApplyList.forEach(o -> {
                 try {
-                    basicApplyService.deleteBasicApply(o.getId());
+                    basicApplyService.deleteBasicApplyById(o.getId());
                 } catch (Exception e) {
                     logger.error(e.getMessage(), e);
                 }

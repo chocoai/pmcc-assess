@@ -1,7 +1,13 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <style type="text/css">
-    .bg-red{background-color: #f6caca;}
-    .bg-green{background-color: #95d995;}
+    .bg-red {
+        background-color: #f6caca;
+    }
+
+    .bg-green {
+        background-color: #95d995;
+    }
 </style>
 <div class="col-md-12">
     <div class="x_panel card">
@@ -9,6 +15,9 @@
             <div class="card-head-row">
                 <div class="card-title" style="word-break: break-all">
                     ${judgeObject.name}(${judgeObject.evaluationArea}㎡)
+                    <c:if test="${not empty standardJudgeObject}">
+                           <small>标准估价对象:[${standardJudgeObject.number}]评估面积:[${standardJudgeObject.evaluationArea}]㎡</small>
+                    </c:if>
                     <span id="small_select_evaluation">
                     <input type="button" class="btn btn-primary btn-xs" value="选择估价对象"
                            onclick="marketCompare.loadStandardJudges();">
@@ -71,7 +80,10 @@
                             <input type="text" placeholder="名称" class="form-control" name="projectPhaseName">
                         </div>
                         <div class="col-sm-3">
-                            <button style="margin-left: 10px" class="btn btn-info  btn-sm" type="button" onclick="marketCompare.loadCaseAll();"><span class="btn-label"><i class="fa fa-search"></i></span>查询</button>
+                            <button style="margin-left: 10px" class="btn btn-info  btn-sm" type="button"
+                                    onclick="marketCompare.loadCaseAll();"><span class="btn-label"><i
+                                    class="fa fa-search"></i></span>查询
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -145,13 +157,13 @@
 
         //对象不存在则返回空串
         function toString(o) {
-            if (!o)return "";
+            if (!o) return "";
             return o;
         }
 
         //根据name获取对应元素
         function getItemByName(array, name) {
-            if (!array || array.length <= 0)return;
+            if (!array || array.length <= 0) return;
             for (var i = 0; i < array.length; i++) {
                 if (array[i].name == name) {
                     return array[i];
@@ -170,22 +182,22 @@
         //设置元素可编辑
         function setElementEditable() {
             $(".p_text").find('a').click(function () {
-                var that=$(this);
-                AssessCommon.prompt(that.text(),function (value) {
+                var that = $(this);
+                AssessCommon.prompt(that.text(), function (value) {
                     that.text(value);
                 })
             });
 
             $(".p_score").find('a').click(function () {
-                var that=$(this);
-                AssessCommon.prompt(that.text(),function (value) {
+                var that = $(this);
+                AssessCommon.prompt(that.text(), function (value) {
                     if (!/^\d+(?=\.{0,1}\d+$|$)/.test(value)) {
-                        notifyInfo('提示','只能填数字');
+                        notifyInfo('提示', '只能填数字');
                         return;
                     }
                     value = parseFloat(value);
                     if (value < 80 || value > 120) {
-                        notifyInfo('提示','分值只能在80至120之间');
+                        notifyInfo('提示', '分值只能在80至120之间');
                         return;
                     }
 
@@ -199,7 +211,7 @@
                         var currPrice = that.closest('table').find('tbody').find('[data-bisprice="true"]').find('td[data-item-id=' + itemId + ']').text();
                         if (AssessCommon.isNumber(initialPrice) && AssessCommon.isNumber(currPrice)) {
                             if (parseFloat(initialPrice) == parseFloat(currPrice)) {
-                                notifyInfo('提示','请先调整该案例的交易价格');
+                                notifyInfo('提示', '请先调整该案例的交易价格');
                                 return;
                             }
                         }
@@ -226,10 +238,10 @@
             });
 
             $(".p_weight").find('a').click(function () {
-                var that=$(this);
-                AssessCommon.prompt(that.text(),function (value) {
+                var that = $(this);
+                AssessCommon.prompt(that.text(), function (value) {
                     if (value && !/^(0.\d{1,2})$/.test(value)) {
-                        notifyInfo('提示','权重只能在0至1之间的小数，小数位数最多两位');
+                        notifyInfo('提示', '权重只能在0至1之间的小数，小数位数最多两位');
                         return;
                     }
                     that.text(value);
@@ -238,8 +250,8 @@
             });
 
             $(".p_weightDesc").find('a').click(function () {
-                var that=$(this);
-                AssessCommon.prompt(that.text(),function (value) {
+                var that = $(this);
+                AssessCommon.prompt(that.text(), function (value) {
                     that.text(value);
                 })
             });
@@ -698,7 +710,7 @@
         //数据校验
         marketCompare.valid = function () {
             if (!marketCompare.isPass) {
-                notifyInfo('错误','案例错误请检查案例');
+                notifyInfo('错误', '案例错误请检查案例');
                 return false;
             }
             //数据验证
@@ -708,7 +720,7 @@
             //4.校验权重对应的权重描述是否填写
             var data = marketCompare.getData();
             if (!data.evaluationItem.averagePrice) {
-                notifyInfo('错误','【平均价】还未计算出');
+                notifyInfo('错误', '【平均价】还未计算出');
                 return false;
             }
 
@@ -729,7 +741,7 @@
                     }
                 })
                 if (isWeightEmpty) {
-                    notifyInfo('错误','【权重】必须填写');
+                    notifyInfo('错误', '【权重】必须填写');
                     return false;
                 }
 
@@ -743,12 +755,12 @@
                     }
                 })
                 if (weightTotal != 1) {
-                    notifyInfo('错误','权重和必须为1');
+                    notifyInfo('错误', '权重和必须为1');
                     return false;
                 }
 
                 if (isWeightDescEmpty) {
-                    notifyInfo('错误','【权重描述】必须填写');
+                    notifyInfo('错误', '【权重描述】必须填写');
                     return false;
                 }
             }
@@ -796,8 +808,7 @@
                                 var td = fieldContent.value = $(this).find('td[data-item-id=' + evaluationItemId + ']');
                                 if (td.find('a').length > 0) {
                                     fieldContent.value = td.find('a').text();
-                                }
-                                else {
+                                } else {
                                     fieldContent.value = td.text();
                                 }
                             }
@@ -825,8 +836,7 @@
                                     var td = fieldContent.value = $(this).find('td[data-item-id=' + item + ']');
                                     if (td.find('a').length > 0) {
                                         fieldContent.value = td.find('a').text();
-                                    }
-                                    else {
+                                    } else {
                                         fieldContent.value = td.text();
                                     }
                                 }
@@ -879,7 +889,7 @@
                         if (callback)
                             callback(result.data.id);
                     } else {
-                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                        AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 }
             })
@@ -927,14 +937,14 @@
                     isLand: marketCompare.isLand,
                     judgeObjectId: marketCompare.judgeObjectId,
                     planDetailsIdList: planDetailsIdArray.join(),
-                    jsonData:jsonData
+                    jsonData: jsonData
                 },
                 type: 'post',
                 dataType: 'json',
                 success: function (result) {
                     Loading.progressHide();
                     if (result.ret) {
-                        notifySuccess('成功',"选择成功！");
+                        notifySuccess('成功', "选择成功！");
                         $('#modal_select_case').modal('hide');
                         marketCompare.init({
                             projectId: marketCompare.projectId,
@@ -1022,17 +1032,17 @@
                                     },
                                     success: function (result) {
                                         if (result.ret) {
-                                            notifySuccess('成功',"保存成功");
+                                            notifySuccess('成功', "保存成功");
                                             layer.close(index);
                                         } else {
-                                            notifyInfo('错误',result.errmsg);
+                                            notifyInfo('错误', result.errmsg);
                                         }
                                     }
                                 })
                             });
                         }
                     } else {
-                        notifyInfo('错误',result.errmsg);
+                        notifyInfo('错误', result.errmsg);
                     }
                 }
             })
@@ -1069,7 +1079,7 @@
                                 }
                                 marketCompare.calculation();
                             } else {
-                                notifyInfo('错误',result.errmsg);
+                                notifyInfo('错误', result.errmsg);
                             }
                         }
                     })
@@ -1093,7 +1103,7 @@
                 success: function (result) {
                     Loading.progressHide();
                     if (result.ret) {
-                        notifySuccess('成功',"刷新成功！");
+                        notifySuccess('成功', "刷新成功！");
                         marketCompare.init({
                             projectId: marketCompare.projectId,
                             mcId: result.data.mcId,
@@ -1121,7 +1131,7 @@
                 var html = '';
                 $.each(marketCompare.standardJudges, function (i, item) {
                     var htmlTemp = $("#selectJudgeHtml").html();
-                    htmlTemp = htmlTemp.replace(/{basicApplyId}/, item.id).replace(/{name}/, item.fullName);
+                    htmlTemp = htmlTemp.replace(/{basicApplyId}/, item.id).replace(/{name}/, item.name);
                     html += htmlTemp;
                 })
                 $("#modal_select_judge").find('tbody').empty().append(html);
@@ -1145,7 +1155,7 @@
                 success: function (result) {
                     Loading.progressHide();
                     if (result.ret) {
-                        notifySuccess('成功',"选择成功！");
+                        notifySuccess('成功', "选择成功！");
                         $('#modal_select_judge').modal('hide');
                         marketCompare.init({
                             projectId: marketCompare.projectId,
