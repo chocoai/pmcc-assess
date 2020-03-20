@@ -63,6 +63,7 @@ public class SurveyAssetInventoryService extends BaseService {
             if (surveyAssetInventory == null)
                 throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
             if (surveyAssetInventory.getId() != null && surveyAssetInventory.getId() > 0) {
+                surveyAssetInventory.setProcessInsId(processInsId);
                 surveyAssetInventoryDao.update(surveyAssetInventory);
             } else {
                 surveyAssetInventory.setProjectId(projectId);
