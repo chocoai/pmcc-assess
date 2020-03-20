@@ -83,16 +83,15 @@
                                     <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%"
                                         color="#6f5499" size="10"/>
 
-                                    <%--<c:if test="${assessProjectType == 'assets'}">--%>
-                                        <%--<%@include file="apply/assets.jsp" %>--%>
-                                    <%--</c:if>--%>
+                                    <c:if test="${assessProjectType == 'assets'}">
+                                        <%@include file="apply/assets.jsp" %>
+                                    </c:if>
 
 
                                     <c:if test="${assessProjectType == 'house'}">
                                         <%@include file="apply/house.jsp" %>
                                     </c:if>
 
-                                    <%@include file="apply/land.jsp" %>
 
                                     <c:if test="${assessProjectType == 'land'}">
                                         <%@include file="apply/land.jsp" %>
