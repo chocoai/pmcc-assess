@@ -639,7 +639,7 @@
                     $("#frm_other_info").clearAll().initForm(result.data);
                     $("#modal_other_info").modal();
                 } else {
-                    notifyError('错误',result.errmsg);
+                    notifyInfo('错误',result.errmsg);
                 }
             }
         })

@@ -9,6 +9,7 @@ import com.copower.pmcc.assess.dto.input.project.scheme.SchemeLiquidationAnalysi
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeLiquidationAnalysisGroupDto;
 import com.copower.pmcc.assess.dto.output.project.scheme.ProjectTaskLiquidationAnalysisGroupAndPriceVo;
 import com.copower.pmcc.assess.dto.output.project.scheme.ProjectTaskLiquidationAnalysisVo;
+import com.copower.pmcc.assess.dto.output.project.scheme.SchemeJudgeObjectVo;
 import com.copower.pmcc.assess.dto.output.project.scheme.SchemeLiquidationAnalysisGroupVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataTaxRateAllocationService;
@@ -402,7 +403,19 @@ public class SchemeLiquidationAnalysisService {
         //应该获取最终测算好的价格与面积
         if (CollectionUtils.isNotEmpty(listByDeclareIds)) {
             for (SchemeJudgeObject judgeObject : listByDeclareIds) {
-                if(judgeObject.getBisMerge()==false){
+                if (judgeObject.getBisMerge() == Boolean.TRUE) {
+                    List<SchemeJudgeObjectVo> listByPid = schemeJudgeObjectService.getListByPid(judgeObject.getId());
+                    if(CollectionUtils.isNotEmpty(listByPid)){
+                        for (SchemeJudgeObjectVo schemeJudgeObjectVo : listByPid) {
+                            if (schemeJudgeObjectVo.getEvaluationArea() != null) {
+                                groupArea = groupArea.add(schemeJudgeObjectVo.getEvaluationArea());
+                                if (schemeJudgeObjectVo.getPrice() != null) {
+                                    groupPrice = groupPrice.add(schemeJudgeObjectVo.getEvaluationArea().multiply(schemeJudgeObjectVo.getPrice()));
+                                }
+                            }
+                        }
+                    }
+                } else {
                     if (judgeObject.getEvaluationArea() != null) {
                         groupArea = groupArea.add(judgeObject.getEvaluationArea());
                         if (judgeObject.getPrice() != null) {
@@ -423,14 +436,9 @@ public class SchemeLiquidationAnalysisService {
         oldData.setGroupId(groupId);
         List<SchemeLiquidationAnalysisJudge> oldList = schemeLiquidationAnalysisJudgeDao.getSchemeLiquidationAnalysisJudgeList(oldData);
         List<Integer> existIds = LangUtils.transform(oldList, o -> o.getJudgeObjectId());
-//        if (CollectionUtils.isNotEmpty(oldList)) {
-//            for (SchemeLiquidationAnalysisJudge item : oldList) {
-//                schemeLiquidationAnalysisJudgeDao.deleteInfo(item.getId());
-//            }
-//        }
         if (CollectionUtils.isEmpty(schemeJudgeObjIds)) return;
         for (Integer judgeObjectId : schemeJudgeObjIds) {
-            if(existIds.contains(judgeObjectId)) continue;
+            if (existIds.contains(judgeObjectId)) continue;
             SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
             SchemeLiquidationAnalysisJudge schemeLiquidationAnalysisJudge = new SchemeLiquidationAnalysisJudge();
             schemeLiquidationAnalysisJudge.setAreaId(areaId);

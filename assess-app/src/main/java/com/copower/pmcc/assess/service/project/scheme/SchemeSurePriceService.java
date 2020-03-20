@@ -291,9 +291,25 @@ public class SchemeSurePriceService {
         schemeSurePrice.setPrice(schemeSurePriceApplyDto.getPrice());
         schemeSurePriceDao.updateSurePrice(schemeSurePrice);
 
+        SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectDao.getSchemeJudgeObject(schemeSurePriceApplyDto.getJudgeObjectId());
+        if (schemeJudgeObject != null) {
+            schemeJudgeObject.setPrice(schemeSurePriceApplyDto.getPrice());
+            schemeJudgeObject.setOriginalPrice(schemeSurePriceApplyDto.getPrice());
+            schemeJudgeObjectDao.updateSchemeJudgeObject(schemeJudgeObject);
+            List<SchemeJudgeObject> childrens = schemeJudgeObjectDao.getListByPid(schemeJudgeObject.getId());
+            if (CollectionUtils.isNotEmpty(childrens)) {
+                for (SchemeJudgeObject item : childrens) {
+                    if (item.getPrice() == null) {
+                        item.setPrice(schemeSurePriceApplyDto.getPrice());
+                        item.setOriginalPrice(schemeSurePriceApplyDto.getPrice());
+                        schemeJudgeObjectDao.updateSchemeJudgeObject(item);
+                    }
+                }
+            }
+        }
         if (StringUtils.isBlank(processInsId)) {
             addSurePriceRecord(projectPlanDetails);
-        }else{
+        } else {
             try {
                 bpmRpcActivitiProcessManageService.setProcessEventExecutor(processInsId, SchemeSurePriceEvent.class.getSimpleName()); //修改监听器
             } catch (BpmException e) {
@@ -481,7 +497,7 @@ public class SchemeSurePriceService {
                 List<String> coefficientList = Arrays.asList(coefficients);
                 for (String coefficientItem : coefficientList) {
                     //通过类型匹配
-                    if(coefficientItem.contains(":")){
+                    if (coefficientItem.contains(":")) {
                         String factor = coefficientItem.substring(0, coefficientItem.indexOf(":"));
                         for (SchemeSurePriceFactor schemeSurePriceFactorItem : factorList) {
                             StringBuilder temp = new StringBuilder();
@@ -499,7 +515,8 @@ public class SchemeSurePriceService {
                                 schemeSurePriceFactorDao.updateSurePriceFactor(schemeSurePriceFactor);
                             }
                         }
-                    };
+                    }
+                    ;
                 }
             }
 
@@ -526,9 +543,10 @@ public class SchemeSurePriceService {
 
     /**
      * 新增单价记录
+     *
      * @param projectPlanDetails
      */
-    public void addSurePriceRecord(ProjectPlanDetails projectPlanDetails){
+    public void addSurePriceRecord(ProjectPlanDetails projectPlanDetails) {
         SchemeSurePriceRecord schemeSurePriceRecord = new SchemeSurePriceRecord();
         schemeSurePriceRecord.setPlanDetailsId(projectPlanDetails.getId());
         schemeSurePriceRecord.setProjectId(projectPlanDetails.getProjectId());

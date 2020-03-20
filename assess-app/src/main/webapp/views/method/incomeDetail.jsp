@@ -99,11 +99,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="row form-group" id="group_restriction_explain" style="display: none;">
+                <div class="row form-group">
                     <div class="col-md-12">
                         <div class="form-inline x-valid">
                             <label class="col-sm-1 control-label">
-                                租约限制说明<span class="symbol required"></span>
+                                租约限制说明
                             </label>
                             <div class="col-sm-8">
                                 <label class="form-control input-full">${mdIncome.restrictionExplain}</label>
