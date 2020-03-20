@@ -127,6 +127,12 @@
                                                         项目提成
                                                     </button>
                                                 </div>
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-info btn-sm" type="button"
+                                                            onclick="projectDetails.projectXlxPigeonholeRecord()">
+                                                        归档资料
+                                                    </button>
+                                                </div>
                                             </div>
                                         </small>
                                     </div>
@@ -224,6 +230,11 @@
         $("#v-pills-tab a:first").trigger('click');
     })
     var projectDetails = {
+        //归档记录
+        projectXlxPigeonholeRecord: function () {
+            var url = "${pageContext.request.contextPath}/projectXlxPigeonholeRecord/apply?projectId=" + ${projectInfo.id};
+            window.open(url, '_blank');
+        },
         //项目提成
         projectXlxCommission: function () {
             var url = "${pageContext.request.contextPath}/projectXlxCommission/apply?projectId=" + ${projectInfo.id};
