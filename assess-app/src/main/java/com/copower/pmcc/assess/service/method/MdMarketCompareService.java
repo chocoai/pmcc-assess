@@ -320,8 +320,17 @@ public class MdMarketCompareService {
      * @return
      * @throws Exception
      */
-    public MdCompareInitParamVo selectCase(Integer mcId, String planDetailsIdList, Integer judgeObjectId, boolean isLand) throws Exception {
+    public MdCompareInitParamVo selectCase(Integer mcId, String planDetailsIdList, Integer judgeObjectId, boolean isLand,String jsonData) throws Exception {
         MdCompareInitParamVo mdCompareInitParamVo = new MdCompareInitParamVo();
+        //原来页面的案例
+        MarketCompareResultDto oldData = JSON.parseObject(jsonData, MarketCompareResultDto.class);
+        List<MdMarketCompareItem> oldCaseList = oldData.getCaseItemList();
+        if(CollectionUtils.isNotEmpty(oldCaseList)){
+            for (MdMarketCompareItem item: oldCaseList ) {
+                Integer plandetailsId = mdMarketCompareItemDao.getMarketCompareItemById(item.getId()).getPlanDetailsId();
+                item.setPlanDetailsId(plandetailsId);
+            }
+        }
         //清除原案例信息
         List<MdMarketCompareItem> compareItemList = getCaseListByMcId(mcId);
         if (CollectionUtils.isNotEmpty(compareItemList)) {
@@ -355,13 +364,26 @@ public class MdMarketCompareService {
             setResidueRatioParam(mdMarketCompareItem, basicApply, areaGroup.getValueTimePoint());//获取成新率相关参数
             mdMarketCompareItemDao.addMarketCompareItem(mdMarketCompareItem);
             i++;
+
         }
         mdCompareInitParamVo.setMcId(mcId);
         mdCompareInitParamVo.setJudgeObjectId(judgeObjectId);
         mdCompareInitParamVo.setMarketCompare(getMdMarketCompare(mcId));
         mdCompareInitParamVo.setFields(setUseFieldList);
         mdCompareInitParamVo.setEvaluation(getEvaluationByMcId(mcId));
-        mdCompareInitParamVo.setCases(getCaseListByMcId(mcId));
+        List<MdMarketCompareItem> itemList = getCaseListByMcId(mcId);
+        if(CollectionUtils.isNotEmpty(oldCaseList)){
+            if(CollectionUtils.isNotEmpty(itemList)){
+                for (MdMarketCompareItem item: itemList) {
+                    for (MdMarketCompareItem old: oldCaseList) {
+                        if(item.getPlanDetailsId().equals(old.getPlanDetailsId())){
+                            item.setJsonContent(old.getJsonContent());
+                        }
+                    }
+                }
+            }
+        }
+        mdCompareInitParamVo.setCases(itemList);
         return mdCompareInitParamVo;
     }
 
