@@ -121,6 +121,12 @@
                                                         项目拿号
                                                     </button>
                                                 </div>
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-info btn-sm" type="button"
+                                                            onclick="projectDetails.projectXlxCommission()">
+                                                        项目提成
+                                                    </button>
+                                                </div>
                                             </div>
                                         </small>
                                     </div>
@@ -218,6 +224,11 @@
         $("#v-pills-tab a:first").trigger('click');
     })
     var projectDetails = {
+        //项目提成
+        projectXlxCommission: function () {
+            var url = "${pageContext.request.contextPath}/projectXlxCommission/apply?projectId=" + ${projectInfo.id};
+            window.open(url, '_blank');
+        },
         //后续事项
         projectSubsequent: function () {
             var url = "${pageContext.request.contextPath}/projectSubsequent/apply?projectId=" + ${projectInfo.id};

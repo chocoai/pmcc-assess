@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.ProjectXlxCommissionMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.ProjectXlxCommission" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="project_id" property="projectId" jdbcType="INTEGER" />
+    <result column="process_ins_id" property="processInsId" jdbcType="VARCHAR" />
+    <result column="invoice_number" property="invoiceNumber" jdbcType="VARCHAR" />
+    <result column="invoice_total_money" property="invoiceTotalMoney" jdbcType="DECIMAL" />
+    <result column="project_money" property="projectMoney" jdbcType="DECIMAL" />
+    <result column="payment_confirmation" property="paymentConfirmation" jdbcType="VARCHAR" />
+    <result column="report_number" property="reportNumber" jdbcType="VARCHAR" />
+    <result column="not_commission_confirm" property="notCommissionConfirm" jdbcType="VARCHAR" />
+    <result column="not_rebate_confirm" property="notRebateConfirm" jdbcType="VARCHAR" />
+    <result column="confirm_time" property="confirmTime" jdbcType="TIMESTAMP" />
+    <result column="report_bind_date" property="reportBindDate" jdbcType="TIMESTAMP" />
+    <result column="pigeonhole_date" property="pigeonholeDate" jdbcType="TIMESTAMP" />
+    <result column="overdue_pigeonhole" property="overduePigeonhole" jdbcType="VARCHAR" />
+    <result column="pigeonhole_confirm" property="pigeonholeConfirm" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="created" property="created" jdbcType="TIMESTAMP" />
+    <result column="modified" property="modified" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, project_id, process_ins_id, invoice_number, invoice_total_money, project_money, 
+    payment_confirmation, report_number, not_commission_confirm, not_rebate_confirm, 
+    confirm_time, report_bind_date, pigeonhole_date, overdue_pigeonhole, pigeonhole_confirm, 
+    status, creator, created, modified
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectXlxCommissionExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_project_xlx_commission
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_project_xlx_commission
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_project_xlx_commission
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectXlxCommissionExample" >
+    delete from tb_project_xlx_commission
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectXlxCommission" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_project_xlx_commission (project_id, process_ins_id, invoice_number, 
+      invoice_total_money, project_money, payment_confirmation, 
+      report_number, not_commission_confirm, not_rebate_confirm, 
+      confirm_time, report_bind_date, pigeonhole_date, 
+      overdue_pigeonhole, pigeonhole_confirm, status, 
+      creator, created, modified
+      )
+    values (#{projectId,jdbcType=INTEGER}, #{processInsId,jdbcType=VARCHAR}, #{invoiceNumber,jdbcType=VARCHAR}, 
+      #{invoiceTotalMoney,jdbcType=DECIMAL}, #{projectMoney,jdbcType=DECIMAL}, #{paymentConfirmation,jdbcType=VARCHAR}, 
+      #{reportNumber,jdbcType=VARCHAR}, #{notCommissionConfirm,jdbcType=VARCHAR}, #{notRebateConfirm,jdbcType=VARCHAR}, 
+      #{confirmTime,jdbcType=TIMESTAMP}, #{reportBindDate,jdbcType=TIMESTAMP}, #{pigeonholeDate,jdbcType=TIMESTAMP}, 
+      #{overduePigeonhole,jdbcType=VARCHAR}, #{pigeonholeConfirm,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{creator,jdbcType=VARCHAR}, #{created,jdbcType=TIMESTAMP}, #{modified,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectXlxCommission" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_project_xlx_commission
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="projectId != null" >
+        project_id,
+      </if>
+      <if test="processInsId != null" >
+        process_ins_id,
+      </if>
+      <if test="invoiceNumber != null" >
+        invoice_number,
+      </if>
+      <if test="invoiceTotalMoney != null" >
+        invoice_total_money,
+      </if>
+      <if test="projectMoney != null" >
+        project_money,
+      </if>
+      <if test="paymentConfirmation != null" >
+        payment_confirmation,
+      </if>
+      <if test="reportNumber != null" >
+        report_number,
+      </if>
+      <if test="notCommissionConfirm != null" >
+        not_commission_confirm,
+      </if>
+      <if test="notRebateConfirm != null" >
+        not_rebate_confirm,
+      </if>
+      <if test="confirmTime != null" >
+        confirm_time,
+      </if>
+      <if test="reportBindDate != null" >
+        report_bind_date,
+      </if>
+      <if test="pigeonholeDate != null" >
+        pigeonhole_date,
+      </if>
+      <if test="overduePigeonhole != null" >
+        overdue_pigeonhole,
+      </if>
+      <if test="pigeonholeConfirm != null" >
+        pigeonhole_confirm,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="created != null" >
+        created,
+      </if>
+      <if test="modified != null" >
+        modified,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="projectId != null" >
+        #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="processInsId != null" >
+        #{processInsId,jdbcType=VARCHAR},
+      </if>
+      <if test="invoiceNumber != null" >
+        #{invoiceNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="invoiceTotalMoney != null" >
+        #{invoiceTotalMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="projectMoney != null" >
+        #{projectMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="paymentConfirmation != null" >
+        #{paymentConfirmation,jdbcType=VARCHAR},
+      </if>
+      <if test="reportNumber != null" >
+        #{reportNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="notCommissionConfirm != null" >
+        #{notCommissionConfirm,jdbcType=VARCHAR},
+      </if>
+      <if test="notRebateConfirm != null" >
+        #{notRebateConfirm,jdbcType=VARCHAR},
+      </if>
+      <if test="confirmTime != null" >
+        #{confirmTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reportBindDate != null" >
+        #{reportBindDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pigeonholeDate != null" >
+        #{pigeonholeDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="overduePigeonhole != null" >
+        #{overduePigeonhole,jdbcType=VARCHAR},
+      </if>
+      <if test="pigeonholeConfirm != null" >
+        #{pigeonholeConfirm,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="created != null" >
+        #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modified != null" >
+        #{modified,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectXlxCommissionExample" resultType="java.lang.Integer" >
+    select count(*) from tb_project_xlx_commission
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_project_xlx_commission
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.projectId != null" >
+        project_id = #{record.projectId,jdbcType=INTEGER},
+      </if>
+      <if test="record.processInsId != null" >
+        process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.invoiceNumber != null" >
+        invoice_number = #{record.invoiceNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.invoiceTotalMoney != null" >
+        invoice_total_money = #{record.invoiceTotalMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="record.projectMoney != null" >
+        project_money = #{record.projectMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="record.paymentConfirmation != null" >
+        payment_confirmation = #{record.paymentConfirmation,jdbcType=VARCHAR},
+      </if>
+      <if test="record.reportNumber != null" >
+        report_number = #{record.reportNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.notCommissionConfirm != null" >
+        not_commission_confirm = #{record.notCommissionConfirm,jdbcType=VARCHAR},
+      </if>
+      <if test="record.notRebateConfirm != null" >
+        not_rebate_confirm = #{record.notRebateConfirm,jdbcType=VARCHAR},
+      </if>
+      <if test="record.confirmTime != null" >
+        confirm_time = #{record.confirmTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.reportBindDate != null" >
+        report_bind_date = #{record.reportBindDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.pigeonholeDate != null" >
+        pigeonhole_date = #{record.pigeonholeDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.overduePigeonhole != null" >
+        overdue_pigeonhole = #{record.overduePigeonhole,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pigeonholeConfirm != null" >
+        pigeonhole_confirm = #{record.pigeonholeConfirm,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.created != null" >
+        created = #{record.created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.modified != null" >
+        modified = #{record.modified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_project_xlx_commission
+    set id = #{record.id,jdbcType=INTEGER},
+      project_id = #{record.projectId,jdbcType=INTEGER},
+      process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
+      invoice_number = #{record.invoiceNumber,jdbcType=VARCHAR},
+      invoice_total_money = #{record.invoiceTotalMoney,jdbcType=DECIMAL},
+      project_money = #{record.projectMoney,jdbcType=DECIMAL},
+      payment_confirmation = #{record.paymentConfirmation,jdbcType=VARCHAR},
+      report_number = #{record.reportNumber,jdbcType=VARCHAR},
+      not_commission_confirm = #{record.notCommissionConfirm,jdbcType=VARCHAR},
+      not_rebate_confirm = #{record.notRebateConfirm,jdbcType=VARCHAR},
+      confirm_time = #{record.confirmTime,jdbcType=TIMESTAMP},
+      report_bind_date = #{record.reportBindDate,jdbcType=TIMESTAMP},
+      pigeonhole_date = #{record.pigeonholeDate,jdbcType=TIMESTAMP},
+      overdue_pigeonhole = #{record.overduePigeonhole,jdbcType=VARCHAR},
+      pigeonhole_confirm = #{record.pigeonholeConfirm,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=VARCHAR},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      created = #{record.created,jdbcType=TIMESTAMP},
+      modified = #{record.modified,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectXlxCommission" >
+    update tb_project_xlx_commission
+    <set >
+      <if test="projectId != null" >
+        project_id = #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="processInsId != null" >
+        process_ins_id = #{processInsId,jdbcType=VARCHAR},
+      </if>
+      <if test="invoiceNumber != null" >
+        invoice_number = #{invoiceNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="invoiceTotalMoney != null" >
+        invoice_total_money = #{invoiceTotalMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="projectMoney != null" >
+        project_money = #{projectMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="paymentConfirmation != null" >
+        payment_confirmation = #{paymentConfirmation,jdbcType=VARCHAR},
+      </if>
+      <if test="reportNumber != null" >
+        report_number = #{reportNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="notCommissionConfirm != null" >
+        not_commission_confirm = #{notCommissionConfirm,jdbcType=VARCHAR},
+      </if>
+      <if test="notRebateConfirm != null" >
+        not_rebate_confirm = #{notRebateConfirm,jdbcType=VARCHAR},
+      </if>
+      <if test="confirmTime != null" >
+        confirm_time = #{confirmTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reportBindDate != null" >
+        report_bind_date = #{reportBindDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pigeonholeDate != null" >
+        pigeonhole_date = #{pigeonholeDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="overduePigeonhole != null" >
+        overdue_pigeonhole = #{overduePigeonhole,jdbcType=VARCHAR},
+      </if>
+      <if test="pigeonholeConfirm != null" >
+        pigeonhole_confirm = #{pigeonholeConfirm,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="created != null" >
+        created = #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modified != null" >
+        modified = #{modified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectXlxCommission" >
+    update tb_project_xlx_commission
+    set project_id = #{projectId,jdbcType=INTEGER},
+      process_ins_id = #{processInsId,jdbcType=VARCHAR},
+      invoice_number = #{invoiceNumber,jdbcType=VARCHAR},
+      invoice_total_money = #{invoiceTotalMoney,jdbcType=DECIMAL},
+      project_money = #{projectMoney,jdbcType=DECIMAL},
+      payment_confirmation = #{paymentConfirmation,jdbcType=VARCHAR},
+      report_number = #{reportNumber,jdbcType=VARCHAR},
+      not_commission_confirm = #{notCommissionConfirm,jdbcType=VARCHAR},
+      not_rebate_confirm = #{notRebateConfirm,jdbcType=VARCHAR},
+      confirm_time = #{confirmTime,jdbcType=TIMESTAMP},
+      report_bind_date = #{reportBindDate,jdbcType=TIMESTAMP},
+      pigeonhole_date = #{pigeonholeDate,jdbcType=TIMESTAMP},
+      overdue_pigeonhole = #{overduePigeonhole,jdbcType=VARCHAR},
+      pigeonhole_confirm = #{pigeonholeConfirm,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      creator = #{creator,jdbcType=VARCHAR},
+      created = #{created,jdbcType=TIMESTAMP},
+      modified = #{modified,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
