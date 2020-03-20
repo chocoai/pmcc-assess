@@ -8,6 +8,7 @@ import com.copower.pmcc.bpm.api.dto.SysWorkLogVo;
 import com.copower.pmcc.bpm.api.provider.BpmRpcToolsService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.api.provider.ErpRpcAttachmentService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
@@ -38,6 +39,8 @@ public class WorkLogService {
     private PublicService publicService;
     @Autowired
     private BaseAttachmentService baseAttachmentService;
+    @Autowired
+    private ErpRpcAttachmentService erpRpcAttachmentService;
 
     public BootstrapTableVo<SysWorkLogNewVo> getBootstrapTableVo(String queryUserAccountName, String queryProjectName, String queryTitle, Date queryStartTime, Date queryEndTime) {
         Integer departmentId = commonService.thisUser().getDepartmentId();
@@ -128,7 +131,7 @@ public class WorkLogService {
         String tableName = String.format("%s_%s", "tb", FormatUtils.camelToUnderline(className));
         query.setTableId(newVo.getId());
         query.setTableName(tableName);
-        List<SysAttachmentDto> sysAttachmentDtoList = baseAttachmentService.getAttachmentList(query);
+        List<SysAttachmentDto> sysAttachmentDtoList =erpRpcAttachmentService.getAttachmentList(query);
         if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
             Iterator<SysAttachmentDto> iterator = sysAttachmentDtoList.iterator();
             while (iterator.hasNext()) {

@@ -30,6 +30,7 @@
     <result column="location_factor_ratio" property="locationFactorRatio" jdbcType="DECIMAL" />
     <result column="equity_factor_ratio" property="equityFactorRatio" jdbcType="DECIMAL" />
     <result column="entity_factor_ratio" property="entityFactorRatio" jdbcType="DECIMAL" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -97,8 +98,8 @@
     residue_ratio_id, used_year, usable_year, house_id, area, initial_price, must_adjust_price, 
     annual_coefficient, volume_ratio_coefficient, specific_price, correction_difference, 
     case_difference, weight, weight_description, average_price, deve_degree, evaluate_price, 
-    location_factor_ratio, equity_factor_ratio, entity_factor_ratio, creator, gmt_created, 
-    gmt_modified
+    location_factor_ratio, equity_factor_ratio, entity_factor_ratio, remark, creator, 
+    gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareItemExample" >
     select
@@ -143,8 +144,8 @@
       correction_difference, case_difference, weight, 
       weight_description, average_price, deve_degree, 
       evaluate_price, location_factor_ratio, equity_factor_ratio, 
-      entity_factor_ratio, creator, gmt_created, 
-      gmt_modified)
+      entity_factor_ratio, remark, creator, 
+      gmt_created, gmt_modified)
     values (#{mcId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
       #{planDetailsId,jdbcType=INTEGER}, #{basicApplyId,jdbcType=INTEGER}, #{jsonContent,jdbcType=VARCHAR}, 
       #{tradingTimeExplain,jdbcType=VARCHAR}, #{residueRatioId,jdbcType=INTEGER}, #{usedYear,jdbcType=INTEGER}, 
@@ -154,8 +155,8 @@
       #{correctionDifference,jdbcType=VARCHAR}, #{caseDifference,jdbcType=VARCHAR}, #{weight,jdbcType=VARCHAR}, 
       #{weightDescription,jdbcType=VARCHAR}, #{averagePrice,jdbcType=DECIMAL}, #{deveDegree,jdbcType=DECIMAL}, 
       #{evaluatePrice,jdbcType=DECIMAL}, #{locationFactorRatio,jdbcType=DECIMAL}, #{equityFactorRatio,jdbcType=DECIMAL}, 
-      #{entityFactorRatio,jdbcType=DECIMAL}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{entityFactorRatio,jdbcType=DECIMAL}, #{remark,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.MdMarketCompareItem" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -243,6 +244,9 @@
       </if>
       <if test="entityFactorRatio != null" >
         entity_factor_ratio,
+      </if>
+      <if test="remark != null" >
+        remark,
       </if>
       <if test="creator != null" >
         creator,
@@ -335,6 +339,9 @@
       </if>
       <if test="entityFactorRatio != null" >
         #{entityFactorRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -440,6 +447,9 @@
       <if test="record.entityFactorRatio != null" >
         entity_factor_ratio = #{record.entityFactorRatio,jdbcType=DECIMAL},
       </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -484,6 +494,7 @@
       location_factor_ratio = #{record.locationFactorRatio,jdbcType=DECIMAL},
       equity_factor_ratio = #{record.equityFactorRatio,jdbcType=DECIMAL},
       entity_factor_ratio = #{record.entityFactorRatio,jdbcType=DECIMAL},
+      remark = #{record.remark,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -575,6 +586,9 @@
       <if test="entityFactorRatio != null" >
         entity_factor_ratio = #{entityFactorRatio,jdbcType=DECIMAL},
       </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -616,6 +630,7 @@
       location_factor_ratio = #{locationFactorRatio,jdbcType=DECIMAL},
       equity_factor_ratio = #{equityFactorRatio,jdbcType=DECIMAL},
       entity_factor_ratio = #{entityFactorRatio,jdbcType=DECIMAL},
+      remark = #{remark,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

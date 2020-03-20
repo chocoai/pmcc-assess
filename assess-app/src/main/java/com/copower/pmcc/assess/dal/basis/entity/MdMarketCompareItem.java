@@ -60,6 +60,8 @@ public class MdMarketCompareItem {
 
     private BigDecimal entityFactorRatio;
 
+    private String remark;
+
     private String creator;
 
     private Date gmtCreated;
@@ -288,6 +290,14 @@ public class MdMarketCompareItem {
 
     public void setEntityFactorRatio(BigDecimal entityFactorRatio) {
         this.entityFactorRatio = entityFactorRatio;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark == null ? null : remark.trim();
     }
 
     public String getCreator() {

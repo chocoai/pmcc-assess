@@ -1,23 +1,45 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%--<div class="main-header">--%>
+
+
+<%--    <!-- Navbar Header -->--%>
+<%--    <nav class="navbar navbar-header navbar-expand-lg" data-background-color="blue2">--%>
+
+<%--        <div class="container-fluid">--%>
+<%--            <div class="nav-toggle">--%>
+<%--                <button class="btn btn-toggle toggle-sidebar"><i class="icon-menu"></i></button>--%>
+<%--            </div>--%>
+<%--            <div class="collapse" id="search-nav"  style="max-width: 100%">--%>
+<%--                <h3 style="color: #ffffff">--%>
+<%--                    <span class="label label-warning">${projectInfo.projectStatus}</span> <span style="cursor: pointer;" onclick="window.location.href='${pageContext.request.contextPath}/projectCenter/projectInfo?projectId=${projectInfo.id}'">${projectInfo.projectName}</span>--%>
+<%--                </h3>--%>
+<%--            </div>--%>
+<%--        </div>--%>
+<%--    </nav>--%>
+<%--    <!-- End Navbar -->--%>
+<%--</div>--%>
 <div class="main-header">
-
-
-    <!-- Navbar Header -->
+    <div class="logo-header" data-background-color="blue"><a target="_self"
+                                                             href="${pageContext.request.contextPath}/home/main"
+                                                             class="logo"
+                                                             style="color: #FFFFFF">【 ${baseViewDto.selectApp.name}】</a>
+        <button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse"
+                data-target="collapse" aria-expanded="false" aria-label="Toggle navigation"><span
+                class="navbar-toggler-icon"><i class="icon-menu"></i></span></button>
+        <button class="topbar-toggler more"><i class="icon-options-vertical"></i></button>
+        <div class="nav-toggle">
+            <button class="btn btn-toggle toggle-sidebar"><i class="icon-menu"></i></button>
+        </div>
+    </div>
     <nav class="navbar navbar-header navbar-expand-lg" data-background-color="blue2">
-
         <div class="container-fluid">
-            <div class="nav-toggle">
-                <button class="btn btn-toggle toggle-sidebar"><i class="icon-menu"></i></button>
-            </div>
-            <div class="collapse" id="search-nav"  style="max-width: 100%">
-                <h3 style="color: #ffffff">
-                    <span class="label label-warning">${projectInfo.projectStatus}</span> <span style="cursor: pointer;" onclick="window.location.href='${pageContext.request.contextPath}/projectCenter/projectInfo?projectId=${projectInfo.id}'">${projectInfo.projectName}</span>
-                </h3>
-            </div>
+            <div class="collapse" id="search-nav" style="color: #FFFFFF;font-size: 20px"><span
+                    class="label label-danger">${projectInfo.projectStatus}</span> <span style="cursor: pointer;" onclick="window.location.href='${pageContext.request.contextPath}/projectCenter/projectInfo?projectId=${projectInfo.id}'">${projectInfo.projectName}</span></div>
         </div>
     </nav>
-    <!-- End Navbar -->
 </div>
+
+
 <div class="sidebar sidebar-style-2">
     <div class="scroll-wrapper sidebar-wrapper scrollbar scrollbar-inner" style="position: relative;">
         <div class="sidebar-wrapper scrollbar scrollbar-inner scroll-content"

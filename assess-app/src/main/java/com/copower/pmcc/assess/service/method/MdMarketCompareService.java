@@ -353,6 +353,7 @@ public class MdMarketCompareService {
             mdMarketCompareItem.setMcId(mcId);
             mdMarketCompareItem.setPlanDetailsId(planDetailsId);
             mdMarketCompareItem.setName(String.format("案例%s", i));
+            mdMarketCompareItem.setRemark(projectPlanDetails.getProjectPhaseName());
             mdMarketCompareItem.setType(ExamineTypeEnum.CASE.getId());
             mdMarketCompareItem.setCreator(commonService.thisUserAccount());
             mdMarketCompareItem.setMustAdjustPrice(false);
