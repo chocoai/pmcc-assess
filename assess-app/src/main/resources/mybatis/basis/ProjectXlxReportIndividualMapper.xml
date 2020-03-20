@@ -1,0 +1,974 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.ProjectXlxReportIndividualMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.ProjectXlxReportIndividual" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="location" property="location" jdbcType="VARCHAR" />
+    <result column="project_name" property="projectName" jdbcType="VARCHAR" />
+    <result column="entrusted_unit" property="entrustedUnit" jdbcType="VARCHAR" />
+    <result column="report_score" property="reportScore" jdbcType="INTEGER" />
+    <result column="report_modification_date" property="reportModificationDate" jdbcType="TIMESTAMP" />
+    <result column="report_binding_date" property="reportBindingDate" jdbcType="TIMESTAMP" />
+    <result column="filing_date" property="filingDate" jdbcType="TIMESTAMP" />
+    <result column="land_plots_number" property="landPlotsNumber" jdbcType="DECIMAL" />
+    <result column="land_plots_location" property="landPlotsLocation" jdbcType="VARCHAR" />
+    <result column="entrusted_bank" property="entrustedBank" jdbcType="VARCHAR" />
+    <result column="phone_principal" property="phonePrincipal" jdbcType="VARCHAR" />
+    <result column="address_principal" property="addressPrincipal" jdbcType="VARCHAR" />
+    <result column="contract_signing_date" property="contractSigningDate" jdbcType="TIMESTAMP" />
+    <result column="signer_people" property="signerPeople" jdbcType="VARCHAR" />
+    <result column="floor_area" property="floorArea" jdbcType="DECIMAL" />
+    <result column="actual_charges" property="actualCharges" jdbcType="VARCHAR" />
+    <result column="standard_charge" property="standardCharge" jdbcType="VARCHAR" />
+    <result column="valuation_method" property="valuationMethod" jdbcType="VARCHAR" />
+    <result column="valuation_purpose" property="valuationPurpose" jdbcType="VARCHAR" />
+    <result column="assess_method" property="assessMethod" jdbcType="VARCHAR" />
+    <result column="assess_purpose" property="assessPurpose" jdbcType="VARCHAR" />
+    <result column="signed_by" property="signedBy" jdbcType="VARCHAR" />
+    <result column="draft_author" property="draftAuthor" jdbcType="VARCHAR" />
+    <result column="appraisal_period" property="appraisalPeriod" jdbcType="TIMESTAMP" />
+    <result column="project_acquisition_method" property="projectAcquisitionMethod" jdbcType="VARCHAR" />
+    <result column="project_Leader" property="projectLeader" jdbcType="VARCHAR" />
+    <result column="housing_use" property="housingUse" jdbcType="VARCHAR" />
+    <result column="land_use" property="landUse" jdbcType="VARCHAR" />
+    <result column="cert_use" property="certUse" jdbcType="VARCHAR" />
+    <result column="value_time_point" property="valueTimePoint" jdbcType="TIMESTAMP" />
+    <result column="time_point_explain" property="timePointExplain" jdbcType="VARCHAR" />
+    <result column="report_people" property="reportPeople" jdbcType="VARCHAR" />
+    <result column="number_value" property="numberValue" jdbcType="VARCHAR" />
+    <result column="land_area" property="landArea" jdbcType="DECIMAL" />
+    <result column="assess_area" property="assessArea" jdbcType="DECIMAL" />
+    <result column="judge_object_land_area" property="judgeObjectLandArea" jdbcType="DECIMAL" />
+    <result column="judge_object_floor_area" property="judgeObjectFloorArea" jdbcType="DECIMAL" />
+    <result column="assess_price" property="assessPrice" jdbcType="DECIMAL" />
+    <result column="assess_total_price" property="assessTotalPrice" jdbcType="DECIMAL" />
+    <result column="undertake_sheet" property="undertakeSheet" jdbcType="VARCHAR" />
+    <result column="assess_total_toll" property="assessTotalToll" jdbcType="DECIMAL" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="worth" property="worth" jdbcType="DECIMAL" />
+    <result column="account_value_original" property="accountValueOriginal" jdbcType="DECIMAL" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="plan_details_id" property="planDetailsId" jdbcType="INTEGER" />
+    <result column="project_id" property="projectId" jdbcType="INTEGER" />
+    <result column="assess_type" property="assessType" jdbcType="VARCHAR" />
+    <result column="sorting" property="sorting" jdbcType="INTEGER" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
+    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, location, project_name, entrusted_unit, report_score, report_modification_date, 
+    report_binding_date, filing_date, land_plots_number, land_plots_location, entrusted_bank, 
+    phone_principal, address_principal, contract_signing_date, signer_people, floor_area, 
+    actual_charges, standard_charge, valuation_method, valuation_purpose, assess_method, 
+    assess_purpose, signed_by, draft_author, appraisal_period, project_acquisition_method, 
+    project_Leader, housing_use, land_use, cert_use, value_time_point, time_point_explain, 
+    report_people, number_value, land_area, assess_area, judge_object_land_area, judge_object_floor_area, 
+    assess_price, assess_total_price, undertake_sheet, assess_total_toll, price, worth, 
+    account_value_original, remark, plan_details_id, project_id, assess_type, sorting, 
+    creator, gmt_created, gmt_modified
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectXlxReportIndividualExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_project_xlx_report_individual
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_project_xlx_report_individual
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_project_xlx_report_individual
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectXlxReportIndividualExample" >
+    delete from tb_project_xlx_report_individual
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectXlxReportIndividual" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_project_xlx_report_individual (location, project_name, entrusted_unit, 
+      report_score, report_modification_date, 
+      report_binding_date, filing_date, land_plots_number, 
+      land_plots_location, entrusted_bank, phone_principal, 
+      address_principal, contract_signing_date, 
+      signer_people, floor_area, actual_charges, 
+      standard_charge, valuation_method, valuation_purpose, 
+      assess_method, assess_purpose, signed_by, 
+      draft_author, appraisal_period, project_acquisition_method, 
+      project_Leader, housing_use, land_use, 
+      cert_use, value_time_point, time_point_explain, 
+      report_people, number_value, land_area, 
+      assess_area, judge_object_land_area, judge_object_floor_area, 
+      assess_price, assess_total_price, undertake_sheet, 
+      assess_total_toll, price, worth, 
+      account_value_original, remark, plan_details_id, 
+      project_id, assess_type, sorting, 
+      creator, gmt_created, gmt_modified
+      )
+    values (#{location,jdbcType=VARCHAR}, #{projectName,jdbcType=VARCHAR}, #{entrustedUnit,jdbcType=VARCHAR}, 
+      #{reportScore,jdbcType=INTEGER}, #{reportModificationDate,jdbcType=TIMESTAMP}, 
+      #{reportBindingDate,jdbcType=TIMESTAMP}, #{filingDate,jdbcType=TIMESTAMP}, #{landPlotsNumber,jdbcType=DECIMAL}, 
+      #{landPlotsLocation,jdbcType=VARCHAR}, #{entrustedBank,jdbcType=VARCHAR}, #{phonePrincipal,jdbcType=VARCHAR}, 
+      #{addressPrincipal,jdbcType=VARCHAR}, #{contractSigningDate,jdbcType=TIMESTAMP}, 
+      #{signerPeople,jdbcType=VARCHAR}, #{floorArea,jdbcType=DECIMAL}, #{actualCharges,jdbcType=VARCHAR}, 
+      #{standardCharge,jdbcType=VARCHAR}, #{valuationMethod,jdbcType=VARCHAR}, #{valuationPurpose,jdbcType=VARCHAR}, 
+      #{assessMethod,jdbcType=VARCHAR}, #{assessPurpose,jdbcType=VARCHAR}, #{signedBy,jdbcType=VARCHAR}, 
+      #{draftAuthor,jdbcType=VARCHAR}, #{appraisalPeriod,jdbcType=TIMESTAMP}, #{projectAcquisitionMethod,jdbcType=VARCHAR}, 
+      #{projectLeader,jdbcType=VARCHAR}, #{housingUse,jdbcType=VARCHAR}, #{landUse,jdbcType=VARCHAR}, 
+      #{certUse,jdbcType=VARCHAR}, #{valueTimePoint,jdbcType=TIMESTAMP}, #{timePointExplain,jdbcType=VARCHAR}, 
+      #{reportPeople,jdbcType=VARCHAR}, #{numberValue,jdbcType=VARCHAR}, #{landArea,jdbcType=DECIMAL}, 
+      #{assessArea,jdbcType=DECIMAL}, #{judgeObjectLandArea,jdbcType=DECIMAL}, #{judgeObjectFloorArea,jdbcType=DECIMAL}, 
+      #{assessPrice,jdbcType=DECIMAL}, #{assessTotalPrice,jdbcType=DECIMAL}, #{undertakeSheet,jdbcType=VARCHAR}, 
+      #{assessTotalToll,jdbcType=DECIMAL}, #{price,jdbcType=DECIMAL}, #{worth,jdbcType=DECIMAL}, 
+      #{accountValueOriginal,jdbcType=DECIMAL}, #{remark,jdbcType=VARCHAR}, #{planDetailsId,jdbcType=INTEGER}, 
+      #{projectId,jdbcType=INTEGER}, #{assessType,jdbcType=VARCHAR}, #{sorting,jdbcType=INTEGER}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectXlxReportIndividual" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_project_xlx_report_individual
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="location != null" >
+        location,
+      </if>
+      <if test="projectName != null" >
+        project_name,
+      </if>
+      <if test="entrustedUnit != null" >
+        entrusted_unit,
+      </if>
+      <if test="reportScore != null" >
+        report_score,
+      </if>
+      <if test="reportModificationDate != null" >
+        report_modification_date,
+      </if>
+      <if test="reportBindingDate != null" >
+        report_binding_date,
+      </if>
+      <if test="filingDate != null" >
+        filing_date,
+      </if>
+      <if test="landPlotsNumber != null" >
+        land_plots_number,
+      </if>
+      <if test="landPlotsLocation != null" >
+        land_plots_location,
+      </if>
+      <if test="entrustedBank != null" >
+        entrusted_bank,
+      </if>
+      <if test="phonePrincipal != null" >
+        phone_principal,
+      </if>
+      <if test="addressPrincipal != null" >
+        address_principal,
+      </if>
+      <if test="contractSigningDate != null" >
+        contract_signing_date,
+      </if>
+      <if test="signerPeople != null" >
+        signer_people,
+      </if>
+      <if test="floorArea != null" >
+        floor_area,
+      </if>
+      <if test="actualCharges != null" >
+        actual_charges,
+      </if>
+      <if test="standardCharge != null" >
+        standard_charge,
+      </if>
+      <if test="valuationMethod != null" >
+        valuation_method,
+      </if>
+      <if test="valuationPurpose != null" >
+        valuation_purpose,
+      </if>
+      <if test="assessMethod != null" >
+        assess_method,
+      </if>
+      <if test="assessPurpose != null" >
+        assess_purpose,
+      </if>
+      <if test="signedBy != null" >
+        signed_by,
+      </if>
+      <if test="draftAuthor != null" >
+        draft_author,
+      </if>
+      <if test="appraisalPeriod != null" >
+        appraisal_period,
+      </if>
+      <if test="projectAcquisitionMethod != null" >
+        project_acquisition_method,
+      </if>
+      <if test="projectLeader != null" >
+        project_Leader,
+      </if>
+      <if test="housingUse != null" >
+        housing_use,
+      </if>
+      <if test="landUse != null" >
+        land_use,
+      </if>
+      <if test="certUse != null" >
+        cert_use,
+      </if>
+      <if test="valueTimePoint != null" >
+        value_time_point,
+      </if>
+      <if test="timePointExplain != null" >
+        time_point_explain,
+      </if>
+      <if test="reportPeople != null" >
+        report_people,
+      </if>
+      <if test="numberValue != null" >
+        number_value,
+      </if>
+      <if test="landArea != null" >
+        land_area,
+      </if>
+      <if test="assessArea != null" >
+        assess_area,
+      </if>
+      <if test="judgeObjectLandArea != null" >
+        judge_object_land_area,
+      </if>
+      <if test="judgeObjectFloorArea != null" >
+        judge_object_floor_area,
+      </if>
+      <if test="assessPrice != null" >
+        assess_price,
+      </if>
+      <if test="assessTotalPrice != null" >
+        assess_total_price,
+      </if>
+      <if test="undertakeSheet != null" >
+        undertake_sheet,
+      </if>
+      <if test="assessTotalToll != null" >
+        assess_total_toll,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="worth != null" >
+        worth,
+      </if>
+      <if test="accountValueOriginal != null" >
+        account_value_original,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="planDetailsId != null" >
+        plan_details_id,
+      </if>
+      <if test="projectId != null" >
+        project_id,
+      </if>
+      <if test="assessType != null" >
+        assess_type,
+      </if>
+      <if test="sorting != null" >
+        sorting,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created,
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="location != null" >
+        #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="projectName != null" >
+        #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="entrustedUnit != null" >
+        #{entrustedUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="reportScore != null" >
+        #{reportScore,jdbcType=INTEGER},
+      </if>
+      <if test="reportModificationDate != null" >
+        #{reportModificationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reportBindingDate != null" >
+        #{reportBindingDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="filingDate != null" >
+        #{filingDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="landPlotsNumber != null" >
+        #{landPlotsNumber,jdbcType=DECIMAL},
+      </if>
+      <if test="landPlotsLocation != null" >
+        #{landPlotsLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="entrustedBank != null" >
+        #{entrustedBank,jdbcType=VARCHAR},
+      </if>
+      <if test="phonePrincipal != null" >
+        #{phonePrincipal,jdbcType=VARCHAR},
+      </if>
+      <if test="addressPrincipal != null" >
+        #{addressPrincipal,jdbcType=VARCHAR},
+      </if>
+      <if test="contractSigningDate != null" >
+        #{contractSigningDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="signerPeople != null" >
+        #{signerPeople,jdbcType=VARCHAR},
+      </if>
+      <if test="floorArea != null" >
+        #{floorArea,jdbcType=DECIMAL},
+      </if>
+      <if test="actualCharges != null" >
+        #{actualCharges,jdbcType=VARCHAR},
+      </if>
+      <if test="standardCharge != null" >
+        #{standardCharge,jdbcType=VARCHAR},
+      </if>
+      <if test="valuationMethod != null" >
+        #{valuationMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="valuationPurpose != null" >
+        #{valuationPurpose,jdbcType=VARCHAR},
+      </if>
+      <if test="assessMethod != null" >
+        #{assessMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="assessPurpose != null" >
+        #{assessPurpose,jdbcType=VARCHAR},
+      </if>
+      <if test="signedBy != null" >
+        #{signedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="draftAuthor != null" >
+        #{draftAuthor,jdbcType=VARCHAR},
+      </if>
+      <if test="appraisalPeriod != null" >
+        #{appraisalPeriod,jdbcType=TIMESTAMP},
+      </if>
+      <if test="projectAcquisitionMethod != null" >
+        #{projectAcquisitionMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="projectLeader != null" >
+        #{projectLeader,jdbcType=VARCHAR},
+      </if>
+      <if test="housingUse != null" >
+        #{housingUse,jdbcType=VARCHAR},
+      </if>
+      <if test="landUse != null" >
+        #{landUse,jdbcType=VARCHAR},
+      </if>
+      <if test="certUse != null" >
+        #{certUse,jdbcType=VARCHAR},
+      </if>
+      <if test="valueTimePoint != null" >
+        #{valueTimePoint,jdbcType=TIMESTAMP},
+      </if>
+      <if test="timePointExplain != null" >
+        #{timePointExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="reportPeople != null" >
+        #{reportPeople,jdbcType=VARCHAR},
+      </if>
+      <if test="numberValue != null" >
+        #{numberValue,jdbcType=VARCHAR},
+      </if>
+      <if test="landArea != null" >
+        #{landArea,jdbcType=DECIMAL},
+      </if>
+      <if test="assessArea != null" >
+        #{assessArea,jdbcType=DECIMAL},
+      </if>
+      <if test="judgeObjectLandArea != null" >
+        #{judgeObjectLandArea,jdbcType=DECIMAL},
+      </if>
+      <if test="judgeObjectFloorArea != null" >
+        #{judgeObjectFloorArea,jdbcType=DECIMAL},
+      </if>
+      <if test="assessPrice != null" >
+        #{assessPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="assessTotalPrice != null" >
+        #{assessTotalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="undertakeSheet != null" >
+        #{undertakeSheet,jdbcType=VARCHAR},
+      </if>
+      <if test="assessTotalToll != null" >
+        #{assessTotalToll,jdbcType=DECIMAL},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="worth != null" >
+        #{worth,jdbcType=DECIMAL},
+      </if>
+      <if test="accountValueOriginal != null" >
+        #{accountValueOriginal,jdbcType=DECIMAL},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="planDetailsId != null" >
+        #{planDetailsId,jdbcType=INTEGER},
+      </if>
+      <if test="projectId != null" >
+        #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="assessType != null" >
+        #{assessType,jdbcType=VARCHAR},
+      </if>
+      <if test="sorting != null" >
+        #{sorting,jdbcType=INTEGER},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null" >
+        #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectXlxReportIndividualExample" resultType="java.lang.Integer" >
+    select count(*) from tb_project_xlx_report_individual
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_project_xlx_report_individual
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.location != null" >
+        location = #{record.location,jdbcType=VARCHAR},
+      </if>
+      <if test="record.projectName != null" >
+        project_name = #{record.projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.entrustedUnit != null" >
+        entrusted_unit = #{record.entrustedUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.reportScore != null" >
+        report_score = #{record.reportScore,jdbcType=INTEGER},
+      </if>
+      <if test="record.reportModificationDate != null" >
+        report_modification_date = #{record.reportModificationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.reportBindingDate != null" >
+        report_binding_date = #{record.reportBindingDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.filingDate != null" >
+        filing_date = #{record.filingDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.landPlotsNumber != null" >
+        land_plots_number = #{record.landPlotsNumber,jdbcType=DECIMAL},
+      </if>
+      <if test="record.landPlotsLocation != null" >
+        land_plots_location = #{record.landPlotsLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="record.entrustedBank != null" >
+        entrusted_bank = #{record.entrustedBank,jdbcType=VARCHAR},
+      </if>
+      <if test="record.phonePrincipal != null" >
+        phone_principal = #{record.phonePrincipal,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addressPrincipal != null" >
+        address_principal = #{record.addressPrincipal,jdbcType=VARCHAR},
+      </if>
+      <if test="record.contractSigningDate != null" >
+        contract_signing_date = #{record.contractSigningDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.signerPeople != null" >
+        signer_people = #{record.signerPeople,jdbcType=VARCHAR},
+      </if>
+      <if test="record.floorArea != null" >
+        floor_area = #{record.floorArea,jdbcType=DECIMAL},
+      </if>
+      <if test="record.actualCharges != null" >
+        actual_charges = #{record.actualCharges,jdbcType=VARCHAR},
+      </if>
+      <if test="record.standardCharge != null" >
+        standard_charge = #{record.standardCharge,jdbcType=VARCHAR},
+      </if>
+      <if test="record.valuationMethod != null" >
+        valuation_method = #{record.valuationMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="record.valuationPurpose != null" >
+        valuation_purpose = #{record.valuationPurpose,jdbcType=VARCHAR},
+      </if>
+      <if test="record.assessMethod != null" >
+        assess_method = #{record.assessMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="record.assessPurpose != null" >
+        assess_purpose = #{record.assessPurpose,jdbcType=VARCHAR},
+      </if>
+      <if test="record.signedBy != null" >
+        signed_by = #{record.signedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.draftAuthor != null" >
+        draft_author = #{record.draftAuthor,jdbcType=VARCHAR},
+      </if>
+      <if test="record.appraisalPeriod != null" >
+        appraisal_period = #{record.appraisalPeriod,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.projectAcquisitionMethod != null" >
+        project_acquisition_method = #{record.projectAcquisitionMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="record.projectLeader != null" >
+        project_Leader = #{record.projectLeader,jdbcType=VARCHAR},
+      </if>
+      <if test="record.housingUse != null" >
+        housing_use = #{record.housingUse,jdbcType=VARCHAR},
+      </if>
+      <if test="record.landUse != null" >
+        land_use = #{record.landUse,jdbcType=VARCHAR},
+      </if>
+      <if test="record.certUse != null" >
+        cert_use = #{record.certUse,jdbcType=VARCHAR},
+      </if>
+      <if test="record.valueTimePoint != null" >
+        value_time_point = #{record.valueTimePoint,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.timePointExplain != null" >
+        time_point_explain = #{record.timePointExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="record.reportPeople != null" >
+        report_people = #{record.reportPeople,jdbcType=VARCHAR},
+      </if>
+      <if test="record.numberValue != null" >
+        number_value = #{record.numberValue,jdbcType=VARCHAR},
+      </if>
+      <if test="record.landArea != null" >
+        land_area = #{record.landArea,jdbcType=DECIMAL},
+      </if>
+      <if test="record.assessArea != null" >
+        assess_area = #{record.assessArea,jdbcType=DECIMAL},
+      </if>
+      <if test="record.judgeObjectLandArea != null" >
+        judge_object_land_area = #{record.judgeObjectLandArea,jdbcType=DECIMAL},
+      </if>
+      <if test="record.judgeObjectFloorArea != null" >
+        judge_object_floor_area = #{record.judgeObjectFloorArea,jdbcType=DECIMAL},
+      </if>
+      <if test="record.assessPrice != null" >
+        assess_price = #{record.assessPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.assessTotalPrice != null" >
+        assess_total_price = #{record.assessTotalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.undertakeSheet != null" >
+        undertake_sheet = #{record.undertakeSheet,jdbcType=VARCHAR},
+      </if>
+      <if test="record.assessTotalToll != null" >
+        assess_total_toll = #{record.assessTotalToll,jdbcType=DECIMAL},
+      </if>
+      <if test="record.price != null" >
+        price = #{record.price,jdbcType=DECIMAL},
+      </if>
+      <if test="record.worth != null" >
+        worth = #{record.worth,jdbcType=DECIMAL},
+      </if>
+      <if test="record.accountValueOriginal != null" >
+        account_value_original = #{record.accountValueOriginal,jdbcType=DECIMAL},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.planDetailsId != null" >
+        plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
+      </if>
+      <if test="record.projectId != null" >
+        project_id = #{record.projectId,jdbcType=INTEGER},
+      </if>
+      <if test="record.assessType != null" >
+        assess_type = #{record.assessType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sorting != null" >
+        sorting = #{record.sorting,jdbcType=INTEGER},
+      </if>
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gmtCreated != null" >
+        gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmtModified != null" >
+        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_project_xlx_report_individual
+    set id = #{record.id,jdbcType=INTEGER},
+      location = #{record.location,jdbcType=VARCHAR},
+      project_name = #{record.projectName,jdbcType=VARCHAR},
+      entrusted_unit = #{record.entrustedUnit,jdbcType=VARCHAR},
+      report_score = #{record.reportScore,jdbcType=INTEGER},
+      report_modification_date = #{record.reportModificationDate,jdbcType=TIMESTAMP},
+      report_binding_date = #{record.reportBindingDate,jdbcType=TIMESTAMP},
+      filing_date = #{record.filingDate,jdbcType=TIMESTAMP},
+      land_plots_number = #{record.landPlotsNumber,jdbcType=DECIMAL},
+      land_plots_location = #{record.landPlotsLocation,jdbcType=VARCHAR},
+      entrusted_bank = #{record.entrustedBank,jdbcType=VARCHAR},
+      phone_principal = #{record.phonePrincipal,jdbcType=VARCHAR},
+      address_principal = #{record.addressPrincipal,jdbcType=VARCHAR},
+      contract_signing_date = #{record.contractSigningDate,jdbcType=TIMESTAMP},
+      signer_people = #{record.signerPeople,jdbcType=VARCHAR},
+      floor_area = #{record.floorArea,jdbcType=DECIMAL},
+      actual_charges = #{record.actualCharges,jdbcType=VARCHAR},
+      standard_charge = #{record.standardCharge,jdbcType=VARCHAR},
+      valuation_method = #{record.valuationMethod,jdbcType=VARCHAR},
+      valuation_purpose = #{record.valuationPurpose,jdbcType=VARCHAR},
+      assess_method = #{record.assessMethod,jdbcType=VARCHAR},
+      assess_purpose = #{record.assessPurpose,jdbcType=VARCHAR},
+      signed_by = #{record.signedBy,jdbcType=VARCHAR},
+      draft_author = #{record.draftAuthor,jdbcType=VARCHAR},
+      appraisal_period = #{record.appraisalPeriod,jdbcType=TIMESTAMP},
+      project_acquisition_method = #{record.projectAcquisitionMethod,jdbcType=VARCHAR},
+      project_Leader = #{record.projectLeader,jdbcType=VARCHAR},
+      housing_use = #{record.housingUse,jdbcType=VARCHAR},
+      land_use = #{record.landUse,jdbcType=VARCHAR},
+      cert_use = #{record.certUse,jdbcType=VARCHAR},
+      value_time_point = #{record.valueTimePoint,jdbcType=TIMESTAMP},
+      time_point_explain = #{record.timePointExplain,jdbcType=VARCHAR},
+      report_people = #{record.reportPeople,jdbcType=VARCHAR},
+      number_value = #{record.numberValue,jdbcType=VARCHAR},
+      land_area = #{record.landArea,jdbcType=DECIMAL},
+      assess_area = #{record.assessArea,jdbcType=DECIMAL},
+      judge_object_land_area = #{record.judgeObjectLandArea,jdbcType=DECIMAL},
+      judge_object_floor_area = #{record.judgeObjectFloorArea,jdbcType=DECIMAL},
+      assess_price = #{record.assessPrice,jdbcType=DECIMAL},
+      assess_total_price = #{record.assessTotalPrice,jdbcType=DECIMAL},
+      undertake_sheet = #{record.undertakeSheet,jdbcType=VARCHAR},
+      assess_total_toll = #{record.assessTotalToll,jdbcType=DECIMAL},
+      price = #{record.price,jdbcType=DECIMAL},
+      worth = #{record.worth,jdbcType=DECIMAL},
+      account_value_original = #{record.accountValueOriginal,jdbcType=DECIMAL},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
+      project_id = #{record.projectId,jdbcType=INTEGER},
+      assess_type = #{record.assessType,jdbcType=VARCHAR},
+      sorting = #{record.sorting,jdbcType=INTEGER},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectXlxReportIndividual" >
+    update tb_project_xlx_report_individual
+    <set >
+      <if test="location != null" >
+        location = #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="projectName != null" >
+        project_name = #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="entrustedUnit != null" >
+        entrusted_unit = #{entrustedUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="reportScore != null" >
+        report_score = #{reportScore,jdbcType=INTEGER},
+      </if>
+      <if test="reportModificationDate != null" >
+        report_modification_date = #{reportModificationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reportBindingDate != null" >
+        report_binding_date = #{reportBindingDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="filingDate != null" >
+        filing_date = #{filingDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="landPlotsNumber != null" >
+        land_plots_number = #{landPlotsNumber,jdbcType=DECIMAL},
+      </if>
+      <if test="landPlotsLocation != null" >
+        land_plots_location = #{landPlotsLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="entrustedBank != null" >
+        entrusted_bank = #{entrustedBank,jdbcType=VARCHAR},
+      </if>
+      <if test="phonePrincipal != null" >
+        phone_principal = #{phonePrincipal,jdbcType=VARCHAR},
+      </if>
+      <if test="addressPrincipal != null" >
+        address_principal = #{addressPrincipal,jdbcType=VARCHAR},
+      </if>
+      <if test="contractSigningDate != null" >
+        contract_signing_date = #{contractSigningDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="signerPeople != null" >
+        signer_people = #{signerPeople,jdbcType=VARCHAR},
+      </if>
+      <if test="floorArea != null" >
+        floor_area = #{floorArea,jdbcType=DECIMAL},
+      </if>
+      <if test="actualCharges != null" >
+        actual_charges = #{actualCharges,jdbcType=VARCHAR},
+      </if>
+      <if test="standardCharge != null" >
+        standard_charge = #{standardCharge,jdbcType=VARCHAR},
+      </if>
+      <if test="valuationMethod != null" >
+        valuation_method = #{valuationMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="valuationPurpose != null" >
+        valuation_purpose = #{valuationPurpose,jdbcType=VARCHAR},
+      </if>
+      <if test="assessMethod != null" >
+        assess_method = #{assessMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="assessPurpose != null" >
+        assess_purpose = #{assessPurpose,jdbcType=VARCHAR},
+      </if>
+      <if test="signedBy != null" >
+        signed_by = #{signedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="draftAuthor != null" >
+        draft_author = #{draftAuthor,jdbcType=VARCHAR},
+      </if>
+      <if test="appraisalPeriod != null" >
+        appraisal_period = #{appraisalPeriod,jdbcType=TIMESTAMP},
+      </if>
+      <if test="projectAcquisitionMethod != null" >
+        project_acquisition_method = #{projectAcquisitionMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="projectLeader != null" >
+        project_Leader = #{projectLeader,jdbcType=VARCHAR},
+      </if>
+      <if test="housingUse != null" >
+        housing_use = #{housingUse,jdbcType=VARCHAR},
+      </if>
+      <if test="landUse != null" >
+        land_use = #{landUse,jdbcType=VARCHAR},
+      </if>
+      <if test="certUse != null" >
+        cert_use = #{certUse,jdbcType=VARCHAR},
+      </if>
+      <if test="valueTimePoint != null" >
+        value_time_point = #{valueTimePoint,jdbcType=TIMESTAMP},
+      </if>
+      <if test="timePointExplain != null" >
+        time_point_explain = #{timePointExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="reportPeople != null" >
+        report_people = #{reportPeople,jdbcType=VARCHAR},
+      </if>
+      <if test="numberValue != null" >
+        number_value = #{numberValue,jdbcType=VARCHAR},
+      </if>
+      <if test="landArea != null" >
+        land_area = #{landArea,jdbcType=DECIMAL},
+      </if>
+      <if test="assessArea != null" >
+        assess_area = #{assessArea,jdbcType=DECIMAL},
+      </if>
+      <if test="judgeObjectLandArea != null" >
+        judge_object_land_area = #{judgeObjectLandArea,jdbcType=DECIMAL},
+      </if>
+      <if test="judgeObjectFloorArea != null" >
+        judge_object_floor_area = #{judgeObjectFloorArea,jdbcType=DECIMAL},
+      </if>
+      <if test="assessPrice != null" >
+        assess_price = #{assessPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="assessTotalPrice != null" >
+        assess_total_price = #{assessTotalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="undertakeSheet != null" >
+        undertake_sheet = #{undertakeSheet,jdbcType=VARCHAR},
+      </if>
+      <if test="assessTotalToll != null" >
+        assess_total_toll = #{assessTotalToll,jdbcType=DECIMAL},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="worth != null" >
+        worth = #{worth,jdbcType=DECIMAL},
+      </if>
+      <if test="accountValueOriginal != null" >
+        account_value_original = #{accountValueOriginal,jdbcType=DECIMAL},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="planDetailsId != null" >
+        plan_details_id = #{planDetailsId,jdbcType=INTEGER},
+      </if>
+      <if test="projectId != null" >
+        project_id = #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="assessType != null" >
+        assess_type = #{assessType,jdbcType=VARCHAR},
+      </if>
+      <if test="sorting != null" >
+        sorting = #{sorting,jdbcType=INTEGER},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null" >
+        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectXlxReportIndividual" >
+    update tb_project_xlx_report_individual
+    set location = #{location,jdbcType=VARCHAR},
+      project_name = #{projectName,jdbcType=VARCHAR},
+      entrusted_unit = #{entrustedUnit,jdbcType=VARCHAR},
+      report_score = #{reportScore,jdbcType=INTEGER},
+      report_modification_date = #{reportModificationDate,jdbcType=TIMESTAMP},
+      report_binding_date = #{reportBindingDate,jdbcType=TIMESTAMP},
+      filing_date = #{filingDate,jdbcType=TIMESTAMP},
+      land_plots_number = #{landPlotsNumber,jdbcType=DECIMAL},
+      land_plots_location = #{landPlotsLocation,jdbcType=VARCHAR},
+      entrusted_bank = #{entrustedBank,jdbcType=VARCHAR},
+      phone_principal = #{phonePrincipal,jdbcType=VARCHAR},
+      address_principal = #{addressPrincipal,jdbcType=VARCHAR},
+      contract_signing_date = #{contractSigningDate,jdbcType=TIMESTAMP},
+      signer_people = #{signerPeople,jdbcType=VARCHAR},
+      floor_area = #{floorArea,jdbcType=DECIMAL},
+      actual_charges = #{actualCharges,jdbcType=VARCHAR},
+      standard_charge = #{standardCharge,jdbcType=VARCHAR},
+      valuation_method = #{valuationMethod,jdbcType=VARCHAR},
+      valuation_purpose = #{valuationPurpose,jdbcType=VARCHAR},
+      assess_method = #{assessMethod,jdbcType=VARCHAR},
+      assess_purpose = #{assessPurpose,jdbcType=VARCHAR},
+      signed_by = #{signedBy,jdbcType=VARCHAR},
+      draft_author = #{draftAuthor,jdbcType=VARCHAR},
+      appraisal_period = #{appraisalPeriod,jdbcType=TIMESTAMP},
+      project_acquisition_method = #{projectAcquisitionMethod,jdbcType=VARCHAR},
+      project_Leader = #{projectLeader,jdbcType=VARCHAR},
+      housing_use = #{housingUse,jdbcType=VARCHAR},
+      land_use = #{landUse,jdbcType=VARCHAR},
+      cert_use = #{certUse,jdbcType=VARCHAR},
+      value_time_point = #{valueTimePoint,jdbcType=TIMESTAMP},
+      time_point_explain = #{timePointExplain,jdbcType=VARCHAR},
+      report_people = #{reportPeople,jdbcType=VARCHAR},
+      number_value = #{numberValue,jdbcType=VARCHAR},
+      land_area = #{landArea,jdbcType=DECIMAL},
+      assess_area = #{assessArea,jdbcType=DECIMAL},
+      judge_object_land_area = #{judgeObjectLandArea,jdbcType=DECIMAL},
+      judge_object_floor_area = #{judgeObjectFloorArea,jdbcType=DECIMAL},
+      assess_price = #{assessPrice,jdbcType=DECIMAL},
+      assess_total_price = #{assessTotalPrice,jdbcType=DECIMAL},
+      undertake_sheet = #{undertakeSheet,jdbcType=VARCHAR},
+      assess_total_toll = #{assessTotalToll,jdbcType=DECIMAL},
+      price = #{price,jdbcType=DECIMAL},
+      worth = #{worth,jdbcType=DECIMAL},
+      account_value_original = #{accountValueOriginal,jdbcType=DECIMAL},
+      remark = #{remark,jdbcType=VARCHAR},
+      plan_details_id = #{planDetailsId,jdbcType=INTEGER},
+      project_id = #{projectId,jdbcType=INTEGER},
+      assess_type = #{assessType,jdbcType=VARCHAR},
+      sorting = #{sorting,jdbcType=INTEGER},
+      creator = #{creator,jdbcType=VARCHAR},
+      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
