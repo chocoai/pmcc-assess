@@ -127,7 +127,37 @@ public enum AbandonedZCHEnum {
     UsageStatus2("小微贷使用状况"),
     ValuationProjectName2("司法估价项目名称"),
     JudgeBuildResultSurveySheet3("司法估价结果一览表"),
-    SetUse2("小微贷设定用途"),;
+    SetUse2("小微贷设定用途"),
+
+    ValuationProjectName("估价项目名称"),
+    PracticalUse("实际用途"),
+    EvaluationMethod("评估方法"),
+    HomeWorkEndTime("作业结束时间"),
+    HomeWorkStartTime("作业开始时间"),
+    AssistanceStaff("协助工作人员"),
+    SetUse("设定用途"),
+    PRINCIPAL("估价委托人"),
+    EvaluationThink("估价技术思路"),
+    PrincipalInfo("估价委托人信息"),
+    PrincipalDescribe("估价对象描述"),
+    PrincipalDataDescribe("估价信息描述"),
+    RegisteredRealEstateValuerAndNumber("注册估价师及注册号"),
+    RegisteredHouseRealEstateValuerAndNumber("注册房产估价师及注册号"),
+    RegisteredRealEstateValuer("注册估价师"),
+    XIEHE_organizationHouseInfo("房地产估价机构信息"),
+    XIEHE_organizationInfo("估价机构信息"),
+    XIEHE_organizationName("机构名称"),
+    XIEHE_RealEstateValuationAgencyHouse("房地产估价机构"),
+    XIEHE_RealEstateValuationAgency("估价机构"),
+    XIEHE_organizationAddress("机构住所"),
+    XIEHE_legalRepresentative("机构法定代表人"),
+    XIEHE_registeredNo("机构工商注册号"),
+    XIEHE_organizationRank("机构资质等级"),
+    XIEHE_certificateNo("机构证书号"),
+    XIEHE_certificateEffectiveDate("机构证书有效期"),
+
+
+    ;
     private String name;
 
     private AbandonedZCHEnum(String name) {

@@ -113,6 +113,86 @@ public class WordSortOut {
                     biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.CommonStatutoryPriorityAmountTotal.getName()));
                     break;
 
+
+                case ValuationProjectName:
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.ValuationProjectName.getName()));
+                    break;
+                case PracticalUse:
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.PracticalUse.getName()));
+                    break;
+                case EvaluationMethod:
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.EvaluationMethod.getName()));
+                    break;
+                case HomeWorkEndTime:
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.HomeWorkEndTime.getName()));
+                    break;
+                case HomeWorkStartTime:
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.HomeWorkStartTime.getName()));
+                    break;
+                case AssistanceStaff:
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.AssistanceStaff.getName()));
+                    break;
+                case SetUse:
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.SetUse.getName()));
+                    break;
+                case PRINCIPAL:
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.PRINCIPAL.getName()));
+                    break;
+                case EvaluationThink:
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.EvaluationThink.getName()));
+                    break;
+                case PrincipalInfo:
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.PrincipalInfo.getName()));
+                    break;
+                case PrincipalDescribe:
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.PrincipalDescribe.getName()));
+                    break;
+                case PrincipalDataDescribe:
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.PrincipalDataDescribe.getName()));
+                    break;
+                case RegisteredRealEstateValuerAndNumber:
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.RegisteredRealEstateValuerAndNumber.getName()));
+                    break;
+                case RegisteredHouseRealEstateValuerAndNumber:
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.RegisteredHouseRealEstateValuerAndNumber.getName()));
+                    break;
+                case RegisteredRealEstateValuer:
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.RegisteredRealEstateValuer.getName()));
+                    break;
+                case XIEHE_organizationHouseInfo:
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.XIEHE_organizationHouseInfo.getName()));
+                    break;
+                case XIEHE_organizationInfo:
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.XIEHE_organizationInfo.getName()));
+                    break;
+                case XIEHE_organizationName:
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.XIEHE_organizationName.getName()));
+                    break;
+                case XIEHE_RealEstateValuationAgencyHouse:
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.XIEHE_RealEstateValuationAgencyHouse.getName()));
+                    break;
+                case XIEHE_RealEstateValuationAgency:
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.XIEHE_RealEstateValuationAgency.getName()));
+                    break;
+                case XIEHE_organizationAddress:
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.XIEHE_organizationAddress.getName()));
+                    break;
+                case XIEHE_legalRepresentative:
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.XIEHE_legalRepresentative.getName()));
+                    break;
+                case XIEHE_registeredNo:
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.XIEHE_registeredNo.getName()));
+                    break;
+                case XIEHE_organizationRank:
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.XIEHE_organizationRank.getName()));
+                    break;
+                case XIEHE_certificateNo:
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.XIEHE_certificateNo.getName()));
+                    break;
+                case XIEHE_certificateEffectiveDate:
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.XIEHE_certificateEffectiveDate.getName()));
+                    break;
+
                 //
                 case Seat:
                     biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.Seat.getName()));
@@ -370,9 +450,6 @@ public class WordSortOut {
                     break;
 
                 //
-
-
-
 
 
                 case District_Analysis:
