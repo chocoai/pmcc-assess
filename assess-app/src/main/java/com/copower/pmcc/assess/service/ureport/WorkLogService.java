@@ -12,6 +12,7 @@ import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.DateUtils;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -57,7 +58,7 @@ public class WorkLogService {
     public BootstrapTableVo<SysWorkLogNewVo> getWorkLogByProjectId(Integer publicProjectId) {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        BootstrapTableVo workLogList = bpmRpcToolsService.getWorkLogByProjectId(publicProjectId,  requestBaseParam.getOffset(), requestBaseParam.getLimit(),requestBaseParam.getSearch());
+        BootstrapTableVo workLogList = bpmRpcToolsService.getWorkLogByProjectId(publicProjectId, requestBaseParam.getOffset(), requestBaseParam.getLimit(), requestBaseParam.getSearch());
         Iterator iterator = workLogList.getRows().iterator();
         List<SysWorkLogNewVo> list = new ArrayList<>();
         while (iterator.hasNext()) {
@@ -123,9 +124,10 @@ public class WorkLogService {
         newVo.setContent(publicService.delHtmlTags(newVo.getContent()));
         List<String> htmlView = new ArrayList<>();
         SysAttachmentDto query = new SysAttachmentDto();
-        query.setProjectId(newVo.getAppProjectId());
-        query.setFieldsName("log");
-        query.setTableName("tb_box_approval_log");
+        String className = StringUtils.remove(SysWorkLogVo.class.getSimpleName(), "Vo");
+        String tableName = String.format("%s_%s", "tb", FormatUtils.camelToUnderline(className));
+        query.setTableId(newVo.getId());
+        query.setTableName(tableName);
         List<SysAttachmentDto> sysAttachmentDtoList = baseAttachmentService.getAttachmentList(query);
         if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
             Iterator<SysAttachmentDto> iterator = sysAttachmentDtoList.iterator();
@@ -151,7 +153,12 @@ public class WorkLogService {
 //            newVo.setFileHtml(js.toString());
             newVo.setFileHtml(StringUtils.join(htmlView, " | "));
         }
-        newVo.setCreatorName(publicService.getUserNameByAccount(sysWorkLogVo.getCreator()));
+        String userNameByAccount = publicService.getUserNameByAccount(sysWorkLogVo.getCreator());
+        if (StringUtils.isNotBlank(userNameByAccount)) {
+            newVo.setCreatorName(userNameByAccount);
+        }else {
+            newVo.setCreatorName(sysWorkLogVo.getCreator());
+        }
         newVo.setCreatedName(DateUtils.format(sysWorkLogVo.getCreated(), DateUtils.DATE_CHINESE_PATTERN));
         return newVo;
     }
