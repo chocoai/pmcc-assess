@@ -403,7 +403,7 @@ public class BaseAttachmentService {
         } else {
             sysAttachmentDto.setProjectId(0);
         }
-        String ftpBasePath = String.join(File.separator, createFTPBasePath(), DateUtils.format(new Date(), DateUtils.DATE_PATTERN), String.valueOf(RandomUtils.nextInt(1, 1000)), UUID.randomUUID().toString().substring(0, 10));
+        String ftpBasePath =createFTPBasePath(DateUtils.formatDate(new Date(), "yyyy-MM"), DateUtils.formatNowToYMD(), commonService.thisUserAccount());
         String ftpFileName = createNoRepeatFileName(sysAttachmentDto.getFileExtension());
         sysAttachmentDto.setFilePath(ftpBasePath);
         sysAttachmentDto.setFtpFileName(ftpFileName);

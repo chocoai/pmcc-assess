@@ -566,6 +566,7 @@
         cols.push({field: 'certUse', title: '证载用途'});
         cols.push({field: 'practicalUse', title: '实际用途'});
         cols.push({field: 'floorArea', title: '证载面积'});
+        cols.push({field: 'evaluationArea', title: '评估面积'});
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';

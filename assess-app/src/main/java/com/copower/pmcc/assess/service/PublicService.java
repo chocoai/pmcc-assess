@@ -248,7 +248,7 @@ public class PublicService {
         }
         //再将图片上传到FTP
         String ftpFileName = baseAttachmentService.createNoRepeatFileName("jpg");
-        String ftpDirName = baseAttachmentService.createFTPBasePath();
+        String ftpDirName = baseAttachmentService.createFTPBasePath(DateUtils.formatDate(new Date(), "yyyy-MM"), DateUtils.formatNowToYMD(), commonService.thisUserAccount());
         try {
             ftpUtilsExtense.uploadFilesToFTP(ftpDirName, new FileInputStream(localDir + File.separator + imageName), ftpFileName);
         } catch (Exception e) {
