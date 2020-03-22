@@ -1248,7 +1248,6 @@ public class GenerateLoactionService {
      * @param judgeObjectList
      * @return
      */
-    @Deprecated
     public String getFloor(List<SchemeJudgeObject> judgeObjectList) {
         StringBuffer stringBuffer = new StringBuffer(8);
         Map<Integer, String> map = Maps.newHashMap();

@@ -33,7 +33,7 @@
     </div>
     <nav class="navbar navbar-header navbar-expand-lg" data-background-color="blue2">
         <div class="container-fluid">
-            <div class="collapse" id="search-nav" style="color: #FFFFFF;font-size: 20px"><span
+            <div class="collapse" id="search-nav" style="color: #FFFFFF;font-size: 20px;max-width: 1200px;"><span
                     class="label label-danger">${projectInfo.projectStatus}</span> <span style="cursor: pointer;" onclick="window.location.href='${pageContext.request.contextPath}/projectCenter/projectInfo?projectId=${projectInfo.id}'">${projectInfo.projectName}</span></div>
         </div>
     </nav>

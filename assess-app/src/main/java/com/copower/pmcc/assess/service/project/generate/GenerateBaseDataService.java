@@ -63,7 +63,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 
-import java.awt.*;
 import java.io.File;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -4753,7 +4752,7 @@ public class GenerateBaseDataService {
                 if (StringUtils.isNotBlank(faceStreet.trim())) {
                     stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("临街（路）状况:%s", generateCommonMethod.trim(faceStreet))));
                 }
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("楼层:%s", generateCommonMethod.trim(generateLoactionService.getFloorNew(judgeObjects)))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("楼层:%s", generateCommonMethod.trim(generateLoactionService.getFloor(judgeObjects)))));
                 stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("朝向:%s", generateCommonMethod.trim(generateLoactionService.getOrientation(judgeObjects)))));
                 stringBuilder.append(generateCommonMethod.getIndentHtml("2、交通状况包括"));
                 stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("道路状况:%s", generateCommonMethod.trim(generateLoactionService.getRoadConditionNew(judgeObjects)))));
