@@ -2656,7 +2656,7 @@ public class GenerateBaseDataService {
      */
     public AdCompanyQualificationDto getCompanyQualificationForLicense() {
         if (companyQualificationForLicense == null) {
-            companyQualificationForPractising = adRpcQualificationsService.getCompanyQualificationForLicense(publicService.getCurrentCompany().getCompanyId());
+            companyQualificationForLicense = adRpcQualificationsService.getCompanyQualificationForLicense(publicService.getCurrentCompany().getCompanyId());
         }
         return companyQualificationForLicense;
     }
