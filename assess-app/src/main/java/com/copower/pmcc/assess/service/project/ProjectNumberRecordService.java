@@ -243,4 +243,10 @@ public class ProjectNumberRecordService {
         return list;
     }
 
+    public List<String> getProjectNumberRecordList(ProjectNumberRecord projectNumberRecord){
+        List<ProjectNumberRecord> numberList = projectNumberRecordDao.getProjectNumberRecordList(projectNumberRecord);
+        List<String> list = LangUtils.transform(numberList, o -> o.getNumberValue());
+        return list;
+    }
+
 }

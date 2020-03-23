@@ -163,11 +163,18 @@ commonAssets.batchUpdateSysAttachmentDto = function (data, callback) {
 
 commonAssets.getServerDeclaration2 = function (callback) {
     var data = {setting: true, pid: commonAssets.declareApplyForm.find('[name=assetsSettingId]').val()};
-    dataAssetsAppraisalDic.getDataAssetsAppraisalDicList(data, function (item) {
+    if (data.pid){
+        dataAssetsAppraisalDic.getDataAssetsAppraisalDicList(data, function (item) {
+            if (callback) {
+                callback(item);
+            }
+        });
+    }else {
         if (callback) {
-            callback(item);
+            callback([]);
         }
-    });
+    }
+
 };
 /**
  * 获取配置项

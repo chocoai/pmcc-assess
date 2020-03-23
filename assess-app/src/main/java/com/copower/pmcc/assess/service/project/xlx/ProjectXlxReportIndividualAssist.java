@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectXlxReportIndividual;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
+import com.copower.pmcc.assess.service.project.assets.AssetsCustomizeDataFieldService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
@@ -22,12 +23,14 @@ import org.springframework.web.servlet.ModelAndView;
  * @time: 09:45
  */
 @Component
-@WorkFlowAnnotation(desc = "xlx-生成报告单独事项")
+@WorkFlowAnnotation(desc = "兴良信 报告信息")
 public class ProjectXlxReportIndividualAssist implements ProjectTaskInterface {
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
     private ProjectXlxReportIndividualService projectXlxReportIndividualService;
+    @Autowired
+    private AssetsCustomizeDataFieldService assetsCustomizeDataFieldService;
     @Autowired
     private ProjectInfoService projectInfoService;
     private final String applyViewName = "/project/xlx/reportIndividual/taskProjectXlxReportIndividualIndex";
@@ -84,6 +87,7 @@ public class ProjectXlxReportIndividualAssist implements ProjectTaskInterface {
     }
 
     private void setParams(ModelAndView modelAndView, ProjectPlanDetails projectPlanDetails) {
+        assetsCustomizeDataFieldService.setParams(modelAndView, projectPlanDetails);
         modelAndView.addObject(StringUtils.uncapitalize(ProjectPlanDetails.class.getSimpleName()), projectPlanDetails);
         modelAndView.addObject(StringUtils.uncapitalize(ProjectXlxReportIndividual.class.getSimpleName()), projectXlxReportIndividualService.getProjectXlxReportIndividualByPlanDetailsId(projectPlanDetails.getId()));
         modelAndView.addObject("assessProjectType", projectXlxReportIndividualService.getAssessProjectTypeEnum(projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId()).getProjectCategoryId()).getKey());

@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.constant.AssessProjectClassifyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.xlx.ProjectXlxReportIndividualDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseProjectClassify;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectNumberRecord;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectXlxReportIndividual;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
@@ -30,7 +31,7 @@ import java.util.List;
 
 /**
  * Created by zch on 2020-3-20.
- * xlx-生成报告单独事项
+ * xlx-生成报告单独事项 兴良信 报告信息
  */
 @Service
 public class ProjectXlxReportIndividualService {
@@ -49,7 +50,15 @@ public class ProjectXlxReportIndividualService {
     private ProjectNumberRecordService projectNumberRecordService;
 
     public List<String> getReportNumber(Integer projectCategory, Integer projectId) {
-        return projectNumberRecordService.getReportNumberList(projectId,getAssessProjectTypeEnum(projectCategory),null);
+        List<String> stringList =  new ArrayList<>() ;
+        try {
+//            stringList =  projectNumberRecordService.getReportNumberList(projectId,getAssessProjectTypeEnum(projectCategory),null) ;
+            ProjectNumberRecord query = new ProjectNumberRecord();
+            query.setProjectId(projectId);
+            stringList =  projectNumberRecordService.getProjectNumberRecordList(query) ;
+        } catch (Exception e) {
+        }
+        return stringList;
     }
 
     public AssessProjectTypeEnum getAssessProjectTypeEnum(Integer projectCategoryId){

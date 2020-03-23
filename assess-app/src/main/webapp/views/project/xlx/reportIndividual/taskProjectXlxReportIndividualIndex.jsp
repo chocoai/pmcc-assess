@@ -13,6 +13,36 @@
                 <div class="row mt--2">
                     <%@include file="/views/share/project/projectInfoSimple.jsp" %>
                     <%@include file="/views/share/project/projectPlanDetails.jsp" %>
+
+                    <div class="col-md-12">
+                        <div class="card full-height">
+                            <div class="card-header collapse-link">
+                                <div class="card-head-row">
+                                    <div class="card-title">
+                                        自定义名称
+                                    </div>
+                                    <div class="card-tools">
+                                        <button type="button" class="btn  btn-link btn-primary btn-xs"><span
+                                                class="fa fa-angle-down"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card-body">
+                                <form class="form-horizontal" id="declareApplyForm">
+                                    <input type="hidden" name="planDetailsId" value="${projectPlanDetails.id}">
+                                    <input type="hidden" name="projectId" value="${projectPlanDetails.projectId}">
+                                    <input type="hidden" name="assetsSettingId" value="${projectPhase.assetsSettingId}">
+                                    <%@include file="./../../assets/assetsAppraisalDicApplyModel.jsp" %>
+                                </form>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+
                     <div class="col-md-12">
                         <div class="card full-height">
                             <div class="card-header collapse-link">
@@ -68,20 +98,20 @@
                                                     </div>
                                                 </div>
                                                 <label class="col-md-1  control-label">
-                                                    委托单位<span class="symbol required"></span>
+                                                    委托单位
                                                 </label>
                                                 <div class="col-md-3">
                                                     <input type="text" class="form-control input-full"
                                                            placeholder="委托单位"
-                                                           name="entrustedUnit" required
+                                                           name="entrustedUnit"
                                                            value="${projectXlxReportIndividual.entrustedUnit}">
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%"
-                                        color="#6f5499" size="10"/>
+                                    <%--<hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%"--%>
+                                        <%--color="#6f5499" size="10"/>--%>
 
                                     <c:if test="${assessProjectType == 'assets'}">
                                         <%@include file="apply/assets.jsp" %>
@@ -101,19 +131,19 @@
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
                                                 <label class="col-md-1  control-label">
-                                                    承办表<span class="symbol required"></span>
+                                                    承办表
                                                 </label>
                                                 <div class="col-md-3">
                                                     <input type="text" class="form-control input-full"
-                                                           placeholder="承办表" required name="undertakeSheet"
+                                                           placeholder="承办表"  name="undertakeSheet"
                                                            value="${projectXlxReportIndividual.undertakeSheet}">
                                                 </div>
                                                 <label class="col-md-1  control-label">
-                                                    备注<span class="symbol required"></span>
+                                                    备注
                                                 </label>
                                                 <div class="col-md-7">
                                                     <textarea class="form-control input-full"
-                                                              placeholder="备注" required
+                                                              placeholder="备注"
                                                               name="remark">${projectXlxReportIndividual.remark}</textarea>
                                                 </div>
                                             </div>
@@ -319,10 +349,14 @@
     /*拿取文号*/
     xlxReportIndividual.getReportNumber = function (_this) {
         var frm = $(_this).closest("form");
-        var data = formSerializeArray(frm);
-        xlxReportIndividual.ajaxServerFun(data, "/projectXlxReportIndividual/getReportNumber", "get", function (data) {
-            notifySuccess("成功", "提取文号成功!");
-            var numberValue = frm.find("[name=numberValue]").val(data.join(","));
+//        var data = formSerializeArray(frm);
+        xlxReportIndividual.ajaxServerFun({projectId:'${projectPlanDetails.projectId}'}, "/projectXlxReportIndividual/getReportNumber", "get", function (data) {
+            if (data.length >= 1){
+                notifySuccess("成功", "提取文号成功!");
+                var numberValue = frm.find("[name=numberValue]").val(data.join(","));
+            }else {
+                notifySuccess("无数据", "没有文号记录!");
+            }
         });
     };
 

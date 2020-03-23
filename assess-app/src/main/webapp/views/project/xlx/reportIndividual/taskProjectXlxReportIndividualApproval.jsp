@@ -14,6 +14,33 @@
                     <%@include file="/views/share/project/projectInfoSimple.jsp" %>
                     <%@include file="/views/share/project/projectPlanDetails.jsp" %>
 
+                    <div class="col-md-12">
+                        <div class="card full-height">
+                            <div class="card-header collapse-link">
+                                <div class="card-head-row">
+                                    <div class="card-title">
+                                        自定义名称
+                                    </div>
+                                    <div class="card-tools">
+                                        <button type="button" class="btn  btn-link btn-primary btn-xs"><span
+                                                class="fa fa-angle-down"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card-body">
+                                <form class="form-horizontal" id="declareApplyForm">
+                                    <input type="hidden" name="planDetailsId" value="${projectPlanDetails.id}">
+                                    <input type="hidden" name="projectId" value="${projectPlanDetails.projectId}">
+                                    <%@include file="./../../assets/assetsAppraisalDicApprovalModel.jsp" %>
+                                </form>
+                            </div>
+
+
+                        </div>
+                    </div>
+
                     <!-- 公共模块end -->
                     <div class="col-md-12">
                         <div class="card full-height">
@@ -56,7 +83,7 @@
                                                     <label class="form-control input-full">${projectXlxReportIndividual.numberValue}</label>
                                                 </div>
                                                 <label class="col-md-1  control-label">
-                                                    委托单位<span class="symbol required"></span>
+                                                    委托单位
                                                 </label>
                                                 <div class="col-md-3">
                                                     <label class="form-control input-full">${projectXlxReportIndividual.entrustedUnit}</label>
@@ -65,8 +92,8 @@
                                         </div>
                                     </div>
 
-                                    <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%"
-                                        color="#6f5499" size="10"/>
+                                    <%--<hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%"--%>
+                                        <%--color="#6f5499" size="10"/>--%>
 
                                     <c:if test="${assessProjectType == 'assets'}">
                                         <%@include file="detail/assets.jsp" %>
@@ -86,13 +113,13 @@
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
                                                 <label class="col-md-1  control-label">
-                                                    承办表<span class="symbol required"></span>
+                                                    承办表
                                                 </label>
                                                 <div class="col-md-3">
                                                     <label class="form-control input-full">${projectXlxReportIndividual.undertakeSheet}</label>
                                                 </div>
                                                 <label class="col-md-1  control-label">
-                                                    备注<span class="symbol required"></span>
+                                                    备注
                                                 </label>
                                                 <div class="col-md-7">
                                                     <label class="form-control input-full">${projectXlxReportIndividual.remark}</label>
