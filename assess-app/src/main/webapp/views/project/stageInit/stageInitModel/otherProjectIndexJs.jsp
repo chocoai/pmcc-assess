@@ -982,31 +982,29 @@
         crmCustomer.select({
             multi: false,//是否允许多选
             companyId:${baseViewDto.thisUser.companyId},
-            onSelected: function (nodes) {
-                if (nodes.length == 0) {
+            onSelected: function (node) {
+                if (!node) {
                     return false;
                 }
-                nodes.forEach(function (node, i) {
-                    $(this_).closest('.input-group').find("input[name='uUseUnit']").val(node.id);
-                    $(this_).closest('.input-group').find("input[name='uUseUnitName']").val(node.name);
-                    $.ajax({
-                        type: "get",
-                        url: "${pageContext.request.contextPath}/initiateCrmCustomer/getCrmCustomerDto",
-                        data: {customerId: node.id},
-                        success: function (msg) {
-                            var item = {
-                                uLegalRepresentative: msg.data.legalRepresentative,
-                                uAddress: msg.data.address,
-                                uScopeOperation: msg.data.businessScope,
-                                uCertificateNumber: msg.data.certificateNumber,
-                                uUnitProperties: msg.data.unitProperties
-                            };
-                            $("#" + objProject.config.unit_information.frm).initForm(item);
-                            $("#" + objProject.config.unit_information.frm).find("input[name='uUseUnitName']").val(msg.data.fullName);
-                            $("#" + objProject.config.unit_information.frm).find("select[name='uUnitProperties']").val(msg.data.unitProperties).trigger("selected");
-                            objProject.loadCustomerFieldList(node.id, node.name);
-                        }
-                    });
+                $(this_).closest('.input-group').find("input[name='uUseUnit']").val(node.id);
+                $(this_).closest('.input-group').find("input[name='uUseUnitName']").val(node.name);
+                $.ajax({
+                    type: "get",
+                    url: "${pageContext.request.contextPath}/initiateCrmCustomer/getCrmCustomerDto",
+                    data: {customerId: node.id},
+                    success: function (msg) {
+                        var item = {
+                            uLegalRepresentative: msg.data.legalRepresentative,
+                            uAddress: msg.data.address,
+                            uScopeOperation: msg.data.businessScope,
+                            uCertificateNumber: msg.data.certificateNumber,
+                            uUnitProperties: msg.data.unitProperties
+                        };
+                        $("#" + objProject.config.unit_information.frm).initForm(item);
+                        $("#" + objProject.config.unit_information.frm).find("input[name='uUseUnitName']").val(msg.data.fullName);
+                        $("#" + objProject.config.unit_information.frm).find("select[name='uUnitProperties']").val(msg.data.unitProperties).trigger("selected");
+                        objProject.loadCustomerFieldList(node.id, node.name);
+                    }
                 });
             }
         });

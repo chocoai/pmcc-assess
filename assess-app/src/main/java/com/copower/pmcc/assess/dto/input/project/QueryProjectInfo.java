@@ -28,6 +28,7 @@ public class QueryProjectInfo {
     private String queryEstateName;
     private Integer queryLoanType;
     private Integer queryDepartmentId;
+    private Integer queryProjectCategoryId;
 
     public String getUserAccount() {
         return userAccount;
@@ -155,5 +156,13 @@ public class QueryProjectInfo {
 
     public void setQueryUseUnitName(String queryUseUnitName) {
         this.queryUseUnitName = queryUseUnitName;
+    }
+
+    public Integer getQueryProjectCategoryId() {
+        return queryProjectCategoryId;
+    }
+
+    public void setQueryProjectCategoryId(Integer queryProjectCategoryId) {
+        this.queryProjectCategoryId = queryProjectCategoryId;
     }
 }
