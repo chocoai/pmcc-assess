@@ -67,16 +67,16 @@
                     <%@include file="/views/share/project/projectPlanDetails.jsp" %>
                     <div class="col-md-12">
                         <div class="card full-height">
-                            <div class="card-header collapse-link">
+                            <div class="card-header ">
                                 <div class="card-head-row">
                                     <div class="card-title">
                                         他项权利
                                     </div>
-                                    <div class="card-tools">
-                                        <button class="btn  btn-link btn-primary btn-xs"><span
-                                                class="fa fa-angle-down"></span>
-                                        </button>
-                                    </div>
+                                    <%--<div class="card-tools">--%>
+                                        <%--<button class="btn  btn-link btn-primary btn-xs"><span--%>
+                                                <%--class="fa fa-angle-down"></span>--%>
+                                        <%--</button>--%>
+                                    <%--</div>--%>
                                 </div>
                             </div>
                             <div class="card-body">

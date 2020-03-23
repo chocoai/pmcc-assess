@@ -145,9 +145,9 @@ public class ProjectXlxReportIndividualService {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<ProjectXlxReportIndividual> declareApplyExtensionList = getProjectXlxReportIndividualListByQuery(oo);
+        List<ProjectXlxReportIndividual> projectXlxReportIndividuals = getProjectXlxReportIndividualListLikeQuery(oo);
         vo.setTotal(page.getTotal());
-        vo.setRows(CollectionUtils.isNotEmpty(declareApplyExtensionList) ? declareApplyExtensionList : new ArrayList(0));
+        vo.setRows(CollectionUtils.isNotEmpty(projectXlxReportIndividuals) ? projectXlxReportIndividuals : new ArrayList(0));
         return vo;
     }
 
@@ -162,6 +162,10 @@ public class ProjectXlxReportIndividualService {
 
     public List<ProjectXlxReportIndividual> getProjectXlxReportIndividualListByQuery(ProjectXlxReportIndividual oo) {
         return projectXlxReportIndividualDao.getProjectXlxReportIndividualListByExample(oo);
+    }
+
+    public List<ProjectXlxReportIndividual> getProjectXlxReportIndividualListLikeQuery(ProjectXlxReportIndividual oo){
+        return projectXlxReportIndividualDao.getProjectXlxReportIndividualListLikeQuery(oo);
     }
 
 }

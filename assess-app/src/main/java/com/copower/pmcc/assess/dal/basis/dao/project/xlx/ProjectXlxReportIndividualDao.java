@@ -50,13 +50,21 @@ public class ProjectXlxReportIndividualDao {
     public List<ProjectXlxReportIndividual> getProjectXlxReportIndividualListByExample(ProjectXlxReportIndividual oo) {
         ProjectXlxReportIndividualExample example = new ProjectXlxReportIndividualExample();
         ProjectXlxReportIndividualExample.Criteria criteria = example.createCriteria();
+        criteria.andIdIsNotNull();
+        MybatisUtils.convertObj2Criteria(oo, criteria);
+        example.setOrderByClause("id");
+        return mapper.selectByExample(example);
+    }
+
+    public List<ProjectXlxReportIndividual> getProjectXlxReportIndividualListLikeQuery(ProjectXlxReportIndividual oo) {
+        ProjectXlxReportIndividualExample example = new ProjectXlxReportIndividualExample();
+        ProjectXlxReportIndividualExample.Criteria criteria = example.createCriteria();
         if (StringUtils.isNotBlank(oo.getProjectName())) {
             criteria.andProjectNameLike(String.format("%%%s%%", oo.getProjectName()));
         }
         if (StringUtils.isNotBlank(oo.getNumberValue())) {
             criteria.andNumberValueLike(String.format("%%%s%%", oo.getNumberValue()));
         }
-        MybatisUtils.convertObj2Criteria(oo, criteria);
         example.setOrderByClause("id");
         return mapper.selectByExample(example);
     }

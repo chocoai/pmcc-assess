@@ -201,19 +201,17 @@
         <div class="card full-height">
             <div class="card-header collapse-link">
                 <div class="card-head-row">
+
                     <div class="card-title">
                         他权分组（0{index}）
-                        <small>
-                            <button type="button" class="btn btn-sm btn-warning"
-                                    onclick="cleanHTMLData(this,'_number')">移除
-                            </button>
-                        </small>
                     </div>
                     <div class="card-tools">
-                        <button type="button" class="btn  btn-link btn-primary btn-xs"><span
-                                class="fa fa-angle-down"></span>
-                        </button>
+                        <%--<button type="button" class="btn btn-warning btn-sm" onclick="cleanHTMLData(this,'_number')"><i--%>
+                                <%--class="fa fa-minus"></i></button>--%>
                     </div>
+                    <button type="button" class="btn btn-warning btn-sm" onclick="cleanHTMLData(this,'_number')"><i
+                            class="fa fa-minus"></i></button>
+
                 </div>
             </div>
             <div class="card-body">
@@ -329,6 +327,7 @@
     </div>
 </script>
 <body>
+
 <div class="wrapper">
     <div class="main-panel" style="width: 100%">
         <div class="content" style="margin-top: 0px;">
@@ -337,25 +336,25 @@
                 <div class="row mt--2">
                     <%@include file="/views/share/project/projectInfoSimple.jsp" %>
                     <%@include file="/views/share/project/projectPlanDetails.jsp" %>
+
+
                     <div class="col-md-12">
                         <div class="card full-height">
-                            <div class="card-header collapse-link">
+                            <div class="card-header ">
                                 <div class="card-head-row">
                                     <div class="card-title">
                                         他项权利
                                         <small>
-                                            <button type="button" class="btn btn-sm btn-success" onclick="appendHtml(false)">添加分组</button>
+                                            <button type="button" class="btn btn-sm btn-success"
+                                                    onclick="appendHtml(false)">添加分组
+                                            </button>
                                         </small>
-                                    </div>
-                                    <div class="card-tools">
-                                        <button type="button" class="btn  btn-link btn-primary btn-xs"><span
-                                                class="fa fa-angle-down"></span>
-                                        </button>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="card-body">
+
                                 <div id="taskRightAssistAppend"></div>
                             </div>
                         </div>
@@ -370,9 +369,11 @@
         <%@include file="/views/share/main_footer.jsp" %>
     </div>
 </div>
+
 </body>
 <%@include file="/views/project/tool/declareRecordModeView.jsp" %>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/ajaxfileupload.js?v=${assessVersion}"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/ajaxfileupload.js?v=${assessVersion}"></script>
 <script type="text/javascript">
 
     var commonField = {
@@ -732,6 +733,7 @@
                 projectId: '${projectPlanDetails.projectId}',
                 planDetailsId: '${projectPlanDetails.id}'
             }], function (data) {
+                notifySuccess("成功", "添加他权分组成功!");
                 appendHtml2(data);
             });
         }
@@ -742,7 +744,7 @@
      */
     function appendHtml2(data) {
         var target = $("#" + commonField.taskRightAssistAppend);
-        var index = target.find(".x_panel").size();
+        var index = target.find(".card").size();
         $.each(data, function (i, item) {
             var html = $("#" + commonField.taskRightAssistDiv).html();
             html = html.replace(/_number/g, item.id).replace(/{index}/g, index + i + 1);
@@ -834,7 +836,7 @@
      * @param groupId
      */
     function cleanHTMLData(_this, groupId) {
-        var x_panel = $(_this).closest(".x_panel");
+        var x_panel = $(_this).closest(".card").parent();
         deleteSurveyAssetRightGroupById(groupId, function () {
             x_panel.remove();
             notifySuccess('成功', '移除成功');
