@@ -459,23 +459,7 @@ declareCommon.declareBuildCenterSaveAndUpdateBase = function (item, updateNull, 
     if (updateNull == '') {
         updateNull = false;
     }
-    $.ajax({
-        type: "POST",
-        url: getContextPath() + "/declareBuildEngineeringAndEquipmentCenter/saveDeclareBuildEngineeringAndEquipmentCenter",
-        data: {formData: JSON.stringify(item), updateNull: updateNull},
-        success: function (result) {
-            if (result.ret) {
-                if (callback) {
-                    callback(result.data);
-                }
-            } else {
-                AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
-            }
-        },
-        error: function (result) {
-            AlertError("错误", "调用服务端方法失败，失败原因:" + e);
-        }
-    });
+    declareCommon.ajaxServerMethod({formData: JSON.stringify(item), updateNull: updateNull} ,"/declareBuildEngineeringAndEquipmentCenter/saveDeclareBuildEngineeringAndEquipmentCenter","post",callback) ;
 };
 
 declareCommon.declareBuildCenterSaveAndUpdate = function (item, callback) {
@@ -488,23 +472,7 @@ declareCommon.declareBuildCenterSaveAndUpdate = function (item, callback) {
  * @param callback
  */
 declareCommon.getDeclareBuildCenter = function (id, callback) {
-    $.ajax({
-        type: "get",
-        url: getContextPath() + "/declareBuildEngineeringAndEquipmentCenter/getDeclareBuildEngineeringAndEquipmentCenterById",
-        data: {id: id},
-        success: function (result) {
-            if (result.ret) {
-                if (callback) {
-                    callback(result.data);
-                }
-            } else {
-                AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
-            }
-        },
-        error: function (result) {
-            AlertError("错误", "调用服务端方法失败，失败原因:" + e);
-        }
-    });
+    declareCommon.ajaxServerMethod({id: id},"/declareBuildEngineeringAndEquipmentCenter/getDeclareBuildEngineeringAndEquipmentCenterById","get",callback) ;
 };
 
 /**
@@ -515,22 +483,8 @@ declareCommon.getDeclareBuildCenter = function (id, callback) {
  * @param callback
  */
 declareCommon.deleteByDeclareBuildCenterType = function (centerId, type, callback) {
-    $.ajax({
-        type: "POST",
-        url: getContextPath() + "/declareBuildEngineeringAndEquipmentCenter/deleteByType",
-        data: {centerId: centerId, type: type},
-        success: function (result) {
-            if (result.ret) {
-                if (callback) {
-                    callback(result.data);
-                }
-            } else {
-                AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
-            }
-        },
-        error: function (result) {
-            AlertError("错误", "调用服务端方法失败，失败原因:" + e);
-        }
+    AlertConfirm("是否确认删除当前数据", "删除相应的数据后将不可恢复", function (flag) {
+        declareCommon.ajaxServerFun({centerId: centerId, type: type},"/declareBuildEngineeringAndEquipmentCenter/deleteByType","post",callback) ;
     });
 };
 
@@ -540,43 +494,11 @@ declareCommon.deleteByDeclareBuildCenterType = function (centerId, type, callbac
  * @param callback
  */
 declareCommon.deleteDeclareBuildCenter = function (id, callback) {
-    $.ajax({
-        type: "POST",
-        url: getContextPath() + "/declareBuildEngineeringAndEquipmentCenter/deleteDeclareBuildEngineeringAndEquipmentCenterById",
-        data: {id: id},
-        success: function (result) {
-            if (result.ret) {
-                if (callback) {
-                    callback();
-                }
-            } else {
-                AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
-            }
-        },
-        error: function (result) {
-            AlertError("错误", "调用服务端方法失败，失败原因:" + e);
-        }
-    });
+    declareCommon.ajaxServerMethod({id: id},"/declareBuildEngineeringAndEquipmentCenter/deleteDeclareBuildEngineeringAndEquipmentCenterById","post",callback) ;
 };
 
 declareCommon.copyDeclareBuildCenter = function (copyId, ids, callback) {
-    $.ajax({
-        type: "POST",
-        url: getContextPath() + "/declareBuildEngineeringAndEquipmentCenter/copyDeclareBuildEngineeringAndEquipmentCenter",
-        data: {copyId: copyId, ids: ids},
-        success: function (result) {
-            if (result.ret) {
-                if (callback) {
-                    callback();
-                }
-            } else {
-                AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
-            }
-        },
-        error: function (result) {
-            AlertError("错误", "调用服务端方法失败，失败原因:" + e);
-        }
-    });
+    declareCommon.ajaxServerMethod({copyId: copyId, ids: ids},"/declareBuildEngineeringAndEquipmentCenter/copyDeclareBuildEngineeringAndEquipmentCenter","post",callback) ;
 };
 
 
@@ -590,21 +512,7 @@ declareCommon.saveLandDataBase = function (data, updateNull, callback) {
     if (updateNull == '') {
         updateNull = false;
     }
-    $.ajax({
-        type: "POST",
-        url: getContextPath() + "/declareRealtyLandCert/saveAndUpdateDeclareRealtyLandCert",
-        data: {formData: JSON.stringify(data), updateNull: updateNull},
-        success: function (result) {
-            if (result.ret) {
-                callback(result.data);
-            } else {
-                AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
-            }
-        },
-        error: function (result) {
-            AlertError("错误", "调用服务端方法失败，失败原因:" + e);
-        }
-    });
+    declareCommon.ajaxServerMethod({formData: JSON.stringify(data), updateNull: updateNull},"/declareRealtyLandCert/saveAndUpdateDeclareRealtyLandCert","post",callback) ;
 };
 
 declareCommon.saveLandData = function (data, callback) {
@@ -612,68 +520,15 @@ declareCommon.saveLandData = function (data, callback) {
 };
 
 declareCommon.getLandData = function (id, callback, errCallback) {
-    $.ajax({
-        url: getContextPath() + "/declareRealtyLandCert/getDeclareRealtyLandCertById",
-        type: "get",
-        dataType: "json",
-        data: {id: id},
-        success: function (result) {
-            var flag = false;
-            if (result.ret) {
-                if (result.data) {
-                    flag = true;
-                }
-            }
-            if (flag) {
-                callback(result.data);
-            } else {
-                if (errCallback) {
-                    errCallback("数据异常!");
-                }
-            }
-        },
-        error: function (result) {
-            AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
-        }
-    });
+    declareCommon.ajaxServerMethod({id: id},"/declareRealtyLandCert/getDeclareRealtyLandCertById","get",callback,errCallback) ;
 };
 
 declareCommon.deleteHouseData = function (ids, callback) {
-    $.ajax({
-        url: getContextPath() + "/declareRealtyHouseCert/deleteDeclareRealtyHouseCertById",
-        type: "post",
-        dataType: "json",
-        data: {ids: ids},
-        success: function (result) {
-            if (result.ret) {
-                callback();
-            }
-            else {
-                AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
-            }
-        },
-        error: function (result) {
-            AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
-        }
-    })
+    declareCommon.ajaxServerMethod({ids: ids},"/declareRealtyHouseCert/deleteDeclareRealtyHouseCertById","post",callback) ;
 };
 
 declareCommon.deleteLandData = function (ids, callback) {
-    $.ajax({
-        type: "POST",
-        url: getContextPath() + "/declareRealtyLandCert/deleteDeclareRealtyLandCertById",
-        data: {ids: ids},
-        success: function (result) {
-            if (result.ret) {
-                callback();
-            } else {
-                AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
-            }
-        },
-        error: function (result) {
-            AlertError("错误", "调用服务端方法失败，失败原因:" + e);
-        }
-    });
+    declareCommon.ajaxServerMethod({ids: ids},"/declareRealtyLandCert/deleteDeclareRealtyLandCertById","post",callback) ;
 };
 
 declareCommon.saveHouseDataBase = function (data, updateNull, callback) {
@@ -686,21 +541,7 @@ declareCommon.saveHouseDataBase = function (data, updateNull, callback) {
     if (updateNull == '') {
         updateNull = false;
     }
-    $.ajax({
-        type: "POST",
-        url: getContextPath() + "/declareRealtyHouseCert/saveAndUpdateDeclareRealtyHouseCert",
-        data: {formData: JSON.stringify(data), updateNull: updateNull},
-        success: function (result) {
-            if (result.ret) {
-                callback(result.data);
-            } else {
-                AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
-            }
-        },
-        error: function (result) {
-            AlertError("错误", "调用服务端方法失败，失败原因:" + e);
-        }
-    });
+    declareCommon.ajaxServerMethod({formData: JSON.stringify(data), updateNull: updateNull},"/declareRealtyHouseCert/saveAndUpdateDeclareRealtyHouseCert","post",callback) ;
 };
 
 declareCommon.saveHouseData = function (data, callback) {
@@ -708,57 +549,17 @@ declareCommon.saveHouseData = function (data, callback) {
 };
 
 declareCommon.getHouseData = function (id, callback) {
-    $.ajax({
-        url: getContextPath() + "/declareRealtyHouseCert/getDeclareRealtyHouseCertById",
-        type: "get",
-        dataType: "json",
-        data: {id: id, planDetailsId: declareCommon.getPlanDetailsId()},
-        success: function (result) {
-            if (result.ret) {
-                callback(result.data);
-            }
-        },
-        error: function (result) {
-            AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
-        }
-    })
+    declareCommon.ajaxServerMethod({id: id, planDetailsId: declareCommon.getPlanDetailsId()},"/declareRealtyHouseCert/getDeclareRealtyHouseCertById","get",callback) ;
 };
 
 //不动产获取
 declareCommon.getDeclareRealtyData = function (id, callback) {
-    $.ajax({
-        url: getContextPath() + "/declareRealtyRealEstateCert/getDeclareRealtyRealEstateCertById",
-        type: "get",
-        dataType: "json",
-        data: {id: id},
-        success: function (result) {
-            if (result.ret) {
-                callback(result.data);
-            }
-        },
-        error: function (result) {
-            AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
-        }
-    });
+    declareCommon.ajaxServerMethod({id: id},"/declareRealtyRealEstateCert/getDeclareRealtyRealEstateCertById","get",callback) ;
 };
 
 //不动产 delete
 declareCommon.deleteDeclareRealtyData = function (ids, callback) {
-    $.ajax({
-        type: "POST",
-        url: getContextPath() + "/declareRealtyRealEstateCert/deleteDeclareRealtyRealEstateCertById",
-        data: {ids: ids},
-        success: function (result) {
-            if (result.ret) {
-                callback();
-            } else {
-                AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
-            }
-        },
-        error: function (result) {
-            AlertError("错误", "调用服务端方法失败，失败原因:" + e);
-        }
-    });
+    declareCommon.ajaxServerMethod({ids: ids},"/declareRealtyRealEstateCert/deleteDeclareRealtyRealEstateCertById","post",callback) ;
 };
 
 //不动产save
@@ -772,21 +573,7 @@ declareCommon.saveDeclareRealtyDataBase = function (data, updateNull, callback) 
     if (updateNull == '') {
         updateNull = false;
     }
-    $.ajax({
-        type: "POST",
-        url: getContextPath() + "/declareRealtyRealEstateCert/saveAndUpdateDeclareRealtyRealEstateCert",
-        data: {formData: JSON.stringify(data), updateNull: updateNull},
-        success: function (result) {
-            if (result.ret) {
-                callback(result.data);
-            } else {
-                AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
-            }
-        },
-        error: function (result) {
-            AlertError("错误", "调用服务端方法失败，失败原因:" + e);
-        }
-    });
+    declareCommon.ajaxServerMethod({formData: JSON.stringify(data), updateNull: updateNull},"/declareRealtyRealEstateCert/saveAndUpdateDeclareRealtyRealEstateCert","post",callback) ;
 };
 
 declareCommon.saveDeclareRealtyData = function (data, callback) {
@@ -1109,21 +896,7 @@ declareCommon.saveDeclareBuildEquipmentInstall = function (data, updateNull, cal
     if (updateNull == '') {
         updateNull = false;
     }
-    $.ajax({
-        type: "POST",
-        url: getContextPath() + "/declareBuildEquipmentInstall/saveDeclareBuildEquipmentInstall",
-        data: {formData: JSON.stringify(data), updateNull: updateNull},
-        success: function (result) {
-            if (result.ret) {
-                callback(result.data);
-            } else {
-                AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
-            }
-        },
-        error: function (result) {
-            AlertError("错误", "调用服务端方法失败，失败原因:" + e);
-        }
-    });
+    declareCommon.ajaxServerMethod({formData: JSON.stringify(data), updateNull: updateNull},"/declareBuildEquipmentInstall/saveDeclareBuildEquipmentInstall","post",callback) ;
 };
 //initForm 设备安装
 declareCommon.initFormDeclareBuildEquipmentInstall = function (form, item) {
@@ -1144,44 +917,12 @@ declareCommon.initFormDeclareBuildEquipmentInstall = function (form, item) {
 
 //delete 设备安装
 declareCommon.deleteDeclareBuildEquipmentInstallById = function (id, callback) {
-    $.ajax({
-        type: "POST",
-        url: getContextPath() + "/declareBuildEquipmentInstall/deleteDeclareBuildEquipmentInstallById",
-        data: {id: id},
-        success: function (result) {
-            if (result.ret) {
-                if (callback) {
-                    callback();
-                }
-            } else {
-                AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
-            }
-        },
-        error: function (result) {
-            AlertError("错误", "调用服务端方法失败，失败原因:" + e);
-        }
-    });
+    declareCommon.ajaxServerMethod({id: id},"/declareBuildEquipmentInstall/deleteDeclareBuildEquipmentInstallById","post",callback) ;
 };
 
 //get 设备安装
 declareCommon.getDeclareBuildEquipmentInstallById = function (id, callback) {
-    $.ajax({
-        type: "get",
-        url: getContextPath() + "/declareBuildEquipmentInstall/getDeclareBuildEquipmentInstallById",
-        data: {id: id},
-        success: function (result) {
-            if (result.ret) {
-                if (callback) {
-                    callback();
-                }
-            } else {
-                AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
-            }
-        },
-        error: function (result) {
-            AlertError("错误", "调用服务端方法失败，失败原因:" + e);
-        }
-    });
+    declareCommon.ajaxServerMethod({id: id},"/declareBuildEquipmentInstall/getDeclareBuildEquipmentInstallById","get",callback) ;
 };
 //save 土建
 declareCommon.saveDeclareBuildEngineering = function (data, updateNull, callback) {
@@ -1194,21 +935,7 @@ declareCommon.saveDeclareBuildEngineering = function (data, updateNull, callback
     if (updateNull == '') {
         updateNull = false;
     }
-    $.ajax({
-        type: "POST",
-        url: getContextPath() + "/declareBuildEngineering/saveDeclareBuildEngineering",
-        data: {formData: JSON.stringify(data), updateNull: updateNull},
-        success: function (result) {
-            if (result.ret) {
-                callback(result.data);
-            } else {
-                AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
-            }
-        },
-        error: function (result) {
-            AlertError("错误", "调用服务端方法失败，失败原因:" + e);
-        }
-    });
+    declareCommon.ajaxServerMethod({formData: JSON.stringify(data), updateNull: updateNull},"/declareBuildEngineering/saveDeclareBuildEngineering","post",callback) ;
 };
 //initForm 土建
 declareCommon.initFormDeclareBuildEngineering = function (form, item) {
@@ -1253,44 +980,12 @@ declareCommon.initFormDeclareBuildEngineering = function (form, item) {
 
 //delete 土建
 declareCommon.deleteDeclareBuildEngineeringById = function (id, callback) {
-    $.ajax({
-        type: "POST",
-        url: getContextPath() + "/declareBuildEngineering/deleteDeclareBuildEngineeringById",
-        data: {id: id},
-        success: function (result) {
-            if (result.ret) {
-                if (callback) {
-                    callback();
-                }
-            } else {
-                AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
-            }
-        },
-        error: function (result) {
-            AlertError("错误", "调用服务端方法失败，失败原因:" + e);
-        }
-    });
+    declareCommon.ajaxServerMethod({id: id},"/declareBuildEngineering/deleteDeclareBuildEngineeringById","POST",callback) ;
 };
 
 //get 土建
 declareCommon.getDeclareBuildEngineeringById = function (id, callback) {
-    $.ajax({
-        type: "get",
-        url: getContextPath() + "/declareBuildEngineering/getDeclareBuildEngineeringById",
-        data: {id: id},
-        success: function (result) {
-            if (result.ret) {
-                if (callback) {
-                    callback();
-                }
-            } else {
-                AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
-            }
-        },
-        error: function (result) {
-            AlertError("错误", "调用服务端方法失败，失败原因:" + e);
-        }
-    });
+    declareCommon.ajaxServerMethod({id: id},"/declareBuildEngineering/getDeclareBuildEngineeringById","get",callback) ;
 };
 //save 建筑工程施工许可证
 declareCommon.saveDeclareBuildingConstructionPermit = function (data, updateNull, callback) {
@@ -1303,63 +998,17 @@ declareCommon.saveDeclareBuildingConstructionPermit = function (data, updateNull
     if (updateNull == '') {
         updateNull = false;
     }
-    $.ajax({
-        type: "POST",
-        url: getContextPath() + "/declareBuildingConstructionPermit/saveDeclareBuildingConstructionPermit",
-        data: {formData: JSON.stringify(data), updateNull: updateNull},
-        success: function (result) {
-            if (result.ret) {
-                callback(result.data);
-            } else {
-                AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
-            }
-        },
-        error: function (result) {
-            AlertError("错误", "调用服务端方法失败，失败原因:" + e);
-        }
-    });
+    declareCommon.ajaxServerMethod({formData: JSON.stringify(data), updateNull: updateNull},"/declareBuildingConstructionPermit/saveDeclareBuildingConstructionPermit","post",callback) ;
 };
 
 //delete 建筑工程施工许可证
 declareCommon.deleteDeclareBuildingConstructionPermitById = function (id, callback) {
-    $.ajax({
-        type: "POST",
-        url: getContextPath() + "/declareBuildingConstructionPermit/deleteDeclareBuildingConstructionPermitById",
-        data: {id: id},
-        success: function (result) {
-            if (result.ret) {
-                if (callback) {
-                    callback();
-                }
-            } else {
-                AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
-            }
-        },
-        error: function (result) {
-            AlertError("错误", "调用服务端方法失败，失败原因:" + e);
-        }
-    });
+    declareCommon.ajaxServerMethod({id: id},"/declareBuildingConstructionPermit/deleteDeclareBuildingConstructionPermitById","POST",callback) ;
 };
 
 //get 建筑工程施工许可证
 declareCommon.getDeclareBuildingConstructionPermitById = function (id, callback) {
-    $.ajax({
-        type: "get",
-        url: getContextPath() + "/declareBuildingConstructionPermit/getDeclareBuildingConstructionPermitById",
-        data: {id: id},
-        success: function (result) {
-            if (result.ret) {
-                if (callback) {
-                    callback(result.data);
-                }
-            } else {
-                AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
-            }
-        },
-        error: function (result) {
-            AlertError("错误", "调用服务端方法失败，失败原因:" + e);
-        }
-    });
+    declareCommon.ajaxServerMethod({id: id},"/declareBuildingConstructionPermit/getDeclareBuildingConstructionPermitById","get",callback) ;
 };
 
 
@@ -1374,63 +1023,17 @@ declareCommon.saveDeclareBuildingPermit = function (data, updateNull, callback) 
     if (updateNull == '') {
         updateNull = false;
     }
-    $.ajax({
-        type: "POST",
-        url: getContextPath() + "/declareBuildingPermit/saveDeclareBuildingPermit",
-        data: {formData: JSON.stringify(data), updateNull: updateNull},
-        success: function (result) {
-            if (result.ret) {
-                callback(result.data);
-            } else {
-                AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
-            }
-        },
-        error: function (result) {
-            AlertError("错误", "调用服务端方法失败，失败原因:" + e);
-        }
-    });
+    declareCommon.ajaxServerMethod({formData: JSON.stringify(data), updateNull: updateNull},"/declareBuildingPermit/saveDeclareBuildingPermit","post",callback) ;
 };
 
 //delete 建设工程规划许可证
 declareCommon.deleteDeclareBuildingPermitById = function (id, callback) {
-    $.ajax({
-        type: "POST",
-        url: getContextPath() + "/declareBuildingPermit/deleteDeclareBuildingPermitById",
-        data: {id: id},
-        success: function (result) {
-            if (result.ret) {
-                if (callback) {
-                    callback();
-                }
-            } else {
-                AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
-            }
-        },
-        error: function (result) {
-            AlertError("错误", "调用服务端方法失败，失败原因:" + e);
-        }
-    });
+    declareCommon.ajaxServerMethod({id: id},"/declareBuildingPermit/deleteDeclareBuildingPermitById","post",callback) ;
 };
 
 //get 建设工程规划许可证
 declareCommon.getDeclareBuildingPermitById = function (id, callback) {
-    $.ajax({
-        type: "get",
-        url: getContextPath() + "/declareBuildingPermit/getDeclareBuildingPermitById",
-        data: {id: id},
-        success: function (result) {
-            if (result.ret) {
-                if (callback) {
-                    callback(result.data);
-                }
-            } else {
-                AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
-            }
-        },
-        error: function (result) {
-            AlertError("错误", "调用服务端方法失败，失败原因:" + e);
-        }
-    });
+    declareCommon.ajaxServerMethod({id: id},"/declareBuildingPermit/getDeclareBuildingPermitById","get",callback) ;
 };
 
 
