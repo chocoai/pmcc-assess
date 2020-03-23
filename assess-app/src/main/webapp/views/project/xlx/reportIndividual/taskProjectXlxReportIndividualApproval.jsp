@@ -3,6 +3,7 @@
 <html lang="en" class="no-js">
 <head>
     <%@include file="/views/share/main_css.jsp" %>
+
 </head>
 <body>
 <div class="wrapper">
@@ -33,7 +34,55 @@
                                 <form class="form-horizontal" id="declareApplyForm">
                                     <input type="hidden" name="planDetailsId" value="${projectPlanDetails.id}">
                                     <input type="hidden" name="projectId" value="${projectPlanDetails.projectId}">
-                                    <%@include file="./../../assets/assetsAppraisalDicApprovalModel.jsp" %>
+
+
+                                    <div id="assetsCustomizeDataOther_fieldId">
+                                        <c:forEach items="${customizeDataField}" var="item">
+                                            <div class="row form-group">
+                                                <div class="col-md-12">
+                                                    <div class="form-inline x-valid">
+                                                        <label class=" col-sm-1 control-label">
+                                                            自定义名称<span class="symbol required"></span>
+                                                        </label>
+                                                        <div class="col-sm-2">
+                                                            <label class=" form-control input-full">
+                                                                    ${item.name}
+                                                            </label>
+                                                        </div>
+
+                                                        <label class=" col-sm-1 control-label">
+                                                            附件
+                                                        </label>
+                                                        <div class="col-sm-7">
+                                                            <div id="_other_Enclosure${item.id}"></div>
+                                                        </div>
+                                                    </div>
+                                                    <script type="text/javascript">
+                                                        $(function () {
+                                                            var fileId = 'other_Enclosure${item.id}';
+                                                            xlxReportIndividual.showFile(fileId, AssessDBKey.AssetsCustomizeDataField, "${item.id}", false);
+                                                        });
+                                                    </script>
+                                                </div>
+                                            </div>
+                                        </c:forEach>
+                                    </div>
+
+
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <label class=" col-sm-1 control-label">
+                                                    备注
+                                                </label>
+                                                <div class="col-sm-11">
+                                                    <label class=" form-control input-full">
+                                                        ${assetsCustomizeDataField.remark}
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </form>
                             </div>
 

@@ -5,7 +5,91 @@
     <%@include file="/views/share/main_css.jsp" %>
 </head>
 
+<div id="divBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="max-width: 55%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">报告信息详情</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <div class="form-inline x-valid">
+                                <label class="col-md-1  control-label">
+                                    项目名称
+                                </label>
+                                <div class="col-md-3">
+                                    <label class="form-control input-full" name="projectName"></label>
+                                </div>
+
+                                <label class="col-md-1  control-label">
+                                    文号
+                                </label>
+                                <div class="col-md-3">
+                                    <label class="form-control input-full" name="numberValue"></label>
+                                </div>
+                                <label class="col-md-1  control-label">
+                                    委托单位
+                                </label>
+                                <div class="col-md-3">
+                                    <label class="form-control input-full" name="entrustedUnit"></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div style="display: none" class="house">
+                        <%@include file="detail/house.jsp" %>
+                    </div>
+
+                    <div style="display: none" class="land">
+                        <%@include file="detail/land.jsp" %>
+                    </div>
+
+                    <div style="display: none" class="assets">
+                        <%@include file="detail/assets.jsp" %>
+                    </div>
+
+
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <div class="form-inline x-valid">
+                                <label class="col-md-1  control-label">
+                                    承办表
+                                </label>
+                                <div class="col-md-3">
+                                    <label class="form-control input-full" name="undertakeSheet"></label>
+                                </div>
+                                <label class="col-md-1  control-label">
+                                    备注
+                                </label>
+                                <div class="col-md-7">
+                                    <label class="form-control input-full" name="remark"></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
 <body>
+
+
 <%--<%@include file="share/main_head.jsp" %>--%>
 <!-- start: MAIN CONTAINER -->
 <div class="wrapper">
@@ -30,6 +114,24 @@
                             <div class="card-body">
                                 <form id="query_form" class="form-horizontal">
                                     <div class="form-group form-inline">
+
+                                        <label class="col-md-1 col-form-label">项目类型</label>
+                                        <div class="col-md-3 p-0">
+                                            <select class="form-control input-full" required name="assessType">
+                                                <option value="">--请选择--</option>
+                                                <c:forEach var="classItem" items="${keyValueDtoList}">
+                                                    <c:forEach var="typeItem" items="${classItem.keyValueDtos}">
+                                                        <c:if test="${not empty typeItem.keyValueDtos}">
+                                                            <c:forEach var="categoryItem"
+                                                                       items="${typeItem.keyValueDtos}">
+                                                                <option value="${categoryItem.key}">${categoryItem.value}</option>
+                                                            </c:forEach>
+                                                        </c:if>
+                                                    </c:forEach>
+                                                </c:forEach>
+                                            </select>
+                                        </div>
+
                                         <label class="col-md-1 col-form-label">项目名称</label>
                                         <div class="col-md-2 p-0">
                                             <input name="projectName"
@@ -105,9 +207,19 @@
                 return formatDate(row.filingDate, true);
             }
         });
+
         cols.push({field: 'reportPeople', title: '报告人', width: '5%'});
         cols.push({field: 'numberValue', title: '文号', width: '5%'});
         cols.push({field: 'assessTotalToll', title: '收费', width: '5%'});
+        cols.push({field: 'assessTypeName', title: '类型', width: '5%'});
+        cols.push({
+            field: 'id', title: '查看详情', formatter: function (value, row, index) {
+                var str = '<button onclick="findDataDic(' + row.id + ')" style="margin-left: 5px;" class="btn   btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看子项">';
+                str += '<i class="fa fa-search"></i>';
+                str += '</button>';
+                return str;
+            }
+        });
         var target = $("#tb_List");
         target.bootstrapTable('destroy');
         TableInit(target, "${pageContext.request.contextPath}/projectXlxReportIndividual/getBootstrapTableVo", cols, data, {
@@ -118,6 +230,17 @@
                 $('.tooltips').tooltip();
             }
         });
+    }
+
+    function findDataDic(id) {
+        var item = $("#tb_List").bootstrapTable('getRowByUniqueId', id);
+        console.log(item);
+        var box = $("#divBox") ;
+        var frm = box.find("form") ;
+        frm.clearAll();
+        frm.initForm(item);
+        box.modal("show");
+        frm.find("."+item.assessType).show() ;
     }
 
 

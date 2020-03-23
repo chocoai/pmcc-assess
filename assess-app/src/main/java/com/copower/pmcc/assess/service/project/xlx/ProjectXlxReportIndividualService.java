@@ -7,6 +7,7 @@ import com.copower.pmcc.assess.dal.basis.entity.BaseProjectClassify;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectNumberRecord;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectXlxReportIndividual;
+import com.copower.pmcc.assess.dto.output.project.xlx.ProjectXlxReportIndividualVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
@@ -23,6 +24,8 @@ import com.github.pagehelper.PageInfo;
 import com.google.common.base.Objects;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -155,8 +158,14 @@ public class ProjectXlxReportIndividualService {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<ProjectXlxReportIndividual> projectXlxReportIndividuals = getProjectXlxReportIndividualListLikeQuery(oo);
+        List<ProjectXlxReportIndividualVo> vos = new ArrayList<>() ;
+        if (CollectionUtils.isNotEmpty(projectXlxReportIndividuals)){
+            projectXlxReportIndividuals.forEach(individual -> {
+                vos.add(getProjectXlxReportIndividualVo(individual)) ;
+            });
+        }
         vo.setTotal(page.getTotal());
-        vo.setRows(CollectionUtils.isNotEmpty(projectXlxReportIndividuals) ? projectXlxReportIndividuals : new ArrayList(0));
+        vo.setRows(vos);
         return vo;
     }
 
@@ -175,6 +184,18 @@ public class ProjectXlxReportIndividualService {
 
     public List<ProjectXlxReportIndividual> getProjectXlxReportIndividualListLikeQuery(ProjectXlxReportIndividual oo){
         return projectXlxReportIndividualDao.getProjectXlxReportIndividualListLikeQuery(oo);
+    }
+
+    public ProjectXlxReportIndividualVo getProjectXlxReportIndividualVo(ProjectXlxReportIndividual target){
+        ProjectXlxReportIndividualVo vo = new ProjectXlxReportIndividualVo();
+        BeanUtils.copyProperties(target,vo);
+        if (NumberUtils.isNumber(target.getAssessType())){
+            BaseProjectClassify classifyById = baseProjectClassifyService.getCacheProjectClassifyById(Integer.parseInt(target.getAssessType()));
+            vo.setAssessTypeName(classifyById.getName());
+            String assessType = getAssessProjectTypeEnum(classifyById.getId()).getKey() ;
+            vo.setAssessType(assessType);
+        }
+        return vo;
     }
 
 }

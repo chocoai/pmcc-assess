@@ -63,9 +63,7 @@
                                     <input type="hidden" name="id" value="${projectXlxReportIndividual.id}">
                                     <input type="hidden" name="projectId" value="${projectPlanDetails.projectId}">
                                     <input type="hidden" name="planDetailsId" value="${projectPlanDetails.id}">
-                                    <input type="hidden" name="projectCategory"
-                                           value="${projectInfo.projectCategoryId}">
-                                    <input type="hidden" name="assessType" value="${assessProjectType}">
+                                    <input type="hidden" name="assessType" value="${projectInfo.projectCategoryId}">
 
                                     <div class="row form-group">
                                         <div class="col-md-12">

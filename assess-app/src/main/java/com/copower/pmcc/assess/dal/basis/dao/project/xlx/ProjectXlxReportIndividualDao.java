@@ -65,6 +65,9 @@ public class ProjectXlxReportIndividualDao {
         if (StringUtils.isNotBlank(oo.getNumberValue())) {
             criteria.andNumberValueLike(String.format("%%%s%%", oo.getNumberValue()));
         }
+        if (StringUtils.isNotBlank(oo.getAssessType())){
+            criteria.andAssessTypeEqualTo(oo.getAssessType()) ;
+        }
         example.setOrderByClause("id");
         return mapper.selectByExample(example);
     }

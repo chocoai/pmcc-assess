@@ -138,7 +138,15 @@
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         <!--</table>-->
 
-        <table tableName="tb_declare_realty_check_list" domainObjectName="DeclareRealtyCheckList">
+        <table tableName="tb_survey_asset_info" domainObjectName="SurveyAssetInfo">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+
+        <table tableName="tb_survey_asset_info_group" domainObjectName="SurveyAssetInfoGroup">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+
+        <table tableName="tb_survey_asset_info_item" domainObjectName="SurveyAssetInfoItem">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 
