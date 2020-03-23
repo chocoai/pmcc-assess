@@ -11,7 +11,7 @@
     <div class="col-md-12">
         <div class="form-inline x-valid">
             <label class="col-md-1  control-label">
-                评估总价(万元)<span class="symbol required"></span>
+                评估总价(万元)    
             </label>
             <div class="col-md-3">
                 <label  class="form-control input-full" >
@@ -20,7 +20,7 @@
             </div>
 
             <label class="col-md-1  control-label">
-                评估单价(元)<span class="symbol required"></span>
+                评估单价(元)    
             </label>
             <div class="col-md-3">
                 <label  class="form-control input-full" >
@@ -28,7 +28,7 @@
                 </label>
             </div>
             <label class="col-md-1  control-label">
-                土地面积(㎡)<span class="symbol required"></span>
+                土地面积(㎡)    
             </label>
             <div class="col-md-3">
                 <label  class="form-control input-full" >
@@ -43,7 +43,7 @@
     <div class="col-md-12">
         <div class="form-inline x-valid">
             <label class="col-md-1  control-label">
-                建筑面积(㎡) <span class="symbol required"></span>
+                建筑面积(㎡)     
             </label>
             <div class="col-md-3">
                 <label  class="form-control input-full" >
@@ -51,13 +51,13 @@
                 </label>
             </div>
             <label class="col-md-1  control-label">
-                估价目的<span class="symbol required"></span>
+                估价目的    
             </label>
             <div class="col-md-3">
                 <label  class="form-control input-full" name="valuationPurpose">${projectXlxReportIndividual.valuationPurpose}</label>
             </div>
             <label class="col-md-1  control-label">
-                估价方法<span class="symbol required"></span>
+                估价方法    
             </label>
             <div class="col-md-3">
                 <label  class="form-control input-full" name="valuationMethod">${projectXlxReportIndividual.valuationMethod}</label>
@@ -70,20 +70,20 @@
     <div class="col-md-12">
         <div class="form-inline x-valid">
             <label class="col-md-1  control-label">
-                估价时点<span class="symbol required"></span>
+                估价时点    
             </label>
             <div class="col-md-3">
                 <label class="form-control input-full"><fmt:formatDate value='${projectXlxReportIndividual.valueTimePoint}' pattern='yyyy-MM-dd'/></label>
             </div>
             <label class="col-md-1  control-label">
-                估价作业期<span class="symbol required"></span>
+                估价作业期    
             </label>
             <div class="col-md-3">
                 <label class="form-control input-full"><fmt:formatDate value='${projectXlxReportIndividual.appraisalPeriod}' pattern='yyyy-MM-dd'/></label>
             </div>
 
             <label class="col-md-1  control-label">
-                收费(万元)<span class="symbol required"></span>
+                收费(万元)    
             </label>
             <div class="col-md-3">
                 <label  class="form-control input-full" >
@@ -101,21 +101,21 @@
         <div class="form-inline x-valid">
 
             <label class="col-md-1  control-label">
-                土地用途<span class="symbol required"></span>
+                土地用途    
             </label>
             <div class="col-md-3">
                 <label  class="form-control input-full" name="landUse">${projectXlxReportIndividual.landUse}</label>
             </div>
 
             <label class="col-md-1  control-label">
-                项目负责人<span class="symbol required"></span>
+                项目负责人    
             </label>
             <div class="col-md-3">
                 <label  class="form-control input-full" name="projectLeader">${projectXlxReportIndividual.projectLeader}</label>
             </div>
 
             <label class="col-md-1  control-label">
-                签章人员<span class="symbol required"></span>
+                签章人员    
             </label>
             <div class="col-md-3">
                 <label  class="form-control input-full" name="signerPeople">${projectXlxReportIndividual.signerPeople}</label>
@@ -130,14 +130,14 @@
     <div class="col-md-12">
         <div class="form-inline x-valid">
             <label class="col-md-1  control-label">
-                报告装订日期<span class="symbol required"></span>
+                报告装订日期    
             </label>
             <div class="col-md-3">
                 <label class="form-control input-full"><fmt:formatDate value='${projectXlxReportIndividual.reportBindingDate}' pattern='yyyy-MM-dd'/></label>
             </div>
 
             <label class="col-md-1  control-label">
-                报告份数<span class="symbol required"></span>
+                报告份数    
             </label>
             <div class="col-md-3">
                 <label  class="form-control input-full" >
@@ -146,7 +146,7 @@
             </div>
 
             <label class="col-md-1  control-label">
-                报告修改日期<span class="symbol required"></span>
+                报告修改日期    
             </label>
             <div class="col-md-3">
                 <label class="form-control input-full"><fmt:formatDate value='${projectXlxReportIndividual.reportModificationDate}' pattern='yyyy-MM-dd'/></label>
@@ -161,7 +161,7 @@
         <div class="form-inline x-valid">
 
             <label class="col-md-1  control-label">
-                归档日期<span class="symbol required"></span>
+                归档日期    
             </label>
             <div class="col-md-3">
                 <label class="form-control input-full"><fmt:formatDate value='${projectXlxReportIndividual.filingDate}' pattern='yyyy-MM-dd'/></label>
@@ -169,13 +169,13 @@
 
 
             <label class="col-md-1  control-label">
-                委托银行<span class="symbol required"></span>
+                委托银行    
             </label>
             <div class="col-md-3">
                 <label  class="form-control input-full" name="entrustedBank">${projectXlxReportIndividual.entrustedBank}</label>
             </div>
             <label class="col-md-1  control-label">
-                委托人地址<span class="symbol required"></span>
+                委托人地址    
             </label>
             <div class="col-md-3">
                 <label  class="form-control input-full" name="addressPrincipal">${projectXlxReportIndividual.addressPrincipal}</label>
@@ -188,19 +188,19 @@
     <div class="col-md-12">
         <div class="form-inline x-valid">
             <label class="col-md-1  control-label">
-                委托人及电话<span class="symbol required"></span>
+                委托人及电话    
             </label>
             <div class="col-md-3">
                 <label  class="form-control input-full" name="phonePrincipal">${projectXlxReportIndividual.phonePrincipal}</label>
             </div>
             <label class="col-md-1  control-label">
-                宗地位置<span class="symbol required"></span>
+                宗地位置    
             </label>
             <div class="col-md-3">
                 <label  class="form-control input-full" name="landPlotsLocation">${projectXlxReportIndividual.landPlotsLocation}</label>
             </div>
             <label class="col-md-1  control-label">
-                宗地数<span class="symbol required"></span>
+                宗地数    
             </label>
             <div class="col-md-3">
                 <label  class="form-control input-full" >
