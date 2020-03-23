@@ -462,6 +462,14 @@ commonColumn.buildingFunctionColumn = function () {
     return cols;
 }
 
+//单元-单价调查
+commonColumn.unitHuxingPriceColumn = function () {
+    var cols = [];
+    cols.push({field: 'houseNumber', title: '房号'});
+    cols.push({field: 'area', title: '面积'});
+    return cols;
+}
+
 //单元-楼栋内装
 commonColumn.unitDecorateColumn = function () {
     var cols = [];

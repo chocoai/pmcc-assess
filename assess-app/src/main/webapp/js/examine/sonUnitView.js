@@ -162,8 +162,10 @@ var unitHuxing;
                     var str = '<div class="btn-margin">';
                     str += '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-primary tooltips"  data-placement="top" data-original-title="编辑" onclick="unitHuxing.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
                     str += '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="unitHuxing.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
-                    str += '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="单价调查" onclick="unitHuxingPrice.prototype.showTableModel(' + row.id + ',\'tb_List\')"><i class="fa fa-arrow-right fa-white"></i></button>';
-                    str += '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-success tooltips" data-placement="top" data-original-title="下载房屋模板" onclick="unitHuxing.prototype.getAttachmentId(' + row.id + ',\'tb_List\')"><i class="fa fa-cloud-download-alt"></i></button>';
+                    if(row.standardHouseNumber){
+                        str += '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="单价调查" onclick="unitHuxingPrice.prototype.showTableModel(' + row.id + ',\'tb_List\')"><i class="fa fa-arrow-right fa-white"></i></button>';
+                    }
+                    //str += '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-success tooltips" data-placement="top" data-original-title="下载房屋模板" onclick="unitHuxing.prototype.getAttachmentId(' + row.id + ',\'tb_List\')"><i class="fa fa-cloud-download-alt"></i></button>';
                     str += '</div>';
                     return str;
                 }
@@ -466,7 +468,7 @@ var unitHuxingPrice;
             return data;
         },
         loadDataDicList: function (unitHuxingId) {
-            var cols = commonColumn.estateInvestigation();
+            var cols = commonColumn.unitHuxingPriceColumn();
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -477,7 +479,7 @@ var unitHuxingPrice;
                 }
             });
             $("#" + unitHuxingPrice.prototype.config().table).bootstrapTable('destroy');
-            TableInit(unitHuxingPrice.prototype.config().table, getContextPath() + "/basicEstateInvestigation/getEstateInvestigationList", cols, {
+            TableInit(unitHuxingPrice.prototype.config().table, getContextPath() + "/basicUnitHuxingPrice/getUnitHuxingPriceList", cols, {
                 unitHuxingId: unitHuxingId
             }, {
                 showColumns: false,
@@ -490,7 +492,7 @@ var unitHuxingPrice;
         },
         removeData: function (id, unitHuxingId) {
             $.ajax({
-                url: getContextPath() + "/basicEstateInvestigation/deleteBasicEstateInvestigation",
+                url: getContextPath() + "/basicUnitHuxingPrice/deleteBasicUnitHuxingPrice",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -517,9 +519,7 @@ var unitHuxingPrice;
             $("#" + unitHuxingPrice.prototype.config().frm).clearAll();
             var unitHuxingId = $("#" + unitHuxingPrice.prototype.config().tableFrm).find("input[name='unitHuxingId']").val();
             $("#" + unitHuxingPrice.prototype.config().frm).find("input[name='huxingId']").val(unitHuxingId);
-            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseLoadUtility, '', function (html, data) {
-                $("#" + unitHuxingPrice.prototype.config().frm).find('select.planningUse').empty().html(html).trigger('change');
-            });
+
             $('#' + unitHuxingPrice.prototype.config().box).modal("show");
         },
         saveData: function () {
@@ -529,7 +529,7 @@ var unitHuxingPrice;
             var unitHuxingId = $("#" + unitHuxingPrice.prototype.config().frm).find("input[name='huxingId']").val()
             var data = formParams(unitHuxingPrice.prototype.config().frm, true);
             $.ajax({
-                url: getContextPath() + "/basicEstateInvestigation/saveAndUpdateBasicEstateInvestigation",
+                url: getContextPath() + "/basicUnitHuxingPrice/saveAndUpdateBasicUnitHuxingPrice",
                 type: "post",
                 dataType: "json",
                 data: data,
@@ -556,7 +556,7 @@ var unitHuxingPrice;
         },
         getAndInit: function (id, unitHuxingId) {
             $.ajax({
-                url: getContextPath() + "/basicEstateInvestigation/getBasicEstateInvestigationById",
+                url: getContextPath() + "/basicUnitHuxingPrice/getBasicUnitHuxingPriceById",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -580,15 +580,13 @@ var unitHuxingPrice;
             $("#" + unitHuxingPrice.prototype.config().frm).clearAll();
             $("#" + unitHuxingPrice.prototype.config().frm).find("input[name='huxingId']").val(unitHuxingId);
             $("#" + unitHuxingPrice.prototype.config().frm).initForm(item);
-            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseLoadUtility, item.planningUse, function (html, data) {
-                $("#" + unitHuxingPrice.prototype.config().frm).find('select.planningUse').empty().html(html).trigger('change');
-            });
+
         },
         importData: function () {
             var unitHuxingId = $("#" + unitHuxingPrice.prototype.config().tableFrm).find("input[name='unitHuxingId']").val();
             $.ajaxFileUpload({
                 type: "POST",
-                url: getContextPath() + "/basicEstateInvestigation/importData",
+                url: getContextPath() + "/basicUnitHuxingPrice/importData",
                 data: {
                     huxingId: unitHuxingId
                 },//要传到后台的参数，没有可以不写

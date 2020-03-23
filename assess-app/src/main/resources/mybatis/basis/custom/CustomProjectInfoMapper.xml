@@ -91,6 +91,9 @@
         <if test="queryDepartmentId!=null">
             AND A.department_id = #{queryDepartmentId}
         </if>
+        <if test="queryProjectCategoryId!=null">
+            AND A.project_category_id = #{queryProjectCategoryId}
+        </if>
         ORDER BY A.id DESC
     </select>
 </mapper>

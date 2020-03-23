@@ -105,6 +105,8 @@ public class ProjectCenterController {
         //委托目的
         List<BaseDataDic> entrustPurposeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE);
         modelAndView.addObject("entrustPurposeList", entrustPurposeList);
+        List<KeyValueDto> keyValueDtoList = baseProjectClassifyService.getProjectInitClassify();
+        modelAndView.addObject("projectCategoryList", keyValueDtoList);
         return modelAndView;
     }
 
@@ -127,6 +129,8 @@ public class ProjectCenterController {
         List<BaseDataDic> loanTypeList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_LOAN_TYPE);
         modelAndView.addObject("loanTypeList", loanTypeList);
         modelAndView.addObject("companyId", publicService.getCurrentCompany().getCompanyId());
+        List<KeyValueDto> keyValueDtoList = baseProjectClassifyService.getProjectInitClassify();
+        modelAndView.addObject("projectCategoryList", keyValueDtoList);
         return modelAndView;
     }
 

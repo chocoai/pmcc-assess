@@ -40,6 +40,8 @@ public class BasicUnitHuxing {
 
     private String spatialDistribution;
 
+    private String standardHouseNumber;
+
     public Integer getId() {
         return id;
     }
@@ -182,5 +184,13 @@ public class BasicUnitHuxing {
 
     public void setSpatialDistribution(String spatialDistribution) {
         this.spatialDistribution = spatialDistribution == null ? null : spatialDistribution.trim();
+    }
+
+    public String getStandardHouseNumber() {
+        return standardHouseNumber;
+    }
+
+    public void setStandardHouseNumber(String standardHouseNumber) {
+        this.standardHouseNumber = standardHouseNumber == null ? null : standardHouseNumber.trim();
     }
 }

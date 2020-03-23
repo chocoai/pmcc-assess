@@ -162,6 +162,21 @@
                                                     <input type="text" placeholder="委托人" class="form-control input-full"
                                                            name="queryConsignor">
                                                 </div>
+                                                <label class="col-md-1 col-form-label">项目类型</label>
+                                                <div class="col-md-2 p-0">
+                                                    <select class="form-control input-full" required name="queryProjectCategoryId">
+                                                        <option value="">--请选择--</option>
+                                                        <c:forEach var="classItem" items="${projectCategoryList}">
+                                                            <c:forEach var="typeItem" items="${classItem.keyValueDtos}">
+                                                                <c:if test="${not empty typeItem.keyValueDtos}">
+                                                                    <c:forEach var="categoryItem" items="${typeItem.keyValueDtos}">
+                                                                        <option value="${categoryItem.key}">${categoryItem.value}</option>
+                                                                    </c:forEach>
+                                                                </c:if>
+                                                            </c:forEach>
+                                                        </c:forEach>
+                                                    </select>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

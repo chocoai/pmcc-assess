@@ -1245,6 +1245,76 @@ public class BasicUnitHuxingExample {
             addCriterion("spatial_distribution not between", value1, value2, "spatialDistribution");
             return (Criteria) this;
         }
+
+        public Criteria andStandardHouseNumberIsNull() {
+            addCriterion("standard_house_number is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardHouseNumberIsNotNull() {
+            addCriterion("standard_house_number is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardHouseNumberEqualTo(String value) {
+            addCriterion("standard_house_number =", value, "standardHouseNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardHouseNumberNotEqualTo(String value) {
+            addCriterion("standard_house_number <>", value, "standardHouseNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardHouseNumberGreaterThan(String value) {
+            addCriterion("standard_house_number >", value, "standardHouseNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardHouseNumberGreaterThanOrEqualTo(String value) {
+            addCriterion("standard_house_number >=", value, "standardHouseNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardHouseNumberLessThan(String value) {
+            addCriterion("standard_house_number <", value, "standardHouseNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardHouseNumberLessThanOrEqualTo(String value) {
+            addCriterion("standard_house_number <=", value, "standardHouseNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardHouseNumberLike(String value) {
+            addCriterion("standard_house_number like", value, "standardHouseNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardHouseNumberNotLike(String value) {
+            addCriterion("standard_house_number not like", value, "standardHouseNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardHouseNumberIn(List<String> values) {
+            addCriterion("standard_house_number in", values, "standardHouseNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardHouseNumberNotIn(List<String> values) {
+            addCriterion("standard_house_number not in", values, "standardHouseNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardHouseNumberBetween(String value1, String value2) {
+            addCriterion("standard_house_number between", value1, value2, "standardHouseNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardHouseNumberNotBetween(String value1, String value2) {
+            addCriterion("standard_house_number not between", value1, value2, "standardHouseNumber");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

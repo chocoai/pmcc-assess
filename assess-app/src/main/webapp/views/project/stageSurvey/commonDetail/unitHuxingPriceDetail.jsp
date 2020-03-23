@@ -56,9 +56,9 @@
                 return data;
             },
             loadDataDicList: function (unitHuxingId) {
-                var cols = commonColumn.estateInvestigation();
+                var cols = commonColumn.unitHuxingPriceColumn();
                 $("#" + unitHuxingPriceDetail.prototype.config().table).bootstrapTable('destroy');
-                TableInit(unitHuxingPriceDetail.prototype.config().table, getContextPath() + "/basicEstateInvestigation/getEstateInvestigationList", cols, {
+                TableInit(unitHuxingPriceDetail.prototype.config().table, getContextPath() + "/basicUnitHuxingPrice/getUnitHuxingPriceList", cols, {
                     unitHuxingId: unitHuxingId
                 }, {
                     showColumns: false,
