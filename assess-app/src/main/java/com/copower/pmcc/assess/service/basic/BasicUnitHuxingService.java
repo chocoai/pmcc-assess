@@ -123,8 +123,6 @@ public class BasicUnitHuxingService {
             basicUnitHuxing.setCreator(commonService.thisUserAccount());
             Integer id = basicUnitHuxingDao.addBasicUnitHuxing(basicUnitHuxing);
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicUnitHuxing.class), id);
-            //生成Excel并上传
-            this.createExcelFile(id);
             return id;
         } else {
             if (updateNull) {
@@ -137,8 +135,6 @@ public class BasicUnitHuxingService {
                 }
             }
             basicUnitHuxingDao.updateBasicUnitHuxing(basicUnitHuxing, updateNull);
-            //生成Excel并上传
-            this.createExcelFile(basicUnitHuxing.getId());
             return basicUnitHuxing.getId();
         }
     }
@@ -263,7 +259,7 @@ public class BasicUnitHuxingService {
     /**
      * 生成Excel模板
      */
-    public void createExcelFile(Integer unitHuxingId) throws Exception {
+    public Integer createExcelFile(Integer unitHuxingId) throws Exception {
         BasicUnitHuxing unitHuxing = this.getBasicUnitHuxingById(unitHuxingId);
         if (unitHuxing == null) {
             throw new BusinessException("没有获取到有效的数据");
@@ -323,7 +319,8 @@ public class BasicUnitHuxingService {
         sysAttachmentDto.setFileName("房间模板");
         baseAttachmentService.deleteAttachmentByDto(sysAttachmentDto);
         //上传形成附件
-        baseAttachmentService.importAjaxFileHandle(path, sysAttachmentDto);
+        SysAttachmentDto data = baseAttachmentService.importAjaxFileHandle(path, sysAttachmentDto);
+        return data.getId();
     }
 
 
@@ -332,13 +329,9 @@ public class BasicUnitHuxingService {
      *
      * @return
      */
-    public Integer getAttachmentId(Integer tableId) {
-        SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
-        sysAttachmentDto.setTableId(tableId);
-        sysAttachmentDto.setTableName("unitHuxing_house");
-        List<SysAttachmentDto> attachmentList = baseAttachmentService.getAttachmentList(sysAttachmentDto);
-        if (CollectionUtils.isEmpty(attachmentList)) return null;
-        return attachmentList.get(0).getId();
+    public Integer getAttachmentId(Integer tableId)throws Exception {
+        //生成Excel并上传
+        return createExcelFile(tableId);
     }
 
     /**
