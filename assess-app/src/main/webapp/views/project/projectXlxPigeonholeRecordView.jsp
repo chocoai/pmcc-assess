@@ -262,7 +262,7 @@
         },
         refresh: function () {
             $.ajax({
-                url: "${pageContext.request.contextPath}/projectXlxPigeonholeRecord/init",
+                url: "${pageContext.request.contextPath}/projectXlxPigeonholeRecord/refresh",
                 type: "post",
                 dataType: "json",
                 data: {projectId: ${projectId}},
