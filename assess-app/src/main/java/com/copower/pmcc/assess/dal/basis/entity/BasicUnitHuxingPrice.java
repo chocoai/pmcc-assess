@@ -20,6 +20,12 @@ public class BasicUnitHuxingPrice {
 
     private Date gmtModified;
 
+    private BigDecimal area;
+
+    private String adjustFactor;
+
+    private String jsonData;
+
     public Integer getId() {
         return id;
     }
@@ -82,5 +88,29 @@ public class BasicUnitHuxingPrice {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public BigDecimal getArea() {
+        return area;
+    }
+
+    public void setArea(BigDecimal area) {
+        this.area = area;
+    }
+
+    public String getAdjustFactor() {
+        return adjustFactor;
+    }
+
+    public void setAdjustFactor(String adjustFactor) {
+        this.adjustFactor = adjustFactor == null ? null : adjustFactor.trim();
+    }
+
+    public String getJsonData() {
+        return jsonData;
+    }
+
+    public void setJsonData(String jsonData) {
+        this.jsonData = jsonData == null ? null : jsonData.trim();
     }
 }
