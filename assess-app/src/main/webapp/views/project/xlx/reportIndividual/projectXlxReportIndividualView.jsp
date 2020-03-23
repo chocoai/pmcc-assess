@@ -35,7 +35,7 @@
                                             <input name="projectName"
                                                    class="form-control input-full" placeholder="项目名称"/>
                                         </div>
-                                        <label class="col-md-1 col-form-label">标题</label>
+                                        <label class="col-md-1 col-form-label">文号</label>
                                         <div class="col-md-2 p-0">
                                             <input name="numberValue" class="form-control input-full"
                                                    placeholder="文号"/>
