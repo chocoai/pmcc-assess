@@ -63,7 +63,9 @@
                                                    value="${schemeSurePrice.price}">
                                         </div>
                                         <div class="col-sm-3">
-                                            <button type="button" class="btn btn-success btn-sm" onclick="updatePrice(this)">更新单价</button>
+                                            <button type="button" class="btn btn-success btn-sm"
+                                                    onclick="updatePrice(this)">更新单价
+                                            </button>
                                         </div>
                                     </div>
                                 </form>
@@ -88,18 +90,21 @@
                                 <form class="form-horizontal">
                                     <div class="row form-group">
                                         <div class="col-md-12">
-                                            <button style="margin-left: 10px" type="button" class="btn btn-sm btn-warning"
+                                            <button style="margin-left: 10px" type="button"
+                                                    class="btn btn-sm btn-warning"
                                                     onclick="surePrice.pasteBatch();"><span class="btn-label">
 												<i class="fa fa-paste"></i>
 											</span>粘贴
                                             </button>
-                                            <button style="margin-left: 5px" type="button"  class="btn btn-sm btn-success"
+                                            <button style="margin-left: 5px" type="button"
+                                                    class="btn btn-sm btn-success"
                                                     onclick="surePrice.exportData();"><span class="btn-label">
 												<i class="fa fa-cloud-download-alt"></i>
 											</span>生成下载模板
                                             </button>
-                                            <button style="margin-left: 5px" type="button"  class="btn btn-sm btn-info"
-                                                    onclick="$('#ajaxFileUploadBtn').val('').trigger('click')"><span class="btn-label">
+                                            <button style="margin-left: 5px" type="button" class="btn btn-sm btn-info"
+                                                    onclick="$('#ajaxFileUploadBtn').val('').trigger('click')"><span
+                                                    class="btn-label">
 												<i class="fa fa-cloud-upload-alt"></i>
 											</span>导入
                                             </button>
@@ -110,7 +115,9 @@
                                             <table id="adjust_factor_table" class="table">
                                                 <thead>
                                                 <tr>
-                                                    <th width="5%"><input type="checkbox" onclick="surePrice.checkboxToggle(this);"></th>
+                                                    <th width="5%"><input type="checkbox"
+                                                                          onclick="surePrice.checkboxToggle(this);">
+                                                    </th>
                                                     <th width="10%">权证号</th>
                                                     <th width="10%">证载面积</th>
                                                     <th width="10%">评估面积</th>
@@ -206,6 +213,9 @@
             <div class="btn btn-xs btn-warning paste" style="display:none;"
                  onclick="surePrice.paste(this)">粘贴
             </div>
+            <div class="btn btn-xs btn-primary"
+                 onclick="surePrice.getHuxingId('{id}')">单价调整
+            </div>
         </td>
     </tr>
 </script>
@@ -242,7 +252,9 @@
             </div>
             <div class="modal-body">
                 <input type="hidden" name="judgeObjectId">
-                <button type="button" class="btn btn-sm btn-success tooltips" data-placement="top" onclick="surePrice.addAdjustFactor();"><i class="fa fa-plus fa-white"></i>添加</button>
+                <button type="button" class="btn btn-sm btn-success tooltips" data-placement="top"
+                        onclick="surePrice.addAdjustFactor();"><i class="fa fa-plus fa-white"></i>添加
+                </button>
                 <table class="table">
                     <thead>
                     <tr>
@@ -548,7 +560,7 @@
             },
             error: function (result) {
                 Loading.progressHide();
-                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
         $("#modal_factor").find('[name=judgeObjectId]').val(judgeObjectId);
@@ -604,7 +616,7 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    notifySuccess("成功","保存成功");
+                    notifySuccess("成功", "保存成功");
                     var tr = $('#adjust_factor_table').find('[data-id=' + judgeObjectId + ']');
                     tr.find('[data-name=price]').text(result.data.price);
                     tr.find('[data-name=coefficient]').text(result.data.factor);
@@ -616,7 +628,7 @@
             },
             error: function (result) {
                 Loading.progressHide();
-                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     }
@@ -666,7 +678,7 @@
     //调整因素粘贴
     surePrice.paste = function (_this) {
         if (!surePrice.beCopyJudgeObject) {
-            notifyInfo('提示','请选择被复制对象');
+            notifyInfo('提示', '请选择被复制对象');
             return false;
         }
         var judgeObjectId = $(_this).closest('tr').attr('data-id');
@@ -682,7 +694,7 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    notifySuccess("成功","保存成功");
+                    notifySuccess("成功", "保存成功");
                     //更新元素信息
                     $(_this).closest('tr').find('[data-name=price]').text(surePrice.beCopyJudgeObject.price);
                     $(_this).closest('tr').find('[data-name=coefficient]').text(surePrice.beCopyJudgeObject.coefficient);
@@ -697,7 +709,7 @@
     //调整因素批量粘贴
     surePrice.pasteBatch = function () {
         if (!surePrice.beCopyJudgeObject) {
-            notifyInfo('提示','请选择被复制对象');
+            notifyInfo('提示', '请选择被复制对象');
             return false;
         }
         var judgeObjectIdArray = [];
@@ -708,7 +720,7 @@
             }
         })
         if (judgeObjectIdArray.length <= 0) {
-            notifyInfo('提示','请选择勾选参与复制对象');
+            notifyInfo('提示', '请选择勾选参与复制对象');
             return false;
         }
         Loading.progressShow();
@@ -723,7 +735,7 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    notifySuccess("成功","保存成功");
+                    notifySuccess("成功", "保存成功");
                     //更新元素信息
                     $("#adjust_factor_table tbody").find(':checkbox:checked').each(function () {
                         $(this).closest('tr').find('[data-name=price]').text(surePrice.beCopyJudgeObject.price);
@@ -761,7 +773,7 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    notifySuccess("成功",result.data);
+                    notifySuccess("成功", result.data);
                     surePrice.loadAdjustJudgeObject('${projectPlanDetails.judgeObjectId}');
                 }
             },
@@ -771,7 +783,342 @@
             }
         });
     }
+
+    surePrice.getHuxingId = function (judgeObjectId) {
+        $.ajax({
+            url: getContextPath() + "/schemeSurePrice/getUnitHuxing",
+            type: "get",
+            dataType: "json",
+            data: {judgeObjectId: judgeObjectId},
+            success: function (result) {
+                if (result.ret) {
+                    if (unitHuxingPrice.prototype.isNotNull(result.data)) {
+                        $("#" + unitHuxingPrice.prototype.config().tableFrm).find("input[name='unitHuxingId']").val(result.data.id);
+                        unitHuxingPrice.prototype.showTableModel();
+                    } else {
+                        notifyInfo("提示", "标准房号未关联单价表")
+                    }
+                }
+            },
+            error: function (result) {
+                AlertError("失败", "调用服务端方法失败，失败原因:" + result);
+            }
+        })
+    }
 </script>
 
+<div id="divBoxUnitHuxingPriceTable" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">调查信息</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+
+            <div class="modal-body">
+                <form id="frmUnitHuxingPriceTable" class="form-horizontal">
+                    <input type="hidden" name="unitHuxingId">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <div class="row row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline form-inline x-valid">
+                                            <button type="button" class="btn btn-success btn-sm"
+                                                    onclick="unitHuxingPrice.prototype.showModel()"
+                                                    data-toggle="modal" href="#divBoxUnitHuxingPrice">
+                                                <span class="btn-label">
+												<i class="fa fa-plus"></i>
+											</span>新增
+                                            </button>
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-info btn-sm dropdown-toggle"
+                                                        data-toggle="dropdown">
+                                                     <span class="btn-label">
+												<i class="fa fa-cloud-upload-alt"></i>
+                                                         </span>导入数据
+                                                </button>
+                                                <ul class="dropdown-menu" role="menu">
+                                                    <li><a class="btn"
+                                                           onclick="unitHuxingPrice.prototype.generateHuxingPrice()">下载模板</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="btn"
+                                                           onclick="$('#ajaxFileUpload').val('').trigger('click')"><span>导入</span></a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row row form-group">
+                                    <div class="col-md-12">
+                                        <table class="table table-bordered" id="UnitHuxingPriceList">
+                                            <!-- cerare document add ajax data-->
+                                        </table>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div id="divBoxUnitHuxingPrice" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">调查信息</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+
+            <div class="modal-body">
+                <form id="frmUnitHuxingPrice" class="form-horizontal">
+                    <input type="hidden" name="id">
+                    <input type="hidden" name="huxingId">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                房号
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" placeholder="房号" name="houseNumber"
+                                                       class="form-control input-full">
+                                            </div>
+                                            <label class="col-sm-2 control-label">
+                                                面积
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" placeholder="建筑面积" name="area"
+                                                       data-rule-number='true'
+                                                       class="form-control input-full">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                价格
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" placeholder="价格" name="price" data-rule-number='true'
+                                                       class="form-control input-full">
+                                            </div>
+                                            <label class="col-sm-2 control-label">
+                                                因素
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" placeholder="因素" name="adjustFactor"
+                                                       class="form-control input-full">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="unitHuxingPrice.prototype.saveData()">
+                    保存
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<input type="file" id="ajaxFileUpload" name="file" style="display: none;"
+       onchange="unitHuxingPrice.prototype.importHuxingPrice();">
+</html>
+<script type="application/javascript">
+    unitHuxingPrice = function () {
+    };
+    unitHuxingPrice.prototype = {
+        config: function () {
+            var data = {};
+            data.table = "UnitHuxingPriceList";
+            data.box = "divBoxUnitHuxingPrice";
+            data.frm = "frmUnitHuxingPrice";
+            data.tableBox = "divBoxUnitHuxingPriceTable";
+            data.tableFrm = "frmUnitHuxingPriceTable";
+            return data;
+        },
+        loadDataDicList: function (unitHuxingId) {
+            var cols = [];
+            cols.push({field: 'houseNumber', title: '房号'});
+            cols.push({field: 'area', title: '面积'});
+            cols.push({field: 'price', title: '价格'});
+            cols.push({field: 'adjustFactor', title: '因素'});
+            cols.push({
+                field: 'id', title: '操作', formatter: function (value, row, index) {
+                    var str = '<div class="btn-margin">';
+                    str += '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-primary tooltips"  data-placement="top" data-original-title="编辑" onclick="unitHuxingPrice.prototype.getAndInit(' + row.id + ',\'' + unitHuxingId + '\',\'tb_List\')"><i class="fa fa-pen"></i></button>';
+                    str += '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="unitHuxingPrice.prototype.removeData(' + row.id + ',\'' + unitHuxingId + '\',\'tb_List\')"><i class="fa fa-minus"></i></button>';
+                    str += '</div>';
+                    return str;
+                }
+            });
+            $("#" + unitHuxingPrice.prototype.config().table).bootstrapTable('destroy');
+            TableInit(unitHuxingPrice.prototype.config().table, getContextPath() + "/basicUnitHuxingPrice/getUnitHuxingPriceList", cols, {
+                unitHuxingId: unitHuxingId
+            }, {
+                showColumns: false,
+                showRefresh: false,
+                search: false,
+                onLoadSuccess: function () {
+                    $('.tooltips').tooltip();
+                }
+            });
+        },
+        removeData: function (id, unitHuxingId) {
+            $.ajax({
+                url: getContextPath() + "/basicUnitHuxingPrice/deleteBasicUnitHuxingPrice",
+                type: "post",
+                dataType: "json",
+                data: {id: id},
+                success: function (result) {
+                    if (result.ret) {
+                        notifySuccess("成功", "删除成功");
+                        unitHuxingPrice.prototype.loadDataDicList(unitHuxingId);
+                    }
+                    else {
+                        AlertError("失败", "保存数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        },
+        showTableModel: function () {
+            var unitHuxingId = $("#" + unitHuxingPrice.prototype.config().tableFrm).find("input[name='unitHuxingId']").val();
+            unitHuxingPrice.prototype.loadDataDicList(unitHuxingId);
+            $('#' + unitHuxingPrice.prototype.config().tableBox).modal("show");
+        },
+        showModel: function () {
+            $("#" + unitHuxingPrice.prototype.config().frm).clearAll();
+            var unitHuxingId = $("#" + unitHuxingPrice.prototype.config().tableFrm).find("input[name='unitHuxingId']").val();
+            $("#" + unitHuxingPrice.prototype.config().frm).find("input[name='huxingId']").val(unitHuxingId);
+
+            $('#' + unitHuxingPrice.prototype.config().box).modal("show");
+        },
+        saveData: function () {
+            if (!$("#" + unitHuxingPrice.prototype.config().frm).valid()) {
+                return false;
+            }
+            var unitHuxingId = $("#" + unitHuxingPrice.prototype.config().frm).find("input[name='huxingId']").val()
+            var data = formParams(unitHuxingPrice.prototype.config().frm, true);
+            $.ajax({
+                url: getContextPath() + "/basicUnitHuxingPrice/saveAndUpdateBasicUnitHuxingPrice",
+                type: "post",
+                dataType: "json",
+                data: data,
+                success: function (result) {
+                    if (result.ret) {
+                        notifySuccess("成功", "保存成功");
+                        $('#' + unitHuxingPrice.prototype.config().box).modal('hide');
+                        unitHuxingPrice.prototype.loadDataDicList(unitHuxingId);
+                    }
+                    else {
+                        AlertError("失败", "保存数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        },
+        isNotNull: function (item) {
+            if (item) {
+                return true;
+            }
+            return false;
+        },
+        getAndInit: function (id, unitHuxingId) {
+            $.ajax({
+                url: getContextPath() + "/basicUnitHuxingPrice/getBasicUnitHuxingPriceById",
+                type: "post",
+                dataType: "json",
+                data: {id: id},
+                success: function (result) {
+                    if (result.ret) {
+                        var data = result.data;
+                        if (unitHuxingPrice.prototype.isNotNull(data)) {
+                            unitHuxingPrice.prototype.init(data, unitHuxingId);
+                        } else {
+                            unitHuxingPrice.prototype.init({});
+                        }
+                        $('#' + unitHuxingPrice.prototype.config().box).modal("show");
+                    }
+                },
+                error: function (result) {
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        },
+        init: function (item, unitHuxingId) {
+            $("#" + unitHuxingPrice.prototype.config().frm).clearAll();
+            $("#" + unitHuxingPrice.prototype.config().frm).find("input[name='huxingId']").val(unitHuxingId);
+            $("#" + unitHuxingPrice.prototype.config().frm).initForm(item);
+
+        },
+        importHuxingPrice: function () {
+            var unitHuxingId = $("#" + unitHuxingPrice.prototype.config().tableFrm).find("input[name='unitHuxingId']").val();
+            $.ajaxFileUpload({
+                type: "POST",
+                url: getContextPath() + "/schemeSurePrice/importHuxingPrice",
+                data: {
+                    huxingId: unitHuxingId
+                },//要传到后台的参数，没有可以不写
+                secureuri: false,//是否启用安全提交，默认为false
+                fileElementId: 'ajaxFileUpload',//文件选择框的id属性
+                dataType: 'json',//服务器返回的格式
+                async: false,
+                success: function (result) {
+                    if (result.ret) {
+                        unitHuxingPrice.prototype.loadDataDicList(unitHuxingId);
+                        notifySuccess("成功", result.data);
+                    }
+                },
+                error: function (result, status, e) {
+                    Loading.progressHide();
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result);
+                }
+            });
+        },
+        //生成并下载模板
+        generateHuxingPrice: function () {
+            var href = "${pageContext.request.contextPath}/schemeSurePrice/generateHuxingPrice";
+            window.open(href, "");
+        }
+
+    }
+</script>
 </html>
 

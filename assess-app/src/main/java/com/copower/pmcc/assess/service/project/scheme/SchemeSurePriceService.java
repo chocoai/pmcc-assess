@@ -1,13 +1,14 @@
 package com.copower.pmcc.assess.service.project.scheme;
 
+import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.ArithmeticUtils;
 import com.copower.pmcc.assess.common.PoiUtils;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicUnitHuxingPriceDao;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdCostDao;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdDevelopmentDao;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdIncomeDao;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdMarketCompareDao;
-import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareRecordDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.*;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeSurePriceApplyDto;
@@ -15,6 +16,7 @@ import com.copower.pmcc.assess.dto.output.project.scheme.SchemeJudgeObjectVo;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.basic.*;
 import com.copower.pmcc.assess.service.event.project.SchemeSurePriceEvent;
 import com.copower.pmcc.assess.service.method.MdCommonService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
@@ -23,15 +25,13 @@ import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.LangUtils;
-import com.google.common.base.Objects;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -59,7 +59,9 @@ public class SchemeSurePriceService {
     @Autowired
     private SchemeJudgeObjectDao schemeJudgeObjectDao;
     @Autowired
-    private DeclareRecordDao declareRecordDao;
+    private BasicUnitHuxingPriceService basicUnitHuxingPriceService;
+    @Autowired
+    private BasicUnitHuxingPriceDao basicUnitHuxingPriceDao;
     @Autowired
     private SchemeInfoDao schemeInfoDao;
     @Autowired
@@ -94,6 +96,14 @@ public class SchemeSurePriceService {
     private SchemeSurePriceFactorDao schemeSurePriceFactorDao;
     @Autowired
     private SchemeSurePriceRecordDao schemeSurePriceRecordDao;
+    @Autowired
+    private BasicApplyService basicApplyService;
+    @Autowired
+    private BasicUnitService basicUnitService;
+    @Autowired
+    private BasicHouseService basicHouseService;
+    @Autowired
+    private BasicUnitHuxingService basicUnitHuxingService;
 
     /**
      * 保存确定单价信息
@@ -555,5 +565,174 @@ public class SchemeSurePriceService {
         schemeSurePriceRecord.setCreator(commonService.thisUserAccount());
         schemeSurePriceRecordDao.addSchemeSurePriceRecord(schemeSurePriceRecord);
     }
+
+
+
+    public BasicUnitHuxing getUnitHuxing(Integer judgeObjectId) throws Exception{
+        SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectDao.getSchemeJudgeObject(judgeObjectId);
+        if(schemeJudgeObject.getBasicApplyId()!=null&&schemeJudgeObject.getBasicApplyId()!=0){
+            BasicApply basicApply = basicApplyService.getByBasicApplyId(schemeJudgeObject.getBasicApplyId());
+            if(basicApply!=null){
+                BasicUnit basicUnit = basicUnitService.getBasicUnitById(basicApply.getBasicUnitId());
+                BasicUnitHuxing basicUnitHuxing = new BasicUnitHuxing();
+                basicUnitHuxing.setUnitId(basicUnit.getId());
+                List<BasicUnitHuxing> basicUnitHuxingList = basicUnitHuxingService.basicUnitHuxingList(basicUnitHuxing);
+
+                BasicHouse basicHouse = basicHouseService.getBasicHouseById(basicApply.getBasicHouseId());
+                String houseNumber = basicHouse.getHouseNumber();
+
+                if(CollectionUtils.isNotEmpty(basicUnitHuxingList)){
+                    for (BasicUnitHuxing item: basicUnitHuxingList) {
+                        if(houseNumber.equals(item.getStandardHouseNumber())){
+                            return item;
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+
+    /**
+     * 导出单价调查模板
+     *
+     * @param response
+     */
+    public void generateHuxingPrice(HttpServletResponse response) throws BusinessException, IOException {
+        Workbook wb = new HSSFWorkbook();
+        Sheet sheet = wb.createSheet();
+        Row row = sheet.createRow(0);
+        //创建Excel标题 估价对象名称、评估面积、楼层、房号、评估价格、因素
+        String[] title = {"房号", "面积", "价格", "因素"};
+
+        for (int i = 0; i < title.length; i++) {
+            Cell cell = row.createCell(i);
+            cell.setCellValue(title[i]);
+            sheet.setColumnWidth(i, 4000);
+        }
+
+        OutputStream os = response.getOutputStream();
+        try {
+            this.setResponseHeader(response, "单价调整模板.XLS");
+            wb.write(os);
+
+        } catch (Exception e) {
+            throw new BusinessException("导出Excel出错:" + e);
+        } finally {
+            os.flush();
+            os.close();
+        }
+    }
+
+
+    /**
+     * 功能描述: 导入单价调查
+     *
+     * @param:
+     * @return:
+     * @auther: zch
+     * @date: 2018/9/25 18:31
+     */
+    public String importHuxingPrice(MultipartFile multipartFile, Integer huxingId) throws Exception {
+        Workbook workbook = null;
+        Row row = null;
+        StringBuilder builder = new StringBuilder();
+        //1.保存文件
+        String filePath = baseAttachmentService.saveUploadFile(multipartFile);
+        //2.读取文件
+        try {
+            FileInputStream inputStream = new FileInputStream(filePath);
+            workbook = WorkbookFactory.create(inputStream);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+        //只取第一个sheet
+        Sheet sheet = workbook.getSheetAt(0);
+        //工作表的第一行
+        row = sheet.getRow(0);
+        //读取数据的起始行
+        int startRowNumber = 1;
+        //导入成功数据条数
+        int successCount = 0;
+        //总列数
+        int colLength = row.getPhysicalNumberOfCells() != 0 ? row.getPhysicalNumberOfCells() : row.getLastCellNum();
+        //总行数
+        int rowLength = sheet.getPhysicalNumberOfRows() != 0 ? sheet.getPhysicalNumberOfRows() : sheet.getLastRowNum();
+        rowLength = rowLength - startRowNumber;
+        if (rowLength == 0) {
+            builder.append("没有数据!");
+            return builder.toString();
+        }
+        for (int i = startRowNumber; i < rowLength + startRowNumber; i++) {
+            BasicUnitHuxingPrice basicUnitHuxingPrice = null;
+            try {
+                row = sheet.getRow(i);
+                if (row == null) {
+                    builder.append(String.format("\n第%s行异常：%s", i, "没有数据"));
+                    continue;
+                }
+                basicUnitHuxingPrice = new BasicUnitHuxingPrice();
+                basicUnitHuxingPrice.setHuxingId(huxingId);
+                if (!this.importBasicUnitHuxingPrice(basicUnitHuxingPrice, builder, row, colLength, i, sheet.getRow(0))) {
+                    continue;
+                }
+                basicUnitHuxingPriceService.saveAndUpdateBasicUnitHuxingPrice(basicUnitHuxingPrice, false);
+                successCount++;
+            } catch (Exception e) {
+                builder.append(String.format("\n第%s行异常：%s", i + 1, e.getMessage()));
+            }
+
+        }
+        return String.format("数据总条数%s，成功%s，失败%s。%s", rowLength, successCount, rowLength - successCount, builder.toString());
+    }
+
+
+    public boolean importBasicUnitHuxingPrice(BasicUnitHuxingPrice basicUnitHuxingPrice, StringBuilder builder, Row row, int colLength, int i, Row header) throws Exception {
+        //房号
+        if (org.apache.commons.lang.StringUtils.isNotEmpty(PoiUtils.getCellValue(row.getCell(0)))) {
+            basicUnitHuxingPrice.setHouseNumber(PoiUtils.getCellValue(row.getCell(0)));
+            List<BasicUnitHuxingPrice> list = basicUnitHuxingPriceDao.basicUnitHuxingList(basicUnitHuxingPrice);
+            if (CollectionUtils.isNotEmpty(list)) {
+                BeanUtils.copyProperties(list.get(0), basicUnitHuxingPrice);
+            }
+        }
+
+        //面积
+        if (org.apache.commons.lang.StringUtils.isNotEmpty(PoiUtils.getCellValue(row.getCell(1)))) {
+            if (this.isNumeric(PoiUtils.getCellValue(row.getCell(1)))) {
+                basicUnitHuxingPrice.setArea(new BigDecimal(PoiUtils.getCellValue(row.getCell(1))));
+            } else {
+                builder.append(String.format("\n第%s行异常：面积应填写数字", i));
+                return false;
+            }
+        }
+
+        //价格
+        if (org.apache.commons.lang.StringUtils.isNotEmpty(PoiUtils.getCellValue(row.getCell(2)))) {
+            if (this.isNumeric(PoiUtils.getCellValue(row.getCell(2)))) {
+                basicUnitHuxingPrice.setPrice(new BigDecimal(PoiUtils.getCellValue(row.getCell(2))));
+            } else {
+                builder.append(String.format("\n第%s行异常：价格应填写数字", i));
+                return false;
+            }
+        }
+        //因素
+        if (org.apache.commons.lang.StringUtils.isNotEmpty(PoiUtils.getCellValue(row.getCell(3)))) {
+            basicUnitHuxingPrice.setAdjustFactor(PoiUtils.getCellValue(row.getCell(3)));
+        }
+        HashMap<String, Object> map = new HashMap<>();
+        //自定义数据
+        for (int c = 4; c < colLength; c++) {
+            String value = PoiUtils.getCellValue(row.getCell(c));
+            map.put(PoiUtils.getCellValue(header.getCell(c)), value);
+        }
+        String string = JSONObject.toJSONString(map);
+        if (org.apache.commons.lang.StringUtils.isNotEmpty(string)) {
+            basicUnitHuxingPrice.setJsonData(string);
+        }
+        return true;
+    }
+
 
 }
