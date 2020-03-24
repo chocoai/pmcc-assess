@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.service.project;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectXlxCommissionRatioDao;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectXlxCommissionRatio;
 import com.copower.pmcc.assess.dto.output.project.ProjectMemberVo;
+import com.copower.pmcc.assess.service.project.generate.GenerateCommonMethod;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
@@ -35,6 +36,8 @@ public class ProjectXlxCommissionRatioService {
     private ProjectMemberService projectMemberService;
     @Autowired
     private ProjectXlxCommissionRatioDao commissionRatioDao;
+    @Autowired
+    private GenerateCommonMethod generateCommonMethod;
 
     /**
      * 保存数据
@@ -104,6 +107,8 @@ public class ProjectXlxCommissionRatioService {
             all.addAll(memberList);
         }
         if (CollectionUtils.isNotEmpty(all)) {
+            //去重
+            all = generateCommonMethod.removeDuplicate(all);
             for (String name : all) {
                 ProjectXlxCommissionRatio commissionRatio = new ProjectXlxCommissionRatio();
                 commissionRatio.setName(name);

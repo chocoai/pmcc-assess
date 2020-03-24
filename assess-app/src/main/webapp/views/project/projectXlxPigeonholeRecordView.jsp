@@ -156,24 +156,34 @@
         },
         loadDataDicList: function () {
             var cols = [];
-            cols.push({field: 'fileName', width: '30%', title: '文件名称'});
             cols.push({field: 'sorting', width: '15%', title: '排序'});
+            cols.push({field: 'fileName', width: '30%', title: '文件名称'});
             cols.push({
-                field: 'hasPaperDatum', width: '15%', title: '有无纸质资料', formatter: function (value) {
-                    return getBoolChs(value);
+                field: 'hasPaperDatum', width: '15%', title: '有无纸质资料', formatter: function (value,row,index) {
+                    var html='<div class="form-check" style="justify-content:left">';
+                    html+='<label class="form-check-label">';
+                    html+='<input class="form-check-input" type="checkbox" name="hasPaperDatum" value="true" onclick="projectXlxPigeonholeRecord.prototype.saveData2('+index+',this)"';
+                    if (value==true) {
+                        html += ' checked="checked" ';
+                    }
+                    html+='><span class="form-check-sign"></span>';
+                    html+='</label>';
+                    html+='</div>';
+                    return html;
                 }
             });
             cols.push({
-                field: 'hasElectronicDatum', width: '15%', title: '有无电子资料', formatter: function (value) {
-                    return getBoolChs(value);
-                }
-            });
-            cols.push({
-                field: 'id', width: '15%', title: '操作', formatter: function (value, row, index) {
-                    var str = '<button type="button" onclick="projectXlxPigeonholeRecord.prototype.getAndInit(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
-                    str += '<i class="fa fa-pen"></i>';
-                    str += '</button>';
-                    return str;
+                field: 'hasElectronicDatum', width: '15%', title: '有无电子资料', formatter: function (value,row,index) {
+                    var html='<div class="form-check" style="justify-content:left">';
+                    html+='<label class="form-check-label">';
+                    html+='<input class="form-check-input" type="checkbox" name="hasElectronicDatum" value="true"  onclick="projectXlxPigeonholeRecord.prototype.saveData2('+index+',this)"';
+                    if (value==true) {
+                        html += ' checked="checked" ';
+                    }
+                    html+='><span class="form-check-sign"></span>';
+                    html+='</label>';
+                    html+='</div>';
+                    return html;
                 }
             });
             $("#" + projectXlxPigeonholeRecord.prototype.config().table).bootstrapTable('destroy');
@@ -280,6 +290,29 @@
                 }
             })
         },
+        saveData2:function(index,_that){
+            var row = $("#tb_FatherList").bootstrapTable('getData')[index];
+            var tempName = $(_that).attr("name");
+            var value = $(_that).prop('checked');;
+            row[tempName] = value;
+            $.ajax({
+                url: "${pageContext.request.contextPath}/projectXlxPigeonholeRecord/save",
+                type: "post",
+                dataType: "json",
+                data: {formData: JSON.stringify(row)},
+                success: function (result) {
+                    if (result.ret) {
+                        projectXlxPigeonholeRecord.prototype.loadDataDicList();
+                    }
+                    else {
+                        AlertError("保存数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    AlertError("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        }
 
     }
 
