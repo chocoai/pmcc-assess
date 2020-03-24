@@ -10,6 +10,10 @@ public class BasicUnitHuxingPrice {
 
     private String houseNumber;
 
+    private BigDecimal area;
+
+    private String adjustFactor;
+
     private BigDecimal price;
 
     private String remark;
@@ -20,9 +24,9 @@ public class BasicUnitHuxingPrice {
 
     private Date gmtModified;
 
-    private BigDecimal area;
+    private String declareName;
 
-    private String adjustFactor;
+    private Integer declareId;
 
     private String jsonData;
 
@@ -48,6 +52,22 @@ public class BasicUnitHuxingPrice {
 
     public void setHouseNumber(String houseNumber) {
         this.houseNumber = houseNumber == null ? null : houseNumber.trim();
+    }
+
+    public BigDecimal getArea() {
+        return area;
+    }
+
+    public void setArea(BigDecimal area) {
+        this.area = area;
+    }
+
+    public String getAdjustFactor() {
+        return adjustFactor;
+    }
+
+    public void setAdjustFactor(String adjustFactor) {
+        this.adjustFactor = adjustFactor == null ? null : adjustFactor.trim();
     }
 
     public BigDecimal getPrice() {
@@ -90,20 +110,20 @@ public class BasicUnitHuxingPrice {
         this.gmtModified = gmtModified;
     }
 
-    public BigDecimal getArea() {
-        return area;
+    public String getDeclareName() {
+        return declareName;
     }
 
-    public void setArea(BigDecimal area) {
-        this.area = area;
+    public void setDeclareName(String declareName) {
+        this.declareName = declareName == null ? null : declareName.trim();
     }
 
-    public String getAdjustFactor() {
-        return adjustFactor;
+    public Integer getDeclareId() {
+        return declareId;
     }
 
-    public void setAdjustFactor(String adjustFactor) {
-        this.adjustFactor = adjustFactor == null ? null : adjustFactor.trim();
+    public void setDeclareId(Integer declareId) {
+        this.declareId = declareId;
     }
 
     public String getJsonData() {

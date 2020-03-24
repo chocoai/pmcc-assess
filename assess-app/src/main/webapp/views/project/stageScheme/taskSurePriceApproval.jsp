@@ -111,7 +111,8 @@
                                                         <th width="10%">楼层</th>
                                                         <th width="10%">房号</th>
                                                         <th width="10%">价格</th>
-                                                        <th width="50%">因素</th>
+                                                        <th width="40%">因素</th>
+                                                        <th width="10%">操作</th>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
@@ -123,6 +124,9 @@
                                                             <td>${item.roomNumber}</td>
                                                             <td data-name="price">${item.price}</td>
                                                             <td data-name="coefficient">${item.factor}</td>
+                                                            <td><div class="btn btn-xs btn-primary"
+                                                                                             onclick="determinePrice.getHuxingId(${item.id})">单价调整
+                                                            </div></td>
                                                         </tr>
                                                     </c:forEach>
                                                     </tbody>
@@ -172,6 +176,46 @@
 </div>
 
 </body>
+<div id="divBoxUnitHuxingPriceTable" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">调查信息</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+
+            <div class="modal-body">
+                <form id="frmUnitHuxingPriceTable" class="form-horizontal">
+                    <input type="hidden" name="unitHuxingId">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <div class="row row form-group">
+                                    <div class="col-md-12">
+                                        <table class="table table-bordered" id="UnitHuxingPriceList">
+                                            <!-- cerare document add ajax data-->
+                                        </table>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
 
 <script type="application/javascript">
     $(function () {
@@ -266,6 +310,73 @@
         });
     }
 
+    determinePrice.getHuxingId = function (judgeObjectId) {
+        $.ajax({
+            url: getContextPath() + "/schemeSurePrice/getUnitHuxing",
+            type: "get",
+            dataType: "json",
+            data: {judgeObjectId: judgeObjectId},
+            success: function (result) {
+                if (result.ret) {
+                    if (houseHuxingPrice.prototype.isNotNull(result.data)) {
+                        $("#" + houseHuxingPrice.prototype.config().tableFrm).find("input[name='unitHuxingId']").val(result.data.id);
+                        houseHuxingPrice.prototype.showTableModel();
+                    } else {
+                        notifyInfo("提示", "标准房号未关联单价表")
+                    }
+                }
+            },
+            error: function (result) {
+                AlertError("失败", "调用服务端方法失败，失败原因:" + result);
+            }
+        })
+    }
+
+</script>
+
+<script type="application/javascript">
+    houseHuxingPrice = function () {
+    };
+    houseHuxingPrice.prototype = {
+        config: function () {
+            var data = {};
+            data.table = "UnitHuxingPriceList";
+            data.box = "divBoxUnitHuxingPrice";
+            data.frm = "frmUnitHuxingPrice";
+            data.tableBox = "divBoxUnitHuxingPriceTable";
+            data.tableFrm = "frmUnitHuxingPriceTable";
+            return data;
+        },
+        loadDataDicList: function (unitHuxingId) {
+            var cols = [];
+            cols.push({field: 'houseNumber', title: '房号'});
+            cols.push({field: 'area', title: '面积'});
+            cols.push({field: 'price', title: '价格'});
+            cols.push({field: 'adjustFactor', title: '因素'});
+            $("#" + houseHuxingPrice.prototype.config().table).bootstrapTable('destroy');
+            TableInit(houseHuxingPrice.prototype.config().table, getContextPath() + "/basicUnitHuxingPrice/getUnitHuxingPriceList", cols, {
+                unitHuxingId: unitHuxingId
+            }, {
+                showColumns: false,
+                showRefresh: false,
+                search: false,
+                onLoadSuccess: function () {
+                    $('.tooltips').tooltip();
+                }
+            });
+        },
+        showTableModel: function () {
+            var unitHuxingId = $("#" + houseHuxingPrice.prototype.config().tableFrm).find("input[name='unitHuxingId']").val();
+            houseHuxingPrice.prototype.loadDataDicList(unitHuxingId);
+            $('#' + houseHuxingPrice.prototype.config().tableBox).modal("show");
+        },
+        isNotNull: function (item) {
+            if (item) {
+                return true;
+            }
+            return false;
+        }
+    }
 </script>
 </body>
 </html>

@@ -41,11 +41,11 @@
 
 
 <script>
-    var unitHuxingPriceDetail;
+    var houseHuxingPriceDetail;
     (function () {
-        unitHuxingPriceDetail = function () {
+        houseHuxingPriceDetail = function () {
         };
-        unitHuxingPriceDetail.prototype = {
+        houseHuxingPriceDetail.prototype = {
             config: function () {
                 var data = {};
                 data.table = "UnitHuxingPriceList";
@@ -57,8 +57,8 @@
             },
             loadDataDicList: function (unitHuxingId) {
                 var cols = commonColumn.unitHuxingPriceColumn();
-                $("#" + unitHuxingPriceDetail.prototype.config().table).bootstrapTable('destroy');
-                TableInit(unitHuxingPriceDetail.prototype.config().table, getContextPath() + "/basicUnitHuxingPrice/getUnitHuxingPriceList", cols, {
+                $("#" + houseHuxingPriceDetail.prototype.config().table).bootstrapTable('destroy');
+                TableInit(houseHuxingPriceDetail.prototype.config().table, getContextPath() + "/basicUnitHuxingPrice/getUnitHuxingPriceList", cols, {
                     unitHuxingId: unitHuxingId
                 }, {
                     showColumns: false,
@@ -69,10 +69,11 @@
                     }
                 });
             },
-            showTableModel: function (unitHuxingId) {
-                unitHuxingPriceDetail.prototype.loadDataDicList(unitHuxingId);
-                $("#" + unitHuxingPriceDetail.prototype.config().tableFrm).find("input[name='unitHuxingId']").val(unitHuxingId);
-                $('#' + unitHuxingPriceDetail.prototype.config().tableBox).modal("show");
+            showTableModel: function (_that) {
+                var unitHuxingId = $(_that).closest('.form-group').find('input[name=huxingId]').val();
+                houseHuxingPriceDetail.prototype.loadDataDicList(unitHuxingId);
+                $("#" + houseHuxingPriceDetail.prototype.config().tableFrm).find("input[name='unitHuxingId']").val(unitHuxingId);
+                $('#' + houseHuxingPriceDetail.prototype.config().tableBox).modal("show");
             }
         }
 

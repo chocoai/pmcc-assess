@@ -792,9 +792,9 @@
             data: {judgeObjectId: judgeObjectId},
             success: function (result) {
                 if (result.ret) {
-                    if (unitHuxingPrice.prototype.isNotNull(result.data)) {
-                        $("#" + unitHuxingPrice.prototype.config().tableFrm).find("input[name='unitHuxingId']").val(result.data.id);
-                        unitHuxingPrice.prototype.showTableModel();
+                    if (houseHuxingPrice.prototype.isNotNull(result.data)) {
+                        $("#" + houseHuxingPrice.prototype.config().tableFrm).find("input[name='unitHuxingId']").val(result.data.id);
+                        houseHuxingPrice.prototype.showTableModel();
                     } else {
                         notifyInfo("提示", "标准房号未关联单价表")
                     }
@@ -827,15 +827,15 @@
                                 <div class="row row form-group">
                                     <div class="col-md-12">
                                         <div class="form-inline form-inline x-valid">
-                                            <button type="button" class="btn btn-success btn-sm"
-                                                    onclick="unitHuxingPrice.prototype.showModel()"
+                                            <button type="button" style="margin-left: 5px" class="btn btn-success btn-sm"
+                                                    onclick="houseHuxingPrice.prototype.showModel()"
                                                     data-toggle="modal" href="#divBoxUnitHuxingPrice">
                                                 <span class="btn-label">
 												<i class="fa fa-plus"></i>
 											</span>新增
                                             </button>
                                             <div class="btn-group">
-                                                <button type="button" class="btn btn-info btn-sm dropdown-toggle"
+                                                <button type="button" style="margin-left: 5px" class="btn btn-info btn-sm dropdown-toggle"
                                                         data-toggle="dropdown">
                                                      <span class="btn-label">
 												<i class="fa fa-cloud-upload-alt"></i>
@@ -843,7 +843,7 @@
                                                 </button>
                                                 <ul class="dropdown-menu" role="menu">
                                                     <li><a class="btn"
-                                                           onclick="unitHuxingPrice.prototype.generateHuxingPrice()">下载模板</a>
+                                                           onclick="houseHuxingPrice.prototype.generateHuxingPrice()">下载模板</a>
                                                     </li>
                                                     <li>
                                                         <a class="btn"
@@ -892,6 +892,8 @@
                 <form id="frmUnitHuxingPrice" class="form-horizontal">
                     <input type="hidden" name="id">
                     <input type="hidden" name="huxingId">
+                    <input type="hidden" name="declareName">
+                    <input type="hidden" name="declareId">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="card-body">
@@ -945,7 +947,7 @@
                 <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
                     关闭
                 </button>
-                <button type="button" class="btn btn-primary btn-sm" onclick="unitHuxingPrice.prototype.saveData()">
+                <button type="button" class="btn btn-primary btn-sm" onclick="houseHuxingPrice.prototype.saveData()">
                     保存
                 </button>
             </div>
@@ -954,12 +956,12 @@
     </div>
 </div>
 <input type="file" id="ajaxFileUpload" name="file" style="display: none;"
-       onchange="unitHuxingPrice.prototype.importHuxingPrice();">
+       onchange="houseHuxingPrice.prototype.importHuxingPrice();">
 </html>
 <script type="application/javascript">
-    unitHuxingPrice = function () {
+    houseHuxingPrice = function () {
     };
-    unitHuxingPrice.prototype = {
+    houseHuxingPrice.prototype = {
         config: function () {
             var data = {};
             data.table = "UnitHuxingPriceList";
@@ -978,14 +980,14 @@
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
-                    str += '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-primary tooltips"  data-placement="top" data-original-title="编辑" onclick="unitHuxingPrice.prototype.getAndInit(' + row.id + ',\'' + unitHuxingId + '\',\'tb_List\')"><i class="fa fa-pen"></i></button>';
-                    str += '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="unitHuxingPrice.prototype.removeData(' + row.id + ',\'' + unitHuxingId + '\',\'tb_List\')"><i class="fa fa-minus"></i></button>';
+                    str += '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-primary tooltips"  data-placement="top" data-original-title="编辑" onclick="houseHuxingPrice.prototype.getAndInit(' + row.id + ',\'' + unitHuxingId + '\',\'tb_List\')"><i class="fa fa-pen"></i></button>';
+                    str += '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseHuxingPrice.prototype.removeData(' + row.id + ',\'' + unitHuxingId + '\',\'tb_List\')"><i class="fa fa-minus"></i></button>';
                     str += '</div>';
                     return str;
                 }
             });
-            $("#" + unitHuxingPrice.prototype.config().table).bootstrapTable('destroy');
-            TableInit(unitHuxingPrice.prototype.config().table, getContextPath() + "/basicUnitHuxingPrice/getUnitHuxingPriceList", cols, {
+            $("#" + houseHuxingPrice.prototype.config().table).bootstrapTable('destroy');
+            TableInit(houseHuxingPrice.prototype.config().table, getContextPath() + "/basicUnitHuxingPrice/getUnitHuxingPriceList", cols, {
                 unitHuxingId: unitHuxingId
             }, {
                 showColumns: false,
@@ -1005,7 +1007,7 @@
                 success: function (result) {
                     if (result.ret) {
                         notifySuccess("成功", "删除成功");
-                        unitHuxingPrice.prototype.loadDataDicList(unitHuxingId);
+                        houseHuxingPrice.prototype.loadDataDicList(unitHuxingId);
                     }
                     else {
                         AlertError("失败", "保存数据失败，失败原因:" + result.errmsg);
@@ -1017,23 +1019,23 @@
             })
         },
         showTableModel: function () {
-            var unitHuxingId = $("#" + unitHuxingPrice.prototype.config().tableFrm).find("input[name='unitHuxingId']").val();
-            unitHuxingPrice.prototype.loadDataDicList(unitHuxingId);
-            $('#' + unitHuxingPrice.prototype.config().tableBox).modal("show");
+            var unitHuxingId = $("#" + houseHuxingPrice.prototype.config().tableFrm).find("input[name='unitHuxingId']").val();
+            houseHuxingPrice.prototype.loadDataDicList(unitHuxingId);
+            $('#' + houseHuxingPrice.prototype.config().tableBox).modal("show");
         },
         showModel: function () {
-            $("#" + unitHuxingPrice.prototype.config().frm).clearAll();
-            var unitHuxingId = $("#" + unitHuxingPrice.prototype.config().tableFrm).find("input[name='unitHuxingId']").val();
-            $("#" + unitHuxingPrice.prototype.config().frm).find("input[name='huxingId']").val(unitHuxingId);
+            $("#" + houseHuxingPrice.prototype.config().frm).clearAll();
+            var unitHuxingId = $("#" + houseHuxingPrice.prototype.config().tableFrm).find("input[name='unitHuxingId']").val();
+            $("#" + houseHuxingPrice.prototype.config().frm).find("input[name='huxingId']").val(unitHuxingId);
 
-            $('#' + unitHuxingPrice.prototype.config().box).modal("show");
+            $('#' + houseHuxingPrice.prototype.config().box).modal("show");
         },
         saveData: function () {
-            if (!$("#" + unitHuxingPrice.prototype.config().frm).valid()) {
+            if (!$("#" + houseHuxingPrice.prototype.config().frm).valid()) {
                 return false;
             }
-            var unitHuxingId = $("#" + unitHuxingPrice.prototype.config().frm).find("input[name='huxingId']").val()
-            var data = formParams(unitHuxingPrice.prototype.config().frm, true);
+            var unitHuxingId = $("#" + houseHuxingPrice.prototype.config().frm).find("input[name='huxingId']").val()
+            var data = formParams(houseHuxingPrice.prototype.config().frm, true);
             $.ajax({
                 url: getContextPath() + "/basicUnitHuxingPrice/saveAndUpdateBasicUnitHuxingPrice",
                 type: "post",
@@ -1042,8 +1044,8 @@
                 success: function (result) {
                     if (result.ret) {
                         notifySuccess("成功", "保存成功");
-                        $('#' + unitHuxingPrice.prototype.config().box).modal('hide');
-                        unitHuxingPrice.prototype.loadDataDicList(unitHuxingId);
+                        $('#' + houseHuxingPrice.prototype.config().box).modal('hide');
+                        houseHuxingPrice.prototype.loadDataDicList(unitHuxingId);
                     }
                     else {
                         AlertError("失败", "保存数据失败，失败原因:" + result.errmsg);
@@ -1069,12 +1071,12 @@
                 success: function (result) {
                     if (result.ret) {
                         var data = result.data;
-                        if (unitHuxingPrice.prototype.isNotNull(data)) {
-                            unitHuxingPrice.prototype.init(data, unitHuxingId);
+                        if (houseHuxingPrice.prototype.isNotNull(data)) {
+                            houseHuxingPrice.prototype.init(data, unitHuxingId);
                         } else {
-                            unitHuxingPrice.prototype.init({});
+                            houseHuxingPrice.prototype.init({});
                         }
-                        $('#' + unitHuxingPrice.prototype.config().box).modal("show");
+                        $('#' + houseHuxingPrice.prototype.config().box).modal("show");
                     }
                 },
                 error: function (result) {
@@ -1083,13 +1085,13 @@
             })
         },
         init: function (item, unitHuxingId) {
-            $("#" + unitHuxingPrice.prototype.config().frm).clearAll();
-            $("#" + unitHuxingPrice.prototype.config().frm).find("input[name='huxingId']").val(unitHuxingId);
-            $("#" + unitHuxingPrice.prototype.config().frm).initForm(item);
+            $("#" + houseHuxingPrice.prototype.config().frm).clearAll();
+            $("#" + houseHuxingPrice.prototype.config().frm).find("input[name='huxingId']").val(unitHuxingId);
+            $("#" + houseHuxingPrice.prototype.config().frm).initForm(item);
 
         },
         importHuxingPrice: function () {
-            var unitHuxingId = $("#" + unitHuxingPrice.prototype.config().tableFrm).find("input[name='unitHuxingId']").val();
+            var unitHuxingId = $("#" + houseHuxingPrice.prototype.config().tableFrm).find("input[name='unitHuxingId']").val();
             $.ajaxFileUpload({
                 type: "POST",
                 url: getContextPath() + "/schemeSurePrice/importHuxingPrice",
@@ -1102,7 +1104,7 @@
                 async: false,
                 success: function (result) {
                     if (result.ret) {
-                        unitHuxingPrice.prototype.loadDataDicList(unitHuxingId);
+                        houseHuxingPrice.prototype.loadDataDicList(unitHuxingId);
                         notifySuccess("成功", result.data);
                     }
                 },

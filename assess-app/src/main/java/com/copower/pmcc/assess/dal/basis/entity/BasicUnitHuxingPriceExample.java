@@ -296,6 +296,136 @@ public class BasicUnitHuxingPriceExample {
             return (Criteria) this;
         }
 
+        public Criteria andAreaIsNull() {
+            addCriterion("area is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaIsNotNull() {
+            addCriterion("area is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaEqualTo(BigDecimal value) {
+            addCriterion("area =", value, "area");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaNotEqualTo(BigDecimal value) {
+            addCriterion("area <>", value, "area");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaGreaterThan(BigDecimal value) {
+            addCriterion("area >", value, "area");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("area >=", value, "area");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaLessThan(BigDecimal value) {
+            addCriterion("area <", value, "area");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("area <=", value, "area");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaIn(List<BigDecimal> values) {
+            addCriterion("area in", values, "area");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaNotIn(List<BigDecimal> values) {
+            addCriterion("area not in", values, "area");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("area between", value1, value2, "area");
+            return (Criteria) this;
+        }
+
+        public Criteria andAreaNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("area not between", value1, value2, "area");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdjustFactorIsNull() {
+            addCriterion("adjust_factor is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdjustFactorIsNotNull() {
+            addCriterion("adjust_factor is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdjustFactorEqualTo(String value) {
+            addCriterion("adjust_factor =", value, "adjustFactor");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdjustFactorNotEqualTo(String value) {
+            addCriterion("adjust_factor <>", value, "adjustFactor");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdjustFactorGreaterThan(String value) {
+            addCriterion("adjust_factor >", value, "adjustFactor");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdjustFactorGreaterThanOrEqualTo(String value) {
+            addCriterion("adjust_factor >=", value, "adjustFactor");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdjustFactorLessThan(String value) {
+            addCriterion("adjust_factor <", value, "adjustFactor");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdjustFactorLessThanOrEqualTo(String value) {
+            addCriterion("adjust_factor <=", value, "adjustFactor");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdjustFactorLike(String value) {
+            addCriterion("adjust_factor like", value, "adjustFactor");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdjustFactorNotLike(String value) {
+            addCriterion("adjust_factor not like", value, "adjustFactor");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdjustFactorIn(List<String> values) {
+            addCriterion("adjust_factor in", values, "adjustFactor");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdjustFactorNotIn(List<String> values) {
+            addCriterion("adjust_factor not in", values, "adjustFactor");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdjustFactorBetween(String value1, String value2) {
+            addCriterion("adjust_factor between", value1, value2, "adjustFactor");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdjustFactorNotBetween(String value1, String value2) {
+            addCriterion("adjust_factor not between", value1, value2, "adjustFactor");
+            return (Criteria) this;
+        }
+
         public Criteria andPriceIsNull() {
             addCriterion("price is null");
             return (Criteria) this;
@@ -616,203 +746,133 @@ public class BasicUnitHuxingPriceExample {
             return (Criteria) this;
         }
 
-        public Criteria andAreaIsNull() {
-            addCriterion("area is null");
+        public Criteria andDeclareNameIsNull() {
+            addCriterion("declare_name is null");
             return (Criteria) this;
         }
 
-        public Criteria andAreaIsNotNull() {
-            addCriterion("area is not null");
+        public Criteria andDeclareNameIsNotNull() {
+            addCriterion("declare_name is not null");
             return (Criteria) this;
         }
 
-        public Criteria andAreaEqualTo(BigDecimal value) {
-            addCriterion("area =", value, "area");
+        public Criteria andDeclareNameEqualTo(String value) {
+            addCriterion("declare_name =", value, "declareName");
             return (Criteria) this;
         }
 
-        public Criteria andAreaNotEqualTo(BigDecimal value) {
-            addCriterion("area <>", value, "area");
+        public Criteria andDeclareNameNotEqualTo(String value) {
+            addCriterion("declare_name <>", value, "declareName");
             return (Criteria) this;
         }
 
-        public Criteria andAreaGreaterThan(BigDecimal value) {
-            addCriterion("area >", value, "area");
+        public Criteria andDeclareNameGreaterThan(String value) {
+            addCriterion("declare_name >", value, "declareName");
             return (Criteria) this;
         }
 
-        public Criteria andAreaGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("area >=", value, "area");
+        public Criteria andDeclareNameGreaterThanOrEqualTo(String value) {
+            addCriterion("declare_name >=", value, "declareName");
             return (Criteria) this;
         }
 
-        public Criteria andAreaLessThan(BigDecimal value) {
-            addCriterion("area <", value, "area");
+        public Criteria andDeclareNameLessThan(String value) {
+            addCriterion("declare_name <", value, "declareName");
             return (Criteria) this;
         }
 
-        public Criteria andAreaLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("area <=", value, "area");
+        public Criteria andDeclareNameLessThanOrEqualTo(String value) {
+            addCriterion("declare_name <=", value, "declareName");
             return (Criteria) this;
         }
 
-        public Criteria andAreaIn(List<BigDecimal> values) {
-            addCriterion("area in", values, "area");
+        public Criteria andDeclareNameLike(String value) {
+            addCriterion("declare_name like", value, "declareName");
             return (Criteria) this;
         }
 
-        public Criteria andAreaNotIn(List<BigDecimal> values) {
-            addCriterion("area not in", values, "area");
+        public Criteria andDeclareNameNotLike(String value) {
+            addCriterion("declare_name not like", value, "declareName");
             return (Criteria) this;
         }
 
-        public Criteria andAreaBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("area between", value1, value2, "area");
+        public Criteria andDeclareNameIn(List<String> values) {
+            addCriterion("declare_name in", values, "declareName");
             return (Criteria) this;
         }
 
-        public Criteria andAreaNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("area not between", value1, value2, "area");
+        public Criteria andDeclareNameNotIn(List<String> values) {
+            addCriterion("declare_name not in", values, "declareName");
             return (Criteria) this;
         }
 
-        public Criteria andAdjustFactorIsNull() {
-            addCriterion("adjust_factor is null");
+        public Criteria andDeclareNameBetween(String value1, String value2) {
+            addCriterion("declare_name between", value1, value2, "declareName");
             return (Criteria) this;
         }
 
-        public Criteria andAdjustFactorIsNotNull() {
-            addCriterion("adjust_factor is not null");
+        public Criteria andDeclareNameNotBetween(String value1, String value2) {
+            addCriterion("declare_name not between", value1, value2, "declareName");
             return (Criteria) this;
         }
 
-        public Criteria andAdjustFactorEqualTo(String value) {
-            addCriterion("adjust_factor =", value, "adjustFactor");
+        public Criteria andDeclareIdIsNull() {
+            addCriterion("declare_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andAdjustFactorNotEqualTo(String value) {
-            addCriterion("adjust_factor <>", value, "adjustFactor");
+        public Criteria andDeclareIdIsNotNull() {
+            addCriterion("declare_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andAdjustFactorGreaterThan(String value) {
-            addCriterion("adjust_factor >", value, "adjustFactor");
+        public Criteria andDeclareIdEqualTo(Integer value) {
+            addCriterion("declare_id =", value, "declareId");
             return (Criteria) this;
         }
 
-        public Criteria andAdjustFactorGreaterThanOrEqualTo(String value) {
-            addCriterion("adjust_factor >=", value, "adjustFactor");
+        public Criteria andDeclareIdNotEqualTo(Integer value) {
+            addCriterion("declare_id <>", value, "declareId");
             return (Criteria) this;
         }
 
-        public Criteria andAdjustFactorLessThan(String value) {
-            addCriterion("adjust_factor <", value, "adjustFactor");
+        public Criteria andDeclareIdGreaterThan(Integer value) {
+            addCriterion("declare_id >", value, "declareId");
             return (Criteria) this;
         }
 
-        public Criteria andAdjustFactorLessThanOrEqualTo(String value) {
-            addCriterion("adjust_factor <=", value, "adjustFactor");
+        public Criteria andDeclareIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("declare_id >=", value, "declareId");
             return (Criteria) this;
         }
 
-        public Criteria andAdjustFactorLike(String value) {
-            addCriterion("adjust_factor like", value, "adjustFactor");
+        public Criteria andDeclareIdLessThan(Integer value) {
+            addCriterion("declare_id <", value, "declareId");
             return (Criteria) this;
         }
 
-        public Criteria andAdjustFactorNotLike(String value) {
-            addCriterion("adjust_factor not like", value, "adjustFactor");
+        public Criteria andDeclareIdLessThanOrEqualTo(Integer value) {
+            addCriterion("declare_id <=", value, "declareId");
             return (Criteria) this;
         }
 
-        public Criteria andAdjustFactorIn(List<String> values) {
-            addCriterion("adjust_factor in", values, "adjustFactor");
+        public Criteria andDeclareIdIn(List<Integer> values) {
+            addCriterion("declare_id in", values, "declareId");
             return (Criteria) this;
         }
 
-        public Criteria andAdjustFactorNotIn(List<String> values) {
-            addCriterion("adjust_factor not in", values, "adjustFactor");
+        public Criteria andDeclareIdNotIn(List<Integer> values) {
+            addCriterion("declare_id not in", values, "declareId");
             return (Criteria) this;
         }
 
-        public Criteria andAdjustFactorBetween(String value1, String value2) {
-            addCriterion("adjust_factor between", value1, value2, "adjustFactor");
+        public Criteria andDeclareIdBetween(Integer value1, Integer value2) {
+            addCriterion("declare_id between", value1, value2, "declareId");
             return (Criteria) this;
         }
 
-        public Criteria andAdjustFactorNotBetween(String value1, String value2) {
-            addCriterion("adjust_factor not between", value1, value2, "adjustFactor");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonDataIsNull() {
-            addCriterion("json_data is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonDataIsNotNull() {
-            addCriterion("json_data is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonDataEqualTo(String value) {
-            addCriterion("json_data =", value, "jsonData");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonDataNotEqualTo(String value) {
-            addCriterion("json_data <>", value, "jsonData");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonDataGreaterThan(String value) {
-            addCriterion("json_data >", value, "jsonData");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonDataGreaterThanOrEqualTo(String value) {
-            addCriterion("json_data >=", value, "jsonData");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonDataLessThan(String value) {
-            addCriterion("json_data <", value, "jsonData");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonDataLessThanOrEqualTo(String value) {
-            addCriterion("json_data <=", value, "jsonData");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonDataLike(String value) {
-            addCriterion("json_data like", value, "jsonData");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonDataNotLike(String value) {
-            addCriterion("json_data not like", value, "jsonData");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonDataIn(List<String> values) {
-            addCriterion("json_data in", values, "jsonData");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonDataNotIn(List<String> values) {
-            addCriterion("json_data not in", values, "jsonData");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonDataBetween(String value1, String value2) {
-            addCriterion("json_data between", value1, value2, "jsonData");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonDataNotBetween(String value1, String value2) {
-            addCriterion("json_data not between", value1, value2, "jsonData");
+        public Criteria andDeclareIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("declare_id not between", value1, value2, "declareId");
             return (Criteria) this;
         }
     }

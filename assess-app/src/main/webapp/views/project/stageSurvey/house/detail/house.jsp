@@ -57,12 +57,18 @@
                                             <div class="form-inline x-valid">
                                                 <label class="col-sm-1 control-label">户型(开发商)</label>
                                                 <div class="col-sm-3">
+                                                    <input type="hidden" name="huxingId" value="${basicHouse.huxingId}">
                                                     <label class="form-control input-full"
                                                            name="huxingName">${basicHouse.huxingName}</label>
                                                 </div>
                                                 <label class="col-sm-1 control-label">户型图(开发商)</label>
                                                 <div class="col-sm-3">
                                                     <div id="_house_huxing_plan"></div>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <div class="btn btn-success btn-sm" onclick="houseHuxingPriceDetail.prototype.showTableModel(this)">
+                                                        单价调查
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -81,7 +87,7 @@
                                                     <div id="_house_new_huxing_plan"></div>
                                                 </div>
 
-                                                <div class=" col-xs-31  col-sm-31  col-md-31  col-lg-31  col-sm-offset-1">
+                                                <div class="col-sm-3">
                                                     <c:if test="${empty isApplyBatch}">
                                                         <div class="btn btn-success btn-sm"
                                                              onclick="houseCommon.orientationFun(true)">户型图朝向
@@ -514,6 +520,7 @@
                         </c:if>
                         <%@include file="/views/project/stageSurvey/commonDetail/houseDamagedDegree.jsp" %>
                     </c:if>
+                    <%@include file="/views/project/stageSurvey/commonDetail/unitHuxingPriceDetail.jsp" %>
                     <%@include file="/views/project/chksCustomize/chksSurvey.jsp" %>
                     <div class="col-md-12" style="text-align: center;padding-bottom: 1.25rem">
                         <div class="card-body">
