@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.controller.project.scheme;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.copower.pmcc.assess.dal.basis.entity.BasicUnitHuxing;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeSurePriceFactor;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeSurePriceItem;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeSurePriceApplyDto;
@@ -11,7 +12,6 @@ import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeSurePriceFactorService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeSurePriceService;
-import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.google.common.collect.Lists;
@@ -149,6 +149,46 @@ public class SchemeSurePriceController {
             return HttpResult.newCorrectResult(str);
         } catch (Exception e) {
             e.printStackTrace();
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+
+    }
+
+
+
+    @GetMapping(value = "/getUnitHuxing", name = "获取待调整价格的估价对象")
+    public HttpResult getUnitHuxing(Integer judgeObjectId) {
+        try {
+            BasicUnitHuxing unitHuxing = schemeSurePriceService.getUnitHuxing(judgeObjectId);
+            return HttpResult.newCorrectResult(200, unitHuxing);
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e, errorInfo);
+            return HttpResult.newErrorResult(500, "获取数据异常");
+        }
+    }
+
+    @RequestMapping(value = "/generateHuxingPrice", name = "生成并导出单价调查模板")
+    public void generateHuxingPrice(HttpServletResponse response) throws Exception {
+        try {
+            schemeSurePriceService.generateHuxingPrice(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/importHuxingPrice", name = "导入单价记录", method = RequestMethod.POST)
+    public HttpResult importHuxingPrice(HttpServletRequest request, Integer huxingId) {
+        try {
+            MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+            Iterator<String> fileNames = multipartRequest.getFileNames();
+            MultipartFile multipartFile = multipartRequest.getFile(fileNames.next());
+            if (multipartFile.isEmpty()) {
+                return HttpResult.newErrorResult("上传的文件不能为空");
+            }
+            String str = schemeSurePriceService.importHuxingPrice(multipartFile, huxingId);
+            return HttpResult.newCorrectResult(str);
+        } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());
         }
 

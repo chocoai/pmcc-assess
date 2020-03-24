@@ -72,6 +72,11 @@
                                 <div class="col-sm-3">
                                     <div id="_house_huxing_plan"></div>
                                 </div>
+                                <div class="col-sm-3">
+                                    <div class="btn btn-success btn-sm" onclick="houseHuxingPrice.prototype.showTableModel(this)">
+                                        单价调查
+                                    </div>
+                                </div>
                             </div>
 
                         </div>
@@ -99,7 +104,7 @@
                                            type="file">
                                     <div id="_house_new_huxing_plan"></div>
                                 </div>
-                                <div class=" col-xs-31  col-sm-31  col-md-31  col-lg-31  col-sm-offset-1">
+                                <div class="col-sm-3">
                                     <input type="hidden" name="mapId" value="${basicHouse.mapId}">
                                     <div class="btn btn-success btn-sm" onclick="houseCommon.orientationFun(false)">
                                         户型图朝向
@@ -794,6 +799,7 @@
         <%@include file="/views/project/stageSurvey/common/houseCorollaryEquipment.jsp" %>
     </c:if>
     <%@include file="/views/project/stageSurvey/common/houseDamagedDegree.jsp" %>
+    <%@include file="/views/project/stageSurvey/common/unitHuxingPrice.jsp" %>
 </div>
 <script src='${pageContext.request.contextPath}/js/common.column.js?v=${assessVersion}'></script>
 <script type="text/javascript"
@@ -806,6 +812,8 @@
         src="${pageContext.request.contextPath}/js/select/huxing.select.js?v=${assessVersion}"></script>
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/js/autocomplete/roomType.js?v=${assessVersion}"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/ajaxfileupload.js?v=${assessVersion}"></script>
 <script type="text/javascript">
     $(function () {
         houseCommon.initById('${basicHouse.id}');

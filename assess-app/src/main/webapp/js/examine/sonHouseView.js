@@ -2,6 +2,166 @@
  * Created by kings on 2018-11-9.
  */
 
+var houseHuxingPrice;
+(function () {
+    houseHuxingPrice = function () {
+    };
+    houseHuxingPrice.prototype = {
+        config: function () {
+            var data = {};
+            data.table = "UnitHuxingPriceList";
+            data.box = "divBoxUnitHuxingPrice";
+            data.frm = "frmUnitHuxingPrice";
+            data.tableBox = "divBoxUnitHuxingPriceTable";
+            data.tableFrm = "frmUnitHuxingPriceTable";
+            return data;
+        },
+        loadDataDicList: function (unitHuxingId) {
+            var cols = commonColumn.unitHuxingPriceColumn();
+            cols.push({
+                field: 'id', title: '操作', formatter: function (value, row, index) {
+                    var str = '<div class="btn-margin">';
+                    str += '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-primary tooltips"  data-placement="top" data-original-title="编辑" onclick="houseHuxingPrice.prototype.getAndInit(' + row.id + ',\'' + unitHuxingId + '\',\'tb_List\')"><i class="fa fa-pen"></i></button>';
+                    str += '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseHuxingPrice.prototype.removeData(' + row.id + ',\'' + unitHuxingId + '\',\'tb_List\')"><i class="fa fa-minus"></i></button>';
+                    str += '</div>';
+                    return str;
+                }
+            });
+            $("#" + houseHuxingPrice.prototype.config().table).bootstrapTable('destroy');
+            TableInit(houseHuxingPrice.prototype.config().table, getContextPath() + "/basicUnitHuxingPrice/getUnitHuxingPriceList", cols, {
+                unitHuxingId: unitHuxingId
+            }, {
+                showColumns: false,
+                showRefresh: false,
+                search: false,
+                onLoadSuccess: function () {
+                    $('.tooltips').tooltip();
+                }
+            });
+        },
+        removeData: function (id, unitHuxingId) {
+            $.ajax({
+                url: getContextPath() + "/basicUnitHuxingPrice/deleteBasicUnitHuxingPrice",
+                type: "post",
+                dataType: "json",
+                data: {id: id},
+                success: function (result) {
+                    if (result.ret) {
+                        notifySuccess("成功", "删除成功");
+                        houseHuxingPrice.prototype.loadDataDicList(unitHuxingId);
+                    }
+                    else {
+                        AlertError("失败","保存数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        },
+        showTableModel: function (_that) {
+            var unitHuxingId = $(_that).closest('.form-group').find('input[name=huxingId]').val();
+            houseHuxingPrice.prototype.loadDataDicList(unitHuxingId);
+            $("#" + houseHuxingPrice.prototype.config().tableFrm).find("input[name='unitHuxingId']").val(unitHuxingId);
+            $('#' + houseHuxingPrice.prototype.config().tableBox).modal("show");
+        },
+        showModel: function () {
+            $("#" + houseHuxingPrice.prototype.config().frm).clearAll();
+            var unitHuxingId = $("#" + houseHuxingPrice.prototype.config().tableFrm).find("input[name='unitHuxingId']").val();
+            $("#" + houseHuxingPrice.prototype.config().frm).find("input[name='huxingId']").val(unitHuxingId);
+
+            $('#' + houseHuxingPrice.prototype.config().box).modal("show");
+        },
+        saveData: function () {
+            if (!$("#" + houseHuxingPrice.prototype.config().frm).valid()) {
+                return false;
+            }
+            var unitHuxingId = $("#" + houseHuxingPrice.prototype.config().frm).find("input[name='huxingId']").val()
+            var data = formParams(houseHuxingPrice.prototype.config().frm, true);
+            $.ajax({
+                url: getContextPath() + "/basicUnitHuxingPrice/saveAndUpdateBasicUnitHuxingPrice",
+                type: "post",
+                dataType: "json",
+                data: data,
+                success: function (result) {
+                    if (result.ret) {
+                        notifySuccess("成功", "保存成功");
+                        $('#' + houseHuxingPrice.prototype.config().box).modal('hide');
+                        houseHuxingPrice.prototype.loadDataDicList(unitHuxingId);
+                    }
+                    else {
+                        AlertError("失败","保存数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        },
+        isNotNull: function (item) {
+            if (item) {
+                return true;
+            }
+            return false;
+        },
+        getAndInit: function (id, unitHuxingId) {
+            $.ajax({
+                url: getContextPath() + "/basicUnitHuxingPrice/getBasicUnitHuxingPriceById",
+                type: "post",
+                dataType: "json",
+                data: {id: id},
+                success: function (result) {
+                    if (result.ret) {
+                        var data = result.data;
+                        if (houseHuxingPrice.prototype.isNotNull(data)) {
+                            houseHuxingPrice.prototype.init(data, unitHuxingId);
+                        } else {
+                            houseHuxingPrice.prototype.init({});
+                        }
+                        $('#' + houseHuxingPrice.prototype.config().box).modal("show");
+                    }
+                },
+                error: function (result) {
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        },
+        init: function (item, unitHuxingId) {
+            $("#" + houseHuxingPrice.prototype.config().frm).clearAll();
+            $("#" + houseHuxingPrice.prototype.config().frm).find("input[name='huxingId']").val(unitHuxingId);
+            $("#" + houseHuxingPrice.prototype.config().frm).initForm(item);
+
+        },
+        importData: function (planDetailsId) {
+            console.log(planDetailsId+"===")
+            var unitHuxingId = $("#" + houseHuxingPrice.prototype.config().tableFrm).find("input[name='unitHuxingId']").val();
+            $.ajaxFileUpload({
+                type: "POST",
+                url: getContextPath() + "/basicUnitHuxingPrice/importData",
+                data: {
+                    huxingId: unitHuxingId,
+                    planDetailsId: planDetailsId
+                },//要传到后台的参数，没有可以不写
+                secureuri: false,//是否启用安全提交，默认为false
+                fileElementId: 'ajaxFileUpload',//文件选择框的id属性
+                dataType: 'json',//服务器返回的格式
+                async: false,
+                success: function (result) {
+                    if (result.ret) {
+                        houseHuxingPrice.prototype.loadDataDicList(unitHuxingId);
+                        notifySuccess("成功", result.data);
+                    }
+                },
+                error: function (result, status, e) {
+                    Loading.progressHide();
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                }
+            });
+        }
+    }
+
+})();
+
 var houseHeating;
 (function () {
     houseHeating = function () {

@@ -16,15 +16,21 @@ public interface BasicUnitHuxingPriceMapper {
 
     int insertSelective(BasicUnitHuxingPrice record);
 
+    List<BasicUnitHuxingPrice> selectByExampleWithBLOBs(BasicUnitHuxingPriceExample example);
+
     List<BasicUnitHuxingPrice> selectByExample(BasicUnitHuxingPriceExample example);
 
     BasicUnitHuxingPrice selectByPrimaryKey(Integer id);
 
     int updateByExampleSelective(@Param("record") BasicUnitHuxingPrice record, @Param("example") BasicUnitHuxingPriceExample example);
 
+    int updateByExampleWithBLOBs(@Param("record") BasicUnitHuxingPrice record, @Param("example") BasicUnitHuxingPriceExample example);
+
     int updateByExample(@Param("record") BasicUnitHuxingPrice record, @Param("example") BasicUnitHuxingPriceExample example);
 
     int updateByPrimaryKeySelective(BasicUnitHuxingPrice record);
+
+    int updateByPrimaryKeyWithBLOBs(BasicUnitHuxingPrice record);
 
     int updateByPrimaryKey(BasicUnitHuxingPrice record);
 }

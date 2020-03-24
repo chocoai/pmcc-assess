@@ -23,15 +23,15 @@
                                 <div class="row row form-group">
                                     <div class="col-md-12">
                                         <div class="form-inline form-inline x-valid">
-                                            <button type="button" class="btn btn-success btn-sm"
-                                                    onclick="unitHuxingPrice.prototype.showModel()"
+                                            <button style="margin-left: 5px" type="button" class="btn btn-success btn-sm"
+                                                    onclick="houseHuxingPrice.prototype.showModel()"
                                                     data-toggle="modal" href="#divBoxUnitHuxingPrice">
                                                 <span class="btn-label">
 												<i class="fa fa-plus"></i>
 											</span>新增
                                             </button>
                                             <div class="btn-group"> 
-                                                <button type="button" class="btn btn-info btn-sm dropdown-toggle"
+                                                <button type="button" style="margin-left: 5px"  class="btn btn-info btn-sm dropdown-toggle"
                                                         data-toggle="dropdown">
                                                      <span class="btn-label">
 												<i class="fa fa-cloud-upload-alt"></i>
@@ -91,6 +91,9 @@
                 <form id="frmUnitHuxingPrice" class="form-horizontal">
                     <input type="hidden" name="id">
                     <input type="hidden" name="huxingId">
+                    <input type="hidden" name="huxingId">
+                    <input type="hidden" name="declareName">
+                    <input type="hidden" name="declareId">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="card-body">
@@ -107,7 +110,7 @@
                                             面积
                                         </label>
                                         <div class="col-sm-4">
-                                            <input type="text" placeholder="建筑面积" name="area" data-rule-number='true'
+                                            <input type="text" placeholder="面积" name="area" data-rule-number='true'
                                                    class="form-control input-full">
                                         </div>
                                     </div>
@@ -122,7 +125,7 @@
                 <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
                     关闭
                 </button>
-                <button type="button" class="btn btn-primary btn-sm" onclick="unitHuxingPrice.prototype.saveData()">
+                <button type="button" class="btn btn-primary btn-sm" onclick="houseHuxingPrice.prototype.saveData()">
                     保存
                 </button>
             </div>
@@ -134,6 +137,6 @@
 
 
 <input type="file" id="ajaxFileUpload" name="file" style="display: none;"
-       onchange="unitHuxingPrice.prototype.importData();">
+       onchange="houseHuxingPrice.prototype.importData(${planDetailsId});">
 </html>
 

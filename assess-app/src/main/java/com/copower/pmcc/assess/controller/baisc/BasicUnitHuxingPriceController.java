@@ -1,7 +1,9 @@
 package com.copower.pmcc.assess.controller.baisc;
 
 import com.copower.pmcc.assess.dal.basis.entity.BasicUnitHuxingPrice;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.service.basic.BasicUnitHuxingPriceService;
+import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,8 @@ import java.util.Iterator;
 public class BasicUnitHuxingPriceController {
     @Autowired
     private BasicUnitHuxingPriceService basicUnitHuxingPriceService;
+    @Autowired
+    private ProjectPlanDetailsService projectPlanDetailsService;
 
 
     @ResponseBody
@@ -64,7 +68,7 @@ public class BasicUnitHuxingPriceController {
 
     @ResponseBody
     @RequestMapping(value = "/importData", name = "导入", method = RequestMethod.POST)
-    public HttpResult importData(HttpServletRequest request, Integer huxingId) {
+    public HttpResult importData(HttpServletRequest request, Integer huxingId, Integer planDetailsId) {
         try {
             MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
             Iterator<String> fileNames = multipartRequest.getFileNames();
@@ -72,7 +76,8 @@ public class BasicUnitHuxingPriceController {
             if (multipartFile.isEmpty()) {
                 return HttpResult.newErrorResult("上传的文件不能为空");
             }
-            String str = basicUnitHuxingPriceService.importData(multipartFile, huxingId);
+            ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
+            String str = basicUnitHuxingPriceService.importData(multipartFile, huxingId,planDetails.getProjectId());
             return HttpResult.newCorrectResult(str);
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());
