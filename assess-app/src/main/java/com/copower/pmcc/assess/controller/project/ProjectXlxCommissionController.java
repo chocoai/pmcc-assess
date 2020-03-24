@@ -11,6 +11,7 @@ import com.copower.pmcc.assess.service.project.ProjectNumberRecordService;
 import com.copower.pmcc.assess.service.project.ProjectXlxCommissionService;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
 import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
+import com.copower.pmcc.bpm.api.dto.model.BoxRuDto;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -147,4 +148,16 @@ public class ProjectXlxCommissionController extends BaseController {
     public BootstrapTableVo getDocumentSendVoList(Integer projectId) {
         return projectXlxCommissionService.getDocumentSendVoList(projectId);
     }
+
+    @RequestMapping(value = "/detailsIndex", name = "进入详情页面")
+    public ModelAndView detailsIndex(String processInsId) {
+        BoxRuDto boxRuDto = bpmRpcBoxService.getBoxRuByProcessInstId(processInsId);
+        ProjectXlxCommission projectXlxCommission = projectXlxCommissionService.getDataByProcessInsId(processInsId);
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/commission/approval", processInsId, boxRuDto.getBoxId(), "-1", "");
+        modelAndView.addObject("projectXlxCommission", projectXlxCommission);
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectXlxCommission.getProjectId());
+        modelAndView.addObject("projectInfo", projectInfoService.getSimpleProjectInfoVo(projectInfo));
+        return modelAndView;
+    }
+
 }

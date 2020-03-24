@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.controller.project;
 
+import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectXlxPigeonholeConfigDao;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectXlxPigeonholeRecord;
@@ -67,8 +68,9 @@ public class ProjectXlxPigeonholeRecordController {
 
     @ResponseBody
     @RequestMapping(value = "/save", method = {RequestMethod.POST}, name = "增加与修改")
-    public HttpResult save(ProjectXlxPigeonholeRecord projectXlxPigeonholeRecord) {
+    public HttpResult save(String formData) {
         try {
+            ProjectXlxPigeonholeRecord projectXlxPigeonholeRecord = JSON.parseObject(formData, ProjectXlxPigeonholeRecord.class);
             projectXlxPigeonholeRecordService.saveAndUpdate(projectXlxPigeonholeRecord);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);

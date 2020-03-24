@@ -149,6 +149,7 @@ public class ProjectXlxCommissionService {
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         ProjectXlxCommission commission = new ProjectXlxCommission();
         commission.setProjectId(projectId);
+        commission.setStatus(ProcessStatusEnum.FINISH.getValue());
         List<ProjectXlxCommission> list = projectXlxCommissionDao.getProjectXlxCommission(commission);
         vo.setRows(CollectionUtils.isEmpty(list) ? new ArrayList<ProjectXlxCommission>() : list);
         vo.setTotal(page.getTotal());

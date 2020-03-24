@@ -174,6 +174,10 @@
                                                data-table-id="tb_projectStopList" data-toggle="pill"
                                                href="#div_projectStopList" role="tab" aria-controls="v-pills-messages"
                                                aria-selected="false">项目终止</a>
+                                            <a class="nav-link" onclick="projectDetails.loadProjectCommission(this)"
+                                               data-table-id="tb_projectStopList" data-toggle="pill"
+                                               href="#div_projectStopList" role="tab" aria-controls="v-pills-messages"
+                                               aria-selected="false">项目提成</a>
                                         </div>
                                     </div>
                                     <div class="col-md-10">
@@ -512,6 +516,42 @@
             cols.push({field: 'influence', title: '可能影响'});
             target.bootstrapTable('destroy');
             TableInit(target, "${pageContext.request.contextPath}/projectStop/getProjectStopHistory", cols, {
+                projectId: '${projectInfo.id}'
+            }, {
+                showColumns: false,
+                showRefresh: false,
+                search: false,
+                onLoadSuccess: function () {
+                    $('.tooltips').tooltip();
+                }
+            });
+        },
+
+        //项目提成
+        loadProjectCommission: function (_this) {
+            var target = projectDetails.preLoadListFn(_this);
+            var cols = [];
+            cols.push({field: 'invoiceNumber', title: '发票号码'});
+            cols.push({field: 'invoiceTotalMoney', title: '发票总金额'});
+            cols.push({field: 'projectMoney', title: '本项目金额'});
+            cols.push({field: 'reportNumber', title: '报告文号'});
+            cols.push({
+                field: 'confirmTime', title: '确定时间', formatter: function (value, row, index) {
+                    return formatDate(value, false);
+                }
+            });
+            cols.push({
+                field: 'pigeonholeDate', title: '归档日期', formatter: function (value, row, index) {
+                    return formatDate(value, false);
+                }
+            });
+            cols.push({
+                field: 'id', width: '10%', title: '操作', formatter: function (value, row, index) {
+                    return "<a target='_blank' href='${pageContext.request.contextPath}/projectXlxCommission/detailsIndex?processInsId=" + row.processInsId + "' style='margin-left: 5px;' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-search fa-white'></i></a>";
+                }
+            });
+            target.bootstrapTable('destroy');
+            TableInit(target, "${pageContext.request.contextPath}/projectXlxCommission/getXlxCommissionList", cols, {
                 projectId: '${projectInfo.id}'
             }, {
                 showColumns: false,
