@@ -7,6 +7,7 @@ import com.copower.pmcc.assess.dal.basis.dao.project.xlx.ProjectXlxPigeonholeRec
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectXlxPigeonhole;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
+import com.copower.pmcc.assess.service.event.BaseProcessEvent;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.bpm.api.dto.ProcessUserDto;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
@@ -82,6 +83,7 @@ public class ProjectXlxPigeonholeService {
         processInfo.setGroupName(boxReDto.getGroupName());
         processInfo.setTableName(FormatUtils.entityNameConvertToTableName(ProjectXlxPigeonhole.class));
         processInfo.setBoxId(boxReDto.getId());
+        processInfo.setProcessEventExecutor(BaseProcessEvent.class);
         processInfo.setTableId(projectXlxPigeonhole.getId());
         processInfo.setRemarks(ProjectStatusEnum.STARTAPPLY.getName());
         processInfo.setStartUser(projectXlxPigeonhole.getCreator());

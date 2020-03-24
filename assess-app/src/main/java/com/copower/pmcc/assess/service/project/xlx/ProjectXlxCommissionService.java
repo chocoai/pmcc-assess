@@ -6,7 +6,7 @@ import com.copower.pmcc.assess.dal.basis.dao.project.xlx.ProjectXlxCommissionDao
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectXlxCommission;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
-import com.copower.pmcc.assess.service.event.project.ProjectXlxCommissionEvent;
+import com.copower.pmcc.assess.service.event.BaseProcessEvent;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.bpm.api.dto.ProcessUserDto;
 import com.copower.pmcc.bpm.api.dto.model.ApprovalModelDto;
@@ -82,7 +82,7 @@ public class ProjectXlxCommissionService {
         processInfo.setProcessName(boxReDto.getProcessName());
         processInfo.setGroupName(boxReDto.getGroupName());
         processInfo.setTableName(FormatUtils.entityNameConvertToTableName(ProjectXlxCommission.class));
-        processInfo.setProcessEventExecutor(ProjectXlxCommissionEvent.class);
+        processInfo.setProcessEventExecutor(BaseProcessEvent.class);
         processInfo.setBoxId(boxReDto.getId());
         processInfo.setTableId(projectXlxCommission.getId());
         processInfo.setRemarks(ProjectStatusEnum.STARTAPPLY.getName());

@@ -36,8 +36,8 @@ public class ProjectXlxReportIndividualAssist implements ProjectTaskInterface {
     @Autowired
     private ProjectXlxPigeonholeService projectXlxPigeonholeService;
 
-    private final String applyViewName = "/project/xlx/reportIndividual/taskProjectXlxReportIndividualIndex";
-    private final String approvalViewName = "/project/xlx/reportIndividual/taskProjectXlxReportIndividualApproval";
+    private final String applyViewName = "/customer/xlx/reportIndividual/taskProjectXlxReportIndividualIndex";
+    private final String approvalViewName = "/customer/xlx/reportIndividual/taskProjectXlxReportIndividualApproval";
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {

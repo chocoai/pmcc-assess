@@ -13,36 +13,6 @@
                 <div class="row mt--2">
                     <%@include file="/views/share/project/projectInfoSimple.jsp" %>
                     <%@include file="/views/share/project/projectPlanDetails.jsp" %>
-
-                    <div class="col-md-12">
-                        <div class="card full-height">
-                            <div class="card-header collapse-link">
-                                <div class="card-head-row">
-                                    <div class="card-title">
-                                        自定义名称
-                                    </div>
-                                    <div class="card-tools">
-                                        <button type="button" class="btn  btn-link btn-primary btn-xs"><span
-                                                class="fa fa-angle-down"></span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="card-body">
-                                <form class="form-horizontal" id="declareApplyForm">
-                                    <input type="hidden" name="planDetailsId" value="${projectPlanDetails.id}">
-                                    <input type="hidden" name="projectId" value="${projectPlanDetails.projectId}">
-                                    <input type="hidden" name="assetsSettingId" value="${projectPhase.assetsSettingId}">
-                                    <%@include file="../../../project/assets/assetsAppraisalDicApplyModel.jsp" %>
-                                </form>
-                            </div>
-
-
-                        </div>
-                    </div>
-
-
                     <div class="col-md-12">
                         <div class="card full-height">
                             <div class="card-header collapse-link">
@@ -150,6 +120,33 @@
 
                                 </form>
                             </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="card full-height">
+                            <div class="card-header collapse-link">
+                                <div class="card-head-row">
+                                    <div class="card-title">
+                                        自定义名称
+                                    </div>
+                                    <div class="card-tools">
+                                        <button type="button" class="btn  btn-link btn-primary btn-xs"><span
+                                                class="fa fa-angle-down"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card-body">
+                                <form class="form-horizontal" id="declareApplyForm">
+                                    <input type="hidden" name="planDetailsId" value="${projectPlanDetails.id}">
+                                    <input type="hidden" name="projectId" value="${projectPlanDetails.projectId}">
+                                    <input type="hidden" name="assetsSettingId" value="${projectPhase.assetsSettingId}">
+                                    <%@include file="../../../project/assets/assetsAppraisalDicApplyModel.jsp" %>
+                                </form>
+                            </div>
+
+
                         </div>
                     </div>
                     <div class="col-md-12" style="text-align: center;padding-bottom: 1.25rem">
