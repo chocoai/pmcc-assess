@@ -302,7 +302,7 @@
                 data: {formData: JSON.stringify(row)},
                 success: function (result) {
                     if (result.ret) {
-                        projectXlxPigeonholeRecord.prototype.loadDataDicList();
+                        //projectXlxPigeonholeRecord.prototype.loadDataDicList();
                     }
                     else {
                         AlertError("保存数据失败，失败原因:" + result.errmsg);
