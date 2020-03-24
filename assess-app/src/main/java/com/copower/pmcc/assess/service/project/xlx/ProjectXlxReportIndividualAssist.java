@@ -72,6 +72,9 @@ public class ProjectXlxReportIndividualAssist implements ProjectTaskInterface {
     @Override
     public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException, BpmException {
         ProjectXlxReportIndividual oo = JSONObject.parseObject(formData, ProjectXlxReportIndividual.class);
+        if (StringUtils.isNotBlank(processInsId)){
+            oo.setProcessInsId(processInsId);
+        }
         projectXlxReportIndividualService.saveAndUpdateProjectXlxReportIndividual(oo, true);
     }
 
@@ -83,6 +86,9 @@ public class ProjectXlxReportIndividualAssist implements ProjectTaskInterface {
     @Override
     public void returnEditCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
         ProjectXlxReportIndividual oo = JSONObject.parseObject(formData, ProjectXlxReportIndividual.class);
+        if (StringUtils.isNotBlank(processInsId)){
+            oo.setProcessInsId(processInsId);
+        }
         projectXlxReportIndividualService.saveAndUpdateProjectXlxReportIndividual(oo, true);
     }
 

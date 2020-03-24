@@ -96,6 +96,8 @@ public class ProjectXlxReportIndividual {
 
     private String remark;
 
+    private String processInsId;
+
     private Integer planDetailsId;
 
     private Integer projectId;
@@ -476,6 +478,14 @@ public class ProjectXlxReportIndividual {
 
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
+    }
+
+    public String getProcessInsId() {
+        return processInsId;
+    }
+
+    public void setProcessInsId(String processInsId) {
+        this.processInsId = processInsId == null ? null : processInsId.trim();
     }
 
     public Integer getPlanDetailsId() {

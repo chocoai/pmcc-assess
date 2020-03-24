@@ -3126,6 +3126,76 @@ public class ProjectXlxReportIndividualExample {
             return (Criteria) this;
         }
 
+        public Criteria andProcessInsIdIsNull() {
+            addCriterion("process_ins_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdIsNotNull() {
+            addCriterion("process_ins_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdEqualTo(String value) {
+            addCriterion("process_ins_id =", value, "processInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdNotEqualTo(String value) {
+            addCriterion("process_ins_id <>", value, "processInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdGreaterThan(String value) {
+            addCriterion("process_ins_id >", value, "processInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdGreaterThanOrEqualTo(String value) {
+            addCriterion("process_ins_id >=", value, "processInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdLessThan(String value) {
+            addCriterion("process_ins_id <", value, "processInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdLessThanOrEqualTo(String value) {
+            addCriterion("process_ins_id <=", value, "processInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdLike(String value) {
+            addCriterion("process_ins_id like", value, "processInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdNotLike(String value) {
+            addCriterion("process_ins_id not like", value, "processInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdIn(List<String> values) {
+            addCriterion("process_ins_id in", values, "processInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdNotIn(List<String> values) {
+            addCriterion("process_ins_id not in", values, "processInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdBetween(String value1, String value2) {
+            addCriterion("process_ins_id between", value1, value2, "processInsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProcessInsIdNotBetween(String value1, String value2) {
+            addCriterion("process_ins_id not between", value1, value2, "processInsId");
+            return (Criteria) this;
+        }
+
         public Criteria andPlanDetailsIdIsNull() {
             addCriterion("plan_details_id is null");
             return (Criteria) this;
