@@ -239,6 +239,15 @@
         var frm = box.find("form") ;
         frm.clearAll();
         frm.initForm(item);
+        try {
+            frm.find("label[name='reportModificationDate']").html(formatDate(item.reportModificationDate));
+            frm.find("label[name='reportBindingDate']").html(formatDate(item.reportBindingDate));
+            frm.find("label[name='filingDate']").html(formatDate(item.filingDate));
+            frm.find("label[name='contractSigningDate']").html(formatDate(item.contractSigningDate));
+            frm.find("label[name='appraisalPeriod']").html(formatDate(item.appraisalPeriod));
+            frm.find("label[name='valueTimePoint']").html(formatDate(item.valueTimePoint));
+        } catch (e) {
+        }
         box.modal("show");
         frm.find("."+item.assessType).show() ;
     }
