@@ -33,6 +33,9 @@ public class ProjectXlxReportIndividualAssist implements ProjectTaskInterface {
     private AssetsCustomizeDataFieldService assetsCustomizeDataFieldService;
     @Autowired
     private ProjectInfoService projectInfoService;
+    @Autowired
+    private ProjectXlxPigeonholeService projectXlxPigeonholeService;
+
     private final String applyViewName = "/project/xlx/reportIndividual/taskProjectXlxReportIndividualIndex";
     private final String approvalViewName = "/project/xlx/reportIndividual/taskProjectXlxReportIndividualApproval";
 
@@ -97,5 +100,6 @@ public class ProjectXlxReportIndividualAssist implements ProjectTaskInterface {
         modelAndView.addObject(StringUtils.uncapitalize(ProjectPlanDetails.class.getSimpleName()), projectPlanDetails);
         modelAndView.addObject(StringUtils.uncapitalize(ProjectXlxReportIndividual.class.getSimpleName()), projectXlxReportIndividualService.getProjectXlxReportIndividualByPlanDetailsId(projectPlanDetails.getId()));
         modelAndView.addObject("assessProjectType", projectXlxReportIndividualService.getAssessProjectTypeEnum(projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId()).getProjectCategoryId()).getKey());
+        modelAndView.addObject("pigeonholeDate",projectXlxPigeonholeService.getPigeonholeDateByProjectId(projectPlanDetails.getProjectId()));
     }
 }

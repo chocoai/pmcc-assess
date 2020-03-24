@@ -123,14 +123,14 @@
                                                 </div>
                                                 <div class="input-group-append">
                                                     <button class="btn btn-info btn-sm" type="button"
-                                                            onclick="projectDetails.projectXlxCommission()">
-                                                        项目提成
+                                                            onclick="projectDetails.projectXlxPigeonhole()">
+                                                        项目归档
                                                     </button>
                                                 </div>
                                                 <div class="input-group-append">
                                                     <button class="btn btn-info btn-sm" type="button"
-                                                            onclick="projectDetails.projectXlxPigeonholeRecord()">
-                                                        归档资料
+                                                            onclick="projectDetails.projectXlxCommission()">
+                                                        项目提成
                                                     </button>
                                                 </div>
                                             </div>
@@ -174,6 +174,10 @@
                                                data-table-id="tb_projectStopList" data-toggle="pill"
                                                href="#div_projectStopList" role="tab" aria-controls="v-pills-messages"
                                                aria-selected="false">项目终止</a>
+                                            <a class="nav-link" onclick="projectDetails.loadProjectPigeonhole(this)"
+                                               data-table-id="tb_projectStopList" data-toggle="pill"
+                                               href="#div_projectStopList" role="tab" aria-controls="v-pills-messages"
+                                               aria-selected="false">项目归档</a>
                                             <a class="nav-link" onclick="projectDetails.loadProjectCommission(this)"
                                                data-table-id="tb_projectStopList" data-toggle="pill"
                                                href="#div_projectStopList" role="tab" aria-controls="v-pills-messages"
@@ -235,8 +239,8 @@
     })
     var projectDetails = {
         //归档记录
-        projectXlxPigeonholeRecord: function () {
-            var url = "${pageContext.request.contextPath}/projectXlxPigeonholeRecord/apply?projectId=" + ${projectInfo.id};
+        projectXlxPigeonhole: function () {
+            var url = "${pageContext.request.contextPath}/projectXlxPigeonhole/apply?projectId=" + ${projectInfo.id};
             window.open(url, '_blank');
         },
         //项目提成
@@ -527,6 +531,34 @@
             });
         },
 
+        //项目归档
+        loadProjectPigeonhole: function (_this) {
+            var target = projectDetails.preLoadListFn(_this);
+            var cols = [];
+            cols.push({field: 'filingPerson', title: '归档人员'});
+            cols.push({
+                field: 'filingDate', title: '归档日期', formatter: function (value, row, index) {
+                    return formatDate(value, false);
+                }
+            });
+            cols.push({
+                field: 'id', width: '10%', title: '操作', formatter: function (value, row, index) {
+                    return "<a target='_blank' href='${pageContext.request.contextPath}/projectXlxPigeonhole/detailsIndex?processInsId=" + row.processInsId + "' style='margin-left: 5px;' data-placement='top' data-original-title='查看详情' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-search fa-white'></i></a>";
+                }
+            });
+            target.bootstrapTable('destroy');
+            TableInit(target, "${pageContext.request.contextPath}/projectXlxPigeonhole/getXlxPigeonholeList", cols, {
+                projectId: '${projectInfo.id}'
+            }, {
+                showColumns: false,
+                showRefresh: false,
+                search: false,
+                onLoadSuccess: function () {
+                    $('.tooltips').tooltip();
+                }
+            });
+        },
+
         //项目提成
         loadProjectCommission: function (_this) {
             var target = projectDetails.preLoadListFn(_this);
@@ -561,6 +593,7 @@
                     $('.tooltips').tooltip();
                 }
             });
-        }
+        },
+
     };
 </script>

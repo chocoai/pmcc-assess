@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class ProjectXlxPigeonholeRecordExample {
+public class ProjectXlxPigeonholeExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public ProjectXlxPigeonholeRecordExample() {
+    public ProjectXlxPigeonholeExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -165,66 +165,6 @@ public class ProjectXlxPigeonholeRecordExample {
             return (Criteria) this;
         }
 
-        public Criteria andMasterIdIsNull() {
-            addCriterion("master_id is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andMasterIdIsNotNull() {
-            addCriterion("master_id is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andMasterIdEqualTo(Integer value) {
-            addCriterion("master_id =", value, "masterId");
-            return (Criteria) this;
-        }
-
-        public Criteria andMasterIdNotEqualTo(Integer value) {
-            addCriterion("master_id <>", value, "masterId");
-            return (Criteria) this;
-        }
-
-        public Criteria andMasterIdGreaterThan(Integer value) {
-            addCriterion("master_id >", value, "masterId");
-            return (Criteria) this;
-        }
-
-        public Criteria andMasterIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("master_id >=", value, "masterId");
-            return (Criteria) this;
-        }
-
-        public Criteria andMasterIdLessThan(Integer value) {
-            addCriterion("master_id <", value, "masterId");
-            return (Criteria) this;
-        }
-
-        public Criteria andMasterIdLessThanOrEqualTo(Integer value) {
-            addCriterion("master_id <=", value, "masterId");
-            return (Criteria) this;
-        }
-
-        public Criteria andMasterIdIn(List<Integer> values) {
-            addCriterion("master_id in", values, "masterId");
-            return (Criteria) this;
-        }
-
-        public Criteria andMasterIdNotIn(List<Integer> values) {
-            addCriterion("master_id not in", values, "masterId");
-            return (Criteria) this;
-        }
-
-        public Criteria andMasterIdBetween(Integer value1, Integer value2) {
-            addCriterion("master_id between", value1, value2, "masterId");
-            return (Criteria) this;
-        }
-
-        public Criteria andMasterIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("master_id not between", value1, value2, "masterId");
-            return (Criteria) this;
-        }
-
         public Criteria andProjectIdIsNull() {
             addCriterion("project_id is null");
             return (Criteria) this;
@@ -285,253 +225,273 @@ public class ProjectXlxPigeonholeRecordExample {
             return (Criteria) this;
         }
 
-        public Criteria andFileNameIsNull() {
-            addCriterion("file_name is null");
+        public Criteria andProcessInsIdIsNull() {
+            addCriterion("process_ins_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andFileNameIsNotNull() {
-            addCriterion("file_name is not null");
+        public Criteria andProcessInsIdIsNotNull() {
+            addCriterion("process_ins_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andFileNameEqualTo(String value) {
-            addCriterion("file_name =", value, "fileName");
+        public Criteria andProcessInsIdEqualTo(String value) {
+            addCriterion("process_ins_id =", value, "processInsId");
             return (Criteria) this;
         }
 
-        public Criteria andFileNameNotEqualTo(String value) {
-            addCriterion("file_name <>", value, "fileName");
+        public Criteria andProcessInsIdNotEqualTo(String value) {
+            addCriterion("process_ins_id <>", value, "processInsId");
             return (Criteria) this;
         }
 
-        public Criteria andFileNameGreaterThan(String value) {
-            addCriterion("file_name >", value, "fileName");
+        public Criteria andProcessInsIdGreaterThan(String value) {
+            addCriterion("process_ins_id >", value, "processInsId");
             return (Criteria) this;
         }
 
-        public Criteria andFileNameGreaterThanOrEqualTo(String value) {
-            addCriterion("file_name >=", value, "fileName");
+        public Criteria andProcessInsIdGreaterThanOrEqualTo(String value) {
+            addCriterion("process_ins_id >=", value, "processInsId");
             return (Criteria) this;
         }
 
-        public Criteria andFileNameLessThan(String value) {
-            addCriterion("file_name <", value, "fileName");
+        public Criteria andProcessInsIdLessThan(String value) {
+            addCriterion("process_ins_id <", value, "processInsId");
             return (Criteria) this;
         }
 
-        public Criteria andFileNameLessThanOrEqualTo(String value) {
-            addCriterion("file_name <=", value, "fileName");
+        public Criteria andProcessInsIdLessThanOrEqualTo(String value) {
+            addCriterion("process_ins_id <=", value, "processInsId");
             return (Criteria) this;
         }
 
-        public Criteria andFileNameLike(String value) {
-            addCriterion("file_name like", value, "fileName");
+        public Criteria andProcessInsIdLike(String value) {
+            addCriterion("process_ins_id like", value, "processInsId");
             return (Criteria) this;
         }
 
-        public Criteria andFileNameNotLike(String value) {
-            addCriterion("file_name not like", value, "fileName");
+        public Criteria andProcessInsIdNotLike(String value) {
+            addCriterion("process_ins_id not like", value, "processInsId");
             return (Criteria) this;
         }
 
-        public Criteria andFileNameIn(List<String> values) {
-            addCriterion("file_name in", values, "fileName");
+        public Criteria andProcessInsIdIn(List<String> values) {
+            addCriterion("process_ins_id in", values, "processInsId");
             return (Criteria) this;
         }
 
-        public Criteria andFileNameNotIn(List<String> values) {
-            addCriterion("file_name not in", values, "fileName");
+        public Criteria andProcessInsIdNotIn(List<String> values) {
+            addCriterion("process_ins_id not in", values, "processInsId");
             return (Criteria) this;
         }
 
-        public Criteria andFileNameBetween(String value1, String value2) {
-            addCriterion("file_name between", value1, value2, "fileName");
+        public Criteria andProcessInsIdBetween(String value1, String value2) {
+            addCriterion("process_ins_id between", value1, value2, "processInsId");
             return (Criteria) this;
         }
 
-        public Criteria andFileNameNotBetween(String value1, String value2) {
-            addCriterion("file_name not between", value1, value2, "fileName");
+        public Criteria andProcessInsIdNotBetween(String value1, String value2) {
+            addCriterion("process_ins_id not between", value1, value2, "processInsId");
             return (Criteria) this;
         }
 
-        public Criteria andHasPaperDatumIsNull() {
-            addCriterion("has_paper_datum is null");
+        public Criteria andFilingPersonIsNull() {
+            addCriterion("filing_person is null");
             return (Criteria) this;
         }
 
-        public Criteria andHasPaperDatumIsNotNull() {
-            addCriterion("has_paper_datum is not null");
+        public Criteria andFilingPersonIsNotNull() {
+            addCriterion("filing_person is not null");
             return (Criteria) this;
         }
 
-        public Criteria andHasPaperDatumEqualTo(Boolean value) {
-            addCriterion("has_paper_datum =", value, "hasPaperDatum");
+        public Criteria andFilingPersonEqualTo(String value) {
+            addCriterion("filing_person =", value, "filingPerson");
             return (Criteria) this;
         }
 
-        public Criteria andHasPaperDatumNotEqualTo(Boolean value) {
-            addCriterion("has_paper_datum <>", value, "hasPaperDatum");
+        public Criteria andFilingPersonNotEqualTo(String value) {
+            addCriterion("filing_person <>", value, "filingPerson");
             return (Criteria) this;
         }
 
-        public Criteria andHasPaperDatumGreaterThan(Boolean value) {
-            addCriterion("has_paper_datum >", value, "hasPaperDatum");
+        public Criteria andFilingPersonGreaterThan(String value) {
+            addCriterion("filing_person >", value, "filingPerson");
             return (Criteria) this;
         }
 
-        public Criteria andHasPaperDatumGreaterThanOrEqualTo(Boolean value) {
-            addCriterion("has_paper_datum >=", value, "hasPaperDatum");
+        public Criteria andFilingPersonGreaterThanOrEqualTo(String value) {
+            addCriterion("filing_person >=", value, "filingPerson");
             return (Criteria) this;
         }
 
-        public Criteria andHasPaperDatumLessThan(Boolean value) {
-            addCriterion("has_paper_datum <", value, "hasPaperDatum");
+        public Criteria andFilingPersonLessThan(String value) {
+            addCriterion("filing_person <", value, "filingPerson");
             return (Criteria) this;
         }
 
-        public Criteria andHasPaperDatumLessThanOrEqualTo(Boolean value) {
-            addCriterion("has_paper_datum <=", value, "hasPaperDatum");
+        public Criteria andFilingPersonLessThanOrEqualTo(String value) {
+            addCriterion("filing_person <=", value, "filingPerson");
             return (Criteria) this;
         }
 
-        public Criteria andHasPaperDatumIn(List<Boolean> values) {
-            addCriterion("has_paper_datum in", values, "hasPaperDatum");
+        public Criteria andFilingPersonLike(String value) {
+            addCriterion("filing_person like", value, "filingPerson");
             return (Criteria) this;
         }
 
-        public Criteria andHasPaperDatumNotIn(List<Boolean> values) {
-            addCriterion("has_paper_datum not in", values, "hasPaperDatum");
+        public Criteria andFilingPersonNotLike(String value) {
+            addCriterion("filing_person not like", value, "filingPerson");
             return (Criteria) this;
         }
 
-        public Criteria andHasPaperDatumBetween(Boolean value1, Boolean value2) {
-            addCriterion("has_paper_datum between", value1, value2, "hasPaperDatum");
+        public Criteria andFilingPersonIn(List<String> values) {
+            addCriterion("filing_person in", values, "filingPerson");
             return (Criteria) this;
         }
 
-        public Criteria andHasPaperDatumNotBetween(Boolean value1, Boolean value2) {
-            addCriterion("has_paper_datum not between", value1, value2, "hasPaperDatum");
+        public Criteria andFilingPersonNotIn(List<String> values) {
+            addCriterion("filing_person not in", values, "filingPerson");
             return (Criteria) this;
         }
 
-        public Criteria andHasElectronicDatumIsNull() {
-            addCriterion("has_electronic_datum is null");
+        public Criteria andFilingPersonBetween(String value1, String value2) {
+            addCriterion("filing_person between", value1, value2, "filingPerson");
             return (Criteria) this;
         }
 
-        public Criteria andHasElectronicDatumIsNotNull() {
-            addCriterion("has_electronic_datum is not null");
+        public Criteria andFilingPersonNotBetween(String value1, String value2) {
+            addCriterion("filing_person not between", value1, value2, "filingPerson");
             return (Criteria) this;
         }
 
-        public Criteria andHasElectronicDatumEqualTo(Boolean value) {
-            addCriterion("has_electronic_datum =", value, "hasElectronicDatum");
+        public Criteria andFilingDateIsNull() {
+            addCriterion("filing_date is null");
             return (Criteria) this;
         }
 
-        public Criteria andHasElectronicDatumNotEqualTo(Boolean value) {
-            addCriterion("has_electronic_datum <>", value, "hasElectronicDatum");
+        public Criteria andFilingDateIsNotNull() {
+            addCriterion("filing_date is not null");
             return (Criteria) this;
         }
 
-        public Criteria andHasElectronicDatumGreaterThan(Boolean value) {
-            addCriterion("has_electronic_datum >", value, "hasElectronicDatum");
+        public Criteria andFilingDateEqualTo(Date value) {
+            addCriterion("filing_date =", value, "filingDate");
             return (Criteria) this;
         }
 
-        public Criteria andHasElectronicDatumGreaterThanOrEqualTo(Boolean value) {
-            addCriterion("has_electronic_datum >=", value, "hasElectronicDatum");
+        public Criteria andFilingDateNotEqualTo(Date value) {
+            addCriterion("filing_date <>", value, "filingDate");
             return (Criteria) this;
         }
 
-        public Criteria andHasElectronicDatumLessThan(Boolean value) {
-            addCriterion("has_electronic_datum <", value, "hasElectronicDatum");
+        public Criteria andFilingDateGreaterThan(Date value) {
+            addCriterion("filing_date >", value, "filingDate");
             return (Criteria) this;
         }
 
-        public Criteria andHasElectronicDatumLessThanOrEqualTo(Boolean value) {
-            addCriterion("has_electronic_datum <=", value, "hasElectronicDatum");
+        public Criteria andFilingDateGreaterThanOrEqualTo(Date value) {
+            addCriterion("filing_date >=", value, "filingDate");
             return (Criteria) this;
         }
 
-        public Criteria andHasElectronicDatumIn(List<Boolean> values) {
-            addCriterion("has_electronic_datum in", values, "hasElectronicDatum");
+        public Criteria andFilingDateLessThan(Date value) {
+            addCriterion("filing_date <", value, "filingDate");
             return (Criteria) this;
         }
 
-        public Criteria andHasElectronicDatumNotIn(List<Boolean> values) {
-            addCriterion("has_electronic_datum not in", values, "hasElectronicDatum");
+        public Criteria andFilingDateLessThanOrEqualTo(Date value) {
+            addCriterion("filing_date <=", value, "filingDate");
             return (Criteria) this;
         }
 
-        public Criteria andHasElectronicDatumBetween(Boolean value1, Boolean value2) {
-            addCriterion("has_electronic_datum between", value1, value2, "hasElectronicDatum");
+        public Criteria andFilingDateIn(List<Date> values) {
+            addCriterion("filing_date in", values, "filingDate");
             return (Criteria) this;
         }
 
-        public Criteria andHasElectronicDatumNotBetween(Boolean value1, Boolean value2) {
-            addCriterion("has_electronic_datum not between", value1, value2, "hasElectronicDatum");
+        public Criteria andFilingDateNotIn(List<Date> values) {
+            addCriterion("filing_date not in", values, "filingDate");
             return (Criteria) this;
         }
 
-        public Criteria andSortingIsNull() {
-            addCriterion("sorting is null");
+        public Criteria andFilingDateBetween(Date value1, Date value2) {
+            addCriterion("filing_date between", value1, value2, "filingDate");
             return (Criteria) this;
         }
 
-        public Criteria andSortingIsNotNull() {
-            addCriterion("sorting is not null");
+        public Criteria andFilingDateNotBetween(Date value1, Date value2) {
+            addCriterion("filing_date not between", value1, value2, "filingDate");
             return (Criteria) this;
         }
 
-        public Criteria andSortingEqualTo(Integer value) {
-            addCriterion("sorting =", value, "sorting");
+        public Criteria andStatusIsNull() {
+            addCriterion("status is null");
             return (Criteria) this;
         }
 
-        public Criteria andSortingNotEqualTo(Integer value) {
-            addCriterion("sorting <>", value, "sorting");
+        public Criteria andStatusIsNotNull() {
+            addCriterion("status is not null");
             return (Criteria) this;
         }
 
-        public Criteria andSortingGreaterThan(Integer value) {
-            addCriterion("sorting >", value, "sorting");
+        public Criteria andStatusEqualTo(String value) {
+            addCriterion("status =", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andSortingGreaterThanOrEqualTo(Integer value) {
-            addCriterion("sorting >=", value, "sorting");
+        public Criteria andStatusNotEqualTo(String value) {
+            addCriterion("status <>", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andSortingLessThan(Integer value) {
-            addCriterion("sorting <", value, "sorting");
+        public Criteria andStatusGreaterThan(String value) {
+            addCriterion("status >", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andSortingLessThanOrEqualTo(Integer value) {
-            addCriterion("sorting <=", value, "sorting");
+        public Criteria andStatusGreaterThanOrEqualTo(String value) {
+            addCriterion("status >=", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andSortingIn(List<Integer> values) {
-            addCriterion("sorting in", values, "sorting");
+        public Criteria andStatusLessThan(String value) {
+            addCriterion("status <", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andSortingNotIn(List<Integer> values) {
-            addCriterion("sorting not in", values, "sorting");
+        public Criteria andStatusLessThanOrEqualTo(String value) {
+            addCriterion("status <=", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andSortingBetween(Integer value1, Integer value2) {
-            addCriterion("sorting between", value1, value2, "sorting");
+        public Criteria andStatusLike(String value) {
+            addCriterion("status like", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andSortingNotBetween(Integer value1, Integer value2) {
-            addCriterion("sorting not between", value1, value2, "sorting");
+        public Criteria andStatusNotLike(String value) {
+            addCriterion("status not like", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusIn(List<String> values) {
+            addCriterion("status in", values, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusNotIn(List<String> values) {
+            addCriterion("status not in", values, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusBetween(String value1, String value2) {
+            addCriterion("status between", value1, value2, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusNotBetween(String value1, String value2) {
+            addCriterion("status not between", value1, value2, "status");
             return (Criteria) this;
         }
 

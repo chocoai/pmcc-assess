@@ -5,6 +5,8 @@ import java.util.Date;
 public class ProjectXlxPigeonholeRecord {
     private Integer id;
 
+    private Integer masterId;
+
     private Integer projectId;
 
     private String fileName;
@@ -27,6 +29,14 @@ public class ProjectXlxPigeonholeRecord {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getMasterId() {
+        return masterId;
+    }
+
+    public void setMasterId(Integer masterId) {
+        this.masterId = masterId;
     }
 
     public Integer getProjectId() {

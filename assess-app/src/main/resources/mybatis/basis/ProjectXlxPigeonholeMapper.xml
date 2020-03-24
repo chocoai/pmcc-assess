@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.ProjectXlxPigeonholeRecordMapper" >
-  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.ProjectXlxPigeonholeRecord" >
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.ProjectXlxPigeonholeMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.ProjectXlxPigeonhole" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="master_id" property="masterId" jdbcType="INTEGER" />
     <result column="project_id" property="projectId" jdbcType="INTEGER" />
-    <result column="file_name" property="fileName" jdbcType="VARCHAR" />
-    <result column="has_paper_datum" property="hasPaperDatum" jdbcType="BIT" />
-    <result column="has_electronic_datum" property="hasElectronicDatum" jdbcType="BIT" />
-    <result column="sorting" property="sorting" jdbcType="INTEGER" />
+    <result column="process_ins_id" property="processInsId" jdbcType="VARCHAR" />
+    <result column="filing_person" property="filingPerson" jdbcType="VARCHAR" />
+    <result column="filing_date" property="filingDate" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="created" property="created" jdbcType="TIMESTAMP" />
     <result column="modified" property="modified" jdbcType="TIMESTAMP" />
@@ -72,16 +71,16 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, master_id, project_id, file_name, has_paper_datum, has_electronic_datum, sorting, 
-    creator, created, modified
+    id, project_id, process_ins_id, filing_person, filing_date, status, creator, created, 
+    modified
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectXlxPigeonholeRecordExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectXlxPigeonholeExample" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from tb_project_xlx_pigeonhole_record
+    from tb_project_xlx_pigeonhole
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -92,55 +91,50 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from tb_project_xlx_pigeonhole_record
+    from tb_project_xlx_pigeonhole
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from tb_project_xlx_pigeonhole_record
+    delete from tb_project_xlx_pigeonhole
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectXlxPigeonholeRecordExample" >
-    delete from tb_project_xlx_pigeonhole_record
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectXlxPigeonholeExample" >
+    delete from tb_project_xlx_pigeonhole
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectXlxPigeonholeRecord" >
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectXlxPigeonhole" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_project_xlx_pigeonhole_record (master_id, project_id, file_name, 
-      has_paper_datum, has_electronic_datum, sorting, 
-      creator, created, modified
-      )
-    values (#{masterId,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, #{fileName,jdbcType=VARCHAR}, 
-      #{hasPaperDatum,jdbcType=BIT}, #{hasElectronicDatum,jdbcType=BIT}, #{sorting,jdbcType=INTEGER}, 
-      #{creator,jdbcType=VARCHAR}, #{created,jdbcType=TIMESTAMP}, #{modified,jdbcType=TIMESTAMP}
-      )
+    insert into tb_project_xlx_pigeonhole (project_id, process_ins_id, filing_person, 
+      filing_date, status, creator, 
+      created, modified)
+    values (#{projectId,jdbcType=INTEGER}, #{processInsId,jdbcType=VARCHAR}, #{filingPerson,jdbcType=VARCHAR}, 
+      #{filingDate,jdbcType=TIMESTAMP}, #{status,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{created,jdbcType=TIMESTAMP}, #{modified,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectXlxPigeonholeRecord" >
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectXlxPigeonhole" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_project_xlx_pigeonhole_record
+    insert into tb_project_xlx_pigeonhole
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="masterId != null" >
-        master_id,
-      </if>
       <if test="projectId != null" >
         project_id,
       </if>
-      <if test="fileName != null" >
-        file_name,
+      <if test="processInsId != null" >
+        process_ins_id,
       </if>
-      <if test="hasPaperDatum != null" >
-        has_paper_datum,
+      <if test="filingPerson != null" >
+        filing_person,
       </if>
-      <if test="hasElectronicDatum != null" >
-        has_electronic_datum,
+      <if test="filingDate != null" >
+        filing_date,
       </if>
-      <if test="sorting != null" >
-        sorting,
+      <if test="status != null" >
+        status,
       </if>
       <if test="creator != null" >
         creator,
@@ -153,23 +147,20 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="masterId != null" >
-        #{masterId,jdbcType=INTEGER},
-      </if>
       <if test="projectId != null" >
         #{projectId,jdbcType=INTEGER},
       </if>
-      <if test="fileName != null" >
-        #{fileName,jdbcType=VARCHAR},
+      <if test="processInsId != null" >
+        #{processInsId,jdbcType=VARCHAR},
       </if>
-      <if test="hasPaperDatum != null" >
-        #{hasPaperDatum,jdbcType=BIT},
+      <if test="filingPerson != null" >
+        #{filingPerson,jdbcType=VARCHAR},
       </if>
-      <if test="hasElectronicDatum != null" >
-        #{hasElectronicDatum,jdbcType=BIT},
+      <if test="filingDate != null" >
+        #{filingDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="sorting != null" >
-        #{sorting,jdbcType=INTEGER},
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -182,35 +173,32 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectXlxPigeonholeRecordExample" resultType="java.lang.Integer" >
-    select count(*) from tb_project_xlx_pigeonhole_record
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectXlxPigeonholeExample" resultType="java.lang.Integer" >
+    select count(*) from tb_project_xlx_pigeonhole
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update tb_project_xlx_pigeonhole_record
+    update tb_project_xlx_pigeonhole
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.masterId != null" >
-        master_id = #{record.masterId,jdbcType=INTEGER},
-      </if>
       <if test="record.projectId != null" >
         project_id = #{record.projectId,jdbcType=INTEGER},
       </if>
-      <if test="record.fileName != null" >
-        file_name = #{record.fileName,jdbcType=VARCHAR},
+      <if test="record.processInsId != null" >
+        process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
       </if>
-      <if test="record.hasPaperDatum != null" >
-        has_paper_datum = #{record.hasPaperDatum,jdbcType=BIT},
+      <if test="record.filingPerson != null" >
+        filing_person = #{record.filingPerson,jdbcType=VARCHAR},
       </if>
-      <if test="record.hasElectronicDatum != null" >
-        has_electronic_datum = #{record.hasElectronicDatum,jdbcType=BIT},
+      <if test="record.filingDate != null" >
+        filing_date = #{record.filingDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.sorting != null" >
-        sorting = #{record.sorting,jdbcType=INTEGER},
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=VARCHAR},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -227,14 +215,13 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update tb_project_xlx_pigeonhole_record
+    update tb_project_xlx_pigeonhole
     set id = #{record.id,jdbcType=INTEGER},
-      master_id = #{record.masterId,jdbcType=INTEGER},
       project_id = #{record.projectId,jdbcType=INTEGER},
-      file_name = #{record.fileName,jdbcType=VARCHAR},
-      has_paper_datum = #{record.hasPaperDatum,jdbcType=BIT},
-      has_electronic_datum = #{record.hasElectronicDatum,jdbcType=BIT},
-      sorting = #{record.sorting,jdbcType=INTEGER},
+      process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
+      filing_person = #{record.filingPerson,jdbcType=VARCHAR},
+      filing_date = #{record.filingDate,jdbcType=TIMESTAMP},
+      status = #{record.status,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       created = #{record.created,jdbcType=TIMESTAMP},
       modified = #{record.modified,jdbcType=TIMESTAMP}
@@ -242,26 +229,23 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectXlxPigeonholeRecord" >
-    update tb_project_xlx_pigeonhole_record
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectXlxPigeonhole" >
+    update tb_project_xlx_pigeonhole
     <set >
-      <if test="masterId != null" >
-        master_id = #{masterId,jdbcType=INTEGER},
-      </if>
       <if test="projectId != null" >
         project_id = #{projectId,jdbcType=INTEGER},
       </if>
-      <if test="fileName != null" >
-        file_name = #{fileName,jdbcType=VARCHAR},
+      <if test="processInsId != null" >
+        process_ins_id = #{processInsId,jdbcType=VARCHAR},
       </if>
-      <if test="hasPaperDatum != null" >
-        has_paper_datum = #{hasPaperDatum,jdbcType=BIT},
+      <if test="filingPerson != null" >
+        filing_person = #{filingPerson,jdbcType=VARCHAR},
       </if>
-      <if test="hasElectronicDatum != null" >
-        has_electronic_datum = #{hasElectronicDatum,jdbcType=BIT},
+      <if test="filingDate != null" >
+        filing_date = #{filingDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="sorting != null" >
-        sorting = #{sorting,jdbcType=INTEGER},
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -275,14 +259,13 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectXlxPigeonholeRecord" >
-    update tb_project_xlx_pigeonhole_record
-    set master_id = #{masterId,jdbcType=INTEGER},
-      project_id = #{projectId,jdbcType=INTEGER},
-      file_name = #{fileName,jdbcType=VARCHAR},
-      has_paper_datum = #{hasPaperDatum,jdbcType=BIT},
-      has_electronic_datum = #{hasElectronicDatum,jdbcType=BIT},
-      sorting = #{sorting,jdbcType=INTEGER},
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectXlxPigeonhole" >
+    update tb_project_xlx_pigeonhole
+    set project_id = #{projectId,jdbcType=INTEGER},
+      process_ins_id = #{processInsId,jdbcType=VARCHAR},
+      filing_person = #{filingPerson,jdbcType=VARCHAR},
+      filing_date = #{filingDate,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       created = #{created,jdbcType=TIMESTAMP},
       modified = #{modified,jdbcType=TIMESTAMP}

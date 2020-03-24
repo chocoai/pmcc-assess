@@ -38,20 +38,16 @@ public enum BaseParameterEnum {
     PROJECT_DETAILS_DOCUMENT_OPINION_PROCESS_KEY("project.details.document.opinion.process.key", "项目意见稿审批流程", "box"),
     PROJECT_DETAILS_DOCUMENT_SIGN_BILL_PROCESS_KEY("project.details.document.sign.bill.process.key", "报告签收单审批流程", "box"),
 
-
     PROJECT_SUBSEQUENT_PROCESS_KEY("project.subsequent.process.key", "项目后续事项", "box"),
     PROJECT_TAKE_NUMBER_PROCESS_KEY("project.take.number.process.key", "项目拿号", "box"),
     PROJECT_COMMISSION_PROCESS_KEY("project.commission.process.key", "项目提成流程", "box"),
+    PROJECT_PIGEONHOLE_PROCESS_KEY("project.pigeonhole.process.key", "项目归档流程", "box"),
 
     NET_INFO_COMPLEMENT_PROCESS_KEY("net.info.complement.process.key", "拍卖信息补全", "box"),
     NET_INFO_UPGRADE_PROCESS_KEY("net.info.upgrade.process.key", "拍卖信息升级", "box"),
-
     CASE_BASE_INFO_APPLY_KEY("case.base.info.apply.key", "案例信息申请key", "box"),
-
     DATA_LAND_LEVEL_APPLY_KEY("data.land.level.apply.key", "土地级别流程申请key", "box"),
-
     CASE_BASE_INFO_BATCH_APPLY_KEY("case.base.info.batch.apply.key", "案例信息批量申请key", "box"),
-
     CASE_ASSIGN_APPLY_KEY("case.assign.apply.key", "案例信息补充申请key", "box");
 
     private String parameterKey;

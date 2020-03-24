@@ -26,7 +26,6 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/projectXlxReportIndividual")
 public class ProjectXlxReportIndividualController {
-    private final String errorName = "xlx-生成报告单独事项";
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
@@ -38,7 +37,7 @@ public class ProjectXlxReportIndividualController {
 
     @RequestMapping(value = "/view", name = "转到index页面 ", method = {RequestMethod.GET})
     public ModelAndView index() {
-        String view = "/project/xlx/reportIndividual/projectXlxReportIndividualView";
+        String view = "/customer/xlx/reportIndividual/projectXlxReportIndividualView";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
         //获取到类型 类别 范围
         List<KeyValueDto> keyValueDtoList = baseProjectClassifyService.getProjectInitClassify();
