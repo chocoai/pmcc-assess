@@ -176,7 +176,7 @@
 </div>
 
 </body>
-<div id="divBoxUnitHuxingPriceTable" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+<div id="divBoxHouseHuxingPriceTable" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -188,14 +188,14 @@
             </div>
 
             <div class="modal-body">
-                <form id="frmUnitHuxingPriceTable" class="form-horizontal">
+                <form id="frmHouseHuxingPriceTable" class="form-horizontal">
                     <input type="hidden" name="unitHuxingId">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="card-body">
                                 <div class="row row form-group">
                                     <div class="col-md-12">
-                                        <table class="table table-bordered" id="UnitHuxingPriceList">
+                                        <table class="table table-bordered" id="HouseHuxingPriceList">
                                             <!-- cerare document add ajax data-->
                                         </table>
                                     </div>
@@ -340,11 +340,11 @@
     houseHuxingPrice.prototype = {
         config: function () {
             var data = {};
-            data.table = "UnitHuxingPriceList";
-            data.box = "divBoxUnitHuxingPrice";
-            data.frm = "frmUnitHuxingPrice";
-            data.tableBox = "divBoxUnitHuxingPriceTable";
-            data.tableFrm = "frmUnitHuxingPriceTable";
+            data.table = "HouseHuxingPriceList";
+            data.box = "divBoxHouseHuxingPrice";
+            data.frm = "frmHouseHuxingPrice";
+            data.tableBox = "divBoxHouseHuxingPriceTable";
+            data.tableFrm = "frmHouseHuxingPriceTable";
             return data;
         },
         loadDataDicList: function (unitHuxingId) {
@@ -354,7 +354,7 @@
             cols.push({field: 'price', title: '价格'});
             cols.push({field: 'adjustFactor', title: '因素'});
             $("#" + houseHuxingPrice.prototype.config().table).bootstrapTable('destroy');
-            TableInit(houseHuxingPrice.prototype.config().table, getContextPath() + "/basicUnitHuxingPrice/getUnitHuxingPriceList", cols, {
+            TableInit(houseHuxingPrice.prototype.config().table, getContextPath() + "/basicHouseHuxingPrice/getHouseHuxingPriceList", cols, {
                 unitHuxingId: unitHuxingId
             }, {
                 showColumns: false,

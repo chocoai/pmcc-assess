@@ -3,7 +3,7 @@ package com.copower.pmcc.assess.dal.basis.entity;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class BasicUnitHuxingPrice {
+public class BasicHouseHuxingPrice {
     private Integer id;
 
     private Integer huxingId;
@@ -18,15 +18,15 @@ public class BasicUnitHuxingPrice {
 
     private String remark;
 
+    private Integer declareId;
+
+    private String declareName;
+
     private String creator;
 
     private Date gmtCreated;
 
     private Date gmtModified;
-
-    private String declareName;
-
-    private Integer declareId;
 
     private String jsonData;
 
@@ -86,6 +86,22 @@ public class BasicUnitHuxingPrice {
         this.remark = remark == null ? null : remark.trim();
     }
 
+    public Integer getDeclareId() {
+        return declareId;
+    }
+
+    public void setDeclareId(Integer declareId) {
+        this.declareId = declareId;
+    }
+
+    public String getDeclareName() {
+        return declareName;
+    }
+
+    public void setDeclareName(String declareName) {
+        this.declareName = declareName == null ? null : declareName.trim();
+    }
+
     public String getCreator() {
         return creator;
     }
@@ -108,22 +124,6 @@ public class BasicUnitHuxingPrice {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public String getDeclareName() {
-        return declareName;
-    }
-
-    public void setDeclareName(String declareName) {
-        this.declareName = declareName == null ? null : declareName.trim();
-    }
-
-    public Integer getDeclareId() {
-        return declareId;
-    }
-
-    public void setDeclareId(Integer declareId) {
-        this.declareId = declareId;
     }
 
     public String getJsonData() {

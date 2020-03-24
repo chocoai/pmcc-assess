@@ -3,7 +3,7 @@
 --%>
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<div id="divBoxUnitHuxingPriceTable" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+<div id="divBoxHouseHuxingPriceTable" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -14,13 +14,13 @@
             </div>
 
             <div class="modal-body">
-                <form id="frmUnitHuxingPriceTable" class="form-horizontal">
+                <form id="frmHouseHuxingPriceTable" class="form-horizontal">
                     <input type="hidden" name="unitHuxingId">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="card-body">
                                 <div class="col-md-12">
-                                    <table class="table table-bordered" id="UnitHuxingPriceList">
+                                    <table class="table table-bordered" id="HouseHuxingPriceList">
                                         <!-- cerare document add ajax data-->
                                     </table>
                                 </div>
@@ -48,17 +48,17 @@
         houseHuxingPriceDetail.prototype = {
             config: function () {
                 var data = {};
-                data.table = "UnitHuxingPriceList";
-                data.box = "divBoxUnitHuxingPrice";
-                data.frm = "frmUnitHuxingPrice";
-                data.tableBox = "divBoxUnitHuxingPriceTable";
-                data.tableFrm = "frmUnitHuxingPriceTable";
+                data.table = "HouseHuxingPriceList";
+                data.box = "divBoxHouseHuxingPrice";
+                data.frm = "frmHouseHuxingPrice";
+                data.tableBox = "divBoxHouseHuxingPriceTable";
+                data.tableFrm = "frmHouseHuxingPriceTable";
                 return data;
             },
             loadDataDicList: function (unitHuxingId) {
                 var cols = commonColumn.unitHuxingPriceColumn();
                 $("#" + houseHuxingPriceDetail.prototype.config().table).bootstrapTable('destroy');
-                TableInit(houseHuxingPriceDetail.prototype.config().table, getContextPath() + "/basicUnitHuxingPrice/getUnitHuxingPriceList", cols, {
+                TableInit(houseHuxingPriceDetail.prototype.config().table, getContextPath() + "/basicHouseHuxingPrice/getHouseHuxingPriceList", cols, {
                     unitHuxingId: unitHuxingId
                 }, {
                     showColumns: false,

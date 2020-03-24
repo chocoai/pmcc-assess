@@ -5,14 +5,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class BasicUnitHuxingPriceExample {
+public class BasicHouseHuxingPriceExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public BasicUnitHuxingPriceExample() {
+    public BasicHouseHuxingPriceExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -556,6 +556,136 @@ public class BasicUnitHuxingPriceExample {
             return (Criteria) this;
         }
 
+        public Criteria andDeclareIdIsNull() {
+            addCriterion("declare_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdIsNotNull() {
+            addCriterion("declare_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdEqualTo(Integer value) {
+            addCriterion("declare_id =", value, "declareId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdNotEqualTo(Integer value) {
+            addCriterion("declare_id <>", value, "declareId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdGreaterThan(Integer value) {
+            addCriterion("declare_id >", value, "declareId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("declare_id >=", value, "declareId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdLessThan(Integer value) {
+            addCriterion("declare_id <", value, "declareId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdLessThanOrEqualTo(Integer value) {
+            addCriterion("declare_id <=", value, "declareId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdIn(List<Integer> values) {
+            addCriterion("declare_id in", values, "declareId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdNotIn(List<Integer> values) {
+            addCriterion("declare_id not in", values, "declareId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdBetween(Integer value1, Integer value2) {
+            addCriterion("declare_id between", value1, value2, "declareId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("declare_id not between", value1, value2, "declareId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareNameIsNull() {
+            addCriterion("declare_name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareNameIsNotNull() {
+            addCriterion("declare_name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareNameEqualTo(String value) {
+            addCriterion("declare_name =", value, "declareName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareNameNotEqualTo(String value) {
+            addCriterion("declare_name <>", value, "declareName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareNameGreaterThan(String value) {
+            addCriterion("declare_name >", value, "declareName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareNameGreaterThanOrEqualTo(String value) {
+            addCriterion("declare_name >=", value, "declareName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareNameLessThan(String value) {
+            addCriterion("declare_name <", value, "declareName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareNameLessThanOrEqualTo(String value) {
+            addCriterion("declare_name <=", value, "declareName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareNameLike(String value) {
+            addCriterion("declare_name like", value, "declareName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareNameNotLike(String value) {
+            addCriterion("declare_name not like", value, "declareName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareNameIn(List<String> values) {
+            addCriterion("declare_name in", values, "declareName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareNameNotIn(List<String> values) {
+            addCriterion("declare_name not in", values, "declareName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareNameBetween(String value1, String value2) {
+            addCriterion("declare_name between", value1, value2, "declareName");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeclareNameNotBetween(String value1, String value2) {
+            addCriterion("declare_name not between", value1, value2, "declareName");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;
@@ -743,136 +873,6 @@ public class BasicUnitHuxingPriceExample {
 
         public Criteria andGmtModifiedNotBetween(Date value1, Date value2) {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeclareNameIsNull() {
-            addCriterion("declare_name is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeclareNameIsNotNull() {
-            addCriterion("declare_name is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeclareNameEqualTo(String value) {
-            addCriterion("declare_name =", value, "declareName");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeclareNameNotEqualTo(String value) {
-            addCriterion("declare_name <>", value, "declareName");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeclareNameGreaterThan(String value) {
-            addCriterion("declare_name >", value, "declareName");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeclareNameGreaterThanOrEqualTo(String value) {
-            addCriterion("declare_name >=", value, "declareName");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeclareNameLessThan(String value) {
-            addCriterion("declare_name <", value, "declareName");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeclareNameLessThanOrEqualTo(String value) {
-            addCriterion("declare_name <=", value, "declareName");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeclareNameLike(String value) {
-            addCriterion("declare_name like", value, "declareName");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeclareNameNotLike(String value) {
-            addCriterion("declare_name not like", value, "declareName");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeclareNameIn(List<String> values) {
-            addCriterion("declare_name in", values, "declareName");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeclareNameNotIn(List<String> values) {
-            addCriterion("declare_name not in", values, "declareName");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeclareNameBetween(String value1, String value2) {
-            addCriterion("declare_name between", value1, value2, "declareName");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeclareNameNotBetween(String value1, String value2) {
-            addCriterion("declare_name not between", value1, value2, "declareName");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeclareIdIsNull() {
-            addCriterion("declare_id is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeclareIdIsNotNull() {
-            addCriterion("declare_id is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeclareIdEqualTo(Integer value) {
-            addCriterion("declare_id =", value, "declareId");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeclareIdNotEqualTo(Integer value) {
-            addCriterion("declare_id <>", value, "declareId");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeclareIdGreaterThan(Integer value) {
-            addCriterion("declare_id >", value, "declareId");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeclareIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("declare_id >=", value, "declareId");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeclareIdLessThan(Integer value) {
-            addCriterion("declare_id <", value, "declareId");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeclareIdLessThanOrEqualTo(Integer value) {
-            addCriterion("declare_id <=", value, "declareId");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeclareIdIn(List<Integer> values) {
-            addCriterion("declare_id in", values, "declareId");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeclareIdNotIn(List<Integer> values) {
-            addCriterion("declare_id not in", values, "declareId");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeclareIdBetween(Integer value1, Integer value2) {
-            addCriterion("declare_id between", value1, value2, "declareId");
-            return (Criteria) this;
-        }
-
-        public Criteria andDeclareIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("declare_id not between", value1, value2, "declareId");
             return (Criteria) this;
         }
     }

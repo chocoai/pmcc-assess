@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.BasicUnitHuxingPriceMapper" >
-  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.BasicUnitHuxingPrice" >
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.BasicHouseHuxingPriceMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.BasicHouseHuxingPrice" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="huxing_id" property="huxingId" jdbcType="INTEGER" />
     <result column="house_number" property="houseNumber" jdbcType="VARCHAR" />
@@ -9,13 +9,13 @@
     <result column="adjust_factor" property="adjustFactor" jdbcType="VARCHAR" />
     <result column="price" property="price" jdbcType="DECIMAL" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="declare_id" property="declareId" jdbcType="INTEGER" />
+    <result column="declare_name" property="declareName" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
-    <result column="declare_name" property="declareName" jdbcType="VARCHAR" />
-    <result column="declare_id" property="declareId" jdbcType="INTEGER" />
   </resultMap>
-  <resultMap id="ResultMapWithBLOBs" type="com.copower.pmcc.assess.dal.basis.entity.BasicUnitHuxingPrice" extends="BaseResultMap" >
+  <resultMap id="ResultMapWithBLOBs" type="com.copower.pmcc.assess.dal.basis.entity.BasicHouseHuxingPrice" extends="BaseResultMap" >
     <result column="json_data" property="jsonData" jdbcType="LONGVARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
@@ -77,13 +77,13 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, huxing_id, house_number, area, adjust_factor, price, remark, creator, gmt_created, 
-    gmt_modified, declare_name, declare_id
+    id, huxing_id, house_number, area, adjust_factor, price, remark, declare_id, declare_name, 
+    creator, gmt_created, gmt_modified
   </sql>
   <sql id="Blob_Column_List" >
     json_data
   </sql>
-  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicUnitHuxingPriceExample" >
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseHuxingPriceExample" >
     select
     <if test="distinct" >
       distinct
@@ -91,7 +91,7 @@
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
-    from tb_basic_unit_huxing_price
+    from tb_basic_house_huxing_price
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -99,13 +99,13 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicUnitHuxingPriceExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseHuxingPriceExample" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from tb_basic_unit_huxing_price
+    from tb_basic_house_huxing_price
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -118,39 +118,39 @@
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
-    from tb_basic_unit_huxing_price
+    from tb_basic_house_huxing_price
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from tb_basic_unit_huxing_price
+    delete from tb_basic_house_huxing_price
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicUnitHuxingPriceExample" >
-    delete from tb_basic_unit_huxing_price
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseHuxingPriceExample" >
+    delete from tb_basic_house_huxing_price
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicUnitHuxingPrice" >
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseHuxingPrice" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_basic_unit_huxing_price (huxing_id, house_number, area, 
+    insert into tb_basic_house_huxing_price (huxing_id, house_number, area, 
       adjust_factor, price, remark, 
-      creator, gmt_created, gmt_modified, 
-      declare_name, declare_id, json_data
+      declare_id, declare_name, creator, 
+      gmt_created, gmt_modified, json_data
       )
     values (#{huxingId,jdbcType=INTEGER}, #{houseNumber,jdbcType=VARCHAR}, #{area,jdbcType=DECIMAL}, 
       #{adjustFactor,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, #{remark,jdbcType=VARCHAR}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
-      #{declareName,jdbcType=VARCHAR}, #{declareId,jdbcType=INTEGER}, #{jsonData,jdbcType=LONGVARCHAR}
+      #{declareId,jdbcType=INTEGER}, #{declareName,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{jsonData,jdbcType=LONGVARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicUnitHuxingPrice" >
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseHuxingPrice" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_basic_unit_huxing_price
+    insert into tb_basic_house_huxing_price
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="huxingId != null" >
         huxing_id,
@@ -170,6 +170,12 @@
       <if test="remark != null" >
         remark,
       </if>
+      <if test="declareId != null" >
+        declare_id,
+      </if>
+      <if test="declareName != null" >
+        declare_name,
+      </if>
       <if test="creator != null" >
         creator,
       </if>
@@ -178,12 +184,6 @@
       </if>
       <if test="gmtModified != null" >
         gmt_modified,
-      </if>
-      <if test="declareName != null" >
-        declare_name,
-      </if>
-      <if test="declareId != null" >
-        declare_id,
       </if>
       <if test="jsonData != null" >
         json_data,
@@ -208,6 +208,12 @@
       <if test="remark != null" >
         #{remark,jdbcType=VARCHAR},
       </if>
+      <if test="declareId != null" >
+        #{declareId,jdbcType=INTEGER},
+      </if>
+      <if test="declareName != null" >
+        #{declareName,jdbcType=VARCHAR},
+      </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
       </if>
@@ -217,25 +223,19 @@
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="declareName != null" >
-        #{declareName,jdbcType=VARCHAR},
-      </if>
-      <if test="declareId != null" >
-        #{declareId,jdbcType=INTEGER},
-      </if>
       <if test="jsonData != null" >
         #{jsonData,jdbcType=LONGVARCHAR},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicUnitHuxingPriceExample" resultType="java.lang.Integer" >
-    select count(*) from tb_basic_unit_huxing_price
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseHuxingPriceExample" resultType="java.lang.Integer" >
+    select count(*) from tb_basic_house_huxing_price
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update tb_basic_unit_huxing_price
+    update tb_basic_house_huxing_price
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
@@ -258,6 +258,12 @@
       <if test="record.remark != null" >
         remark = #{record.remark,jdbcType=VARCHAR},
       </if>
+      <if test="record.declareId != null" >
+        declare_id = #{record.declareId,jdbcType=INTEGER},
+      </if>
+      <if test="record.declareName != null" >
+        declare_name = #{record.declareName,jdbcType=VARCHAR},
+      </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
@@ -266,12 +272,6 @@
       </if>
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.declareName != null" >
-        declare_name = #{record.declareName,jdbcType=VARCHAR},
-      </if>
-      <if test="record.declareId != null" >
-        declare_id = #{record.declareId,jdbcType=INTEGER},
       </if>
       <if test="record.jsonData != null" >
         json_data = #{record.jsonData,jdbcType=LONGVARCHAR},
@@ -282,7 +282,7 @@
     </if>
   </update>
   <update id="updateByExampleWithBLOBs" parameterType="map" >
-    update tb_basic_unit_huxing_price
+    update tb_basic_house_huxing_price
     set id = #{record.id,jdbcType=INTEGER},
       huxing_id = #{record.huxingId,jdbcType=INTEGER},
       house_number = #{record.houseNumber,jdbcType=VARCHAR},
@@ -290,18 +290,18 @@
       adjust_factor = #{record.adjustFactor,jdbcType=VARCHAR},
       price = #{record.price,jdbcType=DECIMAL},
       remark = #{record.remark,jdbcType=VARCHAR},
+      declare_id = #{record.declareId,jdbcType=INTEGER},
+      declare_name = #{record.declareName,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      declare_name = #{record.declareName,jdbcType=VARCHAR},
-      declare_id = #{record.declareId,jdbcType=INTEGER},
       json_data = #{record.jsonData,jdbcType=LONGVARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update tb_basic_unit_huxing_price
+    update tb_basic_house_huxing_price
     set id = #{record.id,jdbcType=INTEGER},
       huxing_id = #{record.huxingId,jdbcType=INTEGER},
       house_number = #{record.houseNumber,jdbcType=VARCHAR},
@@ -309,17 +309,17 @@
       adjust_factor = #{record.adjustFactor,jdbcType=VARCHAR},
       price = #{record.price,jdbcType=DECIMAL},
       remark = #{record.remark,jdbcType=VARCHAR},
+      declare_id = #{record.declareId,jdbcType=INTEGER},
+      declare_name = #{record.declareName,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      declare_name = #{record.declareName,jdbcType=VARCHAR},
-      declare_id = #{record.declareId,jdbcType=INTEGER}
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicUnitHuxingPrice" >
-    update tb_basic_unit_huxing_price
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseHuxingPrice" >
+    update tb_basic_house_huxing_price
     <set >
       <if test="huxingId != null" >
         huxing_id = #{huxingId,jdbcType=INTEGER},
@@ -339,6 +339,12 @@
       <if test="remark != null" >
         remark = #{remark,jdbcType=VARCHAR},
       </if>
+      <if test="declareId != null" >
+        declare_id = #{declareId,jdbcType=INTEGER},
+      </if>
+      <if test="declareName != null" >
+        declare_name = #{declareName,jdbcType=VARCHAR},
+      </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
       </if>
@@ -348,47 +354,41 @@
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="declareName != null" >
-        declare_name = #{declareName,jdbcType=VARCHAR},
-      </if>
-      <if test="declareId != null" >
-        declare_id = #{declareId,jdbcType=INTEGER},
-      </if>
       <if test="jsonData != null" >
         json_data = #{jsonData,jdbcType=LONGVARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicUnitHuxingPrice" >
-    update tb_basic_unit_huxing_price
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseHuxingPrice" >
+    update tb_basic_house_huxing_price
     set huxing_id = #{huxingId,jdbcType=INTEGER},
       house_number = #{houseNumber,jdbcType=VARCHAR},
       area = #{area,jdbcType=DECIMAL},
       adjust_factor = #{adjustFactor,jdbcType=VARCHAR},
       price = #{price,jdbcType=DECIMAL},
       remark = #{remark,jdbcType=VARCHAR},
+      declare_id = #{declareId,jdbcType=INTEGER},
+      declare_name = #{declareName,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      declare_name = #{declareName,jdbcType=VARCHAR},
-      declare_id = #{declareId,jdbcType=INTEGER},
       json_data = #{jsonData,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicUnitHuxingPrice" >
-    update tb_basic_unit_huxing_price
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseHuxingPrice" >
+    update tb_basic_house_huxing_price
     set huxing_id = #{huxingId,jdbcType=INTEGER},
       house_number = #{houseNumber,jdbcType=VARCHAR},
       area = #{area,jdbcType=DECIMAL},
       adjust_factor = #{adjustFactor,jdbcType=VARCHAR},
       price = #{price,jdbcType=DECIMAL},
       remark = #{remark,jdbcType=VARCHAR},
+      declare_id = #{declareId,jdbcType=INTEGER},
+      declare_name = #{declareName,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      declare_name = #{declareName,jdbcType=VARCHAR},
-      declare_id = #{declareId,jdbcType=INTEGER}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

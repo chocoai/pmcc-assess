@@ -3,7 +3,7 @@
 --%>
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<div id="divBoxUnitHuxingPriceTable" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+<div id="divBoxHouseHuxingPriceTable" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -15,7 +15,7 @@
             </div>
 
             <div class="modal-body">
-                <form id="frmUnitHuxingPriceTable" class="form-horizontal">
+                <form id="frmHouseHuxingPriceTable" class="form-horizontal">
                     <input type="hidden" name="unitHuxingId">
                     <div class="row">
                         <div class="col-md-12">
@@ -25,7 +25,7 @@
                                         <div class="form-inline form-inline x-valid">
                                             <button style="margin-left: 5px" type="button" class="btn btn-success btn-sm"
                                                     onclick="houseHuxingPrice.prototype.showModel()"
-                                                    data-toggle="modal" href="#divBoxUnitHuxingPrice">
+                                                    data-toggle="modal" href="#divBoxHouseHuxingPrice">
                                                 <span class="btn-label">
 												<i class="fa fa-plus"></i>
 											</span>新增
@@ -52,7 +52,7 @@
                                 </div>
                                 <div class="row row form-group">
                                     <div class="col-md-12">
-                                        <table class="table table-bordered" id="UnitHuxingPriceList">
+                                        <table class="table table-bordered" id="HouseHuxingPriceList">
                                             <!-- cerare document add ajax data-->
                                         </table>
                                     </div>
@@ -76,7 +76,7 @@
 
 
 
-<div id="divBoxUnitHuxingPrice" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+<div id="divBoxHouseHuxingPrice" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -88,9 +88,8 @@
             </div>
 
             <div class="modal-body">
-                <form id="frmUnitHuxingPrice" class="form-horizontal">
+                <form id="frmHouseHuxingPrice" class="form-horizontal">
                     <input type="hidden" name="id">
-                    <input type="hidden" name="huxingId">
                     <input type="hidden" name="huxingId">
                     <input type="hidden" name="declareName">
                     <input type="hidden" name="declareId">

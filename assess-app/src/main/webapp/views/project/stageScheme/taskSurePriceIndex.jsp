@@ -807,7 +807,7 @@
     }
 </script>
 
-<div id="divBoxUnitHuxingPriceTable" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+<div id="divBoxHouseHuxingPriceTable" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -819,7 +819,7 @@
             </div>
 
             <div class="modal-body">
-                <form id="frmUnitHuxingPriceTable" class="form-horizontal">
+                <form id="frmHouseHuxingPriceTable" class="form-horizontal">
                     <input type="hidden" name="unitHuxingId">
                     <div class="row">
                         <div class="col-md-12">
@@ -829,7 +829,7 @@
                                         <div class="form-inline form-inline x-valid">
                                             <button type="button" style="margin-left: 5px" class="btn btn-success btn-sm"
                                                     onclick="houseHuxingPrice.prototype.showModel()"
-                                                    data-toggle="modal" href="#divBoxUnitHuxingPrice">
+                                                    data-toggle="modal" href="#divBoxHouseHuxingPrice">
                                                 <span class="btn-label">
 												<i class="fa fa-plus"></i>
 											</span>新增
@@ -856,7 +856,7 @@
                                 </div>
                                 <div class="row row form-group">
                                     <div class="col-md-12">
-                                        <table class="table table-bordered" id="UnitHuxingPriceList">
+                                        <table class="table table-bordered" id="HouseHuxingPriceList">
                                             <!-- cerare document add ajax data-->
                                         </table>
                                     </div>
@@ -877,7 +877,7 @@
         </div>
     </div>
 </div>
-<div id="divBoxUnitHuxingPrice" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+<div id="divBoxHouseHuxingPrice" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -889,7 +889,7 @@
             </div>
 
             <div class="modal-body">
-                <form id="frmUnitHuxingPrice" class="form-horizontal">
+                <form id="frmHouseHuxingPrice" class="form-horizontal">
                     <input type="hidden" name="id">
                     <input type="hidden" name="huxingId">
                     <input type="hidden" name="declareName">
@@ -964,11 +964,11 @@
     houseHuxingPrice.prototype = {
         config: function () {
             var data = {};
-            data.table = "UnitHuxingPriceList";
-            data.box = "divBoxUnitHuxingPrice";
-            data.frm = "frmUnitHuxingPrice";
-            data.tableBox = "divBoxUnitHuxingPriceTable";
-            data.tableFrm = "frmUnitHuxingPriceTable";
+            data.table = "HouseHuxingPriceList";
+            data.box = "divBoxHouseHuxingPrice";
+            data.frm = "frmHouseHuxingPrice";
+            data.tableBox = "divBoxHouseHuxingPriceTable";
+            data.tableFrm = "frmHouseHuxingPriceTable";
             return data;
         },
         loadDataDicList: function (unitHuxingId) {
@@ -987,7 +987,7 @@
                 }
             });
             $("#" + houseHuxingPrice.prototype.config().table).bootstrapTable('destroy');
-            TableInit(houseHuxingPrice.prototype.config().table, getContextPath() + "/basicUnitHuxingPrice/getUnitHuxingPriceList", cols, {
+            TableInit(houseHuxingPrice.prototype.config().table, getContextPath() + "/basicHouseHuxingPrice/getHouseHuxingPriceList", cols, {
                 unitHuxingId: unitHuxingId
             }, {
                 showColumns: false,
@@ -1000,7 +1000,7 @@
         },
         removeData: function (id, unitHuxingId) {
             $.ajax({
-                url: getContextPath() + "/basicUnitHuxingPrice/deleteBasicUnitHuxingPrice",
+                url: getContextPath() + "/basicHouseHuxingPrice/deleteBasicHouseHuxingPrice",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -1037,7 +1037,7 @@
             var unitHuxingId = $("#" + houseHuxingPrice.prototype.config().frm).find("input[name='huxingId']").val()
             var data = formParams(houseHuxingPrice.prototype.config().frm, true);
             $.ajax({
-                url: getContextPath() + "/basicUnitHuxingPrice/saveAndUpdateBasicUnitHuxingPrice",
+                url: getContextPath() + "/basicHouseHuxingPrice/saveAndUpdateBasicHouseHuxingPrice",
                 type: "post",
                 dataType: "json",
                 data: data,
@@ -1064,7 +1064,7 @@
         },
         getAndInit: function (id, unitHuxingId) {
             $.ajax({
-                url: getContextPath() + "/basicUnitHuxingPrice/getBasicUnitHuxingPriceById",
+                url: getContextPath() + "/basicHouseHuxingPrice/getBasicHouseHuxingPriceById",
                 type: "post",
                 dataType: "json",
                 data: {id: id},

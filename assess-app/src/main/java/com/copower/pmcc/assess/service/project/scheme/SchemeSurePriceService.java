@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.ArithmeticUtils;
 import com.copower.pmcc.assess.common.PoiUtils;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.dal.basis.dao.basic.BasicUnitHuxingPriceDao;
+import com.copower.pmcc.assess.dal.basis.dao.basic.BasicHouseHuxingPriceDao;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdCostDao;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdDevelopmentDao;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdIncomeDao;
@@ -59,9 +59,9 @@ public class SchemeSurePriceService {
     @Autowired
     private SchemeJudgeObjectDao schemeJudgeObjectDao;
     @Autowired
-    private BasicUnitHuxingPriceService basicUnitHuxingPriceService;
+    private BasicHouseHuxingPriceService basicHouseHuxingPriceService;
     @Autowired
-    private BasicUnitHuxingPriceDao basicUnitHuxingPriceDao;
+    private BasicHouseHuxingPriceDao basicHouseHuxingPriceDao;
     @Autowired
     private SchemeInfoDao schemeInfoDao;
     @Autowired
@@ -567,12 +567,11 @@ public class SchemeSurePriceService {
     }
 
 
-
-    public BasicUnitHuxing getUnitHuxing(Integer judgeObjectId) throws Exception{
+    public BasicUnitHuxing getUnitHuxing(Integer judgeObjectId) throws Exception {
         SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectDao.getSchemeJudgeObject(judgeObjectId);
-        if(schemeJudgeObject.getBasicApplyId()!=null&&schemeJudgeObject.getBasicApplyId()!=0){
+        if (schemeJudgeObject.getBasicApplyId() != null && schemeJudgeObject.getBasicApplyId() != 0) {
             BasicApply basicApply = basicApplyService.getByBasicApplyId(schemeJudgeObject.getBasicApplyId());
-            if(basicApply!=null){
+            if (basicApply != null) {
                 BasicUnit basicUnit = basicUnitService.getBasicUnitById(basicApply.getBasicUnitId());
                 BasicUnitHuxing basicUnitHuxing = new BasicUnitHuxing();
                 basicUnitHuxing.setUnitId(basicUnit.getId());
@@ -581,9 +580,9 @@ public class SchemeSurePriceService {
                 BasicHouse basicHouse = basicHouseService.getBasicHouseById(basicApply.getBasicHouseId());
                 String houseNumber = basicHouse.getHouseNumber();
 
-                if(CollectionUtils.isNotEmpty(basicUnitHuxingList)){
-                    for (BasicUnitHuxing item: basicUnitHuxingList) {
-                        if(houseNumber.equals(item.getStandardHouseNumber())){
+                if (CollectionUtils.isNotEmpty(basicUnitHuxingList)) {
+                    for (BasicUnitHuxing item : basicUnitHuxingList) {
+                        if (houseNumber.equals(item.getStandardHouseNumber())) {
                             return item;
                         }
                     }
@@ -665,19 +664,19 @@ public class SchemeSurePriceService {
             return builder.toString();
         }
         for (int i = startRowNumber; i < rowLength + startRowNumber; i++) {
-            BasicUnitHuxingPrice basicUnitHuxingPrice = null;
+            BasicHouseHuxingPrice basicHouseHuxingPrice = null;
             try {
                 row = sheet.getRow(i);
                 if (row == null) {
                     builder.append(String.format("\n第%s行异常：%s", i, "没有数据"));
                     continue;
                 }
-                basicUnitHuxingPrice = new BasicUnitHuxingPrice();
-                basicUnitHuxingPrice.setHuxingId(huxingId);
-                if (!this.importBasicUnitHuxingPrice(basicUnitHuxingPrice, builder, row, colLength, i, sheet.getRow(0))) {
+                basicHouseHuxingPrice = new BasicHouseHuxingPrice();
+                basicHouseHuxingPrice.setHuxingId(huxingId);
+                if (!this.importBasicHouseHuxingPrice(basicHouseHuxingPrice, builder, row, colLength, i, sheet.getRow(0))) {
                     continue;
                 }
-                basicUnitHuxingPriceService.saveAndUpdateBasicUnitHuxingPrice(basicUnitHuxingPrice, false);
+                basicHouseHuxingPriceService.saveAndUpdateBasicHouseHuxingPrice(basicHouseHuxingPrice, false);
                 successCount++;
             } catch (Exception e) {
                 builder.append(String.format("\n第%s行异常：%s", i + 1, e.getMessage()));
@@ -688,20 +687,20 @@ public class SchemeSurePriceService {
     }
 
 
-    public boolean importBasicUnitHuxingPrice(BasicUnitHuxingPrice basicUnitHuxingPrice, StringBuilder builder, Row row, int colLength, int i, Row header) throws Exception {
+    public boolean importBasicHouseHuxingPrice(BasicHouseHuxingPrice basicHouseHuxingPrice, StringBuilder builder, Row row, int colLength, int i, Row header) throws Exception {
         //房号
         if (org.apache.commons.lang.StringUtils.isNotEmpty(PoiUtils.getCellValue(row.getCell(0)))) {
-            basicUnitHuxingPrice.setHouseNumber(PoiUtils.getCellValue(row.getCell(0)));
-            List<BasicUnitHuxingPrice> list = basicUnitHuxingPriceDao.basicUnitHuxingList(basicUnitHuxingPrice);
+            basicHouseHuxingPrice.setHouseNumber(PoiUtils.getCellValue(row.getCell(0)));
+            List<BasicHouseHuxingPrice> list = basicHouseHuxingPriceDao.basicHouseHuxingList(basicHouseHuxingPrice);
             if (CollectionUtils.isNotEmpty(list)) {
-                BeanUtils.copyProperties(list.get(0), basicUnitHuxingPrice);
+                BeanUtils.copyProperties(list.get(0), basicHouseHuxingPrice);
             }
         }
 
         //面积
         if (org.apache.commons.lang.StringUtils.isNotEmpty(PoiUtils.getCellValue(row.getCell(1)))) {
             if (this.isNumeric(PoiUtils.getCellValue(row.getCell(1)))) {
-                basicUnitHuxingPrice.setArea(new BigDecimal(PoiUtils.getCellValue(row.getCell(1))));
+                basicHouseHuxingPrice.setArea(new BigDecimal(PoiUtils.getCellValue(row.getCell(1))));
             } else {
                 builder.append(String.format("\n第%s行异常：面积应填写数字", i));
                 return false;
@@ -711,7 +710,7 @@ public class SchemeSurePriceService {
         //价格
         if (org.apache.commons.lang.StringUtils.isNotEmpty(PoiUtils.getCellValue(row.getCell(2)))) {
             if (this.isNumeric(PoiUtils.getCellValue(row.getCell(2)))) {
-                basicUnitHuxingPrice.setPrice(new BigDecimal(PoiUtils.getCellValue(row.getCell(2))));
+                basicHouseHuxingPrice.setPrice(new BigDecimal(PoiUtils.getCellValue(row.getCell(2))));
             } else {
                 builder.append(String.format("\n第%s行异常：价格应填写数字", i));
                 return false;
@@ -719,7 +718,7 @@ public class SchemeSurePriceService {
         }
         //因素
         if (org.apache.commons.lang.StringUtils.isNotEmpty(PoiUtils.getCellValue(row.getCell(3)))) {
-            basicUnitHuxingPrice.setAdjustFactor(PoiUtils.getCellValue(row.getCell(3)));
+            basicHouseHuxingPrice.setAdjustFactor(PoiUtils.getCellValue(row.getCell(3)));
         }
         HashMap<String, Object> map = new HashMap<>();
         //自定义数据
@@ -729,7 +728,7 @@ public class SchemeSurePriceService {
         }
         String string = JSONObject.toJSONString(map);
         if (org.apache.commons.lang.StringUtils.isNotEmpty(string)) {
-            basicUnitHuxingPrice.setJsonData(string);
+            basicHouseHuxingPrice.setJsonData(string);
         }
         return true;
     }

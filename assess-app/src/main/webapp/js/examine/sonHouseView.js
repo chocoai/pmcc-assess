@@ -9,11 +9,11 @@ var houseHuxingPrice;
     houseHuxingPrice.prototype = {
         config: function () {
             var data = {};
-            data.table = "UnitHuxingPriceList";
-            data.box = "divBoxUnitHuxingPrice";
-            data.frm = "frmUnitHuxingPrice";
-            data.tableBox = "divBoxUnitHuxingPriceTable";
-            data.tableFrm = "frmUnitHuxingPriceTable";
+            data.table = "HouseHuxingPriceList";
+            data.box = "divBoxHouseHuxingPrice";
+            data.frm = "frmHouseHuxingPrice";
+            data.tableBox = "divBoxHouseHuxingPriceTable";
+            data.tableFrm = "frmHouseHuxingPriceTable";
             return data;
         },
         loadDataDicList: function (unitHuxingId) {
@@ -28,7 +28,7 @@ var houseHuxingPrice;
                 }
             });
             $("#" + houseHuxingPrice.prototype.config().table).bootstrapTable('destroy');
-            TableInit(houseHuxingPrice.prototype.config().table, getContextPath() + "/basicUnitHuxingPrice/getUnitHuxingPriceList", cols, {
+            TableInit(houseHuxingPrice.prototype.config().table, getContextPath() + "/basicHouseHuxingPrice/getHouseHuxingPriceList", cols, {
                 unitHuxingId: unitHuxingId
             }, {
                 showColumns: false,
@@ -41,7 +41,7 @@ var houseHuxingPrice;
         },
         removeData: function (id, unitHuxingId) {
             $.ajax({
-                url: getContextPath() + "/basicUnitHuxingPrice/deleteBasicUnitHuxingPrice",
+                url: getContextPath() + "/basicHouseHuxingPrice/deleteBasicHouseHuxingPrice",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -79,7 +79,7 @@ var houseHuxingPrice;
             var unitHuxingId = $("#" + houseHuxingPrice.prototype.config().frm).find("input[name='huxingId']").val()
             var data = formParams(houseHuxingPrice.prototype.config().frm, true);
             $.ajax({
-                url: getContextPath() + "/basicUnitHuxingPrice/saveAndUpdateBasicUnitHuxingPrice",
+                url: getContextPath() + "/basicHouseHuxingPrice/saveAndUpdateBasicHouseHuxingPrice",
                 type: "post",
                 dataType: "json",
                 data: data,
@@ -106,7 +106,7 @@ var houseHuxingPrice;
         },
         getAndInit: function (id, unitHuxingId) {
             $.ajax({
-                url: getContextPath() + "/basicUnitHuxingPrice/getBasicUnitHuxingPriceById",
+                url: getContextPath() + "/basicHouseHuxingPrice/getBasicHouseHuxingPriceById",
                 type: "post",
                 dataType: "json",
                 data: {id: id},
@@ -137,7 +137,7 @@ var houseHuxingPrice;
             var unitHuxingId = $("#" + houseHuxingPrice.prototype.config().tableFrm).find("input[name='unitHuxingId']").val();
             $.ajaxFileUpload({
                 type: "POST",
-                url: getContextPath() + "/basicUnitHuxingPrice/importData",
+                url: getContextPath() + "/basicHouseHuxingPrice/importData",
                 data: {
                     huxingId: unitHuxingId,
                     planDetailsId: planDetailsId
