@@ -23,6 +23,10 @@ public class SurveyAssetInventoryDao {
         return i > 0;
     }
 
+    public SurveyAssetInventory getSurveyAssetInventoryById(Integer id){
+        return surveyAssetInventoryMapper.selectByPrimaryKey(id) ;
+    }
+
     public int save(SurveyAssetInventory surveyAssetInventory) {
         surveyAssetInventoryMapper.insertSelective(surveyAssetInventory);
         return surveyAssetInventory.getId();

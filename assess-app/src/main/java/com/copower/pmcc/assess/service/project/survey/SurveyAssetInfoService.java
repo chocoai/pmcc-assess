@@ -44,7 +44,8 @@ public class SurveyAssetInfoService {
         if (CollectionUtils.isNotEmpty(xlxReportIndividuals)) {
             return xlxReportIndividuals.get(0);
         }
-        return null;
+        saveSurveyAssetInfo(query) ;
+        return query;
     }
 
     public boolean updateSurveyAssetInfo(SurveyAssetInfo oo, boolean updateNull) {

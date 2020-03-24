@@ -42,6 +42,16 @@ public class SurveyAssetInventoryContentDao {
         return i > 0;
     }
 
+
+    public List<SurveyAssetInventoryContent> getSurveyAssetInfoItemListByExample(SurveyAssetInventoryContent oo) {
+        SurveyAssetInventoryContentExample example = new SurveyAssetInventoryContentExample();
+        SurveyAssetInventoryContentExample.Criteria criteria = example.createCriteria();
+        criteria.andIdIsNotNull();
+        MybatisUtils.convertObj2Criteria(oo, criteria);
+        example.setOrderByClause("id");
+        return surveyAssetInventoryContentMapper.selectByExample(example);
+    }
+
     public SurveyAssetInventoryContent getSingleObject(SurveyAssetInventoryContent surveyAssetInventoryContent) {
         SurveyAssetInventoryContentExample example = new SurveyAssetInventoryContentExample();
         MybatisUtils.convertObj2Example(surveyAssetInventoryContent, example);

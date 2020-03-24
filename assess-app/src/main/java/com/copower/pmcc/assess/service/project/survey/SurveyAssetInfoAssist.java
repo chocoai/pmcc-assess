@@ -1,11 +1,14 @@
 package com.copower.pmcc.assess.service.project.survey;
 
+import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
+import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInfo;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
@@ -20,6 +23,8 @@ import org.springframework.web.servlet.ModelAndView;
 public class SurveyAssetInfoAssist implements ProjectTaskInterface {
     @Autowired
     private ProcessControllerComponent processControllerComponent;
+    @Autowired
+    private SurveyAssetInfoService surveyAssetInfoService;
 
     private final String applyViewName = "/project/stageSurvey/taskSurveyAssetInfoIndex";
     private final String approvalViewName = "/project/stageSurvey/taskSurveyAssetInfoApproval";
@@ -27,7 +32,7 @@ public class SurveyAssetInfoAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView(applyViewName, "", 0, "0", "");
-
+        setModelViewParam(projectPlanDetails,modelAndView) ;
         return modelAndView;
     }
 
@@ -35,12 +40,14 @@ public class SurveyAssetInfoAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView approvalView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView(approvalViewName, processInsId, boxId, taskId, agentUserAccount);
+        setModelViewParam(projectPlanDetails,modelAndView) ;
         return modelAndView;
     }
 
     @Override
     public ModelAndView returnEditView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView(applyViewName, processInsId, boxId, taskId, agentUserAccount);
+        setModelViewParam(projectPlanDetails,modelAndView) ;
         return modelAndView;
     }
 
@@ -52,13 +59,15 @@ public class SurveyAssetInfoAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView detailsView(ProjectPlanDetails projectPlanDetails, Integer boxId) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView(approvalViewName, projectPlanDetails.getProcessInsId(), boxId, "-1", "");
+        setModelViewParam(projectPlanDetails,modelAndView) ;
         return modelAndView;
     }
 
 
     @Override
     public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException, BpmException {
-
+        SurveyAssetInfo surveyAssetInfo = JSONObject.parseObject(formData,SurveyAssetInfo.class) ;
+        surveyAssetInfoService.saveAndUpdateSurveyAssetInfo(surveyAssetInfo,false);
     }
 
     @Override
@@ -68,9 +77,13 @@ public class SurveyAssetInfoAssist implements ProjectTaskInterface {
 
     @Override
     public void returnEditCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
+        SurveyAssetInfo surveyAssetInfo = JSONObject.parseObject(formData,SurveyAssetInfo.class) ;
+        surveyAssetInfoService.saveAndUpdateSurveyAssetInfo(surveyAssetInfo,false);
     }
 
     private void setModelViewParam(ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) {
+        SurveyAssetInfo surveyAssetInfo = surveyAssetInfoService.getSurveyAssetInfoByPlanDetailsId(projectPlanDetails.getId()) ;
+        modelAndView.addObject(StringUtils.uncapitalize(SurveyAssetInfo.class.getSimpleName()),surveyAssetInfo) ;
     }
 
 }

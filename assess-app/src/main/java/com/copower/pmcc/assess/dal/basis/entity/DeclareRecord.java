@@ -90,6 +90,8 @@ public class DeclareRecord {
 
     private Boolean bisGenerate;
 
+    private Boolean bisInventory;
+
     private String creator;
 
     private Date gmtCreated;
@@ -438,6 +440,14 @@ public class DeclareRecord {
 
     public void setBisGenerate(Boolean bisGenerate) {
         this.bisGenerate = bisGenerate;
+    }
+
+    public Boolean getBisInventory() {
+        return bisInventory;
+    }
+
+    public void setBisInventory(Boolean bisInventory) {
+        this.bisInventory = bisInventory;
     }
 
     public String getCreator() {
