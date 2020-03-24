@@ -14,7 +14,7 @@
                 价值（万元）    
             </label>
             <div class="col-md-3">
-                <label  class="form-control input-full" >
+                <label  class="form-control input-full" name="worth">
                     <fmt:formatNumber value="${projectXlxReportIndividual.worth}" type="number" maxFractionDigits="2"/>
                 </label>
             </div>
@@ -23,7 +23,7 @@
                 单价(元)    
             </label>
             <div class="col-md-3">
-                <label  class="form-control input-full" >
+                <label  class="form-control input-full" name="price">
                     <fmt:formatNumber value="${projectXlxReportIndividual.price}" type="number" maxFractionDigits="2"/>
                 </label>
             </div>
@@ -31,7 +31,7 @@
                 估价对象土地面积(㎡)    
             </label>
             <div class="col-md-3">
-                <label  class="form-control input-full" >
+                <label  class="form-control input-full" name="judgeObjectLandArea">
                     <fmt:formatNumber value="${projectXlxReportIndividual.judgeObjectLandArea}" type="number" maxFractionDigits="2"/>
                 </label>
             </div>
@@ -46,7 +46,7 @@
                 估价对象建筑面积(㎡)    
             </label>
             <div class="col-md-3">
-                <label  class="form-control input-full" >
+                <label  class="form-control input-full" name="judgeObjectFloorArea">
                     <fmt:formatNumber value="${projectXlxReportIndividual.judgeObjectFloorArea}" type="number" maxFractionDigits="2"/>
                 </label>
             </div>
@@ -54,7 +54,7 @@
                 账面原值(万元)    
             </label>
             <div class="col-md-3">
-                <label  class="form-control input-full" >
+                <label  class="form-control input-full" name="accountValueOriginal">
                     <fmt:formatNumber value="${projectXlxReportIndividual.accountValueOriginal}" type="number" maxFractionDigits="2"/>
                 </label>
             </div>
@@ -107,13 +107,13 @@
                 评估基准日    
             </label>
             <div class="col-md-3">
-                <label class="form-control input-full"><fmt:formatDate value='${projectXlxReportIndividual.valueTimePoint}' pattern='yyyy-MM-dd'/></label>
+                <label class="form-control input-full" name="valueTimePoint"><fmt:formatDate value='${projectXlxReportIndividual.valueTimePoint}' pattern='yyyy-MM-dd'/></label>
             </div>
             <label class="col-md-1  control-label">
                 报告装订日期    
             </label>
             <div class="col-md-3">
-                <label class="form-control input-full"><fmt:formatDate value='${projectXlxReportIndividual.reportBindingDate}' pattern='yyyy-MM-dd'/></label>
+                <label class="form-control input-full" name="reportBindingDate"><fmt:formatDate value='${projectXlxReportIndividual.reportBindingDate}' pattern='yyyy-MM-dd'/></label>
             </div>
         </div>
     </div>
@@ -136,13 +136,13 @@
                 报告修改日期    
             </label>
             <div class="col-md-3">
-                <label class="form-control input-full"><fmt:formatDate value='${projectXlxReportIndividual.reportModificationDate}' pattern='yyyy-MM-dd'/></label>
+                <label class="form-control input-full" name="reportModificationDate"><fmt:formatDate value='${projectXlxReportIndividual.reportModificationDate}' pattern='yyyy-MM-dd'/></label>
             </div>
             <label class="col-md-1  control-label">
                 归档日期    
             </label>
             <div class="col-md-3">
-                <label class="form-control input-full"><fmt:formatDate value='${projectXlxReportIndividual.filingDate}' pattern='yyyy-MM-dd'/></label>
+                <label class="form-control input-full" name="filingDate"><fmt:formatDate value='${projectXlxReportIndividual.filingDate}' pattern='yyyy-MM-dd'/></label>
             </div>
 
 

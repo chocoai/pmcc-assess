@@ -48,6 +48,7 @@
     <result column="worth" property="worth" jdbcType="DECIMAL" />
     <result column="account_value_original" property="accountValueOriginal" jdbcType="DECIMAL" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="process_ins_id" property="processInsId" jdbcType="VARCHAR" />
     <result column="plan_details_id" property="planDetailsId" jdbcType="INTEGER" />
     <result column="project_id" property="projectId" jdbcType="INTEGER" />
     <result column="assess_type" property="assessType" jdbcType="VARCHAR" />
@@ -123,8 +124,8 @@
     project_Leader, housing_use, land_use, cert_use, value_time_point, time_point_explain, 
     report_people, number_value, land_area, assess_area, judge_object_land_area, judge_object_floor_area, 
     assess_price, assess_total_price, undertake_sheet, assess_total_toll, price, worth, 
-    account_value_original, remark, plan_details_id, project_id, assess_type, sorting, 
-    creator, gmt_created, gmt_modified
+    account_value_original, remark, process_ins_id, plan_details_id, project_id, assess_type, 
+    sorting, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectXlxReportIndividualExample" >
     select
@@ -175,10 +176,10 @@
       assess_area, judge_object_land_area, judge_object_floor_area, 
       assess_price, assess_total_price, undertake_sheet, 
       assess_total_toll, price, worth, 
-      account_value_original, remark, plan_details_id, 
-      project_id, assess_type, sorting, 
-      creator, gmt_created, gmt_modified
-      )
+      account_value_original, remark, process_ins_id, 
+      plan_details_id, project_id, assess_type, 
+      sorting, creator, gmt_created, 
+      gmt_modified)
     values (#{location,jdbcType=VARCHAR}, #{projectName,jdbcType=VARCHAR}, #{entrustedUnit,jdbcType=VARCHAR}, 
       #{reportScore,jdbcType=INTEGER}, #{reportModificationDate,jdbcType=TIMESTAMP}, 
       #{reportBindingDate,jdbcType=TIMESTAMP}, #{filingDate,jdbcType=TIMESTAMP}, #{landPlotsNumber,jdbcType=DECIMAL}, 
@@ -194,10 +195,10 @@
       #{assessArea,jdbcType=DECIMAL}, #{judgeObjectLandArea,jdbcType=DECIMAL}, #{judgeObjectFloorArea,jdbcType=DECIMAL}, 
       #{assessPrice,jdbcType=DECIMAL}, #{assessTotalPrice,jdbcType=DECIMAL}, #{undertakeSheet,jdbcType=VARCHAR}, 
       #{assessTotalToll,jdbcType=DECIMAL}, #{price,jdbcType=DECIMAL}, #{worth,jdbcType=DECIMAL}, 
-      #{accountValueOriginal,jdbcType=DECIMAL}, #{remark,jdbcType=VARCHAR}, #{planDetailsId,jdbcType=INTEGER}, 
-      #{projectId,jdbcType=INTEGER}, #{assessType,jdbcType=VARCHAR}, #{sorting,jdbcType=INTEGER}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+      #{accountValueOriginal,jdbcType=DECIMAL}, #{remark,jdbcType=VARCHAR}, #{processInsId,jdbcType=VARCHAR}, 
+      #{planDetailsId,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, #{assessType,jdbcType=VARCHAR}, 
+      #{sorting,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectXlxReportIndividual" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -339,6 +340,9 @@
       </if>
       <if test="remark != null" >
         remark,
+      </if>
+      <if test="processInsId != null" >
+        process_ins_id,
       </if>
       <if test="planDetailsId != null" >
         plan_details_id,
@@ -497,6 +501,9 @@
       </if>
       <if test="remark != null" >
         #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="processInsId != null" >
+        #{processInsId,jdbcType=VARCHAR},
       </if>
       <if test="planDetailsId != null" >
         #{planDetailsId,jdbcType=INTEGER},
@@ -668,6 +675,9 @@
       <if test="record.remark != null" >
         remark = #{record.remark,jdbcType=VARCHAR},
       </if>
+      <if test="record.processInsId != null" >
+        process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
+      </if>
       <if test="record.planDetailsId != null" >
         plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
       </if>
@@ -742,6 +752,7 @@
       worth = #{record.worth,jdbcType=DECIMAL},
       account_value_original = #{record.accountValueOriginal,jdbcType=DECIMAL},
       remark = #{record.remark,jdbcType=VARCHAR},
+      process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
       plan_details_id = #{record.planDetailsId,jdbcType=INTEGER},
       project_id = #{record.projectId,jdbcType=INTEGER},
       assess_type = #{record.assessType,jdbcType=VARCHAR},
@@ -891,6 +902,9 @@
       <if test="remark != null" >
         remark = #{remark,jdbcType=VARCHAR},
       </if>
+      <if test="processInsId != null" >
+        process_ins_id = #{processInsId,jdbcType=VARCHAR},
+      </if>
       <if test="planDetailsId != null" >
         plan_details_id = #{planDetailsId,jdbcType=INTEGER},
       </if>
@@ -962,6 +976,7 @@
       worth = #{worth,jdbcType=DECIMAL},
       account_value_original = #{accountValueOriginal,jdbcType=DECIMAL},
       remark = #{remark,jdbcType=VARCHAR},
+      process_ins_id = #{processInsId,jdbcType=VARCHAR},
       plan_details_id = #{planDetailsId,jdbcType=INTEGER},
       project_id = #{projectId,jdbcType=INTEGER},
       assess_type = #{assessType,jdbcType=VARCHAR},
