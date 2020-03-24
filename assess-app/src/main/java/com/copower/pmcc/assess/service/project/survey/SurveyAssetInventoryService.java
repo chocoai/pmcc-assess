@@ -54,10 +54,22 @@ public class SurveyAssetInventoryService extends BaseService {
      * @param surveyAssetCommonDataDto
      * @throws BusinessException
      */
-    @Transactional(rollbackFor = Exception.class)
     public void save(ProjectPlanDetails projectPlanDetails, String processInsId, SurveyAssetCommonDataDto surveyAssetCommonDataDto) throws BusinessException {
-        Integer projectId = projectPlanDetails.getProjectId();
-        Integer planDetailsId = projectPlanDetails.getId();
+        save(projectPlanDetails.getId(),projectPlanDetails.getProjectId(),projectPlanDetails.getDeclareRecordId(),processInsId,surveyAssetCommonDataDto) ;
+    }
+
+    /**
+     * 保存资产清查数据
+     *
+     * @param planDetailId
+     * @param declareId
+     * @param projectId
+     * @param processInsId
+     * @param surveyAssetCommonDataDto
+     * @throws BusinessException
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void save(Integer planDetailId,Integer projectId, Integer declareId,String processInsId, SurveyAssetCommonDataDto surveyAssetCommonDataDto) throws BusinessException {
         if (surveyAssetCommonDataDto != null) {
             SurveyAssetInventory surveyAssetInventory = surveyAssetCommonDataDto.getSurveyAssetInventory();
             if (surveyAssetInventory == null)
@@ -67,18 +79,18 @@ public class SurveyAssetInventoryService extends BaseService {
                 surveyAssetInventoryDao.update(surveyAssetInventory);
             } else {
                 surveyAssetInventory.setProjectId(projectId);
-                surveyAssetInventory.setPlanDetailId(planDetailsId);
+                surveyAssetInventory.setPlanDetailId(planDetailId);
                 surveyAssetInventory.setProcessInsId(processInsId);
-                surveyAssetInventory.setDeclareRecordId(projectPlanDetails.getDeclareRecordId());
+                surveyAssetInventory.setDeclareRecordId(declareId);
                 surveyAssetInventory.setCreator(commonService.thisUserAccount());
                 surveyAssetInventoryDao.save(surveyAssetInventory);
-
                 //更新附件
                 baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(SurveyAssetInventory.class), surveyAssetInventory.getId());
             }
             List<SurveyAssetInventoryContent> assetInventoryContentList = surveyAssetCommonDataDto.getAssetInventoryContentList();
             if (CollectionUtils.isNotEmpty(assetInventoryContentList)) {
                 for (SurveyAssetInventoryContent surveyAssetInventoryContent : assetInventoryContentList) {
+                    surveyAssetInventoryContent.setMasterId(surveyAssetInventory.getId());
                     surveyAssetInventoryContentService.saveAssetInventoryContent(surveyAssetInventoryContent);
                 }
             }
@@ -153,6 +165,10 @@ public class SurveyAssetInventoryService extends BaseService {
             vo.setCertificateName(baseDataDicService.getNameById(surveyAssetInventory.getCertificate()));
         }
         return vo;
+    }
+
+    public SurveyAssetInventory getSurveyAssetInventoryById(Integer id){
+        return surveyAssetInventoryDao.getSurveyAssetInventoryById(id) ;
     }
 
 }

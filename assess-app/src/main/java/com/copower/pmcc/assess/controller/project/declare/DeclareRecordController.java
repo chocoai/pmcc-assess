@@ -64,9 +64,26 @@ public class DeclareRecordController {
         }
     }
 
+    @PostMapping(value = "/saveDeclareRecord", name = "保存或者修改")
+    public HttpResult saveDeclareRecord(String formData) {
+        try {
+            DeclareRecord declareRecord = JSONObject.parseObject(formData,DeclareRecord.class) ;
+            declareRecordService.saveAndUpdateDeclareRecord(declareRecord) ;
+            return HttpResult.newCorrectResult(200, declareRecord);
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
+            return HttpResult.newErrorResult(500, e);
+        }
+    }
+
 
     @RequestMapping(value = "/getCertificateId", name = "获取证书id", method = RequestMethod.GET)
     public HttpResult getCertificateId(Integer declareRecordId) {
+        return getDeclareRecordById(declareRecordId);
+    }
+
+    @RequestMapping(value = "/getDeclareRecordById", name = "获取证书id", method = RequestMethod.GET)
+    public HttpResult getDeclareRecordById(Integer declareRecordId) {
         try {
             return HttpResult.newCorrectResult(declareRecordService.getDeclareRecordById(declareRecordId));
         } catch (Exception e) {

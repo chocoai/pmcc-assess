@@ -15,8 +15,7 @@
             <%@include file="/views/share/form_head.jsp" %>
             <div class="page-inner mt--5">
                 <div class="row mt--2">
-                    <%@include file="/views/share/project/projectInfoSimple.jsp" %>
-                    <%@include file="/views/share/project/projectPlanDetails.jsp" %>
+
 
                     <!-- 填写表单 start -->
                     <div class="col-md-12">
@@ -24,8 +23,7 @@
                             <div class="card-header collapse-link">
                                 <div class="card-head-row">
                                     <div class="card-title">
-                                        ${projectPlanDetails.projectPhaseName}
-                                        <small>${declareRecord.name}</small>
+                                       资产清查
                                     </div>
                                     <div class="card-tools">
                                         <button class="btn  btn-link btn-primary btn-xs"><span
@@ -542,8 +540,7 @@
                         </div>
                     </c:if>
 
-                    <%@include file="/views/share/form_apply.jsp" %>
-                    <%@include file="/views/share/form_log.jsp" %>
+
                 </div>
             </div>
         </div>
@@ -803,6 +800,24 @@
 
         });
         return data;
+    }
+
+    function newGetFormData(callback) {
+        if (!$("#frm_asset").valid()) {
+            return false;
+        }
+        if (!$("#frm_asset_inventory_content").valid()) {
+            return false;
+        }
+        if (!$("#damageSurvey").valid()) {
+            return false;
+        }
+        if (!$("#taxesPaymentSurvey").valid()) {
+            return false;
+        }
+        if (callback){
+            callback(getFormData()) ;
+        }
     }
 
     function submit(mustUseBox) {

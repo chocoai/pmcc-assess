@@ -102,17 +102,39 @@ public class SurveyAssetInventoryContentService {
      * @return
      */
     public List<SurveyAssetInventoryContent> initAssetInventoryContent(ProjectPlanDetails projectPlanDetails, DeclareRecord declareRecord) {
-        List<SurveyAssetInventoryContent> inventoryContents = getContentListByPlanDetailsId(projectPlanDetails.getId());
-        if (CollectionUtils.isNotEmpty(inventoryContents)) return inventoryContents;
+        return initAssetInventoryContentNew(projectPlanDetails.getId(), projectPlanDetails.getProjectId(), null, declareRecord);
+    }
+
+    public List<SurveyAssetInventoryContent> getSurveyAssetInventoryContentListByMasterId(Integer masterId) {
+        SurveyAssetInventoryContent query = new SurveyAssetInventoryContentVo();
+        query.setMasterId(masterId);
+        return surveyAssetInventoryContentDao.getSurveyAssetInfoItemListByExample(query);
+    }
+
+    /**
+     * 初始化资产清查项
+     *
+     * @param planDetailId
+     * @param projectId
+     * @param declareRecord
+     * @return
+     */
+    public List<SurveyAssetInventoryContent> initAssetInventoryContentNew(Integer planDetailId, Integer projectId, Integer masterId, DeclareRecord declareRecord) {
+        if (planDetailId != null && planDetailId != 0) {
+            List<SurveyAssetInventoryContent> inventoryContents = getContentListByPlanDetailsId(planDetailId);
+            if (CollectionUtils.isNotEmpty(inventoryContents)) {
+                return inventoryContents;
+            }
+        }
         List<SurveyAssetInventoryContent> inventoryContentList = Lists.newArrayList();
         if (declareRecord == null) return inventoryContentList;
         List<BaseDataDic> baseDataDicList = baseDataDicService.getCacheDataDicList(declareRecord.getInventoryContentKey());
         if (CollectionUtils.isEmpty(baseDataDicList)) return inventoryContentList;
-        AssessProjectTypeEnum projectType = projectInfoService.getAssessProjectType(projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId()).getProjectCategoryId());
+        AssessProjectTypeEnum projectType = projectInfoService.getAssessProjectType(projectInfoService.getProjectInfoById(projectId).getProjectCategoryId());
         for (BaseDataDic baseDataDic : baseDataDicList) {
             SurveyAssetInventoryContent surveyAssetInventoryContent = new SurveyAssetInventoryContent();
-            surveyAssetInventoryContent.setProjectId(projectPlanDetails.getProjectId());
-            surveyAssetInventoryContent.setPlanDetailsId(projectPlanDetails.getId());
+            surveyAssetInventoryContent.setProjectId(projectId);
+            surveyAssetInventoryContent.setPlanDetailsId(planDetailId);
             surveyAssetInventoryContent.setDeclareId(declareRecord.getId());
             surveyAssetInventoryContent.setInventoryContent(baseDataDic.getId());
             if (AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_ACTUAL_ADDRESS.equals(baseDataDic.getFieldName())) {//登记地址与实际地址
@@ -173,6 +195,7 @@ public class SurveyAssetInventoryContentService {
         }
         for (SurveyAssetInventoryContent item : inventoryContentList) {
             try {
+                item.setMasterId(masterId);
                 surveyAssetInventoryContentService.saveAssetInventoryContent(item);
             } catch (BusinessException e) {
                 logger.error(e.getMessage(), e);

@@ -4,6 +4,7 @@ import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInfoItem;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInfoItemExample;
 import com.copower.pmcc.assess.dal.basis.mapper.SurveyAssetInfoItemMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -31,6 +32,16 @@ public class SurveyAssetInfoItemDao {
         SurveyAssetInfoItemExample example = new SurveyAssetInfoItemExample();
         example.createCriteria().andIdIn(ids);
         mapper.deleteByExample(example);
+    }
+
+    public SurveyAssetInfoItem getSurveyAssetInfoItemByDeclareId(Integer declareId){
+        SurveyAssetInfoItemExample example = new SurveyAssetInfoItemExample();
+        example.createCriteria().andDeclareIdEqualTo(declareId);
+        List<SurveyAssetInfoItem> surveyAssetInfoItems = mapper.selectByExample(example);
+        if (CollectionUtils.isNotEmpty(surveyAssetInfoItems)){
+            return surveyAssetInfoItems.get(0) ;
+        }
+        return null;
     }
 
     public SurveyAssetInfoItem getSurveyAssetInfoItemById(Integer id) {

@@ -5,6 +5,8 @@ import java.util.Date;
 public class SurveyAssetInfoGroup {
     private Integer id;
 
+    private Integer inventoryId;
+
     private Integer assetInfoId;
 
     private String groupName;
@@ -21,6 +23,14 @@ public class SurveyAssetInfoGroup {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getInventoryId() {
+        return inventoryId;
+    }
+
+    public void setInventoryId(Integer inventoryId) {
+        this.inventoryId = inventoryId;
     }
 
     public Integer getAssetInfoId() {

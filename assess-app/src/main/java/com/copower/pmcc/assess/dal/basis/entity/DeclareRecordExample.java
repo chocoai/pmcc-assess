@@ -2946,6 +2946,66 @@ public class DeclareRecordExample {
             return (Criteria) this;
         }
 
+        public Criteria andBisInventoryIsNull() {
+            addCriterion("bis_inventory is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisInventoryIsNotNull() {
+            addCriterion("bis_inventory is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisInventoryEqualTo(Boolean value) {
+            addCriterion("bis_inventory =", value, "bisInventory");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisInventoryNotEqualTo(Boolean value) {
+            addCriterion("bis_inventory <>", value, "bisInventory");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisInventoryGreaterThan(Boolean value) {
+            addCriterion("bis_inventory >", value, "bisInventory");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisInventoryGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_inventory >=", value, "bisInventory");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisInventoryLessThan(Boolean value) {
+            addCriterion("bis_inventory <", value, "bisInventory");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisInventoryLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_inventory <=", value, "bisInventory");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisInventoryIn(List<Boolean> values) {
+            addCriterion("bis_inventory in", values, "bisInventory");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisInventoryNotIn(List<Boolean> values) {
+            addCriterion("bis_inventory not in", values, "bisInventory");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisInventoryBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_inventory between", value1, value2, "bisInventory");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisInventoryNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_inventory not between", value1, value2, "bisInventory");
+            return (Criteria) this;
+        }
+
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;
