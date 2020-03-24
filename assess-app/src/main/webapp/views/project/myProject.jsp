@@ -126,14 +126,14 @@
                 var str = "";
                 if (row.projectStatus) {
                     if (row.projectStatus == '草稿') {
-                        str += '<button onclick="editHref(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="继续填写">';
+                        str += '<button type="button" onclick="editHref(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="继续填写">';
                         str += '<i class="fa fa-pen"></i>';
                         str += '</button>';
-                        str += '<button onclick="projectClearData (' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-warning btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
+                        str += '<button type="button" onclick="projectClearData (' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-warning btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
                         str += '<i class="fa fa-minus"></i>';
                         str += '</button>';
                     } else {
-                        str += '<button onclick="checkDetail(' + row.id + ')" style="margin-left: 5px;" class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看详情">';
+                        str += '<button type="button" onclick="checkDetail(' + row.id + ')" style="margin-left: 5px;" class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看详情">';
                         str += '<i class="fa fa-search"></i>';
                         str += '</button>';
                     }

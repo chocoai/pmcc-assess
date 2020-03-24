@@ -19,9 +19,6 @@
         <div class="content" style="margin-top: 0px;">
             <div class="page-inner">
                 <div class="row">
-                    <%@include file="/views/share/project/projectInfoSimple.jsp" %>
-                    <!-- 公共模块end -->
-
                     <div class="col-md-12">
                         <div class="card full-height">
                             <div class="card-header collapse-link">
@@ -37,6 +34,51 @@
                                 </div>
                             </div>
                             <div class="card-body">
+                                <table class="table table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col" width="10%">序号</th>
+                                        <th scope="col" width="50%">名称</th>
+                                        <th scope="col" width="20%">纸质资料</th>
+                                        <th scope="col" width="20%">电子资料</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    <tr>
+                                        <td>1</td>
+                                        <td>申报附件</td>
+                                        <td><div class="form-check">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox" value="">
+                                                <span class="form-check-sign"></span>
+                                            </label>
+                                        </div></td>
+                                        <td><div class="form-check">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox" value="">
+                                                <span class="form-check-sign"></span>
+                                            </label>
+                                        </div></td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>申报附件</td>
+                                        <td><div class="form-check">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox" value="">
+                                                <span class="form-check-sign"></span>
+                                            </label>
+                                        </div></td>
+                                        <td><div class="form-check">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox" value="">
+                                                <span class="form-check-sign"></span>
+                                            </label>
+                                        </div></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
                                 <form id="master_form" class="form-horizontal">
                                     <p>
                                         <button style="margin-left: 10px" class="btn btn-primary btn-sm" type="button"
@@ -80,49 +122,52 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">归档信息</h4>
+                <h4 class="modal-title">归档信息1</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
             </div>
 
             <div class="modal-body">
-                <form id="frmFather" class="form-horizontal">
-                    <input type="hidden" id="id" name="id" value="0">
-                    <input type="hidden"  name="fileName" value="0">
-                    <input type="hidden"  name="sorting" value="0">
-                    <input type="hidden"  name="projectId" value="0">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="card-body">
-                                <div class="row form-group">
-                                    <div class="col-md-12">
-                                        <div class="form-inline x-valid">
-                                            <div class="col-sm-6">
-                                                <div class="form-check" style="justify-content:left">
-                                                    <label class="form-check-label">
-                                                        <input class="form-check-input" type="checkbox"
-                                                               id="hasPaperDatum"
-                                                               name="hasPaperDatum" value="true"
-                                                               checked="checked">
-                                                        <span class="form-check-sign">有无纸质资料</span>
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <div class="form-check" style="justify-content:left">
-                                                    <label class="form-check-label">
-                                                        <input class="form-check-input" type="checkbox" id="hasElectronicDatum" name="hasElectronicDatum" value="true" checked="checked">
-                                                        <span class="form-check-sign">有无电子资料</span>
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th scope="col">序号</th>
+                        <th scope="col">名称</th>
+                        <th scope="col">纸质资料</th>
+                        <th scope="col">电子资料</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>申报附件</td>
+                        <td><div class="form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" value="">
+                                <span class="form-check-sign">Agree with terms and conditions</span>
+                            </label>
+                        </div></td>
+                        <td><div class="form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" value="">
+                                <span class="form-check-sign">Agree with terms and conditions</span>
+                            </label>
+                        </div></td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Jacob</td>
+                        <td>Thornton</td>
+                        <td>@fat</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td colspan="2">Larry the Bird</td>
+                        <td>@twitter</td>
+                    </tr>
+                    </tbody>
+                </table>
+
 
             </div>
             <div class="modal-footer">
@@ -154,6 +199,7 @@
             data.frm = "frmFather";
             return data;
         },
+
         loadDataDicList: function () {
             var cols = [];
             cols.push({field: 'fileName', width: '30%', title: '文件名称'});
