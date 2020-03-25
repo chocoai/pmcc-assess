@@ -7,6 +7,7 @@ import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.survey.SurveyAssetCommonDataDto;
 import com.copower.pmcc.assess.dto.output.basic.SurveyAssetInventoryVo;
 import com.copower.pmcc.assess.dto.output.project.survey.SurveyAssetInventoryContentVo;
+import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
@@ -48,6 +49,8 @@ public class SurveyAssetInventoryController {
     private ProjectInfoService projectInfoService;
     @Autowired
     private ProjectPlanDetailsService projectPlanDetailsService;
+    @Autowired
+    private BaseService baseService;
 
     private final String applyViewName = "/project/stageSurvey/surveyAssetInventoryIndex";
     private final String detailView = "/project/stageSurvey/surveyAssetInventoryDetail";
@@ -104,7 +107,19 @@ public class SurveyAssetInventoryController {
             surveyAssetInventoryService.save(0, 0, 0, "0", surveyAssetCommonDataDto);
             return HttpResult.newCorrectResult(200, surveyAssetCommonDataDto);
         } catch (BusinessException e) {
-            return HttpResult.newErrorResult(500, e);
+            baseService.writeExceptionInfo(e);
+            return HttpResult.newErrorResult(500, e.getMessage());
+        }
+    }
+
+    @PostMapping(value = "/parseSurveyAssetInventory/{assetInfoId}/{inventoryId}/{masterId}/{type}",name = "数据粘贴")
+    public HttpResult parseSurveyAssetInventory(@PathVariable(name = "assetInfoId")Integer assetInfoId,@PathVariable(name = "inventoryId") Integer inventoryId,@PathVariable(name = "type")String type,@PathVariable(name = "masterId")Integer masterId){
+        try {
+            surveyAssetInventoryService.parseSurveyAssetInventory(assetInfoId,inventoryId, type, masterId);
+            return HttpResult.newCorrectResult(200);
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
+            return HttpResult.newErrorResult(500, e.getMessage());
         }
     }
 

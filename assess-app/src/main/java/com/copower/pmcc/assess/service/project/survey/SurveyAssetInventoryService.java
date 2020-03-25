@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.service.project.survey;
 
 import com.alibaba.fastjson.JSON;
+import com.copower.pmcc.assess.common.enums.survey.SurveyAssetInventoryEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInventoryDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
@@ -15,6 +16,7 @@ import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.google.common.base.Objects;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -24,6 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.Iterator;
 import java.util.List;
 
 
@@ -45,6 +48,10 @@ public class SurveyAssetInventoryService extends BaseService {
     private SurveyAssetInventoryContentService surveyAssetInventoryContentService;
     @Autowired
     private BaseAttachmentService baseAttachmentService;
+    @Autowired
+    private SurveyAssetInfoGroupService surveyAssetInfoGroupService;
+    @Autowired
+    private SurveyAssetInfoItemService surveyAssetInfoItemService;
 
     /**
      * 保存资产清查数据
@@ -55,7 +62,7 @@ public class SurveyAssetInventoryService extends BaseService {
      * @throws BusinessException
      */
     public void save(ProjectPlanDetails projectPlanDetails, String processInsId, SurveyAssetCommonDataDto surveyAssetCommonDataDto) throws BusinessException {
-        save(projectPlanDetails.getId(),projectPlanDetails.getProjectId(),projectPlanDetails.getDeclareRecordId(),processInsId,surveyAssetCommonDataDto) ;
+        save(projectPlanDetails.getId(), projectPlanDetails.getProjectId(), projectPlanDetails.getDeclareRecordId(), processInsId, surveyAssetCommonDataDto);
     }
 
     /**
@@ -69,7 +76,7 @@ public class SurveyAssetInventoryService extends BaseService {
      * @throws BusinessException
      */
     @Transactional(rollbackFor = Exception.class)
-    public void save(Integer planDetailId,Integer projectId, Integer declareId,String processInsId, SurveyAssetCommonDataDto surveyAssetCommonDataDto) throws BusinessException {
+    public void save(Integer planDetailId, Integer projectId, Integer declareId, String processInsId, SurveyAssetCommonDataDto surveyAssetCommonDataDto) throws BusinessException {
         if (surveyAssetCommonDataDto != null) {
             SurveyAssetInventory surveyAssetInventory = surveyAssetCommonDataDto.getSurveyAssetInventory();
             if (surveyAssetInventory == null)
@@ -167,8 +174,95 @@ public class SurveyAssetInventoryService extends BaseService {
         return vo;
     }
 
-    public SurveyAssetInventory getSurveyAssetInventoryById(Integer id){
-        return surveyAssetInventoryDao.getSurveyAssetInventoryById(id) ;
+    public SurveyAssetInventory getSurveyAssetInventoryById(Integer id) {
+        return surveyAssetInventoryDao.getSurveyAssetInventoryById(id);
+    }
+
+    /**
+     * 粘贴  拷贝的数据
+     *
+     * @param inventoryId
+     * @param type
+     * @param masterId
+     * @throws Exception
+     */
+    public void parseSurveyAssetInventory(Integer assetInfoId,Integer inventoryId, String type, Integer masterId) throws Exception {
+        SurveyAssetInventory surveyAssetInventory = surveyAssetInventoryDao.getSurveyAssetInventoryById(inventoryId);
+        List<SurveyAssetInventoryContent> surveyAssetInventoryContents = surveyAssetInventoryContentService.getSurveyAssetInventoryContentListByMasterId(inventoryId);
+        Iterator<SurveyAssetInventoryContent> iterator = surveyAssetInventoryContents.iterator();
+
+        //粘贴主数据
+        copySurveyAssetInventory(surveyAssetInventory);
+
+        while (iterator.hasNext()) {
+            SurveyAssetInventoryContent inventoryContent = iterator.next();
+            //粘贴从数据
+            copySurveyAssetInventoryContent(inventoryContent, surveyAssetInventory.getId());
+
+        }
+        if (type.equals(SurveyAssetInventoryEnum.group.getKey())) {
+            SurveyAssetInfoGroup infoGroup = surveyAssetInfoGroupService.getSurveyAssetInfoGroupById(masterId);
+            if (Objects.equal(infoGroup.getInventoryId(),inventoryId)){
+                throw new Exception("无法粘贴自己") ;
+            }
+            infoGroup.setInventoryId(surveyAssetInventory.getId());
+            surveyAssetInfoGroupService.updateSurveyAssetInfoGroup(infoGroup, true);
+        }
+        if (type.equals(SurveyAssetInventoryEnum.unit.getKey())) {
+            SurveyAssetInfoItem query = new SurveyAssetInfoItem();
+            query.setGroupId(0);
+            query.setDeclareId(masterId);
+            query.setAssetInfoId(assetInfoId);
+            List<SurveyAssetInfoItem> assetInfoItems = surveyAssetInfoItemService.getSurveyAssetInfoItemListByQuery(query);
+            SurveyAssetInfoItem infoItem = null;
+            if (CollectionUtils.isNotEmpty(assetInfoItems)){
+                infoItem = assetInfoItems.get(0) ;
+                if (Objects.equal(infoItem.getInventoryId(),inventoryId)){
+                    throw new Exception("无法粘贴自己") ;
+                }
+            }else {
+                DeclareRecord declareRecordById = declareRecordService.getDeclareRecordById(masterId);
+                infoItem = new SurveyAssetInfoItem();
+                BeanUtils.copyProperties(query,infoItem);
+                infoItem.setName(declareRecordById.getName());
+            }
+            infoItem.setInventoryId(surveyAssetInventory.getId());
+            surveyAssetInfoItemService.saveAndUpdateSurveyAssetInfoItem(infoItem, true);
+        }
+    }
+
+    private void copySurveyAssetInventory(SurveyAssetInventory surveyAssetInventory) throws Exception {
+        Integer inventoryId = surveyAssetInventory.getId();
+        surveyAssetInventory.setId(null);
+        surveyAssetInventoryDao.save(surveyAssetInventory);
+
+        SysAttachmentDto attachmentDto = new SysAttachmentDto();
+        attachmentDto.setTableId(inventoryId);
+        attachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(SurveyAssetInventory.class));
+
+        SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
+        sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(SurveyAssetInventory.class));
+        sysAttachmentDto.setTableId(surveyAssetInventory.getId());
+
+        baseAttachmentService.copyFtpAttachments(attachmentDto, sysAttachmentDto);
+    }
+
+    private void copySurveyAssetInventoryContent(SurveyAssetInventoryContent inventoryContent, Integer inventoryId) throws Exception {
+        Integer id = inventoryContent.getId();
+        inventoryContent.setId(null);
+        inventoryContent.setMasterId(inventoryId);
+        surveyAssetInventoryContentService.saveAssetInventoryContent(inventoryContent);
+
+        SysAttachmentDto attachmentDto = new SysAttachmentDto();
+        attachmentDto.setTableId(id);
+        attachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(SurveyAssetInventoryContent.class));
+
+        SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
+        sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(SurveyAssetInventoryContent.class));
+        sysAttachmentDto.setTableId(inventoryContent.getId());
+
+        baseAttachmentService.copyFtpAttachments(attachmentDto, sysAttachmentDto);
+
     }
 
 }

@@ -106,9 +106,7 @@ public class SurveyAssetInventoryContentService {
     }
 
     public List<SurveyAssetInventoryContent> getSurveyAssetInventoryContentListByMasterId(Integer masterId) {
-        SurveyAssetInventoryContent query = new SurveyAssetInventoryContentVo();
-        query.setMasterId(masterId);
-        return surveyAssetInventoryContentDao.getSurveyAssetInfoItemListByExample(query);
+        return surveyAssetInventoryContentDao.getSurveyAssetInventoryContentListByMasterId(masterId);
     }
 
     /**
@@ -203,4 +201,6 @@ public class SurveyAssetInventoryContentService {
         }
         return inventoryContentList;
     }
+
+
 }

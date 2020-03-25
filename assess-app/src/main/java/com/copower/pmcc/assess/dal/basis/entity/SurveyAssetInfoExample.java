@@ -355,6 +355,186 @@ public class SurveyAssetInfoExample {
             return (Criteria) this;
         }
 
+        public Criteria andThisCountIsNull() {
+            addCriterion("this_count is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andThisCountIsNotNull() {
+            addCriterion("this_count is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andThisCountEqualTo(Integer value) {
+            addCriterion("this_count =", value, "thisCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andThisCountNotEqualTo(Integer value) {
+            addCriterion("this_count <>", value, "thisCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andThisCountGreaterThan(Integer value) {
+            addCriterion("this_count >", value, "thisCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andThisCountGreaterThanOrEqualTo(Integer value) {
+            addCriterion("this_count >=", value, "thisCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andThisCountLessThan(Integer value) {
+            addCriterion("this_count <", value, "thisCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andThisCountLessThanOrEqualTo(Integer value) {
+            addCriterion("this_count <=", value, "thisCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andThisCountIn(List<Integer> values) {
+            addCriterion("this_count in", values, "thisCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andThisCountNotIn(List<Integer> values) {
+            addCriterion("this_count not in", values, "thisCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andThisCountBetween(Integer value1, Integer value2) {
+            addCriterion("this_count between", value1, value2, "thisCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andThisCountNotBetween(Integer value1, Integer value2) {
+            addCriterion("this_count not between", value1, value2, "thisCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinishCountIsNull() {
+            addCriterion("finish_count is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinishCountIsNotNull() {
+            addCriterion("finish_count is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinishCountEqualTo(Integer value) {
+            addCriterion("finish_count =", value, "finishCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinishCountNotEqualTo(Integer value) {
+            addCriterion("finish_count <>", value, "finishCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinishCountGreaterThan(Integer value) {
+            addCriterion("finish_count >", value, "finishCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinishCountGreaterThanOrEqualTo(Integer value) {
+            addCriterion("finish_count >=", value, "finishCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinishCountLessThan(Integer value) {
+            addCriterion("finish_count <", value, "finishCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinishCountLessThanOrEqualTo(Integer value) {
+            addCriterion("finish_count <=", value, "finishCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinishCountIn(List<Integer> values) {
+            addCriterion("finish_count in", values, "finishCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinishCountNotIn(List<Integer> values) {
+            addCriterion("finish_count not in", values, "finishCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinishCountBetween(Integer value1, Integer value2) {
+            addCriterion("finish_count between", value1, value2, "finishCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andFinishCountNotBetween(Integer value1, Integer value2) {
+            addCriterion("finish_count not between", value1, value2, "finishCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountIsNull() {
+            addCriterion("count is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountIsNotNull() {
+            addCriterion("count is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountEqualTo(Integer value) {
+            addCriterion("count =", value, "count");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountNotEqualTo(Integer value) {
+            addCriterion("count <>", value, "count");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountGreaterThan(Integer value) {
+            addCriterion("count >", value, "count");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountGreaterThanOrEqualTo(Integer value) {
+            addCriterion("count >=", value, "count");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountLessThan(Integer value) {
+            addCriterion("count <", value, "count");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountLessThanOrEqualTo(Integer value) {
+            addCriterion("count <=", value, "count");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountIn(List<Integer> values) {
+            addCriterion("count in", values, "count");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountNotIn(List<Integer> values) {
+            addCriterion("count not in", values, "count");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountBetween(Integer value1, Integer value2) {
+            addCriterion("count between", value1, value2, "count");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountNotBetween(Integer value1, Integer value2) {
+            addCriterion("count not between", value1, value2, "count");
+            return (Criteria) this;
+        }
+
         public Criteria andStatusIsNull() {
             addCriterion("status is null");
             return (Criteria) this;

@@ -32,7 +32,7 @@ public class SurveyAssetInfoAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView(applyViewName, "", 0, "0", "");
-        setModelViewParam(projectPlanDetails,modelAndView) ;
+        setModelViewParam(projectPlanDetails, modelAndView);
         return modelAndView;
     }
 
@@ -40,14 +40,14 @@ public class SurveyAssetInfoAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView approvalView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView(approvalViewName, processInsId, boxId, taskId, agentUserAccount);
-        setModelViewParam(projectPlanDetails,modelAndView) ;
+        setModelViewParam(projectPlanDetails, modelAndView);
         return modelAndView;
     }
 
     @Override
     public ModelAndView returnEditView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView(applyViewName, processInsId, boxId, taskId, agentUserAccount);
-        setModelViewParam(projectPlanDetails,modelAndView) ;
+        setModelViewParam(projectPlanDetails, modelAndView);
         return modelAndView;
     }
 
@@ -59,15 +59,19 @@ public class SurveyAssetInfoAssist implements ProjectTaskInterface {
     @Override
     public ModelAndView detailsView(ProjectPlanDetails projectPlanDetails, Integer boxId) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView(approvalViewName, projectPlanDetails.getProcessInsId(), boxId, "-1", "");
-        setModelViewParam(projectPlanDetails,modelAndView) ;
+        setModelViewParam(projectPlanDetails, modelAndView);
         return modelAndView;
     }
 
 
     @Override
     public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException, BpmException {
-        SurveyAssetInfo surveyAssetInfo = JSONObject.parseObject(formData,SurveyAssetInfo.class) ;
-        surveyAssetInfoService.saveAndUpdateSurveyAssetInfo(surveyAssetInfo,false);
+        SurveyAssetInfo surveyAssetInfo = JSONObject.parseObject(formData, SurveyAssetInfo.class);
+        if (StringUtils.isNotBlank(processInsId)) {
+            surveyAssetInfo.setProcessInsId(processInsId);
+        }
+        surveyAssetInfoService.saveAndUpdateSurveyAssetInfo(surveyAssetInfo, false);
+        surveyAssetInfoService.submit(surveyAssetInfo) ;
     }
 
     @Override
@@ -77,13 +81,19 @@ public class SurveyAssetInfoAssist implements ProjectTaskInterface {
 
     @Override
     public void returnEditCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException {
-        SurveyAssetInfo surveyAssetInfo = JSONObject.parseObject(formData,SurveyAssetInfo.class) ;
-        surveyAssetInfoService.saveAndUpdateSurveyAssetInfo(surveyAssetInfo,false);
+        SurveyAssetInfo surveyAssetInfo = JSONObject.parseObject(formData, SurveyAssetInfo.class);
+        if (StringUtils.isNotBlank(processInsId)) {
+            surveyAssetInfo.setProcessInsId(processInsId);
+        }
+        surveyAssetInfoService.saveAndUpdateSurveyAssetInfo(surveyAssetInfo, false);
+        surveyAssetInfoService.submit(surveyAssetInfo) ;
     }
 
     private void setModelViewParam(ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) {
-        SurveyAssetInfo surveyAssetInfo = surveyAssetInfoService.getSurveyAssetInfoByPlanDetailsId(projectPlanDetails.getId()) ;
-        modelAndView.addObject(StringUtils.uncapitalize(SurveyAssetInfo.class.getSimpleName()),surveyAssetInfo) ;
+        SurveyAssetInfo surveyAssetInfo = surveyAssetInfoService.getSurveyAssetInfoByPlanDetailsId(projectPlanDetails);
+
+        modelAndView.addObject(StringUtils.uncapitalize(SurveyAssetInfo.class.getSimpleName()), surveyAssetInfo);
+        modelAndView.addObject("thisUserInfo", processControllerComponent.getThisUserInfo());    //当前操作用户信息
     }
 
 }

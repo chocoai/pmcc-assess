@@ -42,7 +42,7 @@ public class SurveyAssetInfoItemController {
             return HttpResult.newCorrectResult(200,"success") ;
         } catch (Exception e) {
             baseService.writeExceptionInfo(e,String.join("", STRING,e.getMessage()));
-            return HttpResult.newErrorResult(500,e) ;
+            return HttpResult.newErrorResult(500,e.getMessage()) ;
         }
     }
 

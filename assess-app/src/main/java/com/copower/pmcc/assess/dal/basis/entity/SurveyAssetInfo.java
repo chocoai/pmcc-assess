@@ -11,6 +11,12 @@ public class SurveyAssetInfo {
 
     private String processInsId;
 
+    private Integer thisCount;
+
+    private Integer finishCount;
+
+    private Integer count;
+
     private String status;
 
     private String creator;
@@ -49,6 +55,30 @@ public class SurveyAssetInfo {
 
     public void setProcessInsId(String processInsId) {
         this.processInsId = processInsId == null ? null : processInsId.trim();
+    }
+
+    public Integer getThisCount() {
+        return thisCount;
+    }
+
+    public void setThisCount(Integer thisCount) {
+        this.thisCount = thisCount;
+    }
+
+    public Integer getFinishCount() {
+        return finishCount;
+    }
+
+    public void setFinishCount(Integer finishCount) {
+        this.finishCount = finishCount;
+    }
+
+    public Integer getCount() {
+        return count;
+    }
+
+    public void setCount(Integer count) {
+        this.count = count;
     }
 
     public String getStatus() {

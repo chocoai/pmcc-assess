@@ -34,12 +34,12 @@ public class SurveyAssetInfoItemDao {
         mapper.deleteByExample(example);
     }
 
-    public SurveyAssetInfoItem getSurveyAssetInfoItemByDeclareId(Integer declareId){
+    public SurveyAssetInfoItem getSurveyAssetInfoItemByDeclareId(Integer declareId) {
         SurveyAssetInfoItemExample example = new SurveyAssetInfoItemExample();
         example.createCriteria().andDeclareIdEqualTo(declareId);
         List<SurveyAssetInfoItem> surveyAssetInfoItems = mapper.selectByExample(example);
-        if (CollectionUtils.isNotEmpty(surveyAssetInfoItems)){
-            return surveyAssetInfoItems.get(0) ;
+        if (CollectionUtils.isNotEmpty(surveyAssetInfoItems)) {
+            return surveyAssetInfoItems.get(0);
         }
         return null;
     }
@@ -63,6 +63,29 @@ public class SurveyAssetInfoItemDao {
         SurveyAssetInfoItemExample.Criteria criteria = example.createCriteria();
         criteria.andIdIsNotNull();
         MybatisUtils.convertObj2Criteria(oo, criteria);
+        example.setOrderByClause("id");
+        return mapper.selectByExample(example);
+    }
+
+    public List<SurveyAssetInfoItem> getSurveyAssetInfoItemLikeList(SurveyAssetInfoItem oo) {
+        SurveyAssetInfoItemExample example = new SurveyAssetInfoItemExample();
+        SurveyAssetInfoItemExample.Criteria criteria = example.createCriteria();
+        criteria.andIdIsNotNull();
+        if (StringUtils.isNotBlank(oo.getName())) {
+            criteria.andNameLike(String.format("%%%s%%", oo.getName()));
+        }
+        if (oo.getGroupId() != null) {
+            criteria.andGroupIdEqualTo(oo.getGroupId());
+        }
+        if (oo.getDeclareId() != null) {
+            criteria.andDeclareIdEqualTo(oo.getDeclareId());
+        }
+        if (oo.getAssetInfoId() != null) {
+            criteria.andAssetInfoIdEqualTo(oo.getAssetInfoId());
+        }
+        if (StringUtils.isNotBlank(oo.getCreator())){
+            criteria.andCreatorEqualTo(oo.getCreator());
+        }
         example.setOrderByClause("id");
         return mapper.selectByExample(example);
     }
