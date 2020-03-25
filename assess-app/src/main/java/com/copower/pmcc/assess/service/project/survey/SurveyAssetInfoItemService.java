@@ -1,8 +1,10 @@
 package com.copower.pmcc.assess.service.project.survey;
 
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInfoItemDao;
+import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInfoItem;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
+import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -34,6 +36,8 @@ public class SurveyAssetInfoItemService {
     private SurveyAssetInfoItemDao surveyAssetInfoItemDao;
     @Autowired
     private BaseAttachmentService baseAttachmentService;
+    @Autowired
+    private DeclareRecordService declareRecordService;
 
 
     public boolean updateSurveyAssetInfoItem(SurveyAssetInfoItem oo, boolean updateNull) {
@@ -64,9 +68,14 @@ public class SurveyAssetInfoItemService {
         }
     }
 
-    private void removeFileByTableId(Integer tableId) {
+    private void removeFileByTableId(Integer tableId)throws Exception {
         if (tableId == null) {
             return;
+        }
+        SurveyAssetInfoItem infoItem = getSurveyAssetInfoItemById(tableId) ;
+        DeclareRecord recordById = declareRecordService.getDeclareRecordById(infoItem.getDeclareId());
+        if (recordById.getBisInventory()){
+            throw new Exception("已经被清查了,不可以在删除") ;
         }
         SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
         sysAttachmentDto.setTableId(tableId);
@@ -78,7 +87,7 @@ public class SurveyAssetInfoItemService {
         sysAttachmentDtoList.forEach(sysAttachmentDto1 -> baseAttachmentService.deleteAttachment(sysAttachmentDto1.getId()));
     }
 
-    public void deleteSurveyAssetInfoItemById(String id) {
+    public void deleteSurveyAssetInfoItemById(String id) throws Exception{
         if (StringUtils.isEmpty(id)) {
             return;
         }
@@ -88,8 +97,10 @@ public class SurveyAssetInfoItemService {
                 removeFileByTableId(ids.get(0));
                 surveyAssetInfoItemDao.deleteSurveyAssetInfoItemById(ids.get(0));
             } else {
-                ids.forEach(integer -> removeFileByTableId(integer));
-                surveyAssetInfoItemDao.deleteSurveyAssetInfoItemByIds(ids);
+                for (Integer integer:ids){
+                    removeFileByTableId(integer) ;
+                    surveyAssetInfoItemDao.deleteSurveyAssetInfoItemById(integer);
+                }
             }
         }
     }
@@ -98,7 +109,7 @@ public class SurveyAssetInfoItemService {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<SurveyAssetInfoItem> surveyAssetInfoItems = getSurveyAssetInfoItemListByQuery(oo);
+        List<SurveyAssetInfoItem> surveyAssetInfoItems = getSurveyAssetInfoItemLikeList(oo);
         vo.setTotal(page.getTotal());
         vo.setRows(CollectionUtils.isNotEmpty(surveyAssetInfoItems) ? surveyAssetInfoItems : new ArrayList(0));
         return vo;
@@ -115,6 +126,10 @@ public class SurveyAssetInfoItemService {
 
     public List<SurveyAssetInfoItem> getSurveyAssetInfoItemListByQuery(SurveyAssetInfoItem oo) {
         return surveyAssetInfoItemDao.getSurveyAssetInfoItemListByExample(oo);
+    }
+
+    public List<SurveyAssetInfoItem> getSurveyAssetInfoItemLikeList(SurveyAssetInfoItem oo){
+        return surveyAssetInfoItemDao.getSurveyAssetInfoItemLikeList(oo);
     }
 
 

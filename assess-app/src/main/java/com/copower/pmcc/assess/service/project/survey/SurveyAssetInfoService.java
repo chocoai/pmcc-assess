@@ -1,8 +1,9 @@
 package com.copower.pmcc.assess.service.project.survey;
 
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInfoDao;
-import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInfo;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
+import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -20,31 +21,114 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Created by zch on 2020-3-20.
  */
 @Service
 public class SurveyAssetInfoService {
-
-
+    @Autowired
+    private DeclareRecordService declareRecordService;
     @Autowired
     private CommonService commonService;
     @Autowired
     private SurveyAssetInfoDao surveyAssetInfoDao;
     @Autowired
     private BaseAttachmentService baseAttachmentService;
+    @Autowired
+    private SurveyAssetInfoItemService surveyAssetInfoItemService;
+    @Autowired
+    private SurveyAssetInfoGroupService surveyAssetInfoGroupService;
 
 
+    /**
+     * 提交要做的事
+     * @param surveyAssetInfo
+     */
+    public void submit(SurveyAssetInfo surveyAssetInfo) {
 
-    public SurveyAssetInfo getSurveyAssetInfoByPlanDetailsId(Integer planDetailsId) {
+        //处理状态问题
+
+        statistics(surveyAssetInfo);
+
+        updateSurveyAssetInfo(surveyAssetInfo,false) ;
+
+
+    }
+
+    /**
+     * 统计
+     *
+     * @param surveyAssetInfo
+     */
+    public void statistics(SurveyAssetInfo surveyAssetInfo) {
+        List<DeclareRecord> declareRecordList = declareRecordService.getDeclareRecordByProjectId(surveyAssetInfo.getProjectId());
+        surveyAssetInfo.setCount(declareRecordList.size());
+
+        DeclareRecord query = new DeclareRecord();
+        query.setProjectId(surveyAssetInfo.getProjectId());
+        query.setBisInventory(true);
+        List<DeclareRecord> declareRecords = declareRecordService.getDeclareRecordList(query);
+
+        surveyAssetInfo.setFinishCount(declareRecords.size());
+
+        List<SurveyAssetInfoItem> infoItemList = new ArrayList<>();
+        SurveyAssetInfoItem queryItem = new SurveyAssetInfoItem();
+        queryItem.setCreator(commonService.thisUserAccount());
+        queryItem.setAssetInfoId(surveyAssetInfo.getId());
+        SurveyAssetInfoGroup queryGroup = new SurveyAssetInfoGroup();
+        queryGroup.setAssetInfoId(surveyAssetInfo.getId());
+        queryGroup.setCreator(commonService.thisUserAccount());
+        List<SurveyAssetInfoGroup> assetInfoGroups = surveyAssetInfoGroupService.getSurveyAssetInfoGroupListByQuery(queryGroup);
+        if (CollectionUtils.isNotEmpty(assetInfoGroups)) {
+            for (SurveyAssetInfoGroup infoGroup : assetInfoGroups) {
+                if (infoGroup.getInventoryId() == null){
+                    continue;
+                }
+                List<Integer> integerList = surveyAssetInfoItemService.getSurveyAssetInfoItemIdsByGroupId(infoGroup.getId());
+                if (CollectionUtils.isNotEmpty(integerList)) {
+                    for (Integer id : integerList) {
+                        SurveyAssetInfoItem assetInfoItem = surveyAssetInfoItemService.getSurveyAssetInfoItemById(id);
+                        infoItemList.add(assetInfoItem);
+                    }
+                }
+            }
+        }
+        List<SurveyAssetInfoItem> surveyAssetInfoItems = surveyAssetInfoItemService.getSurveyAssetInfoItemListByQuery(queryItem);
+        if (CollectionUtils.isNotEmpty(surveyAssetInfoItems)) {
+            List<SurveyAssetInfoItem> infoItems = surveyAssetInfoItems.stream().filter(surveyAssetInfoItem -> surveyAssetInfoItem.getInventoryId() != null).collect(Collectors.toList());
+            if (CollectionUtils.isNotEmpty(infoItems)) {
+                infoItemList.addAll(infoItems);
+            }
+        }
+        int thisCount = 0;
+        if (CollectionUtils.isNotEmpty(declareRecords)) {
+            if (CollectionUtils.isNotEmpty(infoItemList)) {
+                Set<Integer> integerSet = infoItemList.stream().map(info -> info.getDeclareId()).distinct().collect(Collectors.toSet());
+                if (CollectionUtils.isNotEmpty(integerSet)) {
+                    for (Integer integer : integerSet) {
+                        if (declareRecords.stream().anyMatch(declareRecord -> Objects.equal(declareRecord.getId(), integer))) {
+                            thisCount++;
+                        }
+                    }
+                }
+            }
+        }
+        surveyAssetInfo.setThisCount(thisCount);
+    }
+
+
+    public SurveyAssetInfo getSurveyAssetInfoByPlanDetailsId(ProjectPlanDetails projectPlanDetails) {
         SurveyAssetInfo query = new SurveyAssetInfo();
-        query.setPlanDetailId(planDetailsId);
+        query.setPlanDetailId(projectPlanDetails.getId());
+        query.setProjectId(projectPlanDetails.getProjectId());
         List<SurveyAssetInfo> xlxReportIndividuals = getSurveyAssetInfoListByQuery(query);
         if (CollectionUtils.isNotEmpty(xlxReportIndividuals)) {
             return xlxReportIndividuals.get(0);
         }
-        saveSurveyAssetInfo(query) ;
+        saveSurveyAssetInfo(query);
         return query;
     }
 

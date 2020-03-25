@@ -6,6 +6,9 @@
     <result column="project_id" property="projectId" jdbcType="INTEGER" />
     <result column="plan_detail_id" property="planDetailId" jdbcType="INTEGER" />
     <result column="process_ins_id" property="processInsId" jdbcType="VARCHAR" />
+    <result column="this_count" property="thisCount" jdbcType="INTEGER" />
+    <result column="finish_count" property="finishCount" jdbcType="INTEGER" />
+    <result column="count" property="count" jdbcType="INTEGER" />
     <result column="status" property="status" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
@@ -70,7 +73,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, project_id, plan_detail_id, process_ins_id, status, creator, gmt_created, gmt_modified
+    id, project_id, plan_detail_id, process_ins_id, this_count, finish_count, count, 
+    status, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInfoExample" >
     select
@@ -107,9 +111,11 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_survey_asset_info (project_id, plan_detail_id, process_ins_id, 
+      this_count, finish_count, count, 
       status, creator, gmt_created, 
       gmt_modified)
     values (#{projectId,jdbcType=INTEGER}, #{planDetailId,jdbcType=INTEGER}, #{processInsId,jdbcType=VARCHAR}, 
+      #{thisCount,jdbcType=INTEGER}, #{finishCount,jdbcType=INTEGER}, #{count,jdbcType=INTEGER}, 
       #{status,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
       #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
@@ -127,6 +133,15 @@
       </if>
       <if test="processInsId != null" >
         process_ins_id,
+      </if>
+      <if test="thisCount != null" >
+        this_count,
+      </if>
+      <if test="finishCount != null" >
+        finish_count,
+      </if>
+      <if test="count != null" >
+        count,
       </if>
       <if test="status != null" >
         status,
@@ -150,6 +165,15 @@
       </if>
       <if test="processInsId != null" >
         #{processInsId,jdbcType=VARCHAR},
+      </if>
+      <if test="thisCount != null" >
+        #{thisCount,jdbcType=INTEGER},
+      </if>
+      <if test="finishCount != null" >
+        #{finishCount,jdbcType=INTEGER},
+      </if>
+      <if test="count != null" >
+        #{count,jdbcType=INTEGER},
       </if>
       <if test="status != null" >
         #{status,jdbcType=VARCHAR},
@@ -186,6 +210,15 @@
       <if test="record.processInsId != null" >
         process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
       </if>
+      <if test="record.thisCount != null" >
+        this_count = #{record.thisCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.finishCount != null" >
+        finish_count = #{record.finishCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.count != null" >
+        count = #{record.count,jdbcType=INTEGER},
+      </if>
       <if test="record.status != null" >
         status = #{record.status,jdbcType=VARCHAR},
       </if>
@@ -209,6 +242,9 @@
       project_id = #{record.projectId,jdbcType=INTEGER},
       plan_detail_id = #{record.planDetailId,jdbcType=INTEGER},
       process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
+      this_count = #{record.thisCount,jdbcType=INTEGER},
+      finish_count = #{record.finishCount,jdbcType=INTEGER},
+      count = #{record.count,jdbcType=INTEGER},
       status = #{record.status,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -228,6 +264,15 @@
       </if>
       <if test="processInsId != null" >
         process_ins_id = #{processInsId,jdbcType=VARCHAR},
+      </if>
+      <if test="thisCount != null" >
+        this_count = #{thisCount,jdbcType=INTEGER},
+      </if>
+      <if test="finishCount != null" >
+        finish_count = #{finishCount,jdbcType=INTEGER},
+      </if>
+      <if test="count != null" >
+        count = #{count,jdbcType=INTEGER},
       </if>
       <if test="status != null" >
         status = #{status,jdbcType=VARCHAR},
@@ -249,6 +294,9 @@
     set project_id = #{projectId,jdbcType=INTEGER},
       plan_detail_id = #{planDetailId,jdbcType=INTEGER},
       process_ins_id = #{processInsId,jdbcType=VARCHAR},
+      this_count = #{thisCount,jdbcType=INTEGER},
+      finish_count = #{finishCount,jdbcType=INTEGER},
+      count = #{count,jdbcType=INTEGER},
       status = #{status,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},

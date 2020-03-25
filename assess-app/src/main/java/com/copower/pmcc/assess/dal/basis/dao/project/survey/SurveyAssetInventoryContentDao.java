@@ -59,4 +59,13 @@ public class SurveyAssetInventoryContentDao {
         if (CollectionUtils.isEmpty(list)) return null;
         return list.get(0);
     }
+
+    public List<SurveyAssetInventoryContent> getSurveyAssetInventoryContentListByMasterId(Integer masterId){
+        SurveyAssetInventoryContentExample example = new SurveyAssetInventoryContentExample();
+        SurveyAssetInventoryContentExample.Criteria criteria = example.createCriteria();
+        criteria.andIdIsNotNull();
+        criteria.andMasterIdEqualTo(masterId) ;
+        return surveyAssetInventoryContentMapper.selectByExample(example);
+    }
+
 }

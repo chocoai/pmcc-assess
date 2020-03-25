@@ -63,11 +63,14 @@ public class SurveyAssetInfoGroupService {
         }
     }
 
-    private void removeFileByTableId(Integer tableId) {
+    private void removeFileByTableId(Integer tableId)throws Exception {
         if (tableId == null) {
             return;
         }
-        surveyAssetInfoItemService.deleteSurveyAssetInfoItemByGroupId(tableId);
+        List<Integer> integers = surveyAssetInfoItemService.getSurveyAssetInfoItemIdsByGroupId(tableId);
+        if (CollectionUtils.isNotEmpty(integers)){
+            throw new Exception("存在子类,请删除子类以后在删除本数据") ;
+        }
         SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
         sysAttachmentDto.setTableId(tableId);
         sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(SurveyAssetInfoGroup.class));
@@ -78,7 +81,7 @@ public class SurveyAssetInfoGroupService {
         sysAttachmentDtoList.forEach(sysAttachmentDto1 -> baseAttachmentService.deleteAttachment(sysAttachmentDto1.getId()));
     }
 
-    public void deleteSurveyAssetInfoGroupById(String id) {
+    public void deleteSurveyAssetInfoGroupById(String id) throws Exception{
         if (StringUtils.isEmpty(id)) {
             return;
         }
@@ -88,8 +91,10 @@ public class SurveyAssetInfoGroupService {
                 removeFileByTableId(ids.get(0));
                 surveyAssetInfoGroupDao.deleteSurveyAssetInfoGroupById(ids.get(0));
             } else {
-                ids.forEach(integer -> removeFileByTableId(integer));
-                surveyAssetInfoGroupDao.deleteSurveyAssetInfoGroupByIds(ids);
+                for (Integer integer:ids){
+                    removeFileByTableId(integer) ;
+                    surveyAssetInfoGroupDao.deleteSurveyAssetInfoGroupById(integer);
+                }
             }
         }
     }
@@ -98,7 +103,7 @@ public class SurveyAssetInfoGroupService {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<SurveyAssetInfoGroup> surveyAssetInfoGroups = getSurveyAssetInfoGroupListByQuery(oo);
+        List<SurveyAssetInfoGroup> surveyAssetInfoGroups = getSurveyAssetInfoItemListLikeQuery(oo);
         vo.setTotal(page.getTotal());
         vo.setRows(CollectionUtils.isNotEmpty(surveyAssetInfoGroups) ? surveyAssetInfoGroups : new ArrayList(0));
         return vo;

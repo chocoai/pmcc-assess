@@ -63,6 +63,15 @@ public class SurveyAssetInfoGroupDao {
         if (StringUtils.isNotBlank(oo.getGroupName())){
             criteria.andGroupNameLike(String.format("%%%s%%", oo.getGroupName()));
         }
+        if (oo.getAssetInfoId() != null){
+            criteria.andAssetInfoIdEqualTo(oo.getAssetInfoId()) ;
+        }
+        if (oo.getInventoryId() != null){
+            criteria.andInventoryIdEqualTo(oo.getInventoryId()) ;
+        }
+        if (StringUtils.isNotBlank(oo.getCreator())){
+            criteria.andCreatorEqualTo(oo.getCreator()) ;
+        }
         example.setOrderByClause("id");
         return mapper.selectByExample(example);
     }
