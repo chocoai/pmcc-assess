@@ -190,14 +190,14 @@ public class BasicApplyBatchController extends BaseController {
     @ResponseBody
     @RequestMapping(value = "/getCaseEstateZtreeDtos", method = RequestMethod.GET)
     public List<ZtreeDto> getCaseEstateZtreeDtos(Integer estateId) {
-        return basicApplyBatchService.getCaseEstateZtreeDtos(estateId);
+        return basicApplyBatchService.getCacheEstateZtreeById(estateId);
     }
 
     @ResponseBody
     @RequestMapping(value = "/initCaseEstateZtree", name = "初始化支撑新增获取升级案例结构", method = RequestMethod.POST)
-    public HttpResult initCaseEstateZtree(Integer applyBatchId, Integer caseBatchDetailId, Boolean containThis) {
+    public HttpResult initCaseEstateZtree(Integer applyBatchId, String nodesJson) {
         try {
-            BasicApplyBatchDetail batchDetail = basicApplyBatchService.initCaseEstateZtree(applyBatchId, caseBatchDetailId, containThis);
+            BasicApplyBatchDetail batchDetail = basicApplyBatchService.initCaseEstateZtree(applyBatchId, nodesJson);
             return HttpResult.newCorrectResult(batchDetail);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
@@ -207,9 +207,9 @@ public class BasicApplyBatchController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "/upgradeCase", name = "案例升级", method = RequestMethod.POST)
-    public HttpResult upgradeCase(Integer applyBatchId, Integer pid, Integer caseBatchDetailId) {
+    public HttpResult upgradeCase(Integer applyBatchId, Integer pid, String nodeJson) {
         try {
-            BasicApplyBatchDetail batchDetail = basicApplyBatchService.upgradeCase(applyBatchId, pid, caseBatchDetailId);
+            BasicApplyBatchDetail batchDetail = basicApplyBatchService.upgradeCase(applyBatchId, pid, nodeJson);
             return HttpResult.newCorrectResult(batchDetail);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);

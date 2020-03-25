@@ -87,11 +87,10 @@ public class BasicApplyBatchEvent extends BaseProcessEvent {
                             basicEstate.setVersion(latestVersionEstate.getVersion() + 1);
                             basicEstate.setCreator(batchDetail.getCreator());
                             basicEstate.setGmtCreated(DateUtils.now());
-                        } else {
-                            basicEstate.setVersion(1);
                         }
+                        basicEstate.setVersion(basicEstate.getVersion() == null ? 1 : basicEstate.getVersion());
                         basicEstate.setBisCase(true);
-                        basicEstateDao.updateBasicEstate(basicEstate,false);
+                        basicEstateDao.updateBasicEstate(basicEstate, false);
                         break;
                     case BUILDING:
                         BasicBuilding basicBuilding = basicBuildingDao.getBasicBuildingById(batchDetail.getTableId());
@@ -104,11 +103,10 @@ public class BasicApplyBatchEvent extends BaseProcessEvent {
                                 basicBuilding.setCreator(batchDetail.getCreator());
                                 basicBuilding.setGmtCreated(DateUtils.now());
                             }
-                        } else {
-                            basicBuilding.setVersion(1);
                         }
+                        basicBuilding.setVersion(basicBuilding.getVersion() == null ? 1 : basicBuilding.getVersion());
                         basicBuilding.setBisCase(true);
-                        basicBuildingDao.updateBasicBuilding(basicBuilding,false);
+                        basicBuildingDao.updateBasicBuilding(basicBuilding, false);
                         break;
                     case UNIT:
                         BasicUnit basicUnit = basicUnitDao.getBasicUnitById(batchDetail.getTableId());
@@ -121,11 +119,10 @@ public class BasicApplyBatchEvent extends BaseProcessEvent {
                                 basicUnit.setCreator(batchDetail.getCreator());
                                 basicUnit.setGmtCreated(DateUtils.now());
                             }
-                        } else {
-                            basicUnit.setVersion(1);
                         }
+                        basicUnit.setVersion(basicUnit.getVersion() == null ? 1 : basicUnit.getVersion());
                         basicUnit.setBisCase(true);
-                        basicUnitDao.updateBasicUnit(basicUnit,false);
+                        basicUnitDao.updateBasicUnit(basicUnit, false);
                         break;
                     case HOUSE:
                         BasicHouse basicHouse = basicHouseDao.getBasicHouseById(batchDetail.getTableId());
@@ -138,11 +135,10 @@ public class BasicApplyBatchEvent extends BaseProcessEvent {
                                 basicHouse.setCreator(batchDetail.getCreator());
                                 basicHouse.setGmtCreated(DateUtils.now());
                             }
-                        } else {
-                            basicHouse.setVersion(1);
                         }
+                        basicHouse.setVersion(basicHouse.getVersion() == null ? 1 : basicHouse.getVersion());
                         basicHouse.setBisCase(true);
-                        basicHouseDao.updateBasicHouse(basicHouse,false);
+                        basicHouseDao.updateBasicHouse(basicHouse, false);
                         break;
                 }
             }

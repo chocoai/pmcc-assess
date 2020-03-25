@@ -271,7 +271,7 @@ public class BasicUnitService extends BasicEntityAbstract {
                 BasicApplyBatchDetail unitDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(FormatUtils.entityNameConvertToTableName(BasicUnit.class), basicUnit.getId());
                 if (unitDetail != null) {
                     unitDetail.setName(basicUnit.getUnitNumber());
-                    unitDetail.setDisplayName(String.format("%s%s", basicUnit.getUnitNumber(), "单元"));
+                    unitDetail.setDisplayName(basicUnit.getUnitNumber());
                     basicApplyBatchDetailService.saveBasicApplyBatchDetail(unitDetail);
                 }
                 return basicUnit.getId();

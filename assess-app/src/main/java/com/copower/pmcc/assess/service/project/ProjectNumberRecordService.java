@@ -17,6 +17,7 @@ import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.DateUtils;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.github.pagehelper.Page;
@@ -57,14 +58,19 @@ public class ProjectNumberRecordService {
     private CustomProjectNumberRecordMapper customProjectNumberRecordMapper;
 
     public List<String> getReportNumberList(Integer projectId, AssessProjectTypeEnum assessProjectTypeEnum, Integer reportType) {
+        List<ProjectNumberRecord> numberList = getReportNumberRecordList(projectId,assessProjectTypeEnum,reportType);
+        List<String> list = LangUtils.transform(numberList, o -> o.getNumberValue());
+        return list;
+    }
+
+    public List<ProjectNumberRecord> getReportNumberRecordList(Integer projectId, AssessProjectTypeEnum assessProjectTypeEnum, Integer reportType) {
         ProjectNumberRecord where = new ProjectNumberRecord();
         where.setBisDelete(false);
         where.setProjectId(projectId);
         where.setAssessProjectType(assessProjectTypeEnum.getKey());
         where.setReportType(reportType);
         List<ProjectNumberRecord> numberList = projectNumberRecordDao.getProjectNumberRecordList(where);
-        List<String> list = LangUtils.transform(numberList, o -> o.getNumberValue());
-        return list;
+        return numberList;
     }
 
 
@@ -177,7 +183,7 @@ public class ProjectNumberRecordService {
                 projectInfo.setResultNumberDate(new Date());
                 projectInfoService.saveProjectInfo(projectInfo);
             }
-            erpRpcToolsService.updateSymbolUsed(applicationConstant.getAppKey(), sysSymbolListDto.getSymbol());
+            erpRpcToolsService.updateSymbolEnable(applicationConstant.getAppKey(), sysSymbolListDto.getSymbol());
         }
         return sysSymbolListDto;
     }

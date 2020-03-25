@@ -15,7 +15,7 @@
                 <div class="row mt--2">
                     <c:if test="${applyBatch.caseEstateId > 0}">
                         <div class="col-md-3">
-                            <div class=" card" style="min-height: 500px;">
+                            <div class=" card" style="min-height: 300px;">
                                 <div class="card-header">
                                     <div class="card-head-row">
                                         <div class="card-title">
@@ -50,10 +50,12 @@
                             <div class=" card-body">
                                 <div class="row col-md-12">
                                     <div class="col-md-8">
-                                        <button type="button" class="btn btn-sm btn-primary baseTool" style="margin-left: 5px;"
+                                        <button type="button" class="btn btn-sm btn-primary baseTool"
+                                                style="margin-left: 5px;"
                                                 onclick=" batchTreeTool.expandAll(true);">全部展开
                                         </button>
-                                        <button type="button" class="btn btn-sm btn-primary baseTool" style="margin-left: 5px;"
+                                        <button type="button" class="btn btn-sm btn-primary baseTool"
+                                                style="margin-left: 5px;"
                                                 onclick=" batchTreeTool.expandAll(false);">全部收起
                                         </button>
                                         <span id="btnGroup" style="display: none;">
@@ -88,7 +90,9 @@
                                                         大类<span class="symbol required"></span>
                                                     </label>
                                                     <div class="col-xs-10  col-sm-10  col-md-10  col-lg-10">
-                                                        <select class="form-control input-full" name="classify" ${applyBatch.caseEstateId > 0?'disabled="disabled"':''} onchange="formClassifyChange();" required>
+                                                        <select class="form-control input-full"
+                                                                name="classify" ${applyBatch.caseEstateId > 0?'disabled="disabled"':''}
+                                                                onchange="formClassifyChange();" required>
                                                             <option value="">-请选择-</option>
                                                             <c:if test="${not empty formClassifyList}">
                                                                 <c:forEach var="item" items="${formClassifyList}">
@@ -107,7 +111,8 @@
                                                         类型<span class="symbol required"></span>
                                                     </label>
                                                     <div class="col-xs-10  col-sm-10  col-md-10  col-lg-10">
-                                                        <select class="form-control input-full" name="type" ${applyBatch.caseEstateId > 0?'disabled="disabled"':''}
+                                                        <select class="form-control input-full"
+                                                                name="type" ${applyBatch.caseEstateId > 0?'disabled="disabled"':''}
                                                                 onchange="saveBasicApplyBatch();" required>
                                                             <option value="">-请选择-</option>
                                                             <c:if test="${not empty examineFormTypeList}">
@@ -236,7 +241,6 @@
     </div>
 </div>
 </body>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/map.position.js?v=${assessVersion}"></script>
 </html>
 
 <script type="text/javascript">
@@ -663,6 +667,15 @@
         }
     }
 
+    //获取上级所有节点
+    batchTreeTool.getParentsNodeJson = function (node, nodeArray) {
+        var parentNode = node.getParentNode();
+        if (parentNode != null) {
+            nodeArray.push(parentNode);
+            batchTreeTool.getParentsNodeJson(parentNode, nodeArray);
+        }
+    }
+
     //新增
     batchTreeTool.addFromCase = function () {
         var node = caseEstateZtreeObj.getSelectedNodes()[0];
@@ -670,11 +683,12 @@
             notifyInfo('提示', "请先选择节点");
             return;
         }
+        var nodeArray = [node];
+        batchTreeTool.getParentsNodeJson(node, nodeArray);
         $.ajax({
             url: "${pageContext.request.contextPath}/basicApplyBatch/initCaseEstateZtree",
             data: {
-                caseBatchDetailId: node.id,
-                containThis: true,
+                nodesJson: JSON.stringify(nodeArray),
                 applyBatchId: '${applyBatch.id}'
             },
             type: "post",
@@ -694,11 +708,12 @@
             notifyInfo('提示', "请先选择节点");
             return;
         }
+        var nodeArray = [];
+        batchTreeTool.getParentsNodeJson(node, nodeArray);
         $.ajax({
             url: "${pageContext.request.contextPath}/basicApplyBatch/initCaseEstateZtree",
             data: {
-                caseBatchDetailId: node.id,
-                containThis: false,
+                nodesJson: JSON.stringify(nodeArray),
                 applyBatchId: '${applyBatch.id}'
             },
             type: "post",
@@ -708,7 +723,7 @@
                     $.ajax({
                         url: "${pageContext.request.contextPath}/basicApplyBatch/upgradeCase",
                         data: {
-                            caseBatchDetailId: node.id,
+                            nodeJson: JSON.stringify(node),
                             pid: result.data.id,
                             applyBatchId: '${applyBatch.id}'
                         },

@@ -239,7 +239,7 @@ public class BasicBuildingService extends BasicEntityAbstract {
 
         BasicBuilding basicBuilding = new BasicBuilding();
         basicBuilding.setBuildingNumber(buildingNumber);
-        basicBuilding.setBuildingName(buildingNumber + '栋');
+        basicBuilding.setBuildingName(buildingNumber);
         basicBuilding.setApplyId(0);
         basicBuilding.setCreator(commonService.thisUserAccount());
         basicBuildingDao.addBasicBuilding(basicBuilding);

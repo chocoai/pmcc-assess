@@ -12,12 +12,12 @@
                 </div>
                 <div class="card-tools">
                     <button class="btn  btn-link btn-primary btn-xs"><span
-                            class="fa fa-angle-down"></span>
+                            class="fa fa-angle-up"></span>
                     </button>
                 </div>
             </div>
         </div>
-        <div class="card-body">
+        <div class="card-body" style="display: none">
             <form id="assessmentQualityForm" class="form-horizontal">
                 <div class="row form-group">
                     <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
@@ -145,12 +145,12 @@
                 </div>
                 <div class="card-tools">
                     <button class="btn  btn-link btn-primary btn-xs"><span
-                            class="fa fa-angle-down"></span>
+                            class="fa fa-angle-up"></span>
                     </button>
                 </div>
             </div>
         </div>
-        <div class="card-body">
+        <div class="card-body" style="display: none">
             <table class="table" id="assessmentWorkHoursTableList">
             </table>
         </div>
