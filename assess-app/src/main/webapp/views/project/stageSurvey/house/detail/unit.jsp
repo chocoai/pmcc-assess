@@ -32,7 +32,7 @@
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                         <div class="form-inline x-valid">
-                                            <label class="col-sm-1 control-label">单元编号</label>
+                                            <label class="col-sm-1 control-label">名称</label>
                                             <div class=" col-sm-3 ">
                                                 <div class="input-group">
                                                     <label class="form-control "
