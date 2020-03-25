@@ -35,7 +35,7 @@
                                         <div class="col-md-12">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-1 control-label">
-                                                楼栋号<span class="symbol required"></span>
+                                                名称<span class="symbol required"></span>
                                             </label>
                                             <div class="col-sm-3">
                                                 <div class="input-group">
@@ -48,10 +48,6 @@
                         </span>
                                                 </div>
                                             </div>
-                                    
-                                            <label class="col-sm-1 control-label">
-                                                楼栋名称
-                                            </label>
                                             <div class="col-sm-3">
                                                 <label class="form-control input-full" name="buildingName">${basicBuilding.buildingName}</label>
                                             </div>
@@ -62,12 +58,6 @@
                                             <div class="col-sm-3">
                                                 <label class="form-control input-full" name="propertyTypeName">${basicBuilding.propertyTypeName}</label>
                                             </div>
-                                        </div>
-                                        </div>
-                                    </div>
-                                    <div class="row form-group">
-                                        <div class="col-md-12">
-                                        <div class="form-inline x-valid">
                                             <label class="col-sm-1 control-label">
                                                 物业类别
                                             </label>
@@ -75,7 +65,12 @@
                                                 <label class="form-control input-full"
                                                        name="propertyCategoryName">${basicBuilding.propertyCategoryName}</label>
                                             </div>
-                                    
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                        <div class="form-inline x-valid">
                                             <label class="col-sm-1 control-label">
                                                 土地使用年限
                                             </label>

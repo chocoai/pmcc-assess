@@ -1,9 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="x_content">
-    <div class="x_title">
-        <h3>单元基本信息</h3>
-        <div class="clearfix"></div>
-    </div>
     <form class="form-horizontal" id="basicUnitFrm">
         <input type="hidden" name="id" value="${basicUnit.id}">
         <input type="hidden" name="quoteId" value="${basicUnit.quoteId}">
@@ -15,11 +11,11 @@
                     <div class="row form-group">
                         <div class="col-md-12">
                             <div class="form-inline x-valid">
-                                <label class="col-sm-1">单元编号<span
+                                <label class="col-sm-1">名称<span
                                         class="symbol required"></span></label>
                                 <div class="col-sm-3">
                                     <div class="input-group">
-                                        <input type="text" data-rule-maxlength="100" placeholder="单元编号"
+                                        <input type="text" data-rule-maxlength="100" placeholder="名称"
                                                required="required"
                                                name="unitNumber" class="form-control" value="${basicUnit.unitNumber}"
                                                id="txt_Unit_search">

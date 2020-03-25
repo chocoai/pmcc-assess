@@ -1,11 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="x_content">
-    <div class="x_title">
-        <h3>
-            楼栋基本信息
-        </h3>
-        <div class="clearfix"></div>
-    </div>
     <form class="form-horizontal" id="basicBuildingFrm">
         <div class="row">
             <div class="col-md-12">
@@ -17,11 +11,11 @@
             <div class="col-md-12">
             <div class="form-inline x-valid">
                 <label class="col-sm-1">
-                    楼栋号<span class="symbol required"></span>
+                    名称<span class="symbol required"></span>
                 </label>
                 <div class="col-md-3">
                     <div class="input-group">
-                        <input type="text" id="txt_building_search" data-rule-maxlength="100" placeholder="楼栋号"
+                        <input type="text" id="txt_building_search" data-rule-maxlength="100" placeholder="名称"
                                required="required"
                                name="buildingNumber" class="form-control"
                                onblur="buildingCommon.buildingNumberBlur(this);"
@@ -35,18 +29,18 @@
                     </div>
                 </div>
                 <label class="col-sm-1">
-                    楼栋名称<span class="symbol required"></span>
-                </label>
-                <div class="col-md-3">
-                    <input type="text" placeholder="楼栋名称" name="buildingName"
-                           class="form-control input-full" required="required" value="${basicBuilding.buildingName}">
-                </div>
-                <label class="col-sm-1">
                     物业类型
                 </label>
                 <div class="col-md-3">
                     <select name="propertyType"
                             class="form-control input-full propertyType">
+                    </select>
+                </div>
+                <label class="col-sm-1">
+                    物业类别<span class="symbol required"></span>
+                </label>
+                <div class="col-md-3">
+                    <select name="propertyCategory" class="form-control input-full propertyCategory" required>
                     </select>
                 </div>
             </div>
@@ -55,13 +49,6 @@
         <div class="row form-group">
             <div class="col-md-12">
             <div class="form-inline x-valid">
-                <label class="col-sm-1">
-                    物业类别<span class="symbol required"></span>
-                </label>
-                <div class="col-md-3">
-                    <select name="propertyCategory" class="form-control input-full propertyCategory" required>
-                    </select>
-                </div>
                 <label class="col-sm-1">
                     土地使用年限
                 </label>
