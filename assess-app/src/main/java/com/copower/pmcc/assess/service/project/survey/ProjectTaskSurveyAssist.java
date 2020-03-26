@@ -2,10 +2,7 @@ package com.copower.pmcc.assess.service.project.survey;
 
 import com.copower.pmcc.assess.common.enums.AssessProjectTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.basic.BasicApplyBatchService;
@@ -58,7 +55,7 @@ public class ProjectTaskSurveyAssist implements ProjectTaskInterface {
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskCIPIndex", "", 0, "0", "");
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskCIPIndex2", "", 0, "0", "");
         setViewParam(projectPlanDetails, modelAndView);
         return modelAndView;
     }
@@ -72,7 +69,7 @@ public class ProjectTaskSurveyAssist implements ProjectTaskInterface {
 
     @Override
     public ModelAndView returnEditView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskCIPIndex", processInsId, boxId, taskId, agentUserAccount);
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskCIPIndex2", processInsId, boxId, taskId, agentUserAccount);
         setViewParam(projectPlanDetails, modelAndView);
         return modelAndView;
     }
@@ -114,10 +111,14 @@ public class ProjectTaskSurveyAssist implements ProjectTaskInterface {
         modelAndView.addObject("declareRecord", declareRecord);
         modelAndView.addObject("applyBatch", basicApplyBatchService.getBasicApplyBatchByPlanDetailsId(projectPlanDetails.getId()));
         modelAndView.addObject("formClassifyList", getFormClassifyList(projectPlanDetails.getProjectId()));
+        modelAndView.addObject("projectId", projectPlanDetails.getProjectId());
         modelAndView.addObject("examineFormTypeList", surveyCommonService.getExamineFormTypeList());
         List<BaseDataDic> buildingStatusList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.PROJECT_SURVEY_BUILDING_STATUS);
         modelAndView.addObject("buildingStatusList", buildingStatusList);
         modelAndView.addObject("userAccount", processControllerComponent.getThisUser());
+
+        List<BasicApplyBatchDetail> estateBatchDetailList = basicApplyBatchService.getOriginalBasicApplyBatchListByProjectId(projectPlanDetails.getProjectId());
+        modelAndView.addObject("estateBatchDetailList", estateBatchDetailList);
         //用于页面判断是否是子任务
         ProjectResponsibilityDto masterDto = new ProjectResponsibilityDto();
         masterDto.setPlanDetailsId(projectPlanDetails.getId());

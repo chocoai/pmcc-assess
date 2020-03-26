@@ -8,6 +8,7 @@ import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.controller.BaseController;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.ZtreeDto;
+import com.copower.pmcc.assess.dto.input.basic.BasicFormClassifyDto;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateVo;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseVo;
 import com.copower.pmcc.assess.dto.output.project.survey.BasicApplyBatchDetailVo;
@@ -39,6 +40,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -393,8 +395,26 @@ public class BasicApplyBatchController extends BaseController {
     public HttpResult saveItemData(String formData, Integer planDetailsId) {
         try {
             BasicApplyBatchDetail basicApplyBatchDetail = JSON.parseObject(formData, BasicApplyBatchDetail.class);
-            BasicApplyBatchDetailVo basicApplyBatchDetailVo = basicApplyBatchDetailService.getBasicApplyBatchDetailVo(basicApplyBatchDetailService.addBasicApplyBatchDetail(basicApplyBatchDetail, planDetailsId));
+            BasicApplyBatchDetailVo basicApplyBatchDetailVo = basicApplyBatchDetailService.getBasicApplyBatchDetailVo(basicApplyBatchDetailService.saveAndUpdateComplete(basicApplyBatchDetail, planDetailsId));
             return HttpResult.newCorrectResult(basicApplyBatchDetailVo);
+        } catch (Exception e1) {
+            logger.error(e1.getMessage(), e1);
+            return HttpResult.newErrorResult("保存数据异常");
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/updateItemData", name = "修改数据", method = {RequestMethod.POST})
+    public HttpResult updateItemData(String formData, Integer planDetailsId) {
+        try {
+            BasicApplyBatchDetail tempData = JSON.parseObject(formData, BasicApplyBatchDetail.class);
+            //更新name与权证id
+            BasicApplyBatchDetail oldData = basicApplyBatchDetailService.getDataById(tempData.getId());
+            oldData.setName(tempData.getName());
+            oldData.setDeclareRecordId(tempData.getDeclareRecordId());
+            oldData.setDeclareRecordName(tempData.getDeclareRecordName());
+            BasicApplyBatchDetailVo vo = basicApplyBatchDetailService.getBasicApplyBatchDetailVo(basicApplyBatchDetailService.saveAndUpdateComplete(oldData, planDetailsId));
+            return HttpResult.newCorrectResult(vo);
         } catch (Exception e1) {
             logger.error(e1.getMessage(), e1);
             return HttpResult.newErrorResult("保存数据异常");
@@ -789,11 +809,12 @@ public class BasicApplyBatchController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "/initBasicApplyBatchInfo", method = {RequestMethod.POST}, name = "初始化")
-    public HttpResult initBasicApplyBatchInfo(Integer planDetailsId, Integer classify, Integer type, Integer buildingStatus) {
+    public HttpResult initBasicApplyBatchInfo(Integer planDetailsId, Integer projectId, Integer classify, Integer type, Integer buildingStatus) {
         try {
             BasicApplyBatch applyBatch = new BasicApplyBatch();
             applyBatch.setPlanDetailsId(planDetailsId);
             applyBatch.setClassify(classify);
+            applyBatch.setProjectId(projectId);
             applyBatch.setType(type);
             applyBatch.setBuildingStatus(buildingStatus);
             basicApplyBatchService.initBasicApplyBatchInfo(applyBatch);
@@ -828,4 +849,37 @@ public class BasicApplyBatchController extends BaseController {
     }
 
 
+    @ResponseBody
+    @RequestMapping(value = "/getTableTypeList", method = RequestMethod.GET, name = "获取表单类型")
+    public HttpResult getTableTypeList(String type) throws Exception {
+        try {
+            BasicFormClassifyEnum anEnum = BasicFormClassifyEnum.getEnumByKey(type);
+            List<BasicFormClassifyEnum> enumList = BasicFormClassifyEnum.getHighLevelEnumsByLevel(anEnum.getLevel());
+            List<BasicFormClassifyDto> dtos = Lists.newArrayList();
+            if(!CollectionUtils.isEmpty(enumList)){
+                for (BasicFormClassifyEnum item: enumList) {
+                    BasicFormClassifyDto dto = new BasicFormClassifyDto();
+                    dto.setTableName(item.getTableName());
+                    dto.setValue(item.getValue());
+                    dtos.add(dto);
+                }
+            }
+            return HttpResult.newCorrectResult(dtos);
+        } catch (Exception e1) {
+            logger.error(e1.getMessage(), e1);
+            return HttpResult.newErrorResult("异常");
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/referenceEstate", method = RequestMethod.POST, name = "引用其他楼盘")
+    public HttpResult referenceEstate(Integer referenceId,Integer basicApplyBatchId) throws Exception {
+        try {
+            basicApplyBatchService.referenceEstate(referenceId,basicApplyBatchId);
+            return HttpResult.newCorrectResult();
+        } catch (Exception e1) {
+            logger.error(e1.getMessage(), e1);
+            return HttpResult.newErrorResult("异常");
+        }
+    }
 }

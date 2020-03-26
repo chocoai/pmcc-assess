@@ -266,10 +266,7 @@
 
                                                         </datalist>
                                                         <div class="input-group-prepend">
-                                                            <button class="btn btn-warning btn-sm "
-                                                                    style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                                    type="button"
-                                                                    onclick="$(this).closest('.input-group').find('input').val('');">
+                                                            <button class="btn btn-warning btn-sm " style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;" type="button" onclick="$(this).closest('.input-group').find('input').val('');">
                                                                 清空
                                                             </button>
                                                         </div>

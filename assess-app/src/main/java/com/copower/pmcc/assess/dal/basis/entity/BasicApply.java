@@ -16,6 +16,8 @@ public class BasicApply {
 
     private Integer caseHouseId;
 
+    private Integer declareRecordId;
+
     private Integer basicEstateId;
 
     private Integer basicBuildingId;
@@ -114,6 +116,14 @@ public class BasicApply {
 
     public void setCaseHouseId(Integer caseHouseId) {
         this.caseHouseId = caseHouseId;
+    }
+
+    public Integer getDeclareRecordId() {
+        return declareRecordId;
+    }
+
+    public void setDeclareRecordId(Integer declareRecordId) {
+        this.declareRecordId = declareRecordId;
     }
 
     public Integer getBasicEstateId() {

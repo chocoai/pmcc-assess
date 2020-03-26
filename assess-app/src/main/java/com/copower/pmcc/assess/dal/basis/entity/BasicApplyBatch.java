@@ -7,7 +7,11 @@ public class BasicApplyBatch {
 
     private String processInsId;
 
+    private Integer projectId;
+
     private Integer planDetailsId;
+
+    private Integer referenceApplyBatchId;
 
     private String province;
 
@@ -61,12 +65,28 @@ public class BasicApplyBatch {
         this.processInsId = processInsId == null ? null : processInsId.trim();
     }
 
+    public Integer getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(Integer projectId) {
+        this.projectId = projectId;
+    }
+
     public Integer getPlanDetailsId() {
         return planDetailsId;
     }
 
     public void setPlanDetailsId(Integer planDetailsId) {
         this.planDetailsId = planDetailsId;
+    }
+
+    public Integer getReferenceApplyBatchId() {
+        return referenceApplyBatchId;
+    }
+
+    public void setReferenceApplyBatchId(Integer referenceApplyBatchId) {
+        this.referenceApplyBatchId = referenceApplyBatchId;
     }
 
     public String getProvince() {

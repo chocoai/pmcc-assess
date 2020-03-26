@@ -76,6 +76,9 @@ public class NetInfoRecordHouseService {
             netInfoRecordHouse.setCreator(recordHouse.getCreator());
             netInfoRecordHouse.setGmtCreated(recordHouse.getGmtCreated());
             netInfoRecordHouse.setGmtModified(DateUtils.now());
+            netInfoRecordHouse.setVersion(recordHouse.getVersion());
+            netInfoRecordHouse.setBisNewest(recordHouse.getBisNewest());
+            netInfoRecordHouse.setBeUpgradeId(recordHouse.getBeUpgradeId());
             netInfoRecordHouseDao.updateNetInfoRecordHouse(netInfoRecordHouse, true);
             return netInfoRecordHouse;
         }

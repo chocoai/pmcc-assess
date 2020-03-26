@@ -281,7 +281,7 @@ public class UReportService {
                                 if (makeOutProjectDto.getActualAmount() != null)
                                     actualAmount = actualAmount.add(objectToBigDecimal(makeOutProjectDto.getActualAmount() / 100L));
                                 if (makeOutProjectDto.getPayAmount() != null)
-                                    payAmount = payAmount.add(objectToBigDecimal(makeOutProjectDto.getPayAmount().divide(new BigDecimal("100"))));
+                                    payAmount = payAmount.add(objectToBigDecimal(makeOutProjectDto.getPayAmount() / 100L));
                             }
                         }
                         vo.setAmount(amount);
