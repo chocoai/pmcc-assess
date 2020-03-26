@@ -76,6 +76,12 @@ public class NetInfoRecordLandService {
             NetInfoRecordLand recordLand = getNetInfoRecordLandById(netInfoRecordLand.getId());
             netInfoRecordLand.setStatus(recordLand.getStatus());
             netInfoRecordLand.setCreator(commonService.thisUserAccount());
+            netInfoRecordLand.setGmtCreated(recordLand.getGmtCreated());
+            netInfoRecordLand.setGmtModified(DateUtils.now());
+            netInfoRecordLand.setApprover(recordLand.getApprover());
+            netInfoRecordLand.setVersion(recordLand.getVersion());
+            netInfoRecordLand.setBisNewest(recordLand.getBisNewest());
+            netInfoRecordLand.setBeUpgradeId(recordLand.getBeUpgradeId());
             netInfoRecordLandDao.updateNetInfoRecordLand(netInfoRecordLand, true);
             return netInfoRecordLand;
         }

@@ -18,7 +18,13 @@ import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import com.copower.pmcc.erp.common.utils.LangUtils;
+import com.copower.pmcc.finance.api.dto.FinancialBillMakeOutDto;
+import com.copower.pmcc.finance.api.dto.FinancialBillMakeOutProjectDto;
+import com.copower.pmcc.finance.api.provider.FinanceRpcToolService;
+import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,6 +33,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -52,6 +59,8 @@ public class ProjectXlxCommissionController extends BaseController {
     private ProjectNumberRecordService projectNumberRecordService;
     @Autowired
     private ProjectXlxPigeonholeService projectXlxPigeonholeService;
+    @Autowired
+    private FinanceRpcToolService financeRpcToolService;
 
     @RequestMapping(value = "/apply", name = "项目提成申请")
     public ModelAndView apply(Integer projectId) throws BusinessException {
@@ -75,9 +84,37 @@ public class ProjectXlxCommissionController extends BaseController {
             }
             projectXlxCommission.setReportNumber(number.deleteCharAt(number.length() - 1).toString());
         }
+        List<FinancialBillMakeOutDto> projectBillMakeOutList = financeRpcToolService.getFinancialBillMakeOutListAll(projectInfo.getPublicProjectId(), null);
+        if (CollectionUtils.isNotEmpty(projectBillMakeOutList)) {
+            BigDecimal amount = new BigDecimal("0");
+            BigDecimal actualAmount = new BigDecimal("0");
+            BigDecimal payAmount = new BigDecimal("0");
+            StringBuilder invoiceNumber = new StringBuilder();
+            for (FinancialBillMakeOutDto makeOutProjectDto : projectBillMakeOutList) {
+                if (StringUtils.isNotBlank(makeOutProjectDto.getBillNumber()))
+                    invoiceNumber.append(makeOutProjectDto.getBillNumber()).append(",");
+                List<FinancialBillMakeOutProjectDto> projectDtos = makeOutProjectDto.getProjectDtos();
+                if (CollectionUtils.isNotEmpty(projectDtos)) {
+                    for (FinancialBillMakeOutProjectDto projectDto : projectDtos) {
+                        if(projectInfo.getPublicProjectId().equals(projectDto.getProjectId())){
+                            if (projectDto.getAmount() != null)
+                                amount = amount.add(new BigDecimal(projectDto.getAmount() / 100L));
+                            if (projectDto.getActualAmount() != null)
+                                actualAmount = actualAmount.add(new BigDecimal(projectDto.getActualAmount() / 100L));
+                            if (projectDto.getPayAmount() != null)
+                                payAmount = payAmount.add(new BigDecimal(projectDto.getPayAmount() / 100L));
+                        }
+                    }
+                }
+            }
+            projectXlxCommission.setInvoiceNumber(StringUtils.strip(invoiceNumber.toString(), ","));
+            projectXlxCommission.setInvoiceTotalMoney(amount);
+            projectXlxCommission.setProjectMoney(actualAmount);
+        }
+
         projectXlxCommissionService.addData(projectXlxCommission);
         modelAndView.addObject("projectXlxCommission", projectXlxCommission);
-        modelAndView.addObject("pigeonholeDate",projectXlxPigeonholeService.getPigeonholeDateByProjectId(projectInfo.getId()));
+        modelAndView.addObject("pigeonholeDate", projectXlxPigeonholeService.getPigeonholeDateByProjectId(projectInfo.getId()));
         return modelAndView;
     }
 

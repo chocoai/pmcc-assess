@@ -208,16 +208,16 @@ public class ProjectDebtService {
                         reportProjectDebt.setPreauditNumber(StringUtils.join(preauditList, ","));
                     }
 
-                //结果报告文号
-                List<Integer> sameGroupResultType = dataNumberRuleService.getSameGroupReportType(assessProjectType, resultId);
-                List<String> resultIdList = Lists.newArrayList();
-                for (Integer resultType : sameGroupResultType) {
-                    resultIdList.addAll(projectNumberRecordService.getReportNumberList(projectItem.getId(), assessProjectType, resultType));
+                    //结果报告文号
+                    List<Integer> sameGroupResultType = dataNumberRuleService.getSameGroupReportType(assessProjectType, resultId);
+                    List<String> resultIdList = Lists.newArrayList();
+                    for (Integer resultType : sameGroupResultType) {
+                        resultIdList.addAll(projectNumberRecordService.getReportNumberList(projectItem.getId(), assessProjectType, resultType));
 
-                }
-                if (CollectionUtils.isNotEmpty(resultIdList)) {
-                    reportProjectDebt.setResultNumber(StringUtils.join(resultIdList, ","));
-                }
+                    }
+                    if (CollectionUtils.isNotEmpty(resultIdList)) {
+                        reportProjectDebt.setResultNumber(StringUtils.join(resultIdList, ","));
+                    }
                 }
                 //项目经理
                 String projectManager = projectMemberService.getProjectManager(projectItem.getId());
@@ -255,7 +255,7 @@ public class ProjectDebtService {
                     if (makeOutProjectDto.getActualAmount() != null)
                         actualAmount = actualAmount.add(objectToBigDecimal(makeOutProjectDto.getActualAmount() / 100L));
                     if (makeOutProjectDto.getPayAmount() != null)
-                        payAmount = payAmount.add(objectToBigDecimal(makeOutProjectDto.getPayAmount().divide(new BigDecimal("100"))));
+                        payAmount = payAmount.add(objectToBigDecimal(makeOutProjectDto.getPayAmount() / 100L));
                 }
             }
             //开票金额

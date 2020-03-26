@@ -62,7 +62,7 @@
         <dependency>
             <groupId>com.copower</groupId>
             <artifactId>finance-api</artifactId>
-            <version>1.0.5</version>
+            <version>1.0.11</version>
             <exclusions>
                 <exclusion>
                     <artifactId>erp-api</artifactId>
