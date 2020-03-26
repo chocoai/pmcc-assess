@@ -1,11 +1,14 @@
 package com.copower.pmcc.assess.service.project.survey;
 
+import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInfoDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.api.enums.SysProjectEnum;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
@@ -16,12 +19,13 @@ import com.github.pagehelper.PageInfo;
 import com.google.common.base.Objects;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.math.BigDecimal;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -41,19 +45,78 @@ public class SurveyAssetInfoService {
     private SurveyAssetInfoItemService surveyAssetInfoItemService;
     @Autowired
     private SurveyAssetInfoGroupService surveyAssetInfoGroupService;
+    @Autowired
+    private SurveyAssetInventoryContentService surveyAssetInventoryContentService;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
+    @Autowired
+    private SurveyAssetInventoryService surveyAssetInventoryService;
 
 
     /**
      * 提交要做的事
+     *
      * @param surveyAssetInfo
      */
     public void submit(SurveyAssetInfo surveyAssetInfo) {
 
-        //处理状态问题
+        List<DeclareRecord> declareRecordList = declareRecordService.getDeclareRecordByProjectId(surveyAssetInfo.getProjectId());
 
+        //处理状态问题
+        SurveyAssetInfoGroup queryGroup = new SurveyAssetInfoGroup();
+        queryGroup.setAssetInfoId(surveyAssetInfo.getId());
+        queryGroup.setCreator(commonService.thisUserAccount());
+        List<SurveyAssetInfoGroup> assetInfoGroups = surveyAssetInfoGroupService.getSurveyAssetInfoGroupListByQuery(queryGroup);
+        if (CollectionUtils.isNotEmpty(assetInfoGroups)) {
+            for (SurveyAssetInfoGroup infoGroup : assetInfoGroups) {
+                if (infoGroup.getInventoryId() == null) {
+                    continue;
+                }
+                List<Integer> integerList = surveyAssetInfoItemService.getSurveyAssetInfoItemIdsByGroupId(infoGroup.getId());
+                if (CollectionUtils.isNotEmpty(integerList)) {
+                    for (Integer id : integerList) {
+                        SurveyAssetInfoItem assetInfoItem = surveyAssetInfoItemService.getSurveyAssetInfoItemById(id);
+                        if (assetInfoItem.getDeclareId() == null) {
+                            continue;
+                        }
+                        DeclareRecord declareRecord = declareRecordList.stream().filter(record -> Objects.equal(record.getId(), assetInfoItem.getDeclareId())).findFirst().get();
+                        if (declareRecord == null) {
+                            continue;
+                        }
+                        declareRecord.setBisInventory(true);
+                        declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
+                    }
+                }
+            }
+        }
+
+        SurveyAssetInfoItem queryItem = new SurveyAssetInfoItem();
+        queryItem.setCreator(commonService.thisUserAccount());
+        queryItem.setAssetInfoId(surveyAssetInfo.getId());
+        List<SurveyAssetInfoItem> surveyAssetInfoItems = surveyAssetInfoItemService.getSurveyAssetInfoItemListByQuery(queryItem);
+        if (CollectionUtils.isNotEmpty(surveyAssetInfoItems)) {
+            List<SurveyAssetInfoItem> infoItems = surveyAssetInfoItems.stream().filter(surveyAssetInfoItem -> surveyAssetInfoItem.getInventoryId() != null).collect(Collectors.toList());
+            if (CollectionUtils.isNotEmpty(infoItems)) {
+                for (SurveyAssetInfoItem assetInfoItem : infoItems) {
+                    if (assetInfoItem.getDeclareId() == null) {
+                        continue;
+                    }
+                    DeclareRecord declareRecord = declareRecordList.stream().filter(record -> Objects.equal(record.getId(), assetInfoItem.getDeclareId())).findFirst().get();
+                    if (declareRecord == null) {
+                        continue;
+                    }
+                    declareRecord.setBisInventory(true);
+                    declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
+                }
+            }
+        }
+
+        //统计
         statistics(surveyAssetInfo);
 
-        updateSurveyAssetInfo(surveyAssetInfo,false) ;
+        //更新
+        surveyAssetInfo.setStatus(SysProjectEnum.FINISH.getValue());
+        updateSurveyAssetInfo(surveyAssetInfo, false);
 
 
     }
@@ -84,7 +147,7 @@ public class SurveyAssetInfoService {
         List<SurveyAssetInfoGroup> assetInfoGroups = surveyAssetInfoGroupService.getSurveyAssetInfoGroupListByQuery(queryGroup);
         if (CollectionUtils.isNotEmpty(assetInfoGroups)) {
             for (SurveyAssetInfoGroup infoGroup : assetInfoGroups) {
-                if (infoGroup.getInventoryId() == null){
+                if (infoGroup.getInventoryId() == null) {
                     continue;
                 }
                 List<Integer> integerList = surveyAssetInfoItemService.getSurveyAssetInfoItemIdsByGroupId(infoGroup.getId());
@@ -128,6 +191,7 @@ public class SurveyAssetInfoService {
         if (CollectionUtils.isNotEmpty(xlxReportIndividuals)) {
             return xlxReportIndividuals.get(0);
         }
+        query.setStatus(SysProjectEnum.RUNING.getValue());
         saveSurveyAssetInfo(query);
         return query;
     }
@@ -212,5 +276,114 @@ public class SurveyAssetInfoService {
     public List<SurveyAssetInfo> getSurveyAssetInfoListByQuery(SurveyAssetInfo oo) {
         return surveyAssetInfoDao.getSurveyAssetInfoListByExample(oo);
     }
+
+    public void writeBackDeclareRecord(String processInsId) {
+        SurveyAssetInfo query = new SurveyAssetInfo();
+        query.setProcessInsId(processInsId);
+        List<SurveyAssetInfo> surveyAssetInfos = surveyAssetInfoDao.getSurveyAssetInfoListByExample(query);
+        if (CollectionUtils.isNotEmpty(surveyAssetInfos)) {
+            for (SurveyAssetInfo surveyAssetInfo : surveyAssetInfos) {
+                writeBackDeclareRecord(surveyAssetInfo);
+            }
+        }
+    }
+
+    /**
+     * 反写申报记录数据的证载用途与实际用途
+     *
+     * @param surveyAssetInfo
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void writeBackDeclareRecord(SurveyAssetInfo surveyAssetInfo) {
+        if (surveyAssetInfo == null) {
+            return;
+        }
+        Map<Integer, DeclareRecord> recordMap = new HashMap<>();
+        List<DeclareRecord> declareRecordList = declareRecordService.getDeclareRecordByProjectId(surveyAssetInfo.getProjectId());
+
+        SurveyAssetInfoGroup queryGroup = new SurveyAssetInfoGroup();
+        queryGroup.setAssetInfoId(surveyAssetInfo.getId());
+        List<SurveyAssetInfoGroup> assetInfoGroups = surveyAssetInfoGroupService.getSurveyAssetInfoGroupListByQuery(queryGroup);
+
+        if (CollectionUtils.isNotEmpty(assetInfoGroups)) {
+            for (SurveyAssetInfoGroup infoGroup : assetInfoGroups) {
+                if (infoGroup.getInventoryId() == null) {
+                    continue;
+                }
+                List<Integer> integerList = surveyAssetInfoItemService.getSurveyAssetInfoItemIdsByGroupId(infoGroup.getId());
+                if (CollectionUtils.isNotEmpty(integerList)) {
+                    for (Integer id : integerList) {
+                        SurveyAssetInfoItem assetInfoItem = surveyAssetInfoItemService.getSurveyAssetInfoItemById(id);
+                        if (assetInfoItem.getDeclareId() == null) {
+                            continue;
+                        }
+                        DeclareRecord declareRecord = declareRecordList.stream().filter(record -> Objects.equal(record.getId(), assetInfoItem.getDeclareId())).findFirst().get();
+                        if (declareRecord == null) {
+                            continue;
+                        }
+                        recordMap.put(infoGroup.getInventoryId(), declareRecord);
+                    }
+                }
+            }
+        }
+
+        SurveyAssetInfoItem queryItem = new SurveyAssetInfoItem();
+        queryItem.setAssetInfoId(surveyAssetInfo.getId());
+        List<SurveyAssetInfoItem> surveyAssetInfoItems = surveyAssetInfoItemService.getSurveyAssetInfoItemListByQuery(queryItem);
+        if (CollectionUtils.isNotEmpty(surveyAssetInfoItems)) {
+            List<SurveyAssetInfoItem> infoItems = surveyAssetInfoItems.stream().filter(surveyAssetInfoItem -> surveyAssetInfoItem.getInventoryId() != null).collect(Collectors.toList());
+            if (CollectionUtils.isNotEmpty(infoItems)) {
+                for (SurveyAssetInfoItem assetInfoItem : infoItems) {
+                    if (assetInfoItem.getDeclareId() == null) {
+                        continue;
+                    }
+                    DeclareRecord declareRecord = declareRecordList.stream().filter(record -> Objects.equal(record.getId(), assetInfoItem.getDeclareId())).findFirst().get();
+                    if (declareRecord == null) {
+                        continue;
+                    }
+                    recordMap.put(assetInfoItem.getInventoryId(), declareRecord);
+                }
+            }
+        }
+
+        if (recordMap.isEmpty()) {
+            return;
+        }
+
+        Iterator<Map.Entry<Integer, DeclareRecord>> entryIterator = recordMap.entrySet().iterator();
+        while (entryIterator.hasNext()) {
+            Map.Entry<Integer, DeclareRecord> recordEntry = entryIterator.next();
+            List<SurveyAssetInventoryContent> inventoryContentList = surveyAssetInventoryContentService.getSurveyAssetInventoryContentListByMasterId(recordEntry.getKey());
+            if (CollectionUtils.isEmpty(inventoryContentList)) {
+                continue;
+            }
+            writeBackDeclareRecord(recordEntry.getValue(), inventoryContentList);
+        }
+
+
+    }
+
+    private void writeBackDeclareRecord(DeclareRecord declareRecord, List<SurveyAssetInventoryContent> contentList) {
+        BaseDataDic areaDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_AREA);
+        BaseDataDic addressDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_ACTUAL_ADDRESS);
+
+        for (SurveyAssetInventoryContent content : contentList) {
+            //反写实际面积
+            if (areaDic != null) {
+                if (content.getInventoryContent().equals(areaDic.getId()) && org.apache.commons.lang3.StringUtils.isNotBlank(content.getActual()) && NumberUtils.isNumber(content.getActual())) {
+                    declareRecord.setPracticalArea(new BigDecimal(content.getActual()));
+                }
+            }
+            //反写实际地址
+            if (addressDic != null) {
+                if (content.getInventoryContent().equals(addressDic.getId()) && org.apache.commons.lang3.StringUtils.isNotBlank(content.getActual())) {
+                    declareRecord.setSeat(content.getActual());
+                }
+            }
+        }
+        declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
+    }
+
+
 
 }

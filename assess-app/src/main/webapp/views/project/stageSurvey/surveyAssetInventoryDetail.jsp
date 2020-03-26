@@ -13,8 +13,8 @@
             <%@include file="/views/share/form_head.jsp" %>
             <div class="page-inner mt--5">
                 <div class="row mt--2">
-                    <%@include file="/views/share/project/projectInfoSimple.jsp" %>
-                    <%@include file="/views/share/project/projectPlanDetails.jsp" %>
+                    <%--<%@include file="/views/share/project/projectInfoSimple.jsp" %>--%>
+                    <%--<%@include file="/views/share/project/projectPlanDetails.jsp" %>--%>
 
                     <!-- 填写表单 start -->
                     <div class="col-md-12">
@@ -22,8 +22,7 @@
                             <div class="card-header collapse-link">
                                 <div class="card-head-row">
                                     <div class="card-title">
-                                        ${projectPlanDetails.projectPhaseName}
-                                        <small>${declareRecord.name}</small>
+                                        资产清查
                                     </div>
                                     <div class="card-tools">
                                         <button class="btn  btn-link btn-primary btn-xs"><span
@@ -49,7 +48,7 @@
                                                 <label class="col-sm-1 col-form-label">是否查看原件<span
                                                         class="symbol required"></span></label>
                                                 <div class="col-sm-3">
-                                                    <label class="form-control input-full"> ${surveyAssetInventory.bisCheckOriginal eq true? '是':'否'}</label>
+                                                    <label class="form-control input-full"> ${surveyAssetInventory.findOriginalName}</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -383,7 +382,7 @@
                             </div>
                         </div>
                     </c:if>
-                    <%@include file="/views/share/form_approval.jsp" %>
+                    <%--<%@include file="/views/share/form_approval.jsp" %>--%>
                 </div>
             </div>
         </div>

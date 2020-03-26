@@ -9,6 +9,7 @@
     <result column="declare_record_id" property="declareRecordId" jdbcType="INTEGER" />
     <result column="evaluator" property="evaluator" jdbcType="VARCHAR" />
     <result column="check_date" property="checkDate" jdbcType="TIMESTAMP" />
+    <result column="find_original" property="findOriginal" jdbcType="INTEGER" />
     <result column="bis_check_original" property="bisCheckOriginal" jdbcType="BIT" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
     <result column="special_case" property="specialCase" jdbcType="VARCHAR" />
@@ -93,10 +94,10 @@
   </sql>
   <sql id="Base_Column_List" >
     id, project_id, plan_detail_id, process_ins_id, declare_record_id, evaluator, check_date, 
-    bis_check_original, remark, special_case, segmentation_limit, can_use, application, 
-    certificate, rim_is_normal, zone_damage, abnormality, entity_is_damage, entity_damage, 
-    damage_remark, payment_status, payment_content, transfer_limit, creator, gmt_created, 
-    gmt_modified, other_project
+    find_original, bis_check_original, remark, special_case, segmentation_limit, can_use, 
+    application, certificate, rim_is_normal, zone_damage, abnormality, entity_is_damage, 
+    entity_damage, damage_remark, payment_status, payment_content, transfer_limit, creator, 
+    gmt_created, gmt_modified, other_project
   </sql>
   <sql id="Blob_Column_List" >
     location
@@ -155,24 +156,24 @@
     </selectKey>
     insert into tb_survey_asset_inventory (project_id, plan_detail_id, process_ins_id, 
       declare_record_id, evaluator, check_date, 
-      bis_check_original, remark, special_case, 
-      segmentation_limit, can_use, application, 
-      certificate, rim_is_normal, zone_damage, 
-      abnormality, entity_is_damage, entity_damage, 
-      damage_remark, payment_status, payment_content, 
-      transfer_limit, creator, gmt_created, 
-      gmt_modified, other_project, location
-      )
+      find_original, bis_check_original, remark, 
+      special_case, segmentation_limit, can_use, 
+      application, certificate, rim_is_normal, 
+      zone_damage, abnormality, entity_is_damage, 
+      entity_damage, damage_remark, payment_status, 
+      payment_content, transfer_limit, creator, 
+      gmt_created, gmt_modified, other_project, 
+      location)
     values (#{projectId,jdbcType=INTEGER}, #{planDetailId,jdbcType=INTEGER}, #{processInsId,jdbcType=VARCHAR}, 
       #{declareRecordId,jdbcType=INTEGER}, #{evaluator,jdbcType=VARCHAR}, #{checkDate,jdbcType=TIMESTAMP}, 
-      #{bisCheckOriginal,jdbcType=BIT}, #{remark,jdbcType=VARCHAR}, #{specialCase,jdbcType=VARCHAR}, 
-      #{segmentationLimit,jdbcType=VARCHAR}, #{canUse,jdbcType=VARCHAR}, #{application,jdbcType=INTEGER}, 
-      #{certificate,jdbcType=VARCHAR}, #{rimIsNormal,jdbcType=VARCHAR}, #{zoneDamage,jdbcType=VARCHAR}, 
-      #{abnormality,jdbcType=VARCHAR}, #{entityIsDamage,jdbcType=VARCHAR}, #{entityDamage,jdbcType=VARCHAR}, 
-      #{damageRemark,jdbcType=VARCHAR}, #{paymentStatus,jdbcType=VARCHAR}, #{paymentContent,jdbcType=VARCHAR}, 
-      #{transferLimit,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP}, #{otherProject,jdbcType=VARCHAR}, #{location,jdbcType=LONGVARCHAR}
-      )
+      #{findOriginal,jdbcType=INTEGER}, #{bisCheckOriginal,jdbcType=BIT}, #{remark,jdbcType=VARCHAR}, 
+      #{specialCase,jdbcType=VARCHAR}, #{segmentationLimit,jdbcType=VARCHAR}, #{canUse,jdbcType=VARCHAR}, 
+      #{application,jdbcType=INTEGER}, #{certificate,jdbcType=VARCHAR}, #{rimIsNormal,jdbcType=VARCHAR}, 
+      #{zoneDamage,jdbcType=VARCHAR}, #{abnormality,jdbcType=VARCHAR}, #{entityIsDamage,jdbcType=VARCHAR}, 
+      #{entityDamage,jdbcType=VARCHAR}, #{damageRemark,jdbcType=VARCHAR}, #{paymentStatus,jdbcType=VARCHAR}, 
+      #{paymentContent,jdbcType=VARCHAR}, #{transferLimit,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{otherProject,jdbcType=VARCHAR}, 
+      #{location,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventory" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -197,6 +198,9 @@
       </if>
       <if test="checkDate != null" >
         check_date,
+      </if>
+      <if test="findOriginal != null" >
+        find_original,
       </if>
       <if test="bisCheckOriginal != null" >
         bis_check_original,
@@ -280,6 +284,9 @@
       </if>
       <if test="checkDate != null" >
         #{checkDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="findOriginal != null" >
+        #{findOriginal,jdbcType=INTEGER},
       </if>
       <if test="bisCheckOriginal != null" >
         #{bisCheckOriginal,jdbcType=BIT},
@@ -376,6 +383,9 @@
       <if test="record.checkDate != null" >
         check_date = #{record.checkDate,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.findOriginal != null" >
+        find_original = #{record.findOriginal,jdbcType=INTEGER},
+      </if>
       <if test="record.bisCheckOriginal != null" >
         bis_check_original = #{record.bisCheckOriginal,jdbcType=BIT},
       </if>
@@ -453,6 +463,7 @@
       declare_record_id = #{record.declareRecordId,jdbcType=INTEGER},
       evaluator = #{record.evaluator,jdbcType=VARCHAR},
       check_date = #{record.checkDate,jdbcType=TIMESTAMP},
+      find_original = #{record.findOriginal,jdbcType=INTEGER},
       bis_check_original = #{record.bisCheckOriginal,jdbcType=BIT},
       remark = #{record.remark,jdbcType=VARCHAR},
       special_case = #{record.specialCase,jdbcType=VARCHAR},
@@ -487,6 +498,7 @@
       declare_record_id = #{record.declareRecordId,jdbcType=INTEGER},
       evaluator = #{record.evaluator,jdbcType=VARCHAR},
       check_date = #{record.checkDate,jdbcType=TIMESTAMP},
+      find_original = #{record.findOriginal,jdbcType=INTEGER},
       bis_check_original = #{record.bisCheckOriginal,jdbcType=BIT},
       remark = #{record.remark,jdbcType=VARCHAR},
       special_case = #{record.specialCase,jdbcType=VARCHAR},
@@ -531,6 +543,9 @@
       </if>
       <if test="checkDate != null" >
         check_date = #{checkDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="findOriginal != null" >
+        find_original = #{findOriginal,jdbcType=INTEGER},
       </if>
       <if test="bisCheckOriginal != null" >
         bis_check_original = #{bisCheckOriginal,jdbcType=BIT},
@@ -606,6 +621,7 @@
       declare_record_id = #{declareRecordId,jdbcType=INTEGER},
       evaluator = #{evaluator,jdbcType=VARCHAR},
       check_date = #{checkDate,jdbcType=TIMESTAMP},
+      find_original = #{findOriginal,jdbcType=INTEGER},
       bis_check_original = #{bisCheckOriginal,jdbcType=BIT},
       remark = #{remark,jdbcType=VARCHAR},
       special_case = #{specialCase,jdbcType=VARCHAR},
@@ -637,6 +653,7 @@
       declare_record_id = #{declareRecordId,jdbcType=INTEGER},
       evaluator = #{evaluator,jdbcType=VARCHAR},
       check_date = #{checkDate,jdbcType=TIMESTAMP},
+      find_original = #{findOriginal,jdbcType=INTEGER},
       bis_check_original = #{bisCheckOriginal,jdbcType=BIT},
       remark = #{remark,jdbcType=VARCHAR},
       special_case = #{specialCase,jdbcType=VARCHAR},

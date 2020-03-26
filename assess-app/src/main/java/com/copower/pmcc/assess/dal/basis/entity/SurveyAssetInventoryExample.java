@@ -545,6 +545,66 @@ public class SurveyAssetInventoryExample {
             return (Criteria) this;
         }
 
+        public Criteria andFindOriginalIsNull() {
+            addCriterion("find_original is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFindOriginalIsNotNull() {
+            addCriterion("find_original is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFindOriginalEqualTo(Integer value) {
+            addCriterion("find_original =", value, "findOriginal");
+            return (Criteria) this;
+        }
+
+        public Criteria andFindOriginalNotEqualTo(Integer value) {
+            addCriterion("find_original <>", value, "findOriginal");
+            return (Criteria) this;
+        }
+
+        public Criteria andFindOriginalGreaterThan(Integer value) {
+            addCriterion("find_original >", value, "findOriginal");
+            return (Criteria) this;
+        }
+
+        public Criteria andFindOriginalGreaterThanOrEqualTo(Integer value) {
+            addCriterion("find_original >=", value, "findOriginal");
+            return (Criteria) this;
+        }
+
+        public Criteria andFindOriginalLessThan(Integer value) {
+            addCriterion("find_original <", value, "findOriginal");
+            return (Criteria) this;
+        }
+
+        public Criteria andFindOriginalLessThanOrEqualTo(Integer value) {
+            addCriterion("find_original <=", value, "findOriginal");
+            return (Criteria) this;
+        }
+
+        public Criteria andFindOriginalIn(List<Integer> values) {
+            addCriterion("find_original in", values, "findOriginal");
+            return (Criteria) this;
+        }
+
+        public Criteria andFindOriginalNotIn(List<Integer> values) {
+            addCriterion("find_original not in", values, "findOriginal");
+            return (Criteria) this;
+        }
+
+        public Criteria andFindOriginalBetween(Integer value1, Integer value2) {
+            addCriterion("find_original between", value1, value2, "findOriginal");
+            return (Criteria) this;
+        }
+
+        public Criteria andFindOriginalNotBetween(Integer value1, Integer value2) {
+            addCriterion("find_original not between", value1, value2, "findOriginal");
+            return (Criteria) this;
+        }
+
         public Criteria andBisCheckOriginalIsNull() {
             addCriterion("bis_check_original is null");
             return (Criteria) this;

@@ -14,7 +14,7 @@
     <div class="modal-dialog modal-lg" style="max-width: 50%;">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">资产清查组 添加</h4>
+                <h4 class="modal-title">资产清查组 </h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -334,8 +334,8 @@
                 str += '</button>';
 
 
-                str += '<button type="button" onclick="assetInfo.findSurveyAssetInfoGroupDetail(' + row.id + ')" style="margin-left: 5px;" class="btn   btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看子项详情">';
-                str += '<i class="fa fa-search"></i>';
+                str += '<button type="button" onclick="assetInfo.findSurveyAssetInfoGroupDetail(' + row.id + ')" style="margin-left: 5px;" class="btn   btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看包含的权证列表">';
+                str += '查看包含的权证列表 <i class="fa fa-search"></i>';
                 str += '</button>';
 
 

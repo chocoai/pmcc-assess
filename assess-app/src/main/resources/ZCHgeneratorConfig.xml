@@ -146,7 +146,7 @@
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 
-        <table tableName="tb_survey_asset_info_item" domainObjectName="SurveyAssetInfoItem">
+        <table tableName="tb_survey_asset_inventory" domainObjectName="SurveyAssetInventory">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 

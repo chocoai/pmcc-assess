@@ -73,10 +73,19 @@ public class SurveyAssetInfoItemService {
             return;
         }
         SurveyAssetInfoItem infoItem = getSurveyAssetInfoItemById(tableId) ;
-        DeclareRecord recordById = declareRecordService.getDeclareRecordById(infoItem.getDeclareId());
-        if (recordById.getBisInventory()){
-            throw new Exception("已经被清查了,不可以在删除") ;
+
+        if (!Objects.equal(commonService.thisUserAccount(),infoItem.getCreator())){
+            throw new Exception("不属于当前操作人的数据") ;
         }
+
+        DeclareRecord recordById = declareRecordService.getDeclareRecordById(infoItem.getDeclareId());
+        recordById.setBisInventory(false);
+        declareRecordService.saveAndUpdateDeclareRecord(recordById) ;
+
+
+//        if (recordById.getBisInventory()){
+//            throw new Exception("已经被清查了,不可以在删除") ;
+//        }
         SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
         sysAttachmentDto.setTableId(tableId);
         sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(SurveyAssetInfoItem.class));

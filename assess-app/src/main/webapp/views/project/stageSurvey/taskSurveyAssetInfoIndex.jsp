@@ -476,7 +476,7 @@
                     obj = data[0];
                     assetInfo.handleJquery(assetInfo.queryForm).find("[name=inventoryId]").val(obj.inventoryId);
                 } else {
-                    notifyWarning("复制失败", "没有清查过数据");
+                    notifyWarning("复制失败", "没有清查过数据或者属于清查组");
                     return false;
                 }
             });
@@ -507,7 +507,7 @@
                 notifySuccess("成功", "粘贴完成");
                 assetInfo.loadDeclareRecordList();
                 assetInfo.loadSurveyAssetInfoGroupList();
-                assetInfo.handleJquery(assetInfo.queryForm).clearAll() ;
+                assetInfo.handleJquery(assetInfo.queryForm).clearAll();
             });
         });
     };
@@ -525,7 +525,7 @@
             if (data.length >= 1) {
                 var item = data[0];
                 assetInfo.surveyAssetInventoryHandle(inventoryId, item.declareId, "group", id);
-            }else {
+            } else {
                 notifyInfo('提示', '没有在组中添加权证');
             }
         });
@@ -604,7 +604,7 @@
                             }
                         }
                         layer.closeAll('iframe');
-                        notifyInfo("成功", "清查成功");
+                        notifyInfo("成功", "清查业务数据填写成功");
                     });
                 });
 
@@ -761,6 +761,7 @@
     assetInfo.delSurveyAssetInfoItem = function (id, selector) {
         assetInfo.deleteSurveyAssetInfoItemById(id, function () {
             $(selector).bootstrapTable('refresh');
+            assetInfo.loadDeclareRecordList();
         });
     };
 
@@ -796,7 +797,13 @@
 <script type="text/javascript">
 
     function submit(mustUseBox) {
-        var formData = JSON.stringify({});
+        var data = {
+            id: '${surveyAssetInfo.id}',
+            planDetailId: '${surveyAssetInfo.planDetailId}',
+            projectId: '${surveyAssetInfo.projectId}',
+            processInsId: '${surveyAssetInfo.processInsId}'
+        };
+        var formData = JSON.stringify(data);
         if ("${processInsId}" != "0") {
             submitEditToServer(formData);
         } else {

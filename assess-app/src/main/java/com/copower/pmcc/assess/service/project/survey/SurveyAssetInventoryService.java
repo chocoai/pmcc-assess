@@ -171,6 +171,7 @@ public class SurveyAssetInventoryService extends BaseService {
         if (StringUtils.isNotBlank(surveyAssetInventory.getCertificate())) {
             vo.setCertificateName(baseDataDicService.getNameById(surveyAssetInventory.getCertificate()));
         }
+        vo.setFindOriginalName(baseDataDicService.getNameById(surveyAssetInventory.getFindOriginal()));
         return vo;
     }
 

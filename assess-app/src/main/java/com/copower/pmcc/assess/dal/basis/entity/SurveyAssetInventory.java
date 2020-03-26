@@ -17,6 +17,8 @@ public class SurveyAssetInventory {
 
     private Date checkDate;
 
+    private Integer findOriginal;
+
     private Boolean bisCheckOriginal;
 
     private String remark;
@@ -113,6 +115,14 @@ public class SurveyAssetInventory {
 
     public void setCheckDate(Date checkDate) {
         this.checkDate = checkDate;
+    }
+
+    public Integer getFindOriginal() {
+        return findOriginal;
+    }
+
+    public void setFindOriginal(Integer findOriginal) {
+        this.findOriginal = findOriginal;
     }
 
     public Boolean getBisCheckOriginal() {

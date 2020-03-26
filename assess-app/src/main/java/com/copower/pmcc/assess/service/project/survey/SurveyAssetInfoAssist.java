@@ -4,8 +4,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInfo;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
+import com.copower.pmcc.assess.service.event.project.SurveyAssetInfoEvent;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.api.exception.BpmException;
+import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import org.apache.commons.lang3.StringUtils;
@@ -25,6 +27,8 @@ public class SurveyAssetInfoAssist implements ProjectTaskInterface {
     private ProcessControllerComponent processControllerComponent;
     @Autowired
     private SurveyAssetInfoService surveyAssetInfoService;
+    @Autowired
+    private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
 
     private final String applyViewName = "/project/stageSurvey/taskSurveyAssetInfoIndex";
     private final String approvalViewName = "/project/stageSurvey/taskSurveyAssetInfoApproval";
@@ -72,6 +76,11 @@ public class SurveyAssetInfoAssist implements ProjectTaskInterface {
         }
         surveyAssetInfoService.saveAndUpdateSurveyAssetInfo(surveyAssetInfo, false);
         surveyAssetInfoService.submit(surveyAssetInfo) ;
+        if (StringUtils.isNotBlank(processInsId)) {
+            bpmRpcActivitiProcessManageService.setProcessEventExecutor(processInsId, SurveyAssetInfoEvent.class.getSimpleName());//修改监听器
+        }else {
+            surveyAssetInfoService.writeBackDeclareRecord(surveyAssetInfo);
+        }
     }
 
     @Override

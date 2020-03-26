@@ -23,7 +23,7 @@
                             <div class="card-header collapse-link">
                                 <div class="card-head-row">
                                     <div class="card-title">
-                                       资产清查
+                                        资产清查
                                     </div>
                                     <div class="card-tools">
                                         <button class="btn  btn-link btn-primary btn-xs"><span
@@ -50,19 +50,14 @@
                                                            value="<fmt:formatDate value='${surveyAssetInventory.checkDate}' pattern='yyyy-MM-dd'/>">
 
                                                 </div>
-                                                <label class="col-sm-1 col-form-label">是否查看原件<span
+                                                <label class="col-sm-1 col-form-label">查看原件<span
                                                         class="symbol required"></span></label>
                                                 <div class="col-sm-3">
-                                                     <span class="radio-inline">
-                                                     <div class="input-group">
-                                                         <span class="input-group-addon">
-                                                          <input type="radio" name="bisCheckOriginal" value="1">是
-                                                             <input type="radio" checked="checked"
-                                                                    name="bisCheckOriginal"
-                                                                    value="0">否
-                                                              </span>
-                                                          </div>
-                                                      </span>
+
+                                                    <select class="form-control input-full"
+                                                            name="findOriginal" required>
+                                                        <option value="">请选择</option>
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
@@ -199,7 +194,7 @@
                                                         <input type="text" data-rule-maxlength="50" placeholder="登记"
                                                                required
                                                                id="registration${item.id}" onchange="isAgreement(this);"
-                                                               name="registration${item.id}"
+                                                               name="registration${item.id}" data-name="registration"
                                                                class="form-control input-full "
                                                                value="${item.registration}">
                                                     </div>
@@ -209,8 +204,9 @@
                                                         <input type="text" data-rule-maxlength="50" placeholder="实际"
                                                                required
                                                                id="actual${item.id}" onchange="isAgreement(this);"
-                                                               name="actual${item.id}"
-                                                               class="form-control input-full " value="${item.actual}">
+                                                               name="actual${item.id}" data-name="actual"
+                                                               class="form-control input-full "
+                                                               value="${empty item.actual?item.registration:item.actual}">
                                                     </div>
                                                 </td>
                                                 <td>
@@ -556,10 +552,11 @@
 <script type="application/javascript">
 
     $(function () {
+        initAgreement();
         loadAssetRightList();
-        if("${surveyAssetInventory.transferLimit}"){
+        if ("${surveyAssetInventory.transferLimit}") {
             $("#bisLimit").val("是");
-        }else{
+        } else {
             $("#bisLimit").val("否");
         }
         showLimit();
@@ -630,8 +627,23 @@
         }
         showOther();
         showButton();
+        AssessCommon.loadDataDicByKey(AssessDicKey.projectSurveyInventoryContentDefaultCheckOriginal, '${surveyAssetInventory.findOriginal}', function (html, data) {
+            $("#frm_asset").find("select[name='findOriginal']").empty().html(html).trigger('change');
+        });
     })
     ;
+
+    /**
+     * 初始化  验证 验证登记与实际是否一致 辅助 isAgreement method
+     */
+    function initAgreement() {
+        var frm = $("#frm_asset_inventory_content");
+        var table = frm.find("table");
+        table.find("tbody").find("tr").each(function (i, tr) {
+            var registration = $(tr).find("input[data-name=registration]");
+            isAgreement(registration[0]);
+        });
+    }
 
     //验证登记与实际是否一致，如果不一致需填写相关内容
     function isAgreement(_this) {
@@ -815,8 +827,8 @@
         if (!$("#taxesPaymentSurvey").valid()) {
             return false;
         }
-        if (callback){
-            callback(getFormData()) ;
+        if (callback) {
+            callback(getFormData());
         }
     }
 
