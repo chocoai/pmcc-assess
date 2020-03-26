@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.service.project.survey;
 
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInfoItemDao;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
+import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInfoGroup;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInfoItem;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
@@ -38,18 +39,24 @@ public class SurveyAssetInfoItemService {
     private BaseAttachmentService baseAttachmentService;
     @Autowired
     private DeclareRecordService declareRecordService;
+    @Autowired
+    private SurveyAssetInfoGroupService surveyAssetInfoGroupService;
 
 
     public boolean updateSurveyAssetInfoItem(SurveyAssetInfoItem oo, boolean updateNull) {
         return surveyAssetInfoItemDao.updateSurveyAssetInfoItem(oo, updateNull);
     }
 
-    public boolean saveSurveyAssetInfoItem(SurveyAssetInfoItem oo) {
+    public boolean saveSurveyAssetInfoItem(SurveyAssetInfoItem oo)throws Exception {
         if (oo == null) {
             return false;
         }
         if (StringUtils.isEmpty(oo.getCreator())) {
             oo.setCreator(commonService.thisUserAccount());
+        }
+        List<SurveyAssetInfoItem> infoItems = getSurveyAssetInfoItemListByQuery(oo);
+        if (CollectionUtils.isNotEmpty(infoItems)){
+            throw new Exception(String.join("",oo.getName()+":已经存在")) ;
         }
         boolean b = surveyAssetInfoItemDao.saveSurveyAssetInfoItem(oo);
         baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(SurveyAssetInfoItem.class), oo.getId());
@@ -57,7 +64,7 @@ public class SurveyAssetInfoItemService {
 
     }
 
-    public void saveAndUpdateSurveyAssetInfoItem(SurveyAssetInfoItem oo, boolean updateNull) {
+    public void saveAndUpdateSurveyAssetInfoItem(SurveyAssetInfoItem oo, boolean updateNull)throws Exception {
         if (oo == null) {
             return;
         }
@@ -68,24 +75,23 @@ public class SurveyAssetInfoItemService {
         }
     }
 
-    private void removeFileByTableId(Integer tableId)throws Exception {
+    private void removeFileByTableId(Integer tableId) throws Exception {
         if (tableId == null) {
             return;
         }
-        SurveyAssetInfoItem infoItem = getSurveyAssetInfoItemById(tableId) ;
+        SurveyAssetInfoItem infoItem = getSurveyAssetInfoItemById(tableId);
 
-        if (!Objects.equal(commonService.thisUserAccount(),infoItem.getCreator())){
-            throw new Exception("不属于当前操作人的数据") ;
+        if (!Objects.equal(commonService.thisUserAccount(), infoItem.getCreator())) {
+            throw new Exception("不属于当前操作人的数据");
         }
 
         DeclareRecord recordById = declareRecordService.getDeclareRecordById(infoItem.getDeclareId());
-        recordById.setBisInventory(false);
-        declareRecordService.saveAndUpdateDeclareRecord(recordById) ;
 
 
-//        if (recordById.getBisInventory()){
-//            throw new Exception("已经被清查了,不可以在删除") ;
-//        }
+        if (recordById.getBisInventory()) {
+            throw new Exception("已经被清查了,不可以在删除");
+        }
+
         SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
         sysAttachmentDto.setTableId(tableId);
         sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(SurveyAssetInfoItem.class));
@@ -96,7 +102,7 @@ public class SurveyAssetInfoItemService {
         sysAttachmentDtoList.forEach(sysAttachmentDto1 -> baseAttachmentService.deleteAttachment(sysAttachmentDto1.getId()));
     }
 
-    public void deleteSurveyAssetInfoItemById(String id) throws Exception{
+    public void deleteSurveyAssetInfoItemById(String id) throws Exception {
         if (StringUtils.isEmpty(id)) {
             return;
         }
@@ -106,8 +112,8 @@ public class SurveyAssetInfoItemService {
                 removeFileByTableId(ids.get(0));
                 surveyAssetInfoItemDao.deleteSurveyAssetInfoItemById(ids.get(0));
             } else {
-                for (Integer integer:ids){
-                    removeFileByTableId(integer) ;
+                for (Integer integer : ids) {
+                    removeFileByTableId(integer);
                     surveyAssetInfoItemDao.deleteSurveyAssetInfoItemById(integer);
                 }
             }
@@ -119,6 +125,14 @@ public class SurveyAssetInfoItemService {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<SurveyAssetInfoItem> surveyAssetInfoItems = getSurveyAssetInfoItemLikeList(oo);
+        if (CollectionUtils.isNotEmpty(surveyAssetInfoItems)) {
+            for (SurveyAssetInfoItem assetInfoItem : surveyAssetInfoItems) {
+                if (assetInfoItem.getGroupId() != null && assetInfoItem.getGroupId() != 0) {
+                    SurveyAssetInfoGroup infoGroup = surveyAssetInfoGroupService.getSurveyAssetInfoGroupById(assetInfoItem.getGroupId());
+                    assetInfoItem.setGroupName(infoGroup.getGroupName());
+                }
+            }
+        }
         vo.setTotal(page.getTotal());
         vo.setRows(CollectionUtils.isNotEmpty(surveyAssetInfoItems) ? surveyAssetInfoItems : new ArrayList(0));
         return vo;
@@ -137,7 +151,7 @@ public class SurveyAssetInfoItemService {
         return surveyAssetInfoItemDao.getSurveyAssetInfoItemListByExample(oo);
     }
 
-    public List<SurveyAssetInfoItem> getSurveyAssetInfoItemLikeList(SurveyAssetInfoItem oo){
+    public List<SurveyAssetInfoItem> getSurveyAssetInfoItemLikeList(SurveyAssetInfoItem oo) {
         return surveyAssetInfoItemDao.getSurveyAssetInfoItemLikeList(oo);
     }
 
@@ -156,14 +170,13 @@ public class SurveyAssetInfoItemService {
     public void deleteSurveyAssetInfoItemByGroupId(Integer groupId) {
         List<Integer> integerList = getSurveyAssetInfoItemIdsByGroupId(groupId);
         if (CollectionUtils.isNotEmpty(integerList)) {
-           for (Integer id:integerList){
-               SurveyAssetInfoItem infoItem = getSurveyAssetInfoItemById(id) ;
-               infoItem.setGroupId(null);
-               updateSurveyAssetInfoItem(infoItem,true) ;
-           }
+            for (Integer id : integerList) {
+                SurveyAssetInfoItem infoItem = getSurveyAssetInfoItemById(id);
+                infoItem.setGroupId(null);
+                updateSurveyAssetInfoItem(infoItem, true);
+            }
         }
     }
-
 
 
 }

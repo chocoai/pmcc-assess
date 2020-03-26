@@ -90,9 +90,9 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <form class="form-horizontal" id="queryForm">
+                                <form class="form-horizontal">
                                     <input type="hidden" name="projectId" value="${projectInfo.id}">
-                                    <input type="hidden" name="inventoryId">
+
 
                                     <div class="row form-group">
                                         <div class="col-md-12">
@@ -114,29 +114,127 @@
                                                            class="form-control input-full">
                                                 </div>
                                                 <label class="col-sm-1 control-label">
-                                                    资产清查组
+                                                    状态
                                                 </label>
                                                 <div class="col-sm-2">
-                                                    <select name="surveyAssetInfoGroup" class="form-control input-full">
+                                                    <select name="bisInventory" class="form-control input-full">
                                                         <option value="">请选择</option>
+                                                        <option value="true">已完成清查</option>
+                                                        <option value="false">未清查</option>
                                                     </select>
                                                 </div>
                                                 <div class="col-sm-3">
                                                     <button type="button" class="btn btn-info btn-sm"
                                                             onclick="assetInfo.loadDeclareRecordList(this);">
-                                                        <i class="fa fa-search"></i>
+                                                        <span class="btn-label"><i class="fa fa-search"></i></span>
+                                                        查询
                                                     </button>
                                                     <button class="btn btn-success btn-sm" style="margin-left: 5px;"
                                                             type="button"
-                                                            onclick="assetInfo.selectSurveyAssetInfoGroup(this) ;">
+                                                            onclick="assetInfo.selectClaimData(this) ;">
                                                         <span class="btn-label"><i
-                                                                class="fa fa-plus"></i></span>选择权证添加到组中
+                                                                class="fa fa-plus"></i></span>添加到认领的权证列表
                                                     </button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <table class="table table-bordered" id="tb_declare_record_list"></table>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-12">
+                        <div class="x_panel card full-height">
+                            <div class="card-header collapse-link">
+                                <div class="card-head-row">
+                                    <div class="x_title card-title">
+                                        认领的权证
+                                    </div>
+                                    <div class="card-tools">
+                                        <button class="btn  btn-link btn-primary btn-xs"><span
+                                                class="fa fa-angle-down"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <form class="form-horizontal" id="queryForm">
+                                    <input type="hidden" name="inventoryId">
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline">
+                                                <label class="col-sm-1 control-label">
+                                                    权证号
+                                                </label>
+                                                <div class="col-sm-1">
+                                                    <input type="text" data-rule-maxlength="50" placeholder="权证号"
+                                                           name="name"
+                                                           class="form-control input-full">
+                                                </div>
+                                                <label class="col-sm-1 control-label">
+                                                    状态
+                                                </label>
+                                                <div class="col-sm-1">
+                                                    <select name="status" class="form-control input-full">
+                                                        <option value="">请选择</option>
+                                                        <option value="runing">进行中</option>
+                                                        <option value="finish">已完成</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <button type="button" class="btn btn-info btn-sm"
+                                                            onclick="assetInfo.loadSurveyAssetInfoItemBaseList(this);">
+                                                        <span class="btn-label"><i class="fa fa-search"></i></span>
+                                                        查询
+                                                    </button>
+                                                    <div class="dropdown" style="display: inline;margin-left: 5px;">
+                                                        <button type="button"
+                                                                class="btn btn-primary dropdown-toggle btn-sm"
+                                                                data-toggle="dropdown"
+                                                                aria-expanded="false">
+                                                            认领的权证添加到组中
+                                                        </button>
+                                                        <div class="dropdown-menu" role="menu"
+                                                             data-name="surveyAssetInfoGroup">
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-2 ">
+                                                    <button type="button" class="btn btn-info btn-sm"
+                                                            onclick="assetInfo.taskCopy(this) ;"><i
+                                                            class="fa fa-copy" aria-hidden="true"></i> 拷贝
+                                                    </button>
+                                                    <button type="button" class="btn btn-warning btn-sm"
+                                                            onclick="assetInfo.taskPaste(this) ;"><i
+                                                            class="fa fa-clipboard" aria-hidden="true"></i>粘贴
+                                                    </button>
+                                                </div>
+                                                <div class="col-sm-2 ">
+                                                    <div class="input-group ">
+                                                        <input type="hidden" name="copyId">
+                                                        <input type="text" readonly="readonly" name="copyName"
+                                                               class="form-control form-control-sm"
+                                                               placeholder="暂无复制数据">
+                                                        <div class="input-group-prepend ">
+                                                            <button class="btn btn-warning btn-sm"
+                                                                    style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                                    type="button"
+                                                                    onclick="$(this).closest('.input-group').find('input').val('');">
+                                                                <i class="fa "></i>
+                                                                清空
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <table class="table table-bordered" id="tb_infoBaseItem_list"></table>
                                 </form>
                             </div>
                         </div>
@@ -162,15 +260,38 @@
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                             <div class="form-inline">
+                                                <label class="col-sm-1 control-label">
+                                                    组名称
+                                                </label>
+                                                <div class="col-sm-2">
+                                                    <input type="text" data-rule-maxlength="50" placeholder="组名称"
+                                                           name="groupName"
+                                                           class="form-control input-full">
+                                                </div>
+                                                <label class="col-sm-1 control-label">
+                                                    状态
+                                                </label>
+                                                <div class="col-sm-2">
+                                                    <select name="status" class="form-control input-full">
+                                                        <option value="">请选择</option>
+                                                        <option value="runing">进行中</option>
+                                                        <option value="finish">已完成</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <button type="button" class="btn btn-info btn-sm"
+                                                            onclick="assetInfo.loadSurveyAssetInfoGroupList(this);">
+                                                        <span class="btn-label"><i class="fa fa-search"></i></span>
+                                                        查询
+                                                    </button>
+                                                    <button style="margin-left: 5px" class="btn btn-success btn-sm"
+                                                            type="button" data-toggle="modal"
+                                                            onclick="assetInfo.addSurveyAssetInfoGroup();">
+                                                        <span class="btn-label"><i class="fa fa-plus"></i></span>资产清查组
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div id="grouptoolbar">
-                                        <button style="margin-left: 5px" class="btn btn-success btn-sm"
-                                                type="button" data-toggle="modal"
-                                                onclick="assetInfo.addSurveyAssetInfoGroup();">
-                                            <span class="btn-label"><i class="fa fa-plus"></i></span>资产清查组
-                                        </button>
                                     </div>
                                     <table class="table table-bordered" id="tbSurveyAssetInfoGroupList"></table>
                                 </form>
@@ -307,12 +428,27 @@
     };
 
     /**
-     * 资产清查 save
+     * 资产清查 save 单个
      * @param data
      * @param callback
      */
-    assetInfo.saveAndUpdateSurveyAssetInfoItem = function (data, callback) {
-        assetInfo.ajaxServerFun({formData: JSON.stringify(data)}, "/surveyAssetInfoItem/saveAndUpdateSurveyAssetInfoItem", "post", callback);
+    assetInfo.saveAndUpdateSurveyAssetInfoItem = function (data, callback, updateNull) {
+        if (updateNull == null || updateNull == undefined) {
+            updateNull = false;
+        }
+        assetInfo.ajaxServerFun({
+            formData: JSON.stringify(data),
+            updateNull: updateNull
+        }, "/surveyAssetInfoItem/saveAndUpdateSurveyAssetInfoItem", "post", callback);
+    };
+
+    /**
+     * 资产清查 save 多个
+     * @param data
+     * @param callback
+     */
+    assetInfo.addSurveyAssetInfoItem = function (data, callback) {
+        assetInfo.ajaxServerFun({formData: JSON.stringify(data)}, "/surveyAssetInfoItem/addSurveyAssetInfoItem", "post", callback);
     };
 
     /**
@@ -354,6 +490,7 @@
     assetInfo.groupTable = $("#tbSurveyAssetInfoGroupList");
     assetInfo.groupBox = $("#boxSurveyAssetInfoGroup");
     assetInfo.InfoItemTable = $("#tb_infoItem_list");
+    assetInfo.InfoItemBaseTable = $("#tb_infoBaseItem_list");
     assetInfo.queryForm = $("#queryForm");
 
     assetInfo.handleJquery = function (obj) {
@@ -378,29 +515,27 @@
         var target = assetInfo.handleJquery(assetInfo.declareRecordTable);
         var selector = target.selector;
         var cols = [];
-        cols.push({checkbox: true, width: "5%"});
-        cols.push({field: 'name', title: '权证号', width: "13%"});
+        cols.push({checkbox: true, width: "5%", title: "勾选"});
+        cols.push({
+            field: 'name', title: '权证号', width: "13%", formatter: function (value, row, index) {
+                var str = value;
+                if (row.bisInventory) {
+                    str += "<button type='button' class='btn btn-xs btn-warning' disabled='disabled' style='margin-left: 5px;'>已经被清查</button>";
+                }
+                return str;
+            }
+        });
         cols.push({field: 'seat', title: '坐落', width: "20%"});
         cols.push({field: 'certUse', title: '证载用途', width: "5%"});
         cols.push({field: 'practicalUse', title: '实际用途', width: "5%"});
         cols.push({field: 'floorArea', title: '面积', width: "5%"});
         cols.push({
-            field: 'id', title: '操作(以组的方式来清查数据需要把权证添加到组中)', width: "40%", formatter: function (value, row, index) {
-                var str = "";
-                str += '<button type="button" onclick="assetInfo.itemHandel(' + value + ')" style="margin-left: 5px;" class="btn   btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="清查操作">';
-                str += '<i class="fa fa-cog"></i>';
-                str += '</button>';
-                str += "<button type='button' style='margin-left: 5px;'   onclick='assetInfo.taskPaste(this," + row.id + ");' data-type='unit' title='粘贴' class='btn btn-xs btn-warning ' ><i class='fa fa-paste fa-white'></i> <span>粘贴</span></button>";
-                str += "<button type='button' style='margin-left: 5px;'   onclick='assetInfo.taskCopy(this," + row.id + ");' data-type='unit' title='复制' class='btn btn-xs btn-warning btn-copy' ><i class='fa fa-copy fa-white'></i> <span>复制</span></button>";
-                if (row.bisInventory) {
-                    str += "<button type='button' class='btn btn-xs btn-warning' disabled='disabled' style='margin-left: 5px;'>已经被清查</button>";
+            field: 'bisInventory', title: '状态', width: "10%", formatter: function (value, row, index) {
+                if (value) {
+                    return "已完成清查";
+                } else {
+                    return "未清查";
                 }
-
-                str += '<button type="button" onclick="assetInfo.delSurveyAssetInfoItemByDeclareId(' + row.id + ",'" + selector + "'" + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn   btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="清除关联的清查业务">';
-                str += '清除此权证关联的清查业务';
-                str += '</button>';
-
-                return str;
             }
         });
         target.bootstrapTable('destroy');
@@ -416,7 +551,17 @@
         });
     };
 
-    assetInfo.loadSurveyAssetInfoGroupList = function () {
+    assetInfo.loadSurveyAssetInfoGroupList = function (_this) {
+        var data = {projectId: '${projectInfo.id}', assetInfoId: '${surveyAssetInfo.id}'};
+        if (_this) {
+            data = formSerializeArray($(_this).closest("form"));
+        }
+        var arr = Object.keys(data);
+        $.each(arr, function (i, item) {
+            if (!data[item]) {
+                data[item] = undefined;
+            }
+        });
         var target = assetInfo.handleJquery(assetInfo.groupTable);
         var cols = [];
         cols.push({field: 'groupName', title: '组名称', width: "30%"});
@@ -436,18 +581,31 @@
                 str += '</button>';
 
 
-                str += "<button type='button' style='margin-left: 5px;'   onclick='assetInfo.taskPaste(this," + row.id + ");' data-type='group' title='粘贴' class='btn btn-xs btn-warning ' ><i class='fa fa-paste fa-white'></i> <span>粘贴</span></button>";
-                str += "<button type='button' style='margin-left: 5px;'   onclick='assetInfo.taskCopy(this," + row.id + ");' data-type='group' title='复制' class='btn btn-xs btn-warning btn-copy' ><i class='fa fa-copy fa-white'></i> <span>复制</span></button>";
+//                str += "<button type='button' style='margin-left: 5px;'   onclick='assetInfo.taskPaste(this," + row.id + ");' data-type='group' title='粘贴' class='btn btn-xs btn-warning ' ><i class='fa fa-paste fa-white'></i> <span>粘贴</span></button>";
+//                str += "<button type='button' style='margin-left: 5px;'   onclick='assetInfo.taskCopy(this," + row.id + ");' data-type='group' title='复制' class='btn btn-xs btn-warning btn-copy' ><i class='fa fa-copy fa-white'></i> <span>复制</span></button>";
 
                 return str;
             }
         });
+        cols.push({
+            field: 'status', title: '状态', width: "10%", formatter: function (value, row, index) {
+                var str = "";
+                if (value) {
+                    if (value == 'runing') {
+                        str = "进行中";
+                    }
+                    if (value == 'finish') {
+                        str = "已完成";
+                    }
+                }
+                return str;
+            }
+        });
         target.bootstrapTable('destroy');
-        TableInit(target, "${pageContext.request.contextPath}/surveyAssetInfoGroup/getBootstrapTableVo", cols, {assetInfoId: '${surveyAssetInfo.id}'}, {
+        TableInit(target, "${pageContext.request.contextPath}/surveyAssetInfoGroup/getBootstrapTableVo", cols, data, {
             method: "get",
             showColumns: false,
             showRefresh: false,
-            toolbar: "#grouptoolbar",
             search: false,
             onLoadSuccess: function () {
                 $(".tooltips").tooltip();   //提示
@@ -456,60 +614,110 @@
         });
     };
 
+    assetInfo.selectClaimData = function () {
+        var target = assetInfo.handleJquery(assetInfo.declareRecordTable);
+        var rows = target.bootstrapTable('getSelections');
+        if (!rows || rows.length <= 0) {
+            notifyWarning("勾选的数据为0", "请勾选需要认领的权证!");
+        } else {
+            var idArray = [];
+            var num = 0;
+            rows.forEach(function (ele, index) {
+                if (!ele.bisInventory) {
+                    idArray.push(ele.id);
+                } else {
+                    num++;
+                }
+            });
+            if (num != 0) {
+                notifyWarning("警告", "此次选择的权证存在已经被清查的数据,请检查!");
+                target.bootstrapTable('uncheckAll');
+                return false;
+            }
+            if (idArray.length >= 1) {
+                AlertConfirm("确认认领这些权证", "确定", function (flag) {
+                    var data = [];
+                    $.each(idArray, function (i, declareId) {
+                        var obj = assetInfo.handleJquery(assetInfo.declareRecordTable).bootstrapTable('getRowByUniqueId', declareId);
+                        var item = {
+                            name: obj.name,
+                            declareId: declareId,
+                            assetInfoId: '${surveyAssetInfo.id}',
+                            status: 'runing',
+                            groupId: 0
+                        };
+                        data.push(item);
+                    });
+                    assetInfo.addSurveyAssetInfoItem(data, function () {
+                        AlertSuccess("添加成功", "已经添加到 认领列表中");
+                        target.bootstrapTable('uncheckAll');
+                        assetInfo.loadSurveyAssetInfoItemBaseList();
+                    });
+                });
+            } else {
+                target.bootstrapTable('uncheckAll');
+                notifyWarning("警告", "此次选择的权证都已经被清查了!");
+            }
+        }
+    };
+
     /***
      * 拷贝清查具体数据
      */
-    assetInfo.taskCopy = function (_this, id) {
-        assetInfo.handleJquery(assetInfo.declareRecordTable).find('.btn-copy').each(function () {
-            $(this).find('span').text('复制');
-        });
-        assetInfo.handleJquery(assetInfo.groupTable).find('.btn-copy').each(function () {
-            $(this).find('span').text('复制');
-        });
-        var type = $(_this).attr("data-type");
-        var obj = null;
-        if (type == 'unit') {
-            var query = {groupId: 0, assetInfoId: '${surveyAssetInfo.id}', declareId: id};
-            assetInfo.getSurveyAssetInfoItemListByQuery(query, function (data) {
-                if (data.length >= 1) {
-                    $(_this).find("span").text('已被复制');
-                    obj = data[0];
-                    assetInfo.handleJquery(assetInfo.queryForm).find("[name=inventoryId]").val(obj.inventoryId);
-                } else {
-                    notifyWarning("复制失败", "没有清查过数据或者属于清查组");
-                    return false;
-                }
-            });
-        }
-        if (type == 'group') {
-            obj = assetInfo.handleJquery(assetInfo.groupTable).bootstrapTable('getRowByUniqueId', id);
-            if (!obj.inventoryId) {
-                notifyWarning("复制失败", "此清查组没有清查过数据");
-                return false;
+    assetInfo.taskCopy = function (_this) {
+        var frm = $(_this).closest("form") ;
+        var target = assetInfo.handleJquery(assetInfo.InfoItemBaseTable);
+        var rows = target.bootstrapTable('getSelections');
+        if (!rows || rows.length <= 0) {
+            notifyWarning("提示", "请勾选认领的权证中的一个!");
+        } else {
+            if (rows.length > 1){
+                notifyWarning("提示", "只能拷贝一个!");
+                target.bootstrapTable('uncheckAll');
+                return false ;
             }
-            assetInfo.handleJquery(assetInfo.queryForm).find("[name=inventoryId]").val(obj.inventoryId);
-            $(_this).find("span").text('已被复制');
+            var data = rows[0] ;
+            if (data.groupId){
+                notifyWarning("提示", "此数据属于清查组不能拷贝!");
+                target.bootstrapTable('uncheckAll');
+                return false ;
+            }
+            if (! data.inventoryId){
+                notifyWarning("提示", "此数据没有完成清查业务 不能拷贝!");
+                target.bootstrapTable('uncheckAll');
+                return false ;
+            }
+            frm.find("[name=copyId]").val(data.id) ;
+            frm.find("[name=copyName]").val(data.name) ;
+            target.bootstrapTable('uncheckAll');
+            notifySuccess("成功", "拷贝成功!");
         }
     };
 
     /***
      * 粘贴清查具体数据
      */
-    assetInfo.taskPaste = function (_this, id) {
-        var type = $(_this).attr("data-type");
-        var inventoryId = assetInfo.handleJquery(assetInfo.queryForm).find("[name=inventoryId]").val();
-        if (!inventoryId) {
+    assetInfo.taskPaste = function (_this) {
+        var frm = $(_this).closest("form") ;
+        var target = assetInfo.handleJquery(assetInfo.InfoItemBaseTable);
+        var rows = target.bootstrapTable('getSelections');
+        var id = frm.find("[name=copyId]").val();
+        if (!id) {
             notifyInfo('提示', '没有复制对象');
             return false;
         }
-        AlertConfirm("粘贴操作", "是否确认", function (flag) {
-            assetInfo.parseSurveyAssetInventory(inventoryId, type, id, function () {
-                notifySuccess("成功", "粘贴完成");
-                assetInfo.loadDeclareRecordList();
-                assetInfo.loadSurveyAssetInfoGroupList();
-                assetInfo.handleJquery(assetInfo.queryForm).clearAll();
+        if (!rows || rows.length <= 0) {
+            notifyWarning("提示", "请勾选认领的权证中的一个!");
+        } else {
+            var data = target.bootstrapTable('getRowByUniqueId', id);
+            AlertConfirm("粘贴操作", "是否确认", function (flag) {
+                assetInfo.parseSurveyAssetInventory(data.inventoryId, "unit", id, function () {
+                    notifySuccess("成功", "粘贴完成");
+                    assetInfo.loadSurveyAssetInfoItemBaseList();
+                });
             });
-        });
+        }
+
     };
 
     /*
@@ -526,7 +734,7 @@
                 var item = data[0];
                 assetInfo.surveyAssetInventoryHandle(inventoryId, item.declareId, "group", id);
             } else {
-                notifyInfo('提示', '没有在组中添加权证');
+                notifyInfo('提示', '没有在组中添加认领的权证');
             }
         });
     };
@@ -536,21 +744,8 @@
      */
     assetInfo.itemHandel = function (id) {
         var inventoryId = 0;
-        assetInfo.getSurveyAssetInfoItemListByQuery({
-            groupId: 0,
-            assetInfoId: '${surveyAssetInfo.id}',
-            declareId: id
-        }, function (data) {
-            if (data.length == 0) {
-                assetInfo.surveyAssetInventoryHandle(inventoryId, id, "unit", null);
-            } else {
-                var item = data[0];
-                if (item.inventoryId) {
-                    inventoryId = item.inventoryId;
-                }
-                assetInfo.surveyAssetInventoryHandle(inventoryId, id, "unit", item.id);
-            }
-        })
+        var item = assetInfo.handleJquery(assetInfo.InfoItemBaseTable).bootstrapTable('getRowByUniqueId', id);
+        assetInfo.surveyAssetInventoryHandle(inventoryId, item.declareId, "unit", item.id);
     };
 
     /**
@@ -583,7 +778,10 @@
                         if (type == 'group') {
                             assetInfo.getSurveyAssetInfoGroupById(masterId, function (obj) {
                                 obj.inventoryId = result.surveyAssetInventory.id;
-                                assetInfo.saveAndUpdateSurveyAssetInfoGroup(obj, null);
+                                obj.status = 'finish';
+                                assetInfo.saveAndUpdateSurveyAssetInfoGroup(obj, function () {
+                                    assetInfo.loadSurveyAssetInfoGroupList();
+                                });
                             });
                         }
                         //单个的方式清查
@@ -591,16 +789,11 @@
                             if (masterId) {
                                 assetInfo.getSurveyAssetInfoItemById(masterId, function (obj) {
                                     obj.inventoryId = result.surveyAssetInventory.id;
-                                    assetInfo.saveAndUpdateSurveyAssetInfoItem(obj, null);
+                                    obj.status = 'finish';
+                                    assetInfo.saveAndUpdateSurveyAssetInfoItem(obj, function () {
+                                        assetInfo.loadSurveyAssetInfoItemBaseList();
+                                    });
                                 })
-                            } else {
-                                var obj = {
-                                    groupId: 0,
-                                    declareId: declareId,
-                                    inventoryId: result.surveyAssetInventory.id,
-                                    assetInfoId: '${surveyAssetInfo.id}'
-                                };
-                                assetInfo.saveAndUpdateSurveyAssetInfoItem(obj, null);
                             }
                         }
                         layer.closeAll('iframe');
@@ -622,6 +815,7 @@
         var groupName = "组" + (assetInfo.handleJquery(assetInfo.groupTable).bootstrapTable('getData').length + 1);
         var data = {assetInfoId: '${surveyAssetInfo.id}'};
         data.groupName = groupName;
+        data.status = 'runing';
         assetInfo.saveAndUpdateSurveyAssetInfoGroup(data, function (item) {
             notifySuccess("成功", "添加资产清查组成功!");
             assetInfo.loadSurveyAssetInfoGroupList();
@@ -631,45 +825,39 @@
     /**
      *
      */
-    assetInfo.selectSurveyAssetInfoGroup = function (_this) {
-        var selectData = formSerializeArray($(_this).closest("form"));
-        var groupId = selectData.surveyAssetInfoGroup;
+    assetInfo.selectSurveyAssetInfoGroup = function (groupId) {
         if (!groupId) {
-            notifyWarning("没有选择清查组", "请选择下拉框中的清查组");
+            notifyWarning("无清查组", "请添加清查组");
             return false;
         }
-        var target = assetInfo.handleJquery(assetInfo.declareRecordTable);
+        var groupData = assetInfo.handleJquery(assetInfo.groupTable).bootstrapTable('getRowByUniqueId', groupId);
+        var target = assetInfo.handleJquery(assetInfo.InfoItemBaseTable);
         var rows = target.bootstrapTable('getSelections');
         if (!rows || rows.length <= 0) {
             notifyWarning("请勾选上面的权证列表", "勾选的将添加到所选择的清查组中!");
         } else {
-            var idArray = [];
+            var data = [];
             var num = 0;
             rows.forEach(function (ele, index) {
-                if (!ele.bisInventory) {
-                    idArray.push(ele.id);
-                } else {
+                ele.groupId = groupData.id;
+                ele.groupName = groupData.groupName;
+                data.push(ele);
+                if (ele.status == 'finish') {
                     num++;
                 }
             });
             if (num != 0) {
-                notifyWarning("警告", "此次选择的权证存在已经被清查的数据,请检查!");
+                notifyWarning("警告", "添加到清查组的认领权证有已经完成清查任务的认领权证,请检查!");
                 target.bootstrapTable('uncheckAll');
                 return false;
             }
-            if (idArray.length >= 1) {
+            if (data.length >= 1) {
                 AlertConfirm("是否确认添加当前选中数据到清查组中", "确定", function (flag) {
-                    $.each(idArray, function (i, declareId) {
-                        var obj = assetInfo.handleJquery(assetInfo.declareRecordTable).bootstrapTable('getRowByUniqueId', declareId);
-                        assetInfo.saveAndUpdateSurveyAssetInfoItem({
-                            declareId: declareId,
-                            groupId: groupId,
-                            name: obj.name
-                        });
+                    assetInfo.addSurveyAssetInfoItem(data, function () {
+                        AlertSuccess("添加成功", "已经添加到 《" + groupData.groupName + "》 中");
+                        target.bootstrapTable('uncheckAll');
+                        assetInfo.loadSurveyAssetInfoItemBaseList();
                     });
-                    var groupData = assetInfo.handleJquery(assetInfo.groupTable).bootstrapTable('getRowByUniqueId', groupId);
-                    AlertSuccess("添加成功", "已经添加到 《" + groupData.groupName + "》 中");
-                    target.bootstrapTable('uncheckAll');
                 });
             } else {
                 target.bootstrapTable('uncheckAll');
@@ -721,11 +909,14 @@
     assetInfo.writeQuerySurveyAssetInfoGroupHtml = function () {
         var dataAll = assetInfo.handleJquery(assetInfo.groupTable).bootstrapTable('getData');
         var frm = assetInfo.handleJquery(assetInfo.queryForm);
-        var html = "<option value=''>请选择</option>";
+        var html = "";
+        if (dataAll.length == 0) {
+            html += "<a href='javascript://' class='dropdown-item'> 请选择组</a>";
+        }
         $.each(dataAll, function (i, item) {
-            html += "<option value='" + item.id + "'" + ">" + item.groupName + "</option>";
+            html += "<a href='javascript://' class='dropdown-item' onclick='assetInfo.selectSurveyAssetInfoGroup(" + item.id + ")'" + ">" + item.groupName + "</a>";
         });
-        frm.find("select[name='surveyAssetInfoGroup']").empty().append(html);
+        frm.find("div[data-name='surveyAssetInfoGroup']").empty().append(html);
     };
 
     assetInfo.loadSurveyAssetInfoItemList = function (query, table) {
@@ -735,7 +926,7 @@
         cols.push({
             field: 'id', title: '操作', width: "10%", formatter: function (value, row, index) {
                 var str = "";
-                str += '<button type="button" onclick="assetInfo.delSurveyAssetInfoItem(' + row.id + ",'" + selector + "'" + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn   btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
+                str += '<button type="button" onclick="assetInfo.removeGroupSurveyAssetInfoItem(' + row.id + ",'" + selector + "'" + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn   btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="从此组中移除">';
                 str += '<i class="fa fa-minus"></i>';
                 str += '</button>';
                 return str;
@@ -761,26 +952,97 @@
     assetInfo.delSurveyAssetInfoItem = function (id, selector) {
         assetInfo.deleteSurveyAssetInfoItemById(id, function () {
             $(selector).bootstrapTable('refresh');
-            assetInfo.loadDeclareRecordList();
         });
     };
 
+    /**
+     * 移除组中添加的数据
+     * @param id
+     * @param selector
+     */
+    assetInfo.removeGroupSurveyAssetInfoItem = function (id, selector) {
+        var data = $(selector).bootstrapTable('getRowByUniqueId', id);
+        data.groupId = 0;
+        data.groupName = '';
+        assetInfo.saveAndUpdateSurveyAssetInfoItem(data, function () {
+            notifySuccess("成功", "移除成功!");
+            $(selector).bootstrapTable('refresh');
+            assetInfo.handleJquery(assetInfo.InfoItemBaseTable).bootstrapTable('refresh');
+        }, true);
+    };
+
     assetInfo.delSurveyAssetInfoItemByDeclareId = function (id, selector) {
-        assetInfo.getSurveyAssetInfoItemListByQuery({
-            groupId: 0,
-            assetInfoId: '${surveyAssetInfo.id}',
-            declareId: id
-        }, function (data) {
-            if (data.length >= 1) {
-                var ids = [];
-                $.each(data, function (i, item) {
-                    ids.push(item.id);
-                });
-                assetInfo.deleteSurveyAssetInfoItemById(ids.join(","), function () {
-                    $(selector).bootstrapTable('refresh');
-                });
-            } else {
-                notifyInfo("没有清查业务数据", "无需删除!");
+        var data = $(selector).bootstrapTable('getRowByUniqueId', id);
+        if (data.groupId) {
+            AlertError("此条数据已经加入组中", "请进入组中移除,然后在进入认领列表中删除");
+        } else {
+            assetInfo.delSurveyAssetInfoItem(id, selector);
+        }
+    };
+
+    assetInfo.loadSurveyAssetInfoItemBaseList = function (_this) {
+        var options = {
+            projectId: '${projectInfo.id}',
+            assetInfoId:${surveyAssetInfo.id},
+            creator: '${projectPlanDetails.executeUserAccount}'
+        };
+        var data = {};
+        if (_this) {
+            data = formSerializeArray($(_this).closest("form"));
+        }
+        jQuery.extend(data, options);
+        var arr = Object.keys(data);
+        $.each(arr, function (i, item) {
+            if (!data[item]) {
+                data[item] = undefined;
+            }
+        });
+        var target = assetInfo.handleJquery(assetInfo.InfoItemBaseTable);
+        var selector = target.selector;
+        var cols = [];
+        cols.push({checkbox: true, width: "5%", title: "勾选"});
+        cols.push({field: 'name', title: '权证号', width: "33%"});
+        cols.push({
+            field: 'id', title: '操作', width: "40%", formatter: function (value, row, index) {
+                var str = "";
+                str += '<button type="button" onclick="assetInfo.delSurveyAssetInfoItemByDeclareId(' + row.id + ",'" + selector + "'" + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn   btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
+                str += '<i class="fa fa-minus"></i>';
+                str += '</button>';
+
+                str += '<button type="button" onclick="assetInfo.itemHandel(' + value + ')" style="margin-left: 5px;" class="btn   btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="清查操作">';
+                str += '<i class="fa fa-cog"></i>';
+                str += '</button>';
+
+                return str;
+            }
+        });
+        cols.push({
+            field: 'status', title: '状态/属于组', width: "10%", formatter: function (value, row, index) {
+                var str = "";
+                if (row.groupId) {
+                    str = row.groupName + "";
+                } else {
+                    if (value) {
+                        if (value == 'runing') {
+                            str = "进行中";
+                        }
+                        if (value == 'finish') {
+                            str = "已完成";
+                        }
+                    }
+                }
+                return str;
+            }
+        });
+        target.bootstrapTable('destroy');
+        TableInit(target, "${pageContext.request.contextPath}/surveyAssetInfoItem/getBootstrapTableVo", cols, data, {
+            method: "get",
+            showColumns: false,
+            showRefresh: false,
+            search: false,
+            striped: true,
+            onLoadSuccess: function () {
+                $(".tooltips").tooltip();   //提示
             }
         });
     };
@@ -789,6 +1051,7 @@
     $(document).ready(function () {
         assetInfo.loadDeclareRecordList();
         assetInfo.loadSurveyAssetInfoGroupList();
+        assetInfo.loadSurveyAssetInfoItemBaseList();
     });
 
 </script>

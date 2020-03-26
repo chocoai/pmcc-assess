@@ -74,6 +74,9 @@ public class SurveyAssetInfoItemDao {
         if (StringUtils.isNotBlank(oo.getName())) {
             criteria.andNameLike(String.format("%%%s%%", oo.getName()));
         }
+        if (StringUtils.isNotBlank(oo.getGroupName())) {
+            criteria.andGroupNameLike(String.format("%%%s%%", oo.getGroupName()));
+        }
         if (oo.getGroupId() != null) {
             criteria.andGroupIdEqualTo(oo.getGroupId());
         }
@@ -83,8 +86,11 @@ public class SurveyAssetInfoItemDao {
         if (oo.getAssetInfoId() != null) {
             criteria.andAssetInfoIdEqualTo(oo.getAssetInfoId());
         }
-        if (StringUtils.isNotBlank(oo.getCreator())){
+        if (StringUtils.isNotBlank(oo.getCreator())) {
             criteria.andCreatorEqualTo(oo.getCreator());
+        }
+        if (StringUtils.isNotBlank(oo.getStatus())) {
+            criteria.andStatusEqualTo(oo.getStatus());
         }
         example.setOrderByClause("id");
         return mapper.selectByExample(example);

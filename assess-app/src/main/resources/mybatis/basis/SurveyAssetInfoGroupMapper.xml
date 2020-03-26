@@ -5,6 +5,7 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="inventory_id" property="inventoryId" jdbcType="INTEGER" />
     <result column="asset_info_id" property="assetInfoId" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
     <result column="group_name" property="groupName" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
@@ -69,7 +70,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, inventory_id, asset_info_id, group_name, creator, gmt_created, gmt_modified
+    id, inventory_id, asset_info_id, status, group_name, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInfoGroupExample" >
     select
@@ -105,12 +106,12 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_survey_asset_info_group (inventory_id, asset_info_id, group_name, 
-      creator, gmt_created, gmt_modified
-      )
-    values (#{inventoryId,jdbcType=INTEGER}, #{assetInfoId,jdbcType=INTEGER}, #{groupName,jdbcType=VARCHAR}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+    insert into tb_survey_asset_info_group (inventory_id, asset_info_id, status, 
+      group_name, creator, gmt_created, 
+      gmt_modified)
+    values (#{inventoryId,jdbcType=INTEGER}, #{assetInfoId,jdbcType=INTEGER}, #{status,jdbcType=VARCHAR}, 
+      #{groupName,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInfoGroup" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -123,6 +124,9 @@
       </if>
       <if test="assetInfoId != null" >
         asset_info_id,
+      </if>
+      <if test="status != null" >
+        status,
       </if>
       <if test="groupName != null" >
         group_name,
@@ -143,6 +147,9 @@
       </if>
       <if test="assetInfoId != null" >
         #{assetInfoId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
       </if>
       <if test="groupName != null" >
         #{groupName,jdbcType=VARCHAR},
@@ -176,6 +183,9 @@
       <if test="record.assetInfoId != null" >
         asset_info_id = #{record.assetInfoId,jdbcType=INTEGER},
       </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
       <if test="record.groupName != null" >
         group_name = #{record.groupName,jdbcType=VARCHAR},
       </if>
@@ -198,6 +208,7 @@
     set id = #{record.id,jdbcType=INTEGER},
       inventory_id = #{record.inventoryId,jdbcType=INTEGER},
       asset_info_id = #{record.assetInfoId,jdbcType=INTEGER},
+      status = #{record.status,jdbcType=VARCHAR},
       group_name = #{record.groupName,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -214,6 +225,9 @@
       </if>
       <if test="assetInfoId != null" >
         asset_info_id = #{assetInfoId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
       </if>
       <if test="groupName != null" >
         group_name = #{groupName,jdbcType=VARCHAR},
@@ -234,6 +248,7 @@
     update tb_survey_asset_info_group
     set inventory_id = #{inventoryId,jdbcType=INTEGER},
       asset_info_id = #{assetInfoId,jdbcType=INTEGER},
+      status = #{status,jdbcType=VARCHAR},
       group_name = #{groupName,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},

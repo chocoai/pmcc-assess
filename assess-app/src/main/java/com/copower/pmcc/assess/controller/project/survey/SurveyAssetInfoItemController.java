@@ -9,6 +9,8 @@ import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 /**
  * Created by zch on 2019-12-16.
@@ -23,7 +25,7 @@ public class SurveyAssetInfoItemController {
     private SurveyAssetInfoItemService surveyAssetInfoItemService;
     private static final String STRING = "资产清查" ;
 
-    @PostMapping(value = "/saveAndUpdateSurveyAssetInfoItem",name = "save")
+    @PostMapping(value = "/saveAndUpdateSurveyAssetInfoItem",name = "单个添加")
     public HttpResult saveAndUpdateSurveyAssetInfoItem(String formData, @RequestParam(defaultValue = "false") boolean updateNull){
         try {
             SurveyAssetInfoItem surveyAssetInfoItem = JSONObject.parseObject(formData,SurveyAssetInfoItem.class) ;
@@ -31,7 +33,21 @@ public class SurveyAssetInfoItemController {
             return HttpResult.newCorrectResult(200,surveyAssetInfoItem) ;
         } catch (Exception e) {
             baseService.writeExceptionInfo(e,String.join("", STRING,e.getMessage()));
-            return HttpResult.newErrorResult(500,e) ;
+            return HttpResult.newErrorResult(500,e.getMessage()) ;
+        }
+    }
+
+    @PostMapping(value = "/addSurveyAssetInfoItem",name = "多个添加")
+    public HttpResult addSurveyAssetInfoItem(String formData, @RequestParam(defaultValue = "false") boolean updateNull){
+        try {
+            List<SurveyAssetInfoItem> surveyAssetInfoItems = JSONObject.parseArray(formData,SurveyAssetInfoItem.class) ;
+            for (SurveyAssetInfoItem surveyAssetInfoItem:surveyAssetInfoItems){
+                surveyAssetInfoItemService.saveAndUpdateSurveyAssetInfoItem(surveyAssetInfoItem,updateNull);
+            }
+            return HttpResult.newCorrectResult(200,surveyAssetInfoItems) ;
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e,String.join("", STRING,e.getMessage()));
+            return HttpResult.newErrorResult(500,e.getMessage()) ;
         }
     }
 

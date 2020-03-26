@@ -72,6 +72,9 @@ public class SurveyAssetInfoGroupDao {
         if (StringUtils.isNotBlank(oo.getCreator())){
             criteria.andCreatorEqualTo(oo.getCreator()) ;
         }
+        if (StringUtils.isNotBlank(oo.getStatus())) {
+            criteria.andStatusEqualTo(oo.getStatus());
+        }
         example.setOrderByClause("id");
         return mapper.selectByExample(example);
     }

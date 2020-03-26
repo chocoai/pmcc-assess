@@ -7,7 +7,11 @@ public class SurveyAssetInfoItem {
 
     private Integer assetInfoId;
 
+    private String groupName;
+
     private String name;
+
+    private String status;
 
     private Integer groupId;
 
@@ -37,12 +41,28 @@ public class SurveyAssetInfoItem {
         this.assetInfoId = assetInfoId;
     }
 
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName == null ? null : groupName.trim();
+    }
+
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status == null ? null : status.trim();
     }
 
     public Integer getGroupId() {
