@@ -552,6 +552,10 @@
 <script type="application/javascript">
 
     $(function () {
+        AssessCommon.loadDataDicByKey(AssessDicKey.projectSurveyInventoryContentDefaultCheckOriginal, '${surveyAssetInventory.findOriginal}', function (html, data) {
+            console.log(html) ;
+            $("#frm_asset").find("select[name='findOriginal']").empty().html(html).trigger('change');
+        });
         initAgreement();
         loadAssetRightList();
         if ("${surveyAssetInventory.transferLimit}") {
@@ -627,9 +631,6 @@
         }
         showOther();
         showButton();
-        AssessCommon.loadDataDicByKey(AssessDicKey.projectSurveyInventoryContentDefaultCheckOriginal, '${surveyAssetInventory.findOriginal}', function (html, data) {
-            $("#frm_asset").find("select[name='findOriginal']").empty().html(html).trigger('change');
-        });
     })
     ;
 
