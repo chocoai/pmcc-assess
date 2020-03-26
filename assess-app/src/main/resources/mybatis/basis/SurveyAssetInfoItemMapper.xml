@@ -4,7 +4,9 @@
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInfoItem" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="asset_info_id" property="assetInfoId" jdbcType="INTEGER" />
+    <result column="group_name" property="groupName" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
     <result column="group_id" property="groupId" jdbcType="INTEGER" />
     <result column="declare_id" property="declareId" jdbcType="INTEGER" />
     <result column="inventory_id" property="inventoryId" jdbcType="INTEGER" />
@@ -71,8 +73,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, asset_info_id, name, group_id, declare_id, inventory_id, creator, gmt_created, 
-    gmt_modified
+    id, asset_info_id, group_name, name, status, group_id, declare_id, inventory_id, 
+    creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInfoItemExample" >
     select
@@ -108,12 +110,14 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_survey_asset_info_item (asset_info_id, name, group_id, 
-      declare_id, inventory_id, creator, 
-      gmt_created, gmt_modified)
-    values (#{assetInfoId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{groupId,jdbcType=INTEGER}, 
-      #{declareId,jdbcType=INTEGER}, #{inventoryId,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_survey_asset_info_item (asset_info_id, group_name, name, 
+      status, group_id, declare_id, 
+      inventory_id, creator, gmt_created, 
+      gmt_modified)
+    values (#{assetInfoId,jdbcType=INTEGER}, #{groupName,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR}, #{groupId,jdbcType=INTEGER}, #{declareId,jdbcType=INTEGER}, 
+      #{inventoryId,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInfoItem" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -124,8 +128,14 @@
       <if test="assetInfoId != null" >
         asset_info_id,
       </if>
+      <if test="groupName != null" >
+        group_name,
+      </if>
       <if test="name != null" >
         name,
+      </if>
+      <if test="status != null" >
+        status,
       </if>
       <if test="groupId != null" >
         group_id,
@@ -150,8 +160,14 @@
       <if test="assetInfoId != null" >
         #{assetInfoId,jdbcType=INTEGER},
       </if>
+      <if test="groupName != null" >
+        #{groupName,jdbcType=VARCHAR},
+      </if>
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
       </if>
       <if test="groupId != null" >
         #{groupId,jdbcType=INTEGER},
@@ -188,8 +204,14 @@
       <if test="record.assetInfoId != null" >
         asset_info_id = #{record.assetInfoId,jdbcType=INTEGER},
       </if>
+      <if test="record.groupName != null" >
+        group_name = #{record.groupName,jdbcType=VARCHAR},
+      </if>
       <if test="record.name != null" >
         name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=VARCHAR},
       </if>
       <if test="record.groupId != null" >
         group_id = #{record.groupId,jdbcType=INTEGER},
@@ -218,7 +240,9 @@
     update tb_survey_asset_info_item
     set id = #{record.id,jdbcType=INTEGER},
       asset_info_id = #{record.assetInfoId,jdbcType=INTEGER},
+      group_name = #{record.groupName,jdbcType=VARCHAR},
       name = #{record.name,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=VARCHAR},
       group_id = #{record.groupId,jdbcType=INTEGER},
       declare_id = #{record.declareId,jdbcType=INTEGER},
       inventory_id = #{record.inventoryId,jdbcType=INTEGER},
@@ -235,8 +259,14 @@
       <if test="assetInfoId != null" >
         asset_info_id = #{assetInfoId,jdbcType=INTEGER},
       </if>
+      <if test="groupName != null" >
+        group_name = #{groupName,jdbcType=VARCHAR},
+      </if>
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
       </if>
       <if test="groupId != null" >
         group_id = #{groupId,jdbcType=INTEGER},
@@ -262,7 +292,9 @@
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInfoItem" >
     update tb_survey_asset_info_item
     set asset_info_id = #{assetInfoId,jdbcType=INTEGER},
+      group_name = #{groupName,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
       group_id = #{groupId,jdbcType=INTEGER},
       declare_id = #{declareId,jdbcType=INTEGER},
       inventory_id = #{inventoryId,jdbcType=INTEGER},

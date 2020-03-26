@@ -12,6 +12,7 @@
     <result column="created" property="created" jdbcType="TIMESTAMP" />
     <result column="modified" property="modified" jdbcType="TIMESTAMP" />
     <result column="master_data_id" property="masterDataId" jdbcType="INTEGER" />
+    <result column="approver" property="approver" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -73,7 +74,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, data_id, process_ins_id, type, json_data, status, creator, created, modified, 
-    master_data_id
+    master_data_id, approver
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.NetInfoUpgradeExample" >
     select
@@ -111,12 +112,12 @@
     </selectKey>
     insert into tb_net_info_upgrade (data_id, process_ins_id, type, 
       json_data, status, creator, 
-      created, modified, master_data_id
-      )
+      created, modified, master_data_id, 
+      approver)
     values (#{dataId,jdbcType=INTEGER}, #{processInsId,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, 
       #{jsonData,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
-      #{created,jdbcType=TIMESTAMP}, #{modified,jdbcType=TIMESTAMP}, #{masterDataId,jdbcType=INTEGER}
-      )
+      #{created,jdbcType=TIMESTAMP}, #{modified,jdbcType=TIMESTAMP}, #{masterDataId,jdbcType=INTEGER}, 
+      #{approver,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.NetInfoUpgrade" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -151,6 +152,9 @@
       <if test="masterDataId != null" >
         master_data_id,
       </if>
+      <if test="approver != null" >
+        approver,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="dataId != null" >
@@ -179,6 +183,9 @@
       </if>
       <if test="masterDataId != null" >
         #{masterDataId,jdbcType=INTEGER},
+      </if>
+      <if test="approver != null" >
+        #{approver,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -221,6 +228,9 @@
       <if test="record.masterDataId != null" >
         master_data_id = #{record.masterDataId,jdbcType=INTEGER},
       </if>
+      <if test="record.approver != null" >
+        approver = #{record.approver,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -237,7 +247,8 @@
       creator = #{record.creator,jdbcType=VARCHAR},
       created = #{record.created,jdbcType=TIMESTAMP},
       modified = #{record.modified,jdbcType=TIMESTAMP},
-      master_data_id = #{record.masterDataId,jdbcType=INTEGER}
+      master_data_id = #{record.masterDataId,jdbcType=INTEGER},
+      approver = #{record.approver,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -272,6 +283,9 @@
       <if test="masterDataId != null" >
         master_data_id = #{masterDataId,jdbcType=INTEGER},
       </if>
+      <if test="approver != null" >
+        approver = #{approver,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -285,7 +299,8 @@
       creator = #{creator,jdbcType=VARCHAR},
       created = #{created,jdbcType=TIMESTAMP},
       modified = #{modified,jdbcType=TIMESTAMP},
-      master_data_id = #{masterDataId,jdbcType=INTEGER}
+      master_data_id = #{masterDataId,jdbcType=INTEGER},
+      approver = #{approver,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

@@ -9,6 +9,8 @@ public class SurveyAssetInfoGroup {
 
     private Integer assetInfoId;
 
+    private String status;
+
     private String groupName;
 
     private String creator;
@@ -39,6 +41,14 @@ public class SurveyAssetInfoGroup {
 
     public void setAssetInfoId(Integer assetInfoId) {
         this.assetInfoId = assetInfoId;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status == null ? null : status.trim();
     }
 
     public String getGroupName() {

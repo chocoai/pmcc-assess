@@ -149,6 +149,9 @@ public class NetInfoUpgradeService {
 
     public void approvalCommit(ApprovalModelDto approvalModelDto, String processInsId) {
         try {
+            NetInfoUpgrade upgrade = getDataByProcessInsId(processInsId);
+            upgrade.setApprover(commonService.thisUserAccount());
+            editData(upgrade);
             processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);
         } catch (BpmException e) {
             e.printStackTrace();

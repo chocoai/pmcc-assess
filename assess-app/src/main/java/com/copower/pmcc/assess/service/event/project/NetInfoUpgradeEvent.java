@@ -55,7 +55,9 @@ public class NetInfoUpgradeEvent extends BaseProcessEvent {
             netInfoRecordHouseDao.updateNetInfoRecordHouse(oldRecordHouse,true);
             NetInfoRecordHouse newRecordHouse = JSON.parseObject(data.getJsonData(), NetInfoRecordHouse.class);
             newRecordHouse.setStatus(1);
-            newRecordHouse.setBeUpgradeId(oldRecordHouse.getBeUpgradeId()==null?oldRecordHouse.getId():oldRecordHouse.getBeUpgradeId());
+            newRecordHouse.setCreator(data.getCreator());
+            newRecordHouse.setApprover(data.getApprover());
+            newRecordHouse.setBeUpgradeId(oldRecordHouse.getBeUpgradeId()==null?newRecordHouse.getId():oldRecordHouse.getBeUpgradeId());
             newRecordHouse.setVersion(oldRecordHouse.getVersion() + 1);
             netInfoRecordHouseDao.addNetInfoRecordHouse(newRecordHouse);
             //附件拷贝
@@ -110,7 +112,10 @@ public class NetInfoUpgradeEvent extends BaseProcessEvent {
             netInfoRecordLandDao.updateNetInfoRecordLand(oldRecordLand,true);
             NetInfoRecordLand newRecordLand = JSON.parseObject(data.getJsonData(), NetInfoRecordLand.class);
             newRecordLand.setStatus(1);
-            newRecordLand.setBeUpgradeId(newRecordLand.getBeUpgradeId()==null?newRecordLand.getId():newRecordLand.getBeUpgradeId());
+            newRecordLand.setCreator(data.getCreator());
+            newRecordLand.setApprover(data.getApprover());
+            newRecordLand.setStatus(1);
+            newRecordLand.setBeUpgradeId(oldRecordLand.getBeUpgradeId()==null?newRecordLand.getId():oldRecordLand.getBeUpgradeId());
             newRecordLand.setVersion(oldRecordLand.getVersion() + 1);
             netInfoRecordLandDao.addNetInfoRecordLand(newRecordLand);
             //附件拷贝

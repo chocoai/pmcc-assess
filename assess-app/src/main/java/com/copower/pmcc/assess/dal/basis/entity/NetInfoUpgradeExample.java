@@ -754,6 +754,76 @@ public class NetInfoUpgradeExample {
             addCriterion("master_data_id not between", value1, value2, "masterDataId");
             return (Criteria) this;
         }
+
+        public Criteria andApproverIsNull() {
+            addCriterion("approver is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andApproverIsNotNull() {
+            addCriterion("approver is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andApproverEqualTo(String value) {
+            addCriterion("approver =", value, "approver");
+            return (Criteria) this;
+        }
+
+        public Criteria andApproverNotEqualTo(String value) {
+            addCriterion("approver <>", value, "approver");
+            return (Criteria) this;
+        }
+
+        public Criteria andApproverGreaterThan(String value) {
+            addCriterion("approver >", value, "approver");
+            return (Criteria) this;
+        }
+
+        public Criteria andApproverGreaterThanOrEqualTo(String value) {
+            addCriterion("approver >=", value, "approver");
+            return (Criteria) this;
+        }
+
+        public Criteria andApproverLessThan(String value) {
+            addCriterion("approver <", value, "approver");
+            return (Criteria) this;
+        }
+
+        public Criteria andApproverLessThanOrEqualTo(String value) {
+            addCriterion("approver <=", value, "approver");
+            return (Criteria) this;
+        }
+
+        public Criteria andApproverLike(String value) {
+            addCriterion("approver like", value, "approver");
+            return (Criteria) this;
+        }
+
+        public Criteria andApproverNotLike(String value) {
+            addCriterion("approver not like", value, "approver");
+            return (Criteria) this;
+        }
+
+        public Criteria andApproverIn(List<String> values) {
+            addCriterion("approver in", values, "approver");
+            return (Criteria) this;
+        }
+
+        public Criteria andApproverNotIn(List<String> values) {
+            addCriterion("approver not in", values, "approver");
+            return (Criteria) this;
+        }
+
+        public Criteria andApproverBetween(String value1, String value2) {
+            addCriterion("approver between", value1, value2, "approver");
+            return (Criteria) this;
+        }
+
+        public Criteria andApproverNotBetween(String value1, String value2) {
+            addCriterion("approver not between", value1, value2, "approver");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

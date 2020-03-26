@@ -23,6 +23,8 @@ public class NetInfoUpgrade {
 
     private Integer masterDataId;
 
+    private String approver;
+
     public Integer getId() {
         return id;
     }
@@ -101,5 +103,13 @@ public class NetInfoUpgrade {
 
     public void setMasterDataId(Integer masterDataId) {
         this.masterDataId = masterDataId;
+    }
+
+    public String getApprover() {
+        return approver;
+    }
+
+    public void setApprover(String approver) {
+        this.approver = approver == null ? null : approver.trim();
     }
 }
