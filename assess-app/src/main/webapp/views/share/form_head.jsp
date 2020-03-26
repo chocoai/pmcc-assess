@@ -18,10 +18,25 @@
                             <div class="form_wizard wizard_horizontal">
                                 <ul class="wizard_steps anchor" style="margin: 0px;">
                                     <li>
-                                        <c:if test="${flog=='approval'}"><a class="done"></c:if>
-                                        <c:if test="${flog=='details'}"><a class="done"></c:if>
-                                        <c:if test="${flog=='apply' or flog=='edit'}"><a class="selected"></c:if>
-                                         <span class="step_no">0</span><span class="step_descr"><small>申请</small></span></a>
+                                        <c:choose>
+                                        <c:when test="${flog=='approval'}">
+                                        <a class="done">
+                                            </c:when>
+                                            <c:when test="${flog=='details'}">
+                                            <a class="done">
+                                                </c:when>
+                                                <c:when test="${flog=='apply'}">
+                                                <a class="selected">
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                    <a class="selected">
+                                                        </c:otherwise>
+                                                        </c:choose>
+                                                        <span class="step_no">0</span>
+                                                        <span class="step_descr">
+                                                      <small>申请</small>
+                                                    </span>
+                                                    </a>
                                     </li>
                                     <c:forEach var="item" items="${Steps}">
                                         <li>
@@ -41,7 +56,8 @@
                 </c:if>
 
             </div>
-            <a href="${pageContext.request.contextPath}/home/main" class="btn btn-white btn-border btn-round mr-2">回首页</a>
+            <a href="${pageContext.request.contextPath}/home/main"
+               class="btn btn-white btn-border btn-round mr-2">回首页</a>
         </div>
     </div>
 
