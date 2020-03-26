@@ -120,6 +120,24 @@ public class BasicApplyBatchDao {
     }
 
     /**
+     * 获取草稿数据列表
+     *
+     * @param projectId
+     * @return
+     */
+    public List<BasicApplyBatch> getOriginalBasicApplyBatchListByProjectId(Integer projectId) {
+        BasicApplyBatchExample example = new BasicApplyBatchExample();
+        BasicApplyBatchExample.Criteria criteria = example.createCriteria();
+        if (projectId!=null) {
+            criteria.andProjectIdEqualTo(projectId);
+        }
+        criteria.andReferenceApplyBatchIdIsNull();
+        criteria.andBisDeleteEqualTo(false);
+        example.setOrderByClause("id desc");
+        return basicApplyBatchMapper.selectByExample(example);
+    }
+
+    /**
      * 新增
      *
      * @param examineInfo

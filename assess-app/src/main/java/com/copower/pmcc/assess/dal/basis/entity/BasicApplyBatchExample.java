@@ -235,6 +235,66 @@ public class BasicApplyBatchExample {
             return (Criteria) this;
         }
 
+        public Criteria andProjectIdIsNull() {
+            addCriterion("project_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectIdIsNotNull() {
+            addCriterion("project_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectIdEqualTo(Integer value) {
+            addCriterion("project_id =", value, "projectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectIdNotEqualTo(Integer value) {
+            addCriterion("project_id <>", value, "projectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectIdGreaterThan(Integer value) {
+            addCriterion("project_id >", value, "projectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("project_id >=", value, "projectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectIdLessThan(Integer value) {
+            addCriterion("project_id <", value, "projectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectIdLessThanOrEqualTo(Integer value) {
+            addCriterion("project_id <=", value, "projectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectIdIn(List<Integer> values) {
+            addCriterion("project_id in", values, "projectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectIdNotIn(List<Integer> values) {
+            addCriterion("project_id not in", values, "projectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectIdBetween(Integer value1, Integer value2) {
+            addCriterion("project_id between", value1, value2, "projectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("project_id not between", value1, value2, "projectId");
+            return (Criteria) this;
+        }
+
         public Criteria andPlanDetailsIdIsNull() {
             addCriterion("plan_details_id is null");
             return (Criteria) this;
@@ -292,6 +352,66 @@ public class BasicApplyBatchExample {
 
         public Criteria andPlanDetailsIdNotBetween(Integer value1, Integer value2) {
             addCriterion("plan_details_id not between", value1, value2, "planDetailsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andReferenceApplyBatchIdIsNull() {
+            addCriterion("reference_apply_batch_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andReferenceApplyBatchIdIsNotNull() {
+            addCriterion("reference_apply_batch_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andReferenceApplyBatchIdEqualTo(Integer value) {
+            addCriterion("reference_apply_batch_id =", value, "referenceApplyBatchId");
+            return (Criteria) this;
+        }
+
+        public Criteria andReferenceApplyBatchIdNotEqualTo(Integer value) {
+            addCriterion("reference_apply_batch_id <>", value, "referenceApplyBatchId");
+            return (Criteria) this;
+        }
+
+        public Criteria andReferenceApplyBatchIdGreaterThan(Integer value) {
+            addCriterion("reference_apply_batch_id >", value, "referenceApplyBatchId");
+            return (Criteria) this;
+        }
+
+        public Criteria andReferenceApplyBatchIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("reference_apply_batch_id >=", value, "referenceApplyBatchId");
+            return (Criteria) this;
+        }
+
+        public Criteria andReferenceApplyBatchIdLessThan(Integer value) {
+            addCriterion("reference_apply_batch_id <", value, "referenceApplyBatchId");
+            return (Criteria) this;
+        }
+
+        public Criteria andReferenceApplyBatchIdLessThanOrEqualTo(Integer value) {
+            addCriterion("reference_apply_batch_id <=", value, "referenceApplyBatchId");
+            return (Criteria) this;
+        }
+
+        public Criteria andReferenceApplyBatchIdIn(List<Integer> values) {
+            addCriterion("reference_apply_batch_id in", values, "referenceApplyBatchId");
+            return (Criteria) this;
+        }
+
+        public Criteria andReferenceApplyBatchIdNotIn(List<Integer> values) {
+            addCriterion("reference_apply_batch_id not in", values, "referenceApplyBatchId");
+            return (Criteria) this;
+        }
+
+        public Criteria andReferenceApplyBatchIdBetween(Integer value1, Integer value2) {
+            addCriterion("reference_apply_batch_id between", value1, value2, "referenceApplyBatchId");
+            return (Criteria) this;
+        }
+
+        public Criteria andReferenceApplyBatchIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("reference_apply_batch_id not between", value1, value2, "referenceApplyBatchId");
             return (Criteria) this;
         }
 

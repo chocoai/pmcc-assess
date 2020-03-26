@@ -24,6 +24,33 @@ public class ZtreeDto implements Serializable,Cloneable,Comparable<ZtreeDto> {
     private String creator;
     private String creatorName;
     private String executor;
+    private Integer declareRecordId;
+    private String declareRecordName;
+    private Integer applyBatchId;
+
+    public Integer getApplyBatchId() {
+        return applyBatchId;
+    }
+
+    public void setApplyBatchId(Integer applyBatchId) {
+        this.applyBatchId = applyBatchId;
+    }
+
+    public String getDeclareRecordName() {
+        return declareRecordName;
+    }
+
+    public void setDeclareRecordName(String declareRecordName) {
+        this.declareRecordName = declareRecordName;
+    }
+
+    public Integer getDeclareRecordId() {
+        return declareRecordId;
+    }
+
+    public void setDeclareRecordId(Integer declareRecordId) {
+        this.declareRecordId = declareRecordId;
+    }
 
     public String getTextName() {
         return textName;

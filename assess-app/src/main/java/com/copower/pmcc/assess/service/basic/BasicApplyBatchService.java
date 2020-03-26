@@ -147,6 +147,12 @@ public class BasicApplyBatchService {
             ztreeDto.setExecutor(item.getExecutor());
             ztreeDto.setCreatorName(publicService.getUserNameByAccount(item.getCreator()));
             ztreeDto.setBisStructure(item.getBisStructure());
+            ztreeDto.setApplyBatchId(item.getApplyBatchId());
+            ztreeDto.setDeclareRecordId(item.getDeclareRecordId());
+            DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(item.getDeclareRecordId());
+            if(declareRecord!=null){
+                ztreeDto.setDeclareRecordName(declareRecord.getName());
+            }
             treeDtos.add(ztreeDto);
         }
         return treeDtos;
@@ -405,6 +411,7 @@ public class BasicApplyBatchService {
         //申报表代入的信息
         DeclareRecord declareRecord = null;
         ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(basicApplyBatch.getPlanDetailsId());
+        basicApplyBatch.setProjectId(projectPlanDetails.getProjectId());
         if (projectPlanDetails != null && projectPlanDetails.getDeclareRecordId() != null) {
             declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
         }
@@ -902,4 +909,35 @@ public class BasicApplyBatchService {
         }
     }
 
+    /**
+     * 获取楼盘
+     *
+     * @param projectId
+     * @return
+     */
+    public List<BasicApplyBatchDetail> getOriginalBasicApplyBatchListByProjectId(Integer projectId) {
+        List<BasicApplyBatch> basicApplyBatchList = basicApplyBatchDao.getOriginalBasicApplyBatchListByProjectId(projectId);
+        List<BasicApplyBatchDetail> basicApplyBatchDetailList = Lists.newArrayList();
+        if(CollectionUtils.isNotEmpty(basicApplyBatchList)){
+            for (BasicApplyBatch item: basicApplyBatchList) {
+                BasicApplyBatchDetail batchDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(item.getId(), BasicFormClassifyEnum.ESTATE.getTableName(), item.getEstateId());
+                basicApplyBatchDetailList.add(batchDetail);
+            }
+
+        }
+        return basicApplyBatchDetailList;
+    }
+
+    /**
+     * 引用楼盘
+     *
+     * @param referenceId
+     * @param basicApplyBatchId
+     * @return
+     */
+    public void referenceEstate(Integer referenceId,Integer basicApplyBatchId) {
+        BasicApplyBatch basicApplyBatch = getBasicApplyBatchById(basicApplyBatchId);
+        basicApplyBatch.setReferenceApplyBatchId(referenceId);
+        basicApplyBatchDao.updateInfo(basicApplyBatch);
+    }
 }

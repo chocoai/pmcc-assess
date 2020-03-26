@@ -37,7 +37,6 @@
                                     <input type="hidden" name="formClassify" value="${applyBatch.classify}">
                                     <input type="hidden" name="formType" value="${applyBatch.type}">
                                     <input type="hidden" name="planDetailsId" value="${applyBatch.planDetailsId}">
-                                    <input type="hidden" name="applyBatchId" value="${applyBatch.id}">
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
@@ -130,7 +129,13 @@
 <script type="text/javascript">
 
     $(function () {
-        ztreeInit();
+        if (${!empty applyBatch}) {
+            if (${!empty applyBatch.referenceApplyBatchId}) {
+                ztreeInit(${applyBatch.referenceApplyBatchId});
+            } else {
+                ztreeInit(${applyBatch.id});
+            }
+        }
     });
     var setting = {
         data: {
@@ -152,10 +157,10 @@
     };
 
     //初始化
-    function ztreeInit() {
+    function ztreeInit(basicApplyBatchId) {
         $.ajax({
             url: '${pageContext.request.contextPath}/basicApplyBatch/getBatchApplyTree',
-            data: {basicApplyBatchId: '${applyBatch.id}'},
+            data: {basicApplyBatchId: basicApplyBatchId},
             type: 'get',
             dataType: "json",
             success: function (result) {
@@ -177,6 +182,7 @@
         data.tbType = treeNode.type;
         data.tableId = treeNode.tableId;
         data.tableName = treeNode.tableName;
+        data.applyBatchId = treeNode.applyBatchId;
 
         window.open('${pageContext.request.contextPath}/basicApplyBatch/informationDetail?' + parseParam(data));
     }
@@ -187,6 +193,7 @@
         var frm = $("#frmProjectCIP");
         var data = formSerializeArray(frm);
         data.tbType = node.type;
+        data.applyBatchId = node.applyBatchId;
         data.tbId = node.tableId;
         window.open('${pageContext.request.contextPath}/basicApplyBatch/fillInfo?' + parseParam(data));
     }

@@ -9,6 +9,10 @@ public class BasicApplyBatchDetail {
 
     private Integer applyBatchId;
 
+    private Integer declareRecordId;
+
+    private String declareRecordName;
+
     private String tableName;
 
     private Integer tableId;
@@ -65,6 +69,22 @@ public class BasicApplyBatchDetail {
 
     public void setApplyBatchId(Integer applyBatchId) {
         this.applyBatchId = applyBatchId;
+    }
+
+    public Integer getDeclareRecordId() {
+        return declareRecordId;
+    }
+
+    public void setDeclareRecordId(Integer declareRecordId) {
+        this.declareRecordId = declareRecordId;
+    }
+
+    public String getDeclareRecordName() {
+        return declareRecordName;
+    }
+
+    public void setDeclareRecordName(String declareRecordName) {
+        this.declareRecordName = declareRecordName == null ? null : declareRecordName.trim();
     }
 
     public String getTableName() {

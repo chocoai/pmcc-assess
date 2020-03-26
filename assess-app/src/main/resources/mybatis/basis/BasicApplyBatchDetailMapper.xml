@@ -5,6 +5,8 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="pid" property="pid" jdbcType="INTEGER" />
     <result column="apply_batch_id" property="applyBatchId" jdbcType="INTEGER" />
+    <result column="declare_record_id" property="declareRecordId" jdbcType="INTEGER" />
+    <result column="declare_record_name" property="declareRecordName" jdbcType="VARCHAR" />
     <result column="table_name" property="tableName" jdbcType="VARCHAR" />
     <result column="table_id" property="tableId" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
@@ -82,9 +84,10 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, pid, apply_batch_id, table_name, table_id, name, display_name, executor, quote_id, 
-    base_type, case_table_pid, upgrade_table_id, bis_structure, bis_standard, bis_from_case, 
-    bis_delete, creator, gmt_created, gmt_modified, full_name
+    id, pid, apply_batch_id, declare_record_id, declare_record_name, table_name, table_id, 
+    name, display_name, executor, quote_id, base_type, case_table_pid, upgrade_table_id, 
+    bis_structure, bis_standard, bis_from_case, bis_delete, creator, gmt_created, gmt_modified, 
+    full_name
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchDetailExample" >
     select
@@ -120,20 +123,22 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_basic_apply_batch_detail (pid, apply_batch_id, table_name, 
-      table_id, name, display_name, 
-      executor, quote_id, base_type, 
-      case_table_pid, upgrade_table_id, bis_structure, 
-      bis_standard, bis_from_case, bis_delete, 
-      creator, gmt_created, gmt_modified, 
-      full_name)
-    values (#{pid,jdbcType=INTEGER}, #{applyBatchId,jdbcType=INTEGER}, #{tableName,jdbcType=VARCHAR}, 
-      #{tableId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{displayName,jdbcType=VARCHAR}, 
-      #{executor,jdbcType=VARCHAR}, #{quoteId,jdbcType=INTEGER}, #{baseType,jdbcType=VARCHAR}, 
-      #{caseTablePid,jdbcType=INTEGER}, #{upgradeTableId,jdbcType=INTEGER}, #{bisStructure,jdbcType=BIT}, 
-      #{bisStandard,jdbcType=BIT}, #{bisFromCase,jdbcType=BIT}, #{bisDelete,jdbcType=BIT}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
-      #{fullName,jdbcType=VARCHAR})
+    insert into tb_basic_apply_batch_detail (pid, apply_batch_id, declare_record_id, 
+      declare_record_name, table_name, table_id, 
+      name, display_name, executor, 
+      quote_id, base_type, case_table_pid, 
+      upgrade_table_id, bis_structure, bis_standard, 
+      bis_from_case, bis_delete, creator, 
+      gmt_created, gmt_modified, full_name
+      )
+    values (#{pid,jdbcType=INTEGER}, #{applyBatchId,jdbcType=INTEGER}, #{declareRecordId,jdbcType=INTEGER}, 
+      #{declareRecordName,jdbcType=VARCHAR}, #{tableName,jdbcType=VARCHAR}, #{tableId,jdbcType=INTEGER}, 
+      #{name,jdbcType=VARCHAR}, #{displayName,jdbcType=VARCHAR}, #{executor,jdbcType=VARCHAR}, 
+      #{quoteId,jdbcType=INTEGER}, #{baseType,jdbcType=VARCHAR}, #{caseTablePid,jdbcType=INTEGER}, 
+      #{upgradeTableId,jdbcType=INTEGER}, #{bisStructure,jdbcType=BIT}, #{bisStandard,jdbcType=BIT}, 
+      #{bisFromCase,jdbcType=BIT}, #{bisDelete,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{fullName,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchDetail" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -146,6 +151,12 @@
       </if>
       <if test="applyBatchId != null" >
         apply_batch_id,
+      </if>
+      <if test="declareRecordId != null" >
+        declare_record_id,
+      </if>
+      <if test="declareRecordName != null" >
+        declare_record_name,
       </if>
       <if test="tableName != null" >
         table_name,
@@ -205,6 +216,12 @@
       </if>
       <if test="applyBatchId != null" >
         #{applyBatchId,jdbcType=INTEGER},
+      </if>
+      <if test="declareRecordId != null" >
+        #{declareRecordId,jdbcType=INTEGER},
+      </if>
+      <if test="declareRecordName != null" >
+        #{declareRecordName,jdbcType=VARCHAR},
       </if>
       <if test="tableName != null" >
         #{tableName,jdbcType=VARCHAR},
@@ -277,6 +294,12 @@
       <if test="record.applyBatchId != null" >
         apply_batch_id = #{record.applyBatchId,jdbcType=INTEGER},
       </if>
+      <if test="record.declareRecordId != null" >
+        declare_record_id = #{record.declareRecordId,jdbcType=INTEGER},
+      </if>
+      <if test="record.declareRecordName != null" >
+        declare_record_name = #{record.declareRecordName,jdbcType=VARCHAR},
+      </if>
       <if test="record.tableName != null" >
         table_name = #{record.tableName,jdbcType=VARCHAR},
       </if>
@@ -338,6 +361,8 @@
     set id = #{record.id,jdbcType=INTEGER},
       pid = #{record.pid,jdbcType=INTEGER},
       apply_batch_id = #{record.applyBatchId,jdbcType=INTEGER},
+      declare_record_id = #{record.declareRecordId,jdbcType=INTEGER},
+      declare_record_name = #{record.declareRecordName,jdbcType=VARCHAR},
       table_name = #{record.tableName,jdbcType=VARCHAR},
       table_id = #{record.tableId,jdbcType=INTEGER},
       name = #{record.name,jdbcType=VARCHAR},
@@ -367,6 +392,12 @@
       </if>
       <if test="applyBatchId != null" >
         apply_batch_id = #{applyBatchId,jdbcType=INTEGER},
+      </if>
+      <if test="declareRecordId != null" >
+        declare_record_id = #{declareRecordId,jdbcType=INTEGER},
+      </if>
+      <if test="declareRecordName != null" >
+        declare_record_name = #{declareRecordName,jdbcType=VARCHAR},
       </if>
       <if test="tableName != null" >
         table_name = #{tableName,jdbcType=VARCHAR},
@@ -426,6 +457,8 @@
     update tb_basic_apply_batch_detail
     set pid = #{pid,jdbcType=INTEGER},
       apply_batch_id = #{applyBatchId,jdbcType=INTEGER},
+      declare_record_id = #{declareRecordId,jdbcType=INTEGER},
+      declare_record_name = #{declareRecordName,jdbcType=VARCHAR},
       table_name = #{tableName,jdbcType=VARCHAR},
       table_id = #{tableId,jdbcType=INTEGER},
       name = #{name,jdbcType=VARCHAR},

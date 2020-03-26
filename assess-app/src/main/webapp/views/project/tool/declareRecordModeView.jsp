@@ -156,7 +156,7 @@
     };
 
     declareRecordModeObj.searchData = function (_this) {
-        var group = $(_this).closest(".card-body");
+        var group = $(_this).closest(".form-horizontal");
 //        var province = group.find("select[name='province']").val();
 //        var city = group.find("select[name='city']").val();
 //        var district = group.find("select[name='district']").val();
