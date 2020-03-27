@@ -16,6 +16,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,6 +82,7 @@ public class SurveyAssetInfoGroupService {
         sysAttachmentDtoList.forEach(sysAttachmentDto1 -> baseAttachmentService.deleteAttachment(sysAttachmentDto1.getId()));
     }
 
+    @Transactional(rollbackFor = {Exception.class})
     public void deleteSurveyAssetInfoGroupById(String id) throws Exception{
         if (StringUtils.isEmpty(id)) {
             return;

@@ -20,6 +20,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +48,7 @@ public class SurveyAssetInfoItemService {
         return surveyAssetInfoItemDao.updateSurveyAssetInfoItem(oo, updateNull);
     }
 
+    @Transactional(rollbackFor = {Exception.class})
     public boolean saveSurveyAssetInfoItem(SurveyAssetInfoItem oo)throws Exception {
         if (oo == null) {
             return false;
@@ -167,16 +169,7 @@ public class SurveyAssetInfoItemService {
         return integerList;
     }
 
-    public void deleteSurveyAssetInfoItemByGroupId(Integer groupId) {
-        List<Integer> integerList = getSurveyAssetInfoItemIdsByGroupId(groupId);
-        if (CollectionUtils.isNotEmpty(integerList)) {
-            for (Integer id : integerList) {
-                SurveyAssetInfoItem infoItem = getSurveyAssetInfoItemById(id);
-                infoItem.setGroupId(null);
-                updateSurveyAssetInfoItem(infoItem, true);
-            }
-        }
-    }
+
 
 
 }

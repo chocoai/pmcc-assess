@@ -187,11 +187,14 @@ public class SurveyAssetInventoryService extends BaseService {
      * @param masterId
      * @throws Exception
      */
-    public void parseSurveyAssetInventory(Integer assetInfoId,Integer inventoryId, String type, Integer masterId) throws Exception {
+    public void parseSurveyAssetInventory(Integer inventoryId, String type, String masterId) throws Exception {
         SurveyAssetInventory surveyAssetInventory = surveyAssetInventoryDao.getSurveyAssetInventoryById(inventoryId);
         List<SurveyAssetInventoryContent> surveyAssetInventoryContents = surveyAssetInventoryContentService.getSurveyAssetInventoryContentListByMasterId(inventoryId);
         Iterator<SurveyAssetInventoryContent> iterator = surveyAssetInventoryContents.iterator();
-
+        List<Integer> integerList = FormatUtils.transformString2Integer(masterId);
+        if (CollectionUtils.isEmpty(integerList)){
+            throw new Exception("无拷贝数据") ;
+        }
         //粘贴主数据
         copySurveyAssetInventory(surveyAssetInventory);
 
@@ -202,33 +205,24 @@ public class SurveyAssetInventoryService extends BaseService {
 
         }
         if (type.equals(SurveyAssetInventoryEnum.group.getKey())) {
-            SurveyAssetInfoGroup infoGroup = surveyAssetInfoGroupService.getSurveyAssetInfoGroupById(masterId);
-            if (Objects.equal(infoGroup.getInventoryId(),inventoryId)){
-                throw new Exception("无法粘贴自己") ;
-            }
-            infoGroup.setInventoryId(surveyAssetInventory.getId());
-            surveyAssetInfoGroupService.updateSurveyAssetInfoGroup(infoGroup, true);
-        }
-        if (type.equals(SurveyAssetInventoryEnum.unit.getKey())) {
-            SurveyAssetInfoItem query = new SurveyAssetInfoItem();
-            query.setGroupId(0);
-            query.setDeclareId(masterId);
-            query.setAssetInfoId(assetInfoId);
-            List<SurveyAssetInfoItem> assetInfoItems = surveyAssetInfoItemService.getSurveyAssetInfoItemListByQuery(query);
-            SurveyAssetInfoItem infoItem = null;
-            if (CollectionUtils.isNotEmpty(assetInfoItems)){
-                infoItem = assetInfoItems.get(0) ;
-                if (Objects.equal(infoItem.getInventoryId(),inventoryId)){
+            for (Integer id:integerList){
+                SurveyAssetInfoGroup infoGroup = surveyAssetInfoGroupService.getSurveyAssetInfoGroupById(id);
+                if (Objects.equal(infoGroup.getInventoryId(),inventoryId)){
                     throw new Exception("无法粘贴自己") ;
                 }
-            }else {
-                DeclareRecord declareRecordById = declareRecordService.getDeclareRecordById(masterId);
-                infoItem = new SurveyAssetInfoItem();
-                BeanUtils.copyProperties(query,infoItem);
-                infoItem.setName(declareRecordById.getName());
+                infoGroup.setInventoryId(surveyAssetInventory.getId());
+                surveyAssetInfoGroupService.updateSurveyAssetInfoGroup(infoGroup, true);
             }
-            infoItem.setInventoryId(surveyAssetInventory.getId());
-            surveyAssetInfoItemService.saveAndUpdateSurveyAssetInfoItem(infoItem, true);
+        }
+        if (type.equals(SurveyAssetInventoryEnum.unit.getKey())) {
+            for (Integer id:integerList){
+                SurveyAssetInfoItem surveyAssetInfoItem = surveyAssetInfoItemService.getSurveyAssetInfoItemById(id) ;
+                if (Objects.equal(surveyAssetInfoItem.getInventoryId(),inventoryId)){
+                    throw new Exception("无法粘贴自己") ;
+                }
+                surveyAssetInfoItem.setInventoryId(surveyAssetInventory.getId());
+                surveyAssetInfoItemService.saveAndUpdateSurveyAssetInfoItem(surveyAssetInfoItem, true);
+            }
         }
     }
 

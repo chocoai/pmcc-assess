@@ -1,14 +1,11 @@
 package com.copower.pmcc.assess.controller.project.survey;
 
-import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.constant.AssessProjectClassifyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.survey.SurveyAssetCommonDataDto;
 import com.copower.pmcc.assess.dto.output.basic.SurveyAssetInventoryVo;
 import com.copower.pmcc.assess.dto.output.project.survey.SurveyAssetInventoryContentVo;
 import com.copower.pmcc.assess.service.BaseService;
-import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
@@ -38,8 +35,6 @@ public class SurveyAssetInventoryController {
     @Autowired
     private SurveyAssetInventoryService surveyAssetInventoryService;
     @Autowired
-    private BaseDataDicService baseDataDicService;
-    @Autowired
     private SurveyAssetInventoryContentService surveyAssetInventoryContentService;
     @Autowired
     private DeclareRecordService declareRecordService;
@@ -62,12 +57,6 @@ public class SurveyAssetInventoryController {
         if (inventoryId != null && inventoryId != 0) {
             //修改情况
             setModelViewParam(inventoryId, declareRecord, modelAndView);
-            //房产证类型
-            List<BaseDataDic> types = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.PROJECT_DECLARE_HOUSE_CERTIFICATE_TYPE);
-            modelAndView.addObject("types", types);
-            //是否办证
-            List<BaseDataDic> certificateTypes = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.CERTIFICATE_HANDLING_TYPE);
-            modelAndView.addObject("certificateTypes", certificateTypes);
         } else {
             //初始状况
             modelAndView.addObject("declareRecord", declareRecord);
@@ -77,12 +66,6 @@ public class SurveyAssetInventoryController {
             SysUserDto thisUserInfo = processControllerComponent.getThisUserInfo();
             modelAndView.addObject("thisUserInfo", thisUserInfo);    //当前操作用户信息
             modelAndView.addObject("surveyAssetInventoryContentVos", surveyAssetInventoryContentVos);
-            //证载用途
-            List<BaseDataDic> types = baseDataDicService.getCacheDataDicList(AssessExamineTaskConstant.EXAMINE_HOUSE_LOAD_UTILITY);
-            modelAndView.addObject("types", types);
-            //是否办证
-            List<BaseDataDic> certificateTypes = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.CERTIFICATE_HANDLING_TYPE);
-            modelAndView.addObject("certificateTypes", certificateTypes);
             //土地类型
             BaseProjectClassify houseLand = baseProjectClassifyService.getCacheProjectClassifyByFieldName(AssessProjectClassifyConstant.SINGLE_HOUSE_LAND_CERTIFICATE_TYPE_SIMPLE);
             modelAndView.addObject("houseLand", houseLand.getId());
@@ -93,14 +76,14 @@ public class SurveyAssetInventoryController {
     }
 
     @GetMapping(value = "/detailView/{projectId}/{planDetailId}/{inventoryId}/{declareId}", name = "详情")
-    public ModelAndView detailsView(@PathVariable(name = "projectId", required = true) Integer projectId, @PathVariable(name = "planDetailId", required = true) Integer planDetailId, @PathVariable(name = "inventoryId") Integer inventoryId, @PathVariable(name = "declareId", required = true) Integer declareId){
-        ModelAndView modelAndView =  processControllerComponent.baseModelAndView(detailView);
+    public ModelAndView detailsView(@PathVariable(name = "projectId", required = true) Integer projectId, @PathVariable(name = "planDetailId", required = true) Integer planDetailId, @PathVariable(name = "inventoryId") Integer inventoryId, @PathVariable(name = "declareId", required = true) Integer declareId) {
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView(detailView);
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(declareId);
         setModelViewParam(inventoryId, declareRecord, modelAndView);
         return modelAndView;
     }
 
-    @PostMapping(value = "/saveSurveyAssetInventory",name = "具体的数据保存")
+    @PostMapping(value = "/saveSurveyAssetInventory", name = "具体的数据保存")
     public HttpResult saveSurveyAssetInventory(String formData) {
         try {
             SurveyAssetCommonDataDto surveyAssetCommonDataDto = surveyAssetInventoryService.format(formData);
@@ -112,11 +95,22 @@ public class SurveyAssetInventoryController {
         }
     }
 
-    @PostMapping(value = "/parseSurveyAssetInventory/{assetInfoId}/{inventoryId}/{masterId}/{type}",name = "数据粘贴")
-    public HttpResult parseSurveyAssetInventory(@PathVariable(name = "assetInfoId")Integer assetInfoId,@PathVariable(name = "inventoryId") Integer inventoryId,@PathVariable(name = "type")String type,@PathVariable(name = "masterId")Integer masterId){
+    @PostMapping(value = "/parseSurveyAssetInventory/{inventoryId}/{type}/{masterId}", name = "数据粘贴")
+    public HttpResult parseSurveyAssetInventory(@PathVariable(name = "inventoryId") Integer inventoryId, @PathVariable(name = "type") String type, @PathVariable(name = "masterId") String masterId) {
         try {
-            surveyAssetInventoryService.parseSurveyAssetInventory(assetInfoId,inventoryId, type, masterId);
+            surveyAssetInventoryService.parseSurveyAssetInventory(inventoryId, type, masterId);
             return HttpResult.newCorrectResult(200);
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
+            return HttpResult.newErrorResult(500, e.getMessage());
+        }
+    }
+
+    @GetMapping(value = "/getSurveyAssetInventoryById")
+    public HttpResult getSurveyAssetInventoryById(Integer id) {
+        try {
+            SurveyAssetInventoryVo surveyAssetInventoryVo = surveyAssetInventoryService.getSurveyAssetInventoryVo(surveyAssetInventoryService.getSurveyAssetInventoryById(id));
+            return HttpResult.newCorrectResult(200, surveyAssetInventoryVo);
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult(500, e.getMessage());
