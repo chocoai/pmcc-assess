@@ -306,7 +306,14 @@ AssessDicKey.dataTypeIndex = "data.index.type";//指数类型
 AssessDicKey.projectDeclareCertificateIsnull = "project.declare.certificate.isNull";//有权证以及无权证
 AssessDicKey.projectDeclareCertificate_YES = "project.declare.certificate.yes";//有权证
 AssessDicKey.projectDeclareCertificate_NO = "project.declare.certificate.not";//无权证
+
+//资产清查
+AssessDicKey.projectSurveyInventoryContentDefaultFindMethod = "project.survey.inventory.content.default.findMethod";//查看方法
+AssessDicKey.projectSurveyInventoryContentDefaultFindMethodNetwork = "project.survey.inventory.content.default.findMethod.network";//查看方法_网络查询
+AssessDicKey.projectSurveyInventoryContentDefaultAffected = "project.survey.inventory.content.default.affected";//影响对象
+AssessDicKey.projectSurveyInventoryContentDefaultInfluenceFactor = "project.survey.inventory.content.default.influenceFactor";//影响要素
 AssessDicKey.projectSurveyInventoryContentDefaultCheckOriginal = "project.survey.inventory.content.default.checkOriginal";//查看原件
+AssessDicKey.CERTIFICATE_HANDLING_TYPE = "certificate.handling.type";//是否办证
 
 
 /**

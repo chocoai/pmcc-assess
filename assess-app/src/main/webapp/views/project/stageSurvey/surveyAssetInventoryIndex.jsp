@@ -6,8 +6,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
 </head>
-
-
 <body>
 <div class="wrapper">
     <div class="main-panel" style="width: 100%">
@@ -15,8 +13,6 @@
             <%@include file="/views/share/form_head.jsp" %>
             <div class="page-inner mt--5">
                 <div class="row mt--2">
-
-
                     <!-- 填写表单 start -->
                     <div class="col-md-12">
                         <div class="card full-height">
@@ -35,14 +31,13 @@
                             <div class="card-body">
                                 <form id="frm_asset" class="form-horizontal">
                                     <input type="hidden" name="id" value="${surveyAssetInventory.id}">
-
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
                                                 <label class="col-sm-1 col-form-label">
                                                     核对日期<span class="symbol required"></span></label>
                                                 <div class="col-sm-3">
-                                                    <input type="text" required placeholder="核对日期" id="checkDate"
+                                                    <input type="text" required placeholder="核对日期"
                                                            name="checkDate"
                                                            data-date-format="yyyy-mm-dd"
                                                            class="form-control input-full date-picker dbdate"
@@ -53,7 +48,6 @@
                                                 <label class="col-sm-1 col-form-label">查看原件<span
                                                         class="symbol required"></span></label>
                                                 <div class="col-sm-3">
-
                                                     <select class="form-control input-full"
                                                             name="findOriginal" required>
                                                         <option value="">请选择</option>
@@ -68,57 +62,112 @@
                                                 <label class="col-sm-1 col-form-label">
                                                     分割限制<span class="symbol required"></span></label>
                                                 <div class="col-sm-3">
-                                                    <select class="form-control input-full" id="segmentationLimit"
+                                                    <select class="form-control input-full"
                                                             name="segmentationLimit"
-                                                            required onchange="showOther()">
+                                                            required onchange="showOther(this)">
                                                         <option value="可分">可分</option>
                                                         <option value="不可分" selected>不可分</option>
                                                     </select>
                                                 </div>
                                                 <div class="showUse"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row form-group showCertificate">
-                                        <div class="col-md-12">
-                                            <div class="form-inline x-valid">
+
                                                 <label class="col-sm-1 col-form-label">
-                                                    能否使用
+                                                    查看方法
                                                 </label>
                                                 <div class="col-sm-3">
-                                                    <select class="form-control input-full" id="canUse" name="canUse">
-                                                        <option value="" selected>请选择</option>
-                                                        <option value="正常使用">正常使用</option>
-                                                        <option value="不能正常使用">不能正常使用</option>
+                                                    <select class="form-control input-full" name="findMethod">
                                                     </select>
                                                 </div>
 
-                                                <label class="col-sm-1 col-form-label">
-                                                    证载用途
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row form-group" data-name="findMethod" style="display: none;">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1 control-label">
+                                                    查询的地址
                                                 </label>
                                                 <div class="col-sm-3">
-                                                    <select class="form-control input-full" id="application"
-                                                            name="application">
-                                                        <option value="">-请选择-</option>
-                                                        <c:forEach var="items" items="${types}">
-                                                            <option value="${items.id}">${items.name}</option>
-                                                        </c:forEach>
+                                                    <input class="form-control input-full" placeholder="查询的地址"
+                                                           value="${surveyAssetInventory.networkAddress}"
+                                                           name="networkAddress">
+                                                </div>
+                                                <label class="col-sm-1 control-label">
+                                                    说明
+                                                </label>
+                                                <div class="col-sm-3">
+                                           <textarea placeholder="查询说明" class="form-control input-full"
+                                                     name="networkRemark">${surveyAssetInventory.networkRemark}</textarea>
+                                                </div>
+                                                <label class="col-sm-1 control-label">
+                                                    查看结果附件
+                                                </label>
+                                                <div class="col-sm-3">
+                                                    <input id="networkFindFile" type="file" multiple="false">
+                                                    <div id="_networkFindFile"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <%--<div class="row form-group showCertificate">--%>
+                                    <%--<div class="col-md-12">--%>
+                                    <%--<div class="form-inline x-valid">--%>
+                                    <%--<label class="col-sm-1 col-form-label">--%>
+                                    <%--能否使用--%>
+                                    <%--</label>--%>
+                                    <%--<div class="col-sm-3">--%>
+                                    <%--<select class="form-control input-full" name="canUse">--%>
+                                    <%--<option value="" selected>请选择</option>--%>
+                                    <%--<option value="正常使用">正常使用</option>--%>
+                                    <%--<option value="不能正常使用">不能正常使用</option>--%>
+                                    <%--</select>--%>
+                                    <%--</div>--%>
+
+                                    <%--<label class="col-sm-1 col-form-label">--%>
+                                    <%--证载用途--%>
+                                    <%--</label>--%>
+                                    <%--<div class="col-sm-3">--%>
+                                    <%--<select class="form-control input-full" name="application">--%>
+                                    <%--</select>--%>
+                                    <%--</div>--%>
+                                    <%--<label class="col-sm-1 col-form-label">--%>
+                                    <%--是否办证</label>--%>
+                                    <%--<div class="col-sm-3">--%>
+                                    <%--<select class="form-control input-full"--%>
+                                    <%--name="certificate">--%>
+                                    <%--</select>--%>
+                                    <%--</div>--%>
+                                    <%--</div>--%>
+                                    <%--</div>--%>
+                                    <%--</div>--%>
+
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1 col-form-label">
+                                                    影响对象
+                                                </label>
+                                                <div class="col-sm-3">
+                                                    <select class="form-control input-full search-select select2 "
+                                                            name="affected" multiple="multiple">
                                                     </select>
                                                 </div>
                                                 <label class="col-sm-1 col-form-label">
-                                                    是否办证</label>
+                                                    影响要素
+                                                </label>
                                                 <div class="col-sm-3">
-                                                    <select class="form-control input-full" id="certificate"
-                                                            name="certificate">
-                                                        <option value="">-请选择-</option>
-                                                        <c:forEach var="items" items="${certificateTypes}">
-                                                            <option value="${items.id}">${items.name}</option>
-                                                        </c:forEach>
+                                                    <select class="form-control input-full search-select select2"
+                                                            name="influenceFactor" multiple="multiple">
                                                     </select>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
@@ -145,7 +194,6 @@
                                             </div>
                                         </div>
                                     </div>
-
                                 </form>
                             </div>
                         </div>
@@ -281,15 +329,15 @@
                                                 </script>
                                                 <td>
                                                     <button type="button" class="btn btn-xs btn-danger"
-                                                            onclick="emptyRefill(this)">清空
+                                                            onclick="$(this).closest('tr').find('input').val('') ;">清空
                                                     </button>
                                                 </td>
                                             </tr>
                                             <script type="text/javascript">
                                                 $(function () {
                                                     //清查内容附件上传和加载
-                                                    uploadFileCommon("${item.id}");
-                                                    showFileCommon("${item.id}");
+                                                    survey.uploadFileCommon("${item.id}");
+                                                    survey.showFileCommon("${item.id}");
                                                 })
                                             </script>
                                         </c:forEach>
@@ -545,90 +593,254 @@
 </div>
 </body>
 
+<script type="text/html" id="influenceFactorRemarkTextHtml">
+    <div class="row form-group">
+        <div class="col-md-12">
+            <div class="form-inline x-valid">
+                <label class="col-sm-1 col-form-label">
+                    {name}说明
+                </label>
+                <div class="col-sm-10">
+                    <textarea data-name="influenceFactorRemarkText" name="influenceFactorRemarkText{id}"
+                              class="form-control input-full" placeholder="{name}说明"></textarea>
+                </div>
+                <div class="col-sm-1"><input class="btn btn-warning" type="button" value="X"
+                                             onclick="$(this).closest('.form-group').remove();"></div>
+            </div>
+        </div>
+    </div>
+</script>
 
-<%@include file="/views/project/stageSurvey/certificate.jsp" %>
+
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/js/ajaxfileupload.js?v=${assessVersion}"></script>
 <script type="application/javascript">
 
-    $(function () {
-        AssessCommon.loadDataDicByKey(AssessDicKey.projectSurveyInventoryContentDefaultCheckOriginal, '${surveyAssetInventory.findOriginal}', function (html, data) {
-            console.log(html) ;
-            $("#frm_asset").find("select[name='findOriginal']").empty().html(html).trigger('change');
+    var survey = {};
+
+    survey.frm = $("#frm_asset");
+
+    survey.handleJquery = function (obj) {
+        if (obj instanceof jQuery) {
+            return obj;
+        } else {
+            return $(obj.selector);
+        }
+    };
+
+    survey.fileUpload = function (fieldsName, tableName, id, deleteFlag) {
+        FileUtils.uploadFiles({
+            target: fieldsName,
+            disabledTarget: "btn_submit",
+            formData: {
+                tableName: tableName,
+                tableId: id,
+                fieldsName: fieldsName,
+                // projectId: id
+            },
+            deleteFlag: deleteFlag
         });
+    };
+
+    survey.showFile = function (fieldsName, tableName, id, deleteFlag) {
+        FileUtils.getFileShows({
+            target: fieldsName,
+            formData: {
+                tableName: tableName,
+                tableId: id,
+                fieldsName: fieldsName,
+                // projectId: id
+            },
+            deleteFlag: deleteFlag
+        })
+    };
+
+    survey.isNotBlank = function (item) {
+        if (item) {
+            return true;
+        }
+        return false;
+    };
+
+    //公共  赋值 方法
+    survey.initFormData = function (form, item, fileArr, bisDetail, tableName, inputArr) {
+        var frm = $(form.selector);
+        frm.clearAll();
+        frm.initForm(item);
+        frm.validate();
+        if (fileArr) {
+            $.each(fileArr, function (i, n) {
+                if (bisDetail == false) {
+                    survey.showFile(n, tableName, survey.isNotBlank(item.id) ? item.id : '0', false);
+                    survey.fileUpload(n, tableName, survey.isNotBlank(item.id) ? item.id : '0', false);
+                } else {
+                    survey.showFile(n, tableName, survey.isNotBlank(item.id) ? item.id : '0', true);
+                    survey.fileUpload(n, tableName, survey.isNotBlank(item.id) ? item.id : '0', true);
+                }
+            });
+        }
+        if (inputArr) {
+            $.each(inputArr, function (i, n) {
+                frm.find("input[name='" + n + "']").val(formatDate(item[n]));
+                frm.find("label[name='" + n + "']").html(formatDate(item[n]));
+            });
+        }
+    };
+
+    survey.initSurveyAssetInventoryForm = function (data) {
+        //进行动态赋值对象
+        if (data.influenceFactorRemarkText) {
+            var testData = data.influenceFactorRemarkText.split(",");
+            var obj = {};
+            $.each(testData, function (i, str) {
+                var rD = str.split(":");
+                obj[rD[0]] = rD[1];
+            });
+            jQuery.extend(data, obj);
+        }
+
+        var frm = survey.handleJquery(survey.frm);
+        //附件
+        var arr = ["checkOriginalFile", "paymentStatusFile", "networkFindFile", AssessUploadKey.INVENTORY_PAYMENT_STATUS, AssessUploadKey.INVENTORY_CHECK_ORIGINAL];
+        //日期
+        var inputArr = ["checkDate"];
+        survey.initFormData(frm, data, arr, false, AssessDBKey.SurveyAssetInventory, inputArr);
         initAgreement();
-        loadAssetRightList();
-        if ("${surveyAssetInventory.transferLimit}") {
+        if (data.transferLimit) {
             $("#bisLimit").val("是");
         } else {
             $("#bisLimit").val("否");
         }
-        showLimit();
-        FileUtils.uploadFiles({
-            target: "checkOriginalFile",
-            disabledTarget: "btn_submit",
-            formData: {
-                tableName: AssessDBKey.SurveyAssetInventory,
-                fieldsName: AssessUploadKey.INVENTORY_CHECK_ORIGINAL,
-                tableId: '${empty surveyAssetInventory?0:surveyAssetInventory.id}'
-            },
-            deleteFlag: true
+        AssessCommon.loadDataDicByKey(AssessDicKey.projectSurveyInventoryContentDefaultCheckOriginal, data.findOriginal, function (html, item) {
+            frm.find("select[name='findOriginal']").empty().html(html).trigger('change');
+        });
+        AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseLoadUtility, data.application, function (html, item) {
+            frm.find("select[name='application']").empty().html(html).trigger('change');
+        });
+        AssessCommon.loadDataDicByKey(AssessDicKey.CERTIFICATE_HANDLING_TYPE, data.certificate, function (html, item) {
+            frm.find("select[name='certificate']").empty().html(html).trigger('change');
+        });
+        AssessCommon.loadDataDicByKey(AssessDicKey.projectSurveyInventoryContentDefaultFindMethod, data.findMethod, function (html, item) {
+            frm.find("select[name='findMethod']").empty().html(html).trigger('change');
+        });
+        frm.find("select[name='findMethod']").change(function () {
+            var id = $(this).val();
+            AssessCommon.getDataDicInfo(id, function (item) {
+                if (item.fieldName == AssessDicKey.projectSurveyInventoryContentDefaultFindMethodNetwork) {
+                    frm.find("div[data-name=findMethod]").show();
+                } else {
+                    frm.find("div[data-name=findMethod]").hide();
+                }
+            });
+
+        });
+        AssessCommon.loadDataDicByKey(AssessDicKey.projectSurveyInventoryContentDefaultAffected, data.affected, function (html, item) {
+            frm.find("select[name='affected']").empty().html(html).trigger('change');
+            if (data.affected) {
+                frm.find("select[name='affected']").val(data.affected.split(",")).trigger('change');
+            }
+        });
+        AssessCommon.loadDataDicByKey(AssessDicKey.projectSurveyInventoryContentDefaultInfluenceFactor, data.influenceFactor, function (html, item) {
+            frm.find("select[name='influenceFactor']").empty().html(html);
+            if (data.influenceFactor) {
+                frm.find("select[name='influenceFactor']").val(data.influenceFactor.split(",")).trigger('change');
+            }
+        });
+        frm.find("select[name='influenceFactor']").change(function () {
+            var ids = $(this).val();
+            if (! ids){
+              return false ;
+            }
+            var target = frm.find("select[name='influenceFactor']").closest(".form-group");
+            var arr = $.grep(ids, function (n, i) {
+                if (n) {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+            $.each(arr, function (i, id) {
+                var name = "influenceFactorRemarkText" + id;
+                var size = frm.find("[name=" + name + "]").size();
+                var html = $("#influenceFactorRemarkTextHtml").html();
+                if (size == 0) {
+                    AssessCommon.getDataDicInfo(id, function (item) {
+                        html = html.replace(/{id}/g, id);
+                        html = html.replace(/{name}/g, item.name);
+                        target.after(html);
+                        frm.initForm(data);
+                    });
+                }
+            })
         });
 
-        FileUtils.getFileShows({
-            target: "checkOriginalFile",
-            formData: {
-                tableName: AssessDBKey.SurveyAssetInventory,
-                fieldsName: AssessUploadKey.INVENTORY_CHECK_ORIGINAL,
-                tableId: '${empty surveyAssetInventory?0:surveyAssetInventory.id}'
-            },
-            deleteFlag: true
-        })
-
-        FileUtils.uploadFiles({
-            target: "paymentStatusFile",
-            disabledTarget: "btn_submit",
-            formData: {
-                tableName: AssessDBKey.SurveyAssetInventory,
-                fieldsName: AssessUploadKey.INVENTORY_PAYMENT_STATUS,
-                tableId: '${empty surveyAssetInventory?0:surveyAssetInventory.id}'
-            },
-            deleteFlag: true
-        });
-
-        FileUtils.getFileShows({
-            target: "paymentStatusFile",
-            formData: {
-                tableName: AssessDBKey.SurveyAssetInventory,
-                fieldsName: AssessUploadKey.INVENTORY_PAYMENT_STATUS,
-                tableId: '${empty surveyAssetInventory?0:surveyAssetInventory.id}'
-            },
-            deleteFlag: true
-        })
-
-
-        if ("${surveyAssetInventory}".length > 0) {
-            if ("${surveyAssetInventory.segmentationLimit}".length > 0) {
-                $("#segmentationLimit").val("${surveyAssetInventory.segmentationLimit}");
+        if (data.id) {
+            if (data.transferLimit) {
+                $("#transferLimit").val(data.transferLimit);
             }
-            $("#canUse").val("${surveyAssetInventory.canUse}");
-            $("#application").val("${surveyAssetInventory.application}");
-            $("#certificate").val("${surveyAssetInventory.certificate}");
-            $("#transferLimit").val("${surveyAssetInventory.transferLimit}");
-            if ("${surveyAssetInventory.entityIsDamage}") {
-                $("#entityIsDamage").val("${surveyAssetInventory.entityIsDamage}");
+            if (data.entityIsDamage) {
+                $("#entityIsDamage").val(data.entityIsDamage);
             }
-            if ("${surveyAssetInventory.rimIsNormal}".length > 0) {
-                $("#rimIsNormal").val("${surveyAssetInventory.rimIsNormal}");
+            if (data.rimIsNormal) {
+                $("#rimIsNormal").val(data.rimIsNormal);
             }
-            writeHTMLData('zoneProjectName', 'zoneProjectItem', 'zoneBit', '${surveyAssetInventory.zoneDamage}');
-            writeHTMLData('entityProjectName', 'entityProjectItem', 'entity', '${surveyAssetInventory.entityDamage}');
-            writeHTMLData('otherProjectName', 'otherProjectItem', 'otherProject', '${surveyAssetInventory.otherProject}');
-            if ("${surveyAssetInventory.paymentStatus}") {
-                $("#paymentStatus").val("${surveyAssetInventory.paymentStatus}");
+            if (data.paymentStatus) {
+                $("#paymentStatus").val(data.paymentStatus);
             }
+            writeHTMLData('zoneProjectName', 'zoneProjectItem', 'zoneBit', data.zoneDamage);
+            writeHTMLData('entityProjectName', 'entityProjectItem', 'entity', data.entityDamage);
+            writeHTMLData('otherProjectName', 'otherProjectItem', 'otherProject', data.otherProject);
             writePaymentHTMLData(${surveyAssetInventory.paymentContent});
         }
+    };
+
+    survey.cleanHTMLData = function (_this) {
+        $(_this).closest(".form-group").remove();
+    };
+
+    survey.getSurveyAssetInventoryById = function (id, callback) {
+        Loading.progressShow();
+        $.ajax({
+            type: "get",
+            url: '${pageContext.request.contextPath}' + "/surveyAssetInventory/getSurveyAssetInventoryById",
+            data: {id: id},
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    if (callback) {
+                        callback(result.data);
+                    }
+                } else {
+                    if (result.errmsg) {
+                        AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
+                    } else {
+                        AlertError("错误", "调用服务端方法失败，失败原因:" + result);
+                    }
+                }
+            },
+            error: function (result) {
+                Loading.progressHide();
+                if (result.errmsg) {
+                    AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
+                } else {
+                    AlertError("错误", "调用服务端方法失败，失败原因:" + result);
+                }
+            }
+        });
+    };
+
+
+    $(function () {
+        if ('${surveyAssetInventory}') {
+            if ('${surveyAssetInventory.id}') {
+                survey.getSurveyAssetInventoryById('${surveyAssetInventory.id}', function (data) {
+                    survey.initSurveyAssetInventoryForm(data);
+                });
+            } else {
+                survey.initSurveyAssetInventoryForm({});
+            }
+        }
+        showLimit();
         showOther();
         showButton();
     })
@@ -642,7 +854,10 @@
         var table = frm.find("table");
         table.find("tbody").find("tr").each(function (i, tr) {
             var registration = $(tr).find("input[data-name=registration]");
-            isAgreement(registration[0]);
+            var value = registration.val();
+            if (value) {
+                isAgreement(registration[0]);
+            }
         });
     }
 
@@ -664,74 +879,24 @@
         }
     }
 
-
     //上传附件通用
-    function uploadFileCommon(tableId) {
-        FileUtils.uploadFiles({
-            showMode: 'table',
-            target: "credentialAccessory" + tableId,
-            disabledTarget: "btn_submit",
-            formData: {
-                tableName: AssessDBKey.SurveyAssetInventoryContent,
-                tableId: tableId
-            },
-            deleteFlag: true
-        });
-    }
+    survey.uploadFileCommon = function (tableId) {
+        survey.fileUpload("credentialAccessory" + tableId, AssessDBKey.SurveyAssetInventoryContent, tableId, true);
+    };
 
-    //显示附件通用
-    function showFileCommon(tableId) {
-        FileUtils.getFileShows({
-            showMode: 'table',
-            target: "credentialAccessory" + tableId,
-            formData: {
-                tableName: AssessDBKey.SurveyAssetInventoryContent,
-                tableId: tableId
-            },
-            deleteFlag: true
-        })
-    }
+    //显示附件
+    survey.showFileCommon = function (tableId) {
+        survey.showFile("credentialAccessory" + tableId, AssessDBKey.SurveyAssetInventoryContent, tableId, true);
+    };
+
 
     //类型改变
-    function typeChange(_this) {
-        $("#category").empty();
-        AssessCommon.loadDataDicByPid($(_this).val(), '', function (html) {
-            $("#category").html(html);
-        })
-    }
-
-    //加载 他项权利列表
-    function loadAssetRightList() {
-        var cols = [];
-        cols.push({field: 'typeName', title: '类型'});
-        cols.push({field: 'categoryName', title: '类别'});
-        cols.push({field: 'number', title: '他权证编号'});
-        cols.push({field: 'obligor', title: '义务人'});
-        cols.push({field: 'obligee', title: '权利人'});
-        cols.push({field: 'registerArea', title: '登记面积'});
-        cols.push({field: 'rightRank', title: '他权级次'});
-
-        cols.push({
-            field: 'id', title: '操作', formatter: function (value, row, index) {
-                var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-success tooltips" data-placement="top" data-original-title="编辑" onclick="editData(' + index + ');" ><i class="fa fa-edit fa-white"></i></a>';
-                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="delData(' + row.id + ')"><i class="fa fa-minus fa-white"></i></a>';
-                str += '</div>';
-                return str;
-            }
-        });
-        $("#tb_List").bootstrapTable('destroy');
-        TableInit("tb_List", "${pageContext.request.contextPath}/surveyAssetInventoryRight/getListByPlanDetailsId", cols, {
-            planDetailsId: '${projectPlanDetails.id}'
-        }, {
-            showColumns: false,
-            showRefresh: false,
-            search: false,
-            onLoadSuccess: function () {
-                $(".tooltips").tooltip();   //提示
-            }
-        });
-    }
+    //    function typeChange(_this) {
+    //        $("#category").empty();
+    //        AssessCommon.loadDataDicByPid($(_this).val(), '', function (html) {
+    //            $("#category").html(html);
+    //        })
+    //    }
 
 
     //获取需要保存的数据
@@ -754,11 +919,17 @@
             dataItem.push(item);
         });
         var data = {};
-        data.surveyAssetInventory = formParams("frm_asset");//评估人员 核对时间
-        data.surveyAssetInventory.segmentationLimit = $("#segmentationLimit").val();
-        data.surveyAssetInventory.canUse = $("#canUse").val();
-        data.surveyAssetInventory.application = $("#application").val();
-        data.surveyAssetInventory.certificate = $("#certificate").val();
+        var surveyAssetInventory = formParams("frm_asset");//评估人员 核对时间
+        var resultData = [];
+        $.each(Object.keys(surveyAssetInventory), function (i, name) {
+            if (name.indexOf('influenceFactorRemarkText') != -1) {
+                if (surveyAssetInventory[name]) {
+                    resultData.push(name + ":" + surveyAssetInventory[name]);
+                }
+            }
+        });
+        surveyAssetInventory.influenceFactorRemarkText = resultData.join(",");
+        data.surveyAssetInventory = surveyAssetInventory;
         data.assetInventoryContentList = dataItem;
         data.surveyAssetInventory.specialCase = $("#specialCase").val();
         data.surveyAssetInventory.rimIsNormal = $("#rimIsNormal").val();
@@ -833,59 +1004,25 @@
         }
     }
 
-    function submit(mustUseBox) {
-        if (!$("#frm_asset").valid()) {
-            return false;
-        }
-        if (!$("#frm_asset_inventory_content").valid()) {
-            return false;
-        }
-        if (!$("#damageSurvey").valid()) {
-            return false;
-        }
-        if (!$("#taxesPaymentSurvey").valid()) {
-            return false;
-        }
-        var formData = JSON.stringify(getFormData());
-
-
-        if ("${processInsId}" != "0") {
-            submitEditToServer(formData);
-        }
-        else {
-            submitToServer(formData, mustUseBox);
-        }
-    }
-
 
     //表格一致显示隐藏切换
-    function showHiddenCheck(_this, id) {
-        if ($('#areConsistent' + id).prop("checked")) {
-            $(_this).closest("tr").find(".showHidden,div").css('display', 'none');
-            $(_this).closest("tr").find("input:text").val("");
-        } else {
-            $(_this).closest("tr").find(".showHidden,div").css('display', 'block');
+    //    function showHiddenCheck(_this, id) {
+    //        if ($('#areConsistent' + id).prop("checked")) {
+    //            $(_this).closest("tr").find(".showHidden,div").css('display', 'none');
+    //            $(_this).closest("tr").find("input:text").val("");
+    //        } else {
+    //            $(_this).closest("tr").find(".showHidden,div").css('display', 'block');
+    //        }
+    //    }
+
+
+    function showOther(_this) {
+        var frm = survey.handleJquery(survey.frm);
+        var target = frm.find("select[name='segmentationLimit']");
+        if (!_this) {
+            _this = target [0];
         }
-    }
-
-    //清空重填
-    function emptyRefill(_this) {
-        $(_this).closest("tr").find("input").val("");
-    }
-
-    //评估人员
-    function selectEvaluator() {
-        erpEmployee.select({
-            onSelected: function (data) {
-                $("#evaluator").val(data.name);
-                $("#evaluatorID").val(data.account);
-            }
-        });
-    }
-
-
-    function showOther() {
-        if ($("#segmentationLimit").val() == "可分") {
+        if ($(_this).val() == "可分") {
             $(".showCertificate").show();
             $(".showUse").show();
         } else {
@@ -902,30 +1039,6 @@
             $(".showLimit").hide();
             $("#transferLimit").val("");
         }
-    }
-
-
-    //获取对应房产证信息
-    function checkRealEstate() {
-        Loading.progressShow();
-        $.ajax({
-            url: "${pageContext.request.contextPath}/declareRecord/getCertificateId",
-            type: "get",
-            dataType: "json",
-            data: {declareRecordId: "${projectPlanDetails.declareRecordId}"},
-            success: function (result) {
-                Loading.progressHide();
-                if (result.ret) {
-                    certificate.prototype.getAndInit(result.data.dataTableName, result.data.dataTableId);
-                }
-                else {
-                    AlertError("获取数据失败，失败原因:" + result.errmsg);
-                }
-            },
-            error: function (result) {
-                AlertError("调用服务端方法失败，失败原因:" + result);
-            }
-        })
     }
 
 

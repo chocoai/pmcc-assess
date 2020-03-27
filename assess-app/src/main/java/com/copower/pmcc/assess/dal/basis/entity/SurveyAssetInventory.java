@@ -17,7 +17,19 @@ public class SurveyAssetInventory {
 
     private Date checkDate;
 
+    private Integer findMethod;
+
     private Integer findOriginal;
+
+    private String networkRemark;
+
+    private String networkAddress;
+
+    private String affected;
+
+    private String influenceFactor;
+
+    private String influenceFactorRemarkText;
 
     private Boolean bisCheckOriginal;
 
@@ -51,13 +63,13 @@ public class SurveyAssetInventory {
 
     private String transferLimit;
 
+    private String otherProject;
+
     private String creator;
 
     private Date gmtCreated;
 
     private Date gmtModified;
-
-    private String otherProject;
 
     private String location;
 
@@ -117,12 +129,60 @@ public class SurveyAssetInventory {
         this.checkDate = checkDate;
     }
 
+    public Integer getFindMethod() {
+        return findMethod;
+    }
+
+    public void setFindMethod(Integer findMethod) {
+        this.findMethod = findMethod;
+    }
+
     public Integer getFindOriginal() {
         return findOriginal;
     }
 
     public void setFindOriginal(Integer findOriginal) {
         this.findOriginal = findOriginal;
+    }
+
+    public String getNetworkRemark() {
+        return networkRemark;
+    }
+
+    public void setNetworkRemark(String networkRemark) {
+        this.networkRemark = networkRemark == null ? null : networkRemark.trim();
+    }
+
+    public String getNetworkAddress() {
+        return networkAddress;
+    }
+
+    public void setNetworkAddress(String networkAddress) {
+        this.networkAddress = networkAddress == null ? null : networkAddress.trim();
+    }
+
+    public String getAffected() {
+        return affected;
+    }
+
+    public void setAffected(String affected) {
+        this.affected = affected == null ? null : affected.trim();
+    }
+
+    public String getInfluenceFactor() {
+        return influenceFactor;
+    }
+
+    public void setInfluenceFactor(String influenceFactor) {
+        this.influenceFactor = influenceFactor == null ? null : influenceFactor.trim();
+    }
+
+    public String getInfluenceFactorRemarkText() {
+        return influenceFactorRemarkText;
+    }
+
+    public void setInfluenceFactorRemarkText(String influenceFactorRemarkText) {
+        this.influenceFactorRemarkText = influenceFactorRemarkText == null ? null : influenceFactorRemarkText.trim();
     }
 
     public Boolean getBisCheckOriginal() {
@@ -253,6 +313,14 @@ public class SurveyAssetInventory {
         this.transferLimit = transferLimit == null ? null : transferLimit.trim();
     }
 
+    public String getOtherProject() {
+        return otherProject;
+    }
+
+    public void setOtherProject(String otherProject) {
+        this.otherProject = otherProject == null ? null : otherProject.trim();
+    }
+
     public String getCreator() {
         return creator;
     }
@@ -275,14 +343,6 @@ public class SurveyAssetInventory {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public String getOtherProject() {
-        return otherProject;
-    }
-
-    public void setOtherProject(String otherProject) {
-        this.otherProject = otherProject == null ? null : otherProject.trim();
     }
 
     public String getLocation() {

@@ -78,7 +78,7 @@
                             <div class="card-header collapse-link">
                                 <div class="card-head-row">
                                     <div class="x_title card-title">
-                                        单个权证方式
+                                        认领的权证
                                     </div>
                                     <div class="card-tools">
                                         <button class="btn  btn-link btn-primary btn-xs"><span
@@ -231,11 +231,16 @@
     };
 
     /**
-     * 单个权证   清查数据
+     * 认领权证   清查数据
      */
     assetInfo.itemHandel = function (id) {
         var obj = assetInfo.handleJquery(assetInfo.InfoItemBaseTable).bootstrapTable('getRowByUniqueId', id);
-        assetInfo.surveyAssetInventoryHandle(obj.inventoryId, obj.declareId);
+        console.log(obj) ;
+        if (obj.inventoryId) {
+            assetInfo.surveyAssetInventoryHandle(obj.inventoryId, obj.declareId);
+        }else {
+            notifyInfo('提示', '无相关业务数据');
+        }
     };
 
     /**
@@ -269,7 +274,11 @@
     };
 
     assetInfo.loadSurveyAssetInfoItemBaseList = function (_this) {
-        var options = {projectId: '${projectInfo.id}', groupId: 0, assetInfoId:${surveyAssetInfo.id},creator:'${projectPlanDetails.executeUserAccount}'};
+        var options = {
+            projectId: '${projectInfo.id}',
+            assetInfoId:${surveyAssetInfo.id},
+            creator: '${projectPlanDetails.executeUserAccount}'
+        };
         var data = {};
         if (_this) {
             data = formSerializeArray($(_this).closest("form"));
@@ -278,20 +287,52 @@
         var arr = Object.keys(data);
         $.each(arr, function (i, item) {
             if (!data[item]) {
-                if (item != 'groupId') {
-                    data[item] = undefined;
-                }
+                data[item] = undefined;
             }
         });
         var target = assetInfo.handleJquery(assetInfo.InfoItemBaseTable);
         var cols = [];
         cols.push({field: 'name', title: '权证号', width: "33%"});
         cols.push({
-            field: 'id', title: '操作', width: "40%", formatter: function (value, row, index) {
+            field: 'id', title: '查看清查业务数据', width: "40%", formatter: function (value, row, index) {
                 var str = "";
-                str += '<button type="button" onclick="assetInfo.itemHandel(' + value + ')" style="margin-left: 5px;" class="btn   btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看清查业务数据">';
-                str += '<i class="fa fa-search"></i>';
-                str += '</button>';
+                if (row.groupId) {
+                    str += "<span class='label label-info'>";
+                    str += "到" + row.groupName + "查看业务详情";
+                    str += "</span>";
+                } else {
+                    str += '<button type="button" onclick="assetInfo.itemHandel(' + value + ')" style="margin-left: 5px;" class="btn   btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看清查业务数据">';
+                    str += '<i class="fa fa-search"></i>';
+                    str += '</button>';
+                }
+                return str;
+            }
+        });
+        cols.push({
+            field: 'status', title: '状态/属于组', width: "10%", formatter: function (value, row, index) {
+
+
+                var str = "";
+                if (row.groupId) {
+                    str += "<span class='label label-info'>";
+                    str += row.groupName;
+                    str += "</span>";
+                } else {
+                    if (value) {
+                        if (value == 'runing') {
+                            str += "<span class='label label-info'>";
+                            str += "进行中";
+//                            str += "<i class='far fa-circle'></i>" ;
+                            str += "</span>";
+                        }
+                        if (value == 'finish') {
+                            str += "<span class='label label-info'>";
+                            str += "已完成";
+//                            str += "<i class='far fa-check-circle'></i>" ;
+                            str += "</span>";
+                        }
+                    }
+                }
                 return str;
             }
         });
@@ -310,7 +351,12 @@
     };
 
     assetInfo.loadSurveyAssetInfoGroupList = function (_this) {
-        var options = {projectId: '${projectInfo.id}', groupId: 0, assetInfoId:${surveyAssetInfo.id},creator:'${projectPlanDetails.executeUserAccount}'};
+        var options = {
+            projectId: '${projectInfo.id}',
+            groupId: 0,
+            assetInfoId:${surveyAssetInfo.id},
+            creator: '${projectPlanDetails.executeUserAccount}'
+        };
         var data = {};
         if (_this) {
             data = formSerializeArray($(_this).closest("form"));
@@ -335,10 +381,30 @@
 
 
                 str += '<button type="button" onclick="assetInfo.findSurveyAssetInfoGroupDetail(' + row.id + ')" style="margin-left: 5px;" class="btn   btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看包含的权证列表">';
-                str += '查看包含的权证列表 <i class="fa fa-search"></i>';
+                str += '包含的权证列表 <i class="fa fa-search"></i>';
                 str += '</button>';
 
 
+                return str;
+            }
+        });
+        cols.push({
+            field: 'status', title: '状态', width: "10%", formatter: function (value, row, index) {
+                var str = "";
+                if (value) {
+                    if (value == 'runing') {
+                        str += "<span class='label label-info'>";
+                        str += "进行中";
+//                            str += "<i class='far fa-circle'></i>" ;
+                        str += "</span>";
+                    }
+                    if (value == 'finish') {
+                        str += "<span class='label label-info'>";
+                        str += "已完成";
+//                            str += "<i class='far fa-check-circle'></i>" ;
+                        str += "</span>";
+                    }
+                }
                 return str;
             }
         });
