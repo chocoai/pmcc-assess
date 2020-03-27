@@ -489,7 +489,7 @@
                 url: '${pageContext.request.contextPath}/basicEstate/quoteFromAlternative',
                 data: {
                     id: id,
-                    tableId:${tbId}
+                    tableId:'${tbId}'
                 },
                 type: "get",
                 success: function (result) {
@@ -583,7 +583,7 @@
                 url: '${pageContext.request.contextPath}/basicBuilding/quoteFromAlternative',
                 data: {
                     id: id,
-                    tableId:${tbId}
+                    tableId:'${tbId}'
                 },
                 type: "get",
                 success: function (result) {
@@ -673,7 +673,7 @@
                 url: '${pageContext.request.contextPath}/basicUnit/quoteFromAlternative',
                 data: {
                     id: id,
-                    tableId:${tbId}
+                    tableId:'${tbId}'
                 },
                 type: "get",
                 success: function (result) {
@@ -763,7 +763,7 @@
                 url: '${pageContext.request.contextPath}/basicHouse/quoteFromAlternative',
                 data: {
                     id: id,
-                    tableId:${tbId}
+                    tableId:'${tbId}'
                 },
                 type: "get",
                 success: function (result) {
@@ -1094,7 +1094,7 @@
                 url: '${pageContext.request.contextPath}/basicEstate/quoteCaseEstate',
                 data: {
                     sourceId: id,
-                    targetId:${tbId}
+                    targetId:'${tbId}'
                 },
                 type: "get",
                 success: function (result) {
@@ -1294,4 +1294,42 @@
     };
 
 
+    function showCaseQuoteModal() {
+        //打开楼盘modal
+        if ("estate" == "${tbType}") {
+            caseFun.caseEstate.showModel();
+        }
+        //打开楼栋modal
+        if ("building" == "${tbType}") {
+            caseFun.caseBuild.showModel(${quoteId});
+        }
+        //打开单元modal
+        if ("unit" == "${tbType}") {
+            caseFun.caseUnit.showModel(${quoteId});
+        }
+        //打开房屋modal
+        if ("house" == "${tbType}") {
+            caseFun.caseHouse.showModel(${quoteId});
+        }
+    }
+
+    function showProjectQuoteModal() {
+        //打开楼盘modal
+        if ("estate" == "${tbType}") {
+            projectData.prototype.showModel();
+        }
+
+        //打开楼栋modal
+        if ("building" == "${tbType}") {
+            projectBuild.prototype.showModel();
+        }
+        //打开单元modal
+        if ("unit" == "${tbType}") {
+            projectUnit.prototype.showModel();
+        }
+        //打开房屋modal
+        if ("house" == "${tbType}") {
+            projectHouse.prototype.showModel();
+        }
+    }
 </script>

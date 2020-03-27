@@ -11,6 +11,7 @@ import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateTaggingDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicHouseDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.SynchronousDataDto;
+import com.copower.pmcc.assess.dto.input.basic.BasicFormClassifyParamDto;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseDamagedDegreeVo;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseTradingVo;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseVo;
@@ -21,6 +22,7 @@ import com.copower.pmcc.assess.service.assist.ResidueRatioService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataDamagedDegreeService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -43,6 +45,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -92,6 +95,10 @@ public class BasicHouseService extends BasicEntityAbstract {
     private ResidueRatioService residueRatioService;
     @Autowired
     private BasicUnitService basicUnitService;
+    @Autowired
+    private ProcessControllerComponent processControllerComponent;
+    @Autowired
+    private PublicBasicService publicBasicService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -677,5 +684,39 @@ public class BasicHouseService extends BasicEntityAbstract {
             }
         }
         return targetBasicHouse;
+    }
+
+    @Override
+    public List<BasicFormClassifyEnum> getLowerFormClassifyList() {
+        return null;
+    }
+
+    @Override
+    public ModelAndView getEditModelAndView(BasicFormClassifyParamDto basicFormClassifyParamDto) throws Exception {
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/stageSurvey/realEstate/house");
+        modelAndView.addObject("basicHouse", getBasicHouseById(basicFormClassifyParamDto.getTbId()));
+        modelAndView.addObject("basicHouseTrading", basicHouseTradingService.getTradingByHouseId(basicFormClassifyParamDto.getTbId()));
+        Integer applyBatchId = basicFormClassifyParamDto.getApplyBatchId();
+        Integer tbId = basicFormClassifyParamDto.getTbId();
+        BasicApplyBatchDetail basicApplyBatchDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(applyBatchId, FormatUtils.entityNameConvertToTableName(BasicHouse.class), tbId);
+        if (basicApplyBatchDetail != null) {//获取引用id
+            basicApplyBatchDetail = basicApplyBatchDetailService.getDataById(basicApplyBatchDetail.getPid());
+            if (basicApplyBatchDetail != null) {
+                BasicEntityAbstract entityAbstract = publicBasicService.getServiceBeanByTableName(basicApplyBatchDetail.getTableName());
+                Object entity = entityAbstract.getBasicEntityById(basicApplyBatchDetail.getTableId());
+                if (entity != null) {
+                    modelAndView.addObject("quoteId", entityAbstract.getProperty(entity, "quoteId"));
+                }
+            }
+        }
+        return modelAndView;
+    }
+
+    @Override
+    public ModelAndView getDetailModelAndView(BasicFormClassifyParamDto basicFormClassifyParamDto) throws Exception {
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/stageSurvey/realEstate/detail/house");
+        modelAndView.addObject("basicHouse", getBasicHouseById(basicFormClassifyParamDto.getTbId()));
+        modelAndView.addObject("basicHouseTrading", basicHouseTradingService.getTradingByHouseId(basicFormClassifyParamDto.getTbId()));
+        return modelAndView;
     }
 }

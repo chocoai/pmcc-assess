@@ -6,7 +6,6 @@ import com.copower.pmcc.assess.dto.output.basic.BasicHouseIntelligentVo;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
-import com.copower.pmcc.assess.service.cases.CaseHouseIntelligentService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
@@ -42,8 +41,6 @@ public class BasicHouseIntelligentService {
     private BasicHouseIntelligentDao basicHouseIntelligentDao;
     @Autowired
     private BaseDataDicService baseDataDicService;
-    @Autowired
-    private CaseHouseIntelligentService caseHouseIntelligentService;
     @Autowired
     private CommonService commonService;
     @Autowired
@@ -138,9 +135,7 @@ public class BasicHouseIntelligentService {
         BeanUtils.copyProperties(basicHouseIntelligent, vo);
         vo.setSwitchCircuitName(baseDataDicService.getNameById(basicHouseIntelligent.getSwitchCircuit()));
         vo.setLayingMethodName(baseDataDicService.getNameById(basicHouseIntelligent.getLayingMethod()));
-        vo.setLampsLanternsName(caseHouseIntelligentService.getLampsLanternsName(basicHouseIntelligent.getLampsLanterns()));
         vo.setGradeName(baseDataDicService.getNameById(basicHouseIntelligent.getGrade()));
-        vo.setIntelligentSystemName(caseHouseIntelligentService.getIntelligentSystemName(basicHouseIntelligent.getIntelligentSystem()));
         vo.setCreatorName(publicService.getUserNameByAccount(basicHouseIntelligent.getCreator()));
         return vo;
     }

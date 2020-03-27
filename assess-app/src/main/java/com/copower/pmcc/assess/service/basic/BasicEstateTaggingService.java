@@ -6,11 +6,9 @@ import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateTaggingDao;
 import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchDetail;
 import com.copower.pmcc.assess.dal.basis.entity.BasicEstateTagging;
 import com.copower.pmcc.assess.dal.basis.entity.BasicUnit;
-import com.copower.pmcc.assess.dal.cases.entity.CaseEstateTagging;
 import com.copower.pmcc.assess.dto.input.MapDto;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateTaggingGaoDe;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateTaggingVo;
-import com.copower.pmcc.assess.service.cases.CaseEstateTaggingService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -39,8 +37,6 @@ import java.util.stream.Collectors;
 public class BasicEstateTaggingService {
     @Autowired
     private BasicEstateTaggingDao basicEstateTaggingDao;
-    @Autowired
-    private CaseEstateTaggingService caseEstateTaggingService;
     @Autowired
     private BasicApplyService basicApplyService;
     @Autowired
@@ -168,9 +164,7 @@ public class BasicEstateTaggingService {
     public BasicEstateTagging getUnitTagging(String unitPartInMode, Integer tableId, Integer caseUnitId) throws Exception {
         BasicEstateTagging tagging = new BasicEstateTagging();
         if (StringUtils.isBlank(unitPartInMode)) {
-            CaseEstateTagging caseEstateTagging = caseEstateTaggingService.getCaseEstateTagging(caseUnitId, BasicFormClassifyEnum.UNIT.getKey());
-            if (caseEstateTagging == null) return null;
-            BeanUtils.copyProperties(caseEstateTagging, tagging);
+
         } else {
             BasicEstateTagging where = new BasicEstateTagging();
             where.setTableId(tableId);

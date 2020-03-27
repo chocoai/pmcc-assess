@@ -12,6 +12,7 @@ import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateLandStateDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateTaggingDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.SynchronousDataDto;
+import com.copower.pmcc.assess.dto.input.basic.BasicFormClassifyParamDto;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateLandStateVo;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateVo;
 import com.copower.pmcc.assess.proxy.face.BasicEntityAbstract;
@@ -22,6 +23,9 @@ import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataBlockService;
 import com.copower.pmcc.assess.service.data.DataDeveloperService;
+import com.copower.pmcc.assess.service.project.ProjectInfoService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.crm.api.dto.CrmBaseDataDicDto;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -45,6 +49,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -92,6 +97,10 @@ public class BasicEstateService extends BasicEntityAbstract {
     private BasicApplyBatchDetailService basicApplyBatchDetailService;
     @Autowired
     private BasicApplyBatchService basicApplyBatchService;
+    @Autowired
+    private ProcessControllerComponent processControllerComponent;
+    @Autowired
+    private ProjectInfoService projectInfoService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -350,13 +359,14 @@ public class BasicEstateService extends BasicEntityAbstract {
 
     /**
      * 案例库中是否已存在该楼盘
+     *
      * @param province
      * @param city
      * @param name
      * @return
      */
-    public Boolean isExistEstateCase(String province,String city,String name){
-        return basicEstateDao.getBasicEstateCount(province,city,name)>0;
+    public Boolean isExistEstateCase(String province, String city, String name) {
+        return basicEstateDao.getBasicEstateCount(province, city, name) > 0;
     }
 
     @Override
@@ -390,7 +400,7 @@ public class BasicEstateService extends BasicEntityAbstract {
         BasicEstate basicEstate = JSONObject.parseObject(jsonContent, BasicEstate.class);
         //原来数据做记录,将老数据复制一条
         BasicEstate oldBasicEstate = getBasicEstateById(basicEstate.getId());
-        if(oldBasicEstate!=null&&StringUtils.isNotBlank(oldBasicEstate.getName())){
+        if (oldBasicEstate != null && StringUtils.isNotBlank(oldBasicEstate.getName())) {
             BasicEstate version = (BasicEstate) copyBasicEntity(oldBasicEstate.getId(), null, false);
             version.setRelevanceId(oldBasicEstate.getId());
             saveAndUpdate(version, false);
@@ -443,7 +453,7 @@ public class BasicEstateService extends BasicEntityAbstract {
         if (sourceId == null) return null;
         BasicEstate sourceBasicEstate = getBasicEstateById(sourceId);
         if (sourceBasicEstate == null) return null;
-        BasicEstate targetBasicEstate = (targetId == null || targetId <= 0) ? null :getBasicEstateById(targetId);
+        BasicEstate targetBasicEstate = (targetId == null || targetId <= 0) ? null : getBasicEstateById(targetId);
         if (CollectionUtils.isEmpty(ignoreList)) ignoreList = Lists.newArrayList();
         ignoreList.addAll(Lists.newArrayList(BaseConstant.ASSESS_IGNORE_ARRAY));
         if (targetBasicEstate == null) {
@@ -555,5 +565,30 @@ public class BasicEstateService extends BasicEntityAbstract {
             ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
         }
         return targetBasicEstate;
+    }
+
+    @Override
+    public List<BasicFormClassifyEnum> getLowerFormClassifyList() {
+        List<BasicFormClassifyEnum> list = Lists.newArrayList();
+        list.add(BasicFormClassifyEnum.BUILDING);
+        return list;
+    }
+
+    @Override
+    public ModelAndView getEditModelAndView(BasicFormClassifyParamDto basicFormClassifyParamDto) throws Exception {
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/stageSurvey/realEstate/estate");
+        modelAndView.addObject("basicEstate", getBasicEstateById(basicFormClassifyParamDto.getTbId()));
+        modelAndView.addObject("basicEstateLandState", basicEstateLandStateService.getBasicEstateLandStateVo(basicEstateLandStateService.getLandStateByEstateId(basicFormClassifyParamDto.getTbId())));
+        List<CrmBaseDataDicDto> unitPropertiesList = projectInfoService.getUnitPropertiesList();
+        modelAndView.addObject("unitPropertiesList", unitPropertiesList);
+        return modelAndView;
+    }
+
+    @Override
+    public ModelAndView getDetailModelAndView(BasicFormClassifyParamDto basicFormClassifyParamDto) {
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/stageSurvey/realEstate/detail/estate");
+        modelAndView.addObject("basicEstate", getBasicEstateById(basicFormClassifyParamDto.getTbId()));
+        modelAndView.addObject("basicEstateLandState", basicEstateLandStateService.getLandStateByEstateId(basicFormClassifyParamDto.getTbId()));
+        return modelAndView;
     }
 }

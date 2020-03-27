@@ -5,8 +5,6 @@ import com.copower.pmcc.assess.dal.basis.custom.mapper.CustomCaseMapper;
 import com.copower.pmcc.assess.dal.basis.entity.BasicEstate;
 import com.copower.pmcc.assess.dal.basis.entity.BasicEstateExample;
 import com.copower.pmcc.assess.dal.basis.mapper.BasicEstateMapper;
-import com.copower.pmcc.assess.dal.cases.entity.CaseEstate;
-import com.copower.pmcc.assess.dal.cases.entity.CaseEstateExample;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;

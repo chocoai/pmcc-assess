@@ -9,6 +9,7 @@ import com.copower.pmcc.assess.controller.BaseController;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.ZtreeDto;
 import com.copower.pmcc.assess.dto.input.basic.BasicFormClassifyDto;
+import com.copower.pmcc.assess.dto.input.basic.BasicFormClassifyParamDto;
 import com.copower.pmcc.assess.dto.output.basic.BasicEstateVo;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseVo;
 import com.copower.pmcc.assess.dto.output.project.survey.BasicApplyBatchDetailVo;
@@ -341,9 +342,9 @@ public class BasicApplyBatchController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "/recordBatchApply", name = "批量申请", method = {RequestMethod.POST})
-    public HttpResult recordBatchApply(String province,String city,String estateName) {
+    public HttpResult recordBatchApply(String province, String city, String estateName) {
         try {
-            Integer basicBatchId = basicApplyBatchService.recordBatchApply(province,city,estateName);
+            Integer basicBatchId = basicApplyBatchService.recordBatchApply(province, city, estateName);
             return HttpResult.newCorrectResult(basicBatchId);
         } catch (Exception e1) {
             logger.error(e1.getMessage(), e1);
@@ -450,14 +451,31 @@ public class BasicApplyBatchController extends BaseController {
         return HttpResult.newCorrectResult(basicApplyBatchDetailService.getBasicApplyBatchDetailVo(basicApplyBatchDetailService.getDataById(id)));
     }
 
-    @RequestMapping(value = "/fillInformation", name = "填写信息页面", method = RequestMethod.GET)
-    public ModelAndView fillInformation(Integer type, Integer id, Integer buildingType, Integer estateId, Integer planDetailsId) throws Exception {
-        String view = "/basic/fillInformation";
-        ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
-        modelAndView.addObject("planDetailsId", planDetailsId);
-        this.setViewParam(type, id, buildingType, estateId, modelAndView);
-
+    @RequestMapping(value = "/informationEdit", name = "信息填写", method = RequestMethod.GET)
+    public ModelAndView informationEdit(BasicFormClassifyParamDto basicFormClassifyParamDto) throws Exception {
+        BasicFormClassifyEnum estateTaggingTypeEnum = BasicFormClassifyEnum.getEnumByKey(basicFormClassifyParamDto.getTbType());
+        BasicEntityAbstract entityAbstract = publicBasicService.getServiceBeanByTableName(estateTaggingTypeEnum.getTableName());
+        ModelAndView modelAndView = entityAbstract.getEditModelAndView(basicFormClassifyParamDto);
+        modelAndView.addObject("planDetailsId", basicFormClassifyParamDto.getPlanDetailsId());
+        modelAndView.addObject("tbType", basicFormClassifyParamDto.getTbType());
+        modelAndView.addObject("formClassify", basicFormClassifyParamDto.getFormClassify());
+        modelAndView.addObject("tbId", basicFormClassifyParamDto.getTbId());
+        if (basicFormClassifyParamDto.getApplyBatchId() != null) {
+            BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchById(basicFormClassifyParamDto.getApplyBatchId());
+            modelAndView.addObject(StringUtils.uncapitalize(BasicApplyBatch.class.getSimpleName()), basicApplyBatch);
+        }
         return modelAndView;
+    }
+
+    @RequestMapping(value = "/informationDetail", name = "信息详情", method = RequestMethod.GET)
+    public ModelAndView informationDetail(BasicFormClassifyParamDto basicFormClassifyParamDto) throws Exception {
+        BasicFormClassifyEnum estateTaggingTypeEnum = BasicFormClassifyEnum.getEnumByKey(basicFormClassifyParamDto.getTbType());
+        BasicEntityAbstract entityAbstract = publicBasicService.getServiceBeanByTableName(estateTaggingTypeEnum.getTableName());
+        ModelAndView detailsModelAndView = entityAbstract.getDetailModelAndView(basicFormClassifyParamDto);
+        detailsModelAndView.addObject("formType", BasicApplyTypeEnum.getEnumById(basicFormClassifyParamDto.getFormType()).getKey());
+        detailsModelAndView.addObject("isHistory", basicFormClassifyParamDto.getHistory());
+        detailsModelAndView.addObject("tbType", basicFormClassifyParamDto.getTbType());
+        return detailsModelAndView;
     }
 
     @RequestMapping(value = "/fillInfo", name = "填写信息页面", method = RequestMethod.GET)
@@ -531,6 +549,7 @@ public class BasicApplyBatchController extends BaseController {
         modelAndView.addObject("tbId", tbId);
         modelAndView.addObject("quoteId", quoteId);
         modelAndView.addObject("formType", BasicApplyTypeEnum.getEnumById(formType).getKey());
+
         List<CrmBaseDataDicDto> unitPropertiesList = projectInfoService.getUnitPropertiesList();
         modelAndView.addObject("unitPropertiesList", unitPropertiesList);
         if (applyBatchId != null) {
@@ -541,8 +560,8 @@ public class BasicApplyBatchController extends BaseController {
     }
 
 
-    @RequestMapping(value = "/informationDetail", name = "信息详情页面", method = RequestMethod.GET)
-    public ModelAndView informationDetail(Integer formClassify, Integer formType, Integer tableId, String tableName, String tbType, Integer planDetailsId, Integer applyBatchId, boolean isHistory, Integer assessmentPerformanceId) throws Exception {
+    @RequestMapping(value = "/informationDetail1", name = "信息详情页面", method = RequestMethod.GET)
+    public ModelAndView informationDetail1(Integer formClassify, Integer formType, Integer tableId, String tableName, String tbType, Integer planDetailsId, Integer applyBatchId, boolean isHistory, Integer assessmentPerformanceId) throws Exception {
         final StringBuffer stringBuffer = new StringBuffer("/project/stageSurvey");
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(stringBuffer.toString());
         if (formType != null)
@@ -697,50 +716,6 @@ public class BasicApplyBatchController extends BaseController {
         }
     }
 
-
-    /**
-     * 设置参数
-     *
-     * @param modelAndView
-     * @throws Exception
-     */
-    private void setViewParam(Integer type, Integer id, Integer buildingType, Integer estateId, ModelAndView modelAndView) {
-        if (buildingType == 0)
-            modelAndView.addObject("buildingType", "estate");
-        if (buildingType == 1)
-            modelAndView.addObject("buildingType", "building");
-        if (buildingType == 2)
-            modelAndView.addObject("buildingType", "unit");
-        if (buildingType == 3)
-            modelAndView.addObject("buildingType", "house");
-
-        if (buildingType == 0) {
-            BasicApplyBatch applyBatch = new BasicApplyBatch();
-            applyBatch.setEstateId(estateId);
-            BasicApplyBatch singleData = basicApplyBatchService.getSingleData(applyBatch);
-            if (singleData != null) {
-                modelAndView.addObject("tableId", singleData.getEstateId());
-                //显示引用项目还是案列按钮
-                modelAndView.addObject("showTab", singleData.getShowTab());
-            }
-        } else {
-            BasicApplyBatchDetail basicApplyBatchDetail = new BasicApplyBatchDetail();
-            basicApplyBatchDetail.setId(id);
-            BasicApplyBatchDetail detailData = basicApplyBatchDetailService.getSingleData(basicApplyBatchDetail);
-            modelAndView.addObject("tableId", detailData.getTableId());
-            BasicApplyBatch applyBatch = basicApplyBatchService.getBasicApplyBatchById(detailData.getApplyBatchId());
-            modelAndView.addObject("showTab", applyBatch.getShowTab());
-        }
-        BasicApply basicApply = new BasicApply();
-        basicApply.setType(type);
-        modelAndView.addObject("type", type);
-        modelAndView.addObject("basicApply", basicApply);
-        modelAndView.addObject("isApplyBatch", "show");
-        List<CrmBaseDataDicDto> unitPropertiesList = projectInfoService.getUnitPropertiesList();
-        modelAndView.addObject("unitPropertiesList", unitPropertiesList);
-    }
-
-
     @ResponseBody
     @RequestMapping(value = "/getEstateDataByPlanDetailsId", method = {RequestMethod.GET}, name = "获取查勘下楼盘列表")
     public BootstrapTableVo getEstateDataByPlanDetailsId(Integer planDetailsId) throws Exception {
@@ -853,11 +828,11 @@ public class BasicApplyBatchController extends BaseController {
     @RequestMapping(value = "/getTableTypeList", method = RequestMethod.GET, name = "获取表单类型")
     public HttpResult getTableTypeList(String type) throws Exception {
         try {
-            BasicFormClassifyEnum anEnum = BasicFormClassifyEnum.getEnumByKey(type);
-            List<BasicFormClassifyEnum> enumList = BasicFormClassifyEnum.getHighLevelEnumsByLevel(anEnum.getLevel());
+            BasicEntityAbstract entityAbstract = publicBasicService.getServiceBeanByKey(type);
+            List<BasicFormClassifyEnum> enumList = entityAbstract.getLowerFormClassifyList();
             List<BasicFormClassifyDto> dtos = Lists.newArrayList();
-            if(!CollectionUtils.isEmpty(enumList)){
-                for (BasicFormClassifyEnum item: enumList) {
+            if (!CollectionUtils.isEmpty(enumList)) {
+                for (BasicFormClassifyEnum item : enumList) {
                     BasicFormClassifyDto dto = new BasicFormClassifyDto();
                     dto.setTableName(item.getTableName());
                     dto.setValue(item.getValue());
@@ -873,9 +848,9 @@ public class BasicApplyBatchController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "/referenceEstate", method = RequestMethod.POST, name = "引用其他楼盘")
-    public HttpResult referenceEstate(Integer referenceId,Integer basicApplyBatchId) throws Exception {
+    public HttpResult referenceEstate(Integer referenceId, Integer basicApplyBatchId) throws Exception {
         try {
-            basicApplyBatchService.referenceEstate(referenceId,basicApplyBatchId);
+            basicApplyBatchService.referenceEstate(referenceId, basicApplyBatchId);
             return HttpResult.newCorrectResult();
         } catch (Exception e1) {
             logger.error(e1.getMessage(), e1);

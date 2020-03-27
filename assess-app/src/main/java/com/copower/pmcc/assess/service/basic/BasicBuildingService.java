@@ -10,6 +10,7 @@ import com.copower.pmcc.assess.dal.basis.dao.basic.BasicBuildingDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateTaggingDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.SynchronousDataDto;
+import com.copower.pmcc.assess.dto.input.basic.BasicFormClassifyParamDto;
 import com.copower.pmcc.assess.dto.output.basic.BasicBuildingVo;
 import com.copower.pmcc.assess.proxy.face.BasicEntityAbstract;
 import com.copower.pmcc.assess.service.PublicService;
@@ -19,6 +20,9 @@ import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataBuilderService;
 import com.copower.pmcc.assess.service.data.DataBuildingNewRateService;
 import com.copower.pmcc.assess.service.data.DataPropertyService;
+import com.copower.pmcc.assess.service.project.ProjectInfoService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.crm.api.dto.CrmBaseDataDicDto;
 import com.copower.pmcc.crm.api.provider.CrmRpcBaseDataDicService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -42,6 +46,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -84,6 +89,12 @@ public class BasicBuildingService extends BasicEntityAbstract {
     private BasicApplyBatchDetailService basicApplyBatchDetailService;
     @Autowired
     private BasicEstateService basicEstateService;
+    @Autowired
+    private ProcessControllerComponent processControllerComponent;
+    @Autowired
+    private ProjectInfoService projectInfoService;
+    @Autowired
+    private PublicBasicService publicBasicService;
 
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -359,7 +370,7 @@ public class BasicBuildingService extends BasicEntityAbstract {
         if (sourceId == null) return null;
         BasicBuilding sourceBasicBuilding = getBasicBuildingById(sourceId);
         if (sourceBasicBuilding == null) return null;
-        BasicBuilding targetBasicBuilding =(targetId == null || targetId <= 0) ? null : getBasicBuildingById(targetId);
+        BasicBuilding targetBasicBuilding = (targetId == null || targetId <= 0) ? null : getBasicBuildingById(targetId);
         if (CollectionUtils.isEmpty(ignoreList)) ignoreList = Lists.newArrayList();
         ignoreList.addAll(Lists.newArrayList(BaseConstant.ASSESS_IGNORE_ARRAY));
         if (targetBasicBuilding == null) {
@@ -410,5 +421,41 @@ public class BasicBuildingService extends BasicEntityAbstract {
             ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
         }
         return targetBasicBuilding;
+    }
+
+    @Override
+    public List<BasicFormClassifyEnum> getLowerFormClassifyList() {
+        List<BasicFormClassifyEnum> list = Lists.newArrayList();
+        list.add(BasicFormClassifyEnum.UNIT);
+        return list;
+    }
+
+    @Override
+    public ModelAndView getEditModelAndView(BasicFormClassifyParamDto basicFormClassifyParamDto) throws Exception {
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/stageSurvey/realEstate/building");
+        modelAndView.addObject("basicBuilding", getBasicBuildingVoById(basicFormClassifyParamDto.getTbId()));
+        List<CrmBaseDataDicDto> unitPropertiesList = projectInfoService.getUnitPropertiesList();
+        modelAndView.addObject("unitPropertiesList", unitPropertiesList);
+        Integer applyBatchId = basicFormClassifyParamDto.getApplyBatchId();
+        Integer tbId = basicFormClassifyParamDto.getTbId();
+        BasicApplyBatchDetail basicApplyBatchDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(applyBatchId, FormatUtils.entityNameConvertToTableName(BasicBuilding.class), tbId);
+        if (basicApplyBatchDetail != null) {//获取引用id
+            basicApplyBatchDetail = basicApplyBatchDetailService.getDataById(basicApplyBatchDetail.getPid());
+            if (basicApplyBatchDetail != null) {
+                BasicEntityAbstract entityAbstract = publicBasicService.getServiceBeanByTableName(basicApplyBatchDetail.getTableName());
+                Object entity = entityAbstract.getBasicEntityById(basicApplyBatchDetail.getTableId());
+                if (entity != null) {
+                    modelAndView.addObject("quoteId", entityAbstract.getProperty(entity, "quoteId"));
+                }
+            }
+        }
+        return modelAndView;
+    }
+
+    @Override
+    public ModelAndView getDetailModelAndView(BasicFormClassifyParamDto basicFormClassifyParamDto) throws Exception {
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/stageSurvey/realEstate/detail/building");
+        modelAndView.addObject("basicBuilding", getBasicBuildingVoById(basicFormClassifyParamDto.getTbId()));
+        return modelAndView;
     }
 }

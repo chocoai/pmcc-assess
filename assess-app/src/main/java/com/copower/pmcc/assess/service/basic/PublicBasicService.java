@@ -225,6 +225,12 @@ public class PublicBasicService {
         return (BasicEntityAbstract) SpringContextUtils.getBean(formClassifyEnum.getServiceName());
     }
 
+    public BasicEntityAbstract getServiceBeanByKey(String key){
+        if(StringUtils.isBlank(key)) return null;
+        BasicFormClassifyEnum formClassifyEnum = BasicFormClassifyEnum.getEnumByKey(key);
+        return (BasicEntityAbstract) SpringContextUtils.getBean(formClassifyEnum.getServiceName());
+    }
+
     /**
      * 获取申请完整名称
      *

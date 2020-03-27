@@ -10,11 +10,14 @@ import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateTaggingDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicUnitDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.SynchronousDataDto;
+import com.copower.pmcc.assess.dto.input.basic.BasicFormClassifyParamDto;
 import com.copower.pmcc.assess.dto.output.basic.BasicUnitVo;
 import com.copower.pmcc.assess.proxy.face.BasicEntityAbstract;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.assist.DdlMySqlAssist;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.crm.api.dto.CrmBaseDataDicDto;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -37,6 +40,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -71,6 +75,10 @@ public class BasicUnitService extends BasicEntityAbstract {
     private BasicApplyBatchDetailService basicApplyBatchDetailService;
     @Autowired
     private BasicBuildingService basicBuildingService;
+    @Autowired
+    private ProcessControllerComponent processControllerComponent;
+    @Autowired
+    private PublicBasicService publicBasicService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -358,5 +366,39 @@ public class BasicUnitService extends BasicEntityAbstract {
             ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
         }
         return targetBasicUnit;
+    }
+
+    @Override
+    public List<BasicFormClassifyEnum> getLowerFormClassifyList() {
+        List<BasicFormClassifyEnum> list = Lists.newArrayList();
+        list.add(BasicFormClassifyEnum.HOUSE);
+        return list;
+    }
+
+    @Override
+    public ModelAndView getEditModelAndView(BasicFormClassifyParamDto basicFormClassifyParamDto) throws Exception {
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/stageSurvey/realEstate/unit");
+        modelAndView.addObject("basicUnit", getBasicUnitById(basicFormClassifyParamDto.getTbId()));
+        Integer applyBatchId = basicFormClassifyParamDto.getApplyBatchId();
+        Integer tbId = basicFormClassifyParamDto.getTbId();
+        BasicApplyBatchDetail basicApplyBatchDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(applyBatchId, FormatUtils.entityNameConvertToTableName(BasicUnit.class), tbId);
+        if (basicApplyBatchDetail != null) {//获取引用id
+            basicApplyBatchDetail = basicApplyBatchDetailService.getDataById(basicApplyBatchDetail.getPid());
+            if (basicApplyBatchDetail != null) {
+                BasicEntityAbstract entityAbstract = publicBasicService.getServiceBeanByTableName(basicApplyBatchDetail.getTableName());
+                Object entity = entityAbstract.getBasicEntityById(basicApplyBatchDetail.getTableId());
+                if (entity != null) {
+                    modelAndView.addObject("quoteId", entityAbstract.getProperty(entity, "quoteId"));
+                }
+            }
+        }
+        return modelAndView;
+    }
+
+    @Override
+    public ModelAndView getDetailModelAndView(BasicFormClassifyParamDto basicFormClassifyParamDto) throws Exception {
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/stageSurvey/realEstate/detail/unit");
+        modelAndView.addObject("basicUnit", getBasicUnitById(basicFormClassifyParamDto.getTbId()));
+        return modelAndView;
     }
 }

@@ -1,7 +1,6 @@
 package com.copower.pmcc.assess.dto.output.basic;
 
 import com.copower.pmcc.assess.dal.basis.entity.BasicHouseCaseSummary;
-import com.copower.pmcc.assess.dal.cases.entity.CaseBaseHouse;
 
 /**
  * Created by kings on 2018-12-5.

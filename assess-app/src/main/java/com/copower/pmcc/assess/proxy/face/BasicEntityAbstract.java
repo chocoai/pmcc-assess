@@ -1,6 +1,9 @@
 package com.copower.pmcc.assess.proxy.face;
 
+import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
+import com.copower.pmcc.assess.dto.input.basic.BasicFormClassifyParamDto;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -64,4 +67,9 @@ public abstract class BasicEntityAbstract {
 
     public abstract Object copyBasicEntityIgnore(Integer sourceId, Integer targetId, Boolean containChild, List<String> ignoreList) throws Exception;//数据拷贝
 
+    public abstract List<BasicFormClassifyEnum> getLowerFormClassifyList();//获取下级表单模板
+
+    public abstract ModelAndView getEditModelAndView(BasicFormClassifyParamDto basicFormClassifyParamDto) throws Exception;
+
+    public abstract ModelAndView getDetailModelAndView(BasicFormClassifyParamDto basicFormClassifyParamDto) throws Exception;
 }
