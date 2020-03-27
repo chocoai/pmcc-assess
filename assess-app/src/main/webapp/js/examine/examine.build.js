@@ -33,53 +33,6 @@
         buildingCommon.buildingForm.find('[name=buildingName]').val(value + '栋');
     };
 
-    //添加楼栋
-    buildingCommon.add = function (_this, callback) {
-        var buildingNumber = $(_this).closest('form').find('[name=buildingNumber]').val();
-        if (!buildingNumber) {
-            notifyInfo('提示','请填写楼栋编号！');
-            return false;
-        }
-        $.ajax({
-            url: getContextPath() + '/basicBuilding/addBuilding',
-            data: {
-                buildingNumber: buildingNumber
-            },
-            success: function (result) {
-                if (result.ret) {
-                    buildingCommon.showBuildingView(result.data);
-                    if (callback) {
-                        callback($(_this).attr('data-mode'));
-                    }
-                }
-            }
-        })
-    };
-
-    //升级楼栋
-    buildingCommon.upgrade = function (_this, callback) {
-        var caseBuildingId = $(_this).closest('form').find("input[name='caseBuildingId']").val();
-        var buildingPartInMode = $(_this).attr('data-mode');
-        if (!caseBuildingId) {
-            notifyInfo('提示','请选择系统中已存在的楼栋信息！');
-            return false;
-        }
-        $.ajax({
-            url: getContextPath() + '/basicBuilding/appWriteBuilding',
-            data: {
-                caseBuildingId: caseBuildingId,
-                buildingPartInMode: buildingPartInMode
-            },
-            success: function (result) {
-                if (result.ret) {
-                    buildingCommon.showBuildingView(result.data);
-                    if (callback) {
-                        callback($(_this).attr('data-mode'));
-                    }
-                }
-            }
-        })
-    };
 
     //楼栋初始化by applyId
     buildingCommon.init = function (applyId, callback) {

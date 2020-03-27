@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en" class="no-js">
 <head>
@@ -18,11 +19,14 @@
                                     <div class="card-title">
                                         信息填写
                                         <button type="button" class="btn btn-sm btn-primary"
-                                                onclick="showHistoryModal();">历史记录</button>
+                                                onclick="showHistoryModal();">历史记录
+                                        </button>
                                         <button type="button" class="btn btn-sm btn-primary"
-                                                onclick="showCaseQuoteModal();">引用案例</button>
+                                                onclick="showCaseQuoteModal();">引用案例
+                                        </button>
                                         <button type="button" class="btn btn-sm btn-primary"
-                                                onclick="showProjectQuoteModal();">引用备选案例</button>
+                                                onclick="showProjectQuoteModal();">引用备选案例
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -33,8 +37,10 @@
                                             <div class="col-md-12">
                                                 <div class="card-body">
                                                     <input type="hidden" name="id" value="${basicBuilding.id}">
-                                                    <input type="hidden" name="quoteId" value="${basicBuilding.quoteId}">
-                                                    <input type="hidden" name="estateId" value="${basicBuilding.estateId}">
+                                                    <input type="hidden" name="quoteId"
+                                                           value="${basicBuilding.quoteId}">
+                                                    <input type="hidden" name="estateId"
+                                                           value="${basicBuilding.estateId}">
                                                     <div class="row form-group">
                                                         <div class="col-md-12">
                                                             <div class="form-inline x-valid">
@@ -43,17 +49,22 @@
                                                                 </label>
                                                                 <div class="col-md-3">
                                                                     <div class="input-group">
-                                                                        <input type="text" id="txt_building_search" data-rule-maxlength="100" placeholder="名称"
+                                                                        <input type="text" id="txt_building_search"
+                                                                               data-rule-maxlength="100"
+                                                                               placeholder="名称"
                                                                                required="required"
-                                                                               name="buildingNumber" class="form-control"
+                                                                               name="buildingNumber"
+                                                                               class="form-control"
                                                                                onblur="buildingCommon.buildingNumberBlur(this);"
                                                                                value="${basicBuilding.buildingNumber}">
-                                                                        <span class="input-group-btn">
-                             <input type="hidden" name="mapId" value="${basicBuilding.mapId}">
-                             <div onclick="buildingCommon.mapMarker(false);" class="btn btn-info">
-                                 <i class="fa fa-map-marker"></i> 标注
-                             </div>
-                        </span>
+                                                                        <div class="input-group-prepend">
+                                                                            <button class="btn btn-info btn-sm "
+                                                                                    style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                                                    type="button"
+                                                                                    onclick="buildingCommon.mapMarker(false);">
+                                                                                标注
+                                                                            </button>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                                 <label class="col-sm-1">
@@ -68,7 +79,9 @@
                                                                     物业类别<span class="symbol required"></span>
                                                                 </label>
                                                                 <div class="col-md-3">
-                                                                    <select name="propertyCategory" class="form-control input-full propertyCategory" required>
+                                                                    <select name="propertyCategory"
+                                                                            class="form-control input-full propertyCategory"
+                                                                            required>
                                                                     </select>
                                                                 </div>
                                                             </div>
@@ -81,14 +94,19 @@
                                                                     土地使用年限
                                                                 </label>
                                                                 <div class="col-md-3">
-                                                                    <input type="text" placeholder="土地使用年限(数字)" data-rule-number='true'
-                                                                           name="landUseYear" class="form-control input-full" value="${basicBuilding.landUseYear}">
+                                                                    <input type="text" placeholder="土地使用年限(数字)"
+                                                                           data-rule-number='true'
+                                                                           name="landUseYear"
+                                                                           class="form-control input-full"
+                                                                           value="${basicBuilding.landUseYear}">
                                                                 </div>
                                                                 <label class="col-sm-1">
                                                                     户型区间
                                                                 </label>
                                                                 <div class="col-md-3">
-                                                                    <input type="text" placeholder="户型区间" name="unitInterval" class="form-control input-full"
+                                                                    <input type="text" placeholder="户型区间"
+                                                                           name="unitInterval"
+                                                                           class="form-control input-full"
                                                                            value="${basicBuilding.unitInterval}">
                                                                 </div>
                                                             </div>
@@ -101,22 +119,30 @@
                                                                     所在位置<span class="symbol required"></span>
                                                                 </label>
                                                                 <div class="col-md-3">
-                                                                    <input type="text" placeholder="所在位置" name="location" class="form-control input-full" required
+                                                                    <input type="text" placeholder="所在位置"
+                                                                           name="location"
+                                                                           class="form-control input-full" required
                                                                            value="${basicBuilding.location}">
                                                                 </div>
                                                                 <label class="col-sm-1">
                                                                     首层位置<span class="symbol required"></span>
                                                                 </label>
                                                                 <div class="col-md-3">
-                                                                    <input type="text" placeholder="首层位置(数字)" data-rule-number='true' required
-                                                                           name="firstFloor" class="form-control input-full" value="${basicBuilding.firstFloor}">
+                                                                    <input type="text" placeholder="首层位置(数字)"
+                                                                           data-rule-number='true' required
+                                                                           name="firstFloor"
+                                                                           class="form-control input-full"
+                                                                           value="${basicBuilding.firstFloor}">
                                                                 </div>
                                                                 <label class="col-sm-1">
                                                                     最高层<span class="symbol required"></span>
                                                                 </label>
                                                                 <div class="col-md-3">
-                                                                    <input type="text" placeholder="最高层(数字)" data-rule-number='true' required
-                                                                           name="maxFloor" class="form-control input-full" value="${basicBuilding.maxFloor}">
+                                                                    <input type="text" placeholder="最高层(数字)"
+                                                                           data-rule-number='true' required
+                                                                           name="maxFloor"
+                                                                           class="form-control input-full"
+                                                                           value="${basicBuilding.maxFloor}">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -128,23 +154,32 @@
                                                                     总层数<span class="symbol required"></span>
                                                                 </label>
                                                                 <div class="col-md-3">
-                                                                    <input type="text" placeholder="总层数" data-rule-number="true"
-                                                                           name="floorCount" class="form-control input-full" required="required"
+                                                                    <input type="text" placeholder="总层数"
+                                                                           data-rule-number="true"
+                                                                           name="floorCount"
+                                                                           class="form-control input-full"
+                                                                           required="required"
                                                                            value="${basicBuilding.floorCount}">
                                                                 </div>
                                                                 <label class="col-sm-1">
                                                                     层高<span class="symbol required"></span>
                                                                 </label>
                                                                 <div class="col-md-3">
-                                                                    <input type="text" placeholder="层高(数字)" data-rule-number='true' required
-                                                                           name="floorHeight" class="form-control input-full" value="${basicBuilding.floorHeight}">
+                                                                    <input type="text" placeholder="层高(数字)"
+                                                                           data-rule-number='true' required
+                                                                           name="floorHeight"
+                                                                           class="form-control input-full"
+                                                                           value="${basicBuilding.floorHeight}">
                                                                 </div>
                                                                 <label class="col-sm-1">
                                                                     建筑高度
                                                                 </label>
                                                                 <div class="col-md-3">
-                                                                    <input type="text" placeholder="建筑高度(数字)" data-rule-number='true'
-                                                                           name="buildingHeight" class="form-control input-full" value="${basicBuilding.buildingHeight}">
+                                                                    <input type="text" placeholder="建筑高度(数字)"
+                                                                           data-rule-number='true'
+                                                                           name="buildingHeight"
+                                                                           class="form-control input-full"
+                                                                           value="${basicBuilding.buildingHeight}">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -156,19 +191,27 @@
                                                                     建筑面积
                                                                 </label>
                                                                 <div class="col-md-3">
-                                                                    <input type="text" placeholder="建筑面积(数字)" data-rule-number='true'
-                                                                           name="buildingArea" class="form-control input-full" value="${basicBuilding.buildingArea}">
+                                                                    <input type="text" placeholder="建筑面积(数字)"
+                                                                           data-rule-number='true'
+                                                                           name="buildingArea"
+                                                                           class="form-control input-full"
+                                                                           value="${basicBuilding.buildingArea}">
                                                                 </div>
                                                                 <label class="col-sm-1">
                                                                     占地面积
                                                                 </label>
                                                                 <div class="col-md-3">
-                                                                    <input type="text" placeholder="占地面积(数字)" data-rule-number='true'
-                                                                           name="coverAnArea" class="form-control input-full" value="${basicBuilding.coverAnArea}">
+                                                                    <input type="text" placeholder="占地面积(数字)"
+                                                                           data-rule-number='true'
+                                                                           name="coverAnArea"
+                                                                           class="form-control input-full"
+                                                                           value="${basicBuilding.coverAnArea}">
                                                                 </div>
                                                                 <label class="col-sm-1">单元说明</label>
                                                                 <div class="col-md-3">
-                                                                    <input type="text" name="remark" class="form-control input-full" value="${basicBuilding.remark}">
+                                                                    <input type="text" name="remark"
+                                                                           class="form-control input-full"
+                                                                           value="${basicBuilding.remark}">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -206,7 +249,8 @@
                                                                     建筑结构类别
                                                                 </label>
                                                                 <div class="col-md-3">
-                                                                    <select name="buildingStructureCategory" class="form-control input-full buildingStructureCategory">
+                                                                    <select name="buildingStructureCategory"
+                                                                            class="form-control input-full buildingStructureCategory">
                                                                     </select>
                                                                 </div>
                                                             </div>
@@ -256,12 +300,15 @@
                                                                     楼间距<span class="symbol required"></span>
                                                                 </label>
                                                                 <div class="col-md-3">
-                                                                    <select name="betweenDistance" required class="form-control input-full betweenDistance search-select select2">
+                                                                    <select name="betweenDistance" required
+                                                                            class="form-control input-full betweenDistance search-select select2">
                                                                     </select>
                                                                 </div>
                                                                 <label class="col-sm-1">楼间距描述</label>
                                                                 <div class="col-md-3">
-                                                                    <input type="text" placeholder="楼间距描述" class="form-control input-full" name="betweenDistanceDescription"
+                                                                    <input type="text" placeholder="楼间距描述"
+                                                                           class="form-control input-full"
+                                                                           name="betweenDistanceDescription"
                                                                            value="${basicBuilding.betweenDistanceDescription}">
                                                                 </div>
                                                                 <label class="col-sm-1">
@@ -283,7 +330,8 @@
                                                                 </label>
                                                                 <div class="col-md-3">
                                                                     <input placeholder="竣工时间"
-                                                                           name="beCompletedTime" required data-date-format="yyyy-mm-dd"
+                                                                           name="beCompletedTime" required
+                                                                           data-date-format="yyyy-mm-dd"
                                                                            class="form-control input-full date-picker dbdate beCompletedTime">
                                                                 </div>
                                                                 <label class="col-sm-1">
@@ -323,24 +371,34 @@
                                                                     建筑公司
                                                                 </label>
                                                                 <div class="col-md-3">
-                                                                    <input type="text" placeholder="建筑公司" class="form-control input-full" name="builderName"
+                                                                    <input type="text" placeholder="建筑公司"
+                                                                           class="form-control input-full"
+                                                                           name="builderName"
                                                                            value="${basicBuilding.builderName}">
-                                                                    <input type="hidden" placeholder="建筑公司" class="form-control input-full" name="builder"
+                                                                    <input type="hidden" placeholder="建筑公司"
+                                                                           class="form-control input-full"
+                                                                           name="builder"
                                                                            value="${basicBuilding.builder}">
                                                                 </div>
                                                                 <label class="col-sm-1">
                                                                     物业费<span class="symbol required"></span>
                                                                 </label>
                                                                 <div class="col-md-3">
-                                                                    <input type="text" placeholder="物业费(数字)" name="propertyFee" data-rule-number='true' required
-                                                                           class="form-control input-full" value="${basicBuilding.propertyFee}">
+                                                                    <input type="text" placeholder="物业费(数字)"
+                                                                           name="propertyFee" data-rule-number='true'
+                                                                           required
+                                                                           class="form-control input-full"
+                                                                           value="${basicBuilding.propertyFee}">
                                                                 </div>
                                                                 <label class="col-sm-1">
                                                                     配套公共设施使用费
                                                                 </label>
                                                                 <div class="col-md-3">
-                                                                    <input type="text" placeholder="配套公共设施使用费(数字)" name="facilitiesUseFee"
-                                                                           data-rule-number='true' class="form-control input-full" value="${basicBuilding.facilitiesUseFee}">
+                                                                    <input type="text" placeholder="配套公共设施使用费(数字)"
+                                                                           name="facilitiesUseFee"
+                                                                           data-rule-number='true'
+                                                                           class="form-control input-full"
+                                                                           value="${basicBuilding.facilitiesUseFee}">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -353,18 +411,24 @@
                                                                     物业公司名称
                                                                 </label>
                                                                 <div class="col-md-3">
-                                                                    <input type="text" name="propertyName" placeholder="物业公司名称" class="form-control input-full"
+                                                                    <input type="text" name="propertyName"
+                                                                           placeholder="物业公司名称"
+                                                                           class="form-control input-full"
                                                                            value="${basicBuilding.propertyName}">
-                                                                    <input type="hidden" name="property" placeholder="物业公司 " class="form-control input-full"
+                                                                    <input type="hidden" name="property"
+                                                                           placeholder="物业公司 "
+                                                                           class="form-control input-full"
                                                                            value="${basicBuilding.property}">
                                                                 </div>
                                                                 <label class="col-sm-1">
                                                                     物业公司性质
                                                                 </label>
                                                                 <div class="col-md-3">
-                                                                    <select name="propertyCompanyNature" class="form-control input-full">
+                                                                    <select name="propertyCompanyNature"
+                                                                            class="form-control input-full">
                                                                         <option value="">-请选择-</option>
-                                                                        <c:forEach items="${unitPropertiesList}" var="item">
+                                                                        <c:forEach items="${unitPropertiesList}"
+                                                                                   var="item">
                                                                             <c:choose>
                                                                                 <c:when test="${item.id == basicBuilding.propertyCompanyNature}">
                                                                                     <option value="${item.id}"
@@ -381,7 +445,8 @@
                                                                     物业公司社会信誉
                                                                 </label>
                                                                 <div class="col-md-3">
-                                                                    <select name="propertySocialPrestige" class="form-control input-full">
+                                                                    <select name="propertySocialPrestige"
+                                                                            class="form-control input-full">
                                                                         <option value="">-请选择-</option>
                                                                     </select>
                                                                 </div>
@@ -396,21 +461,25 @@
                                                                 </label>
                                                                 <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
                                                                     <!-- 这个id是不能更改的bootstrap3 强制如此 toolbar -->
-                                                                    <div id="toolbarBuildingPropertyServiceItemTable" style="display: none">
+                                                                    <div id="toolbarBuildingPropertyServiceItemTable"
+                                                                         style="display: none">
                                                                         <div class="btn-group">
-                                                                            <button type="button" class="btn btn-warning btn-sm"
+                                                                            <button type="button"
+                                                                                    class="btn btn-warning btn-sm"
                                                                                     onclick="buildingCommon.deleteBasicBuildingPropertyServiceItem('#basicBuildingPropertyServiceItemTable')">
                                 <span class="btn-label">
 												<i class="fa fa-minus"></i>
 											</span>删除
                                                                             </button>
-                                                                            <button type="button" class="btn btn-primary btn-sm"
+                                                                            <button type="button"
+                                                                                    class="btn btn-primary btn-sm"
                                                                                     onclick="buildingCommon.editBasicBuildingPropertyServiceItem('#basicBuildingPropertyServiceItemTable','#basicBuildingPropertyServiceItemModalTool',true)">
                                 <span class="btn-label">
 												<i class="fa fa-pen"></i>
 											</span>编辑
                                                                             </button>
-                                                                            <button type="button" class="btn btn-success btn-sm"
+                                                                            <button type="button"
+                                                                                    class="btn btn-success btn-sm"
                                                                                     onclick="buildingCommon.editBasicBuildingPropertyServiceItem('#basicBuildingPropertyServiceItemTable','#basicBuildingPropertyServiceItemModalTool',false)">
                                 <span class="btn-label">
 												<i class="fa fa-plus"></i>
@@ -419,7 +488,8 @@
                                                                         </div>
                                                                     </div>
 
-                                                                    <table class="table table-bordered" id="basicBuildingPropertyServiceItemTable"
+                                                                    <table class="table table-bordered"
+                                                                           id="basicBuildingPropertyServiceItemTable"
                                                                            data-toolbar="#toolbarBuildingPropertyServiceItemTable">
 
                                                                     </table>
@@ -441,19 +511,24 @@
                                                                 <label class="col-sm-1">平面图<span
                                                                         class="symbol required"></span></label>
                                                                 <div class="col-md-3">
-                                                                    <input id="building_floor_plan" placeholder="上传附件" class="form-control input-full" type="file">
+                                                                    <input id="building_floor_plan" placeholder="上传附件"
+                                                                           class="form-control input-full" type="file">
                                                                     <div id="_building_floor_plan"></div>
                                                                 </div>
                                                                 <label class="col-sm-1">外装图<span
                                                                         class="symbol required"></span></label>
                                                                 <div class="col-md-3">
-                                                                    <input id="building_figure_outside" placeholder="上传附件" class="form-control input-full" type="file">
+                                                                    <input id="building_figure_outside"
+                                                                           placeholder="上传附件"
+                                                                           class="form-control input-full" type="file">
                                                                     <div id="_building_figure_outside"></div>
                                                                 </div>
                                                                 <label class="col-sm-1">外观图<span
                                                                         class="symbol required"></span></label>
                                                                 <div class="col-md-3">
-                                                                    <input id="building_floor_Appearance_figure" placeholder="上传附件" class="form-control input-full" type="file">
+                                                                    <input id="building_floor_Appearance_figure"
+                                                                           placeholder="上传附件"
+                                                                           class="form-control input-full" type="file">
                                                                     <div id="_building_floor_Appearance_figure"></div>
                                                                 </div>
                                                             </div>
@@ -477,7 +552,9 @@
                     </div>
                     <div class="col-md-12" style="text-align: center;padding-bottom: 1.25rem">
                         <div class="card-body">
-                            <button type="button" id="cancel_btn btn-sm" class="btn btn-default" onclick="window.close()">关闭</button>
+                            <button type="button" id="cancel_btn btn-sm" class="btn btn-default"
+                                    onclick="window.close()">关闭
+                            </button>
                             <button type="button" class="btn btn-warning" onclick="saveDataInfo();">保存</button>
                         </div>
                     </div>
@@ -489,7 +566,8 @@
 </div>
 </body>
 </html>
-<div id="basicBuildingPropertyServiceItemModalTool" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+<div id="basicBuildingPropertyServiceItemModalTool" class="modal fade bs-example-modal-lg" data-backdrop="static"
+     tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -511,61 +589,64 @@
                                     <div class="col-md-12">
                                         <div class="row form-group">
                                             <div class="col-md-12">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-2">
-                                                    服务类型<span class="symbol required"></span>
-                                                </label>
-                                                <div class="col-sm-4">
-                                                    <select required="required" name="serviceType"
-                                                            class="form-control input-full serviceType"
-                                                            onchange="">
-                                                        <option value="">-请选择-</option>
-                                                    </select>
+                                                <div class="form-inline x-valid">
+                                                    <label class="col-sm-2">
+                                                        服务类型<span class="symbol required"></span>
+                                                    </label>
+                                                    <div class="col-sm-4">
+                                                        <select required="required" name="serviceType"
+                                                                class="form-control input-full serviceType"
+                                                                onchange="">
+                                                            <option value="">-请选择-</option>
+                                                        </select>
+                                                    </div>
+                                                    <label class="col-sm-2">
+                                                        服务内容<span class="symbol required"></span>
+                                                    </label>
+                                                    <div class="col-sm-4">
+                                                        <select required="required" name="serviceContent"
+                                                                class="form-control input-full">
+                                                            <option value="">请先选择类型</option>
+                                                        </select>
+                                                    </div>
                                                 </div>
-                                                <label class="col-sm-2">
-                                                    服务内容<span class="symbol required"></span>
-                                                </label>
-                                                <div class="col-sm-4">
-                                                    <select required="required" name="serviceContent" class="form-control input-full">
-                                                        <option value="">请先选择类型</option>
-                                                    </select>
-                                                </div>
-                                            </div>
                                             </div>
                                         </div>
                                         <div class="row form-group">
                                             <div class="col-md-12">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-2">
-                                                    服务时间
-                                                </label>
-                                                <div class="col-sm-4">
-                                                    <input type="text" class="form-control input-full" name="serviceTime"
-                                                           placeholder="服务时间" required="required">
+                                                <div class="form-inline x-valid">
+                                                    <label class="col-sm-2">
+                                                        服务时间
+                                                    </label>
+                                                    <div class="col-sm-4">
+                                                        <input type="text" class="form-control input-full"
+                                                               name="serviceTime"
+                                                               placeholder="服务时间" required="required">
+                                                    </div>
+                                                    <label class="col-sm-2">
+                                                        等级评价<span class="symbol required"></span>
+                                                    </label>
+                                                    <div class="col-sm-4">
+                                                        <select required="required" name="gradeEvaluation"
+                                                                class="form-control input-full search-select select2">
+                                                            <option value="">-请选择-</option>
+                                                        </select>
+                                                    </div>
                                                 </div>
-                                                <label class="col-sm-2">
-                                                    等级评价<span class="symbol required"></span>
-                                                </label>
-                                                <div class="col-sm-4">
-                                                    <select required="required" name="gradeEvaluation"
-                                                            class="form-control input-full search-select select2">
-                                                        <option value="">-请选择-</option>
-                                                    </select>
-                                                </div>
-                                            </div>
                                             </div>
                                         </div>
                                         <div class="row form-group">
                                             <div class="col-md-12">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-2">
-                                                    收费标准<span class="symbol required"></span>
-                                                </label>
-                                                <div class="col-sm-10">
-                                                    <input type="text" class="form-control input-full" name="chargesNotes"
-                                                           placeholder="收费标准" required="required">
+                                                <div class="form-inline x-valid">
+                                                    <label class="col-sm-2">
+                                                        收费标准<span class="symbol required"></span>
+                                                    </label>
+                                                    <div class="col-sm-10">
+                                                        <input type="text" class="form-control input-full"
+                                                               name="chargesNotes"
+                                                               placeholder="收费标准" required="required">
+                                                    </div>
                                                 </div>
-                                            </div>
                                             </div>
                                         </div>
 
@@ -580,7 +661,8 @@
                 <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
                     关闭
                 </button>
-                <button type="button" class="btn btn-primary btn-sm" onclick="buildingCommon.addBasicBuildingPropertyServiceItem(this);">
+                <button type="button" class="btn btn-primary btn-sm"
+                        onclick="buildingCommon.addBasicBuildingPropertyServiceItem(this);">
                     保存
                 </button>
             </div>
@@ -625,7 +707,8 @@
                                             服务内容<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-3">
-                                            <select required="required" name="serviceContent" class="form-control input-full">
+                                            <select required="required" name="serviceContent"
+                                                    class="form-control input-full">
                                                 <option value="">请先选择类型</option>
                                             </select>
                                         </div>
@@ -681,19 +764,22 @@
         </div>
     </div>
 </div>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/assets/jquery-ui/jquery-ui.min.js?v=${assessVersion}"></script>
 <script src='${pageContext.request.contextPath}/js/common.column.js?v=${assessVersion}'></script>
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/js/examine/examine.common.js?v=${assessVersion}"></script>
 <script type="text/javascript"
-        src="${pageContext.request.contextPath}/js/examine/examine.estate.js?v=${assessVersion}"></script>
-<script type="text/javascript"
         src="${pageContext.request.contextPath}/js/examine/examine.build.js?v=${assessVersion}"></script>
-<script type="text/javascript"
-        src="${pageContext.request.contextPath}/js/examine/sonBuildView.js?v=${assessVersion}"></script>
-
+<script src='${pageContext.request.contextPath}/js/autocomplete/building.case.js?v=${assessVersion}'></script>
+<script src='${pageContext.request.contextPath}/js/autocomplete/property.js?v=${assessVersion}'></script>
+<script src='${pageContext.request.contextPath}/js/autocomplete/builder.js?v=${assessVersion}'></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/sonBuildView.js?v=${assessVersion}"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/tree-grid/css/jquery.treegrid.css">
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js?v=${assessVersion}"></script>
+<%@include file="/views/project/stageSurvey/common/applyInfoHistory.jsp" %>
+<%@include file="/views/project/stageSurvey/common/applyInfoQuote.jsp" %>
 <%@include file="/views/data/dataPropertyModelQuote.jsp" %>
 <%@include file="/views/method/module/developmentCommon.jsp" %>
 <script type="text/javascript"

@@ -104,55 +104,6 @@
         })
     };
 
-
-    //添加房屋
-    houseCommon.add = function (_this, callback) {
-        var houseNumber = $(_this).closest('form').find('[name=houseNumber]').val();
-        if (!houseNumber) {
-            notifyInfo('提示','请填写房屋编号！');
-            return false;
-        }
-        $.ajax({
-            url: getContextPath() + '/basicHouse/addHouseAndTrading',
-            data: {
-                houseNumber: houseNumber
-            },
-            success: function (result) {
-                if (result.ret) {
-                    houseCommon.showHouseView(result.data);
-                    if (callback) {
-                        callback($(_this).attr('data-mode'));
-                    }
-                }
-            }
-        })
-    };
-
-    //升级房屋
-    houseCommon.upgrade = function (_this, callback) {
-        var caseHouseId = $(_this).closest('form').find("input[name='caseHouseId']").val();
-        var housePartInMode = $(_this).attr('data-mode');
-        if (!caseHouseId) {
-            notifyInfo('提示','请选择系统中已存在的房屋信息！');
-            return false;
-        }
-        $.ajax({
-            url: getContextPath() + '/basicHouse/appWriteHouse',
-            data: {
-                caseHouseId: caseHouseId,
-                housePartInMode: housePartInMode
-            },
-            success: function (result) {
-                if (result.ret) {
-                    houseCommon.showHouseView(result.data);
-                    if (callback) {
-                        callback($(_this).attr('data-mode'));
-                    }
-                }
-            }
-        })
-    };
-
     //房屋初始化by applyId
     houseCommon.init = function (applyId, callback) {
         $.ajax({

@@ -42,58 +42,6 @@ examineCommon.getFormData = function () {
     return item;
 }
 
-
-//开发商选择
-examineCommon.developerSelect = function (this_) {
-    assessDeveloper.select(function (row) {
-        $(this_).parent().prev().val(row.name);
-        $(this_).parent().prev().prev().val(row.id);
-    });
-};
-
-//土地级别选择
-examineCommon.landLevelSelect = function (this_) {
-    var formGroup = $(this_).closest('.form-group');
-    assessLandLevelTool.select({
-        province: estateCommon.estateForm.find('[name=province]').val(),
-        city: estateCommon.estateForm.find('[name=city]').val(),
-        district: estateCommon.estateForm.find('[name=district]').val(),
-        success: function (data) {
-            formGroup.find("input[name='landLevel']").val(data.id);
-            formGroup.find("input[name='landLevelName']").val(data.name);
-            estateCommon.estateLandStateForm.find("input[name=landLevelContentResult]").val('');
-            estateCommon.estateLandStateForm.find("input[name=landFactorTotalScoreResult]").val('');
-        }
-    })
-};
-//物业选择
-examineCommon.propertySelect = function (this_) {
-    assessProperty.select(function (row) {
-        $(this_).parent().prev().val(row.name);
-        $(this_).parent().prev().prev().val(row.id);
-    });
-};
-//建造商选择
-examineCommon.builderSelect = function (this_) {
-    assessBuilder.select(function (row) {
-        $(this_).parent().prev().val(row.name);
-        $(this_).parent().prev().prev().val(row.id);
-    });
-};
-//板块选择
-examineCommon.blockSelect = function (this_) {
-    var $form = $(this_).closest('form');
-    assessBlock.select({
-        province: $form.find('[name=province]').val(),
-        city: $form.find('[name=city]').val(),
-        success: function (row) {
-            $(this_).closest('.input-group').find("input[name='blockId']").val(row.id);
-            $(this_).closest('.input-group').find("input[name='blockName']").val(row.name);
-            estateCommon.estateForm.find("#blockDescription").val(row.remark);
-        }
-    })
-};
-
 examineCommon.getBasicApplyBatchDetailList = function (obj, callback) {
     $.ajax({
         url: getContextPath() + '/basicApplyBatch/getBasicApplyBatchDetailList',

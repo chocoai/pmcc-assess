@@ -74,7 +74,6 @@ public class ErpAreaService {
                         logger.error("数据库异常");
                         throw new Exception("数据库异常");//省下面一定会有市或者区 (既然已经匹配到省说明区域下面必须有市)
                     }
-
                 }
             }
         }

@@ -639,66 +639,6 @@
         })
     };
 
-    /**
-     * 土地级别详情 填充并且赋值
-     * 说明:首先进入得是一个大型得数组对象,然后把大型数组对象分组变为2维数组对象，
-     * 然后对这个二维数组对象进行遍历在遍历得过程中随机选出一个对象然后在页面上显示这个对象得数据，并且用一个隐藏框把遍历到这个位置得对象json串化保存在这个input中
-     * @param data
-     */
-    /*
-        estateCommon.landLevelLoadHtml = function (data) {
-            if (jQuery.isEmptyObject(data)) {
-                return false;
-            }
-            var target = $("#landLevelTabContent");
-            target.empty();
-            target.parent().show();
-
-            //由于js来筛选 有大量json 解析或者字符串化 影响代码阅读度，因此改为了后台直接处理,第一次的时候有2此筛选分类这样确实代码可读性差
-            data.forEach(function (dataA, indexM) {
-                $.each(dataA, function (i, obj) {
-                    var item = estateCommon.getLandLevelFilter(obj);
-                    var landLevelBodyHtml = $("#landLevelTabContentBody").html();
-                    if (landLevelBodyHtml) {
-                        landLevelBodyHtml = landLevelBodyHtml.replace(/{dataLandLevelAchievement}/g, item.id);
-                        landLevelBodyHtml = landLevelBodyHtml.replace(/{landFactorTotalScore}/g, item.achievement);
-                        landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelCategoryName}/g, item.category);
-                        landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelTypeName}/g, item.typeName);
-                        landLevelBodyHtml = landLevelBodyHtml.replace(/{gradeName}/g, item.gradeName);
-                        var text = "";
-                        $.each(obj, function (i, n) {
-                            text += "等级:" + n.gradeName + "，说明:" + n.reamark + "； \r";
-                        });
-                        landLevelBodyHtml = landLevelBodyHtml.replace(/{reamark}/g, text);
-                        landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelContent}/g, JSON.stringify(obj));
-                        AssessCommon.loadAsyncDataDicByKey(AssessDicKey.programmeMarketCostapproachGrade, item.grade, function (html, data) {
-                            landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelGradeHTML}/g, html);
-                            target.append(landLevelBodyHtml);
-                        }, false);
-                    }
-                });
-
-                if (indexM == 0) {
-                    target.find("tr").first().find("td").first().attr("rowspan", dataA.length);
-                    target.find("tr").each(function (i, n) {
-                        if (i != 0) {
-                            $(n).find("td").first().remove();
-                        }
-                    });
-                }
-                if (indexM == 1) {
-                    var length = data[0].length;
-                    target.find("tr").eq(length).find("td").first().attr("rowspan", dataA.length);
-                    target.find("tr").each(function (i, n) {
-                        if (i > length) {
-                            $(n).find("td").first().remove();
-                        }
-                    });
-                }
-            });
-        };
-    */
-
     //js数组去重复 ,直接重载在原生js上
     Array.prototype.deleteEle = function () {
         var newArr = this;
@@ -722,10 +662,6 @@
     estateCommon.getLandLevelFilter = function (obj) {
         var random = Math.random() * (obj.length - 1);
         random = Math.round(random);
-        // if (random >= 0 && random <= obj.length - 1) {
-        // } else {
-        //     random = 0;
-        // }
         random = 0;
         var objArray = [];
         obj.forEach(function (data, index) {
@@ -752,7 +688,7 @@
         return item;
     };
 
-    //删除呀
+    //删除
     estateCommon.landLevelEmpty = function (that) {
         $(that).parent().parent().remove();
     };
@@ -1004,6 +940,20 @@
             });
 
         });
+    };
+
+    //板块选择
+    estateCommon.blockSelect = function (this_) {
+        var $form = $(this_).closest('form');
+        assessBlock.select({
+            province: $form.find('[name=province]').val(),
+            city: $form.find('[name=city]').val(),
+            success: function (row) {
+                $(this_).closest('.input-group').find("input[name='blockId']").val(row.id);
+                $(this_).closest('.input-group').find("input[name='blockName']").val(row.name);
+                estateCommon.estateForm.find("#blockDescription").val(row.remark);
+            }
+        })
     };
 
     window.estateCommon = estateCommon;
