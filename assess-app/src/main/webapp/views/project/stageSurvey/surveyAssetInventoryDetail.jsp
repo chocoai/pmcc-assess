@@ -13,8 +13,6 @@
             <%@include file="/views/share/form_head.jsp" %>
             <div class="page-inner mt--5">
                 <div class="row mt--2">
-                    <%--<%@include file="/views/share/project/projectInfoSimple.jsp" %>--%>
-                    <%--<%@include file="/views/share/project/projectPlanDetails.jsp" %>--%>
 
                     <!-- 填写表单 start -->
                     <div class="col-md-12">
@@ -42,7 +40,8 @@
                                                     核对日期<span class="symbol required"></span></label>
                                                 <div class="col-sm-3">
                                                     <label class="form-control input-full"><fmt:formatDate
-                                                            value="${surveyAssetInventory.checkDate}" pattern="yyyy-MM-dd"/></label>
+                                                            value="${surveyAssetInventory.checkDate}"
+                                                            pattern="yyyy-MM-dd"/></label>
 
                                                 </div>
                                                 <label class="col-sm-1 col-form-label">是否查看原件<span
@@ -61,36 +60,100 @@
                                                 <div class="col-sm-3">
                                                     <label class="form-control input-full">${surveyAssetInventory.segmentationLimit}</label>
                                                 </div>
-                                                <div class="showUse"></div>
+                                                <%--<div class="showUse"></div>--%>
+
+                                                <label class="col-sm-1 col-form-label">
+                                                    影响对象
+                                                </label>
+                                                <div class="col-sm-3">
+                                                    <label class="form-control input-full">${surveyAssetInventory.affectedName}</label>
+                                                </div>
+
+                                                <label class="col-sm-1 col-form-label">
+                                                    查看方法
+                                                </label>
+                                                <div class="col-sm-3">
+                                                    <label class="form-control input-full">${surveyAssetInventory.findMethodName}</label>
+                                                </div>
+
+
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div class="row form-group showCertificate">
+                                    <div class="row form-group " data-name="findMethod" style="display: none;">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
                                                 <label class="col-sm-1 col-form-label">
-                                                    能否使用
+                                                    查询的地址
                                                 </label>
                                                 <div class="col-sm-3">
-                                                    <label class="form-control input-full">${surveyAssetInventory.canUse}</label>
+                                                    <label class="form-control input-full">${surveyAssetInventory.networkAddress}</label>
                                                 </div>
 
                                                 <label class="col-sm-1 col-form-label">
-                                                    证载用途
+                                                    说明
                                                 </label>
                                                 <div class="col-sm-3">
-                                                    <label class="form-control input-full">${surveyAssetInventory.applicationName}</label>
+                                                    <label class="form-control input-full">${surveyAssetInventory.networkRemark}</label>
 
                                                 </div>
                                                 <label class="col-sm-1 col-form-label">
-                                                    是否办证</label>
+                                                    查看结果附件</label>
                                                 <div class="col-sm-3">
-                                                    <label class="form-control input-full">${surveyAssetInventory.certificateName}</label>
+                                                    <div id="_networkFindFile"></div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+
+                                    <%--<div class="row form-group showCertificate">--%>
+                                    <%--<div class="col-md-12">--%>
+                                    <%--<div class="form-inline x-valid">--%>
+                                    <%--<label class="col-sm-1 col-form-label">--%>
+                                    <%--能否使用--%>
+                                    <%--</label>--%>
+                                    <%--<div class="col-sm-3">--%>
+                                    <%--<label class="form-control input-full">${surveyAssetInventory.canUse}</label>--%>
+                                    <%--</div>--%>
+
+                                    <%--<label class="col-sm-1 col-form-label">--%>
+                                    <%--证载用途--%>
+                                    <%--</label>--%>
+                                    <%--<div class="col-sm-3">--%>
+                                    <%--<label class="form-control input-full">${surveyAssetInventory.applicationName}</label>--%>
+
+                                    <%--</div>--%>
+                                    <%--<label class="col-sm-1 col-form-label">--%>
+                                    <%--是否办证</label>--%>
+                                    <%--<div class="col-sm-3">--%>
+                                    <%--<label class="form-control input-full">${surveyAssetInventory.certificateName}</label>--%>
+                                    <%--</div>--%>
+                                    <%--</div>--%>
+                                    <%--</div>--%>
+                                    <%--</div>--%>
+
+
+                                    <c:forEach items="${surveyAssetInventory.influenceFactorRemarkList}" var="item">
+                                        <div class="row form-group">
+                                            <div class="col-md-12">
+                                                <div class="form-inline x-valid">
+                                                    <label class="col-sm-1 col-form-label">
+                                                        影响要素
+                                                    </label>
+                                                    <div class="col-sm-3">
+                                                                <label class="form-control input-full">${item.key}</label>
+                                                    </div>
+                                                    <label class="col-sm-1 col-form-label">
+                                                        说明
+                                                    </label>
+                                                    <div class="col-sm-7">
+                                                        <label class="form-control input-full">${item.value}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </c:forEach>
 
                                     <div class="row form-group">
                                         <div class="col-md-12">
@@ -189,7 +252,8 @@
                                                 </td>
                                                 <td>
                                                     <label class="form-control input-full">
-                                                        <fmt:formatDate value="${item.surveyTime}" pattern="yyyy-MM-dd"/>
+                                                        <fmt:formatDate value="${item.surveyTime}"
+                                                                        pattern="yyyy-MM-dd"/>
                                                     </label>
                                                 </td>
                                                 <td>
@@ -382,7 +446,6 @@
                             </div>
                         </div>
                     </c:if>
-                    <%--<%@include file="/views/share/form_approval.jsp" %>--%>
                 </div>
             </div>
         </div>
@@ -392,30 +455,71 @@
 </body>
 
 
-<%@include file="/views/project/stageSurvey/certificate.jsp" %>
 <script type="application/javascript">
-    $(function () {
-        loadAssetOtherRightList();
-        showLimit();
-        FileUtils.getFileShows({
-            target: "checkOriginalFile",
-            formData: {
-                tableName: AssessDBKey.SurveyAssetInventory,
-                fieldsName: AssessUploadKey.INVENTORY_CHECK_ORIGINAL,
-                tableId: '${surveyAssetInventory.id}'
-            },
-            deleteFlag: false
-        })
 
-        FileUtils.getFileShows({
-            target: "paymentStatusFile",
+    var survey = {};
+
+    survey.frm = $("#frm_asset");
+
+    survey.handleJquery = function (obj) {
+        if (obj instanceof jQuery) {
+            return obj;
+        } else {
+            return $(obj.selector);
+        }
+    };
+
+    survey.fileUpload = function (fieldsName, tableName, id, deleteFlag) {
+        FileUtils.uploadFiles({
+            target: fieldsName,
+            disabledTarget: "btn_submit",
             formData: {
-                tableName: AssessDBKey.SurveyAssetInventory,
-                fieldsName: AssessUploadKey.INVENTORY_PAYMENT_STATUS,
-                tableId: '${surveyAssetInventory.id}'
+                tableName: tableName,
+                tableId: id,
+                fieldsName: fieldsName,
+                // projectId: id
             },
-            deleteFlag: false
+            deleteFlag: deleteFlag
+        });
+    };
+
+    survey.showFile = function (fieldsName, tableName, id, deleteFlag) {
+        FileUtils.getFileShows({
+            target: fieldsName,
+            formData: {
+                tableName: tableName,
+                tableId: id,
+                fieldsName: fieldsName,
+                // projectId: id
+            },
+            deleteFlag: deleteFlag
         })
+    };
+
+    survey.isNotBlank = function (item) {
+        if (item) {
+            return true;
+        }
+        return false;
+    };
+
+    $(function () {
+        var frm = $("#frm_asset") ;
+        AssessCommon.getDataDicInfo('${surveyAssetInventory.findMethod}', function (item) {
+            if (item.fieldName == AssessDicKey.projectSurveyInventoryContentDefaultFindMethodNetwork) {
+                frm.find("div[data-name=findMethod]").show();
+            } else {
+                frm.find("div[data-name=findMethod]").hide();
+            }
+        });
+        //附件
+        var arr = ["checkOriginalFile", "paymentStatusFile", "networkFindFile", AssessUploadKey.INVENTORY_PAYMENT_STATUS, AssessUploadKey.INVENTORY_CHECK_ORIGINAL];
+
+        $.each(arr, function (i, n) {
+            survey.showFile(n, AssessDBKey.SurveyAssetInventory, '${surveyAssetInventory.id}', false);
+        });
+        showLimit();
+
 
         if ("${surveyAssetInventory}") {
             showOther();
@@ -425,100 +529,12 @@
             writeHTMLData('otherProjectName', 'otherProjectItem', 'otherProject', ${surveyAssetInventory.otherProject});
             writePaymentHTMLData(${surveyAssetInventory.paymentContent});
         }
-    })
-
-    //获取对应房产证信息
-    function checkRealEstate() {
-        Loading.progressShow();
-        $.ajax({
-            url: "${pageContext.request.contextPath}/declareRecord/getCertificateId",
-            type: "get",
-            dataType: "json",
-            data: {declareRecordId: "${projectPlanDetails.declareRecordId}"},
-            success: function (result) {
-                Loading.progressHide();
-                if (result.ret) {
-                    certificate.prototype.getAndInit(result.data.dataTableName, result.data.dataTableId);
-                }
-                else {
-                    AlertError("获取数据失败，失败原因:" + result.errmsg);
-                }
-            },
-            error: function (result) {
-                AlertError("调用服务端方法失败，失败原因:" + result);
-            }
-        })
-    }
+    });
 
     //显示附件通用
     function showFileCommon(tableId) {
-        FileUtils.getFileShows({
-            showMode: 'table',
-            target: "credentialAccessory" + tableId,
-            formData: {
-                tableName: AssessDBKey.SurveyAssetInventoryContent,
-                tableId: tableId
-            },
-            deleteFlag: false
-        })
+        survey.showFile("credentialAccessory" + tableId, AssessDBKey.SurveyAssetInventoryContent, tableId, false);
     }
-
-    function saveform() {
-        saveApprovalform("");
-    }
-
-    //加载他项权利附件
-    function loadInventoryRightFile(tableId) {
-        FileUtils.getFileShows({
-            target: "inventoryRightFile",
-            formData: {
-                tableName: AssessDBKey.SurveyAssetInventoryRight,
-                tableId: tableId
-            },
-            deleteFlag: true
-        });
-    }
-
-    function loadAssetOtherRightList() {
-        var cols = [];
-        cols.push({field: 'typeName', title: '类型'});
-        cols.push({field: 'categoryName', title: '类别'});
-        cols.push({field: 'number', title: '他权证编号'});
-        cols.push({field: 'obligor', title: '义务人'});
-        cols.push({field: 'obligee', title: '权利人'});
-        cols.push({field: 'registerArea', title: '登记面积'});
-        cols.push({field: 'rightRank', title: '他权级次'});
-        cols.push({
-            field: 'id', title: '操作', formatter: function (value, row, index) {
-                var str = '<div class="btn-margin">';
-                str += '<a class="btn btn-xs btn-warning tooltips" data-placement="top"  onclick="viewInventoryRightInfo(' + index + ')"><i class="fa fa-search fa-white"></i></a>';
-                str += '</div>';
-                return str;
-            }
-        });
-        $("#tb_inventory_right_list").bootstrapTable('destroy');
-        TableInit("tb_inventory_right_list", "${pageContext.request.contextPath}/surveyAssetInventoryRight/getListByPlanDetailsId", cols, {
-            planDetailsId: '${projectPlanDetails.id}'
-        }, {
-            showColumns: false,
-            showRefresh: false,
-            search: false,
-        });
-    }
-
-    //查看他项信息
-    function viewInventoryRightInfo(index) {
-        var row = $("#tb_inventory_right_list").bootstrapTable('getData')[index];
-        $("#viewInventoryRightModal").find('[data-name]').each(function () {
-            $(this).text('').text(row[$(this).attr('data-name')]);
-        })
-        loadInventoryRightFile(row.id);
-        $("#viewInventoryRightModal").find('[data-name=registerDate]').text(formatDate(row.registerDate, false));
-        $("#viewInventoryRightModal").find('[data-name=beginDate]').text(formatDate(row.beginDate, false));
-        $("#viewInventoryRightModal").find('[data-name=endDate]').text(formatDate(row.endDate, false));
-        $("#viewInventoryRightModal").modal();
-
-    };
 
     function showOther() {
         if ("${surveyAssetInventory.segmentationLimit}" == "可分") {
@@ -537,10 +553,10 @@
     }
 
     function showLimit() {
-        if("${surveyAssetInventory.transferLimit}"){
+        if ("${surveyAssetInventory.transferLimit}") {
             $("#bisLimit").text("是");
             $(".showLimit").show();
-        }else{
+        } else {
             $("#bisLimit").text("否");
             $(".showLimit").hide();
         }
@@ -607,6 +623,5 @@
     }
 
 </script>
-</body>
 </html>
 

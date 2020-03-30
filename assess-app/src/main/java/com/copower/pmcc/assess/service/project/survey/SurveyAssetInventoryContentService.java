@@ -11,6 +11,8 @@ import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.declare.DeclareBuildEngineeringAndEquipmentCenterService;
+import com.copower.pmcc.assess.service.project.declare.DeclareRealtyHouseCertService;
+import com.copower.pmcc.assess.service.project.declare.DeclareRealtyLandCertService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.CommonService;
@@ -22,8 +24,10 @@ import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -50,6 +54,10 @@ public class SurveyAssetInventoryContentService {
     private ProjectInfoService projectInfoService;
     @Autowired
     private DeclareBuildEngineeringAndEquipmentCenterService declareBuildEngineeringAndEquipmentCenterService;
+    @Autowired
+    private DeclareRealtyHouseCertService declareRealtyHouseCertService;
+    @Autowired
+    private DeclareRealtyLandCertService declareRealtyLandCertService;
 
     public BootstrapTableVo getList(Integer planDetailsId) {
         BootstrapTableVo vo = new BootstrapTableVo();
@@ -125,7 +133,9 @@ public class SurveyAssetInventoryContentService {
             }
         }
         List<SurveyAssetInventoryContent> inventoryContentList = Lists.newArrayList();
-        if (declareRecord == null) return inventoryContentList;
+        if (declareRecord == null) {
+            return inventoryContentList;
+        }
         List<BaseDataDic> baseDataDicList = baseDataDicService.getCacheDataDicList(declareRecord.getInventoryContentKey());
         if (CollectionUtils.isEmpty(baseDataDicList)) return inventoryContentList;
         AssessProjectTypeEnum projectType = projectInfoService.getAssessProjectType(projectInfoService.getProjectInfoById(projectId).getProjectCategoryId());
@@ -135,45 +145,95 @@ public class SurveyAssetInventoryContentService {
             surveyAssetInventoryContent.setPlanDetailsId(planDetailId);
             surveyAssetInventoryContent.setDeclareId(declareRecord.getId());
             surveyAssetInventoryContent.setInventoryContent(baseDataDic.getId());
+
             if (AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_ACTUAL_ADDRESS.equals(baseDataDic.getFieldName())) {//登记地址与实际地址
                 surveyAssetInventoryContent.setRegistration(declareRecord.getSeat());
                 inventoryContentList.add(surveyAssetInventoryContent);
             }
+
             if (AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_STRUCTURE.equals(baseDataDic.getFieldName())) {//登记结构与实际结构
                 if (AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_HOUSE.equals(projectType)) {
                     surveyAssetInventoryContent.setRegistration(declareRecord.getHousingStructure());
                     inventoryContentList.add(surveyAssetInventoryContent);
                 }
             }
+
             if (AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_USE.equals(baseDataDic.getFieldName())) {//登记用途与实际用途
-                if (AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_HOUSE.equals(projectType)) {
+                DeclareBuildEngineeringAndEquipmentCenter query = new DeclareBuildEngineeringAndEquipmentCenter();
+                if (Objects.equal(declareRecord.getDataTableName(), FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class))) {
+
+                    query.setType(DeclareRealtyHouseCert.class.getSimpleName());
+                    query.setHouseId(declareRecord.getDataTableId());
+                    List<DeclareBuildEngineeringAndEquipmentCenter> centerList = declareBuildEngineeringAndEquipmentCenterService.declareBuildEngineeringAndEquipmentCenterList(query);
+                    if (CollectionUtils.isNotEmpty(centerList)) {
+                        DeclareBuildEngineeringAndEquipmentCenter center = centerList.get(0);
+                        if (center.getLandId() != null && center.getLandId() != 0) {
+                            DeclareRealtyLandCert landCert = declareRealtyLandCertService.getDeclareRealtyLandCertById(center.getLandId());
+                            if (landCert != null) {
+                                if (StringUtils.isNotBlank(landCert.getCertUse())) {
+                                    surveyAssetInventoryContent.setActual(landCert.getCertUse());
+                                    if (Objects.equal(landCert.getCertUse(), declareRecord.getCertUse())) {
+                                        surveyAssetInventoryContent.setAreConsistent("一致");
+                                    } else {
+                                        surveyAssetInventoryContent.setAreConsistent("不一致");
+                                    }
+                                }
+                            }
+                        }
+                    }
                     surveyAssetInventoryContent.setRegistration(declareRecord.getCertUse());
-                } else if (AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_LAND.equals(projectType)) {
+                }
+                if (Objects.equal(declareRecord.getDataTableName(), FormatUtils.entityNameConvertToTableName(DeclareRealtyLandCert.class))) {
                     surveyAssetInventoryContent.setRegistration(declareRecord.getLandCertUse());
                 }
                 inventoryContentList.add(surveyAssetInventoryContent);
             }
+
             if (AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_SPACE.equals(baseDataDic.getFieldName())) {//登记空间位置与实际空间位置
                 if (AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_HOUSE.equals(projectType)) {
                     inventoryContentList.add(surveyAssetInventoryContent);
                 }
             }
             if (AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_HOUSE_LAND_ADDRESS.equals(baseDataDic.getFieldName())) {//房产证与土地证证载地址
-                if (DeclareCertificateTypeEnum.HOUSE.getKey().equals(declareRecord.getType()) || DeclareCertificateTypeEnum.LAND.getKey().equals(declareRecord.getType())) {
-                    DeclareBuildEngineeringAndEquipmentCenter query = new DeclareBuildEngineeringAndEquipmentCenter();
-                    if (DeclareCertificateTypeEnum.HOUSE.getKey().equals(declareRecord.getType())) {
-                        query.setHouseId(declareRecord.getDataTableId());
-                        query.setType(DeclareRealtyHouseCert.class.getSimpleName());
-                    }
-                    if (DeclareCertificateTypeEnum.LAND.getKey().equals(declareRecord.getType())) {
-                        query.setLandId(declareRecord.getDataTableId());
-                        query.setType(DeclareRealtyLandCert.class.getSimpleName());
-                    }
-                    if (query.getHouseId() != null || query.getLandId() != null) {
-                        List<DeclareBuildEngineeringAndEquipmentCenter> centers = declareBuildEngineeringAndEquipmentCenterService.declareBuildEngineeringAndEquipmentCenterList(query);
-                        if (CollectionUtils.isNotEmpty(centers)) {
-                            if (centers.get(0).getLandId() != null && centers.get(0).getHouseId() != null) {
-                                surveyAssetInventoryContent.setRegistration(declareRecord.getSeat());
+
+                DeclareBuildEngineeringAndEquipmentCenter query = new DeclareBuildEngineeringAndEquipmentCenter();
+//                if (DeclareCertificateTypeEnum.HOUSE.getKey().equals(declareRecord.getType()) || DeclareCertificateTypeEnum.LAND.getKey().equals(declareRecord.getType())) {
+//                    if (DeclareCertificateTypeEnum.HOUSE.getKey().equals(declareRecord.getType())) {
+//                        query.setHouseId(declareRecord.getDataTableId());
+//                        query.setType(DeclareRealtyHouseCert.class.getSimpleName());
+//                    }
+//                    if (DeclareCertificateTypeEnum.LAND.getKey().equals(declareRecord.getType())) {
+//                        query.setLandId(declareRecord.getDataTableId());
+//                        query.setType(DeclareRealtyLandCert.class.getSimpleName());
+//                    }
+//                    if (query.getHouseId() != null || query.getLandId() != null) {
+//                        List<DeclareBuildEngineeringAndEquipmentCenter> centers = declareBuildEngineeringAndEquipmentCenterService.declareBuildEngineeringAndEquipmentCenterList(query);
+//                        if (CollectionUtils.isNotEmpty(centers)) {
+//                            if (centers.get(0).getLandId() != null && centers.get(0).getHouseId() != null) {
+//                                surveyAssetInventoryContent.setRegistration(declareRecord.getSeat());
+//                                inventoryContentList.add(surveyAssetInventoryContent);
+//                            }
+//                        }
+//                    }
+//                }
+                if (Objects.equal(declareRecord.getDataTableName(), FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class))) {
+                    query.setType(DeclareRealtyHouseCert.class.getSimpleName());
+                    query.setHouseId(declareRecord.getDataTableId());
+                    List<DeclareBuildEngineeringAndEquipmentCenter> centerList = declareBuildEngineeringAndEquipmentCenterService.declareBuildEngineeringAndEquipmentCenterList(query);
+                    if (CollectionUtils.isNotEmpty(centerList)) {
+                        DeclareBuildEngineeringAndEquipmentCenter center = centerList.get(0);
+                        if (center.getLandId() != null && center.getLandId() != 0) {
+                            surveyAssetInventoryContent.setRegistration(declareRecord.getSeat());
+                            DeclareRealtyLandCert landCert = declareRealtyLandCertService.getDeclareRealtyLandCertById(center.getLandId());
+                            if (landCert != null) {
+                                if (StringUtils.isNotBlank(landCert.getBeLocated())) {
+                                    surveyAssetInventoryContent.setActual(landCert.getBeLocated());
+                                    if (Objects.equal(landCert.getBeLocated(), declareRecord.getSeat())) {
+                                        surveyAssetInventoryContent.setAreConsistent("一致");
+                                    } else {
+                                        surveyAssetInventoryContent.setAreConsistent("不一致");
+                                    }
+                                }
                                 inventoryContentList.add(surveyAssetInventoryContent);
                             }
                         }
@@ -181,8 +241,9 @@ public class SurveyAssetInventoryContentService {
                 }
             }
             if (AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_AREA.equals(baseDataDic.getFieldName())) {//登记面积与实际面积
-                if (declareRecord.getFloorArea() != null)
+                if (declareRecord.getFloorArea() != null) {
                     surveyAssetInventoryContent.setRegistration(String.valueOf(declareRecord.getFloorArea()));
+                }
                 inventoryContentList.add(surveyAssetInventoryContent);
             }
             if (AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_FOUR_TO_LAND.equals(baseDataDic.getFieldName())) {//土地四至

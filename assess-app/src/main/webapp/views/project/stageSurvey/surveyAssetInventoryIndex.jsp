@@ -31,6 +31,8 @@
                             <div class="card-body">
                                 <form id="frm_asset" class="form-horizontal">
                                     <input type="hidden" name="id" value="${surveyAssetInventory.id}">
+                                    <input type="hidden" name="influenceFactorRemarkText"
+                                           value="${surveyAssetInventory.influenceFactorRemarkText}">
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
@@ -688,17 +690,6 @@
     };
 
     survey.initSurveyAssetInventoryForm = function (data) {
-        //进行动态赋值对象
-        if (data.influenceFactorRemarkText) {
-            var testData = data.influenceFactorRemarkText.split(",");
-            var obj = {};
-            $.each(testData, function (i, str) {
-                var rD = str.split(":");
-                obj[rD[0]] = rD[1];
-            });
-            jQuery.extend(data, obj);
-        }
-
         var frm = survey.handleJquery(survey.frm);
         //附件
         var arr = ["checkOriginalFile", "paymentStatusFile", "networkFindFile", AssessUploadKey.INVENTORY_PAYMENT_STATUS, AssessUploadKey.INVENTORY_CHECK_ORIGINAL];
@@ -748,8 +739,8 @@
         });
         frm.find("select[name='influenceFactor']").change(function () {
             var ids = $(this).val();
-            if (! ids){
-              return false ;
+            if (!ids) {
+                return false;
             }
             var target = frm.find("select[name='influenceFactor']").closest(".form-group");
             var arr = $.grep(ids, function (n, i) {
@@ -768,7 +759,22 @@
                         html = html.replace(/{id}/g, id);
                         html = html.replace(/{name}/g, item.name);
                         target.after(html);
-                        frm.initForm(data);
+                        var influenceFactorRemarkText = frm.find("input[name=influenceFactorRemarkText]").val();
+                        //进行动态赋值对象
+                        var obj = {};
+                        if (influenceFactorRemarkText) {
+                            var testData = influenceFactorRemarkText.split(",");
+                            $.each(testData, function (i, str) {
+                                var rD = str.split(":");
+                                obj[rD[0]] = rD[1];
+                            });
+                        }
+                        if (obj){
+                            var value = obj[name] ;
+                            if (value){
+                                frm.find("textarea[name="+name+"]").val(value) ;
+                            }
+                        }
                     });
                 }
             })
@@ -923,8 +929,10 @@
         var resultData = [];
         $.each(Object.keys(surveyAssetInventory), function (i, name) {
             if (name.indexOf('influenceFactorRemarkText') != -1) {
-                if (surveyAssetInventory[name]) {
-                    resultData.push(name + ":" + surveyAssetInventory[name]);
+                if (name != 'influenceFactorRemarkText'){
+                    if (surveyAssetInventory[name]) {
+                        resultData.push(name + ":" + surveyAssetInventory[name]);
+                    }
                 }
             }
         });
