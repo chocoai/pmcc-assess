@@ -1,9 +1,5 @@
 package com.copower.pmcc.assess.common.enums.report;
 
-import com.copower.pmcc.erp.api.dto.KeyValueDto;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @Auther: zch
@@ -32,21 +28,13 @@ public enum BaseReportFieldCompareEnum {
     COUNT_COURSE("比较法测算过程"),
     COUNT_RESULT("比较法测算结果"),
 
-    HOUSEPRICE_INDEX( "比较法房价指数表"),
-    DESIGN_FORMULAS( "比较法计算公式"),
+    HOUSEPRICE_INDEX("比较法房价指数表"),
+    DESIGN_FORMULAS("比较法计算公式"),
 
-    PRICE_CONNOTATION( "比较法单价内涵"),
-    ;
-    private String key;
+    PRICE_CONNOTATION("比较法单价内涵"),;
 
     private String name;
-    private String describe;
 
-    private BaseReportFieldCompareEnum(String key, String name, String describe) {
-        this.name = name;
-        this.key = key;
-        this.describe = describe;
-    }
 
     private BaseReportFieldCompareEnum(String name) {
         this.name = name;
@@ -62,24 +50,7 @@ public enum BaseReportFieldCompareEnum {
         return null;
     }
 
-    public static List<KeyValueDto> getBaseReportFieldEnumList() {
-        List<KeyValueDto> keyValueDtos = new ArrayList<>();
-        for (BaseReportFieldCompareEnum e : BaseReportFieldCompareEnum.values()) {
-            KeyValueDto keyValueDto = new KeyValueDto();
-            keyValueDto.setKey(String.valueOf(e.getKey()));
-            keyValueDto.setValue(e.getName());
-            keyValueDtos.add(keyValueDto);
-        }
-        return keyValueDtos;
-    }
 
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
-    }
 
     public String getName() {
         return name;

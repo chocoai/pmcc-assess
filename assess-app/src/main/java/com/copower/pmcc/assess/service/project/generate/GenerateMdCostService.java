@@ -4,8 +4,9 @@ import com.alibaba.fastjson.JSONArray;
 import com.aspose.words.*;
 import com.copower.pmcc.assess.common.ArithmeticUtils;
 import com.copower.pmcc.assess.common.AsposeUtils;
+import com.copower.pmcc.assess.common.PoiUtils;
 import com.copower.pmcc.assess.common.enums.data.DataBuildingInstallCostTypeEnum;
-import com.copower.pmcc.assess.common.enums.report.BaseReportFieldEnum;
+import com.copower.pmcc.assess.common.enums.report.BaseReportMarketCostEnum;
 import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.method.MdEconomicIndicatorsApplyDto;
@@ -93,11 +94,11 @@ public class GenerateMdCostService {
         }
         String localPath = baseAttachmentService.downloadFtpFileToLocal(dtoList.get(0).getId());
         Document document = new Document(localPath);
-        Map<String, BaseReportFieldEnum> reportFieldEnumMap = new HashMap<String, BaseReportFieldEnum>(0);
-        for (BaseReportFieldEnum reportFieldEnum : BaseReportFieldEnum.values()) {
+        Map<String, BaseReportMarketCostEnum> reportFieldEnumMap = new HashMap<String, BaseReportMarketCostEnum>(0);
+        for (BaseReportMarketCostEnum reportFieldEnum : BaseReportMarketCostEnum.values()) {
             reportFieldEnumMap.put(reportFieldEnum.getName(), reportFieldEnum);
         }
-        Map<BaseReportFieldEnum, String> map = Maps.newHashMap();
+        Map<BaseReportMarketCostEnum, String> map = Maps.newHashMap();
         //获取待替换文本的集合
         List<String> stringList = generateCommonMethod.specialTreatment(AsposeUtils.getRegexList(document, null));
         //获取所有书签集合
@@ -133,7 +134,7 @@ public class GenerateMdCostService {
         if (!map.isEmpty()) {
             //发起线程组
             final CountDownLatch countDownLatch = new CountDownLatch(map.size());
-            for (Map.Entry<BaseReportFieldEnum, String> enumStringEntry : map.entrySet()) {
+            for (Map.Entry<BaseReportMarketCostEnum, String> enumStringEntry : map.entrySet()) {
                 taskExecutor.execute(new Runnable() {
                     @Override
                     public void run() {
@@ -151,7 +152,7 @@ public class GenerateMdCostService {
             //能够阻塞线程 直到调用N次end.countDown() 方法才释放线程
             countDownLatch.await(time, TimeUnit.SECONDS);
 
-//            for (Map.Entry<BaseReportFieldEnum, String> enumStringEntry : map.entrySet()) {
+//            for (Map.Entry<BaseReportMarketCostEnum, String> enumStringEntry : map.entrySet()) {
 //                try {
 //                    setFieldObjectValue(enumStringEntry.getKey(), textMap, fileMap, bookmarkMap, mdCostVo, schemeAreaGroup, schemeJudgeObject, toolResidueRatio, mdEconomicIndicatorsApplyDto);
 //                    setFieldObjectOtherValue(enumStringEntry.getKey(), textMap, fileMap, bookmarkMap, costJSONObjectMap);
@@ -165,12 +166,14 @@ public class GenerateMdCostService {
         //替换
         if (!textMap.isEmpty()) {
             AsposeUtils.replaceText(localPath, textMap);
+            PoiUtils.replaceText(textMap, localPath);
         }
         if (!bookmarkMap.isEmpty()) {
             AsposeUtils.replaceBookmark(localPath, bookmarkMap, true);
         }
         try {
             if (!fileMap.isEmpty()) {
+                Document fileDoc = new Document(localPath) ;
                 for (Map.Entry<String, String> stringStringEntry : fileMap.entrySet()) {
                     Pattern compile = Pattern.compile(AsposeUtils.escapeExprSpecialWord(stringStringEntry.getKey()));
                     IReplacingCallback callback = new IReplacingCallback() {
@@ -183,9 +186,9 @@ public class GenerateMdCostService {
                             return ReplaceAction.REPLACE;
                         }
                     };
-                    document.getRange().replace(compile, callback, false);
+                    fileDoc.getRange().replace(compile, callback, false);
                 }
-                AsposeUtils.saveWord(localPath, document);
+                AsposeUtils.saveWord(localPath, fileDoc);
             }
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
@@ -196,7 +199,7 @@ public class GenerateMdCostService {
         return localPath;
     }
 
-    private void setFieldObjectOtherValue(BaseReportFieldEnum key, final ConcurrentHashMap<String, String> textMap, final ConcurrentHashMap<String, String> fileMap, final ConcurrentHashMap<String, String> bookmarkMap, LinkedHashMap<MdCalculatingMethodEngineeringCost, JSONArray> costJSONObjectMap) throws Exception {
+    private void setFieldObjectOtherValue(BaseReportMarketCostEnum key, final ConcurrentHashMap<String, String> textMap, final ConcurrentHashMap<String, String> fileMap, final ConcurrentHashMap<String, String> bookmarkMap, LinkedHashMap<MdCalculatingMethodEngineeringCost, JSONArray> costJSONObjectMap) throws Exception {
         switch (key) {
             case MarketCost_CalculatingMethodEngineeringCostSheet: {
                 if (costJSONObjectMap.isEmpty()) {
@@ -244,7 +247,7 @@ public class GenerateMdCostService {
      * @param key
      * @return
      */
-    private String getReportDataValue(final MdCostConstructionVo target, BaseReportFieldEnum key) {
+    private String getReportDataValue(final MdCostConstructionVo target, BaseReportMarketCostEnum key) {
         switch (key) {
             case MarketCost_UnitAreaLandPrice: {//成本法单位面积地价
                 return ArithmeticUtils.getBigDecimalString(target.getLandPurchasePrice());
@@ -254,14 +257,14 @@ public class GenerateMdCostService {
                 return ArithmeticUtils.round(bigDecimal.toString(), 0);
             }
             case MarketCost_landGetRelevant: {//成本法土地取得税费
-                String param1 = getReportDataValue(target, BaseReportFieldEnum.MarketCost_landPurchasePrice);
+                String param1 = getReportDataValue(target, BaseReportMarketCostEnum.MarketCost_landPurchasePrice);
                 BigDecimal bigDecimal = ArithmeticUtils.multiply(ArithmeticUtils.createBigDecimal(param1), target.getLandGetRelevant());
                 return ArithmeticUtils.round(bigDecimal.toString(), 0);
             }
             case MarketCost_landGetCost: {//成本法土地取得成本
-                String param1 = getReportDataValue(target, BaseReportFieldEnum.MarketCost_landPurchasePrice);
-                String param2 = getReportDataValue(target, BaseReportFieldEnum.MarketCost_landGetRelevant);
-                String param3 = getReportDataValue(target, BaseReportFieldEnum.MarketCost_additionalCostLandAcquisition);
+                String param1 = getReportDataValue(target, BaseReportMarketCostEnum.MarketCost_landPurchasePrice);
+                String param2 = getReportDataValue(target, BaseReportMarketCostEnum.MarketCost_landGetRelevant);
+                String param3 = getReportDataValue(target, BaseReportMarketCostEnum.MarketCost_additionalCostLandAcquisition);
                 BigDecimal v = ArithmeticUtils.add(new BigDecimal[]{ArithmeticUtils.createBigDecimal(param1), ArithmeticUtils.createBigDecimal(param2), ArithmeticUtils.createBigDecimal(param3)});
                 return ArithmeticUtils.round(v.toString(), 0);
             }
@@ -274,22 +277,22 @@ public class GenerateMdCostService {
                 return ArithmeticUtils.round(bigDecimal.toString(), 0);
             }
             case MarketCost_reconnaissanceDesignTotal: {//成本法勘察设计和前期工程费总计
-                return mdMarketCostService.getFieldObjectValue(BaseReportFieldEnum.MarketCost_reconnaissanceDesign, target);
+                return mdMarketCostService.getFieldObjectValue(BaseReportMarketCostEnum.MarketCost_reconnaissanceDesign, target);
             }
             case MarketCost_infrastructureCostTotal: {//成本法基础设施建设费总计
-                return mdMarketCostService.getFieldObjectValue(BaseReportFieldEnum.MarketCost_infrastructureCost, target);
+                return mdMarketCostService.getFieldObjectValue(BaseReportMarketCostEnum.MarketCost_infrastructureCost, target);
             }
             case MarketCost_infrastructureMatchingCostTotal: {//成本法基础设施建设费总计
-                return mdMarketCostService.getFieldObjectValue(BaseReportFieldEnum.MarketCost_infrastructureMatchingCost, target);
+                return mdMarketCostService.getFieldObjectValue(BaseReportMarketCostEnum.MarketCost_infrastructureMatchingCost, target);
             }
             case MarketCost_devDuringTotal: {//成本法开发期间税费总计
-                return mdMarketCostService.getFieldObjectValue(BaseReportFieldEnum.MarketCost_devDuring, target);
+                return mdMarketCostService.getFieldObjectValue(BaseReportMarketCostEnum.MarketCost_devDuring, target);
             }
             case MarketCost_otherEngineeringCostTotal: {//成本法其他工程费总计
-                return mdMarketCostService.getFieldObjectValue(BaseReportFieldEnum.MarketCost_otherEngineeringCost, target);
+                return mdMarketCostService.getFieldObjectValue(BaseReportMarketCostEnum.MarketCost_otherEngineeringCost, target);
             }
             case MarketCost_landGetCostTotal: {//成本法土地取得成本总计
-                return ArithmeticUtils.round(mdMarketCostService.getFieldObjectValue(BaseReportFieldEnum.MarketCost_landGetCostTotal, target), 2);
+                return ArithmeticUtils.round(mdMarketCostService.getFieldObjectValue(BaseReportMarketCostEnum.MarketCost_landGetCostTotal, target), 2);
             }
             case MarketCost_constructionSub: {//成本法建设成本
                 String param1 = target.getConstructionInstallationEngineeringFee().toString();
@@ -312,46 +315,46 @@ public class GenerateMdCostService {
                 return ArithmeticUtils.round(bigDecimal.toString(), 0);
             }
             case MarketCost_constructionSubtotal: {//成本法建设成本总计
-                String param1 = getReportDataValue(target, BaseReportFieldEnum.MarketCost_constructionSub);
+                String param1 = getReportDataValue(target, BaseReportMarketCostEnum.MarketCost_constructionSub);
                 BigDecimal bigDecimal = ArithmeticUtils.mul(param1, target.getDevelopBuildAreaTax().toString());
                 bigDecimal = ArithmeticUtils.div(bigDecimal, ArithmeticUtils.createBigDecimal(10000));
                 return ArithmeticUtils.round(bigDecimal.toString(), 2);
             }
             case MarketCost_unforeseenExpensesTotal: {//成本法不可预见费总计
-                String param1 = getReportDataValue(target, BaseReportFieldEnum.MarketCost_constructionSubtotal);
+                String param1 = getReportDataValue(target, BaseReportMarketCostEnum.MarketCost_constructionSubtotal);
                 BigDecimal bigDecimal = ArithmeticUtils.mul(param1, target.getUnforeseenExpenses().toString());
                 return ArithmeticUtils.round(bigDecimal.toString(), 2);
             }
             case MarketCost_managementExpenseTotal: {//成本法管理费总计
-                return mdMarketCostService.getFieldObjectValue(BaseReportFieldEnum.MarketCost_managementExpense, target);
+                return mdMarketCostService.getFieldObjectValue(BaseReportMarketCostEnum.MarketCost_managementExpense, target);
             }
             case MarketCost_salesFeeTotal: {//成本法销售费总计
-//                return mdMarketCostService.getFieldObjectValue(BaseReportFieldEnum.MarketCost_salesFee, target);
+//                return mdMarketCostService.getFieldObjectValue(BaseReportMarketCostEnum.MarketCost_salesFee, target);
                 String v1 = ArithmeticUtils.round(target.getSalesFee().toString(), 4);
                 return String.join("", v1, "v");
             }
             case MarketCost_salesTaxAndAdditionalTotal: {//成本法销售税金及附加总计
-//                return mdMarketCostService.getFieldObjectValue(BaseReportFieldEnum.MarketCost_salesTaxAndAdditionalTotal, target);
+//                return mdMarketCostService.getFieldObjectValue(BaseReportMarketCostEnum.MarketCost_salesTaxAndAdditionalTotal, target);
 
                 String v1 = ArithmeticUtils.round(target.getSalesTaxAndAdditional().toString(), 4);
                 return String.join("", v1, "v");
             }
             case MarketCost_interestInvestment: {
                 String v1 = target.getInterestInvestment();
-                String v2 = mdMarketCostService.getFieldObjectValue(BaseReportFieldEnum.MarketCost_interestInvestmentCorrectRate, target);
+                String v2 = mdMarketCostService.getFieldObjectValue(BaseReportMarketCostEnum.MarketCost_interestInvestmentCorrectRate, target);
                 return String.join("", v1, "+", v2 + "v");
             }
             case MarketCost_investmentProfit: {
                 String v1 = target.getInvestmentProfit();
-                String v2 = mdMarketCostService.getFieldObjectValue(BaseReportFieldEnum.MarketCost_investmentProfitCorrectRate, target);
+                String v2 = mdMarketCostService.getFieldObjectValue(BaseReportMarketCostEnum.MarketCost_investmentProfitCorrectRate, target);
                 v2 = ArithmeticUtils.round(ArithmeticUtils.createBigDecimal(v2), 4);
                 return String.join("", v1, "+", v2 + "v");
             }
             case MarketCost_constructionInstallationEngineeringFeeTotal: {//成本法建筑安装工程费总计
-                return mdMarketCostService.getFieldObjectValue(BaseReportFieldEnum.MarketCost_constructionInstallationEngineeringFee, target);
+                return mdMarketCostService.getFieldObjectValue(BaseReportMarketCostEnum.MarketCost_constructionInstallationEngineeringFee, target);
             }
             case MarketCost_EstateLandPrice: {//成本法楼面土地单价
-                String v = getReportDataValue(target, BaseReportFieldEnum.MarketCost_landGetCost);
+                String v = getReportDataValue(target, BaseReportMarketCostEnum.MarketCost_landGetCost);
                 v = ArithmeticUtils.div(v, target.getDevelopBuildAreaTax().toString());
                 return ArithmeticUtils.round(v, 0);
             }
@@ -362,16 +365,16 @@ public class GenerateMdCostService {
                 return target.getConstructionAssessmentValue();
             }
             case MarketCost_CompleteCostValue: {//成本法完全成本计算值
-                String v = getReportDataValue(target, BaseReportFieldEnum.MarketCost_CompleteCostTotalValue);
+                String v = getReportDataValue(target, BaseReportMarketCostEnum.MarketCost_CompleteCostTotalValue);
                 return ArithmeticUtils.mul(v, "10000", 0);
             }
             case MarketCost_constructionAssessmentPriceCorrecting: {//成本法单价
-                String param1 = getReportDataValue(target, BaseReportFieldEnum.MarketCost_CompleteCostValue);
+                String param1 = getReportDataValue(target, BaseReportMarketCostEnum.MarketCost_CompleteCostValue);
                 String value = ArithmeticUtils.div(param1, target.getDevelopBuildAreaTax().toString());
                 return ArithmeticUtils.round(value, 0);
             }
             case MarketCost_constructionAssessmentPriceCorrecting2: {
-                String v = getReportDataValue(target, BaseReportFieldEnum.MarketCost_constructionAssessmentPriceCorrecting);
+                String v = getReportDataValue(target, BaseReportMarketCostEnum.MarketCost_constructionAssessmentPriceCorrecting);
                 if (target.getResidueRatio() != null) {
                     v = ArithmeticUtils.mul(v, target.getResidueRatio().toString(), 2);
                 }
@@ -394,7 +397,7 @@ public class GenerateMdCostService {
      * @param schemeJudgeObject
      * @param toolResidueRatio
      */
-    private void setFieldObjectValue(BaseReportFieldEnum key, final ConcurrentHashMap<String, String> textMap, final ConcurrentHashMap<String, String> fileMap, final ConcurrentHashMap<String, String> bookmarkMap, MdCostVo mdCostVo, SchemeAreaGroup schemeAreaGroup, SchemeJudgeObject schemeJudgeObject, ToolResidueRatio toolResidueRatio, MdEconomicIndicatorsApplyDto mdEconomicIndicatorsApplyDto) throws Exception {
+    private void setFieldObjectValue(BaseReportMarketCostEnum key, final ConcurrentHashMap<String, String> textMap, final ConcurrentHashMap<String, String> fileMap, final ConcurrentHashMap<String, String> bookmarkMap, MdCostVo mdCostVo, SchemeAreaGroup schemeAreaGroup, SchemeJudgeObject schemeJudgeObject, ToolResidueRatio toolResidueRatio, MdEconomicIndicatorsApplyDto mdEconomicIndicatorsApplyDto) throws Exception {
         MdCostConstructionVo target = mdCostVo.getMdCostConstruction();
         String algsValue = getReportDataValue(target, key);
         if (StringUtils.isNotBlank(algsValue)) {

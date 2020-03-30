@@ -189,6 +189,36 @@ public class GenerateReportService {
         baseAttachmentService.addAttachment(sysAttachmentDto);
     }
 
+    /**
+     * 报告字段 all
+     *
+     * @return
+     */
+    private List<String> getReportEnums() {
+        List<String> names = Lists.newArrayList();
+        //公共报告 字段
+        Arrays.asList(BaseReportCommonEnum.values()).forEach(oo -> names.add(oo.getName()));
+        //基础报告 字段
+        Arrays.asList(BaseReportEnum.values()).forEach(oo -> names.add(oo.getName()));
+        //收益法 字段
+        Arrays.asList(BaseReportFieldMdIncomeEnum.values()).forEach(oo -> names.add(oo.getName()));
+        //基准地 字段
+        Arrays.asList(BaseReportFieldMdBaseLandPriceEnum.values()).forEach(oo -> names.add(oo.getName()));
+        //比较法 字段
+        Arrays.asList(BaseReportFieldCompareEnum.values()).forEach(oo -> names.add(oo.getName()));
+        //假设法 字段
+        Arrays.asList(BaseReportDevelopmentEnum.values()).forEach(oo -> names.add(oo.getName()));
+        //成本法 字段
+        Arrays.asList(BaseReportMarketCostEnum.values()).forEach(oo -> names.add(oo.getName()));
+        //银行 字段
+        Arrays.asList(BaseReportBankEnum.values()).forEach(oo -> names.add(oo.getName()));
+        //工商银行 字段
+        Arrays.asList(BaseReportField_INDUSTRIAL_AND_COMMERCIAL_BANKEnum.values()).forEach(oo -> names.add(oo.getName()));
+        //建设银行 字段
+        Arrays.asList(BaseReportFieldConstructionBankEnum.values()).forEach(oo -> names.add(oo.getName()));
+        return names;
+    }
+
 
     /**
      * 创建报告模板(具体)
@@ -200,28 +230,12 @@ public class GenerateReportService {
      * @throws Exception
      */
     private String fullReportHandlePath(BaseReportTemplate baseReportTemplate, GenerateReportInfo generateReportInfo, BaseDataDic reportType) throws Exception {
-        List<String> names = Lists.newArrayList();
-        //基础报告
-        for (BaseReportFieldEnum baseReportFieldEnum : BaseReportFieldEnum.values()) {
-            names.add(baseReportFieldEnum.getName());
-        }
-        //收益法
-        Arrays.asList(BaseReportFieldMdIncomeEnum.values()).forEach(oo -> {
-            names.add(oo.getName());
-        });
-        //基准地
-        Arrays.asList(BaseReportFieldMdBaseLandPriceEnum.values()).forEach(oo -> {
-            names.add(oo.getName());
-        });
-        //比较法
-        Arrays.asList(BaseReportFieldCompareEnum.values()).forEach(oo -> {
-            names.add(oo.getName());
-        });
+        List<String> names = getReportEnums();
         String dir = null;
         SysAttachmentDto query = new SysAttachmentDto();
         //这里很重要
         //使用曾经使用过的word进行替换
-        String[] keys = new String[]{BaseReportSymbolOperationEnum.GET.getKey(), BaseReportSymbolOperationEnum.RESET.getKey()};
+        String[] keys = new String[]{ReportSymbolOperationEnum.GET.getKey(), ReportSymbolOperationEnum.RESET.getKey()};
         for (int i = 0; i < keys.length; i++) {
             if (Objects.equal(generateReportInfo.getSymbolOperation(), keys[i])) {
                 query.setTableId(generateReportInfo.getId());
@@ -230,7 +244,7 @@ public class GenerateReportService {
             }
         }
         //使用报告模板
-        if (Objects.equal(generateReportInfo.getSymbolOperation(), BaseReportSymbolOperationEnum.NONE.getKey())) {
+        if (Objects.equal(generateReportInfo.getSymbolOperation(), ReportSymbolOperationEnum.NONE.getKey())) {
             query.setTableId(baseReportTemplate.getId());
             query.setTableName(FormatUtils.entityNameConvertToTableName(BaseReportTemplate.class));
         }
@@ -247,7 +261,7 @@ public class GenerateReportService {
         ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(generateReportInfo.getProjectId()));
         GenerateBaseDataService generateBaseDataService = new GenerateBaseDataService(projectInfoVo, generateReportInfo.getAreaGroupId(), baseReportTemplate, projectPlan);
         //重新拿号
-        if (Objects.equal(generateReportInfo.getSymbolOperation(), BaseReportSymbolOperationEnum.RESET.getKey())) {
+        if (Objects.equal(generateReportInfo.getSymbolOperation(), ReportSymbolOperationEnum.RESET.getKey())) {
             AssessProjectTypeEnum assessProjectType = projectInfoService.getAssessProjectType(projectInfoVo.getProjectCategoryId());
             ProjectNumberRecord numberRecord = projectNumberRecordService.getProjectNumberRecord(generateReportInfo.getProjectId(), generateReportInfo.getAreaGroupId(), assessProjectType, reportType.getId());
             if (numberRecord != null) {
@@ -261,7 +275,7 @@ public class GenerateReportService {
                 AsposeUtils.replaceText(dir, projectNumberRecordService.getWordNumber2(numberRecord.getNumberValue()), projectNumberRecordService.getWordNumber2(value));
             }
             //重新设回拿号标志
-            generateReportInfo.setSymbolOperation(BaseReportSymbolOperationEnum.GET.getKey());
+            generateReportInfo.setSymbolOperation(ReportSymbolOperationEnum.GET.getKey());
         }
         //评估类型(添加一个封面)
         if (generateReportInfo.getAssessCategory() != null) {
@@ -305,9 +319,9 @@ public class GenerateReportService {
         if (CollectionUtils.isNotEmpty(compareHashSet)) {
             count++;
             Iterator<String> iterator = compareHashSet.iterator();
-            while (iterator.hasNext()){
+            while (iterator.hasNext()) {
                 String next = iterator.next();
-                if (StringUtils.isBlank(next)){
+                if (StringUtils.isBlank(next)) {
                     continue;
                 }
                 try{
@@ -330,21 +344,21 @@ public class GenerateReportService {
 
     private void handleReport(String name, Map<String, String> textMap, Map<String, String> bookmarkMap, Map<String, String> fileMap, GenerateBaseDataService generateBaseDataService, GenerateReportInfo generateReportInfo, String reportType) throws Exception {
         //文号
-        if (Objects.equal(BaseReportFieldEnum.ReportNumber.getName(), name)) {
-            if (Objects.equal(generateReportInfo.getSymbolOperation(), BaseReportSymbolOperationEnum.GET.getKey())) {
+        if (Objects.equal(BaseReportCommonEnum.CommonReportNumber.getName(), name)) {
+            if (Objects.equal(generateReportInfo.getSymbolOperation(), ReportSymbolOperationEnum.GET.getKey())) {
                 generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getWordNumber());
             }
         }
         //查询码
-        if (Objects.equal(BaseReportFieldEnum.queryCode.getName(), name)) {
+        if (Objects.equal(BaseReportCommonEnum.CommonQueryCode.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateReportInfo.getQueryCode());
         }
         //备案号
-        if (Objects.equal(BaseReportFieldEnum.recordNo.getName(), name)) {
+        if (Objects.equal(BaseReportCommonEnum.CommonRecordNo.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateReportInfo.getRecordNo());
         }
         //备案日期
-        if (Objects.equal(BaseReportFieldEnum.recordDate.getName(), name)) {
+        if (Objects.equal(BaseReportCommonEnum.CommonRecordDate.getName(), name)) {
             String reportIssuanceStr = "";
             if (generateReportInfo.getRecordDate() != null) {
                 reportIssuanceStr = DateUtils.format(generateReportInfo.getRecordDate(), DateUtils.DATE_CHINESE_PATTERN);
@@ -352,26 +366,26 @@ public class GenerateReportService {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, reportIssuanceStr);
         }
         //报告编号
-        if (Objects.equal(BaseReportFieldEnum.ReportNumber2.getName(), name)) {
-            if (Objects.equal(generateReportInfo.getSymbolOperation(), BaseReportSymbolOperationEnum.GET.getKey())) {
+        if (Objects.equal(BaseReportCommonEnum.CommonReportNumbering.getName(), name)) {
+            if (Objects.equal(generateReportInfo.getSymbolOperation(), ReportSymbolOperationEnum.GET.getKey())) {
                 generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getWordNumber2());
             }
         }
         //报告二维码
-        if (Objects.equal(BaseReportFieldEnum.ReportQrcode.getName(), name)) {
-            if (Objects.equal(generateReportInfo.getSymbolOperation(), BaseReportSymbolOperationEnum.GET.getKey())) {
+        if (Objects.equal(BaseReportCommonEnum.CommonReportQrcode.getName(), name)) {
+            if (Objects.equal(generateReportInfo.getSymbolOperation(), ReportSymbolOperationEnum.GET.getKey())) {
                 generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getReportQrcode(generateReportInfo, reportType));
             }
         }
         //报告类别
-        if (Objects.equal(BaseReportFieldEnum.ReportingCategories.getName(), name)) {
+        if (Objects.equal(BaseReportCommonEnum.CommonReportingCategories.getName(), name)) {
             if (StringUtils.isNotBlank(reportType)) {
                 BaseDataDic reportTypeDic = baseDataDicService.getCacheDataDicByFieldName(reportType);
                 generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, reportTypeDic.getName());
             }
         }
         //报告出具日期
-        if (Objects.equal(BaseReportFieldEnum.ReportIssuanceDate.getName(), name)) {
+        if (Objects.equal(BaseReportCommonEnum.CommonReportIssuanceDate.getName(), name)) {
             String reportIssuanceStr = null;
             if (generateReportInfo.getReportIssuanceDate() != null) {
                 reportIssuanceStr = DateUtils.format(generateReportInfo.getReportIssuanceDate(), DateUtils.DATE_CHINESE_PATTERN);
@@ -381,192 +395,178 @@ public class GenerateReportService {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, reportIssuanceStr);
         }
         //协助工作人员
-        if (Objects.equal(BaseReportFieldEnum.AssistanceStaff.getName(), name)) {
+        if (Objects.equal(BaseReportCommonEnum.AssistanceStaff.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getAssistanceStaff(generateReportInfo));
         }
         //评估假设
-        if (Objects.equal(BaseReportFieldEnum.EVALUATION_HYPOTHESIS.getName(), name)) {
+        if (Objects.equal(BaseReportEnum.EVALUATION_HYPOTHESIS.getName(), name)) {
             String hypothesis = generateBaseDataService.getPrincipleBasisHypothesis(SchemeSupportTypeEnum.HYPOTHESIS);
             generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, hypothesis);
         }
         //评估依据
-        if (Objects.equal(BaseReportFieldEnum.EVALUATION_BASIS.getName(), name)) {
+        if (Objects.equal(BaseReportEnum.EVALUATION_BASIS.getName(), name)) {
             String basic = generateBaseDataService.getPrincipleBasisHypothesis(SchemeSupportTypeEnum.BASIS);
             generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, basic);
         }
         //评估原则
-        if (Objects.equal(BaseReportFieldEnum.EVALUATION_PRINCIPLE.getName(), name)) {
+        if (Objects.equal(BaseReportEnum.EVALUATION_PRINCIPLE.getName(), name)) {
             String principle = generateBaseDataService.getPrincipleBasisHypothesis(SchemeSupportTypeEnum.PRINCIPLE);
             generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, principle);
         }
         //变现能力分析
-        if (Objects.equal(BaseReportFieldEnum.ANALYSIS_CATEGORY_LIQUIDITY.getName(), name)) {
+        if (Objects.equal(BaseReportEnum.ANALYSIS_CATEGORY_LIQUIDITY.getName(), name)) {
             generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLiquidityRisk(SchemeSupportTypeEnum.REPORT_ANALYSIS_CATEGORY_LIQUIDITY));
         }
-        //建行个贷变现能力分析
-        if (Objects.equal(BaseReportFieldEnum.ANALYSIS_CATEGORY_LIQUIDITY2.getName(), name)) {
+        //银行变现能力分析
+        if (Objects.equal(BaseReportBankEnum.ANALYSIS_CATEGORY_LIQUIDITY.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLiquidityRiskLittle());
         }
-        if (Objects.equal(BaseReportFieldEnum.ANALYSIS_CATEGORY_LIQUIDITY3.getName(), name)) {
-            String value = generateBaseDataService.getLiquidityRiskLittle();
-            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, value);
-        }
         //风险提示
-        if (Objects.equal(BaseReportFieldEnum.ANALYSIS_CATEGORY_RISK.getName(), name)) {
+        if (Objects.equal(BaseReportEnum.ANALYSIS_CATEGORY_RISK.getName(), name)) {
             generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLiquidityRisk(SchemeSupportTypeEnum.REPORT_ANALYSIS_CATEGORY_RISK));
         }
         //社会经济发展概况
-        if (Objects.equal(BaseReportFieldEnum.BACKGROUND_ANALYSIS_DEVELOPMENT.getName(), name)) {
+        if (Objects.equal(BaseReportEnum.BACKGROUND_ANALYSIS_DEVELOPMENT.getName(), name)) {
             generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getReportAnalysis(AssessDataDicKeyConstant.REPORT_ANALYSIS_CATEGORY_BACKGROUND_DEVELOPMENT));
         }
         //房地产市场总体概况
-        if (Objects.equal(BaseReportFieldEnum.BACKGROUND_ANALYSIS_GENERAL.getName(), name)) {
+        if (Objects.equal(BaseReportEnum.BACKGROUND_ANALYSIS_GENERAL.getName(), name)) {
             generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getReportAnalysis(AssessDataDicKeyConstant.REPORT_ANALYSIS_CATEGORY_BACKGROUND_GENERAL));
         }
         //同类房地产市场状况
-        if (Objects.equal(BaseReportFieldEnum.BACKGROUND_ANALYSIS_MARKET.getName(), name)) {
+        if (Objects.equal(BaseReportEnum.BACKGROUND_ANALYSIS_MARKET.getName(), name)) {
             generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getReportAnalysis(AssessDataDicKeyConstant.REPORT_ANALYSIS_CATEGORY_BACKGROUND_MARKET));
         }
         //同类房地产市场版块状况
-        if (Objects.equal(BaseReportFieldEnum.BACKGROUND_ANALYSIS_BLOCK.getName(), name)) {
+        if (Objects.equal(BaseReportEnum.BACKGROUND_ANALYSIS_BLOCK.getName(), name)) {
             generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getReportAnalysis(AssessDataDicKeyConstant.REPORT_ANALYSIS_CATEGORY_BACKGROUND_BLOCK));
         }
         //背景估价对象区域物业总体状况
-        if (Objects.equal(BaseReportFieldEnum.BACKGROUND_ANALYSIS_PROPERTY.getName(), name)) {
+        if (Objects.equal(BaseReportEnum.BACKGROUND_ANALYSIS_PROPERTY.getName(), name)) {
             generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getReportAnalysis(AssessDataDicKeyConstant.REPORT_ANALYSIS_CATEGORY_BACKGROUND_PROPERTY));
         }
         //特别提示
-        if (Objects.equal(BaseReportFieldEnum.HotTip.getName(), name)) {
+        if (Objects.equal(BaseReportCommonEnum.CommonHotTip.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getHotTip2(0));
         }
-        //建行个贷特别提示
-        if (Objects.equal(BaseReportFieldEnum.HotTip2.getName(), name)) {
-            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getHotTip2(0));
-        }
-        if (Objects.equal(BaseReportFieldEnum.HotTip4.getName(), name)) {
+        if (Objects.equal(BaseReportFieldConstructionBankEnum.HotTipBank.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getHotTip2(2));
-        }
-        if (Objects.equal(BaseReportFieldEnum.HotTipBank.getName(), name)) {
-            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getHotTip2(2));
-        }
-        if (Objects.equal(BaseReportFieldEnum.Atypism2.getName(), name)) {
-            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getHotTip2(0));
         }
         //作业结束时间
-        if (Objects.equal(BaseReportFieldEnum.HomeWorkEndTime.getName(), name)) {
+        if (Objects.equal(BaseReportCommonEnum.HomeWorkEndTime.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getHomeWorkEndTime(generateReportInfo.getHomeWorkEndTime()));
         }
         //作业开始时间
-        if (Objects.equal(BaseReportFieldEnum.HomeWorkStartTime.getName(), name)) {
+        if (Objects.equal(BaseReportCommonEnum.HomeWorkStartTime.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getHomeWorkStartTime());
         }
         //现场查勘期
-        if (Objects.equal(BaseReportFieldEnum.surveyExamineDate.getName(), name)) {
+        if (Objects.equal(BaseReportEnum.surveyExamineDate.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSurveyExamineDate(generateReportInfo.getInvestigationsStartDate(), generateReportInfo.getInvestigationsEndDate()));
         }
         //现场查勘人员
-        if (Objects.equal(BaseReportFieldEnum.surveyExamineCreate.getName(), name)) {
+        if (Objects.equal(BaseReportEnum.surveyExamineCreate.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSurveyExamineCreate());
         }
         //房地产估价机构营业执照复印件
-        if (Objects.equal(BaseReportFieldEnum.CopyBusinessLicenseRealEstateValuationAgency.getName(), name)) {
+        if (Objects.equal(BaseReportEnum.CopyBusinessLicenseRealEstateValuationAgency.getName(), name)) {
             generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getCopyBusinessLicenseRealEstateValuationAgency());
         }
         //房地产估价机构资质证书复印件
-        if (Objects.equal(BaseReportFieldEnum.CopyQualificationCertificateRealEstateValuationInstitution.getName(), name)) {
+        if (Objects.equal(BaseReportEnum.CopyQualificationCertificateRealEstateValuationInstitution.getName(), name)) {
             generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getCopyQualificationCertificateRealEstateValuationInstitution());
         }
         //机构住所
-        if (Objects.equal(BaseReportFieldEnum.XIEHE_organizationAddress.getName(), name)) {
+        if (Objects.equal(BaseReportCommonEnum.XIEHE_organizationAddress.getName(), name)) {
             AdCompanyQualificationDto qualificationForPractising = generateBaseDataService.getCompanyQualificationForPractising();
             String value = qualificationForPractising == null ? "" : qualificationForPractising.getOrganizationAddress();
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, value);
         }
         //机构名称
-        if (Objects.equal(BaseReportFieldEnum.XIEHE_organizationName.getName(), name)
-                || Objects.equal(BaseReportFieldEnum.XIEHE_RealEstateValuationAgencyHouse.getName(), name)
-                || Objects.equal(BaseReportFieldEnum.XIEHE_RealEstateValuationAgency.getName(), name)) {
+        if (Objects.equal(BaseReportCommonEnum.XIEHE_organizationName.getName(), name)
+                || Objects.equal(BaseReportCommonEnum.XIEHE_RealEstateValuationAgencyHouse.getName(), name)
+                || Objects.equal(BaseReportCommonEnum.XIEHE_RealEstateValuationAgency.getName(), name)) {
             if (StringUtils.isNotEmpty(textMap.get(name))) return;
             AdCompanyQualificationDto qualificationForPractising = generateBaseDataService.getCompanyQualificationForPractising();
             String value = qualificationForPractising == null ? "" : qualificationForPractising.getOrganizationName();
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, value);
         }
         //机构名称法定代表人
-        if (Objects.equal(BaseReportFieldEnum.XIEHE_legalRepresentative.getName(), name)) {
+        if (Objects.equal(BaseReportCommonEnum.XIEHE_legalRepresentative.getName(), name)) {
             AdCompanyQualificationDto qualificationForPractising = generateBaseDataService.getCompanyQualificationForPractising();
             String value = qualificationForPractising == null ? "" : qualificationForPractising.getLegalRepresentative();
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, value);
         }
         //机构工商注册号
-        if (Objects.equal(BaseReportFieldEnum.XIEHE_registeredNo.getName(), name)) {
+        if (Objects.equal(BaseReportCommonEnum.XIEHE_registeredNo.getName(), name)) {
             AdCompanyQualificationDto qualificationForPractising = generateBaseDataService.getCompanyQualificationForPractising();
             String value = qualificationForPractising == null ? "" : qualificationForPractising.getRegisteredNo();
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, value);
         }
         //机构资质等级
-        if (Objects.equal(BaseReportFieldEnum.XIEHE_organizationRank.getName(), name)) {
+        if (Objects.equal(BaseReportCommonEnum.XIEHE_organizationRank.getName(), name)) {
             AdCompanyQualificationDto qualificationForPractising = generateBaseDataService.getCompanyQualificationForPractising();
             String value = qualificationForPractising == null ? "" : qualificationForPractising.getOrganizationRank();
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, value);
         }
         //机构证书号
-        if (Objects.equal(BaseReportFieldEnum.XIEHE_certificateNo.getName(), name)) {
+        if (Objects.equal(BaseReportCommonEnum.XIEHE_certificateNo.getName(), name)) {
             AdCompanyQualificationDto qualificationForPractising = generateBaseDataService.getCompanyQualificationForPractising();
             String value = qualificationForPractising == null ? "" : qualificationForPractising.getCertificateNo();
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, value);
         }
         //证书有效期
-        if (Objects.equal(BaseReportFieldEnum.XIEHE_certificateEffectiveDate.getName(), name)) {
+        if (Objects.equal(BaseReportCommonEnum.XIEHE_certificateEffectiveDate.getName(), name)) {
             AdCompanyQualificationDto qualificationForPractising = generateBaseDataService.getCompanyQualificationForPractising();
             String value = qualificationForPractising == null ? "" : qualificationForPractising.getCertificateEffectiveDate();
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, value);
         }
         //房地产估价机构信息
-        if (Objects.equal(BaseReportFieldEnum.XIEHE_organizationHouseInfo.getName(), name)) {
+        if (Objects.equal(BaseReportCommonEnum.XIEHE_organizationHouseInfo.getName(), name)) {
             generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getXIEHE_organizationInfo());
         }
         //估价机构信息
-        if (Objects.equal(BaseReportFieldEnum.XIEHE_organizationInfo.getName(), name)) {
+        if (Objects.equal(BaseReportCommonEnum.XIEHE_organizationInfo.getName(), name)) {
             generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getXIEHE_organizationInfo());
         }
         //经营范围
-        if (Objects.equal(BaseReportFieldEnum.BusinessScope.getName(), name)) {
+        if (Objects.equal(BaseReportEnum.BusinessScope.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getBusinessScope());
         }
         //注册房产估价师及注册号
-        if (Objects.equal(BaseReportFieldEnum.RegisteredHouseRealEstateValuerAndNumber.getName(), name)) {
+        if (Objects.equal(BaseReportCommonEnum.RegisteredHouseRealEstateValuerAndNumber.getName(), name)) {
             generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getRegisteredRealEstateValuerAndNumber(generateReportInfo));
         }
         //注册估价师及注册号
-        if (Objects.equal(BaseReportFieldEnum.RegisteredRealEstateValuerAndNumber.getName(), name)) {
+        if (Objects.equal(BaseReportCommonEnum.RegisteredRealEstateValuerAndNumber.getName(), name)) {
             generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getRegisteredRealEstateValuerAndNumber(generateReportInfo));
         }
         //注册估价师
-        if (Objects.equal(BaseReportFieldEnum.RegisteredRealEstateValuer.getName(), name)) {
+        if (Objects.equal(BaseReportCommonEnum.RegisteredRealEstateValuer.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getRegisteredRealEstateValuer(generateReportInfo));
         }
         //注册房地产估价师注册证书复印件
-        if (Objects.equal(BaseReportFieldEnum.RegisteredRealEstateValuerValuationInstitution.getName(), name)) {
+        if (Objects.equal(BaseReportEnum.RegisteredRealEstateValuerValuationInstitution.getName(), name)) {
             generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getRegisteredRealEstateValuerValuationInstitution(generateReportInfo));
         }
         //房地产总价
-        if (Objects.equal(BaseReportFieldEnum.TotalRealEstatePrice.getName(), name)) {
+        if (Objects.equal(BaseReportEnum.TotalRealEstatePrice.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getTotalRealEstatePrice());
         }
         //房地产总价大写金额
-        if (Objects.equal(BaseReportFieldEnum.CapitalizationAmount.getName(), name)) {
+        if (Objects.equal(BaseReportEnum.CapitalizationAmount.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getCapitalizationAmount());
         }
         //外聘专家工作概况
-        if (Objects.equal(BaseReportFieldEnum.ExpertWorkOverview.getName(), name)) {
+        if (Objects.equal(BaseReportEnum.ExpertWorkOverview.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getExpertWorkOverview());
         }
         //共有权情况
-        if (Objects.equal(BaseReportFieldEnum.Co_ownership.getName(), name)) {
+        if (Objects.equal(BaseReportBankEnum.Co_ownership.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getCo_ownership());
         }
         //估价对象详细测算过程( 收益法 , 市场比较法)
-        if (Objects.equal(BaseReportFieldEnum.DetailedCalculationProcessValuationObject.getName(), name)) {
+        if (Objects.equal(BaseReportEnum.DetailedCalculationProcessValuationObject.getName(), name)) {
             generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getDetailedCalculationProcessValuationObject());
         }
         //收益法租赁限制说明
@@ -574,282 +574,257 @@ public class GenerateReportService {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getTenancyrestrictionRemark());
         }
         //出具报告城市
-        if (Objects.equal(BaseReportFieldEnum.ReportArea.getName(), name)) {
+        if (Objects.equal(BaseReportEnum.ReportArea.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getReportAreaName());
         }
         //价值类型
-        if (Objects.equal(BaseReportFieldEnum.ValueType.getName(), name)) {
+        if (Objects.equal(BaseReportCommonEnum.CommonValueType.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getValueType());
         }
         //物业类型
-        if (Objects.equal(BaseReportFieldEnum.PROPERTY_TYPE.getName(), name)) {
+        if (Objects.equal(BaseReportEnum.PROPERTY_TYPE.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getPROPERTY_TYPE());
         }
         //价值类型描述
-        if (Objects.equal(BaseReportFieldEnum.ValueTypeDesc.getName(), name)) {
+        if (Objects.equal(BaseReportCommonEnum.CommonValueTypeDesc.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getValueTypeDesc());
         }
         //设定用途
-        if (Objects.equal(BaseReportFieldEnum.SetUse.getName(), name)) {
+        if (Objects.equal(BaseReportCommonEnum.SetUse.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSetUse(true));
         }
-        if (Objects.equal(BaseReportFieldEnum.SetUse2.getName(), name)) {
+        if (Objects.equal(BaseReportFieldConstructionBankEnum.SetUse.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSetUse(false));
         }
         //坐落
-        if (Objects.equal(BaseReportFieldEnum.Seat2.getName(), name)) {
+        if (Objects.equal(BaseReportBankEnum.Seat.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSeatText());
         }
-        if (Objects.equal(BaseReportFieldEnum.Seat.getName(), name)) {
-            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSeatText());
-        }
-        //建行个贷权证号
-        if (Objects.equal(BaseReportFieldEnum.CERT_NAME1.getName(), name)) {
-            AsposeUtils.AsposeSettingParameter parameter = AsposeUtils.getAsposeSettingParameter();
-            parameter.setFontFamily("仿宋_GB2312").setFontSize(9.0).setLineSpacing(10.00);
-            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSchemeJudgeObjectCertText());
-        }
-        if (Objects.equal(BaseReportFieldEnum.CERT_NAME2.getName(), name)) {
-            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSchemeJudgeObjectCertText());
-        }
-        if (Objects.equal(BaseReportFieldEnum.CERT_NAME3.getName(), name)) {
+        //银行通用权证号
+        if (Objects.equal(BaseReportBankEnum.CERT_NAME.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSchemeJudgeObjectCertText());
         }
         //证载用途
-        if (Objects.equal(BaseReportFieldEnum.CertificationPurpose.getName(), name)) {
+        if (Objects.equal(BaseReportCommonEnum.CommonCertificationPurpose.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSeparationCertificateUses(true));
         }
-        if (Objects.equal(BaseReportFieldEnum.CertificationPurpose2.getName(), name)) {
+        if (Objects.equal(BaseReportFieldConstructionBankEnum.CertificationPurpose.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSeparationCertificateUses(false));
         }
         //房产类型
-        if (Objects.equal(BaseReportFieldEnum.HouseType.getName(), name)) {
+        if (Objects.equal(BaseReportEnum.HouseType.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSetUse(true));
         }
         //土地 实际用途
-        if (Objects.equal(BaseReportFieldEnum.PracticalUse.getName(), name)) {
+        if (Objects.equal(BaseReportCommonEnum.PracticalUse.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getPracticalUse());
         }
         //评估面积
-        if (Objects.equal(BaseReportFieldEnum.AssessArea.getName(), name)) {
+        if (Objects.equal(BaseReportBankEnum.AssessArea.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getAssessArea());
         }
         //评估单价
-        if (Objects.equal(BaseReportFieldEnum.AssessPrice.getName(), name)) {
+        if (Objects.equal(BaseReportBankEnum.AssessPrice.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getAssessPrice());
         }
         //评估总价分述
-        if (Objects.equal(BaseReportFieldEnum.AssessPriceClassification.getName(), name)) {
+        if (Objects.equal(BaseReportFieldConstructionBankEnum.AssessPriceClassification.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getAssessPriceClassification());
         }
         //评估总价
-        if (Objects.equal(BaseReportFieldEnum.AssessTotal.getName(), name)) {
+        if (Objects.equal(BaseReportCommonEnum.CommonAssessTotal.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getAssessAssessTotal());
         }
         //评估总价大写
-        if (Objects.equal(BaseReportFieldEnum.AssessTotalRMB.getName(), name)) {
+        if (Objects.equal(BaseReportCommonEnum.CommonAssessTotalRMB.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getAssessAssessTotalAssessTotalRMB());
         }
         //登记时间
-        if (Objects.equal(BaseReportFieldEnum.RegistrationDate.getName(), name)) {
+        if (Objects.equal(BaseReportBankEnum.RegistrationDate.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getRegistrationDate());
         }
         //房屋结构 建筑结构
-        if (Objects.equal(BaseReportFieldEnum.housingStructure.getName(), name)) {
-            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getBuildingStructureCategory());
-        }
-        if (Objects.equal(BaseReportFieldEnum.housingStructure2.getName(), name)) {
+        if (Objects.equal(BaseReportBankEnum.housingStructure.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getBuildingStructureCategory());
         }
         //总层数
-        if (Objects.equal(BaseReportFieldEnum.floorCount.getName(), name)) {
-            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getFloorCount());
-        }
-        if (Objects.equal(BaseReportFieldEnum.floorCount2.getName(), name)) {
+        if (Objects.equal(BaseReportBankEnum.floorCount.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getFloorCount());
         }
         //楼盘名称
-        if (Objects.equal(BaseReportFieldEnum.estateName.getName(), name)) {
+        if (Objects.equal(BaseReportBankEnum.estateName.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getEstateName());
         }
         //房屋性质
-        if (Objects.equal(BaseReportFieldEnum.houseNature.getName(), name)) {
+        if (Objects.equal(BaseReportBankEnum.houseNature.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getHouseNature());
         }
         //房屋所有权人
-        if (Objects.equal(BaseReportFieldEnum.ownership.getName(), name)) {
+        if (Objects.equal(BaseReportBankEnum.ownership.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getOwnership());
         }
         //户型
-        if (Objects.equal(BaseReportFieldEnum.unitType.getName(), name)) {
+        if (Objects.equal(BaseReportFieldConstructionBankEnum.unitType.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getDeclareRecordUnitType());
         }
         //装修状况
-        if (Objects.equal(BaseReportFieldEnum.DecorationStatus.getName(), name)) {
+        if (Objects.equal(BaseReportFieldConstructionBankEnum.DecorationStatus.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getDecorationStatus());
         }
         //填发单位
-        if (Objects.equal(BaseReportFieldEnum.FillingUnit.getName(), name)) {
+        if (Objects.equal(BaseReportBankEnum.FillingUnit.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getFillingUnit());
         }
         //附记
-        if (Objects.equal(BaseReportFieldEnum.AttachmentReark.getName(), name)) {
+        if (Objects.equal(BaseReportBankEnum.AttachmentReark.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getAttachmentReark());
         }
         //建成年代
-        if (Objects.equal(BaseReportFieldEnum.BeCompletedTimeGetInteger.getName(), name)) {
+        if (Objects.equal(BaseReportBankEnum.BeCompletedTimeGetInteger.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getBeCompletedTimeGetInteger());
         }
         //楼层
-        if (Objects.equal(BaseReportFieldEnum.floor.getName(), name)) {
+        if (Objects.equal(BaseReportBankEnum.floor.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getDeclareRecordFloor());
         }
-        if (Objects.equal(BaseReportFieldEnum.floor2.getName(), name)) {
-            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getDeclareRecordFloor());
-        }
+
         //当前年份
-        if (Objects.equal(BaseReportFieldEnum.ThisYear.getName(), name)) {
+        if (Objects.equal(BaseReportCommonEnum.CommonThisYear.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getThisYear());
         }
         //建筑面积
-        if (Objects.equal(BaseReportFieldEnum.BuildArea.getName(), name)) {
+        if (Objects.equal(BaseReportBankEnum.BuildArea.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getBuildArea());
         }
         //套内建筑面积
-        if (Objects.equal(BaseReportFieldEnum.CoverArea.getName(), name)) {
+        if (Objects.equal(BaseReportBankEnum.CoverArea.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getCoverArea());
         }
         //委托单位
-        if (Objects.equal(BaseReportFieldEnum.EntrustedUnit.getName(), name)) {
+        if (Objects.equal(BaseReportCommonEnum.CommonEntrustedUnit.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getEntrustmentUnit());
         }
         //档案保管号
-        if (Objects.equal(BaseReportFieldEnum.ArchivesDepositNumber.getName(), name)) {
+        if (Objects.equal(BaseReportFieldConstructionBankEnum.ArchivesDepositNumber.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getNetAssessmentGroundNum());
         }
         //层户数
-        if (Objects.equal(BaseReportFieldEnum.LayerNumber.getName(), name)) {
+        if (Objects.equal(BaseReportBankEnum.LayerNumber.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLayerNumber());
         }
         //朝向
-        if (Objects.equal(BaseReportFieldEnum.Orientation.getName(), name)) {
+        if (Objects.equal(BaseReportBankEnum.Orientation.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getOrientation());
         }
         //建行个贷层高
-        if (Objects.equal(BaseReportFieldEnum.StoreyHeight.getName(), name)) {
+        if (Objects.equal(BaseReportBankEnum.StoreyHeight.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getStoreyHeight());
         }
         //建行个贷其它
-        if (Objects.equal(BaseReportFieldEnum.NetAssessmentOther.getName(), name)) {
+        if (Objects.equal(BaseReportBankEnum.NetAssessmentOther.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getNetAssessmentOther());
         }
         //建行个贷丘地号
-        if (Objects.equal(BaseReportFieldEnum.NetAssessmentGroundNum.getName(), name)) {
+        if (Objects.equal(BaseReportBankEnum.NetAssessmentGroundNum.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getNetAssessmentGroundNum());
         }
-        if (Objects.equal(BaseReportFieldEnum.exteriorWallDecorate.getName(), name)) {
+        if (Objects.equal(BaseReportBankEnum.exteriorWallDecorate.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getOutfitDecorate1());
         }
-        if (Objects.equal(BaseReportFieldEnum.LobbyDecorate.getName(), name)) {
+        if (Objects.equal(BaseReportBankEnum.LobbyDecorate.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getOutfitDecorate2());
         }
         //地基及墙面
-        if (Objects.equal(BaseReportFieldEnum.FoundationAndWall.getName(), name)) {
+        if (Objects.equal(BaseReportBankEnum.FoundationAndWall.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getFoundationAndWall());
         }
         //使用状况
-        if (Objects.equal(BaseReportFieldEnum.UsageStatus.getName(), name)) {
-            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getUsageStatus());
-        }
-        if (Objects.equal(BaseReportFieldEnum.UsageStatus2.getName(), name)) {
+        if (Objects.equal(BaseReportBankEnum.UsageStatus.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getUsageStatus());
         }
         //委托目的
-        if (Objects.equal(BaseReportFieldEnum.DelegatePurpose.getName(), name)) {
+        if (Objects.equal(BaseReportCommonEnum.CommonDelegatePurpose.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getDelegatePurpose());
         }
         //委托目的表述
-        if (Objects.equal(BaseReportFieldEnum.StatementPurposeEntrustment.getName(), name)) {
+        if (Objects.equal(BaseReportCommonEnum.CommonStatementPurposeEntrustment.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getStatementPurposeEntrustment());
         }
         //评估方法 ,估价对象评估方法
-        if (Objects.equal(BaseReportFieldEnum.EvaluationMethod.getName(), name)) {
+        if (Objects.equal(BaseReportCommonEnum.EvaluationMethod.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getEvaluationMethod());
         }
         //出租或占用情况
-        if (Objects.equal(BaseReportFieldEnum.rentalPossessionDesc.getName(), name)) {
+        if (Objects.equal(BaseReportEnum.rentalPossessionDesc.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getRentalPossessionDesc());
         }
         //价值时点
-        if (Objects.equal(BaseReportFieldEnum.ValueTimePoint.getName(), name)) {
+        if (Objects.equal(BaseReportCommonEnum.CommonValueTimePoint.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getValueTimePoint());
         }
         //价值时点说明
-        if (Objects.equal(BaseReportFieldEnum.ValueTimePointRemark.getName(), name)) {
+        if (Objects.equal(BaseReportCommonEnum.CommonValueTimePointRemark.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getValueTimePointRemark());
         }
         //申报启用表单类型
-        if (Objects.equal(BaseReportFieldEnum.DecalreFormTypeAll.getName(), name)) {
+        if (Objects.equal(BaseReportEnum.DecalreFormTypeAll.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getTypesFormEnabledDeclarationOffice());
         }
         //估价技术思路
-        if (Objects.equal(BaseReportFieldEnum.EvaluationThink.getName(), name)) {
+        if (Objects.equal(BaseReportCommonEnum.EvaluationThink.getName(), name)) {
             generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getEvaluationThink());
         }
         //估价对象适用的估价方法
-        if (Objects.equal(BaseReportFieldEnum.SelectionValuationMethod.getName(), name)) {
+        if (Objects.equal(BaseReportEnum.SelectionValuationMethod.getName(), name)) {
             generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSelectionValuationMethod());
         }
         //估价对象不适用的估价方法
-        if (Objects.equal(BaseReportFieldEnum.NotSelectionValuationMethod.getName(), name)) {
+        if (Objects.equal(BaseReportEnum.NotSelectionValuationMethod.getName(), name)) {
             generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getNotSelectionValuationMethod());
         }
         //分类评估单价计算试
-        if (Objects.equal(BaseReportFieldEnum.EvaluationExpression.getName(), name)) {
+        if (Objects.equal(BaseReportEnum.EvaluationExpression.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getEvaluationExpression());
         }
         //变现分析税费
-        if (Objects.equal(BaseReportFieldEnum.LIQUIDATION_ANALYSIS.getName(), name)) {
+        if (Objects.equal(BaseReportEnum.LIQUIDATION_ANALYSIS.getName(), name)) {
             generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLiquidationAnalysis());
         }
         //法定优先受偿款
-        if (Objects.equal(BaseReportFieldEnum.StatutoryOptimumReimbursement.getName(), name)) {
+        if (Objects.equal(BaseReportBankEnum.StatutoryOptimumReimbursement.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getStatutoryOptimumReimbursement(0));
         }
-        if (Objects.equal(BaseReportFieldEnum.StatutoryOptimumReimbursement1.getName(), name)) {
-            String text = generateCommonMethod.getNumber(BaseReportFieldEnum.StatutoryOptimumReimbursement1.name());
-            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getStatutoryOptimumReimbursement(Integer.parseInt(text)));
+        if (Objects.equal(BaseReportBankEnum.StatutoryOptimumReimbursementMortgage.getName(), name)) {
+            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getStatutoryOptimumReimbursement(1));
         }
-        if (Objects.equal(BaseReportFieldEnum.StatutoryOptimumReimbursement2.getName(), name)) {
-            String text = generateCommonMethod.getNumber(BaseReportFieldEnum.StatutoryOptimumReimbursement2.name());
-            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getStatutoryOptimumReimbursement(Integer.parseInt(text)));
+        if (Objects.equal(BaseReportBankEnum.StatutoryOptimumReimbursementEngineering.getName(), name)) {
+            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getStatutoryOptimumReimbursement(2));
         }
-        if (Objects.equal(BaseReportFieldEnum.StatutoryOptimumReimbursement3.getName(), name)) {
-            String text = generateCommonMethod.getNumber(BaseReportFieldEnum.StatutoryOptimumReimbursement3.name());
-            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getStatutoryOptimumReimbursement(Integer.parseInt(text)));
+        if (Objects.equal(BaseReportBankEnum.StatutoryOptimumReimbursementOther.getName(), name)) {
+            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getStatutoryOptimumReimbursement(3));
         }
         //抵押价值总金额
-        if (Objects.equal(BaseReportFieldEnum.totalAmountMortgageValue.getName(), name)) {
+        if (Objects.equal(BaseReportEnum.totalAmountMortgageValue.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getTotalAmountMortgageValue());
         }
         //抵押价值总金额大写
-        if (Objects.equal(BaseReportFieldEnum.totalAmountMortgageValueCapitalization.getName(), name)) {
+        if (Objects.equal(BaseReportEnum.totalAmountMortgageValueCapitalization.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getTotalAmountMortgageValueCapitalization());
         }
         //他权类别
-        if (Objects.equal(BaseReportFieldEnum.HisRightType.getName(), name)) {
+        if (Objects.equal(BaseReportEnum.HisRightType.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getHisRightType(false));
         }
         //他权类别及明细
-        if (Objects.equal(BaseReportFieldEnum.HisRightTypeAndDetail.getName(), name)) {
+        if (Objects.equal(BaseReportEnum.HisRightTypeAndDetail.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getHisRightType(true));
         }
         //最佳利用方式
-        if (Objects.equal(BaseReportFieldEnum.BestUseDesc.getName(), name)) {
+        if (Objects.equal(BaseReportEnum.BestUseDesc.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getOptimumUtilizationMode());
         }
         //法定优先受偿款总金额
-        if (Objects.equal(BaseReportFieldEnum.StatutoryPriorityAmountTotal.getName(), name)) {
+        if (Objects.equal(BaseReportCommonEnum.CommonStatutoryPriorityAmountTotal.getName(), name)) {
             BigDecimal bigDecimal = generateBaseDataService.getSchemeReimbursementKnowTotalPrice();
             if (bigDecimal.doubleValue() > 0) {
                 bigDecimal = bigDecimal.divide(new BigDecimal(10000)).setScale(2, BigDecimal.ROUND_HALF_UP);
@@ -857,85 +832,86 @@ public class GenerateReportService {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, bigDecimal.toString());
         }
         //估价对象区位状况表
-        if (Objects.equal(BaseReportFieldEnum.JudgeObjectAreaStatusSheet.getName(), name)) {
+        if (Objects.equal(BaseReportEnum.JudgeObjectAreaStatusSheet.getName(), name)) {
             generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectAreaStatusSheet());
         }
         //估价土地实体状况表
-        if (Objects.equal(BaseReportFieldEnum.JudgeObjectLandStateSheet.getName(), name)) {
+        if (Objects.equal(BaseReportEnum.JudgeObjectLandStateSheet.getName(), name)) {
             generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectLandStateSheet());
         }
         //估价对象建筑实体状况表
-        if (Objects.equal(BaseReportFieldEnum.JudgeBuildLandStateSheet.getName(), name)) {
+        if (Objects.equal(BaseReportEnum.JudgeBuildLandStateSheet.getName(), name)) {
             generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeBuildLandStateSheet());
         }
         //估价对象权益状况表
-        if (Objects.equal(BaseReportFieldEnum.JudgeObjectEquitySheet.getName(), name)) {
+        if (Objects.equal(BaseReportEnum.JudgeObjectEquitySheet.getName(), name)) {
             generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectEquitySheet());
         }
         //汇总表
-        if (Objects.equal(BaseReportFieldEnum.judgeSummarySheet.getName(), name)) {
+        if (Objects.equal(BaseReportEnum.judgeSummarySheet.getName(), name)) {
             generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeSummarySheet());
         }
         //建行预评数据表格
-        if (Objects.equal(BaseReportFieldEnum.CCB_Pre_Evaluation_Data_Form.getName(), name)) {
+        if (Objects.equal(BaseReportFieldConstructionBankEnum.CCB_Pre_Evaluation_Data_Form.getName(), name)) {
             generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getCCB_Pre_Evaluation_Data_FormSheet());
         }
         //估价结果一览表
-        if (Objects.equal(BaseReportFieldEnum.JudgeBuildResultSurveySheet.getName(), name)) {
+        if (Objects.equal(BaseReportEnum.JudgeBuildResultSurveySheet.getName(), name)) {
             generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getjudgeBuildResultSurveySheet(true));
         }
-        if (Objects.equal(BaseReportFieldEnum.JudgeBuildResultSurveySheet2.getName(), name)) {
+        //估价结果一览表不含坐落
+        if (Objects.equal(BaseReportEnum.JudgeBuildResultSurveySheetNotBeLocated.getName(), name)) {
             generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getjudgeBuildResultSurveySheet(false));
         }
-        if (Objects.equal(BaseReportFieldEnum.JudgeBuildResultSurveySheet3.getName(), name)) {
+        if (Objects.equal(BaseReportFieldJudicialEnum.JudgeBuildResultSurveySheet.getName(), name)) {
             generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getjudgeBuildResultSurveySheet2());
         }
         //相关参数选取与应用
-        if (Objects.equal(BaseReportFieldEnum.SelectionApplicationParameters.getName(), name)) {
+        if (Objects.equal(BaseReportEnum.SelectionApplicationParameters.getName(), name)) {
             generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSelectionApplicationParameters());
         }
         //主要计算过程
-        if (Objects.equal(BaseReportFieldEnum.ComputationProcess.getName(), name)) {
+        if (Objects.equal(BaseReportEnum.ComputationProcess.getName(), name)) {
             generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getComputationProcess());
         }
         //估价对象市场价值的确定
-        if (Objects.equal(BaseReportFieldEnum.DeterminationMarketValueValuationObject.getName(), name)) {
+        if (Objects.equal(BaseReportEnum.DeterminationMarketValueValuationObject.getName(), name)) {
             generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getDeterminationMarketValueValuationObject());
         }
         //估价对象描述
-        if (Objects.equal(BaseReportFieldEnum.PrincipalDescribe.getName(), name)) {
+        if (Objects.equal(BaseReportCommonEnum.PrincipalDescribe.getName(), name)) {
             generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getPrincipalDescribe());
         }
         //估价信息描述
-        if (Objects.equal(BaseReportFieldEnum.PrincipalDataDescribe.getName(), name)) {
+        if (Objects.equal(BaseReportCommonEnum.PrincipalDataDescribe.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getPrincipalDataDescribe());
         }
         //估价对象权属
-        if (Objects.equal(BaseReportFieldEnum.EquityStatusObjectSheet.getName(), name)) {
+        if (Objects.equal(BaseReportEnum.EquityStatusObjectSheet.getName(), name)) {
             generateCommonMethod.putValue(false, false, true, null, bookmarkMap, fileMap, name, generateBaseDataService.getEquityStatusObjectSheet());
         }
         //估价对象权属明细清单
-        if (Objects.equal(BaseReportFieldEnum.EquityStatusObjectCheckListSheet.getName(), name)) {
+        if (Objects.equal(BaseReportEnum.EquityStatusObjectCheckListSheet.getName(), name)) {
             generateCommonMethod.putValue(false, false, true, null, bookmarkMap, fileMap, name, generateBaseDataService.getEquityStatusObjectSheetCheckList());
         }
         //权属证号
-        if (Objects.equal(BaseReportFieldEnum.EquityStatusObjectNumber.getName(), name)) {
+        if (Objects.equal(BaseReportEnum.EquityStatusObjectNumber.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getEquityStatusObjectNumber());
         }
         //分类评估方法结果
-        if (Objects.equal(BaseReportFieldEnum.EvaluationMethodResult.getName(), name)) {
+        if (Objects.equal(BaseReportEnum.EvaluationMethodResult.getName(), name)) {
             generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getEvaluationMethodResult());
         }
         //估价委托书复印件
-        if (Objects.equal(BaseReportFieldEnum.JudgeObjectPrincipalCopySheet.getName(), name)) {
+        if (Objects.equal(BaseReportEnum.JudgeObjectPrincipalCopySheet.getName(), name)) {
             generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJUDGEOBJECTPRINCIPALCOPYSHEET());
         }
         //估计对象位置示意图
-        if (Objects.equal(BaseReportFieldEnum.EstimatedObjectLocationDiagram.getName(), name)) {
+        if (Objects.equal(BaseReportEnum.EstimatedObjectLocationDiagram.getName(), name)) {
             generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getEstimatedObjectLocationDiagram());
         }
         //估价对象实况照片
-        if (Objects.equal(BaseReportFieldEnum.Valuation_Target_Live_Photos.getName(), name)) {
+        if (Objects.equal(BaseReportEnum.Valuation_Target_Live_Photos.getName(), name)) {
             try {
                 generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getValuation_Target_Live_Photos());
             } catch (Exception e) {
@@ -943,167 +919,168 @@ public class GenerateReportService {
             }
         }
         //估价对象权属证明复印件
-        if (Objects.equal(BaseReportFieldEnum.Copies_the_Ownership_Certificate_the_Valuation_Object.getName(), name)) {
+        if (Objects.equal(BaseReportEnum.Copies_the_Ownership_Certificate_the_Valuation_Object.getName(), name)) {
             generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getCopies_the_Ownership_Certificate_the_Valuation_Object());
         }
         //估价中引用的专用文件资料
-        if (Objects.equal(BaseReportFieldEnum.Special_documentation_referenced_in_valuation.getName(), name)) {
+        if (Objects.equal(BaseReportEnum.Special_documentation_referenced_in_valuation.getName(), name)) {
             generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSpecial_documentation_referenced_in_valuation());
         }
         //委托人 估价委托人
-        if (Objects.equal(BaseReportFieldEnum.PRINCIPAL.getName(), name)) {
+        if (Objects.equal(BaseReportCommonEnum.PRINCIPAL.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getPrincipal());
         }
         // 估价委托人信息
-        if (Objects.equal(BaseReportFieldEnum.PrincipalInfo.getName(), name)) {
+        if (Objects.equal(BaseReportCommonEnum.PrincipalInfo.getName(), name)) {
             generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getPrincipalInfo());
         }
         //财产范围说明
-        if (Objects.equal(BaseReportFieldEnum.ScopePropertyExplain.getName(), name)) {
+        if (Objects.equal(BaseReportEnum.ScopePropertyExplain.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getScopePropertyExplain());
         }
         //估价项目名称
-        if (Objects.equal(BaseReportFieldEnum.ValuationProjectName.getName(), name)) {
+        if (Objects.equal(BaseReportCommonEnum.ValuationProjectName.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getValuationProjectName());
         }
-        if (Objects.equal(BaseReportFieldEnum.ValuationProjectName2.getName(), name)) {
+        //司法估价项目名称
+        if (Objects.equal(BaseReportFieldJudicialEnum.ValuationProjectName.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getValuationProjectName2());
         }
         //户型及布局
-        if (Objects.equal(BaseReportFieldEnum.HuxingLayout.getName(), name)) {
+        if (Objects.equal(BaseReportBankEnum.HuxingLayout.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getHuxingLayout());
         }
         //获取某些土地证字段信息
-        if (Objects.equal(BaseReportFieldEnum.LandArea.getName(), name)) {
-            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandCertificateFieldValue(BaseReportFieldEnum.LandArea));
+        if (Objects.equal(BaseReportBankEnum.LandArea.getName(), name)) {
+            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandCertificateFieldValue(name));
         }
-        if (Objects.equal(BaseReportFieldEnum.LandCertificateField1.getName(), name)) {
-            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandCertificateFieldValue(BaseReportFieldEnum.LandCertificateField1));
+        if (Objects.equal(BaseReportBankEnum.landNumber.getName(), name)) {
+            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandCertificateFieldValue(name));
         }
-        if (Objects.equal(BaseReportFieldEnum.LandCertificateField2.getName(), name)) {
-            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandCertificateFieldValue(BaseReportFieldEnum.LandCertificateField2));
+        if (Objects.equal(BaseReportBankEnum.landownership.getName(), name)) {
+            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandCertificateFieldValue(name));
         }
-        if (Objects.equal(BaseReportFieldEnum.LandCertificateField3.getName(), name)) {
-            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandCertificateFieldValue(BaseReportFieldEnum.LandCertificateField3));
+        if (Objects.equal(BaseReportBankEnum.landcert_use.getName(), name)) {
+            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandCertificateFieldValue(name));
         }
-        if (Objects.equal(BaseReportFieldEnum.LandCertificateField4.getName(), name)) {
-            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandCertificateFieldValue(BaseReportFieldEnum.LandCertificateField4));
+        if (Objects.equal(BaseReportBankEnum.land_right_nature.getName(), name)) {
+            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandCertificateFieldValue(name));
         }
-        if (Objects.equal(BaseReportFieldEnum.LandCertificateField5.getName(), name)) {
-            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandCertificateFieldValue(BaseReportFieldEnum.LandCertificateField5));
+        if (Objects.equal(BaseReportBankEnum.landapportionment_area.getName(), name)) {
+            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandCertificateFieldValue(name));
         }
-        if (Objects.equal(BaseReportFieldEnum.LandCertificateField6.getName(), name)) {
-            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandCertificateFieldValue(BaseReportFieldEnum.LandCertificateField6));
+        if (Objects.equal(BaseReportBankEnum.landendTime.getName(), name)) {
+            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandCertificateFieldValue(name));
         }
-        if (Objects.equal(BaseReportFieldEnum.LandCertificateField7.getName(), name)) {
-            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandCertificateFieldValue(BaseReportFieldEnum.LandCertificateField7));
+        if (Objects.equal(BaseReportBankEnum.landregistration_authority.getName(), name)) {
+            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandCertificateFieldValue(name));
         }
-        if (Objects.equal(BaseReportFieldEnum.LandCertificateField8.getName(), name)) {
-            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandCertificateFieldValue(BaseReportFieldEnum.LandCertificateField8));
+        if (Objects.equal(BaseReportBankEnum.landregistration_date.getName(), name)) {
+            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandCertificateFieldValue(name));
         }
         //获取某些区位字段信息
-        if (Objects.equal(BaseReportFieldEnum.JudgeObjectLoactionField1.getName(), name)) {
-            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectLocationValue(BaseReportFieldEnum.JudgeObjectLoactionField1));
+        if (Objects.equal(BaseReportBankEnum.BankGeneralLocation.getName(), name)) {
+            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectLocationValue(name));
         }
-        if (Objects.equal(BaseReportFieldEnum.JudgeObjectLoactionField2.getName(), name)) {
-            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectLocationValue(BaseReportFieldEnum.JudgeObjectLoactionField2));
+        if (Objects.equal(BaseReportBankEnum.BankGeneralShoppingConditions.getName(), name)) {
+            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectLocationValue(name));
         }
-        if (Objects.equal(BaseReportFieldEnum.JudgeObjectLoactionField3.getName(), name)) {
-            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectLocationValue(BaseReportFieldEnum.JudgeObjectLoactionField3));
+        if (Objects.equal(BaseReportBankEnum.Bus_Convenience.getName(), name)) {
+            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectLocationValue(name));
         }
-        if (Objects.equal(BaseReportFieldEnum.JudgeObjectLoactionField4.getName(), name)) {
-            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectLocationValue(BaseReportFieldEnum.JudgeObjectLoactionField4));
+        if (Objects.equal(BaseReportBankEnum.BankGeneralTraffic_accessibility.getName(), name)) {
+            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectLocationValue(name));
         }
-        if (Objects.equal(BaseReportFieldEnum.JudgeObjectLoactionField5.getName(), name)) {
-            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectLocationValue(BaseReportFieldEnum.JudgeObjectLoactionField5));
+        if (Objects.equal(BaseReportBankEnum.BankGeneralsubway.getName(), name)) {
+            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectLocationValue(name));
         }
-        if (Objects.equal(BaseReportFieldEnum.JudgeObjectLoactionField6.getName(), name)) {
-            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectLocationValue(BaseReportFieldEnum.JudgeObjectLoactionField6));
+        if (Objects.equal(BaseReportBankEnum.BankGeneralinfrastructure.getName(), name)) {
+            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectLocationValue(name));
         }
-        if (Objects.equal(BaseReportFieldEnum.JudgeObjectLoactionField6B.getName(), name)) {
-            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectLocationValue(BaseReportFieldEnum.JudgeObjectLoactionField6B));
+        if (Objects.equal(BaseReportBankEnum.BankGeneralExternal_facilities.getName(), name)) {
+            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectLocationValue(name));
         }
-        if (Objects.equal(BaseReportFieldEnum.JudgeObjectLoactionField7.getName(), name)) {
-            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectLocationValue(BaseReportFieldEnum.JudgeObjectLoactionField7));
+        if (Objects.equal(BaseReportBankEnum.BankGeneraleducational_facility.getName(), name)) {
+            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectLocationValue(name));
         }
-        if (Objects.equal(BaseReportFieldEnum.JudgeObjectLoactionField8.getName(), name)) {
-            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectLocationValue(BaseReportFieldEnum.JudgeObjectLoactionField8));
+        if (Objects.equal(BaseReportBankEnum.BankGeneralMedical_Facilities.getName(), name)) {
+            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectLocationValue(name));
         }
-        if (Objects.equal(BaseReportFieldEnum.JudgeObjectLoactionField9.getName(), name)) {
-            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectLocationValue(BaseReportFieldEnum.JudgeObjectLoactionField9));
+        if (Objects.equal(BaseReportBankEnum.BankGeneralNatural_environment.getName(), name)) {
+            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectLocationValue(name));
         }
-        if (Objects.equal(BaseReportFieldEnum.JudgeObjectLoactionField10.getName(), name)) {
-            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectLocationValue(BaseReportFieldEnum.JudgeObjectLoactionField10));
+        if (Objects.equal(BaseReportBankEnum.BankGeneralcultural_environment.getName(), name)) {
+            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectLocationValue(name));
         }
         //获取房屋的装修情况
-        if (Objects.equal(BaseReportFieldEnum.JudgeObjectDamagedDegreeField1.getName(), name)) {
-            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectDamagedDegreeFieldA(BaseReportFieldEnum.JudgeObjectDamagedDegreeField1));
+        if (Objects.equal(BaseReportBankEnum.renovation_condition_door.getName(), name)) {
+            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectDamagedDegreeFieldA(name));
         }
-        if (Objects.equal(BaseReportFieldEnum.JudgeObjectDamagedDegreeField2.getName(), name)) {
-            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectDamagedDegreeFieldA(BaseReportFieldEnum.JudgeObjectDamagedDegreeField2));
+        if (Objects.equal(BaseReportBankEnum.renovation_condition_window.getName(), name)) {
+            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectDamagedDegreeFieldA(name));
         }
-        if (Objects.equal(BaseReportFieldEnum.JudgeObjectDamagedDegreeField3.getName(), name)) {
-            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectDamagedDegreeFieldA(BaseReportFieldEnum.JudgeObjectDamagedDegreeField3));
+        if (Objects.equal(BaseReportBankEnum.renovation_condition_land.getName(), name)) {
+            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectDamagedDegreeFieldA(name));
         }
-        if (Objects.equal(BaseReportFieldEnum.JudgeObjectDamagedDegreeField4.getName(), name)) {
-            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectDamagedDegreeFieldA(BaseReportFieldEnum.JudgeObjectDamagedDegreeField4));
+        if (Objects.equal(BaseReportBankEnum.renovation_condition_wall.getName(), name)) {
+            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectDamagedDegreeFieldA(name));
         }
-        if (Objects.equal(BaseReportFieldEnum.JudgeObjectDamagedDegreeField5.getName(), name)) {
-            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectDamagedDegreeFieldA(BaseReportFieldEnum.JudgeObjectDamagedDegreeField5));
+        if (Objects.equal(BaseReportBankEnum.renovation_condition_Canopy.getName(), name)) {
+            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectDamagedDegreeFieldA(name));
         }
-        if (Objects.equal(BaseReportFieldEnum.JudgeObjectDamagedDegreeField6.getName(), name)) {
-            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectDamagedDegreeFieldB(BaseReportFieldEnum.JudgeObjectDamagedDegreeField6));
+        if (Objects.equal(BaseReportBankEnum.renovation_condition_bathroom.getName(), name)) {
+            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectDamagedDegreeFieldB(name));
         }
-        if (Objects.equal(BaseReportFieldEnum.JudgeObjectDamagedDegreeField7.getName(), name)) {
-            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectDamagedDegreeFieldB(BaseReportFieldEnum.JudgeObjectDamagedDegreeField7));
+        if (Objects.equal(BaseReportBankEnum.renovation_condition_kitchen.getName(), name)) {
+            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectDamagedDegreeFieldB(name));
         }
-        if (Objects.equal(BaseReportFieldEnum.JudgeObjectDamagedDegreeField8.getName(), name)) {
+        if (Objects.equal(BaseReportBankEnum.renovation_condition_maintenance.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectDamagedDegreeFieldValue());
         }
-        if (Objects.equal(BaseReportFieldEnum.JudgeObjectOtherField1.getName(), name)) {
-            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectOtherFieldValue(BaseReportFieldEnum.JudgeObjectOtherField1));
+        if (Objects.equal(BaseReportBankEnum.BankGenerallandscape.getName(), name)) {
+            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectOtherFieldValue(name));
         }
-        if (Objects.equal(BaseReportFieldEnum.JudgeObjectOtherField2.getName(), name)) {
-            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectOtherFieldValue(BaseReportFieldEnum.JudgeObjectOtherField2));
+        if (Objects.equal(BaseReportBankEnum.BankGeneralFrontage.getName(), name)) {
+            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectOtherFieldValue(name));
         }
-        if (Objects.equal(BaseReportFieldEnum.JudgeObjectOtherField3.getName(), name)) {
-            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectOtherFieldValue(BaseReportFieldEnum.JudgeObjectOtherField3));
+        if (Objects.equal(BaseReportBankEnum.BankGeneralFloorSpacing.getName(), name)) {
+            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectOtherFieldValue(name));
         }
-        if (Objects.equal(BaseReportFieldEnum.JudgeObjectOtherField4.getName(), name)) {
-            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectOtherFieldValue(BaseReportFieldEnum.JudgeObjectOtherField4));
+        if (Objects.equal(BaseReportBankEnum.BankGeneralGreenlandRate.getName(), name)) {
+            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectOtherFieldValue(name));
         }
-        if (Objects.equal(BaseReportFieldEnum.JudgeObjectOtherField5.getName(), name)) {
-            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectOtherFieldValue(BaseReportFieldEnum.JudgeObjectOtherField5));
+        if (Objects.equal(BaseReportBankEnum.BankGeneralBuildingCoverage.getName(), name)) {
+            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectOtherFieldValue(name));
         }
-        if (Objects.equal(BaseReportFieldEnum.JudgeObjectOtherField6.getName(), name)) {
-            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectOtherFieldValue(BaseReportFieldEnum.JudgeObjectOtherField6));
+        if (Objects.equal(BaseReportBankEnum.BankGeneralParkingLot.getName(), name)) {
+            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectOtherFieldValue(name));
         }
-        if (Objects.equal(BaseReportFieldEnum.JudgeObjectOtherField7.getName(), name)) {
-            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectOtherFieldValue(BaseReportFieldEnum.JudgeObjectOtherField7));
+        if (Objects.equal(BaseReportBankEnum.BankGeneralPropertyManagement.getName(), name)) {
+            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectOtherFieldValue(name));
         }
-        if (Objects.equal(BaseReportFieldEnum.JudgeObjectOtherField8.getName(), name)) {
-            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectOtherFieldValue(BaseReportFieldEnum.JudgeObjectOtherField8));
+        if (Objects.equal(BaseReportBankEnum.BankGeneralSuccessRate.getName(), name)) {
+            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectOtherFieldValue(name));
         }
-        if (Objects.equal(BaseReportFieldEnum.NetAssessmentOne.getName(), name)) {
-            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getNetAssessmentNumber(BaseReportFieldEnum.NetAssessmentOne));
+        if (Objects.equal(BaseReportFieldConstructionBankEnum.NetAssessmentOne.getName(), name)) {
+            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getNetAssessmentNumber(name));
         }
-        if (Objects.equal(BaseReportFieldEnum.NetAssessmentTwo.getName(), name)) {
-            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getNetAssessmentNumber(BaseReportFieldEnum.NetAssessmentTwo));
+        if (Objects.equal(BaseReportFieldConstructionBankEnum.NetAssessmentTwo.getName(), name)) {
+            generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getNetAssessmentNumber(name));
         }
         //厌恶设施
-        if (Objects.equal(BaseReportFieldEnum.AversionFacility.getName(), name)) {
+        if (Objects.equal(BaseReportBankEnum.AversionFacility.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getAversionFacility());
         }
         //报告使用单位
-        if (Objects.equal(BaseReportFieldEnum.ReportUnitString.getName(), name)) {
+        if (Objects.equal(BaseReportCommonEnum.CommonReportUnitString.getName(), name)) {
             generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getReportUnitString());
         }
         //工行估价案例情况表
-        if (Objects.equal(BaseReportFieldEnum.ICBCValuationCaseInformationSheet.getName(), name)) {
+        if (Objects.equal(BaseReportField_INDUSTRIAL_AND_COMMERCIAL_BANKEnum.ICBCValuationCaseInformationSheet.getName(), name)) {
             generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getICBCValuationCaseInformationSheet());
         }
         //建行个贷区位分析
-        if (Objects.equal(BaseReportFieldEnum.District_Analysis.getName(), name)) {
+        if (Objects.equal(BaseReportField_INDUSTRIAL_AND_COMMERCIAL_BANKEnum.District_Analysis.getName(), name)) {
             generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getICBCDistrictAnalysisSheet());
         }
     }

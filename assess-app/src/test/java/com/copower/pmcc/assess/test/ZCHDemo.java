@@ -6,7 +6,8 @@ import com.aspose.words.*;
 import com.aspose.words.Table;
 import com.copower.pmcc.assess.common.ArithmeticUtils;
 import com.copower.pmcc.assess.common.AsposeUtils;
-import com.copower.pmcc.assess.common.enums.report.BaseReportFieldEnum;
+import com.copower.pmcc.assess.common.enums.report.BaseReportDevelopmentEnum;
+import com.copower.pmcc.assess.common.enums.report.BaseReportMarketCostEnum;
 import com.copower.pmcc.assess.dal.basis.entity.MdCalculatingMethodEngineeringCost;
 import com.copower.pmcc.assess.dal.basis.entity.MdDevelopment;
 import com.copower.pmcc.assess.dto.output.MergeCellModel;
@@ -24,9 +25,6 @@ import org.apache.poi.ss.formula.functions.T;
 import org.junit.Test;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.math.MathContext;
-import java.math.RoundingMode;
 import java.text.ParseException;
 import java.util.*;
 import java.util.List;
@@ -318,7 +316,7 @@ public class ZCHDemo {
         vo.setInterestInvestmentTax(new BigDecimal(0.05));
         vo.setSalesTaxAndAdditional(new BigDecimal(0.057));
         vo.setInvestmentProfitTax(new BigDecimal(0.2));
-        String value = getFieldObjectValue(BaseReportFieldEnum.MarketCost_constructionAssessmentPriceCorrecting, vo);
+        String value = getFieldObjectValue(BaseReportMarketCostEnum.MarketCost_constructionAssessmentPriceCorrecting, vo);
         System.out.println(value);
     }
 
@@ -359,11 +357,11 @@ public class ZCHDemo {
         mdDevelopment.setOtherAmendments(new BigDecimal(1));
         mdDevelopment.setDevelopmentDegreeRevision(new BigDecimal(-20));
 
-        String value = new MdDevelopmentService().getFieldObjectValue(BaseReportFieldEnum.Development_Price, mdDevelopment);
+        String value = new MdDevelopmentService().getFieldObjectValue(BaseReportDevelopmentEnum.Development_Price, mdDevelopment);
         System.out.println(value);
     }
 
-    private String getFieldObjectValue(BaseReportFieldEnum key, MdCostConstructionVo target) {
+    private String getFieldObjectValue(BaseReportMarketCostEnum key, MdCostConstructionVo target) {
         return new MdMarketCostService().getFieldObjectValue(key, target);
     }
 
@@ -490,6 +488,11 @@ public class ZCHDemo {
                 }
             }
         }
+    }
+
+    @Test
+    public void sdh32663(){
+//        Package p = new Package();//com.copower.pmcc.assess.common.enums.report
     }
 
 

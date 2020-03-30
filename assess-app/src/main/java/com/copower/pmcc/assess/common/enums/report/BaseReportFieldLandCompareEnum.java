@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * @Auther: zch
  * @Date: 2019/1/15 14:30
- * @Description:报告模板字段(市场比较法)
+ * @Description:报告模板字段(土地比较法)
  */
 public enum BaseReportFieldLandCompareEnum {
     BIDDING_HANGING_CASE("土地比较法招拍挂案例表"),
@@ -41,9 +41,7 @@ public enum BaseReportFieldLandCompareEnum {
     PRICE_CALCULATION_METHOD("土地比较法价格计算方式"),
     COMPUTATION_PROCESS("土地比较法计算过程"),
     COMPUTATION_RESULT("土地比较法计算结果"),
-    VALUATION_PRICE("土地比较法评估单价")
-    ;
-    private String key;
+    VALUATION_PRICE("土地比较法评估单价");
 
     private String name;
 
@@ -62,24 +60,6 @@ public enum BaseReportFieldLandCompareEnum {
         return null;
     }
 
-    public static List<KeyValueDto> getBaseReportFieldEnumList() {
-        List<KeyValueDto> keyValueDtos = new ArrayList<>();
-        for (BaseReportFieldLandCompareEnum e : BaseReportFieldLandCompareEnum.values()) {
-            KeyValueDto keyValueDto = new KeyValueDto();
-            keyValueDto.setKey(String.valueOf(e.getKey()));
-            keyValueDto.setValue(e.getName());
-            keyValueDtos.add(keyValueDto);
-        }
-        return keyValueDtos;
-    }
-
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
-    }
 
     public String getName() {
         return name;

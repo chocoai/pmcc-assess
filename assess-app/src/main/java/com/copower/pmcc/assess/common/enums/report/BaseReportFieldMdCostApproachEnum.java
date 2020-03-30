@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * @author: zch
  * @date: 2019/2/14 16:11
- * @description:报告模板字段(收益法)
+ * @description:报告模板字段(逼近法)
  */
 public enum BaseReportFieldMdCostApproachEnum implements Serializable {
     approachSetUse("逼近法土地设定用途"),//方案中设定用途*

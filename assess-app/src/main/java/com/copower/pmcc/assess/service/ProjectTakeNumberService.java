@@ -7,7 +7,8 @@ import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.enums.AssessProjectTypeEnum;
 import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
-import com.copower.pmcc.assess.common.enums.report.BaseReportFieldEnum;
+import com.copower.pmcc.assess.common.enums.report.BaseReportCommonEnum;
+import com.copower.pmcc.assess.common.enums.report.BaseReportEnum;
 import com.copower.pmcc.assess.constant.AssessProjectClassifyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectTakeNumberDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
@@ -303,8 +304,8 @@ public class ProjectTakeNumberService {
      */
     public void replaceDocument(String tempPath, String symbol, String otherPath) throws Exception {
         Document document = new Document(tempPath);
-        String reportNumber = String.join("", "${", BaseReportFieldEnum.ReportNumber.getName(), "}");
-        String reportQrcode = String.join("", "\\$\\{", BaseReportFieldEnum.ReportQrcode.getName(), "\\}");
+        String reportNumber = String.join("", "${", BaseReportCommonEnum.CommonReportNumber.getName(), "}");
+        String reportQrcode = String.join("", "\\$\\{", BaseReportCommonEnum.CommonReportQrcode.getName(), "\\}");
         document.getRange().replace(reportNumber, symbol, false, false);
         if (StringUtils.isNotBlank(otherPath)) {
             IReplacingCallback callback = new IReplacingCallback() {
