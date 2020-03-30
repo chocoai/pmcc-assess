@@ -181,7 +181,6 @@
                     tableName: AssessDBKey.DataContractCalculateTool,
                     tableId: tableId
                 },
-                signatureFlag:true,
                 deleteFlag: true
             })
         },
