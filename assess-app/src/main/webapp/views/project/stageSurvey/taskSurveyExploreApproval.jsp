@@ -180,7 +180,7 @@
         var frm = $("#frmProjectCIP");
         var data = formSerializeArray(frm);
         data.tbType = treeNode.type;
-        data.tableId = treeNode.tableId;
+        data.tbId = treeNode.tableId;
         data.tableName = treeNode.tableName;
         data.applyBatchId = treeNode.applyBatchId;
 
@@ -195,7 +195,7 @@
         data.tbType = node.type;
         data.applyBatchId = node.applyBatchId;
         data.tbId = node.tableId;
-        window.open('${pageContext.request.contextPath}/basicApplyBatch/fillInfo?' + parseParam(data));
+        window.open('${pageContext.request.contextPath}/basicApplyBatch/informationEdit?' + parseParam(data));
     }
 
     //js对象转成路径参数
