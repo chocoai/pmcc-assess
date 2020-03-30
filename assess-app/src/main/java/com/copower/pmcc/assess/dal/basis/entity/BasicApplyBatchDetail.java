@@ -17,6 +17,8 @@ public class BasicApplyBatchDetail {
 
     private Integer tableId;
 
+    private String type;
+
     private String name;
 
     private String displayName;
@@ -101,6 +103,14 @@ public class BasicApplyBatchDetail {
 
     public void setTableId(Integer tableId) {
         this.tableId = tableId;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type == null ? null : type.trim();
     }
 
     public String getName() {

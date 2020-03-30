@@ -142,7 +142,7 @@ public class BasicApplyBatchService {
                     }
                 }
             }
-            ztreeDto.setType(BasicFormClassifyEnum.getEnumByTableName(item.getTableName()).getKey());
+            ztreeDto.setType(item.getType());
             ztreeDto.setCreator(item.getCreator());
             ztreeDto.setExecutor(item.getExecutor());
             ztreeDto.setCreatorName(publicService.getUserNameByAccount(item.getCreator()));
@@ -451,6 +451,7 @@ public class BasicApplyBatchService {
         estateApplyBatchDetail.setName(basicApplyBatch.getEstateName());
         estateApplyBatchDetail.setDisplayName(basicApplyBatch.getEstateName());
         estateApplyBatchDetail.setExecutor(commonService.thisUserAccount());
+        estateApplyBatchDetail.setType(BasicFormClassifyEnum.ESTATE.getKey());
         basicApplyBatchDetailService.saveBasicApplyBatchDetail(estateApplyBatchDetail);
 
         if (AssessDataDicKeyConstant.PROJECT_SURVEY_FORM_CLASSIFY_SINGEL.equals(classifyDataDic.getFieldName())) {
@@ -467,6 +468,7 @@ public class BasicApplyBatchService {
             buildingApplyBatchDetail.setTableId(basicBuilding.getId());
             buildingApplyBatchDetail.setName("楼栋信息");
             buildingApplyBatchDetail.setDisplayName("楼栋信息");
+            buildingApplyBatchDetail.setType(BasicFormClassifyEnum.BUILDING.getKey());
             buildingApplyBatchDetail.setExecutor(commonService.thisUserAccount());
             basicApplyBatchDetailService.saveBasicApplyBatchDetail(buildingApplyBatchDetail);
             //单元
@@ -483,6 +485,7 @@ public class BasicApplyBatchService {
             unitApplyBatchDetail.setTableId(basicUnit.getId());
             unitApplyBatchDetail.setName("单元信息");
             unitApplyBatchDetail.setDisplayName("单元信息");
+            unitApplyBatchDetail.setType(BasicFormClassifyEnum.UNIT.getKey());
             unitApplyBatchDetail.setExecutor(commonService.thisUserAccount());
             basicApplyBatchDetailService.saveBasicApplyBatchDetail(unitApplyBatchDetail);
             //房屋
@@ -504,6 +507,7 @@ public class BasicApplyBatchService {
             houseApplyBatchDetail.setTableId(basicHouse.getId());
             houseApplyBatchDetail.setName("房屋信息");
             houseApplyBatchDetail.setDisplayName("房屋信息");
+            houseApplyBatchDetail.setType(BasicFormClassifyEnum.HOUSE.getKey());
             houseApplyBatchDetail.setExecutor(commonService.thisUserAccount());
             basicApplyBatchDetailService.saveBasicApplyBatchDetail(houseApplyBatchDetail);
 

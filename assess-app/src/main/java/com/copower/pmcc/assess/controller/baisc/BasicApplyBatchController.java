@@ -454,7 +454,7 @@ public class BasicApplyBatchController extends BaseController {
     @RequestMapping(value = "/informationEdit", name = "信息填写", method = RequestMethod.GET)
     public ModelAndView informationEdit(BasicFormClassifyParamDto basicFormClassifyParamDto) throws Exception {
         BasicFormClassifyEnum estateTaggingTypeEnum = BasicFormClassifyEnum.getEnumByKey(basicFormClassifyParamDto.getTbType());
-        BasicEntityAbstract entityAbstract = publicBasicService.getServiceBeanByTableName(estateTaggingTypeEnum.getTableName());
+        BasicEntityAbstract entityAbstract = publicBasicService.getServiceBeanByKey(estateTaggingTypeEnum.getKey());
         ModelAndView modelAndView = entityAbstract.getEditModelAndView(basicFormClassifyParamDto);
         modelAndView.addObject("planDetailsId", basicFormClassifyParamDto.getPlanDetailsId());
         modelAndView.addObject("tbType", basicFormClassifyParamDto.getTbType());
@@ -836,6 +836,7 @@ public class BasicApplyBatchController extends BaseController {
                     BasicFormClassifyDto dto = new BasicFormClassifyDto();
                     dto.setTableName(item.getTableName());
                     dto.setValue(item.getValue());
+                    dto.setKey(item.getKey());
                     dtos.add(dto);
                 }
             }

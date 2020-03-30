@@ -411,7 +411,6 @@
 
 
     //添加数据打开modal
-    var typeHtml = "";
     var declareRecordsHtml = "";
     batchTreeTool.showAddModal = function () {
         var node = zTreeObj.getSelectedNodes()[0];
@@ -428,96 +427,132 @@
             }
             pNode = pNode.getParentNode();
         }
-        switch (type) {
-            case "estate": {
-                html += '<div class="row form-group">';
-                html += '<div class="col-md-12">';
-                html += '<div class="form-inline x-valid">';
+        var typeHtml = "";
+        $.ajax({
+            url: "${pageContext.request.contextPath}/basicApplyBatch/getTableTypeList",
+            data: {type: type},
+            type: "get",
+            dataType: "json",
+            success: function (result) {
+                if (result.ret) {
+                    if (!jQuery.isEmptyObject(result.data)) {
+                        typeHtml = "<label class='col-sm-1 control-label'>";
+                        typeHtml += "表单类型";
+                        typeHtml += "<span class='symbol required'></span>";
+                        typeHtml += "</label>";
+                        typeHtml += "<div class='col-sm-5'>";
+                        typeHtml += "<select name='type' required class='form-control input-full' onchange='typeChange(this)'>";
+                        typeHtml += "<option value=''>--请选择--</option>";
+                        $.each(result.data, function (i, item) {
+                            typeHtml += "<option value='" + item.key + "'>" + item.value + "</option>";
+                        })
+                        typeHtml += "</select>";
+                        typeHtml += "</div>";
+                        console.log(typeHtml)
 
-                html += "<label class='col-sm-1 control-label'>";
-                html += "名称";
-                html += "<span class='symbol required'></span>";
-                html += "</label>";
-                html += " <div class='col-sm-5'>";
-                html += "<input type='text'  name='name' class='form-control input-full' required value=''>";
-                html += "</div>";
-                html += typeHtml;
-                html += "</div>";
-                html += "</div>";
-                html += "</div>";
-                html += '<div class="row form-group">';
-                html += '<div class="col-md-12">';
-                html += '<div class="form-inline x-valid">';
-                html += declareRecordsHtml;
-                html += "</div>";
-                html += "</div>";
-                html += "</div>";
-                break;
+                        switch (type) {
+                            case "estate":case "building.base": {
+                                html += '<div class="row form-group">';
+                                html += '<div class="col-md-12">';
+                                html += '<div class="form-inline x-valid">';
+                                html += "<label class='col-sm-1 control-label'>";
+                                html += "名称";
+                                html += "<span class='symbol required'></span>";
+                                html += "</label>";
+                                html += " <div class='col-sm-5'>";
+                                html += "<input type='hidden'  name='tableName' value='tb_basic_building'>";
+                                html += "<input type='text'  name='name' class='form-control input-full' required value=''>";
+                                html += "</div>";
+                                html += typeHtml;
+                                html += "</div>";
+                                html += "</div>";
+                                html += "</div>";
+                                html += '<div class="row form-group">';
+                                html += '<div class="col-md-12">';
+                                html += '<div class="form-inline x-valid">';
+                                html += declareRecordsHtml;
+                                html += "</div>";
+                                html += "</div>";
+                                html += "</div>";
+                                break;
+                            }
+                            case "building":case "building.monolaye":case "building.difference": {
+                            html += '<div class="row form-group">';
+                            html += '<div class="col-md-12">';
+                            html += '<div class="form-inline x-valid">';
+                            html += "<label class='col-sm-1 control-label'>";
+                            html += "名称";
+                            html += "<span class='symbol required'></span>";
+                            html += "</label>";
+                            html += " <div class='col-sm-5'>";
+                            html += "<input type='hidden'  name='tableName' value='tb_basic_unit'>";
+                            html += "<input type='text'  name='name' class='form-control input-full' required value=''>";
+                            html += "</div>";
+                            html += typeHtml;
+                            html += "</div>";
+                            html += "</div>";
+                            html += "</div>";
+                            html += '<div class="row form-group">';
+                            html += '<div class="col-md-12">';
+                            html += '<div class="form-inline x-valid">';
+                            html += declareRecordsHtml;
+                            html += "</div>";
+                            html += "</div>";
+                            html += "</div>";
+                            break;
+                        }
+                            case "unit": {
+                                html += '<div class="row form-group">';
+                                html += '<div class="col-md-12">';
+                                html += '<div class="form-inline x-valid">';
+                                html += "<label class='col-sm-1 control-label'>";
+                                html += "名称";
+                                html += "<span class='symbol required'></span>";
+                                html += "</label>";
+                                html += " <div class='col-sm-5'>";
+                                html += "<input type='hidden'  name='tableName' value='tb_basic_house'>";
+                                html += "<input type='text'  name='name' class='form-control input-full' required value=''>";
+                                html += "</div>";
+                                html += typeHtml;
+                                html += "</div>";
+                                html += "</div>";
+                                html += "</div>";
+                                html += '<div class="row form-group">';
+                                html += '<div class="col-md-12">';
+                                html += '<div class="form-inline x-valid">';
+                                html += declareRecordsHtml;
+                                html += "</div>";
+                                html += "</div>";
+                                html += "</div>";
+                                break;
+                            }
+                            case "house": {
+                                notifyInfo('提示', "房屋下无法继续添加节点。");
+                                return false;
+                                break;
+                            }
+                        }
+                        $("#detailContent").empty().append(html);
+                        $("#frm_detail").find("input[name='applyBatchId']").val(node.applyBatchId);
+                        $("#frm_detail").find("input[name='pid']").val(node.id);
+                        $("#frm_detail").find("input[name='executor']").val(node.creator);
+                        $("#frm_detail").find("input[name='executorName']").val(node.creatorName);
+                        $("#frm_detail").find("input[name='declareRecordId']").val(declareRecordId);
+                        $("#frm_detail").find("input[name='declareRecordName']").val(declareRecordName);
+                        $("#detail_modal").modal();
+                    }else{
+                        notifyInfo('提示',"没有下级表单") ;
+                    }
+                } else {
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result);
+                }
             }
-            case "building": {
-                html += '<div class="row form-group">';
-                html += '<div class="col-md-12">';
-                html += '<div class="form-inline x-valid">';
-                html += "<label class='col-sm-1 control-label'>";
-                html += "名称";
-                html += "<span class='symbol required'></span>";
-                html += "</label>";
-                html += " <div class='col-sm-5'>";
-                html += "<input type='text'  name='name' class='form-control input-full' required value=''>";
-                html += "</div>";
-                html += typeHtml;
-                html += "</div>";
-                html += "</div>";
-                html += "</div>";
-                html += '<div class="row form-group">';
-                html += '<div class="col-md-12">';
-                html += '<div class="form-inline x-valid">';
-                html += declareRecordsHtml;
-                html += "</div>";
-                html += "</div>";
-                html += "</div>";
-                break;
-            }
-            case "unit": {
-                html += '<div class="row form-group">';
-                html += '<div class="col-md-12">';
-                html += '<div class="form-inline x-valid">';
-                html += "<label class='col-sm-1 control-label'>";
-                html += "名称";
-                html += "<span class='symbol required'></span>";
-                html += "</label>";
-                html += " <div class='col-sm-5'>";
-                html += "<input type='text'  name='name' class='form-control input-full' required value=''>";
-                html += "</div>";
-                html += typeHtml;
-                html += "</div>";
-                html += "</div>";
-                html += "</div>";
-                html += '<div class="row form-group">';
-                html += '<div class="col-md-12">';
-                html += '<div class="form-inline x-valid">';
-                html += declareRecordsHtml;
-                html += "</div>";
-                html += "</div>";
-                html += "</div>";
-                break;
-            }
-            case "house": {
-                notifyInfo('提示', "房屋下无法继续添加节点。");
-                return false;
-                break;
-            }
-        }
-        $("#detailContent").empty().append(html);
-        $("#frm_detail").find("input[name='applyBatchId']").val(node.applyBatchId);
-        $("#frm_detail").find("input[name='pid']").val(node.id);
-        $("#frm_detail").find("input[name='executor']").val(node.creator);
-        $("#frm_detail").find("input[name='executorName']").val(node.creatorName);
-        $("#frm_detail").find("input[name='declareRecordId']").val(declareRecordId);
-        $("#frm_detail").find("input[name='declareRecordName']").val(declareRecordName);
-        $("#detail_modal").modal();
+
+        })
+
 
     }
+
 
     //保存明细
     batchTreeTool.saveItemData = function () {
@@ -541,7 +576,7 @@
                         id: result.data.id,
                         pid: result.data.pid,
                         tableId: result.data.tableId,
-                        type: result.data.tableName.replace('tb_basic_', ''),
+                        type: result.data.type,
                         displayName: result.data.displayName + '(' + result.data.executorName + ')',
                         textName: result.data.displayName,
                         executor: result.data.executor,
@@ -692,6 +727,7 @@
                     node.displayName = result.data.displayName + '(' + result.data.executorName + ')';
                     node.textName = result.data.displayName;
                     node.pid = result.data.pid;
+                    node.type = result.data.type;
                     node.executor = result.data.executor;
                     node.creator = result.data.creator;
                     node.creatorName = result.data.creatorName;
@@ -876,7 +912,8 @@
 
     batchTreeTool.showFunctionBtn = function () {
         var node = zTreeObj.getSelectedNodes()[0];
-
+        //batchTreeTool.getTypeHtml(node.type);
+        batchTreeTool.getDeclareRecordsHtml();
         //是当前执行人时
         if (node.executor == '${userAccount}') {
             $("#btnGroup").find('.btn.masterTool').show();
@@ -887,8 +924,7 @@
             $("#btnGroup").find('.btn.masterTool').hide();
         }
 
-        batchTreeTool.getTypeHtml(node.type);
-        batchTreeTool.getDeclareRecordsHtml(${projectId}, node.type);
+
     }
 
     //获取该节点下子级表单类型
@@ -907,14 +943,14 @@
                         typeHtml += "<span class='symbol required'></span>";
                         typeHtml += "</label>";
                         typeHtml += "<div class='col-sm-5'>";
-                        typeHtml += "<select name='tableName' required class='form-control input-full' onchange='typeChange(this)'>";
+                        typeHtml += "<select name='type' required class='form-control input-full' onchange='typeChange(this)'>";
                         typeHtml += "<option value=''>--请选择--</option>";
                         $.each(result.data, function (i, item) {
-                            typeHtml += "<option value='" + item.tableName + "'>" + item.value + "</option>";
+                            typeHtml += "<option value='" + item.key + "'>" + item.value + "</option>";
                         })
                         typeHtml += "</select>";
                         typeHtml += "</div>";
-
+console.log(typeHtml)
                     }
                 } else {
                     AlertError("失败", "调用服务端方法失败，失败原因:" + result);
@@ -925,7 +961,7 @@
     }
 
     //获取该节点下子级表单类型
-    batchTreeTool.getDeclareRecordsHtml = function (projectId, type) {
+    batchTreeTool.getDeclareRecordsHtml = function () {
         declareRecordsHtml = "<label class='col-sm-1 control-label'>";
         declareRecordsHtml += "权证";
         declareRecordsHtml += "</label>";
@@ -1016,7 +1052,7 @@
     }
 
     function typeChange(_this) {
-        if ($(_this).val() == AssessDBKey.BasicHouse) {
+        if ($(_this).val() == "house") {
             $("#frm_detail").find("input[name='declareRecordName']").attr("required", true);
         } else {
             $("#frm_detail").find("input[name='declareRecordName']").attr("required", false);

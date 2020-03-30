@@ -68,6 +68,29 @@
                                                                     </div>
                                                                 </div>
                                                                 <label class="col-sm-1">
+                                                                    物业类型
+                                                                </label>
+                                                                <div class="col-md-3">
+                                                                    <select name="propertyType"
+                                                                            class="form-control input-full propertyType">
+                                                                    </select>
+                                                                </div>
+                                                                <label class="col-sm-1">
+                                                                    物业类别<span class="symbol required"></span>
+                                                                </label>
+                                                                <div class="col-md-3">
+                                                                    <select name="propertyCategory"
+                                                                            class="form-control input-full propertyCategory"
+                                                                            required>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row form-group">
+                                                        <div class="col-md-12">
+                                                            <div class="form-inline x-valid">
+                                                                <label class="col-sm-1">
                                                                     土地使用年限
                                                                 </label>
                                                                 <div class="col-md-3">
@@ -78,13 +101,19 @@
                                                                            value="${basicBuilding.landUseYear}">
                                                                 </div>
                                                                 <label class="col-sm-1">
-                                                                    所在位置<span class="symbol required"></span>
+                                                                    户型区间
                                                                 </label>
                                                                 <div class="col-md-3">
-                                                                    <input type="text" placeholder="所在位置"
-                                                                           name="location"
-                                                                           class="form-control input-full" required
-                                                                           value="${basicBuilding.location}">
+                                                                    <input type="text" placeholder="户型区间"
+                                                                           name="unitInterval"
+                                                                           class="form-control input-full"
+                                                                           value="${basicBuilding.unitInterval}">
+                                                                </div>
+                                                                <label class="col-sm-1">单元数</label>
+                                                                <div class="col-md-3">
+                                                                    <input type="text" name="remark"
+                                                                           class="form-control input-full"
+                                                                           value="${basicBuilding.remark}">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -93,15 +122,23 @@
                                                         <div class="col-md-12">
                                                             <div class="form-inline x-valid">
                                                                 <label class="col-sm-1">
-                                                                    总层数<span class="symbol required"></span>
+                                                                    所在位置<span class="symbol required"></span>
                                                                 </label>
                                                                 <div class="col-md-3">
-                                                                    <input type="text" placeholder="总层数"
-                                                                           data-rule-number="true"
-                                                                           name="floorCount"
+                                                                    <input type="text" placeholder="所在位置"
+                                                                           name="location"
+                                                                           class="form-control input-full" required
+                                                                           value="${basicBuilding.location}">
+                                                                </div>
+                                                                <label class="col-sm-1">
+                                                                    层高<span class="symbol required"></span>
+                                                                </label>
+                                                                <div class="col-md-3">
+                                                                    <input type="text" placeholder="层高(数字)"
+                                                                           data-rule-number='true' required
+                                                                           name="floorHeight"
                                                                            class="form-control input-full"
-                                                                           required="required"
-                                                                           value="${basicBuilding.floorCount}">
+                                                                           value="${basicBuilding.floorHeight}">
                                                                 </div>
                                                                 <label class="col-sm-1">
                                                                     建筑高度
@@ -113,6 +150,23 @@
                                                                            class="form-control input-full"
                                                                            value="${basicBuilding.buildingHeight}">
                                                                 </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row form-group">
+                                                        <div class="col-md-12">
+                                                            <div class="form-inline x-valid">
+                                                                <label class="col-sm-1">
+                                                                    建筑面积
+                                                                </label>
+                                                                <div class="col-md-3">
+                                                                    <input type="text" placeholder="建筑面积(数字)"
+                                                                           data-rule-number='true'
+                                                                           name="buildingArea"
+                                                                           class="form-control input-full"
+                                                                           value="${basicBuilding.buildingArea}">
+                                                                </div>
                                                                 <label class="col-sm-1">
                                                                     占地面积
                                                                 </label>
@@ -123,19 +177,13 @@
                                                                            class="form-control input-full"
                                                                            value="${basicBuilding.coverAnArea}">
                                                                 </div>
+
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="row form-group">
                                                         <div class="col-md-12">
                                                             <div class="form-inline x-valid">
-
-                                                                <label class="col-sm-1">单元说明</label>
-                                                                <div class="col-md-3">
-                                                                    <input type="text" name="remark"
-                                                                           class="form-control input-full"
-                                                                           value="${basicBuilding.remark}">
-                                                                </div>
                                                                 <label class="col-sm-1">
                                                                     建筑结构类型
                                                                 </label>
@@ -270,6 +318,16 @@
                                                                            value="${basicBuilding.builder}">
                                                                 </div>
                                                                 <label class="col-sm-1">
+                                                                    物业费<span class="symbol required"></span>
+                                                                </label>
+                                                                <div class="col-md-3">
+                                                                    <input type="text" placeholder="物业费(数字)"
+                                                                           name="propertyFee" data-rule-number='true'
+                                                                           required
+                                                                           class="form-control input-full"
+                                                                           value="${basicBuilding.propertyFee}">
+                                                                </div>
+                                                                <label class="col-sm-1">
                                                                     配套公共设施使用费
                                                                 </label>
                                                                 <div class="col-md-3">
@@ -279,6 +337,13 @@
                                                                            class="form-control input-full"
                                                                            value="${basicBuilding.facilitiesUseFee}">
                                                                 </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row form-group">
+                                                        <div class="col-md-12">
+                                                            <div class="form-inline x-valid">
                                                                 <label class="col-sm-1">
                                                                     物业公司名称
                                                                 </label>
@@ -292,12 +357,6 @@
                                                                            class="form-control input-full"
                                                                            value="${basicBuilding.property}">
                                                                 </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row form-group">
-                                                        <div class="col-md-12">
-                                                            <div class="form-inline x-valid">
                                                                 <label class="col-sm-1">
                                                                     物业公司性质
                                                                 </label>
@@ -418,6 +477,8 @@
                                     </form>
                                 </div>
                                 <div class="x_content">
+                                    <%@include file="/views/project/stageSurvey/common/buildingFunction.jsp" %>
+                                    <%@include file="/views/project/stageSurvey/common/buildingOutfit.jsp" %>
                                     <c:if test="${formType eq 'industry'}">
                                         <%@include file="/views/project/stageSurvey/common/buildingMaintenance.jsp" %>
                                         <%@include file="/views/project/stageSurvey/common/buildingSurface.jsp" %>

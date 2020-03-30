@@ -15,7 +15,7 @@ public enum BasicFormClassifyEnum {
     //----房产-----------------------------------
     ESTATE("estate", "楼盘", "tb_basic_estate", "basicEstateService"),
     BUILDING("building", "楼栋", "tb_basic_building", "basicBuildingService"),
-    BUILDING_MONOLAYER("building", "楼栋（单层）", "tb_basic_building", "basicBuildingMonolayerService"),
+    BUILDING_MONOLAYER("building.monolayer", "楼栋（单层）", "tb_basic_building", "basicBuildingMonolayerService"),
     BUILDING_BASE("building.base", "综合楼（基础部分）", "tb_basic_building", "basicBuildingBaseService"),
     BUILDING_DIFFERENCE("building.difference", "综合楼（差异部分）", "tb_basic_building", "basicBuildingDifferenceService"),
     UNIT("unit", "单元", "tb_basic_unit", "basicUnitService"),
