@@ -633,7 +633,8 @@
 </div>
 </body>
 </html>
-
+<%@include file="/views/project/stageSurvey/common/applyInfoHistory.jsp" %>
+<%@include file="/views/project/stageSurvey/common/applyInfoQuote.jsp" %>
 <div id="divBoxTradingLeaseAndSell" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
@@ -900,5 +901,17 @@
                 }
             }
         });
+    }
+
+    function showHistoryModal() {
+        historyInfo.caseHouse.showModel('${tbId}','${formClassify}','${tbType}','${basicApplyBatch.id}');
+    };
+
+    function showCaseQuoteModal() {
+        caseFun.caseHouse.showModel(${quoteId});
+    }
+
+    function showProjectQuoteModal() {
+        projectHouse.prototype.showModel();
     }
 </script>

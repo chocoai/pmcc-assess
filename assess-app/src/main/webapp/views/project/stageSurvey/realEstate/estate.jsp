@@ -944,4 +944,16 @@
             }
         });
     }
+
+    function showHistoryModal() {
+        historyInfo.caseEstate.showModel('${tbId}','${formClassify}','${tbType}','${basicApplyBatch.id}');
+    };
+
+    function showCaseQuoteModal() {
+        caseFun.caseEstate.showModel();
+    }
+
+    function showProjectQuoteModal() {
+        projectData.prototype.showModel();
+    }
 </script>

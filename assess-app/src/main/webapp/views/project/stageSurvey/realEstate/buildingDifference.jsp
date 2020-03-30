@@ -274,4 +274,16 @@
             }
         });
     }
+
+    function showHistoryModal() {
+        historyInfo.caseBuild.showModel('${tbId}','${formClassify}','${tbType}','${basicApplyBatch.id}');
+    };
+
+    function showCaseQuoteModal() {
+        caseFun.caseBuild.showModel(${quoteId});
+    }
+
+    function showProjectQuoteModal() {
+        projectBuild.prototype.showModel();
+    }
 </script>

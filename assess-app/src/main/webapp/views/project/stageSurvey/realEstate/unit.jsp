@@ -109,6 +109,8 @@
 </div>
 </body>
 </html>
+<%@include file="/views/project/stageSurvey/common/applyInfoHistory.jsp" %>
+<%@include file="/views/project/stageSurvey/common/applyInfoQuote.jsp" %>
 <script src='${pageContext.request.contextPath}/js/common.column.js?v=${assessVersion}'></script>
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/js/examine/examine.common.js?v=${assessVersion}"></script>
@@ -160,5 +162,17 @@
                 }
             }
         });
+    }
+
+    function showHistoryModal() {
+        historyInfo.caseUnit.showModel('${tbId}','${formClassify}','${tbType}','${basicApplyBatch.id}');
+    };
+
+    function showCaseQuoteModal() {
+        caseFun.caseUnit.showModel(${quoteId});
+    }
+
+    function showProjectQuoteModal() {
+        projectUnit.prototype.showModel();
     }
 </script>
