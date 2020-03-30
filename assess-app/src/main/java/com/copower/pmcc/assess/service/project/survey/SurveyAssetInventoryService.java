@@ -11,6 +11,7 @@ import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
+import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
 import com.copower.pmcc.erp.common.CommonService;
@@ -26,8 +27,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /**
@@ -172,8 +176,61 @@ public class SurveyAssetInventoryService extends BaseService {
             vo.setCertificateName(baseDataDicService.getNameById(surveyAssetInventory.getCertificate()));
         }
         vo.setFindOriginalName(baseDataDicService.getNameById(surveyAssetInventory.getFindOriginal()));
+        vo.setFindMethodName(baseDataDicService.getNameById(surveyAssetInventory.getFindMethod()));
+        if (StringUtils.isNotBlank(surveyAssetInventory.getInfluenceFactor())) {
+            List<Integer> string2Integer = FormatUtils.transformString2Integer(surveyAssetInventory.getInfluenceFactor());
+            List<String> stringList = new ArrayList<>();
+            for (Integer id : string2Integer) {
+                stringList.add(baseDataDicService.getNameById(id));
+            }
+            vo.setInfluenceFactorName(StringUtils.join(stringList, ","));
+        }
+        if (StringUtils.isNotBlank(surveyAssetInventory.getAffected())) {
+            List<Integer> string2Integer = FormatUtils.transformString2Integer(surveyAssetInventory.getAffected());
+            List<String> stringList = new ArrayList<>();
+            for (Integer id : string2Integer) {
+                stringList.add(baseDataDicService.getNameById(id));
+            }
+            vo.setAffectedName(StringUtils.join(stringList, ","));
+        }
+        if (StringUtils.isNotBlank(surveyAssetInventory.getInfluenceFactorRemarkText())) {
+            List<String> stringList = FormatUtils.transformString2List(surveyAssetInventory.getInfluenceFactorRemarkText());
+            if (CollectionUtils.isNotEmpty(stringList)) {
+                for (String s : stringList) {
+                    List<String> strings = FormatUtils.transformString2List(s, ":");
+                    if (strings.size() == 1) {
+                        continue;
+                    }
+                    String number = getNumber(strings.get(0));
+                    if (NumberUtils.isNumber(number)) {
+                        vo.getInfluenceFactorRemarkList().add(new KeyValueDto(baseDataDicService.getNameById(number), strings.get(1)));
+                    }
+                }
+            }
+        }
         return vo;
     }
+
+    /**
+     * 提取数字
+     *
+     * @param text
+     * @return
+     */
+    private String getNumber(String text) {
+        if (StringUtils.isEmpty(text)) {
+            return "0";
+        }
+        if (NumberUtils.isNumber(text)) {
+            return text;
+        }
+        String regEx = "[^0-9]";
+        Pattern p = Pattern.compile(regEx);
+        Matcher m = p.matcher(text);
+        String s = m.replaceAll("").trim();
+        return StringUtils.isNotBlank(s) ? s : "0";
+    }
+
 
     public SurveyAssetInventory getSurveyAssetInventoryById(Integer id) {
         return surveyAssetInventoryDao.getSurveyAssetInventoryById(id);
@@ -192,8 +249,8 @@ public class SurveyAssetInventoryService extends BaseService {
         List<SurveyAssetInventoryContent> surveyAssetInventoryContents = surveyAssetInventoryContentService.getSurveyAssetInventoryContentListByMasterId(inventoryId);
         Iterator<SurveyAssetInventoryContent> iterator = surveyAssetInventoryContents.iterator();
         List<Integer> integerList = FormatUtils.transformString2Integer(masterId);
-        if (CollectionUtils.isEmpty(integerList)){
-            throw new Exception("无拷贝数据") ;
+        if (CollectionUtils.isEmpty(integerList)) {
+            throw new Exception("无拷贝数据");
         }
         //粘贴主数据
         copySurveyAssetInventory(surveyAssetInventory);
@@ -205,20 +262,20 @@ public class SurveyAssetInventoryService extends BaseService {
 
         }
         if (type.equals(SurveyAssetInventoryEnum.group.getKey())) {
-            for (Integer id:integerList){
+            for (Integer id : integerList) {
                 SurveyAssetInfoGroup infoGroup = surveyAssetInfoGroupService.getSurveyAssetInfoGroupById(id);
-                if (Objects.equal(infoGroup.getInventoryId(),inventoryId)){
-                    throw new Exception("无法粘贴自己") ;
+                if (Objects.equal(infoGroup.getInventoryId(), inventoryId)) {
+                    throw new Exception("无法粘贴自己");
                 }
                 infoGroup.setInventoryId(surveyAssetInventory.getId());
                 surveyAssetInfoGroupService.updateSurveyAssetInfoGroup(infoGroup, true);
             }
         }
         if (type.equals(SurveyAssetInventoryEnum.unit.getKey())) {
-            for (Integer id:integerList){
-                SurveyAssetInfoItem surveyAssetInfoItem = surveyAssetInfoItemService.getSurveyAssetInfoItemById(id) ;
-                if (Objects.equal(surveyAssetInfoItem.getInventoryId(),inventoryId)){
-                    throw new Exception("无法粘贴自己") ;
+            for (Integer id : integerList) {
+                SurveyAssetInfoItem surveyAssetInfoItem = surveyAssetInfoItemService.getSurveyAssetInfoItemById(id);
+                if (Objects.equal(surveyAssetInfoItem.getInventoryId(), inventoryId)) {
+                    throw new Exception("无法粘贴自己");
                 }
                 surveyAssetInfoItem.setInventoryId(surveyAssetInventory.getId());
                 surveyAssetInfoItemService.saveAndUpdateSurveyAssetInfoItem(surveyAssetInfoItem, true);
