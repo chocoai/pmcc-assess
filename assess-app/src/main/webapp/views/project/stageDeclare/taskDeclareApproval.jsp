@@ -350,7 +350,7 @@
                 str += '<button type="button" onclick="declareApprovalFun.houseFindData(' + row.id + ')" style="margin-left: 5px;" class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="房产证">';
                 str += '房产证';
                 str += '</button>';
-                str += '<button type="button" class="btn btn-xs btn-info tooltips" style="margin-left: 5px;" data-placement="bottom" data-original-title="不动产清单" onclick="declareCommon.loadDeclareRealtyCheckListTable('  +row.id +  ')" > <i class="fa "></i>不动产清单</button>';
+                str += '<button type="button" class="btn btn-xs btn-info tooltips" style="margin-left: 5px;" data-placement="bottom" data-original-title="不动产清单" onclick="declareCommon.loadDeclareRealtyCheckListTable('  +row.centerId +  ')" > <i class="fa "></i>不动产清单</button>';
 
                 str += '<button type="button" onclick="declareApprovalFun.houseRelationDeclareEconomicIndicatorsData(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="经济指标">';
                 str += '经济指标';
@@ -426,7 +426,7 @@
                 str += '经济指标';
                 str += '</button>';
 
-                str += '<button type="button" class="btn btn-xs btn-info tooltips" style="margin-left: 5px;" data-placement="bottom" data-original-title="不动产清单" onclick="declareCommon.loadDeclareRealtyCheckListTable('  +row.id +  ')" > <i class="fa "></i>不动产清单</button>';
+                str += '<button type="button" class="btn btn-xs btn-info tooltips" style="margin-left: 5px;" data-placement="bottom" data-original-title="不动产清单" onclick="declareCommon.loadDeclareRealtyCheckListTable('  +row.centerId +  ')" > <i class="fa "></i>不动产清单</button>';
 
 
                 str += '<div class="dropdown" style="display: inline;margin-left: 5px;">';
