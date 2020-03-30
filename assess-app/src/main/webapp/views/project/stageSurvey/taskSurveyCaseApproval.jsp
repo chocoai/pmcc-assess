@@ -195,7 +195,7 @@
         data.tbType = node.type;
         data.applyBatchId = node.applyBatchId;
         data.tbId = node.tableId;
-        window.open('${pageContext.request.contextPath}/basicApplyBatch/fillInfo?' + parseParam(data));
+        window.open('${pageContext.request.contextPath}/basicApplyBatch/informationEdit?' + parseParam(data));
     }
 
     //js对象转成路径参数

@@ -58,21 +58,21 @@ public class ProjectTaskCaseAssist implements ProjectTaskInterface {
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/tasktaskSurveyCaseIndex", "", 0, "0", "");
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskSurveyCaseIndex", "", 0, "0", "");
         setViewParam(projectPlanDetails, modelAndView);
         return modelAndView;
     }
 
     @Override
     public ModelAndView approvalView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/tasktaskSurveyCaseApproval", processInsId, boxId, taskId, agentUserAccount);
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskSurveyCaseApproval", processInsId, boxId, taskId, agentUserAccount);
         setViewParam(projectPlanDetails, modelAndView);
         return modelAndView;
     }
 
     @Override
     public ModelAndView returnEditView(String processInsId, String taskId, Integer boxId, ProjectPlanDetails projectPlanDetails, String agentUserAccount) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/tasktaskSurveyCaseIndex", processInsId, boxId, taskId, agentUserAccount);
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskSurveyCaseIndex", processInsId, boxId, taskId, agentUserAccount);
         setViewParam(projectPlanDetails, modelAndView);
         return modelAndView;
     }
@@ -84,7 +84,7 @@ public class ProjectTaskCaseAssist implements ProjectTaskInterface {
 
     @Override
     public ModelAndView detailsView(ProjectPlanDetails projectPlanDetails, Integer boxId) {
-        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/tasktaskSurveyCaseApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
+        ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageSurvey/taskSurveyCaseApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
         setViewParam(projectPlanDetails, modelAndView);
         return modelAndView;
     }

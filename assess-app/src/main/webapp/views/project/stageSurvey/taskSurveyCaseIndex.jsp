@@ -806,7 +806,7 @@
         var node = zTreeObj.getSelectedNodes()[0];
         var classify = $("#basicBatchApplyFrm").find('[name=classify]').val();
         var formType = $("#basicBatchApplyFrm").find('[name=type]').val();
-        var url = '${pageContext.request.contextPath}/basicApplyBatch/fillInfo?';
+        var url = '${pageContext.request.contextPath}/basicApplyBatch/informationEdit?';
         url += 'applyBatchId=' + $("#basicBatchApplyFrm").find('[name=id]').val();
         url += '&formClassify=' + classify;
         url += '&formType=' + formType;
