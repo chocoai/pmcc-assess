@@ -870,4 +870,35 @@
             }
         });
     })
+
+    //保存数据信息
+    function saveDataInfo() {
+        Loading.progressShow();
+        var item = {};
+        item.basicHouse = formSerializeArray(houseCommon.houseForm);
+        item.basicTrading = formSerializeArray(houseCommon.houseTradingForm);
+        item.basicDamagedDegree = damagedDegree.getFormData();
+        var formData = JSON.stringify(examineCommon.getFormData());
+        $.ajax({
+            url: "${pageContext.request.contextPath}/basicApplyBatch/saveDraft",
+            type: "post",
+            dataType: "json",
+            async: false,
+            data: {
+                formData: formData,
+                formClassify: '${tbType}',
+                planDetailsId: '${planDetailsId}'
+            },
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    AlertSuccess("成功", "保存数据成功", function () {
+                        window.close();
+                    });
+                } else {
+                    AlertError("保存失败,失败原因:" + result.errmsg);
+                }
+            }
+        });
+    }
 </script>
