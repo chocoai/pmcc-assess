@@ -98,30 +98,17 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="streetNumbers">
+
+                                    </div>
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
-                                                <label class="col-sm-1 control-label">街道号</label>
-                                                <div class="col-sm-3">
-                                                    <label class="form-control input-full"
-                                                           name="streetNumber">${basicEstate.streetNumber}</label>
-                                                </div>
-                                                <label class="col-sm-1 control-label">附号</label>
-                                                <div class="col-sm-3">
-                                                    <label class="form-control input-full"
-                                                           name="attachNumber">${basicEstate.attachNumber}</label>
-                                                </div>
                                                 <label class="col-sm-1 control-label">占地面积</label>
                                                 <div class="col-sm-3">
                                                     <label class="form-control input-full"
                                                            name="coverAnArea">${basicEstate.coverAnArea}</label>
                                                 </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row form-group">
-                                        <div class="col-md-12">
-                                            <div class="form-inline x-valid">
                                                 <label class="col-sm-1 control-label">容积率</label>
                                                 <div class="col-sm-3">
                                                     <label class="form-control input-full"
@@ -132,17 +119,18 @@
                                                     <label class="form-control input-full"
                                                            name="greeningRate">${basicEstate.greeningRate}</label>
                                                 </div>
-                                                <label class="col-sm-1 control-label">总楼栋数</label>
-                                                <div class="col-sm-3">
-                                                    <label class="form-control input-full"
-                                                           name="buildingNumber">${basicEstate.buildingNumber}</label>
-                                                </div>
+
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
+                                                <label class="col-sm-1 control-label">总楼栋数</label>
+                                                <div class="col-sm-3">
+                                                    <label class="form-control input-full"
+                                                           name="buildingNumber">${basicEstate.buildingNumber}</label>
+                                                </div>
                                                 <label class="col-sm-1 control-label">开发商</label>
                                                 <div class="col-sm-3">
                                                     <label class="form-control input-full"
@@ -153,17 +141,18 @@
                                                     <label class="form-control input-full"
                                                            name="floorArea">${basicEstate.floorArea}</label>
                                                 </div>
-                                                <label class="col-sm-1 control-label">均价</label>
-                                                <div class="col-sm-3">
-                                                    <label class="form-control input-full"
-                                                           name="averagePrice">${basicEstate.averagePrice}</label>
-                                                </div>
+
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
+                                                <label class="col-sm-1 control-label">均价</label>
+                                                <div class="col-sm-3">
+                                                    <label class="form-control input-full"
+                                                           name="averagePrice">${basicEstate.averagePrice}</label>
+                                                </div>
                                                 <label class="col-sm-1 control-label">价格区间</label>
                                                 <div class="col-sm-3">
                                                     <label class="form-control input-full"
@@ -667,7 +656,6 @@
 
 <script type="text/javascript">
     $(function () {
-        console.log("0000")
         estateCommon.initDetailById('${basicEstate.id}', '', false);
     })
 </script>

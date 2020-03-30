@@ -141,24 +141,46 @@
                                                 <div class="row form-group">
                                                     <div class="col-md-12">
                                                         <div class="form-inline x-valid">
-                                                            <label class="col-sm-1">街道号<span
-                                                                    class="symbol required"></span></label>
+                                                            <label class="col-sm-1 control-label">
+                                                                街道号、附号
+                                                            </label>
                                                             <div class="col-sm-3">
-                                                                <input type="text" required
-                                                                       placeholder="街道号" name="streetNumber"
-                                                                       class="form-control input-full"
-                                                                       value="${basicEstate.streetNumber}">
+                                                                <button class="btn btn-sm btn-success"
+                                                                        onclick="estateCommon.appendHTML()"><i
+                                                                        class="fa fa-plus"></i></button>
                                                             </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="streetNumbers">
 
-                                                            <label class="col-sm-1">附号</label>
-                                                            <div class="col-sm-3">
-                                                                <input type="text" data-rule-maxlength="100"
-                                                                       data-rule-number='true'
-                                                                       placeholder="附号(请输入数字)"
-                                                                       name="attachNumber"
-                                                                       class="form-control input-full"
-                                                                       value="${basicEstate.attachNumber}">
-                                                            </div>
+                                                </div>
+                                                <%--<div class="row form-group">--%>
+                                                    <%--<div class="col-md-12">--%>
+                                                        <%--<div class="form-inline x-valid">--%>
+                                                            <%--<label class="col-sm-1">街道号<span class="symbol required"></span></label>--%>
+                                                            <%--<div class="col-sm-3">--%>
+                                                                <%--<input type="text" required--%>
+                                                                       <%--placeholder="街道号" name="streetNumber"--%>
+                                                                       <%--class="form-control input-full"--%>
+                                                                       <%--value="${basicEstate.streetNumber}">--%>
+                                                            <%--</div>--%>
+
+                                                            <%--<label class="col-sm-1">附号</label>--%>
+                                                            <%--<div class="col-sm-3">--%>
+                                                                <%--<input type="text" data-rule-maxlength="100"--%>
+                                                                       <%--data-rule-number='true'--%>
+                                                                       <%--placeholder="附号(请输入数字)"--%>
+                                                                       <%--name="attachNumber"--%>
+                                                                       <%--class="form-control input-full"--%>
+                                                                       <%--value="${basicEstate.attachNumber}">--%>
+                                                            <%--</div>--%>
+                                                        <%--</div>--%>
+                                                    <%--</div>--%>
+                                                <%--</div>--%>
+                                                <div class="row form-group">
+                                                    <div class="col-md-12">
+                                                        <div class="form-inline x-valid">
                                                             <label class="col-sm-1">占地面积</label>
                                                             <div class="col-sm-3">
                                                                 <input type="text" data-rule-maxlength="100"
@@ -167,12 +189,6 @@
                                                                        class="form-control input-full"
                                                                        value="${basicEstate.coverAnArea}">
                                                             </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row form-group">
-                                                    <div class="col-md-12">
-                                                        <div class="form-inline x-valid">
                                                             <label class="col-sm-1">容积率</label>
                                                             <div class="col-sm-3">
                                                                 <input type="text"
@@ -180,7 +196,6 @@
                                                                        class="form-control input-full"
                                                                        value="${basicEstate.volumetricRate}">
                                                             </div>
-
                                                             <label class="col-sm-1">绿化率</label>
                                                             <div class="col-sm-3">
                                                                 <input type="text"
@@ -188,6 +203,13 @@
                                                                        class="form-control input-full"
                                                                        value="${basicEstate.greeningRate}">
                                                             </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row form-group">
+                                                    <div class="col-md-12">
+                                                        <div class="form-inline x-valid">
                                                             <label class="col-sm-1">总楼栋数<span
                                                                     class="symbol required"></span></label>
                                                             <div class="col-sm-3">
@@ -198,12 +220,6 @@
                                                                        class="form-control input-full"
                                                                        value="${basicEstate.buildingNumber}">
                                                             </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row form-group">
-                                                    <div class="col-md-12">
-                                                        <div class="form-inline x-valid">
                                                             <label class="col-sm-1">开发商</label>
                                                             <div class="col-sm-3">
                                                                 <input type="text" placeholder="开发商"
@@ -222,6 +238,13 @@
                                                                        class="form-control input-full"
                                                                        value="${basicEstate.floorArea}">
                                                             </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row form-group">
+                                                    <div class="col-md-12">
+                                                        <div class="form-inline x-valid">
                                                             <label class="col-sm-1">均价</label>
                                                             <div class="col-sm-3">
                                                                 <input type="text" data-rule-maxlength="100"
@@ -230,12 +253,6 @@
                                                                        class="form-control input-full"
                                                                        value="${basicEstate.averagePrice}">
                                                             </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row form-group">
-                                                    <div class="col-md-12">
-                                                        <div class="form-inline x-valid">
                                                             <label class="col-sm-1">价格区间</label>
                                                             <div class="col-sm-3">
                                                                 <input type="text" placeholder="价格区间"
