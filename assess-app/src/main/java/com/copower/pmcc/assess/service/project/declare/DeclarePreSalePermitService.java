@@ -74,4 +74,17 @@ public class DeclarePreSalePermitService {
     public void removeDeclarePreSalePermit(DeclarePreSalePermit declarePreSalePermit) {
         declarePreSalePermitDao.removeDeclarePreSalePermit(declarePreSalePermit);
     }
+
+    public boolean deleteDeclarePreSalePermitById(Integer id) {
+        return declarePreSalePermitDao.deleteDeclarePreSalePermitById(id);
+    }
+
+    public void deleteDeclarePreSalePermitByIds(String id) {
+        FormatUtils.transformString2Integer(id).forEach(integer -> deleteDeclarePreSalePermitById(integer));
+    }
+
+
+    public List<DeclarePreSalePermit> getDeclarePreSalePermitByMasterId(Integer masterId) {
+        return declarePreSalePermitDao.getDeclarePreSalePermitByMasterId(masterId);
+    }
 }

@@ -29,6 +29,10 @@ public class DeclareBuildingPermit {
 
     private String remark;
 
+    private Integer masterId;
+
+    private String masterType;
+
     public Integer getId() {
         return id;
     }
@@ -131,5 +135,21 @@ public class DeclareBuildingPermit {
 
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
+    }
+
+    public Integer getMasterId() {
+        return masterId;
+    }
+
+    public void setMasterId(Integer masterId) {
+        this.masterId = masterId;
+    }
+
+    public String getMasterType() {
+        return masterType;
+    }
+
+    public void setMasterType(String masterType) {
+        this.masterType = masterType == null ? null : masterType.trim();
     }
 }

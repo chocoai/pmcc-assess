@@ -63,6 +63,8 @@
     </div>
 </div>
 
+
+
 <!-- 不动产清单 -->
 <div id="declareRealtyCheckListDataModelBox" class="modal fade bs-example-modal-lg" data-backdrop="static"
      tabindex="-1"
@@ -103,6 +105,97 @@
     </div>
 </div>
 
+<!--建设工程规划许可证-->
+<div id="divDeclareBuildingPermitBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    建设工程规划许可证 列表
+                </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <input type="hidden" name="masterId">
+                </form>
+                <span class="divDeclareBuildingPermitBox">
+                    <button type="button" class="btn btn-success btn-sm"
+                            onclick="declareCommon.addDeclareBuildingPermit();">
+                        <i class="fa fa-plus"></i>
+                        新增
+                    </button>
+                    <button type="button" class="btn btn-warning  btn-sm"
+                            onclick="declareCommon.delDeclareBuildingPermit()">
+                                    <i class="fa fa-minus"></i>
+                                    删除
+                                </button>
+                </span>
+                <table class="table table-bordered" id="tbDeclareBuildingPermitList">
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="declareBuildingPermitDataModelBox" class="modal fade bs-example-modal-lg" data-backdrop="static"
+     tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="max-width: 65%;">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title">建设工程规划许可证</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <input type="hidden" name="id">
+                    <input type="hidden" name="masterId">
+                    <div class="row">
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                            <div class="card-body">
+                                <div class="row form-group">
+                                    <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
+                                                附件
+                                            </label>
+                                            <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
+                                                <input id="declareBuildingPermitAnnex"
+                                                       name="declareBuildingPermitAnnex"
+                                                       required="required" placeholder="附件"
+                                                       class="form-control input-full"
+                                                       type="file">
+                                                <div id="_declareBuildingPermitAnnex"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-primary btn-sm"
+                        onclick="declareCommon.saveDeclareBuildingPermitData();">
+                    保存
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <div class="wrapper">
@@ -168,7 +261,8 @@
                                                 </label>
                                                 <div class="col-xs-10  col-sm-10  col-md-10  col-lg-10">
                                                     <input name="assessArea" class="form-control input-full"
-                                                        data-rule-number="true"   placeholder="上次评估面积" value='${declare.assessArea}'/>
+                                                           data-rule-number="true" placeholder="上次评估面积"
+                                                           value='${declare.assessArea}'/>
                                                 </div>
                                             </div>
                                         </div>
@@ -179,7 +273,8 @@
                                                 </label>
                                                 <div class="col-xs-10  col-sm-10  col-md-10  col-lg-10">
                                                     <input name="assessMoney" class="form-control input-full"
-                                                           data-rule-number="true"  placeholder="上次评估金额" value='${declare.assessMoney}'/>
+                                                           data-rule-number="true" placeholder="上次评估金额"
+                                                           value='${declare.assessMoney}'/>
                                                 </div>
                                             </div>
                                         </div>
@@ -285,7 +380,9 @@
                                                 });
                                             </script>
                                             <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
-                                                <button type="button" class="btn btn-warning btn-sm" onclick="declareApplyExtensionCumstom.cleanItemHTML(this)"><i class="fa fa-minus"></i></button>
+                                                <button type="button" class="btn btn-warning btn-sm"
+                                                        onclick="declareApplyExtensionCumstom.cleanItemHTML(this)"><i
+                                                        class="fa fa-minus"></i></button>
                                             </div>
                                         </div>
                                     </c:forEach>
@@ -311,12 +408,18 @@
     </div>
 </div>
 </body>
-<script type="text/javascript" src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js?v=${assessVersion}"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/declare/declare.common.js?v=${assessVersion}"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/declare/house/realty.house.cert.js?v=${assessVersion}"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/declare/house/realty.real.estate.cert.js?v=${assessVersion}"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/declare/house/realty.land.cert.js?v=${assessVersion}"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/ajaxfileupload.js?v=${assessVersion}"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js?v=${assessVersion}"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/declare/declare.common.js?v=${assessVersion}"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/declare/house/realty.house.cert.js?v=${assessVersion}"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/declare/house/realty.real.estate.cert.js?v=${assessVersion}"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/declare/house/realty.land.cert.js?v=${assessVersion}"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/ajaxfileupload.js?v=${assessVersion}"></script>
 <input type="file" id="ajaxFileUpload" name="file" style="display: none;">
 
 
@@ -344,7 +447,7 @@
             submitForm(mustUseBox);
             return false;
         }
-        notifyWarning("警告","请确认是否添加了申报数据!");
+        notifyWarning("警告", "请确认是否添加了申报数据!");
     }
 
     //提交表单

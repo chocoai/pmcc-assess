@@ -1375,6 +1375,136 @@ public class DeclarePreSalePermitExample {
             addCriterion("remark not between", value1, value2, "remark");
             return (Criteria) this;
         }
+
+        public Criteria andMasterIdIsNull() {
+            addCriterion("master_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMasterIdIsNotNull() {
+            addCriterion("master_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMasterIdEqualTo(Integer value) {
+            addCriterion("master_id =", value, "masterId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMasterIdNotEqualTo(Integer value) {
+            addCriterion("master_id <>", value, "masterId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMasterIdGreaterThan(Integer value) {
+            addCriterion("master_id >", value, "masterId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMasterIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("master_id >=", value, "masterId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMasterIdLessThan(Integer value) {
+            addCriterion("master_id <", value, "masterId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMasterIdLessThanOrEqualTo(Integer value) {
+            addCriterion("master_id <=", value, "masterId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMasterIdIn(List<Integer> values) {
+            addCriterion("master_id in", values, "masterId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMasterIdNotIn(List<Integer> values) {
+            addCriterion("master_id not in", values, "masterId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMasterIdBetween(Integer value1, Integer value2) {
+            addCriterion("master_id between", value1, value2, "masterId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMasterIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("master_id not between", value1, value2, "masterId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMasterTypeIsNull() {
+            addCriterion("master_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMasterTypeIsNotNull() {
+            addCriterion("master_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMasterTypeEqualTo(String value) {
+            addCriterion("master_type =", value, "masterType");
+            return (Criteria) this;
+        }
+
+        public Criteria andMasterTypeNotEqualTo(String value) {
+            addCriterion("master_type <>", value, "masterType");
+            return (Criteria) this;
+        }
+
+        public Criteria andMasterTypeGreaterThan(String value) {
+            addCriterion("master_type >", value, "masterType");
+            return (Criteria) this;
+        }
+
+        public Criteria andMasterTypeGreaterThanOrEqualTo(String value) {
+            addCriterion("master_type >=", value, "masterType");
+            return (Criteria) this;
+        }
+
+        public Criteria andMasterTypeLessThan(String value) {
+            addCriterion("master_type <", value, "masterType");
+            return (Criteria) this;
+        }
+
+        public Criteria andMasterTypeLessThanOrEqualTo(String value) {
+            addCriterion("master_type <=", value, "masterType");
+            return (Criteria) this;
+        }
+
+        public Criteria andMasterTypeLike(String value) {
+            addCriterion("master_type like", value, "masterType");
+            return (Criteria) this;
+        }
+
+        public Criteria andMasterTypeNotLike(String value) {
+            addCriterion("master_type not like", value, "masterType");
+            return (Criteria) this;
+        }
+
+        public Criteria andMasterTypeIn(List<String> values) {
+            addCriterion("master_type in", values, "masterType");
+            return (Criteria) this;
+        }
+
+        public Criteria andMasterTypeNotIn(List<String> values) {
+            addCriterion("master_type not in", values, "masterType");
+            return (Criteria) this;
+        }
+
+        public Criteria andMasterTypeBetween(String value1, String value2) {
+            addCriterion("master_type between", value1, value2, "masterType");
+            return (Criteria) this;
+        }
+
+        public Criteria andMasterTypeNotBetween(String value1, String value2) {
+            addCriterion("master_type not between", value1, value2, "masterType");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

@@ -45,36 +45,20 @@ public class DeclareBuildingConstructionPermitController {
 
     @ResponseBody
     @RequestMapping(value = "/getDeclareBuildingConstructionPermitList", method = {RequestMethod.GET}, name = "获取建筑工程施工许可证维护列表")
-    public BootstrapTableVo getExamineEstateNetworkList(Integer planDetailsId) {
-        DeclareBuildingConstructionPermit declareBuildingConstructionPermit = new DeclareBuildingConstructionPermit();
-        BootstrapTableVo vo = null;
-        try {
-            if (planDetailsId != null) {
-                declareBuildingConstructionPermit.setPlanDetailsId(planDetailsId);
-            }
-            vo = declareBuildingConstructionPermitService.getDeclareBuildingConstructionPermitListVos(declareBuildingConstructionPermit);
-        } catch (Exception e1) {
-            logger.error(String.format("exception: %s", e1.getMessage()), e1);
-            return null;
-        }
-        return vo;
+    public BootstrapTableVo getExamineEstateNetworkList(DeclareBuildingConstructionPermit declareBuildingConstructionPermit) {
+        return declareBuildingConstructionPermitService.getDeclareBuildingConstructionPermitListVos(declareBuildingConstructionPermit);
     }
 
     @ResponseBody
     @RequestMapping(value = "/deleteDeclareBuildingConstructionPermitById", method = {RequestMethod.POST}, name = "删除建筑工程施工许可证维护")
-    public HttpResult delete(Integer id) {
+    public HttpResult delete(String id) {
         try {
-            if (id != null) {
-                DeclareBuildingConstructionPermit declareBuildingConstructionPermit = new DeclareBuildingConstructionPermit();
-                declareBuildingConstructionPermit.setId(id);
-                declareBuildingConstructionPermitService.removeDeclareBuildingConstructionPermit(declareBuildingConstructionPermit);
-                return HttpResult.newCorrectResult();
-            }
+            declareBuildingConstructionPermitService.deleteDeclareBuildingConstructionPermitByIds(id);
+            return HttpResult.newCorrectResult();
         } catch (Exception e1) {
             logger.error(String.format("exception: %s" + e1.getMessage()), e1);
             return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
         }
-        return null;
     }
 
     @Deprecated

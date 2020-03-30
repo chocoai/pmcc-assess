@@ -46,36 +46,20 @@ public class DeclareLandUsePermitController {
 
     @ResponseBody
     @RequestMapping(value = "/getDeclareLandUsePermitList", method = {RequestMethod.GET}, name = "获取建设用地规划许可证列表")
-    public BootstrapTableVo getExamineEstateNetworkList(Integer planDetailsId) {
-        DeclareLandUsePermit declareLandUsePermit = new DeclareLandUsePermit();
-        BootstrapTableVo vo = null;
-        try {
-            if (planDetailsId != null) {
-                declareLandUsePermit.setPlanDetailsId(planDetailsId);
-            }
-            vo = declareLandUsePermitService.getDeclareLandUsePermitListVos(declareLandUsePermit);
-        } catch (Exception e1) {
-            logger.error(String.format("exception: %s", e1.getMessage()), e1);
-            return null;
-        }
-        return vo;
+    public BootstrapTableVo getExamineEstateNetworkList(DeclareLandUsePermit declareLandUsePermit) {
+        return declareLandUsePermitService.getDeclareLandUsePermitListVos(declareLandUsePermit);
     }
 
     @ResponseBody
     @RequestMapping(value = "/deleteDeclareLandUsePermitById", method = {RequestMethod.POST}, name = "删除建设用地规划许可证")
-    public HttpResult delete(Integer id) {
+    public HttpResult delete(String id) {
         try {
-            if (id != null) {
-                DeclareLandUsePermit declareLandUsePermit = new DeclareLandUsePermit();
-                declareLandUsePermit.setId(id);
-                declareLandUsePermitService.removeDeclareLandUsePermit(declareLandUsePermit);
-                return HttpResult.newCorrectResult();
-            }
+            declareLandUsePermitService.deleteDeclareLandUsePermitByIds(id);
+            return HttpResult.newCorrectResult();
         } catch (Exception e1) {
             logger.error(String.format("exception: %s" + e1.getMessage()), e1);
             return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
         }
-        return null;
     }
 
     @Deprecated

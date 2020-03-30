@@ -55,9 +55,23 @@ public class DeclareLandUsePermitDao {
         declareLandUsePermitMapper.deleteByExample(example);
     }
 
+    public boolean deleteDeclareLandUsePermitById(Integer id){
+        return declareLandUsePermitMapper.deleteByPrimaryKey(id) == 1;
+    }
+
     public List<DeclareLandUsePermit> getDeclareLandUsePermitList(DeclareLandUsePermit declareLandUsePermit) {
         DeclareLandUsePermitExample example = new DeclareLandUsePermitExample();
         MybatisUtils.convertObj2Example(declareLandUsePermit, example);
         return declareLandUsePermitMapper.selectByExample(example);
     }
+
+    public List<DeclareLandUsePermit> getDeclareLandUsePermitByMasterId(Integer masterId){
+        DeclareLandUsePermitExample example = new DeclareLandUsePermitExample();
+        DeclareLandUsePermitExample.Criteria criteria = example.createCriteria();
+        criteria.andMasterIdEqualTo(masterId);
+        criteria.andIdIsNotNull();
+        return declareLandUsePermitMapper.selectByExample(example) ;
+    }
+    
+    
 }

@@ -612,7 +612,7 @@ assessCommonHouse.loadList = function () {
             str += '<button type="button" onclick="assessCommonHouse.showAddModelDeclareEconomicIndicators(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="经济指标">经济指标</button>';
 
 
-            str += '<button type="button" class="btn btn-xs btn-info tooltips" style="margin-left: 5px;" data-placement="bottom" data-original-title="不动产清单" onclick="declareCommon.loadDeclareRealtyCheckListTable(' + "'" + row.id + "'" + "," + "'" + table.selector + "'" + ')" > <i class="fa "></i>不动产清单</button>';
+            str += '<button type="button" class="btn btn-xs btn-info tooltips" style="margin-left: 5px;" data-placement="bottom" data-original-title="不动产清单" onclick="declareCommon.loadDeclareRealtyCheckListTable(' + "'" + row.centerId + "'" + "," + "'" + table.selector + "'" + ')" > <i class="fa "></i>不动产清单</button>';
 
             str += '<button type="button" onclick="assessCommonHouse.houseImportEvent(' + row.id + ',\'tb_List\')"  style="margin-left: 5px;"  class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="房产证附件">房产证附件</button>';
 

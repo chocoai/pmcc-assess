@@ -37,7 +37,7 @@ public class DeclareLandUsePermitService {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     public Integer saveAndUpdateDeclareLandUsePermit(DeclareLandUsePermit declareLandUsePermit) {
-       return saveAndUpdateDeclareLandUsePermit(declareLandUsePermit,false) ;
+        return saveAndUpdateDeclareLandUsePermit(declareLandUsePermit, false);
     }
 
     public Integer saveAndUpdateDeclareLandUsePermit(DeclareLandUsePermit declareLandUsePermit, boolean updateNull) {
@@ -47,7 +47,7 @@ public class DeclareLandUsePermitService {
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(DeclareLandUsePermit.class), id);
             return id;
         } else {
-            declareLandUsePermitDao.updateDeclareLandUsePermit(declareLandUsePermit,updateNull);
+            declareLandUsePermitDao.updateDeclareLandUsePermit(declareLandUsePermit, updateNull);
             return null;
         }
     }
@@ -73,4 +73,18 @@ public class DeclareLandUsePermitService {
     public void removeDeclareLandUsePermit(DeclareLandUsePermit declareLandUsePermit) {
         declareLandUsePermitDao.removeDeclareLandUsePermit(declareLandUsePermit);
     }
+
+
+    public List<DeclareLandUsePermit> getDeclareLandUsePermitByMasterId(Integer masterId) {
+        return declareLandUsePermitDao.getDeclareLandUsePermitByMasterId(masterId);
+    }
+
+    public boolean deleteDeclareLandUsePermitById(Integer id) {
+        return declareLandUsePermitDao.deleteDeclareLandUsePermitById(id);
+    }
+
+    public void deleteDeclareLandUsePermitByIds(String id) {
+       FormatUtils.transformString2Integer(id).forEach(integer -> deleteDeclareLandUsePermitById(integer));
+    }
+
 }
