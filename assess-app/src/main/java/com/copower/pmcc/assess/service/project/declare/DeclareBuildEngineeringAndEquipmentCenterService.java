@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -39,6 +40,16 @@ public class DeclareBuildEngineeringAndEquipmentCenterService {
     private DeclareRealtyHouseCertService declareRealtyHouseCertService;
     @Autowired
     private TaskExecutor executor;
+    @Autowired
+    private DeclareBuildingConstructionPermitService declareBuildingConstructionPermitService;
+    @Autowired
+    private DeclareBuildingPermitService declareBuildingPermitService;
+    @Autowired
+    private DeclareLandUsePermitService declareLandUsePermitService;
+    @Autowired
+    private DeclarePreSalePermitService declarePreSalePermitService;
+    @Autowired
+    private DeclareRealtyCheckListService declareRealtyCheckListService;
 
     public Integer saveAndUpdateDeclareBuildEngineeringAndEquipmentCenter(DeclareBuildEngineeringAndEquipmentCenter declareBuildEngineeringAndEquipmentCenter) {
         return saveAndUpdateDeclareBuildEngineeringAndEquipmentCenter(declareBuildEngineeringAndEquipmentCenter, false);
@@ -175,8 +186,72 @@ public class DeclareBuildEngineeringAndEquipmentCenterService {
                         equipmentCenter.setHouseId(null);
                     }
                     declareBuildEngineeringAndEquipmentCenterDao.updateDeclareBuildEngineeringAndEquipmentCenter(equipmentCenter);
+                    copyLicense(type,idA,copyId) ;
                 });
             });
+        }
+    }
+
+    /**
+     * 许可证 拷贝
+     * @param masterType
+     * @param masterId
+     * @param copyId
+     */
+    private void copyLicense(String masterType,Integer masterId,Integer copyId){
+        List<DeclareBuildingConstructionPermit> declareBuildingConstructionPermits = declareBuildingConstructionPermitService.getDeclareBuildingConstructionPermitByMasterId(copyId);
+        List<DeclareBuildingPermit> declareBuildingPermits = declareBuildingPermitService.getDeclareBuildingPermitByMasterId(copyId);
+        List<DeclareLandUsePermit> declareLandUsePermits = declareLandUsePermitService.getDeclareLandUsePermitByMasterId(copyId);
+        List<DeclarePreSalePermit> declarePreSalePermits = declarePreSalePermitService.getDeclarePreSalePermitByMasterId(copyId);
+        List<DeclareRealtyCheckList> realtyCheckLists = declareRealtyCheckListService.getDeclareRealtyCheckLists(copyId);
+        if (CollectionUtils.isNotEmpty(declareBuildingConstructionPermits)){
+            Iterator<DeclareBuildingConstructionPermit> iterator = declareBuildingConstructionPermits.iterator();
+            while (iterator.hasNext()){
+                DeclareBuildingConstructionPermit permit = iterator.next();
+                permit.setId(null);
+                permit.setMasterId(masterId);
+                permit.setMasterType(masterType);
+                declareBuildingConstructionPermitService.saveAndUpdateDeclareBuildingConstructionPermit(permit) ;
+            }
+        }
+        if (CollectionUtils.isNotEmpty(declareBuildingPermits)){
+            Iterator<DeclareBuildingPermit> iterator = declareBuildingPermits.iterator();
+            while (iterator.hasNext()){
+                DeclareBuildingPermit buildingPermit = iterator.next();
+                buildingPermit.setId(null);
+                buildingPermit.setMasterId(masterId);
+                buildingPermit.setMasterType(masterType);
+                declareBuildingPermitService.saveAndUpdateDeclareBuildingPermit(buildingPermit);
+            }
+        }
+        if (CollectionUtils.isNotEmpty(declareLandUsePermits)){
+            Iterator<DeclareLandUsePermit> iterator = declareLandUsePermits.iterator();
+            while (iterator.hasNext()){
+                DeclareLandUsePermit usePermit = iterator.next();
+                usePermit.setId(null);
+                usePermit.setMasterId(masterId);
+                usePermit.setMasterType(masterType);
+                declareLandUsePermitService.saveAndUpdateDeclareLandUsePermit(usePermit) ;
+            }
+        }
+        if (CollectionUtils.isNotEmpty(declarePreSalePermits)){
+            Iterator<DeclarePreSalePermit> iterator = declarePreSalePermits.iterator();
+            while (iterator.hasNext()){
+                DeclarePreSalePermit salePermit = iterator.next();
+                salePermit.setId(null);
+                salePermit.setMasterId(masterId);
+                salePermit.setMasterType(masterType);
+                declarePreSalePermitService.saveAndUpdateDeclarePreSalePermit(salePermit) ;
+            }
+        }
+        if (CollectionUtils.isNotEmpty(realtyCheckLists)){
+            Iterator<DeclareRealtyCheckList> iterator = realtyCheckLists.iterator();
+            while (iterator.hasNext()){
+                DeclareRealtyCheckList checkList = iterator.next();
+                checkList.setId(null);
+                checkList.setMarsterId(masterId);
+                declareRealtyCheckListService.saveDeclareRealtyCheckList(checkList) ;
+            }
         }
     }
 

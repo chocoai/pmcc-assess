@@ -17,6 +17,8 @@
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="master_id" property="masterId" jdbcType="INTEGER" />
+    <result column="master_type" property="masterType" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -78,7 +80,8 @@
   </sql>
   <sql id="Base_Column_List" >
     id, plan_details_id, certificate_number, issuing_organ, date, unit, name, location, 
-    nature, area, scale_construction, creator, gmt_created, gmt_modified, remark
+    nature, area, scale_construction, creator, gmt_created, gmt_modified, remark, master_id, 
+    master_type
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareLandUsePermitExample" >
     select
@@ -118,14 +121,14 @@
       issuing_organ, date, unit, 
       name, location, nature, 
       area, scale_construction, creator, 
-      gmt_created, gmt_modified, remark
-      )
+      gmt_created, gmt_modified, remark, 
+      master_id, master_type)
     values (#{planDetailsId,jdbcType=INTEGER}, #{certificateNumber,jdbcType=VARCHAR}, 
       #{issuingOrgan,jdbcType=VARCHAR}, #{date,jdbcType=TIMESTAMP}, #{unit,jdbcType=VARCHAR}, 
       #{name,jdbcType=VARCHAR}, #{location,jdbcType=VARCHAR}, #{nature,jdbcType=VARCHAR}, 
       #{area,jdbcType=DECIMAL}, #{scaleConstruction,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR}
-      )
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR}, 
+      #{masterId,jdbcType=INTEGER}, #{masterType,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareLandUsePermit" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -175,6 +178,12 @@
       <if test="remark != null" >
         remark,
       </if>
+      <if test="masterId != null" >
+        master_id,
+      </if>
+      <if test="masterType != null" >
+        master_type,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="planDetailsId != null" >
@@ -218,6 +227,12 @@
       </if>
       <if test="remark != null" >
         #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="masterId != null" >
+        #{masterId,jdbcType=INTEGER},
+      </if>
+      <if test="masterType != null" >
+        #{masterType,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -275,6 +290,12 @@
       <if test="record.remark != null" >
         remark = #{record.remark,jdbcType=VARCHAR},
       </if>
+      <if test="record.masterId != null" >
+        master_id = #{record.masterId,jdbcType=INTEGER},
+      </if>
+      <if test="record.masterType != null" >
+        master_type = #{record.masterType,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -296,7 +317,9 @@
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      remark = #{record.remark,jdbcType=VARCHAR}
+      remark = #{record.remark,jdbcType=VARCHAR},
+      master_id = #{record.masterId,jdbcType=INTEGER},
+      master_type = #{record.masterType,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -346,6 +369,12 @@
       <if test="remark != null" >
         remark = #{remark,jdbcType=VARCHAR},
       </if>
+      <if test="masterId != null" >
+        master_id = #{masterId,jdbcType=INTEGER},
+      </if>
+      <if test="masterType != null" >
+        master_type = #{masterType,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -364,7 +393,9 @@
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      remark = #{remark,jdbcType=VARCHAR}
+      remark = #{remark,jdbcType=VARCHAR},
+      master_id = #{masterId,jdbcType=INTEGER},
+      master_type = #{masterType,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

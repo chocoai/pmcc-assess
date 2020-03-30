@@ -46,36 +46,20 @@ public class DeclarePreSalePermitController {
 
     @ResponseBody
     @RequestMapping(value = "/getDeclarePreSalePermitList", method = {RequestMethod.GET}, name = "获取商品房预售许可证列表")
-    public BootstrapTableVo getExamineEstateNetworkList(Integer planDetailsId) {
-        DeclarePreSalePermit declarePreSalePermit = new DeclarePreSalePermit();
-        BootstrapTableVo vo = null;
-        try {
-            if (planDetailsId != null) {
-                declarePreSalePermit.setPlanDetailsId(planDetailsId);
-            }
-            vo = declarePreSalePermitService.getDeclarePreSalePermitListVos(declarePreSalePermit);
-        } catch (Exception e1) {
-            logger.error(String.format("exception: %s", e1.getMessage()), e1);
-            return null;
-        }
-        return vo;
+    public BootstrapTableVo getExamineEstateNetworkList(DeclarePreSalePermit declarePreSalePermit) {
+        return declarePreSalePermitService.getDeclarePreSalePermitListVos(declarePreSalePermit);
     }
 
     @ResponseBody
     @RequestMapping(value = "/deleteDeclarePreSalePermitById", method = {RequestMethod.POST}, name = "删除商品房预售许可证")
-    public HttpResult delete(Integer id) {
+    public HttpResult delete(String id) {
         try {
-            if (id != null) {
-                DeclarePreSalePermit declarePreSalePermit = new DeclarePreSalePermit();
-                declarePreSalePermit.setId(id);
-                declarePreSalePermitService.removeDeclarePreSalePermit(declarePreSalePermit);
-                return HttpResult.newCorrectResult();
-            }
+            declarePreSalePermitService.deleteDeclarePreSalePermitByIds(id);
+            return HttpResult.newCorrectResult();
         } catch (Exception e1) {
             logger.error(String.format("exception: %s" + e1.getMessage()), e1);
             return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
         }
-        return null;
     }
 
     @Deprecated

@@ -60,4 +60,18 @@ public class DeclarePreSalePermitDao {
         MybatisUtils.convertObj2Example(declarePreSalePermit, example);
         return declarePreSalePermitMapper.selectByExample(example);
     }
+
+
+    public List<DeclarePreSalePermit> getDeclarePreSalePermitByMasterId(Integer masterId){
+        DeclarePreSalePermitExample example = new DeclarePreSalePermitExample();
+        DeclarePreSalePermitExample.Criteria criteria = example.createCriteria();
+        criteria.andMasterIdEqualTo(masterId);
+        criteria.andIdIsNotNull();
+        return declarePreSalePermitMapper.selectByExample(example) ;
+    }
+
+    public boolean deleteDeclarePreSalePermitById(Integer id){
+        return declarePreSalePermitMapper.deleteByPrimaryKey(id) == 1;
+    }
+    
 }

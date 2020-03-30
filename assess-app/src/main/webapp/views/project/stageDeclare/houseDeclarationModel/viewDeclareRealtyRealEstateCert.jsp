@@ -228,67 +228,7 @@
 </div>
 
 
-<!-- 建设工程规划许可证 -->
-<div id="declareBuildingPermitRealtyRealBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
-     role="dialog"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg" style="max-width: 65%;">
-        <div class="modal-content">
 
-            <div class="modal-header">
-                <h4 class="modal-title">建设工程规划许可证</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-            </div>
-
-            <div class="modal-body">
-                <form class="form-horizontal">
-                    <input type="hidden" name="id">
-                    <input type="hidden" name="centerId">
-                    <div class="row">
-                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
-
-                            <div class="card-body">
-
-                                <div class="row form-group">
-                                    <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
-                                                附件
-                                            </label>
-                                            <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
-                                                <input id="declareBuildingPermitFileId2"
-                                                       name="declareBuildingPermitFileId2"
-                                                       required="required" placeholder="附件"
-                                                       class="form-control input-full"
-                                                       type="file">
-                                                <div id="_declareBuildingPermitFileId2"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-
-            <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
-                    关闭
-                </button>
-                <button type="button" class="btn btn-warning btn-sm"
-                        onclick="declareRealtyRealEstateCert.declareBuildingPermitRemove()">
-                    删除
-                </button>
-                <button type="button" class="btn btn-primary btn-sm"
-                        onclick="declareRealtyRealEstateCert.declareBuildingPermitSaveAndUpdate();">
-                    保存
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
 
 
 <!-- 建设用地规划许可证 -->

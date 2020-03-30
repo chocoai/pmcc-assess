@@ -73,4 +73,19 @@ public class DeclareBuildingPermitService {
     public void removeDeclareBuildingPermit(DeclareBuildingPermit declareBuildingPermit) {
         declareBuildingPermitDao.removeDeclareBuildingPermit(declareBuildingPermit);
     }
+
+    public boolean deleteDeclareBuildingPermitById(Integer id){
+        return declareBuildingPermitDao.deleteDeclareBuildingPermitById(id) ;
+    }
+
+    public void deleteDeclareBuildingPermitByIds(String id){
+        List<Integer> integerList = FormatUtils.transformString2Integer(id);
+        integerList.forEach(integer -> deleteDeclareBuildingPermitById(integer));
+    }
+
+
+    public List<DeclareBuildingPermit> getDeclareBuildingPermitByMasterId(Integer masterId){
+        return declareBuildingPermitDao.getDeclareBuildingPermitByMasterId(masterId) ;
+    }
+    
 }

@@ -47,6 +47,10 @@ public class DeclareBuildingConstructionPermit {
 
     private Date gmtModified;
 
+    private Integer masterId;
+
+    private String masterType;
+
     public Integer getId() {
         return id;
     }
@@ -221,5 +225,21 @@ public class DeclareBuildingConstructionPermit {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public Integer getMasterId() {
+        return masterId;
+    }
+
+    public void setMasterId(Integer masterId) {
+        this.masterId = masterId;
+    }
+
+    public String getMasterType() {
+        return masterType;
+    }
+
+    public void setMasterType(String masterType) {
+        this.masterType = masterType == null ? null : masterType.trim();
     }
 }

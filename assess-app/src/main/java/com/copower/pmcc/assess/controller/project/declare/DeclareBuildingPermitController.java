@@ -45,36 +45,21 @@ public class DeclareBuildingPermitController {
 
     @ResponseBody
     @RequestMapping(value = "/getDeclareBuildingPermitList", method = {RequestMethod.GET}, name = "获取建设工程规划许可证列表")
-    public BootstrapTableVo getExamineEstateNetworkList(Integer planDetailsId) {
-        DeclareBuildingPermit declareBuildingPermit = new DeclareBuildingPermit();
-        BootstrapTableVo vo = null;
-        try {
-            if (planDetailsId != null) {
-                declareBuildingPermit.setPlanDetailsId(planDetailsId);
-            }
-            vo = declareBuildingPermitService.getDeclareBuildingPermitListVos(declareBuildingPermit);
-        } catch (Exception e1) {
-            logger.error(String.format("exception: %s", e1.getMessage()), e1);
-            return null;
-        }
+    public BootstrapTableVo getExamineEstateNetworkList(DeclareBuildingPermit declareBuildingPermit) {
+        BootstrapTableVo vo = declareBuildingPermitService.getDeclareBuildingPermitListVos(declareBuildingPermit);
         return vo;
     }
 
     @ResponseBody
     @RequestMapping(value = "/deleteDeclareBuildingPermitById", method = {RequestMethod.POST}, name = "删除建设工程规划许可证")
-    public HttpResult delete(Integer id) {
+    public HttpResult delete(String id) {
         try {
-            if (id != null) {
-                DeclareBuildingPermit declareBuildingPermit = new DeclareBuildingPermit();
-                declareBuildingPermit.setId(id);
-                declareBuildingPermitService.removeDeclareBuildingPermit(declareBuildingPermit);
-                return HttpResult.newCorrectResult();
-            }
+            declareBuildingPermitService.deleteDeclareBuildingPermitByIds(id);
+            return HttpResult.newCorrectResult();
         } catch (Exception e1) {
             logger.error(String.format("exception: %s" + e1.getMessage()), e1);
             return HttpResult.newErrorResult(String.format("异常! %s", e1.getMessage()));
         }
-        return null;
     }
 
     @Deprecated

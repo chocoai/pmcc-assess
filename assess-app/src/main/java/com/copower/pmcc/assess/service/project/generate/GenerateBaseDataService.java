@@ -947,7 +947,7 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getLandCertificateFieldValue(String enumName) {
-        BaseReportBankEnum baseReportEnum = BaseReportBankEnum.getEnumByName(enumName) ;
+        BaseReportBankEnum baseReportEnum = BaseReportBankEnum.getEnumByName(enumName);
         Map<Integer, String> map = Maps.newHashMap();
         for (SchemeJudgeObject schemeJudgeObject : getSchemeJudgeObjectList()) {
             if (schemeJudgeObject.getDeclareRecordId() == null) {
@@ -2063,6 +2063,31 @@ public class GenerateBaseDataService {
         return localPath;
     }
 
+    public List<DeclareRealtyCheckList> getEquityStatusObjectSheetCheckListHelp(DeclareRecord declareRecord) {
+        DeclareBuildEngineeringAndEquipmentCenter center = new DeclareBuildEngineeringAndEquipmentCenter();
+        if (Objects.equal(declareRecord.getDataTableName(), FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class))) {
+            center.setType(DeclareRealtyHouseCert.class.getSimpleName());
+            center.setHouseId(declareRecord.getDataTableId());
+        }
+        if (Objects.equal(declareRecord.getDataTableName(), FormatUtils.entityNameConvertToTableName(DeclareRealtyRealEstateCert.class))) {
+            center.setType(DeclareRealtyRealEstateCert.class.getSimpleName());
+            center.setRealEstateId(declareRecord.getDataTableId());
+        }
+        if (Objects.equal(declareRecord.getDataTableName(), FormatUtils.entityNameConvertToTableName(DeclareRealtyLandCert.class))) {
+            center.setType(DeclareRealtyLandCert.class.getSimpleName());
+            center.setLandId(declareRecord.getDataTableId());
+        }
+        if (StringUtils.isBlank(center.getType())){
+            return new ArrayList<>();
+        }
+        List<DeclareBuildEngineeringAndEquipmentCenter> centerList = declareBuildEngineeringAndEquipmentCenterService.declareBuildEngineeringAndEquipmentCenterList(center);
+        if (CollectionUtils.isNotEmpty(centerList)) {
+            return declareRealtyCheckListService.getDeclareRealtyCheckLists(centerList.get(0).getId());
+        } else {
+            return new ArrayList<>();
+        }
+    }
+
     /**
      * 权属明细清单
      *
@@ -2148,7 +2173,7 @@ public class GenerateBaseDataService {
             linkedLists.clear();
 
             //清单行
-            List<DeclareRealtyCheckList> checkListList = declareRealtyCheckListService.getDeclareRealtyCheckLists(declareRecord.getDataTableId());
+            List<DeclareRealtyCheckList> checkListList = getEquityStatusObjectSheetCheckListHelp(declareRecord);
             List<BigDecimal> areas = new ArrayList<>(checkListList.size());
             if (CollectionUtils.isNotEmpty(checkListList)) {
                 Iterator<DeclareRealtyCheckList> iterator = checkListList.iterator();
@@ -2876,15 +2901,15 @@ public class GenerateBaseDataService {
             strings = FormatUtils.transformString2List(generateReportInfo.getRealEstateAppraiser());
         }
         ProjectMemberVo projectMemberVo = projectInfo.getProjectMemberVo();
-        if (StringUtils.isNotBlank(projectMemberVo.getUserAccountManager())){
-            stringSet.add(projectMemberVo.getUserAccountManager()) ;
+        if (StringUtils.isNotBlank(projectMemberVo.getUserAccountManager())) {
+            stringSet.add(projectMemberVo.getUserAccountManager());
         }
-        if (StringUtils.isNotBlank(projectMemberVo.getUserAccountMember())){
-            stringSet.addAll(FormatUtils.transformString2List(projectMemberVo.getUserAccountMember())) ;
+        if (StringUtils.isNotBlank(projectMemberVo.getUserAccountMember())) {
+            stringSet.addAll(FormatUtils.transformString2List(projectMemberVo.getUserAccountMember()));
         }
         Iterator<String> iterator = stringSet.iterator();
-        while (iterator.hasNext()){
-            if (strings.contains(iterator.next())){
+        while (iterator.hasNext()) {
+            if (strings.contains(iterator.next())) {
                 iterator.remove();
             }
         }
@@ -3967,7 +3992,7 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getJudgeObjectOtherFieldValue(String enumName) throws Exception {
-        BaseReportBankEnum reportFieldEnum = BaseReportBankEnum.getEnumByName(enumName) ;
+        BaseReportBankEnum reportFieldEnum = BaseReportBankEnum.getEnumByName(enumName);
         Map<Integer, String> map = Maps.newHashMap();
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         String value = "/";
@@ -4203,7 +4228,7 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getJudgeObjectDamagedDegreeFieldB(String enumName) throws Exception {
-        BaseReportBankEnum reportFieldEnum = BaseReportBankEnum.getEnumByName(enumName) ;
+        BaseReportBankEnum reportFieldEnum = BaseReportBankEnum.getEnumByName(enumName);
         String name = null;
         switch (reportFieldEnum) {
             case renovation_condition_bathroom: {
@@ -4260,7 +4285,7 @@ public class GenerateBaseDataService {
     }
 
     public String getJudgeObjectDamagedDegreeFieldA(String enumName) throws Exception {
-        BaseReportBankEnum reportFieldEnum = BaseReportBankEnum.getEnumByName(enumName) ;
+        BaseReportBankEnum reportFieldEnum = BaseReportBankEnum.getEnumByName(enumName);
         String name = null;
         switch (reportFieldEnum) {
             case renovation_condition_door: {
@@ -4346,7 +4371,7 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getJudgeObjectLocationValue(String enumName) throws Exception {
-        BaseReportBankEnum reportFieldEnum = BaseReportBankEnum.getEnumByName(enumName) ;
+        BaseReportBankEnum reportFieldEnum = BaseReportBankEnum.getEnumByName(enumName);
         StringBuilder stringBuilder = new StringBuilder(8);
         LinkedList<String> stringLinkedList = Lists.newLinkedList();
         Map<Integer, String> map = Maps.newHashMap();
@@ -5068,7 +5093,7 @@ public class GenerateBaseDataService {
             BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchByEstateId(basicEstate.getId());
             BasicExamineHandle basicExamineHandle = new BasicExamineHandle(basicApplyBatch);
             BasicEstateLandStateVo landStateVo = basicExamineHandle.getBasicEstateLandState();
-            if (landStateVo==null||landStateVo.getId() == null || landStateVo.getId() == 0) {
+            if (landStateVo == null || landStateVo.getId() == null || landStateVo.getId() == 0) {
                 continue;
             }
             StringBuilder stringBuilder = new StringBuilder();
@@ -5587,7 +5612,7 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getNetAssessmentNumber(String enumName) {
-        BaseReportFieldConstructionBankEnum reportFieldEnum = BaseReportFieldConstructionBankEnum.getEnumByName(enumName) ;
+        BaseReportFieldConstructionBankEnum reportFieldEnum = BaseReportFieldConstructionBankEnum.getEnumByName(enumName);
         Map<Integer, String> map = Maps.newHashMap();
         List<SchemeJudgeObject> schemeJudgeObjectList = Lists.newArrayList();
         schemeJudgeObjectService.getJudgeObjectListAllByAreaGroupId(areaId).forEach(schemeJudgeObject -> {

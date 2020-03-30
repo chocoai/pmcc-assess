@@ -228,7 +228,7 @@ assessCommonLand.loadList = function () {
             str += '<div class="dropdown">';
             str += "<button class='btn btn-info btn-xs dropdown-toggle'  style=\"margin-left: 5px;\" data-toggle='dropdown'>许可证信息</button>";
             str += "<div class='dropdown-menu' role='menu' aria-labelledby='dropdownMenu2'>";
-            str += "<a class='dropdown-item'  onclick='assessCommonLand.declareBuildingPermitView(" + row.id + ")'>" + "建设工程规划许可证</a>";
+            str += "<a class='dropdown-item' onclick='declareCommon.loadTableDeclareBuildingPermit(" + row.centerId + "," + row.centerId + ")'>建设工程规划许可证</a>";
             str += "<a class='dropdown-item'  onclick='assessCommonLand.declareLandUsePermitView(" + row.id + ")'>" + "建设用地规划许可证</a>";
             str += "<a class='dropdown-item'  onclick='assessCommonLand.declareBuildingConstructionPermitView(" + row.id + ")'>" + "建筑工程施工许可证</a>";
             str += "<a class='dropdown-item'  onclick='assessCommonLand.declarePreSalePermitView(" + row.id + ")'>" + "商品房预售许可证</a>";
@@ -439,69 +439,8 @@ assessCommonLand.deleteDeclareEconomicIndicatorsCenter = function (frmEle, box) 
 };
 
 
-//建设工程规划许可证
-assessCommonLand.declareBuildingPermitView = function (id) {
-    var item = $("#" + assessCommonLand.config.table).bootstrapTable('getRowByUniqueId', id);
-    if (!declareCommon.isNotBlank(item.centerId)) {
-        notifyWarning("警告", "不合符调整后的数据约定,请联系管理员!");
 
-        return false;
-    }
-    var box = $("#declareBuildingPermitLandBox");
-    var frm = box.find("form");
-    box.find("#" + commonDeclareApplyModel.config.buildingPermit.handleId).remove();
-    box.find(".card-body").append(commonDeclareApplyModel.buildingPermit.getHtml());
-    var arr = ["declareBuildingPermitFileId3"];
-    var inputArr = ["date"];
-    declareCommon.showHtmlMastInit(frm, function (area) {
-        box.modal("show");
-        declareCommon.getDeclareBuildCenter(item.centerId, function (centerData) {
-            if (centerData.buildingPermitId) {
-                declareCommon.getDeclareBuildingPermitById(centerData.buildingPermitId, function (data) {
-                    data.centerId = centerData.id;
-                    declareCommon.initFormData(frm, data, arr, false, AssessDBKey.DeclareBuildingPermit, inputArr);
-                });
-            } else {
-                declareCommon.initFormData(frm, {centerId: centerData.id}, arr, false, AssessDBKey.DeclareBuildingPermit, inputArr);
-            }
-        });
-    });
-};
-//建设工程规划许可证
-assessCommonLand.declareBuildingPermitSaveAndUpdate = function () {
-    var box = $("#declareBuildingPermitLandBox");
-    var frm = box.find("form");
-    if (!frm.valid()) {
-        return false;
-    }
-    var data = formSerializeArray(frm);
-    data.planDetailsId = declareCommon.getPlanDetailsId();
-    declareCommon.saveDeclareBuildingPermit(data, true, function (item) {
-        declareCommon.declareBuildCenterSaveAndUpdate({buildingPermitId: item.id, id: data.centerId}, function () {
-            box.modal("hide");
-            notifySuccess("成功", "保存成功!");
-        });
-    });
-};
-//建设工程规划许可证
-assessCommonLand.declareBuildingPermitRemove = function () {
-    var box = $("#declareBuildingPermitLandBox");
-    var frm = box.find("form");
-    var data = formSerializeArray(frm);
-    if (declareCommon.isNotBlank(data.centerId)) {
-        declareCommon.getDeclareBuildCenter(data.centerId, function (centerData) {
-            if (declareCommon.isNotBlank(centerData.buildingPermitId)) {
-                declareCommon.deleteByDeclareBuildCenterType(data.centerId, declareCommon.declareCenterData.buildingPermitId.type, function () {
-                    box.modal("hide");
-                    notifyInfo('提示', "已经删除");
-                });
-            } else {
-                notifyInfo('提示', "未添加数据");
 
-            }
-        });
-    }
-};
 
 //建设用地规划许可证
 assessCommonLand.declareLandUsePermitView = function (id) {

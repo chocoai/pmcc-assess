@@ -138,17 +138,17 @@
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         <!--</table>-->
 
-        <table tableName="tb_survey_asset_info" domainObjectName="SurveyAssetInfo">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
+        <!--<table tableName="tb_survey_asset_info" domainObjectName="SurveyAssetInfo">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
 
-        <table tableName="tb_survey_asset_info_group" domainObjectName="SurveyAssetInfoGroup">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
+        <!--<table tableName="tb_survey_asset_info_group" domainObjectName="SurveyAssetInfoGroup">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
 
-        <table tableName="tb_survey_asset_inventory" domainObjectName="SurveyAssetInventory">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
+        <!--<table tableName="tb_survey_asset_inventory" domainObjectName="SurveyAssetInventory">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
 
         <!--<table tableName="tb_declare_realty_land_cert" domainObjectName="DeclareRealtyLandCert">-->
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
@@ -158,17 +158,9 @@
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         <!--</table>-->
 
-        <!--<table tableName="tb_declare_land_use_permit" domainObjectName="DeclareLandUsePermit">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
 
-        <!--<table tableName="tb_declare_building_permit" domainObjectName="DeclareBuildingPermit">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
 
-        <!--<table tableName="tb_declare_building_construction_permit" domainObjectName="DeclareBuildingConstructionPermit">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
+
 
         <!--<table tableName="tb_md_economic_indicators_item" domainObjectName="MdEconomicIndicatorsItem">-->
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
@@ -203,17 +195,21 @@
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
         <!--</table>-->
 
-        <!--<table tableName="tb_declare_building_permit" domainObjectName="DeclareBuildingPermit">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
+        <table tableName="tb_declare_building_permit" domainObjectName="DeclareBuildingPermit">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
 
-        <!--<table tableName="tb_declare_land_use_permit" domainObjectName="DeclareLandUsePermit">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
+        <table tableName="tb_declare_land_use_permit" domainObjectName="DeclareLandUsePermit">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
 
-        <!--<table tableName="tb_declare_pre_sale_permit" domainObjectName="DeclarePreSalePermit">-->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
+        <table tableName="tb_declare_pre_sale_permit" domainObjectName="DeclarePreSalePermit">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+
+        <table tableName="tb_declare_building_construction_permit" domainObjectName="DeclareBuildingConstructionPermit">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
 
 
 
