@@ -7,7 +7,7 @@
         <div class="card-header collapse-link">
             <div class="card-head-row">
                 <div class="card-title">
-                    楼栋内装情况
+                    装饰装修
                 </div>
                 <div class="card-tools">
                     <button class="btn  btn-link btn-primary btn-xs"><span

@@ -1928,7 +1928,7 @@ damagedDegree.loadDamagedDegreeList = function () {
 //现状change
 damagedDegree.entityConditionChange = function (_this) {
     var group = $(_this).closest('.group');
-    var text = $(_this).attr('data-' + $(_this).val()) +" *" ;
+    var text = $(_this).attr('data-' + $(_this).val());
     group.find('[data-name=entityConditionContent]').text(text);
     group.find("textarea").attr("required","required") ;
 };
