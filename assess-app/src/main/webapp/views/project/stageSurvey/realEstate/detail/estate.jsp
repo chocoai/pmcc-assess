@@ -199,13 +199,22 @@
                                             <div class="form-inline x-valid">
                                                 <label class="col-sm-1 control-label">总平面图</label>
                                                 <div class="col-sm-5">
-
                                                     <div id="_estate_floor_total_plan"></div>
                                                 </div>
                                                 <label class="col-sm-1 control-label">外观图</label>
                                                 <div class="col-sm-5">
 
                                                     <div id="_estate_floor_Appearance_figure"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1 control-label">大门入口图</label>
+                                                <div class="col-sm-5">
+                                                    <div id="_estate_gate_entrance_plan"></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -658,6 +667,7 @@
 
 <script type="text/javascript">
     $(function () {
+        console.log("0000")
         estateCommon.initDetailById('${basicEstate.id}', '', false);
     })
 </script>

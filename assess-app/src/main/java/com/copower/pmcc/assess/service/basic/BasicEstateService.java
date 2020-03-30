@@ -589,8 +589,8 @@ public class BasicEstateService extends BasicEntityAbstract {
     @Override
     public ModelAndView getDetailModelAndView(BasicFormClassifyParamDto basicFormClassifyParamDto) {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/stageSurvey/realEstate/detail/estate");
-        modelAndView.addObject("basicEstate", getBasicEstateById(basicFormClassifyParamDto.getTbId()));
-        modelAndView.addObject("basicEstateLandState", basicEstateLandStateService.getLandStateByEstateId(basicFormClassifyParamDto.getTbId()));
+        modelAndView.addObject("basicEstate", getBasicEstateVo(getBasicEstateById(basicFormClassifyParamDto.getTbId())));
+        modelAndView.addObject("basicEstateLandState", basicEstateLandStateService.getBasicEstateLandStateVo(basicEstateLandStateService.getLandStateByEstateId(basicFormClassifyParamDto.getTbId())));
         return modelAndView;
     }
 }

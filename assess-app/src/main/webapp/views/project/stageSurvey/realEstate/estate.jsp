@@ -289,6 +289,20 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <div class="row form-group">
+                                                    <div class="col-md-12">
+                                                        <div class="form-inline x-valid">
+                                                            <label class="col-sm-1">大门入口图<span
+                                                                    class="symbol required"></span></label>
+                                                            <div class="col-md-5">
+                                                                <input id="estate_gate_entrance_plan" placeholder="上传附件"
+                                                                       class="form-control input-full"
+                                                                       type="file">
+                                                                <div id="_estate_gate_entrance_plan"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                                 <c:if test="${formType eq 'industry'}">
                                                     <div class="row form-group">
                                                         <div class="col-md-12">

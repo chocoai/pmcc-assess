@@ -16,6 +16,7 @@ AssessUploadKey.INVENTORY_SPECIAL_CASE = "inventory_special_case";//资产清查
 AssessUploadKey.INVENTORY_PAYMENT_STATUS = "inventory_payment_status";//资产清缴纳情况附件
 
 AssessUploadKey.ESTATE_FLOOR_TOTAL_PLAN = "estate_floor_total_plan";//楼盘总平面图
+AssessUploadKey.ESTATE_GATE_ENTRANCE_PLAN = "estate_gate_entrance_plan";//楼盘大门入口图
 AssessUploadKey.ESTATE_FLOOR_APPEARANCE_FIGURE = "estate_floor_Appearance_figure";//楼盘外观图
 AssessUploadKey.ESTATE_WATER_SUPPLY_PLAN = "estate_water_supply_plan";//楼盘供水平面图
 AssessUploadKey.ESTATE_POWER_SUPPLY_PLAN = "estate_power_supply_plan";//楼盘供电平面图

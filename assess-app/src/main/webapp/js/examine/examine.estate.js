@@ -19,7 +19,8 @@
         AssessUploadKey.ESTATE_WATER_SUPPLY_PLAN,
         AssessUploadKey.ESTATE_POWER_SUPPLY_PLAN,
         AssessUploadKey.ESTATE_AIR_SUPPLY_PLAN,
-        AssessUploadKey.ESTATE_HEATING_PLAN
+        AssessUploadKey.ESTATE_HEATING_PLAN,
+        AssessUploadKey.ESTATE_GATE_ENTRANCE_PLAN
     ];
 
     /**
@@ -304,10 +305,13 @@
         });
 
         $.each(estateCommon.estateFileControlIdArray, function (i, n) {
+            console.log("1111")
             estateCommon.fileUpload(n, AssessDBKey.BasicEstate, data.estate.id);
             if(bisDetail==false){
+                console.log("2222")
                 estateCommon.fileShow(n, AssessDBKey.BasicEstate, data.estate.id,false);
             }else{
+                console.log("3333")
                 estateCommon.fileShow(n, AssessDBKey.BasicEstate, data.estate.id,true);
             }
         });
