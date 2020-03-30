@@ -216,6 +216,10 @@ public class GenerateReportService {
         Arrays.asList(BaseReportField_INDUSTRIAL_AND_COMMERCIAL_BANKEnum.values()).forEach(oo -> names.add(oo.getName()));
         //建设银行 字段
         Arrays.asList(BaseReportFieldConstructionBankEnum.values()).forEach(oo -> names.add(oo.getName()));
+        //司法字段
+        Arrays.asList(BaseReportFieldJudicialEnum.values()).forEach(oo -> names.add(oo.getName()));
+        //土地比较法 字段
+        Arrays.asList(BaseReportFieldLandCompareEnum.values()).forEach(oo -> names.add(oo.getName()));
         return names;
     }
 
