@@ -571,6 +571,8 @@ public class BasicEstateService extends BasicEntityAbstract {
     public List<BasicFormClassifyEnum> getLowerFormClassifyList() {
         List<BasicFormClassifyEnum> list = Lists.newArrayList();
         list.add(BasicFormClassifyEnum.BUILDING);
+        list.add(BasicFormClassifyEnum.BUILDING_MONOLAYER);
+        list.add(BasicFormClassifyEnum.BUILDING_BASE);
         return list;
     }
 
