@@ -134,12 +134,12 @@
                     <div class="row form-group">
                         <div class="col-md-12">
                             <div class="form-inline x-valid">
-                                <label class="col-sm-2">名称</label>
+                                <label class="col-sm-2">名称<span class="symbol required"></span></label>
                                 <div class="col-sm-4">
                                     <input type="text" data-rule-maxlength="100" placeholder="名称"
-                                           name="name" class="form-control input-full">
+                                           name="name" class="form-control input-full" required>
                                 </div>
-                                <label class="col-sm-2">表单类型</label>
+                                <label class="col-sm-2">表单类型<span class="symbol required"></span></label>
                                 <div class="col-sm-4">
                                     <select name='type' required
                                             class='form-control input-full'></select>
