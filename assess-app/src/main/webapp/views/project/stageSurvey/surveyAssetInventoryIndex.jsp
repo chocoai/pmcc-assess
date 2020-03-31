@@ -36,18 +36,7 @@
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
-                                                <label class="col-sm-1 col-form-label">
-                                                    核对日期<span class="symbol required"></span></label>
-                                                <div class="col-sm-3">
-                                                    <input type="text" required placeholder="核对日期"
-                                                           name="checkDate"
-                                                           data-date-format="yyyy-mm-dd"
-                                                           class="form-control input-full date-picker dbdate"
-                                                           readonly="readonly"
-                                                           value="<fmt:formatDate value='${surveyAssetInventory.checkDate}' pattern='yyyy-MM-dd'/>">
-
-                                                </div>
-                                                <label class="col-sm-1 col-form-label">查看原件<span
+                                                <label class="col-sm-1 col-form-label">是否查看原件<span
                                                         class="symbol required"></span></label>
                                                 <div class="col-sm-3">
                                                     <select class="form-control input-full"
@@ -55,12 +44,7 @@
                                                         <option value="">请选择</option>
                                                     </select>
                                                 </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row form-group">
-                                        <div class="col-md-12">
-                                            <div class="form-inline x-valid">
+
                                                 <label class="col-sm-1 col-form-label">
                                                     分割限制<span class="symbol required"></span></label>
                                                 <div class="col-sm-3">
@@ -71,7 +55,13 @@
                                                         <option value="不可分" selected>不可分</option>
                                                     </select>
                                                 </div>
-                                                <div class="showUse"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+
 
                                                 <label class="col-sm-1 col-form-label">
                                                     查看方法
@@ -81,7 +71,20 @@
                                                     </select>
                                                 </div>
 
-
+                                                <label class="col-sm-1 control-label">
+                                                    查看说明
+                                                </label>
+                                                <div class="col-sm-3">
+                                           <textarea placeholder="查询说明" class="form-control input-full"
+                                                     name="networkRemark">${surveyAssetInventory.networkRemark}</textarea>
+                                                </div>
+                                                <label class="col-sm-1 control-label">
+                                                    查看结果附件
+                                                </label>
+                                                <div class="col-sm-3">
+                                                    <input id="networkFindFile" type="file" multiple="false">
+                                                    <div id="_networkFindFile"></div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -96,20 +99,6 @@
                                                     <input class="form-control input-full" placeholder="查询的地址"
                                                            value="${surveyAssetInventory.networkAddress}"
                                                            name="networkAddress">
-                                                </div>
-                                                <label class="col-sm-1 control-label">
-                                                    说明
-                                                </label>
-                                                <div class="col-sm-3">
-                                           <textarea placeholder="查询说明" class="form-control input-full"
-                                                     name="networkRemark">${surveyAssetInventory.networkRemark}</textarea>
-                                                </div>
-                                                <label class="col-sm-1 control-label">
-                                                    查看结果附件
-                                                </label>
-                                                <div class="col-sm-3">
-                                                    <input id="networkFindFile" type="file" multiple="false">
-                                                    <div id="_networkFindFile"></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -170,9 +159,23 @@
                                         </div>
                                     </div>
 
+
+                                    <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%"
+                                        color="#6f5499" size="10"/>
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
+                                                <label class="col-sm-1 col-form-label">
+                                                    核对日期<span class="symbol required"></span></label>
+                                                <div class="col-sm-3">
+                                                    <input type="text" required placeholder="核对日期"
+                                                           name="checkDate"
+                                                           data-date-format="yyyy-mm-dd"
+                                                           class="form-control input-full date-picker dbdate"
+                                                           readonly="readonly"
+                                                           value="<fmt:formatDate value='${surveyAssetInventory.checkDate}' pattern='yyyy-MM-dd'/>">
+
+                                                </div>
                                                 <label class="col-sm-1 control-label">
                                                     证明文件
                                                 </label>
@@ -180,16 +183,10 @@
                                                     <input id="checkOriginalFile" type="file" multiple="false">
                                                     <div id="_checkOriginalFile"></div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row form-group">
-                                        <div class="col-md-12">
-                                            <div class="form-inline x-valid">
                                                 <label class="col-sm-1 control-label">
                                                     说明
                                                 </label>
-                                                <div class="col-sm-11">
+                                                <div class="col-sm-3">
                                            <textarea placeholder="说明" class="form-control input-full"
                                                      name="remark">${surveyAssetInventory.remark}</textarea>
                                                 </div>
@@ -769,10 +766,10 @@
                                 obj[rD[0]] = rD[1];
                             });
                         }
-                        if (obj){
-                            var value = obj[name] ;
-                            if (value){
-                                frm.find("textarea[name="+name+"]").val(value) ;
+                        if (obj) {
+                            var value = obj[name];
+                            if (value) {
+                                frm.find("textarea[name=" + name + "]").val(value);
                             }
                         }
                     });
@@ -929,7 +926,7 @@
         var resultData = [];
         $.each(Object.keys(surveyAssetInventory), function (i, name) {
             if (name.indexOf('influenceFactorRemarkText') != -1) {
-                if (name != 'influenceFactorRemarkText'){
+                if (name != 'influenceFactorRemarkText') {
                     if (surveyAssetInventory[name]) {
                         resultData.push(name + ":" + surveyAssetInventory[name]);
                     }

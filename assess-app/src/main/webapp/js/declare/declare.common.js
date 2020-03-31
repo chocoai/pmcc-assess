@@ -65,15 +65,31 @@ declareCommon.config = {
         frm: "frmDeclareEconomicIndicatorsContentRealtyRealEstate",
         name: "经济指标2"
     },
+    //不动产清单
     declareRealtyCheckListModel: "#declareRealtyCheckListDataModelBox",
     declareRealtyCheckListListBox: "#divDataDeclareRealtyCheckList",
     declareRealtyCheckListToolBar: "#toolbarDeclareRealtyCheckList",
     declareRealtyCheckListTable: "#tbDataDeclareRealtyCheckListList",
-
+    //建设工程规划许可证
     declareBuildingPermitListBox: "#divDeclareBuildingPermitBox",
     declareBuildingPermitDataModelBox: "#declareBuildingPermitDataModelBox",
     tbDeclareBuildingPermitList: "#tbDeclareBuildingPermitList",
-    declareBuildingPermitFileId: "declareBuildingPermitAnnex"
+    declareBuildingPermitFileId: "declareBuildingPermitAnnex",
+    //建设用地规划许可证
+    declareLandUsePermitListBox: "#divDeclareLandUsePermitBox",
+    declareLandUsePermitDataModelBox: "#declareLandUsePermitDataModelBox",
+    tbDeclareLandUsePermitList: "#tbDeclareLandUsePermitList",
+    declareLandUsePermitFileId: "declareLandUsePermitAnnex",
+    //建筑工程施工许可证
+    declareBuildingConstructionPermitListBox: "#divDeclareBuildingConstructionPermitBox",
+    declareBuildingConstructionPermitDataModelBox: "#declareBuildingConstructionPermitDataModelBox",
+    tbDeclareBuildingConstructionPermitList: "#tbDeclareBuildingConstructionPermitList",
+    declareBuildingConstructionPermitFileId: "declareBuildingConstructionPermitAnnex",
+    //商品房预售许可证
+    declarePreSalePermitListBox: "#divDeclarePreSalePermitBox",
+    declarePreSalePermitDataModelBox: "#declarePreSalePermitDataModelBox",
+    tbDeclarePreSalePermitList: "#tbDeclarePreSalePermitList",
+    declarePreSalePermitFileId: "declarePreSalePermitAnnex"
 };
 
 declareCommon.declareCenterData = {
@@ -1038,7 +1054,7 @@ declareCommon.saveDeclareBuildingConstructionPermit = function (data, updateNull
 
 //delete 建筑工程施工许可证
 declareCommon.deleteDeclareBuildingConstructionPermitById = function (id, callback) {
-    declareCommon.ajaxServerFun({id: id}, "/declareBuildingConstructionPermit/deleteDeclareBuildingConstructionPermitById", "POST", callback,"delete");
+    declareCommon.ajaxServerFun({id: id}, "/declareBuildingConstructionPermit/deleteDeclareBuildingConstructionPermitById", "POST", callback, "delete");
 };
 
 //get 建筑工程施工许可证
@@ -1066,7 +1082,7 @@ declareCommon.saveDeclareBuildingPermit = function (data, updateNull, callback) 
 
 //delete 建设工程规划许可证
 declareCommon.deleteDeclareBuildingPermitById = function (id, callback) {
-    declareCommon.ajaxServerFun({id: id}, "/declareBuildingPermit/deleteDeclareBuildingPermitById", "post", callback,"delete");
+    declareCommon.ajaxServerFun({id: id}, "/declareBuildingPermit/deleteDeclareBuildingPermitById", "post", callback, "delete");
 };
 
 //get 建设工程规划许可证
@@ -1096,7 +1112,7 @@ declareCommon.saveDeclareLandUsePermit = function (data, updateNull, callback) {
 
 //delete 建设用地规划许可证
 declareCommon.deleteDeclareLandUsePermitById = function (id, callback) {
-    declareCommon.ajaxServerFun({id: id}, "/declareLandUsePermit/deleteDeclareLandUsePermitById", "POST", callback,"delete");
+    declareCommon.ajaxServerFun({id: id}, "/declareLandUsePermit/deleteDeclareLandUsePermitById", "POST", callback, "delete");
 };
 
 //get 建设用地规划许可证
@@ -1129,7 +1145,7 @@ declareCommon.saveDeclarePreSalePermit = function (data, updateNull, callback) {
 
 //delete 商品房预售许可证
 declareCommon.deleteDeclarePreSalePermitById = function (id, callback) {
-    declareCommon.ajaxServerFun({id: id}, "/declarePreSalePermit/deleteDeclarePreSalePermitById", "POST", callback,"delete");
+    declareCommon.ajaxServerFun({id: id}, "/declarePreSalePermit/deleteDeclarePreSalePermitById", "POST", callback, "delete");
 };
 
 //get 商品房预售许可证
@@ -1308,6 +1324,15 @@ declareCommon.loadTableDeclareBuildingPermit = function (masterId, tableId) {
     frm.clearAll();
     frm.initForm(query);
     var cols = [];
+    cols.push({field: 'certificateNumber', title: '证书编号'});
+    cols.push({field: 'issuingOrgan', title: '发证机关'});
+    cols.push({
+        field: 'date', title: '日期', formatter: function (value, row, index) {
+            return formatDate(value);
+        }
+    });
+    cols.push({field: 'unit', title: '建设单位（个人）'});
+    cols.push({field: 'name', title: '建设项目名称'});
     if (tableId) {
         cols.push({
             field: 'id', title: '编辑', width: 200, formatter: function (value, row, index) {
@@ -1331,15 +1356,6 @@ declareCommon.loadTableDeclareBuildingPermit = function (masterId, tableId) {
             }
         });
     }
-    cols.push({field: 'certificateNumber', title: '证书编号'});
-    cols.push({field: 'issuingOrgan', title: '发证机关'});
-    cols.push({
-        field: 'date', title: '日期', formatter: function (value, row, index) {
-            return formatDate(value);
-        }
-    });
-    cols.push({field: 'unit', title: '建设单位（个人）'});
-    cols.push({field: 'name', title: '建设项目名称'});
     var table = $(declareCommon.config.tbDeclareBuildingPermitList);
     table.bootstrapTable('destroy');
     TableInit(table, getContextPath() + "/declareBuildingPermit/getDeclareBuildingPermitList", cols, query, {
@@ -1364,7 +1380,7 @@ declareCommon.addDeclareBuildingPermit = function (data) {
         box.modal("show");
         if (data) {
             declareCommon.initFormData(frm, data, arr, true, AssessDBKey.DeclareBuildingPermit, inputArr);
-        }else {
+        } else {
             declareCommon.initFormData(frm, area, arr, true, AssessDBKey.DeclareBuildingPermit, inputArr);
         }
     });
@@ -1389,7 +1405,7 @@ declareCommon.saveDeclareBuildingPermitData = function () {
 declareCommon.editDeclareBuildingPermit = function (id) {
     var table = $(declareCommon.config.tbDeclareBuildingPermitList);
     var item = table.bootstrapTable('getRowByUniqueId', id);
-    declareCommon.addDeclareBuildingPermit(item) ;
+    declareCommon.addDeclareBuildingPermit(item);
 };
 
 declareCommon.delDeclareBuildingPermit = function () {
@@ -1407,7 +1423,7 @@ declareCommon.delDeclareBuildingPermit = function () {
             table.bootstrapTable('refresh');
         });
     }
-} ;
+};
 declareCommon.findDeclareBuildingPermit = function (id) {
     var table = $(declareCommon.config.tbDeclareBuildingPermitList);
     var item = table.bootstrapTable('getRowByUniqueId', id);
@@ -1419,5 +1435,379 @@ declareCommon.findDeclareBuildingPermit = function (id) {
     box.find(".card-body").append(commonDeclareApprovalModel.buildingPermit.getHtml());
     declareCommon.initFormData(frm, item, arr, false, AssessDBKey.DeclareBuildingPermit, inputArr);
     box.modal("show");
-} ;
+};
 
+
+//建设用地
+declareCommon.loadTableDeclareLandUsePermit = function (masterId, tableId) {
+    var box = $(declareCommon.config.declareLandUsePermitListBox);
+    var frm = box.find("form");
+    var query = {masterId: masterId};
+    frm.clearAll();
+    frm.initForm(query);
+    var cols = [];
+    cols.push({field: 'certificateNumber', title: '证书编号'});
+    cols.push({field: 'issuingOrgan', title: '发证机关'});
+    cols.push({
+        field: 'date', title: '日期', formatter: function (value, row, index) {
+            return formatDate(value);
+        }
+    });
+    cols.push({field: 'unit', title: '用地单位'});
+    cols.push({field: 'name', title: '用地项目名称'});
+    cols.push({field: 'location', title: '用地位置'});
+    if (tableId) {
+        cols.push({
+            field: 'id', title: '编辑', width: 200, formatter: function (value, row, index) {
+                var str = '<div class="btn-margin">';
+                str += '<button onclick="declareCommon.editDeclareLandUsePermit(' + row.id + ')"  style="margin-left: 5px;"  class="btn   btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
+                str += '<i class="fa fa-pen"></i>';
+                str += '</button>';
+                str += '</div>';
+                return str;
+            }
+        });
+    } else {
+        cols.push({
+            field: 'id', title: '详情', width: 200, formatter: function (value, row, index) {
+                var str = '<div class="btn-margin">';
+                str += '<button onclick="declareCommon.findDeclareLandUsePermit(' + row.id + ')"  style="margin-left: 5px;"  class="btn   btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="详情">';
+                str += '<i class="fa fa-search"></i>';
+                str += '</button>';
+                str += '</div>';
+                return str;
+            }
+        });
+    }
+    var table = $(declareCommon.config.tbDeclareLandUsePermitList);
+    table.bootstrapTable('destroy');
+    TableInit(table, getContextPath() + "/declareLandUsePermit/getDeclareLandUsePermitList", cols, query, {
+        showColumns: false,
+        showRefresh: false,
+        search: false,
+        toolbar: "." + box.attr("id"),
+        onLoadSuccess: function () {
+            $('.tooltips').tooltip();
+        }
+    }, true, false);
+    box.modal("show");
+};
+declareCommon.addDeclareLandUsePermit = function (data) {
+    var box = $(declareCommon.config.declareLandUsePermitDataModelBox);
+    var frm = box.find("form");
+    box.find("#" + commonDeclareApplyModel.config.landUsePermit.handleId).remove();
+    box.find(".card-body").append(commonDeclareApplyModel.landUsePermit.getHtml());
+    var arr = [declareCommon.config.declareLandUsePermitFileId];
+    var inputArr = ["date"];
+    declareCommon.showHtmlMastInit(frm, function (area) {
+        box.modal("show");
+        if (data) {
+            declareCommon.initFormData(frm, data, arr, true, AssessDBKey.DeclareLandUsePermit, inputArr);
+        } else {
+            declareCommon.initFormData(frm, area, arr, true, AssessDBKey.DeclareLandUsePermit, inputArr);
+        }
+    });
+};
+declareCommon.saveDeclareLandUsePermitData = function () {
+    var box = $(declareCommon.config.declareLandUsePermitDataModelBox);
+    var frm = box.find("form");
+    var data = formSerializeArray(frm);
+    var item = formSerializeArray($(declareCommon.config.declareLandUsePermitListBox).find("form"));
+    $.extend(data, item);
+    data.planDetailsId = declareCommon.getPlanDetailsId();
+    if (!frm.valid()) {
+        return false;
+    }
+    declareCommon.saveDeclareLandUsePermit(data, true, function (item) {
+        box.modal("hide");
+        notifySuccess("成功", "保存成功!");
+        var table = $(declareCommon.config.tbDeclareLandUsePermitList);
+        table.bootstrapTable('refresh');
+    });
+};
+declareCommon.editDeclareLandUsePermit = function (id) {
+    var table = $(declareCommon.config.tbDeclareLandUsePermitList);
+    var item = table.bootstrapTable('getRowByUniqueId', id);
+    declareCommon.addDeclareLandUsePermit(item);
+};
+
+declareCommon.delDeclareLandUsePermit = function () {
+    var table = $(declareCommon.config.tbDeclareLandUsePermitList);
+    var rows = table.bootstrapTable('getSelections');
+    if (!rows || rows.length <= 0) {
+        notifyWarning("警告", "请选择要删除的数据!");
+
+    } else {
+        var idArray = [];
+        $.each(rows, function (i, item) {
+            idArray.push(item.id);
+        });
+        declareCommon.deleteDeclareLandUsePermitById(idArray.join(","), function () {
+            table.bootstrapTable('refresh');
+        });
+    }
+};
+declareCommon.findDeclareLandUsePermit = function (id) {
+    var table = $(declareCommon.config.tbDeclareLandUsePermitList);
+    var item = table.bootstrapTable('getRowByUniqueId', id);
+    var arr = [declareCommon.config.declareLandUsePermitFileId];
+    var inputArr = ["date"];
+    var box = $(declareCommon.config.declareLandUsePermitDataModelBox);
+    var frm = box.find("form");
+    box.find("#" + commonDeclareApprovalModel.config.landUsePermit.handleId).remove();
+    box.find(".card-body").append(commonDeclareApprovalModel.landUsePermit.getHtml());
+    declareCommon.initFormData(frm, item, arr, false, AssessDBKey.DeclareLandUsePermit, inputArr);
+    box.modal("show");
+};
+
+
+//建筑工程施工许可证
+declareCommon.loadTableDeclareBuildingConstructionPermit = function (masterId, tableId) {
+    var box = $(declareCommon.config.declareBuildingConstructionPermitListBox);
+    var frm = box.find("form");
+    var query = {masterId: masterId};
+    frm.clearAll();
+    frm.initForm(query);
+    var cols = [];
+    cols.push({field: 'certificateNumber', title: '证书编号'});
+    cols.push({field: 'issuingOrgan', title: '发证机关'});
+    cols.push({
+        field: 'date', title: '日期', formatter: function (value, row, index) {
+            return formatDate(value);
+        }
+    });
+    cols.push({field: 'buildUnit', title: '建设单位（个人）'});
+    cols.push({field: 'name', title: '工程名称'});
+    cols.push({field: 'buildAddress', title: '建设地址'});
+    cols.push({field: 'chiefEngineerConstructionInspection', title: '总监理工程师'});
+    cols.push({
+        field: 'contractPeriod', title: '合同日期', formatter: function (value, row, index) {
+            return formatDate(value);
+        }
+    });
+    if (tableId) {
+        cols.push({
+            field: 'id', title: '编辑', width: 200, formatter: function (value, row, index) {
+                var str = '<div class="btn-margin">';
+                str += '<button onclick="declareCommon.editDeclareBuildingConstructionPermit(' + row.id + ')"  style="margin-left: 5px;"  class="btn   btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
+                str += '<i class="fa fa-pen"></i>';
+                str += '</button>';
+                str += '</div>';
+                return str;
+            }
+        });
+    } else {
+        cols.push({
+            field: 'id', title: '详情', width: 200, formatter: function (value, row, index) {
+                var str = '<div class="btn-margin">';
+                str += '<button onclick="declareCommon.findDeclareBuildingConstructionPermit(' + row.id + ')"  style="margin-left: 5px;"  class="btn   btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="详情">';
+                str += '<i class="fa fa-search"></i>';
+                str += '</button>';
+                str += '</div>';
+                return str;
+            }
+        });
+    }
+    var table = $(declareCommon.config.tbDeclareBuildingConstructionPermitList);
+    table.bootstrapTable('destroy');
+    TableInit(table, getContextPath() + "/declareBuildingConstructionPermit/getDeclareBuildingConstructionPermitList", cols, query, {
+        showColumns: false,
+        showRefresh: false,
+        search: false,
+        toolbar: "." + box.attr("id"),
+        onLoadSuccess: function () {
+            $('.tooltips').tooltip();
+        }
+    }, true, false);
+    box.modal("show");
+};
+declareCommon.addDeclareBuildingConstructionPermit = function (data) {
+    var box = $(declareCommon.config.declareBuildingConstructionPermitDataModelBox);
+    var frm = box.find("form");
+    box.find("#" + commonDeclareApplyModel.config.buildingConstructionPermit.handleId).remove();
+    box.find(".card-body").append(commonDeclareApplyModel.buildingConstructionPermit.getHtml());
+    var arr = [declareCommon.config.declareBuildingConstructionPermitFileId];
+    var inputArr = ["date","contractPeriod"];
+    declareCommon.showHtmlMastInit(frm, function (area) {
+        box.modal("show");
+        if (data) {
+            declareCommon.initFormData(frm, data, arr, true, AssessDBKey.DeclareBuildingConstructionPermit, inputArr);
+        } else {
+            declareCommon.initFormData(frm, area, arr, true, AssessDBKey.DeclareBuildingConstructionPermit, inputArr);
+        }
+    });
+};
+declareCommon.saveDeclareBuildingConstructionPermitData = function () {
+    var box = $(declareCommon.config.declareBuildingConstructionPermitDataModelBox);
+    var frm = box.find("form");
+    var data = formSerializeArray(frm);
+    var item = formSerializeArray($(declareCommon.config.declareBuildingConstructionPermitListBox).find("form"));
+    $.extend(data, item);
+    data.planDetailsId = declareCommon.getPlanDetailsId();
+    if (!frm.valid()) {
+        return false;
+    }
+    declareCommon.saveDeclareBuildingConstructionPermit(data, true, function (item) {
+        box.modal("hide");
+        notifySuccess("成功", "保存成功!");
+        var table = $(declareCommon.config.tbDeclareBuildingConstructionPermitList);
+        table.bootstrapTable('refresh');
+    });
+};
+declareCommon.editDeclareBuildingConstructionPermit = function (id) {
+    var table = $(declareCommon.config.tbDeclareBuildingConstructionPermitList);
+    var item = table.bootstrapTable('getRowByUniqueId', id);
+    declareCommon.addDeclareBuildingConstructionPermit(item);
+};
+
+declareCommon.delDeclareBuildingConstructionPermit = function () {
+    var table = $(declareCommon.config.tbDeclareBuildingConstructionPermitList);
+    var rows = table.bootstrapTable('getSelections');
+    if (!rows || rows.length <= 0) {
+        notifyWarning("警告", "请选择要删除的数据!");
+
+    } else {
+        var idArray = [];
+        $.each(rows, function (i, item) {
+            idArray.push(item.id);
+        });
+        declareCommon.deleteDeclareBuildingConstructionPermitById(idArray.join(","), function () {
+            table.bootstrapTable('refresh');
+        });
+    }
+};
+declareCommon.findDeclareBuildingConstructionPermit = function (id) {
+    var table = $(declareCommon.config.tbDeclareBuildingConstructionPermitList);
+    var item = table.bootstrapTable('getRowByUniqueId', id);
+    var arr = [declareCommon.config.declareBuildingConstructionPermitFileId];
+    var inputArr = ["date","contractPeriod"];
+    var box = $(declareCommon.config.declareBuildingConstructionPermitDataModelBox);
+    var frm = box.find("form");
+    box.find("#" + commonDeclareApprovalModel.config.buildingConstructionPermit.handleId).remove();
+    box.find(".card-body").append(commonDeclareApprovalModel.buildingConstructionPermit.getHtml());
+    declareCommon.initFormData(frm, item, arr, false, AssessDBKey.DeclareBuildingConstructionPermit, inputArr);
+    box.modal("show");
+};
+
+
+
+//商品房预售许可证
+declareCommon.loadTableDeclarePreSalePermit = function (masterId, tableId) {
+    var box = $(declareCommon.config.declarePreSalePermitListBox);
+    var frm = box.find("form");
+    var query = {masterId: masterId};
+    frm.clearAll();
+    frm.initForm(query);
+    var cols = [];
+    cols.push({field: 'certificateNumber', title: '证书编号'});
+    cols.push({field: 'issuingOrgan', title: '发证机关'});
+    cols.push({
+        field: 'date', title: '日期', formatter: function (value, row, index) {
+            return formatDate(value);
+        }
+    });
+    cols.push({field: 'salesUnit', title: '售房单位'});
+    cols.push({field: 'legalRepresentative', title: '法定代表人'});
+    if (tableId) {
+        cols.push({
+            field: 'id', title: '编辑', width: 200, formatter: function (value, row, index) {
+                var str = '<div class="btn-margin">';
+                str += '<button onclick="declareCommon.editDeclarePreSalePermit(' + row.id + ')"  style="margin-left: 5px;"  class="btn   btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
+                str += '<i class="fa fa-pen"></i>';
+                str += '</button>';
+                str += '</div>';
+                return str;
+            }
+        });
+    } else {
+        cols.push({
+            field: 'id', title: '详情', width: 200, formatter: function (value, row, index) {
+                var str = '<div class="btn-margin">';
+                str += '<button onclick="declareCommon.findDeclarePreSalePermit(' + row.id + ')"  style="margin-left: 5px;"  class="btn   btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="详情">';
+                str += '<i class="fa fa-search"></i>';
+                str += '</button>';
+                str += '</div>';
+                return str;
+            }
+        });
+    }
+    var table = $(declareCommon.config.tbDeclarePreSalePermitList);
+    table.bootstrapTable('destroy');
+    TableInit(table, getContextPath() + "/declarePreSalePermit/getDeclarePreSalePermitList", cols, query, {
+        showColumns: false,
+        showRefresh: false,
+        search: false,
+        toolbar: "." + box.attr("id"),
+        onLoadSuccess: function () {
+            $('.tooltips').tooltip();
+        }
+    }, true, false);
+    box.modal("show");
+};
+declareCommon.addDeclarePreSalePermit = function (data) {
+    var box = $(declareCommon.config.declarePreSalePermitDataModelBox);
+    var frm = box.find("form");
+    box.find("#" + commonDeclareApplyModel.config.preSalePermit.handleId).remove();
+    box.find(".card-body").append(commonDeclareApplyModel.preSalePermit.getHtml());
+    var arr = [declareCommon.config.declarePreSalePermitFileId];
+    var inputArr = ["date"];
+    declareCommon.showHtmlMastInit(frm, function (area) {
+        box.modal("show");
+        if (data) {
+            declareCommon.initFormData(frm, data, arr, true, AssessDBKey.DeclarePreSalePermit, inputArr);
+        } else {
+            declareCommon.initFormData(frm, area, arr, true, AssessDBKey.DeclarePreSalePermit, inputArr);
+        }
+    });
+};
+declareCommon.saveDeclarePreSalePermitData = function () {
+    var box = $(declareCommon.config.declarePreSalePermitDataModelBox);
+    var frm = box.find("form");
+    var data = formSerializeArray(frm);
+    var item = formSerializeArray($(declareCommon.config.declarePreSalePermitListBox).find("form"));
+    $.extend(data, item);
+    data.planDetailsId = declareCommon.getPlanDetailsId();
+    if (!frm.valid()) {
+        return false;
+    }
+    declareCommon.saveDeclarePreSalePermit(data, true, function (item) {
+        box.modal("hide");
+        notifySuccess("成功", "保存成功!");
+        var table = $(declareCommon.config.tbDeclarePreSalePermitList);
+        table.bootstrapTable('refresh');
+    });
+};
+declareCommon.editDeclarePreSalePermit = function (id) {
+    var table = $(declareCommon.config.tbDeclarePreSalePermitList);
+    var item = table.bootstrapTable('getRowByUniqueId', id);
+    declareCommon.addDeclarePreSalePermit(item);
+};
+
+declareCommon.delDeclarePreSalePermit = function () {
+    var table = $(declareCommon.config.tbDeclarePreSalePermitList);
+    var rows = table.bootstrapTable('getSelections');
+    if (!rows || rows.length <= 0) {
+        notifyWarning("警告", "请选择要删除的数据!");
+
+    } else {
+        var idArray = [];
+        $.each(rows, function (i, item) {
+            idArray.push(item.id);
+        });
+        declareCommon.deleteDeclarePreSalePermitById(idArray.join(","), function () {
+            table.bootstrapTable('refresh');
+        });
+    }
+};
+declareCommon.findDeclarePreSalePermit = function (id) {
+    var table = $(declareCommon.config.tbDeclarePreSalePermitList);
+    var item = table.bootstrapTable('getRowByUniqueId', id);
+    var arr = [declareCommon.config.declarePreSalePermitFileId];
+    var inputArr = ["date"];
+    var box = $(declareCommon.config.declarePreSalePermitDataModelBox);
+    var frm = box.find("form");
+    box.find("#" + commonDeclareApprovalModel.config.preSalePermit.handleId).remove();
+    box.find(".card-body").append(commonDeclareApprovalModel.preSalePermit.getHtml());
+    declareCommon.initFormData(frm, item, arr, false, AssessDBKey.DeclarePreSalePermit, inputArr);
+    box.modal("show");
+};

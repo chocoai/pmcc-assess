@@ -1,8 +1,11 @@
 package com.copower.pmcc.assess.service.project.declare;
 
+import com.copower.pmcc.assess.common.MyEntry;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareBuildEngineeringAndEquipmentCenterDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
+import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
+import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.google.common.base.Objects;
@@ -18,6 +21,7 @@ import org.springframework.util.ObjectUtils;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.BiConsumer;
 
 /**
  * @Auther: zch
@@ -50,6 +54,8 @@ public class DeclareBuildEngineeringAndEquipmentCenterService {
     private DeclarePreSalePermitService declarePreSalePermitService;
     @Autowired
     private DeclareRealtyCheckListService declareRealtyCheckListService;
+    @Autowired
+    private BaseService baseService;
 
     public Integer saveAndUpdateDeclareBuildEngineeringAndEquipmentCenter(DeclareBuildEngineeringAndEquipmentCenter declareBuildEngineeringAndEquipmentCenter) {
         return saveAndUpdateDeclareBuildEngineeringAndEquipmentCenter(declareBuildEngineeringAndEquipmentCenter, false);
@@ -199,6 +205,20 @@ public class DeclareBuildEngineeringAndEquipmentCenterService {
      * @param copyId
      */
     private void copyLicense(String masterType,Integer masterId,Integer copyId){
+        //附件拷贝 提取的公共方法
+        BiConsumer<String,MyEntry<Integer,Integer>> biConsumer = ((tableName,entryBiConsumer) -> {
+            SysAttachmentDto example = new SysAttachmentDto();
+            example.setTableName(tableName);
+            example.setTableId(entryBiConsumer.getKey());
+            SysAttachmentDto sysAttachmentDto = new SysAttachmentDto() ;
+            sysAttachmentDto.setTableName(tableName);
+            sysAttachmentDto.setTableId(entryBiConsumer.getValue());
+            try {
+                baseAttachmentService.copyFtpAttachments(example,sysAttachmentDto);
+            } catch (Exception e) {
+                baseService.writeExceptionInfo(e);
+            }
+        }) ;
         List<DeclareBuildingConstructionPermit> declareBuildingConstructionPermits = declareBuildingConstructionPermitService.getDeclareBuildingConstructionPermitByMasterId(copyId);
         List<DeclareBuildingPermit> declareBuildingPermits = declareBuildingPermitService.getDeclareBuildingPermitByMasterId(copyId);
         List<DeclareLandUsePermit> declareLandUsePermits = declareLandUsePermitService.getDeclareLandUsePermitByMasterId(copyId);
@@ -208,49 +228,65 @@ public class DeclareBuildEngineeringAndEquipmentCenterService {
             Iterator<DeclareBuildingConstructionPermit> iterator = declareBuildingConstructionPermits.iterator();
             while (iterator.hasNext()){
                 DeclareBuildingConstructionPermit permit = iterator.next();
+                MyEntry<Integer,Integer> myEntry = new MyEntry<>(permit.getId(),0) ;
                 permit.setId(null);
                 permit.setMasterId(masterId);
                 permit.setMasterType(masterType);
                 declareBuildingConstructionPermitService.saveAndUpdateDeclareBuildingConstructionPermit(permit) ;
+                myEntry.setValue(permit.getId()) ;
+                biConsumer.accept(FormatUtils.entityNameConvertToTableName(DeclareBuildingConstructionPermit.class) ,myEntry);
+
             }
         }
         if (CollectionUtils.isNotEmpty(declareBuildingPermits)){
             Iterator<DeclareBuildingPermit> iterator = declareBuildingPermits.iterator();
             while (iterator.hasNext()){
                 DeclareBuildingPermit buildingPermit = iterator.next();
+                MyEntry<Integer,Integer> myEntry = new MyEntry<>(buildingPermit.getId(),0) ;
                 buildingPermit.setId(null);
                 buildingPermit.setMasterId(masterId);
                 buildingPermit.setMasterType(masterType);
                 declareBuildingPermitService.saveAndUpdateDeclareBuildingPermit(buildingPermit);
+                myEntry.setValue(buildingPermit.getId()) ;
+                biConsumer.accept(FormatUtils.entityNameConvertToTableName(DeclareBuildingPermit.class) ,myEntry);
             }
         }
         if (CollectionUtils.isNotEmpty(declareLandUsePermits)){
             Iterator<DeclareLandUsePermit> iterator = declareLandUsePermits.iterator();
             while (iterator.hasNext()){
                 DeclareLandUsePermit usePermit = iterator.next();
+                MyEntry<Integer,Integer> myEntry = new MyEntry<>(usePermit.getId(),0) ;
                 usePermit.setId(null);
                 usePermit.setMasterId(masterId);
                 usePermit.setMasterType(masterType);
                 declareLandUsePermitService.saveAndUpdateDeclareLandUsePermit(usePermit) ;
+                myEntry.setValue(usePermit.getId()) ;
+                biConsumer.accept(FormatUtils.entityNameConvertToTableName(DeclareLandUsePermit.class) ,myEntry);
             }
         }
         if (CollectionUtils.isNotEmpty(declarePreSalePermits)){
             Iterator<DeclarePreSalePermit> iterator = declarePreSalePermits.iterator();
             while (iterator.hasNext()){
                 DeclarePreSalePermit salePermit = iterator.next();
+                MyEntry<Integer,Integer> myEntry = new MyEntry<>(salePermit.getId(),0) ;
                 salePermit.setId(null);
                 salePermit.setMasterId(masterId);
                 salePermit.setMasterType(masterType);
                 declarePreSalePermitService.saveAndUpdateDeclarePreSalePermit(salePermit) ;
+                myEntry.setValue(salePermit.getId()) ;
+                biConsumer.accept(FormatUtils.entityNameConvertToTableName(DeclarePreSalePermit.class) ,myEntry);
             }
         }
         if (CollectionUtils.isNotEmpty(realtyCheckLists)){
             Iterator<DeclareRealtyCheckList> iterator = realtyCheckLists.iterator();
             while (iterator.hasNext()){
                 DeclareRealtyCheckList checkList = iterator.next();
+                MyEntry<Integer,Integer> myEntry = new MyEntry<>(checkList.getId(),0) ;
                 checkList.setId(null);
                 checkList.setMarsterId(masterId);
                 declareRealtyCheckListService.saveDeclareRealtyCheckList(checkList) ;
+                myEntry.setValue(checkList.getId()) ;
+                biConsumer.accept(FormatUtils.entityNameConvertToTableName(DeclareRealtyCheckList.class) ,myEntry);
             }
         }
     }
