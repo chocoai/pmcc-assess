@@ -90,7 +90,7 @@ public class DeclareRecord {
 
     private Boolean bisGenerate;
 
-    private Boolean bisInventory;
+    private String inventoryStatus;
 
     private String creator;
 
@@ -442,12 +442,12 @@ public class DeclareRecord {
         this.bisGenerate = bisGenerate;
     }
 
-    public Boolean getBisInventory() {
-        return bisInventory;
+    public String getInventoryStatus() {
+        return inventoryStatus;
     }
 
-    public void setBisInventory(Boolean bisInventory) {
-        this.bisInventory = bisInventory;
+    public void setInventoryStatus(String inventoryStatus) {
+        this.inventoryStatus = inventoryStatus == null ? null : inventoryStatus.trim();
     }
 
     public String getCreator() {

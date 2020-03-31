@@ -53,17 +53,17 @@ public class DeclareRecordDao {
     public List<DeclareRecord> getDeclareRecordList(DeclareRecord declareRecord) {
         DeclareRecordExample example = new DeclareRecordExample();
         DeclareRecordExample.Criteria criteria = example.createCriteria();
-        if (StringUtils.isNotBlank(declareRecord.getName())){
-            criteria.andNameLike(String.join("",StringUtils.repeat("%",2),declareRecord.getName(),StringUtils.repeat("%",2))) ;
+        if (StringUtils.isNotBlank(declareRecord.getName())) {
+            criteria.andNameLike(String.join("", StringUtils.repeat("%", 2), declareRecord.getName(), StringUtils.repeat("%", 2)));
         }
-        if (StringUtils.isNotBlank(declareRecord.getSeat())){
-            criteria.andSeatLike(String.join("",StringUtils.repeat("%",2),declareRecord.getSeat(),StringUtils.repeat("%",2))) ;
+        if (StringUtils.isNotBlank(declareRecord.getSeat())) {
+            criteria.andSeatLike(String.join("", StringUtils.repeat("%", 2), declareRecord.getSeat(), StringUtils.repeat("%", 2)));
         }
-        if (StringUtils.isNotBlank(declareRecord.getBuildingNumber())){
-            criteria.andBuildingNumberLike(String.join("",StringUtils.repeat("%",2),declareRecord.getBuildingNumber(),StringUtils.repeat("%",2))) ;
+        if (StringUtils.isNotBlank(declareRecord.getBuildingNumber())) {
+            criteria.andBuildingNumberLike(String.join("", StringUtils.repeat("%", 2), declareRecord.getBuildingNumber(), StringUtils.repeat("%", 2)));
         }
-        if (StringUtils.isNotBlank(declareRecord.getUnit())){
-            criteria.andUnitLike(String.join("",StringUtils.repeat("%",2),declareRecord.getUnit(),StringUtils.repeat("%",2))) ;
+        if (StringUtils.isNotBlank(declareRecord.getUnit())) {
+            criteria.andUnitLike(String.join("", StringUtils.repeat("%", 2), declareRecord.getUnit(), StringUtils.repeat("%", 2)));
         }
         MybatisUtils.convertObj2Criteria(declareRecord, criteria);
         example.setOrderByClause("id");
@@ -97,7 +97,11 @@ public class DeclareRecordDao {
 
 
     public boolean updateDeclareRecord(DeclareRecord declareRecord) {
-        return mapper.updateByPrimaryKeySelective(declareRecord) > 0;
+        return updateDeclareRecord(declareRecord,false);
+    }
+
+    public boolean updateDeclareRecord(DeclareRecord oo, boolean updateNull) {
+        return updateNull ? mapper.updateByPrimaryKey(oo) == 1 : mapper.updateByPrimaryKeySelective(oo) == 1;
     }
 
     public Integer saveReturnId(DeclareRecord declareRecord) {
@@ -117,7 +121,7 @@ public class DeclareRecordDao {
         return mapper.selectByPrimaryKey(id);
     }
 
-    public Integer getCountByProjectId(Integer projectId){
+    public Integer getCountByProjectId(Integer projectId) {
         DeclareRecordExample example = new DeclareRecordExample();
         DeclareRecordExample.Criteria criteria = example.createCriteria();
         criteria.andProjectIdEqualTo(projectId);

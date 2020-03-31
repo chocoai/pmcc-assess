@@ -50,8 +50,8 @@ public class SurveyAssetInventoryController {
     private final String applyViewName = "/project/stageSurvey/surveyAssetInventoryIndex";
     private final String detailView = "/project/stageSurvey/surveyAssetInventoryDetail";
 
-    @GetMapping(value = "/view/{projectId}/{planDetailId}/{inventoryId}/{declareId}", name = "申请或者修改")
-    public ModelAndView applyView(@PathVariable(name = "projectId", required = true) Integer projectId, @PathVariable(name = "planDetailId", required = true) Integer planDetailId, @PathVariable(name = "inventoryId") Integer inventoryId, @PathVariable(name = "declareId", required = true) Integer declareId) {
+    @GetMapping(value = "/view/{projectId}/{planDetailId}/{inventoryId}/{declareId}/{masterName}", name = "申请或者修改")
+    public ModelAndView applyView(@PathVariable(name = "projectId", required = true) Integer projectId, @PathVariable(name = "planDetailId", required = true) Integer planDetailId, @PathVariable(name = "inventoryId") Integer inventoryId, @PathVariable(name = "declareId", required = true) Integer declareId,@PathVariable(name = "masterName")String masterName) {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(applyViewName);
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(declareId);
         if (inventoryId != null && inventoryId != 0) {
@@ -72,6 +72,7 @@ public class SurveyAssetInventoryController {
         }
         modelAndView.addObject("projectPlanDetails", projectPlanDetailsService.getProjectPlanDetailsById(planDetailId));
         modelAndView.addObject("projectInfo", projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(projectId)));
+        modelAndView.addObject("masterName", masterName);
         return modelAndView;
     }
 

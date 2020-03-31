@@ -51,6 +51,16 @@ public class SurveyAssetInfoItemController {
         }
     }
 
+    @PostMapping(value = "/addSurveyAssetInfoItemRecordData", name = "多个添加 并且会更新权证")
+    public HttpResult addSurveyAssetInfoItemRecordData(String formData) {
+        try {
+            return HttpResult.newCorrectResult(200, surveyAssetInfoItemService.addSurveyAssetInfoItemRecordData(formData));
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e, String.join("", STRING, e.getMessage()));
+            return HttpResult.newErrorResult(500, e.getMessage());
+        }
+    }
+
     @PostMapping(value = "/deleteSurveyAssetInfoItemById", name = "delete")
     public HttpResult deleteSurveyAssetInfoItemById(String id) {
         try {

@@ -73,6 +73,10 @@ public class DeclareRecordService {
 
 
     public Integer saveAndUpdateDeclareRecord(DeclareRecord declareRecord) {
+       return saveAndUpdateDeclareRecord(declareRecord,false) ;
+    }
+
+    public Integer saveAndUpdateDeclareRecord(DeclareRecord declareRecord , boolean updateNull) {
         if (declareRecord == null) {
             return null;
         }
@@ -81,9 +85,13 @@ public class DeclareRecordService {
             declareRecordDao.saveReturnId(declareRecord);
             return declareRecord.getId();
         } else {
-            declareRecordDao.updateDeclareRecord(declareRecord);
+            updateDeclareRecord(declareRecord,updateNull) ;
             return declareRecord.getId();
         }
+    }
+
+    public boolean updateDeclareRecord(DeclareRecord oo, boolean updateNull) {
+        return declareRecordDao.updateDeclareRecord(oo, updateNull);
     }
 
 
@@ -159,7 +167,7 @@ public class DeclareRecordService {
         return declareRecords;
     }
 
-    public BootstrapTableVo getBootstrapTableVo(DeclareRecord declareRecord){
+    public BootstrapTableVo getBootstrapTableVo(DeclareRecord declareRecord) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());

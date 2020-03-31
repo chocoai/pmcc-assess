@@ -73,7 +73,7 @@ public class SurveyAssetInfoService {
                     for (Integer id : integerList) {
                         SurveyAssetInfoItem assetInfoItem = surveyAssetInfoItemService.getSurveyAssetInfoItemById(id);
                         DeclareRecord declareRecord = declareRecordList.stream().filter(record -> Objects.equal(record.getId(), assetInfoItem.getDeclareId())).findFirst().get();
-                        declareRecord.setBisInventory(true);
+                        declareRecord.setInventoryStatus(SysProjectEnum.FINISH.getValue());
                         declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
                     }
                 }
@@ -90,7 +90,7 @@ public class SurveyAssetInfoService {
             if (CollectionUtils.isNotEmpty(surveyAssetInfoItems)) {
                 for (SurveyAssetInfoItem assetInfoItem : surveyAssetInfoItems) {
                     DeclareRecord declareRecord = declareRecordList.stream().filter(record -> Objects.equal(record.getId(), assetInfoItem.getDeclareId())).findFirst().get();
-                    declareRecord.setBisInventory(true);
+                    declareRecord.setInventoryStatus(SysProjectEnum.FINISH.getValue());
                     declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
                 }
             }
@@ -117,7 +117,7 @@ public class SurveyAssetInfoService {
         List<DeclareRecord> declareRecordList = declareRecordService.getDeclareRecordByProjectId(surveyAssetInfo.getProjectId());
         surveyAssetInfo.setCount(declareRecordList.size());
 
-        List<DeclareRecord> recordList = declareRecordList.stream().filter(declareRecord -> declareRecord.getBisInventory()).collect(Collectors.toList());
+        List<DeclareRecord> recordList = declareRecordList.stream().filter(declareRecord -> Objects.equal(declareRecord.getInventoryStatus(),SysProjectEnum.FINISH.getValue())).collect(Collectors.toList());
 
 
         surveyAssetInfo.setFinishCount(recordList.size());

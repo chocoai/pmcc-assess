@@ -1,13 +1,17 @@
 package com.copower.pmcc.assess.service.project.survey;
 
+import com.alibaba.fastjson.JSONObject;
+import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInfoItemDao;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInfoGroup;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInfoItem;
+import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
+import com.copower.pmcc.erp.api.enums.SysProjectEnum;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
@@ -23,6 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,6 +47,8 @@ public class SurveyAssetInfoItemService {
     private DeclareRecordService declareRecordService;
     @Autowired
     private SurveyAssetInfoGroupService surveyAssetInfoGroupService;
+    @Autowired
+    private BaseService baseService;
 
 
     public boolean updateSurveyAssetInfoItem(SurveyAssetInfoItem oo, boolean updateNull) {
@@ -49,7 +56,7 @@ public class SurveyAssetInfoItemService {
     }
 
     @Transactional(rollbackFor = {Exception.class})
-    public boolean saveSurveyAssetInfoItem(SurveyAssetInfoItem oo)throws Exception {
+    public boolean saveSurveyAssetInfoItem(SurveyAssetInfoItem oo) throws Exception {
         if (oo == null) {
             return false;
         }
@@ -57,8 +64,8 @@ public class SurveyAssetInfoItemService {
             oo.setCreator(commonService.thisUserAccount());
         }
         List<SurveyAssetInfoItem> infoItems = getSurveyAssetInfoItemListByQuery(oo);
-        if (CollectionUtils.isNotEmpty(infoItems)){
-            throw new Exception(String.join("",oo.getName()+":已经存在")) ;
+        if (CollectionUtils.isNotEmpty(infoItems)) {
+            throw new Exception(String.join("", oo.getName() + ":已经存在"));
         }
         boolean b = surveyAssetInfoItemDao.saveSurveyAssetInfoItem(oo);
         baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(SurveyAssetInfoItem.class), oo.getId());
@@ -66,7 +73,7 @@ public class SurveyAssetInfoItemService {
 
     }
 
-    public void saveAndUpdateSurveyAssetInfoItem(SurveyAssetInfoItem oo, boolean updateNull)throws Exception {
+    public void saveAndUpdateSurveyAssetInfoItem(SurveyAssetInfoItem oo, boolean updateNull) throws Exception {
         if (oo == null) {
             return;
         }
@@ -75,6 +82,33 @@ public class SurveyAssetInfoItemService {
         } else {
             saveSurveyAssetInfoItem(oo);
         }
+    }
+
+    public Integer addSurveyAssetInfoItemRecordData(String formData) {
+        List<SurveyAssetInfoItem> surveyAssetInfoItems = JSONObject.parseArray(formData, SurveyAssetInfoItem.class);
+        int i = 0;
+        if (CollectionUtils.isNotEmpty(surveyAssetInfoItems)) {
+            Iterator<SurveyAssetInfoItem> iterator = surveyAssetInfoItems.iterator();
+            while (iterator.hasNext()) {
+                SurveyAssetInfoItem assetInfoItem = iterator.next();
+                try {
+                    DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(assetInfoItem.getDeclareId());
+                    if (Objects.equal(declareRecord.getInventoryStatus(), SysProjectEnum.FINISH.getValue())) {
+                        continue;
+                    }
+                    if (Objects.equal(declareRecord.getInventoryStatus(), SysProjectEnum.RUNING.getValue())) {
+                        continue;
+                    }
+                    saveSurveyAssetInfoItem(assetInfoItem);
+                    declareRecord.setInventoryStatus(SysProjectEnum.RUNING.getValue());
+                    declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
+                    i++;
+                } catch (Exception e) {
+                    baseService.writeExceptionInfo(e);
+                }
+            }
+        }
+        return i;
     }
 
     private void removeFileByTableId(Integer tableId) throws Exception {
@@ -90,9 +124,12 @@ public class SurveyAssetInfoItemService {
         DeclareRecord recordById = declareRecordService.getDeclareRecordById(infoItem.getDeclareId());
 
 
-        if (recordById.getBisInventory()) {
+        if (Objects.equal(recordById.getInventoryStatus(), SysProjectEnum.FINISH.getValue())) {
             throw new Exception("已经被清查了,不可以在删除");
         }
+
+        recordById.setInventoryStatus(null);
+        declareRecordService.updateDeclareRecord(recordById,true) ;
 
         SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
         sysAttachmentDto.setTableId(tableId);
@@ -168,8 +205,6 @@ public class SurveyAssetInfoItemService {
         }
         return integerList;
     }
-
-
 
 
 }

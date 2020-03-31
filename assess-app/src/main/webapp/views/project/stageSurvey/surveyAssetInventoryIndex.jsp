@@ -10,8 +10,7 @@
 <div class="wrapper">
     <div class="main-panel" style="width: 100%">
         <div class="content" style="margin-top: 0px;">
-            <%@include file="/views/share/form_head.jsp" %>
-            <div class="page-inner mt--5">
+            <div class="page-inner">
                 <div class="row mt--2">
                     <!-- 填写表单 start -->
                     <div class="col-md-12">
@@ -19,7 +18,7 @@
                             <div class="card-header collapse-link">
                                 <div class="card-head-row">
                                     <div class="card-title">
-                                        资产清查
+                                        ${masterName} 清查业务
                                     </div>
                                     <div class="card-tools">
                                         <button class="btn  btn-link btn-primary btn-xs"><span
@@ -36,24 +35,19 @@
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
-                                                <label class="col-sm-1 col-form-label">是否查看原件<span
+                                                <label class="col-sm-1 col-form-label">查看原件<span
                                                         class="symbol required"></span></label>
                                                 <div class="col-sm-3">
-                                                    <select class="form-control input-full"
-                                                            name="findOriginal" required>
-                                                        <option value="">请选择</option>
-                                                    </select>
-                                                </div>
-
-                                                <label class="col-sm-1 col-form-label">
-                                                    分割限制<span class="symbol required"></span></label>
-                                                <div class="col-sm-3">
-                                                    <select class="form-control input-full"
-                                                            name="segmentationLimit"
-                                                            required onchange="showOther(this)">
-                                                        <option value="可分">可分</option>
-                                                        <option value="不可分" selected>不可分</option>
-                                                    </select>
+                                                     <span class="radio-inline">
+                                                     <div class="input-group">
+                                                         <span class="input-group-addon">
+                                                          <input type="radio" name="bisCheckOriginal" value="1">是
+                                                             <input type="radio" checked="checked"
+                                                                    name="bisCheckOriginal"
+                                                                    value="0">否
+                                                              </span>
+                                                          </div>
+                                                      </span>
                                                 </div>
                                             </div>
                                         </div>
@@ -72,18 +66,19 @@
                                                 </div>
 
                                                 <label class="col-sm-1 control-label">
-                                                    查看说明
-                                                </label>
-                                                <div class="col-sm-3">
-                                           <textarea placeholder="查询说明" class="form-control input-full"
-                                                     name="networkRemark">${surveyAssetInventory.networkRemark}</textarea>
-                                                </div>
-                                                <label class="col-sm-1 control-label">
                                                     查看结果附件
                                                 </label>
                                                 <div class="col-sm-3">
                                                     <input id="networkFindFile" type="file" multiple="false">
                                                     <div id="_networkFindFile"></div>
+                                                </div>
+
+                                                <label class="col-sm-1 control-label">
+                                                    查看说明
+                                                </label>
+                                                <div class="col-sm-3">
+                                           <textarea placeholder="查询说明" class="form-control input-full"
+                                                     name="networkRemark">${surveyAssetInventory.networkRemark}</textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -104,41 +99,22 @@
                                         </div>
                                     </div>
 
-                                    <%--<div class="row form-group showCertificate">--%>
-                                    <%--<div class="col-md-12">--%>
-                                    <%--<div class="form-inline x-valid">--%>
-                                    <%--<label class="col-sm-1 col-form-label">--%>
-                                    <%--能否使用--%>
-                                    <%--</label>--%>
-                                    <%--<div class="col-sm-3">--%>
-                                    <%--<select class="form-control input-full" name="canUse">--%>
-                                    <%--<option value="" selected>请选择</option>--%>
-                                    <%--<option value="正常使用">正常使用</option>--%>
-                                    <%--<option value="不能正常使用">不能正常使用</option>--%>
-                                    <%--</select>--%>
-                                    <%--</div>--%>
 
-                                    <%--<label class="col-sm-1 col-form-label">--%>
-                                    <%--证载用途--%>
-                                    <%--</label>--%>
-                                    <%--<div class="col-sm-3">--%>
-                                    <%--<select class="form-control input-full" name="application">--%>
-                                    <%--</select>--%>
-                                    <%--</div>--%>
-                                    <%--<label class="col-sm-1 col-form-label">--%>
-                                    <%--是否办证</label>--%>
-                                    <%--<div class="col-sm-3">--%>
-                                    <%--<select class="form-control input-full"--%>
-                                    <%--name="certificate">--%>
-                                    <%--</select>--%>
-                                    <%--</div>--%>
-                                    <%--</div>--%>
-                                    <%--</div>--%>
-                                    <%--</div>--%>
-
+                                    <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%"
+                                        color="#6f5499" size="10"/>
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
+                                                <label class="col-sm-1 col-form-label">
+                                                    分割限制<span class="symbol required"></span></label>
+                                                <div class="col-sm-3">
+                                                    <select class="form-control input-full"
+                                                            name="segmentationLimit"
+                                                            required >
+                                                        <option value="可分">可分</option>
+                                                        <option value="不可分" selected>不可分</option>
+                                                    </select>
+                                                </div>
                                                 <label class="col-sm-1 col-form-label">
                                                     影响对象
                                                 </label>
@@ -177,18 +153,18 @@
 
                                                 </div>
                                                 <label class="col-sm-1 control-label">
-                                                    证明文件
-                                                </label>
-                                                <div class="col-sm-3">
-                                                    <input id="checkOriginalFile" type="file" multiple="false">
-                                                    <div id="_checkOriginalFile"></div>
-                                                </div>
-                                                <label class="col-sm-1 control-label">
                                                     说明
                                                 </label>
                                                 <div class="col-sm-3">
                                            <textarea placeholder="说明" class="form-control input-full"
                                                      name="remark">${surveyAssetInventory.remark}</textarea>
+                                                </div>
+                                                <label class="col-sm-1 control-label">
+                                                    证明文件
+                                                </label>
+                                                <div class="col-sm-3">
+                                                    <input id="checkOriginalFile" type="file" multiple="false">
+                                                    <div id="_checkOriginalFile"></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -844,7 +820,6 @@
             }
         }
         showLimit();
-        showOther();
         showButton();
     })
     ;
@@ -1021,20 +996,7 @@
     //    }
 
 
-    function showOther(_this) {
-        var frm = survey.handleJquery(survey.frm);
-        var target = frm.find("select[name='segmentationLimit']");
-        if (!_this) {
-            _this = target [0];
-        }
-        if ($(_this).val() == "可分") {
-            $(".showCertificate").show();
-            $(".showUse").show();
-        } else {
-            $(".showCertificate").hide();
-            $(".showUse").hide();
-        }
-    }
+
 
 
     function showLimit() {

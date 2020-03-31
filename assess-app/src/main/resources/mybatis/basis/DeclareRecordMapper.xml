@@ -45,7 +45,7 @@
     <result column="building_status" property="buildingStatus" jdbcType="INTEGER" />
     <result column="bis_part_in" property="bisPartIn" jdbcType="BIT" />
     <result column="bis_generate" property="bisGenerate" jdbcType="BIT" />
-    <result column="bis_inventory" property="bisInventory" jdbcType="BIT" />
+    <result column="inventory_status" property="inventoryStatus" jdbcType="VARCHAR" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -115,7 +115,7 @@
     land_cert_use_category, land_practical_use, public_situation, floor_area, practical_area, 
     nature, land_right_type, land_right_nature, land_use_right_area, housing_structure, 
     group_id, area_group_id, house_use_end_date, land_use_end_date, inventory_content_key, 
-    registration_date, price, building_status, bis_part_in, bis_generate, bis_inventory, 
+    registration_date, price, building_status, bis_part_in, bis_generate, inventory_status, 
     creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareRecordExample" >
@@ -166,7 +166,7 @@
       area_group_id, house_use_end_date, land_use_end_date, 
       inventory_content_key, registration_date, 
       price, building_status, bis_part_in, 
-      bis_generate, bis_inventory, creator, 
+      bis_generate, inventory_status, creator, 
       gmt_created, gmt_modified)
     values (#{projectId,jdbcType=INTEGER}, #{number,jdbcType=INTEGER}, #{dataTableName,jdbcType=VARCHAR}, 
       #{dataTableId,jdbcType=INTEGER}, #{dataFromType,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, 
@@ -182,7 +182,7 @@
       #{areaGroupId,jdbcType=INTEGER}, #{houseUseEndDate,jdbcType=TIMESTAMP}, #{landUseEndDate,jdbcType=TIMESTAMP}, 
       #{inventoryContentKey,jdbcType=VARCHAR}, #{registrationDate,jdbcType=TIMESTAMP}, 
       #{price,jdbcType=DECIMAL}, #{buildingStatus,jdbcType=INTEGER}, #{bisPartIn,jdbcType=BIT}, 
-      #{bisGenerate,jdbcType=BIT}, #{bisInventory,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, 
+      #{bisGenerate,jdbcType=BIT}, #{inventoryStatus,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
       #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DeclareRecord" >
@@ -317,8 +317,8 @@
       <if test="bisGenerate != null" >
         bis_generate,
       </if>
-      <if test="bisInventory != null" >
-        bis_inventory,
+      <if test="inventoryStatus != null" >
+        inventory_status,
       </if>
       <if test="creator != null" >
         creator,
@@ -457,8 +457,8 @@
       <if test="bisGenerate != null" >
         #{bisGenerate,jdbcType=BIT},
       </if>
-      <if test="bisInventory != null" >
-        #{bisInventory,jdbcType=BIT},
+      <if test="inventoryStatus != null" >
+        #{inventoryStatus,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
@@ -609,8 +609,8 @@
       <if test="record.bisGenerate != null" >
         bis_generate = #{record.bisGenerate,jdbcType=BIT},
       </if>
-      <if test="record.bisInventory != null" >
-        bis_inventory = #{record.bisInventory,jdbcType=BIT},
+      <if test="record.inventoryStatus != null" >
+        inventory_status = #{record.inventoryStatus,jdbcType=VARCHAR},
       </if>
       <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
@@ -671,7 +671,7 @@
       building_status = #{record.buildingStatus,jdbcType=INTEGER},
       bis_part_in = #{record.bisPartIn,jdbcType=BIT},
       bis_generate = #{record.bisGenerate,jdbcType=BIT},
-      bis_inventory = #{record.bisInventory,jdbcType=BIT},
+      inventory_status = #{record.inventoryStatus,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -808,8 +808,8 @@
       <if test="bisGenerate != null" >
         bis_generate = #{bisGenerate,jdbcType=BIT},
       </if>
-      <if test="bisInventory != null" >
-        bis_inventory = #{bisInventory,jdbcType=BIT},
+      <if test="inventoryStatus != null" >
+        inventory_status = #{inventoryStatus,jdbcType=VARCHAR},
       </if>
       <if test="creator != null" >
         creator = #{creator,jdbcType=VARCHAR},
@@ -867,7 +867,7 @@
       building_status = #{buildingStatus,jdbcType=INTEGER},
       bis_part_in = #{bisPartIn,jdbcType=BIT},
       bis_generate = #{bisGenerate,jdbcType=BIT},
-      bis_inventory = #{bisInventory,jdbcType=BIT},
+      inventory_status = #{inventoryStatus,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}

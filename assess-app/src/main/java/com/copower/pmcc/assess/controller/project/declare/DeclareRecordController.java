@@ -65,11 +65,23 @@ public class DeclareRecordController {
     }
 
     @PostMapping(value = "/saveDeclareRecord", name = "保存或者修改")
-    public HttpResult saveDeclareRecord(String formData) {
+    public HttpResult saveDeclareRecord(String formData, @RequestParam(required = false, defaultValue = "false") boolean updateNull) {
         try {
-            DeclareRecord declareRecord = JSONObject.parseObject(formData,DeclareRecord.class) ;
-            declareRecordService.saveAndUpdateDeclareRecord(declareRecord) ;
+            DeclareRecord declareRecord = JSONObject.parseObject(formData, DeclareRecord.class);
+            declareRecordService.saveAndUpdateDeclareRecord(declareRecord, updateNull);
             return HttpResult.newCorrectResult(200, declareRecord);
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
+            return HttpResult.newErrorResult(500, e);
+        }
+    }
+
+    @PostMapping(value = "/saveDeclareRecordArray", name = "保存或者修改")
+    public HttpResult saveDeclareRecordArray(String formData, @RequestParam(required = false, defaultValue = "false") boolean updateNull) {
+        try {
+            List<DeclareRecord> declareRecordList = JSONObject.parseArray(formData, DeclareRecord.class);
+            declareRecordList.forEach(declareRecord -> declareRecordService.saveAndUpdateDeclareRecord(declareRecord,updateNull));
+            return HttpResult.newCorrectResult(200, declareRecordList);
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult(500, e);
