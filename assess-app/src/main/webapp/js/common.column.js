@@ -473,6 +473,7 @@ commonColumn.unitHuxingPriceColumn = function () {
 //单元-楼栋内装
 commonColumn.unitDecorateColumn = function () {
     var cols = [];
+    cols.push({field: 'unitCommonPart', title: '公共部位'});
     cols.push({
         field: 'name', title: '装修部位', formatter: function (value, row, index) {
             var s = row.decorationPartName;
@@ -486,6 +487,17 @@ commonColumn.unitDecorateColumn = function () {
     cols.push({field: 'materialGradeName', title: '材料档次'});
     cols.push({field: 'constructionTechnologyName', title: '施工工艺'});
     cols.push({field: 'materialPriceName', title: '材料价格区间'});
+    return cols;
+}
+
+
+//单元-公共部分
+commonColumn.unitCommonPartColumn  = function () {
+    var cols = [];
+    cols.push({field: 'unitCommonPart', title: '公共部位'});
+    cols.push({field: 'unitLocation', title: '所在位置'});
+    cols.push({field: 'unitMonadName', title: '单位'});
+    cols.push({field: 'unitQuantityName', title: '数量'});
     return cols;
 }
 

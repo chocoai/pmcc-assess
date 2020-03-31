@@ -25,6 +25,8 @@ public class BasicUnitDecorate {
 
     private Date gmtModified;
 
+    private String unitCommonPart;
+
     public Integer getId() {
         return id;
     }
@@ -111,5 +113,13 @@ public class BasicUnitDecorate {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getUnitCommonPart() {
+        return unitCommonPart;
+    }
+
+    public void setUnitCommonPart(String unitCommonPart) {
+        this.unitCommonPart = unitCommonPart == null ? null : unitCommonPart.trim();
     }
 }

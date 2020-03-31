@@ -216,6 +216,11 @@ AssessDicKey.examineUnitHuxingTypeProduction = "unit.huxing.type.production";//�
 AssessDicKey.examineUnitHuxingTypeStay = "unit.huxing.type.stay";//户型类别-住宿(招待所)用房
 AssessDicKey.examineUnitHuxingTypeOffice = "unit.huxing.type.office";//户型类别-行政办公用房
 
+AssessDicKey.examineUnitCommonPart = "unit.common.part";//公共部位
+AssessDicKey.examineUnitLocation = "unit.location";//所在位置
+AssessDicKey.examineUnitMonad = "unit.monad";//单位
+AssessDicKey.examineUnitQuantity = "unit.quantity";//数量
+
 //房屋
 AssessDicKey.examineHouseSpatialDistribution = "examine.house.spatial.distribution";//空间布局
 AssessDicKey.examineHouseFinancingConditions = "examine.house.financing.conditions";//融资条件

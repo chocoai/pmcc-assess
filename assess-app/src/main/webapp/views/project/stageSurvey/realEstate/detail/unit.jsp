@@ -75,6 +75,7 @@
                     <c:if test="${empty isHistory}">
                         <%@include file="/views/project/stageSurvey/commonDetail/unitHuxing.jsp" %>
                         <%@include file="/views/project/stageSurvey/commonDetail/unitDecorate.jsp" %>
+                        <%@include file="/views/project/stageSurvey/commonDetail/unitCommonPart.jsp" %>
                         <%@include file="/views/project/stageSurvey/commonDetail/unitElevator.jsp" %>
                     </c:if>
                     <%@include file="/views/project/chksCustomize/chksSurvey.jsp" %>
