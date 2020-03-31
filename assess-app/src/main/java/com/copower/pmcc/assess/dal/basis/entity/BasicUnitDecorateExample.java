@@ -774,6 +774,76 @@ public class BasicUnitDecorateExample {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
             return (Criteria) this;
         }
+
+        public Criteria andUnitCommonPartIsNull() {
+            addCriterion("unit_common_part is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitCommonPartIsNotNull() {
+            addCriterion("unit_common_part is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitCommonPartEqualTo(String value) {
+            addCriterion("unit_common_part =", value, "unitCommonPart");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitCommonPartNotEqualTo(String value) {
+            addCriterion("unit_common_part <>", value, "unitCommonPart");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitCommonPartGreaterThan(String value) {
+            addCriterion("unit_common_part >", value, "unitCommonPart");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitCommonPartGreaterThanOrEqualTo(String value) {
+            addCriterion("unit_common_part >=", value, "unitCommonPart");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitCommonPartLessThan(String value) {
+            addCriterion("unit_common_part <", value, "unitCommonPart");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitCommonPartLessThanOrEqualTo(String value) {
+            addCriterion("unit_common_part <=", value, "unitCommonPart");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitCommonPartLike(String value) {
+            addCriterion("unit_common_part like", value, "unitCommonPart");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitCommonPartNotLike(String value) {
+            addCriterion("unit_common_part not like", value, "unitCommonPart");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitCommonPartIn(List<String> values) {
+            addCriterion("unit_common_part in", values, "unitCommonPart");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitCommonPartNotIn(List<String> values) {
+            addCriterion("unit_common_part not in", values, "unitCommonPart");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitCommonPartBetween(String value1, String value2) {
+            addCriterion("unit_common_part between", value1, value2, "unitCommonPart");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitCommonPartNotBetween(String value1, String value2) {
+            addCriterion("unit_common_part not between", value1, value2, "unitCommonPart");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

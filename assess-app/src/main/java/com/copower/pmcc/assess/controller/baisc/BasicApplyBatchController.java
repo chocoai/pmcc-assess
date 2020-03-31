@@ -783,6 +783,18 @@ public class BasicApplyBatchController extends BaseController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "/deleteBatchAllById", method = {RequestMethod.POST}, name = "数据清理")
+    public HttpResult deleteBatchAllById(Integer applyBatchId) {
+        try {
+            basicApplyBatchService.deleteBatchAllById(applyBatchId);
+            return HttpResult.newCorrectResult();
+        } catch (Exception e) {
+            logger.error(String.format("exception: %s", e.getMessage()), e);
+            return HttpResult.newErrorResult("数据清理异常");
+        }
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/initBasicApplyBatchInfo", method = {RequestMethod.POST}, name = "初始化")
     public HttpResult initBasicApplyBatchInfo(Integer planDetailsId, Integer projectId, Integer classify, Integer type, Integer buildingStatus) {
         try {

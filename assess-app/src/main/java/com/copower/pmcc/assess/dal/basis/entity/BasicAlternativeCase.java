@@ -7,6 +7,8 @@ public class BasicAlternativeCase {
 
     private String name;
 
+    private Integer batchDetailId;
+
     private String businessKey;
 
     private Integer businessId;
@@ -31,6 +33,14 @@ public class BasicAlternativeCase {
 
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
+    }
+
+    public Integer getBatchDetailId() {
+        return batchDetailId;
+    }
+
+    public void setBatchDetailId(Integer batchDetailId) {
+        this.batchDetailId = batchDetailId;
     }
 
     public String getBusinessKey() {

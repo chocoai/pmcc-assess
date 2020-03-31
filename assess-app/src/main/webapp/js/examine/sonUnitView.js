@@ -113,6 +113,9 @@ var unitDecorate;
         },
         init: function (item) {
             $("#" + unitDecorate.prototype.config().frm).clearAll().initForm(item, function () {
+                AssessCommon.loadDataListHtml(AssessDicKey.examineUnitCommonPart, item.unitCommonPart, function (html, data) {
+                    $("#" + unitDecorate.prototype.config().frm).find("#unitCommonPartList").empty().html(html).trigger('change');
+                }, true);
                 $("#" + unitDecorate.prototype.config().frm).find('select.decoratingMaterial').off('change').on('change', function () {
                     AssessCommon.loadDataDicByPid($(this).val(), item.constructionTechnology, function (html, data) {
                         $("#" + unitDecorate.prototype.config().frm).find('select.constructionTechnology').empty().html(html).trigger('change');
@@ -139,6 +142,145 @@ var unitDecorate;
     //绑定事件
     $('#' + unitDecorate.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
         unitDecorate.prototype.loadDataDicList();
+    })
+})();
+
+var unitCommonPart;
+(function () {
+    unitCommonPart = function () {
+
+    };
+    unitCommonPart.prototype = {
+        config: function () {
+            var data = {};
+            data.table = "ExamineUnitCommonPartList";
+            data.box = "divBoxExamineUnitCommonPart";
+            data.frm = "frmExamineUnitCommonPart";
+            return data;
+        },
+        isNotBlank: function (item) {
+            if (item) {
+                return true;
+            }
+            return false;
+        },
+        loadDataDicList: function () {
+            var cols = commonColumn.unitCommonPartColumn();
+            cols.push({
+                field: 'id', title: '操作', formatter: function (value, row, index) {
+                    var str = '<div class="btn-margin">';
+                    str += '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-primary tooltips"  data-placement="top" data-original-title="编辑" onclick="unitCommonPart.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
+                    str += '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="unitCommonPart.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
+                    str += '</div>';
+                    return str;
+                }
+            });
+            $("#" + unitCommonPart.prototype.config().table).bootstrapTable('destroy');
+            TableInit(unitCommonPart.prototype.config().table, getContextPath() + "/basicUnitCommonPart/getBootstrapTableVo", cols, {
+                unitId: unitCommon.getUnitId()
+            }, {
+                showColumns: false,
+                showRefresh: false,
+                search: false,
+                onLoadSuccess: function () {
+                    $('.tooltips').tooltip();
+                }
+            });
+        },
+        removeData: function (id) {
+            $.ajax({
+                url: getContextPath() + "/basicUnitCommonPart/deleteBasicUnitCommonPart",
+                type: "post",
+                dataType: "json",
+                data: {id: id},
+                success: function (result) {
+                    if (result.ret) {
+                        notifySuccess("成功", "删除成功");
+                        unitCommonPart.prototype.loadDataDicList();
+                    }
+                    else {
+                        AlertError("失败","保存数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        },
+        showModel: function () {
+            unitCommonPart.prototype.init({});
+            $('#' + unitCommonPart.prototype.config().box).modal("show");
+        },
+        saveData: function () {
+            if (!$("#" + unitCommonPart.prototype.config().frm).valid()) {
+                return false;
+            }
+            var data = formParams(unitCommonPart.prototype.config().frm, true);
+            data.unitId = unitCommon.getUnitId();
+            $.ajax({
+                url: getContextPath() + "/basicUnitCommonPart/saveAndUpdateBasicUnitCommonPart",
+                type: "post",
+                dataType: "json",
+                data: data,
+                success: function (result) {
+                    if (result.ret) {
+                        notifySuccess("成功", "保存成功");
+                        $('#' + unitCommonPart.prototype.config().box).modal('hide');
+                        unitCommonPart.prototype.loadDataDicList();
+                    }
+                    else {
+                        AlertError("失败","保存数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        },
+        getAndInit: function (id) {
+            $.ajax({
+                url: getContextPath() + "/basicUnitCommonPart/getBasicUnitCommonPartById",
+                type: "get",
+                dataType: "json",
+                data: {id: id},
+                success: function (result) {
+                    if (result.ret) {
+                        if (unitCommonPart.prototype.isNotBlank(result.data)) {
+                            unitCommonPart.prototype.init(result.data);
+                        } else {
+                            unitCommonPart.prototype.init({});
+                        }
+                        $('#' + unitCommonPart.prototype.config().box).modal("show");
+                    }
+                },
+                error: function (result) {
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        },
+        init: function (item) {
+            $("#" + unitCommonPart.prototype.config().frm).clearAll().initForm(item, function () {
+                AssessCommon.loadDataListHtml(AssessDicKey.examineUnitCommonPart, item.unitCommonPart, function (html, data) {
+                    $("#" + unitCommonPart.prototype.config().frm).find("#unitCommonPartList").empty().html(html).trigger('change');
+                }, true);
+                AssessCommon.loadDataListHtml(AssessDicKey.examineUnitLocation, item.unitLocation, function (html, data) {
+                    $("#" + unitCommonPart.prototype.config().frm).find("#unitLocationList").empty().html(html).trigger('change');
+                }, true);
+
+                AssessCommon.loadDataDicByKey(AssessDicKey.examineUnitMonad, item.unitMonad, function (html, data) {
+                    $("#" + unitCommonPart.prototype.config().frm).find('select.unitMonad').empty().html(html).trigger('change');
+                });
+                AssessCommon.loadDataDicByKey(AssessDicKey.examineUnitQuantity, item.unitQuantity, function (html, data) {
+                    $("#" + unitCommonPart.prototype.config().frm).find('select.unitQuantity').empty().html(html).trigger('change');
+                });
+
+            });
+        }
+    }
+
+    //绑定事件
+    $('#' + unitCommonPart.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
+        unitCommonPart.prototype.loadDataDicList();
     })
 })();
 ////----------------------------------

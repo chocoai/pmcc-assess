@@ -17,12 +17,15 @@
 
                     <!-- 填写表单 start -->
                     <div class="col-md-12">
-                        <div class="card full-height">
-                            <div class="card-header collapse-link">
+                        <div class="card full-height" style="min-height: 300px;">
+                            <div class="card-header">
                                 <div class="card-head-row">
                                     <div class="card-title">
                                         ${projectPlanDetails.projectPhaseName}
-                                        <small>${declareRecord.name}</small>
+                                        <button type="button" class="btn btn-sm btn-info" style="margin-left: 10px;"
+                                                onclick="batchTreeTool.showAlternativeCaseModal();">
+                                            引用备选案例
+                                        </button>
                                     </div>
                                     <div class="card-tools">
                                         <button class="btn  btn-link btn-primary btn-sm"><span
@@ -32,132 +35,86 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <form id="basicBatchApplyFrm" class="form-horizontal">
-                                    <input type="hidden" name="id" value="${applyBatch.id}">
-                                    <input type="hidden" name="planDetailsId" value="${projectPlanDetails.id}">
-                                    <input type="hidden" id="estateId" name="estateId" value="${applyBatch.estateId}">
-                                    <div class="row form-group">
-                                        <div class="col-md-12">
-                                            <div class="form-inline x-valid">
+                                <div class="row col-md-12">
+                                    <div class="col-md-9">
+                                        <button type="button" class="btn btn-sm btn-success deserveTool"
+                                                style="margin-left: 20px;"
+                                                onclick="batchTreeTool.showAddModal()">
+                                            新增
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-warning deleteTool"
+                                                onclick=" batchTreeTool.deleteDetail();">
+                                            删除
+                                        </button>
 
-                                                <label class="col-sm-1">
-                                                    大类<span class="symbol required"></span>
-                                                </label>
-                                                <div class="col-sm-2">
-                                                    <select class="form-control input-full" name="classify"
-                                                            onchange="formClassifyChange();"
-                                                            required>
-                                                        <option value="">-请选择-</option>
-                                                        <c:if test="${not empty formClassifyList}">
-                                                            <c:forEach var="item" items="${formClassifyList}">
-                                                                <option value="${item.id}"
-                                                                        data-key="${item.fieldName}"
-                                                                    ${item.id eq applyBatch.classify?'selected="selected"':''}>${item.name}</option>
-                                                            </c:forEach>
-                                                        </c:if>
-                                                    </select>
-                                                </div>
-                                                <label class="col-sm-1">
-                                                    类型<span class="symbol required"></span>
-                                                </label>
-                                                <div class="col-sm-2">
-                                                    <select class="form-control input-full" name="type"
-                                                            onchange="saveBasicApplyBatch();" required>
-                                                        <option value="">-请选择-</option>
-                                                        <c:if test="${not empty examineFormTypeList}">
-                                                            <c:forEach var="item" items="${examineFormTypeList}">
-                                                                <option value="${item.key}" ${item.key eq applyBatch.type?'selected="selected"':''}>${item.value}</option>
-                                                            </c:forEach>
-                                                        </c:if>
-                                                    </select>
-                                                </div>
-
-                                                <c:if test="${not empty declareRecord}">
-                                                    <label class="col-sm-1">
-                                                        建筑状态<span class="symbol required"></span>
+                                        <button type="button" class="btn btn-sm btn-primary fillInformation deserveTool"
+                                                style="margin-left: 20px;"
+                                                onclick="batchTreeTool.fillInformation();">
+                                            填写信息
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-warning paste alternativeCase"
+                                                onclick="batchTreeTool.addToAlternative();">
+                                            添加到备选案例
+                                        </button>
+                                        <ul id="ztree" class="ztree" style="margin-top: 10px;"></ul>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <form id="basicBatchApplyFrm" class="form-horizontal">
+                                            <input type="hidden" name="id" value="${applyBatch.id}">
+                                            <input type="hidden" name="planDetailsId" value="${projectPlanDetails.id}">
+                                            <input type="hidden" id="estateId" name="estateId"
+                                                   value="${applyBatch.estateId}">
+                                            <div class="row form-group">
+                                                <div class="col-md-12 form-inline">
+                                                    <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
+                                                        大类<span class="symbol required"></span>
                                                     </label>
-                                                    <div class="col-sm-2">
-                                                        <select class="form-control input-full" name="buildingStatus"
-                                                                onchange="editBuildingStatus();" required>
+                                                    <div class="col-xs-10  col-sm-10  col-md-10  col-lg-10">
+                                                        <select class="form-control input-full" name="classify"
+                                                                onchange="formClassifyChange();"
+                                                                required>
                                                             <option value="">-请选择-</option>
-                                                            <c:if test="${not empty buildingStatusList}">
-                                                                <c:forEach var="item" items="${buildingStatusList}">
-                                                                    <option value="${item.id}" ${item.id eq applyBatch.buildingStatus?'selected="selected"':''}>${item.name}</option>
+                                                            <c:if test="${not empty formClassifyList}">
+                                                                <c:forEach var="item" items="${formClassifyList}">
+                                                                    <option value="${item.id}"
+                                                                            data-key="${item.fieldName}"
+                                                                        ${item.id eq applyBatch.classify?'selected="selected"':''}>${item.name}</option>
                                                                 </c:forEach>
                                                             </c:if>
                                                         </select>
                                                     </div>
-                                                </c:if>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                </form>
-                                <div class="row form-group">
-                                    <div class="col-md-12">
-
-                                            <div class="col-md-3 pull-left" style="max-height: 500px;overflow: auto;">
-                                                <ul id="ztree" class="ztree"></ul>
+                                            <div class="row form-group">
+                                                <div class="col-md-12 form-inline">
+                                                    <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
+                                                        类型<span class="symbol required"></span>
+                                                    </label>
+                                                    <div class="col-xs-10  col-sm-10  col-md-10  col-lg-10">
+                                                        <select class="form-control input-full" name="type"
+                                                                onchange="saveBasicApplyBatch();" required>
+                                                            <option value="">-请选择-</option>
+                                                            <c:if test="${not empty examineFormTypeList}">
+                                                                <c:forEach var="item" items="${examineFormTypeList}">
+                                                                    <option value="${item.key}" ${item.key eq applyBatch.type?'selected="selected"':''}>${item.value}</option>
+                                                                </c:forEach>
+                                                            </c:if>
+                                                        </select>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="col-md-8 pull-left" id="btnGroup">
-                                                <button type="button" class="btn btn-sm btn-success deserveTool"
-                                                   onclick="batchTreeTool.showAddModal()">
-                                                    新增
-                                                </button>
-                                                <button type="button" class="btn btn-sm btn-warning deleteTool"
-                                                   onclick=" batchTreeTool.deleteDetail();">
-                                                    删除
-                                                </button>
-                                                <button type="button" class="btn btn-sm btn-primary"
-                                                   onclick=" batchTreeTool.expandAll(true);">
-                                                    全部展开
-                                                </button>
-                                                <button type="button" class="btn btn-sm btn-primary"
-                                                   onclick=" batchTreeTool.expandAll(false);">
-                                                    全部收起
-                                                </button>
-                                                <button type="button" class="btn btn-sm btn-primary fillInformation deserveTool"
-                                                   onclick="batchTreeTool.fillInformation();">
-                                                    填写信息
-                                                </button>
-                                                <button type="button" style="display: none"
-                                                   class="btn btn-sm btn-primary fillInformation limitTool"
-                                                   onclick="batchTreeTool.checkInfo();">
-                                                    查看信息
-                                                </button>
-                                                <button type="button" class="btn btn-sm btn-warning copy" onclick="batchTreeTool.copy();">
-                                                    复制
-                                                </button>
-                                                <button type="button" class="btn btn-sm btn-warning paste deserveTool"
-                                                   onclick="batchTreeTool.paste();">
-                                                    粘贴
-                                                </button>
-                                                <button type="button" class="btn btn-sm btn-warning paste masterTool"
-                                                   onclick="batchTreeTool.deepCopy();">
-                                                    深复制
-                                                </button>
-                                                <c:if test="${not empty declareRecord}">
-                                                    <button type="button" class="btn btn-sm btn-warning paste alternativeCase"
-                                                       style="display: none"
-                                                       onclick="batchTreeTool.addToAlternative();">
-                                                        添加到备选案例
-                                                    </button>
-                                                </c:if>
-                                            </div>
-
+                                        </form>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                     <%@include file="/views/share/form_apply.jsp" %>
-                    <%--<%@include file="/views/share/form_log.jsp" %>--%>
                 </div>
             </div>
         </div>
         <%@include file="/views/share/main_footer.jsp" %>
     </div>
-
 </div>
 <div id="detail_modal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
@@ -169,23 +126,25 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
             </div>
-
             <div class="modal-body">
-                <form id="frm_detail" class="form-horizontal">
+                <form id="detail_form" class="form-horizontal">
                     <input type="hidden" name="id" value="0">
-                    <div class="row">
+                    <input type="hidden" name="pid">
+                    <input type="hidden" name="applyBatchId">
+                    <div class="row form-group">
                         <div class="col-md-12">
-                            <div class="card-body">
-                                <input type="hidden" name="pid">
-                                <input type="hidden" name="applyBatchId">
-                                <input type="hidden" name="tableName">
-                                <input type="hidden" name="tableId">
-                                <div id="detailContent">
+                            <div class="form-inline x-valid">
+                                <label class="col-sm-2">名称</label>
+                                <div class="col-sm-4">
+                                    <input type="text" data-rule-maxlength="100" placeholder="名称"
+                                           name="name" class="form-control input-full">
                                 </div>
-
+                                <label class="col-sm-2">表单类型</label>
+                                <div class="col-sm-4">
+                                    <select name='type' required
+                                            class='form-control input-full'></select>
+                                </div>
                             </div>
-
-
                         </div>
                     </div>
                 </form>
@@ -198,36 +157,50 @@
                     确定
                 </button>
             </div>
-
         </div>
     </div>
 </div>
-<div id="detail_modal_b" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
-     role="dialog"
+<div id="reference_modal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">添加</h4>
+                <h4 class="modal-title">备选案例</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
             </div>
-
             <div class="modal-body">
-                <form id="frm_detail_b" class="form-horizontal">
-                    <input type="hidden" name="id" value="0">
+                <form class="form-horizontal">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="card-body">
-                                <input type="hidden" name="pid">
-                                <input type="hidden" name="applyBatchId">
-                                <input type="hidden" name="tableName">
-                                <input type="hidden" name="tableId">
-                                <div id="detailContent_b">
+                                <div class="row form-group ">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                名称
+                                            </label>
+                                            <div class="col-sm-5">
+                                                <input type="text" data-rule-maxlength="50" placeholder="名称"
+                                                       id="queryAlternativeName" class="form-control input-full">
+                                            </div>
+                                            <div class="col-sm-5">
+                                                <button type="button" class="btn btn-sm btn-info"
+                                                        onclick="batchTreeTool.loadAlternativeCaseList();">
+                                                    <span class="btn-label"><i class="fa fa-search"></i></span>
+                                                    查询
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <table class="table table-bordered" id="basicAlternativeCaseList">
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
-
-
                         </div>
                     </div>
                 </form>
@@ -236,17 +209,12 @@
                 <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
                     关闭
                 </button>
-                <button type="button" class="btn btn-primary btn-sm" onclick="batchTreeTool.saveItemData()">
-                    确定
-                </button>
             </div>
 
         </div>
     </div>
 </div>
-
 </body>
-
 </html>
 <script type="text/javascript">
     $(function () {
@@ -258,13 +226,11 @@
     //任务提交
     function submit(useBox) {
         var formData = {};
-        formData.declareId = "${declareRecord.id}";
         formData.projectId = "${projectInfo.id}";
         formData.planDetailsId = "${projectPlanDetails.id}";
         if ("${processInsId}" != "0") {
             submitEditToServer(JSON.stringify(formData));
-        }
-        else {
+        } else {
             submitToServer(JSON.stringify(formData), useBox);
         }
     }
@@ -307,7 +273,7 @@
                     $("#basicBatchApplyFrm").find('[name=estateId]').val(result.data.estateId);
                     batchTreeTool.ztreeInit(result.data.id);
                 } else {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             }
         });
@@ -326,26 +292,7 @@
                 if (result.ret) {
                     $("#basicBatchApplyFrm").find('[name=id]').val(result.data.id);
                 } else {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
-                }
-            }
-        });
-    }
-
-    //修改权证建筑状态
-    function editBuildingStatus() {
-        $.ajax({
-            url: "${pageContext.request.contextPath}/basicApplyBatch/editBuildingStatus",
-            type: "post",
-            dataType: "json",
-            data: {
-                formData: JSON.stringify(formSerializeArray($("#basicBatchApplyFrm")))
-            },
-            success: function (result) {
-                if (result.ret) {
-
-                } else {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             }
         });
@@ -354,12 +301,9 @@
 <script type="text/javascript">
     var batchApply = undefined;
     var setting = {
-        view: {
-            fontCss: setFontCss,
-        },
         data: {
             key: {
-                name: "displayName"
+                name: "name"
             },
             simpleData: {
                 enable: true,
@@ -370,13 +314,17 @@
         },// 回调函数
         callback: {
             onClick: function (event, treeId, treeNode, clickFlag) {
-                batchTreeTool.showFunctionBtn();
+
             }
         }
     };
 
     var batchTreeTool = function () {
     };
+
+    batchTreeTool.getApplyBatchId = function () {
+        return $("#basicBatchApplyFrm").find('[name=id]').val();
+    }
 
     //初始化tree
     batchTreeTool.ztreeInit = function (basicApplyBatchId) {
@@ -417,151 +365,40 @@
     //添加数据打开modal
     batchTreeTool.showAddModal = function () {
         var node = zTreeObj.getSelectedNodes()[0];
-        var level = node.level;
-        if (node.bisStructure) {
-            notifyInfo('提示',"构筑物下无法继续添加节点。");
-            return false;
+        if (node == null) {
+            notifyInfo('提示', '还未选择节点');
+            return;
         }
-        var html = "";
-        switch (level) {
-            case 0: {
-                $("#frm_detail").find("input[name='tableName']").val("tb_basic_building");
-                html += '<div class="row form-group">';
-                html += '<div class="col-md-12">';
-                html += '<div class="form-inline x-valid">';
-                html += "<label class='col-sm-1 control-label'>";
-                html += "楼栋编号";
-                html += "<span class='symbol required'></span>";
-                html += "</label>";
-                html += " <div class='col-sm-3'>";
-                html += "<input type='text'  name='name' class='form-control input-full' required value=''>";
-                html += "</div>";
-                html += "<label class='col-sm-1 control-label'>";
-                html += "构筑物";
-                html += "<span class='symbol required'></span>";
-                html += "</label>";
-                html += " <div class='col-sm-3'>";
-                html += "<select id='bisStructure' name='bisStructure' required class='form-control input-full'>";
-                html += "<option value=''>--请选择--</option>";
-                html += "<option value='true'>是</option>";
-                html += "<option value='false'>否</option>";
-                html += "</select>";
-                html += "</div>";
-                html += "<label class='col-sm-1 control-label'>";
-                html += "执行人";
-                html += "<span class='symbol required'></span>";
-                html += "</label>";
-                html += " <div class='col-sm-3'>";
-                html += " <input type='hidden' id='executor' name='executor'>";
-                html += "<input type='text' name='executorName' id='executorName' data-rule-maxlength='50' readonly class='form-control input-full' onclick='personSelect()'>";
-                html += "</div>";
-                html += "</div>";
-                html += "</div>";
-                html += "</div>";
-                break;
+        $.ajax({
+            url: "${pageContext.request.contextPath}/basicApplyBatch/getTableTypeList",
+            data: {type: node.type},
+            type: "get",
+            dataType: "json",
+            success: function (result) {
+                if (result.ret && result.data) {
+                    var typeHtml = "<option value=''>--请选择--</option>";
+                    $.each(result.data, function (i, item) {
+                        typeHtml += "<option value='" + item.key + "'>" + item.value + "</option>";
+                    })
+                    $("#detail_form").clearAll();
+                    $("#detail_form").find("[name='type']").empty().html(typeHtml);
+                    $("#detail_form").find("input[name='applyBatchId']").val(batchTreeTool.getApplyBatchId());
+                    $("#detail_form").find("input[name='pid']").val(node.id);
+                    $("#detail_modal").modal();
+                } else {
+                    notifyInfo('提示', '该节点下没有可添加的表单类型');
+                }
             }
-            case 1: {
-                $("#frm_detail").find("input[name='tableName']").val("tb_basic_unit");
-                html += '<div class="row form-group">';
-                html += '<div class="col-md-12">';
-                html += '<div class="form-inline x-valid">';
-                html += "<label class='col-sm-1 control-label'>";
-                html += "单元编号";
-                html += "<span class='symbol required'></span>";
-                html += "</label>";
-                html += " <div class='col-sm-3'>";
-                html += "<input type='text'  name='name' class='form-control input-full' required value=''>";
-                html += "</div>";
-                html += "<label class='col-sm-1 control-label'>";
-                html += "执行人";
-                html += "<span class='symbol required'></span>";
-                html += "</label>";
-                html += " <div class='col-sm-3'>";
-                html += " <input type='hidden' id='executor' name='executor'>";
-                html += "<input type='text' name='executorName' id='executorName' data-rule-maxlength='50' readonly class='form-control input-full' onclick='personSelect()'>";
-                html += "</div>";
+        })
 
-                html += "</div>";
-                html += "</div>";
-                html += "</div>";
-                break;
-            }
-            case 2: {
-                $("#frm_detail").find("input[name='tableName']").val("tb_basic_house");
-                html += '<div class="row form-group">';
-                html += '<div class="col-md-12">';
-                html += '<div class="form-inline x-valid">';
-
-                html += "<label class='col-sm-1 control-label'>";
-                html += "房号";
-                html += "<span class='symbol required'></span>";
-                html += "</label>";
-                html += " <div class='col-sm-3'>";
-                html += "<input type='text'  name='name' class='form-control input-full' required value=''>";
-                html += "</div>";
-                html += "<label class='col-sm-1 control-label'>";
-                html += "执行人";
-                html += "<span class='symbol required'></span>";
-                html += "</label>";
-                html += " <div class='col-sm-3'>";
-                html += " <input type='hidden' id='executor' name='executor'>";
-                html += "<input type='text' name='executorName' id='executorName' data-rule-maxlength='50' readonly class='form-control input-full' onclick='personSelect()'>";
-                html += "</div>";
-
-                html += "</div>";
-                html += "</div>";
-                html += "</div>";
-                break;
-            }
-
-            case 3: {
-                notifyInfo('提示',"房屋下无法继续添加节点。");
-                return false;
-                break;
-            }
-
-        }
-        $("#detailContent").empty().append(html);
-        $("#frm_detail").find("input[name='applyBatchId']").val($("#basicBatchApplyFrm").find('[name=id]').val());
-        $("#frm_detail").find("input[name='pid']").val(node.id);
-        $("#frm_detail").find("input[name='executor']").val(node.creator);
-        $("#frm_detail").find("input[name='executorName']").val(node.creatorName);
-        $("#detail_modal").modal();
     }
 
     //保存明细
     batchTreeTool.saveItemData = function () {
-        if (!$("#frm_detail").valid()) {
+        if (!$("#detail_form").valid()) {
             return false;
         }
-
-        var node = zTreeObj.getSelectedNodes()[0];
-        var level = node.level;
-        var name = $("#frm_detail").find("input[name='name']").val();
-        switch (level) {
-            case 0: {
-                name = name+"栋";
-                break;
-            }
-            case 1: {
-                name = name+"单元";
-                break;
-            }
-        }
-        var nodes = zTreeObj.getSelectedNodes();
-        if(nodes.length>0){
-            var allNode = nodes[0]['textName'];//获取当前选中节点
-            var node = nodes[0].getParentNode();
-            getParentNodes(node,allNode);
-        }
-        var location = "";
-        var nodeArrs = curLocation.split(">");
-        for(var i=nodeArrs.length-1;i>=0;i--){
-            location += nodeArrs[i];
-        }
-
-        var formData = formParams("frm_detail");
-        //formData.fullName = location+name;
+        var formData = formParams("detail_form");
         $.ajax({
             url: "${pageContext.request.contextPath}/basicApplyBatch/saveItemData",
             type: "post",
@@ -571,198 +408,21 @@
             },
             success: function (result) {
                 if (result.ret) {
-                    notifySuccess('成功','保存成功');
+                    notifySuccess('成功', '保存成功');
                     var node = zTreeObj.getSelectedNodes()[0];
-                    var childNode = zTreeObj.addNodes(node, {
+                    zTreeObj.addNodes(node, {
                         id: result.data.id,
                         pid: result.data.pid,
                         tableId: result.data.tableId,
-                        type: result.data.tableName.replace('tb_basic_', ''),
-                        displayName: result.data.displayName + '(' + result.data.executorName + ')',
-                        textName: result.data.displayName,
-                        executor: result.data.executor,
-                        executorName: result.data.executorName,
+                        type: result.data.type,
+                        displayName: result.data.name,
+                        name: result.data.name,
                         creator: result.data.creator,
-                        creatorName: result.data.creatorName,
-                        bisStructure: result.data.bisStructure
+                        creatorName: result.data.creatorName
                     });
-
                     $('#detail_modal').modal('hide');
                 } else {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
-                }
-            }
-        });
-    }
-
-
-    batchTreeTool.getFullName= function(){
-
-    }
-
-    function getParentNodes(node,allNode){
-        if(node!=null){
-            allNode += ">"+node['textName'];
-            curNode = node.getParentNode();
-            getParentNodes(curNode,allNode);
-        }else{
-            //根节点
-            curLocation = allNode;
-        }
-    }
-
-    //编辑明细
-    batchTreeTool.getAndEditDetail = function () {
-        var node = zTreeObj.getSelectedNodes()[0];
-        if (node.level == 0) {
-            notifyInfo('提示',"楼盘信息请在【填写信息】中修改。");
-            return false;
-        }
-        $.ajax({
-            url: "${pageContext.request.contextPath}/basicApplyBatch/getAndEditDetail",
-            data: {id: node.id},
-            type: "get",
-            dataType: "json",
-            success: function (result) {
-                if (result.ret) {
-                    batchTreeTool.showEditModal(result.data);
-                }
-            }
-        })
-    }
-
-    //编辑数据打开modal
-    batchTreeTool.showEditModal = function (data) {
-        var node = zTreeObj.getSelectedNodes()[0];
-        var level = node.level;
-        var html = "";
-        switch (level) {
-            case 1: {
-                $("#frm_detail_b").find("input[name='tableName']").val("tb_basic_building");
-                html += '<div class="row form-group">';
-                html += '<div class="col-md-12">';
-                html += '<div class="form-inline x-valid">';
-
-                html += "<label class='col-sm-1 control-label'>";
-                html += "楼栋编号";
-                html += "</label>";
-                html += " <div class='col-sm-3'>";
-                html += "<input type='text'  name='name' class='form-control input-full' required>";
-                html += "</div>";
-                html += "<label class='col-sm-1 control-label'>";
-                html += "构筑物";
-                html += "<span class='symbol required'></span>";
-                html += "</label>";
-                html += " <div class='col-sm-3'>";
-                html += "<select id='bisStructure_b' name='bisStructure' required class='form-control input-full'>";
-                html += "<option value=''>--请选择--</option>";
-                html += "<option value='true'>是</option>";
-                html += "<option value='false'>否</option>";
-                html += "</select>";
-                html += "</div>";
-                html += "<label class='col-sm-1 control-label'>";
-                html += "执行人";
-                html += "<span class='symbol required'></span>";
-                html += "</label>";
-                html += " <div class='col-sm-3'>";
-                html += " <input type='hidden' id='executor' name='executor'>";
-                html += "<input type='text' name='executorName' id='executorName' data-rule-maxlength='50' readonly class='form-control input-full' onclick='personSelect()'>";
-                html += "</div>";
-
-                html += "</div>";
-                html += "</div>";
-                html += "</div>";
-                break;
-            }
-            case 2: {
-                $("#frm_detail_b").find("input[name='tableName']").val("tb_basic_unit");
-                html += '<div class="row form-group">';
-                html += '<div class="col-md-12">';
-                html += '<div class="form-inline x-valid">';
-
-                html += "<label class='col-sm-1 control-label'>";
-                html += "单元编号";
-                html += "</label>";
-                html += " <div class='col-sm-3'>";
-                html += "<input type='text'  name='name' class='form-control input-full' required>";
-                html += "</div>";
-                html += "<label class='col-sm-1 control-label'>";
-                html += "执行人";
-                html += "<span class='symbol required'></span>";
-                html += "</label>";
-                html += " <div class='col-sm-3'>";
-                html += " <input type='hidden' id='executor' name='executor'>";
-                html += "<input type='text' name='executorName' id='executorName' data-rule-maxlength='50' readonly class='form-control input-full' onclick='personSelect()'>";
-                html += "</div>";
-                html += "</div>";
-                html += "</div>";
-                html += "</div>";
-                break;
-            }
-            case 3: {
-                $("#frm_detail_b").find("input[name='tableName']").val("tb_basic_house");
-                html += '<div class="row form-group">';
-                html += '<div class="col-md-12">';
-                html += '<div class="form-inline x-valid">';
-                html += "<label class='col-sm-1 control-label'>";
-                html += "房号";
-                html += "</label>";
-                html += " <div class='col-sm-3'>";
-                html += "<input type='text'  name='name' class='form-control input-full' required>";
-                html += "</div>";
-                html += "<label class='col-sm-1 control-label'>";
-                html += "执行人";
-                html += "<span class='symbol required'></span>";
-                html += "</label>";
-                html += " <div class='col-sm-3'>";
-                html += " <input type='hidden' id='executor' name='executor'>";
-                html += "<input type='text' name='executorName' id='executorName' data-rule-maxlength='50' readonly class='form-control input-full' onclick='personSelect()'>";
-                html += "</div>";
-                html += "</div>";
-                html += "</div>";
-                html += "</div>";
-                break;
-            }
-        }
-        $("#frm_detail_b").clearAll();
-        $("#frm_detail_b").find("#detailContent_b").empty().append(html);
-        $("#frm_detail_b").initForm(data);
-        $("#bisStructure_b").val('' + data.bisStructure);
-        $("#detail_modal_b").modal();
-    }
-
-    //保存编辑明细
-    batchTreeTool.saveEditItemData = function () {
-        if (!$("#frm_detail").valid()) {
-            return false;
-        }
-        var formData = formParams("frm_detail_b");
-        $.ajax({
-            url: "${pageContext.request.contextPath}/basicApplyBatch/saveItemData",
-            type: "post",
-            dataType: "json",
-            data: {
-                formData: JSON.stringify(formData),
-                planDetailsId: '${projectPlanDetails.id}'
-            },
-            success: function (result) {
-                if (result.ret) {
-                    notifySuccess('成功','保存成功');
-                    var node = zTreeObj.getSelectedNodes()[0];
-                    node.id = result.data.id;
-                    node.name = result.data.name;
-                    node.displayName = result.data.displayName + '(' + result.data.executorName + ')';
-                    node.textName =  result.data.displayName;
-                    node.pid = result.data.pid;
-                    node.executor = result.data.executor;
-                    node.creator = result.data.creator;
-                    node.creatorName = result.data.creatorName;
-                    node.executorName = result.data.executorName;
-                    node.bisStructure = result.data.bisStructure;
-                    zTreeObj.updateNode(node, false);
-                    $('#detail_modal_b').modal('hide');
-                } else {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             }
         });
@@ -773,7 +433,7 @@
         AlertConfirm("是否确认删除", "删除相应的数据后将不可恢复", function () {
             var node = zTreeObj.getSelectedNodes()[0];
             if (node.id == 0) {
-                notifyInfo('提示',"无法删除，请重新选择。");
+                notifyInfo('提示', "无法删除，请重新选择。");
                 return false;
             }
             $.ajax({
@@ -789,9 +449,9 @@
                         if (parentNode) {
                             zTreeObj.selectNode(parentNode);
                         }
-                        notifySuccess("成功","删除成功");
+                        notifySuccess("成功", "删除成功");
                     } else {
-                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                        AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 }
             })
@@ -807,100 +467,26 @@
         var classify = $("#basicBatchApplyFrm").find('[name=classify]').val();
         var formType = $("#basicBatchApplyFrm").find('[name=type]').val();
         var url = '${pageContext.request.contextPath}/basicApplyBatch/informationEdit?';
-        url += 'applyBatchId=' + $("#basicBatchApplyFrm").find('[name=id]').val();
+        url += 'applyBatchId=' + batchTreeTool.getApplyBatchId();
         url += '&formClassify=' + classify;
         url += '&formType=' + formType;
         url += '&tbId=' + node.tableId;
         url += '&tbType=' + node.type;
         url += '&planDetailsId=${projectPlanDetails.id}';
-        openWin(url, function () {
-        })
-    }
-
-    //被复制对象
-    batchTreeTool.beCopyObject = undefined;
-
-    //调整因素复制
-    batchTreeTool.copy = function (_this) {
-        //设置被复制元素的id
-        //显示出粘贴按钮
-        var node = zTreeObj.getSelectedNodes()[0];
-        if (node.level == 0) {
-            notifyInfo('提示',"不能复制楼盘，重新选择");
-            return false;
-        }
-        batchTreeTool.beCopyObject = {};
-        batchTreeTool.beCopyObject.id = node.id;
-        batchTreeTool.beCopyObject.level = node.level;
-        notifySuccess('成功',"复制成功");
-        $("#btnGroup").find('.paste').show();
-    }
-
-    //调整因素粘贴
-    batchTreeTool.paste = function () {
-        if (!batchTreeTool.beCopyObject) {
-            notifyInfo('提示','请选择被复制对象');
-            return false;
-        }
-        var node = zTreeObj.getSelectedNodes()[0];
-        if (node.id == batchTreeTool.beCopyObject.id) {
-            notifyInfo('提示','不能复制粘贴自身');
-            return false;
-        }
-        if (node.level != batchTreeTool.beCopyObject.level) {
-            notifyInfo('提示','请选择相应节点进行粘贴');
-            return false;
-        }
-        AlertConfirm("确认要粘贴么","将覆盖原来数据", function (result) {
-            Loading.progressShow();
-            $.ajax({
-                url: "${pageContext.request.contextPath}/basicApplyBatch/paste",
-                data: {
-                    sourceBatchDetailId: batchTreeTool.beCopyObject.id,
-                    targeBatchDetailId: node.id
-                },
-                type: "post",
-                dataType: "json",
-                success: function (result) {
-                    Loading.progressHide();
-                    if (result.ret) {
-                        notifySuccess("成功","粘贴成功");
-                    }
-                    else {
-                        AlertError("获取数据失败，失败原因:" + result.errmsg, 1, null, null);
-                    }
-                }
-            });
-        });
-    }
-
-    //深复制
-    batchTreeTool.deepCopy = function () {
-        var node = zTreeObj.getSelectedNodes()[0];
-        if (node.level == 0) {
-            notifyInfo('提示',"不能复制楼盘，重新选择")
-            return false;
-        }
-        Loading.progressShow();
-        $.ajax({
-            url: "${pageContext.request.contextPath}/basicApplyBatch/deepCopy",
-            data: {
-                sourceBatchDetailId: node.id,
-                planDetailsId: '${projectPlanDetails.id}'
-            },
-            type: "post",
-            dataType: "json",
-            success: function (result) {
-                Loading.progressHide();
-                if (result.ret) {
-                    notifySuccess('成功',"复制成功");
-                    batchTreeTool.ztreeInitByPlanDetailsId('${projectPlanDetails.id}');
-                }
-                else {
-                    AlertError("获取数据失败，失败原因:" + result.errmsg);
-                }
+        var frame = layer.open({
+            type: 2,
+            title: node.name,
+            shadeClose: true,
+            shade: true,
+            maxmin: true, //开启最大化最小化按钮
+            area: ['893px', '600px'],
+            content: url,
+            cancel: function (index, layero) {
+                var iframe = window[layero.find('iframe')[0]['name']];
+                batchTreeTool.ztreeInit(batchTreeTool.getApplyBatchId());
             }
         });
+        layer.full(frame);
     }
 
     //添加到备选案例
@@ -908,7 +494,8 @@
         Loading.progressShow();
         var node = zTreeObj.getSelectedNodes()[0];
         var data = {};
-        data.business_id = node.id;
+        data.batchDetailId = node.id;
+        data.business_id = node.tableId;
         data.business_key = node.type;
         $.ajax({
             url: "${pageContext.request.contextPath}/basicAlternativeCase/addToAlternative",
@@ -920,91 +507,79 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    notifySuccess("成功","添加成功");
-                }
-                else {
-                    AlertError("失败","失败原因:" + result.errmsg);
-                }
-            }
-        });
-    }
-
-    //全部展开或收起
-    batchTreeTool.expandAll = function (flag) {
-        zTreeObj.expandAll(flag);
-    }
-
-    batchTreeTool.showFunctionBtn = function () {
-        var node = zTreeObj.getSelectedNodes()[0];
-        //子任务控制按钮
-        if ('${projectTaskMasterId}' != '${responsibilityId}') {
-            $("#btnGroup").find('.btn.masterTool').hide();
-            //是当前执行人时
-            if (node.executor == '${userAccount}') {
-                $("#btnGroup").find('.btn.deserveTool').show();
-                $("#btnGroup").find('.btn.limitTool').hide();
-                //删除按钮控制
-                if (node.executor == node.creator) {
-                    $("#btnGroup").find('.btn.deleteTool').show();
+                    notifySuccess("成功", "添加成功");
                 } else {
-                    $("#btnGroup").find('.btn.deleteTool').hide();
-                }
-            } else {
-                $("#btnGroup").find('.btn.limitTool').show();
-                $("#btnGroup").find('.btn.deserveTool').hide();
-                $("#btnGroup").find('.btn.deleteTool').hide();
-            }
-        }
-        if (node.executor == '${userAccount}') {
-            $("#btnGroup").find('.btn.alternativeCase').show();
-        } else {
-            $("#btnGroup").find('.btn.alternativeCase').hide();
-        }
-
-    }
-
-    //信息详情页面
-    batchTreeTool.checkInfo = function () {
-        var node = zTreeObj.getSelectedNodes()[0];
-        var classify = $("#basicBatchApplyFrm").find('[name=classify]').val();
-        var formType = $("#basicBatchApplyFrm").find('[name=type]').val();
-        var url = '${pageContext.request.contextPath}/basicApplyBatch/informationDetail?';
-        url += 'applyBatchId=' + $("#basicBatchApplyFrm").find('[name=id]').val();
-        url += '&formClassify=' + classify;
-        url += '&formType=' + formType;
-        url += '&tableId=' + node.tableId;
-        url += '&tbType=' + node.type;
-        url += '&tableName=' + node.tableName;
-        url += '&planDetailsId=${projectPlanDetails.id}';
-        openWin(url, function () {
-        })
-    }
-
-    function setFontCss(treeId, treeNode) {
-        if (treeNode.executor != '${userAccount}') {
-            return {color: "#AAAAAA"};
-        } else {
-            return {color: "black"};
-        }
-    }
-
-    //选择人员
-    function personSelect() {
-        erpEmployee.select({
-            onSelected: function (data) {
-                if (data.account) {
-                    $("#frm_detail").find("#executorName").val(data.name);
-                    $("#frm_detail").find("#executor").val(data.account);
-                    $("#frm_detail_b").find("#executorName").val(data.name);
-                    $("#frm_detail_b").find("#executor").val(data.account);
-                }
-                else {
-                    $("#frm_detail").find("#executorName").val('');
-                    $("#frm_detail").find("#executor").val('');
-                    $("#frm_detail_b").find("#executorName").val('');
-                    $("#frm_detail_b").find("#executor").val('');
+                    AlertError("失败", "失败原因:" + result.errmsg);
                 }
             }
         });
+    }
+
+    //显示弹窗
+    batchTreeTool.showAlternativeCaseModal = function () {
+        batchTreeTool.loadAlternativeCaseList();
+        $('#reference_modal').modal();
+    }
+
+    //加载备选案例数据列表
+    batchTreeTool.loadAlternativeCaseList = function () {
+        var cols = [];
+        cols.push({field: 'name', title: '名称', width: '80%'});
+        cols.push({
+            field: 'id', title: '操作', formatter: function (value, row, index) {
+                var str = '<div class="btn-margin">';
+                str += '<button type="button" class="btn btn-xs btn-warning tooltips" style="margin-left: 5px;"  data-placement="top" data-original-title="引用" onclick="batchTreeTool.referenceAlternativeCase(' + row.id + ')"><i class="fa fa-check"></i></button>';
+                str += '</div>';
+                return str;
+            }
+        });
+        $("#basicAlternativeCaseList").bootstrapTable('destroy');
+        TableInit($("#basicAlternativeCaseList"), "${pageContext.request.contextPath}/basicAlternativeCase/getBasicAlternativeCaseList", cols, {
+            name: $('#queryAlternativeName').val()
+        }, {
+            showColumns: false,
+            showRefresh: false,
+            search: false,
+            onLoadSuccess: function () {
+                $('.tooltips').tooltip();
+            }
+        });
+    }
+
+    //引用备选案例
+    batchTreeTool.referenceAlternativeCase = function (id) {
+        Loading.progressShow();
+        $.ajax({
+            url: '${pageContext.request.contextPath}/basicApplyBatch/deleteBatchAllById',
+            type: 'post',
+            data: {
+                applyBatchId: batchTreeTool.getApplyBatchId(),
+            },
+            dataType: 'json',
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    var data = {};
+                    data.id = id;
+                    data.projectId = "${projectInfo.id}";
+                    data.planDetailsId = "${projectPlanDetails.id}";
+                    $.ajax({
+                        url: '${pageContext.request.contextPath}/basicAlternativeCase/referenceDataById',
+                        type: 'post',
+                        data: data,
+                        dataType: 'json',
+                        success: function (result) {
+                            if (result.ret) {
+                                AlertSuccess('成功', '引用成功', function () {
+                                    window.location.href = window.location.href;
+                                })
+                            }else{
+                                AlertError('失败', '引用失败');
+                            }
+                        }
+                    })
+                }
+            }
+        })
     }
 </script>

@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.BasicUnitDecorateMapper" >
-  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.BasicUnitDecorate" >
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.BasicUnitCommonPartMapper" >
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.BasicUnitCommonPart" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="unit_id" property="unitId" jdbcType="INTEGER" />
-    <result column="decoration_part" property="decorationPart" jdbcType="INTEGER" />
-    <result column="decorating_material" property="decoratingMaterial" jdbcType="INTEGER" />
-    <result column="material_price_range" property="materialPriceRange" jdbcType="INTEGER" />
-    <result column="construction_technology" property="constructionTechnology" jdbcType="INTEGER" />
-    <result column="material_grade" property="materialGrade" jdbcType="INTEGER" />
+    <result column="unit_common_part" property="unitCommonPart" jdbcType="VARCHAR" />
+    <result column="unit_location" property="unitLocation" jdbcType="VARCHAR" />
+    <result column="unit_monad" property="unitMonad" jdbcType="INTEGER" />
+    <result column="unit_quantity" property="unitQuantity" jdbcType="INTEGER" />
     <result column="bis_delete" property="bisDelete" jdbcType="BIT" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
-    <result column="unit_common_part" property="unitCommonPart" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -74,16 +72,16 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, unit_id, decoration_part, decorating_material, material_price_range, construction_technology, 
-    material_grade, bis_delete, creator, gmt_created, gmt_modified, unit_common_part
+    id, unit_id, unit_common_part, unit_location, unit_monad, unit_quantity, bis_delete, 
+    creator, gmt_created, gmt_modified
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicUnitDecorateExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicUnitCommonPartExample" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from tb_basic_unit_decorate
+    from tb_basic_unit_common_part
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -94,57 +92,52 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from tb_basic_unit_decorate
+    from tb_basic_unit_common_part
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from tb_basic_unit_decorate
+    delete from tb_basic_unit_common_part
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicUnitDecorateExample" >
-    delete from tb_basic_unit_decorate
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicUnitCommonPartExample" >
+    delete from tb_basic_unit_common_part
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicUnitDecorate" >
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicUnitCommonPart" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_basic_unit_decorate (unit_id, decoration_part, decorating_material, 
-      material_price_range, construction_technology, 
-      material_grade, bis_delete, creator, 
-      gmt_created, gmt_modified, unit_common_part
+    insert into tb_basic_unit_common_part (unit_id, unit_common_part, unit_location, 
+      unit_monad, unit_quantity, bis_delete, 
+      creator, gmt_created, gmt_modified
       )
-    values (#{unitId,jdbcType=INTEGER}, #{decorationPart,jdbcType=INTEGER}, #{decoratingMaterial,jdbcType=INTEGER}, 
-      #{materialPriceRange,jdbcType=INTEGER}, #{constructionTechnology,jdbcType=INTEGER}, 
-      #{materialGrade,jdbcType=INTEGER}, #{bisDelete,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{unitCommonPart,jdbcType=VARCHAR}
+    values (#{unitId,jdbcType=INTEGER}, #{unitCommonPart,jdbcType=VARCHAR}, #{unitLocation,jdbcType=VARCHAR}, 
+      #{unitMonad,jdbcType=INTEGER}, #{unitQuantity,jdbcType=INTEGER}, #{bisDelete,jdbcType=BIT}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicUnitDecorate" >
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicUnitCommonPart" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_basic_unit_decorate
+    insert into tb_basic_unit_common_part
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="unitId != null" >
         unit_id,
       </if>
-      <if test="decorationPart != null" >
-        decoration_part,
+      <if test="unitCommonPart != null" >
+        unit_common_part,
       </if>
-      <if test="decoratingMaterial != null" >
-        decorating_material,
+      <if test="unitLocation != null" >
+        unit_location,
       </if>
-      <if test="materialPriceRange != null" >
-        material_price_range,
+      <if test="unitMonad != null" >
+        unit_monad,
       </if>
-      <if test="constructionTechnology != null" >
-        construction_technology,
-      </if>
-      <if test="materialGrade != null" >
-        material_grade,
+      <if test="unitQuantity != null" >
+        unit_quantity,
       </if>
       <if test="bisDelete != null" >
         bis_delete,
@@ -158,28 +151,22 @@
       <if test="gmtModified != null" >
         gmt_modified,
       </if>
-      <if test="unitCommonPart != null" >
-        unit_common_part,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="unitId != null" >
         #{unitId,jdbcType=INTEGER},
       </if>
-      <if test="decorationPart != null" >
-        #{decorationPart,jdbcType=INTEGER},
+      <if test="unitCommonPart != null" >
+        #{unitCommonPart,jdbcType=VARCHAR},
       </if>
-      <if test="decoratingMaterial != null" >
-        #{decoratingMaterial,jdbcType=INTEGER},
+      <if test="unitLocation != null" >
+        #{unitLocation,jdbcType=VARCHAR},
       </if>
-      <if test="materialPriceRange != null" >
-        #{materialPriceRange,jdbcType=INTEGER},
+      <if test="unitMonad != null" >
+        #{unitMonad,jdbcType=INTEGER},
       </if>
-      <if test="constructionTechnology != null" >
-        #{constructionTechnology,jdbcType=INTEGER},
-      </if>
-      <if test="materialGrade != null" >
-        #{materialGrade,jdbcType=INTEGER},
+      <if test="unitQuantity != null" >
+        #{unitQuantity,jdbcType=INTEGER},
       </if>
       <if test="bisDelete != null" >
         #{bisDelete,jdbcType=BIT},
@@ -193,19 +180,16 @@
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="unitCommonPart != null" >
-        #{unitCommonPart,jdbcType=VARCHAR},
-      </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicUnitDecorateExample" resultType="java.lang.Integer" >
-    select count(*) from tb_basic_unit_decorate
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicUnitCommonPartExample" resultType="java.lang.Integer" >
+    select count(*) from tb_basic_unit_common_part
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update tb_basic_unit_decorate
+    update tb_basic_unit_common_part
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
@@ -213,20 +197,17 @@
       <if test="record.unitId != null" >
         unit_id = #{record.unitId,jdbcType=INTEGER},
       </if>
-      <if test="record.decorationPart != null" >
-        decoration_part = #{record.decorationPart,jdbcType=INTEGER},
+      <if test="record.unitCommonPart != null" >
+        unit_common_part = #{record.unitCommonPart,jdbcType=VARCHAR},
       </if>
-      <if test="record.decoratingMaterial != null" >
-        decorating_material = #{record.decoratingMaterial,jdbcType=INTEGER},
+      <if test="record.unitLocation != null" >
+        unit_location = #{record.unitLocation,jdbcType=VARCHAR},
       </if>
-      <if test="record.materialPriceRange != null" >
-        material_price_range = #{record.materialPriceRange,jdbcType=INTEGER},
+      <if test="record.unitMonad != null" >
+        unit_monad = #{record.unitMonad,jdbcType=INTEGER},
       </if>
-      <if test="record.constructionTechnology != null" >
-        construction_technology = #{record.constructionTechnology,jdbcType=INTEGER},
-      </if>
-      <if test="record.materialGrade != null" >
-        material_grade = #{record.materialGrade,jdbcType=INTEGER},
+      <if test="record.unitQuantity != null" >
+        unit_quantity = #{record.unitQuantity,jdbcType=INTEGER},
       </if>
       <if test="record.bisDelete != null" >
         bis_delete = #{record.bisDelete,jdbcType=BIT},
@@ -240,52 +221,44 @@
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.unitCommonPart != null" >
-        unit_common_part = #{record.unitCommonPart,jdbcType=VARCHAR},
-      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update tb_basic_unit_decorate
+    update tb_basic_unit_common_part
     set id = #{record.id,jdbcType=INTEGER},
       unit_id = #{record.unitId,jdbcType=INTEGER},
-      decoration_part = #{record.decorationPart,jdbcType=INTEGER},
-      decorating_material = #{record.decoratingMaterial,jdbcType=INTEGER},
-      material_price_range = #{record.materialPriceRange,jdbcType=INTEGER},
-      construction_technology = #{record.constructionTechnology,jdbcType=INTEGER},
-      material_grade = #{record.materialGrade,jdbcType=INTEGER},
+      unit_common_part = #{record.unitCommonPart,jdbcType=VARCHAR},
+      unit_location = #{record.unitLocation,jdbcType=VARCHAR},
+      unit_monad = #{record.unitMonad,jdbcType=INTEGER},
+      unit_quantity = #{record.unitQuantity,jdbcType=INTEGER},
       bis_delete = #{record.bisDelete,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      unit_common_part = #{record.unitCommonPart,jdbcType=VARCHAR}
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicUnitDecorate" >
-    update tb_basic_unit_decorate
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicUnitCommonPart" >
+    update tb_basic_unit_common_part
     <set >
       <if test="unitId != null" >
         unit_id = #{unitId,jdbcType=INTEGER},
       </if>
-      <if test="decorationPart != null" >
-        decoration_part = #{decorationPart,jdbcType=INTEGER},
+      <if test="unitCommonPart != null" >
+        unit_common_part = #{unitCommonPart,jdbcType=VARCHAR},
       </if>
-      <if test="decoratingMaterial != null" >
-        decorating_material = #{decoratingMaterial,jdbcType=INTEGER},
+      <if test="unitLocation != null" >
+        unit_location = #{unitLocation,jdbcType=VARCHAR},
       </if>
-      <if test="materialPriceRange != null" >
-        material_price_range = #{materialPriceRange,jdbcType=INTEGER},
+      <if test="unitMonad != null" >
+        unit_monad = #{unitMonad,jdbcType=INTEGER},
       </if>
-      <if test="constructionTechnology != null" >
-        construction_technology = #{constructionTechnology,jdbcType=INTEGER},
-      </if>
-      <if test="materialGrade != null" >
-        material_grade = #{materialGrade,jdbcType=INTEGER},
+      <if test="unitQuantity != null" >
+        unit_quantity = #{unitQuantity,jdbcType=INTEGER},
       </if>
       <if test="bisDelete != null" >
         bis_delete = #{bisDelete,jdbcType=BIT},
@@ -299,25 +272,20 @@
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="unitCommonPart != null" >
-        unit_common_part = #{unitCommonPart,jdbcType=VARCHAR},
-      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicUnitDecorate" >
-    update tb_basic_unit_decorate
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicUnitCommonPart" >
+    update tb_basic_unit_common_part
     set unit_id = #{unitId,jdbcType=INTEGER},
-      decoration_part = #{decorationPart,jdbcType=INTEGER},
-      decorating_material = #{decoratingMaterial,jdbcType=INTEGER},
-      material_price_range = #{materialPriceRange,jdbcType=INTEGER},
-      construction_technology = #{constructionTechnology,jdbcType=INTEGER},
-      material_grade = #{materialGrade,jdbcType=INTEGER},
+      unit_common_part = #{unitCommonPart,jdbcType=VARCHAR},
+      unit_location = #{unitLocation,jdbcType=VARCHAR},
+      unit_monad = #{unitMonad,jdbcType=INTEGER},
+      unit_quantity = #{unitQuantity,jdbcType=INTEGER},
       bis_delete = #{bisDelete,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      unit_common_part = #{unitCommonPart,jdbcType=VARCHAR}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

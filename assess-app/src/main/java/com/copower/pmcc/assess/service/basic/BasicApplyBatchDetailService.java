@@ -7,6 +7,7 @@ import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDetailDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicBuildingDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.survey.BasicApplyBatchDetailVo;
+import com.copower.pmcc.assess.proxy.face.BasicEntityAbstract;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
@@ -58,7 +59,7 @@ public class BasicApplyBatchDetailService {
     @Autowired
     private PublicService publicService;
     @Autowired
-    private BpmRpcProjectTaskService bpmRpcProjectTaskService;
+    private PublicBasicService publicBasicService;
     @Autowired
     private BasicApplyBatchDetailService basicApplyBatchDetailService;
 
@@ -105,16 +106,21 @@ public class BasicApplyBatchDetailService {
      */
     public BasicApplyBatchDetail saveAndUpdateComplete(BasicApplyBatchDetail basicApplyBatchDetail, Integer planDetailsId) throws Exception {
         basicApplyBatchDetail.setDisplayName(basicApplyBatchDetail.getName());
+        basicApplyBatchDetail.setName(basicApplyBatchDetail.getName());
         basicApplyBatchDetail.setCreator(processControllerComponent.getThisUser());
         basicApplyBatchDetail.setExecutor(processControllerComponent.getThisUser());
-        switch (BasicFormClassifyEnum.getEnumByTableName(basicApplyBatchDetail.getTableName())) {
+        BasicFormClassifyEnum enumByKey = BasicFormClassifyEnum.getEnumByKey(basicApplyBatchDetail.getType());
+        basicApplyBatchDetail.setTableName(enumByKey.getTableName());
+        switch (enumByKey) {
             case ESTATE:
                 BasicEstate estateData = basicEstateService.getBasicEstateById(basicApplyBatchDetail.getTableId());
                 estateData.setName(basicApplyBatchDetail.getName());
                 basicEstateService.saveAndUpdate(estateData, false);
                 break;
             case BUILDING:
-                basicApplyBatchDetail.setDisplayName(String.format("%s栋", basicApplyBatchDetail.getName()));
+            case BUILDING_MONOLAYER:
+            case BUILDING_BASE:
+            case BUILDING_DIFFERENCE:
                 BasicBuilding buildingData = basicBuildingService.getBasicBuildingById(basicApplyBatchDetail.getTableId());
                 BasicBuilding building = buildingData == null ? new BasicBuilding() : buildingData;
                 building.setBuildingNumber(basicApplyBatchDetail.getName());
@@ -126,7 +132,6 @@ public class BasicApplyBatchDetailService {
                 basicApplyBatchDetail.setTableId(building.getId());
                 break;
             case UNIT:
-                basicApplyBatchDetail.setDisplayName(String.format("%s单元", basicApplyBatchDetail.getName()));
                 BasicUnit unitData = basicUnitService.getBasicUnitById(basicApplyBatchDetail.getTableId());
                 BasicUnit unit = unitData == null ? new BasicUnit() : unitData;
                 BasicBuilding basicBuilding = getBasicBuildingByBatchDetailId(basicApplyBatchDetail.getPid());
@@ -180,28 +185,9 @@ public class BasicApplyBatchDetailService {
         return basicApplyBatchDetail;
     }
 
-    //添加子任务
-    public void addSonTask(Integer planDetailsId, String key, Integer tableId, String executor, Integer basicApplyBatchId) {
-        if (executor == null) return;
-        BasicApplyBatch applyBatch = basicApplyBatchDao.getBasicApplyBatchById(basicApplyBatchId);
-        if (StringUtils.equals(applyBatch.getCreator(), executor)) return;
-        ProjectResponsibilityDto masterDto = new ProjectResponsibilityDto();
-        masterDto.setPlanDetailsId(planDetailsId);
-        masterDto.setPid(0);
-        ProjectResponsibilityDto projectTaskMaster = bpmRpcProjectTaskService.getProjectTask(masterDto);
-        ProjectResponsibilityDto sonDto = new ProjectResponsibilityDto();
-        BeanUtils.copyProperties(projectTaskMaster, sonDto, BaseConstant.ASSESS_IGNORE_ARRAY);
-        sonDto.setPid(projectTaskMaster.getId());
-        sonDto.setBusinessKey(key);
-        sonDto.setBusinessId(tableId);
-        sonDto.setUserAccount(executor);
-        bpmRpcProjectTaskService.saveProjectTaskExtend(sonDto);
-    }
-
     //存入basicApply表单
     public void insertBasicApply(BasicApplyBatchDetail houseBasicApplyBatchDetail, Integer planDetailsId) throws Exception {
-        if (!houseBasicApplyBatchDetail.getTableName().equals(BasicFormClassifyEnum.HOUSE.getTableName()))
-            return;
+        if (!houseBasicApplyBatchDetail.getType().equals(BasicFormClassifyEnum.HOUSE.getKey())) return;
         BasicApply where = new BasicApply();
         where.setPlanDetailsId(planDetailsId);
         where.setBasicHouseId(houseBasicApplyBatchDetail.getTableId());
@@ -284,97 +270,12 @@ public class BasicApplyBatchDetailService {
      */
     public void deleteBasicApplyBatchDetail(Integer id) throws Exception {
         BasicApplyBatchDetail basicApplyBatchDetail = basicApplyBatchDetailDao.getInfoById(id);
-        BasicApplyBatch applyBatch = basicApplyBatchDao.getBasicApplyBatchById(basicApplyBatchDetail.getApplyBatchId());
-        switch (BasicFormClassifyEnum.getEnumByTableName(basicApplyBatchDetail.getTableName())) {
-            case ESTATE:
-                basicEstateService.clearInvalidData(applyBatch.getEstateId());
-                List<BasicApplyBatchDetail> buildingDetails = getBasicApplyBatchDetailByPid(basicApplyBatchDetail.getId(), basicApplyBatchDetail.getApplyBatchId());
-                if (CollectionUtils.isNotEmpty(buildingDetails)) {
-                    for (BasicApplyBatchDetail building : buildingDetails) {
-                        deleteBuildingAndTask(applyBatch.getPlanDetailsId(), building);
-                    }
-                }
-            case BUILDING://删除原来楼栋数据
-                deleteBuildingAndTask(applyBatch.getPlanDetailsId(), basicApplyBatchDetail);
-                break;
-            case UNIT://删除原来单元数据
-                deleteUnitAndTask(applyBatch.getPlanDetailsId(), basicApplyBatchDetail);
-                break;
-            case HOUSE:
-                deleteHouseAndTask(applyBatch.getPlanDetailsId(), basicApplyBatchDetail.getTableId());
-                break;
-        }
-        basicApplyBatchDetailDao.deleteInfo(id);
-    }
-
-    /**
-     * 删除楼栋及相关Task任务
-     *
-     * @param planDetailsId
-     * @param applyBatchDetail
-     * @throws Exception
-     */
-    public void deleteBuildingAndTask(Integer planDetailsId, BasicApplyBatchDetail applyBatchDetail) throws Exception {
-        basicBuildingService.clearInvalidChildData(applyBatchDetail.getTableId());
-        List<BasicApplyBatchDetail> unitDetails = getBasicApplyBatchDetailByPid(applyBatchDetail.getId(), applyBatchDetail.getApplyBatchId());
-        if (CollectionUtils.isNotEmpty(unitDetails)) {
-            for (BasicApplyBatchDetail unit : unitDetails) {
-                List<BasicApplyBatchDetail> houseDetails = getBasicApplyBatchDetailByPid(unit.getId(), applyBatchDetail.getApplyBatchId());
-                if (CollectionUtils.isNotEmpty(houseDetails)) {
-                    for (BasicApplyBatchDetail house : houseDetails) {
-                        deleteHouseAndTask(planDetailsId, house.getTableId());
-                    }
-                }
-                deleteUnitAndTask(planDetailsId, unit);
-            }
-        }
-        deleteSonTask(planDetailsId, BasicFormClassifyEnum.BUILDING.getKey(), applyBatchDetail.getTableId());
-    }
-
-    /**
-     * 删除单元及相关Task任务
-     *
-     * @param planDetailsId
-     * @param applyBatchDetail
-     * @throws Exception
-     */
-    public void deleteUnitAndTask(Integer planDetailsId, BasicApplyBatchDetail applyBatchDetail) throws Exception {
-        basicUnitService.deleteBasicUnit(applyBatchDetail.getTableId());
-        basicUnitService.clearInvalidChildData(applyBatchDetail.getTableId());
-        List<BasicApplyBatchDetail> houseDetails = getBasicApplyBatchDetailByPid(applyBatchDetail.getId(), applyBatchDetail.getApplyBatchId());
-        if (CollectionUtils.isNotEmpty(houseDetails)) {
-            for (BasicApplyBatchDetail house : houseDetails) {
-                deleteHouseAndTask(planDetailsId, house.getTableId());
-            }
-        }
-        deleteSonTask(planDetailsId, BasicFormClassifyEnum.UNIT.getKey(), applyBatchDetail.getTableId());//删除单元子任务
-    }
-
-
-    /**
-     * 删除房屋及相关Task任务
-     *
-     * @param planDetailsId
-     * @param houseId
-     * @throws Exception
-     */
-    public void deleteHouseAndTask(Integer planDetailsId, Integer houseId) throws Exception {
-        //删除原来房屋数据
-        basicHouseService.deleteHousesAndBasicApply(houseId);
-        basicHouseTradingService.deleteBasicHouseTradingByHouseId(houseId);
-        //删除房屋子任务
-        deleteSonTask(planDetailsId, BasicFormClassifyEnum.HOUSE.getKey(), houseId);
-    }
-
-    //删除子任务
-    public void deleteSonTask(Integer planDetailsId, String key, Integer tableId) {
-        ProjectResponsibilityDto oldDto = new ProjectResponsibilityDto();
-        oldDto.setPlanDetailsId(planDetailsId);
-        oldDto.setBusinessId(tableId);
-        oldDto.setBusinessKey(key);
-        List<ProjectResponsibilityDto> projectTaskList = bpmRpcProjectTaskService.getProjectTaskList(oldDto);
-        if (CollectionUtils.isNotEmpty(projectTaskList)) {
-            projectTaskList.forEach(o -> bpmRpcProjectTaskService.deleteProjectTask(o.getId()));
+        List<BasicApplyBatchDetail> list = Lists.newArrayList();
+        collectionChildBatchDetails(basicApplyBatchDetail, list);
+        for (BasicApplyBatchDetail applyBatchDetail : list) {
+            BasicEntityAbstract entityAbstract = publicBasicService.getServiceBeanByKey(applyBatchDetail.getType());
+            entityAbstract.clearInvalidData(applyBatchDetail.getTableId());
+            basicApplyBatchDetailDao.deleteInfo(applyBatchDetail.getId());
         }
     }
 
@@ -487,6 +388,23 @@ public class BasicApplyBatchDetailService {
     }
 
     /**
+     * 收集该节点的所有下级节点
+     *
+     * @param batchDetail
+     * @param list
+     */
+    public void collectionChildBatchDetails(BasicApplyBatchDetail batchDetail, List<BasicApplyBatchDetail> list) {
+        if (list == null || batchDetail == null) return;
+        list.add(batchDetail);
+        List<BasicApplyBatchDetail> details = getBasicApplyBatchDetailByPid(batchDetail.getId(), batchDetail.getApplyBatchId());
+        if (CollectionUtils.isNotEmpty(details)) {
+            for (BasicApplyBatchDetail detail : details) {
+                collectionChildBatchDetails(detail, list);
+            }
+        }
+    }
+
+    /**
      * 获取完整名称
      *
      * @param batchDetailId
@@ -498,7 +416,7 @@ public class BasicApplyBatchDetailService {
         if (CollectionUtils.isEmpty(list)) return null;
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = list.size() - 1; i >= 0; i--) {
-            stringBuilder.append(list.get(i).getDisplayName());
+            stringBuilder.append(list.get(i).getName());
         }
         return stringBuilder.toString();
     }

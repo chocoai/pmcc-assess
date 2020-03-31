@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class BasicAlternativeCaseExample {
+public class BasicUnitCommonPartExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public BasicAlternativeCaseExample() {
+    public BasicUnitCommonPartExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -165,263 +165,383 @@ public class BasicAlternativeCaseExample {
             return (Criteria) this;
         }
 
-        public Criteria andNameIsNull() {
-            addCriterion("name is null");
+        public Criteria andUnitIdIsNull() {
+            addCriterion("unit_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andNameIsNotNull() {
-            addCriterion("name is not null");
+        public Criteria andUnitIdIsNotNull() {
+            addCriterion("unit_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andNameEqualTo(String value) {
-            addCriterion("name =", value, "name");
+        public Criteria andUnitIdEqualTo(Integer value) {
+            addCriterion("unit_id =", value, "unitId");
             return (Criteria) this;
         }
 
-        public Criteria andNameNotEqualTo(String value) {
-            addCriterion("name <>", value, "name");
+        public Criteria andUnitIdNotEqualTo(Integer value) {
+            addCriterion("unit_id <>", value, "unitId");
             return (Criteria) this;
         }
 
-        public Criteria andNameGreaterThan(String value) {
-            addCriterion("name >", value, "name");
+        public Criteria andUnitIdGreaterThan(Integer value) {
+            addCriterion("unit_id >", value, "unitId");
             return (Criteria) this;
         }
 
-        public Criteria andNameGreaterThanOrEqualTo(String value) {
-            addCriterion("name >=", value, "name");
+        public Criteria andUnitIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("unit_id >=", value, "unitId");
             return (Criteria) this;
         }
 
-        public Criteria andNameLessThan(String value) {
-            addCriterion("name <", value, "name");
+        public Criteria andUnitIdLessThan(Integer value) {
+            addCriterion("unit_id <", value, "unitId");
             return (Criteria) this;
         }
 
-        public Criteria andNameLessThanOrEqualTo(String value) {
-            addCriterion("name <=", value, "name");
+        public Criteria andUnitIdLessThanOrEqualTo(Integer value) {
+            addCriterion("unit_id <=", value, "unitId");
             return (Criteria) this;
         }
 
-        public Criteria andNameLike(String value) {
-            addCriterion("name like", value, "name");
+        public Criteria andUnitIdIn(List<Integer> values) {
+            addCriterion("unit_id in", values, "unitId");
             return (Criteria) this;
         }
 
-        public Criteria andNameNotLike(String value) {
-            addCriterion("name not like", value, "name");
+        public Criteria andUnitIdNotIn(List<Integer> values) {
+            addCriterion("unit_id not in", values, "unitId");
             return (Criteria) this;
         }
 
-        public Criteria andNameIn(List<String> values) {
-            addCriterion("name in", values, "name");
+        public Criteria andUnitIdBetween(Integer value1, Integer value2) {
+            addCriterion("unit_id between", value1, value2, "unitId");
             return (Criteria) this;
         }
 
-        public Criteria andNameNotIn(List<String> values) {
-            addCriterion("name not in", values, "name");
+        public Criteria andUnitIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("unit_id not between", value1, value2, "unitId");
             return (Criteria) this;
         }
 
-        public Criteria andNameBetween(String value1, String value2) {
-            addCriterion("name between", value1, value2, "name");
+        public Criteria andUnitCommonPartIsNull() {
+            addCriterion("unit_common_part is null");
             return (Criteria) this;
         }
 
-        public Criteria andNameNotBetween(String value1, String value2) {
-            addCriterion("name not between", value1, value2, "name");
+        public Criteria andUnitCommonPartIsNotNull() {
+            addCriterion("unit_common_part is not null");
             return (Criteria) this;
         }
 
-        public Criteria andBatchDetailIdIsNull() {
-            addCriterion("batch_detail_id is null");
+        public Criteria andUnitCommonPartEqualTo(String value) {
+            addCriterion("unit_common_part =", value, "unitCommonPart");
             return (Criteria) this;
         }
 
-        public Criteria andBatchDetailIdIsNotNull() {
-            addCriterion("batch_detail_id is not null");
+        public Criteria andUnitCommonPartNotEqualTo(String value) {
+            addCriterion("unit_common_part <>", value, "unitCommonPart");
             return (Criteria) this;
         }
 
-        public Criteria andBatchDetailIdEqualTo(Integer value) {
-            addCriterion("batch_detail_id =", value, "batchDetailId");
+        public Criteria andUnitCommonPartGreaterThan(String value) {
+            addCriterion("unit_common_part >", value, "unitCommonPart");
             return (Criteria) this;
         }
 
-        public Criteria andBatchDetailIdNotEqualTo(Integer value) {
-            addCriterion("batch_detail_id <>", value, "batchDetailId");
+        public Criteria andUnitCommonPartGreaterThanOrEqualTo(String value) {
+            addCriterion("unit_common_part >=", value, "unitCommonPart");
             return (Criteria) this;
         }
 
-        public Criteria andBatchDetailIdGreaterThan(Integer value) {
-            addCriterion("batch_detail_id >", value, "batchDetailId");
+        public Criteria andUnitCommonPartLessThan(String value) {
+            addCriterion("unit_common_part <", value, "unitCommonPart");
             return (Criteria) this;
         }
 
-        public Criteria andBatchDetailIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("batch_detail_id >=", value, "batchDetailId");
+        public Criteria andUnitCommonPartLessThanOrEqualTo(String value) {
+            addCriterion("unit_common_part <=", value, "unitCommonPart");
             return (Criteria) this;
         }
 
-        public Criteria andBatchDetailIdLessThan(Integer value) {
-            addCriterion("batch_detail_id <", value, "batchDetailId");
+        public Criteria andUnitCommonPartLike(String value) {
+            addCriterion("unit_common_part like", value, "unitCommonPart");
             return (Criteria) this;
         }
 
-        public Criteria andBatchDetailIdLessThanOrEqualTo(Integer value) {
-            addCriterion("batch_detail_id <=", value, "batchDetailId");
+        public Criteria andUnitCommonPartNotLike(String value) {
+            addCriterion("unit_common_part not like", value, "unitCommonPart");
             return (Criteria) this;
         }
 
-        public Criteria andBatchDetailIdIn(List<Integer> values) {
-            addCriterion("batch_detail_id in", values, "batchDetailId");
+        public Criteria andUnitCommonPartIn(List<String> values) {
+            addCriterion("unit_common_part in", values, "unitCommonPart");
             return (Criteria) this;
         }
 
-        public Criteria andBatchDetailIdNotIn(List<Integer> values) {
-            addCriterion("batch_detail_id not in", values, "batchDetailId");
+        public Criteria andUnitCommonPartNotIn(List<String> values) {
+            addCriterion("unit_common_part not in", values, "unitCommonPart");
             return (Criteria) this;
         }
 
-        public Criteria andBatchDetailIdBetween(Integer value1, Integer value2) {
-            addCriterion("batch_detail_id between", value1, value2, "batchDetailId");
+        public Criteria andUnitCommonPartBetween(String value1, String value2) {
+            addCriterion("unit_common_part between", value1, value2, "unitCommonPart");
             return (Criteria) this;
         }
 
-        public Criteria andBatchDetailIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("batch_detail_id not between", value1, value2, "batchDetailId");
+        public Criteria andUnitCommonPartNotBetween(String value1, String value2) {
+            addCriterion("unit_common_part not between", value1, value2, "unitCommonPart");
             return (Criteria) this;
         }
 
-        public Criteria andBusinessKeyIsNull() {
-            addCriterion("business_key is null");
+        public Criteria andUnitLocationIsNull() {
+            addCriterion("unit_location is null");
             return (Criteria) this;
         }
 
-        public Criteria andBusinessKeyIsNotNull() {
-            addCriterion("business_key is not null");
+        public Criteria andUnitLocationIsNotNull() {
+            addCriterion("unit_location is not null");
             return (Criteria) this;
         }
 
-        public Criteria andBusinessKeyEqualTo(String value) {
-            addCriterion("business_key =", value, "businessKey");
+        public Criteria andUnitLocationEqualTo(String value) {
+            addCriterion("unit_location =", value, "unitLocation");
             return (Criteria) this;
         }
 
-        public Criteria andBusinessKeyNotEqualTo(String value) {
-            addCriterion("business_key <>", value, "businessKey");
+        public Criteria andUnitLocationNotEqualTo(String value) {
+            addCriterion("unit_location <>", value, "unitLocation");
             return (Criteria) this;
         }
 
-        public Criteria andBusinessKeyGreaterThan(String value) {
-            addCriterion("business_key >", value, "businessKey");
+        public Criteria andUnitLocationGreaterThan(String value) {
+            addCriterion("unit_location >", value, "unitLocation");
             return (Criteria) this;
         }
 
-        public Criteria andBusinessKeyGreaterThanOrEqualTo(String value) {
-            addCriterion("business_key >=", value, "businessKey");
+        public Criteria andUnitLocationGreaterThanOrEqualTo(String value) {
+            addCriterion("unit_location >=", value, "unitLocation");
             return (Criteria) this;
         }
 
-        public Criteria andBusinessKeyLessThan(String value) {
-            addCriterion("business_key <", value, "businessKey");
+        public Criteria andUnitLocationLessThan(String value) {
+            addCriterion("unit_location <", value, "unitLocation");
             return (Criteria) this;
         }
 
-        public Criteria andBusinessKeyLessThanOrEqualTo(String value) {
-            addCriterion("business_key <=", value, "businessKey");
+        public Criteria andUnitLocationLessThanOrEqualTo(String value) {
+            addCriterion("unit_location <=", value, "unitLocation");
             return (Criteria) this;
         }
 
-        public Criteria andBusinessKeyLike(String value) {
-            addCriterion("business_key like", value, "businessKey");
+        public Criteria andUnitLocationLike(String value) {
+            addCriterion("unit_location like", value, "unitLocation");
             return (Criteria) this;
         }
 
-        public Criteria andBusinessKeyNotLike(String value) {
-            addCriterion("business_key not like", value, "businessKey");
+        public Criteria andUnitLocationNotLike(String value) {
+            addCriterion("unit_location not like", value, "unitLocation");
             return (Criteria) this;
         }
 
-        public Criteria andBusinessKeyIn(List<String> values) {
-            addCriterion("business_key in", values, "businessKey");
+        public Criteria andUnitLocationIn(List<String> values) {
+            addCriterion("unit_location in", values, "unitLocation");
             return (Criteria) this;
         }
 
-        public Criteria andBusinessKeyNotIn(List<String> values) {
-            addCriterion("business_key not in", values, "businessKey");
+        public Criteria andUnitLocationNotIn(List<String> values) {
+            addCriterion("unit_location not in", values, "unitLocation");
             return (Criteria) this;
         }
 
-        public Criteria andBusinessKeyBetween(String value1, String value2) {
-            addCriterion("business_key between", value1, value2, "businessKey");
+        public Criteria andUnitLocationBetween(String value1, String value2) {
+            addCriterion("unit_location between", value1, value2, "unitLocation");
             return (Criteria) this;
         }
 
-        public Criteria andBusinessKeyNotBetween(String value1, String value2) {
-            addCriterion("business_key not between", value1, value2, "businessKey");
+        public Criteria andUnitLocationNotBetween(String value1, String value2) {
+            addCriterion("unit_location not between", value1, value2, "unitLocation");
             return (Criteria) this;
         }
 
-        public Criteria andBusinessIdIsNull() {
-            addCriterion("business_id is null");
+        public Criteria andUnitMonadIsNull() {
+            addCriterion("unit_monad is null");
             return (Criteria) this;
         }
 
-        public Criteria andBusinessIdIsNotNull() {
-            addCriterion("business_id is not null");
+        public Criteria andUnitMonadIsNotNull() {
+            addCriterion("unit_monad is not null");
             return (Criteria) this;
         }
 
-        public Criteria andBusinessIdEqualTo(Integer value) {
-            addCriterion("business_id =", value, "businessId");
+        public Criteria andUnitMonadEqualTo(Integer value) {
+            addCriterion("unit_monad =", value, "unitMonad");
             return (Criteria) this;
         }
 
-        public Criteria andBusinessIdNotEqualTo(Integer value) {
-            addCriterion("business_id <>", value, "businessId");
+        public Criteria andUnitMonadNotEqualTo(Integer value) {
+            addCriterion("unit_monad <>", value, "unitMonad");
             return (Criteria) this;
         }
 
-        public Criteria andBusinessIdGreaterThan(Integer value) {
-            addCriterion("business_id >", value, "businessId");
+        public Criteria andUnitMonadGreaterThan(Integer value) {
+            addCriterion("unit_monad >", value, "unitMonad");
             return (Criteria) this;
         }
 
-        public Criteria andBusinessIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("business_id >=", value, "businessId");
+        public Criteria andUnitMonadGreaterThanOrEqualTo(Integer value) {
+            addCriterion("unit_monad >=", value, "unitMonad");
             return (Criteria) this;
         }
 
-        public Criteria andBusinessIdLessThan(Integer value) {
-            addCriterion("business_id <", value, "businessId");
+        public Criteria andUnitMonadLessThan(Integer value) {
+            addCriterion("unit_monad <", value, "unitMonad");
             return (Criteria) this;
         }
 
-        public Criteria andBusinessIdLessThanOrEqualTo(Integer value) {
-            addCriterion("business_id <=", value, "businessId");
+        public Criteria andUnitMonadLessThanOrEqualTo(Integer value) {
+            addCriterion("unit_monad <=", value, "unitMonad");
             return (Criteria) this;
         }
 
-        public Criteria andBusinessIdIn(List<Integer> values) {
-            addCriterion("business_id in", values, "businessId");
+        public Criteria andUnitMonadIn(List<Integer> values) {
+            addCriterion("unit_monad in", values, "unitMonad");
             return (Criteria) this;
         }
 
-        public Criteria andBusinessIdNotIn(List<Integer> values) {
-            addCriterion("business_id not in", values, "businessId");
+        public Criteria andUnitMonadNotIn(List<Integer> values) {
+            addCriterion("unit_monad not in", values, "unitMonad");
             return (Criteria) this;
         }
 
-        public Criteria andBusinessIdBetween(Integer value1, Integer value2) {
-            addCriterion("business_id between", value1, value2, "businessId");
+        public Criteria andUnitMonadBetween(Integer value1, Integer value2) {
+            addCriterion("unit_monad between", value1, value2, "unitMonad");
             return (Criteria) this;
         }
 
-        public Criteria andBusinessIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("business_id not between", value1, value2, "businessId");
+        public Criteria andUnitMonadNotBetween(Integer value1, Integer value2) {
+            addCriterion("unit_monad not between", value1, value2, "unitMonad");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitQuantityIsNull() {
+            addCriterion("unit_quantity is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitQuantityIsNotNull() {
+            addCriterion("unit_quantity is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitQuantityEqualTo(Integer value) {
+            addCriterion("unit_quantity =", value, "unitQuantity");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitQuantityNotEqualTo(Integer value) {
+            addCriterion("unit_quantity <>", value, "unitQuantity");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitQuantityGreaterThan(Integer value) {
+            addCriterion("unit_quantity >", value, "unitQuantity");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitQuantityGreaterThanOrEqualTo(Integer value) {
+            addCriterion("unit_quantity >=", value, "unitQuantity");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitQuantityLessThan(Integer value) {
+            addCriterion("unit_quantity <", value, "unitQuantity");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitQuantityLessThanOrEqualTo(Integer value) {
+            addCriterion("unit_quantity <=", value, "unitQuantity");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitQuantityIn(List<Integer> values) {
+            addCriterion("unit_quantity in", values, "unitQuantity");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitQuantityNotIn(List<Integer> values) {
+            addCriterion("unit_quantity not in", values, "unitQuantity");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitQuantityBetween(Integer value1, Integer value2) {
+            addCriterion("unit_quantity between", value1, value2, "unitQuantity");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitQuantityNotBetween(Integer value1, Integer value2) {
+            addCriterion("unit_quantity not between", value1, value2, "unitQuantity");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteIsNull() {
+            addCriterion("bis_delete is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteIsNotNull() {
+            addCriterion("bis_delete is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteEqualTo(Boolean value) {
+            addCriterion("bis_delete =", value, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteNotEqualTo(Boolean value) {
+            addCriterion("bis_delete <>", value, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteGreaterThan(Boolean value) {
+            addCriterion("bis_delete >", value, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_delete >=", value, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteLessThan(Boolean value) {
+            addCriterion("bis_delete <", value, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_delete <=", value, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteIn(List<Boolean> values) {
+            addCriterion("bis_delete in", values, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteNotIn(List<Boolean> values) {
+            addCriterion("bis_delete not in", values, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_delete between", value1, value2, "bisDelete");
+            return (Criteria) this;
+        }
+
+        public Criteria andBisDeleteNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_delete not between", value1, value2, "bisDelete");
             return (Criteria) this;
         }
 

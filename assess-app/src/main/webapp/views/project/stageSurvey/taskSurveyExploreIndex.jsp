@@ -53,7 +53,6 @@
                                             收起
                                         </button>
                                         <button type="button" class="btn btn-sm btn-success normalTool" style="margin-left: 20px;"
-                                                style="margin-left: 5px;"
                                                 onclick="batchTreeTool.showAddModal()">
                                             新增
                                         </button>
