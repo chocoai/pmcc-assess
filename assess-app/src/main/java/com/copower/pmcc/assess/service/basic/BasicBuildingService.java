@@ -345,7 +345,7 @@ public class BasicBuildingService extends BasicEntityAbstract {
                 BasicApplyBatchDetail buildingDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(FormatUtils.entityNameConvertToTableName(BasicBuilding.class), basicBuilding.getId());
                 if (buildingDetail != null) {
                     buildingDetail.setName(basicBuilding.getBuildingNumber());
-                    buildingDetail.setDisplayName(basicBuilding.getBuildingName());
+                    buildingDetail.setDisplayName(basicBuilding.getBuildingNumber());
                     basicApplyBatchDetailService.saveBasicApplyBatchDetail(buildingDetail);
                 }
                 return basicBuilding.getId();

@@ -9,6 +9,7 @@ import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.crm.api.dto.CrmBaseDataDicDto;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
@@ -65,7 +66,9 @@ public class BasicBuildingDifferenceService extends BasicEntityAbstract {
 
     @Override
     public List<BasicFormClassifyEnum> getLowerFormClassifyList() {
-        return null;
+        List<BasicFormClassifyEnum> list = Lists.newArrayList();
+        list.add(BasicFormClassifyEnum.UNIT);
+        return list;
     }
 
     @Override

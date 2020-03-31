@@ -32,87 +32,66 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <form class="form-horizontal" id="frmProjectCIP">
-                                    <!-- formClassify 大类 , formType 类型-->
-                                    <input type="hidden" name="formClassify" value="${applyBatch.classify}">
-                                    <input type="hidden" name="formType" value="${applyBatch.type}">
-                                    <input type="hidden" name="planDetailsId" value="${applyBatch.planDetailsId}">
-                                    <div class="row form-group">
-                                        <div class="col-md-12">
-                                            <div class="form-inline x-valid">
-
-                                                <label class="col-sm-1">
-                                                    大类
-                                                </label>
-                                                <div class="col-sm-2">
-                                                    <c:if test="${not empty formClassifyList}">
-                                                        <c:forEach var="item" items="${formClassifyList}">
-                                                            <c:if test="${applyBatch.classify == item.id}">
-                                                                <label class="form-control input-full">${item.name}</label>
-                                                            </c:if>
-                                                        </c:forEach>
-                                                    </c:if>
-                                                </div>
-                                                <label class="col-sm-1">
-                                                    类型
-                                                </label>
-                                                <div class="col-sm-2">
-                                                    <c:if test="${not empty examineFormTypeList}">
-                                                        <c:forEach var="item" items="${examineFormTypeList}">
-                                                            <c:if test="${applyBatch.type == item.key}">
-                                                                <label class="form-control input-full">${item.value}</label>
-                                                            </c:if>
-                                                        </c:forEach>
-                                                    </c:if>
-                                                </div>
-
-                                                <c:if test="${not empty declareRecord}">
-                                                    <label class="col-sm-1">
-                                                        建筑状态
+                                <div class="row col-md-12">
+                                    <div class="col-md-9">
+                                        <button type="button" class="btn btn-sm btn-info" onclick="informationDetail()">
+                                            查看信息
+                                        </button>
+                                        <c:if test="${flog=='approval'}">
+                                            <button type="button" class="btn btn-sm btn-primary"
+                                                    onclick="fillInformation();">
+                                                编辑信息
+                                            </button>
+                                        </c:if>
+                                        <button class="btn btn-sm btn-warning paste alternativeCase"
+                                                onclick="addToAlternative();">添加到备选案例
+                                        </button>
+                                        <ul id="ztree" class="ztree"></ul>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <form id="frmProjectCIP" class="form-horizontal">
+                                            <input type="hidden" name="formClassify" value="${applyBatch.classify}">
+                                            <input type="hidden" name="formType" value="${applyBatch.type}">
+                                            <input type="hidden" name="planDetailsId" value="${applyBatch.planDetailsId}">
+                                            <div class="row form-group">
+                                                <div class="col-md-12 form-inline">
+                                                    <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
+                                                        大类
                                                     </label>
-                                                    <div class="col-sm-2">
-                                                        <c:if test="${not empty buildingStatusList}">
-                                                            <c:forEach var="item" items="${buildingStatusList}">
-                                                                <c:if test="${applyBatch.buildingStatus == item.id}">
+                                                    <div class="col-xs-10  col-sm-10  col-md-10  col-lg-10">
+                                                        <c:if test="${not empty formClassifyList}">
+                                                            <c:forEach var="item" items="${formClassifyList}">
+                                                                <c:if test="${applyBatch.classify == item.id}">
                                                                     <label class="form-control input-full">${item.name}</label>
                                                                 </c:if>
                                                             </c:forEach>
                                                         </c:if>
                                                     </div>
-                                                </c:if>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                </form>
-                                <div class="row form-group">
-                                    <div class="col-md-12">
-                                            <div class="col-md-3 pull-left" style="max-height: 500px;overflow: auto;">
-                                                <ul id="ztree" class="ztree"></ul>
+                                            <div class="row form-group">
+                                                <div class="col-md-12 form-inline">
+                                                    <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
+                                                        类型
+                                                    </label>
+                                                    <div class="col-xs-10  col-sm-10  col-md-10  col-lg-10">
+                                                        <c:if test="${not empty examineFormTypeList}">
+                                                            <c:forEach var="item" items="${examineFormTypeList}">
+                                                                <c:if test="${applyBatch.type == item.key}">
+                                                                    <label class="form-control input-full">${item.value}</label>
+                                                                </c:if>
+                                                            </c:forEach>
+                                                        </c:if>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="col-md-8 pull-left" id="btnGroup">
-                                                <button class="btn btn-sm btn-success" onclick="informationDetail()">
-                                                    详情
-                                                </button>
-                                                <c:if test="${flog=='approval'}">
-                                                    <button class="btn btn-sm btn-primary" onclick="fillInformation();">
-                                                        编辑
-                                                    </button>
-                                                </c:if>
-                                                <c:if test="${not empty declareRecord && flog!='approval'}">
-                                                    <button class="btn btn-sm btn-warning paste alternativeCase" style="display: none"
-                                                       onclick="addToAlternative();">
-                                                        添加到备选案例
-                                                    </button>
-                                                </c:if>
-                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                     <%@include file="/views/share/form_approval.jsp" %>
-                   <%-- <%@include file="/views/share/form_log.jsp" %>--%>
                 </div>
             </div>
         </div>
@@ -130,17 +109,13 @@
 
     $(function () {
         if (${!empty applyBatch}) {
-            if (${!empty applyBatch.referenceApplyBatchId}) {
-                ztreeInit(${applyBatch.referenceApplyBatchId});
-            } else {
-                ztreeInit(${applyBatch.id});
-            }
+            ztreeInit(${applyBatch.id});
         }
     });
     var setting = {
         data: {
             key: {
-                name: "displayName"
+                name: "name"
             },
             simpleData: {
                 enable: true,
@@ -151,7 +126,7 @@
         },// 回调函数
         callback: {
             onClick: function (event, treeId, treeNode, clickFlag) {
-                showFunctionBtn();
+
             }
         }
     };
@@ -180,8 +155,7 @@
         var frm = $("#frmProjectCIP");
         var data = formSerializeArray(frm);
         data.tbType = treeNode.type;
-        data.tableId = treeNode.tableId;
-        data.tableName = treeNode.tableName;
+        data.tbId = treeNode.tableId;
         data.applyBatchId = treeNode.applyBatchId;
 
         window.open('${pageContext.request.contextPath}/basicApplyBatch/informationDetail?' + parseParam(data));
@@ -212,30 +186,13 @@
         return paramStr.substr(1);
     };
 
-
-    //test
-    var obj = {name: 'tom', 'class': {className: 'class1'}, classMates: [{name: 'lily'}]};
-    //    console.log(parseParam(obj)) ;
-    //output: "name=tom&class.className=class1&classMates[0].name=lily"
-    //    console.log(parseParam(obj, 'stu')) ;
-    //output: "stu.name=tom&stu.class.className=class1&stu.classMates[0].name=lily"
-
-    function showFunctionBtn() {
-        var node = zTreeObj.getSelectedNodes()[0];
-        if (node.executor == '${userAccount}') {
-            $("#btnGroup").find('.btn.alternativeCase').show();
-        } else {
-            $("#btnGroup").find('.btn.alternativeCase').hide();
-        }
-
-    }
-
     //添加到备选案例
     function addToAlternative() {
         Loading.progressShow();
         var node = zTreeObj.getSelectedNodes()[0];
         var data = {};
-        data.business_id = node.id;
+        data.batchDetailId = node.id;
+        data.business_id = node.tableId;
         data.business_key = node.type;
         $.ajax({
             url: "${pageContext.request.contextPath}/basicAlternativeCase/addToAlternative",
@@ -247,10 +204,9 @@
             success: function (result) {
                 Loading.progressHide();
                 if (result.ret) {
-                    notifySuccess("成功","添加成功");
-                }
-                else {
-                    AlertError("添加失败","失败原因:" + result.errmsg, 1, null, null);
+                    notifySuccess("成功", "添加成功");
+                } else {
+                    AlertError("添加失败", "失败原因:" + result.errmsg, 1, null, null);
                 }
             }
         });

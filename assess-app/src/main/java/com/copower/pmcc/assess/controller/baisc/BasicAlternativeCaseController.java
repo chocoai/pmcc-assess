@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.controller.baisc;
 
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.dal.basis.entity.BasicAlternativeCase;
+import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatch;
 import com.copower.pmcc.assess.dto.input.BasicAlternativeCaseDto;
 import com.copower.pmcc.assess.service.basic.BasicAlternativeCaseService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -38,12 +39,10 @@ public class BasicAlternativeCaseController {
     public HttpResult addToAlternative(String formData) {
         BasicAlternativeCase basicAlternativeCase = JSON.parseObject(formData, BasicAlternativeCase.class);
         try {
-            basicAlternativeCaseService.saveAndUpdateBasicAlternativeCase(basicAlternativeCase);
+            basicAlternativeCaseService.addBasicAlternativeCase(basicAlternativeCase);
             return HttpResult.newCorrectResult("添加成功");
-        } catch (BusinessException e) {
-            logger.error(e.getMessage(), e);
-            return HttpResult.newErrorResult(e.getMessage());
         } catch (Exception e) {
+            logger.error(e.getMessage(), e);
             return HttpResult.newErrorResult("添加异常");
         }
     }
@@ -74,5 +73,15 @@ public class BasicAlternativeCaseController {
         return null;
     }
 
-
+    @ResponseBody
+    @RequestMapping(value = "/referenceDataById", method = {RequestMethod.POST}, name = "引用数据")
+    public HttpResult referenceDataById(Integer id, Integer projectId, Integer planDetailsId) {
+        try {
+            BasicApplyBatch basicApplyBatch = basicAlternativeCaseService.referenceDataById(id, projectId, planDetailsId);
+            return HttpResult.newCorrectResult(basicApplyBatch);
+        } catch (Exception e1) {
+            logger.error(String.format("exception: %s" + e1.getMessage()), e1);
+            return HttpResult.newErrorResult("引用数据异常!");
+        }
+    }
 }
