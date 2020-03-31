@@ -117,7 +117,7 @@ public class ProjectTaskSurveyAssist implements ProjectTaskInterface {
         modelAndView.addObject("buildingStatusList", buildingStatusList);
         modelAndView.addObject("userAccount", processControllerComponent.getThisUser());
 
-        List<BasicApplyBatchDetail> estateBatchDetailList = basicApplyBatchService.getOriginalBasicApplyBatchListByProjectId(projectPlanDetails.getProjectId());
+        List<BasicApplyBatchDetail> estateBatchDetailList = basicApplyBatchService.getOriginalBasicApplyBatchListByProjectId(projectPlanDetails.getProjectId(),projectPlanDetails.getProjectPhaseId(),projectPlanDetails.getId());
         modelAndView.addObject("estateBatchDetailList", estateBatchDetailList);
         //用于页面判断是否是子任务
         ProjectResponsibilityDto masterDto = new ProjectResponsibilityDto();

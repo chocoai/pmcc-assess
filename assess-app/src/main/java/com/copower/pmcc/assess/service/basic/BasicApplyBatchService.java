@@ -914,13 +914,22 @@ public class BasicApplyBatchService {
     }
 
     /**
-     * 获取楼盘
+     * 获取可以引用的楼盘
      *
      * @param projectId
      * @return
      */
-    public List<BasicApplyBatchDetail> getOriginalBasicApplyBatchListByProjectId(Integer projectId) {
-        List<BasicApplyBatch> basicApplyBatchList = basicApplyBatchDao.getOriginalBasicApplyBatchListByProjectId(projectId);
+    public List<BasicApplyBatchDetail> getOriginalBasicApplyBatchListByProjectId(Integer projectId,Integer projectPhaseId,Integer planDetailsId) {
+        ProjectPlanDetails projectPlanDetails = new ProjectPlanDetails();
+        projectPlanDetails.setProjectId(projectId);
+        projectPlanDetails.setProjectPhaseId(projectPhaseId);
+        projectPlanDetails.setBisEnable(true);
+        List<ProjectPlanDetails> planDetailsList = projectPlanDetailsService.getProjectDetails(projectPlanDetails);
+        List<Integer> transform = LangUtils.transform(planDetailsList, p -> p.getId());
+        //移出自身
+        transform.remove(planDetailsId);
+        List<BasicApplyBatch> basicApplyBatchList = LangUtils.transform(transform, o -> basicApplyBatchDao.getBasicApplyBatchByPlanDetailsId(o));
+
         List<BasicApplyBatchDetail> basicApplyBatchDetailList = Lists.newArrayList();
         if(CollectionUtils.isNotEmpty(basicApplyBatchList)){
             for (BasicApplyBatch item: basicApplyBatchList) {

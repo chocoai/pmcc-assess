@@ -116,25 +116,28 @@ public class BasicApplyBatchDao {
         BasicApplyBatchExample example = new BasicApplyBatchExample();
         BasicApplyBatchExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
         MybatisUtils.convertObj2Criteria(basicApplyBatch, criteria);
+        example.setOrderByClause("id desc");
         return basicApplyBatchMapper.selectByExample(example);
     }
 
     /**
-     * 获取草稿数据列表
+     * 获取数据（未引用）
      *
-     * @param projectId
+     * @param planDetailsId
      * @return
      */
-    public List<BasicApplyBatch> getOriginalBasicApplyBatchListByProjectId(Integer projectId) {
+    public BasicApplyBatch getBasicApplyBatchByPlanDetailsId(Integer planDetailsId) {
         BasicApplyBatchExample example = new BasicApplyBatchExample();
         BasicApplyBatchExample.Criteria criteria = example.createCriteria();
-        if (projectId!=null) {
-            criteria.andProjectIdEqualTo(projectId);
+        if (planDetailsId!=null) {
+            criteria.andPlanDetailsIdEqualTo(planDetailsId);
         }
         criteria.andReferenceApplyBatchIdIsNull();
         criteria.andBisDeleteEqualTo(false);
         example.setOrderByClause("id desc");
-        return basicApplyBatchMapper.selectByExample(example);
+        List<BasicApplyBatch> basicApplyBatchs = basicApplyBatchMapper.selectByExample(example);
+        if (CollectionUtils.isNotEmpty(basicApplyBatchs)) return basicApplyBatchs.get(0);
+        return null;
     }
 
     /**
