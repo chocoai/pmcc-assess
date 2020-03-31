@@ -78,10 +78,10 @@
                                                                            value="${basicBuilding.landUseYear}">
                                                                 </div>
                                                                 <label class="col-sm-1">
-                                                                    所在位置<span class="symbol required"></span>
+                                                                    楼栋所在位置<span class="symbol required"></span>
                                                                 </label>
                                                                 <div class="col-md-3">
-                                                                    <input type="text" placeholder="所在位置"
+                                                                    <input type="text" placeholder="楼栋所在位置"
                                                                            name="location"
                                                                            class="form-control input-full" required
                                                                            value="${basicBuilding.location}">
@@ -129,8 +129,7 @@
                                                     <div class="row form-group">
                                                         <div class="col-md-12">
                                                             <div class="form-inline x-valid">
-
-                                                                <label class="col-sm-1">单元说明</label>
+                                                                <label class="col-sm-1">单元数</label>
                                                                 <div class="col-md-3">
                                                                     <input type="text" name="remark"
                                                                            class="form-control input-full"

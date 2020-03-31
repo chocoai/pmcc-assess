@@ -440,23 +440,25 @@
         var strs2 = attachNumbers.split(",");
         var length = strs.length;
         for (var i = 0; i < length; i++) {
-            var html = "<div class='row form-group'>";
-            html += '<div class="col-sm-12">';
-            html += '<div class="form-inline x-valid">';
+            if(estateCommon.isNotBlank(strs[i])||estateCommon.isNotBlank(strs2[i])){
+                var html = "<div class='row form-group'>";
+                html += '<div class="col-sm-12">';
+                html += '<div class="form-inline x-valid">';
 
-            html += "<label class='col-sm-1 control-label'>街道号<span class='symbol required'></span></label>";
-            html += "<div class='col-sm-3'>";
-            html += "<label class='form-control input-full'" + "name='streetNumber'>"+strs[i]+"</label>";
-            html += "</div>";
-            html += "<label class='col-sm-1 control-label'>附号</label>";
-            html += "<div class='col-sm-3'>";
-            html += "<label class='form-control input-full'" + "name='attachNumber'>"+strs2[i]+"</label>";
-            html += "</div>";
+                html += "<label class='col-sm-1 control-label'>街道号<span class='symbol required'></span></label>";
+                html += "<div class='col-sm-3'>";
+                html += "<label class='form-control input-full'" + "name='streetNumber'>"+strs[i]+"</label>";
+                html += "</div>";
+                html += "<label class='col-sm-1 control-label'>附号</label>";
+                html += "<div class='col-sm-3'>";
+                html += "<label class='form-control input-full'" + "name='attachNumber'>"+strs2[i]+"</label>";
+                html += "</div>";
 
-            html += "</div>";
-            html += "</div>";
-            html += "</div>";
-            estateCommon.estateForm.find(".streetNumbers").append(html);
+                html += "</div>";
+                html += "</div>";
+                html += "</div>";
+                estateCommon.estateForm.find(".streetNumbers").append(html);
+            }
         }
     };
 

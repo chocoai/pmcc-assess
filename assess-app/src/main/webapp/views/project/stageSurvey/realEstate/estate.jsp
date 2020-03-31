@@ -141,11 +141,25 @@
                                                 <div class="row form-group">
                                                     <div class="col-md-12">
                                                         <div class="form-inline x-valid">
-                                                            <label class="col-sm-1 control-label">
-                                                                街道号、附号
-                                                            </label>
+                                                            <label class="col-sm-1">街道号<span class="symbol required"></span></label>
                                                             <div class="col-sm-3">
-                                                                <button class="btn btn-sm btn-success"
+                                                                <input type="text" required
+                                                                       placeholder="街道号" name="streetNumber"
+                                                                       class="form-control input-full"
+                                                                       value="${basicEstate.streetNumber}">
+                                                            </div>
+
+                                                            <label class="col-sm-1">附号</label>
+                                                            <div class="col-sm-3">
+                                                                <input type="text" data-rule-maxlength="100"
+                                                                       data-rule-number='true'
+                                                                       placeholder="附号(请输入数字)"
+                                                                       name="attachNumber"
+                                                                       class="form-control input-full"
+                                                                       value="${basicEstate.attachNumber}">
+                                                            </div>
+                                                            <div class="col-sm-3">
+                                                                <button class="btn btn-sm btn-success" type="button"
                                                                         onclick="estateCommon.appendHTML()"><i
                                                                         class="fa fa-plus"></i></button>
                                                             </div>
@@ -155,29 +169,6 @@
                                                 <div class="streetNumbers">
 
                                                 </div>
-                                                <%--<div class="row form-group">--%>
-                                                    <%--<div class="col-md-12">--%>
-                                                        <%--<div class="form-inline x-valid">--%>
-                                                            <%--<label class="col-sm-1">街道号<span class="symbol required"></span></label>--%>
-                                                            <%--<div class="col-sm-3">--%>
-                                                                <%--<input type="text" required--%>
-                                                                       <%--placeholder="街道号" name="streetNumber"--%>
-                                                                       <%--class="form-control input-full"--%>
-                                                                       <%--value="${basicEstate.streetNumber}">--%>
-                                                            <%--</div>--%>
-
-                                                            <%--<label class="col-sm-1">附号</label>--%>
-                                                            <%--<div class="col-sm-3">--%>
-                                                                <%--<input type="text" data-rule-maxlength="100"--%>
-                                                                       <%--data-rule-number='true'--%>
-                                                                       <%--placeholder="附号(请输入数字)"--%>
-                                                                       <%--name="attachNumber"--%>
-                                                                       <%--class="form-control input-full"--%>
-                                                                       <%--value="${basicEstate.attachNumber}">--%>
-                                                            <%--</div>--%>
-                                                        <%--</div>--%>
-                                                    <%--</div>--%>
-                                                <%--</div>--%>
                                                 <div class="row form-group">
                                                     <div class="col-md-12">
                                                         <div class="form-inline x-valid">

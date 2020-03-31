@@ -80,6 +80,10 @@
                                             <div class="col-sm-3">
                                                 <label class="form-control input-full" name="unitInterval">${basicBuilding.unitInterval}</label>
                                             </div>
+                                            <label class="col-sm-1 control-label">单元数</label>
+                                            <div class="col-sm-3">
+                                                <label class="form-control input-full" name="remark">${basicBuilding.remark}</label>
+                                            </div>
                                         </div>
                                         </div>
                                     </div>
@@ -87,7 +91,7 @@
                                         <div class="col-md-12">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-1 control-label">
-                                                所在位置
+                                                楼栋所在位置
                                             </label>
                                             <div class="col-sm-3">
                                                 <label class="form-control input-full" name="location">${basicBuilding.location}</label>
@@ -151,17 +155,6 @@
                                             <div class="col-sm-3">
                                                 <label class="form-control input-full" name="coverAnArea">${basicBuilding.coverAnArea}</label>
                                             </div>
-                                    
-                                            <label class="col-sm-1 control-label">单元说明</label>
-                                            <div class="col-sm-3">
-                                                <label class="form-control input-full" name="remark">${basicBuilding.remark}</label>
-                                            </div>
-                                        </div>
-                                        </div>
-                                    </div>
-                                    <div class="row form-group">
-                                        <div class="col-md-12">
-                                        <div class="form-inline x-valid">
                                             <label class="col-sm-1 control-label">
                                                 建筑结构类型
                                             </label>
@@ -169,7 +162,12 @@
                                                 <label class="form-control input-full"
                                                        name="buildingStructureTypeName">${basicBuilding.buildingStructureTypeName}</label>
                                             </div>
-                                    
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                        <div class="form-inline x-valid">
                                             <label class="col-sm-1 control-label">
                                                 建筑结构类别
                                             </label>
@@ -177,12 +175,6 @@
                                                 <label class="form-control input-full"
                                                        name="buildingStructureCategoryName">${basicBuilding.buildingStructureCategoryName}</label>
                                             </div>
-                                        </div>
-                                        </div>
-                                    </div>
-                                    <div class="row form-group">
-                                        <div class="col-md-12">
-                                        <div class="form-inline x-valid">
                                             <label class="col-sm-1 control-label">
                                                 建筑使用年限
                                             </label>
@@ -196,14 +188,19 @@
                                                            name="industryUseYearName">${basicBuilding.industryUseYearName}</label>
                                                 </c:if>
                                             </div>
-                                    
+
                                             <label class="col-sm-1 control-label">
                                                 外观风格
                                             </label>
                                             <div class="col-sm-3">
                                                 <label class="form-control input-full" name="appearanceStyleName">${basicBuilding.appearanceStyleName}</label>
                                             </div>
-                                    
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                        <div class="form-inline x-valid">
                                             <label class="col-sm-1 control-label">
                                                 外观新旧
                                             </label>
@@ -211,25 +208,24 @@
                                                 <label class="form-control input-full"
                                                        name="appearanceNewAndOldName">${basicBuilding.appearanceNewAndOldName}</label>
                                             </div>
-                                        </div>
-                                        </div>
-                                    </div>
-                                    <div class="row form-group">
-                                        <div class="col-md-12">
-                                        <div class="form-inline x-valid">
                                             <label class="col-sm-1 control-label">
                                                 楼间距
                                             </label>
                                             <div class="col-sm-3">
                                                 <label class="form-control input-full" name="betweenDistanceName">${basicBuilding.betweenDistanceName}</label>
                                             </div>
-                                    
+
                                             <label class="col-sm-1 control-label">楼间距描述</label>
                                             <div class="col-sm-3">
                                                 <label class="form-control input-full"
                                                        name="betweenDistanceDescription">${basicBuilding.betweenDistanceDescription}</label>
                                             </div>
-                                    
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                        <div class="form-inline x-valid">
                                             <label class="col-sm-1 control-label">
                                                 竣工时间获取方式
                                             </label>
@@ -237,12 +233,6 @@
                                                 <label class="form-control input-full"
                                                        name="completedTimeTypeName">${basicBuilding.completedTimeTypeName}</label>
                                             </div>
-                                        </div>
-                                        </div>
-                                    </div>
-                                    <div class="row form-group">
-                                        <div class="col-md-12">
-                                        <div class="form-inline x-valid">
                                             <label class="col-sm-1 control-label">
                                                 竣工时间
                                             </label>
@@ -251,7 +241,6 @@
                                                         value='${basicBuilding.beCompletedTime}' pattern='yyyy-MM-dd'/></label>
 
                                             </div>
-                                    
                                             <label class="col-sm-1 control-label">
                                                 开盘时间
                                             </label>
@@ -261,7 +250,12 @@
                                                             value='${basicBuilding.openTime}' pattern='yyyy-MM-dd'/>
                                                 </label>
                                             </div>
-                                    
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                        <div class="form-inline x-valid">
                                             <label class="col-sm-1 control-label">
                                                 工程质量
                                             </label>
@@ -269,31 +263,17 @@
                                                 <label class="form-control input-full"
                                                        name="constructionQualityName">${basicBuilding.constructionQualityName}</label>
                                             </div>
-                                        </div>
-                                        </div>
-                                    </div>
-                                    <div class="row form-group">
-                                        <div class="col-md-12">
-                                        <div class="form-inline x-valid">
                                             <label class="col-sm-1 control-label">
                                                 建筑公司
                                             </label>
                                             <div class="col-sm-3">
                                                 <label class="form-control input-full" name="builderName">${basicBuilding.builderName}</label>
                                             </div>
-                                    
                                             <label class="col-sm-1 control-label">
                                                 物业费
                                             </label>
                                             <div class="col-sm-3">
                                                 <label class="form-control input-full" name="propertyFee">${basicBuilding.propertyFee}</label>
-                                            </div>
-                                    
-                                            <label class="col-sm-1 control-label">
-                                                配套公共设施使用费
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <label class="form-control input-full" name="facilitiesUseFee">${basicBuilding.facilitiesUseFee}</label>
                                             </div>
                                         </div>
                                         </div>
@@ -301,6 +281,12 @@
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                         <div class="form-inline x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                配套公共设施使用费
+                                            </label>
+                                            <div class="col-sm-3">
+                                                <label class="form-control input-full" name="facilitiesUseFee">${basicBuilding.facilitiesUseFee}</label>
+                                            </div>
                                             <label class="col-sm-1 control-label">
                                                 物业公司名称
                                             </label>
@@ -315,7 +301,12 @@
                                                 <label class="form-control input-full"
                                                        name="propertyCompanyNatureName">${basicBuilding.propertyCompanyNatureName}</label>
                                             </div>
-                                    
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                        <div class="form-inline x-valid">
                                             <label class="col-sm-1 control-label">
                                                 物业公司社会信誉
                                             </label>

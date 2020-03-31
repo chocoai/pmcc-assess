@@ -91,7 +91,7 @@
                                         <div class="col-md-12">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-1 control-label">
-                                                所在位置
+                                                楼栋所在位置
                                             </label>
                                             <div class="col-sm-3">
                                                 <label class="form-control input-full" name="location">${basicBuilding.location}</label>

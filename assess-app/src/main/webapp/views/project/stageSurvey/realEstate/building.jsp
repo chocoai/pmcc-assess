@@ -109,6 +109,12 @@
                                                                            class="form-control input-full"
                                                                            value="${basicBuilding.unitInterval}">
                                                                 </div>
+                                                                <label class="col-sm-1">单元数</label>
+                                                                <div class="col-md-3">
+                                                                    <input type="text" name="remark"
+                                                                           class="form-control input-full"
+                                                                           value="${basicBuilding.remark}">
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -116,10 +122,10 @@
                                                         <div class="col-md-12">
                                                             <div class="form-inline x-valid">
                                                                 <label class="col-sm-1">
-                                                                    所在位置<span class="symbol required"></span>
+                                                                    楼栋所在位置<span class="symbol required"></span>
                                                                 </label>
                                                                 <div class="col-md-3">
-                                                                    <input type="text" placeholder="所在位置"
+                                                                    <input type="text" placeholder="楼栋所在位置"
                                                                            name="location"
                                                                            class="form-control input-full" required
                                                                            value="${basicBuilding.location}">
@@ -207,36 +213,6 @@
                                                                            class="form-control input-full"
                                                                            value="${basicBuilding.coverAnArea}">
                                                                 </div>
-                                                                <label class="col-sm-1">单元说明</label>
-                                                                <div class="col-md-3">
-                                                                    <input type="text" name="remark"
-                                                                           class="form-control input-full"
-                                                                           value="${basicBuilding.remark}">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <%--<div class="form-inline x-valid">--%>
-                                                        <%--<label class="col-sm-1">--%>
-                                                        <%--套内面积--%>
-                                                        <%--</label>--%>
-                                                        <%--<div class="col-md-3">--%>
-                                                        <%--<input type="text" placeholder="套内面积"--%>
-                                                        <%--name="inJacketArea" class="form-control input-full" value="${basicBuilding.inJacketArea}">--%>
-                                                        <%--</div>--%>
-                                                        <%--</div>--%>
-                                                        <%--<div class="form-inline x-valid">--%>
-                                                        <%--<label class="col-sm-1">--%>
-                                                        <%--使用面积--%>
-                                                        <%--</label>--%>
-                                                        <%--<div class="col-md-3">--%>
-                                                        <%--<input type="text" placeholder="使用面积"--%>
-                                                        <%--name="useArea" class="form-control input-full" value="${basicBuilding.useArea}">--%>
-                                                        <%--</div>--%>
-                                                        <%--</div>--%>
-                                                    </div>
-                                                    <div class="row form-group">
-                                                        <div class="col-md-12">
-                                                            <div class="form-inline x-valid">
                                                                 <label class="col-sm-1">
                                                                     建筑结构类型
                                                                 </label>
@@ -245,6 +221,12 @@
                                                                             class="form-control input-full buildingStructureType">
                                                                     </select>
                                                                 </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row form-group">
+                                                        <div class="col-md-12">
+                                                            <div class="form-inline x-valid">
                                                                 <label class="col-sm-1">
                                                                     建筑结构类别
                                                                 </label>
@@ -253,12 +235,6 @@
                                                                             class="form-control input-full buildingStructureCategory">
                                                                     </select>
                                                                 </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row form-group">
-                                                        <div class="col-md-12">
-                                                            <div class="form-inline x-valid">
                                                                 <label class="col-sm-1">
                                                                     建筑使用年限<span class="symbol required"></span>
                                                                 </label>
@@ -282,6 +258,13 @@
                                                                             class="form-control input-full appearanceStyle">
                                                                     </select>
                                                                 </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row form-group">
+                                                        <div class="col-md-12">
+                                                            <div class="form-inline x-valid">
+
                                                                 <label class="col-sm-1">
                                                                     外观新旧<span class="symbol required"></span>
                                                                 </label>
@@ -290,12 +273,6 @@
                                                                             class="form-control input-full appearanceNewAndOld">
                                                                     </select>
                                                                 </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row form-group">
-                                                        <div class="col-md-12">
-                                                            <div class="form-inline x-valid">
                                                                 <label class="col-sm-1">
                                                                     楼间距<span class="symbol required"></span>
                                                                 </label>
@@ -311,6 +288,12 @@
                                                                            name="betweenDistanceDescription"
                                                                            value="${basicBuilding.betweenDistanceDescription}">
                                                                 </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row form-group">
+                                                        <div class="col-md-12">
+                                                            <div class="form-inline x-valid">
                                                                 <label class="col-sm-1">
                                                                     竣工时间获取方式<span class="symbol required"></span>
                                                                 </label>
@@ -319,12 +302,6 @@
                                                                             class="form-control input-full completedTimeType search-select select2">
                                                                     </select>
                                                                 </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row form-group">
-                                                        <div class="col-md-12">
-                                                            <div class="form-inline x-valid">
                                                                 <label class="col-sm-1">
                                                                     竣工时间<span class="symbol required"></span>
                                                                 </label>
@@ -342,17 +319,12 @@
                                                                            name="openTime" data-date-format="yyyy-mm-dd"
                                                                            class="form-control input-full date-picker dbdate openTime">
                                                                 </div>
-                                                                <%--<div class="form-inline x-valid">--%>
-                                                                <%--<label class="col-sm-1">--%>
-                                                                <%--交房时间--%>
-                                                                <%--</label>--%>
-                                                                <%--<div class="col-md-3">--%>
-                                                                <%--<input placeholder="交房时间"--%>
-                                                                <%--name="roomTime" data-date-format="yyyy-mm-dd"--%>
-                                                                <%--class="form-control input-full date-picker dbdate roomTime">--%>
-                                                                <%--</div>--%>
-                                                                <%--</div>--%>
-
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row form-group">
+                                                        <div class="col-md-12">
+                                                            <div class="form-inline x-valid">
                                                                 <label class="col-sm-1">
                                                                     工程质量
                                                                 </label>
@@ -361,12 +333,6 @@
                                                                             class="form-control input-full constructionQuality">
                                                                     </select>
                                                                 </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row form-group">
-                                                        <div class="col-md-12">
-                                                            <div class="form-inline x-valid">
                                                                 <label class="col-sm-1">
                                                                     建筑公司
                                                                 </label>
@@ -390,6 +356,12 @@
                                                                            class="form-control input-full"
                                                                            value="${basicBuilding.propertyFee}">
                                                                 </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row form-group">
+                                                        <div class="col-md-12">
+                                                            <div class="form-inline x-valid">
                                                                 <label class="col-sm-1">
                                                                     配套公共设施使用费
                                                                 </label>
@@ -400,13 +372,6 @@
                                                                            class="form-control input-full"
                                                                            value="${basicBuilding.facilitiesUseFee}">
                                                                 </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="row form-group">
-                                                        <div class="col-md-12">
-                                                            <div class="form-inline x-valid">
                                                                 <label class="col-sm-1">
                                                                     物业公司名称
                                                                 </label>
@@ -441,6 +406,13 @@
                                                                         </c:forEach>
                                                                     </select>
                                                                 </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row form-group">
+                                                        <div class="col-md-12">
+                                                            <div class="form-inline x-valid">
                                                                 <label class="col-sm-1">
                                                                     物业公司社会信誉
                                                                 </label>
