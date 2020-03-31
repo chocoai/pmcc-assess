@@ -197,6 +197,284 @@
     </div>
 </div>
 
+<!--建设用地规划许可证-->
+<div id="divDeclareLandUsePermitBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    建设用地规划许可证 列表
+                </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <input type="hidden" name="masterId">
+                </form>
+                <span class="divDeclareLandUsePermitBox">
+                    <button type="button" class="btn btn-success btn-sm"
+                            onclick="declareCommon.addDeclareLandUsePermit();">
+                        <i class="fa fa-plus"></i>
+                        新增
+                    </button>
+                    <button type="button" class="btn btn-warning  btn-sm"
+                            onclick="declareCommon.delDeclareLandUsePermit()">
+                                    <i class="fa fa-minus"></i>
+                                    删除
+                                </button>
+                </span>
+                <table class="table table-bordered" id="tbDeclareLandUsePermitList">
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="declareLandUsePermitDataModelBox" class="modal fade bs-example-modal-lg" data-backdrop="static"
+     tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="max-width: 65%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">建设用地规划许可证</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <input type="hidden" name="id">
+                    <input type="hidden" name="masterId">
+                    <div class="row">
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                            <div class="card-body">
+                                <div class="row form-group">
+                                    <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
+                                                附件
+                                            </label>
+                                            <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
+                                                <input id="declareLandUsePermitAnnex"
+                                                       name="declareLandUsePermitAnnex"
+                                                       required="required" placeholder="附件"
+                                                       class="form-control input-full"
+                                                       type="file">
+                                                <div id="_declareLandUsePermitAnnex"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-primary btn-sm"
+                        onclick="declareCommon.saveDeclareLandUsePermitData();">
+                    保存
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--建筑工程施工许可证-->
+<div id="divDeclareBuildingConstructionPermitBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    建筑工程施工许可证 列表
+                </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <input type="hidden" name="masterId">
+                </form>
+                <span class="divDeclareBuildingConstructionPermitBox">
+                    <button type="button" class="btn btn-success btn-sm"
+                            onclick="declareCommon.addDeclareBuildingConstructionPermit();">
+                        <i class="fa fa-plus"></i>
+                        新增
+                    </button>
+                    <button type="button" class="btn btn-warning  btn-sm"
+                            onclick="declareCommon.delDeclareBuildingConstructionPermit()">
+                                    <i class="fa fa-minus"></i>
+                                    删除
+                                </button>
+                </span>
+                <table class="table table-bordered" id="tbDeclareBuildingConstructionPermitList">
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="declareBuildingConstructionPermitDataModelBox" class="modal fade bs-example-modal-lg" data-backdrop="static"
+     tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="max-width: 65%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">建筑工程施工许可证</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <input type="hidden" name="id">
+                    <input type="hidden" name="masterId">
+                    <div class="row">
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                            <div class="card-body">
+                                <div class="row form-group">
+                                    <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
+                                                附件
+                                            </label>
+                                            <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
+                                                <input id="declareBuildingConstructionPermitAnnex"
+                                                       name="declareBuildingConstructionPermitAnnex"
+                                                       required="required" placeholder="附件"
+                                                       class="form-control input-full"
+                                                       type="file">
+                                                <div id="_declareBuildingConstructionPermitAnnex"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-primary btn-sm"
+                        onclick="declareCommon.saveDeclareBuildingConstructionPermitData();">
+                    保存
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!--商品房预售许可证-->
+<div id="divDeclarePreSalePermitBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    商品房预售许可证 列表
+                </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <input type="hidden" name="masterId">
+                </form>
+                <span class="divDeclarePreSalePermitBox">
+                    <button type="button" class="btn btn-success btn-sm"
+                            onclick="declareCommon.addDeclarePreSalePermit();">
+                        <i class="fa fa-plus"></i>
+                        新增
+                    </button>
+                    <button type="button" class="btn btn-warning  btn-sm"
+                            onclick="declareCommon.delDeclarePreSalePermit()">
+                                    <i class="fa fa-minus"></i>
+                                    删除
+                                </button>
+                </span>
+                <table class="table table-bordered" id="tbDeclarePreSalePermitList">
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="declarePreSalePermitDataModelBox" class="modal fade bs-example-modal-lg" data-backdrop="static"
+     tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="max-width: 65%;">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title">商品房预售许可证</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <input type="hidden" name="id">
+                    <input type="hidden" name="masterId">
+                    <div class="row">
+                        <div class=" col-xs-12  col-sm-12  col-md-12  col-lg-12 ">
+                            <div class="card-body">
+                                <div class="row form-group">
+                                    <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
+                                                附件
+                                            </label>
+                                            <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
+                                                <input id="declarePreSalePermitAnnex"
+                                                       name="declarePreSalePermitAnnex"
+                                                       required="required" placeholder="附件"
+                                                       class="form-control input-full"
+                                                       type="file">
+                                                <div id="_declarePreSalePermitAnnex"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-primary btn-sm"
+                        onclick="declareCommon.saveDeclarePreSalePermitData();">
+                    保存
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 <div class="wrapper">
     <div class="main-panel" style="width: 100%">
