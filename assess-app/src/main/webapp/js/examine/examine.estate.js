@@ -409,28 +409,32 @@
         var strs = streetNumbers.split(",");
         var strs2 = attachNumbers.split(",");
         var length = strs.length;
-        for (var i = 0; i < length; i++) {
-            var html = "<div class='row form-group'>";
-            html += '<div class="col-sm-12">';
-            html += '<div class="form-inline x-valid">';
+        estateCommon.estateForm.find("input[name='streetNumber']").val(strs[0]);
+        estateCommon.estateForm.find("input[name='attachNumber']").val(strs2[0]);
+        for (var i = 1; i < length; i++) {
+            if(estateCommon.isNotBlank(strs[i])) {
+                var html = "<div class='row form-group'>";
+                html += '<div class="col-sm-12">';
+                html += '<div class="form-inline x-valid">';
 
-            html += "<label class='col-sm-1 control-label'>街道号<span class='symbol required'></span></label>";
-            html += "<div class='col-sm-3'>";
-            html += "<input type='text' required class='form-control input-full'" + "name='streetNumber' value='" + strs[i] + "'>";
-            html += "</div>";
-            html += "<label class='col-sm-1 control-label'>附号</label>";
-            html += "<div class='col-sm-3'>";
-            html += "<input type='text' class='form-control input-full'" + "name='attachNumber' value='" + strs2[i] + "'>";
-            html += "</div>";
+                html += "<label class='col-sm-1 control-label'>街道号<span class='symbol required'></span></label>";
+                html += "<div class='col-sm-3'>";
+                html += "<input type='text' required class='form-control input-full'" + "name='streetNumber' value='" + strs[i] + "'>";
+                html += "</div>";
+                html += "<label class='col-sm-1 control-label'>附号</label>";
+                html += "<div class='col-sm-3'>";
+                html += "<input type='text' class='form-control input-full'" + "name='attachNumber' value='" + strs2[i] + "'>";
+                html += "</div>";
 
-            html += "<div class='col-sm-1'>";
-            html += "<span class='input-group-btn'>" + "<input class='btn btn-warning btn-sm' type='button' value='X' onclick='estateCommon.cleanHTMLData(this)'>" + "</span>";
-            html += "</div>";
+                html += "<div class='col-sm-1'>";
+                html += "<span class='input-group-btn'>" + "<input class='btn btn-warning btn-sm' type='button' value='X' onclick='estateCommon.cleanHTMLData(this)'>" + "</span>";
+                html += "</div>";
 
-            html += "</div>";
-            html += "</div>";
-            html += "</div>";
-            estateCommon.estateForm.find(".streetNumbers").append(html);
+                html += "</div>";
+                html += "</div>";
+                html += "</div>";
+                estateCommon.estateForm.find(".streetNumbers").append(html);
+            }
         }
     };
 
@@ -440,12 +444,12 @@
         var strs2 = attachNumbers.split(",");
         var length = strs.length;
         for (var i = 0; i < length; i++) {
-            if(estateCommon.isNotBlank(strs[i])||estateCommon.isNotBlank(strs2[i])){
+            if(estateCommon.isNotBlank(strs[i])){
                 var html = "<div class='row form-group'>";
                 html += '<div class="col-sm-12">';
                 html += '<div class="form-inline x-valid">';
 
-                html += "<label class='col-sm-1 control-label'>街道号<span class='symbol required'></span></label>";
+                html += "<label class='col-sm-1 control-label'>街道号</label>";
                 html += "<div class='col-sm-3'>";
                 html += "<label class='form-control input-full'" + "name='streetNumber'>"+strs[i]+"</label>";
                 html += "</div>";

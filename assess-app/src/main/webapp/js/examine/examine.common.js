@@ -6,6 +6,20 @@ examineCommon.getFormData = function () {
         item.basicEstate = formSerializeArray(estateCommon.estateForm);
         item.basicEstate.id = estateCommon.estateForm.find("input[name='id']").val();
         item.basicEstate.name = estateCommon.estateForm.find("input[name='name']").val();
+        var streetNumbers = item.basicEstate.streetNumber.split(",");
+        var attachNumbers =item.basicEstate.attachNumber.split(",");
+        var length = streetNumbers.length;
+        var streetNumberValue = [];
+        var attachNumberValue = [];
+        for (var i = 0; i < length; i++) {
+            if(estateCommon.isNotBlank(streetNumbers[i])) {
+                streetNumberValue.push(streetNumbers[i]);
+                attachNumberValue.push(attachNumbers[i])
+            }
+        }
+        item.basicEstate.streetNumber = streetNumberValue.join();
+        item.basicEstate.attachNumber = attachNumberValue.join();
+
     }
     if (window.estateCommon && estateCommon.estateLandStateForm.length > 0) {
         var data = formSerializeArray(estateCommon.estateLandStateForm);
