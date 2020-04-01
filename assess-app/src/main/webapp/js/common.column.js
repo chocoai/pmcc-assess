@@ -463,7 +463,7 @@ commonColumn.buildingFunctionColumn = function () {
 }
 
 //单元-单价调查
-commonColumn.unitHuxingPriceColumn = function () {
+commonColumn.houseHuxingPriceColumn = function () {
     var cols = [];
     cols.push({field: 'houseNumber', title: '房号'});
     cols.push({field: 'area', title: '面积'});

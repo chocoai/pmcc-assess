@@ -28,6 +28,8 @@ public class BasicHouseHuxingPrice {
 
     private Date gmtModified;
 
+    private Integer houseId;
+
     private String jsonData;
 
     public Integer getId() {
@@ -124,6 +126,14 @@ public class BasicHouseHuxingPrice {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public Integer getHouseId() {
+        return houseId;
+    }
+
+    public void setHouseId(Integer houseId) {
+        this.houseId = houseId;
     }
 
     public String getJsonData() {

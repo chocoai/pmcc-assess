@@ -567,26 +567,13 @@ public class SchemeSurePriceService {
     }
 
 
-    public BasicUnitHuxing getUnitHuxing(Integer judgeObjectId) throws Exception {
+    public BasicHouse getBasicHouse(Integer judgeObjectId) throws Exception {
         SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectDao.getSchemeJudgeObject(judgeObjectId);
         if (schemeJudgeObject.getBasicApplyId() != null && schemeJudgeObject.getBasicApplyId() != 0) {
             BasicApply basicApply = basicApplyService.getByBasicApplyId(schemeJudgeObject.getBasicApplyId());
             if (basicApply != null) {
-                BasicUnit basicUnit = basicUnitService.getBasicUnitById(basicApply.getBasicUnitId());
-                BasicUnitHuxing basicUnitHuxing = new BasicUnitHuxing();
-                basicUnitHuxing.setUnitId(basicUnit.getId());
-                List<BasicUnitHuxing> basicUnitHuxingList = basicUnitHuxingService.basicUnitHuxingList(basicUnitHuxing);
+                return basicHouseService.getBasicHouseById(basicApply.getBasicHouseId());
 
-                BasicHouse basicHouse = basicHouseService.getBasicHouseById(basicApply.getBasicHouseId());
-                String houseNumber = basicHouse.getHouseNumber();
-
-                if (CollectionUtils.isNotEmpty(basicUnitHuxingList)) {
-                    for (BasicUnitHuxing item : basicUnitHuxingList) {
-                        if (houseNumber.equals(item.getStandardHouseNumber())) {
-                            return item;
-                        }
-                    }
-                }
             }
         }
         return null;
@@ -633,7 +620,7 @@ public class SchemeSurePriceService {
      * @auther: zch
      * @date: 2018/9/25 18:31
      */
-    public String importHuxingPrice(MultipartFile multipartFile, Integer huxingId) throws Exception {
+    public String importHuxingPrice(MultipartFile multipartFile, Integer houseId) throws Exception {
         Workbook workbook = null;
         Row row = null;
         StringBuilder builder = new StringBuilder();
@@ -672,7 +659,7 @@ public class SchemeSurePriceService {
                     continue;
                 }
                 basicHouseHuxingPrice = new BasicHouseHuxingPrice();
-                basicHouseHuxingPrice.setHuxingId(huxingId);
+                basicHouseHuxingPrice.setHouseId(houseId);
                 if (!this.importBasicHouseHuxingPrice(basicHouseHuxingPrice, builder, row, colLength, i, sheet.getRow(0))) {
                     continue;
                 }
@@ -691,7 +678,7 @@ public class SchemeSurePriceService {
         //房号
         if (org.apache.commons.lang.StringUtils.isNotEmpty(PoiUtils.getCellValue(row.getCell(0)))) {
             basicHouseHuxingPrice.setHouseNumber(PoiUtils.getCellValue(row.getCell(0)));
-            List<BasicHouseHuxingPrice> list = basicHouseHuxingPriceDao.basicHouseHuxingList(basicHouseHuxingPrice);
+            List<BasicHouseHuxingPrice> list = basicHouseHuxingPriceDao.basicHouseHuxingPriceList(basicHouseHuxingPrice);
             if (CollectionUtils.isNotEmpty(list)) {
                 BeanUtils.copyProperties(list.get(0), basicHouseHuxingPrice);
             }

@@ -602,7 +602,7 @@
                         </c:if>
                         <%@include file="/views/project/stageSurvey/commonDetail/houseDamagedDegree.jsp" %>
                     </c:if>
-                    <%@include file="/views/project/stageSurvey/commonDetail/unitHuxingPriceDetail.jsp" %>
+                    <%@include file="/views/project/stageSurvey/commonDetail/houseHuxingPrice.jsp" %>
                     <%@include file="/views/project/chksCustomize/chksSurvey.jsp" %>
                     <div class="col-md-12" style="text-align: center;padding-bottom: 1.25rem">
                         <div class="card-body">

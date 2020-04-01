@@ -1,6 +1,49 @@
 /**
  * Created by kings on 2019-5-30.
  */
+var houseHuxingPrice;
+(function () {
+    houseHuxingPrice = function () {
+
+    };
+    houseHuxingPrice.prototype = {
+        config: function () {
+            var data = {};
+            data.table = "HouseHuxingPriceList";
+            data.box = "divBoxHouseHuxingPrice";
+            data.frm = "frmHouseHuxingPrice";
+            data.type = "null";//
+            return data;
+        },
+        isNotBlank: function (item) {
+            if (item) {
+                return true;
+            }
+            return false;
+        },
+        loadDataDicList: function () {
+            var cols = commonColumn.houseHuxingPriceColumn();
+            $("#" + houseHuxingPrice.prototype.config().table).bootstrapTable('destroy');
+            TableInit(houseHuxingPrice.prototype.config().table, getContextPath()+"/basicHouseHuxingPrice/getBootstrapTableVo", cols, {
+                houseId: houseCommon.getHouseId(),
+                approval: true
+            }, {
+                showColumns: false,
+                showRefresh: false,
+                search: false,
+                onLoadSuccess: function () {
+                    $('.tooltips').tooltip();
+                }
+            });
+        }
+    }
+
+    //绑定事件
+    $('#' + houseHuxingPrice.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
+        houseHuxingPrice.prototype.loadDataDicList();
+    })
+})();
+
 
 var houseRoom;
 (function () {

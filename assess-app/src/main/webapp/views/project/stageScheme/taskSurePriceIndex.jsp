@@ -786,14 +786,14 @@
 
     surePrice.getHuxingId = function (judgeObjectId) {
         $.ajax({
-            url: getContextPath() + "/schemeSurePrice/getUnitHuxing",
+            url: getContextPath() + "/schemeSurePrice/getBasicHouse",
             type: "get",
             dataType: "json",
             data: {judgeObjectId: judgeObjectId},
             success: function (result) {
                 if (result.ret) {
                     if (houseHuxingPrice.prototype.isNotNull(result.data)) {
-                        $("#" + houseHuxingPrice.prototype.config().tableFrm).find("input[name='unitHuxingId']").val(result.data.id);
+                        $("#" + houseHuxingPrice.prototype.config().tableFrm).find("input[name='houseId']").val(result.data.id);
                         houseHuxingPrice.prototype.showTableModel();
                     } else {
                         notifyInfo("提示", "标准房号未关联单价表")
@@ -820,7 +820,7 @@
 
             <div class="modal-body">
                 <form id="frmHouseHuxingPriceTable" class="form-horizontal">
-                    <input type="hidden" name="unitHuxingId">
+                    <input type="hidden" name="houseId">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="card-body">
@@ -891,7 +891,7 @@
             <div class="modal-body">
                 <form id="frmHouseHuxingPrice" class="form-horizontal">
                     <input type="hidden" name="id">
-                    <input type="hidden" name="huxingId">
+                    <input type="hidden" name="houseId">
                     <input type="hidden" name="declareName">
                     <input type="hidden" name="declareId">
                     <div class="row">
@@ -971,7 +971,7 @@
             data.tableFrm = "frmHouseHuxingPriceTable";
             return data;
         },
-        loadDataDicList: function (unitHuxingId) {
+        loadDataDicList: function (houseId) {
             var cols = [];
             cols.push({field: 'houseNumber', title: '房号'});
             cols.push({field: 'area', title: '面积'});
@@ -980,15 +980,15 @@
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
-                    str += '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-primary tooltips"  data-placement="top" data-original-title="编辑" onclick="houseHuxingPrice.prototype.getAndInit(' + row.id + ',\'' + unitHuxingId + '\',\'tb_List\')"><i class="fa fa-pen"></i></button>';
-                    str += '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseHuxingPrice.prototype.removeData(' + row.id + ',\'' + unitHuxingId + '\',\'tb_List\')"><i class="fa fa-minus"></i></button>';
+                    str += '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-primary tooltips"  data-placement="top" data-original-title="编辑" onclick="houseHuxingPrice.prototype.getAndInit(' + row.id + ',\'' + houseId + '\',\'tb_List\')"><i class="fa fa-pen"></i></button>';
+                    str += '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseHuxingPrice.prototype.removeData(' + row.id + ',\'' + houseId + '\',\'tb_List\')"><i class="fa fa-minus"></i></button>';
                     str += '</div>';
                     return str;
                 }
             });
             $("#" + houseHuxingPrice.prototype.config().table).bootstrapTable('destroy');
-            TableInit(houseHuxingPrice.prototype.config().table, getContextPath() + "/basicHouseHuxingPrice/getHouseHuxingPriceList", cols, {
-                unitHuxingId: unitHuxingId
+            TableInit(houseHuxingPrice.prototype.config().table, getContextPath() + "/basicHouseHuxingPrice/getBootstrapTableVo", cols, {
+                houseId: houseId
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -998,7 +998,7 @@
                 }
             });
         },
-        removeData: function (id, unitHuxingId) {
+        removeData: function (id, houseId) {
             $.ajax({
                 url: getContextPath() + "/basicHouseHuxingPrice/deleteBasicHouseHuxingPrice",
                 type: "post",
@@ -1007,7 +1007,7 @@
                 success: function (result) {
                     if (result.ret) {
                         notifySuccess("成功", "删除成功");
-                        houseHuxingPrice.prototype.loadDataDicList(unitHuxingId);
+                        houseHuxingPrice.prototype.loadDataDicList(houseId);
                     }
                     else {
                         AlertError("失败", "保存数据失败，失败原因:" + result.errmsg);
@@ -1019,14 +1019,14 @@
             })
         },
         showTableModel: function () {
-            var unitHuxingId = $("#" + houseHuxingPrice.prototype.config().tableFrm).find("input[name='unitHuxingId']").val();
-            houseHuxingPrice.prototype.loadDataDicList(unitHuxingId);
+            var houseId = $("#" + houseHuxingPrice.prototype.config().tableFrm).find("input[name='houseId']").val();
+            houseHuxingPrice.prototype.loadDataDicList(houseId);
             $('#' + houseHuxingPrice.prototype.config().tableBox).modal("show");
         },
         showModel: function () {
             $("#" + houseHuxingPrice.prototype.config().frm).clearAll();
-            var unitHuxingId = $("#" + houseHuxingPrice.prototype.config().tableFrm).find("input[name='unitHuxingId']").val();
-            $("#" + houseHuxingPrice.prototype.config().frm).find("input[name='huxingId']").val(unitHuxingId);
+            var houseId = $("#" + houseHuxingPrice.prototype.config().tableFrm).find("input[name='houseId']").val();
+            $("#" + houseHuxingPrice.prototype.config().frm).find("input[name='houseId']").val(houseId);
 
             $('#' + houseHuxingPrice.prototype.config().box).modal("show");
         },
@@ -1034,7 +1034,7 @@
             if (!$("#" + houseHuxingPrice.prototype.config().frm).valid()) {
                 return false;
             }
-            var unitHuxingId = $("#" + houseHuxingPrice.prototype.config().frm).find("input[name='huxingId']").val()
+            var houseId = $("#" + houseHuxingPrice.prototype.config().frm).find("input[name='houseId']").val()
             var data = formParams(houseHuxingPrice.prototype.config().frm, true);
             $.ajax({
                 url: getContextPath() + "/basicHouseHuxingPrice/saveAndUpdateBasicHouseHuxingPrice",
@@ -1045,7 +1045,7 @@
                     if (result.ret) {
                         notifySuccess("成功", "保存成功");
                         $('#' + houseHuxingPrice.prototype.config().box).modal('hide');
-                        houseHuxingPrice.prototype.loadDataDicList(unitHuxingId);
+                        houseHuxingPrice.prototype.loadDataDicList(houseId);
                     }
                     else {
                         AlertError("失败", "保存数据失败，失败原因:" + result.errmsg);
@@ -1062,17 +1062,17 @@
             }
             return false;
         },
-        getAndInit: function (id, unitHuxingId) {
+        getAndInit: function (id, houseId) {
             $.ajax({
                 url: getContextPath() + "/basicHouseHuxingPrice/getBasicHouseHuxingPriceById",
-                type: "post",
+                type: "get",
                 dataType: "json",
                 data: {id: id},
                 success: function (result) {
                     if (result.ret) {
                         var data = result.data;
                         if (houseHuxingPrice.prototype.isNotNull(data)) {
-                            houseHuxingPrice.prototype.init(data, unitHuxingId);
+                            houseHuxingPrice.prototype.init(data, houseId);
                         } else {
                             houseHuxingPrice.prototype.init({});
                         }
@@ -1084,19 +1084,19 @@
                 }
             })
         },
-        init: function (item, unitHuxingId) {
+        init: function (item, houseId) {
             $("#" + houseHuxingPrice.prototype.config().frm).clearAll();
-            $("#" + houseHuxingPrice.prototype.config().frm).find("input[name='huxingId']").val(unitHuxingId);
+            $("#" + houseHuxingPrice.prototype.config().frm).find("input[name='houseId']").val(houseId);
             $("#" + houseHuxingPrice.prototype.config().frm).initForm(item);
 
         },
         importHuxingPrice: function () {
-            var unitHuxingId = $("#" + houseHuxingPrice.prototype.config().tableFrm).find("input[name='unitHuxingId']").val();
+            var houseId = $("#" + houseHuxingPrice.prototype.config().tableFrm).find("input[name='houseId']").val();
             $.ajaxFileUpload({
                 type: "POST",
                 url: getContextPath() + "/schemeSurePrice/importHuxingPrice",
                 data: {
-                    huxingId: unitHuxingId
+                    houseId: houseId
                 },//要传到后台的参数，没有可以不写
                 secureuri: false,//是否启用安全提交，默认为false
                 fileElementId: 'ajaxFileUpload',//文件选择框的id属性
@@ -1104,7 +1104,7 @@
                 async: false,
                 success: function (result) {
                     if (result.ret) {
-                        houseHuxingPrice.prototype.loadDataDicList(unitHuxingId);
+                        houseHuxingPrice.prototype.loadDataDicList(houseId);
                         notifySuccess("成功", result.data);
                     }
                 },

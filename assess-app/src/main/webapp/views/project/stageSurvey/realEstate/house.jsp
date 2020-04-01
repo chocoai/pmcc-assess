@@ -794,7 +794,7 @@
                                                 file="/views/project/stageSurvey/common/houseCorollaryEquipment.jsp" %>
                                     </c:if>
                                     <%@include file="/views/project/stageSurvey/common/houseDamagedDegree.jsp" %>
-                                    <%@include file="/views/project/stageSurvey/common/unitHuxingPrice.jsp" %>
+                                    <%@include file="/views/project/stageSurvey/common/houseHuxingPrice.jsp" %>
                                 </div>
                             </div>
                         </div>
