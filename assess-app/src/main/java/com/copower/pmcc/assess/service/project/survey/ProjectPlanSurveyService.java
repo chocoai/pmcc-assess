@@ -69,13 +69,13 @@ public class ProjectPlanSurveyService {
         Integer projectId = projectPlan.getProjectId();
         Integer workStageId = projectPlan.getWorkStageId();
 
-        ProjectPhase inventoryPhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.ASSET_INVENTORY, projectPlan.getCategoryId());
-        ProjectPhase explorePhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.SCENE_EXPLORE, projectPlan.getCategoryId());
+//        ProjectPhase inventoryPhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.ASSET_INVENTORY, projectPlan.getCategoryId());
+//        ProjectPhase explorePhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.SCENE_EXPLORE, projectPlan.getCategoryId());
         ProjectPhase otherRightPhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.OTHER_RIGHT, projectPlan.getCategoryId());
-        List<ProjectPhase> projectPhases = Lists.newArrayList(inventoryPhase,explorePhase);
-        List<DeclareRecord> declareRecords = declareRecordService.getDeclareRecordList(projectId, false);
+        // List<ProjectPhase> projectPhases = Lists.newArrayList(inventoryPhase,explorePhase);
+        // List<DeclareRecord> declareRecords = declareRecordService.getDeclareRecordList(projectId, false);
         //案例调查任务和他项权利任务与项目挂钩
-        if (CollectionUtils.isEmpty(projectPhases)) return;
+        // if (CollectionUtils.isEmpty(projectPhases)) return;
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
         ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(workStageId);
         //添加他权任务
@@ -106,7 +106,7 @@ public class ProjectPlanSurveyService {
         } catch (BpmException e) {
             logger.error("查勘添加task任务" + e.getMessage(), e);
         }
-        generateSurveyPlanDetails(planId, projectInfo, projectWorkStage, projectPhases, declareRecords);
+        //generateSurveyPlanDetails(planId, projectInfo, projectWorkStage, projectPhases, declareRecords);
     }
 
     /**
