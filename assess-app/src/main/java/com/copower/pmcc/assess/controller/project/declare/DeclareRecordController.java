@@ -4,12 +4,15 @@ import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -25,6 +28,17 @@ public class DeclareRecordController {
     private BaseService baseService;
     @Autowired
     private DeclareRecordService declareRecordService;
+    @Autowired
+    private ProcessControllerComponent processControllerComponent;
+
+    @RequestMapping(value = "/view/{declareId}", name = "转到详情页面 ", method = {RequestMethod.GET})
+    public ModelAndView index(@PathVariable(name = "declareId",required = true) Integer declareId) {
+        String view = "/project/stageDeclare/declareRecord/detail";
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
+        modelAndView.addObject(StringUtils.uncapitalize(DeclareRecord.class.getSimpleName()),declareRecordService.getDeclareRecordById(declareId)) ;
+        return modelAndView;
+    }
+
 
     @RequestMapping(value = "/getDeclareRecordList", method = {RequestMethod.GET}, name = "获取申报记录数据")
     public BootstrapTableVo getDeclareRecordList(Integer projectId, String name, String seat, Boolean bisPartIn, String province, String city, String district) {

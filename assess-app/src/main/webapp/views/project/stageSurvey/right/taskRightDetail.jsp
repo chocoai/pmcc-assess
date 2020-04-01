@@ -11,16 +11,11 @@
 <div class="wrapper">
     <div class="main-panel" style="width: 100%">
         <div class="content" style="margin-top: 0px;">
-            <%@include file="/views/share/form_head.jsp" %>
-            <div class="page-inner mt--5">
+            <div class="page-inner">
                 <div class="row mt--2">
-                    <%@include file="/views/share/project/projectInfoSimple.jsp" %>
-                    <%@include file="/views/share/project/projectPlanDetails.jsp" %>
 
-                    <%@include file="./right/taskRightCommonDetail.jsp" %>
+                    <%@include file="taskRightCommonDetail.jsp" %>
 
-
-                    <%@include file="/views/share/form_approval.jsp" %>
                 </div>
             </div>
         </div>
@@ -29,11 +24,4 @@
 </div>
 
 </body>
-
-<script type="text/javascript">
-
-    function saveform() {
-        saveApprovalform("");
-    }
-</script>
 </html>

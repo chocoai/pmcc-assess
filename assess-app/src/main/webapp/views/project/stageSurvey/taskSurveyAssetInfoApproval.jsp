@@ -106,7 +106,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-12">
+                    <div class="col-md-12" style="display: none;">
                         <div class="card full-height">
                             <div class="card-header collapse-link">
                                 <div class="card-head-row">
@@ -224,7 +224,7 @@
         var obj = assetInfo.handleJquery(assetInfo.groupTable).bootstrapTable('getRowByUniqueId', id);
         var inventoryId = 0;
         if (obj.inventoryId) {
-            assetInfo.surveyAssetInventoryHandle(obj.inventoryId, 0);
+            assetInfo.surveyAssetInventoryHandle(obj.inventoryId, 0, obj.groupName);
         } else {
             notifyInfo('提示', '无相关业务数据');
         }
@@ -235,10 +235,9 @@
      */
     assetInfo.itemHandel = function (id) {
         var obj = assetInfo.handleJquery(assetInfo.InfoItemBaseTable).bootstrapTable('getRowByUniqueId', id);
-        console.log(obj) ;
         if (obj.inventoryId) {
-            assetInfo.surveyAssetInventoryHandle(obj.inventoryId, obj.declareId);
-        }else {
+            assetInfo.surveyAssetInventoryHandle(obj.inventoryId, obj.declareId, obj.name);
+        } else {
             notifyInfo('提示', '无相关业务数据');
         }
     };
@@ -248,15 +247,15 @@
      * @param inventoryId
      * @param declareId
      */
-    assetInfo.surveyAssetInventoryHandle = function (inventoryId, declareId) {
+    assetInfo.surveyAssetInventoryHandle = function (inventoryId, declareId, masterName) {
         var frame = layer.open({
             type: 2,
-            title: '资产清查',
+            title: '',
             shadeClose: true,
             shade: true,
             maxmin: true, //开启最大化最小化按钮
             area: ['893px', '600px'],
-            content: '${pageContext.request.contextPath}/surveyAssetInventory/detailView/${projectPlanDetails.projectId}/${projectPlanDetails.id}/' + inventoryId + "/" + declareId,
+            content: '${pageContext.request.contextPath}/surveyAssetInventory/detailView/${projectPlanDetails.projectId}/${projectPlanDetails.id}/' + inventoryId + "/" + declareId + "/" + masterName,
             cancel: function (index, layero) {
                 var iframe = window[layero.find('iframe')[0]['name']];
                 //放弃按钮 不需要做处理
@@ -292,14 +291,22 @@
         });
         var target = assetInfo.handleJquery(assetInfo.InfoItemBaseTable);
         var cols = [];
-        cols.push({field: 'name', title: '权证号', width: "33%"});
+        cols.push({
+            field: 'name', title: '权证号', width: "33%", formatter: function (value, row, index) {
+                var str = value;
+                if (row.groupId) {
+                    str += "<span class='label label-info'>";
+                    str += row.groupName;
+                    str += "</span>";
+                }
+                return str;
+            }
+        });
         cols.push({
             field: 'id', title: '查看清查业务数据', width: "40%", formatter: function (value, row, index) {
                 var str = "";
                 if (row.groupId) {
-                    str += "<span class='label label-info'>";
-                    str += "到" + row.groupName + "查看业务详情";
-                    str += "</span>";
+
                 } else {
                     str += '<button type="button" onclick="assetInfo.itemHandel(' + value + ')" style="margin-left: 5px;" class="btn   btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看清查业务数据">';
                     str += '<i class="fa fa-search"></i>';
@@ -309,28 +316,18 @@
             }
         });
         cols.push({
-            field: 'status', title: '状态/属于组', width: "10%", formatter: function (value, row, index) {
-
-
+            field: 'status', title: '状态', width: "10%", formatter: function (value, row, index) {
                 var str = "";
-                if (row.groupId) {
-                    str += "<span class='label label-info'>";
-                    str += row.groupName;
-                    str += "</span>";
-                } else {
-                    if (value) {
-                        if (value == 'runing') {
-                            str += "<span class='label label-info'>";
-                            str += "进行中";
-//                            str += "<i class='far fa-circle'></i>" ;
-                            str += "</span>";
-                        }
-                        if (value == 'finish') {
-                            str += "<span class='label label-info'>";
-                            str += "已完成";
-//                            str += "<i class='far fa-check-circle'></i>" ;
-                            str += "</span>";
-                        }
+                if (value) {
+                    if (value == 'runing') {
+                        str += "<span class='label label-info'>";
+                        str += "待清查";
+                        str += "</span>";
+                    }
+                    if (value == 'finish') {
+                        str += "<span class='label label-success'>";
+                        str += "已清查";
+                        str += "</span>";
                     }
                 }
                 return str;
@@ -394,14 +391,12 @@
                 if (value) {
                     if (value == 'runing') {
                         str += "<span class='label label-info'>";
-                        str += "进行中";
-//                            str += "<i class='far fa-circle'></i>" ;
+                        str += "待清查";
                         str += "</span>";
                     }
                     if (value == 'finish') {
-                        str += "<span class='label label-info'>";
-                        str += "已完成";
-//                            str += "<i class='far fa-check-circle'></i>" ;
+                        str += "<span class='label label-success'>";
+                        str += "已清查";
                         str += "</span>";
                     }
                 }
@@ -417,6 +412,10 @@
             toolbar: "#baseInfoGroupToolbar",
             onLoadSuccess: function () {
                 $(".tooltips").tooltip();   //提示
+                var item = target.bootstrapTable('getData');
+                if (item.length >= 1) {
+                    target.closest(".card").parent().show();
+                }
             }
         });
     };

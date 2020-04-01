@@ -1,18 +1,19 @@
 package com.copower.pmcc.assess.controller.project.survey;
 
 import com.alibaba.fastjson.JSONObject;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetRightDeclare;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetRightDeclareService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Iterator;
 import java.util.List;
@@ -30,6 +31,18 @@ public class SurveyAssetRightDeclareController {
     @Autowired
     private BaseService baseService;
     private static final String STRING = "他项权利 申报记录" ;
+
+    @Autowired
+    private ProcessControllerComponent processControllerComponent;
+
+
+    @RequestMapping(value = "/taskRightDetail/{projectId}", name = "转到详情页面 ", method = {RequestMethod.GET})
+    public ModelAndView index(@PathVariable(name = "projectId",required = true) Integer projectId) {
+        String view = "/project/stageSurvey/right/taskRightDetail";
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
+        modelAndView.addObject(StringUtils.uncapitalize(ProjectPlanDetails.class.getSimpleName()),surveyAssetRightDeclareService.getProjectPlanDetailsByQuery(projectId)) ;
+        return modelAndView;
+    }
 
 
     @PostMapping(value = "/saveAndUpdateSurveyAssetRightDeclareAll",name = "save")

@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.project.survey;
 
+import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareRecordDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetRightDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetRightDeclareDao;
@@ -7,6 +8,9 @@ import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetRightGrou
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetRightItemDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
+import com.copower.pmcc.assess.service.project.ProjectInfoService;
+import com.copower.pmcc.assess.service.project.ProjectPhaseService;
+import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -42,6 +46,22 @@ public class SurveyAssetRightDeclareService {
     private SurveyAssetRightDeclareDao surveyAssetRightDeclareDao;
     @Autowired
     private BaseAttachmentService baseAttachmentService;
+    @Autowired
+    private ProjectPlanDetailsService projectPlanDetailsService;
+    @Autowired
+    private ProjectInfoService projectInfoService;
+    @Autowired
+    private ProjectPhaseService projectPhaseService;
+
+    public ProjectPlanDetails getProjectPlanDetailsByQuery(Integer projectId) {
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
+        ProjectPhase otherRightPhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.OTHER_RIGHT, projectInfo.getProjectCategoryId());
+        ProjectPlanDetails query = new ProjectPlanDetails();
+        query.setProjectId(projectId);
+        query.setProjectPhaseId(otherRightPhase.getId());
+        List<ProjectPlanDetails> detailsList = projectPlanDetailsService.getProjectDetails(query);
+        return detailsList.get(0) ;
+    }
 
     public boolean updateSurveyAssetRightDeclare(SurveyAssetRightDeclare oo, boolean updateNull) {
         return surveyAssetRightDeclareDao.updateSurveyAssetRightDeclare(oo, updateNull);
@@ -57,7 +77,7 @@ public class SurveyAssetRightDeclareService {
         return surveyAssetRightDeclareDao.saveSurveyAssetRightDeclare(oo);
     }
 
-    public void saveAndUpdateSurveyAssetRightDeclare(SurveyAssetRightDeclare oo,boolean updateNull) {
+    public void saveAndUpdateSurveyAssetRightDeclare(SurveyAssetRightDeclare oo, boolean updateNull) {
         if (oo == null) {
             return;
         }
@@ -68,15 +88,15 @@ public class SurveyAssetRightDeclareService {
         }
     }
 
-    private void removeFileByTableId(Integer tableId){
-        if (tableId == null){
+    private void removeFileByTableId(Integer tableId) {
+        if (tableId == null) {
             return;
         }
         SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
         sysAttachmentDto.setTableId(tableId);
         sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(SurveyAssetRightDeclare.class));
-        List<SysAttachmentDto> sysAttachmentDtoList = baseAttachmentService.getAttachmentList(sysAttachmentDto) ;
-        if (CollectionUtils.isEmpty(sysAttachmentDtoList)){
+        List<SysAttachmentDto> sysAttachmentDtoList = baseAttachmentService.getAttachmentList(sysAttachmentDto);
+        if (CollectionUtils.isEmpty(sysAttachmentDtoList)) {
             return;
         }
         sysAttachmentDtoList.forEach(sysAttachmentDto1 -> baseAttachmentService.deleteAttachment(sysAttachmentDto1.getId()));
@@ -89,7 +109,7 @@ public class SurveyAssetRightDeclareService {
         List<Integer> ids = FormatUtils.transformString2Integer(id);
         if (CollectionUtils.isNotEmpty(ids)) {
             if (ids.size() == 1) {
-                removeFileByTableId(ids.get(0)) ;
+                removeFileByTableId(ids.get(0));
                 surveyAssetRightDeclareDao.deleteSurveyAssetRightDeclareById(ids.get(0));
             } else {
                 ids.forEach(integer -> removeFileByTableId(integer));
@@ -121,10 +141,10 @@ public class SurveyAssetRightDeclareService {
         return surveyAssetRightDeclareDao.getSurveyAssetRightDeclareListByExample(oo);
     }
 
-    public List<SurveyAssetRightDeclare> getSurveyAssetRightDeclareListByGroupId(Integer groupId){
+    public List<SurveyAssetRightDeclare> getSurveyAssetRightDeclareListByGroupId(Integer groupId) {
         SurveyAssetRightDeclare select = new SurveyAssetRightDeclare();
         select.setGroupId(groupId);
-        return getSurveyAssetRightDeclareListByExample(select) ;
+        return getSurveyAssetRightDeclareListByExample(select);
     }
 
 }

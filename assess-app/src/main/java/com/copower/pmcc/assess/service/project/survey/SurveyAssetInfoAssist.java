@@ -100,6 +100,8 @@ public class SurveyAssetInfoAssist implements ProjectTaskInterface {
 
     private void setModelViewParam(ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) {
         SurveyAssetInfo surveyAssetInfo = surveyAssetInfoService.getSurveyAssetInfoByPlanDetailsId(projectPlanDetails);
+        //统计信息
+        surveyAssetInfoService.statistics(surveyAssetInfo);
 
         modelAndView.addObject(StringUtils.uncapitalize(SurveyAssetInfo.class.getSimpleName()), surveyAssetInfo);
         modelAndView.addObject("thisUserInfo", processControllerComponent.getThisUserInfo());    //当前操作用户信息

@@ -110,7 +110,7 @@
                                                 <div class="col-sm-3">
                                                     <select class="form-control input-full"
                                                             name="segmentationLimit"
-                                                            required >
+                                                            required>
                                                         <option value="可分">可分</option>
                                                         <option value="不可分" selected>不可分</option>
                                                     </select>
@@ -193,11 +193,11 @@
                                     <table id="tb_surveyList">
                                         <thead>
                                         <tr>
+                                            <th style="width: 6%">是否一致</th>
                                             <th style="width: 10%">一致性内容</th>
                                             <th style="width: 10%">登记<span
                                                     style="color:red;font-size:10px;">(没有登记信息则填无)</span></th>
                                             <th style="width: 10%">实际</th>
-                                            <th style="width: 6%">是否一致</th>
                                             <th style="width: 10%">差异原因</th>
                                             <th style="width: 10%">证明文件</th>
                                             <th style="width: 7%">证明文件附件</th>
@@ -210,31 +210,50 @@
                                         <tbody>
                                         <c:forEach items="${surveyAssetInventoryContentVos}" var="item" varStatus="s">
                                             <tr>
-                                                <input type="hidden" id="id" name="id" value="${item.id}">
-                                                <td>${item.inventoryContentName}</td>
                                                 <td>
-                                                    <div class="x-valid">
+                                                    <div class="x-valid ">
+
+                                                        <div class="form-check" style="justify-content:left">
+                                                            <label class="form-check-label">
+                                                                <input class="form-check-input" type="checkbox"
+                                                                       id="areConsistent${item.id}"
+                                                                       onclick="survey.areConsistentEvent(this) ;"
+                                                                       name="areConsistent${item.id}"
+                                                                       value="一致" ${item.areConsistent eq '一致'?'checked':''} ${empty item.areConsistent ?'checked':''}>
+                                                                <span class="form-check-sign">一致</span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </td>
+
+                                                <input type="hidden" name="id" value="${item.id}">
+
+                                                <td>${item.inventoryContentName}</td>
+
+                                                <td>
+                                                    <div class="x-valid show-hide">
                                                         <input type="text" data-rule-maxlength="50" placeholder="登记"
                                                                required
-                                                               id="registration${item.id}" onchange="isAgreement(this);"
+                                                               id="registration${item.id}"
+                                                               onblur="survey.isAgreement(this);"
                                                                name="registration${item.id}" data-name="registration"
                                                                class="form-control input-full "
                                                                value="${item.registration}">
                                                     </div>
                                                 </td>
+
                                                 <td>
-                                                    <div class="x-valid">
+                                                    <div class="x-valid show-hide">
                                                         <input type="text" data-rule-maxlength="50" placeholder="实际"
                                                                required
-                                                               id="actual${item.id}" onchange="isAgreement(this);"
+                                                               id="actual${item.id}"
+                                                               onblur="survey.isAgreement(this);"
                                                                name="actual${item.id}" data-name="actual"
                                                                class="form-control input-full "
-                                                               value="${empty item.actual?item.registration:item.actual}">
+                                                               value="${item.actual}">
                                                     </div>
                                                 </td>
-                                                <td>
-                                                    <label data-name="areConsistent">${item.areConsistent}</label>
-                                                </td>
+
                                                 <td>
                                                     <div class="x-valid show-hide"
                                                          style="display: ${item.areConsistent eq '一致'?'none':'block'}">
@@ -292,16 +311,15 @@
                                                                 id="sureConsistent${item.id}"
                                                                 name="sureConsistent${item.id}" required>
                                                             <option value=""></option>
-                                                            <option value="一致">一致</option>
-                                                            <option value="不一致">不一致</option>
+                                                            <option value="一致" ${item.sureConsistent eq '一致'?'selected':''}>
+                                                                一致
+                                                            </option>
+                                                            <option value="不一致" ${item.sureConsistent eq '不一致'?'selected':''}>
+                                                                不一致
+                                                            </option>
                                                         </select>
                                                     </div>
                                                 </td>
-                                                <script type="text/javascript">
-                                                    $(function () {
-                                                        getConsistentVal("sureConsistent${item.id}", "${item.sureConsistent}");
-                                                    })
-                                                </script>
                                                 <td>
                                                     <button type="button" class="btn btn-xs btn-danger"
                                                             onclick="$(this).closest('tr').find('input').val('') ;">清空
@@ -313,6 +331,7 @@
                                                     //清查内容附件上传和加载
                                                     survey.uploadFileCommon("${item.id}");
                                                     survey.showFileCommon("${item.id}");
+                                                    survey.initAgreement('#areConsistent${item.id}');
                                                 })
                                             </script>
                                         </c:forEach>
@@ -536,6 +555,15 @@
                                                             <option value="否">否</option>
                                                         </select>
                                                     </div>
+                                                    <div class="col-sm-3">
+                                                        <button type="button" class="btn btn-sm btn-success"
+                                                                onclick="survey.findDeclareRecord() ;">
+                                                            权证查看
+                                                        </button>
+                                                        <button type="button" class="btn btn-sm btn-success" onclick="survey.findRightDetail();">
+                                                            他项权力查看
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -580,7 +608,7 @@
                               class="form-control input-full" placeholder="{name}说明"></textarea>
                 </div>
                 <div class="col-sm-1"><input class="btn btn-warning" type="button" value="X"
-                                             onclick="$(this).closest('.form-group').remove();"></div>
+                                             onclick="survey.influenceFactorEvent(this,'{id}') ;"></div>
             </div>
         </div>
     </div>
@@ -669,7 +697,6 @@
         //日期
         var inputArr = ["checkDate"];
         survey.initFormData(frm, data, arr, false, AssessDBKey.SurveyAssetInventory, inputArr);
-        initAgreement();
         if (data.transferLimit) {
             $("#bisLimit").val("是");
         } else {
@@ -773,9 +800,6 @@
         }
     };
 
-    survey.cleanHTMLData = function (_this) {
-        $(_this).closest(".form-group").remove();
-    };
 
     survey.getSurveyAssetInventoryById = function (id, callback) {
         Loading.progressShow();
@@ -808,54 +832,72 @@
         });
     };
 
-
-    $(function () {
-        if ('${surveyAssetInventory}') {
-            if ('${surveyAssetInventory.id}') {
-                survey.getSurveyAssetInventoryById('${surveyAssetInventory.id}', function (data) {
-                    survey.initSurveyAssetInventoryForm(data);
-                });
-            } else {
-                survey.initSurveyAssetInventoryForm({});
-            }
+    survey.areConsistentEvent = function (_this) {
+        var value = $(_this).prop("checked");
+        var tr = $(_this).closest('tr');
+        if (value) {
+            tr.find('.show-hide').hide();
+        } else {
+            tr.find('.show-hide').show();
         }
-        showLimit();
-        showButton();
-    })
-    ;
+    };
 
     /**
-     * 初始化  验证 验证登记与实际是否一致 辅助 isAgreement method
+     * 初始化
      */
-    function initAgreement() {
-        var frm = $("#frm_asset_inventory_content");
-        var table = frm.find("table");
-        table.find("tbody").find("tr").each(function (i, tr) {
-            var registration = $(tr).find("input[data-name=registration]");
-            var value = registration.val();
-            if (value) {
-                isAgreement(registration[0]);
+    survey.initAgreement = function (selector) {
+        var tr = $(selector).closest('tr');
+        var registration = $.trim(tr.find('[name^=registration]').val());//登记
+        var actual = $.trim(tr.find('[name^=actual]').val());//实际
+        var num = 1;
+        if (actual && registration) {
+            if (actual != registration) {
+                num++;
             }
-        });
-    }
+        }
+        if (num == 1) {
+            tr.find('.show-hide').hide();
+            tr.find("input[type=checkbox]").prop('checked', true);
+        } else {
+            tr.find('.show-hide').show();
+            tr.find("input[type=checkbox]").prop('checked', false);
+        }
+    };
 
-    //验证登记与实际是否一致，如果不一致需填写相关内容
-    function isAgreement(_this) {
+    /**
+     * 验证登记与实际是否一致，如果不一致需填写相关内容
+     * @param _this
+     */
+    survey.isAgreement = function (_this) {
+        var value = $(_this).val();
+        if (!value) {
+            return false;
+        }
         var tr = $(_this).closest('tr');
         var registration = $.trim(tr.find('[name^=registration]').val());//登记
         var actual = $.trim(tr.find('[name^=actual]').val());//实际
-        if (AssessCommon.isNumber(registration) && AssessCommon.isNumber(actual)) {
-            registration = parseFloat(registration);
-            actual = parseFloat(actual);
+        if (actual && registration) {
+            if (actual == registration) {
+                tr.find('.show-hide').hide();
+                tr.find("input[type=checkbox]").prop('checked', true);
+            }
         }
-        if (registration == actual) {
-            tr.find('[data-name=areConsistent]').text('一致');
-            tr.find('.show-hide').hide();
-        } else {
-            tr.find('[data-name=areConsistent]').text('不一致');
-            tr.find('.show-hide').show();
+    };
+
+    //select2 change事件的处理
+    survey.influenceFactorEvent = function (_this, id) {
+        var frm = $(_this).closest("form");
+        var data = formSerializeArray(frm);
+        $(_this).closest(".form-group").remove();
+        if (data.influenceFactor) {
+            var arr = data.influenceFactor.split(",");
+            arr = $.grep(arr, function (n, i) {
+                return n != id;
+            });
+            frm.find("select[name='influenceFactor']").val(arr).trigger('change');
         }
-    }
+    };
+
 
     //上传附件通用
     survey.uploadFileCommon = function (tableId) {
@@ -868,13 +910,56 @@
     };
 
 
-    //类型改变
-    //    function typeChange(_this) {
-    //        $("#category").empty();
-    //        AssessCommon.loadDataDicByPid($(_this).val(), '', function (html) {
-    //            $("#category").html(html);
-    //        })
-    //    }
+    //权证查看
+    survey.findDeclareRecord = function () {
+        var frame = layer.open({
+            type: 2,
+            title: '',
+            shadeClose: true,
+            shade: true,
+            maxmin: false, //开启最大化最小化按钮
+            area: ['893px', '500px'],
+            content: '${pageContext.request.contextPath}/declareRecord/view/${declareRecord.id}',
+            cancel: function (index, layero) {
+                var iframe = window[layero.find('iframe')[0]['name']];
+                //放弃按钮 不需要做处理
+            },
+            btnAlign: 'c',
+//            btn: ['关闭'],
+            yes: function (index, layero) {
+                layer.closeAll('iframe');
+            },
+            btn2: function (index, layero) {
+                layer.closeAll('iframe');
+            }
+        });
+//        layer.full(frame);
+    };
+
+    survey.findRightDetail = function () {
+        var frame = layer.open({
+            type: 2,
+            title: '',
+            shadeClose: true,
+            shade: true,
+            maxmin: false, //开启最大化最小化按钮
+            area: ['893px', '500px'],
+            content: '${pageContext.request.contextPath}/surveyAssetRightDeclare/taskRightDetail/${declareRecord.projectId}',
+            cancel: function (index, layero) {
+                var iframe = window[layero.find('iframe')[0]['name']];
+                //放弃按钮 不需要做处理
+            },
+            btnAlign: 'c',
+//            btn: ['关闭'],
+            yes: function (index, layero) {
+                layer.closeAll('iframe');
+            },
+            btn2: function (index, layero) {
+                layer.closeAll('iframe');
+            }
+        });
+//        layer.full(frame);
+    };
 
 
     //获取需要保存的数据
@@ -884,8 +969,13 @@
         $.each(trs, function (i, tr) {
             var item = {};
             item.registration = $(tr).find('[name^="registration"]').val();    //登记面积
-            item.actual = $(tr).find('[name^="actual"]').val();                //实际面积
-            item.areConsistent = $(tr).find('[data-name="areConsistent"]').text();   //是否一致
+            item.actual = $(tr).find('[name^="actual"]').val();//实际面积
+            var areConsistentEle = $(tr).find('[name^="areConsistent"]'); //是否一致
+            if (areConsistentEle.prop("checked")) {
+                item.areConsistent = areConsistentEle.val();
+            } else {
+                item.areConsistent = '不一致';
+            }
             item.differenceReason = $(tr).find('[name^="differenceReason"]').val(); //差异原因
             item.credential = $(tr).find('[name^="credential"]').val(); //证明文件
             item.voucher = $(tr).find('[name^="voucher"]').val(); //证明人
@@ -967,6 +1057,7 @@
     }
 
     function newGetFormData(callback) {
+        getFormData();
         if (!$("#frm_asset").valid()) {
             return false;
         }
@@ -983,20 +1074,6 @@
             callback(getFormData());
         }
     }
-
-
-    //表格一致显示隐藏切换
-    //    function showHiddenCheck(_this, id) {
-    //        if ($('#areConsistent' + id).prop("checked")) {
-    //            $(_this).closest("tr").find(".showHidden,div").css('display', 'none');
-    //            $(_this).closest("tr").find("input:text").val("");
-    //        } else {
-    //            $(_this).closest("tr").find(".showHidden,div").css('display', 'block');
-    //        }
-    //    }
-
-
-
 
 
     function showLimit() {
@@ -1039,9 +1116,8 @@
         $("." + item).append(html);
     }
 
-    function cleanHTMLData(item) {
-        var value = "";
-        $(item).parent().parent().parent().parent().remove();
+    function cleanHTMLData(_this) {
+        $(_this).closest(".form-group").remove();
     }
 
     function writeHTMLData(projectName, projectItem, item, json) {
@@ -1174,9 +1250,22 @@
         }
     }
 
-    function getConsistentVal(id, value) {
-        $("#" + id).val(value);
-    }
+
+    $(function () {
+        if ('${surveyAssetInventory}') {
+            if ('${surveyAssetInventory.id}') {
+                survey.getSurveyAssetInventoryById('${surveyAssetInventory.id}', function (data) {
+                    survey.initSurveyAssetInventoryForm(data);
+                });
+            } else {
+                survey.initSurveyAssetInventoryForm({});
+            }
+        }
+        showLimit();
+        showButton();
+    });
+
+
 </script>
 
 </html>

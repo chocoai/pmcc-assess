@@ -44,7 +44,7 @@
                                 <button type="button" class="btn btn-warning  btn-sm"
                                         onclick="assetInfo.removeGroupSurveyAssetInfoItem() ;">
                                     <i class="fa fa-minus"></i>
-                                    删除
+                                    移除
                                 </button>
                                 </span>
                                             <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
@@ -212,16 +212,11 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-sm-2 ">
+                                                <div class="col-sm-1 ">
                                                     <button type="button" class="btn btn-info btn-sm"
                                                             onclick="assetInfo.loadSurveyAssetInfoItemBaseList(this);">
                                                         <span class="btn-label"><i class="fa fa-search"></i></span>
                                                         查询
-                                                    </button>
-                                                    <button class="btn btn-warning btn-sm"
-                                                            type="button" data-toggle="modal"
-                                                            onclick="assetInfo.delSurveyAssetInfoItemByDeclareId() ;"><span
-                                                            class="btn-label"><i class="fa fa-minus"></i></span>删除
                                                     </button>
                                                 </div>
                                                 <div class="col-sm-2 ">
@@ -250,6 +245,13 @@
                                                             </button>
                                                         </div>
                                                     </div>
+                                                </div>
+                                                <div class="col-sm-1 ">
+                                                    <button class="btn btn-warning btn-sm"
+                                                            type="button" data-toggle="modal"
+                                                            onclick="assetInfo.delSurveyAssetInfoItemByDeclareId() ;"><span
+                                                            class="btn-label"><i class="fa fa-minus"></i></span>删除
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -408,11 +410,14 @@
     assetInfo.saveDeclareRecord = function (data, callback) {
         assetInfo.ajaxServerFun({formData: JSON.stringify(data)}, "/declareRecord/saveDeclareRecord", "post", callback, null);
     };
-    assetInfo.saveDeclareRecordArray = function (data,updateNull, callback) {
-        if (updateNull == null || updateNull == undefined || updateNull == ''){
-            updateNull = false ;
+    assetInfo.saveDeclareRecordArray = function (data, updateNull, callback) {
+        if (updateNull == null || updateNull == undefined || updateNull == '') {
+            updateNull = false;
         }
-        assetInfo.ajaxServerFun({formData: JSON.stringify(data),updateNull:updateNull}, "/declareRecord/saveDeclareRecordArray", "post", callback, null);
+        assetInfo.ajaxServerFun({
+            formData: JSON.stringify(data),
+            updateNull: updateNull
+        }, "/declareRecord/saveDeclareRecordArray", "post", callback, null);
     };
 
     /*
@@ -615,13 +620,11 @@
                     if (value == 'runing') {
                         str += "<span class='label label-info'>";
                         str += "待清查";
-//                            str += "<i class='far fa-circle'></i>" ;
                         str += "</span>";
                     }
                     if (value == 'finish') {
                         str += "<span class='label label-success'>";
                         str += "已清查";
-//                            str += "<i class='far fa-check-circle'></i>" ;
                         str += "</span>";
                     }
                 }
@@ -656,6 +659,12 @@
             onLoadSuccess: function () {
                 $(".tooltips").tooltip();   //提示
                 assetInfo.writeQuerySurveyAssetInfoGroupHtml();
+                var item = target.bootstrapTable('getData');
+                if (item.length >= 1) {
+                    target.closest(".card").parent().show();
+                } else {
+                    target.closest(".card").parent().hide();
+                }
             }
         });
     };
@@ -699,13 +708,11 @@
                     if (value == 'runing') {
                         str += "<span class='label label-info'>";
                         str += "待清查";
-//                            str += "<i class='far fa-circle'></i>" ;
                         str += "</span>";
                     }
                     if (value == 'finish') {
                         str += "<span class='label label-success'>";
                         str += "已清查";
-//                            str += "<i class='far fa-check-circle'></i>" ;
                         str += "</span>";
                     }
                 }
@@ -922,9 +929,23 @@
                             assetInfo.getSurveyAssetInfoGroupById(masterId, function (obj) {
                                 obj.inventoryId = result.surveyAssetInventory.id;
                                 obj.status = 'finish';
+
                                 assetInfo.saveAndUpdateSurveyAssetInfoGroup(obj, function () {
                                     assetInfo.loadSurveyAssetInfoGroupList();
                                 });
+                            });
+                            assetInfo.getSurveyAssetInfoItemIdsByGroupId(masterId, function (ids) {
+                                var objArr = [];
+                                $.each(ids, function (i, id) {
+                                    var obj = assetInfo.handleJquery(assetInfo.InfoItemBaseTable).bootstrapTable('getRowByUniqueId', id);
+                                    obj.status = 'finish';
+                                    objArr.push(obj);
+                                });
+                                if (objArr.length >= 1) {
+                                    assetInfo.addSurveyAssetInfoItem(objArr, function () {
+                                        assetInfo.loadSurveyAssetInfoItemBaseList();
+                                    });
+                                }
                             });
                         }
                         //单个的方式清查
@@ -1052,9 +1073,15 @@
 
     //资产清查组 delete
     assetInfo.delSurveyAssetInfoGroup = function (id) {
-        assetInfo.deleteSurveyAssetInfoGroupById(id, function () {
-            assetInfo.loadSurveyAssetInfoGroupList();
-        })
+        assetInfo.getSurveyAssetInfoItemIdsByGroupId(id, function (data) {
+            if (data.length >= 1) {
+                notifyWarning("提示", "请先移除组中的数据!");
+                return false;
+            }
+            assetInfo.deleteSurveyAssetInfoGroupById(id, function () {
+                assetInfo.loadSurveyAssetInfoGroupList();
+            })
+        });
     };
 
     /**
@@ -1137,6 +1164,7 @@
         }
         assetInfo.deleteSurveyAssetInfoItemById(ids.join(","), function () {
             target.bootstrapTable('refresh');
+            assetInfo.handleJquery(assetInfo.declareRecordTable).bootstrapTable('refresh');
         });
     };
 
@@ -1152,7 +1180,23 @@
 
 <script type="text/javascript">
 
+
+    /**
+     * 提交
+     * @param mustUseBox
+     * @returns {boolean}
+     */
     function submit(mustUseBox) {
+
+        var dataAll = assetInfo.handleJquery(assetInfo.InfoItemBaseTable).bootstrapTable('getData');
+        var filterData = $.grep(dataAll, function (item, i) {
+            return item.status != 'finish';
+        });
+        if (filterData.length != 0) {
+            notifyWarning("提示", "认领的权证有未清查的!");
+            return false;
+        }
+
         var data = {
             id: '${surveyAssetInfo.id}',
             planDetailId: '${surveyAssetInfo.planDetailId}',

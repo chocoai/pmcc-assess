@@ -4,23 +4,19 @@
 <head>
     <%@include file="/views/share/main_css.jsp" %>
 </head>
-
-
 <body>
 <div class="wrapper">
     <div class="main-panel" style="width: 100%">
         <div class="content" style="margin-top: 0px;">
-            <%@include file="/views/share/form_head.jsp" %>
-            <div class="page-inner mt--5">
+            <div class="page-inner">
                 <div class="row mt--2">
-
                     <!-- 填写表单 start -->
                     <div class="col-md-12">
                         <div class="card full-height">
                             <div class="card-header collapse-link">
                                 <div class="card-head-row">
                                     <div class="card-title">
-                                        资产清查
+                                        ${masterName} 清查业务
                                     </div>
                                     <div class="card-tools">
                                         <button class="btn  btn-link btn-primary btn-xs"><span
@@ -32,26 +28,60 @@
                             <div class="card-body">
                                 <form id="frm_asset" class="form-horizontal">
                                     <input type="hidden" name="id" value="${surveyAssetInventory.id}">
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1 col-form-label">查看原件<span
+                                                        class="symbol required"></span></label>
+                                                <div class="col-sm-3">
+                                                    <label class="form-control input-full"> ${surveyAssetInventory.bisCheckOriginal eq true? '是':'否'}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
                                                 <label class="col-sm-1 col-form-label">
-                                                    核对日期<span class="symbol required"></span></label>
+                                                    查看方法
+                                                </label>
                                                 <div class="col-sm-3">
-                                                    <label class="form-control input-full"><fmt:formatDate
-                                                            value="${surveyAssetInventory.checkDate}"
-                                                            pattern="yyyy-MM-dd"/></label>
-
+                                                    <label class="form-control input-full">${surveyAssetInventory.findMethodName}</label>
                                                 </div>
-                                                <label class="col-sm-1 col-form-label">是否查看原件<span
-                                                        class="symbol required"></span></label>
+                                                <label class="col-sm-1 col-form-label">
+                                                    查看结果附件</label>
                                                 <div class="col-sm-3">
-                                                    <label class="form-control input-full"> ${surveyAssetInventory.findOriginalName}</label>
+                                                    <div id="_networkFindFile"></div>
+                                                </div>
+                                                <label class="col-sm-1 col-form-label">
+                                                    查看说明
+                                                </label>
+                                                <div class="col-sm-3">
+                                                    <label class="form-control input-full">${surveyAssetInventory.networkRemark}</label>
+
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+
+                                    <c:if test="${!empty surveyAssetInventory.networkAddress}">
+                                        <div class="row form-group">
+                                            <div class="col-md-12">
+                                                <div class="form-inline x-valid">
+                                                    <label class="col-sm-1 control-label">
+                                                        查询的地址
+                                                    </label>
+                                                    <div class="col-sm-3">
+                                                        <label class="form-control input-full">${surveyAssetInventory.networkAddress}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </c:if>
+
+                                    <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%"
+                                        color="#6f5499" size="10"/>
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
@@ -60,79 +90,15 @@
                                                 <div class="col-sm-3">
                                                     <label class="form-control input-full">${surveyAssetInventory.segmentationLimit}</label>
                                                 </div>
-                                                <%--<div class="showUse"></div>--%>
-
                                                 <label class="col-sm-1 col-form-label">
                                                     影响对象
                                                 </label>
                                                 <div class="col-sm-3">
                                                     <label class="form-control input-full">${surveyAssetInventory.affectedName}</label>
                                                 </div>
-
-                                                <label class="col-sm-1 col-form-label">
-                                                    查看方法
-                                                </label>
-                                                <div class="col-sm-3">
-                                                    <label class="form-control input-full">${surveyAssetInventory.findMethodName}</label>
-                                                </div>
-
-
                                             </div>
                                         </div>
                                     </div>
-
-                                    <div class="row form-group " data-name="findMethod" style="display: none;">
-                                        <div class="col-md-12">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-1 col-form-label">
-                                                    查询的地址
-                                                </label>
-                                                <div class="col-sm-3">
-                                                    <label class="form-control input-full">${surveyAssetInventory.networkAddress}</label>
-                                                </div>
-
-                                                <label class="col-sm-1 col-form-label">
-                                                    说明
-                                                </label>
-                                                <div class="col-sm-3">
-                                                    <label class="form-control input-full">${surveyAssetInventory.networkRemark}</label>
-
-                                                </div>
-                                                <label class="col-sm-1 col-form-label">
-                                                    查看结果附件</label>
-                                                <div class="col-sm-3">
-                                                    <div id="_networkFindFile"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <%--<div class="row form-group showCertificate">--%>
-                                    <%--<div class="col-md-12">--%>
-                                    <%--<div class="form-inline x-valid">--%>
-                                    <%--<label class="col-sm-1 col-form-label">--%>
-                                    <%--能否使用--%>
-                                    <%--</label>--%>
-                                    <%--<div class="col-sm-3">--%>
-                                    <%--<label class="form-control input-full">${surveyAssetInventory.canUse}</label>--%>
-                                    <%--</div>--%>
-
-                                    <%--<label class="col-sm-1 col-form-label">--%>
-                                    <%--证载用途--%>
-                                    <%--</label>--%>
-                                    <%--<div class="col-sm-3">--%>
-                                    <%--<label class="form-control input-full">${surveyAssetInventory.applicationName}</label>--%>
-
-                                    <%--</div>--%>
-                                    <%--<label class="col-sm-1 col-form-label">--%>
-                                    <%--是否办证</label>--%>
-                                    <%--<div class="col-sm-3">--%>
-                                    <%--<label class="form-control input-full">${surveyAssetInventory.certificateName}</label>--%>
-                                    <%--</div>--%>
-                                    <%--</div>--%>
-                                    <%--</div>--%>
-                                    <%--</div>--%>
-
 
                                     <c:forEach items="${surveyAssetInventory.influenceFactorRemarkList}" var="item">
                                         <div class="row form-group">
@@ -142,7 +108,7 @@
                                                         影响要素
                                                     </label>
                                                     <div class="col-sm-3">
-                                                                <label class="form-control input-full">${item.key}</label>
+                                                        <label class="form-control input-full">${item.key}</label>
                                                     </div>
                                                     <label class="col-sm-1 col-form-label">
                                                         说明
@@ -155,9 +121,26 @@
                                         </div>
                                     </c:forEach>
 
+
+                                    <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%"
+                                        color="#6f5499" size="10"/>
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
+                                                <label class="col-sm-1 col-form-label">
+                                                    核对日期<span class="symbol required"></span></label>
+                                                <div class="col-sm-3">
+                                                    <label class="form-control input-full"><fmt:formatDate
+                                                            value="${surveyAssetInventory.checkDate}"
+                                                            pattern="yyyy-MM-dd"/></label>
+
+                                                </div>
+                                                <label class="col-sm-1 control-label">
+                                                    说明
+                                                </label>
+                                                <div class="col-sm-3">
+                                                    <label class="form-control input-full">${surveyAssetInventory.remark}</label>
+                                                </div>
                                                 <label class="col-sm-1 control-label">
                                                     证明文件
                                                 </label>
@@ -167,18 +150,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row form-group">
-                                        <div class="col-md-12">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-1 control-label">
-                                                    说明
-                                                </label>
-                                                <div class="col-sm-11">
-                                                    <label class="form-control input-full">${surveyAssetInventory.remark}</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+
 
                                 </form>
                             </div>
@@ -204,10 +176,10 @@
                                     <table id="tb_List">
                                         <thead>
                                         <tr>
+                                            <th style="width: 6%">是否一致</th>
                                             <th style="width: 10%">一致性内容</th>
                                             <th style="width: 10%">登记</th>
                                             <th style="width: 10%">实际</th>
-                                            <th style="width: 6%">是否一致</th>
                                             <th style="width: 10%">差异原因</th>
                                             <th style="width: 10%">证明文件</th>
                                             <th style="width: 10%">证明文件附件</th>
@@ -220,18 +192,18 @@
                                         <c:forEach items="${surveyAssetInventoryContentVos}" var="item" varStatus="s">
                                         <tr>
                                             <td>
-                                                <label class="form-control input-full">${item.inventoryContentName}</label>
-                                            </td>
-                                            <td>
-                                                <label class="form-control input-full">${item.registration}</label>
-                                            </td>
-                                            <td>
-                                                <label class="form-control input-full">${item.actual}</label>
-                                            </td>
-                                            <td>
                                                 <label class="form-control input-full">${item.areConsistent}</label>
                                             </td>
-                                            <c:if test="${item.areConsistent eq '不一致'}">
+                                            <td>
+                                                <label class="form-control input-full">${item.inventoryContentName}</label>
+                                            </td>
+                                            <c:if test="${item.areConsistent != '一致'}">
+                                                <td>
+                                                    <label class="form-control input-full">${item.registration}</label>
+                                                </td>
+                                                <td>
+                                                    <label class="form-control input-full">${item.actual}</label>
+                                                </td>
                                                 <td>
                                                     <label class="form-control input-full">${item.differenceReason}</label>
                                                 </td>
@@ -504,14 +476,7 @@
     };
 
     $(function () {
-        var frm = $("#frm_asset") ;
-        AssessCommon.getDataDicInfo('${surveyAssetInventory.findMethod}', function (item) {
-            if (item.fieldName == AssessDicKey.projectSurveyInventoryContentDefaultFindMethodNetwork) {
-                frm.find("div[data-name=findMethod]").show();
-            } else {
-                frm.find("div[data-name=findMethod]").hide();
-            }
-        });
+        var frm = $("#frm_asset");
         //附件
         var arr = ["checkOriginalFile", "paymentStatusFile", "networkFindFile", AssessUploadKey.INVENTORY_PAYMENT_STATUS, AssessUploadKey.INVENTORY_CHECK_ORIGINAL];
 
