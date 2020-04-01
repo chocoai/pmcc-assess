@@ -109,6 +109,14 @@ public class BasicUnitHuxingService {
         return stringBuilder.toString();
     }
 
+    public BasicUnitHuxing getHuxingByHouseId(Integer houseId) {
+        BasicUnitHuxing basicUnitHuxing = new BasicUnitHuxing();
+        basicUnitHuxing.setHouseId(houseId);
+        List<BasicUnitHuxing> tradings = basicUnitHuxingDao.basicUnitHuxingList(basicUnitHuxing);
+        if (org.springframework.util.CollectionUtils.isEmpty(tradings)) return null;
+        return tradings.get(0);
+    }
+
     /**
      * 新增或者修改
      *
@@ -147,6 +155,15 @@ public class BasicUnitHuxingService {
      */
     public boolean deleteBasicUnitHuxing(Integer id) throws Exception {
         return basicUnitHuxingDao.deleteBasicUnitHuxing(id);
+    }
+
+    public boolean deleteBasicHuxingByHouseId(Integer houseId) throws Exception {
+        BasicUnitHuxing huxing = new BasicUnitHuxing();
+        huxing.setHouseId(houseId);
+        List<BasicUnitHuxing> huxings = basicUnitHuxingDao.basicUnitHuxingList(huxing);
+        if (org.springframework.util.CollectionUtils.isEmpty(huxings)) return true;
+        huxings.forEach(o -> basicUnitHuxingDao.deleteBasicUnitHuxing(o.getId()));
+        return true;
     }
 
     /**

@@ -6,6 +6,10 @@ import java.util.Date;
 public class BasicUnitHuxing {
     private Integer id;
 
+    private Integer houseId;
+
+    private Integer estateId;
+
     private Integer unitId;
 
     private Integer type;
@@ -42,12 +46,32 @@ public class BasicUnitHuxing {
 
     private String standardHouseNumber;
 
+    private String tenementType;
+
+    private String huxingData;
+
     public Integer getId() {
         return id;
     }
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getHouseId() {
+        return houseId;
+    }
+
+    public void setHouseId(Integer houseId) {
+        this.houseId = houseId;
+    }
+
+    public Integer getEstateId() {
+        return estateId;
+    }
+
+    public void setEstateId(Integer estateId) {
+        this.estateId = estateId;
     }
 
     public Integer getUnitId() {
@@ -192,5 +216,21 @@ public class BasicUnitHuxing {
 
     public void setStandardHouseNumber(String standardHouseNumber) {
         this.standardHouseNumber = standardHouseNumber == null ? null : standardHouseNumber.trim();
+    }
+
+    public String getTenementType() {
+        return tenementType;
+    }
+
+    public void setTenementType(String tenementType) {
+        this.tenementType = tenementType == null ? null : tenementType.trim();
+    }
+
+    public String getHuxingData() {
+        return huxingData;
+    }
+
+    public void setHuxingData(String huxingData) {
+        this.huxingData = huxingData == null ? null : huxingData.trim();
     }
 }

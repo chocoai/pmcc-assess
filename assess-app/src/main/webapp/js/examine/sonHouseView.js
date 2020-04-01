@@ -1427,6 +1427,194 @@ var houseWater;
     })
 })();
 
+var houseRoomDecorate;
+(function () {
+    houseRoomDecorate = function () {
+
+    };
+    houseRoomDecorate.prototype = {
+        config: function () {
+            var data = {};
+            data.table = "HouseRoomDecorateList";
+            data.box = "divBoxHouseRoomDecorate";
+            data.frm = "frmHouseRoomDecorate";
+            data.type = "null";//
+            return data;
+        },
+        isNotBlank: function (item) {
+            if (item) {
+                return true;
+            }
+            return false;
+        },
+        loadDataDicList: function () {
+            var cols = commonColumn.houseRoomDecorateColumn();
+            cols.push({
+                field: 'id', title: '操作', formatter: function (value, row, index) {
+                    var str = '<div class="btn-margin">';
+                    str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-primary tooltips"  data-placement="top" data-original-title="编辑" onclick="houseRoomDecorate.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
+                    str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseRoomDecorate.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
+                    str += '</div>';
+                    return str;
+                }
+            });
+            $("#" + houseRoomDecorate.prototype.config().table).bootstrapTable('destroy');
+            TableInit(houseRoomDecorate.prototype.config().table, getContextPath() + "/basicHouseRoomDecorate/getBootstrapTableVo", cols, {
+                houseId: houseCommon.getHouseId()
+            }, {
+                showColumns: false,
+                showRefresh: false,
+                search: false,
+                onLoadSuccess: function () {
+                    $('.tooltips').tooltip();
+                }
+            });
+        },
+        removeData: function (id) {
+            $.ajax({
+                url: getContextPath() + "/basicHouseRoomDecorate/deleteBasicHouseRoomDecorate",
+                type: "post",
+                dataType: "json",
+                data: {id: id},
+                success: function (result) {
+                    if (result.ret) {
+                        notifySuccess("成功", "删除成功");
+                        houseRoomDecorate.prototype.loadDataDicList();
+                    }
+                    else {
+                        AlertError("保存数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    AlertError("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        },
+        showModel: function () {
+            houseRoomDecorate.prototype.init({});
+            $('#' + houseRoomDecorate.prototype.config().box).modal("show");
+        },
+        saveData: function () {
+            if (!$("#" + houseRoomDecorate.prototype.config().frm).valid()) {
+                return false;
+            }
+            var data = formParams(houseRoomDecorate.prototype.config().frm, true);
+            data.houseId = houseCommon.getHouseId();
+            $.ajax({
+                url: getContextPath() + "/basicHouseRoomDecorate/saveAndUpdateBasicHouseRoomDecorate",
+                type: "post",
+                dataType: "json",
+                data: data,
+                success: function (result) {
+                    if (result.ret) {
+                        notifySuccess("成功", "保存成功");
+                        $('#' + houseRoomDecorate.prototype.config().box).modal('hide');
+                        houseRoomDecorate.prototype.loadDataDicList();
+                    }
+                    else {
+                        AlertError("保存数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    AlertError("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        },
+        getAndInit: function (id) {
+            $.ajax({
+                url: getContextPath() + "/basicHouseRoomDecorate/getBasicHouseRoomDecorateById",
+                type: "get",
+                dataType: "json",
+                data: {id: id},
+                success: function (result) {
+                    if (result.ret) {
+                        if (houseRoomDecorate.prototype.isNotBlank(result.data)) {
+                            houseRoomDecorate.prototype.init(result.data);
+                        } else {
+                            houseRoomDecorate.prototype.init({});
+                        }
+                        $('#' + houseRoomDecorate.prototype.config().box).modal("show");//
+                    }
+                },
+                error: function (result) {
+                    AlertError("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        },
+        init: function (item) {
+            $("#" + houseRoomDecorate.prototype.config().frm).clearAll();
+            $("#" + houseRoomDecorate.prototype.config().frm).initForm(item);
+            $("#" + houseRoomDecorate.prototype.config().frm).find('select.material').off('change').on('change', function () {
+                AssessCommon.loadDataDicByPid($(this).val(), item.constructionTechnology, function (html, data) {
+                    $("#" + houseRoomDecorate.prototype.config().frm).find('select.constructionTechnology').empty().html(html).trigger('change');
+                });
+                item.constructionTechnology = null;
+            });
+            $("#" + houseRoomDecorate.prototype.config().frm).find('select.constructionTechnology').off('change').on('change', function () {
+                AssessCommon.loadDataDicByPid($(this).val(), item.materialPrice, function (html, data) {
+                    $("#" + houseRoomDecorate.prototype.config().frm).find('select.materialPrice').empty().html(html).trigger('change');
+                });
+                item.materialPrice = null;
+            });
+
+            AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_room_material, item.material, function (html, data) {
+                $("#" + houseRoomDecorate.prototype.config().frm).find('select.material').empty().html(html).trigger('change');
+            });
+
+            AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_room_part, item.part, function (html, data) {
+                $("#" + houseRoomDecorate.prototype.config().frm).find('select.part').empty().html(html).trigger('change');
+            });
+        },
+        openDecoratePartModal: function(_this){
+            var data = $(_this).closest('.input-group').find('input[name="decoratePart"]').val();
+            AssessCommon.loadAsyncDataDicByKey(AssessDicKey.examine_house_room_part, '', function (html, resultData) {
+                var target = $("#industrySupplyInfoContainer");
+                target.empty();
+
+                var resultHtml = '<div>';
+                var array = [];
+                    if (houseRoomDecorate.prototype.isNotBlank(data)) {
+                        array = data.split(',');
+                    }
+                resultHtml += "<div class='form-check' style='justify-content:left'>";
+                $.each(resultData, function (i, item) {
+                    resultHtml += "<label class='form-check-label'>";
+                    resultHtml += "<input class='form-check-input' type='checkbox' name='infrastructure' ";
+                    if ($.inArray(item.name.toString(), array) > -1) {
+                        resultHtml += ' checked="checked" ';
+                    }
+                    resultHtml += 'value="' + item.name + '">';
+                    resultHtml += "<span class='form-check-sign'>" + item.name + "</span>";
+                });
+                resultHtml += "</div>";
+                target.append(resultHtml);
+            }, true);
+
+            $("#divBoxDecoratePart").modal("show");
+        },
+        saveDecoratePart : function () {
+            var checkedBoxs = $("#frmDecoratePart").find('input:checkbox:checked');
+            if (checkedBoxs.length <= 0) {
+                notifyInfo('提示','至少选择一个');
+                return false;
+            }
+            var data = [];
+            checkedBoxs.each(function () {
+                data.push($(this).val());
+            })
+            $("#" + houseRoomDecorate.prototype.config().frm).find('input[name="decoratePart"]').val(data.join());
+            console.log(data.join()+"==")
+            console.log($("#" + houseRoomDecorate.prototype.config().frm).find('input[name="decoratePart"]').val())
+            $("#divBoxDecoratePart").modal("hide");
+        }
+    }
+
+    //绑定事件
+    $('#' + houseRoomDecorate.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
+        houseRoomDecorate.prototype.loadDataDicList();
+    })
+})();
+
 var houseWaterDrain = {};
 houseWaterDrain.config = {
     table: "HouseWaterDrainList",

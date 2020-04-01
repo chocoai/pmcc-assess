@@ -7,6 +7,8 @@ public class BasicHouseRoomDecorate {
 
     private Integer roomId;
 
+    private Integer houseId;
+
     private Integer part;
 
     private Integer material;
@@ -25,6 +27,8 @@ public class BasicHouseRoomDecorate {
 
     private Date gmtModified;
 
+    private String decoratePart;
+
     public Integer getId() {
         return id;
     }
@@ -39,6 +43,14 @@ public class BasicHouseRoomDecorate {
 
     public void setRoomId(Integer roomId) {
         this.roomId = roomId;
+    }
+
+    public Integer getHouseId() {
+        return houseId;
+    }
+
+    public void setHouseId(Integer houseId) {
+        this.houseId = houseId;
     }
 
     public Integer getPart() {
@@ -111,5 +123,13 @@ public class BasicHouseRoomDecorate {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getDecoratePart() {
+        return decoratePart;
+    }
+
+    public void setDecoratePart(String decoratePart) {
+        this.decoratePart = decoratePart == null ? null : decoratePart.trim();
     }
 }

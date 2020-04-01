@@ -166,6 +166,126 @@ public class BasicUnitHuxingExample {
             return (Criteria) this;
         }
 
+        public Criteria andHouseIdIsNull() {
+            addCriterion("house_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdIsNotNull() {
+            addCriterion("house_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdEqualTo(Integer value) {
+            addCriterion("house_id =", value, "houseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdNotEqualTo(Integer value) {
+            addCriterion("house_id <>", value, "houseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdGreaterThan(Integer value) {
+            addCriterion("house_id >", value, "houseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("house_id >=", value, "houseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdLessThan(Integer value) {
+            addCriterion("house_id <", value, "houseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdLessThanOrEqualTo(Integer value) {
+            addCriterion("house_id <=", value, "houseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdIn(List<Integer> values) {
+            addCriterion("house_id in", values, "houseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdNotIn(List<Integer> values) {
+            addCriterion("house_id not in", values, "houseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdBetween(Integer value1, Integer value2) {
+            addCriterion("house_id between", value1, value2, "houseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("house_id not between", value1, value2, "houseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEstateIdIsNull() {
+            addCriterion("estate_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEstateIdIsNotNull() {
+            addCriterion("estate_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEstateIdEqualTo(Integer value) {
+            addCriterion("estate_id =", value, "estateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEstateIdNotEqualTo(Integer value) {
+            addCriterion("estate_id <>", value, "estateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEstateIdGreaterThan(Integer value) {
+            addCriterion("estate_id >", value, "estateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEstateIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("estate_id >=", value, "estateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEstateIdLessThan(Integer value) {
+            addCriterion("estate_id <", value, "estateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEstateIdLessThanOrEqualTo(Integer value) {
+            addCriterion("estate_id <=", value, "estateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEstateIdIn(List<Integer> values) {
+            addCriterion("estate_id in", values, "estateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEstateIdNotIn(List<Integer> values) {
+            addCriterion("estate_id not in", values, "estateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEstateIdBetween(Integer value1, Integer value2) {
+            addCriterion("estate_id between", value1, value2, "estateId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEstateIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("estate_id not between", value1, value2, "estateId");
+            return (Criteria) this;
+        }
+
         public Criteria andUnitIdIsNull() {
             addCriterion("unit_id is null");
             return (Criteria) this;
@@ -1313,6 +1433,146 @@ public class BasicUnitHuxingExample {
 
         public Criteria andStandardHouseNumberNotBetween(String value1, String value2) {
             addCriterion("standard_house_number not between", value1, value2, "standardHouseNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andTenementTypeIsNull() {
+            addCriterion("tenement_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTenementTypeIsNotNull() {
+            addCriterion("tenement_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTenementTypeEqualTo(String value) {
+            addCriterion("tenement_type =", value, "tenementType");
+            return (Criteria) this;
+        }
+
+        public Criteria andTenementTypeNotEqualTo(String value) {
+            addCriterion("tenement_type <>", value, "tenementType");
+            return (Criteria) this;
+        }
+
+        public Criteria andTenementTypeGreaterThan(String value) {
+            addCriterion("tenement_type >", value, "tenementType");
+            return (Criteria) this;
+        }
+
+        public Criteria andTenementTypeGreaterThanOrEqualTo(String value) {
+            addCriterion("tenement_type >=", value, "tenementType");
+            return (Criteria) this;
+        }
+
+        public Criteria andTenementTypeLessThan(String value) {
+            addCriterion("tenement_type <", value, "tenementType");
+            return (Criteria) this;
+        }
+
+        public Criteria andTenementTypeLessThanOrEqualTo(String value) {
+            addCriterion("tenement_type <=", value, "tenementType");
+            return (Criteria) this;
+        }
+
+        public Criteria andTenementTypeLike(String value) {
+            addCriterion("tenement_type like", value, "tenementType");
+            return (Criteria) this;
+        }
+
+        public Criteria andTenementTypeNotLike(String value) {
+            addCriterion("tenement_type not like", value, "tenementType");
+            return (Criteria) this;
+        }
+
+        public Criteria andTenementTypeIn(List<String> values) {
+            addCriterion("tenement_type in", values, "tenementType");
+            return (Criteria) this;
+        }
+
+        public Criteria andTenementTypeNotIn(List<String> values) {
+            addCriterion("tenement_type not in", values, "tenementType");
+            return (Criteria) this;
+        }
+
+        public Criteria andTenementTypeBetween(String value1, String value2) {
+            addCriterion("tenement_type between", value1, value2, "tenementType");
+            return (Criteria) this;
+        }
+
+        public Criteria andTenementTypeNotBetween(String value1, String value2) {
+            addCriterion("tenement_type not between", value1, value2, "tenementType");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingDataIsNull() {
+            addCriterion("huxing_data is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingDataIsNotNull() {
+            addCriterion("huxing_data is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingDataEqualTo(String value) {
+            addCriterion("huxing_data =", value, "huxingData");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingDataNotEqualTo(String value) {
+            addCriterion("huxing_data <>", value, "huxingData");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingDataGreaterThan(String value) {
+            addCriterion("huxing_data >", value, "huxingData");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingDataGreaterThanOrEqualTo(String value) {
+            addCriterion("huxing_data >=", value, "huxingData");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingDataLessThan(String value) {
+            addCriterion("huxing_data <", value, "huxingData");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingDataLessThanOrEqualTo(String value) {
+            addCriterion("huxing_data <=", value, "huxingData");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingDataLike(String value) {
+            addCriterion("huxing_data like", value, "huxingData");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingDataNotLike(String value) {
+            addCriterion("huxing_data not like", value, "huxingData");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingDataIn(List<String> values) {
+            addCriterion("huxing_data in", values, "huxingData");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingDataNotIn(List<String> values) {
+            addCriterion("huxing_data not in", values, "huxingData");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingDataBetween(String value1, String value2) {
+            addCriterion("huxing_data between", value1, value2, "huxingData");
+            return (Criteria) this;
+        }
+
+        public Criteria andHuxingDataNotBetween(String value1, String value2) {
+            addCriterion("huxing_data not between", value1, value2, "huxingData");
             return (Criteria) this;
         }
     }

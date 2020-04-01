@@ -249,6 +249,48 @@ var houseWater;
     })
 })();
 
+var houseRoomDecorate;
+(function () {
+    houseRoomDecorate = function () {
+
+    };
+    houseRoomDecorate.prototype = {
+        config: function () {
+            var data = {};
+            data.table = "HouseRoomDecorateList";
+            data.box = "divBoxHouseRoomDecorate";
+            data.frm = "frmHouseRoomDecorate";
+            data.type = "null";//
+            return data;
+        },
+        isNotBlank: function (item) {
+            if (item) {
+                return true;
+            }
+            return false;
+        },
+        loadDataDicList: function () {
+            var cols = commonColumn.houseRoomDecorateColumn();
+            $("#" + houseRoomDecorate.prototype.config().table).bootstrapTable('destroy');
+            TableInit(houseRoomDecorate.prototype.config().table, getContextPath()+"/basicHouseRoomDecorate/getBootstrapTableVo", cols, {
+                houseId: houseCommon.getHouseId(),
+                approval: true
+            }, {
+                showColumns: false,
+                showRefresh: false,
+                search: false,
+                onLoadSuccess: function () {
+                    $('.tooltips').tooltip();
+                }
+            });
+        }
+    }
+
+    //绑定事件
+    $('#' + houseRoomDecorate.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
+        houseRoomDecorate.prototype.loadDataDicList();
+    })
+})();
 var houseWaterDrain = {};
 houseWaterDrain.config = {
     table: "HouseWaterDrainList",

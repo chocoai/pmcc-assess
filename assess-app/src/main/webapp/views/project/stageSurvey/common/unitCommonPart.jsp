@@ -1,6 +1,4 @@
-<%--
- 楼栋内装
---%>
+
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="col-md-12">
@@ -62,8 +60,8 @@
                                         <div class="col-sm-10">
                                             <div class="input-group">
                                                 <input type="text" required name="unitCommonPart"
-                                                       class="form-control" list="unitCommonPartList">
-                                                <datalist id="unitCommonPartList">
+                                                       class="form-control" list="unitCommonPartList2">
+                                                <datalist id="unitCommonPartList2">
 
                                                 </datalist>
                                                 <div class="input-group-prepend">

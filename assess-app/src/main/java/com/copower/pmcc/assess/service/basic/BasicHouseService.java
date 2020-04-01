@@ -15,6 +15,7 @@ import com.copower.pmcc.assess.dto.input.basic.BasicFormClassifyParamDto;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseDamagedDegreeVo;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseTradingVo;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseVo;
+import com.copower.pmcc.assess.dto.output.basic.BasicUnitHuxingVo;
 import com.copower.pmcc.assess.proxy.face.BasicEntityAbstract;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.assist.DdlMySqlAssist;
@@ -76,6 +77,8 @@ public class BasicHouseService extends BasicEntityAbstract {
     private BasicHouseDao basicHouseDao;
     @Autowired
     private BasicHouseTradingService basicHouseTradingService;
+    @Autowired
+    private BasicUnitHuxingService basicUnitHuxingService;
     @Autowired
     private BasicHouseRoomDecorateService basicHouseRoomDecorateService;
     @Autowired
@@ -241,6 +244,7 @@ public class BasicHouseService extends BasicEntityAbstract {
         StringBuilder sqlBulder = new StringBuilder();
         String baseSql = "update %s set bis_delete=1 where house_id=%s;";
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseTrading.class), houseId));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicUnitHuxing.class), houseId));
         sqlBulder.append(String.format("update %s set bis_delete=1 where id=%s;", FormatUtils.entityNameConvertToTableName(BasicHouse.class), houseId));
         ddlMySqlAssist.customTableDdl(sqlBulder.toString());
     }
@@ -287,6 +291,14 @@ public class BasicHouseService extends BasicEntityAbstract {
             basicHouseTradingVo.setHouseId(basicHouse.getId());
         }
         objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicHouseTrading.class.getSimpleName()), basicHouseTradingVo);
+
+        BasicUnitHuxing unitHuxing = basicUnitHuxingService.getHuxingByHouseId(basicHouse.getId());
+        BasicUnitHuxingVo unitHuxingVo = basicUnitHuxingService.getBasicUnitHuxingVo(unitHuxing);
+        if (unitHuxingVo == null) {
+            unitHuxingVo = new BasicUnitHuxingVo();
+            unitHuxingVo.setHouseId(basicHouse.getId());
+        }
+        objectMap.put(FormatUtils.toLowerCaseFirstChar("basicHouseHuxing"), unitHuxingVo);
         return objectMap;
     }
 
@@ -412,6 +424,9 @@ public class BasicHouseService extends BasicEntityAbstract {
 
         BasicHouseTrading houseTrading = basicHouseTradingService.getTradingByHouseId(basicHouse.getId());
         objectMap.put(FormatUtils.toLowerCaseFirstChar(BasicHouseTrading.class.getSimpleName()), basicHouseTradingService.getBasicHouseTradingVo(houseTrading) != null ? basicHouseTradingService.getBasicHouseTradingVo(houseTrading) : new BasicHouseTrading());
+
+        BasicUnitHuxing unitHuxing = basicUnitHuxingService.getHuxingByHouseId(basicHouse.getId());
+        objectMap.put("basicHouseHuxing", basicUnitHuxingService.getBasicUnitHuxingVo(unitHuxing) != null ? basicUnitHuxingService.getBasicUnitHuxingVo(unitHuxing) : new BasicUnitHuxingVo());
         initDemagedDegree(basicHouse);
         return objectMap;
     }
@@ -494,6 +509,18 @@ public class BasicHouseService extends BasicEntityAbstract {
                         }
                     }
                 }
+                //户型
+                jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_HOUSE_HUXING.getVar());
+                BasicUnitHuxing huxing = JSONObject.parseObject(jsonContent, BasicUnitHuxing.class);
+                if (huxing != null) {
+                    BasicUnitHuxing houseHuxingOld = basicUnitHuxingService.getHuxingByHouseId(basicHouse.getId());
+                    if (houseHuxingOld != null) {
+                        huxing.setId(houseHuxingOld.getId());
+                        huxing.setHouseId(houseId);
+                        huxing.setEstateId(houseHuxingOld.getEstateId());
+                        basicUnitHuxingService.saveAndUpdateBasicUnitHuxing(huxing, true);
+                    }
+                }
                 //交易信息
                 jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_TRADING.getVar());
                 BasicHouseTrading basicTrading = JSONObject.parseObject(jsonContent, BasicHouseTrading.class);
@@ -553,6 +580,25 @@ public class BasicHouseService extends BasicEntityAbstract {
             BeanUtils.copyProperties(sourceBasicHouse, targetBasicHouse, ignoreList.toArray(new String[ignoreList.size()]));
         }
         this.saveAndUpdate(targetBasicHouse, true);
+        BasicUnitHuxing sourceBasicHouseHuxing = basicUnitHuxingService.getHuxingByHouseId(sourceId);
+        if (sourceBasicHouseHuxing != null) {
+            BasicUnitHuxing targetBasicHouseHuxing = basicUnitHuxingService.getHuxingByHouseId(targetBasicHouse.getId());
+            if (targetBasicHouseHuxing == null) {
+                targetBasicHouseHuxing = new BasicUnitHuxing();
+                BeanUtils.copyProperties(sourceBasicHouseHuxing, targetBasicHouseHuxing);
+                targetBasicHouseHuxing.setId(null);
+                targetBasicHouseHuxing.setHouseId(targetBasicHouse.getId());
+                targetBasicHouseHuxing.setEstateId(targetBasicHouse.getEstateId());
+                targetBasicHouseHuxing.setCreator(commonService.thisUserAccount());
+                targetBasicHouseHuxing.setGmtCreated(null);
+                targetBasicHouseHuxing.setGmtModified(null);
+            } else {
+                BeanUtils.copyProperties(sourceBasicHouseHuxing, targetBasicHouseHuxing, "id");
+                targetBasicHouseHuxing.setHouseId(targetBasicHouse.getId());
+            }
+            basicUnitHuxingService.saveAndUpdateBasicUnitHuxing(targetBasicHouseHuxing, true);
+        }
+
         BasicHouseTrading sourceBasicHouseTrading = basicHouseTradingService.getTradingByHouseId(sourceId);
         if (sourceBasicHouseTrading != null) {
             BasicHouseTrading targetBasicHouseTrading = basicHouseTradingService.getTradingByHouseId(targetBasicHouse.getId());
@@ -721,6 +767,7 @@ public class BasicHouseService extends BasicEntityAbstract {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/stageSurvey/realEstate/house");
         modelAndView.addObject("basicHouse", getBasicHouseById(basicFormClassifyParamDto.getTbId()));
         modelAndView.addObject("basicHouseTrading", basicHouseTradingService.getTradingByHouseId(basicFormClassifyParamDto.getTbId()));
+        modelAndView.addObject("basicHouseHuxing", basicUnitHuxingService.getHuxingByHouseId(basicFormClassifyParamDto.getTbId()));
         Integer applyBatchId = basicFormClassifyParamDto.getApplyBatchId();
         Integer tbId = basicFormClassifyParamDto.getTbId();
         BasicApplyBatchDetail basicApplyBatchDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(applyBatchId, FormatUtils.entityNameConvertToTableName(BasicHouse.class), tbId);
@@ -742,6 +789,7 @@ public class BasicHouseService extends BasicEntityAbstract {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/stageSurvey/realEstate/detail/house");
         modelAndView.addObject("basicHouse", getBasicHouseVo(getBasicHouseById(basicFormClassifyParamDto.getTbId())));
         modelAndView.addObject("basicHouseTrading", basicHouseTradingService.getBasicHouseTradingVo(basicHouseTradingService.getTradingByHouseId(basicFormClassifyParamDto.getTbId())));
+        modelAndView.addObject("basicHouseHuxing", basicUnitHuxingService.getBasicUnitHuxingVo(basicUnitHuxingService.getHuxingByHouseId(basicFormClassifyParamDto.getTbId())));
         return modelAndView;
     }
 }

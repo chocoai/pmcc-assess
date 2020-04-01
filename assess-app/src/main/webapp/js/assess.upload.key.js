@@ -24,6 +24,7 @@ AssessUploadKey.ESTATE_AIR_SUPPLY_PLAN = "estate_air_supply_plan";//楼盘供气
 AssessUploadKey.ESTATE_HEATING_PLAN = "estate_heating_plan";//楼盘采暖平面图
 
 AssessUploadKey.HOUSE_HUXING_PLAN = "house_huxing_plan";//户型图
+AssessUploadKey.HOUSE_HUXING = "house_huxing";//户型图
 AssessUploadKey.HOUSE_NEW_HUXING_PLAN = "house_new_huxing_plan";//新户型图
 AssessUploadKey.HOUSE_IMG_PLAN = "house_img_plan";//房屋平面图
 AssessUploadKey.HOUSE_DECORATE = "house_decorate";//房屋装饰图

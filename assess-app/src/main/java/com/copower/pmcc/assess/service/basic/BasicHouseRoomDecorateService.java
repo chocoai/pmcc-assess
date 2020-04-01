@@ -31,11 +31,12 @@ import java.util.List;
 
 /**
  * @Auther: zch
- * @Date: 2018/11/2 10:12
- * @Description:房间装修
+ * @Date: 2018/11/6 11:21
+ * @Description:供排水情况
  */
 @Service
 public class BasicHouseRoomDecorateService {
+
     @Autowired
     private BaseAttachmentService baseAttachmentService;
     @Autowired
@@ -46,7 +47,6 @@ public class BasicHouseRoomDecorateService {
     private CommonService commonService;
     @Autowired
     private PublicService publicService;
-
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
@@ -74,16 +74,16 @@ public class BasicHouseRoomDecorateService {
             baseAttachmentService.updateTableIdByTableName(FormatUtils.entityNameConvertToTableName(BasicHouseRoomDecorate.class), id);
             return id;
         } else {
-            if(updateNull){
+            if (updateNull) {
                 BasicHouseRoomDecorate houseRoomDecorate = basicHouseRoomDecorateDao.getBasicHouseRoomDecorateById(basicHouseRoomDecorate.getId());
-                if(houseRoomDecorate!=null){
+                if (houseRoomDecorate != null) {
                     basicHouseRoomDecorate.setBisDelete(houseRoomDecorate.getBisDelete());
                     basicHouseRoomDecorate.setCreator(houseRoomDecorate.getCreator());
                     basicHouseRoomDecorate.setGmtCreated(houseRoomDecorate.getGmtCreated());
                     basicHouseRoomDecorate.setGmtModified(DateUtils.now());
                 }
             }
-            basicHouseRoomDecorateDao.updateBasicHouseRoomDecorate(basicHouseRoomDecorate,updateNull);
+            basicHouseRoomDecorateDao.updateBasicHouseRoomDecorate(basicHouseRoomDecorate, updateNull);
             return null;
         }
     }
@@ -119,6 +119,11 @@ public class BasicHouseRoomDecorateService {
         return LangUtils.transform(roomDecorates, o -> getBasicHouseRoomDecorateVo(o));
     }
 
+    public List<BasicHouseRoomDecorate> getBasicHouseRoomDecorateList(Integer houseId)  {
+        BasicHouseRoomDecorate where = new BasicHouseRoomDecorate();
+        where.setHouseId(houseId);
+        return basicHouseRoomDecorateDao.basicHouseRoomDecorateList(where);
+    }
 
     public BootstrapTableVo getBootstrapTableVo(BasicHouseRoomDecorate basicHouseRoomDecorate) throws Exception {
         BootstrapTableVo vo = new BootstrapTableVo();
@@ -158,4 +163,6 @@ public class BasicHouseRoomDecorateService {
         vo.setCreatorName(publicService.getUserNameByAccount(basicHouseRoomDecorate.getCreator()));
         return vo;
     }
+
+
 }

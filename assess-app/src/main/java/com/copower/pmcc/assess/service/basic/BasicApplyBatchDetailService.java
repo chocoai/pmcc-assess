@@ -2,10 +2,8 @@ package com.copower.pmcc.assess.service.basic;
 
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
-import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDetailDao;
-import com.copower.pmcc.assess.dal.basis.dao.basic.BasicBuildingDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.survey.BasicApplyBatchDetailVo;
 import com.copower.pmcc.assess.proxy.face.BasicEntityAbstract;
@@ -13,15 +11,12 @@ import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
-import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
-import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.KeyValue;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.BeanUtils;
@@ -38,7 +33,7 @@ public class BasicApplyBatchDetailService {
     @Autowired
     private BasicHouseService basicHouseService;
     @Autowired
-    private BasicBuildingDao basicBuildingDao;
+    private BasicUnitHuxingService basicUnitHuxingService;
     @Autowired
     private BasicUnitService basicUnitService;
     @Autowired
@@ -181,6 +176,11 @@ public class BasicApplyBatchDetailService {
                     }
                 }
                 basicHouseTradingService.saveAndUpdateBasicHouseTrading(houseTrading, false);
+
+                BasicUnitHuxing huxing = new BasicUnitHuxing();
+                huxing.setHouseId(house.getId());
+                huxing.setEstateId(house.getEstateId());
+                basicUnitHuxingService.saveAndUpdateBasicUnitHuxing(huxing, false);
                 break;
         }
         basicApplyBatchDetailService.saveBasicApplyBatchDetail(basicApplyBatchDetail);
