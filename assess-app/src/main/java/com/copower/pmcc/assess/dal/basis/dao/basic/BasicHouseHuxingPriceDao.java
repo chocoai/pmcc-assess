@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  * @Auther: zch
- * @Date: 2018/9/7 09:52
+ * @Date: 2018/11/6 11:19
  * @Description:
  */
 @Repository
@@ -23,23 +23,23 @@ public class BasicHouseHuxingPriceDao {
         return basicHouseHuxingPriceMapper.selectByPrimaryKey(id);
     }
 
-    public Integer addBasicHouseHuxingPrice(BasicHouseHuxingPrice basicHouseHuxing) {
-        basicHouseHuxingPriceMapper.insertSelective(basicHouseHuxing);
-        return basicHouseHuxing.getId();
+    public Integer addBasicHouseHuxingPrice(BasicHouseHuxingPrice basicHouseHuxingPrice) {
+        basicHouseHuxingPriceMapper.insertSelective(basicHouseHuxingPrice);
+        return basicHouseHuxingPrice.getId();
     }
 
-    public boolean updateBasicHouseHuxingPrice(BasicHouseHuxingPrice basicHouseHuxing, boolean updateNull) {
-        return updateNull ? basicHouseHuxingPriceMapper.updateByPrimaryKey(basicHouseHuxing) == 1 : basicHouseHuxingPriceMapper.updateByPrimaryKeySelective(basicHouseHuxing) == 1;
+    public boolean updateBasicHouseHuxingPrice(BasicHouseHuxingPrice basicHouseHuxingPrice, boolean updateNull) {
+        return updateNull ? basicHouseHuxingPriceMapper.updateByPrimaryKey(basicHouseHuxingPrice) == 1 : basicHouseHuxingPriceMapper.updateByPrimaryKeySelective(basicHouseHuxingPrice) == 1;
     }
 
     public boolean deleteBasicHouseHuxingPrice(Integer id) {
         return basicHouseHuxingPriceMapper.deleteByPrimaryKey(id) == 1;
     }
 
-    public List<BasicHouseHuxingPrice> basicHouseHuxingList(BasicHouseHuxingPrice basicHouseHuxing) {
+    public List<BasicHouseHuxingPrice> basicHouseHuxingPriceList(BasicHouseHuxingPrice basicHouseHuxingPrice) {
         BasicHouseHuxingPriceExample example = new BasicHouseHuxingPriceExample();
         BasicHouseHuxingPriceExample.Criteria criteria = example.createCriteria();
-        MybatisUtils.convertObj2Criteria(basicHouseHuxing, criteria);
+        MybatisUtils.convertObj2Criteria(basicHouseHuxingPrice, criteria);
         return basicHouseHuxingPriceMapper.selectByExample(example);
     }
 

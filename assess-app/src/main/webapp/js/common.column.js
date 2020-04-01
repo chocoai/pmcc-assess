@@ -463,7 +463,7 @@ commonColumn.buildingFunctionColumn = function () {
 }
 
 //单元-单价调查
-commonColumn.unitHuxingPriceColumn = function () {
+commonColumn.houseHuxingPriceColumn = function () {
     var cols = [];
     cols.push({field: 'houseNumber', title: '房号'});
     cols.push({field: 'area', title: '面积'});
@@ -473,16 +473,16 @@ commonColumn.unitHuxingPriceColumn = function () {
 //单元-楼栋内装
 commonColumn.unitDecorateColumn = function () {
     var cols = [];
-    cols.push({field: 'unitCommonPart', title: '公共部位'});
     cols.push({
-        field: 'name', title: '装修部位', formatter: function (value, row, index) {
-            var s = row.decorationPartName;
+        field: 'name', title: '公共部位', formatter: function (value, row, index) {
+            var s = row.unitCommonPart;
             if (row.creatorName) {
                 s += "<span style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</span>"
             }
             return s;
         }
     });
+    cols.push({field: 'decorationPartName', title: '装修部位'});
     cols.push({field: 'decoratingMaterialName', title: '装修材料'});
     cols.push({field: 'materialGradeName', title: '材料档次'});
     cols.push({field: 'constructionTechnologyName', title: '施工工艺'});
@@ -494,7 +494,15 @@ commonColumn.unitDecorateColumn = function () {
 //单元-公共部分
 commonColumn.unitCommonPartColumn  = function () {
     var cols = [];
-    cols.push({field: 'unitCommonPart', title: '公共部位'});
+    cols.push({
+        field: 'name', title: '公共部位', formatter: function (value, row, index) {
+            var s = row.unitCommonPart;
+            if (row.creatorName) {
+                s += "<span style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</span>"
+            }
+            return s;
+        }
+    });
     cols.push({field: 'unitLocation', title: '所在位置'});
     cols.push({field: 'unitMonadName', title: '单位'});
     cols.push({field: 'unitQuantityName', title: '数量'});
@@ -575,7 +583,7 @@ commonColumn.houseRoomDecorateColumn = function () {
     var cols = [];
     cols.push({
         field: 'name', title: '房间装修部位', formatter: function (value, row, index) {
-            var s = row.partName;
+            var s = row.decoratePart;
             if (row.creatorName) {
                 s += "<span style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</span>"
             }

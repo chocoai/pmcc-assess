@@ -223,6 +223,7 @@ AssessDicKey.examineUnitQuantity = "unit.quantity";//数量
 
 //房屋
 AssessDicKey.examineHouseSpatialDistribution = "examine.house.spatial.distribution";//空间布局
+AssessDicKey.examineHouseTenementType = "examine.house.tenement.type";//空间布局
 AssessDicKey.examineHouseFinancingConditions = "examine.house.financing.conditions";//融资条件
 AssessDicKey.examineHouseScopeProperty = "examine.house.scope.property";//财产范围
 AssessDicKey.examineHouseLoadUtility = "examine.house.load.utility";//证载用途

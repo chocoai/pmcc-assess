@@ -205,7 +205,88 @@
                             </div>
                         </div>
                     </div>
-
+                    <div class="col-md-12">
+                        <div class="card full-height">
+                            <div class="card-header collapse-link">
+                                <div class="card-head-row">
+                                    <div class="card-title">
+                                        户型
+                                    </div>
+                                    <div class="card-tools">
+                                        <button class="btn  btn-link btn-primary btn-xs"><span
+                                                class="fa fa-angle-down"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <form class="form-horizontal" id="basicHouseHuxing">
+                                    <input type="hidden" name="id" value="${basicHouseHuxing.id}">
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1 control-label">物业类型</label>
+                                                <div class="col-sm-3">
+                                                    <label class="form-control input-full"
+                                                           name="tenementType">${basicHouseHuxing.tenementType}</label>
+                                                </div>
+                                                <label class="col-sm-1 control-label">户型名称</label>
+                                                <div class="col-sm-3">
+                                                    <label class="form-control input-full"
+                                                           name="newHuxingName">${basicHouseHuxing.name}</label>
+                                                </div>
+                                                <label class="col-sm-1 control-label">面积</label>
+                                                <div class="col-sm-3">
+                                                    <label class="form-control input-full"
+                                                           name="area">${basicHouseHuxing.area}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1 control-label">朝向</label>
+                                                <div class="col-sm-3">
+                                                    <label class="form-control input-full"
+                                                           name="orientationName">${basicHouseHuxing.orientationName}</label>
+                                                </div>
+                                                <label class="col-sm-1 control-label">空间布局</label>
+                                                <div class="col-sm-3">
+                                                    <label class="form-control input-full"
+                                                           name="spatialDistributionName">${basicHouseHuxing.spatialDistributionName}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1">备注<span
+                                                        class="symbol required"></span></label>
+                                                <div class="col-sm-11">
+                                                    <label class="form-control input-full"
+                                                           name="description">${basicHouseHuxing.description}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1">
+                                                    附件
+                                                </label>
+                                                <div class="col-sm-3">
+                                                    <div id="_house_huxing"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="col-md-12">
                         <div class="card full-height">
@@ -515,12 +596,13 @@
                             <%@include file="/views/project/stageSurvey/commonDetail/houseIntelligent.jsp" %>
                         </c:if>
                         <%@include file="/views/project/stageSurvey/commonDetail/houseRoom.jsp" %>
+                        <%@include file="/views/project/stageSurvey/commonDetail/houseRoomDecorate.jsp" %>
                         <c:if test="${formType eq 'industry'}">
                             <%@include file="/views/project/stageSurvey/commonDetail/houseCorollaryEquipment.jsp" %>
                         </c:if>
                         <%@include file="/views/project/stageSurvey/commonDetail/houseDamagedDegree.jsp" %>
                     </c:if>
-                    <%@include file="/views/project/stageSurvey/commonDetail/unitHuxingPriceDetail.jsp" %>
+                    <%@include file="/views/project/stageSurvey/commonDetail/houseHuxingPrice.jsp" %>
                     <%@include file="/views/project/chksCustomize/chksSurvey.jsp" %>
                     <div class="col-md-12" style="text-align: center;padding-bottom: 1.25rem">
                         <div class="card-body">

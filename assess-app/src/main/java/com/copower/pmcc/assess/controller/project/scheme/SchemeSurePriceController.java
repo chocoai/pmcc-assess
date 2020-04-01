@@ -3,7 +3,6 @@ package com.copower.pmcc.assess.controller.project.scheme;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.dal.basis.entity.BasicUnitHuxing;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeSurePriceFactor;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeSurePriceItem;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeSurePriceApplyDto;
@@ -155,6 +154,7 @@ public class SchemeSurePriceController {
         }
 
     }
+
 
 
     @GetMapping(value = "/getUnitHuxing", name = "获取待调整价格的估价对象")

@@ -1,6 +1,4 @@
-<%--
- 楼栋内装
---%>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="col-md-12">
     <div class="card full-height">

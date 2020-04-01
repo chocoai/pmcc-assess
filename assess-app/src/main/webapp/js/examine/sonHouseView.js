@@ -5,6 +5,7 @@
 var houseHuxingPrice;
 (function () {
     houseHuxingPrice = function () {
+
     };
     houseHuxingPrice.prototype = {
         config: function () {
@@ -12,24 +13,29 @@ var houseHuxingPrice;
             data.table = "HouseHuxingPriceList";
             data.box = "divBoxHouseHuxingPrice";
             data.frm = "frmHouseHuxingPrice";
-            data.tableBox = "divBoxHouseHuxingPriceTable";
-            data.tableFrm = "frmHouseHuxingPriceTable";
+            data.type = "null";//
             return data;
         },
-        loadDataDicList: function (unitHuxingId) {
-            var cols = commonColumn.unitHuxingPriceColumn();
+        isNotBlank: function (item) {
+            if (item) {
+                return true;
+            }
+            return false;
+        },
+        loadDataDicList: function () {
+            var cols = commonColumn.houseHuxingPriceColumn();
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
-                    str += '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-primary tooltips"  data-placement="top" data-original-title="编辑" onclick="houseHuxingPrice.prototype.getAndInit(' + row.id + ',\'' + unitHuxingId + '\',\'tb_List\')"><i class="fa fa-pen"></i></button>';
-                    str += '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseHuxingPrice.prototype.removeData(' + row.id + ',\'' + unitHuxingId + '\',\'tb_List\')"><i class="fa fa-minus"></i></button>';
+                    str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-primary tooltips"  data-placement="top" data-original-title="编辑" onclick="houseHuxingPrice.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
+                    str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseHuxingPrice.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
                     str += '</div>';
                     return str;
                 }
             });
             $("#" + houseHuxingPrice.prototype.config().table).bootstrapTable('destroy');
-            TableInit(houseHuxingPrice.prototype.config().table, getContextPath() + "/basicHouseHuxingPrice/getHouseHuxingPriceList", cols, {
-                unitHuxingId: unitHuxingId
+            TableInit(houseHuxingPrice.prototype.config().table, getContextPath() + "/basicHouseHuxingPrice/getBootstrapTableVo", cols, {
+                houseId: houseCommon.getHouseId()
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -39,7 +45,7 @@ var houseHuxingPrice;
                 }
             });
         },
-        removeData: function (id, unitHuxingId) {
+        removeData: function (id) {
             $.ajax({
                 url: getContextPath() + "/basicHouseHuxingPrice/deleteBasicHouseHuxingPrice",
                 type: "post",
@@ -48,36 +54,27 @@ var houseHuxingPrice;
                 success: function (result) {
                     if (result.ret) {
                         notifySuccess("成功", "删除成功");
-                        houseHuxingPrice.prototype.loadDataDicList(unitHuxingId);
+                        houseHuxingPrice.prototype.loadDataDicList();
                     }
                     else {
-                        AlertError("失败","保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
-        showTableModel: function (_that) {
-            var unitHuxingId = $(_that).closest('.form-group').find('input[name=huxingId]').val();
-            houseHuxingPrice.prototype.loadDataDicList(unitHuxingId);
-            $("#" + houseHuxingPrice.prototype.config().tableFrm).find("input[name='unitHuxingId']").val(unitHuxingId);
-            $('#' + houseHuxingPrice.prototype.config().tableBox).modal("show");
-        },
         showModel: function () {
-            $("#" + houseHuxingPrice.prototype.config().frm).clearAll();
-            var unitHuxingId = $("#" + houseHuxingPrice.prototype.config().tableFrm).find("input[name='unitHuxingId']").val();
-            $("#" + houseHuxingPrice.prototype.config().frm).find("input[name='huxingId']").val(unitHuxingId);
-
+            houseHuxingPrice.prototype.init({});
             $('#' + houseHuxingPrice.prototype.config().box).modal("show");
         },
         saveData: function () {
             if (!$("#" + houseHuxingPrice.prototype.config().frm).valid()) {
                 return false;
             }
-            var unitHuxingId = $("#" + houseHuxingPrice.prototype.config().frm).find("input[name='huxingId']").val()
             var data = formParams(houseHuxingPrice.prototype.config().frm, true);
+            data.houseId = houseCommon.getHouseId();
             $.ajax({
                 url: getContextPath() + "/basicHouseHuxingPrice/saveAndUpdateBasicHouseHuxingPrice",
                 type: "post",
@@ -87,59 +84,48 @@ var houseHuxingPrice;
                     if (result.ret) {
                         notifySuccess("成功", "保存成功");
                         $('#' + houseHuxingPrice.prototype.config().box).modal('hide');
-                        houseHuxingPrice.prototype.loadDataDicList(unitHuxingId);
+                        houseHuxingPrice.prototype.loadDataDicList();
                     }
                     else {
-                        AlertError("失败","保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
-        isNotNull: function (item) {
-            if (item) {
-                return true;
-            }
-            return false;
-        },
-        getAndInit: function (id, unitHuxingId) {
+        getAndInit: function (id) {
             $.ajax({
                 url: getContextPath() + "/basicHouseHuxingPrice/getBasicHouseHuxingPriceById",
-                type: "post",
+                type: "get",
                 dataType: "json",
                 data: {id: id},
                 success: function (result) {
                     if (result.ret) {
-                        var data = result.data;
-                        if (houseHuxingPrice.prototype.isNotNull(data)) {
-                            houseHuxingPrice.prototype.init(data, unitHuxingId);
+                        if (houseHuxingPrice.prototype.isNotBlank(result.data)) {
+                            houseHuxingPrice.prototype.init(result.data);
                         } else {
                             houseHuxingPrice.prototype.init({});
                         }
-                        $('#' + houseHuxingPrice.prototype.config().box).modal("show");
+                        $('#' + houseHuxingPrice.prototype.config().box).modal("show");//
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
-        init: function (item, unitHuxingId) {
+        init: function (item) {
             $("#" + houseHuxingPrice.prototype.config().frm).clearAll();
-            $("#" + houseHuxingPrice.prototype.config().frm).find("input[name='huxingId']").val(unitHuxingId);
             $("#" + houseHuxingPrice.prototype.config().frm).initForm(item);
-
         },
         importData: function (planDetailsId) {
-            console.log(planDetailsId+"===")
-            var unitHuxingId = $("#" + houseHuxingPrice.prototype.config().tableFrm).find("input[name='unitHuxingId']").val();
             $.ajaxFileUpload({
                 type: "POST",
                 url: getContextPath() + "/basicHouseHuxingPrice/importData",
                 data: {
-                    huxingId: unitHuxingId,
+                    houseId: houseCommon.getHouseId(),
                     planDetailsId: planDetailsId
                 },//要传到后台的参数，没有可以不写
                 secureuri: false,//是否启用安全提交，默认为false
@@ -148,7 +134,7 @@ var houseHuxingPrice;
                 async: false,
                 success: function (result) {
                     if (result.ret) {
-                        houseHuxingPrice.prototype.loadDataDicList(unitHuxingId);
+                        houseHuxingPrice.prototype.loadDataDicList();
                         notifySuccess("成功", result.data);
                     }
                 },
@@ -160,6 +146,10 @@ var houseHuxingPrice;
         }
     }
 
+    //绑定事件
+    $('#' + houseHuxingPrice.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
+        houseHuxingPrice.prototype.loadDataDicList();
+    })
 })();
 
 var houseHeating;
@@ -1424,6 +1414,194 @@ var houseWater;
     //绑定事件
     $('#' + houseWater.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
         houseWater.prototype.loadDataDicList();
+    })
+})();
+
+var houseRoomDecorate;
+(function () {
+    houseRoomDecorate = function () {
+
+    };
+    houseRoomDecorate.prototype = {
+        config: function () {
+            var data = {};
+            data.table = "HouseRoomDecorateList";
+            data.box = "divBoxHouseRoomDecorate";
+            data.frm = "frmHouseRoomDecorate";
+            data.type = "null";//
+            return data;
+        },
+        isNotBlank: function (item) {
+            if (item) {
+                return true;
+            }
+            return false;
+        },
+        loadDataDicList: function () {
+            var cols = commonColumn.houseRoomDecorateColumn();
+            cols.push({
+                field: 'id', title: '操作', formatter: function (value, row, index) {
+                    var str = '<div class="btn-margin">';
+                    str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-primary tooltips"  data-placement="top" data-original-title="编辑" onclick="houseRoomDecorate.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
+                    str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseRoomDecorate.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
+                    str += '</div>';
+                    return str;
+                }
+            });
+            $("#" + houseRoomDecorate.prototype.config().table).bootstrapTable('destroy');
+            TableInit(houseRoomDecorate.prototype.config().table, getContextPath() + "/basicHouseRoomDecorate/getBootstrapTableVo", cols, {
+                houseId: houseCommon.getHouseId()
+            }, {
+                showColumns: false,
+                showRefresh: false,
+                search: false,
+                onLoadSuccess: function () {
+                    $('.tooltips').tooltip();
+                }
+            });
+        },
+        removeData: function (id) {
+            $.ajax({
+                url: getContextPath() + "/basicHouseRoomDecorate/deleteBasicHouseRoomDecorate",
+                type: "post",
+                dataType: "json",
+                data: {id: id},
+                success: function (result) {
+                    if (result.ret) {
+                        notifySuccess("成功", "删除成功");
+                        houseRoomDecorate.prototype.loadDataDicList();
+                    }
+                    else {
+                        AlertError("保存数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    AlertError("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        },
+        showModel: function () {
+            houseRoomDecorate.prototype.init({});
+            $('#' + houseRoomDecorate.prototype.config().box).modal("show");
+        },
+        saveData: function () {
+            if (!$("#" + houseRoomDecorate.prototype.config().frm).valid()) {
+                return false;
+            }
+            var data = formParams(houseRoomDecorate.prototype.config().frm, true);
+            data.houseId = houseCommon.getHouseId();
+            $.ajax({
+                url: getContextPath() + "/basicHouseRoomDecorate/saveAndUpdateBasicHouseRoomDecorate",
+                type: "post",
+                dataType: "json",
+                data: data,
+                success: function (result) {
+                    if (result.ret) {
+                        notifySuccess("成功", "保存成功");
+                        $('#' + houseRoomDecorate.prototype.config().box).modal('hide');
+                        houseRoomDecorate.prototype.loadDataDicList();
+                    }
+                    else {
+                        AlertError("保存数据失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    AlertError("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        },
+        getAndInit: function (id) {
+            $.ajax({
+                url: getContextPath() + "/basicHouseRoomDecorate/getBasicHouseRoomDecorateById",
+                type: "get",
+                dataType: "json",
+                data: {id: id},
+                success: function (result) {
+                    if (result.ret) {
+                        if (houseRoomDecorate.prototype.isNotBlank(result.data)) {
+                            houseRoomDecorate.prototype.init(result.data);
+                        } else {
+                            houseRoomDecorate.prototype.init({});
+                        }
+                        $('#' + houseRoomDecorate.prototype.config().box).modal("show");//
+                    }
+                },
+                error: function (result) {
+                    AlertError("调用服务端方法失败，失败原因:" + result);
+                }
+            })
+        },
+        init: function (item) {
+            $("#" + houseRoomDecorate.prototype.config().frm).clearAll();
+            $("#" + houseRoomDecorate.prototype.config().frm).initForm(item);
+            $("#" + houseRoomDecorate.prototype.config().frm).find('select.material').off('change').on('change', function () {
+                AssessCommon.loadDataDicByPid($(this).val(), item.constructionTechnology, function (html, data) {
+                    $("#" + houseRoomDecorate.prototype.config().frm).find('select.constructionTechnology').empty().html(html).trigger('change');
+                });
+                item.constructionTechnology = null;
+            });
+            $("#" + houseRoomDecorate.prototype.config().frm).find('select.constructionTechnology').off('change').on('change', function () {
+                AssessCommon.loadDataDicByPid($(this).val(), item.materialPrice, function (html, data) {
+                    $("#" + houseRoomDecorate.prototype.config().frm).find('select.materialPrice').empty().html(html).trigger('change');
+                });
+                item.materialPrice = null;
+            });
+
+            AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_room_material, item.material, function (html, data) {
+                $("#" + houseRoomDecorate.prototype.config().frm).find('select.material').empty().html(html).trigger('change');
+            });
+
+            AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_room_part, item.part, function (html, data) {
+                $("#" + houseRoomDecorate.prototype.config().frm).find('select.part').empty().html(html).trigger('change');
+            });
+        },
+        openDecoratePartModal: function(_this){
+            var data = $(_this).closest('.input-group').find('input[name="decoratePart"]').val();
+            AssessCommon.loadAsyncDataDicByKey(AssessDicKey.examine_house_room_part, '', function (html, resultData) {
+                var target = $("#industrySupplyInfoContainer");
+                target.empty();
+
+                var resultHtml = '<div>';
+                var array = [];
+                    if (houseRoomDecorate.prototype.isNotBlank(data)) {
+                        array = data.split(',');
+                    }
+                resultHtml += "<div class='form-check' style='justify-content:left'>";
+                $.each(resultData, function (i, item) {
+                    resultHtml += "<label class='form-check-label'>";
+                    resultHtml += "<input class='form-check-input' type='checkbox' name='infrastructure' ";
+                    if ($.inArray(item.name.toString(), array) > -1) {
+                        resultHtml += ' checked="checked" ';
+                    }
+                    resultHtml += 'value="' + item.name + '">';
+                    resultHtml += "<span class='form-check-sign'>" + item.name + "</span>";
+                });
+                resultHtml += "</div>";
+                target.append(resultHtml);
+            }, true);
+
+            $("#divBoxDecoratePart").modal("show");
+        },
+        saveDecoratePart : function () {
+            var checkedBoxs = $("#frmDecoratePart").find('input:checkbox:checked');
+            if (checkedBoxs.length <= 0) {
+                notifyInfo('提示','至少选择一个');
+                return false;
+            }
+            var data = [];
+            checkedBoxs.each(function () {
+                data.push($(this).val());
+            })
+            $("#" + houseRoomDecorate.prototype.config().frm).find('input[name="decoratePart"]').val(data.join());
+            console.log(data.join()+"==")
+            console.log($("#" + houseRoomDecorate.prototype.config().frm).find('input[name="decoratePart"]').val())
+            $("#divBoxDecoratePart").modal("hide");
+        }
+    }
+
+    //绑定事件
+    $('#' + houseRoomDecorate.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
+        houseRoomDecorate.prototype.loadDataDicList();
     })
 })();
 

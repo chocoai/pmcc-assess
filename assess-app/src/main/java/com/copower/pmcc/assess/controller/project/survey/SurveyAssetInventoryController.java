@@ -47,8 +47,8 @@ public class SurveyAssetInventoryController {
     @Autowired
     private BaseService baseService;
 
-    private final String applyViewName = "/project/stageSurvey/surveyAssetInventoryIndex";
-    private final String detailView = "/project/stageSurvey/surveyAssetInventoryDetail";
+    private final String applyViewName = "/project/stageSurvey/inventory/surveyAssetInventoryIndex";
+    private final String detailView = "/project/stageSurvey/inventory/surveyAssetInventoryDetail";
 
     @GetMapping(value = "/view/{projectId}/{planDetailId}/{inventoryId}/{declareId}/{masterName}", name = "申请或者修改")
     public ModelAndView applyView(@PathVariable(name = "projectId", required = true) Integer projectId, @PathVariable(name = "planDetailId", required = true) Integer planDetailId, @PathVariable(name = "inventoryId") Integer inventoryId, @PathVariable(name = "declareId", required = true) Integer declareId,@PathVariable(name = "masterName")String masterName) {
@@ -76,11 +76,12 @@ public class SurveyAssetInventoryController {
         return modelAndView;
     }
 
-    @GetMapping(value = "/detailView/{projectId}/{planDetailId}/{inventoryId}/{declareId}", name = "详情")
-    public ModelAndView detailsView(@PathVariable(name = "projectId", required = true) Integer projectId, @PathVariable(name = "planDetailId", required = true) Integer planDetailId, @PathVariable(name = "inventoryId") Integer inventoryId, @PathVariable(name = "declareId", required = true) Integer declareId) {
+    @GetMapping(value = "/detailView/{projectId}/{planDetailId}/{inventoryId}/{declareId}/{masterName}", name = "详情")
+    public ModelAndView detailsView(@PathVariable(name = "projectId", required = true) Integer projectId, @PathVariable(name = "planDetailId", required = true) Integer planDetailId, @PathVariable(name = "inventoryId") Integer inventoryId, @PathVariable(name = "declareId", required = true) Integer declareId , @PathVariable(name = "masterName")String masterName) {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(detailView);
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(declareId);
         setModelViewParam(inventoryId, declareRecord, modelAndView);
+        modelAndView.addObject("masterName", masterName);
         return modelAndView;
     }
 

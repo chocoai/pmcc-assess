@@ -14,6 +14,7 @@ import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
+import com.copower.pmcc.erp.api.enums.SysProjectEnum;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
@@ -278,6 +279,7 @@ public class SurveyAssetInventoryService extends BaseService {
                     throw new Exception("无法粘贴自己");
                 }
                 surveyAssetInfoItem.setInventoryId(surveyAssetInventory.getId());
+                surveyAssetInfoItem.setStatus(SysProjectEnum.FINISH.getValue());
                 surveyAssetInfoItemService.saveAndUpdateSurveyAssetInfoItem(surveyAssetInfoItem, true);
             }
         }

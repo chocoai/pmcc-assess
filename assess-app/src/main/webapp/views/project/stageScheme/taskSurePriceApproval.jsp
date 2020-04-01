@@ -189,7 +189,7 @@
 
             <div class="modal-body">
                 <form id="frmHouseHuxingPriceTable" class="form-horizontal">
-                    <input type="hidden" name="unitHuxingId">
+                    <input type="hidden" name="houseId">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="card-body">
@@ -312,14 +312,14 @@
 
     determinePrice.getHuxingId = function (judgeObjectId) {
         $.ajax({
-            url: getContextPath() + "/schemeSurePrice/getUnitHuxing",
+            url: getContextPath() + "/schemeSurePrice/getBasicHouse",
             type: "get",
             dataType: "json",
             data: {judgeObjectId: judgeObjectId},
             success: function (result) {
                 if (result.ret) {
                     if (houseHuxingPrice.prototype.isNotNull(result.data)) {
-                        $("#" + houseHuxingPrice.prototype.config().tableFrm).find("input[name='unitHuxingId']").val(result.data.id);
+                        $("#" + houseHuxingPrice.prototype.config().tableFrm).find("input[name='houseId']").val(result.data.id);
                         houseHuxingPrice.prototype.showTableModel();
                     } else {
                         notifyInfo("提示", "标准房号未关联单价表")
@@ -347,15 +347,15 @@
             data.tableFrm = "frmHouseHuxingPriceTable";
             return data;
         },
-        loadDataDicList: function (unitHuxingId) {
+        loadDataDicList: function (houseId) {
             var cols = [];
             cols.push({field: 'houseNumber', title: '房号'});
             cols.push({field: 'area', title: '面积'});
             cols.push({field: 'price', title: '价格'});
             cols.push({field: 'adjustFactor', title: '因素'});
             $("#" + houseHuxingPrice.prototype.config().table).bootstrapTable('destroy');
-            TableInit(houseHuxingPrice.prototype.config().table, getContextPath() + "/basicHouseHuxingPrice/getHouseHuxingPriceList", cols, {
-                unitHuxingId: unitHuxingId
+            TableInit(houseHuxingPrice.prototype.config().table, getContextPath() + "/basicHouseHuxingPrice/getBootstrapTableVo", cols, {
+                houseId: houseId
             }, {
                 showColumns: false,
                 showRefresh: false,
@@ -366,8 +366,8 @@
             });
         },
         showTableModel: function () {
-            var unitHuxingId = $("#" + houseHuxingPrice.prototype.config().tableFrm).find("input[name='unitHuxingId']").val();
-            houseHuxingPrice.prototype.loadDataDicList(unitHuxingId);
+            var houseId = $("#" + houseHuxingPrice.prototype.config().tableFrm).find("input[name='houseId']").val();
+            houseHuxingPrice.prototype.loadDataDicList(houseId);
             $('#' + houseHuxingPrice.prototype.config().tableBox).modal("show");
         },
         isNotNull: function (item) {

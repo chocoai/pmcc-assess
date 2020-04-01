@@ -26,6 +26,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileInputStream;
@@ -37,21 +38,40 @@ import java.util.regex.Pattern;
 
 /**
  * @Auther: zch
- * @Date: 2018/9/7 09:53
- * @Description:
+ * @Date: 2018/11/6 11:21
+ * @Description:供排水情况
  */
 @Service
 public class BasicHouseHuxingPriceService {
-    private final Logger logger = LoggerFactory.getLogger(getClass());
+
+    @Autowired
+    private BaseAttachmentService baseAttachmentService;
     @Autowired
     private BasicHouseHuxingPriceDao basicHouseHuxingPriceDao;
     @Autowired
     private CommonService commonService;
     @Autowired
-    private BaseAttachmentService baseAttachmentService;
-    @Autowired
     private DeclareRecordService declareRecordService;
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
+    /**
+     * 获取数据
+     *
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    public BasicHouseHuxingPrice getBasicHouseHuxingPriceById(Integer id) throws Exception {
+        return basicHouseHuxingPriceDao.getBasicHouseHuxingPriceById(id);
+    }
+
+    /**
+     * 新增或者修改
+     *
+     * @param basicHouseHuxingPrice
+     * @return
+     * @throws Exception
+     */
     public Integer saveAndUpdateBasicHouseHuxingPrice(BasicHouseHuxingPrice basicHouseHuxingPrice, boolean updateNull) throws Exception {
         if (basicHouseHuxingPrice.getId() == null || basicHouseHuxingPrice.getId().intValue() == 0) {
             basicHouseHuxingPrice.setCreator(commonService.thisUserAccount());
@@ -71,25 +91,45 @@ public class BasicHouseHuxingPriceService {
         }
     }
 
-    public BasicHouseHuxingPrice getBasicHouseHuxingPriceById(Integer id) {
-        return basicHouseHuxingPriceDao.getBasicHouseHuxingPriceById(id);
+
+    /**
+     * 删除数据
+     *
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    public boolean deleteBasicHouseHuxingPrice(Integer id) throws Exception {
+        return basicHouseHuxingPriceDao.deleteBasicHouseHuxingPrice(id);
     }
 
-    public BootstrapTableVo getBasicHouseHuxingPriceListVos(BasicHouseHuxingPrice basicHouseHuxingPrice) {
+    /**
+     * 获取数据列表
+     *
+     * @param basicHouseHuxingPrice
+     * @return
+     * @throws Exception
+     */
+    public List<BasicHouseHuxingPrice> basicHouseHuxingPriceList(BasicHouseHuxingPrice basicHouseHuxingPrice) throws Exception {
+        return basicHouseHuxingPriceDao.basicHouseHuxingPriceList(basicHouseHuxingPrice);
+    }
+
+    public List<BasicHouseHuxingPrice> getBasicHouseHuxingPriceList(Integer houseId) {
+        BasicHouseHuxingPrice where = new BasicHouseHuxingPrice();
+        where.setHouseId(houseId);
+        return basicHouseHuxingPriceDao.basicHouseHuxingPriceList(where);
+    }
+
+    public BootstrapTableVo getBootstrapTableVo(BasicHouseHuxingPrice basicHouseHuxingPrice) throws Exception {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-
-        List<BasicHouseHuxingPrice> basicHouseHuxingPrices = basicHouseHuxingPriceDao.basicHouseHuxingList(basicHouseHuxingPrice);
+        List<BasicHouseHuxingPrice> basicHouseHuxingPriceList = basicHouseHuxingPriceDao.basicHouseHuxingPriceList(basicHouseHuxingPrice);
         vo.setTotal(page.getTotal());
-        vo.setRows(CollectionUtils.isEmpty(basicHouseHuxingPrices) ? new ArrayList<BasicHouseHuxingPrice>() : basicHouseHuxingPrices);
+        vo.setRows(ObjectUtils.isEmpty(basicHouseHuxingPriceList) ? new ArrayList<BasicHouseHuxingPrice>(10) : basicHouseHuxingPriceList);
         return vo;
     }
 
-
-    public boolean deleteBasicHouseHuxingPrice(Integer id) {
-        return basicHouseHuxingPriceDao.deleteBasicHouseHuxingPrice(id);
-    }
 
     /**
      * 功能描述: 导入
@@ -99,7 +139,7 @@ public class BasicHouseHuxingPriceService {
      * @auther: zch
      * @date: 2018/9/25 18:31
      */
-    public String importData(MultipartFile multipartFile, Integer huxingId, Integer projectId) throws Exception {
+    public String importData(MultipartFile multipartFile, Integer houseId, Integer projectId) throws Exception {
         Workbook workbook = null;
         Row row = null;
         StringBuilder builder = new StringBuilder();
@@ -138,7 +178,7 @@ public class BasicHouseHuxingPriceService {
                     continue;
                 }
                 basicHouseHuxingPrice = new BasicHouseHuxingPrice();
-                basicHouseHuxingPrice.setHuxingId(huxingId);
+                basicHouseHuxingPrice.setHouseId(houseId);
                 if (!this.importBasicHouseHuxingPrice(basicHouseHuxingPrice, builder, row, colLength, i, sheet.getRow(0), projectId)) {
                     continue;
                 }
@@ -157,7 +197,7 @@ public class BasicHouseHuxingPriceService {
         //房号
         if (StringUtils.isNotEmpty(PoiUtils.getCellValue(row.getCell(0)))) {
             basicHouseHuxingPrice.setHouseNumber(PoiUtils.getCellValue(row.getCell(0)));
-            List<BasicHouseHuxingPrice> list = basicHouseHuxingPriceDao.basicHouseHuxingList(basicHouseHuxingPrice);
+            List<BasicHouseHuxingPrice> list = basicHouseHuxingPriceDao.basicHouseHuxingPriceList(basicHouseHuxingPrice);
             if (CollectionUtils.isNotEmpty(list)) {
                 BeanUtils.copyProperties(list.get(0), basicHouseHuxingPrice);
             }

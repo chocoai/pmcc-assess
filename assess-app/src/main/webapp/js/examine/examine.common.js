@@ -50,6 +50,9 @@ examineCommon.getFormData = function () {
     if (window.houseCommon && houseCommon.houseTradingForm.length > 0) {
         item.basicTrading = formSerializeArray(houseCommon.houseTradingForm);
     }
+    if (window.houseCommon && houseCommon.houseHuxingForm.length > 0) {
+        item.basicHouseHuxing = formSerializeArray(houseCommon.houseHuxingForm);
+    }
     if (window.damagedDegree) {
         item.basicDamagedDegree = damagedDegree.getFormData();
     }

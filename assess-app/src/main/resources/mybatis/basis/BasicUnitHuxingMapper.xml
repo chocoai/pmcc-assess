@@ -3,6 +3,8 @@
 <mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.BasicUnitHuxingMapper" >
   <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.BasicUnitHuxing" >
     <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="house_id" property="houseId" jdbcType="INTEGER" />
+    <result column="estate_id" property="estateId" jdbcType="INTEGER" />
     <result column="unit_id" property="unitId" jdbcType="INTEGER" />
     <result column="type" property="type" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
@@ -21,6 +23,8 @@
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
     <result column="spatial_distribution" property="spatialDistribution" jdbcType="VARCHAR" />
     <result column="standard_house_number" property="standardHouseNumber" jdbcType="VARCHAR" />
+    <result column="tenement_type" property="tenementType" jdbcType="VARCHAR" />
+    <result column="huxing_data" property="huxingData" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -81,9 +85,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, unit_id, type, name, area, orientation, span_length, span_width, span_number, 
-    bay, deep, house_category, description, bis_delete, creator, gmt_created, gmt_modified, 
-    spatial_distribution, standard_house_number
+    id, house_id, estate_id, unit_id, type, name, area, orientation, span_length, span_width, 
+    span_number, bay, deep, house_category, description, bis_delete, creator, gmt_created, 
+    gmt_modified, spatial_distribution, standard_house_number, tenement_type, huxing_data
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicUnitHuxingExample" >
     select
@@ -119,19 +123,21 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_basic_unit_huxing (unit_id, type, name, 
-      area, orientation, span_length, 
-      span_width, span_number, bay, 
-      deep, house_category, description, 
-      bis_delete, creator, gmt_created, 
-      gmt_modified, spatial_distribution, standard_house_number
+    insert into tb_basic_unit_huxing (house_id, estate_id, unit_id, 
+      type, name, area, orientation, 
+      span_length, span_width, span_number, 
+      bay, deep, house_category, 
+      description, bis_delete, creator, 
+      gmt_created, gmt_modified, spatial_distribution, 
+      standard_house_number, tenement_type, huxing_data
       )
-    values (#{unitId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
-      #{area,jdbcType=DECIMAL}, #{orientation,jdbcType=VARCHAR}, #{spanLength,jdbcType=DECIMAL}, 
-      #{spanWidth,jdbcType=INTEGER}, #{spanNumber,jdbcType=DECIMAL}, #{bay,jdbcType=DECIMAL}, 
-      #{deep,jdbcType=DECIMAL}, #{houseCategory,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
-      #{bisDelete,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP}, #{spatialDistribution,jdbcType=VARCHAR}, #{standardHouseNumber,jdbcType=VARCHAR}
+    values (#{houseId,jdbcType=INTEGER}, #{estateId,jdbcType=INTEGER}, #{unitId,jdbcType=INTEGER}, 
+      #{type,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{area,jdbcType=DECIMAL}, #{orientation,jdbcType=VARCHAR}, 
+      #{spanLength,jdbcType=DECIMAL}, #{spanWidth,jdbcType=INTEGER}, #{spanNumber,jdbcType=DECIMAL}, 
+      #{bay,jdbcType=DECIMAL}, #{deep,jdbcType=DECIMAL}, #{houseCategory,jdbcType=VARCHAR}, 
+      #{description,jdbcType=VARCHAR}, #{bisDelete,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{spatialDistribution,jdbcType=VARCHAR}, 
+      #{standardHouseNumber,jdbcType=VARCHAR}, #{tenementType,jdbcType=VARCHAR}, #{huxingData,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicUnitHuxing" >
@@ -140,6 +146,12 @@
     </selectKey>
     insert into tb_basic_unit_huxing
     <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="houseId != null" >
+        house_id,
+      </if>
+      <if test="estateId != null" >
+        estate_id,
+      </if>
       <if test="unitId != null" >
         unit_id,
       </if>
@@ -194,8 +206,20 @@
       <if test="standardHouseNumber != null" >
         standard_house_number,
       </if>
+      <if test="tenementType != null" >
+        tenement_type,
+      </if>
+      <if test="huxingData != null" >
+        huxing_data,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="houseId != null" >
+        #{houseId,jdbcType=INTEGER},
+      </if>
+      <if test="estateId != null" >
+        #{estateId,jdbcType=INTEGER},
+      </if>
       <if test="unitId != null" >
         #{unitId,jdbcType=INTEGER},
       </if>
@@ -250,6 +274,12 @@
       <if test="standardHouseNumber != null" >
         #{standardHouseNumber,jdbcType=VARCHAR},
       </if>
+      <if test="tenementType != null" >
+        #{tenementType,jdbcType=VARCHAR},
+      </if>
+      <if test="huxingData != null" >
+        #{huxingData,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
   <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicUnitHuxingExample" resultType="java.lang.Integer" >
@@ -263,6 +293,12 @@
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.houseId != null" >
+        house_id = #{record.houseId,jdbcType=INTEGER},
+      </if>
+      <if test="record.estateId != null" >
+        estate_id = #{record.estateId,jdbcType=INTEGER},
       </if>
       <if test="record.unitId != null" >
         unit_id = #{record.unitId,jdbcType=INTEGER},
@@ -318,6 +354,12 @@
       <if test="record.standardHouseNumber != null" >
         standard_house_number = #{record.standardHouseNumber,jdbcType=VARCHAR},
       </if>
+      <if test="record.tenementType != null" >
+        tenement_type = #{record.tenementType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.huxingData != null" >
+        huxing_data = #{record.huxingData,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -326,6 +368,8 @@
   <update id="updateByExample" parameterType="map" >
     update tb_basic_unit_huxing
     set id = #{record.id,jdbcType=INTEGER},
+      house_id = #{record.houseId,jdbcType=INTEGER},
+      estate_id = #{record.estateId,jdbcType=INTEGER},
       unit_id = #{record.unitId,jdbcType=INTEGER},
       type = #{record.type,jdbcType=INTEGER},
       name = #{record.name,jdbcType=VARCHAR},
@@ -343,7 +387,9 @@
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       spatial_distribution = #{record.spatialDistribution,jdbcType=VARCHAR},
-      standard_house_number = #{record.standardHouseNumber,jdbcType=VARCHAR}
+      standard_house_number = #{record.standardHouseNumber,jdbcType=VARCHAR},
+      tenement_type = #{record.tenementType,jdbcType=VARCHAR},
+      huxing_data = #{record.huxingData,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -351,6 +397,12 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicUnitHuxing" >
     update tb_basic_unit_huxing
     <set >
+      <if test="houseId != null" >
+        house_id = #{houseId,jdbcType=INTEGER},
+      </if>
+      <if test="estateId != null" >
+        estate_id = #{estateId,jdbcType=INTEGER},
+      </if>
       <if test="unitId != null" >
         unit_id = #{unitId,jdbcType=INTEGER},
       </if>
@@ -405,12 +457,20 @@
       <if test="standardHouseNumber != null" >
         standard_house_number = #{standardHouseNumber,jdbcType=VARCHAR},
       </if>
+      <if test="tenementType != null" >
+        tenement_type = #{tenementType,jdbcType=VARCHAR},
+      </if>
+      <if test="huxingData != null" >
+        huxing_data = #{huxingData,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicUnitHuxing" >
     update tb_basic_unit_huxing
-    set unit_id = #{unitId,jdbcType=INTEGER},
+    set house_id = #{houseId,jdbcType=INTEGER},
+      estate_id = #{estateId,jdbcType=INTEGER},
+      unit_id = #{unitId,jdbcType=INTEGER},
       type = #{type,jdbcType=INTEGER},
       name = #{name,jdbcType=VARCHAR},
       area = #{area,jdbcType=DECIMAL},
@@ -427,7 +487,9 @@
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       spatial_distribution = #{spatialDistribution,jdbcType=VARCHAR},
-      standard_house_number = #{standardHouseNumber,jdbcType=VARCHAR}
+      standard_house_number = #{standardHouseNumber,jdbcType=VARCHAR},
+      tenement_type = #{tenementType,jdbcType=VARCHAR},
+      huxing_data = #{huxingData,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

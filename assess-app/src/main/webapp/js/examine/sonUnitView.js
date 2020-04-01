@@ -261,7 +261,7 @@ var unitCommonPart;
         init: function (item) {
             $("#" + unitCommonPart.prototype.config().frm).clearAll().initForm(item, function () {
                 AssessCommon.loadDataListHtml(AssessDicKey.examineUnitCommonPart, item.unitCommonPart, function (html, data) {
-                    $("#" + unitCommonPart.prototype.config().frm).find("#unitCommonPartList").empty().html(html).trigger('change');
+                    $("#" + unitCommonPart.prototype.config().frm).find("#unitCommonPartList2").empty().html(html).trigger('change');
                 }, true);
                 AssessCommon.loadDataListHtml(AssessDicKey.examineUnitLocation, item.unitLocation, function (html, data) {
                     $("#" + unitCommonPart.prototype.config().frm).find("#unitLocationList").empty().html(html).trigger('change');

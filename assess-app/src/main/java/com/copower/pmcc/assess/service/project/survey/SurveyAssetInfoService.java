@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInfoDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -49,7 +50,8 @@ public class SurveyAssetInfoService {
     private SurveyAssetInventoryContentService surveyAssetInventoryContentService;
     @Autowired
     private BaseDataDicService baseDataDicService;
-
+    @Autowired
+    private ProjectPlanDetailsService projectPlanDetailsService;
 
     /**
      * 提交要做的事
@@ -59,28 +61,7 @@ public class SurveyAssetInfoService {
     public void submit(SurveyAssetInfo surveyAssetInfo) {
 
         List<DeclareRecord> declareRecordList = declareRecordService.getDeclareRecordByProjectId(surveyAssetInfo.getProjectId());
-
-        //处理状态问题  组
-        SurveyAssetInfoGroup queryGroup = new SurveyAssetInfoGroup();
-        queryGroup.setAssetInfoId(surveyAssetInfo.getId());
-        queryGroup.setCreator(commonService.thisUserAccount());
-        queryGroup.setStatus(SysProjectEnum.FINISH.getValue());
-        List<SurveyAssetInfoGroup> assetInfoGroups = surveyAssetInfoGroupService.getSurveyAssetInfoGroupListByQuery(queryGroup);
-        if (CollectionUtils.isNotEmpty(assetInfoGroups)) {
-            for (SurveyAssetInfoGroup infoGroup : assetInfoGroups) {
-                List<Integer> integerList = surveyAssetInfoItemService.getSurveyAssetInfoItemIdsByGroupId(infoGroup.getId());
-                if (CollectionUtils.isNotEmpty(integerList)) {
-                    for (Integer id : integerList) {
-                        SurveyAssetInfoItem assetInfoItem = surveyAssetInfoItemService.getSurveyAssetInfoItemById(id);
-                        DeclareRecord declareRecord = declareRecordList.stream().filter(record -> Objects.equal(record.getId(), assetInfoItem.getDeclareId())).findFirst().get();
-                        declareRecord.setInventoryStatus(SysProjectEnum.FINISH.getValue());
-                        declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
-                    }
-                }
-            }
-        }
-
-        //处理状态问题  认领的单个方式
+        //处理状态问题
         SurveyAssetInfoItem queryItem = new SurveyAssetInfoItem();
         queryItem.setCreator(commonService.thisUserAccount());
         queryItem.setAssetInfoId(surveyAssetInfo.getId());
@@ -95,10 +76,6 @@ public class SurveyAssetInfoService {
                 }
             }
         }
-
-        //统计
-        statistics(surveyAssetInfo);
-
         //更新
         surveyAssetInfo.setStatus(SysProjectEnum.FINISH.getValue());
 
@@ -122,21 +99,15 @@ public class SurveyAssetInfoService {
 
         surveyAssetInfo.setFinishCount(recordList.size());
 
+        ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(surveyAssetInfo.getPlanDetailId());
+
         SurveyAssetInfoItem queryItem = new SurveyAssetInfoItem();
-        queryItem.setCreator(commonService.thisUserAccount());
+        queryItem.setCreator(projectPlanDetails.getExecuteUserAccount());
         queryItem.setAssetInfoId(surveyAssetInfo.getId());
         queryItem.setStatus(SysProjectEnum.FINISH.getValue());
 
-        SurveyAssetInfoGroup queryGroup = new SurveyAssetInfoGroup();
-        queryGroup.setAssetInfoId(surveyAssetInfo.getId());
-        queryGroup.setCreator(commonService.thisUserAccount());
-        queryGroup.setStatus(SysProjectEnum.FINISH.getValue());
-        List<SurveyAssetInfoGroup> assetInfoGroups = surveyAssetInfoGroupService.getSurveyAssetInfoGroupListByQuery(queryGroup);
         List<SurveyAssetInfoItem> surveyAssetInfoItems = surveyAssetInfoItemService.getSurveyAssetInfoItemListByQuery(queryItem);
-
-        int thisCount = assetInfoGroups.size()+surveyAssetInfoItems.size();
-
-        surveyAssetInfo.setThisCount(thisCount);
+        surveyAssetInfo.setThisCount(surveyAssetInfoItems.size());
     }
 
 
@@ -257,28 +228,6 @@ public class SurveyAssetInfoService {
         }
         Map<Integer, DeclareRecord> recordMap = new HashMap<>();
         List<DeclareRecord> declareRecordList = declareRecordService.getDeclareRecordByProjectId(surveyAssetInfo.getProjectId());
-
-        SurveyAssetInfoGroup queryGroup = new SurveyAssetInfoGroup();
-        queryGroup.setAssetInfoId(surveyAssetInfo.getId());
-        queryGroup.setStatus(SysProjectEnum.FINISH.getValue());
-        List<SurveyAssetInfoGroup> assetInfoGroups = surveyAssetInfoGroupService.getSurveyAssetInfoGroupListByQuery(queryGroup);
-
-        if (CollectionUtils.isNotEmpty(assetInfoGroups)) {
-            for (SurveyAssetInfoGroup infoGroup : assetInfoGroups) {
-                List<Integer> integerList = surveyAssetInfoItemService.getSurveyAssetInfoItemIdsByGroupId(infoGroup.getId());
-                if (CollectionUtils.isNotEmpty(integerList)) {
-                    for (Integer id : integerList) {
-                        SurveyAssetInfoItem assetInfoItem = surveyAssetInfoItemService.getSurveyAssetInfoItemById(id);
-                        DeclareRecord declareRecord = declareRecordList.stream().filter(record -> Objects.equal(record.getId(), assetInfoItem.getDeclareId())).findFirst().get();
-                        if (declareRecord == null) {
-                            continue;
-                        }
-                        recordMap.put(infoGroup.getInventoryId(), declareRecord);
-                    }
-                }
-            }
-        }
-
         SurveyAssetInfoItem queryItem = new SurveyAssetInfoItem();
         queryItem.setAssetInfoId(surveyAssetInfo.getId());
         queryItem.setStatus(SysProjectEnum.FINISH.getValue());
@@ -294,11 +243,9 @@ public class SurveyAssetInfoService {
                 }
             }
         }
-
         if (recordMap.isEmpty()) {
             return;
         }
-
         Iterator<Map.Entry<Integer, DeclareRecord>> entryIterator = recordMap.entrySet().iterator();
         while (entryIterator.hasNext()) {
             Map.Entry<Integer, DeclareRecord> recordEntry = entryIterator.next();

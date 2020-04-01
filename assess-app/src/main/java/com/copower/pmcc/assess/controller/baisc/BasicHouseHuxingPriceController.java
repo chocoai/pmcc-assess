@@ -6,10 +6,13 @@ import com.copower.pmcc.assess.service.basic.BasicHouseHuxingPriceService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -17,33 +20,39 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Iterator;
 
-
+/**
+ * @Auther: zch
+ * @Date: 2018/11/6 11:57
+ * @Description:
+ */
 @RequestMapping(value = "/basicHouseHuxingPrice")
 @Controller
 public class BasicHouseHuxingPriceController {
     @Autowired
-    private BasicHouseHuxingPriceService basicHouseHuxingPriceService;
-    @Autowired
     private ProjectPlanDetailsService projectPlanDetailsService;
-
+    @Autowired
+    private BasicHouseHuxingPriceService basicHouseHuxingPriceService;
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @ResponseBody
-    @RequestMapping(value = "/getBasicHouseHuxingPriceById", name = "获取数据", method = {RequestMethod.POST})
+    @RequestMapping(value = "/getBasicHouseHuxingPriceById", name = "获取数据", method = {RequestMethod.GET})
     public HttpResult getBasicHouseHuxingPriceById(Integer id) {
         try {
-            return HttpResult.newCorrectResult(basicHouseHuxingPriceService.getBasicHouseHuxingPriceById(id));
+            return HttpResult.newCorrectResult(200, basicHouseHuxingPriceService.getBasicHouseHuxingPriceById(id));
         } catch (Exception e) {
-            return HttpResult.newErrorResult("获取失败");
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(500, e.getMessage());
         }
     }
 
     @ResponseBody
-    @RequestMapping(value = "/saveAndUpdateBasicHouseHuxingPrice", name = "新增或者修改", method = RequestMethod.POST)
-    public HttpResult saveAndUpdateBasicHouseHuxingPrice(BasicHouseHuxingPrice basicHouseHuxing) {
+    @RequestMapping(value = "/saveAndUpdateBasicHouseHuxingPrice", name = "新增或者修改", method = {RequestMethod.POST})
+    public HttpResult saveAndUpdateBasicHouseHuxingPrice(BasicHouseHuxingPrice basicHouseHuxingPrice) {
         try {
-            return HttpResult.newCorrectResult(basicHouseHuxingPriceService.saveAndUpdateBasicHouseHuxingPrice(basicHouseHuxing, true));
+            return HttpResult.newCorrectResult(200, basicHouseHuxingPriceService.saveAndUpdateBasicHouseHuxingPrice(basicHouseHuxingPrice, true));
         } catch (Exception e) {
-            return HttpResult.newErrorResult("新增或者修改失败");
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(500, e.getMessage());
         }
     }
 
@@ -51,24 +60,38 @@ public class BasicHouseHuxingPriceController {
     @RequestMapping(value = "/deleteBasicHouseHuxingPrice", name = "删除数据", method = {RequestMethod.POST})
     public HttpResult deleteBasicHouseHuxingPrice(Integer id) {
         try {
-            return HttpResult.newCorrectResult(basicHouseHuxingPriceService.deleteBasicHouseHuxingPrice(id));
+            return HttpResult.newCorrectResult(200, basicHouseHuxingPriceService.deleteBasicHouseHuxingPrice(id));
         } catch (Exception e) {
-            return HttpResult.newErrorResult("删除失败");
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(500, e.getMessage());
         }
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getHouseHuxingPriceList", name = "获取选择户型数据列表")
-    public BootstrapTableVo getHouseHuxingPriceList(Integer unitHuxingId) {
-        BasicHouseHuxingPrice basicHouseHuxingPrice = new BasicHouseHuxingPrice();
-        basicHouseHuxingPrice.setHuxingId(unitHuxingId);
-        return basicHouseHuxingPriceService.getBasicHouseHuxingPriceListVos(basicHouseHuxingPrice);
+    @RequestMapping(value = "/getBootstrapTableVo", method = {RequestMethod.GET})
+    public BootstrapTableVo getBootstrapTableVo(BasicHouseHuxingPrice basicHouseHuxingPrice, @RequestParam(required = true, name = "approval", defaultValue = "false") Boolean approval) {
+        try {
+            return basicHouseHuxingPriceService.getBootstrapTableVo(basicHouseHuxingPrice);
+        } catch (Exception e) {
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return null;
+        }
+    }
 
+    @ResponseBody
+    @RequestMapping(value = "/basicHouseHuxingPriceList", name = "获取数据列表", method = {RequestMethod.GET})
+    public HttpResult basicHouseHuxingPriceList(BasicHouseHuxingPrice basicHouseHuxingPrice) {
+        try {
+            return HttpResult.newCorrectResult(200, basicHouseHuxingPriceService.basicHouseHuxingPriceList(basicHouseHuxingPrice));
+        } catch (Exception e) {
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(500, e.getMessage());
+        }
     }
 
     @ResponseBody
     @RequestMapping(value = "/importData", name = "导入", method = RequestMethod.POST)
-    public HttpResult importData(HttpServletRequest request, Integer huxingId, Integer planDetailsId) {
+    public HttpResult importData(HttpServletRequest request, Integer houseId, Integer planDetailsId) {
         try {
             MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
             Iterator<String> fileNames = multipartRequest.getFileNames();
@@ -77,7 +100,7 @@ public class BasicHouseHuxingPriceController {
                 return HttpResult.newErrorResult("上传的文件不能为空");
             }
             ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
-            String str = basicHouseHuxingPriceService.importData(multipartFile, huxingId, planDetails.getProjectId());
+            String str = basicHouseHuxingPriceService.importData(multipartFile, houseId, planDetails.getProjectId());
             return HttpResult.newCorrectResult(str);
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());

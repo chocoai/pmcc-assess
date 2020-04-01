@@ -225,6 +225,66 @@ public class BasicHouseRoomDecorateExample {
             return (Criteria) this;
         }
 
+        public Criteria andHouseIdIsNull() {
+            addCriterion("house_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdIsNotNull() {
+            addCriterion("house_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdEqualTo(Integer value) {
+            addCriterion("house_id =", value, "houseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdNotEqualTo(Integer value) {
+            addCriterion("house_id <>", value, "houseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdGreaterThan(Integer value) {
+            addCriterion("house_id >", value, "houseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("house_id >=", value, "houseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdLessThan(Integer value) {
+            addCriterion("house_id <", value, "houseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdLessThanOrEqualTo(Integer value) {
+            addCriterion("house_id <=", value, "houseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdIn(List<Integer> values) {
+            addCriterion("house_id in", values, "houseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdNotIn(List<Integer> values) {
+            addCriterion("house_id not in", values, "houseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdBetween(Integer value1, Integer value2) {
+            addCriterion("house_id between", value1, value2, "houseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("house_id not between", value1, value2, "houseId");
+            return (Criteria) this;
+        }
+
         public Criteria andPartIsNull() {
             addCriterion("part is null");
             return (Criteria) this;
@@ -782,6 +842,76 @@ public class BasicHouseRoomDecorateExample {
 
         public Criteria andGmtModifiedNotBetween(Date value1, Date value2) {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
+            return (Criteria) this;
+        }
+
+        public Criteria andDecoratePartIsNull() {
+            addCriterion("decorate_part is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDecoratePartIsNotNull() {
+            addCriterion("decorate_part is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDecoratePartEqualTo(String value) {
+            addCriterion("decorate_part =", value, "decoratePart");
+            return (Criteria) this;
+        }
+
+        public Criteria andDecoratePartNotEqualTo(String value) {
+            addCriterion("decorate_part <>", value, "decoratePart");
+            return (Criteria) this;
+        }
+
+        public Criteria andDecoratePartGreaterThan(String value) {
+            addCriterion("decorate_part >", value, "decoratePart");
+            return (Criteria) this;
+        }
+
+        public Criteria andDecoratePartGreaterThanOrEqualTo(String value) {
+            addCriterion("decorate_part >=", value, "decoratePart");
+            return (Criteria) this;
+        }
+
+        public Criteria andDecoratePartLessThan(String value) {
+            addCriterion("decorate_part <", value, "decoratePart");
+            return (Criteria) this;
+        }
+
+        public Criteria andDecoratePartLessThanOrEqualTo(String value) {
+            addCriterion("decorate_part <=", value, "decoratePart");
+            return (Criteria) this;
+        }
+
+        public Criteria andDecoratePartLike(String value) {
+            addCriterion("decorate_part like", value, "decoratePart");
+            return (Criteria) this;
+        }
+
+        public Criteria andDecoratePartNotLike(String value) {
+            addCriterion("decorate_part not like", value, "decoratePart");
+            return (Criteria) this;
+        }
+
+        public Criteria andDecoratePartIn(List<String> values) {
+            addCriterion("decorate_part in", values, "decoratePart");
+            return (Criteria) this;
+        }
+
+        public Criteria andDecoratePartNotIn(List<String> values) {
+            addCriterion("decorate_part not in", values, "decoratePart");
+            return (Criteria) this;
+        }
+
+        public Criteria andDecoratePartBetween(String value1, String value2) {
+            addCriterion("decorate_part between", value1, value2, "decoratePart");
+            return (Criteria) this;
+        }
+
+        public Criteria andDecoratePartNotBetween(String value1, String value2) {
+            addCriterion("decorate_part not between", value1, value2, "decoratePart");
             return (Criteria) this;
         }
     }
