@@ -202,6 +202,10 @@ public class UReportService {
                     if (projectCreated != null) {
                         vo.setProjectCreated(DateUtils.convertDate(String.valueOf(projectCreated)));
                     }
+                    Object reportNumberCreated = map.get("gmt_created");
+                    if (reportNumberCreated != null) {
+                        vo.setReportNumberCreated(DateUtils.convertDate(String.valueOf(reportNumberCreated)));
+                    }
                     vo.setProjectName(objectToString(map.get("project_name")));
                     vo.setServiceComeFromExplain(objectToString(map.get("service_come_from_explain")));
                     //委托目的
