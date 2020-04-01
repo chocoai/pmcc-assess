@@ -58,20 +58,20 @@ public class BasicApplyService {
         return basicApplyDao.getBasicApplyById(id);
     }
 
-    public BasicApply getByBasicApplyByEstateId(Integer estateId) {
-        BasicApply where = new BasicApply();
-        where.setBasicEstateId(estateId);
-        List<BasicApply> basicApplyList = basicApplyDao.getBasicApplyList(where);
-        if (CollectionUtils.isEmpty(basicApplyList)) return null;
-        return basicApplyList.get(0);
-    }
-
     public List<BasicApply> getListByDeclareRecordId(Integer declareRecordId) {
         BasicApply where = new BasicApply();
         where.setDeclareRecordId(declareRecordId);
         List<BasicApply> basicApplyList = basicApplyDao.getBasicApplyList(where);
         if (CollectionUtils.isEmpty(basicApplyList)) return null;
         return basicApplyList;
+    }
+
+    public BasicApply getBasicApplyByBatchDetailId(Integer batchDetailId) {
+        BasicApply where = new BasicApply();
+        where.setBatchDetailId(batchDetailId);
+        List<BasicApply> basicApplyList = basicApplyDao.getBasicApplyList(where);
+        if (CollectionUtils.isEmpty(basicApplyList)) return null;
+        return basicApplyList.get(0);
     }
 
 
@@ -89,15 +89,6 @@ public class BasicApplyService {
         basicApply.setPlanDetailsId(planDetailsId);
         List<BasicApply> basicApplies = basicApplyDao.getBasicApplyList(basicApply);
         return basicApplies;
-    }
-
-    public BasicApply getBasicApply(BasicApply basicApply) {
-        List<BasicApply> basicApplies = basicApplyDao.getBasicApplyList(basicApply);
-        if (!ObjectUtils.isEmpty(basicApplies)) {
-            return basicApplies.get(0);
-        } else {
-            return null;
-        }
     }
 
     public Integer saveBasicApply(BasicApply basicApply) {

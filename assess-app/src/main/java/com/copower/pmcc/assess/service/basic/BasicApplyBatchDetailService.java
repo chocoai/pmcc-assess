@@ -191,10 +191,7 @@ public class BasicApplyBatchDetailService {
     //存入basicApply表单
     public void insertBasicApply(BasicApplyBatchDetail houseBasicApplyBatchDetail, Integer planDetailsId) throws Exception {
         if (!houseBasicApplyBatchDetail.getType().equals(BasicFormClassifyEnum.HOUSE.getKey())) return;
-        BasicApply where = new BasicApply();
-        where.setPlanDetailsId(planDetailsId);
-        where.setBasicHouseId(houseBasicApplyBatchDetail.getTableId());
-        BasicApply basicApply = basicApplyService.getBasicApply(where);
+        BasicApply basicApply = basicApplyService.getBasicApplyByBatchDetailId(houseBasicApplyBatchDetail.getId());
         if (basicApply == null) {
             basicApply = new BasicApply();
         }
@@ -274,7 +271,8 @@ public class BasicApplyBatchDetailService {
         collectionChildBatchDetails(basicApplyBatchDetail, list);
         for (BasicApplyBatchDetail applyBatchDetail : list) {
             BasicEntityAbstract entityAbstract = publicBasicService.getServiceBeanByKey(applyBatchDetail.getType());
-            entityAbstract.clearInvalidData(applyBatchDetail.getTableId());
+            if (entityAbstract != null)
+                entityAbstract.clearInvalidData(applyBatchDetail.getTableId());
             basicApplyBatchDetailDao.deleteInfo(applyBatchDetail.getId());
         }
     }

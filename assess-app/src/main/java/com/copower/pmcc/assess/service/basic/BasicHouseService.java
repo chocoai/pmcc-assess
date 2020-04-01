@@ -129,25 +129,6 @@ public class BasicHouseService extends BasicEntityAbstract {
         return basicHouseDao.deleteBasicHouse(id);
     }
 
-    /**
-     * 删除房屋数据
-     *
-     * @param houseId
-     * @return
-     * @throws Exception
-     */
-    public void deleteHousesAndBasicApply(Integer houseId) throws Exception {
-        this.deleteBasicHouse(houseId);
-        this.clearInvalidChildData(houseId);
-        //删除标准时，删除原来basicApply的数据
-        BasicApply basicApply = new BasicApply();
-        basicApply.setBasicHouseId(houseId);
-        BasicApply basicApplyOnly = basicApplyService.getBasicApply(basicApply);
-        if (basicApplyOnly != null) {
-            basicApplyDao.deleteBasicApply(basicApplyOnly.getId());
-        }
-    }
-
 
     /**
      * 获取数据列表
@@ -467,32 +448,7 @@ public class BasicHouseService extends BasicEntityAbstract {
                     houseDetail.setName(basicHouse.getHouseNumber());
                     houseDetail.setDisplayName(basicHouse.getHouseNumber());
                     basicApplyBatchDetailService.saveBasicApplyBatchDetail(houseDetail);
-                    if (planDetailsId != null && planDetailsId > 0) {
-                        BasicApply where = new BasicApply();
-                        where.setPlanDetailsId(planDetailsId);
-                        where.setBasicHouseId(houseDetail.getTableId());
-                        BasicApply basicApply = basicApplyService.getBasicApply(where);
-                        if (basicApply != null) {
-                            List<BasicApplyBatchDetail> list = Lists.newArrayList();
-                            basicApplyBatchDetailService.collectionParentBatchDetails(houseDetail.getId(), list);
-                            if (CollectionUtils.isNotEmpty(list)) {
-                                StringBuilder stringBuilder = new StringBuilder();
-                                List<KeyValueDto> keyValueDtos = Lists.newArrayList();
-                                for (int i = list.size() - 1; i >= 0; i--) {
-                                    BasicApplyBatchDetail batchDetail = list.get(i);
-                                    stringBuilder.append(batchDetail.getName());
-                                    KeyValueDto keyValueDto = new KeyValueDto();
-                                    keyValueDto.setKey(batchDetail.getType());
-                                    keyValueDto.setValue(String.valueOf(batchDetail.getTableId()));
-                                    keyValueDtos.add(keyValueDto);
-                                }
-                                basicApply.setName(stringBuilder.toString());
-                                basicApply.setStructuralInfo(JSON.toJSONString(keyValueDtos));
-                            }
-                            basicApply.setArea(basicHouse.getArea());
-                            basicApplyService.saveBasicApply(basicApply);
-                        }
-                    }
+                    basicApplyBatchDetailService.insertBasicApply(houseDetail,planDetailsId);
                 }
                 //交易信息
                 jsonContent = jsonObject.getString(BasicApplyFormNameEnum.BASIC_TRADING.getVar());

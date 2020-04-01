@@ -4548,7 +4548,7 @@ public class GenerateBaseDataService {
         BasicExamineHandle.BasicVo basicVo = new BasicExamineHandle.BasicVo();
         switch (formNameEnum) {
             case BASIC_ESTATE: {
-                BasicApply basicApply = basicApplyService.getByBasicApplyByEstateId(basicEstate.getId());
+                BasicApply basicApply = null;
                 basicVo.setName(StringUtils.isNotEmpty(name) ? name : basicEstate.getName());
                 basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo("楼盘信息"));
                 basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo("1、位置状况"));

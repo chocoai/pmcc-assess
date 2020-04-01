@@ -309,11 +309,9 @@ public class SchemeSurePriceService {
             List<SchemeJudgeObject> childrens = schemeJudgeObjectDao.getListByPid(schemeJudgeObject.getId());
             if (CollectionUtils.isNotEmpty(childrens)) {
                 for (SchemeJudgeObject item : childrens) {
-                    if (item.getPrice() == null) {
-                        item.setPrice(schemeSurePriceApplyDto.getPrice());
-                        item.setOriginalPrice(schemeSurePriceApplyDto.getPrice());
-                        schemeJudgeObjectDao.updateSchemeJudgeObject(item);
-                    }
+                    item.setPrice(schemeSurePriceApplyDto.getPrice());
+                    item.setOriginalPrice(schemeSurePriceApplyDto.getPrice());
+                    schemeJudgeObjectDao.updateSchemeJudgeObject(item);
                 }
             }
         }

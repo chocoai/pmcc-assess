@@ -3,6 +3,7 @@ package com.copower.pmcc.assess.controller.project.scheme;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.dal.basis.entity.BasicUnitHuxing;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeSurePriceFactor;
 import com.copower.pmcc.assess.dal.basis.entity.SchemeSurePriceItem;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeSurePriceApplyDto;
@@ -117,8 +118,9 @@ public class SchemeSurePriceController {
     @PostMapping(value = "/updateCalculationSchemeSurePrice", name = "更新计算的估价对象单价")
     public HttpResult updateCalculationSchemeSurePrice(String fomData, Integer planDetailsId) {
         try {
-            schemeSurePriceService.submitSurePrice(JSONObject.parseObject(fomData, SchemeSurePriceApplyDto.class),
-                    projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId), null);
+            SchemeSurePriceApplyDto schemeSurePriceApplyDto = JSONObject.parseObject(fomData, SchemeSurePriceApplyDto.class);
+            ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
+            schemeSurePriceService.submitSurePrice(schemeSurePriceApplyDto, projectPlanDetails, null);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             baseService.writeExceptionInfo(e, errorInfo);
@@ -153,7 +155,6 @@ public class SchemeSurePriceController {
         }
 
     }
-
 
 
     @GetMapping(value = "/getUnitHuxing", name = "获取待调整价格的估价对象")
