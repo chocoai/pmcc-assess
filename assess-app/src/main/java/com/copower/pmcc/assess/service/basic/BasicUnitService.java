@@ -18,6 +18,7 @@ import com.copower.pmcc.assess.service.assist.DdlMySqlAssist;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.crm.api.dto.CrmBaseDataDicDto;
+import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -191,26 +192,28 @@ public class BasicUnitService extends BasicEntityAbstract {
         ddlMySqlAssist.customTableDdl(sqlBulder.toString());
     }
 
+    public BasicUnit getBasicUnitByApplyId(Integer applyId) {
+        if (applyId == null) return null;
+        return getBasicUnitByBasicApply(basicApplyService.getByBasicApplyId(applyId));
+    }
 
     /**
      * 获取数据
      *
-     * @param applyId
+     * @param basicApply
      * @return
      * @throws Exception
      */
-    public BasicUnit getBasicUnitByApplyId(Integer applyId) {
-        if (applyId == null) return null;
-        BasicUnit where = new BasicUnit();
-        where.setApplyId(applyId);
-        where.setCreator(commonService.thisUserAccount());
-        List<BasicUnit> basicUnits = basicUnitDao.getBasicUnitList(where);
-        if (!CollectionUtils.isEmpty(basicUnits)) {
-            return basicUnits.get(0);
-        } else {
-            BasicApply basicApply = basicApplyService.getByBasicApplyId(applyId);
-            return basicUnitDao.getBasicUnitById(basicApply.getBasicUnitId());
+    public BasicUnit getBasicUnitByBasicApply(BasicApply basicApply) {
+        if (basicApply == null) return null;
+        String structuralInfo = basicApply.getStructuralInfo();
+        List<KeyValueDto> keyValueDtos = JSON.parseArray(structuralInfo, KeyValueDto.class);
+        for (KeyValueDto keyValueDto : keyValueDtos) {
+            if (BasicFormClassifyEnum.UNIT.getKey().equals(keyValueDto.getKey())) {
+                return getBasicUnitById(Integer.valueOf(keyValueDto.getValue()));
+            }
         }
+        return null;
     }
 
     /**

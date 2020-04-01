@@ -4,6 +4,8 @@ import com.copower.pmcc.assess.dal.basis.entity.BasicBuilding;
 import com.copower.pmcc.assess.dto.output.data.DataBuilderVo;
 import com.copower.pmcc.assess.dto.output.data.DataPropertyVo;
 
+import java.util.List;
+
 
 /**
  * @Auther: zch
@@ -35,6 +37,7 @@ public class BasicBuildingVo extends BasicBuilding {
     private String propertySocialPrestigeName;
     private String propertyCompanyNatureName;
     private String creatorName;
+    private List<BasicBuilding> basicBuildingDifferences;
 
     public String getCreatorName() {
         return creatorName;
@@ -187,5 +190,13 @@ public class BasicBuildingVo extends BasicBuilding {
 
     public void setPropertyCompanyNatureName(String propertyCompanyNatureName) {
         this.propertyCompanyNatureName = propertyCompanyNatureName;
+    }
+
+    public List<BasicBuilding> getBasicBuildingDifferences() {
+        return basicBuildingDifferences;
+    }
+
+    public void setBasicBuildingDifferences(List<BasicBuilding> basicBuildingDifferences) {
+        this.basicBuildingDifferences = basicBuildingDifferences;
     }
 }

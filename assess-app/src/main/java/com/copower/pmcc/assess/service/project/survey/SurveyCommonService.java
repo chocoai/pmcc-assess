@@ -107,12 +107,9 @@ public class SurveyCommonService {
      */
     public BasicApply getSceneExploreBasicApply(Integer declareId) {
         try {
-            DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(declareId);
-            ProjectInfo projectInfo = projectInfoService.getProjectInfoById(declareRecord.getProjectId());
-            ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.SCENE_EXPLORE, projectInfo.getProjectCategoryId());
-            ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetails(declareId, projectPhase.getId());
-            BasicApply basicApply = basicApplyService.getBasicApplyByPlanDetailsId(planDetails.getId());
-            return basicApply;
+            List<BasicApply> applyList = getSceneExploreBasicApplyList(declareId);
+            if (CollectionUtils.isEmpty(applyList)) return null;
+            return applyList.get(0);
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
             return null;
@@ -127,12 +124,8 @@ public class SurveyCommonService {
      */
     public List<BasicApply> getSceneExploreBasicApplyList(Integer declareId) {
         try {
-            DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(declareId);
-            ProjectInfo projectInfo = projectInfoService.getProjectInfoById(declareRecord.getProjectId());
-            ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.SCENE_EXPLORE, projectInfo.getProjectCategoryId());
-            ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetails(declareId, projectPhase.getId());
-            List<BasicApply> basicApplyList = basicApplyService.getBasicApplyListByPlanDetailsId(planDetails.getId());
-            return basicApplyList;
+            List<BasicApply> applyList = basicApplyService.getListByDeclareRecordId(declareId);
+            return applyList;
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
             return null;
@@ -151,26 +144,6 @@ public class SurveyCommonService {
             baseService.writeExceptionInfo(e);
             return null;
         }
-    }
-
-
-    /**
-     * 获取楼栋可使用年限
-     *
-     * @param declareId
-     * @return
-     */
-    public Integer getBuildingUsableYear(Integer declareId) {
-        //获取该证现场查勘时楼栋的可使用年限
-        Integer buildingUsableYear = 0;
-        try {
-            BasicApply basicApply = this.getSceneExploreBasicApply(declareId);
-            BasicBuilding basicBuilding = basicBuildingService.getBasicBuildingByApplyId(basicApply.getId());
-            buildingUsableYear = this.getBuildingUsableYear(basicApply, basicBuilding);
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-        }
-        return buildingUsableYear;
     }
 
     /**

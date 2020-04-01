@@ -23,6 +23,7 @@ import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.data.DataDamagedDegreeService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -291,9 +292,19 @@ public class BasicHouseService extends BasicEntityAbstract {
 
     public BasicHouse getHouseByApplyId(Integer applyId) {
         if (applyId == null) return null;
-        BasicApply basicApply = basicApplyService.getByBasicApplyId(applyId);
+        return getHouseByBasicApply(basicApplyDao.getBasicApplyById(applyId));
+    }
+
+    public BasicHouse getHouseByBasicApply(BasicApply basicApply) {
         if (basicApply == null) return null;
-        return basicHouseDao.getBasicHouseById(basicApply.getBasicHouseId());
+        String structuralInfo = basicApply.getStructuralInfo();
+        List<KeyValueDto> keyValueDtos = JSON.parseArray(structuralInfo, KeyValueDto.class);
+        for (KeyValueDto keyValueDto : keyValueDtos) {
+            if (BasicFormClassifyEnum.HOUSE.getKey().equals(keyValueDto.getKey())) {
+                return getBasicHouseById(Integer.valueOf(keyValueDto.getValue()));
+            }
+        }
+        return null;
     }
 
     /**
@@ -462,9 +473,23 @@ public class BasicHouseService extends BasicEntityAbstract {
                         where.setBasicHouseId(houseDetail.getTableId());
                         BasicApply basicApply = basicApplyService.getBasicApply(where);
                         if (basicApply != null) {
-                            Map<BasicFormClassifyEnum, BasicApplyBatchDetail> map = basicApplyBatchDetailService.getApplyBatchDetailMap(houseDetail);
+                            List<BasicApplyBatchDetail> list = Lists.newArrayList();
+                            basicApplyBatchDetailService.collectionParentBatchDetails(houseDetail.getId(), list);
+                            if (CollectionUtils.isNotEmpty(list)) {
+                                StringBuilder stringBuilder = new StringBuilder();
+                                List<KeyValueDto> keyValueDtos = Lists.newArrayList();
+                                for (int i = list.size() - 1; i >= 0; i--) {
+                                    BasicApplyBatchDetail batchDetail = list.get(i);
+                                    stringBuilder.append(batchDetail.getName());
+                                    KeyValueDto keyValueDto = new KeyValueDto();
+                                    keyValueDto.setKey(batchDetail.getType());
+                                    keyValueDto.setValue(String.valueOf(batchDetail.getTableId()));
+                                    keyValueDtos.add(keyValueDto);
+                                }
+                                basicApply.setName(stringBuilder.toString());
+                                basicApply.setStructuralInfo(JSON.toJSONString(keyValueDtos));
+                            }
                             basicApply.setArea(basicHouse.getArea());
-                            basicApply.setName(basicApplyBatchDetailService.getFullNameByBatchDetailId(houseDetail.getId()));
                             basicApplyService.saveBasicApply(basicApply);
                         }
                     }

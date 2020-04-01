@@ -24,6 +24,7 @@ import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.crm.api.dto.CrmBaseDataDicDto;
 import com.copower.pmcc.crm.api.provider.CrmRpcBaseDataDicService;
+import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -146,22 +147,41 @@ public class BasicBuildingService extends BasicEntityAbstract {
     /**
      * 获取数据
      *
-     * @param applyId
+     * @param basicApply
      * @return
      * @throws Exception
      */
+    public BasicBuildingVo getBasicBuildingByBasicApply(BasicApply basicApply) {
+        if (basicApply == null) return null;
+        String structuralInfo = basicApply.getStructuralInfo();
+        List<KeyValueDto> keyValueDtos = JSON.parseArray(structuralInfo, KeyValueDto.class);
+        BasicBuildingVo vo = new BasicBuildingVo();
+        //检查是否存在差异的楼栋数据，有则需将基础部分与差异部分写入vo中
+        Boolean containDifference = false;
+        for (KeyValueDto keyValueDto : keyValueDtos) {
+            Boolean isBuilding = BasicFormClassifyEnum.BUILDING.getKey().equals(keyValueDto.getKey());
+            Boolean isBuildingBase = BasicFormClassifyEnum.BUILDING_BASE.getKey().equals(keyValueDto.getKey());
+            Boolean isBuildingMonolayer = BasicFormClassifyEnum.BUILDING_MONOLAYER.getKey().equals(keyValueDto.getKey());
+            containDifference = containDifference == false ? BasicFormClassifyEnum.BUILDING_DIFFERENCE.getKey().equals(keyValueDto.getKey()) : true;
+            if (isBuilding || isBuildingBase || isBuildingMonolayer) {
+                vo = getBasicBuildingVo(getBasicBuildingById(Integer.valueOf(keyValueDto.getValue())));
+            }
+        }
+        if (containDifference) {
+            List<BasicBuilding> buildingDifferenceList = Lists.newArrayList();
+            for (KeyValueDto keyValueDto : keyValueDtos) {
+                if(BasicFormClassifyEnum.BUILDING.getKey().equals(keyValueDto.getKey())){
+                    buildingDifferenceList.add(getBasicBuildingById(Integer.valueOf(keyValueDto.getValue())));
+                }
+            }
+            vo.setBasicBuildingDifferences(buildingDifferenceList);
+        }
+        return vo;
+    }
+
     public BasicBuildingVo getBasicBuildingByApplyId(Integer applyId) {
         if (applyId == null) return null;
-        BasicBuilding where = new BasicBuilding();
-        where.setApplyId(applyId);
-        where.setCreator(commonService.thisUserAccount());
-        List<BasicBuilding> basicBuildings = basicBuildingDao.getBasicBuildingList(where);
-        if (!CollectionUtils.isEmpty(basicBuildings)) {
-            return getBasicBuildingVo(basicBuildings.get(0));
-        } else {
-            BasicApply basicApply = basicApplyService.getByBasicApplyId(applyId);
-            return getBasicBuildingVoById(basicApply.getBasicBuildingId());
-        }
+        return getBasicBuildingByBasicApply(basicApplyService.getByBasicApplyId(applyId));
     }
 
     public BootstrapTableVo getBootstrapTableVo(BasicBuilding basicBuilding) throws Exception {

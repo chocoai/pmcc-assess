@@ -66,6 +66,14 @@ public class BasicApplyService {
         return basicApplyList.get(0);
     }
 
+    public List<BasicApply> getListByDeclareRecordId(Integer declareRecordId) {
+        BasicApply where = new BasicApply();
+        where.setDeclareRecordId(declareRecordId);
+        List<BasicApply> basicApplyList = basicApplyDao.getBasicApplyList(where);
+        if (CollectionUtils.isEmpty(basicApplyList)) return null;
+        return basicApplyList;
+    }
+
 
     public BasicApply getBasicApplyByPlanDetailsId(Integer planDetailsId) {
         List<BasicApply> basicApplies = getBasicApplyListByPlanDetailsId(planDetailsId);

@@ -8,6 +8,10 @@ public class BasicApply {
 
     private String name;
 
+    private Integer batchDetailId;
+
+    private String structuralInfo;
+
     private Integer caseEstateId;
 
     private Integer caseBuildingId;
@@ -84,6 +88,22 @@ public class BasicApply {
 
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
+    }
+
+    public Integer getBatchDetailId() {
+        return batchDetailId;
+    }
+
+    public void setBatchDetailId(Integer batchDetailId) {
+        this.batchDetailId = batchDetailId;
+    }
+
+    public String getStructuralInfo() {
+        return structuralInfo;
+    }
+
+    public void setStructuralInfo(String structuralInfo) {
+        this.structuralInfo = structuralInfo == null ? null : structuralInfo.trim();
     }
 
     public Integer getCaseEstateId() {

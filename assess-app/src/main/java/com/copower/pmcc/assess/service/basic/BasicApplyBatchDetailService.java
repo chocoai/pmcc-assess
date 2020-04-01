@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.basic;
 
+import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
 import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDao;
@@ -15,10 +16,12 @@ import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.KeyValue;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.BeanUtils;
@@ -194,35 +197,32 @@ public class BasicApplyBatchDetailService {
         BasicApply basicApply = basicApplyService.getBasicApply(where);
         if (basicApply == null) {
             basicApply = new BasicApply();
-            Map<BasicFormClassifyEnum, BasicApplyBatchDetail> map = getApplyBatchDetailMap(houseBasicApplyBatchDetail);
-            basicApply.setBasicHouseId(houseBasicApplyBatchDetail.getTableId());
-            basicApply.setDeclareRecordId(houseBasicApplyBatchDetail.getDeclareRecordId());
-            basicApply.setHouseNumber(houseBasicApplyBatchDetail.getName());
-            BasicHouse basicHouse = basicHouseService.getBasicHouseById(houseBasicApplyBatchDetail.getTableId());
-            if (basicHouse != null)
-                basicApply.setArea(basicHouse.getArea());
-            //单元
-            BasicApplyBatchDetail unitBatchDetail = map.get(BasicFormClassifyEnum.UNIT);
-            if (unitBatchDetail != null) {
-                basicApply.setUnitNumber(unitBatchDetail.getName());
-                basicApply.setBasicUnitId(unitBatchDetail.getTableId());
-            }
-            //楼栋
-            BasicApplyBatchDetail buildBatchDetail = map.get(BasicFormClassifyEnum.BUILDING);
-            if (buildBatchDetail != null) {
-                basicApply.setBuildingNumber(buildBatchDetail.getName());
-                basicApply.setBasicBuildingId(buildBatchDetail.getTableId());
-            }
-            //楼盘
-            BasicApplyBatchDetail estateBatchDetail = map.get(BasicFormClassifyEnum.ESTATE);
-            if (estateBatchDetail != null) {
-                basicApply.setBasicEstateId(estateBatchDetail.getTableId());
-            }
-            basicApply.setPlanDetailsId(planDetailsId);
-            if (basicApply.getName() == null)
-                basicApply.setName(basicApplyBatchDetailService.getFullNameByBatchDetailId(houseBasicApplyBatchDetail.getId()));
-            basicApplyService.saveBasicApply(basicApply);
         }
+        basicApply.setBasicHouseId(houseBasicApplyBatchDetail.getTableId());
+        basicApply.setDeclareRecordId(houseBasicApplyBatchDetail.getDeclareRecordId());
+        basicApply.setHouseNumber(houseBasicApplyBatchDetail.getName());
+        BasicHouse basicHouse = basicHouseService.getBasicHouseById(houseBasicApplyBatchDetail.getTableId());
+        if (basicHouse != null)
+            basicApply.setArea(basicHouse.getArea());
+        basicApply.setBatchDetailId(houseBasicApplyBatchDetail.getId());
+        basicApply.setPlanDetailsId(planDetailsId);
+        List<BasicApplyBatchDetail> list = Lists.newArrayList();
+        collectionParentBatchDetails(houseBasicApplyBatchDetail.getId(), list);
+        if (CollectionUtils.isNotEmpty(list)) {
+            StringBuilder stringBuilder = new StringBuilder();
+            List<KeyValueDto> keyValueDtos = Lists.newArrayList();
+            for (int i = list.size() - 1; i >= 0; i--) {
+                BasicApplyBatchDetail batchDetail = list.get(i);
+                stringBuilder.append(batchDetail.getName());
+                KeyValueDto keyValueDto = new KeyValueDto();
+                keyValueDto.setKey(batchDetail.getType());
+                keyValueDto.setValue(String.valueOf(batchDetail.getTableId()));
+                keyValueDtos.add(keyValueDto);
+            }
+            basicApply.setName(stringBuilder.toString());
+            basicApply.setStructuralInfo(JSON.toJSONString(keyValueDtos));
+        }
+        basicApplyService.saveBasicApply(basicApply);
     }
 
     /**

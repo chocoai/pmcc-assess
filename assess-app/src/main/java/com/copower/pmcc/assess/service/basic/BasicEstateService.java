@@ -26,6 +26,7 @@ import com.copower.pmcc.assess.service.data.DataDeveloperService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.crm.api.dto.CrmBaseDataDicDto;
+import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -101,6 +102,8 @@ public class BasicEstateService extends BasicEntityAbstract {
     private ProcessControllerComponent processControllerComponent;
     @Autowired
     private ProjectInfoService projectInfoService;
+    @Autowired
+    private PublicBasicService publicBasicService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -297,16 +300,19 @@ public class BasicEstateService extends BasicEntityAbstract {
 
     public BasicEstate getBasicEstateByApplyId(Integer applyId) {
         if (applyId == null) return null;
-        BasicEstate where = new BasicEstate();
-        where.setApplyId(applyId);
-        where.setCreator(commonService.thisUserAccount());
-        List<BasicEstate> basicEstates = basicEstateDao.getBasicEstateList(where);
-        if (!CollectionUtils.isEmpty(basicEstates)) {
-            return basicEstates.get(0);
-        } else {
-            BasicApply basicApply = basicApplyService.getByBasicApplyId(applyId);
-            return basicEstateDao.getBasicEstateById(basicApply.getBasicEstateId());
+        return getBasicEstateByBasicApply(basicApplyService.getByBasicApplyId(applyId));
+    }
+
+    public BasicEstate getBasicEstateByBasicApply(BasicApply basicApply) {
+        if (basicApply == null) return null;
+        String structuralInfo = basicApply.getStructuralInfo();
+        List<KeyValueDto> keyValueDtos = JSON.parseArray(structuralInfo, KeyValueDto.class);
+        for (KeyValueDto keyValueDto : keyValueDtos) {
+            if (BasicFormClassifyEnum.ESTATE.getKey().equals(keyValueDto.getKey())) {
+                return getBasicEstateById(Integer.valueOf(keyValueDto.getValue()));
+            }
         }
+        return null;
     }
 
 
