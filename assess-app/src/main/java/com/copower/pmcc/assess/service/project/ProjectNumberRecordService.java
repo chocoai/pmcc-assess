@@ -183,7 +183,7 @@ public class ProjectNumberRecordService {
                 projectInfo.setResultNumberDate(new Date());
                 projectInfoService.saveProjectInfo(projectInfo);
             }
-            erpRpcToolsService.updateSymbolEnable(applicationConstant.getAppKey(), sysSymbolListDto.getSymbol());
+            erpRpcToolsService.updateSymbolExamine(applicationConstant.getAppKey(), sysSymbolListDto.getSymbol());
         }
         return sysSymbolListDto;
     }

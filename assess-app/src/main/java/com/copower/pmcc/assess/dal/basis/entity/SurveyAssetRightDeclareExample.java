@@ -375,52 +375,62 @@ public class SurveyAssetRightDeclareExample {
             return (Criteria) this;
         }
 
-        public Criteria andBuildingNumberEqualTo(Integer value) {
+        public Criteria andBuildingNumberEqualTo(String value) {
             addCriterion("building_number =", value, "buildingNumber");
             return (Criteria) this;
         }
 
-        public Criteria andBuildingNumberNotEqualTo(Integer value) {
+        public Criteria andBuildingNumberNotEqualTo(String value) {
             addCriterion("building_number <>", value, "buildingNumber");
             return (Criteria) this;
         }
 
-        public Criteria andBuildingNumberGreaterThan(Integer value) {
+        public Criteria andBuildingNumberGreaterThan(String value) {
             addCriterion("building_number >", value, "buildingNumber");
             return (Criteria) this;
         }
 
-        public Criteria andBuildingNumberGreaterThanOrEqualTo(Integer value) {
+        public Criteria andBuildingNumberGreaterThanOrEqualTo(String value) {
             addCriterion("building_number >=", value, "buildingNumber");
             return (Criteria) this;
         }
 
-        public Criteria andBuildingNumberLessThan(Integer value) {
+        public Criteria andBuildingNumberLessThan(String value) {
             addCriterion("building_number <", value, "buildingNumber");
             return (Criteria) this;
         }
 
-        public Criteria andBuildingNumberLessThanOrEqualTo(Integer value) {
+        public Criteria andBuildingNumberLessThanOrEqualTo(String value) {
             addCriterion("building_number <=", value, "buildingNumber");
             return (Criteria) this;
         }
 
-        public Criteria andBuildingNumberIn(List<Integer> values) {
+        public Criteria andBuildingNumberLike(String value) {
+            addCriterion("building_number like", value, "buildingNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingNumberNotLike(String value) {
+            addCriterion("building_number not like", value, "buildingNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuildingNumberIn(List<String> values) {
             addCriterion("building_number in", values, "buildingNumber");
             return (Criteria) this;
         }
 
-        public Criteria andBuildingNumberNotIn(List<Integer> values) {
+        public Criteria andBuildingNumberNotIn(List<String> values) {
             addCriterion("building_number not in", values, "buildingNumber");
             return (Criteria) this;
         }
 
-        public Criteria andBuildingNumberBetween(Integer value1, Integer value2) {
+        public Criteria andBuildingNumberBetween(String value1, String value2) {
             addCriterion("building_number between", value1, value2, "buildingNumber");
             return (Criteria) this;
         }
 
-        public Criteria andBuildingNumberNotBetween(Integer value1, Integer value2) {
+        public Criteria andBuildingNumberNotBetween(String value1, String value2) {
             addCriterion("building_number not between", value1, value2, "buildingNumber");
             return (Criteria) this;
         }

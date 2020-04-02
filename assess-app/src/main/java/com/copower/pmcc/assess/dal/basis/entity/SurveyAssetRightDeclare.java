@@ -11,7 +11,7 @@ public class SurveyAssetRightDeclare {
 
     private String buildingName;
 
-    private Integer buildingNumber;
+    private String buildingNumber;
 
     private String unitNumber;
 
@@ -61,12 +61,12 @@ public class SurveyAssetRightDeclare {
         this.buildingName = buildingName == null ? null : buildingName.trim();
     }
 
-    public Integer getBuildingNumber() {
+    public String getBuildingNumber() {
         return buildingNumber;
     }
 
-    public void setBuildingNumber(Integer buildingNumber) {
-        this.buildingNumber = buildingNumber;
+    public void setBuildingNumber(String buildingNumber) {
+        this.buildingNumber = buildingNumber == null ? null : buildingNumber.trim();
     }
 
     public String getUnitNumber() {
