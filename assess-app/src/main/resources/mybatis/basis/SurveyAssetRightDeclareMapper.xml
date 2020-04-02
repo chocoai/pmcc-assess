@@ -6,7 +6,7 @@
     <result column="declare_name" property="declareName" jdbcType="VARCHAR" />
     <result column="declare_id" property="declareId" jdbcType="INTEGER" />
     <result column="building_name" property="buildingName" jdbcType="VARCHAR" />
-    <result column="building_number" property="buildingNumber" jdbcType="INTEGER" />
+    <result column="building_number" property="buildingNumber" jdbcType="VARCHAR" />
     <result column="unit_number" property="unitNumber" jdbcType="VARCHAR" />
     <result column="ownership" property="ownership" jdbcType="VARCHAR" />
     <result column="seat" property="seat" jdbcType="VARCHAR" />
@@ -118,7 +118,7 @@
       creator, gmt_created, gmt_modified
       )
     values (#{declareName,jdbcType=VARCHAR}, #{declareId,jdbcType=INTEGER}, #{buildingName,jdbcType=VARCHAR}, 
-      #{buildingNumber,jdbcType=INTEGER}, #{unitNumber,jdbcType=VARCHAR}, #{ownership,jdbcType=VARCHAR}, 
+      #{buildingNumber,jdbcType=VARCHAR}, #{unitNumber,jdbcType=VARCHAR}, #{ownership,jdbcType=VARCHAR}, 
       #{seat,jdbcType=VARCHAR}, #{planDetailsId,jdbcType=INTEGER}, #{groupId,jdbcType=INTEGER}, 
       #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
       )
@@ -177,7 +177,7 @@
         #{buildingName,jdbcType=VARCHAR},
       </if>
       <if test="buildingNumber != null" >
-        #{buildingNumber,jdbcType=INTEGER},
+        #{buildingNumber,jdbcType=VARCHAR},
       </if>
       <if test="unitNumber != null" >
         #{unitNumber,jdbcType=VARCHAR},
@@ -227,7 +227,7 @@
         building_name = #{record.buildingName,jdbcType=VARCHAR},
       </if>
       <if test="record.buildingNumber != null" >
-        building_number = #{record.buildingNumber,jdbcType=INTEGER},
+        building_number = #{record.buildingNumber,jdbcType=VARCHAR},
       </if>
       <if test="record.unitNumber != null" >
         unit_number = #{record.unitNumber,jdbcType=VARCHAR},
@@ -264,7 +264,7 @@
       declare_name = #{record.declareName,jdbcType=VARCHAR},
       declare_id = #{record.declareId,jdbcType=INTEGER},
       building_name = #{record.buildingName,jdbcType=VARCHAR},
-      building_number = #{record.buildingNumber,jdbcType=INTEGER},
+      building_number = #{record.buildingNumber,jdbcType=VARCHAR},
       unit_number = #{record.unitNumber,jdbcType=VARCHAR},
       ownership = #{record.ownership,jdbcType=VARCHAR},
       seat = #{record.seat,jdbcType=VARCHAR},
@@ -290,7 +290,7 @@
         building_name = #{buildingName,jdbcType=VARCHAR},
       </if>
       <if test="buildingNumber != null" >
-        building_number = #{buildingNumber,jdbcType=INTEGER},
+        building_number = #{buildingNumber,jdbcType=VARCHAR},
       </if>
       <if test="unitNumber != null" >
         unit_number = #{unitNumber,jdbcType=VARCHAR},
@@ -324,7 +324,7 @@
     set declare_name = #{declareName,jdbcType=VARCHAR},
       declare_id = #{declareId,jdbcType=INTEGER},
       building_name = #{buildingName,jdbcType=VARCHAR},
-      building_number = #{buildingNumber,jdbcType=INTEGER},
+      building_number = #{buildingNumber,jdbcType=VARCHAR},
       unit_number = #{unitNumber,jdbcType=VARCHAR},
       ownership = #{ownership,jdbcType=VARCHAR},
       seat = #{seat,jdbcType=VARCHAR},

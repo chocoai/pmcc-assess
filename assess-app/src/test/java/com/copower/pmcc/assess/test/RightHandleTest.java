@@ -126,9 +126,7 @@ public class RightHandleTest {
                         SurveyAssetRightDeclare declare = new SurveyAssetRightDeclare();
                         declare.setDeclareId(declareRecord.getId());
                         declare.setDeclareName(declareRecord.getName());
-                        if (NumberUtils.isNumber(declareRecord.getBuildingNumber())) {
-                            declare.setBuildingNumber(Integer.parseInt(declareRecord.getBuildingNumber()));
-                        }
+                        declare.setBuildingNumber(declareRecord.getBuildingNumber());
                         declare.setOwnership(declareRecord.getOwnership());
                         declare.setSeat(declareRecord.getSeat());
                         declare.setUnitNumber(declareRecord.getUnit());
