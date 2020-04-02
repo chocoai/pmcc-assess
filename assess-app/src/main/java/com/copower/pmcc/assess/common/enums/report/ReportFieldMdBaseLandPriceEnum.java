@@ -7,7 +7,7 @@ import java.io.Serializable;
  * @date: 2019/2/14 16:11
  * @description:报告模板字段(基准地价)
  */
-public enum BaseReportFieldMdBaseLandPriceEnum implements Serializable {
+public enum ReportFieldMdBaseLandPriceEnum implements Serializable {
     BaseLandPriceProfile("基准地价概要"),
     BaseLandPriceArea("基准地价区域"),
     BaseLandPriceLevelName("基准地价土地级别名称"),
@@ -39,12 +39,12 @@ public enum BaseReportFieldMdBaseLandPriceEnum implements Serializable {
     BaseLandPriceCalculateCourseDetail("基准地价测算过程明细表"),//?
     ;
     private String name;
-    BaseReportFieldMdBaseLandPriceEnum(String name) {
+    ReportFieldMdBaseLandPriceEnum(String name) {
         this.name = name;
     }
 
-    public static BaseReportFieldMdBaseLandPriceEnum getEnumByName(String name) {
-        for (BaseReportFieldMdBaseLandPriceEnum e : BaseReportFieldMdBaseLandPriceEnum.values()) {
+    public static ReportFieldMdBaseLandPriceEnum getEnumByName(String name) {
+        for (ReportFieldMdBaseLandPriceEnum e : ReportFieldMdBaseLandPriceEnum.values()) {
             if (e.getName().equals(name)) {
                 return e;
             }

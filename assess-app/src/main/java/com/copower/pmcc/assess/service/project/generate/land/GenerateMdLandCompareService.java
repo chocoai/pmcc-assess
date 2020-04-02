@@ -2,7 +2,7 @@ package com.copower.pmcc.assess.service.project.generate.land;
 
 import com.aspose.words.Document;
 import com.copower.pmcc.assess.common.AsposeUtils;
-import com.copower.pmcc.assess.common.enums.report.BaseReportFieldLandCompareEnum;
+import com.copower.pmcc.assess.common.enums.report.ReportFieldLandCompareEnum;
 import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
 import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataHousePriceIndexDao;
@@ -178,7 +178,7 @@ public class GenerateMdLandCompareService {
      */
     public String getValueText(String key) throws Exception {
         if (StringUtils.isBlank(key)) return null;
-        BaseReportFieldLandCompareEnum fieldCompareEnum = BaseReportFieldLandCompareEnum.getEnumByName(key);
+        ReportFieldLandCompareEnum fieldCompareEnum = ReportFieldLandCompareEnum.getEnumByName(key);
         StringBuilder stringBuilder = new StringBuilder();
         switch (fieldCompareEnum) {
             case REGIONAL_FACTORS://土地比较法相关区域因素
@@ -255,7 +255,7 @@ public class GenerateMdLandCompareService {
      */
     public String getValueByKey(String key) throws Exception {
         if (StringUtils.isBlank(key)) return null;
-        BaseReportFieldLandCompareEnum fieldCompareEnum = BaseReportFieldLandCompareEnum.getEnumByName(key);
+        ReportFieldLandCompareEnum fieldCompareEnum = ReportFieldLandCompareEnum.getEnumByName(key);
         switch (fieldCompareEnum) {
             case BIDDING_HANGING_CASE://土地比较法招拍挂案例表
 

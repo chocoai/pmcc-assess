@@ -7,7 +7,7 @@ import java.io.Serializable;
  * @date: 2019/1/15 14:30
  * @description:报告模板字段 基础
  */
-public enum BaseReportEnum implements Serializable {
+public enum ReportFieldEnum implements Serializable {
     ReportHouseQrCode("房产二维码"),
     ReportASSETSQrCode("资产评估二维码"),
     ReportLandQrCode("土地评估二维码"),
@@ -221,7 +221,7 @@ public enum BaseReportEnum implements Serializable {
     ;
     private String name;
 
-    private BaseReportEnum(String name) {
+    private ReportFieldEnum(String name) {
         this.name = name;
     }
 
@@ -229,8 +229,8 @@ public enum BaseReportEnum implements Serializable {
         return name;
     }
 
-    public static BaseReportEnum getEnumByName(String name) {
-        for (BaseReportEnum e : BaseReportEnum.values()) {
+    public static ReportFieldEnum getEnumByName(String name) {
+        for (ReportFieldEnum e : ReportFieldEnum.values()) {
             if (e.getName().equals(name)) {
                 return e;
             }

@@ -6,7 +6,7 @@ package com.copower.pmcc.assess.common.enums.report;
  * @Date: 2019/1/15 14:30
  * @Description:报告模板字段(市场比较法)
  */
-public enum BaseReportFieldCompareEnum {
+public enum ReportFieldCompareEnum {
     CASE_NUMBER("比较法案例个数"),
     COMPARABLE_BASIS("比较法可比案例情况表"),
     LOCATION_CONDITION("比较法估价对象区位状况表"),
@@ -36,13 +36,13 @@ public enum BaseReportFieldCompareEnum {
     private String name;
 
 
-    private BaseReportFieldCompareEnum(String name) {
+    private ReportFieldCompareEnum(String name) {
         this.name = name;
     }
 
 
-    public static BaseReportFieldCompareEnum getEnumByName(String name) {
-        for (BaseReportFieldCompareEnum e : BaseReportFieldCompareEnum.values()) {
+    public static ReportFieldCompareEnum getEnumByName(String name) {
+        for (ReportFieldCompareEnum e : ReportFieldCompareEnum.values()) {
             if (e.getName().equals(name)) {
                 return e;
             }

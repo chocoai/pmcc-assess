@@ -7,7 +7,7 @@ import java.io.Serializable;
  * @date: 2019/1/15 14:30
  * @description:报告模板字段 公共
  */
-public enum BaseReportCommonEnum implements Serializable {
+public enum ReportFieldCommonEnum implements Serializable {
     CommonReportNumber("公共文号"),// ReportNumber("文号")
     CommonQueryCode("公共查询码"),//queryCode("查询码")
     CommonRecordNo("公共备案号"),//recordNo("备案号")
@@ -61,7 +61,7 @@ public enum BaseReportCommonEnum implements Serializable {
     ;
     private String name;
 
-    private BaseReportCommonEnum(String name) {
+    private ReportFieldCommonEnum(String name) {
         this.name = name;
     }
 
@@ -69,8 +69,8 @@ public enum BaseReportCommonEnum implements Serializable {
         return name;
     }
 
-    public static BaseReportCommonEnum getEnumByName(String name) {
-        for (BaseReportCommonEnum e : BaseReportCommonEnum.values()) {
+    public static ReportFieldCommonEnum getEnumByName(String name) {
+        for (ReportFieldCommonEnum e : ReportFieldCommonEnum.values()) {
             if (e.getName().equals(name)) {
                 return e;
             }

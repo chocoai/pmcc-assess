@@ -4,7 +4,7 @@ package com.copower.pmcc.assess.common.enums.report;
  * Created by zch on 2020-3-18.
  * 报告模板字段 假设法
  */
-public enum BaseReportDevelopmentEnum {
+public enum ReportFieldDevelopmentEnum {
     Development_projectConstructionPeriod("假设法项目建设期"),
     Development_projectConstructionPeriod2("假设法开发周期"),
     Development_developedYear("假设法已开发时间"),
@@ -81,7 +81,7 @@ public enum BaseReportDevelopmentEnum {
     Development_SalesTaxAndAdditional("假设法增值税及附加"),//暂时不确定删除
     ;
     private String name;
-    private BaseReportDevelopmentEnum(String name) {
+    private ReportFieldDevelopmentEnum(String name) {
         this.name = name;
     }
 
@@ -89,8 +89,8 @@ public enum BaseReportDevelopmentEnum {
         return name;
     }
 
-    public static BaseReportDevelopmentEnum getEnumByName(String name) {
-        for (BaseReportDevelopmentEnum e : BaseReportDevelopmentEnum.values()) {
+    public static ReportFieldDevelopmentEnum getEnumByName(String name) {
+        for (ReportFieldDevelopmentEnum e : ReportFieldDevelopmentEnum.values()) {
             if (e.getName().equals(name)) {
                 return e;
             }

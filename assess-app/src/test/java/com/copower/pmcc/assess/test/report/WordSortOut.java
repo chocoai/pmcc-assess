@@ -41,422 +41,422 @@ public class WordSortOut {
             String findName = zchEnum.getName();
             switch (zchEnum) {
                 case recordNo:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.CommonRecordNo.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldCommonEnum.CommonRecordNo.getName()));
                     break;
                 case ReportNumber:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.CommonReportNumber.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldCommonEnum.CommonReportNumber.getName()));
                     break;
                 case queryCode:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.CommonQueryCode.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldCommonEnum.CommonQueryCode.getName()));
                     break;
                 case ThisYear:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.CommonThisYear.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldCommonEnum.CommonThisYear.getName()));
                     break;
                 case recordDate:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.CommonRecordDate.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldCommonEnum.CommonRecordDate.getName()));
                     break;
                 case ReportNumber2:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.CommonReportNumbering.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldCommonEnum.CommonReportNumbering.getName()));
                     break;
                 case ReportQrcode:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.CommonReportQrcode.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldCommonEnum.CommonReportQrcode.getName()));
                     break;
                 case ReportingCategories:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.CommonReportingCategories.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldCommonEnum.CommonReportingCategories.getName()));
                     break;
                 case ReportUnitString:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.CommonReportUnitString.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldCommonEnum.CommonReportUnitString.getName()));
                     break;
                 case ReportIssuanceDate:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.CommonReportIssuanceDate.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldCommonEnum.CommonReportIssuanceDate.getName()));
                     break;
                 case DelegatePurpose:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.CommonDelegatePurpose.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldCommonEnum.CommonDelegatePurpose.getName()));
                     break;
                 case StatementPurposeEntrustment:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.CommonStatementPurposeEntrustment.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldCommonEnum.CommonStatementPurposeEntrustment.getName()));
                     break;
                 case ValueTimePoint:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.CommonValueTimePoint.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldCommonEnum.CommonValueTimePoint.getName()));
                     break;
                 case ValueTimePointRemark:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.CommonValueTimePointRemark.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldCommonEnum.CommonValueTimePointRemark.getName()));
                     break;
                 case ValueType:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.CommonValueType.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldCommonEnum.CommonValueType.getName()));
                     break;
                 case ValueTypeDesc:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.CommonValueTypeDesc.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldCommonEnum.CommonValueTypeDesc.getName()));
                     break;
                 case EntrustedUnit:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.CommonEntrustedUnit.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldCommonEnum.CommonEntrustedUnit.getName()));
                     break;
                 case AssessTotal:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.CommonAssessTotal.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldCommonEnum.CommonAssessTotal.getName()));
                     break;
                 case AssessTotalRMB:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.CommonAssessTotalRMB.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldCommonEnum.CommonAssessTotalRMB.getName()));
                     break;
                 case CertificationPurpose:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.CommonCertificationPurpose.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldCommonEnum.CommonCertificationPurpose.getName()));
                     break;
                 case HotTip:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.CommonHotTip.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldCommonEnum.CommonHotTip.getName()));
                     break;
                 case HotTip2:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.CommonHotTip.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldCommonEnum.CommonHotTip.getName()));
                     break;
                 case Atypism2:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.CommonHotTip.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldCommonEnum.CommonHotTip.getName()));
                     break;
                 case StatutoryPriorityAmountTotal:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.CommonStatutoryPriorityAmountTotal.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldCommonEnum.CommonStatutoryPriorityAmountTotal.getName()));
                     break;
 
 
                 case ValuationProjectName:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.ValuationProjectName.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldCommonEnum.ValuationProjectName.getName()));
                     break;
                 case PracticalUse:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.PracticalUse.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldCommonEnum.PracticalUse.getName()));
                     break;
                 case EvaluationMethod:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.EvaluationMethod.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldCommonEnum.EvaluationMethod.getName()));
                     break;
                 case HomeWorkEndTime:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.HomeWorkEndTime.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldCommonEnum.HomeWorkEndTime.getName()));
                     break;
                 case HomeWorkStartTime:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.HomeWorkStartTime.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldCommonEnum.HomeWorkStartTime.getName()));
                     break;
                 case AssistanceStaff:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.AssistanceStaff.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldCommonEnum.AssistanceStaff.getName()));
                     break;
                 case SetUse:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.SetUse.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldCommonEnum.SetUse.getName()));
                     break;
                 case PRINCIPAL:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.PRINCIPAL.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldCommonEnum.PRINCIPAL.getName()));
                     break;
                 case EvaluationThink:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.EvaluationThink.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldCommonEnum.EvaluationThink.getName()));
                     break;
                 case PrincipalInfo:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.PrincipalInfo.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldCommonEnum.PrincipalInfo.getName()));
                     break;
                 case PrincipalDescribe:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.PrincipalDescribe.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldCommonEnum.PrincipalDescribe.getName()));
                     break;
                 case PrincipalDataDescribe:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.PrincipalDataDescribe.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldCommonEnum.PrincipalDataDescribe.getName()));
                     break;
                 case RegisteredRealEstateValuerAndNumber:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.RegisteredRealEstateValuerAndNumber.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldCommonEnum.RegisteredRealEstateValuerAndNumber.getName()));
                     break;
                 case RegisteredHouseRealEstateValuerAndNumber:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.RegisteredHouseRealEstateValuerAndNumber.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldCommonEnum.RegisteredHouseRealEstateValuerAndNumber.getName()));
                     break;
                 case RegisteredRealEstateValuer:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.RegisteredRealEstateValuer.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldCommonEnum.RegisteredRealEstateValuer.getName()));
                     break;
                 case XIEHE_organizationHouseInfo:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.XIEHE_organizationHouseInfo.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldCommonEnum.XIEHE_organizationHouseInfo.getName()));
                     break;
                 case XIEHE_organizationInfo:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.XIEHE_organizationInfo.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldCommonEnum.XIEHE_organizationInfo.getName()));
                     break;
                 case XIEHE_organizationName:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.XIEHE_organizationName.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldCommonEnum.XIEHE_organizationName.getName()));
                     break;
                 case XIEHE_RealEstateValuationAgencyHouse:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.XIEHE_RealEstateValuationAgencyHouse.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldCommonEnum.XIEHE_RealEstateValuationAgencyHouse.getName()));
                     break;
                 case XIEHE_RealEstateValuationAgency:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.XIEHE_RealEstateValuationAgency.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldCommonEnum.XIEHE_RealEstateValuationAgency.getName()));
                     break;
                 case XIEHE_organizationAddress:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.XIEHE_organizationAddress.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldCommonEnum.XIEHE_organizationAddress.getName()));
                     break;
                 case XIEHE_legalRepresentative:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.XIEHE_legalRepresentative.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldCommonEnum.XIEHE_legalRepresentative.getName()));
                     break;
                 case XIEHE_registeredNo:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.XIEHE_registeredNo.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldCommonEnum.XIEHE_registeredNo.getName()));
                     break;
                 case XIEHE_organizationRank:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.XIEHE_organizationRank.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldCommonEnum.XIEHE_organizationRank.getName()));
                     break;
                 case XIEHE_certificateNo:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.XIEHE_certificateNo.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldCommonEnum.XIEHE_certificateNo.getName()));
                     break;
                 case XIEHE_certificateEffectiveDate:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportCommonEnum.XIEHE_certificateEffectiveDate.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldCommonEnum.XIEHE_certificateEffectiveDate.getName()));
                     break;
 
                 //
                 case Seat:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.Seat.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.Seat.getName()));
                     break;
                 case Seat2:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.Seat.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.Seat.getName()));
                     break;
                 case AssessArea:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.AssessArea.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.AssessArea.getName()));
                     break;
                 case AssessPrice:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.AssessPrice.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.AssessPrice.getName()));
                     break;
                 case StatutoryOptimumReimbursement:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.StatutoryOptimumReimbursement.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.StatutoryOptimumReimbursement.getName()));
                     break;
                 case StatutoryOptimumReimbursement3:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.StatutoryOptimumReimbursementOther.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.StatutoryOptimumReimbursementOther.getName()));
                     break;
                 case ownership:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.ownership.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.ownership.getName()));
                     break;
                 case Co_ownership:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.Co_ownership.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.Co_ownership.getName()));
                     break;
                 case RegistrationDate:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.RegistrationDate.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.RegistrationDate.getName()));
                     break;
                 case houseNature:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.houseNature.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.houseNature.getName()));
                     break;
                 case BuildArea:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.BuildArea.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.BuildArea.getName()));
                     break;
                 case CoverArea:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.CoverArea.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.CoverArea.getName()));
                     break;
                 case AttachmentReark:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.AttachmentReark.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.AttachmentReark.getName()));
                     break;
                 case FillingUnit:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.FillingUnit.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.FillingUnit.getName()));
                     break;
                 case estateName:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.estateName.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.estateName.getName()));
                     break;
                 case BeCompletedTimeGetInteger:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.BeCompletedTimeGetInteger.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.BeCompletedTimeGetInteger.getName()));
                     break;
                 case ANALYSIS_CATEGORY_LIQUIDITY3:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.ANALYSIS_CATEGORY_LIQUIDITY.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.ANALYSIS_CATEGORY_LIQUIDITY.getName()));
                     break;
                 case ANALYSIS_CATEGORY_LIQUIDITY2:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.ANALYSIS_CATEGORY_LIQUIDITY.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.ANALYSIS_CATEGORY_LIQUIDITY.getName()));
                     break;
                 case CERT_NAME3:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.CERT_NAME.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.CERT_NAME.getName()));
                     break;
                 case CERT_NAME2:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.CERT_NAME.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.CERT_NAME.getName()));
                     break;
                 case CERT_NAME1:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.CERT_NAME.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.CERT_NAME.getName()));
                     break;
                 case floor:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.floor.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.floor.getName()));
                     break;
                 case floor2:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.floor.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.floor.getName()));
                     break;
                 case floorCount:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.floorCount.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.floorCount.getName()));
                     break;
                 case floorCount2:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.floorCount.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.floorCount.getName()));
                     break;
                 case UsageStatus:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.UsageStatus.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.UsageStatus.getName()));
                     break;
                 case UsageStatus2:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.UsageStatus.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.UsageStatus.getName()));
                     break;
                 case housingStructure:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.housingStructure.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.housingStructure.getName()));
                     break;
                 case housingStructure2:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.housingStructure.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.housingStructure.getName()));
                     break;
                 case StatutoryOptimumReimbursement2:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.StatutoryOptimumReimbursementEngineering.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.StatutoryOptimumReimbursementEngineering.getName()));
                     break;
                 case StatutoryOptimumReimbursement1:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.StatutoryOptimumReimbursementMortgage.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.StatutoryOptimumReimbursementMortgage.getName()));
                     break;
                 case NetAssessmentGroundNum:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.NetAssessmentGroundNum.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.NetAssessmentGroundNum.getName()));
                     break;
                 case LandCertificateField1:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.landNumber.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.landNumber.getName()));
                     break;
                 case LandCertificateField2:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.landownership.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.landownership.getName()));
                     break;
                 case LandCertificateField3:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.landcert_use.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.landcert_use.getName()));
                     break;
                 case LandCertificateField4:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.land_right_nature.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.land_right_nature.getName()));
                     break;
                 case LandCertificateField5:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.landapportionment_area.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.landapportionment_area.getName()));
                     break;
                 case LandArea:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.LandArea.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.LandArea.getName()));
                     break;
                 case LandCertificateField6:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.landendTime.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.landendTime.getName()));
                     break;
                 case LandCertificateField7:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.landregistration_authority.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.landregistration_authority.getName()));
                     break;
                 case LandCertificateField8:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.landregistration_date.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.landregistration_date.getName()));
                     break;
                 case NetAssessmentOther:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.NetAssessmentOther.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.NetAssessmentOther.getName()));
                     break;
                 case Orientation:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.Orientation.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.Orientation.getName()));
                     break;
                 case exteriorWallDecorate:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.exteriorWallDecorate.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.exteriorWallDecorate.getName()));
                     break;
                 case LobbyDecorate:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.LobbyDecorate.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.LobbyDecorate.getName()));
                     break;
                 case LayerNumber:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.LayerNumber.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.LayerNumber.getName()));
                     break;
                 case StoreyHeight:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.StoreyHeight.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.StoreyHeight.getName()));
                     break;
                 case FoundationAndWall:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.FoundationAndWall.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.FoundationAndWall.getName()));
                     break;
                 case JudgeObjectDamagedDegreeField1:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.renovation_condition_door.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.renovation_condition_door.getName()));
                     break;
                 case JudgeObjectDamagedDegreeField2:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.renovation_condition_window.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.renovation_condition_window.getName()));
                     break;
                 case JudgeObjectDamagedDegreeField3:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.renovation_condition_land.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.renovation_condition_land.getName()));
                     break;
                 case JudgeObjectDamagedDegreeField4:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.renovation_condition_wall.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.renovation_condition_wall.getName()));
                     break;
                 case JudgeObjectDamagedDegreeField5:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.renovation_condition_Canopy.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.renovation_condition_Canopy.getName()));
                     break;
                 case JudgeObjectDamagedDegreeField6:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.renovation_condition_bathroom.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.renovation_condition_bathroom.getName()));
                     break;
                 case JudgeObjectDamagedDegreeField7:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.renovation_condition_kitchen.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.renovation_condition_kitchen.getName()));
                     break;
                 case JudgeObjectDamagedDegreeField8:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.renovation_condition_maintenance.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.renovation_condition_maintenance.getName()));
                     break;
                 case JudgeObjectLoactionField1:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.BankGeneralLocation.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.BankGeneralLocation.getName()));
                     break;
                 case JudgeObjectLoactionField2:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.BankGeneralShoppingConditions.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.BankGeneralShoppingConditions.getName()));
                     break;
                 case JudgeObjectLoactionField3:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.Bus_Convenience.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.Bus_Convenience.getName()));
                     break;
                 case JudgeObjectLoactionField4:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.BankGeneralTraffic_accessibility.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.BankGeneralTraffic_accessibility.getName()));
                     break;
                 case JudgeObjectLoactionField5:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.BankGeneralsubway.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.BankGeneralsubway.getName()));
                     break;
                 case JudgeObjectLoactionField6:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.BankGeneralinfrastructure.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.BankGeneralinfrastructure.getName()));
                     break;
                 case JudgeObjectLoactionField6B:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.BankGeneralExternal_facilities.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.BankGeneralExternal_facilities.getName()));
                     break;
                 case JudgeObjectLoactionField7:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.BankGeneraleducational_facility.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.BankGeneraleducational_facility.getName()));
                     break;
                 case JudgeObjectLoactionField8:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.BankGeneralMedical_Facilities.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.BankGeneralMedical_Facilities.getName()));
                     break;
                 case JudgeObjectLoactionField9:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.BankGeneralNatural_environment.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.BankGeneralNatural_environment.getName()));
                     break;
                 case JudgeObjectLoactionField10:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.BankGeneralcultural_environment.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.BankGeneralcultural_environment.getName()));
                     break;
                 case JudgeObjectOtherField1:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.BankGenerallandscape.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.BankGenerallandscape.getName()));
                     break;
                 case JudgeObjectOtherField2:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.BankGeneralFrontage.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.BankGeneralFrontage.getName()));
                     break;
                 case JudgeObjectOtherField3:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.BankGeneralFloorSpacing.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.BankGeneralFloorSpacing.getName()));
                     break;
                 case JudgeObjectOtherField4:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.BankGeneralGreenlandRate.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.BankGeneralGreenlandRate.getName()));
                     break;
                 case JudgeObjectOtherField5:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.BankGeneralBuildingCoverage.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.BankGeneralBuildingCoverage.getName()));
                     break;
                 case JudgeObjectOtherField6:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.BankGeneralParkingLot.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.BankGeneralParkingLot.getName()));
                     break;
                 case JudgeObjectOtherField7:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.BankGeneralPropertyManagement.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.BankGeneralPropertyManagement.getName()));
                     break;
                 case JudgeObjectOtherField8:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.BankGeneralSuccessRate.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.BankGeneralSuccessRate.getName()));
                     break;
                 case HuxingLayout:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.HuxingLayout.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.HuxingLayout.getName()));
                     break;
                 case AversionFacility:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportBankEnum.AversionFacility.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldUniversalBankEnum.AversionFacility.getName()));
                     break;
                 //
 
                 case AssessPriceClassification:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportFieldConstructionBankEnum.AssessPriceClassification.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldJiansheBankEnum.AssessPriceClassification.getName()));
                     break;
                 case SetUse2:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportFieldConstructionBankEnum.SetUse.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldJiansheBankEnum.SetUse.getName()));
                     break;
                 case HotTipBank:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportFieldConstructionBankEnum.HotTipBank.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldJiansheBankEnum.HotTipBank.getName()));
                     break;
                 case ArchivesDepositNumber:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportFieldConstructionBankEnum.ArchivesDepositNumber.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldJiansheBankEnum.ArchivesDepositNumber.getName()));
                     break;
                 case unitType:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportFieldConstructionBankEnum.unitType.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldJiansheBankEnum.unitType.getName()));
                     break;
                 case DecorationStatus:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportFieldConstructionBankEnum.DecorationStatus.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldJiansheBankEnum.DecorationStatus.getName()));
                     break;
                 case CertificationPurpose2:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportFieldConstructionBankEnum.CertificationPurpose.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldJiansheBankEnum.CertificationPurpose.getName()));
                     break;
 
                 //
 
 
                 case District_Analysis:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportField_INDUSTRIAL_AND_COMMERCIAL_BANKEnum.District_Analysis.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldGongshangBankEnum.District_Analysis.getName()));
                     break;
                 case ICBCValuationCaseInformationSheet:
-                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(BaseReportField_INDUSTRIAL_AND_COMMERCIAL_BANKEnum.ICBCValuationCaseInformationSheet.getName()));
+                    biConsumer.accept(appendFun.apply(findName), appendFun.apply(ReportFieldGongshangBankEnum.ICBCValuationCaseInformationSheet.getName()));
                     break;
 
                 //

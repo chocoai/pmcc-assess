@@ -1,16 +1,11 @@
 package com.copower.pmcc.assess.common.enums.report;
 
-import com.copower.pmcc.erp.api.dto.KeyValueDto;
-
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * @Auther: zch
  * @Date: 2019/1/15 14:30
  * @Description:报告模板字段(土地比较法)
  */
-public enum BaseReportFieldLandCompareEnum {
+public enum ReportFieldLandCompareEnum {
     BIDDING_HANGING_CASE("土地比较法招拍挂案例表"),
     REGIONAL_FACTORS("土地比较法相关区域因素"),
     INDIVIDUAL_FACTORS("土地比较法相关个别因素"),
@@ -46,13 +41,13 @@ public enum BaseReportFieldLandCompareEnum {
     private String name;
 
 
-    private BaseReportFieldLandCompareEnum(String name) {
+    private ReportFieldLandCompareEnum(String name) {
         this.name = name;
     }
 
 
-    public static BaseReportFieldLandCompareEnum getEnumByName(String name) {
-        for (BaseReportFieldLandCompareEnum e : BaseReportFieldLandCompareEnum.values()) {
+    public static ReportFieldLandCompareEnum getEnumByName(String name) {
+        for (ReportFieldLandCompareEnum e : ReportFieldLandCompareEnum.values()) {
             if (e.getName().equals(name)) {
                 return e;
             }

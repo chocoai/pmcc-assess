@@ -8,7 +8,7 @@ import com.aspose.words.DocumentBuilder;
 import com.aspose.words.Table;
 import com.copower.pmcc.assess.common.ArithmeticUtils;
 import com.copower.pmcc.assess.common.AsposeUtils;
-import com.copower.pmcc.assess.common.enums.report.BaseReportFieldMdIncomeSelfEnum;
+import com.copower.pmcc.assess.common.enums.report.ReportFieldMdIncomeSelfEnum;
 import com.copower.pmcc.assess.common.enums.DeclareTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
@@ -149,135 +149,135 @@ public class GenerateMdIncomeSelfRunService implements Serializable {
             try {
 
                 //收益法申报产权证类型
-                if (Objects.equal(name, BaseReportFieldMdIncomeSelfEnum.PropertyRightCertificateIncomeLaw.getName())) {
+                if (Objects.equal(name, ReportFieldMdIncomeSelfEnum.PropertyRightCertificateIncomeLaw.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getPropertyRightCertificateIncomeLaw());
                 }
                 //收益法设定用途
-                if (Objects.equal(name, BaseReportFieldMdIncomeSelfEnum.IncomeSetUse.getName())) {
+                if (Objects.equal(name, ReportFieldMdIncomeSelfEnum.IncomeSetUse.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomeSetUse());
                 }
                 //收益法土地终止日期
-                if (Objects.equal(name, BaseReportFieldMdIncomeSelfEnum.TerminationDateLand.getName())) {
+                if (Objects.equal(name, ReportFieldMdIncomeSelfEnum.TerminationDateLand.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getTerminationDateLand());
                 }
                 //收益法剩余土地使用年限
-                if (Objects.equal(name, BaseReportFieldMdIncomeSelfEnum.IncomeSurplusLandUseYear.getName())) {
+                if (Objects.equal(name, ReportFieldMdIncomeSelfEnum.IncomeSurplusLandUseYear.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomeSurplusLandUseYear());
                 }
                 //收益法竣工时间
-                if (Objects.equal(name, BaseReportFieldMdIncomeSelfEnum.IncomeCompletionTime.getName())) {
+                if (Objects.equal(name, ReportFieldMdIncomeSelfEnum.IncomeCompletionTime.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomeCompletionTime());
                 }
                 //收益法价值时点
-                if (Objects.equal(name, BaseReportFieldMdIncomeSelfEnum.IncomeValuePoint.getName())) {
+                if (Objects.equal(name, ReportFieldMdIncomeSelfEnum.IncomeValuePoint.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomeValuePoint());
                 }
                 //收益法已使用年限
-                if (Objects.equal(name, BaseReportFieldMdIncomeSelfEnum.IncomeUsedLife.getName())) {
+                if (Objects.equal(name, ReportFieldMdIncomeSelfEnum.IncomeUsedLife.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomeUsedLife());
                 }
                 //收益法建筑结构类别
-                if (Objects.equal(name, BaseReportFieldMdIncomeSelfEnum.IncomebuildingStructureType.getName())) {
+                if (Objects.equal(name, ReportFieldMdIncomeSelfEnum.IncomebuildingStructureType.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomebuildingStructureType());
                 }
                 //收益法经济耐用年限
-                if (Objects.equal(name, BaseReportFieldMdIncomeSelfEnum.IncomeBuildEconomicLife.getName())) {
+                if (Objects.equal(name, ReportFieldMdIncomeSelfEnum.IncomeBuildEconomicLife.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomeBuildEconomicLife());
                 }
                 //收益法房产剩余年限
-                if (Objects.equal(name, BaseReportFieldMdIncomeSelfEnum.IncomeHouseSurplusYear.getName())) {
+                if (Objects.equal(name, ReportFieldMdIncomeSelfEnum.IncomeHouseSurplusYear.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomeHouseSurplusYear());
                 }
                 //收益法收益年限
-                if (Objects.equal(name, BaseReportFieldMdIncomeSelfEnum.IncomeYears.getName())) {
+                if (Objects.equal(name, ReportFieldMdIncomeSelfEnum.IncomeYears.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomeYears());
                 }
                 //收益法报酬率
-                if (Objects.equal(name, BaseReportFieldMdIncomeSelfEnum.IncomePayBack.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getToolRewardRateIncomeCommon(BaseReportFieldMdIncomeSelfEnum.IncomePayBack));
+                if (Objects.equal(name, ReportFieldMdIncomeSelfEnum.IncomePayBack.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getToolRewardRateIncomeCommon(ReportFieldMdIncomeSelfEnum.IncomePayBack));
                 }
                 //收益法机会成本说明
-                if (Objects.equal(name, BaseReportFieldMdIncomeSelfEnum.IncomeOpportunityCostReamrk.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getToolRewardRateIncomeCommon(BaseReportFieldMdIncomeSelfEnum.IncomeOpportunityCostReamrk));
+                if (Objects.equal(name, ReportFieldMdIncomeSelfEnum.IncomeOpportunityCostReamrk.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getToolRewardRateIncomeCommon(ReportFieldMdIncomeSelfEnum.IncomeOpportunityCostReamrk));
                 }
                 //收益法投资风险补偿
-                if (Objects.equal(name, BaseReportFieldMdIncomeSelfEnum.IncomeRiskCompensation.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getToolRewardRateIncomeCommon(BaseReportFieldMdIncomeSelfEnum.IncomeRiskCompensation));
+                if (Objects.equal(name, ReportFieldMdIncomeSelfEnum.IncomeRiskCompensation.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getToolRewardRateIncomeCommon(ReportFieldMdIncomeSelfEnum.IncomeRiskCompensation));
                 }
                 //收益法管理负担补偿
-                if (Objects.equal(name, BaseReportFieldMdIncomeSelfEnum.IncomeManageCompensation.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getToolRewardRateIncomeCommon(BaseReportFieldMdIncomeSelfEnum.IncomeManageCompensation));
+                if (Objects.equal(name, ReportFieldMdIncomeSelfEnum.IncomeManageCompensation.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getToolRewardRateIncomeCommon(ReportFieldMdIncomeSelfEnum.IncomeManageCompensation));
                 }
                 //收益法缺乏流动性补偿
-                if (Objects.equal(name, BaseReportFieldMdIncomeSelfEnum.IncomeLiquidCompensation.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getToolRewardRateIncomeCommon(BaseReportFieldMdIncomeSelfEnum.IncomeLiquidCompensation));
+                if (Objects.equal(name, ReportFieldMdIncomeSelfEnum.IncomeLiquidCompensation.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getToolRewardRateIncomeCommon(ReportFieldMdIncomeSelfEnum.IncomeLiquidCompensation));
                 }
                 //收益法投资带来的优惠
-                if (Objects.equal(name, BaseReportFieldMdIncomeSelfEnum.IncomeFinancingAdvantage.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getToolRewardRateIncomeCommon(BaseReportFieldMdIncomeSelfEnum.IncomeFinancingAdvantage));
+                if (Objects.equal(name, ReportFieldMdIncomeSelfEnum.IncomeFinancingAdvantage.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getToolRewardRateIncomeCommon(ReportFieldMdIncomeSelfEnum.IncomeFinancingAdvantage));
                 }
                 //收益法区域
-                if (Objects.equal(name, BaseReportFieldMdIncomeSelfEnum.IncomeArea.getName())) {
+                if (Objects.equal(name, ReportFieldMdIncomeSelfEnum.IncomeArea.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomeRegionalCities());
                 }
                 //收益法自营经营情况
-                if (Objects.equal(name, BaseReportFieldMdIncomeSelfEnum.IncomeEngageSituation.getName())) {
+                if (Objects.equal(name, ReportFieldMdIncomeSelfEnum.IncomeEngageSituation.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomeEngageSituation());
                 }
                 //收益法自营经营收支一览表
-                if (Objects.equal(name, BaseReportFieldMdIncomeSelfEnum.IncomeEngageEarningAndOutGeneral.getName())) {
+                if (Objects.equal(name, ReportFieldMdIncomeSelfEnum.IncomeEngageEarningAndOutGeneral.getName())) {
                     generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, getIncomeEngageEarningAndOutGeneral(null));
                 }
                 //收益法自营经营收入一览表
-                if (Objects.equal(name, BaseReportFieldMdIncomeSelfEnum.IncomeEngageEarningGeneral.getName())) {
+                if (Objects.equal(name, ReportFieldMdIncomeSelfEnum.IncomeEngageEarningGeneral.getName())) {
                     generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, getIncomeEngageEarningAndOutGeneral(0));
                 }
                 //收益法自营同档次物业调查表
-                if (Objects.equal(name, BaseReportFieldMdIncomeSelfEnum.IncomeSurveyItems.getName())) {
+                if (Objects.equal(name, ReportFieldMdIncomeSelfEnum.IncomeSurveyItems.getName())) {
                     generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, getIncomeSurveyItems());
                 }
                 //收益法自营经营成本
-                if (Objects.equal(name, BaseReportFieldMdIncomeSelfEnum.IncomeEngageCost.getName())) {
+                if (Objects.equal(name, ReportFieldMdIncomeSelfEnum.IncomeEngageCost.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomeEngageCost());
                 }
                 //收益法自营增值税及附加取值说明
-                if (Objects.equal(name, BaseReportFieldMdIncomeSelfEnum.IncomeOperatingTaxRemark.getName())) {
+                if (Objects.equal(name, ReportFieldMdIncomeSelfEnum.IncomeOperatingTaxRemark.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomeOperatingTaxRemark());
                 }
                 //收益法自营年营运费
-                if (Objects.equal(name, BaseReportFieldMdIncomeSelfEnum.IncomeSelfSupportYearOperating.getName())) {
+                if (Objects.equal(name, ReportFieldMdIncomeSelfEnum.IncomeSelfSupportYearOperating.getName())) {
                     generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, getIncomeSelfSupportYearOperating());
                 }
                 //收益法自营商业利润取值说明
-                if (Objects.equal(name, BaseReportFieldMdIncomeSelfEnum.IncomeOperatingProfitRemark.getName())) {
+                if (Objects.equal(name, ReportFieldMdIncomeSelfEnum.IncomeOperatingProfitRemark.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomeOperatingProfitRemark());
                 }
                 //估价对象运营费用测算汇总表
-                if (Objects.equal(name, BaseReportFieldMdIncomeSelfEnum.IncomeOperatingCalculateCollect.getName())) {
+                if (Objects.equal(name, ReportFieldMdIncomeSelfEnum.IncomeOperatingCalculateCollect.getName())) {
                     generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, getIncomeOperatingCalculateCollect());
                 }
                 //估价对象运营费一览表
-                if (Objects.equal(name, BaseReportFieldMdIncomeSelfEnum.IncomeOperatingGeneral.getName())) {
+                if (Objects.equal(name, ReportFieldMdIncomeSelfEnum.IncomeOperatingGeneral.getName())) {
                     generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, getIncomeOperatingGeneral());
                 }
                 //收益法自营房地产净收益
-                if (Objects.equal(name, BaseReportFieldMdIncomeSelfEnum.IncomeRealtyNetEarning.getName())) {
+                if (Objects.equal(name, ReportFieldMdIncomeSelfEnum.IncomeRealtyNetEarning.getName())) {
                     generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, getIncomeRealtyNetEarning());
                 }
                 //收益法自营增长率
-                if (Objects.equal(name, BaseReportFieldMdIncomeSelfEnum.IncomeRateIncrease.getName())) {
+                if (Objects.equal(name, ReportFieldMdIncomeSelfEnum.IncomeRateIncrease.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomeRateIncrease());
                 }
                 //收益法自营公式计算结果
-                if (Objects.equal(name, BaseReportFieldMdIncomeSelfEnum.IncomeFormulaResult.getName())) {
+                if (Objects.equal(name, ReportFieldMdIncomeSelfEnum.IncomeFormulaResult.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomeFormulaResult(false));
                 }
                 //收益法自营测算价格
-                if (Objects.equal(name, BaseReportFieldMdIncomeSelfEnum.IncomeCalculatePrice.getName())) {
+                if (Objects.equal(name, ReportFieldMdIncomeSelfEnum.IncomeCalculatePrice.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomeFormulaResult(true));
                 }
                 //收益法自营测算公式带值
-                if (Objects.equal(name, BaseReportFieldMdIncomeSelfEnum.IncomeCalculateFormulaValue.getName())) {
+                if (Objects.equal(name, ReportFieldMdIncomeSelfEnum.IncomeCalculateFormulaValue.getName())) {
                     generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, getIncomeCalculateFormulaValue());
                 }
             } catch (Exception e) {
@@ -1254,7 +1254,7 @@ public class GenerateMdIncomeSelfRunService implements Serializable {
      * @param incomeEnum
      * @return
      */
-    public String getToolRewardRateIncomeCommon(BaseReportFieldMdIncomeSelfEnum incomeEnum) throws Exception {
+    public String getToolRewardRateIncomeCommon(ReportFieldMdIncomeSelfEnum incomeEnum) throws Exception {
         StringBuilder builder = new StringBuilder(8);
         ToolRewardRate toolRewardRate = toolRewardRateService.getToolRewardRateById(getMdIncome().getRewardRateId());
         if (toolRewardRate == null) {

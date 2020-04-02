@@ -10,7 +10,7 @@ import com.aspose.words.Table;
 import com.copower.pmcc.assess.common.ArithmeticUtils;
 import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.enums.tool.ToolRewardRateEnum;
-import com.copower.pmcc.assess.common.enums.report.BaseReportFieldMdCostApproachEnum;
+import com.copower.pmcc.assess.common.enums.report.ReportFieldMdCostApproachEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
@@ -125,123 +125,123 @@ public class GenerateMdCostApproachService implements Serializable {
             String name = StringUtils.isNotBlank(bookmarkAndRegex.getChineseName()) ? bookmarkAndRegex.getChineseName() : bookmarkAndRegex.getName();
             try {
                 //设定用途
-                if (Objects.equal(name, BaseReportFieldMdCostApproachEnum.approachSetUse.getName())) {
+                if (Objects.equal(name, ReportFieldMdCostApproachEnum.approachSetUse.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getApproachSetUse());
                 }
                 //区域
-                if (Objects.equal(name, BaseReportFieldMdCostApproachEnum.approachArea.getName())) {
+                if (Objects.equal(name, ReportFieldMdCostApproachEnum.approachArea.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getApproachArea());
                 }
                 //计息周期
-                if (Objects.equal(name, BaseReportFieldMdCostApproachEnum.parcelMachineCycle.getName())) {
+                if (Objects.equal(name, ReportFieldMdCostApproachEnum.parcelMachineCycle.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getParcelMachineCycle());
                 }
                 //逼近法计息利率
-                if (Objects.equal(name, BaseReportFieldMdCostApproachEnum.parcelCalculatedInterest.getName())) {
+                if (Objects.equal(name, ReportFieldMdCostApproachEnum.parcelCalculatedInterest.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getParcelCalculatedInterest());
                 }
                 //逼近法代征地比例
-                if (Objects.equal(name, BaseReportFieldMdCostApproachEnum.parcelLandAcquisitionRatio.getName())) {
+                if (Objects.equal(name, ReportFieldMdCostApproachEnum.parcelLandAcquisitionRatio.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getParcelLandAcquisitionRatio());
                 }
                 //逼近法宗地外开发费用
-                if (Objects.equal(name, BaseReportFieldMdCostApproachEnum.parcelCirculationExpense.getName())) {
+                if (Objects.equal(name, ReportFieldMdCostApproachEnum.parcelCirculationExpense.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getParcelCirculationExpense());
                 }
                 //逼近法宗地内开发费用
-                if (Objects.equal(name, BaseReportFieldMdCostApproachEnum.parcelFlatExpense.getName())) {
+                if (Objects.equal(name, ReportFieldMdCostApproachEnum.parcelFlatExpense.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getParcelFlatExpense());
                 }
                 //逼近法土地增值收益率
-                if (Objects.equal(name, BaseReportFieldMdCostApproachEnum.parcelIncrementalBenefit.getName())) {
+                if (Objects.equal(name, ReportFieldMdCostApproachEnum.parcelIncrementalBenefit.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getParcelIncrementalBenefit());
                 }
                 //逼近法土地使用权价格
-                if (Objects.equal(name, BaseReportFieldMdCostApproachEnum.parcelLandUsePrice.getName())) {
+                if (Objects.equal(name, ReportFieldMdCostApproachEnum.parcelLandUsePrice.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getParcelLandUsePrice());
                 }
                 //逼近法还原率
-                if (Objects.equal(name, BaseReportFieldMdCostApproachEnum.parcelRewardRate.getName())) {
+                if (Objects.equal(name, ReportFieldMdCostApproachEnum.parcelRewardRate.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getParcelRewardRate());
                 }
                 //土地剩余年限
-                if (Objects.equal(name, BaseReportFieldMdCostApproachEnum.parcelLandRemainingYear.getName())) {
+                if (Objects.equal(name, ReportFieldMdCostApproachEnum.parcelLandRemainingYear.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getParcelLandRemainingYear());
                 }
                 //年期修正系数
-                if (Objects.equal(name, BaseReportFieldMdCostApproachEnum.parcelYearFixed.getName())) {
+                if (Objects.equal(name, ReportFieldMdCostApproachEnum.parcelYearFixed.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getParcelYearFixed());
                 }
                 //逼近法个别因素修正系数
-                if (Objects.equal(name, BaseReportFieldMdCostApproachEnum.parcelPlotRatioElementAmend.getName())) {
+                if (Objects.equal(name, ReportFieldMdCostApproachEnum.parcelPlotRatioElementAmend.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getParcelPlotRatioElementAmend());
                 }
                 //逼近法委估宗地单价
-                if (Objects.equal(name, BaseReportFieldMdCostApproachEnum.parcelParcelUnit.getName())) {
+                if (Objects.equal(name, ReportFieldMdCostApproachEnum.parcelParcelUnit.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getParcelParcelUnit());
                 }
                 //逼近法无限年期土地成本价格
-                if (Objects.equal(name, BaseReportFieldMdCostApproachEnum.parcelInfiniteYearLandCostPrice.getName())) {
+                if (Objects.equal(name, ReportFieldMdCostApproachEnum.parcelInfiniteYearLandCostPrice.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getParcelInfiniteYearLandCostPrice());
                 }
                 //逼近法容积率修正系数
-                if (Objects.equal(name, BaseReportFieldMdCostApproachEnum.parcelPlotRatioAmendCoefficient.getName())) {
+                if (Objects.equal(name, ReportFieldMdCostApproachEnum.parcelPlotRatioAmendCoefficient.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getParcelPlotRatioAmendCoefficient());
                 }
                 //逼近法投资利润率
-                if (Objects.equal(name, BaseReportFieldMdCostApproachEnum.parcelInvestProfitMargin.getName())) {
+                if (Objects.equal(name, ReportFieldMdCostApproachEnum.parcelInvestProfitMargin.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getParcelInvestProfitMargin());
                 }
                 //逼近法含代征地每平税费
-                if (Objects.equal(name, BaseReportFieldMdCostApproachEnum.parcelHaveAcquisitionPerTaxes.getName())) {
+                if (Objects.equal(name, ReportFieldMdCostApproachEnum.parcelHaveAcquisitionPerTaxes.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getParcelHaveAcquisitionPerTaxes());
                 }
                 //逼近法土地开发费用
-                if (Objects.equal(name, BaseReportFieldMdCostApproachEnum.parcelLandDevelopmentExpenses.getName())) {
+                if (Objects.equal(name, ReportFieldMdCostApproachEnum.parcelLandDevelopmentExpenses.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getParcelLandDevelopmentExpenses());
                 }
                 //逼近法投资利润
-                if (Objects.equal(name, BaseReportFieldMdCostApproachEnum.parcelInvestProfit.getName())) {
+                if (Objects.equal(name, ReportFieldMdCostApproachEnum.parcelInvestProfit.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getParcelInvestProfit());
                 }
                 //逼近法投资利息
-                if (Objects.equal(name, BaseReportFieldMdCostApproachEnum.parcelInvestInterest.getName())) {
+                if (Objects.equal(name, ReportFieldMdCostApproachEnum.parcelInvestInterest.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getParcelInvestInterest());
                 }
                 //逼近法容积率修正说明
-                if (Objects.equal(name, BaseReportFieldMdCostApproachEnum.parcelPlotRatioAdjustRemark.getName())) {
+                if (Objects.equal(name, ReportFieldMdCostApproachEnum.parcelPlotRatioAdjustRemark.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getParcelPlotRatioAdjustRemark());
                 }
                 //逼近法实际容积率
-                if (Objects.equal(name, BaseReportFieldMdCostApproachEnum.parcelPlotRatioAdjust.getName())) {
+                if (Objects.equal(name, ReportFieldMdCostApproachEnum.parcelPlotRatioAdjust.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getParcelPlotRatioAdjust());
                 }
                 //逼近法不含代征地每平税费
-                if (Objects.equal(name, BaseReportFieldMdCostApproachEnum.parcelHaveNotAcquisitionPerTaxes.getName())) {
+                if (Objects.equal(name, ReportFieldMdCostApproachEnum.parcelHaveNotAcquisitionPerTaxes.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getParcelHaveNotAcquisitionPerTaxes());
                 }
                 //逼近法宗地外开发程度
-                if (Objects.equal(name, BaseReportFieldMdCostApproachEnum.parcelDevelopmentLevelOuter.getName())) {
+                if (Objects.equal(name, ReportFieldMdCostApproachEnum.parcelDevelopmentLevelOuter.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getParcelDevelopmentLevelOuter());
                 }
                 //逼近法宗地内开发程度
-                if (Objects.equal(name, BaseReportFieldMdCostApproachEnum.parcelDevelopmentLevelInner.getName())) {
+                if (Objects.equal(name, ReportFieldMdCostApproachEnum.parcelDevelopmentLevelInner.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getParcelDevelopmentLevelInner());
                 }
                 //逼近法报酬率测算表
-                if (Objects.equal(name, BaseReportFieldMdCostApproachEnum.parcelRewardRatioCalculate.getName())) {
+                if (Objects.equal(name, ReportFieldMdCostApproachEnum.parcelRewardRatioCalculate.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getParcelRewardRatioCalculate());
                 }
                 //逼近法地价因素说明表
-                if (Objects.equal(name, BaseReportFieldMdCostApproachEnum.parcelLandPriceElementExplain.getName())) {
+                if (Objects.equal(name, ReportFieldMdCostApproachEnum.parcelLandPriceElementExplain.getName())) {
                     generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, getParcelLandPriceElementExplainOrCoefficient(false));
                 }
                 //逼近法地价因素系数表
-                if (Objects.equal(name, BaseReportFieldMdCostApproachEnum.parcelLandPriceElementCoefficient.getName())) {
+                if (Objects.equal(name, ReportFieldMdCostApproachEnum.parcelLandPriceElementCoefficient.getName())) {
                     generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, getParcelLandPriceElementExplainOrCoefficient(true));
                 }
                 //逼近法地价因素修正表
-                if (Objects.equal(name, BaseReportFieldMdCostApproachEnum.parcelLandPriceElementAmend.getName())) {
+                if (Objects.equal(name, ReportFieldMdCostApproachEnum.parcelLandPriceElementAmend.getName())) {
                     generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, getParcelLandPriceElementAmend());
                 }
             } catch (Exception e) {
