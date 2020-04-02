@@ -357,7 +357,7 @@ $(function () {
         },
         //根据key获取字典信息
         loadAsyncDataDicByKey: function (key, value, callback, async) {
-            this.loadNewAsyncDataDicByKey(key, value, callback, async,false);
+            this.loadNewAsyncDataDicByKey(key, value, callback, async,true);
         },
         //根据key获取字典信息
         loadNewAsyncDataDicByKey: function (key, value, callback, async, initHtml) {

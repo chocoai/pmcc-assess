@@ -176,7 +176,7 @@ public class MdMarketCompareService {
 
         String setUseFieldType = isLand ? BaseConstant.ASSESS_DATA_SET_USE_FIELD_LAND : BaseConstant.ASSESS_DATA_SET_USE_FIELD_HOUSE;
         List<DataSetUseField> setUseFieldList = getSetUseFieldList(setUseFieldType);
-        if (schemeJudgeObject.getBasicApplyId() != null) {
+        if (schemeJudgeObject.getBasicApplyId() != null && schemeJudgeObject.getBasicApplyId()!= 0) {
             setJudgeCompareItem(areaGroup, schemeJudgeObject, basicApplyService.getByBasicApplyId(schemeJudgeObject.getBasicApplyId()), mdMarketCompare.getId(), setUseFieldList, isLand);
         } else {
             List<BasicApply> basicApplyList = basicApplyService.getListByDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
