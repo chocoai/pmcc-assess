@@ -17,6 +17,7 @@ import com.copower.pmcc.erp.api.dto.SysProjectDto;
 import com.copower.pmcc.erp.api.provider.ErpRpcProjectService;
 import com.copower.pmcc.erp.api.provider.ErpRpcToolsService;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -71,6 +72,9 @@ public class GenerateEvent extends BaseProcessEvent {
                     projectPlan.setFinishDate(new Date());
                     projectPlanService.updateProjectPlan(projectPlan);
                     if (CollectionUtils.isEmpty(reportNumberList)) return;
+                    reportNumberList = LangUtils.filter(reportNumberList, o -> {
+                        return o.getAreaId() > 0;
+                    });
                     String s = StringUtils.join(reportNumberList, ',');
                     sysProjectDto.setProjectDocumentNumber(s);
                     erpRpcProjectService.saveProject(sysProjectDto);
@@ -81,7 +85,7 @@ public class GenerateEvent extends BaseProcessEvent {
                     break;
                 case CLOSE:
                     for (ProjectNumberRecord record : reportNumberList) {
-                        erpRpcToolsService.updateSymbolExamine(applicationConstant.getAppKey(), record.getNumberValue());
+                        erpRpcToolsService.updateSymbolEnable(applicationConstant.getAppKey(), record.getNumberValue());
                     }
                     break;
             }

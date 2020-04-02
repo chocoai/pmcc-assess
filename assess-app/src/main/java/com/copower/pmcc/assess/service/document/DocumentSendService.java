@@ -273,7 +273,6 @@ public class DocumentSendService {
                     textValues.put(item.getName(), jsonObject.getString(item.getName()));
                 }
             }
-
         }
         Map<String, String> textMap = getBaseEnumValue(documentSend.getProjectId());
         textValues.putAll(textMap);
@@ -316,18 +315,18 @@ public class DocumentSendService {
             DocumentTemplate documentTemplate = documentTemplateService.getDocumentTemplate(documentSend.getContractType());
             Map<String, String> document = documentWordUtils.createDocument(documentTemplate, wordValues, sysAttachmentDto);//将文本字段进行替换，并返回相应本地文件路径
             //生成文号
-            String symbolNumber = new String();
-            ProjectInfo projectInfo = projectInfoService.getProjectInfoById(documentSend.getProjectId());
-            AssessProjectTypeEnum assessProjectTypeEnum = AssessProjectTypeEnum.getAssessProjectTypeEnumByKey(documentTemplate.getAssessProjectType());
-            DataNumberRule numberRule = dataNumberRuleDao.getDataNumberRuleById(documentTemplate.getNumbetRuleId());
-            if (numberRule != null) {
-                SysSymbolListDto symbolListDto = projectNumberRecordService.getReportNumber(projectInfo, 0, assessProjectTypeEnum, numberRule.getReportType(), false);
-                symbolNumber = symbolListDto.getSymbol();
-            }
-            //生成二维码
-            String reportQrcodePath = this.getReportQrcode(documentSend, symbolNumber);
-            //替换
-            projectTakeNumberService.replaceDocument(document.get("localFullPath"), symbolNumber, reportQrcodePath);
+//            String symbolNumber = new String();
+//            ProjectInfo projectInfo = projectInfoService.getProjectInfoById(documentSend.getProjectId());
+//            AssessProjectTypeEnum assessProjectTypeEnum = AssessProjectTypeEnum.getAssessProjectTypeEnumByKey(documentTemplate.getAssessProjectType());
+//            DataNumberRule numberRule = dataNumberRuleDao.getDataNumberRuleById(documentTemplate.getNumbetRuleId());
+//            if (numberRule != null) {
+//                SysSymbolListDto symbolListDto = projectNumberRecordService.getReportNumber(projectInfo, 0, assessProjectTypeEnum, numberRule.getReportType(), false);
+//                symbolNumber = symbolListDto.getSymbol();
+//            }
+//            //生成二维码
+//            String reportQrcodePath = this.getReportQrcode(documentSend, symbolNumber);
+//            //替换
+//            projectTakeNumberService.replaceDocument(document.get("localFullPath"), symbolNumber, reportQrcodePath);
             //对Word文件进行格式化操作
             ftpUtilsExtense.uploadFilesToFTP(document.get("ftpPath"), new FileInputStream(document.get("localFullPath")), document.get("ftpFileName"));
         } catch (Exception e) {

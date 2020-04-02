@@ -27,14 +27,12 @@
 
                     <!-- 公共尾部模块引用 -->
                     <div class="col-md-12" style="text-align: center;padding-bottom: 1.25rem">
-
                         <div class="card-body">
-                            <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
+                            <button type="button" id="cancel_btn" class="btn btn-default" onclick="window.close()">
                                 取消
                             </button>
-
-                            <button id="commit_btn" class="btn btn-success" onclick="masterObj.commit();">
-                                提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
+                            <button type="button" id="commit_btn" class="btn btn-primary" style="margin-left: 10px;" onclick="masterObj.commit();">
+                                提交
                             </button>
                         </div>
                     </div>
