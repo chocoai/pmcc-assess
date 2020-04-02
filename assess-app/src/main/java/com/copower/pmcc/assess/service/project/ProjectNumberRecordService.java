@@ -173,16 +173,6 @@ public class ProjectNumberRecordService {
             projectNumberRecord.setNumber(sysSymbolListDto.getSymbolNumber());
             projectNumberRecord.setCreator(commonService.thisUserAccount());
             projectNumberRecordDao.addProjectNumberRecord(projectNumberRecord);
-
-            //更新项目信息中报告文号生成时间
-            if (StringUtils.equals(AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT, baseDataDic.getFieldName())) {
-                projectInfo.setPreauditNumberDate(new Date());
-                projectInfoService.saveProjectInfo(projectInfo);
-            }
-            if (StringUtils.equals(AssessDataDicKeyConstant.REPORT_TYPE_PREAUDIT, baseDataDic.getFieldName())) {
-                projectInfo.setResultNumberDate(new Date());
-                projectInfoService.saveProjectInfo(projectInfo);
-            }
             erpRpcToolsService.updateSymbolExamine(applicationConstant.getAppKey(), sysSymbolListDto.getSymbol());
         }
         return sysSymbolListDto;
