@@ -1123,6 +1123,7 @@
                                     </div>
                                 </div>
                                 <%--餐饮酒店 hotel--%>
+                                <div style="display: none;" class="x_title hotel">住宿</div>
                                 <div style="display: none;" class="row form-group hotel">
                                     <div class="col-md-12">
                                         <div class="form-inline x-valid">
@@ -1213,6 +1214,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div style="display: none;" class="x_title hotel">商业</div>
                                 <div style="display: none;" class="row form-group hotel">
                                     <div class="col-md-12">
                                         <div class="form-inline x-valid">
@@ -1243,17 +1245,24 @@
                                         </div>
                                     </div>
                                 </div>
+                                    <div style="display: none;" class="row form-group hotel">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1">
+                                                    影视厅
+                                                </label>
+                                                <div class="col-sm-3">
+                                                    <input type="text" placeholder="个数" name="televisionHall"
+                                                           data-rule-number='true'
+                                                           class="form-control input-full">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <div style="display: none;" class="x_title hotel">餐饮</div>
                                 <div style="display: none;" class="row form-group hotel">
                                     <div class="col-md-12">
                                         <div class="form-inline x-valid">
-                                            <label class="col-sm-1">
-                                                影视厅
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" placeholder="个数" name="televisionHall"
-                                                       data-rule-number='true'
-                                                       class="form-control input-full">
-                                            </div>
                                             <label class="col-sm-1">
                                                 普通包间
                                             </label>
@@ -1270,12 +1279,6 @@
                                                        data-rule-number='true'
                                                        class="form-control input-full">
                                             </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div style="display: none;" class="row form-group hotel">
-                                    <div class="col-md-12">
-                                        <div class="form-inline x-valid">
                                             <label class="col-sm-1">
                                                 豪华包间
                                             </label>
@@ -1284,6 +1287,12 @@
                                                        data-rule-number='true'
                                                        class="form-control input-full">
                                             </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="display: none;" class="row form-group hotel">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
                                             <label class="col-sm-1">
                                                 餐饮大厅
                                             </label>

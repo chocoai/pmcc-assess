@@ -14,7 +14,7 @@
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
-    <result column="decorate_part" property="decoratePart" jdbcType="VARCHAR" />
+    <result column="location" property="location" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -76,7 +76,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, room_id, house_id, part, material, construction_technology, material_price, remark, 
-    bis_delete, creator, gmt_created, gmt_modified, decorate_part
+    bis_delete, creator, gmt_created, gmt_modified, location
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseRoomDecorateExample" >
     select
@@ -115,12 +115,12 @@
     insert into tb_basic_house_room_decorate (room_id, house_id, part, 
       material, construction_technology, material_price, 
       remark, bis_delete, creator, 
-      gmt_created, gmt_modified, decorate_part
+      gmt_created, gmt_modified, location
       )
     values (#{roomId,jdbcType=INTEGER}, #{houseId,jdbcType=INTEGER}, #{part,jdbcType=INTEGER}, 
       #{material,jdbcType=INTEGER}, #{constructionTechnology,jdbcType=INTEGER}, #{materialPrice,jdbcType=INTEGER}, 
       #{remark,jdbcType=VARCHAR}, #{bisDelete,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{decoratePart,jdbcType=VARCHAR}
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{location,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseRoomDecorate" >
@@ -162,8 +162,8 @@
       <if test="gmtModified != null" >
         gmt_modified,
       </if>
-      <if test="decoratePart != null" >
-        decorate_part,
+      <if test="location != null" >
+        location,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -200,8 +200,8 @@
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="decoratePart != null" >
-        #{decoratePart,jdbcType=VARCHAR},
+      <if test="location != null" >
+        #{location,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -250,8 +250,8 @@
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.decoratePart != null" >
-        decorate_part = #{record.decoratePart,jdbcType=VARCHAR},
+      <if test="record.location != null" >
+        location = #{record.location,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -272,7 +272,7 @@
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      decorate_part = #{record.decoratePart,jdbcType=VARCHAR}
+      location = #{record.location,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -313,8 +313,8 @@
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
-      <if test="decoratePart != null" >
-        decorate_part = #{decoratePart,jdbcType=VARCHAR},
+      <if test="location != null" >
+        location = #{location,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -332,7 +332,7 @@
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      decorate_part = #{decoratePart,jdbcType=VARCHAR}
+      location = #{location,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

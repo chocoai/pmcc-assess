@@ -1555,32 +1555,40 @@ var houseRoomDecorate;
                 $("#" + houseRoomDecorate.prototype.config().frm).find('select.part').empty().html(html).trigger('change');
             });
         },
-        openDecoratePartModal: function (_this) {
-            var data = $(_this).closest('.input-group').find('input[name="decoratePart"]').val();
-            AssessCommon.loadAsyncDataDicByKey(AssessDicKey.examine_house_room_part, '', function (html, resultData) {
-                var target = $("#industrySupplyInfoContainer");
-                target.empty();
+        openLocationModal: function (_this) {
+            var tenementType = houseCommon.houseHuxingForm.find("input[name='tenementType']").val();
+            if(!tenementType){
+                notifyInfo('提示',"请先填写物业类型！");
+            }
+            $("#frmLocation").find(".form-group").attr("style","display:none");
+            $("#frmLocation").find(".common").show();
+            if(tenementType=='住宅'){
+                $("#frmLocation").find(".residence").show();
+            }
+            if(tenementType=='商铺'||tenementType=='商场'){
+                $("#frmLocation").find(".store").show();
+            }
+            if(tenementType=='餐饮酒店'){
+                $("#frmLocation").find(".hotel").show();
+            }
+            if(tenementType=='办公'){
+                $("#frmLocation").find(".work").show();
+            }
+            if(tenementType=='生产'){
+                $("#frmLocation").find(".production").show();
+            }
+            if(tenementType=='仓储'){
+                $("#frmLocation").find(".storage").show();
+            }
 
-                var resultHtml = '<div>';
-                var array = [];
-                if (houseRoomDecorate.prototype.isNotBlank(data)) {
-                    array = data.split(',');
-                }
-                resultHtml += "<div class='form-check' style='justify-content:left'>";
-                $.each(resultData, function (i, item) {
-                    resultHtml += "<label class='form-check-label'>";
-                    resultHtml += "<input class='form-check-input' type='checkbox' name='infrastructure' ";
-                    if ($.inArray(item.name.toString(), array) > -1) {
-                        resultHtml += ' checked="checked" ';
-                    }
-                    resultHtml += 'value="' + item.name + '">';
-                    resultHtml += "<span class='form-check-sign'>" + item.name + "</span>";
-                });
-                resultHtml += "</div>";
-                target.append(resultHtml);
-            }, true);
-
-            $("#divBoxDecoratePart").modal("show");
+            $("#divBoxLocation").clearAll();
+            var value = $('#' + houseRoomDecorate.prototype.config().frm).find("input[name='location']").val();
+            if(houseRoomDecorate.prototype.isNotBlank(value)){
+                var valueArray = value.split(",");
+                var checkboxs = $("#frmLocation").find("input[name='locationCheckBox']");
+                AssessCommon.checkboxToChecked(checkboxs,valueArray);
+            }
+            $("#divBoxLocation").modal("show");
         },
         saveDecoratePart: function () {
             var checkedBoxs = $("#frmDecoratePart").find('input:checkbox:checked');
@@ -1594,6 +1602,14 @@ var houseRoomDecorate;
             })
             $("#" + houseRoomDecorate.prototype.config().frm).find('input[name="decoratePart"]').val(data.join());
             $("#divBoxDecoratePart").modal("hide");
+        },
+        spliceLocation:function () {
+            var value = [];
+            $("#frmLocation").find("input[name='locationCheckBox']:checked").each(function(i){
+                value.push($(this).val());
+            })
+            $("#" + houseRoomDecorate.prototype.config().frm).find("input[name='location']").val(value);
+            $("#divBoxLocation").modal("hide");
         }
     }
 

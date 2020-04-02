@@ -27,7 +27,7 @@ public class BasicHouseRoomDecorate {
 
     private Date gmtModified;
 
-    private String decoratePart;
+    private String location;
 
     public Integer getId() {
         return id;
@@ -125,11 +125,11 @@ public class BasicHouseRoomDecorate {
         this.gmtModified = gmtModified;
     }
 
-    public String getDecoratePart() {
-        return decoratePart;
+    public String getLocation() {
+        return location;
     }
 
-    public void setDecoratePart(String decoratePart) {
-        this.decoratePart = decoratePart == null ? null : decoratePart.trim();
+    public void setLocation(String location) {
+        this.location = location == null ? null : location.trim();
     }
 }

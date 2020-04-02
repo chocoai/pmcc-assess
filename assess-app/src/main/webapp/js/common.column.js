@@ -585,7 +585,7 @@ commonColumn.houseRoomDecorateColumn = function () {
     var cols = [];
     cols.push({
         field: 'name', title: '房间装修部位', formatter: function (value, row, index) {
-            var s = row.decoratePart;
+            var s = row.partName;
             if (row.creatorName) {
                 s += "<span style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</span>"
             }
@@ -593,6 +593,7 @@ commonColumn.houseRoomDecorateColumn = function () {
         }
     });
     cols.push({field: 'materialName', title: '装修材料'});
+    cols.push({field: 'location', title: '所在位置'});
     cols.push({field: 'constructionTechnologyName', title: '施工工艺'});
     cols.push({field: 'materialPriceName', title: '装修材料价格区间'});
     cols.push({field: 'remark', title: '部位描述'});

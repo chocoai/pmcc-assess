@@ -845,73 +845,73 @@ public class BasicHouseRoomDecorateExample {
             return (Criteria) this;
         }
 
-        public Criteria andDecoratePartIsNull() {
-            addCriterion("decorate_part is null");
+        public Criteria andLocationIsNull() {
+            addCriterion("location is null");
             return (Criteria) this;
         }
 
-        public Criteria andDecoratePartIsNotNull() {
-            addCriterion("decorate_part is not null");
+        public Criteria andLocationIsNotNull() {
+            addCriterion("location is not null");
             return (Criteria) this;
         }
 
-        public Criteria andDecoratePartEqualTo(String value) {
-            addCriterion("decorate_part =", value, "decoratePart");
+        public Criteria andLocationEqualTo(String value) {
+            addCriterion("location =", value, "location");
             return (Criteria) this;
         }
 
-        public Criteria andDecoratePartNotEqualTo(String value) {
-            addCriterion("decorate_part <>", value, "decoratePart");
+        public Criteria andLocationNotEqualTo(String value) {
+            addCriterion("location <>", value, "location");
             return (Criteria) this;
         }
 
-        public Criteria andDecoratePartGreaterThan(String value) {
-            addCriterion("decorate_part >", value, "decoratePart");
+        public Criteria andLocationGreaterThan(String value) {
+            addCriterion("location >", value, "location");
             return (Criteria) this;
         }
 
-        public Criteria andDecoratePartGreaterThanOrEqualTo(String value) {
-            addCriterion("decorate_part >=", value, "decoratePart");
+        public Criteria andLocationGreaterThanOrEqualTo(String value) {
+            addCriterion("location >=", value, "location");
             return (Criteria) this;
         }
 
-        public Criteria andDecoratePartLessThan(String value) {
-            addCriterion("decorate_part <", value, "decoratePart");
+        public Criteria andLocationLessThan(String value) {
+            addCriterion("location <", value, "location");
             return (Criteria) this;
         }
 
-        public Criteria andDecoratePartLessThanOrEqualTo(String value) {
-            addCriterion("decorate_part <=", value, "decoratePart");
+        public Criteria andLocationLessThanOrEqualTo(String value) {
+            addCriterion("location <=", value, "location");
             return (Criteria) this;
         }
 
-        public Criteria andDecoratePartLike(String value) {
-            addCriterion("decorate_part like", value, "decoratePart");
+        public Criteria andLocationLike(String value) {
+            addCriterion("location like", value, "location");
             return (Criteria) this;
         }
 
-        public Criteria andDecoratePartNotLike(String value) {
-            addCriterion("decorate_part not like", value, "decoratePart");
+        public Criteria andLocationNotLike(String value) {
+            addCriterion("location not like", value, "location");
             return (Criteria) this;
         }
 
-        public Criteria andDecoratePartIn(List<String> values) {
-            addCriterion("decorate_part in", values, "decoratePart");
+        public Criteria andLocationIn(List<String> values) {
+            addCriterion("location in", values, "location");
             return (Criteria) this;
         }
 
-        public Criteria andDecoratePartNotIn(List<String> values) {
-            addCriterion("decorate_part not in", values, "decoratePart");
+        public Criteria andLocationNotIn(List<String> values) {
+            addCriterion("location not in", values, "location");
             return (Criteria) this;
         }
 
-        public Criteria andDecoratePartBetween(String value1, String value2) {
-            addCriterion("decorate_part between", value1, value2, "decoratePart");
+        public Criteria andLocationBetween(String value1, String value2) {
+            addCriterion("location between", value1, value2, "location");
             return (Criteria) this;
         }
 
-        public Criteria andDecoratePartNotBetween(String value1, String value2) {
-            addCriterion("decorate_part not between", value1, value2, "decoratePart");
+        public Criteria andLocationNotBetween(String value1, String value2) {
+            addCriterion("location not between", value1, value2, "location");
             return (Criteria) this;
         }
     }
