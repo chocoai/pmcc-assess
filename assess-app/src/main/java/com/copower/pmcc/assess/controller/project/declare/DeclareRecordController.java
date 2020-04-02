@@ -41,8 +41,8 @@ public class DeclareRecordController {
 
 
     @RequestMapping(value = "/getDeclareRecordList", method = {RequestMethod.GET}, name = "获取申报记录数据")
-    public BootstrapTableVo getDeclareRecordList(Integer projectId, String name, String seat, Boolean bisPartIn, String province, String city, String district) {
-        return declareRecordService.getDeclareRecordList(projectId, name, seat, bisPartIn, province, city, district);
+    public BootstrapTableVo getDeclareRecordList(Integer projectId, String name, String seat, Boolean bisPartIn, String province, String city, String district,String inventoryStatus) {
+        return declareRecordService.getDeclareRecordList(projectId, name, seat, bisPartIn, province, city, district,inventoryStatus);
     }
 
     @RequestMapping(value = "/addOrRemoveDeclareRecord", name = "添加或移除申报记录数据", method = RequestMethod.POST)

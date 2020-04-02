@@ -178,11 +178,11 @@ public class DeclareRecordService {
         return vo;
     }
 
-    public BootstrapTableVo getDeclareRecordList(Integer projectId, String name, String seat, Boolean bisPartIn, String province, String city, String district) {
+    public BootstrapTableVo getDeclareRecordList(Integer projectId, String name, String seat, Boolean bisPartIn, String province, String city, String district,String inventoryStatus) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<DeclareRecord> declareRecordList = declareRecordDao.getDeclareRecordList(projectId, name, seat, bisPartIn, province, city, district);
+        List<DeclareRecord> declareRecordList = declareRecordDao.getDeclareRecordList(projectId, name, seat, bisPartIn, province, city, district,inventoryStatus);
         List<DeclareRecordVo> vos = LangUtils.transform(declareRecordList, o -> getDeclareRecordVo(o));
         vo.setTotal(page.getTotal());
         vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<DeclareRecordVo>() : vos);
