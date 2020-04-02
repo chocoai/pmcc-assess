@@ -752,6 +752,7 @@
         });
     };
 
+    //认领权证
     assetInfo.selectClaimData = function () {
         var target = assetInfo.handleJquery(assetInfo.declareRecordTable);
         var rows = target.bootstrapTable('getSelections');
@@ -995,7 +996,7 @@
     };
 
     /**
-     *认领权证
+     *添加权证到组中
      */
     assetInfo.selectSurveyAssetInfoGroup = function (groupId) {
         if (!groupId) {
