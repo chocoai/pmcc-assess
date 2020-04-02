@@ -58,7 +58,7 @@ public class ProjectNumberRecordService {
     private CustomProjectNumberRecordMapper customProjectNumberRecordMapper;
 
     public List<String> getReportNumberList(Integer projectId, AssessProjectTypeEnum assessProjectTypeEnum, Integer reportType) {
-        List<ProjectNumberRecord> numberList = getReportNumberRecordList(projectId,assessProjectTypeEnum,reportType);
+        List<ProjectNumberRecord> numberList = getReportNumberRecordList(projectId, assessProjectTypeEnum, reportType);
         List<String> list = LangUtils.transform(numberList, o -> o.getNumberValue());
         return list;
     }
@@ -67,8 +67,10 @@ public class ProjectNumberRecordService {
         ProjectNumberRecord where = new ProjectNumberRecord();
         where.setBisDelete(false);
         where.setProjectId(projectId);
-        where.setAssessProjectType(assessProjectTypeEnum.getKey());
-        where.setReportType(reportType);
+        if (assessProjectTypeEnum != null)
+            where.setAssessProjectType(assessProjectTypeEnum.getKey());
+        if (reportType != null)
+            where.setReportType(reportType);
         List<ProjectNumberRecord> numberList = projectNumberRecordDao.getProjectNumberRecordList(where);
         return numberList;
     }
@@ -152,7 +154,6 @@ public class ProjectNumberRecordService {
                 return sysSymbolListDto;
             }
         }
-        BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(reportType);
         DataNumberRule numberRule = dataNumberRuleService.getDataNumberRule(assessProjectType, reportType);
         if (numberRule == null)
             throw new BusinessException(HttpReturnEnum.NOTFIND.getName());
@@ -216,9 +217,8 @@ public class ProjectNumberRecordService {
         AssessProjectTypeEnum assessProjectTypeEnum = null;
         for (AssessProjectTypeEnum typeEnum : AssessProjectTypeEnum.values()) {
             if (!com.google.common.base.Objects.equal(assessProjectType, typeEnum.getKey())) {
-                continue ;
+                continue;
             }
-
 
 
             assessProjectTypeEnum = typeEnum;
@@ -227,8 +227,7 @@ public class ProjectNumberRecordService {
     }
 
 
-
-    public List<String> getReportNumberByArea(Integer projectId,Integer areaId, Integer reportType) {
+    public List<String> getReportNumberByArea(Integer projectId, Integer areaId, Integer reportType) {
         ProjectNumberRecord where = new ProjectNumberRecord();
         where.setBisDelete(false);
         where.setProjectId(projectId);
@@ -239,7 +238,7 @@ public class ProjectNumberRecordService {
         return list;
     }
 
-    public List<String> getProjectNumberRecordList(ProjectNumberRecord projectNumberRecord){
+    public List<String> getProjectNumberRecordList(ProjectNumberRecord projectNumberRecord) {
         List<ProjectNumberRecord> numberList = projectNumberRecordDao.getProjectNumberRecordList(projectNumberRecord);
         List<String> list = LangUtils.transform(numberList, o -> o.getNumberValue());
         return list;

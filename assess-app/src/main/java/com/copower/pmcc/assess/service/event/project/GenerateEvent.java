@@ -5,14 +5,17 @@ import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectNumberRecord;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlan;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.event.BaseProcessEvent;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectNumberRecordService;
+import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.ProjectPlanService;
 import com.copower.pmcc.bpm.api.dto.model.ProcessExecution;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
+import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.SysProjectDto;
 import com.copower.pmcc.erp.api.provider.ErpRpcProjectService;
 import com.copower.pmcc.erp.api.provider.ErpRpcToolsService;
@@ -37,7 +40,7 @@ import java.util.List;
 @Component
 public class GenerateEvent extends BaseProcessEvent {
     @Autowired
-    private ProjectPlanService projectPlanService;
+    private ProjectPlanDetailsService projectPlanDetailsService;
     @Autowired
     private ProjectInfoService projectInfoService;
     @Autowired
@@ -50,6 +53,8 @@ public class GenerateEvent extends BaseProcessEvent {
     private ErpRpcToolsService erpRpcToolsService;
     @Autowired
     private ApplicationConstant applicationConstant;
+    @Autowired
+    private ProjectPlanService projectPlanService;
 
     @Override
     public void processFinishExecute(ProcessExecution processExecution) throws Exception {
@@ -57,14 +62,15 @@ public class GenerateEvent extends BaseProcessEvent {
         try {
             ProcessStatusEnum processStatusEnum = ProcessStatusEnum.create(processExecution.getProcessStatus().getValue());
             if (processStatusEnum == null) return;
-            ProjectPlan projectPlan = projectPlanService.getProjectplanByProcessInsId(processExecution.getProcessInstanceId());
-            if (projectPlan == null) return;
-            ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlan.getProjectId());
-            SysProjectDto sysProjectDto = erpRpcProjectService.getProjectInfoByProjectId(projectPlan.getProjectId(), BaseConstant.ASSESS_APP_KEY);
+            ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsByProcessInsId(processExecution.getProcessInstanceId());
+            if (projectPlanDetails == null) return;
+            ProjectPlan projectPlan = projectPlanService.getProjectplanById(projectPlanDetails.getPlanId());
+            ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
+            SysProjectDto sysProjectDto = erpRpcProjectService.getProjectInfoByProjectId(projectPlanDetails.getProjectId(), BaseConstant.ASSESS_APP_KEY);
             List<ProjectNumberRecord> reportNumberList = null;
             if (sysProjectDto != null && sysProjectDto.getId() > 0) {
                 sysProjectDto.setStatus(ProjectStatusEnum.FINISH.getKey());
-                reportNumberList = projectNumberRecordService.getReportNumberRecordList(projectPlan.getProjectId(), null, null);
+                reportNumberList = projectNumberRecordService.getReportNumberRecordList(projectPlanDetails.getProjectId(), null, null);
             }
             switch (processStatusEnum) {
                 case FINISH:
@@ -72,9 +78,7 @@ public class GenerateEvent extends BaseProcessEvent {
                     projectPlan.setFinishDate(new Date());
                     projectPlanService.updateProjectPlan(projectPlan);
                     if (CollectionUtils.isEmpty(reportNumberList)) return;
-                    reportNumberList = LangUtils.filter(reportNumberList, o -> {
-                        return o.getAreaId() > 0;
-                    });
+                    reportNumberList = LangUtils.filter(reportNumberList, o -> o.getAreaId() > 0);
                     String s = StringUtils.join(reportNumberList, ',');
                     sysProjectDto.setProjectDocumentNumber(s);
                     erpRpcProjectService.saveProject(sysProjectDto);
@@ -84,15 +88,10 @@ public class GenerateEvent extends BaseProcessEvent {
                     }
                     break;
                 case CLOSE:
-                    for (ProjectNumberRecord record : reportNumberList) {
-                        erpRpcToolsService.updateSymbolEnable(applicationConstant.getAppKey(), record.getNumberValue());
-                    }
                     break;
             }
         } catch (Exception e) {
             baseService.writeExceptionInfo(e, "生成报告Event");
         }
     }
-
-
 }

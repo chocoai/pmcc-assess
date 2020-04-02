@@ -460,6 +460,7 @@ public class BasicApplyBatchController extends BaseController {
         modelAndView.addObject("tbType", basicFormClassifyParamDto.getTbType());
         modelAndView.addObject("formClassify", basicFormClassifyParamDto.getFormClassify());
         modelAndView.addObject("tbId", basicFormClassifyParamDto.getTbId());
+        modelAndView.addObject("formType", BasicApplyTypeEnum.getEnumById(basicFormClassifyParamDto.getFormType()).getKey());
         if (basicFormClassifyParamDto.getApplyBatchId() != null) {
             BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchById(basicFormClassifyParamDto.getApplyBatchId());
             modelAndView.addObject(StringUtils.uncapitalize(BasicApplyBatch.class.getSimpleName()), basicApplyBatch);
