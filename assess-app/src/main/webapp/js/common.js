@@ -202,7 +202,7 @@ $(function () {
                         }
                     },
                     error: function (result) {
-                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                        AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 });
             }
@@ -226,7 +226,7 @@ $(function () {
                         }
                     },
                     error: function (result) {
-                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                        AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 });
             }
@@ -256,7 +256,7 @@ $(function () {
                         }
                     },
                     error: function (result) {
-                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                        AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 });
             }
@@ -288,7 +288,7 @@ $(function () {
                         }
                     },
                     error: function (result) {
-                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                        AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 });
             }
@@ -345,7 +345,7 @@ $(function () {
                         }
                     },
                     error: function (result) {
-                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                        AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 });
             }
@@ -353,10 +353,14 @@ $(function () {
 
         //根据key获取字典信息
         loadDataDicByKey: function (key, value, callback) {
-            AssessCommon.loadAsyncDataDicByKey(key, value, callback, true);
+            this.loadAsyncDataDicByKey(key, value, callback, true);
         },
         //根据key获取字典信息
         loadAsyncDataDicByKey: function (key, value, callback, async) {
+            this.loadNewAsyncDataDicByKey(key, value, callback, async,false);
+        },
+        //根据key获取字典信息
+        loadNewAsyncDataDicByKey: function (key, value, callback, async, initHtml) {
             if (key) {
                 $.ajax({
                     url: getContextPath() + "/baseDataDic/getDataDicListByFieldName",
@@ -368,7 +372,10 @@ $(function () {
                     },
                     success: function (result) {
                         if (result.ret) {
-                            var retHtml = '<option value="" selected>-请选择-</option>';
+                            var retHtml = '';
+                            if (initHtml) {
+                                retHtml += '<option value="" selected>-请选择-</option>';
+                            }
                             $.each(result.data, function (i, item) {
                                 retHtml += '<option key="' + item.fieldName + '" title="' + item.remark + '" value="' + item.id + '"'
                                 if (item.id == value) {
@@ -383,7 +390,7 @@ $(function () {
                         }
                     },
                     error: function (result) {
-                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                        AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 });
             }
@@ -431,7 +438,7 @@ $(function () {
                         }
                     },
                     error: function (result) {
-                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                        AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 });
             }
@@ -542,7 +549,7 @@ $(function () {
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             })
         },
@@ -715,7 +722,7 @@ $(function () {
                             callback();
                     }
                     else {
-                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                        AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 }
             });
@@ -839,7 +846,7 @@ $(function () {
                         }
                     },
                     error: function (result) {
-                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                        AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 });
             }
@@ -862,7 +869,7 @@ $(function () {
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             });
 
@@ -893,7 +900,7 @@ $(function () {
                         }
                     },
                     error: function (result) {
-                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                        AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 });
             }

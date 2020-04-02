@@ -61,7 +61,8 @@ public class SurveyAssetInventoryController {
             //初始状况
             modelAndView.addObject("declareRecord", declareRecord);
             List<SurveyAssetInventoryContent> list = surveyAssetInventoryContentService.initAssetInventoryContentNew(0, projectId, inventoryId, declareRecord);
-            modelAndView.addObject("surveyAssetInventory", new SurveyAssetInventoryVo());
+            SurveyAssetInventoryVo surveyAssetInventoryVo = new SurveyAssetInventoryVo() ;
+            modelAndView.addObject("surveyAssetInventory", surveyAssetInventoryVo);
             List<SurveyAssetInventoryContentVo> surveyAssetInventoryContentVos = surveyAssetInventoryContentService.getVoList(list);
             SysUserDto thisUserInfo = processControllerComponent.getThisUserInfo();
             modelAndView.addObject("thisUserInfo", thisUserInfo);    //当前操作用户信息

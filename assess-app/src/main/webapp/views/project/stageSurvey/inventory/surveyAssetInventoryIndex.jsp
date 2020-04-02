@@ -725,18 +725,18 @@
             });
 
         });
-        AssessCommon.loadDataDicByKey(AssessDicKey.projectSurveyInventoryContentDefaultAffected, data.affected, function (html, item) {
+        AssessCommon.loadNewAsyncDataDicByKey(AssessDicKey.projectSurveyInventoryContentDefaultAffected, data.affected, function (html, item) {
             frm.find("select[name='affected']").empty().html(html).trigger('change');
             if (data.affected) {
                 frm.find("select[name='affected']").val(data.affected.split(",")).trigger('change');
             }
-        });
-        AssessCommon.loadDataDicByKey(AssessDicKey.projectSurveyInventoryContentDefaultInfluenceFactor, data.influenceFactor, function (html, item) {
+        },true,false);
+        AssessCommon.loadNewAsyncDataDicByKey(AssessDicKey.projectSurveyInventoryContentDefaultInfluenceFactor, data.influenceFactor, function (html, item) {
             frm.find("select[name='influenceFactor']").empty().html(html);
             if (data.influenceFactor) {
                 frm.find("select[name='influenceFactor']").val(data.influenceFactor.split(",")).trigger('change');
             }
-        });
+        },true,false);
         frm.find("select[name='influenceFactor']").change(function () {
             var ids = $(this).val();
             if (!ids) {
@@ -1258,7 +1258,7 @@
                     survey.initSurveyAssetInventoryForm(data);
                 });
             } else {
-                survey.initSurveyAssetInventoryForm({});
+                survey.initSurveyAssetInventoryForm({checkDate:new Date()});
             }
         }
         showLimit();
