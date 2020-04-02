@@ -556,8 +556,8 @@ commonColumn.houseRoomColumn = function () {
     cols.push({
         field: 'name', title: '名称', formatter: function (value, row, index) {
             var s = "";
-            if (row.roomType) {
-                s += row.roomType;
+            if (row.name) {
+                s += row.name;
             }
             if (row.creatorName) {
                 s += "<span style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</span>"
@@ -566,10 +566,12 @@ commonColumn.houseRoomColumn = function () {
         }
     });
     cols.push({field: 'area', title: '面积'});
-    cols.push({field: 'layerHeight', title: '层高(m)'});
-    cols.push({field: 'clearHeight', title: '净高(m)'});
-    cols.push({field: 'opening', title: '开间/宽(m)'});
-    cols.push({field: 'depth', title: '进深/长(m)'});
+    cols.push({field: 'layerHeight', title: '层高'});
+    cols.push({field: 'clearHeight', title: '净高'});
+    cols.push({field: 'opening', title: '开间'});
+    cols.push({field: 'depth', title: '进深'});
+    cols.push({field: 'length', title: '长度'});
+    cols.push({field: 'width', title: '宽度'});
     cols.push({field: 'sunshine', title: '日照'});
     cols.push({field: 'lighting', title: '采光'});
     cols.push({field: 'aeration', title: '通风'});

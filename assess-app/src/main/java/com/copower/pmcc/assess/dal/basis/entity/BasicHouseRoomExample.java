@@ -1355,6 +1355,846 @@ public class BasicHouseRoomExample {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
             return (Criteria) this;
         }
+
+        public Criteria andHouseShapeIsNull() {
+            addCriterion("house_shape is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseShapeIsNotNull() {
+            addCriterion("house_shape is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseShapeEqualTo(String value) {
+            addCriterion("house_shape =", value, "houseShape");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseShapeNotEqualTo(String value) {
+            addCriterion("house_shape <>", value, "houseShape");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseShapeGreaterThan(String value) {
+            addCriterion("house_shape >", value, "houseShape");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseShapeGreaterThanOrEqualTo(String value) {
+            addCriterion("house_shape >=", value, "houseShape");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseShapeLessThan(String value) {
+            addCriterion("house_shape <", value, "houseShape");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseShapeLessThanOrEqualTo(String value) {
+            addCriterion("house_shape <=", value, "houseShape");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseShapeLike(String value) {
+            addCriterion("house_shape like", value, "houseShape");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseShapeNotLike(String value) {
+            addCriterion("house_shape not like", value, "houseShape");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseShapeIn(List<String> values) {
+            addCriterion("house_shape in", values, "houseShape");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseShapeNotIn(List<String> values) {
+            addCriterion("house_shape not in", values, "houseShape");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseShapeBetween(String value1, String value2) {
+            addCriterion("house_shape between", value1, value2, "houseShape");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseShapeNotBetween(String value1, String value2) {
+            addCriterion("house_shape not between", value1, value2, "houseShape");
+            return (Criteria) this;
+        }
+
+        public Criteria andLengthIsNull() {
+            addCriterion("length is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLengthIsNotNull() {
+            addCriterion("length is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLengthEqualTo(String value) {
+            addCriterion("length =", value, "length");
+            return (Criteria) this;
+        }
+
+        public Criteria andLengthNotEqualTo(String value) {
+            addCriterion("length <>", value, "length");
+            return (Criteria) this;
+        }
+
+        public Criteria andLengthGreaterThan(String value) {
+            addCriterion("length >", value, "length");
+            return (Criteria) this;
+        }
+
+        public Criteria andLengthGreaterThanOrEqualTo(String value) {
+            addCriterion("length >=", value, "length");
+            return (Criteria) this;
+        }
+
+        public Criteria andLengthLessThan(String value) {
+            addCriterion("length <", value, "length");
+            return (Criteria) this;
+        }
+
+        public Criteria andLengthLessThanOrEqualTo(String value) {
+            addCriterion("length <=", value, "length");
+            return (Criteria) this;
+        }
+
+        public Criteria andLengthLike(String value) {
+            addCriterion("length like", value, "length");
+            return (Criteria) this;
+        }
+
+        public Criteria andLengthNotLike(String value) {
+            addCriterion("length not like", value, "length");
+            return (Criteria) this;
+        }
+
+        public Criteria andLengthIn(List<String> values) {
+            addCriterion("length in", values, "length");
+            return (Criteria) this;
+        }
+
+        public Criteria andLengthNotIn(List<String> values) {
+            addCriterion("length not in", values, "length");
+            return (Criteria) this;
+        }
+
+        public Criteria andLengthBetween(String value1, String value2) {
+            addCriterion("length between", value1, value2, "length");
+            return (Criteria) this;
+        }
+
+        public Criteria andLengthNotBetween(String value1, String value2) {
+            addCriterion("length not between", value1, value2, "length");
+            return (Criteria) this;
+        }
+
+        public Criteria andWidthIsNull() {
+            addCriterion("width is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWidthIsNotNull() {
+            addCriterion("width is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWidthEqualTo(String value) {
+            addCriterion("width =", value, "width");
+            return (Criteria) this;
+        }
+
+        public Criteria andWidthNotEqualTo(String value) {
+            addCriterion("width <>", value, "width");
+            return (Criteria) this;
+        }
+
+        public Criteria andWidthGreaterThan(String value) {
+            addCriterion("width >", value, "width");
+            return (Criteria) this;
+        }
+
+        public Criteria andWidthGreaterThanOrEqualTo(String value) {
+            addCriterion("width >=", value, "width");
+            return (Criteria) this;
+        }
+
+        public Criteria andWidthLessThan(String value) {
+            addCriterion("width <", value, "width");
+            return (Criteria) this;
+        }
+
+        public Criteria andWidthLessThanOrEqualTo(String value) {
+            addCriterion("width <=", value, "width");
+            return (Criteria) this;
+        }
+
+        public Criteria andWidthLike(String value) {
+            addCriterion("width like", value, "width");
+            return (Criteria) this;
+        }
+
+        public Criteria andWidthNotLike(String value) {
+            addCriterion("width not like", value, "width");
+            return (Criteria) this;
+        }
+
+        public Criteria andWidthIn(List<String> values) {
+            addCriterion("width in", values, "width");
+            return (Criteria) this;
+        }
+
+        public Criteria andWidthNotIn(List<String> values) {
+            addCriterion("width not in", values, "width");
+            return (Criteria) this;
+        }
+
+        public Criteria andWidthBetween(String value1, String value2) {
+            addCriterion("width between", value1, value2, "width");
+            return (Criteria) this;
+        }
+
+        public Criteria andWidthNotBetween(String value1, String value2) {
+            addCriterion("width not between", value1, value2, "width");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdjacentPositionIsNull() {
+            addCriterion("adjacent_position is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdjacentPositionIsNotNull() {
+            addCriterion("adjacent_position is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdjacentPositionEqualTo(String value) {
+            addCriterion("adjacent_position =", value, "adjacentPosition");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdjacentPositionNotEqualTo(String value) {
+            addCriterion("adjacent_position <>", value, "adjacentPosition");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdjacentPositionGreaterThan(String value) {
+            addCriterion("adjacent_position >", value, "adjacentPosition");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdjacentPositionGreaterThanOrEqualTo(String value) {
+            addCriterion("adjacent_position >=", value, "adjacentPosition");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdjacentPositionLessThan(String value) {
+            addCriterion("adjacent_position <", value, "adjacentPosition");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdjacentPositionLessThanOrEqualTo(String value) {
+            addCriterion("adjacent_position <=", value, "adjacentPosition");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdjacentPositionLike(String value) {
+            addCriterion("adjacent_position like", value, "adjacentPosition");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdjacentPositionNotLike(String value) {
+            addCriterion("adjacent_position not like", value, "adjacentPosition");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdjacentPositionIn(List<String> values) {
+            addCriterion("adjacent_position in", values, "adjacentPosition");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdjacentPositionNotIn(List<String> values) {
+            addCriterion("adjacent_position not in", values, "adjacentPosition");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdjacentPositionBetween(String value1, String value2) {
+            addCriterion("adjacent_position between", value1, value2, "adjacentPosition");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdjacentPositionNotBetween(String value1, String value2) {
+            addCriterion("adjacent_position not between", value1, value2, "adjacentPosition");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistanceIsNull() {
+            addCriterion("distance is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistanceIsNotNull() {
+            addCriterion("distance is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistanceEqualTo(String value) {
+            addCriterion("distance =", value, "distance");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistanceNotEqualTo(String value) {
+            addCriterion("distance <>", value, "distance");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistanceGreaterThan(String value) {
+            addCriterion("distance >", value, "distance");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistanceGreaterThanOrEqualTo(String value) {
+            addCriterion("distance >=", value, "distance");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistanceLessThan(String value) {
+            addCriterion("distance <", value, "distance");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistanceLessThanOrEqualTo(String value) {
+            addCriterion("distance <=", value, "distance");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistanceLike(String value) {
+            addCriterion("distance like", value, "distance");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistanceNotLike(String value) {
+            addCriterion("distance not like", value, "distance");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistanceIn(List<String> values) {
+            addCriterion("distance in", values, "distance");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistanceNotIn(List<String> values) {
+            addCriterion("distance not in", values, "distance");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistanceBetween(String value1, String value2) {
+            addCriterion("distance between", value1, value2, "distance");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistanceNotBetween(String value1, String value2) {
+            addCriterion("distance not between", value1, value2, "distance");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpanLengthIsNull() {
+            addCriterion("span_length is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpanLengthIsNotNull() {
+            addCriterion("span_length is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpanLengthEqualTo(String value) {
+            addCriterion("span_length =", value, "spanLength");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpanLengthNotEqualTo(String value) {
+            addCriterion("span_length <>", value, "spanLength");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpanLengthGreaterThan(String value) {
+            addCriterion("span_length >", value, "spanLength");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpanLengthGreaterThanOrEqualTo(String value) {
+            addCriterion("span_length >=", value, "spanLength");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpanLengthLessThan(String value) {
+            addCriterion("span_length <", value, "spanLength");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpanLengthLessThanOrEqualTo(String value) {
+            addCriterion("span_length <=", value, "spanLength");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpanLengthLike(String value) {
+            addCriterion("span_length like", value, "spanLength");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpanLengthNotLike(String value) {
+            addCriterion("span_length not like", value, "spanLength");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpanLengthIn(List<String> values) {
+            addCriterion("span_length in", values, "spanLength");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpanLengthNotIn(List<String> values) {
+            addCriterion("span_length not in", values, "spanLength");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpanLengthBetween(String value1, String value2) {
+            addCriterion("span_length between", value1, value2, "spanLength");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpanLengthNotBetween(String value1, String value2) {
+            addCriterion("span_length not between", value1, value2, "spanLength");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardSpanIsNull() {
+            addCriterion("standard_span is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardSpanIsNotNull() {
+            addCriterion("standard_span is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardSpanEqualTo(String value) {
+            addCriterion("standard_span =", value, "standardSpan");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardSpanNotEqualTo(String value) {
+            addCriterion("standard_span <>", value, "standardSpan");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardSpanGreaterThan(String value) {
+            addCriterion("standard_span >", value, "standardSpan");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardSpanGreaterThanOrEqualTo(String value) {
+            addCriterion("standard_span >=", value, "standardSpan");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardSpanLessThan(String value) {
+            addCriterion("standard_span <", value, "standardSpan");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardSpanLessThanOrEqualTo(String value) {
+            addCriterion("standard_span <=", value, "standardSpan");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardSpanLike(String value) {
+            addCriterion("standard_span like", value, "standardSpan");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardSpanNotLike(String value) {
+            addCriterion("standard_span not like", value, "standardSpan");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardSpanIn(List<String> values) {
+            addCriterion("standard_span in", values, "standardSpan");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardSpanNotIn(List<String> values) {
+            addCriterion("standard_span not in", values, "standardSpan");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardSpanBetween(String value1, String value2) {
+            addCriterion("standard_span between", value1, value2, "standardSpan");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardSpanNotBetween(String value1, String value2) {
+            addCriterion("standard_span not between", value1, value2, "standardSpan");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaxSpanIsNull() {
+            addCriterion("max_span is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaxSpanIsNotNull() {
+            addCriterion("max_span is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaxSpanEqualTo(String value) {
+            addCriterion("max_span =", value, "maxSpan");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaxSpanNotEqualTo(String value) {
+            addCriterion("max_span <>", value, "maxSpan");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaxSpanGreaterThan(String value) {
+            addCriterion("max_span >", value, "maxSpan");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaxSpanGreaterThanOrEqualTo(String value) {
+            addCriterion("max_span >=", value, "maxSpan");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaxSpanLessThan(String value) {
+            addCriterion("max_span <", value, "maxSpan");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaxSpanLessThanOrEqualTo(String value) {
+            addCriterion("max_span <=", value, "maxSpan");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaxSpanLike(String value) {
+            addCriterion("max_span like", value, "maxSpan");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaxSpanNotLike(String value) {
+            addCriterion("max_span not like", value, "maxSpan");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaxSpanIn(List<String> values) {
+            addCriterion("max_span in", values, "maxSpan");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaxSpanNotIn(List<String> values) {
+            addCriterion("max_span not in", values, "maxSpan");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaxSpanBetween(String value1, String value2) {
+            addCriterion("max_span between", value1, value2, "maxSpan");
+            return (Criteria) this;
+        }
+
+        public Criteria andMaxSpanNotBetween(String value1, String value2) {
+            addCriterion("max_span not between", value1, value2, "maxSpan");
+            return (Criteria) this;
+        }
+
+        public Criteria andMinSpanIsNull() {
+            addCriterion("min_span is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMinSpanIsNotNull() {
+            addCriterion("min_span is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMinSpanEqualTo(String value) {
+            addCriterion("min_span =", value, "minSpan");
+            return (Criteria) this;
+        }
+
+        public Criteria andMinSpanNotEqualTo(String value) {
+            addCriterion("min_span <>", value, "minSpan");
+            return (Criteria) this;
+        }
+
+        public Criteria andMinSpanGreaterThan(String value) {
+            addCriterion("min_span >", value, "minSpan");
+            return (Criteria) this;
+        }
+
+        public Criteria andMinSpanGreaterThanOrEqualTo(String value) {
+            addCriterion("min_span >=", value, "minSpan");
+            return (Criteria) this;
+        }
+
+        public Criteria andMinSpanLessThan(String value) {
+            addCriterion("min_span <", value, "minSpan");
+            return (Criteria) this;
+        }
+
+        public Criteria andMinSpanLessThanOrEqualTo(String value) {
+            addCriterion("min_span <=", value, "minSpan");
+            return (Criteria) this;
+        }
+
+        public Criteria andMinSpanLike(String value) {
+            addCriterion("min_span like", value, "minSpan");
+            return (Criteria) this;
+        }
+
+        public Criteria andMinSpanNotLike(String value) {
+            addCriterion("min_span not like", value, "minSpan");
+            return (Criteria) this;
+        }
+
+        public Criteria andMinSpanIn(List<String> values) {
+            addCriterion("min_span in", values, "minSpan");
+            return (Criteria) this;
+        }
+
+        public Criteria andMinSpanNotIn(List<String> values) {
+            addCriterion("min_span not in", values, "minSpan");
+            return (Criteria) this;
+        }
+
+        public Criteria andMinSpanBetween(String value1, String value2) {
+            addCriterion("min_span between", value1, value2, "minSpan");
+            return (Criteria) this;
+        }
+
+        public Criteria andMinSpanNotBetween(String value1, String value2) {
+            addCriterion("min_span not between", value1, value2, "minSpan");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardMeasureIsNull() {
+            addCriterion("standard_measure is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardMeasureIsNotNull() {
+            addCriterion("standard_measure is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardMeasureEqualTo(String value) {
+            addCriterion("standard_measure =", value, "standardMeasure");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardMeasureNotEqualTo(String value) {
+            addCriterion("standard_measure <>", value, "standardMeasure");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardMeasureGreaterThan(String value) {
+            addCriterion("standard_measure >", value, "standardMeasure");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardMeasureGreaterThanOrEqualTo(String value) {
+            addCriterion("standard_measure >=", value, "standardMeasure");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardMeasureLessThan(String value) {
+            addCriterion("standard_measure <", value, "standardMeasure");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardMeasureLessThanOrEqualTo(String value) {
+            addCriterion("standard_measure <=", value, "standardMeasure");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardMeasureLike(String value) {
+            addCriterion("standard_measure like", value, "standardMeasure");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardMeasureNotLike(String value) {
+            addCriterion("standard_measure not like", value, "standardMeasure");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardMeasureIn(List<String> values) {
+            addCriterion("standard_measure in", values, "standardMeasure");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardMeasureNotIn(List<String> values) {
+            addCriterion("standard_measure not in", values, "standardMeasure");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardMeasureBetween(String value1, String value2) {
+            addCriterion("standard_measure between", value1, value2, "standardMeasure");
+            return (Criteria) this;
+        }
+
+        public Criteria andStandardMeasureNotBetween(String value1, String value2) {
+            addCriterion("standard_measure not between", value1, value2, "standardMeasure");
+            return (Criteria) this;
+        }
+
+        public Criteria andStorageRequestIsNull() {
+            addCriterion("storage_request is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStorageRequestIsNotNull() {
+            addCriterion("storage_request is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStorageRequestEqualTo(String value) {
+            addCriterion("storage_request =", value, "storageRequest");
+            return (Criteria) this;
+        }
+
+        public Criteria andStorageRequestNotEqualTo(String value) {
+            addCriterion("storage_request <>", value, "storageRequest");
+            return (Criteria) this;
+        }
+
+        public Criteria andStorageRequestGreaterThan(String value) {
+            addCriterion("storage_request >", value, "storageRequest");
+            return (Criteria) this;
+        }
+
+        public Criteria andStorageRequestGreaterThanOrEqualTo(String value) {
+            addCriterion("storage_request >=", value, "storageRequest");
+            return (Criteria) this;
+        }
+
+        public Criteria andStorageRequestLessThan(String value) {
+            addCriterion("storage_request <", value, "storageRequest");
+            return (Criteria) this;
+        }
+
+        public Criteria andStorageRequestLessThanOrEqualTo(String value) {
+            addCriterion("storage_request <=", value, "storageRequest");
+            return (Criteria) this;
+        }
+
+        public Criteria andStorageRequestLike(String value) {
+            addCriterion("storage_request like", value, "storageRequest");
+            return (Criteria) this;
+        }
+
+        public Criteria andStorageRequestNotLike(String value) {
+            addCriterion("storage_request not like", value, "storageRequest");
+            return (Criteria) this;
+        }
+
+        public Criteria andStorageRequestIn(List<String> values) {
+            addCriterion("storage_request in", values, "storageRequest");
+            return (Criteria) this;
+        }
+
+        public Criteria andStorageRequestNotIn(List<String> values) {
+            addCriterion("storage_request not in", values, "storageRequest");
+            return (Criteria) this;
+        }
+
+        public Criteria andStorageRequestBetween(String value1, String value2) {
+            addCriterion("storage_request between", value1, value2, "storageRequest");
+            return (Criteria) this;
+        }
+
+        public Criteria andStorageRequestNotBetween(String value1, String value2) {
+            addCriterion("storage_request not between", value1, value2, "storageRequest");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpanNumIsNull() {
+            addCriterion("span_num is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpanNumIsNotNull() {
+            addCriterion("span_num is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpanNumEqualTo(String value) {
+            addCriterion("span_num =", value, "spanNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpanNumNotEqualTo(String value) {
+            addCriterion("span_num <>", value, "spanNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpanNumGreaterThan(String value) {
+            addCriterion("span_num >", value, "spanNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpanNumGreaterThanOrEqualTo(String value) {
+            addCriterion("span_num >=", value, "spanNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpanNumLessThan(String value) {
+            addCriterion("span_num <", value, "spanNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpanNumLessThanOrEqualTo(String value) {
+            addCriterion("span_num <=", value, "spanNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpanNumLike(String value) {
+            addCriterion("span_num like", value, "spanNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpanNumNotLike(String value) {
+            addCriterion("span_num not like", value, "spanNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpanNumIn(List<String> values) {
+            addCriterion("span_num in", values, "spanNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpanNumNotIn(List<String> values) {
+            addCriterion("span_num not in", values, "spanNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpanNumBetween(String value1, String value2) {
+            addCriterion("span_num between", value1, value2, "spanNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpanNumNotBetween(String value1, String value2) {
+            addCriterion("span_num not between", value1, value2, "spanNum");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

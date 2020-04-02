@@ -42,6 +42,30 @@ public class BasicHouseRoom {
 
     private Date gmtModified;
 
+    private String houseShape;
+
+    private String length;
+
+    private String width;
+
+    private String adjacentPosition;
+
+    private String distance;
+
+    private String spanLength;
+
+    private String standardSpan;
+
+    private String maxSpan;
+
+    private String minSpan;
+
+    private String standardMeasure;
+
+    private String storageRequest;
+
+    private String spanNum;
+
     public Integer getId() {
         return id;
     }
@@ -192,5 +216,101 @@ public class BasicHouseRoom {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getHouseShape() {
+        return houseShape;
+    }
+
+    public void setHouseShape(String houseShape) {
+        this.houseShape = houseShape == null ? null : houseShape.trim();
+    }
+
+    public String getLength() {
+        return length;
+    }
+
+    public void setLength(String length) {
+        this.length = length == null ? null : length.trim();
+    }
+
+    public String getWidth() {
+        return width;
+    }
+
+    public void setWidth(String width) {
+        this.width = width == null ? null : width.trim();
+    }
+
+    public String getAdjacentPosition() {
+        return adjacentPosition;
+    }
+
+    public void setAdjacentPosition(String adjacentPosition) {
+        this.adjacentPosition = adjacentPosition == null ? null : adjacentPosition.trim();
+    }
+
+    public String getDistance() {
+        return distance;
+    }
+
+    public void setDistance(String distance) {
+        this.distance = distance == null ? null : distance.trim();
+    }
+
+    public String getSpanLength() {
+        return spanLength;
+    }
+
+    public void setSpanLength(String spanLength) {
+        this.spanLength = spanLength == null ? null : spanLength.trim();
+    }
+
+    public String getStandardSpan() {
+        return standardSpan;
+    }
+
+    public void setStandardSpan(String standardSpan) {
+        this.standardSpan = standardSpan == null ? null : standardSpan.trim();
+    }
+
+    public String getMaxSpan() {
+        return maxSpan;
+    }
+
+    public void setMaxSpan(String maxSpan) {
+        this.maxSpan = maxSpan == null ? null : maxSpan.trim();
+    }
+
+    public String getMinSpan() {
+        return minSpan;
+    }
+
+    public void setMinSpan(String minSpan) {
+        this.minSpan = minSpan == null ? null : minSpan.trim();
+    }
+
+    public String getStandardMeasure() {
+        return standardMeasure;
+    }
+
+    public void setStandardMeasure(String standardMeasure) {
+        this.standardMeasure = standardMeasure == null ? null : standardMeasure.trim();
+    }
+
+    public String getStorageRequest() {
+        return storageRequest;
+    }
+
+    public void setStorageRequest(String storageRequest) {
+        this.storageRequest = storageRequest == null ? null : storageRequest.trim();
+    }
+
+    public String getSpanNum() {
+        return spanNum;
+    }
+
+    public void setSpanNum(String spanNum) {
+        this.spanNum = spanNum == null ? null : spanNum.trim();
     }
 }

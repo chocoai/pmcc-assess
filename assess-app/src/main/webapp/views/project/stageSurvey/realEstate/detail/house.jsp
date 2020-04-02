@@ -65,11 +65,7 @@
                                                 <div class="col-sm-3">
                                                     <div id="_house_huxing_plan"></div>
                                                 </div>
-                                                <div class="col-sm-3">
-                                                    <div class="btn btn-success btn-sm" onclick="houseHuxingPriceDetail.prototype.showTableModel(this)">
-                                                        单价调查
-                                                    </div>
-                                                </div>
+
                                             </div>
                                         </div>
                                     </div>

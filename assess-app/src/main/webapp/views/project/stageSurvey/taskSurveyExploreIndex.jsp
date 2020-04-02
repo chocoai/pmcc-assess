@@ -989,7 +989,7 @@ console.log(typeHtml)
         url += 'applyBatchId=' + $("#basicBatchApplyFrm").find('[name=id]').val();
         url += '&formClassify=' + classify;
         url += '&formType=' + formType;
-        url += '&tableId=' + node.tableId;
+        url += '&tbId=' + node.tableId;
         url += '&tbType=' + node.type;
         url += '&tableName=' + node.tableName;
         url += '&planDetailsId=${projectPlanDetails.id}';

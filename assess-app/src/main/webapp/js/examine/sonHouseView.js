@@ -140,7 +140,7 @@ var houseHuxingPrice;
                 },
                 error: function (result, status, e) {
                     Loading.progressHide();
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result);
                 }
             });
         }
@@ -1555,7 +1555,7 @@ var houseRoomDecorate;
                 $("#" + houseRoomDecorate.prototype.config().frm).find('select.part').empty().html(html).trigger('change');
             });
         },
-        openDecoratePartModal: function(_this){
+        openDecoratePartModal: function (_this) {
             var data = $(_this).closest('.input-group').find('input[name="decoratePart"]').val();
             AssessCommon.loadAsyncDataDicByKey(AssessDicKey.examine_house_room_part, '', function (html, resultData) {
                 var target = $("#industrySupplyInfoContainer");
@@ -1563,9 +1563,9 @@ var houseRoomDecorate;
 
                 var resultHtml = '<div>';
                 var array = [];
-                    if (houseRoomDecorate.prototype.isNotBlank(data)) {
-                        array = data.split(',');
-                    }
+                if (houseRoomDecorate.prototype.isNotBlank(data)) {
+                    array = data.split(',');
+                }
                 resultHtml += "<div class='form-check' style='justify-content:left'>";
                 $.each(resultData, function (i, item) {
                     resultHtml += "<label class='form-check-label'>";
@@ -1582,10 +1582,10 @@ var houseRoomDecorate;
 
             $("#divBoxDecoratePart").modal("show");
         },
-        saveDecoratePart : function () {
+        saveDecoratePart: function () {
             var checkedBoxs = $("#frmDecoratePart").find('input:checkbox:checked');
             if (checkedBoxs.length <= 0) {
-                notifyInfo('提示','至少选择一个');
+                notifyInfo('提示', '至少选择一个');
                 return false;
             }
             var data = [];
@@ -1593,8 +1593,6 @@ var houseRoomDecorate;
                 data.push($(this).val());
             })
             $("#" + houseRoomDecorate.prototype.config().frm).find('input[name="decoratePart"]').val(data.join());
-            console.log(data.join()+"==")
-            console.log($("#" + houseRoomDecorate.prototype.config().frm).find('input[name="decoratePart"]').val())
             $("#divBoxDecoratePart").modal("hide");
         }
     }
@@ -1774,7 +1772,6 @@ var houseRoom;
                     var str = '<div class="btn-margin">';
                     str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-primary tooltips"  data-placement="top" data-original-title="编辑" onclick="houseRoom.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
                     str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="houseRoom.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
-                    str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="装修情况" onclick="houseRoom.prototype.showModelSubclass(' + row.id + ',\'tb_List\')"><i class="fa fa-gavel fa-white"></i></button>';
                     str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-warning tooltips"  data-placement="top" data-original-title="复制" onclick="houseRoom.prototype.dataCopy(' + row.id + ',\'tb_List\')"><i class="fa fa-copy fa-white"></i></button>';
                     str += '</div>';
                     return str;
@@ -1814,8 +1811,8 @@ var houseRoom;
         },
         showModel: function () {
             $("#" + houseRoom.prototype.config().frm).clearAll();
-            $('#' + houseRoom.prototype.config().box).modal("show");
             houseRoom.prototype.init({});
+            $('#' + houseRoom.prototype.config().box).modal("show");
         },
         showModelSubclassSaveView: function () {
             var roomId = $('#' + houseRoom.prototype.config().boxSubclass).find("input[name='roomId']").val();
@@ -1992,7 +1989,7 @@ var houseRoom;
                 data: {id: id},
                 success: function (result) {
                     if (result.ret) {
-                        notifySuccess('成功','复制成功');
+                        notifySuccess('成功', '复制成功');
                         houseRoom.prototype.loadDataDicList();
                     }
                 },
@@ -2003,18 +2000,53 @@ var houseRoom;
         },
         init: function (item) {
             $("#" + houseRoom.prototype.config().frm).clearAll();
-            $("#" + houseRoom.prototype.config().frm).initForm(item);
-            var practicalUse = houseCommon.houseForm.find('[name=practicalUse]').val();
-            if (houseRoom.prototype.isEmpty(practicalUse)) {
-                // AssessCommon.loadDataDicByPid(practicalUse, item.roomType, function (html, data) {
-                //     $("#" + houseRoom.prototype.config().frm).find('select.roomType').empty().html(html).trigger('change');
-                // });
-                $("#" + houseRoom.prototype.config().frm).find('input[name=roomType]').apPracticalUse({
-                    practicalUseId:  practicalUse
-                });
+            var tenementType = houseCommon.houseHuxingForm.find('input[name="tenementType"]').val();
+            if (houseRoom.prototype.isNotBlank(tenementType)) {
+                $("#" + houseRoom.prototype.config().frm).find(".form-group").attr("style", "display:none");
+                $("#" + houseRoom.prototype.config().frm).find(".form-group").find("input").attr("disabled", true);
+
+                $("#" + houseRoom.prototype.config().frm).find(".common").show();
+                $("#" + houseRoom.prototype.config().frm).find(".common").find("input").attr("disabled", false);
+                if (houseRoom.prototype.isNotBlank(tenementType)) {
+                    if (tenementType == '住宅'|| tenementType == '办公') {
+                        $("#" + houseRoom.prototype.config().frm).find(".residence.base").show();
+                        $("#" + houseRoom.prototype.config().frm).find(".residence.base").find("input").attr("disabled", false);
+                    }
+                    if (tenementType == '商铺' || tenementType == '商场') {
+                        $("#" + houseRoom.prototype.config().frm).find(".store.base").show();
+                        $("#" + houseRoom.prototype.config().frm).find(".store.base").find("input").attr("disabled", false);
+
+                    }
+                    if (tenementType == '餐饮酒店') {
+                        $("#" + houseRoom.prototype.config().frm).find(".hotel.base").show();
+                        $("#" + houseRoom.prototype.config().frm).find(".hotel.base").find("input").attr("disabled", false);
+                    }
+                    if (tenementType == '生产') {
+                        $("#" + houseRoom.prototype.config().frm).find(".production.base").show();
+                        $("#" + houseRoom.prototype.config().frm).find(".production.base").find("input").attr("disabled", false);
+                    }
+                    if (tenementType == '仓储') {
+                        $("#" + houseRoom.prototype.config().frm).find(".storage.base").show();
+                    }
+                }
+
             } else {
-                notifyInfo("提示","请先选择房屋下的实际用途")
+                notifyInfo("提示", "请先选择房屋下的实际用途")
             }
+            $("#" + houseRoom.prototype.config().frm).initForm(item);
+            AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_room_adjacent_position, item.adjacentPosition, function (html, data) {
+                $("#" + houseRoom.prototype.config().frm).find("select.adjacentPosition").empty().html(html).trigger('change');
+            });
+            AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_room_orientation, item.orientation, function (html, data) {
+                $("#" + houseRoom.prototype.config().frm).find("select.orientation").empty().html(html).trigger('change');
+            });
+            AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_room_standard_measure, item.standardMeasure, function (html, data) {
+                $("#" + houseRoom.prototype.config().frm).find("select.standardMeasure").empty().html(html).trigger('change');
+            });
+            AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_room_storage_request, item.storageRequest, function (html, data) {
+                $("#" + houseRoom.prototype.config().frm).find("select.storageRequest").empty().html(html).trigger('change');
+            });
+
 
             FileUtils.uploadFiles({
                 target: houseRoom.prototype.config().fileIDName,
@@ -2036,6 +2068,65 @@ var houseRoom;
                 },
                 deleteFlag: true
             })
+        },
+        houseShapeChange() {
+            var tenementType = houseCommon.houseHuxingForm.find('input[name="tenementType"]').val();
+            var houseShape = $("#" + houseRoom.prototype.config().frm).find('select[name="houseShape"]').val();
+            console.log(houseShape + "==" + tenementType)
+            if (houseRoom.prototype.isNotBlank(tenementType) && houseRoom.prototype.isNotBlank(tenementType)) {
+                if (tenementType == '住宅'|| tenementType == '办公') {
+                    if (houseShape == '规则') {
+                        $("#" + houseRoom.prototype.config().frm).find(".residence.unruled").hide();
+                        $("#" + houseRoom.prototype.config().frm).find(".residence.unruled").find("input").attr("disabled", true);
+                        $("#" + houseRoom.prototype.config().frm).find(".residence.rule").show();
+                        $("#" + houseRoom.prototype.config().frm).find(".residence.rule").find("input").attr("disabled", false);
+                    } else if (houseShape == '不规则') {
+                        $("#" + houseRoom.prototype.config().frm).find(".residence.rule").hide();
+                        $("#" + houseRoom.prototype.config().frm).find(".residence.rule").find("input").attr("disabled", true);
+                        $("#" + houseRoom.prototype.config().frm).find(".residence.unruled").show();
+                        $("#" + houseRoom.prototype.config().frm).find(".residence.unruled").find("input").attr("disabled", false);
+                    }
+                }
+                if (tenementType == '商铺' || tenementType == '商场') {
+                    if (houseShape == '规则') {
+                        $("#" + houseRoom.prototype.config().frm).find(".store.unruled").hide();
+                        $("#" + houseRoom.prototype.config().frm).find(".store.unruled").find("input").attr("disabled", true);
+                        $("#" + houseRoom.prototype.config().frm).find(".store.rule").show();
+                        $("#" + houseRoom.prototype.config().frm).find(".store.rule").find("input").attr("disabled", false);
+                    } else if (houseShape == '不规则') {
+                        $("#" + houseRoom.prototype.config().frm).find(".store.rule").hide();
+                        $("#" + houseRoom.prototype.config().frm).find(".store.rule").find("input").attr("disabled", true);
+                        $("#" + houseRoom.prototype.config().frm).find(".store.unruled").show();
+                        $("#" + houseRoom.prototype.config().frm).find(".store.unruled").find("input").attr("disabled", false);
+                    }
+                }
+                if (tenementType == '餐饮酒店') {
+                    if (houseShape == '规则') {
+                        $("#" + houseRoom.prototype.config().frm).find(".hotel.unruled").hide();
+                        $("#" + houseRoom.prototype.config().frm).find(".hotel.unruled").find("input").attr("disabled", true);
+                        $("#" + houseRoom.prototype.config().frm).find(".hotel.rule").show();
+                        $("#" + houseRoom.prototype.config().frm).find(".hotel.rule").find("input").attr("disabled", false);
+                    } else if (houseShape == '不规则') {
+                        $("#" + houseRoom.prototype.config().frm).find(".hotel.rule").hide();
+                        $("#" + houseRoom.prototype.config().frm).find(".hotel.rule").find("input").attr("disabled", true);
+                        $("#" + houseRoom.prototype.config().frm).find(".hotel.unruled").show();
+                        $("#" + houseRoom.prototype.config().frm).find(".hotel.unruled").find("input").attr("disabled", false);
+                    }
+                }
+                if (tenementType == '生产') {
+                    if (houseShape == '规则') {
+                        $("#" + houseRoom.prototype.config().frm).find(".production.unruled").hide();
+                        $("#" + houseRoom.prototype.config().frm).find(".production.unruled").find("input").attr("disabled", true);
+                        $("#" + houseRoom.prototype.config().frm).find(".production.rule").show();
+                        $("#" + houseRoom.prototype.config().frm).find(".production.rule").find("input").attr("disabled", false);
+                    } else if (houseShape == '不规则') {
+                        $("#" + houseRoom.prototype.config().frm).find(".production.rule").hide();
+                        $("#" + houseRoom.prototype.config().frm).find(".production.rule").find("input").attr("disabled", true);
+                        $("#" + houseRoom.prototype.config().frm).find(".production.unruled").show();
+                        $("#" + houseRoom.prototype.config().frm).find(".production.unruled").find("input").attr("disabled", false);
+                    }
+                }
+            }
         }
     }
 
@@ -2108,44 +2199,44 @@ damagedDegree.entityConditionChange = function (_this) {
     var group = $(_this).closest('.group');
     var text = $(_this).attr('data-' + $(_this).val());
     group.find('[data-name=entityConditionContent]').text(text);
-    group.find("textarea").attr("required","required") ;
+    group.find("textarea").attr("required", "required");
 };
 
 damagedDegree.valid = function (remark) {
     var i = 0;
-    var target = $("#damagedDegreeTabContent") ;
+    var target = $("#damagedDegreeTabContent");
     target.find(".tab-pane").each(function () {
         $(this).tab('show');
-        var checkArr = ["textarea","select"] ;
-        for (var k = 0;k < checkArr.length;k++){
-            var input = checkArr[k] ;
+        var checkArr = ["textarea", "select"];
+        for (var k = 0; k < checkArr.length; k++) {
+            var input = checkArr[k];
             $(this).find(input).each(function () {
-                var required = $(this).attr('required') ;
-                if ($(this).is(":visible")){
+                var required = $(this).attr('required');
+                if ($(this).is(":visible")) {
                     //必须是已经选择了的
-                    if (required){
-                        var text = $(this).val() ;
-                        var name = $(this).attr('name') ;
-                        var html = "<span class='help-block' for='"+name+"'" +">"   +"此字段必须填写 </span>" ;
-                        if(text){
-                        }else {
-                            $(this).after(html) ;
+                    if (required) {
+                        var text = $(this).val();
+                        var name = $(this).attr('name');
+                        var html = "<span class='help-block' for='" + name + "'" + ">" + "此字段必须填写 </span>";
+                        if (text) {
+                        } else {
+                            $(this).after(html);
                             i++;
                         }
                     }
                 }
             });
         }
-    }) ;
-    if (i != 0){
-        if (remark){
-            notifySuccess('成功',remark);
-        }else {
-            notifySuccess('成功','请检查房屋完损度');
+    });
+    if (i != 0) {
+        if (remark) {
+            notifySuccess('成功', remark);
+        } else {
+            notifySuccess('成功', '请检查房屋完损度');
         }
     }
-    return i == 0 ;
-} ;
+    return i == 0;
+};
 
 //显示modal
 damagedDegree.damagedDegreeDetailModalShow = function (damagedDegreeId, category) {
@@ -2162,7 +2253,7 @@ damagedDegree.loadDamagedDegreeDetailList = function () {
     cols.push({field: 'entityConditionName', title: '实体状况', width: '30%'});
     cols.push({field: 'entityConditionContent', title: '状况内容', width: '40%'});
     cols.push({
-        field: 'id',width: '10%', title: '操作', formatter: function (value, row, index) {
+        field: 'id', width: '10%', title: '操作', formatter: function (value, row, index) {
             var str = '<div class="btn-margin">';
             str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-primary tooltips"  data-placement="top" data-original-title="编辑" onclick="damagedDegree.editDamagedDegreeDetail(' + index + ')"><i class="fa fa-pen"></i></button>';
             str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="damagedDegree.deleteDamagedDegreeDetail(' + row.id + ')"><i class="fa fa-minus"></i></button>';
