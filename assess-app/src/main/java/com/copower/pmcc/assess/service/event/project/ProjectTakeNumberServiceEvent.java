@@ -40,10 +40,10 @@ public class ProjectTakeNumberServiceEvent extends BaseProcessEvent {
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectTakeNumber.getProjectId());
         AssessProjectTypeEnum assessProjectType = projectInfoService.getAssessProjectType(projectInfo.getProjectCategoryId());
         SysSymbolListDto symbolListDto = projectNumberRecordService.getReportNumber(projectInfo, 0, assessProjectType, projectTakeNumber.getReportType(), true);
-        erpRpcToolsService.bindSymbol(applicationConstant.getAppKey(), projectTakeNumber.getNumberValue(), projectInfo.getPublicProjectId(), projectTakeNumber.getId(), FormatUtils.entityNameConvertToTableName(ProjectTakeNumber.class));
-        erpRpcToolsService.updateSymbolUsed(applicationConstant.getAppKey(), symbolListDto.getSymbol());
         projectTakeNumber.setNumberValue(symbolListDto.getSymbol());
         projectTakeNumber.setAssessProjectType(assessProjectType.getKey());
         projectTakeNumberService.editData(projectTakeNumber);
+        erpRpcToolsService.bindSymbol(applicationConstant.getAppKey(), projectTakeNumber.getNumberValue(), projectInfo.getPublicProjectId(), projectTakeNumber.getId(), FormatUtils.entityNameConvertToTableName(ProjectTakeNumber.class));
+        erpRpcToolsService.updateSymbolUsed(applicationConstant.getAppKey(), symbolListDto.getSymbol());
     }
 }
