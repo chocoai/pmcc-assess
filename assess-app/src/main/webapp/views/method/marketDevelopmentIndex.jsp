@@ -671,11 +671,12 @@
                                            name="remunerationRate" value="${mdDevelopment.remunerationRate}"
                                            placeholder="土地还原率" data-value="${mdDevelopment.remunerationRate}"
                                            onblur="loadParamsValue(this);">
-                                    <span class="input-group-btn">
+
+                                    <div class="input-group-append">
                                         <input type="hidden" name="rewardRateId" value="${mdDevelopment.rewardRateId}">
-                                  <input type="button" class="btn btn-info" value="土地还原率"
-                                         onclick="landEngineering.getRewardRate(this);"/>
-                                </span>
+                                        <input type="button" class="btn btn-info btn-sm" value="土地还原率"
+                                               onclick="landEngineering.getRewardRate(this);"/>
+                                    </div>
                                 </div>
                             </div>
                             <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">

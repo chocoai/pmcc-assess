@@ -655,7 +655,7 @@
                                            name="residueRatioShow"
                                            data-value="${mdCostVo.mdCostConstruction.residueRatio}">
                                     <div class="input-group-prepend">
-                                        <button class="btn btn-info " type="button"
+                                        <button class="btn btn-info btn-sm" type="button"
                                                 onclick="construction.callResidueRatio(this,false)">
                                             成新率
                                         </button>
