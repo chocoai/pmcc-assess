@@ -5,7 +5,7 @@ package com.copower.pmcc.assess.common.enums.report;
  * @date: 2019/1/15 14:30
  * @description:报告模板字段 建设银行
  */
-public enum BaseReportFieldConstructionBankEnum {
+public enum ReportFieldJiansheBankEnum {
     AssessPriceClassification("建行评估总价分述"),
     SetUse("建行设定用途"),
     HotTipBank("建行特别提示"),
@@ -18,7 +18,7 @@ public enum BaseReportFieldConstructionBankEnum {
     NetAssessmentTwo("建行个贷评估净值two"),
     ;
     private String name;
-    private BaseReportFieldConstructionBankEnum(String name) {
+    private ReportFieldJiansheBankEnum(String name) {
         this.name = name;
     }
 
@@ -26,8 +26,8 @@ public enum BaseReportFieldConstructionBankEnum {
         return name;
     }
 
-    public static BaseReportFieldConstructionBankEnum getEnumByName(String name) {
-        for (BaseReportFieldConstructionBankEnum e : BaseReportFieldConstructionBankEnum.values()) {
+    public static ReportFieldJiansheBankEnum getEnumByName(String name) {
+        for (ReportFieldJiansheBankEnum e : ReportFieldJiansheBankEnum.values()) {
             if (e.getName().equals(name)) {
                 return e;
             }

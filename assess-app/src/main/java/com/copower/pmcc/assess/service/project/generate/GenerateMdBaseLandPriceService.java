@@ -9,7 +9,7 @@ import com.aspose.words.DocumentBuilder;
 import com.aspose.words.Table;
 import com.copower.pmcc.assess.common.ArithmeticUtils;
 import com.copower.pmcc.assess.common.AsposeUtils;
-import com.copower.pmcc.assess.common.enums.report.BaseReportFieldMdBaseLandPriceEnum;
+import com.copower.pmcc.assess.common.enums.report.ReportFieldMdBaseLandPriceEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessProjectClassifyConstant;
 import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
@@ -139,59 +139,59 @@ public class GenerateMdBaseLandPriceService {
             String name = StringUtils.isNotBlank(bookmarkAndRegex.getChineseName()) ? bookmarkAndRegex.getChineseName() : bookmarkAndRegex.getName();
             try {
                 //基准地价概要
-                if (Objects.equal(name, BaseReportFieldMdBaseLandPriceEnum.BaseLandPriceProfile.getName())) {
+                if (Objects.equal(name, ReportFieldMdBaseLandPriceEnum.BaseLandPriceProfile.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getBaseLandPriceProfile());
                 }
                 //基准地价区域
-                if (Objects.equal(name, BaseReportFieldMdBaseLandPriceEnum.BaseLandPriceArea.getName())) {
+                if (Objects.equal(name, ReportFieldMdBaseLandPriceEnum.BaseLandPriceArea.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getBaseLandPriceArea());
                 }
                 //基准地价土地级别名称
-                if (Objects.equal(name, BaseReportFieldMdBaseLandPriceEnum.BaseLandPriceLevelName.getName())) {
+                if (Objects.equal(name, ReportFieldMdBaseLandPriceEnum.BaseLandPriceLevelName.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getBaseLandPriceLevelName());
                 }
                 //基准地价单价
-                if (Objects.equal(name, BaseReportFieldMdBaseLandPriceEnum.BaseLandPriceUnivalence.getName())) {
+                if (Objects.equal(name, ReportFieldMdBaseLandPriceEnum.BaseLandPriceUnivalence.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getBaseLandPriceUnivalence());
                 }
                 //基准地价期日修正计算式
-                if (Objects.equal(name, BaseReportFieldMdBaseLandPriceEnum.BaseLandPriceDateAmendCalculatedMode.getName())) {
+                if (Objects.equal(name, ReportFieldMdBaseLandPriceEnum.BaseLandPriceDateAmendCalculatedMode.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getBaseLandPriceDateAmendCalculatedMode());
                 }
                 //基准地价期日修正计算结果
-                if (Objects.equal(name, BaseReportFieldMdBaseLandPriceEnum.BaseLandPriceDateAmendCalculatedResult.getName())) {
+                if (Objects.equal(name, ReportFieldMdBaseLandPriceEnum.BaseLandPriceDateAmendCalculatedResult.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getBaseLandPriceDateAmendCalculatedResult());
                 }
                 //基准地价使用年限
-                if (Objects.equal(name, BaseReportFieldMdBaseLandPriceEnum.BaseLandPriceDurableYears.getName())) {
+                if (Objects.equal(name, ReportFieldMdBaseLandPriceEnum.BaseLandPriceDurableYears.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getBaseLandPriceDurableYears());
                 }
                 //基准地价土地剩余年限
-                if (Objects.equal(name, BaseReportFieldMdBaseLandPriceEnum.BaseLandPriceResidueYears.getName())) {
+                if (Objects.equal(name, ReportFieldMdBaseLandPriceEnum.BaseLandPriceResidueYears.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getBaseLandPriceResidueYears());
                 }
                 //基准地价机会成本说明
-                if (Objects.equal(name, BaseReportFieldMdBaseLandPriceEnum.BaseLandPriceOpportunityCostExplain.getName())) {
+                if (Objects.equal(name, ReportFieldMdBaseLandPriceEnum.BaseLandPriceOpportunityCostExplain.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getBaseLandPriceOpportunityCostExplain());
                 }
                 //基准地价机会成本率
-                if (Objects.equal(name, BaseReportFieldMdBaseLandPriceEnum.BaseLandPriceOpportunityCostRatio.getName())) {
+                if (Objects.equal(name, ReportFieldMdBaseLandPriceEnum.BaseLandPriceOpportunityCostRatio.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getBaseLandPriceOpportunityCostRatio());
                 }
                 //基准地价报酬率
-                if (Objects.equal(name, BaseReportFieldMdBaseLandPriceEnum.BaseLandPriceRewardRatio.getName())) {
+                if (Objects.equal(name, ReportFieldMdBaseLandPriceEnum.BaseLandPriceRewardRatio.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getBaseLandPriceRewardRatio());
                 }
                 //基准地价设定用途
-                if (Objects.equal(name, BaseReportFieldMdBaseLandPriceEnum.BaseLandPriceSetPurpose.getName())) {
+                if (Objects.equal(name, ReportFieldMdBaseLandPriceEnum.BaseLandPriceSetPurpose.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getBaseLandPriceSetPurpose());
                 }
                 //基准地价年期修正系数
-                if (Objects.equal(name, BaseReportFieldMdBaseLandPriceEnum.BaseLandPeriodAmend.getName())) {
+                if (Objects.equal(name, ReportFieldMdBaseLandPriceEnum.BaseLandPeriodAmend.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getBaseLandPeriodAmend());
                 }
                 //基准地价容积率修正系数说明
-                if (Objects.equal(name, BaseReportFieldMdBaseLandPriceEnum.BaseLandPricePlotRatioAmendExplain.getName())) {
+                if (Objects.equal(name, ReportFieldMdBaseLandPriceEnum.BaseLandPricePlotRatioAmendExplain.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getBaseLandPricePlotRatioAmendExplain());
                 }
                 //基准地价权利状况修正
@@ -199,51 +199,51 @@ public class GenerateMdBaseLandPriceService {
 //                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getBaseLandPriceRightStateAmend());
 //                }
                 //基准地价开发程度修正说明
-                if (Objects.equal(name, BaseReportFieldMdBaseLandPriceEnum.BaseLandPriceDevelopmentLevelAmendExplain.getName())) {
+                if (Objects.equal(name, ReportFieldMdBaseLandPriceEnum.BaseLandPriceDevelopmentLevelAmendExplain.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getBaseLandPriceDevelopmentLevelAmendExplain());
                 }
                 //基准地价宗地单价
-                if (Objects.equal(name, BaseReportFieldMdBaseLandPriceEnum.BaseLandPriceParcelUnivalence.getName())) {
+                if (Objects.equal(name, ReportFieldMdBaseLandPriceEnum.BaseLandPriceParcelUnivalence.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getBaseLandPriceParcelUnivalence());
                 }
                 //基准地价评估面积
-                if (Objects.equal(name, BaseReportFieldMdBaseLandPriceEnum.BaseLandPriceAssessArea.getName())) {
+                if (Objects.equal(name, ReportFieldMdBaseLandPriceEnum.BaseLandPriceAssessArea.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getBaseLandPriceAssessArea());
                 }
                 //基准地价宗地面积
-                if (Objects.equal(name, BaseReportFieldMdBaseLandPriceEnum.BaseLandPriceParcelArea.getName())) {
+                if (Objects.equal(name, ReportFieldMdBaseLandPriceEnum.BaseLandPriceParcelArea.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getBaseLandPriceParcelArea());
                 }
                 //基准地价容积率
-                if (Objects.equal(name, BaseReportFieldMdBaseLandPriceEnum.BaseLandPriceVolumeFraction.getName())) {
+                if (Objects.equal(name, ReportFieldMdBaseLandPriceEnum.BaseLandPriceVolumeFraction.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getBaseLandPriceVolumeFraction());
                 }
                 //基准地价楼面地价
-                if (Objects.equal(name, BaseReportFieldMdBaseLandPriceEnum.BaseLandPriceFloorPremium.getName())) {
+                if (Objects.equal(name, ReportFieldMdBaseLandPriceEnum.BaseLandPriceFloorPremium.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getBaseLandPriceFloorPremium());
                 }
                 //基准地价价格一览表
-                if (Objects.equal(name, BaseReportFieldMdBaseLandPriceEnum.BaseLandPriceSchedule.getName())) {
+                if (Objects.equal(name, ReportFieldMdBaseLandPriceEnum.BaseLandPriceSchedule.getName())) {
                     generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, getBaseLandPriceSchedule());
                 }
                 //基准地价因素说明表
-                if (Objects.equal(name, BaseReportFieldMdBaseLandPriceEnum.BaseLandPriceFactorExplain.getName())) {
+                if (Objects.equal(name, ReportFieldMdBaseLandPriceEnum.BaseLandPriceFactorExplain.getName())) {
                     generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, getBaseLandPriceFactorExplain(false));
                 }
                 //基准地价因素系数表
-                if (Objects.equal(name, BaseReportFieldMdBaseLandPriceEnum.BaseLandPriceFactorCoefficient.getName())) {
+                if (Objects.equal(name, ReportFieldMdBaseLandPriceEnum.BaseLandPriceFactorCoefficient.getName())) {
                     generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, getBaseLandPriceFactorExplain(true));
                 }
                 //基准地价因素修正表
-                if (Objects.equal(name, BaseReportFieldMdBaseLandPriceEnum.BaseLandPriceFactorAmend.getName())) {
+                if (Objects.equal(name, ReportFieldMdBaseLandPriceEnum.BaseLandPriceFactorAmend.getName())) {
                     generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, getBaseLandPriceFactorAmend());
                 }
                 //基准地价基础指数表
-                if (Objects.equal(name, BaseReportFieldMdBaseLandPriceEnum.BaseLandPriceIndex.getName())) {
+                if (Objects.equal(name, ReportFieldMdBaseLandPriceEnum.BaseLandPriceIndex.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getBaseLandPriceIndex());
                 }
                 //基准地价测算过程明细表
-                if (Objects.equal(name, BaseReportFieldMdBaseLandPriceEnum.BaseLandPriceCalculateCourseDetail.getName())) {
+                if (Objects.equal(name, ReportFieldMdBaseLandPriceEnum.BaseLandPriceCalculateCourseDetail.getName())) {
                     generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, getBaseLandPriceCalculateCourseDetail());
                 }
             } catch (Exception e) {

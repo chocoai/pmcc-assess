@@ -5,14 +5,14 @@ package com.copower.pmcc.assess.common.enums.report;
  * @date: 2019/1/15 14:30
  * @description:报告模板字段 工商银行
  */
-public enum BaseReportField_INDUSTRIAL_AND_COMMERCIAL_BANKEnum {
+public enum ReportFieldGongshangBankEnum {
 
     District_Analysis("工行区位分析"),
     ICBCValuationCaseInformationSheet("工行估价案例情况表"),
 
     ;
     private String name;
-    private BaseReportField_INDUSTRIAL_AND_COMMERCIAL_BANKEnum(String name) {
+    private ReportFieldGongshangBankEnum(String name) {
         this.name = name;
     }
 
@@ -20,8 +20,8 @@ public enum BaseReportField_INDUSTRIAL_AND_COMMERCIAL_BANKEnum {
         return name;
     }
 
-    public static BaseReportField_INDUSTRIAL_AND_COMMERCIAL_BANKEnum getEnumByName(String name) {
-        for (BaseReportField_INDUSTRIAL_AND_COMMERCIAL_BANKEnum e : BaseReportField_INDUSTRIAL_AND_COMMERCIAL_BANKEnum.values()) {
+    public static ReportFieldGongshangBankEnum getEnumByName(String name) {
+        for (ReportFieldGongshangBankEnum e : ReportFieldGongshangBankEnum.values()) {
             if (e.getName().equals(name)) {
                 return e;
             }

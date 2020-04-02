@@ -5,7 +5,7 @@ package com.copower.pmcc.assess.common.enums.report;
  * @date: 2019/1/15 14:30
  * @description:报告模板字段 银行 (基础)
  */
-public enum BaseReportBankEnum {
+public enum ReportFieldUniversalBankEnum {
     Seat("银行通用坐落"),
 
     AssessArea("银行通用评估面积"),
@@ -95,7 +95,7 @@ public enum BaseReportBankEnum {
     ;
     private String name;
 
-    private BaseReportBankEnum(String name) {
+    private ReportFieldUniversalBankEnum(String name) {
         this.name = name;
     }
 
@@ -103,8 +103,8 @@ public enum BaseReportBankEnum {
         return name;
     }
 
-    public static BaseReportBankEnum getEnumByName(String name) {
-        for (BaseReportBankEnum e : BaseReportBankEnum.values()) {
+    public static ReportFieldUniversalBankEnum getEnumByName(String name) {
+        for (ReportFieldUniversalBankEnum e : ReportFieldUniversalBankEnum.values()) {
             if (e.getName().equals(name)) {
                 return e;
             }

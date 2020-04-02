@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.aspose.words.Document;
 import com.aspose.words.DocumentBuilder;
 import com.copower.pmcc.assess.common.AsposeUtils;
-import com.copower.pmcc.assess.common.enums.report.BaseReportFieldCompareEnum;
+import com.copower.pmcc.assess.common.enums.report.ReportFieldCompareEnum;
 import com.copower.pmcc.assess.common.enums.basic.MethodCompareFieldEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
@@ -181,7 +181,7 @@ public class GenerateMdCompareService {
      */
     public String getValueText(String key) throws Exception {
         if (StringUtils.isBlank(key)) return null;
-        BaseReportFieldCompareEnum fieldCompareEnum = BaseReportFieldCompareEnum.getEnumByName(key);
+        ReportFieldCompareEnum fieldCompareEnum = ReportFieldCompareEnum.getEnumByName(key);
         //估价对象数据
         MdMarketCompareItem evaluationItemList = getEvaluationItemList();
         List<MarketCompareItemDto> marketCompareItemDtos = JSON.parseArray(evaluationItemList.getJsonContent(), MarketCompareItemDto.class);
@@ -226,7 +226,7 @@ public class GenerateMdCompareService {
      */
     public String getValueByKey(String key) throws Exception {
         if (StringUtils.isBlank(key)) return null;
-        BaseReportFieldCompareEnum fieldCompareEnum = BaseReportFieldCompareEnum.getEnumByName(key);
+        ReportFieldCompareEnum fieldCompareEnum = ReportFieldCompareEnum.getEnumByName(key);
         //估价对象数据
         MdMarketCompareItem evaluationItemList = getEvaluationItemList();
         List<MarketCompareItemDto> marketCompareItemDtos = JSON.parseArray(evaluationItemList.getJsonContent(), MarketCompareItemDto.class);

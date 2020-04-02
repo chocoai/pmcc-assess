@@ -7,7 +7,7 @@ import java.io.Serializable;
  * @date: 2019/2/14 16:11
  * @description:报告模板字段(收益法)
  */
-public enum BaseReportFieldMdIncomeSelfEnum implements Serializable {
+public enum ReportFieldMdIncomeSelfEnum implements Serializable {
     PropertyRightCertificateIncomeLaw("收益法自营申报权证类型"),// 房产证、不动产证*
     IncomeSetUse("收益法自营设定用途"),//方案中设定用途*
     TerminationDateLand("收益法自营土地终止日期"),//土地证终止日期*
@@ -59,12 +59,12 @@ public enum BaseReportFieldMdIncomeSelfEnum implements Serializable {
     IncomeCalculatePrice("收益法自营测算价格")
     ;
     private String name;
-    BaseReportFieldMdIncomeSelfEnum(String name) {
+    ReportFieldMdIncomeSelfEnum(String name) {
         this.name = name;
     }
 
-    public static BaseReportFieldMdIncomeSelfEnum getEnumByName(String name) {
-        for (BaseReportFieldMdIncomeSelfEnum e : BaseReportFieldMdIncomeSelfEnum.values()) {
+    public static ReportFieldMdIncomeSelfEnum getEnumByName(String name) {
+        for (ReportFieldMdIncomeSelfEnum e : ReportFieldMdIncomeSelfEnum.values()) {
             if (e.getName().equals(name)) {
                 return e;
             }

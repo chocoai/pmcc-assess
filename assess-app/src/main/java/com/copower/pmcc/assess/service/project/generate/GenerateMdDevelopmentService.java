@@ -7,7 +7,7 @@ import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.PoiUtils;
 import com.copower.pmcc.assess.common.enums.data.DataBuildingInstallCostTypeEnum;
 import com.copower.pmcc.assess.common.enums.method.EconomicIndicatorsItemEnum;
-import com.copower.pmcc.assess.common.enums.report.BaseReportDevelopmentEnum;
+import com.copower.pmcc.assess.common.enums.report.ReportFieldDevelopmentEnum;
 import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.method.MdEconomicIndicatorsApplyDto;
@@ -39,7 +39,6 @@ import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import java.io.Serializable;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -109,13 +108,13 @@ public class GenerateMdDevelopmentService {
         }
         String localPath = baseAttachmentService.downloadFtpFileToLocal(dtoList.get(0).getId());
         Document document = new Document(localPath);
-        Map<BaseReportDevelopmentEnum, String> map = Maps.newHashMap();
+        Map<ReportFieldDevelopmentEnum, String> map = Maps.newHashMap();
         final ConcurrentHashMap<String, String> textMap = new ConcurrentHashMap<String, String>(0);
         final ConcurrentHashMap<String, String> fileMap = new ConcurrentHashMap<String, String>(0);
         final ConcurrentHashMap<String, String> bookmarkMap = new ConcurrentHashMap<String, String>(0);
         final ProjectPlanDetails projectPlanDetails = getProjectPlanDetailsById(schemeInfo.getPlanDetailsId());
-        Map<String, BaseReportDevelopmentEnum> reportFieldEnumMap = new HashMap<String, BaseReportDevelopmentEnum>(0);
-        for (BaseReportDevelopmentEnum reportFieldEnum : BaseReportDevelopmentEnum.values()) {
+        Map<String, ReportFieldDevelopmentEnum> reportFieldEnumMap = new HashMap<String, ReportFieldDevelopmentEnum>(0);
+        for (ReportFieldDevelopmentEnum reportFieldEnum : ReportFieldDevelopmentEnum.values()) {
             reportFieldEnumMap.put(reportFieldEnum.getName(), reportFieldEnum);
         }
         //获取待替换文本的集合
@@ -139,10 +138,10 @@ public class GenerateMdDevelopmentService {
         SchemeAreaGroup schemeAreaGroup = getSchemeAreaGroup();
         SchemeJudgeObject schemeJudgeObject = getSchemeJudgeObject();
         if (!map.isEmpty()) {
-            for (Map.Entry<BaseReportDevelopmentEnum, String> enumStringEntry : map.entrySet()) {
+            for (Map.Entry<ReportFieldDevelopmentEnum, String> enumStringEntry : map.entrySet()) {
                 try {
                     //经济指标 单独处理
-                    if (Objects.equal(BaseReportDevelopmentEnum.Development_EconomicIndicators.getName(), enumStringEntry.getKey().getName())) {
+                    if (Objects.equal(ReportFieldDevelopmentEnum.Development_EconomicIndicators.getName(), enumStringEntry.getKey().getName())) {
                         setDevelopment_EconomicIndicatorsValue(textMap, fileMap, bookmarkMap);
                     }
                     setFieldObjectValue(enumStringEntry.getKey(), textMap, fileMap, bookmarkMap, mdDevelopmentVo);
@@ -259,10 +258,10 @@ public class GenerateMdDevelopmentService {
             }
         }
         AsposeUtils.saveWord(localPath, doc);
-        generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, BaseReportDevelopmentEnum.Development_EconomicIndicators.getName(), localPath);
+        generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, ReportFieldDevelopmentEnum.Development_EconomicIndicators.getName(), localPath);
     }
 
-    private void setMdDevelopmentCommonValue(BaseReportDevelopmentEnum key, final ConcurrentHashMap<String, String> textMap, final ConcurrentHashMap<String, String> fileMap, final ConcurrentHashMap<String, String> bookmarkMap, MdDevelopmentVo target, SchemeJudgeObject schemeJudgeObject, SchemeAreaGroup schemeAreaGroup, ProjectPlanDetails projectPlanDetails) {
+    private void setMdDevelopmentCommonValue(ReportFieldDevelopmentEnum key, final ConcurrentHashMap<String, String> textMap, final ConcurrentHashMap<String, String> fileMap, final ConcurrentHashMap<String, String> bookmarkMap, MdDevelopmentVo target, SchemeJudgeObject schemeJudgeObject, SchemeAreaGroup schemeAreaGroup, ProjectPlanDetails projectPlanDetails) {
         switch (key) {
             case Development_region: {
                 generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), schemeAreaGroup.getAreaName());
@@ -501,7 +500,7 @@ public class GenerateMdDevelopmentService {
     }
 
 
-    private synchronized void setFieldObjectValue(BaseReportDevelopmentEnum key, final ConcurrentHashMap<String, String> textMap, final ConcurrentHashMap<String, String> fileMap, final ConcurrentHashMap<String, String> bookmarkMap, MdDevelopmentVo target) {
+    private synchronized void setFieldObjectValue(ReportFieldDevelopmentEnum key, final ConcurrentHashMap<String, String> textMap, final ConcurrentHashMap<String, String> fileMap, final ConcurrentHashMap<String, String> bookmarkMap, MdDevelopmentVo target) {
         String value = mdDevelopmentService.getFieldObjectValueReport(key, target);
         switch (key) {
             case Development_projectConstructionPeriod: {
@@ -529,12 +528,12 @@ public class GenerateMdDevelopmentService {
                 break;
             }
             case Development_LandGetCostTotal: {
-                String v1 = mdDevelopmentService.getFieldObjectValue(BaseReportDevelopmentEnum.Development_LandGetCost, target);
+                String v1 = mdDevelopmentService.getFieldObjectValue(ReportFieldDevelopmentEnum.Development_LandGetCost, target);
                 value = String.join("", v1, "v", "+", ArithmeticUtils.getBigDecimalString(target.getLandGetRelevant()));
                 break;
             }
             case Development_LandGetCostTotal2: {
-                String v1 = mdDevelopmentService.getFieldObjectValue(BaseReportDevelopmentEnum.Development_LandGetCost, target);
+                String v1 = mdDevelopmentService.getFieldObjectValue(ReportFieldDevelopmentEnum.Development_LandGetCost, target);
                 value = String.join("", v1, "v", "+", ArithmeticUtils.getBigDecimalString(target.getLandGetRelevant()));
                 break;
             }
@@ -547,8 +546,8 @@ public class GenerateMdDevelopmentService {
                 break;
             }
             case Development_managementExpenseTotal: {
-                String v1 = mdDevelopmentService.getFieldObjectValue(BaseReportDevelopmentEnum.Development_managementExpenseCorrectRate, target);
-                String v2 = mdDevelopmentService.getFieldObjectValue(BaseReportDevelopmentEnum.Development_managementExpenseTotal, target);
+                String v1 = mdDevelopmentService.getFieldObjectValue(ReportFieldDevelopmentEnum.Development_managementExpenseCorrectRate, target);
+                String v2 = mdDevelopmentService.getFieldObjectValue(ReportFieldDevelopmentEnum.Development_managementExpenseTotal, target);
                 value = String.join("", v1, "v", "+", v2);
                 break;
             }
@@ -609,7 +608,7 @@ public class GenerateMdDevelopmentService {
                 break;
             }
             case Development_reconnaissanceDesign: {
-                value = mdDevelopmentService.getFieldObjectValue(BaseReportDevelopmentEnum.Development_reconnaissanceDesignTotal, target);
+                value = mdDevelopmentService.getFieldObjectValue(ReportFieldDevelopmentEnum.Development_reconnaissanceDesignTotal, target);
                 break;
             }
             case Development_interestInvestmentRate: {
@@ -617,7 +616,7 @@ public class GenerateMdDevelopmentService {
                 break;
             }
             case Development_interestInvestment: {
-                String v1 = mdDevelopmentService.getFieldObjectValue(BaseReportDevelopmentEnum.Development_interestInvestmentCorrectRate, target);
+                String v1 = mdDevelopmentService.getFieldObjectValue(ReportFieldDevelopmentEnum.Development_interestInvestmentCorrectRate, target);
                 v1 = ArithmeticUtils.round(v1, 5);
                 String v2 = ArithmeticUtils.getBigDecimalString(target.getInterestInvestment());
                 value = String.join("", v1, "v", "+", v2);
@@ -628,7 +627,7 @@ public class GenerateMdDevelopmentService {
                 break;
             }
             case Development_investmentProfit: {
-                String v1 = mdDevelopmentService.getFieldObjectValue(BaseReportDevelopmentEnum.Development_investmentProfitCorrectRate, target);
+                String v1 = mdDevelopmentService.getFieldObjectValue(ReportFieldDevelopmentEnum.Development_investmentProfitCorrectRate, target);
                 String v2 = ArithmeticUtils.getBigDecimalString(target.getInvestmentProfit());
                 value = String.join("", v1, "v", "+", v2);
                 break;
@@ -652,7 +651,7 @@ public class GenerateMdDevelopmentService {
             case Development_AmendmentStatusRightsRemark: {
                 value = target.getAmendmentStatusRightsExplain();
                 if (StringUtils.isEmpty(value)) {
-                    value = String.join("", "无", BaseReportDevelopmentEnum.Development_AmendmentStatusRights.getName(), "修正");
+                    value = String.join("", "无", ReportFieldDevelopmentEnum.Development_AmendmentStatusRights.getName(), "修正");
                 }
                 break;
             }
@@ -663,7 +662,7 @@ public class GenerateMdDevelopmentService {
             case Development_OtherAmendmentsRemark: {
                 value = target.getOtherAmendmentsExplain();
                 if (StringUtils.isEmpty(value)) {
-                    value = String.join("", "无", BaseReportDevelopmentEnum.Development_OtherAmendments.getName(), "修正");
+                    value = String.join("", "无", ReportFieldDevelopmentEnum.Development_OtherAmendments.getName(), "修正");
                 }
                 break;
             }
@@ -684,7 +683,7 @@ public class GenerateMdDevelopmentService {
 //                if (mdEconomicIndicatorsApplyDto != null && mdEconomicIndicatorsApplyDto.getEconomicIndicators() != null) {
 //                    value = ArithmeticUtils.getBigDecimalString(mdEconomicIndicatorsApplyDto.getEconomicIndicators().getAssessUseLandArea());
 //                }
-                value = mdDevelopmentService.getFieldObjectValue(BaseReportDevelopmentEnum.Development_total_saleableArea, target);
+                value = mdDevelopmentService.getFieldObjectValue(ReportFieldDevelopmentEnum.Development_total_saleableArea, target);
                 if (StringUtils.isNotBlank(value)) {
                     value = ArithmeticUtils.round(value, 2);
                 }
@@ -716,7 +715,7 @@ public class GenerateMdDevelopmentService {
             case Development_DevelopmentDegreeCorrectionValueRemark: {
                 value = target.getDevelopmentDegreeRevisionExplain();
                 if (StringUtils.isEmpty(value)) {
-                    value = String.join("", "无", BaseReportDevelopmentEnum.Development_DevelopmentDegreeCorrectionValue.getName(), "修正");
+                    value = String.join("", "无", ReportFieldDevelopmentEnum.Development_DevelopmentDegreeCorrectionValue.getName(), "修正");
                 }
                 break;
             }

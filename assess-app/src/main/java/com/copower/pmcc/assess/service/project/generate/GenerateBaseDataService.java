@@ -9,10 +9,9 @@ import com.copower.pmcc.assess.common.*;
 import com.copower.pmcc.assess.common.enums.*;
 import com.copower.pmcc.assess.common.enums.basic.*;
 import com.copower.pmcc.assess.common.enums.method.MethodIncomeOperationModeEnum;
-import com.copower.pmcc.assess.common.enums.report.BaseReportBankEnum;
-import com.copower.pmcc.assess.common.enums.report.BaseReportEnum;
-import com.copower.pmcc.assess.common.enums.report.BaseReportFieldConstructionBankEnum;
-import com.copower.pmcc.assess.common.enums.report.BaseReportField_INDUSTRIAL_AND_COMMERCIAL_BANKEnum;
+import com.copower.pmcc.assess.common.enums.report.ReportFieldUniversalBankEnum;
+import com.copower.pmcc.assess.common.enums.report.ReportFieldEnum;
+import com.copower.pmcc.assess.common.enums.report.ReportFieldJiansheBankEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
@@ -347,13 +346,13 @@ public class GenerateBaseDataService {
         }
         Map<String, String> fileMap = Maps.newHashMap();
         for (String s : regexS) {
-            if (Objects.equal(BaseReportEnum.ReportHouseQrCode.getName(), s)) {
+            if (Objects.equal(ReportFieldEnum.ReportHouseQrCode.getName(), s)) {
                 fileMap.put(String.format("${%s}", s), toolOrCode(String.format("http://gjszcxt.cirea.org.cn/?number=%s", generateReportInfo.getQueryCode()), 60d, 60d));
             }
-            if (Objects.equal(BaseReportEnum.ReportASSETSQrCode.getName(), s)) {
+            if (Objects.equal(ReportFieldEnum.ReportASSETSQrCode.getName(), s)) {
                 fileMap.put(String.format("${%s}", s), toolOrCode(String.format("http://47.94.11.33:8035/TongYiBianMa/Index?_TYBM_H_=%s", generateReportInfo.getRecordNo()), 80d, 80d));
             }
-            if (Objects.equal(BaseReportEnum.ReportLandQrCode.getName(), s)) {
+            if (Objects.equal(ReportFieldEnum.ReportLandQrCode.getName(), s)) {
                 StringBuilder stringBuilder = new StringBuilder(8);
                 stringBuilder.append("http://rd.wechat.com/qrcode/confirm?block_type=101&content=");
                 stringBuilder.append("").append("备案号:").append(generateReportInfo.getRecordNo()).append(";").append(StringUtils.repeat("\n\r\t", 1));
@@ -947,7 +946,7 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getLandCertificateFieldValue(String enumName) {
-        BaseReportBankEnum baseReportEnum = BaseReportBankEnum.getEnumByName(enumName);
+        ReportFieldUniversalBankEnum baseReportEnum = ReportFieldUniversalBankEnum.getEnumByName(enumName);
         Map<Integer, String> map = Maps.newHashMap();
         for (SchemeJudgeObject schemeJudgeObject : getSchemeJudgeObjectList()) {
             if (schemeJudgeObject.getDeclareRecordId() == null) {
@@ -3992,7 +3991,7 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getJudgeObjectOtherFieldValue(String enumName) throws Exception {
-        BaseReportBankEnum reportFieldEnum = BaseReportBankEnum.getEnumByName(enumName);
+        ReportFieldUniversalBankEnum reportFieldEnum = ReportFieldUniversalBankEnum.getEnumByName(enumName);
         Map<Integer, String> map = Maps.newHashMap();
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         String value = "/";
@@ -4228,7 +4227,7 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getJudgeObjectDamagedDegreeFieldB(String enumName) throws Exception {
-        BaseReportBankEnum reportFieldEnum = BaseReportBankEnum.getEnumByName(enumName);
+        ReportFieldUniversalBankEnum reportFieldEnum = ReportFieldUniversalBankEnum.getEnumByName(enumName);
         String name = null;
         switch (reportFieldEnum) {
             case renovation_condition_bathroom: {
@@ -4285,7 +4284,7 @@ public class GenerateBaseDataService {
     }
 
     public String getJudgeObjectDamagedDegreeFieldA(String enumName) throws Exception {
-        BaseReportBankEnum reportFieldEnum = BaseReportBankEnum.getEnumByName(enumName);
+        ReportFieldUniversalBankEnum reportFieldEnum = ReportFieldUniversalBankEnum.getEnumByName(enumName);
         String name = null;
         switch (reportFieldEnum) {
             case renovation_condition_door: {
@@ -4371,7 +4370,7 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getJudgeObjectLocationValue(String enumName) throws Exception {
-        BaseReportBankEnum reportFieldEnum = BaseReportBankEnum.getEnumByName(enumName);
+        ReportFieldUniversalBankEnum reportFieldEnum = ReportFieldUniversalBankEnum.getEnumByName(enumName);
         StringBuilder stringBuilder = new StringBuilder(8);
         LinkedList<String> stringLinkedList = Lists.newLinkedList();
         Map<Integer, String> map = Maps.newHashMap();
@@ -5567,7 +5566,7 @@ public class GenerateBaseDataService {
             {
                 String val = "";
                 try {
-                    val = getNetAssessmentNumber2(BaseReportFieldConstructionBankEnum.NetAssessmentOne, liquidationAnalysisItemList, schemeJudgeObjectList, schemeJudgeObject, 10);
+                    val = getNetAssessmentNumber2(ReportFieldJiansheBankEnum.NetAssessmentOne, liquidationAnalysisItemList, schemeJudgeObjectList, schemeJudgeObject, 10);
                 } catch (Exception e) {
                 }
                 ccb_Pre_Evaluation_Data_FormWriteWord2(documentBuilder, stringLinkedList, "抵押净值1(元)", val);
@@ -5575,7 +5574,7 @@ public class GenerateBaseDataService {
             {
                 String val = "";
                 try {
-                    val = getNetAssessmentNumber2(BaseReportFieldConstructionBankEnum.NetAssessmentTwo, liquidationAnalysisItemList, schemeJudgeObjectList, schemeJudgeObject, 10);
+                    val = getNetAssessmentNumber2(ReportFieldJiansheBankEnum.NetAssessmentTwo, liquidationAnalysisItemList, schemeJudgeObjectList, schemeJudgeObject, 10);
                 } catch (Exception e) {
                 }
                 ccb_Pre_Evaluation_Data_FormWriteWord2(documentBuilder, stringLinkedList, "抵押净值2(元)", val);
@@ -5612,7 +5611,7 @@ public class GenerateBaseDataService {
      * @return
      */
     public String getNetAssessmentNumber(String enumName) {
-        BaseReportFieldConstructionBankEnum reportFieldEnum = BaseReportFieldConstructionBankEnum.getEnumByName(enumName);
+        ReportFieldJiansheBankEnum reportFieldEnum = ReportFieldJiansheBankEnum.getEnumByName(enumName);
         Map<Integer, String> map = Maps.newHashMap();
         List<SchemeJudgeObject> schemeJudgeObjectList = Lists.newArrayList();
         schemeJudgeObjectService.getJudgeObjectListAllByAreaGroupId(areaId).forEach(schemeJudgeObject -> {
@@ -5640,15 +5639,15 @@ public class GenerateBaseDataService {
         return "/";
     }
 
-    public String getNetAssessmentNumber2(BaseReportFieldConstructionBankEnum reportFieldEnum, List<SchemeLiquidationAnalysisItem> liquidationAnalysisItemList, List<SchemeJudgeObject> schemeJudgeObjectList, SchemeJudgeObject schemeJudgeObject, Integer newScalePrice) {
+    public String getNetAssessmentNumber2(ReportFieldJiansheBankEnum reportFieldEnum, List<SchemeLiquidationAnalysisItem> liquidationAnalysisItemList, List<SchemeJudgeObject> schemeJudgeObjectList, SchemeJudgeObject schemeJudgeObject, Integer newScalePrice) {
         final String sellerPayment = "卖方";
         final String tradingParties = "双方";
         final String buyerPayment = "买方";
         List<SchemeLiquidationAnalysisItem> schemeLiquidationAnalysisItemList = liquidationAnalysisItemList.stream().filter(oo -> {
-            if (Objects.equal(reportFieldEnum.name(), BaseReportFieldConstructionBankEnum.NetAssessmentTwo.name())) {
+            if (Objects.equal(reportFieldEnum.name(), ReportFieldJiansheBankEnum.NetAssessmentTwo.name())) {
                 return StringUtils.contains(oo.getTaxesBurden(), sellerPayment);
             }
-            if (Objects.equal(reportFieldEnum.name(), BaseReportFieldConstructionBankEnum.NetAssessmentOne.name())) {
+            if (Objects.equal(reportFieldEnum.name(), ReportFieldJiansheBankEnum.NetAssessmentOne.name())) {
                 return StringUtils.contains(oo.getTaxesBurden(), buyerPayment);
             }
             return StringUtils.contains(oo.getTaxesBurden(), tradingParties);

@@ -7,7 +7,7 @@ import java.io.Serializable;
  * @date: 2019/1/15 14:30
  * @description:报告模板字段 成本法
  */
-public enum BaseReportMarketCostEnum implements Serializable {
+public enum ReportFieldCostMethodEnum implements Serializable {
     MarketCost_JudgeObject("成本法估价对象"),
     MarketCost_Merge_JudgeObject("成本法合并估价对象"),
     MarketCost_Method("成本法土地测算方法"),
@@ -96,7 +96,7 @@ public enum BaseReportMarketCostEnum implements Serializable {
 
     ;
     private String name;
-    private BaseReportMarketCostEnum(String name) {
+    private ReportFieldCostMethodEnum(String name) {
         this.name = name;
     }
 
@@ -104,8 +104,8 @@ public enum BaseReportMarketCostEnum implements Serializable {
         return name;
     }
 
-    public static BaseReportMarketCostEnum getEnumByName(String name) {
-        for (BaseReportMarketCostEnum e : BaseReportMarketCostEnum.values()) {
+    public static ReportFieldCostMethodEnum getEnumByName(String name) {
+        for (ReportFieldCostMethodEnum e : ReportFieldCostMethodEnum.values()) {
             if (e.getName().equals(name)) {
                 return e;
             }

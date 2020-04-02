@@ -5,9 +5,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.aspose.words.*;
 import com.copower.pmcc.assess.common.ArithmeticUtils;
 import com.copower.pmcc.assess.common.AsposeUtils;
-import com.copower.pmcc.assess.common.enums.report.BaseReportFieldMdIncomeEnum;
+import com.copower.pmcc.assess.common.enums.report.ReportFieldMdIncomeEnum;
 import com.copower.pmcc.assess.common.enums.DeclareTypeEnum;
-import com.copower.pmcc.assess.common.enums.report.BaseReportFieldMdIncomeSelfEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdIncomeLeaseCostDao;
@@ -151,244 +150,244 @@ public class GenerateMdIncomeService implements Serializable {
             String name = StringUtils.isNotBlank(bookmarkAndRegex.getChineseName()) ? bookmarkAndRegex.getChineseName() : bookmarkAndRegex.getName();
             try {
                 //收益法租金增长率
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.RentGrowthForecast.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCostOtherCommon(BaseReportFieldMdIncomeEnum.RentGrowthForecast));
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.RentGrowthForecast.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCostOtherCommon(ReportFieldMdIncomeEnum.RentGrowthForecast));
                 }
                 //收益法租金增长率说明
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.RentalGrowthRateExplain.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCostOtherCommon(BaseReportFieldMdIncomeEnum.RentalGrowthRateExplain));
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.RentalGrowthRateExplain.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCostOtherCommon(ReportFieldMdIncomeEnum.RentalGrowthRateExplain));
                 }
                 //收益法出租率说明
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.RestrictionExplain.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCommon(BaseReportFieldMdIncomeEnum.RestrictionExplain));
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.RestrictionExplain.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCommon(ReportFieldMdIncomeEnum.RestrictionExplain));
                 }
                 //收益法确定客观月租金
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.MonthRentalIncome.getName())) {
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.MonthRentalIncome.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMonthRentalIncome(fileMap));
                 }
                 //月份数
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.MonthNumber.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCommon(BaseReportFieldMdIncomeEnum.MonthNumber));
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.MonthNumber.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCommon(ReportFieldMdIncomeEnum.MonthNumber));
                 }
                 //收益法出租率
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.Rentals.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCommon(BaseReportFieldMdIncomeEnum.Rentals));
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.Rentals.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCommon(ReportFieldMdIncomeEnum.Rentals));
                 }
                 //收益法其它收入
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.OtherIncome.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCommon(BaseReportFieldMdIncomeEnum.OtherIncome));
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.OtherIncome.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCommon(ReportFieldMdIncomeEnum.OtherIncome));
                 }
                 //收益法其他收入说明
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.OtherIncomeExplain.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCommon(BaseReportFieldMdIncomeEnum.OtherIncomeExplain));
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.OtherIncomeExplain.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCommon(ReportFieldMdIncomeEnum.OtherIncomeExplain));
                 }
                 //收益法押金说明
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeDepositExplain.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCommon(BaseReportFieldMdIncomeEnum.IncomeDepositExplain));
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.IncomeDepositExplain.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCommon(ReportFieldMdIncomeEnum.IncomeDepositExplain));
                 }
                 //收益法其它交易费说明
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.TransactionTaxeFeeExplain.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCostOtherCommon(BaseReportFieldMdIncomeEnum.TransactionTaxeFeeExplain));
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.TransactionTaxeFeeExplain.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCostOtherCommon(ReportFieldMdIncomeEnum.TransactionTaxeFeeExplain));
                 }
 
                 //一年期定期存款利率
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.YearDepositRate.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCommon(BaseReportFieldMdIncomeEnum.YearDepositRate));
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.YearDepositRate.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCommon(ReportFieldMdIncomeEnum.YearDepositRate));
                 }
                 //有效收入公式
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.EffectiveIncomeFormula.getName())) {
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.EffectiveIncomeFormula.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getEffectiveIncomeFormula());
                 }
                 //收益法年有效毛收入
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.GrossIncome.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCostOtherCommon(BaseReportFieldMdIncomeEnum.GrossIncome));
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.GrossIncome.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCostOtherCommon(ReportFieldMdIncomeEnum.GrossIncome));
                 }
 
                 //收益法年维修费公式
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.MaintenanceCostFormula.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getSimpleFormula(BaseReportFieldMdIncomeEnum.ReplacementCost,BaseReportFieldMdIncomeEnum.MaintenanceCostRatio));
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.MaintenanceCostFormula.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getSimpleFormula(ReportFieldMdIncomeEnum.ReplacementCost, ReportFieldMdIncomeEnum.MaintenanceCostRatio));
                 }
                 //收益法年管理费公式
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.ManagementCostFormula.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getSimpleFormula(BaseReportFieldMdIncomeEnum.GrossIncomeValue,BaseReportFieldMdIncomeEnum.ManagementCostTax));
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.ManagementCostFormula.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getSimpleFormula(ReportFieldMdIncomeEnum.GrossIncomeValue, ReportFieldMdIncomeEnum.ManagementCostTax));
                 }
                 //收益法年保险费公式
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.InsurancePremiumCostFormula.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getSimpleFormula(BaseReportFieldMdIncomeEnum.ReplacementCost,BaseReportFieldMdIncomeEnum.InsurancePremiumTax));
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.InsurancePremiumCostFormula.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getSimpleFormula(ReportFieldMdIncomeEnum.ReplacementCost, ReportFieldMdIncomeEnum.InsurancePremiumTax));
                 }
                 //收益法租赁税费公式
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeAdditionalRatioCostFormula.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getSimpleFormula(BaseReportFieldMdIncomeEnum.GrossIncomeValue,BaseReportFieldMdIncomeEnum.IncomeAdditionalRatio));
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.IncomeAdditionalRatioCostFormula.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getSimpleFormula(ReportFieldMdIncomeEnum.GrossIncomeValue, ReportFieldMdIncomeEnum.IncomeAdditionalRatio));
                 }
 
                 //收益法测算公式带值
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeCalculateFormulaValue.getName())) {
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.IncomeCalculateFormulaValue.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomeCalculateFormulaValue());
                 }
 
 
 
                 //重置成本/重置价格
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.ReplacementCost.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCostOtherCommon(BaseReportFieldMdIncomeEnum.ReplacementCost));
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.ReplacementCost.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCostOtherCommon(ReportFieldMdIncomeEnum.ReplacementCost));
                 }
                 //收益法维修保养费率
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.MaintenanceCostRatio.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCostCommonTax(BaseReportFieldMdIncomeEnum.MaintenanceCostRatio));
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.MaintenanceCostRatio.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCostCommonTax(ReportFieldMdIncomeEnum.MaintenanceCostRatio));
                 }
                 //收益法有效收缴率
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeAdditionalCapture.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCommon(BaseReportFieldMdIncomeEnum.IncomeAdditionalCapture));
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.IncomeAdditionalCapture.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCommon(ReportFieldMdIncomeEnum.IncomeAdditionalCapture));
                 }
                 //收益法有效收缴费
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeAdditionalCaptureCost.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCommon(BaseReportFieldMdIncomeEnum.IncomeAdditionalCaptureCost));
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.IncomeAdditionalCaptureCost.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCommon(ReportFieldMdIncomeEnum.IncomeAdditionalCaptureCost));
                 }
                 //收益法有效收缴率说明
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeAdditionalCaptureRemark.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCommon(BaseReportFieldMdIncomeEnum.IncomeAdditionalCaptureRemark));
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.IncomeAdditionalCaptureRemark.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCommon(ReportFieldMdIncomeEnum.IncomeAdditionalCaptureRemark));
                 }
                 //收益法押金收入
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeDepositCost.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCommon(BaseReportFieldMdIncomeEnum.IncomeDepositCost));
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.IncomeDepositCost.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCommon(ReportFieldMdIncomeEnum.IncomeDepositCost));
                 }
                 //收益法年维修费
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.MaintenanceCost.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCostCommon(BaseReportFieldMdIncomeEnum.MaintenanceCost));
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.MaintenanceCost.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCostCommon(ReportFieldMdIncomeEnum.MaintenanceCost));
                 }
                 //收益法土地使用税
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.LandUseTax.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCostCommonTax(BaseReportFieldMdIncomeEnum.LandUseTax));
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.LandUseTax.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCostCommonTax(ReportFieldMdIncomeEnum.LandUseTax));
                 }
                 //收益法土地使用税费
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.LandUseCost.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCostCommon(BaseReportFieldMdIncomeEnum.LandUseCost));
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.LandUseCost.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCostCommon(ReportFieldMdIncomeEnum.LandUseCost));
                 }
                 //收益法管理费率
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.ManagementCostTax.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCostCommonTax(BaseReportFieldMdIncomeEnum.ManagementCostTax));
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.ManagementCostTax.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCostCommonTax(ReportFieldMdIncomeEnum.ManagementCostTax));
                 }
                 //收益法管理费
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.ManagementCost.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCostCommon(BaseReportFieldMdIncomeEnum.ManagementCost));
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.ManagementCost.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCostCommon(ReportFieldMdIncomeEnum.ManagementCost));
                 }
                 //收益法租赁税费
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeAdditionalRatioCost.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCostCommon(BaseReportFieldMdIncomeEnum.IncomeAdditionalRatioCost));
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.IncomeAdditionalRatioCost.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCostCommon(ReportFieldMdIncomeEnum.IncomeAdditionalRatioCost));
                 }
                 //收益法租赁税率
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeAdditionalRatio.getName())) {
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.IncomeAdditionalRatio.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name,
-                            getMdIncomeLeaseCostCommonTax(BaseReportFieldMdIncomeEnum.IncomeAdditionalRatio));
+                            getMdIncomeLeaseCostCommonTax(ReportFieldMdIncomeEnum.IncomeAdditionalRatio));
                 }
                 //收益法保险费率
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.InsurancePremiumTax.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCostCommonTax(BaseReportFieldMdIncomeEnum.InsurancePremiumTax));
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.InsurancePremiumTax.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCostCommonTax(ReportFieldMdIncomeEnum.InsurancePremiumTax));
                 }
                 //收益法年保险费
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.InsurancePremiumCost.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCostCommon(BaseReportFieldMdIncomeEnum.InsurancePremiumCost));
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.InsurancePremiumCost.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCostCommon(ReportFieldMdIncomeEnum.InsurancePremiumCost));
                 }
                 //收益法地方教育费附加税率
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeLocalEducationRatio.getName())) {
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.IncomeLocalEducationRatio.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name,
-                            getMdIncomeLeaseCostCommonTax(BaseReportFieldMdIncomeEnum.IncomeLocalEducationRatio));
+                            getMdIncomeLeaseCostCommonTax(ReportFieldMdIncomeEnum.IncomeLocalEducationRatio));
                 }
                 //收益法教育费附加税率
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeEducationRatio.getName())) {
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.IncomeEducationRatio.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name,
-                            getMdIncomeLeaseCostCommonTax(BaseReportFieldMdIncomeEnum.IncomeEducationRatio));
+                            getMdIncomeLeaseCostCommonTax(ReportFieldMdIncomeEnum.IncomeEducationRatio));
                 }
                 //收益法城建税税率
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeconstructionTaxRatio.getName())) {
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.IncomeconstructionTaxRatio.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name,
-                            getMdIncomeLeaseCostCommonTax(BaseReportFieldMdIncomeEnum.IncomeconstructionTaxRatio));
+                            getMdIncomeLeaseCostCommonTax(ReportFieldMdIncomeEnum.IncomeconstructionTaxRatio));
                 }
                 //收益法增值税率
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomesalesTaxRatio.getName())) {
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.IncomesalesTaxRatio.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name,
-                            getMdIncomeLeaseCostCommonTax(BaseReportFieldMdIncomeEnum.IncomesalesTaxRatio));
+                            getMdIncomeLeaseCostCommonTax(ReportFieldMdIncomeEnum.IncomesalesTaxRatio));
                 }
                 //收益法增值修正税率
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomesalesTaxRatioCorrect.getName())) {
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.IncomesalesTaxRatioCorrect.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name,
-                            getMdIncomeLeaseCostCommonTax(BaseReportFieldMdIncomeEnum.IncomesalesTaxRatioCorrect));
+                            getMdIncomeLeaseCostCommonTax(ReportFieldMdIncomeEnum.IncomesalesTaxRatioCorrect));
                 }
                 //收益法房产税修正税率
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomePropertyTaxCorrect.getName())) {
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.IncomePropertyTaxCorrect.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name,
-                            getMdIncomeLeaseCostCommonTax(BaseReportFieldMdIncomeEnum.IncomePropertyTaxCorrect));
+                            getMdIncomeLeaseCostCommonTax(ReportFieldMdIncomeEnum.IncomePropertyTaxCorrect));
                 }
                 //城市地方教育修正
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeCityLocalEducationTaxCorrect.getName())) {
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.IncomeCityLocalEducationTaxCorrect.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name,
-                            getMdIncomeLeaseCostCommonTax(BaseReportFieldMdIncomeEnum.IncomeCityLocalEducationTaxCorrect));
+                            getMdIncomeLeaseCostCommonTax(ReportFieldMdIncomeEnum.IncomeCityLocalEducationTaxCorrect));
                 }
                 //年运营费
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.AnnualOperatingCost.getName())) {
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.AnnualOperatingCost.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name,
-                            getMdIncomeLeaseCostOtherCommon(BaseReportFieldMdIncomeEnum.AnnualOperatingCost));
+                            getMdIncomeLeaseCostOtherCommon(ReportFieldMdIncomeEnum.AnnualOperatingCost));
                 }
                 //年净收益
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.AnnualNetIncome.getName())) {
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.AnnualNetIncome.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name,
-                            getMdIncomeLeaseCostOtherCommon(BaseReportFieldMdIncomeEnum.AnnualNetIncome));
+                            getMdIncomeLeaseCostOtherCommon(ReportFieldMdIncomeEnum.AnnualNetIncome));
                 }
                 //单价
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomePrice.getName())) {
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.IncomePrice.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomePrice());
                 }
                 //收益法价格测算表
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeMethodPriceCalculatingSheet.getName())) {
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.IncomeMethodPriceCalculatingSheet.getName())) {
                     generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, getIncomeMethodPriceCalculating());
                 }
 
                 //收益法租赁限制说明
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.TenancyrestrictionRemark.getName())) {
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.TenancyrestrictionRemark.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getTenancyrestrictionReamrk());
                 }
                 //收益法申报产权证类型
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.PropertyRightCertificateIncomeLaw.getName())) {
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.PropertyRightCertificateIncomeLaw.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getPropertyRightCertificateIncomeLaw());
                 }
                 //收益法设定用途
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeSetUse.getName())) {
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.IncomeSetUse.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomeSetUse());
                 }
                 //收益法土地终止日期
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.TerminationDateLand.getName())) {
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.TerminationDateLand.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getTerminationDateLand());
                 }
                 //收益法剩余土地使用年限
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeSurplusLandUseYear.getName())) {
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.IncomeSurplusLandUseYear.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomeSurplusLandUseYear());
                 }
                 //收益法竣工时间
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeCompletionTime.getName())) {
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.IncomeCompletionTime.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomeCompletionTime());
                 }
                 //收益法建筑结构类别
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomebuildingStructureType.getName())) {
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.IncomebuildingStructureType.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomebuildingStructureType());
                 }
                 //收益法价值时点
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeValuePoint.getName())) {
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.IncomeValuePoint.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomeValuePoint());
                 }
                 //收益法已使用年限
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeUsedLife.getName())) {
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.IncomeUsedLife.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomeUsedLife());
                 }
                 //收益法经济耐用年限
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeBuildEconomicLife.getName())) {
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.IncomeBuildEconomicLife.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomeBuildEconomicLife());
                 }
                 //收益法房产剩余年限
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeHouseSurplusYear.getName())) {
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.IncomeHouseSurplusYear.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomeHouseSurplusYear());
                 }
                 //收益法收益年限
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeYears.getName())) {
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.IncomeYears.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomeYears());
                 }
                 //收益法中的比较法
@@ -402,63 +401,63 @@ public class GenerateMdIncomeService implements Serializable {
 //                    }
 //                }
                 //收益法区域城市
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeRegionalCities.getName())) {
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.IncomeRegionalCities.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomeRegionalCities());
                 }
                 //收益法评估面积
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeAssessmentArea.getName())) {
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.IncomeAssessmentArea.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomeAssessmentArea());
                 }
                 //收益法房产税
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomePropertyTax.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCostCommonTax(BaseReportFieldMdIncomeEnum.IncomePropertyTax));
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.IncomePropertyTax.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCostCommonTax(ReportFieldMdIncomeEnum.IncomePropertyTax));
                 }
                 //收益法印花税
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomestampTax.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCostCommonTax(BaseReportFieldMdIncomeEnum.IncomestampTax));
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.IncomestampTax.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCostCommonTax(ReportFieldMdIncomeEnum.IncomestampTax));
                 }
                 //收益法其它交易费率
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeTransactionTax.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCostCommonTax(BaseReportFieldMdIncomeEnum.IncomeTransactionTax));
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.IncomeTransactionTax.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCostCommonTax(ReportFieldMdIncomeEnum.IncomeTransactionTax));
                 }
                 //收益法其它相关费用 (收益法其它交易费)
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeTransaction.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCostCommon(BaseReportFieldMdIncomeEnum.IncomeTransaction));
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.IncomeTransaction.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdIncomeLeaseCostCommon(ReportFieldMdIncomeEnum.IncomeTransaction));
                 }
                 //收益法公式
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeMethodFormula.getName())) {
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.IncomeMethodFormula.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomeMethodFormula());
                 }
                 //收益法报酬率
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomePayBack.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getToolRewardRateIncomeCommon(BaseReportFieldMdIncomeEnum.IncomePayBack));
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.IncomePayBack.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getToolRewardRateIncomeCommon(ReportFieldMdIncomeEnum.IncomePayBack));
                 }
                 //收益法机会成本说明
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeOpportunityCostReamrk.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getToolRewardRateIncomeCommon(BaseReportFieldMdIncomeEnum.IncomeOpportunityCostReamrk));
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.IncomeOpportunityCostReamrk.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getToolRewardRateIncomeCommon(ReportFieldMdIncomeEnum.IncomeOpportunityCostReamrk));
                 }
                 //收益法投资风险补偿
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeRiskCompensation.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getToolRewardRateIncomeCommon(BaseReportFieldMdIncomeEnum.IncomeRiskCompensation));
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.IncomeRiskCompensation.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getToolRewardRateIncomeCommon(ReportFieldMdIncomeEnum.IncomeRiskCompensation));
                 }
                 //收益法管理负担补偿
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeManageCompensation.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getToolRewardRateIncomeCommon(BaseReportFieldMdIncomeEnum.IncomeManageCompensation));
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.IncomeManageCompensation.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getToolRewardRateIncomeCommon(ReportFieldMdIncomeEnum.IncomeManageCompensation));
                 }
                 //收益法缺乏流动性补偿
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeLiquidCompensation.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getToolRewardRateIncomeCommon(BaseReportFieldMdIncomeEnum.IncomeLiquidCompensation));
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.IncomeLiquidCompensation.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getToolRewardRateIncomeCommon(ReportFieldMdIncomeEnum.IncomeLiquidCompensation));
                 }
                 //收益法投资带来的优惠
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeFinancingAdvantage.getName())) {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getToolRewardRateIncomeCommon(BaseReportFieldMdIncomeEnum.IncomeFinancingAdvantage));
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.IncomeFinancingAdvantage.getName())) {
+                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getToolRewardRateIncomeCommon(ReportFieldMdIncomeEnum.IncomeFinancingAdvantage));
                 }
                 //收益法单价内涵
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeUnitPriceConnotation.getName())) {
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.IncomeUnitPriceConnotation.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomeUnitPriceConnotation());
                 }
                 //收益法确定月租金方式
-                if (Objects.equal(name, BaseReportFieldMdIncomeEnum.IncomeDetermineRentalWay.getName())) {
+                if (Objects.equal(name, ReportFieldMdIncomeEnum.IncomeDetermineRentalWay.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getIncomeDetermineRentalWay());
                 }
             } catch (Exception e) {
@@ -898,7 +897,7 @@ public class GenerateMdIncomeService implements Serializable {
      * @param incomeEnum
      * @return
      */
-    private synchronized String getMdIncomeLeaseCommon(BaseReportFieldMdIncomeEnum incomeEnum) {
+    private synchronized String getMdIncomeLeaseCommon(ReportFieldMdIncomeEnum incomeEnum) {
         List<MdIncomeLeaseVo> mdIncomeLeaseList = getMdIncomeLeaseList();
         if (CollectionUtils.isEmpty(mdIncomeLeaseList)) {
             return errorStr;
@@ -971,14 +970,14 @@ public class GenerateMdIncomeService implements Serializable {
                 atomicInteger.incrementAndGet();
             }
         });
-        if (Objects.equal(incomeEnum.getName(), BaseReportFieldMdIncomeEnum.IncomeDepositCost.getName())) {
+        if (Objects.equal(incomeEnum.getName(), ReportFieldMdIncomeEnum.IncomeDepositCost.getName())) {
             separator = "，";
         }
-        if (Objects.equal(incomeEnum.getName(), BaseReportFieldMdIncomeEnum.RestrictionExplain.getName())) {
+        if (Objects.equal(incomeEnum.getName(), ReportFieldMdIncomeEnum.RestrictionExplain.getName())) {
             separator = String.format("%s%s",StringUtils.repeat(" ",2),ControlChar.LINE_BREAK);
             repeat = 3;
         }
-        if (Objects.equal(incomeEnum.getName(), BaseReportFieldMdIncomeEnum.IncomeAdditionalCaptureRemark.getName())) {
+        if (Objects.equal(incomeEnum.getName(), ReportFieldMdIncomeEnum.IncomeAdditionalCaptureRemark.getName())) {
             separator = String.format("%s%s",StringUtils.repeat(" ",2),ControlChar.LINE_BREAK);
             repeat = 3;
         }
@@ -992,7 +991,7 @@ public class GenerateMdIncomeService implements Serializable {
      * @param incomeEnum
      * @return
      */
-    private synchronized String getMdIncomeLeaseCostOtherCommon(BaseReportFieldMdIncomeEnum incomeEnum) {
+    private synchronized String getMdIncomeLeaseCostOtherCommon(ReportFieldMdIncomeEnum incomeEnum) {
         List<MdIncomeLeaseCostVo> leaseVoList = getLeaseVoList();
         List<MdIncomeLeaseVo> mdIncomeLeaseVoList = getMdIncomeLeaseList();
         if (CollectionUtils.isEmpty(leaseVoList)) {
@@ -1148,20 +1147,20 @@ public class GenerateMdIncomeService implements Serializable {
                 atomicInteger.incrementAndGet();
             }
         });
-        if (Objects.equal(incomeEnum.getName(), BaseReportFieldMdIncomeEnum.AnnualOperatingCost.getName())) {
+        if (Objects.equal(incomeEnum.getName(), ReportFieldMdIncomeEnum.AnnualOperatingCost.getName())) {
             separator = ControlChar.LINE_BREAK;
         }
-        if (Objects.equal(incomeEnum.getName(), BaseReportFieldMdIncomeEnum.GrossIncome.getName())) {
+        if (Objects.equal(incomeEnum.getName(), ReportFieldMdIncomeEnum.GrossIncome.getName())) {
             separator = ControlChar.LINE_BREAK;
         }
-        if (Objects.equal(incomeEnum.getName(), BaseReportFieldMdIncomeEnum.AnnualNetIncome.getName())) {
+        if (Objects.equal(incomeEnum.getName(), ReportFieldMdIncomeEnum.AnnualNetIncome.getName())) {
             separator = ControlChar.LINE_BREAK;
         }
-        if (Objects.equal(incomeEnum.getName(), BaseReportFieldMdIncomeEnum.RentalGrowthRateExplain.getName())) {
+        if (Objects.equal(incomeEnum.getName(), ReportFieldMdIncomeEnum.RentalGrowthRateExplain.getName())) {
             separator = String.format("%s%s",StringUtils.repeat(" ",2),ControlChar.LINE_BREAK);
             repeat = 4;
         }
-        if (Objects.equal(incomeEnum.getName(), BaseReportFieldMdIncomeEnum.TransactionTaxeFeeExplain.getName())) {
+        if (Objects.equal(incomeEnum.getName(), ReportFieldMdIncomeEnum.TransactionTaxeFeeExplain.getName())) {
             separator = String.format("%s%s",StringUtils.repeat(" ",2),ControlChar.LINE_BREAK);
             repeat = 0;
         }
@@ -1176,7 +1175,7 @@ public class GenerateMdIncomeService implements Serializable {
      * @param incomeEnum
      * @return
      */
-    private synchronized String getSimpleFormula(BaseReportFieldMdIncomeEnum incomeEnum,BaseReportFieldMdIncomeEnum incomeEnumTax) throws Exception{
+    private synchronized String getSimpleFormula(ReportFieldMdIncomeEnum incomeEnum, ReportFieldMdIncomeEnum incomeEnumTax) throws Exception{
         String moneyStr = getMdIncomeLeaseCostOtherCommon(incomeEnum);
         String taxStr = getMdIncomeLeaseCostCommonTax(incomeEnumTax);
         BigDecimal money = new BigDecimal("0");
@@ -1198,7 +1197,7 @@ public class GenerateMdIncomeService implements Serializable {
      * @param incomeEnum
      * @return
      */
-    private synchronized String getMdIncomeLeaseCostCommon(BaseReportFieldMdIncomeEnum incomeEnum) {
+    private synchronized String getMdIncomeLeaseCostCommon(ReportFieldMdIncomeEnum incomeEnum) {
         List<MdIncomeLeaseCostVo> leaseVoList = getLeaseVoList();
         if (CollectionUtils.isEmpty(leaseVoList)) {
             return errorStr;
@@ -1261,7 +1260,7 @@ public class GenerateMdIncomeService implements Serializable {
      * @param incomeEnum
      * @return
      */
-    private synchronized String getMdIncomeLeaseCostCommonTax(BaseReportFieldMdIncomeEnum incomeEnum) {
+    private synchronized String getMdIncomeLeaseCostCommonTax(ReportFieldMdIncomeEnum incomeEnum) {
         List<MdIncomeLeaseCostVo> leaseVoList = getLeaseVoList();
         if (CollectionUtils.isEmpty(leaseVoList)) {
             return errorStr;
@@ -1379,7 +1378,7 @@ public class GenerateMdIncomeService implements Serializable {
      * @param incomeEnum
      * @return
      */
-    public String getToolRewardRateIncomeCommon(BaseReportFieldMdIncomeEnum incomeEnum) throws Exception {
+    public String getToolRewardRateIncomeCommon(ReportFieldMdIncomeEnum incomeEnum) throws Exception {
         StringBuilder builder = new StringBuilder(8);
         ToolRewardRate toolRewardRate = toolRewardRateService.getToolRewardRateById(getMdIncome().getRewardRateId());
         if (toolRewardRate == null) {

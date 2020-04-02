@@ -7,7 +7,7 @@ import java.io.Serializable;
  * @date: 2019/2/14 16:11
  * @description:报告模板字段(逼近法)
  */
-public enum BaseReportFieldMdCostApproachEnum implements Serializable {
+public enum ReportFieldMdCostApproachEnum implements Serializable {
     approachSetUse("逼近法土地设定用途"),//方案中设定用途*
     approachArea("逼近法区域"),
     parcelMachineCycle("逼近法计息周期"),//计息周期
@@ -46,12 +46,12 @@ public enum BaseReportFieldMdCostApproachEnum implements Serializable {
     parcelCalculate("逼近法测算表"),
     ;
     private String name;
-    BaseReportFieldMdCostApproachEnum(String name) {
+    ReportFieldMdCostApproachEnum(String name) {
         this.name = name;
     }
 
-    public static BaseReportFieldMdCostApproachEnum getEnumByName(String name) {
-        for (BaseReportFieldMdCostApproachEnum e : BaseReportFieldMdCostApproachEnum.values()) {
+    public static ReportFieldMdCostApproachEnum getEnumByName(String name) {
+        for (ReportFieldMdCostApproachEnum e : ReportFieldMdCostApproachEnum.values()) {
             if (e.getName().equals(name)) {
                 return e;
             }
