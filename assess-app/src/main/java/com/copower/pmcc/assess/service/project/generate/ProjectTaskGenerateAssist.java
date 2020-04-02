@@ -52,6 +52,8 @@ public class ProjectTaskGenerateAssist implements ProjectTaskInterface {
     private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
     @Autowired
     private GenerateReportInfoDao generateReportInfoDao;
+    @Autowired
+    private GenerateService generateService;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
@@ -122,9 +124,11 @@ public class ProjectTaskGenerateAssist implements ProjectTaskInterface {
 
     @Override
     public void applyCommit(ProjectPlanDetails projectPlanDetails, String processInsId, String formData) throws BusinessException, BpmException {
-        if (StringUtils.isNotEmpty(processInsId)) {
-            //修改监听器
+        if (StringUtils.isNotEmpty(processInsId)) { //修改监听器
             bpmRpcActivitiProcessManageService.setProcessEventExecutor(projectPlanDetails.getProcessInsId(), GenerateEvent.class.getSimpleName());
+            generateService.updateSymbolExamine(projectPlanDetails.getProjectId());
+        }else{
+            generateService.updateSymbolUsed(projectPlanDetails.getProjectId());
         }
     }
 

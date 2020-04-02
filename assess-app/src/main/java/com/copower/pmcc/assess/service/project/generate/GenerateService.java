@@ -17,16 +17,21 @@ import com.copower.pmcc.bpm.api.dto.model.ProcessInfo;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.erp.api.provider.ErpRpcToolsService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * Created by kings on 2019-2-12.
@@ -52,6 +57,8 @@ public class GenerateService {
     private PublicService publicService;
     @Autowired
     private ProjectNumberRecordService projectNumberRecordService;
+    @Autowired
+    private ErpRpcToolsService erpRpcToolsService;
 
 
     /**
@@ -138,6 +145,57 @@ public class GenerateService {
         if (numberRecord != null) {
             numberRecord.setBisDelete(true);
             projectNumberRecordService.updateProjectNumberRecord(numberRecord);
+        }
+    }
+
+    /**
+     * 获取项目生成报告中文号记录数据
+     *
+     * @param projectId
+     * @return
+     */
+    public List<ProjectNumberRecord> getProjectNumberRecords(Integer projectId) {
+        List<ProjectNumberRecord> numberRecordList = projectNumberRecordService.getReportNumberRecordList(projectId, null, null);
+        if (CollectionUtils.isEmpty(numberRecordList)) return null;
+        numberRecordList = LangUtils.filter(numberRecordList, o -> o.getAreaId() > 0);
+        return numberRecordList;
+    }
+
+    /**
+     * 更新为已使用状态
+     */
+    public void updateSymbolUsed(Integer projectId) {
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
+        List<ProjectNumberRecord> projectNumberRecords = getProjectNumberRecords(projectId);
+        if (CollectionUtils.isNotEmpty(projectNumberRecords)) {
+            projectNumberRecords.forEach(o -> {
+                erpRpcToolsService.bindSymbol(applicationConstant.getAppKey(), o.getNumberValue(), projectInfo.getPublicProjectId(), o.getId(), FormatUtils.entityNameConvertToTableName(ProjectNumberRecord.class));
+                erpRpcToolsService.updateSymbolUsed(applicationConstant.getAppKey(), o.getNumberValue());
+            });
+        }
+    }
+
+    /**
+     * 更新为审核状态
+     */
+    public void updateSymbolExamine(Integer projectId) {
+        List<ProjectNumberRecord> projectNumberRecords = getProjectNumberRecords(projectId);
+        if (CollectionUtils.isNotEmpty(projectNumberRecords)) {
+            projectNumberRecords.forEach(o -> {
+                erpRpcToolsService.updateSymbolExamine(applicationConstant.getAppKey(), o.getNumberValue());
+            });
+        }
+    }
+
+    /**
+     * 更新为可用状态
+     */
+    public void updateSymbolEnable(Integer projectId) {
+        List<ProjectNumberRecord> projectNumberRecords = getProjectNumberRecords(projectId);
+        if (CollectionUtils.isNotEmpty(projectNumberRecords)) {
+            projectNumberRecords.forEach(o -> {
+                erpRpcToolsService.updateSymbolEnable(applicationConstant.getAppKey(), o.getNumberValue());
+            });
         }
     }
 }
