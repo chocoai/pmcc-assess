@@ -167,64 +167,23 @@ public class SurveyCommonService {
         return buildingUsableYear;
     }
 
-    //修改申报实际用途
+    /**
+     * 修改申报记录实际用途
+     * @param projectPlanDetails
+     */
     public void updateDeclarePracticalUse(ProjectPlanDetails projectPlanDetails) {
-        if (projectPlanDetails.getDeclareRecordId() != null) {
-            DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
-            if (declareRecord != null) {
-                try {
-                    BasicApply basicApply = basicApplyService.getBasicApplyByPlanDetailsId(projectPlanDetails.getId());
-                    BasicHouse house = basicHouseService.getBasicHouseById(basicApply.getBasicHouseId());
-                    if (house.getPracticalUse() != null) {
-                        declareRecord.setPracticalUse(baseDataDicService.getNameById(house.getPracticalUse()));
+        List<BasicApply> basicApplyList = basicApplyService.getBasicApplyListByPlanDetailsId(projectPlanDetails.getId());
+        if (CollectionUtils.isNotEmpty(basicApplyList)) {
+            for (BasicApply basicApply : basicApplyList) {
+                BasicHouse house = basicHouseService.getHouseByBasicApply(basicApply);
+                if (house != null && house.getPracticalUse() != null) {
+                    DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(basicApply.getDeclareRecordId());
+                    if(declareRecord!=null){
+                        declareRecord.setPracticalUse(house.getPracticalUse());
                         declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
                     }
-                } catch (Exception e) {
-                    logger.error(e.getMessage(), e);
                 }
             }
         }
-
     }
-
-    /**
-     * 获取案例调查所有任务
-     *
-     * @param planDetailsId
-     * @return
-     */
-    public List<ProjectPlanDetailsVo> getPlanTaskExamineList(Integer planDetailsId) {
-        ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
-        List<ProjectPlanDetails> planDetailsList = projectPlanDetailsService.getPlanDetailsListRecursion(planDetailsId, true);
-        List<ProjectPlanDetailsVo> planDetailsVoList = LangUtils.transform(planDetailsList, o -> projectPlanDetailsService.getProjectPlanDetailsVo(o));
-        if (CollectionUtils.isNotEmpty(planDetailsVoList)) {
-            //获取当前人该阶段下待处理的任务
-            ProjectResponsibilityDto projectResponsibilityDto = new ProjectResponsibilityDto();
-            projectResponsibilityDto.setProjectId(projectPlanDetails.getProjectId());
-            projectResponsibilityDto.setPlanId(projectPlanDetails.getPlanId());
-            projectResponsibilityDto.setAppKey(applicationConstant.getAppKey());
-            projectResponsibilityDto.setUserAccount(commonService.thisUserAccount());
-            List<ProjectResponsibilityDto> projectTaskList = bpmRpcProjectTaskService.getProjectTaskList(projectResponsibilityDto);
-            String viewUrl = String.format("/%s/ProjectTask/projectTaskDetailsById?planDetailsId=", applicationConstant.getAppKey());
-            for (ProjectPlanDetailsVo projectPlanDetailsVo : planDetailsVoList) {
-                if (projectPlanDetailsVo.getId().equals(planDetailsId)) {
-                    projectPlanDetailsVo.set_parentId(null);//顶级节点parentId必须为空才能显示
-                }
-                if (CollectionUtils.isNotEmpty(projectTaskList)) {
-                    for (ProjectResponsibilityDto responsibilityDto : projectTaskList) {
-                        if (responsibilityDto.getPlanDetailsId().equals(projectPlanDetailsVo.getId())) {
-                            projectPlanDetailsVo.setExcuteUrl(String.format("%s?responsibilityId=%s", responsibilityDto.getUrl(), responsibilityDto.getId()));
-                        }
-                    }
-                }
-
-                //设置查看url
-                if (StringUtils.isNotBlank(projectPlanDetailsVo.getExecuteUserAccount()) && projectPlanDetailsVo.getBisStart()) {
-                    projectPlanDetailsVo.setDisplayUrl(String.format("%s%s", viewUrl, projectPlanDetailsVo.getId()));
-                }
-            }
-        }
-        return planDetailsVoList;
-    }
-
 }
