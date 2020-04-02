@@ -563,7 +563,7 @@ public class MdMarketCostService {
                     double d21 = Double.valueOf(getFieldObjectValue(BaseReportMarketCostEnum.MarketCost_interestInvestmentRate, target));
                     double h3 = target.getDevelopYearNumberTax().doubleValue();
                     double a = Math.pow(1 + d21, h3 / 2);
-                    double c = ArithmeticUtils.mul(d20, a - 1, 5);
+                    double c = ArithmeticUtils.mul(d20, a - 1, 4);
                     return String.valueOf(c);
                 } catch (Exception e) {
                     return "";
