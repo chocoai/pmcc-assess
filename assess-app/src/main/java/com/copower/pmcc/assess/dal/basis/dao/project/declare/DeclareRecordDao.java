@@ -70,7 +70,7 @@ public class DeclareRecordDao {
         return mapper.selectByExample(example);
     }
 
-    public List<DeclareRecord> getDeclareRecordList(Integer projectId, String name, String seat, Boolean bisPartIn, String province, String city, String district) {
+    public List<DeclareRecord> getDeclareRecordList(Integer projectId, String name, String seat, Boolean bisPartIn, String province, String city, String district, String inventoryStatus) {
         DeclareRecordExample example = new DeclareRecordExample();
         DeclareRecordExample.Criteria criteria = example.createCriteria();
         criteria.andProjectIdEqualTo(projectId);
@@ -92,12 +92,15 @@ public class DeclareRecordDao {
         if (StringUtils.isNotBlank(district)) {
             criteria.andDistrictEqualTo(district);
         }
+        if (StringUtils.isNotBlank(inventoryStatus)) {
+            criteria.andInventoryStatusEqualTo(inventoryStatus);
+        }
         return mapper.selectByExample(example);
     }
 
 
     public boolean updateDeclareRecord(DeclareRecord declareRecord) {
-        return updateDeclareRecord(declareRecord,false);
+        return updateDeclareRecord(declareRecord, false);
     }
 
     public boolean updateDeclareRecord(DeclareRecord oo, boolean updateNull) {

@@ -124,10 +124,10 @@
                                                     状态
                                                 </label>
                                                 <div class="col-sm-2">
-                                                    <select name="bisInventory" class="form-control input-full">
+                                                    <select name="inventoryStatus" class="form-control input-full">
                                                         <option value="">请选择</option>
-                                                        <option value="true">已清查</option>
-                                                        <option value="false">未清查</option>
+                                                        <option value="finish">已清查</option>
+                                                        <option value="runing">待清查</option>
                                                     </select>
                                                 </div>
                                                 <div class="col-sm-3">
@@ -297,8 +297,8 @@
                                                 <div class="col-sm-2">
                                                     <select name="status" class="form-control input-full">
                                                         <option value="">请选择</option>
-                                                        <option value="runing">进行中</option>
-                                                        <option value="finish">已完成</option>
+                                                        <option value="runing">待清查</option>
+                                                        <option value="finish">已清查</option>
                                                     </select>
                                                 </div>
                                                 <div class="col-sm-3">
@@ -409,6 +409,14 @@
      */
     assetInfo.saveDeclareRecord = function (data, callback) {
         assetInfo.ajaxServerFun({formData: JSON.stringify(data)}, "/declareRecord/saveDeclareRecord", "post", callback, null);
+    };
+    /**
+     * 申报记录 get
+     * @param data
+     * @param callback
+     */
+    assetInfo.getDeclareRecordListByIds = function (data, callback) {
+        assetInfo.ajaxServerFun({id: data.join(",")}, "/declareRecord/getDeclareRecordListByIds", "get", callback, null);
     };
     assetInfo.saveDeclareRecordArray = function (data, updateNull, callback) {
         if (updateNull == null || updateNull == undefined || updateNull == '') {
@@ -744,6 +752,7 @@
         });
     };
 
+    //认领权证
     assetInfo.selectClaimData = function () {
         var target = assetInfo.handleJquery(assetInfo.declareRecordTable);
         var rows = target.bootstrapTable('getSelections');
@@ -753,14 +762,16 @@
             var idArray = [];
             var num = 0;
             rows.forEach(function (ele, index) {
-                if (!ele.bisInventory) {
+                if (ele.inventoryStatus){
+                    if (ele.inventoryStatus == 'finish' || ele.inventoryStatus == 'runing'){
+                        num++;
+                    }
+                }else {
                     idArray.push(ele.id);
-                } else {
-                    num++;
                 }
             });
             if (num != 0) {
-                notifyWarning("警告", "此次选择的权证存在已经被清查的数据,请检查!");
+                notifyWarning("警告", "此次选择的权证存在已经被清查的数据或者已经被认领过的数据,请检查!");
                 target.bootstrapTable('uncheckAll');
                 return false;
             }
@@ -853,13 +864,14 @@
                 target.bootstrapTable('uncheckAll');
                 return false;
             }
-            var data = target.bootstrapTable('getRowByUniqueId', id);
-            AlertConfirm("粘贴操作", "是否确认", function (flag) {
-                assetInfo.parseSurveyAssetInventory(data.inventoryId, 'unit', idArray.join(","), function () {
-                    notifySuccess("成功", "粘贴完成");
-                    assetInfo.loadSurveyAssetInfoItemBaseList();
+            assetInfo.getSurveyAssetInfoItemById(id,function (data) {
+                AlertConfirm("粘贴操作", "是否确认", function (flag) {
+                    assetInfo.parseSurveyAssetInventory(data.inventoryId, 'unit', idArray.join(","), function () {
+                        notifySuccess("成功", "粘贴完成");
+                        assetInfo.loadSurveyAssetInfoItemBaseList();
+                    });
                 });
-            });
+            }) ;
         }
     };
 
@@ -934,19 +946,18 @@
                                     assetInfo.loadSurveyAssetInfoGroupList();
                                 });
                             });
-                            assetInfo.getSurveyAssetInfoItemIdsByGroupId(masterId, function (ids) {
+                            assetInfo.getSurveyAssetInfoItemListByQuery({groupId:masterId,assetInfoId:'${surveyAssetInfo.id}'},function (data) {
                                 var objArr = [];
-                                $.each(ids, function (i, id) {
-                                    var obj = assetInfo.handleJquery(assetInfo.InfoItemBaseTable).bootstrapTable('getRowByUniqueId', id);
+                                $.each(data,function (i,obj) {
                                     obj.status = 'finish';
                                     objArr.push(obj);
-                                });
+                                }) ;
                                 if (objArr.length >= 1) {
                                     assetInfo.addSurveyAssetInfoItem(objArr, function () {
                                         assetInfo.loadSurveyAssetInfoItemBaseList();
                                     });
                                 }
-                            });
+                            }) ;
                         }
                         //单个的方式清查
                         if (type == 'unit') {
@@ -985,7 +996,7 @@
     };
 
     /**
-     *
+     *添加权证到组中
      */
     assetInfo.selectSurveyAssetInfoGroup = function (groupId) {
         if (!groupId) {
@@ -1129,16 +1140,28 @@
             return false;
         }
         var arr = [];
+        var declareIds = [];
         rows.forEach(function (data, index) {
             data.groupId = 0;
             data.inventoryId = 0;
+            data.status = 'runing';
             data.groupName = '';
             arr.push(data);
+            declareIds.push(data.declareId);
         });
-        assetInfo.addSurveyAssetInfoItem(arr, function () {
-            notifySuccess("成功", "移除成功!");
-            target.bootstrapTable('refresh');
-            assetInfo.handleJquery(assetInfo.InfoItemBaseTable).bootstrapTable('refresh');
+        assetInfo.getDeclareRecordListByIds(declareIds, function (data) {
+            var arrRecord = $.grep(data, function (n, i) {
+                return n.inventoryStatus == "finish";
+            });
+            if (arrRecord.length != 0) {
+                notifyWarning("提示", "勾选的数据有已经完成清查的数据,完成清查后不能在删除了");
+                return false;
+            }
+            assetInfo.addSurveyAssetInfoItem(arr, function () {
+                notifySuccess("成功", "移除成功!");
+                target.bootstrapTable('refresh');
+                assetInfo.handleJquery(assetInfo.InfoItemBaseTable).bootstrapTable('refresh');
+            });
         });
     };
 
@@ -1150,21 +1173,32 @@
             return false;
         }
         var arr = [];
-        var arrRecord = [];
+        var declareIds = [];
         var ids = [];
+
         rows.forEach(function (ele, index) {
             if (ele.groupId) {
                 arr.push(ele);
             }
             ids.push(ele.id);
+            declareIds.push(ele.declareId);
         });
         if (arr.length != 0) {
             notifyWarning("勾选的数据有已经加入组中", "请进入组中移除,然后在进入认领列表中删除");
             return false;
         }
-        assetInfo.deleteSurveyAssetInfoItemById(ids.join(","), function () {
-            target.bootstrapTable('refresh');
-            assetInfo.handleJquery(assetInfo.declareRecordTable).bootstrapTable('refresh');
+        assetInfo.getDeclareRecordListByIds(declareIds, function (data) {
+            var arrRecord = $.grep(data, function (n, i) {
+                return n.inventoryStatus == "finish";
+            });
+            if (arrRecord.length != 0) {
+                notifyWarning("提示", "勾选的数据有已经完成清查的数据,完成清查后不能在删除了,请检查");
+                return false;
+            }
+            assetInfo.deleteSurveyAssetInfoItemById(ids.join(","), function () {
+                target.bootstrapTable('refresh');
+                assetInfo.handleJquery(assetInfo.declareRecordTable).bootstrapTable('refresh');
+            });
         });
     };
 
@@ -1187,28 +1221,32 @@
      * @returns {boolean}
      */
     function submit(mustUseBox) {
-
-        var dataAll = assetInfo.handleJquery(assetInfo.InfoItemBaseTable).bootstrapTable('getData');
-        var filterData = $.grep(dataAll, function (item, i) {
-            return item.status != 'finish';
-        });
-        if (filterData.length != 0) {
-            notifyWarning("提示", "认领的权证有未清查的!");
-            return false;
-        }
-
-        var data = {
-            id: '${surveyAssetInfo.id}',
-            planDetailId: '${surveyAssetInfo.planDetailId}',
-            projectId: '${surveyAssetInfo.projectId}',
-            processInsId: '${surveyAssetInfo.processInsId}'
+//不要这样get获取数据  今天发现 getData 和 getRowByUniqueId 只能获取在页面上显示出来的数据,假如你的分页是10条,那么数据一定在10条以内,显然这样是错误的
+//        var dataAll = assetInfo.handleJquery(assetInfo.InfoItemBaseTable).bootstrapTable('getData');
+        var query = {
+            assetInfoId: '${surveyAssetInfo.id}',
+            status: 'runing',
+            creator: '${projectPlanDetails.executeUserAccount}'
         };
-        var formData = JSON.stringify(data);
-        if ("${processInsId}" != "0") {
-            submitEditToServer(formData);
-        } else {
-            submitToServer(formData, mustUseBox);
-        }
+        assetInfo.getSurveyAssetInfoItemListByQuery(query, function (filterData) {
+            if (filterData.length != 0) {
+                notifyWarning("提示", "认领的权证有未清查的!");
+                return false;
+            }
+            var data = {
+                id: '${surveyAssetInfo.id}',
+                planDetailId: '${surveyAssetInfo.planDetailId}',
+                projectId: '${surveyAssetInfo.projectId}',
+                processInsId: '${surveyAssetInfo.processInsId}'
+            };
+            var formData = JSON.stringify(data);
+            if ("${processInsId}" != "0") {
+                submitEditToServer(formData);
+            } else {
+                submitToServer(formData, mustUseBox);
+            }
+        });
+
     }
 
 

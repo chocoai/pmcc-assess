@@ -94,7 +94,7 @@ public class SurveyAssetInfoService {
         List<DeclareRecord> declareRecordList = declareRecordService.getDeclareRecordByProjectId(surveyAssetInfo.getProjectId());
         surveyAssetInfo.setCount(declareRecordList.size());
 
-        List<DeclareRecord> recordList = declareRecordList.stream().filter(declareRecord -> Objects.equal(declareRecord.getInventoryStatus(),SysProjectEnum.FINISH.getValue())).collect(Collectors.toList());
+        List<DeclareRecord> recordList = declareRecordList.stream().filter(declareRecord -> Objects.equal(declareRecord.getInventoryStatus(), SysProjectEnum.FINISH.getValue())).collect(Collectors.toList());
 
 
         surveyAssetInfo.setFinishCount(recordList.size());
@@ -231,12 +231,48 @@ public class SurveyAssetInfoService {
         SurveyAssetInfoItem queryItem = new SurveyAssetInfoItem();
         queryItem.setAssetInfoId(surveyAssetInfo.getId());
         queryItem.setStatus(SysProjectEnum.FINISH.getValue());
-        List<SurveyAssetInfoItem> surveyAssetInfoItems = surveyAssetInfoItemService.getSurveyAssetInfoItemListByQuery(queryItem);
+
+        SurveyAssetInfoGroup queryGroup = new SurveyAssetInfoGroup();
+        queryGroup.setAssetInfoId(surveyAssetInfo.getId());
+        queryGroup.setStatus(SysProjectEnum.FINISH.getValue());
+
+        List<SurveyAssetInfoItem> surveyAssetInfoItems = new ArrayList<>();
+
+        List<SurveyAssetInfoGroup> assetInfoGroups = surveyAssetInfoGroupService.getSurveyAssetInfoGroupListByQuery(queryGroup);
+        if (CollectionUtils.isNotEmpty(assetInfoGroups)) {
+            Iterator<SurveyAssetInfoGroup> iterator = assetInfoGroups.iterator();
+            while (iterator.hasNext()) {
+                SurveyAssetInfoGroup infoGroup = iterator.next();
+                if (infoGroup.getInventoryId() == null) {
+                    continue;
+                }
+                List<Integer> integers = surveyAssetInfoItemService.getSurveyAssetInfoItemIdsByGroupId(infoGroup.getId());
+                if (CollectionUtils.isEmpty(integers)) {
+                    continue;
+                }
+                List<SurveyAssetInfoItem> assetInfoItems = surveyAssetInfoItemService.getSurveyAssetInfoItemByIds(integers);
+                if (CollectionUtils.isEmpty(assetInfoItems)) {
+                    continue;
+                }
+                for (SurveyAssetInfoItem infoItem:assetInfoItems){
+                    infoItem.setInventoryId(infoGroup.getInventoryId());
+                }
+                surveyAssetInfoItems.addAll(assetInfoItems);
+            }
+        }
+        List<SurveyAssetInfoItem> surveyAssetInfoItems2 = surveyAssetInfoItemService.getSurveyAssetInfoItemListByQuery(queryItem);
+        if (CollectionUtils.isNotEmpty(surveyAssetInfoItems2)) {
+            surveyAssetInfoItems.addAll(surveyAssetInfoItems2);
+        }
+
         if (CollectionUtils.isNotEmpty(surveyAssetInfoItems)) {
             if (CollectionUtils.isNotEmpty(surveyAssetInfoItems)) {
                 for (SurveyAssetInfoItem assetInfoItem : surveyAssetInfoItems) {
                     DeclareRecord declareRecord = declareRecordList.stream().filter(record -> Objects.equal(record.getId(), assetInfoItem.getDeclareId())).findFirst().get();
                     if (declareRecord == null) {
+                        continue;
+                    }
+                    if (assetInfoItem.getInventoryId() == null) {
                         continue;
                     }
                     recordMap.put(assetInfoItem.getInventoryId(), declareRecord);
