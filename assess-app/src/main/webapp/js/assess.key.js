@@ -253,6 +253,10 @@ AssessDicKey.examineHouseDecorateSituation = "examine.house.decorate.situation";
 
 AssessDicKey.examine_house_room_part = "examine.house.room.part";//房间装修部位
 AssessDicKey.examine_house_room_material = "examine.house.room.material";//房间装修材料
+AssessDicKey.examine_house_room_adjacent_position = "examine.house.room.adjacent.position";//相邻位置
+AssessDicKey.examine_house_room_orientation = "examine.house.room.orientation";//方位
+AssessDicKey.examine_house_room_standard_measure = "examine.house.room.standard.measure";//计量标准
+AssessDicKey.examine_house_room_storage_request= "examine.house.room.storage.request";//仓储要求
 AssessDicKey.examineHouseIntelligent_wireMaterial = "examine.house.wire_material";//电线材质
 AssessDicKey.examine_house_supply_erection_method = "examine.house.water.supply_erection_method";//供水管架设方式
 AssessDicKey.examine_house_pretreated_water = "examine.house.water.pretreated_water";//前置净水

@@ -21,6 +21,18 @@
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
     <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+    <result column="house_shape" property="houseShape" jdbcType="VARCHAR" />
+    <result column="length" property="length" jdbcType="VARCHAR" />
+    <result column="width" property="width" jdbcType="VARCHAR" />
+    <result column="adjacent_position" property="adjacentPosition" jdbcType="VARCHAR" />
+    <result column="distance" property="distance" jdbcType="VARCHAR" />
+    <result column="span_length" property="spanLength" jdbcType="VARCHAR" />
+    <result column="standard_span" property="standardSpan" jdbcType="VARCHAR" />
+    <result column="max_span" property="maxSpan" jdbcType="VARCHAR" />
+    <result column="min_span" property="minSpan" jdbcType="VARCHAR" />
+    <result column="standard_measure" property="standardMeasure" jdbcType="VARCHAR" />
+    <result column="storage_request" property="storageRequest" jdbcType="VARCHAR" />
+    <result column="span_num" property="spanNum" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -83,7 +95,9 @@
   <sql id="Base_Column_List" >
     id, house_id, room_type, name, area, orientation, aeration, Illumination, sound_insulation, 
     sunshine, lighting, opening, depth, layer_height, clear_height, bis_delete, creator, 
-    gmt_created, gmt_modified
+    gmt_created, gmt_modified, house_shape, length, width, adjacent_position, distance, 
+    span_length, standard_span, max_span, min_span, standard_measure, storage_request, 
+    span_num
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseRoomExample" >
     select
@@ -124,14 +138,22 @@
       Illumination, sound_insulation, sunshine, 
       lighting, opening, depth, 
       layer_height, clear_height, bis_delete, 
-      creator, gmt_created, gmt_modified
+      creator, gmt_created, gmt_modified, 
+      house_shape, length, width, 
+      adjacent_position, distance, span_length, 
+      standard_span, max_span, min_span, 
+      standard_measure, storage_request, span_num
       )
     values (#{houseId,jdbcType=INTEGER}, #{roomType,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
       #{area,jdbcType=DECIMAL}, #{orientation,jdbcType=VARCHAR}, #{aeration,jdbcType=VARCHAR}, 
       #{illumination,jdbcType=VARCHAR}, #{soundInsulation,jdbcType=VARCHAR}, #{sunshine,jdbcType=VARCHAR}, 
       #{lighting,jdbcType=VARCHAR}, #{opening,jdbcType=VARCHAR}, #{depth,jdbcType=VARCHAR}, 
       #{layerHeight,jdbcType=DECIMAL}, #{clearHeight,jdbcType=DECIMAL}, #{bisDelete,jdbcType=BIT}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
+      #{houseShape,jdbcType=VARCHAR}, #{length,jdbcType=VARCHAR}, #{width,jdbcType=VARCHAR}, 
+      #{adjacentPosition,jdbcType=VARCHAR}, #{distance,jdbcType=VARCHAR}, #{spanLength,jdbcType=VARCHAR}, 
+      #{standardSpan,jdbcType=VARCHAR}, #{maxSpan,jdbcType=VARCHAR}, #{minSpan,jdbcType=VARCHAR}, 
+      #{standardMeasure,jdbcType=VARCHAR}, #{storageRequest,jdbcType=VARCHAR}, #{spanNum,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseRoom" >
@@ -194,6 +216,42 @@
       <if test="gmtModified != null" >
         gmt_modified,
       </if>
+      <if test="houseShape != null" >
+        house_shape,
+      </if>
+      <if test="length != null" >
+        length,
+      </if>
+      <if test="width != null" >
+        width,
+      </if>
+      <if test="adjacentPosition != null" >
+        adjacent_position,
+      </if>
+      <if test="distance != null" >
+        distance,
+      </if>
+      <if test="spanLength != null" >
+        span_length,
+      </if>
+      <if test="standardSpan != null" >
+        standard_span,
+      </if>
+      <if test="maxSpan != null" >
+        max_span,
+      </if>
+      <if test="minSpan != null" >
+        min_span,
+      </if>
+      <if test="standardMeasure != null" >
+        standard_measure,
+      </if>
+      <if test="storageRequest != null" >
+        storage_request,
+      </if>
+      <if test="spanNum != null" >
+        span_num,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="houseId != null" >
@@ -249,6 +307,42 @@
       </if>
       <if test="gmtModified != null" >
         #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="houseShape != null" >
+        #{houseShape,jdbcType=VARCHAR},
+      </if>
+      <if test="length != null" >
+        #{length,jdbcType=VARCHAR},
+      </if>
+      <if test="width != null" >
+        #{width,jdbcType=VARCHAR},
+      </if>
+      <if test="adjacentPosition != null" >
+        #{adjacentPosition,jdbcType=VARCHAR},
+      </if>
+      <if test="distance != null" >
+        #{distance,jdbcType=VARCHAR},
+      </if>
+      <if test="spanLength != null" >
+        #{spanLength,jdbcType=VARCHAR},
+      </if>
+      <if test="standardSpan != null" >
+        #{standardSpan,jdbcType=VARCHAR},
+      </if>
+      <if test="maxSpan != null" >
+        #{maxSpan,jdbcType=VARCHAR},
+      </if>
+      <if test="minSpan != null" >
+        #{minSpan,jdbcType=VARCHAR},
+      </if>
+      <if test="standardMeasure != null" >
+        #{standardMeasure,jdbcType=VARCHAR},
+      </if>
+      <if test="storageRequest != null" >
+        #{storageRequest,jdbcType=VARCHAR},
+      </if>
+      <if test="spanNum != null" >
+        #{spanNum,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -318,6 +412,42 @@
       <if test="record.gmtModified != null" >
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.houseShape != null" >
+        house_shape = #{record.houseShape,jdbcType=VARCHAR},
+      </if>
+      <if test="record.length != null" >
+        length = #{record.length,jdbcType=VARCHAR},
+      </if>
+      <if test="record.width != null" >
+        width = #{record.width,jdbcType=VARCHAR},
+      </if>
+      <if test="record.adjacentPosition != null" >
+        adjacent_position = #{record.adjacentPosition,jdbcType=VARCHAR},
+      </if>
+      <if test="record.distance != null" >
+        distance = #{record.distance,jdbcType=VARCHAR},
+      </if>
+      <if test="record.spanLength != null" >
+        span_length = #{record.spanLength,jdbcType=VARCHAR},
+      </if>
+      <if test="record.standardSpan != null" >
+        standard_span = #{record.standardSpan,jdbcType=VARCHAR},
+      </if>
+      <if test="record.maxSpan != null" >
+        max_span = #{record.maxSpan,jdbcType=VARCHAR},
+      </if>
+      <if test="record.minSpan != null" >
+        min_span = #{record.minSpan,jdbcType=VARCHAR},
+      </if>
+      <if test="record.standardMeasure != null" >
+        standard_measure = #{record.standardMeasure,jdbcType=VARCHAR},
+      </if>
+      <if test="record.storageRequest != null" >
+        storage_request = #{record.storageRequest,jdbcType=VARCHAR},
+      </if>
+      <if test="record.spanNum != null" >
+        span_num = #{record.spanNum,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -343,7 +473,19 @@
       bis_delete = #{record.bisDelete,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      house_shape = #{record.houseShape,jdbcType=VARCHAR},
+      length = #{record.length,jdbcType=VARCHAR},
+      width = #{record.width,jdbcType=VARCHAR},
+      adjacent_position = #{record.adjacentPosition,jdbcType=VARCHAR},
+      distance = #{record.distance,jdbcType=VARCHAR},
+      span_length = #{record.spanLength,jdbcType=VARCHAR},
+      standard_span = #{record.standardSpan,jdbcType=VARCHAR},
+      max_span = #{record.maxSpan,jdbcType=VARCHAR},
+      min_span = #{record.minSpan,jdbcType=VARCHAR},
+      standard_measure = #{record.standardMeasure,jdbcType=VARCHAR},
+      storage_request = #{record.storageRequest,jdbcType=VARCHAR},
+      span_num = #{record.spanNum,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -405,6 +547,42 @@
       <if test="gmtModified != null" >
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="houseShape != null" >
+        house_shape = #{houseShape,jdbcType=VARCHAR},
+      </if>
+      <if test="length != null" >
+        length = #{length,jdbcType=VARCHAR},
+      </if>
+      <if test="width != null" >
+        width = #{width,jdbcType=VARCHAR},
+      </if>
+      <if test="adjacentPosition != null" >
+        adjacent_position = #{adjacentPosition,jdbcType=VARCHAR},
+      </if>
+      <if test="distance != null" >
+        distance = #{distance,jdbcType=VARCHAR},
+      </if>
+      <if test="spanLength != null" >
+        span_length = #{spanLength,jdbcType=VARCHAR},
+      </if>
+      <if test="standardSpan != null" >
+        standard_span = #{standardSpan,jdbcType=VARCHAR},
+      </if>
+      <if test="maxSpan != null" >
+        max_span = #{maxSpan,jdbcType=VARCHAR},
+      </if>
+      <if test="minSpan != null" >
+        min_span = #{minSpan,jdbcType=VARCHAR},
+      </if>
+      <if test="standardMeasure != null" >
+        standard_measure = #{standardMeasure,jdbcType=VARCHAR},
+      </if>
+      <if test="storageRequest != null" >
+        storage_request = #{storageRequest,jdbcType=VARCHAR},
+      </if>
+      <if test="spanNum != null" >
+        span_num = #{spanNum,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -427,7 +605,19 @@
       bis_delete = #{bisDelete,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      house_shape = #{houseShape,jdbcType=VARCHAR},
+      length = #{length,jdbcType=VARCHAR},
+      width = #{width,jdbcType=VARCHAR},
+      adjacent_position = #{adjacentPosition,jdbcType=VARCHAR},
+      distance = #{distance,jdbcType=VARCHAR},
+      span_length = #{spanLength,jdbcType=VARCHAR},
+      standard_span = #{standardSpan,jdbcType=VARCHAR},
+      max_span = #{maxSpan,jdbcType=VARCHAR},
+      min_span = #{minSpan,jdbcType=VARCHAR},
+      standard_measure = #{standardMeasure,jdbcType=VARCHAR},
+      storage_request = #{storageRequest,jdbcType=VARCHAR},
+      span_num = #{spanNum,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

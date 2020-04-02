@@ -13,6 +13,34 @@ public class BasicHouseRoomVo extends BasicHouseRoom {
     private String fileViewName;
     private String creatorName;
 
+    private String standardMeasureName;
+    private String storageRequestName;
+    private String adjacentPositionName;
+
+    public String getStandardMeasureName() {
+        return standardMeasureName;
+    }
+
+    public void setStandardMeasureName(String standardMeasureName) {
+        this.standardMeasureName = standardMeasureName;
+    }
+
+    public String getStorageRequestName() {
+        return storageRequestName;
+    }
+
+    public void setStorageRequestName(String storageRequestName) {
+        this.storageRequestName = storageRequestName;
+    }
+
+    public String getAdjacentPositionName() {
+        return adjacentPositionName;
+    }
+
+    public void setAdjacentPositionName(String adjacentPositionName) {
+        this.adjacentPositionName = adjacentPositionName;
+    }
+
     public String getFileViewName() {
         return fileViewName;
     }

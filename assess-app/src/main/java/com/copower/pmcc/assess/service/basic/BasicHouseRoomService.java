@@ -159,6 +159,9 @@ public class BasicHouseRoomService {
         BeanUtils.copyProperties(basicHouseRoom, vo);
         vo.setRoomTypeName(basicHouseRoom.getRoomType());
         vo.setOrientationName(baseDataDicService.getNameById(basicHouseRoom.getOrientation()));
+        vo.setStandardMeasureName(baseDataDicService.getNameById(basicHouseRoom.getStandardMeasure()));
+        vo.setStorageRequestName(baseDataDicService.getNameById(basicHouseRoom.getStorageRequest()));
+        vo.setAdjacentPositionName(baseDataDicService.getNameById(basicHouseRoom.getAdjacentPosition()));
         List<SysAttachmentDto> sysAttachmentDtos = baseAttachmentService.getByField_tableId(basicHouseRoom.getId(), "house_room_file", "tb_basic_house_room");
         StringBuilder builder = new StringBuilder();
         if (!ObjectUtils.isEmpty(sysAttachmentDtos)) {
