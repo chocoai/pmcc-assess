@@ -111,9 +111,9 @@ public class BasicApplyDao {
         return basicApplyMapper.countByExample(example);
     }
 
-    public List<BasicApply> getBasicEstateIdNull() {
+    public List<BasicApply> getBasicApplysByBatchDetailIds(List<Integer> batchDetailIds) {
         BasicApplyExample example = new BasicApplyExample();
-        example.createCriteria().andBasicEstateIdIsNull();
+        example.createCriteria().andBatchDetailIdIn(batchDetailIds);
         return basicApplyMapper.selectByExample(example);
     }
 }

@@ -236,14 +236,14 @@ public class BasicApplyBatchDetailService {
         return basicApplyBatchDetailDao.getInfoList(basicApplyBatchDetail);
     }
 
-    public List<BasicApplyBatchDetail> getBasicApplyBatchDetailListByType(String type,Integer applyBatchId,Boolean isFuzzyMatching){
-        List<String> types=Lists.newArrayList();
-        if(isFuzzyMatching){
-            types.addAll(LangUtils.transform(BasicFormClassifyEnum.getEnumByFuzzyKey(type),o->o.getKey()));
-        }else{
+    public List<BasicApplyBatchDetail> getBasicApplyBatchDetailListByType(String type, Integer applyBatchId, Boolean isFuzzyMatching) {
+        List<String> types = Lists.newArrayList();
+        if (isFuzzyMatching) {
+            types.addAll(LangUtils.transform(BasicFormClassifyEnum.getEnumByFuzzyKey(type), o -> o.getKey()));
+        } else {
             types.add(type);
         }
-        return basicApplyBatchDetailDao.getBasicApplyBatchDetailListByTypes(types,applyBatchId);
+        return basicApplyBatchDetailDao.getBasicApplyBatchDetailListByTypes(types, applyBatchId);
     }
 
 
@@ -295,11 +295,6 @@ public class BasicApplyBatchDetailService {
         return basicApplyBatchDetailDao.getBasicApplyBatchDetail(where);
     }
 
-    public BasicApplyBatchDetail getSingleData(BasicApplyBatchDetail basicApplyBatchDetail) {
-        List<BasicApplyBatchDetail> infoList = basicApplyBatchDetailDao.getInfoList(basicApplyBatchDetail);
-        if (CollectionUtils.isNotEmpty(infoList)) return infoList.get(0);
-        return null;
-    }
 
     /**
      * 获取楼盘
@@ -407,9 +402,16 @@ public class BasicApplyBatchDetailService {
         return stringBuilder.toString();
     }
 
-    public List<BasicApplyBatchDetail> getBasicApplyBatchDetailList(List<Integer> basicApplyBatchIds,String type){
-        if(CollectionUtils.isEmpty(basicApplyBatchIds)) return null;
-        return basicApplyBatchDetailDao.getBasicApplyBatchDetailList(basicApplyBatchIds,type);
+    public List<BasicApplyBatchDetail> getBasicApplyBatchDetailList(List<Integer> basicApplyBatchIds, String type) {
+        if (CollectionUtils.isEmpty(basicApplyBatchIds)) return null;
+        return basicApplyBatchDetailDao.getBasicApplyBatchDetailList(basicApplyBatchIds, type);
+    }
+
+    public List<BasicApplyBatchDetail> getHouseBatchDetailList(Integer batchDetailId) {
+        BasicApplyBatchDetail batchDetail = getDataById(batchDetailId);
+        List<BasicApplyBatchDetail> list = Lists.newArrayList();
+        collectionChildBatchDetails(batchDetail, list);
+        return LangUtils.filter(list,o->BasicFormClassifyEnum.HOUSE.getKey().equals(batchDetail.getType()));
     }
 
 

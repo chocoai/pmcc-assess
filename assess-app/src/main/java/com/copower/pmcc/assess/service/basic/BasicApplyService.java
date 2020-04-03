@@ -25,6 +25,7 @@ import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -113,5 +114,16 @@ public class BasicApplyService {
     public List<BasicApply> getBasicApplyListByIds(List<Integer> ids) {
         if (CollectionUtils.isEmpty(ids)) return null;
         return basicApplyDao.getBasicApplyListByIds(ids);
+    }
+
+    /**
+     * 获取权证信息by list
+     *
+     * @param batchDetailIds
+     * @return
+     */
+    public List<Integer> getDeclareIdsByBatchDetailIds(List<Integer> batchDetailIds) {
+        List<BasicApply> list = basicApplyDao.getBasicApplysByBatchDetailIds(batchDetailIds);
+        return LangUtils.transform(list,o->o.getDeclareRecordId());
     }
 }
