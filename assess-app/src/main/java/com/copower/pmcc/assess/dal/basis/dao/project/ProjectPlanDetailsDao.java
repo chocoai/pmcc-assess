@@ -27,7 +27,6 @@ public class ProjectPlanDetailsDao {
      * @return
      */
     public List<ProjectPlanDetails> getListObject(ProjectPlanDetails projectPlanDetails) {
-
         ProjectPlanDetailsExample example = new ProjectPlanDetailsExample();
         MybatisUtils.convertObj2Example(projectPlanDetails, example);
         example.setOrderByClause("sorting,project_phase_id");

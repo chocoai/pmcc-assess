@@ -871,4 +871,16 @@ public class BasicApplyBatchController extends BaseController {
             return HttpResult.newErrorResult("异常");
         }
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/getBasicApplyBatchDetailListByType", method = RequestMethod.POST, name = "获取数据")
+    public HttpResult getBasicApplyBatchDetailListByType(String type, Integer basicApplyBatchId) {
+        try {
+            List<BasicApplyBatchDetail> batchDetailList = basicApplyBatchDetailService.getBasicApplyBatchDetailListByType(type, basicApplyBatchId, true);
+            return HttpResult.newCorrectResult(batchDetailList);
+        } catch (Exception e1) {
+            logger.error(e1.getMessage(), e1);
+            return HttpResult.newErrorResult("异常");
+        }
+    }
 }

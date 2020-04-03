@@ -12,7 +12,7 @@
     <div class="modal-dialog modal-lg" style="max-width: 50%;">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">资产清查组 添加</h4>
+                <h4 class="modal-title">添加资产清查组</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -81,7 +81,6 @@
                 <div class="row mt--2">
                     <%@include file="/views/share/project/projectInfoSimple.jsp" %>
                     <%@include file="/views/share/project/projectPlanDetails.jsp" %>
-
                     <div class="col-md-12">
                         <div class="x_panel card full-height">
                             <div class="card-header collapse-link">
@@ -99,8 +98,6 @@
                             <div class="card-body">
                                 <form class="form-horizontal">
                                     <input type="hidden" name="projectId" value="${projectInfo.id}">
-
-
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                             <div class="form-inline">
@@ -151,8 +148,6 @@
                             </div>
                         </div>
                     </div>
-
-
                     <div class="col-md-12">
                         <div class="x_panel card full-height">
                             <div class="card-header collapse-link">
@@ -173,37 +168,83 @@
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                             <div class="form-inline">
-                                                <div class="col-sm-1">
-                                                    <input type="text" data-rule-maxlength="50" placeholder="权证号"
-                                                           name="name"
-                                                           class="form-control input-full">
+                                                <label class="col-sm-1 control-label">
+                                                    楼盘
+                                                </label>
+                                                <div class="col-sm-2">
+                                                    <select name="estate" data-child-type="building"
+                                                            data-for-name="building" onchange="assetInfo.getBasicApplyBatchDetailListByType(this);"
+                                                            class="form-control input-full">
+                                                        <option value="">请选择</option>
+                                                        <c:forEach var="item" items="${exploreEstateList}">
+                                                            <option value="${item.id}"
+                                                                    data-apply-batch-id="${item.applyBatchId}">${item.name}</option>
+                                                        </c:forEach>
+                                                    </select>
+                                                </div>
+                                                <label class="col-sm-1 control-label">
+                                                    楼栋
+                                                </label>
+                                                <div class="col-sm-2">
+                                                    <select name="building" data-child-type="unit" data-for-name="unit"
+                                                            onchange="assetInfo.getBasicApplyBatchDetailListByType(this);"  class="form-control input-full">
+                                                    </select>
+                                                </div>
+                                                <label class="col-sm-1 control-label">
+                                                    单元
+                                                </label>
+                                                <div class="col-sm-2">
+                                                    <select name="unit"  onchange="assetInfo.getBasicApplyBatchDetailListByType(this);" class="form-control input-full"></select>
                                                 </div>
                                                 <label class="col-sm-1 control-label">
                                                     状态
                                                 </label>
-                                                <div class="col-sm-1">
+                                                <div class="col-sm-2">
                                                     <select name="status" class="form-control input-full">
                                                         <option value="">请选择</option>
                                                         <option value="runing">待清查</option>
                                                         <option value="finish">已清查</option>
                                                     </select>
                                                 </div>
-                                                <div class="col-sm-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline">
+                                                <label class="col-sm-1 control-label">
+                                                    权证号
+                                                </label>
+                                                <div class="col-sm-2">
+                                                    <input type="text" data-rule-maxlength="50" placeholder="权证号"
+                                                           name="name"
+                                                           class="form-control input-full">
+                                                </div>
+                                                <div class="col-sm-3 ">
+                                                    <button type="button" class="btn btn-info btn-sm"
+                                                            onclick="assetInfo.loadSurveyAssetInfoItemBaseList(this);">
+                                                        <span class="btn-label"><i class="fa fa-search"></i></span>
+                                                        查询
+                                                    </button>
+                                                    <button class="btn btn-warning btn-sm"
+                                                            type="button" data-toggle="modal"
+                                                            onclick="assetInfo.delSurveyAssetInfoItemByDeclareId() ;"><span
+                                                            class="btn-label"><i class="fa fa-minus"></i></span>移除
+                                                    </button>
                                                     <div class="btn-group" role="group"
                                                          aria-label="Button group with nested dropdown">
 
                                                         <button class="btn btn-success btn-sm"
                                                                 type="button" data-toggle="modal"
                                                                 onclick="assetInfo.addSurveyAssetInfoGroup()"><span
-                                                                class="btn-label"><i class="fa fa-plus"></i></span>资产清查组
+                                                                class="btn-label"><i class="fa fa-plus"></i></span>添加清查组
                                                         </button>
-
                                                         <div class="btn-group" role="group">
                                                             <button id="btnGroupDrop1" type="button"
                                                                     class="btn btn-secondary dropdown-toggle btn-sm"
                                                                     data-toggle="dropdown" aria-haspopup="true"
                                                                     aria-expanded="false">
-                                                                认领的权证添加到组中
+                                                                添加权证到组中
                                                             </button>
                                                             <div class="dropdown-menu" aria-labelledby="btnGroupDrop1"
                                                                  data-name="surveyAssetInfoGroup">
@@ -211,15 +252,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
-                                                <div class="col-sm-1 ">
-                                                    <button type="button" class="btn btn-info btn-sm"
-                                                            onclick="assetInfo.loadSurveyAssetInfoItemBaseList(this);">
-                                                        <span class="btn-label"><i class="fa fa-search"></i></span>
-                                                        查询
-                                                    </button>
-                                                </div>
-                                                <div class="col-sm-2 ">
+                                                <div class="col-sm-2">
                                                     <button type="button" class="btn btn-info btn-sm"
                                                             onclick="assetInfo.taskCopy(this) ;"><i
                                                             class="fa fa-copy" aria-hidden="true"></i> 拷贝
@@ -229,7 +262,7 @@
                                                             class="fa fa-clipboard" aria-hidden="true"></i>粘贴
                                                     </button>
                                                 </div>
-                                                <div class="col-sm-2 ">
+                                                <div class="col-sm-4">
                                                     <div class="input-group ">
                                                         <input type="hidden" name="copyId">
                                                         <input type="text" readonly="readonly" name="copyName"
@@ -246,17 +279,24 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline">
+                                                <div class="col-sm-2 ">
+
+                                                </div>
+                                                <div class="col-sm-2 ">
+
+                                                </div>
                                                 <div class="col-sm-1 ">
-                                                    <button class="btn btn-warning btn-sm"
-                                                            type="button" data-toggle="modal"
-                                                            onclick="assetInfo.delSurveyAssetInfoItemByDeclareId() ;"><span
-                                                            class="btn-label"><i class="fa fa-minus"></i></span>删除
-                                                    </button>
+
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-
                                     <table class="table table-bordered" id="tb_infoBaseItem_list"></table>
                                 </form>
                             </div>
@@ -762,11 +802,11 @@
             var idArray = [];
             var num = 0;
             rows.forEach(function (ele, index) {
-                if (ele.inventoryStatus){
-                    if (ele.inventoryStatus == 'finish' || ele.inventoryStatus == 'runing'){
+                if (ele.inventoryStatus) {
+                    if (ele.inventoryStatus == 'finish' || ele.inventoryStatus == 'runing') {
                         num++;
                     }
-                }else {
+                } else {
                     idArray.push(ele.id);
                 }
             });
@@ -864,14 +904,14 @@
                 target.bootstrapTable('uncheckAll');
                 return false;
             }
-            assetInfo.getSurveyAssetInfoItemById(id,function (data) {
+            assetInfo.getSurveyAssetInfoItemById(id, function (data) {
                 AlertConfirm("粘贴操作", "是否确认", function (flag) {
                     assetInfo.parseSurveyAssetInventory(data.inventoryId, 'unit', idArray.join(","), function () {
                         notifySuccess("成功", "粘贴完成");
                         assetInfo.loadSurveyAssetInfoItemBaseList();
                     });
                 });
-            }) ;
+            });
         }
     };
 
@@ -906,7 +946,20 @@
         if (item.groupId) {
             AlertError("已经被添加到组中不可作为单独事项去清查了", "假如作为单独事项来做清查业务  那么请从组中移除添加的这个认领权证");
         } else {
-            assetInfo.surveyAssetInventoryHandle(inventoryId, item.declareId, "unit", item.id, item.name);
+            //验证权证是否填写了查勘，可清查
+            $.ajax({
+                url: '${pageContext.request.contextPath}/surveyAssetInventory/canInventory',
+                type: 'post',
+                data: {assetInfoItemId: id},
+                dataType: 'json',
+                success: function (result) {
+                    if (result.ret && result.data) {
+                        assetInfo.surveyAssetInventoryHandle(inventoryId, item.declareId, "unit", item.id, item.name);
+                    } else {
+                        notifyInfo("提示", "请先填写查勘信息后，才可进行清查");
+                    }
+                }
+            })
         }
     };
 
@@ -946,18 +999,21 @@
                                     assetInfo.loadSurveyAssetInfoGroupList();
                                 });
                             });
-                            assetInfo.getSurveyAssetInfoItemListByQuery({groupId:masterId,assetInfoId:'${surveyAssetInfo.id}'},function (data) {
+                            assetInfo.getSurveyAssetInfoItemListByQuery({
+                                groupId: masterId,
+                                assetInfoId: '${surveyAssetInfo.id}'
+                            }, function (data) {
                                 var objArr = [];
-                                $.each(data,function (i,obj) {
+                                $.each(data, function (i, obj) {
                                     obj.status = 'finish';
                                     objArr.push(obj);
-                                }) ;
+                                });
                                 if (objArr.length >= 1) {
                                     assetInfo.addSurveyAssetInfoItem(objArr, function () {
                                         assetInfo.loadSurveyAssetInfoItemBaseList();
                                     });
                                 }
-                            }) ;
+                            });
                         }
                         //单个的方式清查
                         if (type == 'unit') {
@@ -1201,6 +1257,27 @@
             });
         });
     };
+
+    assetInfo.getBasicApplyBatchDetailListByType = function (_this) {
+        var childControl = $(_this).closest('form').find('[name=' + $(_this).attr('data-for-name') + ']');
+        var type = $(_this).attr('data-child-type');
+        var basicApplyBatchId = $(_this).find("option:selected").attr('data-apply-batch-id');
+        $.ajax({
+            url: '${pageContext.request.contextPath}/basicApplyBatch/getBasicApplyBatchDetailListByType',
+            type: 'post',
+            data: {type: type, basicApplyBatchId: basicApplyBatchId},
+            dataType: 'json',
+            success: function (result) {
+                if (result.ret && result.data) {
+                    var html = '<option value="">请选择</option>';
+                    $.each(result.data, function (i, item) {
+                        html += '<option value="' + item.id + '" data-apply-batch-id="' + item.applyBatchId + '">' + item.name + '</option>';
+                    })
+                    childControl.empty().append(html);
+                }
+            }
+        })
+    }
 
 
     $(document).ready(function () {

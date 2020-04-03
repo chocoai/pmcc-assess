@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchDetailExample;
 import com.copower.pmcc.assess.dal.basis.mapper.BasicApplyBatchDetailMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -57,21 +58,27 @@ public class BasicApplyBatchDetailDao {
         return basicApplyBatchDetailMapper.selectByExample(example);
     }
 
-
-
-    /**
-     * 案例数据新增的主节点
-     *
-     * @param applyBatchId
-     * @return
-     */
-    public List<BasicApplyBatchDetail> getCaseAddNodeDetail(Integer applyBatchId) {
+    public List<BasicApplyBatchDetail> getBasicApplyBatchDetailListByTypes(List<String> types, Integer applyBatchId) {
         BasicApplyBatchDetailExample example = new BasicApplyBatchDetailExample();
-        BasicApplyBatchDetailExample.Criteria criteria = example.createCriteria();
-        criteria.andCaseTablePidIsNotNull();
-        criteria.andApplyBatchIdEqualTo(applyBatchId);
+        BasicApplyBatchDetailExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
+        if (CollectionUtils.isNotEmpty(types)) {
+            criteria.andTypeIn(types);
+        }
+        if (applyBatchId != null)
+            criteria.andApplyBatchIdEqualTo(applyBatchId);
         return basicApplyBatchDetailMapper.selectByExample(example);
     }
+
+    public List<BasicApplyBatchDetail> getBasicApplyBatchDetailList(List<Integer> basicApplyBatchIds, String type) {
+        BasicApplyBatchDetailExample example = new BasicApplyBatchDetailExample();
+        BasicApplyBatchDetailExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
+        if (CollectionUtils.isNotEmpty(basicApplyBatchIds))
+            criteria.andApplyBatchIdIn(basicApplyBatchIds);
+        if (StringUtils.isNotBlank(type))
+            criteria.andTypeEqualTo(type);
+        return basicApplyBatchDetailMapper.selectByExample(example);
+    }
+
 
     /**
      * 案例升级数据

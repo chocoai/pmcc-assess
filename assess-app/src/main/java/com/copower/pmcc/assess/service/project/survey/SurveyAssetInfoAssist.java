@@ -1,19 +1,27 @@
 package com.copower.pmcc.assess.service.project.survey;
 
 import com.alibaba.fastjson.JSONObject;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
-import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInfo;
+import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
+import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
+import com.copower.pmcc.assess.service.basic.BasicApplyBatchDetailService;
+import com.copower.pmcc.assess.service.basic.BasicApplyBatchService;
 import com.copower.pmcc.assess.service.event.project.SurveyAssetInfoEvent;
+import com.copower.pmcc.assess.service.project.ProjectInfoService;
+import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import com.copower.pmcc.erp.common.utils.LangUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 /**
  * @author zch
@@ -21,7 +29,7 @@ import org.springframework.web.servlet.ModelAndView;
  */
 
 @Component
-@WorkFlowAnnotation(desc = "新资产清查成果")
+@WorkFlowAnnotation(desc = "资产清查成果（新）")
 public class SurveyAssetInfoAssist implements ProjectTaskInterface {
     @Autowired
     private ProcessControllerComponent processControllerComponent;
@@ -29,6 +37,14 @@ public class SurveyAssetInfoAssist implements ProjectTaskInterface {
     private SurveyAssetInfoService surveyAssetInfoService;
     @Autowired
     private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
+    @Autowired
+    private ProjectInfoService projectInfoService;
+    @Autowired
+    private BasicApplyBatchService basicApplyBatchService;
+    @Autowired
+    private BasicApplyBatchDetailService basicApplyBatchDetailService;
+    @Autowired
+    private ProjectPlanDetailsService projectPlanDetailsService;
 
     private final String applyViewName = "/project/stageSurvey/taskSurveyAssetInfoIndex";
     private final String approvalViewName = "/project/stageSurvey/taskSurveyAssetInfoApproval";
@@ -75,10 +91,10 @@ public class SurveyAssetInfoAssist implements ProjectTaskInterface {
             surveyAssetInfo.setProcessInsId(processInsId);
         }
         surveyAssetInfoService.saveAndUpdateSurveyAssetInfo(surveyAssetInfo, false);
-        surveyAssetInfoService.submit(surveyAssetInfo) ;
+        surveyAssetInfoService.submit(surveyAssetInfo);
         if (StringUtils.isNotBlank(processInsId)) {
             bpmRpcActivitiProcessManageService.setProcessEventExecutor(processInsId, SurveyAssetInfoEvent.class.getSimpleName());//修改监听器
-        }else {
+        } else {
             surveyAssetInfoService.writeBackDeclareRecord(surveyAssetInfo);
         }
     }
@@ -95,7 +111,7 @@ public class SurveyAssetInfoAssist implements ProjectTaskInterface {
             surveyAssetInfo.setProcessInsId(processInsId);
         }
         surveyAssetInfoService.saveAndUpdateSurveyAssetInfo(surveyAssetInfo, false);
-        surveyAssetInfoService.submit(surveyAssetInfo) ;
+        surveyAssetInfoService.submit(surveyAssetInfo);
     }
 
     private void setModelViewParam(ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) {
@@ -105,6 +121,20 @@ public class SurveyAssetInfoAssist implements ProjectTaskInterface {
 
         modelAndView.addObject(StringUtils.uncapitalize(SurveyAssetInfo.class.getSimpleName()), surveyAssetInfo);
         modelAndView.addObject("thisUserInfo", processControllerComponent.getThisUserInfo());    //当前操作用户信息
+        modelAndView.addObject("exploreEstateList", getExploreEstateList(projectPlanDetails));
     }
 
+    /**
+     * 获取查勘楼盘信息
+     *
+     * @param projectPlanDetails
+     * @return
+     */
+    private List<BasicApplyBatchDetail> getExploreEstateList(ProjectPlanDetails projectPlanDetails) {
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
+        List<ProjectPlanDetails> planDetailsList = projectPlanDetailsService.getProjectPlanDetailsByPhaseKey(projectInfo.getId(), projectInfo.getProjectCategoryId(), AssessPhaseKeyConstant.SCENE_EXPLORE);
+        List<BasicApplyBatch> applyBatchList = basicApplyBatchService.getBasicApplyBatchsByPlanDetailsIds(LangUtils.transform(planDetailsList, o -> o.getId()));
+        List<BasicApplyBatchDetail> batchDetailList = basicApplyBatchDetailService.getBasicApplyBatchDetailList(LangUtils.transform(applyBatchList, o -> o.getId()), BasicFormClassifyEnum.ESTATE.getKey());
+        return batchDetailList;
+    }
 }
