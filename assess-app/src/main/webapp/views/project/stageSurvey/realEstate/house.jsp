@@ -1472,25 +1472,58 @@
                                                 卫生间
                                             </label>
                                             <div class="col-sm-3">
-                                                <input type="text" placeholder="个数" name="toilet"
-                                                       data-rule-number='true'
-                                                       class="form-control input-full">
+                                                <div class="input-group">
+                                                    <input type="text" placeholder="个数"
+                                                           name="toilet"
+                                                           class="form-control">
+                                                    <input type="hidden" name="toiletContent">
+                                                    <div class="input-group-prepend">
+                                                        <button class="btn btn-primary btn-sm "
+                                                                style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                                type="button"
+                                                                onclick="houseCommon.openCommonItemModal(this);">
+                                                            编辑
+                                                        </button>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <label class="col-sm-1">
                                                 洗浴间
                                             </label>
                                             <div class="col-sm-3">
-                                                <input type="text" placeholder="个数" name="bathroom"
-                                                       data-rule-number='true'
-                                                       class="form-control input-full">
+                                                <div class="input-group">
+                                                    <input type="text" placeholder="个数"
+                                                           name="bathroom"
+                                                           class="form-control">
+                                                    <input type="hidden" name="bathroomContent">
+                                                    <div class="input-group-prepend">
+                                                        <button class="btn btn-primary btn-sm "
+                                                                style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                                type="button"
+                                                                onclick="houseCommon.openCommonItemModal(this);">
+                                                            编辑
+                                                        </button>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <label class="col-sm-1">
                                                 厨房
                                             </label>
                                             <div class="col-sm-3">
-                                                <input type="text" placeholder="个数" name="kitchen"
-                                                       data-rule-number='true'
-                                                       class="form-control input-full">
+                                                <div class="input-group">
+                                                    <input type="text" placeholder="个数"
+                                                           name="kitchen"
+                                                           class="form-control">
+                                                    <input type="hidden" name="kitchenContent">
+                                                    <div class="input-group-prepend">
+                                                        <button class="btn btn-primary btn-sm "
+                                                                style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                                type="button"
+                                                                onclick="houseCommon.openCommonItemModal(this);">
+                                                            编辑
+                                                        </button>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -1502,25 +1535,58 @@
                                                 阳台
                                             </label>
                                             <div class="col-sm-3">
-                                                <input type="text" placeholder="个数" name="balcony"
-                                                       data-rule-number='true'
-                                                       class="form-control input-full">
+                                                <div class="input-group">
+                                                    <input type="text" placeholder="个数"
+                                                           name="balcony"
+                                                           class="form-control">
+                                                    <input type="hidden" name="balconyContent">
+                                                    <div class="input-group-prepend">
+                                                        <button class="btn btn-primary btn-sm "
+                                                                style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                                type="button"
+                                                                onclick="houseCommon.openCommonItemModal(this);">
+                                                            编辑
+                                                        </button>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <label class="col-sm-1">
                                                 车库
                                             </label>
                                             <div class="col-sm-3">
-                                                <input type="text" placeholder="个数" name="carport"
-                                                       data-rule-number='true'
-                                                       class="form-control input-full">
+                                                <div class="input-group">
+                                                    <input type="text" placeholder="个数"
+                                                           name="carport"
+                                                           class="form-control">
+                                                    <input type="hidden" name="carportContent">
+                                                    <div class="input-group-prepend">
+                                                        <button class="btn btn-primary btn-sm "
+                                                                style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                                type="button"
+                                                                onclick="houseCommon.openCommonItemModal(this);">
+                                                            编辑
+                                                        </button>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <label class="col-sm-1">
                                                 楼梯间
                                             </label>
                                             <div class="col-sm-3">
-                                                <input type="text" placeholder="个数" name="staircase"
-                                                       data-rule-number='true'
-                                                       class="form-control input-full">
+                                                <div class="input-group">
+                                                    <input type="text" placeholder="个数"
+                                                           name="staircase"
+                                                           class="form-control">
+                                                    <input type="hidden" name="staircaseContent">
+                                                    <div class="input-group-prepend">
+                                                        <button class="btn btn-primary btn-sm "
+                                                                style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                                type="button"
+                                                                onclick="houseCommon.openCommonItemModal(this);">
+                                                            编辑
+                                                        </button>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -1532,17 +1598,39 @@
                                                 电梯间
                                             </label>
                                             <div class="col-sm-3">
-                                                <input type="text" placeholder="个数" name="elevator"
-                                                       data-rule-number='true'
-                                                       class="form-control input-full">
+                                                <div class="input-group">
+                                                    <input type="text" placeholder="个数"
+                                                           name="elevator"
+                                                           class="form-control">
+                                                    <input type="hidden" name="elevatorContent">
+                                                    <div class="input-group-prepend">
+                                                        <button class="btn btn-primary btn-sm "
+                                                                style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                                type="button"
+                                                                onclick="houseCommon.openCommonItemModal(this);">
+                                                            编辑
+                                                        </button>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <label class="col-sm-1">
                                                 过道
                                             </label>
                                             <div class="col-sm-3">
-                                                <input type="text" placeholder="个数" name="passage"
-                                                       data-rule-number='true'
-                                                       class="form-control input-full">
+                                                <div class="input-group">
+                                                    <input type="text" placeholder="个数"
+                                                           name="passage"
+                                                           class="form-control">
+                                                    <input type="hidden" name="passageContent">
+                                                    <div class="input-group-prepend">
+                                                        <button class="btn btn-primary btn-sm "
+                                                                style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                                type="button"
+                                                                onclick="houseCommon.openCommonItemModal(this);">
+                                                            编辑
+                                                        </button>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -1564,6 +1652,64 @@
         </div>
     </div>
 </div>
+
+<div id="divBoxHuxingCommonDetail" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">明细</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+
+            <div class="modal-body">
+                <form id="frmHuxingCommonDetail" class="form-horizontal">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1">
+                                                公共
+                                            </label>
+                                            <div class="col-sm-3">
+                                                <input type="text" placeholder="个数" name="common" data-rule-number='true'
+                                                       class="form-control input-full">
+                                            </div>
+                                            <label class="col-sm-1">
+                                                独立
+                                            </label>
+                                            <div class="col-sm-3">
+                                                <input type="text" placeholder="个数" name="independent"
+                                                       data-rule-number='true'
+                                                       class="form-control input-full">
+                                            </div>
+                                            <label class="col-sm-1">
+                                                公用
+                                            </label>
+                                            <div class="col-sm-3">
+                                                <input type="text" placeholder="个数" name="public"
+                                                       data-rule-number='true'
+                                                       class="form-control input-full">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
 
 <script src='${pageContext.request.contextPath}/js/common.column.js?v=${assessVersion}'></script>
 <script type="text/javascript"
