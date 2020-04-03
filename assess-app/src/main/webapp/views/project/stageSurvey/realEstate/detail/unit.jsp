@@ -31,13 +31,13 @@
                                     <input type="hidden" name="id" value="${basicUnit.id}">
                                     <div class="row form-group">
                                         <div class="col-md-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-1 control-label">名称</label>
-                                            <div class=" col-sm-3 ">
-                                                <div class="input-group">
-                                                    <label class="form-control "
-                                                           name="unitNumber">${basicUnit.unitNumber}</label>
-                                                    <span class="input-group-btn">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1 control-label">名称</label>
+                                                <div class=" col-sm-3 ">
+                                                    <div class="input-group">
+                                                        <label class="form-control "
+                                                               name="unitNumber">${basicUnit.unitNumber}</label>
+                                                        <span class="input-group-btn">
                              <c:if test="${empty isApplyBatch}">
                             <div onclick="unitCommon.mapMarker(true);" class="btn btn-info"><i
                                     class="fa fa-map-marker"></i> 标注</div>
@@ -47,24 +47,43 @@
                                     class="fa fa-map-marker"></i> 标注</div>
                               </c:if>
                         </span>
+                                                    </div>
                                                 </div>
-                                            </div>
-
-                                            <label class="col-sm-1 control-label">梯户比</label>
-                                            <div class=" col-sm-3 ">
-                                                <label class="form-control input-full"
-                                                       name="elevatorHouseholdRatio">${basicUnit.elevatorHouseholdRatio}</label>
-                                            </div>
-
-                                        <c:if test="${formType eq 'industry'}">
-
-                                                <label class="col-sm-1 control-label">户型说明</label>
+                                                <label class="col-sm-1 control-label">梯户比</label>
                                                 <div class=" col-sm-3 ">
                                                     <label class="form-control input-full"
-                                                           name="huxingExplain">${basicUnit.huxingExplain}</label>
+                                                           name="elevatorHouseholdRatio">${basicUnit.elevatorHouseholdRatio}</label>
                                                 </div>
-                                        </c:if>
+                                                <label class="col-sm-1 control-label">户型数</label>
+                                                <div class=" col-sm-3 ">
+                                                    <label class="form-control input-full"
+                                                           name="elevatorHouseholdRatio">${basicUnit.huxingNum}</label>
+                                                </div>
+                                            </div>
                                         </div>
+                                    </div>
+                                    <c:if test="${formType eq 'industry'}">
+                                        <div class="row form-group">
+                                            <div class="col-md-12">
+                                                <div class="form-inline x-valid">
+                                                    <label class="col-sm-1 control-label">户型说明</label>
+                                                    <div class=" col-sm-3 ">
+                                                        <label class="form-control input-full"
+                                                               name="huxingExplain">${basicUnit.huxingExplain}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </c:if>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1">单元平面图<span
+                                                        class="symbol required"></span></label>
+                                                <div class="col-md-3">
+                                                    <div id="_unit_appearance"></div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </form>

@@ -873,6 +873,19 @@ public class BasicApplyBatchController extends BaseController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "/getBasicAlternativeSurveyList", name = "取得提供引用查勘楼盘信息", method = RequestMethod.GET)
+    public BootstrapTableVo getBasicAlternativeSurveyList(String name,Integer planDetailsId) {
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
+        List<BasicApplyBatchDetail> estateBatchDetailList = basicApplyBatchService.getOriginalBasicApplyBatchListByProjectId(projectPlanDetails.getProjectId(),projectPlanDetails.getProjectPhaseId(),projectPlanDetails.getId(),name);
+        vo.setTotal(page.getTotal());
+        vo.setRows(CollectionUtils.isEmpty(estateBatchDetailList) ? new ArrayList<BasicApplyBatchDetail>() : estateBatchDetailList);
+        return vo;
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/getBasicApplyBatchDetailListByType", method = RequestMethod.POST, name = "获取数据")
     public HttpResult getBasicApplyBatchDetailListByType(String type, Integer basicApplyBatchId) {
         try {
