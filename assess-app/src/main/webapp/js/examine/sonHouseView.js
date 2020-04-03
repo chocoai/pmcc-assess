@@ -1782,7 +1782,23 @@ var houseRoom;
             return data;
         },
         loadDataDicList: function () {
-            var cols = commonColumn.houseRoomColumn();
+            var cols = [];
+            var tenementType = houseCommon.houseHuxingForm.find('input[name="tenementType"]').val();
+            if (tenementType == '住宅'|| tenementType == '办公') {
+                cols = commonColumn.houseRoomResidence();
+            } else if (tenementType == '商铺' || tenementType == '商场') {
+                cols = commonColumn.houseRoomStore();
+            } else if (tenementType == '餐饮酒店') {
+                cols = commonColumn.houseRoomHotel();
+            } else if (tenementType == '生产') {
+                cols = commonColumn.houseRoomProduction();
+            } else if (tenementType == '仓储') {
+                cols = commonColumn.houseRoomStorage();
+            }else{
+                cols = commonColumn.houseRoomColumn();
+            }
+
+            cols.push({field: 'fileViewName', title: '附件'});
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -2047,7 +2063,7 @@ var houseRoom;
                 }
 
             } else {
-                notifyInfo("提示", "请先选择房屋下的实际用途")
+                notifyInfo("提示", "请先选择户型的物业类型")
             }
             $("#" + houseRoom.prototype.config().frm).initForm(item);
             AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_room_adjacent_position, item.adjacentPosition, function (html, data) {

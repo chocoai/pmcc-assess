@@ -565,18 +565,136 @@ commonColumn.houseRoomColumn = function () {
             return s;
         }
     });
+    cols.push({field: 'houseShape', title: '房间形状'});
     cols.push({field: 'area', title: '面积'});
     cols.push({field: 'layerHeight', title: '层高'});
     cols.push({field: 'clearHeight', title: '净高'});
-    cols.push({field: 'opening', title: '开间'});
-    cols.push({field: 'depth', title: '进深'});
-    cols.push({field: 'length', title: '长度'});
-    cols.push({field: 'width', title: '宽度'});
-    cols.push({field: 'sunshine', title: '日照'});
-    cols.push({field: 'lighting', title: '采光'});
+    return cols;
+}
+
+commonColumn.houseRoomResidence = function () {
+    var cols = [];
+    cols.push({
+        field: 'name', title: '名称', formatter: function (value, row, index) {
+            var s = "";
+            if (row.name) {
+                s += row.name;
+            }
+            if (row.creatorName) {
+                s += "<span style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</span>"
+            }
+            return s;
+        }
+    });    cols.push({field: 'houseShape', title: '房间形状'});
+    cols.push({field: 'area', title: '面积'});
+    cols.push({field: 'layerHeight', title: '层高'});
+    cols.push({field: 'clearHeight', title: '净高'});
     cols.push({field: 'aeration', title: '通风'});
+    cols.push({field: 'lighting', title: '采光'});
+    cols.push({field: 'sunshine', title: '日照'});
     cols.push({field: 'soundInsulation', title: '隔音'});
-    cols.push({field: 'fileViewName', title: '附件'});
+    cols.push({field: 'length', title: '长度(最长)'});
+    cols.push({field: 'width', title: '宽度(最宽)'});
+    return cols;
+}
+
+commonColumn.houseRoomStore = function () {
+    var cols = [];
+    cols.push({
+        field: 'name', title: '名称', formatter: function (value, row, index) {
+            var s = "";
+            if (row.name) {
+                s += row.name;
+            }
+            if (row.creatorName) {
+                s += "<span style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</span>"
+            }
+            return s;
+        }
+    });    cols.push({field: 'houseShape', title: '房间形状'});
+    cols.push({field: 'area', title: '面积'});
+    cols.push({field: 'layerHeight', title: '层高'});
+    cols.push({field: 'clearHeight', title: '净高'});
+    cols.push({field: 'adjacentPositionName', title: '相邻位置'});
+    cols.push({field: 'orientationName', title: '方位'});
+    cols.push({field: 'opening', title: '开间(最大开间)'});
+    cols.push({field: 'depth', title: '进深(最小进深)'});
+    cols.push({field: 'distance', title: '距离'});
+
+    return cols;
+}
+
+commonColumn.houseRoomHotel = function () {
+    var cols = [];
+    cols.push({
+        field: 'name', title: '名称', formatter: function (value, row, index) {
+            var s = "";
+            if (row.name) {
+                s += row.name;
+            }
+            if (row.creatorName) {
+                s += "<span style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</span>"
+            }
+            return s;
+        }
+    });    cols.push({field: 'houseShape', title: '房间形状'});
+    cols.push({field: 'area', title: '面积'});
+    cols.push({field: 'layerHeight', title: '层高'});
+    cols.push({field: 'clearHeight', title: '净高'});
+    cols.push({field: 'aeration', title: '通风'});
+    cols.push({field: 'lighting', title: '采光'});
+    cols.push({field: 'length', title: '长度(最长)'});
+    cols.push({field: 'width', title: '宽度(最宽)'});
+    return cols;
+}
+
+commonColumn.houseRoomProduction = function () {
+    var cols = [];
+    cols.push({
+        field: 'name', title: '名称', formatter: function (value, row, index) {
+            var s = "";
+            if (row.name) {
+                s += row.name;
+            }
+            if (row.creatorName) {
+                s += "<span style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</span>"
+            }
+            return s;
+        }
+    });    cols.push({field: 'houseShape', title: '房间形状'});
+    cols.push({field: 'area', title: '面积'});
+    cols.push({field: 'layerHeight', title: '层高'});
+    cols.push({field: 'clearHeight', title: '净高'});
+    cols.push({field: 'spanLength', title: '跨长'});
+    cols.push({field: 'spanNum', title: '跨数'});
+    cols.push({field: 'aeration', title: '通风'});
+    cols.push({field: 'lighting', title: '采光'});
+    cols.push({field: 'maxSpan', title: '最大跨距'});
+    cols.push({field: 'minSpan', title: '最小跨距'});
+    cols.push({field: 'standardSpan', title: '标准跨距'});
+
+    return cols;
+}
+
+commonColumn.houseRoomStorage = function () {
+    var cols = [];
+    cols.push({
+        field: 'name', title: '名称', formatter: function (value, row, index) {
+            var s = "";
+            if (row.name) {
+                s += row.name;
+            }
+            if (row.creatorName) {
+                s += "<span style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</span>"
+            }
+            return s;
+        }
+    });    cols.push({field: 'houseShape', title: '房间形状'});
+    cols.push({field: 'area', title: '面积'});
+    cols.push({field: 'layerHeight', title: '层高'});
+    cols.push({field: 'clearHeight', title: '净高'});
+    cols.push({field: 'standardMeasureName', title: '计量标准'});
+    cols.push({field: 'storageRequestName', title: '仓储要求'});
     return cols;
 }
 
