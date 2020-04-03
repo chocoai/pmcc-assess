@@ -27,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -92,7 +93,7 @@ public class GenerateEquityService {
                 ownershipMap.put(number, declareRecord.getOwnership());
             }
         }
-        String value = "";
+        String value = "无";
         switch (key) {
             case Land_acquisition_methods: {
                 if (!natrueMap.isEmpty()) {
@@ -354,7 +355,7 @@ public class GenerateEquityService {
      * @return
      */
     public String getHouseEquityValue(List<SchemeJudgeObject> judgeObjects, Integer projectId, String key) {
-        String value = "";
+        String value = "无";
         if (StringUtils.isEmpty(key)) {
             return value;
         }
@@ -369,17 +370,37 @@ public class GenerateEquityService {
                 continue;
             }
             DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(judgeObject.getDeclareRecordId());
-            if (declareRecord != null) {
-                natureMap.put(number, declareRecord.getNature());
-                certUseMap.put(number, declareRecord.getCertUse());
-                publicSituationMap.put(number, declareRecord.getPublicSituation());
-                ownershipMap.put(number, declareRecord.getOwnership());
+            if (declareRecord == null){
+                continue;
             }
-            BasicApply exploreBasicApply = surveyCommonService.getSceneExploreBasicApply(judgeObject.getDeclareRecordId());
-            BasicBuilding basicBuilding = basicBuildingService.getBasicBuildingByApplyId(exploreBasicApply.getId());
-            if (basicBuilding.getProperty() != null) {//物业信誉与管理
-                DataProperty dataProperty = dataPropertyService.getByDataPropertyId(basicBuilding.getProperty());
-                propertyMap.put(number, getProperty(dataProperty));
+            natureMap.put(number, declareRecord.getNature());
+            certUseMap.put(number, declareRecord.getCertUse());
+            publicSituationMap.put(number, declareRecord.getPublicSituation());
+            ownershipMap.put(number, declareRecord.getOwnership());
+
+            BasicApplyBatch basicApplyBatch = surveyCommonService.getBasicApplyBatchById(judgeObject.getDeclareRecordId()) ;
+            if (basicApplyBatch == null || basicApplyBatch.getId() == 0){
+                continue;
+            }
+            BasicExamineHandle basicExamineHandle = new BasicExamineHandle(basicApplyBatch) ;
+            if (basicExamineHandle == null){
+                continue;
+            }
+            List<BasicBuilding> basicBuildingList = basicExamineHandle.getBasicBuildingAll();
+            if (CollectionUtils.isEmpty(basicBuildingList)){
+                continue;
+            }
+            Iterator<BasicBuilding> iterator = basicBuildingList.iterator();
+            while (iterator.hasNext()){
+                BasicBuilding basicBuilding = iterator.next();
+                if (basicBuilding.getProperty() != null) {//物业信誉与管理
+                    DataProperty dataProperty = dataPropertyService.getByDataPropertyId(basicBuilding.getProperty());
+                    if (dataProperty == null){
+                        continue;
+                    }
+                    propertyMap.put(number, getProperty(dataProperty));
+                }
+
             }
         }
         switch (key) {
@@ -438,7 +459,7 @@ public class GenerateEquityService {
      * @param judgeObjects
      * @return
      */
-    private String getRightCategory(Integer projectId, List<SchemeJudgeObject> judgeObjects) {
+    public String getRightCategory(Integer projectId, List<SchemeJudgeObject> judgeObjects) {
         List<SurveyRightGroupDto> groupDtoList = surveyAssetRightGroupService.groupRightByCategory(projectId, judgeObjects);
         if (CollectionUtils.isEmpty(groupDtoList)) return null;
         StringBuilder rightBuilder = new StringBuilder();
@@ -482,20 +503,38 @@ public class GenerateEquityService {
 
     private Map<Integer, SchemeJudgeObjectSimpleDto> getSchemeJudgeObjectSimpleDto(List<SchemeJudgeObject> judgeObjects) {
         Map<Integer, SchemeJudgeObjectSimpleDto> judgeObjectSimpleDtoMap = Maps.newHashMap();//用于综合评价生成
-        for (SchemeJudgeObject judgeObject : judgeObjects) {
-            SchemeJudgeObjectSimpleDto simpleDto = new SchemeJudgeObjectSimpleDto();
-            Integer number = generateCommonMethod.parseIntJudgeNumber(judgeObject.getNumber());
-            BasicApply exploreBasicApply = surveyCommonService.getSceneExploreBasicApply(judgeObject.getDeclareRecordId());
-            BasicBuilding basicBuilding = basicBuildingService.getBasicBuildingByApplyId(exploreBasicApply.getId());
-            if (basicBuilding.getProperty() != null) {//物业信誉与管理
-                DataProperty dataProperty = dataPropertyService.getByDataPropertyId(basicBuilding.getProperty());
-                BaseDataDic baseDataDic = baseDataDicService.getDataDicById(dataProperty.getSocialPrestige());
-                simpleDto.setSocialPrestige(baseDataDic.getName());
+        for (SchemeJudgeObject schemeJudgeObject : judgeObjects) {
+            if (schemeJudgeObject.getDeclareRecordId() == null || schemeJudgeObject.getDeclareRecordId() == 0){
+                continue;
             }
-            simpleDto.setDeclareRecordId(judgeObject.getDeclareRecordId());
-            simpleDto.setJudgeObjectId(judgeObject.getId());
+            BasicApplyBatch basicApplyBatch = surveyCommonService.getBasicApplyBatchById(schemeJudgeObject.getDeclareRecordId()) ;
+            if (basicApplyBatch == null || basicApplyBatch.getId() == 0){
+                continue;
+            }
+            BasicExamineHandle basicExamineHandle = new BasicExamineHandle(basicApplyBatch) ;
+            if (basicExamineHandle == null){
+                continue;
+            }
+            List<BasicBuilding> basicBuildingList = basicExamineHandle.getBasicBuildingAll();
+            if (CollectionUtils.isEmpty(basicBuildingList)){
+                continue;
+            }
+            SchemeJudgeObjectSimpleDto simpleDto = new SchemeJudgeObjectSimpleDto();
+            Integer number = generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber());
+            for (BasicBuilding basicBuilding :basicBuildingList){
+                if (basicBuilding.getProperty() != null) {//物业信誉与管理
+                    DataProperty dataProperty = dataPropertyService.getByDataPropertyId(basicBuilding.getProperty());
+                    if (dataProperty == null){
+                        continue;
+                    }
+                    BaseDataDic baseDataDic = baseDataDicService.getDataDicById(dataProperty.getSocialPrestige());
+                    simpleDto.setSocialPrestige(baseDataDic.getName());
+                }
+            }
+            simpleDto.setDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
+            simpleDto.setJudgeObjectId(schemeJudgeObject.getId());
             simpleDto.setNumber(number);
-            judgeObjectSimpleDtoMap.put(judgeObject.getDeclareRecordId(), simpleDto);
+            judgeObjectSimpleDtoMap.put(schemeJudgeObject.getDeclareRecordId(), simpleDto);
         }
         return judgeObjectSimpleDtoMap;
     }

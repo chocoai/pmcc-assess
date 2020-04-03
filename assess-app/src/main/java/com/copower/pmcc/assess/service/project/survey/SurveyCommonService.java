@@ -11,10 +11,7 @@ import com.copower.pmcc.assess.dto.output.project.ProjectPlanDetailsVo;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
-import com.copower.pmcc.assess.service.basic.BasicApplyBatchService;
-import com.copower.pmcc.assess.service.basic.BasicApplyService;
-import com.copower.pmcc.assess.service.basic.BasicBuildingService;
-import com.copower.pmcc.assess.service.basic.BasicHouseService;
+import com.copower.pmcc.assess.service.basic.*;
 import com.copower.pmcc.assess.service.data.DataBuildingNewRateService;
 import com.copower.pmcc.assess.service.data.DataExamineTaskService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
@@ -68,6 +65,8 @@ public class SurveyCommonService {
     private BasicApplyService basicApplyService;
     @Autowired
     private BasicApplyBatchService basicApplyBatchService;
+    @Autowired
+    private BasicApplyBatchDetailService basicApplyBatchDetailService;
     @Autowired
     private BasicBuildingService basicBuildingService;
     @Autowired
@@ -133,17 +132,36 @@ public class SurveyCommonService {
     }
 
     public BasicApplyBatch getBasicApplyBatchById(Integer declareId) {
-        try {
-            DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(declareId);
-            ProjectInfo projectInfo = projectInfoService.getProjectInfoById(declareRecord.getProjectId());
-            ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.SCENE_EXPLORE, projectInfo.getProjectCategoryId());
-            ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetails(declareId, projectPhase.getId());
-            BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchByPlanDetailsId(planDetails.getId());
-            return basicApplyBatch;
-        } catch (Exception e) {
-            baseService.writeExceptionInfo(e);
-            return null;
+
+        List<BasicApply> basicApplyList = getSceneExploreBasicApplyList(declareId) ;
+        if (CollectionUtils.isNotEmpty(basicApplyList)){
+            for (BasicApply basicApply:basicApplyList){
+                try {
+                    BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchByPlanDetailsId(basicApply.getPlanDetailsId());
+                    if (basicApplyBatch != null){
+                        return basicApplyBatch ;
+                    }
+                    if (basicApply.getBatchDetailId() != null){
+                        BasicApplyBatchDetail batchDetail = basicApplyBatchDetailService.getDataById(basicApply.getBatchDetailId());
+                        if (batchDetail != null){
+                            BasicApplyBatch batchById = basicApplyBatchService.getBasicApplyBatchById(batchDetail.getApplyBatchId());
+                            if (batchById != null){
+                                return batchById;
+                            }
+                        }
+                    }
+                    if (basicApply.getBasicEstateId() != null){
+                        BasicApplyBatch batchByEstateId = basicApplyBatchService.getBasicApplyBatchByEstateId(basicApply.getBasicEstateId());
+                        if (batchByEstateId != null){
+                            return batchByEstateId;
+                        }
+                    }
+                } catch (Exception e) {
+                    baseService.writeExceptionInfo(e);
+                }
+            }
         }
+        return null;
     }
 
     /**

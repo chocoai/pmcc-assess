@@ -151,6 +151,10 @@ public class BasicExamineHandle implements Serializable {
         return functionList;
     }
 
+    public List<BasicBuildingFunction> getBasicBuildingFunctionList(Integer buildingId) {
+        return basicBuildingFunctionService.getBasicBuildingFunctionList(buildingId);
+    }
+
     public List<BasicBuildingMaintenance> getBasicBuildingMaintenanceAll() throws Exception {
         List<BasicBuildingMaintenance> maintenanceList = new ArrayList<>();
         List<BasicBuilding> basicBuildingList = getBasicBuildingAll();
@@ -175,7 +179,7 @@ public class BasicExamineHandle implements Serializable {
         return outfitVoList;
     }
 
-    public List<BasicBuildingSurface> getBasicBuildingSurfaceAll() throws Exception {
+    public List<BasicBuildingSurface> getBasicBuildingSurfaceAll() {
         List<BasicBuildingSurface> surfaceList = new ArrayList<>();
         List<BasicBuilding> basicBuildingList = getBasicBuildingAll();
         if (CollectionUtils.isNotEmpty(basicBuildingList)) {
@@ -205,7 +209,7 @@ public class BasicExamineHandle implements Serializable {
         return unitHuxingList;
     }
 
-    public List<BasicUnitElevator> getBasicUnitElevatorAll() throws Exception {
+    public List<BasicUnitElevator> getBasicUnitElevatorAll() {
         List<BasicUnitElevator> unitElevatorList = new ArrayList<>();
         List<BasicUnit> unitList = getBasicUnitAll();
         if (CollectionUtils.isNotEmpty(unitList)) {
@@ -216,7 +220,21 @@ public class BasicExamineHandle implements Serializable {
         return unitElevatorList;
     }
 
-    public List<BasicUnitDecorateVo> getBasicUnitDecorateAll() throws Exception {
+    public List<BasicUnitElevator> getBasicUnitElevatorList(Integer unitId) {
+        List<BasicUnitElevator> unitElevatorList = getBasicUnitElevatorAll();
+        if (CollectionUtils.isNotEmpty(unitElevatorList)) {
+            Iterator<BasicUnitElevator> iterator = unitElevatorList.iterator();
+            while (iterator.hasNext()) {
+                BasicUnitElevator unitElevator = iterator.next();
+                if (!Objects.equal(unitElevator.getUnitId(), unitId)) {
+                    iterator.remove();
+                }
+            }
+        }
+        return unitElevatorList;
+    }
+
+    public List<BasicUnitDecorateVo> getBasicUnitDecorateAll() {
         List<BasicUnitDecorateVo> unitDecorateVoList = new ArrayList<>();
         List<BasicUnit> unitList = getBasicUnitAll();
         if (CollectionUtils.isNotEmpty(unitList)) {
@@ -264,7 +282,7 @@ public class BasicExamineHandle implements Serializable {
     }
 
 
-    public List<BasicHouseWater> getBasicHouseWaterAll() throws Exception {
+    public List<BasicHouseWater> getBasicHouseWaterAll() {
         List<BasicHouseWater> waterList = new ArrayList<>();
         List<BasicHouse> basicHouseList = getBasicHouseAll();
         if (CollectionUtils.isNotEmpty(basicHouseList)) {
@@ -275,13 +293,29 @@ public class BasicExamineHandle implements Serializable {
         return waterList;
     }
 
-    public List<BasicHouseWaterDrain> getBasicHouseWaterDrainAll() throws Exception {
+    public List<BasicHouseWater> getBasicHouseWaterList(Integer houseId) {
+        List<BasicHouseWater> waterList = getBasicHouseWaterAll();
+        if (CollectionUtils.isNotEmpty(waterList)) {
+            return waterList.stream().filter(oo -> Objects.equal(oo.getHouseId(), houseId)).collect(Collectors.toList());
+        }
+        return waterList;
+    }
+
+    public List<BasicHouseWaterDrain> getBasicHouseWaterDrainAll() {
         List<BasicHouseWaterDrain> waterDrainList = new ArrayList<>();
         List<BasicHouse> basicHouseList = getBasicHouseAll();
         if (CollectionUtils.isNotEmpty(basicHouseList)) {
             for (BasicHouse target : basicHouseList) {
                 waterDrainList.addAll(basicHouseWaterDrainService.getBasicHouseWaterDrainList(target.getId()));
             }
+        }
+        return waterDrainList;
+    }
+
+    public List<BasicHouseWaterDrain> getBasicHouseWaterDrainList(Integer houseId) {
+        List<BasicHouseWaterDrain> waterDrainList = getBasicHouseWaterDrainAll();
+        if (CollectionUtils.isNotEmpty(waterDrainList)) {
+            return waterDrainList.stream().filter(oo -> Objects.equal(oo.getHouseId(), houseId)).collect(Collectors.toList());
         }
         return waterDrainList;
     }
@@ -320,6 +354,14 @@ public class BasicExamineHandle implements Serializable {
         return intelligentVoList;
     }
 
+    public List<BasicHouseIntelligentVo> getBasicHouseIntelligentList(Integer houseId) {
+        List<BasicHouseIntelligentVo> intelligentVoList = getBasicHouseIntelligentAll() ;
+        if (CollectionUtils.isNotEmpty(intelligentVoList)) {
+           return intelligentVoList.stream().filter(oo -> Objects.equal(oo.getHouseId(),houseId)).collect(Collectors.toList());
+        }
+        return intelligentVoList;
+    }
+
     public List<BasicHouseEquipment> getBasicHouseEquipmentAll() {
         List<BasicHouseEquipment> basicHouseEquipmentList = new ArrayList<>();
         List<BasicHouse> basicHouseList = getBasicHouseAll();
@@ -327,6 +369,14 @@ public class BasicExamineHandle implements Serializable {
             for (BasicHouse target : basicHouseList) {
                 basicHouseEquipmentList.addAll(basicHouseEquipmentService.getBasicHouseEquipmentList(target.getId()));
             }
+        }
+        return basicHouseEquipmentList;
+    }
+
+    public List<BasicHouseEquipment> getBasicHouseEquipmentList(Integer houseId) {
+        List<BasicHouseEquipment> basicHouseEquipmentList = getBasicHouseEquipmentAll();
+        if (CollectionUtils.isNotEmpty(basicHouseEquipmentList)) {
+            return basicHouseEquipmentList.stream().filter(oo -> Objects.equal(oo.getHouseId(), houseId)).collect(Collectors.toList());
         }
         return basicHouseEquipmentList;
     }
@@ -415,6 +465,7 @@ public class BasicExamineHandle implements Serializable {
     public List<BasicHouse> getBasicHouseAll() {
         return getBasicHouseAndTradingAll().stream().map(oo -> oo.getHouse()).collect(Collectors.toList());
     }
+
 
     public List<BasicHouse> getBasicHouseList(Integer unitId) {
         return getBasicHouseAndTradingList(unitId).stream().map(oo -> oo.getHouse()).collect(Collectors.toList());
