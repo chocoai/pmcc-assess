@@ -286,8 +286,12 @@
                 AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseSpatialDistribution, data.basicHouseHuxing.spatialDistribution, function (html, data) {
                     houseCommon.houseHuxingForm.find("select.spatialDistribution").empty().html(html).trigger('change');
                 });
-
+                AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseUtilitiesMeasure, data.basicHouseHuxing.utilitiesMeasure, function (html, data) {
+                    houseCommon.houseHuxingForm.find("select.utilitiesMeasure").empty().html(html).trigger('change');
+                });
+                houseCommon.showCurrentFloor(data);
             }
+
         });
         //完损度数据加载
         try {
@@ -333,6 +337,42 @@
         });
     }
 
+    houseCommon.showCurrentFloor = function (data) {
+        if (houseCommon.isNotBlank(data.basicHouseHuxing.spatialDistribution)) {
+            var strArr = ["多层"];//来自于实体描述1(1).docx中的规则
+            var spatialDistributionId = data.basicHouseHuxing.spatialDistribution;
+            if (spatialDistributionId) {
+                AssessCommon.getDataDicInfo(spatialDistributionId, function (spatialDistributionData) {
+                    var str = strArr.join(",");
+                    //当属于数组中的任意一项时显示
+                    if (str.indexOf(spatialDistributionData.name) > -1) {
+                        $("#currentFloor").parent().parent().parent().parent().show();
+                    } else {
+                        $("#currentFloor").parent().parent().parent().parent().hide();
+                    }
+                });
+            }
+        } else {
+            $("#currentFloor").parent().parent().parent().parent().hide();
+        }
+
+        //绑定变更事件
+        houseCommon.houseHuxingForm.find("select.spatialDistribution").off('change').on('change', function () {
+            var strArr = ["多层"];//来自于实体描述1(1).docx中的规则
+            var spatialDistributionId = houseCommon.houseHuxingForm.find("select.spatialDistribution").val();
+            if (spatialDistributionId) {
+                AssessCommon.getDataDicInfo(spatialDistributionId, function (spatialDistributionData) {
+                    var str = strArr.join(",");
+                    //当属于数组中的任意一项时显示
+                    if (str.indexOf(spatialDistributionData.name) > -1) {
+                        $("#currentFloor").parent().parent().parent().parent().show();
+                    } else {
+                        $("#currentFloor").parent().parent().parent().parent().hide();
+                    }
+                });
+            }
+        });
+    }
 
     houseCommon.showPriceConnotationUnit = function (data) {
         if (houseCommon.isNotBlank(data.basicHouseTrading.priceConnotation)) {

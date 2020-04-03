@@ -145,7 +145,19 @@
                                         </div>
                                     </div>
                                 </div>
-
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                装修档次
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <select name="level" class="form-control input-full level">
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

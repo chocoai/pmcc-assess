@@ -395,6 +395,27 @@
                                                                 required>
                                                         </select>
                                                     </div>
+                                                    <label class="col-sm-1">水电费标准<span
+                                                            class="symbol required"></span></label>
+                                                    <div class="col-sm-3">
+                                                        <select class="form-control input-full search-select select2 utilitiesMeasure"
+                                                                name="utilitiesMeasure"
+                                                                required>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col-md-12">
+                                                <div class="form-inline x-valid">
+                                                    <label class="col-sm-1">所在楼层<span
+                                                            class="symbol required"></span></label>
+                                                    <div class="col-sm-3">
+                                                        <input type="text" placeholder="所在楼层" name="currentFloor"
+                                                               class="form-control input-full" id="currentFloor"
+                                                               required value="${basicHouseHuxing.currentFloor}">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

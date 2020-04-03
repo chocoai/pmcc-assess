@@ -50,6 +50,10 @@ public class BasicUnitHuxing {
 
     private String huxingData;
 
+    private Integer utilitiesMeasure;
+
+    private String currentFloor;
+
     public Integer getId() {
         return id;
     }
@@ -232,5 +236,21 @@ public class BasicUnitHuxing {
 
     public void setHuxingData(String huxingData) {
         this.huxingData = huxingData == null ? null : huxingData.trim();
+    }
+
+    public Integer getUtilitiesMeasure() {
+        return utilitiesMeasure;
+    }
+
+    public void setUtilitiesMeasure(Integer utilitiesMeasure) {
+        this.utilitiesMeasure = utilitiesMeasure;
+    }
+
+    public String getCurrentFloor() {
+        return currentFloor;
+    }
+
+    public void setCurrentFloor(String currentFloor) {
+        this.currentFloor = currentFloor == null ? null : currentFloor.trim();
     }
 }

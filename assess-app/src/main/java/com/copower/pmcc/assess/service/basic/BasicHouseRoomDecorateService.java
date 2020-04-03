@@ -147,6 +147,7 @@ public class BasicHouseRoomDecorateService {
         vo.setMaterialName(baseDataDicService.getNameById(basicHouseRoomDecorate.getMaterial()));
         vo.setConstructionTechnologyName(baseDataDicService.getNameById(basicHouseRoomDecorate.getConstructionTechnology()));
         vo.setMaterialPriceName(baseDataDicService.getNameById(basicHouseRoomDecorate.getMaterialPrice()));
+        vo.setLevelName(baseDataDicService.getNameById(basicHouseRoomDecorate.getLevel()));
         List<SysAttachmentDto> sysAttachmentDtos = baseAttachmentService.getByField_tableId(basicHouseRoomDecorate.getId(), "house_room_file", "tb_basic_house_room_decorate");
         StringBuilder builder = new StringBuilder();
         if (!ObjectUtils.isEmpty(sysAttachmentDtos)) {
