@@ -52,11 +52,11 @@ var unitDecorate;
                         unitDecorate.prototype.loadDataDicList();
                     }
                     else {
-                        AlertError("失败","保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("失败", "保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -82,11 +82,11 @@ var unitDecorate;
                         unitDecorate.prototype.loadDataDicList();
                     }
                     else {
-                        AlertError("失败","保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("失败", "保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -107,15 +107,12 @@ var unitDecorate;
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
         init: function (item) {
             $("#" + unitDecorate.prototype.config().frm).clearAll().initForm(item, function () {
-                AssessCommon.loadDataListHtml(AssessDicKey.examineUnitCommonPart, item.unitCommonPart, function (html, data) {
-                    $("#" + unitDecorate.prototype.config().frm).find("#unitCommonPartList").empty().html(html).trigger('change');
-                }, true);
                 $("#" + unitDecorate.prototype.config().frm).find('select.decoratingMaterial').off('change').on('change', function () {
                     AssessCommon.loadDataDicByPid($(this).val(), item.constructionTechnology, function (html, data) {
                         $("#" + unitDecorate.prototype.config().frm).find('select.constructionTechnology').empty().html(html).trigger('change');
@@ -136,6 +133,47 @@ var unitDecorate;
                     $("#" + unitDecorate.prototype.config().frm).find('select.materialGrade').empty().html(html).trigger('change');
                 });
             });
+        },
+        openPartItemModal: function () {
+            AssessCommon.loadAsyncDataDicByKey(AssessDicKey.examineUnitCommonPart, '', function (html, resultData) {
+                var target = $("#frmUnitDecoratePartItem").find(".card-body");
+                target.empty();
+                var resultHtml = '<div>';
+                var divLength = Math.ceil(resultData.length/6);
+                for (var j = 0; j < divLength; j++) {
+                    resultHtml += '<div class="row form-group">';
+                    resultHtml += '<div class="col-md-12">';
+                    resultHtml += "<div class='form-check' style='justify-content:left'>";
+                    var length = (j+1)*6>resultData.length?resultData.length:(j+1)*6;
+                    for (var i = j*6; i < length; i++) {
+                        resultHtml += "<label class='form-check-label'>";
+                        resultHtml += "<input class='form-check-input' type='checkbox' name='partItemCheckBox' ";
+                        resultHtml += 'value="' + resultData[i].name + '">';
+                        resultHtml += "<span class='form-check-sign'>" + resultData[i].name + "</span></label>";
+                    }
+                    resultHtml += "</div>";
+                    resultHtml += "</div>";
+                    resultHtml += "</div>";
+                }
+
+                target.append(resultHtml);
+            }, false);
+
+            var value = $('#' + unitDecorate.prototype.config().frm).find("input[name='unitCommonPart']").val();
+            if(unitDecorate.prototype.isNotBlank(value)){
+                var valueArray = value.split(",");
+                var checkboxs = $("#frmUnitDecoratePartItem").find("input[name='partItemCheckBox']");
+                AssessCommon.checkboxToChecked(checkboxs,valueArray);
+            }
+            $("#divBoxUnitDecoratePartItem").modal("show");
+        },
+        splicePartItem:function () {
+            var value = [];
+            $("#frmUnitDecoratePartItem").find("input[name='partItemCheckBox']:checked").each(function(i){
+                value.push($(this).val());
+            })
+            $("#" + unitDecorate.prototype.config().frm).find("input[name='unitCommonPart']").val(value);
+            $("#divBoxUnitDecoratePartItem").modal("hide");
         }
     }
 
@@ -199,11 +237,11 @@ var unitCommonPart;
                         unitCommonPart.prototype.loadDataDicList();
                     }
                     else {
-                        AlertError("失败","保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("失败", "保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -229,11 +267,11 @@ var unitCommonPart;
                         unitCommonPart.prototype.loadDataDicList();
                     }
                     else {
-                        AlertError("失败","保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("失败", "保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -254,15 +292,12 @@ var unitCommonPart;
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
         init: function (item) {
             $("#" + unitCommonPart.prototype.config().frm).clearAll().initForm(item, function () {
-                AssessCommon.loadDataListHtml(AssessDicKey.examineUnitCommonPart, item.unitCommonPart, function (html, data) {
-                    $("#" + unitCommonPart.prototype.config().frm).find("#unitCommonPartList2").empty().html(html).trigger('change');
-                }, true);
                 AssessCommon.loadDataListHtml(AssessDicKey.examineUnitLocation, item.unitLocation, function (html, data) {
                     $("#" + unitCommonPart.prototype.config().frm).find("#unitLocationList").empty().html(html).trigger('change');
                 }, true);
@@ -275,6 +310,47 @@ var unitCommonPart;
                 });
 
             });
+        },
+        openPartItemModal: function () {
+            AssessCommon.loadAsyncDataDicByKey(AssessDicKey.examineUnitCommonPart, '', function (html, resultData) {
+                var target = $("#frmExamineUnitPartItem").find(".card-body");
+                target.empty();
+                var resultHtml = '<div>';
+                var divLength = Math.ceil(resultData.length/6);
+                for (var j = 0; j < divLength; j++) {
+                    resultHtml += '<div class="row form-group">';
+                    resultHtml += '<div class="col-md-12">';
+                    resultHtml += "<div class='form-check' style='justify-content:left'>";
+                    var length = (j+1)*6>resultData.length?resultData.length:(j+1)*6;
+                    for (var i = j*6; i < length; i++) {
+                        resultHtml += "<label class='form-check-label'>";
+                        resultHtml += "<input class='form-check-input' type='checkbox' name='partItemCheckBox' ";
+                        resultHtml += 'value="' + resultData[i].name + '">';
+                        resultHtml += "<span class='form-check-sign'>" + resultData[i].name + "</span></label>";
+                    }
+                    resultHtml += "</div>";
+                    resultHtml += "</div>";
+                    resultHtml += "</div>";
+                }
+
+                target.append(resultHtml);
+            }, false);
+
+            var value = $('#' + unitCommonPart.prototype.config().frm).find("input[name='unitCommonPart']").val();
+            if(unitCommonPart.prototype.isNotBlank(value)){
+                var valueArray = value.split(",");
+                var checkboxs = $("#frmExamineUnitPartItem").find("input[name='partItemCheckBox']");
+                AssessCommon.checkboxToChecked(checkboxs,valueArray);
+            }
+            $("#divBoxExamineUnitPartItem").modal("show");
+        },
+        splicePartItem:function () {
+            var value = [];
+            $("#frmExamineUnitPartItem").find("input[name='partItemCheckBox']:checked").each(function(i){
+                value.push($(this).val());
+            })
+            $("#" + unitCommonPart.prototype.config().frm).find("input[name='unitCommonPart']").val(value);
+            $("#divBoxExamineUnitPartItem").modal("hide");
         }
     }
 
@@ -332,11 +408,11 @@ var unitHuxing;
                         unitHuxing.prototype.loadDataDicList();
                     }
                     else {
-                        AlertError("失败","保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("失败", "保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -349,7 +425,7 @@ var unitHuxing;
                 return false;
             }
             if ($("#_" + unitHuxing.prototype.config().unitHuxingFileIDFildName).html().length <= 0) {
-                notifyInfo('提示',"请上传户型图");
+                notifyInfo('提示', "请上传户型图");
                 return false;
             }
 
@@ -376,11 +452,11 @@ var unitHuxing;
                         unitHuxing.prototype.loadDataDicList();
                     }
                     else {
-                        AlertError("失败","保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("失败", "保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -482,7 +558,7 @@ var unitHuxing;
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -579,7 +655,7 @@ var unitHuxing;
                 },
                 error: function (result, status, e) {
                     Loading.progressHide();
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result);
                 }
             });
         }
@@ -646,11 +722,11 @@ var unitElevator;
                         unitElevator.prototype.loadDataDicList();
                     }
                     else {
-                        AlertError("失败","保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("失败", "保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -676,11 +752,11 @@ var unitElevator;
                         unitElevator.prototype.loadDataDicList();
                     }
                     else {
-                        AlertError("失败","保存数据失败，失败原因:" + result.errmsg);
+                        AlertError("失败", "保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result);
                 }
             })
         },
@@ -697,7 +773,7 @@ var unitElevator;
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result);
                 }
             })
         },

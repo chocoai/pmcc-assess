@@ -41,6 +41,8 @@ public class BasicUnit {
 
     private Date gmtModified;
 
+    private String huxingNum;
+
     public Integer getId() {
         return id;
     }
@@ -191,5 +193,13 @@ public class BasicUnit {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getHuxingNum() {
+        return huxingNum;
+    }
+
+    public void setHuxingNum(String huxingNum) {
+        this.huxingNum = huxingNum == null ? null : huxingNum.trim();
     }
 }

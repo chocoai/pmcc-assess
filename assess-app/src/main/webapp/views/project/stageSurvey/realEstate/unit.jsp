@@ -69,6 +69,15 @@
                                                                            required="required"
                                                                            value="${basicUnit.elevatorHouseholdRatio}">
                                                                 </div>
+                                                                <label class="col-sm-1">户型数<span
+                                                                        class="symbol required"></span></label>
+                                                                <div class="col-sm-3">
+                                                                    <input type="text" placeholder="户型数"
+                                                                           name="huxingNum"
+                                                                           class="form-control input-full"
+                                                                           required="required"
+                                                                           value="${basicUnit.huxingNum}">
+                                                                </div>
                                                                 <c:if test="${formType eq 'industry'}">
                                                                     <label class="col-sm-1">户型说明</label>
                                                                     <div class="col-sm-3">
@@ -77,6 +86,34 @@
                                                                                value="${basicUnit.huxingExplain}">
                                                                     </div>
                                                                 </c:if>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <c:if test="${formType eq 'industry'}">
+                                                        <div class="row form-group">
+                                                            <div class="col-md-12">
+                                                                <div class="form-inline x-valid">
+                                                                    <label class="col-sm-1">户型说明</label>
+                                                                    <div class="col-sm-3">
+                                                                        <input type="text" name="huxingExplain"
+                                                                               class="form-control input-full"
+                                                                               value="${basicUnit.huxingExplain}">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </c:if>
+                                                    <div class="row form-group">
+                                                        <div class="col-md-12">
+                                                            <div class="form-inline x-valid">
+                                                                <label class="col-sm-1">单元平面图<span
+                                                                        class="symbol required"></span></label>
+                                                                <div class="col-md-3">
+                                                                    <input id="unit_appearance" placeholder="上传附件"
+                                                                           class="form-control input-full"
+                                                                           type="file">
+                                                                    <div id="_unit_appearance"></div>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -165,7 +202,7 @@
     }
 
     function showHistoryModal() {
-        historyInfo.caseUnit.showModel('${tbId}','${formClassify}','${tbType}','${basicApplyBatch.id}');
+        historyInfo.caseUnit.showModel('${tbId}', '${formClassify}', '${tbType}', '${basicApplyBatch.id}');
     };
 
     function showCaseQuoteModal() {

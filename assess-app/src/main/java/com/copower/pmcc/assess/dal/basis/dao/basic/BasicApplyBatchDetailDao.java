@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchDetailExample;
 import com.copower.pmcc.assess.dal.basis.mapper.BasicApplyBatchDetailMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -120,5 +121,25 @@ public class BasicApplyBatchDetailDao {
         return basicApplyBatchDetailMapper.updateByPrimaryKeySelective(basicApplyBatchDetail) > 0;
     }
 
+    public BasicApplyBatchDetail getBasicApplyBatchDetailList(Integer basicApplyBatchId, String tableName, Integer tableId,String name) {
+        BasicApplyBatchDetailExample example = new BasicApplyBatchDetailExample();
+        BasicApplyBatchDetailExample.Criteria criteria = example.createCriteria();
+        if(basicApplyBatchId!=null){
+            criteria.andApplyBatchIdEqualTo(basicApplyBatchId);
+        }
+        if (StringUtils.isNotBlank(name)) {
+            criteria.andNameLike(String.format("%s%s%s", "%", name, "%"));
+        }
+        if (StringUtils.isNotBlank(tableName)) {
+            criteria.andTableNameEqualTo(tableName);
+        }
+        if (tableId!=null) {
+            criteria.andTableIdEqualTo(tableId);
+        }
+        example.setOrderByClause("id desc");
 
+        List<BasicApplyBatchDetail> basicApplyBatchDetails = basicApplyBatchDetailMapper.selectByExample(example);
+        if (CollectionUtils.isNotEmpty(basicApplyBatchDetails)) return basicApplyBatchDetails.get(0);
+        return null;
+    }
 }

@@ -77,15 +77,23 @@ var houseRoom;
             return data;
         },
         loadDataDicList: function () {
-            var cols = commonColumn.houseRoomColumn();
-            cols.push({
-                field: 'id', title: '操作', formatter: function (value, row, index) {
-                    var str = '<div class="btn-margin">';
-                    str += '<button type="button" style="margin-left: 5px;"  class="btn btn-xs btn-info tooltips"  data-placement="top" data-original-title="查看" onclick="houseRoom.prototype.getAndInit(' + row.id + ')"><i class="fa fa-search"></i></button>';
-                    str += '</div>';
-                    return str;
-                }
-            });
+            var cols = [];
+            var tenementType = houseCommon.houseHuxingForm.find('label[name="tenementType"]').text();
+            if (tenementType == '住宅'|| tenementType == '办公') {
+                cols = commonColumn.houseRoomResidence();
+            } else if (tenementType == '商铺' || tenementType == '商场') {
+                cols = commonColumn.houseRoomStore();
+            } else if (tenementType == '餐饮酒店') {
+                cols = commonColumn.houseRoomHotel();
+            } else if (tenementType == '生产') {
+                cols = commonColumn.houseRoomProduction();
+            } else if (tenementType == '仓储') {
+                cols = commonColumn.houseRoomStorage();
+            }else{
+                cols = commonColumn.houseRoomColumn();
+            }
+
+            cols.push({field: 'fileViewName', title: '附件'});
             $("#" + houseRoom.prototype.config().table).bootstrapTable('destroy');
             TableInit(houseRoom.prototype.config().table, getContextPath()+"/basicHouseRoom/getBootstrapTableVo", cols, {
                 houseId: houseCommon.getHouseId(),

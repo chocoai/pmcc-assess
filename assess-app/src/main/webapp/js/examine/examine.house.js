@@ -49,13 +49,13 @@
     };
 
     houseCommon.getUnitId = function () {
-         return houseCommon.houseForm.find('[name=unitId]').val();
+        return houseCommon.houseForm.find('[name=unitId]').val();
     };
 
     //户型选择
     houseCommon.selectHuxing = function (_this) {
         assessHuxing.selectByBasicUnitId({
-            basicUnitId:houseCommon.getUnitId(),
+            basicUnitId: houseCommon.getUnitId(),
             success: function (row) {
                 //1.赋值 2.拷贝附件并显示附件数据
                 $(_this).closest('.input-group').find('[name=huxingId]').val(row.id);
@@ -277,7 +277,7 @@
         //户型
         houseCommon.houseHuxingForm.initForm(data.basicHouseHuxing, function () {
             if (data.basicHouseHuxing != null) {
-                AssessCommon.loadDataListHtml(AssessDicKey.examineHouseTenementType,  data.basicHouseHuxing.tenementType, function (html, data) {
+                AssessCommon.loadDataListHtml(AssessDicKey.examineHouseTenementType, data.basicHouseHuxing.tenementType, function (html, data) {
                     houseCommon.houseHuxingForm.find("#tenementTypeList").empty().html(html).trigger('change');
                 }, true);
                 AssessCommon.loadDataDicByKey(AssessDicKey.examineCommonHouseOrientation, data.basicHouseHuxing.orientation, function (html, data) {
@@ -597,16 +597,16 @@
             data: data,
             success: function (result) {
                 if (result.ret) {
-                    notifySuccess('成功','保存成功');
+                    notifySuccess('成功', '保存成功');
                     $("#" + divBoxSon).modal("hide");
                     houseCommon.loadTradingSellAndLeaseList(data.type);
                 }
                 else {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         })
     };
@@ -623,15 +623,15 @@
             },
             success: function (result) {
                 if (result.ret) {
-                    notifySuccess('成功','删除成功');
+                    notifySuccess('成功', '删除成功');
                     houseCommon.loadTradingSellAndLeaseList(type);
                 }
                 else {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     };
@@ -690,12 +690,12 @@
             }
             var unitMarker = unitMarkerArray[0];
             if (!unitMarker) {
-                notifyInfo('提示',"还未标注单元位置信息");
+                notifyInfo('提示', "还未标注单元位置信息");
                 return;
             }
             var attachmentId = houseCommon.getMarkersysAttachmentId();
             if (!attachmentId) {
-                notifyInfo('提示',"未找到相关户型图片");
+                notifyInfo('提示', "未找到相关户型图片");
                 return;
             }
             examineCommon.getApplyBatchEstateTaggingsByTableId({
@@ -740,7 +740,7 @@
                                 name: houseCommon.houseForm.find('[name=houseNumber]').val()
                             };
                             examineCommon.addBasicEstateTagging(resultData, function () {
-                                notifyInfo('提示',"标注成功信息!");
+                                notifyInfo('提示', "标注成功信息!");
                             });
                         }
                     }
@@ -758,7 +758,7 @@
             type: "unit"
         }, function (unitMarker) {
             if (!unitMarker) {
-                notifyInfo('提示',"还未标注单元位置信息");
+                notifyInfo('提示', "还未标注单元位置信息");
                 return;
             }
             toolMapHandleFun.getToolMapHandleListByExample({
@@ -767,7 +767,7 @@
             }, function (result) {
                 var attachmentId = houseCommon.getMarkersysAttachmentId();
                 if (!attachmentId) {
-                    notifyInfo('提示',"未找到相关户型图片");
+                    notifyInfo('提示', "未找到相关户型图片");
                     return;
                 }
                 var data = {
@@ -808,7 +808,7 @@
                                 tableId: saveData.tableId
                             }, function () {
                                 toolMapHandleFun.saveData(saveData, function () {
-                                    notifyInfo('提示',"成功！");
+                                    notifyInfo('提示', "成功！");
                                 });
                             });
                         }
@@ -829,90 +829,127 @@
     };
 
     //打开户型字段modal
-    houseCommon.openHuxingModal = function(){
+    houseCommon.openHuxingModal = function () {
         var huxingData = houseCommon.houseForm.find("input[name='huxingData']").val();
         $("#divBoxHuxing").clearAll();
-        if(huxingData){
+        if (huxingData) {
             $("#frmHuxing").initForm(JSON.parse(huxingData));
         }
         $("#divBoxHuxing").modal("show");
     };
 
     //打开户型字段modal
-    houseCommon.openHouseHuxingModal = function(){
+    houseCommon.openHouseHuxingModal = function () {
         var tenementType = houseCommon.houseHuxingForm.find("input[name='tenementType']").val();
-        if(!tenementType){
-            notifyInfo('提示',"请先填写物业类型！");
+        if (!tenementType) {
+            notifyInfo('提示', "请先填写物业类型！");
         }
-        $("#frmHouseHuxing").find(".form-group").attr("style","display:none");
+        $("#frmHouseHuxing").find(".form-group").attr("style", "display:none");
         $("#frmHouseHuxing").find(".common").show();
-        if(tenementType=='住宅'){
+        if (tenementType == '住宅') {
             $("#frmHouseHuxing").find(".residence").show();
         }
-        if(tenementType=='商铺'||tenementType=='商场'){
+        if (tenementType == '商铺' || tenementType == '商场') {
             $("#frmHouseHuxing").find(".store").show();
         }
-        if(tenementType=='餐饮酒店'){
+        if (tenementType == '餐饮酒店') {
             $("#frmHouseHuxing").find(".hotel").show();
         }
-        if(tenementType=='办公'){
+        if (tenementType == '办公') {
             $("#frmHouseHuxing").find(".work").show();
         }
-        if(tenementType=='生产'){
+        if (tenementType == '生产') {
             $("#frmHouseHuxing").find(".production").show();
         }
-        if(tenementType=='仓储'){
+        if (tenementType == '仓储') {
             $("#frmHouseHuxing").find(".storage").show();
         }
 
         var huxingData = houseCommon.houseHuxingForm.find("input[name='huxingData']").val();
         $("#divBoxHouseHuxing").clearAll();
-        if(huxingData){
+        if (huxingData) {
             $("#frmHouseHuxing").initForm(JSON.parse(huxingData));
         }
         $("#divBoxHouseHuxing").modal("show");
     };
 
-    //拼接户型字段
-    houseCommon.spliceHuxing = function(){
-        if (!$("#frmHuxing").valid()) {
-            return false;
-        }
-        var text = "";
-        if (houseCommon.isNotBlank($("#frmHuxing").find("input[name='house']").val())) {
-            text += $("#frmHuxing").find("input[name='house']").val() + "房";
-        }
-        if (houseCommon.isNotBlank($("#frmHuxing").find("input[name='saloon']").val())) {
-            text += $("#frmHuxing").find("input[name='saloon']").val() + "客厅";
-        }
-        if (houseCommon.isNotBlank($("#frmHuxing").find("input[name='kitchen']").val())) {
-            text += $("#frmHuxing").find("input[name='kitchen']").val() + "厨房";
-        }
-        if (houseCommon.isNotBlank($("#frmHuxing").find("input[name='toilet']").val())) {
-            text += $("#frmHuxing").find("input[name='toilet']").val() + "卫生间";
-        }
-        if (houseCommon.isNotBlank($("#frmHuxing").find("input[name='garden']").val())) {
-            text += $("#frmHuxing").find("input[name='garden']").val() + "花园";
-        }
-        if (houseCommon.isNotBlank($("#frmHuxing").find("input[name='balcony']").val())) {
-            text += $("#frmHuxing").find("input[name='balcony']").val() + "阳台";
-        }
-        houseCommon.houseForm.find("input[name='newHuxingName']").val(text);
-        $("#divBoxHuxing").modal('hide');
-        var huxingData = JSON.stringify(formParams("frmHuxing"));
-        houseCommon.houseForm.find("input[name='huxingData']").val(huxingData);
-    };
 
     //拼接户型字段
-    houseCommon.spliceHouseHuxing = function(){
+    houseCommon.spliceHouseHuxing = function () {
         if (!$("#frmHouseHuxing").valid()) {
             return false;
         }
         var text = "";
+        if (houseCommon.isNotBlank($("#frmHouseHuxing").find("input[name='toilet']").val())) {
+            text += $("#frmHouseHuxing").find("input[name='toilet']").val() + "卫生间";
+        }
+        if (houseCommon.isNotBlank($("#frmHouseHuxing").find("input[name='bathroom']").val())) {
+            text += $("#frmHouseHuxing").find("input[name='bathroom']").val() + "洗浴间";
+        }
+        if (houseCommon.isNotBlank($("#frmHouseHuxing").find("input[name='kitchen']").val())) {
+            text += $("#frmHouseHuxing").find("input[name='kitchen']").val() + "厨房";
+        }
+        if (houseCommon.isNotBlank($("#frmHouseHuxing").find("input[name='balcony']").val())) {
+            text += $("#frmHouseHuxing").find("input[name='balcony']").val() + "阳台";
+        }
+        if (houseCommon.isNotBlank($("#frmHouseHuxing").find("input[name='carport']").val())) {
+            text += $("#frmHouseHuxing").find("input[name='carport']").val() + "车库";
+        }
+        if (houseCommon.isNotBlank($("#frmHouseHuxing").find("input[name='staircase']").val())) {
+            text += $("#frmHouseHuxing").find("input[name='staircase']").val() + "楼梯间";
+        }
+        if (houseCommon.isNotBlank($("#frmHouseHuxing").find("input[name='elevator']").val())) {
+            text += $("#frmHouseHuxing").find("input[name='elevator']").val() + "电梯间";
+        }
+        if (houseCommon.isNotBlank($("#frmHouseHuxing").find("input[name='passage']").val())) {
+            text += $("#frmHouseHuxing").find("input[name='passage']").val() + "过道";
+        }
+
+        houseCommon.houseHuxingForm.find("input[name='name']").val(text);
+
         $("#divBoxHouseHuxing").modal('hide');
         var huxingData = JSON.stringify(formParams("frmHouseHuxing"));
         houseCommon.houseHuxingForm.find("input[name='huxingData']").val(huxingData);
     };
 
+    //打开通用字段明细modal
+    houseCommon.openCommonItemModal = function (_this) {
+        var typeName = $(_this).closest('.input-group').find('input').first().attr("name");
+        var html = "";
+        html += '<button type="button" data-dismiss="modal" class="btn btn-default btn-sm">关闭</button>';
+        html += '<button type="button" class="btn btn-primary btn-sm" onclick="houseCommon.spliceHuxingCommonItem(\''+typeName+'\')">保存</button>';
+        $("#divBoxHuxingCommonDetail").find(".modal-footer").empty().append(html);
+
+        var contentName = typeName+'Content';
+        var data = $("#frmHouseHuxing").find('input[name="' + contentName + '"]').val();
+        $("#frmHuxingCommonDetail").clearAll();
+        if (data) {
+            $("#frmHuxingCommonDetail").initForm(JSON.parse(data));
+        }
+        $("#divBoxHuxingCommonDetail").modal("show");
+    };
+    //拼接通用字段明细
+    houseCommon.spliceHuxingCommonItem = function (typeName) {
+        var contentName = typeName+'Content';
+        var common = parseFloat($("#frmHuxingCommonDetail").find("input[name='common']").val());
+        var independent = parseFloat($("#frmHuxingCommonDetail").find("input[name='independent']").val());
+        var public = parseFloat($("#frmHuxingCommonDetail").find("input[name='public']").val());
+        var result = 0;
+        if ($.isNumeric(common)) {
+            result += common;
+        }
+        if ($.isNumeric(independent)) {
+            result += independent;
+        }
+        if ($.isNumeric(public)) {
+            result += public;
+        }
+        var data = JSON.stringify(formParams("frmHuxingCommonDetail"));
+
+        $("#frmHouseHuxing").find('input[name="' + contentName + '"]').val(data);
+        $("#frmHouseHuxing").find('input[name="' + typeName + '"]').val(result);
+        $("#divBoxHuxingCommonDetail").modal('hide');
+
+    };
     window.houseCommon = houseCommon;
 })(jQuery);

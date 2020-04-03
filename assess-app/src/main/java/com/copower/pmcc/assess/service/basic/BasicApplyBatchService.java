@@ -150,7 +150,7 @@ public class BasicApplyBatchService {
             ztreeDto.setApplyBatchId(item.getApplyBatchId());
             ztreeDto.setDeclareRecordId(item.getDeclareRecordId());
             DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(item.getDeclareRecordId());
-            if(declareRecord!=null){
+            if (declareRecord != null) {
                 ztreeDto.setDeclareRecordName(declareRecord.getName());
             }
             treeDtos.add(ztreeDto);
@@ -203,7 +203,7 @@ public class BasicApplyBatchService {
         whereBasicBuilding.setEstateId(estateId);
         whereBasicBuilding.setBisCase(true);
         List<BasicBuilding> buildingList = basicBuildingService.getBasicBuildingList(whereBasicBuilding);
-        if(CollectionUtils.isEmpty(buildingList)) return ztreeDtoList;
+        if (CollectionUtils.isEmpty(buildingList)) return ztreeDtoList;
         for (BasicBuilding basicBuilding : buildingList) {
             ZtreeDto ztreeDtoBuilding = new ZtreeDto();
             ztreeDtoBuilding.setPid(ztreeDtoEstate.getId());
@@ -219,7 +219,7 @@ public class BasicApplyBatchService {
             whereBasicUnit.setBuildingId(basicBuilding.getId());
             whereBasicUnit.setBisCase(true);
             List<BasicUnit> basicUnitList = basicUnitService.getBasicUnitList(whereBasicUnit);
-            if(CollectionUtils.isEmpty(basicUnitList)) continue;
+            if (CollectionUtils.isEmpty(basicUnitList)) continue;
             for (BasicUnit basicUnit : basicUnitList) {
                 ZtreeDto ztreeDtoUnit = new ZtreeDto();
                 ztreeDtoUnit.setPid(ztreeDtoBuilding.getId());
@@ -235,7 +235,7 @@ public class BasicApplyBatchService {
                 whereBasicHouse.setUnitId(basicUnit.getId());
                 whereBasicHouse.setBisCase(true);
                 List<BasicHouse> basicHouseList = basicHouseService.getBasicHouseList(whereBasicHouse);
-                if(CollectionUtils.isEmpty(basicHouseList)) continue;
+                if (CollectionUtils.isEmpty(basicHouseList)) continue;
                 for (BasicHouse basicHouse : basicHouseList) {
                     ZtreeDto ztreeDtoHouse = new ZtreeDto();
                     ztreeDtoHouse.setPid(ztreeDtoUnit.getId());
@@ -835,7 +835,7 @@ public class BasicApplyBatchService {
         applyBatchDetail.setApplyBatchId(applyBatchId);
         applyBatchDetail.setCreator(commonService.thisUserAccount());
         applyBatchDetail.setExecutor(commonService.thisUserAccount());
-        ZtreeDto ztreeDto = JSON.parseObject(nodeJson,ZtreeDto.class);
+        ZtreeDto ztreeDto = JSON.parseObject(nodeJson, ZtreeDto.class);
         ArrayList<String> ignoreList = Lists.newArrayList("bisCase");
         if (ztreeDto != null) {
             applyBatchDetail.setUpgradeTableId(ztreeDto.getTableId());
@@ -919,7 +919,7 @@ public class BasicApplyBatchService {
      * @param projectId
      * @return
      */
-    public List<BasicApplyBatchDetail> getOriginalBasicApplyBatchListByProjectId(Integer projectId,Integer projectPhaseId,Integer planDetailsId) {
+    public List<BasicApplyBatchDetail> getOriginalBasicApplyBatchListByProjectId(Integer projectId, Integer projectPhaseId, Integer planDetailsId, String name) {
         ProjectPlanDetails projectPlanDetails = new ProjectPlanDetails();
         projectPlanDetails.setProjectId(projectId);
         projectPlanDetails.setProjectPhaseId(projectPhaseId);
@@ -931,10 +931,12 @@ public class BasicApplyBatchService {
         List<BasicApplyBatch> basicApplyBatchList = LangUtils.transform(transform, o -> basicApplyBatchDao.getBasicApplyBatchByPlanDetailsId(o));
 
         List<BasicApplyBatchDetail> basicApplyBatchDetailList = Lists.newArrayList();
-        if(CollectionUtils.isNotEmpty(basicApplyBatchList)){
-            for (BasicApplyBatch item: basicApplyBatchList) {
-                BasicApplyBatchDetail batchDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(item.getId(), BasicFormClassifyEnum.ESTATE.getTableName(), item.getEstateId());
-                basicApplyBatchDetailList.add(batchDetail);
+        if (CollectionUtils.isNotEmpty(basicApplyBatchList)) {
+            for (BasicApplyBatch item : basicApplyBatchList) {
+                BasicApplyBatchDetail batchDetail = basicApplyBatchDetailDao.getBasicApplyBatchDetailList(item.getId(), BasicFormClassifyEnum.ESTATE.getTableName(), item.getEstateId(), name);
+                if (batchDetail != null) {
+                    basicApplyBatchDetailList.add(batchDetail);
+                }
             }
 
         }
@@ -948,9 +950,23 @@ public class BasicApplyBatchService {
      * @param basicApplyBatchId
      * @return
      */
-    public void referenceEstate(Integer referenceId,Integer basicApplyBatchId) {
-        BasicApplyBatch basicApplyBatch = getBasicApplyBatchById(basicApplyBatchId);
-        basicApplyBatch.setReferenceApplyBatchId(referenceId);
-        basicApplyBatchDao.updateInfo(basicApplyBatch);
+    public void referenceEstate(Integer referenceId, Integer basicApplyBatchId, Integer planDetailsId) {
+        if (basicApplyBatchId != null) {
+            BasicApplyBatch basicApplyBatch = getBasicApplyBatchById(basicApplyBatchId);
+            basicApplyBatch.setReferenceApplyBatchId(referenceId);
+            basicApplyBatchDao.updateInfo(basicApplyBatch);
+        } else {
+            BasicApplyBatch sourceApplyBatch = basicApplyBatchDao.getBasicApplyBatchById(referenceId);
+            BasicApplyBatch newBasicApplyBatch = new BasicApplyBatch();
+            BeanUtils.copyProperties(sourceApplyBatch, newBasicApplyBatch, BaseConstant.ASSESS_IGNORE_ARRAY);
+            newBasicApplyBatch.setProjectId(sourceApplyBatch.getProjectId());
+            newBasicApplyBatch.setPlanDetailsId(planDetailsId);
+            newBasicApplyBatch.setReferenceApplyBatchId(referenceId);
+            newBasicApplyBatch.setDraftFlag(false);
+            newBasicApplyBatch.setBisDelete(false);
+            newBasicApplyBatch.setCreator(commonService.thisUserAccount());
+            basicApplyBatchDao.addBasicApplyBatch(newBasicApplyBatch);
+        }
+
     }
 }
