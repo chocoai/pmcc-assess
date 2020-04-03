@@ -862,13 +862,26 @@ public class BasicApplyBatchController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "/referenceEstate", method = RequestMethod.POST, name = "引用其他楼盘")
-    public HttpResult referenceEstate(Integer referenceId, Integer basicApplyBatchId) throws Exception {
+    public HttpResult referenceEstate(Integer referenceId, Integer basicApplyBatchId,Integer planDetailsId) throws Exception {
         try {
-            basicApplyBatchService.referenceEstate(referenceId, basicApplyBatchId);
+            basicApplyBatchService.referenceEstate(referenceId, basicApplyBatchId,planDetailsId);
             return HttpResult.newCorrectResult();
         } catch (Exception e1) {
             logger.error(e1.getMessage(), e1);
             return HttpResult.newErrorResult("异常");
         }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getBasicAlternativeSurveyList", name = "取得提供引用查勘楼盘信息", method = RequestMethod.GET)
+    public BootstrapTableVo getBasicAlternativeSurveyList(String name,Integer planDetailsId) {
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
+        List<BasicApplyBatchDetail> estateBatchDetailList = basicApplyBatchService.getOriginalBasicApplyBatchListByProjectId(projectPlanDetails.getProjectId(),projectPlanDetails.getProjectPhaseId(),projectPlanDetails.getId(),name);
+        vo.setTotal(page.getTotal());
+        vo.setRows(CollectionUtils.isEmpty(estateBatchDetailList) ? new ArrayList<BasicApplyBatchDetail>() : estateBatchDetailList);
+        return vo;
     }
 }

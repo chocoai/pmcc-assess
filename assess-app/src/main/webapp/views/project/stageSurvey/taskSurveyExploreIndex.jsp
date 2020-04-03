@@ -17,22 +17,15 @@
 
                     <!-- 填写表单 start -->
                     <div class="col-md-12">
-                        <div class="card full-height"  style="min-height: 300px;">
+                        <div class="card full-height" style="min-height: 300px;">
                             <div class="card-header">
                                 <div class="card-head-row">
                                     <div class="card-title">
                                         ${projectPlanDetails.projectPhaseName}
-                                        <button class="btn btn-info btn-sm dropdown-toggle" type="button"
-                                                data-toggle="dropdown" style="margin-left: 10px;"
-                                                aria-expanded="false">
+                                        <button type="button" class="btn btn-sm btn-info" style="margin-left: 10px;"
+                                                onclick="batchTreeTool.showAlternativeSurveyModal();">
                                             引用楼盘
                                         </button>
-                                        <div class="dropdown-menu" role="menu">
-                                            <c:forEach var="item" items="${estateBatchDetailList}">
-                                                <a class="dropdown-item"
-                                                   onclick="referenceEstate(${item.applyBatchId});">${item.name}</a>
-                                            </c:forEach>
-                                        </div>
                                     </div>
                                     <div class="card-tools">
                                         <button class="btn  btn-link btn-primary btn-sm"><span
@@ -52,7 +45,8 @@
                                                 onclick=" batchTreeTool.expandAll(false);">
                                             收起
                                         </button>
-                                        <button type="button" class="btn btn-sm btn-success normalTool" style="margin-left: 20px;"
+                                        <button type="button" class="btn btn-sm btn-success normalTool"
+                                                style="margin-left: 20px;"
                                                 onclick="batchTreeTool.showAddModal()">
                                             新增
                                         </button>
@@ -233,6 +227,60 @@
         </div>
     </div>
 </div>
+<div id="reference_modal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">查勘楼盘</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <div class="row form-group ">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1 control-label">
+                                                名称
+                                            </label>
+                                            <div class="col-sm-5">
+                                                <input type="text" data-rule-maxlength="50" placeholder="名称"
+                                                       id="queryAlternativeName" class="form-control input-full">
+                                            </div>
+                                            <div class="col-sm-5">
+                                                <button type="button" class="btn btn-sm btn-info"
+                                                        onclick="batchTreeTool.loadAlternativeSurveyList();">
+                                                    <span class="btn-label"><i class="fa fa-search"></i></span>
+                                                    查询
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <table class="table table-bordered" id="basicAlternativeSurveyList">
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
+                    关闭
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
 
 </body>
 
@@ -372,6 +420,10 @@
     var batchTreeTool = function () {
     };
 
+    batchTreeTool.getApplyBatchId = function () {
+        return $("#basicBatchApplyFrm").find('[name=id]').val();
+    }
+
     //初始化tree
     batchTreeTool.ztreeInit = function (basicApplyBatchId) {
         $.ajax({
@@ -450,7 +502,8 @@
                         console.log(typeHtml)
 
                         switch (type) {
-                            case "estate":case "building.base": {
+                            case "estate":
+                            case "building.base": {
                                 html += '<div class="row form-group">';
                                 html += '<div class="col-md-12">';
                                 html += '<div class="form-inline x-valid">';
@@ -475,31 +528,33 @@
                                 html += "</div>";
                                 break;
                             }
-                            case "building":case "building.monolaye":case "building.difference": {
-                            html += '<div class="row form-group">';
-                            html += '<div class="col-md-12">';
-                            html += '<div class="form-inline x-valid">';
-                            html += "<label class='col-sm-1 control-label'>";
-                            html += "名称";
-                            html += "<span class='symbol required'></span>";
-                            html += "</label>";
-                            html += " <div class='col-sm-5'>";
-                            html += "<input type='hidden'  name='tableName' value='tb_basic_unit'>";
-                            html += "<input type='text'  name='name' class='form-control input-full' required value=''>";
-                            html += "</div>";
-                            html += typeHtml;
-                            html += "</div>";
-                            html += "</div>";
-                            html += "</div>";
-                            html += '<div class="row form-group">';
-                            html += '<div class="col-md-12">';
-                            html += '<div class="form-inline x-valid">';
-                            html += declareRecordsHtml;
-                            html += "</div>";
-                            html += "</div>";
-                            html += "</div>";
-                            break;
-                        }
+                            case "building":
+                            case "building.monolaye":
+                            case "building.difference": {
+                                html += '<div class="row form-group">';
+                                html += '<div class="col-md-12">';
+                                html += '<div class="form-inline x-valid">';
+                                html += "<label class='col-sm-1 control-label'>";
+                                html += "名称";
+                                html += "<span class='symbol required'></span>";
+                                html += "</label>";
+                                html += " <div class='col-sm-5'>";
+                                html += "<input type='hidden'  name='tableName' value='tb_basic_unit'>";
+                                html += "<input type='text'  name='name' class='form-control input-full' required value=''>";
+                                html += "</div>";
+                                html += typeHtml;
+                                html += "</div>";
+                                html += "</div>";
+                                html += "</div>";
+                                html += '<div class="row form-group">';
+                                html += '<div class="col-md-12">';
+                                html += '<div class="form-inline x-valid">';
+                                html += declareRecordsHtml;
+                                html += "</div>";
+                                html += "</div>";
+                                html += "</div>";
+                                break;
+                            }
                             case "unit": {
                                 html += '<div class="row form-group">';
                                 html += '<div class="col-md-12">';
@@ -539,8 +594,8 @@
                         $("#frm_detail").find("input[name='declareRecordId']").val(declareRecordId);
                         $("#frm_detail").find("input[name='declareRecordName']").val(declareRecordName);
                         $("#detail_modal").modal();
-                    }else{
-                        notifyInfo('提示',"没有下级表单") ;
+                    } else {
+                        notifyInfo('提示', "没有下级表单");
                     }
                 } else {
                     AlertError("失败", "调用服务端方法失败，失败原因:" + result);
@@ -949,7 +1004,6 @@
                         })
                         typeHtml += "</select>";
                         typeHtml += "</div>";
-console.log(typeHtml)
                     }
                 } else {
                     AlertError("失败", "调用服务端方法失败，失败原因:" + result);
@@ -994,6 +1048,61 @@ console.log(typeHtml)
         url += '&tableName=' + node.tableName;
         url += '&planDetailsId=${projectPlanDetails.id}';
         openWin(url, function () {
+        })
+    }
+
+    //显示弹窗
+    batchTreeTool.showAlternativeSurveyModal = function () {
+        batchTreeTool.loadAlternativeSurveyList();
+        $('#reference_modal').modal();
+    }
+
+    //加载备选案例数据列表
+    batchTreeTool.loadAlternativeSurveyList = function () {
+        var cols = [];
+        cols.push({field: 'name', title: '名称', width: '80%'});
+        cols.push({
+            field: 'id', title: '操作', formatter: function (value, row, index) {
+                var str = '<div class="btn-margin">';
+                str += '<button type="button" class="btn btn-xs btn-warning tooltips" style="margin-left: 5px;"  data-placement="top" data-original-title="引用" onclick="batchTreeTool.referenceAlternativeSurvey(' + row.applyBatchId + ')"><i class="fa fa-check"></i></button>';
+                str += '</div>';
+                return str;
+            }
+        });
+        $("#basicAlternativeSurveyList").bootstrapTable('destroy');
+        TableInit($("#basicAlternativeSurveyList"), "${pageContext.request.contextPath}/basicApplyBatch/getBasicAlternativeSurveyList", cols, {
+            name: $('#queryAlternativeName').val(),
+            planDetailsId: "${projectPlanDetails.id}"
+        }, {
+            showColumns: false,
+            showRefresh: false,
+            search: false,
+            onLoadSuccess: function () {
+                $('.tooltips').tooltip();
+            }
+        });
+    }
+
+    //引用备选案例
+    batchTreeTool.referenceAlternativeSurvey = function (referenceId) {
+        $.ajax({
+            url: "${pageContext.request.contextPath}/basicApplyBatch/referenceEstate",
+            data: {
+                referenceId: referenceId,
+                basicApplyBatchId: batchTreeTool.getApplyBatchId(),
+                planDetailsId: "${projectPlanDetails.id}"
+            },
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                if (result.ret) {
+                    AlertSuccess('成功', '引用成功', function () {
+                        window.location.href = window.location.href;
+                    })
+                } else {
+                    AlertError('失败', '引用失败');
+                }
+            }
         })
     }
 
@@ -1058,24 +1167,4 @@ console.log(typeHtml)
         }
     }
 
-    function referenceEstate(referenceId) {
-        $.ajax({
-            url: "${pageContext.request.contextPath}/basicApplyBatch/referenceEstate",
-            data: {
-                referenceId: referenceId,
-                basicApplyBatchId:'${applyBatch.id}'
-            },
-            type: "post",
-            dataType: "json",
-            success: function (result) {
-                if (result.ret) {
-                    //刷新树
-                    batchTreeTool.ztreeInit(referenceId);
-                    notifySuccess("成功", "引用成功");
-                } else {
-                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
-                }
-            }
-        })
-    }
 </script>
