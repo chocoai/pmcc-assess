@@ -862,9 +862,9 @@ public class BasicApplyBatchController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "/referenceEstate", method = RequestMethod.POST, name = "引用其他楼盘")
-    public HttpResult referenceEstate(Integer referenceId, Integer basicApplyBatchId) throws Exception {
+    public HttpResult referenceEstate(Integer referenceId, Integer basicApplyBatchId, Integer planDetailsId) throws Exception {
         try {
-            basicApplyBatchService.referenceEstate(referenceId, basicApplyBatchId);
+            basicApplyBatchService.referenceEstate(referenceId, basicApplyBatchId, planDetailsId);
             return HttpResult.newCorrectResult();
         } catch (Exception e1) {
             logger.error(e1.getMessage(), e1);
