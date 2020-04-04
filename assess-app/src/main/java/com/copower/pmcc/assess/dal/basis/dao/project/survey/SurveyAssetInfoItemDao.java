@@ -67,7 +67,7 @@ public class SurveyAssetInfoItemDao {
         return mapper.selectByExample(example);
     }
 
-    public List<SurveyAssetInfoItem> getSurveyAssetInfoItemLikeList(SurveyAssetInfoItem oo) {
+    public List<SurveyAssetInfoItem> getSurveyAssetInfoItemLikeList(SurveyAssetInfoItem oo,List<Integer> declareIds) {
         SurveyAssetInfoItemExample example = new SurveyAssetInfoItemExample();
         SurveyAssetInfoItemExample.Criteria criteria = example.createCriteria();
         criteria.andIdIsNotNull();
@@ -91,6 +91,9 @@ public class SurveyAssetInfoItemDao {
         }
         if (StringUtils.isNotBlank(oo.getStatus())) {
             criteria.andStatusEqualTo(oo.getStatus());
+        }
+        if(CollectionUtils.isNotEmpty(declareIds)){
+            criteria.andDeclareIdIn(declareIds);
         }
         example.setOrderByClause("id");
         return mapper.selectByExample(example);

@@ -797,16 +797,10 @@ public class BasicApplyBatchController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "/initBasicApplyBatchInfo", method = {RequestMethod.POST}, name = "初始化")
-    public HttpResult initBasicApplyBatchInfo(Integer planDetailsId, Integer projectId, Integer classify, Integer type, Integer buildingStatus) {
+    public HttpResult initBasicApplyBatchInfo(BasicApplyBatch applyBatch) {
         try {
-            BasicApplyBatch applyBatch = new BasicApplyBatch();
-            applyBatch.setPlanDetailsId(planDetailsId);
-            applyBatch.setClassify(classify);
-            applyBatch.setProjectId(projectId);
-            applyBatch.setType(type);
-            applyBatch.setBuildingStatus(buildingStatus);
-            basicApplyBatchService.initBasicApplyBatchInfo(applyBatch);
-            return HttpResult.newCorrectResult(applyBatch);
+            BasicApplyBatch basicApplyBatch = basicApplyBatchService.initBasicApplyBatchInfo(applyBatch);
+            return HttpResult.newCorrectResult(basicApplyBatch);
         } catch (Exception e) {
             logger.error(String.format("exception: %s", e.getMessage()), e);
             return HttpResult.newErrorResult("初始化异常");
@@ -887,9 +881,9 @@ public class BasicApplyBatchController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "/getBasicApplyBatchDetailListByType", method = RequestMethod.POST, name = "获取数据")
-    public HttpResult getBasicApplyBatchDetailListByType(String type, Integer basicApplyBatchId) {
+    public HttpResult getBasicApplyBatchDetailListByType(String type, Integer basicApplyBatchId,Integer pid) {
         try {
-            List<BasicApplyBatchDetail> batchDetailList = basicApplyBatchDetailService.getBasicApplyBatchDetailListByType(type, basicApplyBatchId, true);
+            List<BasicApplyBatchDetail> batchDetailList = basicApplyBatchDetailService.getBasicApplyBatchDetailListByType(type, basicApplyBatchId,pid, true);
             return HttpResult.newCorrectResult(batchDetailList);
         } catch (Exception e1) {
             logger.error(e1.getMessage(), e1);

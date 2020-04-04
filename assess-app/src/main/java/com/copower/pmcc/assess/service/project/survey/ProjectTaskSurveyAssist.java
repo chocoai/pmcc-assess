@@ -116,14 +116,6 @@ public class ProjectTaskSurveyAssist implements ProjectTaskInterface {
         List<BaseDataDic> buildingStatusList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.PROJECT_SURVEY_BUILDING_STATUS);
         modelAndView.addObject("buildingStatusList", buildingStatusList);
         modelAndView.addObject("userAccount", processControllerComponent.getThisUser());
-
-        //用于页面判断是否是子任务
-        ProjectResponsibilityDto masterDto = new ProjectResponsibilityDto();
-        masterDto.setPlanDetailsId(projectPlanDetails.getId());
-        masterDto.setPid(0);
-        ProjectResponsibilityDto projectTaskMaster = bpmRpcProjectTaskService.getProjectTask(masterDto);
-        if (projectTaskMaster != null)
-            modelAndView.addObject("projectTaskMasterId", projectTaskMaster.getId());
     }
 
     private List<BaseDataDic> getFormClassifyList(Integer projectId) {

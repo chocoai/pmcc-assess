@@ -386,6 +386,7 @@ public class BasicApplyBatchService {
                 basicApplyBatchDetailService.deleteBasicApplyBatchDetail(basicApplyBatchDetail.getId());
             }
         }
+        basicApplyBatchDao.deleteInfo(basicApplyBatchId);
     }
 
     public void addBasicApplyBatch(BasicApplyBatch applyBatch) {

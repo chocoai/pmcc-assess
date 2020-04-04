@@ -173,7 +173,8 @@
                                                 </label>
                                                 <div class="col-sm-2">
                                                     <select name="estate" data-child-type="building"
-                                                            data-for-name="building" onchange="assetInfo.getBasicApplyBatchDetailListByType(this);"
+                                                            data-for-name="building"
+                                                            onchange="assetInfo.getBasicApplyBatchDetailListByType(this);"
                                                             class="form-control input-full">
                                                         <option value="">请选择</option>
                                                         <c:forEach var="item" items="${exploreEstateList}">
@@ -187,14 +188,17 @@
                                                 </label>
                                                 <div class="col-sm-2">
                                                     <select name="building" data-child-type="unit" data-for-name="unit"
-                                                            onchange="assetInfo.getBasicApplyBatchDetailListByType(this);"  class="form-control input-full">
+                                                            onchange="assetInfo.getBasicApplyBatchDetailListByType(this);"
+                                                            class="form-control input-full">
                                                     </select>
                                                 </div>
                                                 <label class="col-sm-1 control-label">
                                                     单元
                                                 </label>
                                                 <div class="col-sm-2">
-                                                    <select name="unit"  onchange="assetInfo.getBasicApplyBatchDetailListByType(this);" class="form-control input-full"></select>
+                                                    <select name="unit"
+                                                            onchange="assetInfo.getBasicApplyBatchDetailListByType(this);"
+                                                            class="form-control input-full"></select>
                                                 </div>
                                                 <label class="col-sm-1 control-label">
                                                     状态
@@ -1260,12 +1264,18 @@
 
     assetInfo.getBasicApplyBatchDetailListByType = function (_this) {
         var childControl = $(_this).closest('form').find('[name=' + $(_this).attr('data-for-name') + ']');
+        var data = {};
         var type = $(_this).attr('data-child-type');
+        if ('unit' == type) {
+            data.pid = $(_this).val();
+        }
         var basicApplyBatchId = $(_this).find("option:selected").attr('data-apply-batch-id');
+        data.type = type;
+        data.basicApplyBatchId = basicApplyBatchId;
         $.ajax({
             url: '${pageContext.request.contextPath}/basicApplyBatch/getBasicApplyBatchDetailListByType',
             type: 'post',
-            data: {type: type, basicApplyBatchId: basicApplyBatchId},
+            data: data,
             dataType: 'json',
             success: function (result) {
                 if (result.ret && result.data) {

@@ -236,14 +236,14 @@ public class BasicApplyBatchDetailService {
         return basicApplyBatchDetailDao.getInfoList(basicApplyBatchDetail);
     }
 
-    public List<BasicApplyBatchDetail> getBasicApplyBatchDetailListByType(String type, Integer applyBatchId, Boolean isFuzzyMatching) {
+    public List<BasicApplyBatchDetail> getBasicApplyBatchDetailListByType(String type, Integer applyBatchId,Integer pid, Boolean isFuzzyMatching) {
         List<String> types = Lists.newArrayList();
         if (isFuzzyMatching) {
             types.addAll(LangUtils.transform(BasicFormClassifyEnum.getEnumByFuzzyKey(type), o -> o.getKey()));
         } else {
             types.add(type);
         }
-        return basicApplyBatchDetailDao.getBasicApplyBatchDetailListByTypes(types, applyBatchId);
+        return basicApplyBatchDetailDao.getBasicApplyBatchDetailListByTypes(types, applyBatchId,pid);
     }
 
 
@@ -411,7 +411,8 @@ public class BasicApplyBatchDetailService {
         BasicApplyBatchDetail batchDetail = getDataById(batchDetailId);
         List<BasicApplyBatchDetail> list = Lists.newArrayList();
         collectionChildBatchDetails(batchDetail, list);
-        return LangUtils.filter(list,o->BasicFormClassifyEnum.HOUSE.getKey().equals(batchDetail.getType()));
+        List<BasicApplyBatchDetail> filter = LangUtils.filter(list, o -> BasicFormClassifyEnum.HOUSE.getKey().equals(o.getType()));
+        return filter;
     }
 
 

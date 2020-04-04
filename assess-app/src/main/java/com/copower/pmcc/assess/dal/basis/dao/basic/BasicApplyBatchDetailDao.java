@@ -58,14 +58,18 @@ public class BasicApplyBatchDetailDao {
         return basicApplyBatchDetailMapper.selectByExample(example);
     }
 
-    public List<BasicApplyBatchDetail> getBasicApplyBatchDetailListByTypes(List<String> types, Integer applyBatchId) {
+    public List<BasicApplyBatchDetail> getBasicApplyBatchDetailListByTypes(List<String> types, Integer applyBatchId,Integer pid) {
         BasicApplyBatchDetailExample example = new BasicApplyBatchDetailExample();
         BasicApplyBatchDetailExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
         if (CollectionUtils.isNotEmpty(types)) {
             criteria.andTypeIn(types);
         }
-        if (applyBatchId != null)
+        if (applyBatchId != null){
             criteria.andApplyBatchIdEqualTo(applyBatchId);
+        }
+        if (pid != null){
+            criteria.andPidEqualTo(pid);
+        }
         return basicApplyBatchDetailMapper.selectByExample(example);
     }
 
