@@ -114,7 +114,7 @@
                                                                            value="${basicBuilding.buildingHeight}">
                                                                 </div>
                                                                 <label class="col-sm-1">
-                                                                    占地面积
+                                                                    占地面积(平方米)
                                                                 </label>
                                                                 <div class="col-md-3">
                                                                     <input type="text" placeholder="占地面积(数字)"
@@ -129,12 +129,6 @@
                                                     <div class="row form-group">
                                                         <div class="col-md-12">
                                                             <div class="form-inline x-valid">
-                                                                <label class="col-sm-1">单元数</label>
-                                                                <div class="col-md-3">
-                                                                    <input type="text" name="remark"
-                                                                           class="form-control input-full"
-                                                                           value="${basicBuilding.remark}">
-                                                                </div>
                                                                 <label class="col-sm-1">
                                                                     建筑结构类型
                                                                 </label>
@@ -150,6 +144,12 @@
                                                                     <select name="buildingStructureCategory"
                                                                             class="form-control input-full buildingStructureCategory">
                                                                     </select>
+                                                                </div>
+                                                                <div class="col-md-3 col-lg-offset-1 ">
+                                                                    <button type="button" class="btn btn-info btn-sm"
+                                                                            onclick="buildingCommon.constructionInstallationEngineeringFeeEvent.loadHtml();">
+                                                                        建筑安装完工度调查
+                                                                    </button>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -370,12 +370,6 @@
                                                                            data-toolbar="#toolbarBuildingPropertyServiceItemTable">
 
                                                                     </table>
-                                                                </div>
-                                                                <div class="col-md-3 col-lg-offset-1 ">
-                                                                    <button type="button" class="btn btn-info btn-sm"
-                                                                            onclick="buildingCommon.constructionInstallationEngineeringFeeEvent.loadHtml();">
-                                                                        建筑安装完工度调查
-                                                                    </button>
                                                                 </div>
                                                             </div>
                                                         </div>

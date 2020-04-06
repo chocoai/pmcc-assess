@@ -18,6 +18,7 @@
     <result column="property" property="property" jdbcType="INTEGER" />
     <result column="property_name" property="propertyName" jdbcType="VARCHAR" />
     <result column="unit_interval" property="unitInterval" jdbcType="VARCHAR" />
+    <result column="unit_count" property="unitCount" jdbcType="INTEGER" />
     <result column="property_fee" property="propertyFee" jdbcType="DECIMAL" />
     <result column="facilities_use_fee" property="facilitiesUseFee" jdbcType="DECIMAL" />
     <result column="building_height" property="buildingHeight" jdbcType="VARCHAR" />
@@ -25,7 +26,6 @@
     <result column="cover_an_area" property="coverAnArea" jdbcType="DECIMAL" />
     <result column="property_type" property="propertyType" jdbcType="INTEGER" />
     <result column="property_category" property="propertyCategory" jdbcType="INTEGER" />
-    <result column="property_grade" property="propertyGrade" jdbcType="INTEGER" />
     <result column="open_time" property="openTime" jdbcType="TIMESTAMP" />
     <result column="room_time" property="roomTime" jdbcType="TIMESTAMP" />
     <result column="completed_time_type" property="completedTimeType" jdbcType="INTEGER" />
@@ -125,15 +125,15 @@
   <sql id="Base_Column_List" >
     id, apply_id, estate_id, quote_id, residence_use_year, industry_use_year, building_number, 
     building_name, full_name, floor_count, location, builder, builder_name, property, 
-    property_name, unit_interval, property_fee, facilities_use_fee, building_height, 
-    building_area, cover_an_area, property_type, property_category, property_grade, open_time, 
-    room_time, completed_time_type, be_completed_time, floor_height, diameter_depth, 
-    land_use_year, net_height, building_structure_type, building_structure_category, 
-    first_floor, max_floor, in_jacket_area, use_area, construction_quality, appearance_style, 
-    appearance_new_and_old, between_distance, between_distance_description, v_structura, 
-    v_specifications, v_structural_construction, v_basic_practice, v_structural_practice, 
-    property_social_prestige, property_company_nature, map_id, remark, display_case_id, 
-    relevance_id, version, bis_case, bis_enable, bis_delete, creator, gmt_created, gmt_modified
+    property_name, unit_interval, unit_count, property_fee, facilities_use_fee, building_height, 
+    building_area, cover_an_area, property_type, property_category, open_time, room_time, 
+    completed_time_type, be_completed_time, floor_height, diameter_depth, land_use_year, 
+    net_height, building_structure_type, building_structure_category, first_floor, max_floor, 
+    in_jacket_area, use_area, construction_quality, appearance_style, appearance_new_and_old, 
+    between_distance, between_distance_description, v_structura, v_specifications, v_structural_construction, 
+    v_basic_practice, v_structural_practice, property_social_prestige, property_company_nature, 
+    map_id, remark, display_case_id, relevance_id, version, bis_case, bis_enable, bis_delete, 
+    creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicBuildingExample" >
     select
@@ -174,9 +174,9 @@
       building_name, full_name, floor_count, 
       location, builder, builder_name, 
       property, property_name, unit_interval, 
-      property_fee, facilities_use_fee, building_height, 
-      building_area, cover_an_area, property_type, 
-      property_category, property_grade, open_time, 
+      unit_count, property_fee, facilities_use_fee, 
+      building_height, building_area, cover_an_area, 
+      property_type, property_category, open_time, 
       room_time, completed_time_type, be_completed_time, 
       floor_height, diameter_depth, land_use_year, 
       net_height, building_structure_type, building_structure_category, 
@@ -195,9 +195,9 @@
       #{buildingName,jdbcType=VARCHAR}, #{fullName,jdbcType=VARCHAR}, #{floorCount,jdbcType=VARCHAR}, 
       #{location,jdbcType=VARCHAR}, #{builder,jdbcType=INTEGER}, #{builderName,jdbcType=VARCHAR}, 
       #{property,jdbcType=INTEGER}, #{propertyName,jdbcType=VARCHAR}, #{unitInterval,jdbcType=VARCHAR}, 
-      #{propertyFee,jdbcType=DECIMAL}, #{facilitiesUseFee,jdbcType=DECIMAL}, #{buildingHeight,jdbcType=VARCHAR}, 
-      #{buildingArea,jdbcType=DECIMAL}, #{coverAnArea,jdbcType=DECIMAL}, #{propertyType,jdbcType=INTEGER}, 
-      #{propertyCategory,jdbcType=INTEGER}, #{propertyGrade,jdbcType=INTEGER}, #{openTime,jdbcType=TIMESTAMP}, 
+      #{unitCount,jdbcType=INTEGER}, #{propertyFee,jdbcType=DECIMAL}, #{facilitiesUseFee,jdbcType=DECIMAL}, 
+      #{buildingHeight,jdbcType=VARCHAR}, #{buildingArea,jdbcType=DECIMAL}, #{coverAnArea,jdbcType=DECIMAL}, 
+      #{propertyType,jdbcType=INTEGER}, #{propertyCategory,jdbcType=INTEGER}, #{openTime,jdbcType=TIMESTAMP}, 
       #{roomTime,jdbcType=TIMESTAMP}, #{completedTimeType,jdbcType=INTEGER}, #{beCompletedTime,jdbcType=TIMESTAMP}, 
       #{floorHeight,jdbcType=VARCHAR}, #{diameterDepth,jdbcType=DECIMAL}, #{landUseYear,jdbcType=DECIMAL}, 
       #{netHeight,jdbcType=DECIMAL}, #{buildingStructureType,jdbcType=INTEGER}, #{buildingStructureCategory,jdbcType=INTEGER}, 
@@ -263,6 +263,9 @@
       <if test="unitInterval != null" >
         unit_interval,
       </if>
+      <if test="unitCount != null" >
+        unit_count,
+      </if>
       <if test="propertyFee != null" >
         property_fee,
       </if>
@@ -283,9 +286,6 @@
       </if>
       <if test="propertyCategory != null" >
         property_category,
-      </if>
-      <if test="propertyGrade != null" >
-        property_grade,
       </if>
       <if test="openTime != null" >
         open_time,
@@ -445,6 +445,9 @@
       <if test="unitInterval != null" >
         #{unitInterval,jdbcType=VARCHAR},
       </if>
+      <if test="unitCount != null" >
+        #{unitCount,jdbcType=INTEGER},
+      </if>
       <if test="propertyFee != null" >
         #{propertyFee,jdbcType=DECIMAL},
       </if>
@@ -465,9 +468,6 @@
       </if>
       <if test="propertyCategory != null" >
         #{propertyCategory,jdbcType=INTEGER},
-      </if>
-      <if test="propertyGrade != null" >
-        #{propertyGrade,jdbcType=INTEGER},
       </if>
       <if test="openTime != null" >
         #{openTime,jdbcType=TIMESTAMP},
@@ -639,6 +639,9 @@
       <if test="record.unitInterval != null" >
         unit_interval = #{record.unitInterval,jdbcType=VARCHAR},
       </if>
+      <if test="record.unitCount != null" >
+        unit_count = #{record.unitCount,jdbcType=INTEGER},
+      </if>
       <if test="record.propertyFee != null" >
         property_fee = #{record.propertyFee,jdbcType=DECIMAL},
       </if>
@@ -659,9 +662,6 @@
       </if>
       <if test="record.propertyCategory != null" >
         property_category = #{record.propertyCategory,jdbcType=INTEGER},
-      </if>
-      <if test="record.propertyGrade != null" >
-        property_grade = #{record.propertyGrade,jdbcType=INTEGER},
       </if>
       <if test="record.openTime != null" >
         open_time = #{record.openTime,jdbcType=TIMESTAMP},
@@ -797,6 +797,7 @@
       property = #{record.property,jdbcType=INTEGER},
       property_name = #{record.propertyName,jdbcType=VARCHAR},
       unit_interval = #{record.unitInterval,jdbcType=VARCHAR},
+      unit_count = #{record.unitCount,jdbcType=INTEGER},
       property_fee = #{record.propertyFee,jdbcType=DECIMAL},
       facilities_use_fee = #{record.facilitiesUseFee,jdbcType=DECIMAL},
       building_height = #{record.buildingHeight,jdbcType=VARCHAR},
@@ -804,7 +805,6 @@
       cover_an_area = #{record.coverAnArea,jdbcType=DECIMAL},
       property_type = #{record.propertyType,jdbcType=INTEGER},
       property_category = #{record.propertyCategory,jdbcType=INTEGER},
-      property_grade = #{record.propertyGrade,jdbcType=INTEGER},
       open_time = #{record.openTime,jdbcType=TIMESTAMP},
       room_time = #{record.roomTime,jdbcType=TIMESTAMP},
       completed_time_type = #{record.completedTimeType,jdbcType=INTEGER},
@@ -894,6 +894,9 @@
       <if test="unitInterval != null" >
         unit_interval = #{unitInterval,jdbcType=VARCHAR},
       </if>
+      <if test="unitCount != null" >
+        unit_count = #{unitCount,jdbcType=INTEGER},
+      </if>
       <if test="propertyFee != null" >
         property_fee = #{propertyFee,jdbcType=DECIMAL},
       </if>
@@ -914,9 +917,6 @@
       </if>
       <if test="propertyCategory != null" >
         property_category = #{propertyCategory,jdbcType=INTEGER},
-      </if>
-      <if test="propertyGrade != null" >
-        property_grade = #{propertyGrade,jdbcType=INTEGER},
       </if>
       <if test="openTime != null" >
         open_time = #{openTime,jdbcType=TIMESTAMP},
@@ -1049,6 +1049,7 @@
       property = #{property,jdbcType=INTEGER},
       property_name = #{propertyName,jdbcType=VARCHAR},
       unit_interval = #{unitInterval,jdbcType=VARCHAR},
+      unit_count = #{unitCount,jdbcType=INTEGER},
       property_fee = #{propertyFee,jdbcType=DECIMAL},
       facilities_use_fee = #{facilitiesUseFee,jdbcType=DECIMAL},
       building_height = #{buildingHeight,jdbcType=VARCHAR},
@@ -1056,7 +1057,6 @@
       cover_an_area = #{coverAnArea,jdbcType=DECIMAL},
       property_type = #{propertyType,jdbcType=INTEGER},
       property_category = #{propertyCategory,jdbcType=INTEGER},
-      property_grade = #{propertyGrade,jdbcType=INTEGER},
       open_time = #{openTime,jdbcType=TIMESTAMP},
       room_time = #{roomTime,jdbcType=TIMESTAMP},
       completed_time_type = #{completedTimeType,jdbcType=INTEGER},

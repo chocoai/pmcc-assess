@@ -35,356 +35,317 @@
                                 <form id="frm_estate" class="form-horizontal">
                                     <input type="hidden" name="id" value="${basicEstate.id}">
                                     <input type="hidden" name="quoteId" value="${basicEstate.quoteId}">
-                                    <div class="row">
+                                    <div class="row form-group">
                                         <div class="col-md-12">
-                                            <div class="card-body">
-                                                <div class="row form-group">
-                                                    <div class="col-md-12">
-                                                        <div class="form-inline x-valid">
-                                                            <label class="col-sm-1">省
-                                                                <span class="symbol required"></span></label>
-                                                            <div class="col-sm-3">
-                                                                <select name="province"
-                                                                        class="form-control input-full search-select select2 province">
-                                                                </select>
-                                                            </div>
-                                                            <label class="col-sm-1">市<span
-                                                                    class="symbol required"></span></label>
-                                                            <div class="col-sm-3">
-                                                                <select name="city"
-                                                                        class="form-control input-full search-select select2 city">
-                                                                </select>
-                                                            </div>
-                                                            <label class="col-sm-1">县</label>
-                                                            <div class="col-sm-3">
-                                                                <select name="district"
-                                                                        class="form-control input-full search-select select2 district">
-                                                                </select>
-                                                            </div>
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1">省
+                                                    <span class="symbol required"></span></label>
+                                                <div class="col-sm-3">
+                                                    <select name="province"
+                                                            class="form-control input-full search-select select2 province">
+                                                    </select>
+                                                </div>
+                                                <label class="col-sm-1">市<span
+                                                        class="symbol required"></span></label>
+                                                <div class="col-sm-3">
+                                                    <select name="city"
+                                                            class="form-control input-full search-select select2 city">
+                                                    </select>
+                                                </div>
+                                                <label class="col-sm-1">县</label>
+                                                <div class="col-sm-3">
+                                                    <select name="district"
+                                                            class="form-control input-full search-select select2 district">
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1">楼盘名称<span
+                                                        class="symbol required"></span></label>
+                                                <div class="col-sm-3">
+                                                    <div class="input-group">
+                                                        <input type="text" id="txt_estate_search"
+                                                               data-rule-maxlength="100" placeholder="楼盘名称"
+                                                               required="required"
+                                                               name="name" class="form-control"
+                                                               value="${basicEstate.name}">
+                                                        <div class="input-group-prepend">
+                                                            <button class="btn btn-info btn-sm "
+                                                                    style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                                    type="button"
+                                                                    onclick="estateCommon.mapMarker(false);">
+                                                                标注
+                                                            </button>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="row form-group">
-                                                    <div class="col-md-12">
-                                                        <div class="form-inline x-valid">
-                                                            <label class="col-sm-1">楼盘名称<span
-                                                                    class="symbol required"></span></label>
-                                                            <div class="col-sm-3">
-                                                                <div class="input-group">
-                                                                    <input type="text" id="txt_estate_search"
-                                                                           data-rule-maxlength="100" placeholder="楼盘名称"
-                                                                           required="required"
-                                                                           name="name" class="form-control"
-                                                                           value="${basicEstate.name}">
-                                                                    <div class="input-group-prepend">
-                                                                        <button class="btn btn-info btn-sm "
-                                                                                style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                                                type="button"
-                                                                                onclick="estateCommon.mapMarker(false);">
-                                                                            标注
-                                                                        </button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <label class="col-sm-1">楼盘方位<span
-                                                                    class="symbol required"></span></label>
-                                                            <div class="col-sm-3">
-                                                                <select name="position"
-                                                                        class="form-control input-full search-select position select2"
-                                                                        required>
-                                                                </select>
-                                                            </div>
-                                                            <label class="col-sm-1">基础版块<span
-                                                                    class="symbol required"></span></label>
-                                                            <div class="col-sm-3">
-                                                                <div class="input-group">
-                                                                    <input type="hidden" name="blockId"
-                                                                           value="${basicEstate.blockId}">
-                                                                    <input type="text"
-                                                                           onchange="$(this).closest('.input-group').find('[name=blockId]').val('0');"
-                                                                           placeholder="基础版块" class="form-control"
-                                                                           name="blockName"
-                                                                           value="${basicEstate.blockName}">
-                                                                    <div class="input-group-prepend">
-                                                                        <button class="btn btn-warning btn-sm "
-                                                                                style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                                                type="button"
-                                                                                onclick="$(this).closest('.input-group').find('input').val('');">
-                                                                            清空
-                                                                        </button>
-                                                                    </div>
-                                                                    <div class="input-group-prepend">
-                                                                        <button class="btn btn-primary btn-sm "
-                                                                                style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                                                type="button"
-                                                                                onclick="estateCommon.blockSelect(this);">
-                                                                            选择
-                                                                        </button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                <label class="col-sm-1">楼盘方位<span
+                                                        class="symbol required"></span></label>
+                                                <div class="col-sm-3">
+                                                    <select name="position"
+                                                            class="form-control input-full search-select position select2"
+                                                            required>
+                                                    </select>
                                                 </div>
-                                                <div class="row form-group">
-                                                    <div class="col-md-12">
-                                                        <div class="form-inline x-valid">
-                                                            <label class="col-sm-1">基础版块描述<span
-                                                                    class="symbol required"></span></label>
-                                                            <div class="col-sm-11">
-                        <textarea class="form-control input-full" name="blockDescription" id="blockDescription" required
-                                  placeholder="基础版块描述">${basicEstate.blockDescription}</textarea>
-                                                            </div>
+                                                <label class="col-sm-1">基础版块<span
+                                                        class="symbol required"></span></label>
+                                                <div class="col-sm-3">
+                                                    <div class="input-group">
+                                                        <input type="hidden" name="blockId"
+                                                               value="${basicEstate.blockId}">
+                                                        <input type="text"
+                                                               onchange="$(this).closest('.input-group').find('[name=blockId]').val('0');"
+                                                               placeholder="基础版块" class="form-control"
+                                                               name="blockName"
+                                                               value="${basicEstate.blockName}">
+                                                        <div class="input-group-prepend">
+                                                            <button class="btn btn-warning btn-sm "
+                                                                    style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                                    type="button"
+                                                                    onclick="$(this).closest('.input-group').find('input').val('');">
+                                                                清空
+                                                            </button>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row form-group">
-                                                    <div class="col-md-12">
-                                                        <div class="form-inline x-valid">
-                                                            <label class="col-sm-1">街道号<span class="symbol required"></span></label>
-                                                            <div class="col-sm-3">
-                                                                <input type="text" required
-                                                                       placeholder="街道号" name="streetNumber"
-                                                                       class="form-control input-full"
-                                                                       value="${basicEstate.streetNumber}">
-                                                            </div>
-
-                                                            <label class="col-sm-1">附号</label>
-                                                            <div class="col-sm-3">
-                                                                <input type="text" data-rule-maxlength="100"
-                                                                       data-rule-number='true'
-                                                                       placeholder="附号(请输入数字)"
-                                                                       name="attachNumber"
-                                                                       class="form-control input-full"
-                                                                       value="${basicEstate.attachNumber}">
-                                                            </div>
-                                                            <div class="col-sm-3">
-                                                                <button class="btn btn-sm btn-success" type="button"
-                                                                        onclick="estateCommon.appendHTML()"><i
-                                                                        class="fa fa-plus"></i></button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="streetNumbers">
-
-                                                </div>
-                                                <div class="row form-group">
-                                                    <div class="col-md-12">
-                                                        <div class="form-inline x-valid">
-                                                            <label class="col-sm-1">占地面积</label>
-                                                            <div class="col-sm-3">
-                                                                <input type="text" data-rule-maxlength="100"
-                                                                       data-rule-number='true'
-                                                                       placeholder="占地面积(请输入数字)" name="coverAnArea"
-                                                                       class="form-control input-full"
-                                                                       value="${basicEstate.coverAnArea}">
-                                                            </div>
-                                                            <label class="col-sm-1">容积率</label>
-                                                            <div class="col-sm-3">
-                                                                <input type="text"
-                                                                       placeholder="容积率" name="volumetricRate"
-                                                                       class="form-control input-full"
-                                                                       value="${basicEstate.volumetricRate}">
-                                                            </div>
-                                                            <label class="col-sm-1">绿化率</label>
-                                                            <div class="col-sm-3">
-                                                                <input type="text"
-                                                                       placeholder="绿化率" name="greeningRate"
-                                                                       class="form-control input-full"
-                                                                       value="${basicEstate.greeningRate}">
-                                                            </div>
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row form-group">
-                                                    <div class="col-md-12">
-                                                        <div class="form-inline x-valid">
-                                                            <label class="col-sm-1">总楼栋数<span
-                                                                    class="symbol required"></span></label>
-                                                            <div class="col-sm-3">
-                                                                <input type="text" data-rule-maxlength="100"
-                                                                       data-rule-number='true'
-                                                                       placeholder="总楼栋数(请输入数字)" name="buildingNumber"
-                                                                       required
-                                                                       class="form-control input-full"
-                                                                       value="${basicEstate.buildingNumber}">
-                                                            </div>
-                                                            <label class="col-sm-1">开发商</label>
-                                                            <div class="col-sm-3">
-                                                                <input type="text" placeholder="开发商"
-                                                                       class="form-control input-full"
-                                                                       name="developerName"
-                                                                       value="${basicEstate.developerName}">
-                                                                <input type="hidden" placeholder="开发商"
-                                                                       class="form-control input-full" name="developer"
-                                                                       value="${basicEstate.developer}">
-                                                            </div>
-                                                            <label class="col-sm-1">建筑面积</label>
-                                                            <div class="col-sm-3">
-                                                                <input type="text" data-rule-maxlength="100"
-                                                                       data-rule-number='true'
-                                                                       placeholder="建筑面积(请输入数字)" name="floorArea"
-                                                                       class="form-control input-full"
-                                                                       value="${basicEstate.floorArea}">
-                                                            </div>
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row form-group">
-                                                    <div class="col-md-12">
-                                                        <div class="form-inline x-valid">
-                                                            <label class="col-sm-1">均价</label>
-                                                            <div class="col-sm-3">
-                                                                <input type="text" data-rule-maxlength="100"
-                                                                       data-rule-number='true'
-                                                                       placeholder="均价(请输入数字)" name="averagePrice"
-                                                                       class="form-control input-full"
-                                                                       value="${basicEstate.averagePrice}">
-                                                            </div>
-                                                            <label class="col-sm-1">价格区间</label>
-                                                            <div class="col-sm-3">
-                                                                <input type="text" placeholder="价格区间"
-                                                                       name="priceRange" class="form-control input-full"
-                                                                       value="${basicEstate.priceRange}">
-                                                            </div>
-                                                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
-                                                                开盘时间
-                                                            </label>
-                                                            <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                                                                <input type="text" placeholder="开盘时间"
-                                                                       data-date-format='yyyy-mm-dd'
-                                                                       name="openTime"
-                                                                       class="form-control input-full dbdate">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row form-group">
-                                                    <div class="col-md-12">
-                                                        <div class="form-inline x-valid">
-                                                            <label class="col-sm-1">楼盘区位分析<span
-                                                                    class="symbol required"></span></label>
-                                                            <div class="col-sm-11">
-                        <textarea class="form-control input-full" name="locationDescribe" required
-                                  placeholder="楼盘区位分析">${basicEstate.locationDescribe}</textarea>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row form-group">
-                                                    <div class="col-md-12">
-                                                        <div class="form-inline x-valid">
-                                                            <label class="col-sm-1">总平面图<span
-                                                                    class="symbol required"></span></label>
-                                                            <div class="col-md-5">
-                                                                <input id="estate_floor_total_plan" placeholder="上传附件"
-                                                                       class="form-control input-full"
-                                                                       type="file">
-                                                                <div id="_estate_floor_total_plan"></div>
-                                                            </div>
-                                                            <label class="col-sm-1">外观图<span
-                                                                    class="symbol required"></span></label>
-                                                            <div class="col-md-5">
-                                                                <input id="estate_floor_Appearance_figure"
-                                                                       placeholder="上传附件"
-                                                                       class="form-control input-full"
-                                                                       type="file">
-                                                                <div id="_estate_floor_Appearance_figure"></div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row form-group">
-                                                    <div class="col-md-12">
-                                                        <div class="form-inline x-valid">
-                                                            <label class="col-sm-1">大门入口图<span
-                                                                    class="symbol required"></span></label>
-                                                            <div class="col-md-5">
-                                                                <input id="estate_gate_entrance_plan" placeholder="上传附件"
-                                                                       class="form-control input-full"
-                                                                       type="file">
-                                                                <div id="_estate_gate_entrance_plan"></div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <c:if test="${formType eq 'industry'}">
-                                                    <div class="row form-group">
-                                                        <div class="col-md-12">
-                                                            <div class="form-inline x-valid">
-                                                                <label class="col-sm-1">供水平面图</label>
-                                                                <div class="col-md-5">
-                                                                    <input id="estate_water_supply_plan"
-                                                                           placeholder="上传附件"
-                                                                           class="form-control input-full"
-                                                                           type="file">
-                                                                    <div id="_estate_water_supply_plan"></div>
-                                                                </div>
-                                                                <label class="col-sm-1">供电平面图</label>
-                                                                <div class="col-md-5">
-                                                                    <input id="estate_power_supply_plan"
-                                                                           placeholder="上传附件"
-                                                                           class="form-control input-full"
-                                                                           type="file">
-                                                                    <div id="_estate_power_supply_plan"></div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row form-group">
-                                                        <div class="col-md-12">
-                                                            <div class="form-inline x-valid">
-                                                                <label class="col-sm-1">供气平面图</label>
-                                                                <div class="col-md-5">
-                                                                    <input id="estate_air_supply_plan"
-                                                                           placeholder="上传附件"
-                                                                           class="form-control input-full"
-                                                                           type="file">
-                                                                    <div id="_estate_air_supply_plan"></div>
-                                                                </div>
-                                                                <label class="col-sm-1">采暖平面图</label>
-                                                                <div class="col-md-5">
-                                                                    <input id="estate_heating_plan" placeholder="上传附件"
-                                                                           class="form-control input-full"
-                                                                           type="file">
-                                                                    <div id="_estate_heating_plan"></div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </c:if>
-                                                <div class="x_content">
-                                                    <div class="x_title">基础设施情况</div>
-                                                    <div class="row form-group">
-                                                        <div class="col-md-12">
-                                                            <div class="form-inline x-valid">
-                                                                <label class="col-sm-1">基础设施完备度<span
-                                                                        class="symbol required"></span></label>
-                                                                <div class="col-sm-3">
-                                                                    <select class="form-control input-full search-select select2 "
-                                                                            name="infrastructureCompleteness"
-                                                                            required="required">
-                                                                    </select>
-                                                                </div>
-                                                                <div class="col-sm-8">
-                                                                    <div id="industrySupplyInfoContainer"></div>
-                                                                </div>
-                                                            </div>
-
+                                                        <div class="input-group-prepend">
+                                                            <button class="btn btn-primary btn-sm "
+                                                                    style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                                    type="button"
+                                                                    onclick="estateCommon.blockSelect(this);">
+                                                                选择
+                                                            </button>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1">基础版块描述<span
+                                                        class="symbol required"></span></label>
+                                                <div class="col-sm-11">
+                        <textarea class="form-control input-full" name="blockDescription" id="blockDescription" required
+                                  placeholder="基础版块描述">${basicEstate.blockDescription}</textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1">街道号<span class="symbol required"></span></label>
+                                                <div class="col-sm-3">
+                                                    <input type="text" required
+                                                           placeholder="街道号" name="streetNumber"
+                                                           class="form-control input-full"
+                                                           value="${basicEstate.streetNumber}">
+                                                </div>
+
+                                                <label class="col-sm-1">附号</label>
+                                                <div class="col-sm-3">
+                                                    <input type="text" data-rule-maxlength="100"
+                                                           data-rule-number='true'
+                                                           placeholder="附号(请输入数字)"
+                                                           name="attachNumber"
+                                                           class="form-control input-full"
+                                                           value="${basicEstate.attachNumber}">
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <button class="btn btn-sm btn-success" type="button"
+                                                            onclick="estateCommon.appendHTML()"><i
+                                                            class="fa fa-plus"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="streetNumbers"></div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1">占地面积(平方米)</label>
+                                                <div class="col-sm-3">
+                                                    <input type="text" data-rule-maxlength="100"
+                                                           data-rule-number='true'
+                                                           placeholder="占地面积(请输入数字)" name="coverAnArea"
+                                                           class="form-control input-full"
+                                                           value="${basicEstate.coverAnArea}">
+                                                </div>
+                                                <label class="col-sm-1">容积率</label>
+                                                <div class="col-sm-3">
+                                                    <input type="text"
+                                                           placeholder="容积率" name="volumetricRate"
+                                                           class="form-control input-full"
+                                                           value="${basicEstate.volumetricRate}">
+                                                </div>
+                                                <label class="col-sm-1">绿化率</label>
+                                                <div class="col-sm-3">
+                                                    <input type="text"
+                                                           placeholder="绿化率" name="greeningRate"
+                                                           class="form-control input-full  x-percent"
+                                                           value="${basicEstate.greeningRate}">
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1">总楼栋数<span
+                                                        class="symbol required"></span></label>
+                                                <div class="col-sm-3">
+                                                    <input type="text" data-rule-maxlength="100"
+                                                           data-rule-number='true'
+                                                           placeholder="总楼栋数(请输入数字)" name="buildingNumber"
+                                                           required
+                                                           class="form-control input-full"
+                                                           value="${basicEstate.buildingNumber}">
+                                                </div>
+                                                <label class="col-sm-1">开发商</label>
+                                                <div class="col-sm-3">
+                                                    <input type="text" placeholder="开发商"
+                                                           class="form-control input-full"
+                                                           name="developerName"
+                                                           value="${basicEstate.developerName}">
+                                                    <input type="hidden" placeholder="开发商"
+                                                           class="form-control input-full" name="developer"
+                                                           value="${basicEstate.developer}">
+                                                </div>
+                                                <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
+                                                    开盘时间
+                                                </label>
+                                                <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
+                                                    <input type="text" placeholder="开盘时间"
+                                                           data-date-format='yyyy-mm-dd'
+                                                           name="openTime"
+                                                           class="form-control input-full dbdate">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1">楼盘区位分析<span
+                                                        class="symbol required"></span></label>
+                                                <div class="col-sm-11">
+                        <textarea class="form-control input-full" name="locationDescribe" required
+                                  placeholder="楼盘区位分析">${basicEstate.locationDescribe}</textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1">总平面图<span
+                                                        class="symbol required"></span></label>
+                                                <div class="col-md-5">
+                                                    <input id="estate_floor_total_plan" placeholder="上传附件"
+                                                           class="form-control input-full"
+                                                           type="file">
+                                                    <div id="_estate_floor_total_plan"></div>
+                                                </div>
+                                                <label class="col-sm-1">外观图<span
+                                                        class="symbol required"></span></label>
+                                                <div class="col-md-5">
+                                                    <input id="estate_floor_Appearance_figure"
+                                                           placeholder="上传附件"
+                                                           class="form-control input-full"
+                                                           type="file">
+                                                    <div id="_estate_floor_Appearance_figure"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1">大门入口图<span
+                                                        class="symbol required"></span></label>
+                                                <div class="col-md-5">
+                                                    <input id="estate_gate_entrance_plan" placeholder="上传附件"
+                                                           class="form-control input-full"
+                                                           type="file">
+                                                    <div id="_estate_gate_entrance_plan"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <c:if test="${formType eq 'industry'}">
+                                        <div class="row form-group">
+                                            <div class="col-md-12">
+                                                <div class="form-inline x-valid">
+                                                    <label class="col-sm-1">供水平面图</label>
+                                                    <div class="col-md-5">
+                                                        <input id="estate_water_supply_plan"
+                                                               placeholder="上传附件"
+                                                               class="form-control input-full"
+                                                               type="file">
+                                                        <div id="_estate_water_supply_plan"></div>
+                                                    </div>
+                                                    <label class="col-sm-1">供电平面图</label>
+                                                    <div class="col-md-5">
+                                                        <input id="estate_power_supply_plan"
+                                                               placeholder="上传附件"
+                                                               class="form-control input-full"
+                                                               type="file">
+                                                        <div id="_estate_power_supply_plan"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col-md-12">
+                                                <div class="form-inline x-valid">
+                                                    <label class="col-sm-1">供气平面图</label>
+                                                    <div class="col-md-5">
+                                                        <input id="estate_air_supply_plan"
+                                                               placeholder="上传附件"
+                                                               class="form-control input-full"
+                                                               type="file">
+                                                        <div id="_estate_air_supply_plan"></div>
+                                                    </div>
+                                                    <label class="col-sm-1">采暖平面图</label>
+                                                    <div class="col-md-5">
+                                                        <input id="estate_heating_plan" placeholder="上传附件"
+                                                               class="form-control input-full"
+                                                               type="file">
+                                                        <div id="_estate_heating_plan"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </c:if>
+                                    <div class="card-header">
+                                        <div class="card-category">基础设施情况</div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1">基础设施完备度<span
+                                                        class="symbol required"></span></label>
+                                                <div class="col-sm-3">
+                                                    <select class="form-control input-full search-select select2 "
+                                                            name="infrastructureCompleteness"
+                                                            required="required">
+                                                    </select>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    <div id="industrySupplyInfoContainer"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </form>
                                 <div class="x_content">
-                                    <div class="x_title">
-                                        <h3>土地实体情况 </h3>
-                                        <div class="clearfix"></div>
+                                    <div class="card-header">
+                                        <div class="card-title">土地实体情况</div>
                                     </div>
                                     <form id="frm_estateLandState" class="form-horizontal">
                                         <input type="hidden" name="id" value="${basicEstateLandState.id}">
@@ -430,9 +391,7 @@
                                                                    list="landUseCategoryList"
                                                                    value="${basicEstateLandState.landUseCategory}"
                                                                    class="form-control" required>
-                                                            <datalist id="landUseCategoryList">
-
-                                                            </datalist>
+                                                            <datalist id="landUseCategoryList"></datalist>
                                                             <div class="input-group-prepend">
                                                                 <button class="btn btn-warning btn-sm "
                                                                         style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
@@ -446,6 +405,64 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="row form-group">
+                                            <div class="col-md-12">
+                                                <div class="form-inline x-valid">
+                                                    <label class="col-sm-1">土地取得时间<span class="symbol required"></span></label>
+                                                    <div class="col-sm-3">
+                                                        <input placeholder="土地取得时间"
+                                                               name="acquisitionTime" required
+                                                               data-date-format="yyyy-mm-dd"
+                                                               class="form-control input-full date-picker dbdate acquisitionTime">
+                                                    </div>
+                                                    <label class="col-sm-1">土地使用年限<span class="symbol required"></span></label>
+                                                    <div class="col-sm-3">
+                                                        <input placeholder="土地使用年限" data-rule-number="true"
+                                                               name="acquisitionTime" required
+                                                               class="form-control input-full">
+                                                    </div>
+                                                    <label class="col-sm-1">土地级别<span
+                                                            class="symbol required"></span></label>
+                                                    <div class="col-sm-3">
+                                                        <div class="input-group">
+                                                            <input type="hidden" name="landLevel"
+                                                                   value='${basicEstateLandState.landLevel}'>
+                                                            <input type="text" readonly="readonly"
+                                                                   onclick="examineCommon.landLevelSelect(this);"
+                                                                   placeholder="土地级别" class="form-control"
+                                                                   name="landLevelName" required
+                                                                   value="${basicEstateLandState.landLevelName}">
+                                                            <div class="input-group-prepend">
+                                                                <button class="btn btn-warning btn-sm "
+                                                                        style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                                        type="button"
+                                                                        onclick="$(this).closest('.input-group').find('input').val('');">
+                                                                    清空
+                                                                </button>
+                                                            </div>
+                                                            <div class="input-group-prepend">
+                                                                <button class="btn btn-primary btn-sm "
+                                                                        style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                                        type="button"
+                                                                        onclick="examineCommon.landLevelSelect(this);">
+                                                                    选择
+                                                                </button>
+                                                            </div>
+                                                            <div class="input-group-prepend">
+                                                                <button class="btn btn-info btn-sm "
+                                                                        style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                                        type="button"
+                                                                        onclick="estateCommon.openLevelDetailModal(this);">
+                                                                    因素
+                                                                </button>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%" color="#6f5499" size="10">
                                         <div class="row form-group">
                                             <div class="col-md-12">
                                                 <div class="form-inline x-valid">
@@ -511,44 +528,7 @@
                                                                name="northTo"
                                                                value="${basicEstateLandState.northTo}">
                                                     </div>
-                                                    <label class="col-sm-1">土地级别<span
-                                                            class="symbol required"></span></label>
-                                                    <div class="col-sm-3">
-                                                        <div class="input-group">
-                                                            <input type="hidden" name="landLevel"
-                                                                   value='${basicEstateLandState.landLevel}'>
-                                                            <input type="text" readonly="readonly"
-                                                                   onclick="examineCommon.landLevelSelect(this);"
-                                                                   placeholder="土地级别" class="form-control"
-                                                                   name="landLevelName" required
-                                                                   value="${basicEstateLandState.landLevelName}">
-                                                            <div class="input-group-prepend">
-                                                                <button class="btn btn-warning btn-sm "
-                                                                        style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                                        type="button"
-                                                                        onclick="$(this).closest('.input-group').find('input').val('');">
-                                                                    清空
-                                                                </button>
-                                                            </div>
-                                                            <div class="input-group-prepend">
-                                                                <button class="btn btn-primary btn-sm "
-                                                                        style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                                        type="button"
-                                                                        onclick="examineCommon.landLevelSelect(this);">
-                                                                    选择
-                                                                </button>
-                                                            </div>
-                                                            <div class="input-group-prepend">
-                                                                <button class="btn btn-info btn-sm "
-                                                                        style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                                        type="button"
-                                                                        onclick="estateCommon.openLevelDetailModal(this);">
-                                                                    因素
-                                                                </button>
-                                                            </div>
 
-                                                        </div>
-                                                    </div>
                                                     <label class="col-sm-1">土地形状<span
                                                             class="symbol required"></span></label>
                                                     <div class="col-sm-3">
@@ -556,20 +536,26 @@
                                                                 name="shapeState" required>
                                                         </select>
                                                     </div>
+                                                    <label class="col-sm-1">土地面积<span
+                                                            class="symbol required"></span></label>
+                                                    <div class=" col-xs-1  col-sm-1  col-md-1  col-lg-1">
+                                                        <select class="form-control input-full" name="landAreaUnit">
+                                                            <option value="平方米" selected="selected">平方米</option>
+                                                            <option value="亩">亩</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-2">
+                                                        <input type="text" class="form-control input-full"
+                                                               data-rule-number='true' required
+                                                               placeholder="土地面积(请输入数字)" name="landArea"
+                                                               value="${basicEstateLandState.landArea}">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="row form-group">
                                             <div class="col-md-12">
                                                 <div class="form-inline x-valid">
-                                                    <label class="col-sm-1">土地面积<span
-                                                            class="symbol required"></span></label>
-                                                    <div class="col-sm-3">
-                                                        <input type="text" class="form-control input-full"
-                                                               data-rule-number='true' required
-                                                               placeholder="土地面积(请输入数字)" name="landArea"
-                                                               value="${basicEstateLandState.landArea}">
-                                                    </div>
                                                     <label class="col-sm-1">地形</label>
                                                     <div class="col-sm-3">
                                                         <select class="form-control input-full search-select select2 planeness"
@@ -582,27 +568,18 @@
                                                                 name="topographicTerrain">
                                                         </select>
                                                     </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row form-group">
-                                            <div class="col-md-12">
-                                                <div class="form-inline x-valid">
                                                     <label class="col-sm-1">土地开发程度</label>
                                                     <div class="col-sm-3">
                                                         <select class="form-control input-full developmentDegree"
                                                                 name="developmentDegree">
                                                         </select>
                                                     </div>
-
-                                                    <label class="col-sm-1 developmentDegreeContent">土地开发程度备注</label>
-                                                    <div class="col-sm-3 developmentDegreeContent">
-                                                        <input type="text" class="form-control input-full"
-                                                               placeholder="土地开发程度备注"
-                                                               name="developmentDegreeRemark"
-                                                               value="${basicEstateLandState.developmentDegreeRemark}">
-                                                    </div>
-
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col-md-12">
+                                                <div class="form-inline x-valid">
                                                     <label class="col-sm-1">土地利用现状</label>
                                                     <div class="col-sm-3">
                                                         <input type="text" class="form-control input-full"
@@ -610,26 +587,22 @@
                                                                name="presentSituationLandUse"
                                                                value="${basicEstateLandState.presentSituationLandUse}">
                                                     </div>
+                                                    <label class="col-sm-1 developmentDegreeContent">土地开发程度备注</label>
+                                                    <div class="col-sm-3 developmentDegreeContent">
+                                                        <input type="text" class="form-control input-full"
+                                                               placeholder="土地开发程度备注"
+                                                               name="developmentDegreeRemark"
+                                                               value="${basicEstateLandState.developmentDegreeRemark}">
+                                                    </div>
                                                     <div class="col-sm-4">
                                                         <div id="developmentDegreeContentContainer"></div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row form-group">
-                                            <div class="col-md-12">
-                                                <div class="form-inline x-valid">
-                                                    <label class="col-sm-1">取得时间</label>
-                                                    <div class="col-sm-3">
-                                                        <input placeholder="取得时间"
-                                                               name="acquisitionTime" required
-                                                               data-date-format="yyyy-mm-dd"
-                                                               class="form-control input-full date-picker dbdate acquisitionTime">
-                                                    </div>
-                                                </div>
-                                            </div>
+                                        <div class="card-header">
+                                            <div class="card-category">开发限制条件</div>
                                         </div>
-                                        <div class="x_title">开发限制条件</div>
                                         <div class="row form-group">
                                             <div class="col-md-12">
                                                 <div class="form-inline x-valid">
@@ -689,7 +662,9 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="x_title">土壤</div>
+                                        <div class="card-header">
+                                            <div class="card-category">土壤</div>
+                                        </div>
                                         <div class="row form-group">
                                             <div class="col-md-12">
                                                 <div class="form-inline x-valid">
@@ -786,7 +761,7 @@
                             <button type="button" id="cancel_btn btn-sm" class="btn btn-default"
                                     onclick="window.close()">关闭
                             </button>
-                            <button type="button" class="btn btn-warning" onclick="saveDataInfo();">保存</button>
+                            <button type="button" style="margin-left: 10px;" class="btn btn-warning" onclick="saveDataInfo();">保存</button>
                         </div>
                     </div>
                 </div>

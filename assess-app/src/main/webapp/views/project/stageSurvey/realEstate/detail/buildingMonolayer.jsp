@@ -72,17 +72,9 @@
                                             <div class="col-sm-3">
                                                 <label class="form-control input-full" name="landUseYear">${basicBuilding.landUseYear}</label>
                                             </div>
-                                    
-                                            <label class="col-sm-1 control-label">
-                                                户型区间
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <label class="form-control input-full" name="unitInterval">${basicBuilding.unitInterval}</label>
-                                            </div>
-
                                             <label class="col-sm-1 control-label">单元数</label>
                                             <div class="col-sm-3">
-                                                <label class="form-control input-full" name="remark">${basicBuilding.remark}</label>
+                                                <label class="form-control input-full" name="unitCount">${basicBuilding.unitCount}</label>
                                             </div>
                                         </div>
                                         </div>
@@ -117,13 +109,13 @@
                                         <div class="col-md-12">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-1 control-label">
-                                                建筑面积
+                                                建筑面积(平方米)
                                             </label>
                                             <div class="col-sm-3">
                                                 <label class="form-control input-full" name="buildingArea">${basicBuilding.buildingArea}</label>
                                             </div>
                                             <label class="col-sm-1 control-label">
-                                                占地面积
+                                                占地面积(平方米)
                                             </label>
                                             <div class="col-sm-3">
                                                 <label class="form-control input-full" name="coverAnArea">${basicBuilding.coverAnArea}</label>
@@ -243,9 +235,8 @@
                                             <div class="col-sm-3">
                                                 <label class="form-control input-full" name="builderName">${basicBuilding.builderName}</label>
                                             </div>
-
                                             <label class="col-sm-1 control-label">
-                                                物业费
+                                                物业费(平方米)
                                             </label>
                                             <div class="col-sm-3">
                                                 <label class="form-control input-full" name="propertyFee">${basicBuilding.propertyFee}</label>

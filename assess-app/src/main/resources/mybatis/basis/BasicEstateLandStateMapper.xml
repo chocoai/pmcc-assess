@@ -8,9 +8,11 @@
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="land_use_type" property="landUseType" jdbcType="VARCHAR" />
     <result column="land_use_category" property="landUseCategory" jdbcType="VARCHAR" />
+    <result column="land_use_year" property="landUseYear" jdbcType="DECIMAL" />
     <result column="land_factor_total_score" property="landFactorTotalScore" jdbcType="DECIMAL" />
     <result column="land_level_content" property="landLevelContent" jdbcType="VARCHAR" />
     <result column="land_level" property="landLevel" jdbcType="INTEGER" />
+    <result column="land_area_unit" property="landAreaUnit" jdbcType="VARCHAR" />
     <result column="land_area" property="landArea" jdbcType="VARCHAR" />
     <result column="east_to_name" property="eastToName" jdbcType="VARCHAR" />
     <result column="east_to" property="eastTo" jdbcType="VARCHAR" />
@@ -108,14 +110,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, apply_id, estate_id, name, land_use_type, land_use_category, land_factor_total_score, 
-    land_level_content, land_level, land_area, east_to_name, east_to, south_to_name, 
-    south_to, west_to_name, west_to, north_to_name, north_to, shape_state, shape_state_remark, 
-    planeness, topographic_terrain, development_degree, development_degree_remark, development_degree_content, 
-    acquisition_time, plot_ratio, building_density, green_space_rate, compatible_ratio, 
-    bearing_capacity, contaminated, ph, fertility, conclusion, hold_on, building_height_limit, 
-    investment_intensity, special_restrictions, present_situation_land_use, infrastructure_completeness, 
-    development_time, bis_delete, creator, gmt_created, gmt_modified
+    id, apply_id, estate_id, name, land_use_type, land_use_category, land_use_year, land_factor_total_score, 
+    land_level_content, land_level, land_area_unit, land_area, east_to_name, east_to, 
+    south_to_name, south_to, west_to_name, west_to, north_to_name, north_to, shape_state, 
+    shape_state_remark, planeness, topographic_terrain, development_degree, development_degree_remark, 
+    development_degree_content, acquisition_time, plot_ratio, building_density, green_space_rate, 
+    compatible_ratio, bearing_capacity, contaminated, ph, fertility, conclusion, hold_on, 
+    building_height_limit, investment_intensity, special_restrictions, present_situation_land_use, 
+    infrastructure_completeness, development_time, bis_delete, creator, gmt_created, 
+    gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandStateExample" >
     select
@@ -152,8 +155,9 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_basic_estate_land_state (apply_id, estate_id, name, 
-      land_use_type, land_use_category, land_factor_total_score, 
-      land_level_content, land_level, land_area, 
+      land_use_type, land_use_category, land_use_year, 
+      land_factor_total_score, land_level_content, 
+      land_level, land_area_unit, land_area, 
       east_to_name, east_to, south_to_name, 
       south_to, west_to_name, west_to, 
       north_to_name, north_to, shape_state, 
@@ -169,8 +173,9 @@
       bis_delete, creator, gmt_created, 
       gmt_modified)
     values (#{applyId,jdbcType=INTEGER}, #{estateId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
-      #{landUseType,jdbcType=VARCHAR}, #{landUseCategory,jdbcType=VARCHAR}, #{landFactorTotalScore,jdbcType=DECIMAL}, 
-      #{landLevelContent,jdbcType=VARCHAR}, #{landLevel,jdbcType=INTEGER}, #{landArea,jdbcType=VARCHAR}, 
+      #{landUseType,jdbcType=VARCHAR}, #{landUseCategory,jdbcType=VARCHAR}, #{landUseYear,jdbcType=DECIMAL}, 
+      #{landFactorTotalScore,jdbcType=DECIMAL}, #{landLevelContent,jdbcType=VARCHAR}, 
+      #{landLevel,jdbcType=INTEGER}, #{landAreaUnit,jdbcType=VARCHAR}, #{landArea,jdbcType=VARCHAR}, 
       #{eastToName,jdbcType=VARCHAR}, #{eastTo,jdbcType=VARCHAR}, #{southToName,jdbcType=VARCHAR}, 
       #{southTo,jdbcType=VARCHAR}, #{westToName,jdbcType=VARCHAR}, #{westTo,jdbcType=VARCHAR}, 
       #{northToName,jdbcType=VARCHAR}, #{northTo,jdbcType=VARCHAR}, #{shapeState,jdbcType=INTEGER}, 
@@ -207,6 +212,9 @@
       <if test="landUseCategory != null" >
         land_use_category,
       </if>
+      <if test="landUseYear != null" >
+        land_use_year,
+      </if>
       <if test="landFactorTotalScore != null" >
         land_factor_total_score,
       </if>
@@ -215,6 +223,9 @@
       </if>
       <if test="landLevel != null" >
         land_level,
+      </if>
+      <if test="landAreaUnit != null" >
+        land_area_unit,
       </if>
       <if test="landArea != null" >
         land_area,
@@ -344,6 +355,9 @@
       <if test="landUseCategory != null" >
         #{landUseCategory,jdbcType=VARCHAR},
       </if>
+      <if test="landUseYear != null" >
+        #{landUseYear,jdbcType=DECIMAL},
+      </if>
       <if test="landFactorTotalScore != null" >
         #{landFactorTotalScore,jdbcType=DECIMAL},
       </if>
@@ -352,6 +366,9 @@
       </if>
       <if test="landLevel != null" >
         #{landLevel,jdbcType=INTEGER},
+      </if>
+      <if test="landAreaUnit != null" >
+        #{landAreaUnit,jdbcType=VARCHAR},
       </if>
       <if test="landArea != null" >
         #{landArea,jdbcType=VARCHAR},
@@ -493,6 +510,9 @@
       <if test="record.landUseCategory != null" >
         land_use_category = #{record.landUseCategory,jdbcType=VARCHAR},
       </if>
+      <if test="record.landUseYear != null" >
+        land_use_year = #{record.landUseYear,jdbcType=DECIMAL},
+      </if>
       <if test="record.landFactorTotalScore != null" >
         land_factor_total_score = #{record.landFactorTotalScore,jdbcType=DECIMAL},
       </if>
@@ -501,6 +521,9 @@
       </if>
       <if test="record.landLevel != null" >
         land_level = #{record.landLevel,jdbcType=INTEGER},
+      </if>
+      <if test="record.landAreaUnit != null" >
+        land_area_unit = #{record.landAreaUnit,jdbcType=VARCHAR},
       </if>
       <if test="record.landArea != null" >
         land_area = #{record.landArea,jdbcType=VARCHAR},
@@ -626,9 +649,11 @@
       name = #{record.name,jdbcType=VARCHAR},
       land_use_type = #{record.landUseType,jdbcType=VARCHAR},
       land_use_category = #{record.landUseCategory,jdbcType=VARCHAR},
+      land_use_year = #{record.landUseYear,jdbcType=DECIMAL},
       land_factor_total_score = #{record.landFactorTotalScore,jdbcType=DECIMAL},
       land_level_content = #{record.landLevelContent,jdbcType=VARCHAR},
       land_level = #{record.landLevel,jdbcType=INTEGER},
+      land_area_unit = #{record.landAreaUnit,jdbcType=VARCHAR},
       land_area = #{record.landArea,jdbcType=VARCHAR},
       east_to_name = #{record.eastToName,jdbcType=VARCHAR},
       east_to = #{record.eastTo,jdbcType=VARCHAR},
@@ -688,6 +713,9 @@
       <if test="landUseCategory != null" >
         land_use_category = #{landUseCategory,jdbcType=VARCHAR},
       </if>
+      <if test="landUseYear != null" >
+        land_use_year = #{landUseYear,jdbcType=DECIMAL},
+      </if>
       <if test="landFactorTotalScore != null" >
         land_factor_total_score = #{landFactorTotalScore,jdbcType=DECIMAL},
       </if>
@@ -696,6 +724,9 @@
       </if>
       <if test="landLevel != null" >
         land_level = #{landLevel,jdbcType=INTEGER},
+      </if>
+      <if test="landAreaUnit != null" >
+        land_area_unit = #{landAreaUnit,jdbcType=VARCHAR},
       </if>
       <if test="landArea != null" >
         land_area = #{landArea,jdbcType=VARCHAR},
@@ -818,9 +849,11 @@
       name = #{name,jdbcType=VARCHAR},
       land_use_type = #{landUseType,jdbcType=VARCHAR},
       land_use_category = #{landUseCategory,jdbcType=VARCHAR},
+      land_use_year = #{landUseYear,jdbcType=DECIMAL},
       land_factor_total_score = #{landFactorTotalScore,jdbcType=DECIMAL},
       land_level_content = #{landLevelContent,jdbcType=VARCHAR},
       land_level = #{landLevel,jdbcType=INTEGER},
+      land_area_unit = #{landAreaUnit,jdbcType=VARCHAR},
       land_area = #{landArea,jdbcType=VARCHAR},
       east_to_name = #{eastToName,jdbcType=VARCHAR},
       east_to = #{eastTo,jdbcType=VARCHAR},

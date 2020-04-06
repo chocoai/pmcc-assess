@@ -1146,6 +1146,66 @@ public class BasicBuildingExample {
             return (Criteria) this;
         }
 
+        public Criteria andUnitCountIsNull() {
+            addCriterion("unit_count is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitCountIsNotNull() {
+            addCriterion("unit_count is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitCountEqualTo(Integer value) {
+            addCriterion("unit_count =", value, "unitCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitCountNotEqualTo(Integer value) {
+            addCriterion("unit_count <>", value, "unitCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitCountGreaterThan(Integer value) {
+            addCriterion("unit_count >", value, "unitCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitCountGreaterThanOrEqualTo(Integer value) {
+            addCriterion("unit_count >=", value, "unitCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitCountLessThan(Integer value) {
+            addCriterion("unit_count <", value, "unitCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitCountLessThanOrEqualTo(Integer value) {
+            addCriterion("unit_count <=", value, "unitCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitCountIn(List<Integer> values) {
+            addCriterion("unit_count in", values, "unitCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitCountNotIn(List<Integer> values) {
+            addCriterion("unit_count not in", values, "unitCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitCountBetween(Integer value1, Integer value2) {
+            addCriterion("unit_count between", value1, value2, "unitCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitCountNotBetween(Integer value1, Integer value2) {
+            addCriterion("unit_count not between", value1, value2, "unitCount");
+            return (Criteria) this;
+        }
+
         public Criteria andPropertyFeeIsNull() {
             addCriterion("property_fee is null");
             return (Criteria) this;
@@ -1573,66 +1633,6 @@ public class BasicBuildingExample {
 
         public Criteria andPropertyCategoryNotBetween(Integer value1, Integer value2) {
             addCriterion("property_category not between", value1, value2, "propertyCategory");
-            return (Criteria) this;
-        }
-
-        public Criteria andPropertyGradeIsNull() {
-            addCriterion("property_grade is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andPropertyGradeIsNotNull() {
-            addCriterion("property_grade is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andPropertyGradeEqualTo(Integer value) {
-            addCriterion("property_grade =", value, "propertyGrade");
-            return (Criteria) this;
-        }
-
-        public Criteria andPropertyGradeNotEqualTo(Integer value) {
-            addCriterion("property_grade <>", value, "propertyGrade");
-            return (Criteria) this;
-        }
-
-        public Criteria andPropertyGradeGreaterThan(Integer value) {
-            addCriterion("property_grade >", value, "propertyGrade");
-            return (Criteria) this;
-        }
-
-        public Criteria andPropertyGradeGreaterThanOrEqualTo(Integer value) {
-            addCriterion("property_grade >=", value, "propertyGrade");
-            return (Criteria) this;
-        }
-
-        public Criteria andPropertyGradeLessThan(Integer value) {
-            addCriterion("property_grade <", value, "propertyGrade");
-            return (Criteria) this;
-        }
-
-        public Criteria andPropertyGradeLessThanOrEqualTo(Integer value) {
-            addCriterion("property_grade <=", value, "propertyGrade");
-            return (Criteria) this;
-        }
-
-        public Criteria andPropertyGradeIn(List<Integer> values) {
-            addCriterion("property_grade in", values, "propertyGrade");
-            return (Criteria) this;
-        }
-
-        public Criteria andPropertyGradeNotIn(List<Integer> values) {
-            addCriterion("property_grade not in", values, "propertyGrade");
-            return (Criteria) this;
-        }
-
-        public Criteria andPropertyGradeBetween(Integer value1, Integer value2) {
-            addCriterion("property_grade between", value1, value2, "propertyGrade");
-            return (Criteria) this;
-        }
-
-        public Criteria andPropertyGradeNotBetween(Integer value1, Integer value2) {
-            addCriterion("property_grade not between", value1, value2, "propertyGrade");
             return (Criteria) this;
         }
 

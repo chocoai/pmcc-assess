@@ -96,6 +96,8 @@ public class BasicBuildingService extends BasicEntityAbstract {
     private ProjectInfoService projectInfoService;
     @Autowired
     private PublicBasicService publicBasicService;
+    @Autowired
+    private BasicEstateLandStateService basicEstateLandStateService;
 
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -453,7 +455,8 @@ public class BasicBuildingService extends BasicEntityAbstract {
     @Override
     public ModelAndView getEditModelAndView(BasicFormClassifyParamDto basicFormClassifyParamDto) throws Exception {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/stageSurvey/realEstate/building");
-        modelAndView.addObject("basicBuilding", getBasicBuildingVoById(basicFormClassifyParamDto.getTbId()));
+        BasicBuildingVo buildingVo = getBasicBuildingVoById(basicFormClassifyParamDto.getTbId());
+        modelAndView.addObject("basicBuilding", buildingVo);
         List<CrmBaseDataDicDto> unitPropertiesList = projectInfoService.getUnitPropertiesList();
         modelAndView.addObject("unitPropertiesList", unitPropertiesList);
         Integer applyBatchId = basicFormClassifyParamDto.getApplyBatchId();
@@ -475,7 +478,8 @@ public class BasicBuildingService extends BasicEntityAbstract {
     @Override
     public ModelAndView getDetailModelAndView(BasicFormClassifyParamDto basicFormClassifyParamDto) throws Exception {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/project/stageSurvey/realEstate/detail/building");
-        modelAndView.addObject("basicBuilding", getBasicBuildingVoById(basicFormClassifyParamDto.getTbId()));
+        BasicBuildingVo buildingVo = getBasicBuildingVoById(basicFormClassifyParamDto.getTbId());
+        modelAndView.addObject("basicBuilding", buildingVo);
         return modelAndView;
     }
 }

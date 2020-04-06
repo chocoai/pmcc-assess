@@ -396,6 +396,10 @@ commonColumn.estateSupplyGasColumn = function () {
 //楼栋-楼栋外装
 commonColumn.buildingOutfitColumn = function () {
     var cols = [];
+    cols.push({field: 'decoratingMaterialName', title: '装修材料'});
+    cols.push({field: 'materialGradeName', title: '材料档次'});
+    cols.push({field: 'constructionTechnologyName', title: '施工工艺'});
+    cols.push({field: 'materialPriceName', title: '材料价格区间'});
     cols.push({
         field: 'name', title: '装修部位', formatter: function (value, row, index) {
             var s = row.decorationPart;
@@ -405,10 +409,6 @@ commonColumn.buildingOutfitColumn = function () {
             return s;
         }
     });
-    cols.push({field: 'decoratingMaterialName', title: '装修材料'});
-    cols.push({field: 'materialGradeName', title: '材料档次'});
-    cols.push({field: 'constructionTechnologyName', title: '施工工艺'});
-    cols.push({field: 'materialPriceName', title: '材料价格区间'});
     return cols;
 }
 

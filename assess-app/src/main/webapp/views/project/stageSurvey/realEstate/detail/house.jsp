@@ -55,53 +55,6 @@
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
-                                                <label class="col-sm-1 control-label">户型(开发商)</label>
-                                                <div class="col-sm-3">
-                                                    <input type="hidden" name="huxingId" value="${basicHouse.huxingId}">
-                                                    <label class="form-control input-full"
-                                                           name="huxingName">${basicHouse.huxingName}</label>
-                                                </div>
-                                                <label class="col-sm-1 control-label">户型图(开发商)</label>
-                                                <div class="col-sm-3">
-                                                    <div id="_house_huxing_plan"></div>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row form-group">
-                                        <div class="col-md-12">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-1 control-label">户型(装修)</label>
-                                                <div class="col-sm-3">
-                                                    <label class="form-control input-full"
-                                                           name="newHuxingName">${basicHouse.newHuxingName}</label>
-                                                </div>
-
-                                                <label class="col-sm-1 control-label">户型图(装修)</label>
-                                                <div class="col-sm-3">
-                                                    <div id="_house_new_huxing_plan"></div>
-                                                </div>
-
-                                                <div class="col-sm-3">
-                                                    <c:if test="${empty isApplyBatch}">
-                                                        <div class="btn btn-success btn-sm"
-                                                             onclick="houseCommon.orientationFun(true)">户型图朝向
-                                                        </div>
-                                                    </c:if>
-                                                    <c:if test="${isApplyBatch eq 'show'}">
-                                                        <div class="btn btn-success btn-sm"
-                                                             onclick="houseCommon.orientationFun2(true,${tableId})">
-                                                            户型图朝向
-                                                        </div>
-                                                    </c:if>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row form-group">
-                                        <div class="col-md-12">
-                                            <div class="form-inline x-valid">
                                                 <label class="col-sm-1 control-label">面积</label>
                                                 <div class="col-sm-3">
                                                     <label class="form-control input-full"

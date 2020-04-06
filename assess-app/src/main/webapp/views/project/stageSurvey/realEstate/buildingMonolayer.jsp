@@ -160,7 +160,7 @@
                                                         <div class="col-md-12">
                                                             <div class="form-inline x-valid">
                                                                 <label class="col-sm-1">
-                                                                    建筑面积
+                                                                    建筑面积(平方米)
                                                                 </label>
                                                                 <div class="col-md-3">
                                                                     <input type="text" placeholder="建筑面积(数字)"
@@ -170,7 +170,7 @@
                                                                            value="${basicBuilding.buildingArea}">
                                                                 </div>
                                                                 <label class="col-sm-1">
-                                                                    占地面积
+                                                                    占地面积(平方米)
                                                                 </label>
                                                                 <div class="col-md-3">
                                                                     <input type="text" placeholder="占地面积(数字)"
@@ -312,7 +312,7 @@
                                                                            value="${basicBuilding.builder}">
                                                                 </div>
                                                                 <label class="col-sm-1">
-                                                                    物业费<span class="symbol required"></span>
+                                                                    物业费(平方米)<span class="symbol required"></span>
                                                                 </label>
                                                                 <div class="col-md-3">
                                                                     <input type="text" placeholder="物业费(数字)"

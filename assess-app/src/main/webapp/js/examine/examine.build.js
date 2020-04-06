@@ -138,6 +138,11 @@
                 buildingCommon.buildingForm.find("select.buildingStructureCategory").empty().html(html).trigger('change');
             });
         });
+        buildingCommon.buildingForm.find('select.propertyType').off('change').on('change', function () {
+            AssessCommon.loadDataDicByPid($(this).val(), data.propertyCategory, function (html, data) {
+                buildingCommon.buildingForm.find('select.propertyCategory').empty().html(html).trigger('change');
+            });
+        });
         AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_construction_quality, data.constructionQuality, function (html, data) {
             buildingCommon.buildingForm.find('[name=constructionQuality]').empty().html(html).trigger('change');
         });
@@ -149,9 +154,6 @@
         });
         AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_property_type, data.propertyType, function (html, data) {
             buildingCommon.buildingForm.find('select.propertyType').empty().html(html).trigger('change');
-        });
-        AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_property_category, data.propertyCategory, function (html, data) {
-            buildingCommon.buildingForm.find('select.propertyCategory').empty().html(html).trigger('change');
         });
         AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_property_structure, data.buildingStructureType, function (html, data) {
             buildingCommon.buildingForm.find('select.buildingStructureType').empty().html(html).trigger('change');

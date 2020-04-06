@@ -36,6 +36,8 @@ public class BasicBuilding {
 
     private String unitInterval;
 
+    private Integer unitCount;
+
     private BigDecimal propertyFee;
 
     private BigDecimal facilitiesUseFee;
@@ -49,8 +51,6 @@ public class BasicBuilding {
     private Integer propertyType;
 
     private Integer propertyCategory;
-
-    private Integer propertyGrade;
 
     private Date openTime;
 
@@ -254,6 +254,14 @@ public class BasicBuilding {
         this.unitInterval = unitInterval == null ? null : unitInterval.trim();
     }
 
+    public Integer getUnitCount() {
+        return unitCount;
+    }
+
+    public void setUnitCount(Integer unitCount) {
+        this.unitCount = unitCount;
+    }
+
     public BigDecimal getPropertyFee() {
         return propertyFee;
     }
@@ -308,14 +316,6 @@ public class BasicBuilding {
 
     public void setPropertyCategory(Integer propertyCategory) {
         this.propertyCategory = propertyCategory;
-    }
-
-    public Integer getPropertyGrade() {
-        return propertyGrade;
-    }
-
-    public void setPropertyGrade(Integer propertyGrade) {
-        this.propertyGrade = propertyGrade;
     }
 
     public Date getOpenTime() {

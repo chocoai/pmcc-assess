@@ -16,11 +16,15 @@ public class BasicEstateLandState {
 
     private String landUseCategory;
 
+    private BigDecimal landUseYear;
+
     private BigDecimal landFactorTotalScore;
 
     private String landLevelContent;
 
     private Integer landLevel;
+
+    private String landAreaUnit;
 
     private String landArea;
 
@@ -144,6 +148,14 @@ public class BasicEstateLandState {
         this.landUseCategory = landUseCategory == null ? null : landUseCategory.trim();
     }
 
+    public BigDecimal getLandUseYear() {
+        return landUseYear;
+    }
+
+    public void setLandUseYear(BigDecimal landUseYear) {
+        this.landUseYear = landUseYear;
+    }
+
     public BigDecimal getLandFactorTotalScore() {
         return landFactorTotalScore;
     }
@@ -166,6 +178,14 @@ public class BasicEstateLandState {
 
     public void setLandLevel(Integer landLevel) {
         this.landLevel = landLevel;
+    }
+
+    public String getLandAreaUnit() {
+        return landAreaUnit;
+    }
+
+    public void setLandAreaUnit(String landAreaUnit) {
+        this.landAreaUnit = landAreaUnit == null ? null : landAreaUnit.trim();
     }
 
     public String getLandArea() {

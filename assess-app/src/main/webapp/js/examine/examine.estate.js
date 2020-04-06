@@ -180,6 +180,10 @@
      */
     estateCommon.initForm = function (data, bisDetail) {
         estateCommon.estateForm.clearAll().initForm(data.estate);
+        estateCommon.estateForm.find('.x-percent').each(function () {
+            $(this).attr('data-value', data.estate[$(this).attr('name')]);
+            AssessCommon.elementParsePercent($(this));
+        })
         estateCommon.estateLandStateForm.clearAll().initForm(data.land);
         estateCommon.estateLandStateForm.find('.x-percent').each(function () {
             $(this).attr('data-value', data.land[$(this).attr('name')]);
