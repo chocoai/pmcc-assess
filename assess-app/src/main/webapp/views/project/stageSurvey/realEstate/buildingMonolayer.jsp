@@ -101,21 +101,18 @@
                                                                            value="${basicBuilding.landUseYear}">
                                                                 </div>
                                                                 <label class="col-sm-1">
-                                                                    户型区间
-                                                                </label>
-                                                                <div class="col-md-3">
-                                                                    <input type="text" placeholder="户型区间"
-                                                                           name="unitInterval"
-                                                                           class="form-control input-full"
-                                                                           value="${basicBuilding.unitInterval}">
-                                                                </div>
-                                                                <label class="col-sm-1">
                                                                     单元数<span class="symbol required"></span>
                                                                 </label>
                                                                 <div class="col-md-3">
                                                                     <input type="text" name="remark" required
                                                                            class="form-control input-full"
                                                                            value="${basicBuilding.remark}">
+                                                                </div>
+                                                                <div class="col-md-3 col-lg-offset-1 ">
+                                                                    <button type="button" class="btn btn-info btn-sm"
+                                                                            onclick="buildingCommon.constructionInstallationEngineeringFeeEvent.loadHtml();">
+                                                                        建筑安装完工度调查
+                                                                    </button>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -431,12 +428,6 @@
                                                                            data-toolbar="#toolbarBuildingPropertyServiceItemTable">
 
                                                                     </table>
-                                                                </div>
-                                                                <div class="col-md-3 col-lg-offset-1 ">
-                                                                    <button type="button" class="btn btn-info btn-sm"
-                                                                            onclick="buildingCommon.constructionInstallationEngineeringFeeEvent.loadHtml();">
-                                                                        建筑安装完工度调查
-                                                                    </button>
                                                                 </div>
                                                             </div>
                                                         </div>

@@ -76,6 +76,12 @@
                                             <div class="col-sm-3">
                                                 <label class="form-control input-full" name="unitCount">${basicBuilding.unitCount}</label>
                                             </div>
+                                            <div class="col-sm-3">
+                                                <button type="button" class="btn btn-info btn-sm"
+                                                        onclick="buildingCommon.constructionInstallationEngineeringFeeEvent.loadHtml();">
+                                                    建筑安装完工度调查
+                                                </button>
+                                            </div>
                                         </div>
                                         </div>
                                     </div>
@@ -294,12 +300,6 @@
                                                 <table class="table table-bordered" id="basicBuildingPropertyServiceItemTable">
 
                                                 </table>
-                                            </div>
-                                            <div class="col-sm-3">
-                                                <button type="button" class="btn btn-info btn-sm"
-                                                        onclick="buildingCommon.constructionInstallationEngineeringFeeEvent.loadHtml();">
-                                                    建筑安装完工度调查
-                                                </button>
                                             </div>
                                         </div>
                                         </div>
