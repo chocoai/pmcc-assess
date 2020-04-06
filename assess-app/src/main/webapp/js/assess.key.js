@@ -190,8 +190,8 @@ AssessDicKey.estate_examinematchingmedical_distance = "estate.examineMatchingMed
 //楼栋
 AssessDicKey.examine_building_residence_data = "examine.building.residence.data";//非工业仓储(建筑使用寿命)
 AssessDicKey.examine_building_property_type = "building.property_type";//物业类型
+AssessDicKey.examine_building_property_category = "building.property_category";//物业类别
 AssessDicKey.examine_building_property_structure = "building.building_structure";//建筑结构
-AssessDicKey.examine_building_property_category = "building.building_category";//建筑类别
 AssessDicKey.examine_building_construction_quality = "examine.building.construction.quality";//工程质量
 AssessDicKey.examine_building_appearance_style = "examine.building.appearance.style";//外观风格
 AssessDicKey.examine_building_appearance_new_and_old = "examine.building.appearance_new_and_old";//外观新旧

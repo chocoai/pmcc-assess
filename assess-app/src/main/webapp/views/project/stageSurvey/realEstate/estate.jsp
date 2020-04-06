@@ -616,6 +616,19 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="row form-group">
+                                            <div class="col-md-12">
+                                                <div class="form-inline x-valid">
+                                                    <label class="col-sm-1">取得时间</label>
+                                                    <div class="col-sm-3">
+                                                        <input placeholder="取得时间"
+                                                               name="acquisitionTime" required
+                                                               data-date-format="yyyy-mm-dd"
+                                                               class="form-control input-full date-picker dbdate acquisitionTime">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="x_title">开发限制条件</div>
                                         <div class="row form-group">
                                             <div class="col-md-12">
@@ -629,14 +642,14 @@
                                                     </div>
                                                     <label class="col-sm-1">建筑密度</label>
                                                     <div class="col-sm-3">
-                                                        <input type="text" class="form-control input-full"
+                                                        <input type="text" class="form-control input-full x-percent"
                                                                placeholder="建筑密度"
                                                                name="buildingDensity"
                                                                value="${basicEstateLandState.buildingDensity}">
                                                     </div>
                                                     <label class="col-sm-1">绿地率</label>
                                                     <div class="col-sm-3">
-                                                        <input type="text" class="form-control input-full"
+                                                        <input type="text" class="form-control input-full x-percent"
                                                                placeholder="绿地率"
                                                                name="greenSpaceRate"
                                                                value="${basicEstateLandState.greenSpaceRate}">

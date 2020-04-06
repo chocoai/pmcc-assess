@@ -1576,6 +1576,66 @@ public class BasicBuildingExample {
             return (Criteria) this;
         }
 
+        public Criteria andPropertyGradeIsNull() {
+            addCriterion("property_grade is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyGradeIsNotNull() {
+            addCriterion("property_grade is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyGradeEqualTo(Integer value) {
+            addCriterion("property_grade =", value, "propertyGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyGradeNotEqualTo(Integer value) {
+            addCriterion("property_grade <>", value, "propertyGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyGradeGreaterThan(Integer value) {
+            addCriterion("property_grade >", value, "propertyGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyGradeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("property_grade >=", value, "propertyGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyGradeLessThan(Integer value) {
+            addCriterion("property_grade <", value, "propertyGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyGradeLessThanOrEqualTo(Integer value) {
+            addCriterion("property_grade <=", value, "propertyGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyGradeIn(List<Integer> values) {
+            addCriterion("property_grade in", values, "propertyGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyGradeNotIn(List<Integer> values) {
+            addCriterion("property_grade not in", values, "propertyGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyGradeBetween(Integer value1, Integer value2) {
+            addCriterion("property_grade between", value1, value2, "propertyGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyGradeNotBetween(Integer value1, Integer value2) {
+            addCriterion("property_grade not between", value1, value2, "propertyGrade");
+            return (Criteria) this;
+        }
+
         public Criteria andOpenTimeIsNull() {
             addCriterion("open_time is null");
             return (Criteria) this;

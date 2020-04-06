@@ -18,6 +18,8 @@ public class BasicEstateLandState {
 
     private BigDecimal landFactorTotalScore;
 
+    private String landLevelContent;
+
     private Integer landLevel;
 
     private String landArea;
@@ -51,6 +53,8 @@ public class BasicEstateLandState {
     private String developmentDegreeRemark;
 
     private String developmentDegreeContent;
+
+    private Date acquisitionTime;
 
     private String plotRatio;
 
@@ -91,8 +95,6 @@ public class BasicEstateLandState {
     private Date gmtCreated;
 
     private Date gmtModified;
-
-    private String landLevelContent;
 
     public Integer getId() {
         return id;
@@ -148,6 +150,14 @@ public class BasicEstateLandState {
 
     public void setLandFactorTotalScore(BigDecimal landFactorTotalScore) {
         this.landFactorTotalScore = landFactorTotalScore;
+    }
+
+    public String getLandLevelContent() {
+        return landLevelContent;
+    }
+
+    public void setLandLevelContent(String landLevelContent) {
+        this.landLevelContent = landLevelContent == null ? null : landLevelContent.trim();
     }
 
     public Integer getLandLevel() {
@@ -284,6 +294,14 @@ public class BasicEstateLandState {
 
     public void setDevelopmentDegreeContent(String developmentDegreeContent) {
         this.developmentDegreeContent = developmentDegreeContent == null ? null : developmentDegreeContent.trim();
+    }
+
+    public Date getAcquisitionTime() {
+        return acquisitionTime;
+    }
+
+    public void setAcquisitionTime(Date acquisitionTime) {
+        this.acquisitionTime = acquisitionTime;
     }
 
     public String getPlotRatio() {
@@ -444,13 +462,5 @@ public class BasicEstateLandState {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public String getLandLevelContent() {
-        return landLevelContent;
-    }
-
-    public void setLandLevelContent(String landLevelContent) {
-        this.landLevelContent = landLevelContent == null ? null : landLevelContent.trim();
     }
 }

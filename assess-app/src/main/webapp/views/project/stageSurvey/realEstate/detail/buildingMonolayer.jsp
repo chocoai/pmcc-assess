@@ -54,7 +54,7 @@
                                                 <label class="form-control input-full" name="propertyTypeName">${basicBuilding.propertyTypeName}</label>
                                             </div>
                                             <label class="col-sm-1 control-label">
-                                                物业类别
+                                                物业档次
                                             </label>
                                             <div class="col-sm-3">
                                                 <label class="form-control input-full"

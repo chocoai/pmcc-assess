@@ -556,6 +556,76 @@ public class BasicEstateLandStateExample {
             return (Criteria) this;
         }
 
+        public Criteria andLandLevelContentIsNull() {
+            addCriterion("land_level_content is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelContentIsNotNull() {
+            addCriterion("land_level_content is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelContentEqualTo(String value) {
+            addCriterion("land_level_content =", value, "landLevelContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelContentNotEqualTo(String value) {
+            addCriterion("land_level_content <>", value, "landLevelContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelContentGreaterThan(String value) {
+            addCriterion("land_level_content >", value, "landLevelContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelContentGreaterThanOrEqualTo(String value) {
+            addCriterion("land_level_content >=", value, "landLevelContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelContentLessThan(String value) {
+            addCriterion("land_level_content <", value, "landLevelContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelContentLessThanOrEqualTo(String value) {
+            addCriterion("land_level_content <=", value, "landLevelContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelContentLike(String value) {
+            addCriterion("land_level_content like", value, "landLevelContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelContentNotLike(String value) {
+            addCriterion("land_level_content not like", value, "landLevelContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelContentIn(List<String> values) {
+            addCriterion("land_level_content in", values, "landLevelContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelContentNotIn(List<String> values) {
+            addCriterion("land_level_content not in", values, "landLevelContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelContentBetween(String value1, String value2) {
+            addCriterion("land_level_content between", value1, value2, "landLevelContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelContentNotBetween(String value1, String value2) {
+            addCriterion("land_level_content not between", value1, value2, "landLevelContent");
+            return (Criteria) this;
+        }
+
         public Criteria andLandLevelIsNull() {
             addCriterion("land_level is null");
             return (Criteria) this;
@@ -1693,6 +1763,66 @@ public class BasicEstateLandStateExample {
 
         public Criteria andDevelopmentDegreeContentNotBetween(String value1, String value2) {
             addCriterion("development_degree_content not between", value1, value2, "developmentDegreeContent");
+            return (Criteria) this;
+        }
+
+        public Criteria andAcquisitionTimeIsNull() {
+            addCriterion("acquisition_time is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAcquisitionTimeIsNotNull() {
+            addCriterion("acquisition_time is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAcquisitionTimeEqualTo(Date value) {
+            addCriterion("acquisition_time =", value, "acquisitionTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andAcquisitionTimeNotEqualTo(Date value) {
+            addCriterion("acquisition_time <>", value, "acquisitionTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andAcquisitionTimeGreaterThan(Date value) {
+            addCriterion("acquisition_time >", value, "acquisitionTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andAcquisitionTimeGreaterThanOrEqualTo(Date value) {
+            addCriterion("acquisition_time >=", value, "acquisitionTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andAcquisitionTimeLessThan(Date value) {
+            addCriterion("acquisition_time <", value, "acquisitionTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andAcquisitionTimeLessThanOrEqualTo(Date value) {
+            addCriterion("acquisition_time <=", value, "acquisitionTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andAcquisitionTimeIn(List<Date> values) {
+            addCriterion("acquisition_time in", values, "acquisitionTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andAcquisitionTimeNotIn(List<Date> values) {
+            addCriterion("acquisition_time not in", values, "acquisitionTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andAcquisitionTimeBetween(Date value1, Date value2) {
+            addCriterion("acquisition_time between", value1, value2, "acquisitionTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andAcquisitionTimeNotBetween(Date value1, Date value2) {
+            addCriterion("acquisition_time not between", value1, value2, "acquisitionTime");
             return (Criteria) this;
         }
 

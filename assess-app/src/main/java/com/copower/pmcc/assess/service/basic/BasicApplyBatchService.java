@@ -74,9 +74,7 @@ public class BasicApplyBatchService {
     @Autowired
     private BasicHouseTradingService basicHouseTradingService;
     @Autowired
-    private BasicHouseDamagedDegreeService basicHouseDamagedDegreeService;
-    @Autowired
-    private ResidueRatioService residueRatioService;
+    private BasicUnitHuxingService basicUnitHuxingService;
     @Autowired
     private PublicService publicService;
     @Autowired
@@ -500,6 +498,12 @@ public class BasicApplyBatchService {
             basicHouseTrading.setHouseId(basicHouse.getId());
             basicHouseTrading.setCreator(commonService.thisUserAccount());
             basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicHouseTrading, false);
+
+            BasicUnitHuxing huxing = new BasicUnitHuxing();
+            huxing.setHouseId(basicHouse.getId());
+            huxing.setEstateId(basicHouse.getEstateId());
+            basicUnitHuxingService.saveAndUpdateBasicUnitHuxing(huxing, false);
+
             BasicApplyBatchDetail houseApplyBatchDetail = new BasicApplyBatchDetail();
             houseApplyBatchDetail.setBisStandard(true);
             houseApplyBatchDetail.setPid(unitApplyBatchDetail.getId());

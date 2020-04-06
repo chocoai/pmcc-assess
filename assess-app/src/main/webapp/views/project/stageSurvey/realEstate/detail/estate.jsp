@@ -414,6 +414,17 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1">取得时间</label>
+                                                <div class="col-sm-3">
+                                                    <label class="form-control input-full dbdate x-percent" name="acquisitionTime"><fmt:formatDate
+                                                            value='${basicEstateLandState.acquisitionTime}' pattern='yyyy-MM-dd'/></label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="x_title">开发限制条件</div>
                                     <div class="row form-group">
                                         <div class="col-md-12">
@@ -425,13 +436,17 @@
                                                 </div>
                                                 <label class="col-sm-1 control-label">建筑密度</label>
                                                 <div class="col-sm-3">
-                                                    <label class="form-control input-full"
-                                                           name="buildingDensity">${basicEstateLandState.buildingDensity}</label>
+                                                    <label class="form-control input-full">
+                                                        <fmt:formatNumber value="${basicEstateLandState.buildingDensity}"
+                                                                          type="percent"
+                                                                          maxFractionDigits="4"/></label>
                                                 </div>
                                                 <label class="col-sm-1 control-label">绿地率</label>
                                                 <div class="col-sm-3">
-                                                    <label class="form-control input-full"
-                                                           name="greenSpaceRate">${basicEstateLandState.greenSpaceRate}</label>
+                                                    <label class="form-control input-full">
+                                                        <fmt:formatNumber value="${basicEstateLandState.greenSpaceRate}"
+                                                                          type="percent"
+                                                                          maxFractionDigits="4"/></label>
                                                 </div>
                                             </div>
                                         </div>
@@ -627,7 +642,6 @@
 
                     <%@include file="/views/project/chksCustomize/chksSurvey.jsp" %>
                     <div class="col-md-12" style="text-align: center;padding-bottom: 1.25rem">
-
                         <div class="card-body">
                             <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
                                 关闭
@@ -656,7 +670,7 @@
 
 <script type="text/javascript">
     $(function () {
-        estateCommon.initDetailById('${basicEstate.id}', '', false);
+        estateCommon.initDetailById('${basicEstate.id}', '', true);
     })
 </script>
 </html>

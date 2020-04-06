@@ -76,87 +76,6 @@
                                                             </div>
                                                         </div>
                                                     </div>
-
-                                                    <div class="row form-group">
-                                                        <div class="col-md-12">
-                                                            <div class="form-inline x-valid">
-                                                                <label class="col-sm-1">户型(开发商)</label>
-                                                                <div class="col-sm-3">
-                                                                    <div class="input-group">
-                                                                        <input type="hidden" name="huxingId"
-                                                                               value="${basicHouse.huxingId}">
-                                                                        <input type="text" readonly="readonly"
-                                                                               onclick="houseCommon.selectHuxing(this);"
-                                                                               placeholder="户型" class="form-control"
-                                                                               name="huxingName"
-                                                                               value="${basicHouse.huxingName}">
-
-                                                                        <div class="input-group-prepend">
-                                                                            <button class="btn btn-warning btn-sm "
-                                                                                    style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                                                    type="button"
-                                                                                    onclick="$(this).closest('.input-group').find('input').val('');">
-                                                                                清空
-                                                                            </button>
-                                                                        </div>
-                                                                        <div class="input-group-prepend">
-                                                                            <button class="btn btn-primary btn-sm "
-                                                                                    style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                                                    type="button"
-                                                                                    onclick="houseCommon.selectHuxing(this);">
-                                                                                选择
-                                                                            </button>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <label class="col-sm-1">户型图(开发商)</label>
-                                                                <div class="col-sm-3">
-                                                                    <div id="_house_huxing_plan"></div>
-                                                                </div>
-                                                            </div>
-
-                                                        </div>
-                                                    </div>
-                                                    <div class="row form-group">
-                                                        <div class="col-md-12">
-                                                            <div class="form-inline x-valid">
-                                                                <label class="col-sm-1">户型(装修)</label>
-                                                                <div class="col-sm-3">
-                                                                    <div class="input-group">
-                                                                        <input type="hidden" name="huxingData"
-                                                                               value="${basicHouse.huxingData}">
-                                                                        <input type="text" placeholder="户型(装修)"
-                                                                               name="newHuxingName"
-                                                                               class="form-control"
-                                                                               value="${basicHouse.newHuxingName}">
-                                                                        <div class="input-group-prepend">
-                                                                            <button class="btn btn-primary btn-sm "
-                                                                                    style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                                                    type="button"
-                                                                                    onclick="houseCommon.openHuxingModal();">
-                                                                                编辑
-                                                                            </button>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <label class="col-sm-1">户型图(装修)</label>
-                                                                <div class="col-sm-3">
-                                                                    <input id="house_new_huxing_plan" placeholder="上传附件"
-                                                                           class="form-control input-full"
-                                                                           type="file">
-                                                                    <div id="_house_new_huxing_plan"></div>
-                                                                </div>
-                                                                <div class="col-sm-3">
-                                                                    <input type="hidden" name="mapId"
-                                                                           value="${basicHouse.mapId}">
-                                                                    <div class="btn btn-success btn-sm"
-                                                                         onclick="houseCommon.orientationFun(false)">
-                                                                        户型图朝向
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
                                                     <div class="row form-group">
                                                         <div class="col-md-12">
                                                             <div class="form-inline x-valid">
@@ -351,7 +270,7 @@
                                                         <div class="input-group">
                                                             <input type="hidden" name="huxingData"
                                                                    value="${basicHouseHuxing.huxingData}">
-                                                            <input type="text" placeholder="户型(装修)"
+                                                            <input type="text" placeholder="户型名称"
                                                                    name="name"
                                                                    class="form-control"
                                                                    value="${basicHouseHuxing.name}">
@@ -359,7 +278,7 @@
                                                                 <button class="btn btn-primary btn-sm "
                                                                         style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
                                                                         type="button"
-                                                                        onclick="houseCommon.openHouseHuxingModal();">
+                                                                        onclick="houseCommon.displayHouseHuxing(this);">
                                                                     编辑
                                                                 </button>
                                                             </div>
@@ -948,102 +867,6 @@
         </div>
     </div>
 </div>
-
-<div id="divBoxHuxing" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">户型</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-            </div>
-
-            <div class="modal-body">
-                <form id="frmHuxing" class="form-horizontal">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="card-body">
-
-                                <div class="row form-group">
-                                    <div class="col-md-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-1">
-                                                卧室
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" placeholder="个数" name="house" data-rule-number='true'
-                                                       class="form-control input-full">
-                                            </div>
-                                            <label class="col-sm-1">
-                                                客厅
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" placeholder="个数" name="saloon"
-                                                       data-rule-number='true'
-                                                       class="form-control input-full">
-                                            </div>
-                                            <label class="col-sm-1">
-                                                厨房
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" placeholder="个数" name="kitchen"
-                                                       data-rule-number='true'
-                                                       class="form-control input-full">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row form-group">
-                                    <div class="col-md-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-1">
-                                                卫生间
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" placeholder="个数" name="toilet"
-                                                       data-rule-number='true'
-                                                       class="form-control input-full">
-                                            </div>
-                                            <label class="col-sm-1">
-                                                花园
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" placeholder="个数" name="garden"
-                                                       data-rule-number='true'
-                                                       class="form-control input-full">
-                                            </div>
-                                            <label class="col-sm-1">
-                                                阳台
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" placeholder="个数" name="balcony"
-                                                       data-rule-number='true'
-                                                       class="form-control input-full">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
-                    关闭
-                </button>
-                <button type="button" class="btn btn-primary btn-sm" onclick="houseCommon.spliceHuxing()">
-                    保存
-                </button>
-            </div>
-
-        </div>
-    </div>
-</div>
-
 <div id="divBoxHouseHuxing" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -1053,619 +876,76 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
             </div>
-
             <div class="modal-body">
                 <form id="frmHouseHuxing" class="form-horizontal">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="card-body">
-                                <%--住宅 residence--%>
-                                <div style="display: none;" class="row form-group residence">
-                                    <div class="col-md-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-1">
-                                                卧室
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" placeholder="个数" name="bedroom"
-                                                       data-rule-number='true'
-                                                       class="form-control input-full">
-                                            </div>
-                                            <label class="col-sm-1">
-                                                客厅
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" placeholder="个数" name="drawing"
-                                                       data-rule-number='true'
-                                                       class="form-control input-full">
-                                            </div>
-                                            <label class="col-sm-1">
-                                                中餐厅
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" placeholder="个数" name="restaurant"
-                                                       data-rule-number='true'
-                                                       class="form-control input-full">
-                                            </div>
-                                        </div>
-                                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-6">
+                            <div class="form-inline">
+                                <label class="col-sm-4 col-form-label">
+                                    专有部分
+                                </label>
+                                <div class="col-sm-8">
+                                    <select id="huxingSpecialPart" class="form-control input-full" onchange="houseCommon.huxingSpecialPartChange(this);"></select>
                                 </div>
-                                <div style="display: none;" class="row form-group residence">
-                                    <div class="col-md-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-1">
-                                                西餐厅
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" placeholder="个数" name="westernRestaurant"
-                                                       data-rule-number='true'
-                                                       class="form-control input-full">
-                                            </div>
-                                            <label class="col-sm-1">
-                                                茶室
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" placeholder="个数" name="tearoom"
-                                                       data-rule-number='true'
-                                                       class="form-control input-full">
-                                            </div>
-                                            <label class="col-sm-1">
-                                                影视室
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" placeholder="个数" name="television"
-                                                       data-rule-number='true'
-                                                       class="form-control input-full">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <%--商铺/商场 store--%>
-                                <div style="display: none;" class="row form-group store">
-                                    <div class="col-md-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-1">
-                                                商间
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" placeholder="个数" name="storeNum"
-                                                       data-rule-number='true'
-                                                       class="form-control input-full">
-                                            </div>
-                                            <label class="col-sm-1">
-                                                商区
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" placeholder="个数" name="businessZone"
-                                                       data-rule-number='true'
-                                                       class="form-control input-full">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <%--餐饮酒店 hotel--%>
-                                <div style="display: none;" class="x_title hotel">住宿</div>
-                                <div style="display: none;" class="row form-group hotel">
-                                    <div class="col-md-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-1">
-                                                普通标间
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" placeholder="个数" name="commonStandardRoom"
-                                                       data-rule-number='true'
-                                                       class="form-control input-full">
-                                            </div>
-                                            <label class="col-sm-1">
-                                                商务标间
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" placeholder="个数" name="businessStandardRoom"
-                                                       data-rule-number='true'
-                                                       class="form-control input-full">
-                                            </div>
-                                            <label class="col-sm-1">
-                                                高级标间
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" placeholder="个数" name="expertStandardRoom"
-                                                       data-rule-number='true'
-                                                       class="form-control input-full">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div style="display: none;" class="row form-group hotel">
-                                    <div class="col-md-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-1">
-                                                普通单间
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" placeholder="个数" name="commonSingleRoom"
-                                                       data-rule-number='true'
-                                                       class="form-control input-full">
-                                            </div>
-                                            <label class="col-sm-1">
-                                                商务单间
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" placeholder="个数" name="businessSingleRoom"
-                                                       data-rule-number='true'
-                                                       class="form-control input-full">
-                                            </div>
-                                            <label class="col-sm-1">
-                                                高级单间
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" placeholder="个数" name="expertSingleRoom"
-                                                       data-rule-number='true'
-                                                       class="form-control input-full">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div style="display: none;" class="row form-group hotel">
-                                    <div class="col-md-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-1">
-                                                普通套房
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" placeholder="个数" name="commonSuite"
-                                                       data-rule-number='true'
-                                                       class="form-control input-full">
-                                            </div>
-                                            <label class="col-sm-1">
-                                                商务套房
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" placeholder="个数" name="businessSuite"
-                                                       data-rule-number='true'
-                                                       class="form-control input-full">
-                                            </div>
-                                            <label class="col-sm-1">
-                                                高级套房
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" placeholder="个数" name="expertSuite"
-                                                       data-rule-number='true'
-                                                       class="form-control input-full">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div style="display: none;" class="x_title hotel">商业</div>
-                                <div style="display: none;" class="row form-group hotel">
-                                    <div class="col-md-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-1">
-                                                会议室
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" placeholder="个数" name="meetingRoom1"
-                                                       data-rule-number='true'
-                                                       class="form-control input-full">
-                                            </div>
-                                            <label class="col-sm-1">
-                                                会议厅
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" placeholder="个数" name="meetingHall"
-                                                       data-rule-number='true'
-                                                       class="form-control input-full">
-                                            </div>
-                                            <label class="col-sm-1">
-                                                商务厅
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" placeholder="个数" name="businessHall"
-                                                       data-rule-number='true'
-                                                       class="form-control input-full">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                    <div style="display: none;" class="row form-group hotel">
-                                        <div class="col-md-12">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-1">
-                                                    影视厅
-                                                </label>
-                                                <div class="col-sm-3">
-                                                    <input type="text" placeholder="个数" name="televisionHall"
-                                                           data-rule-number='true'
-                                                           class="form-control input-full">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                <div style="display: none;" class="x_title hotel">餐饮</div>
-                                <div style="display: none;" class="row form-group hotel">
-                                    <div class="col-md-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-1">
-                                                普通包间
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" placeholder="个数" name="commonPrivateRoom"
-                                                       data-rule-number='true'
-                                                       class="form-control input-full">
-                                            </div>
-                                            <label class="col-sm-1">
-                                                标准包间
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" placeholder="个数" name="standardPrivateRoom"
-                                                       data-rule-number='true'
-                                                       class="form-control input-full">
-                                            </div>
-                                            <label class="col-sm-1">
-                                                豪华包间
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" placeholder="个数" name="luxuryPrivateRoom"
-                                                       data-rule-number='true'
-                                                       class="form-control input-full">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div style="display: none;" class="row form-group hotel">
-                                    <div class="col-md-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-1">
-                                                餐饮大厅
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" placeholder="个数" name="cateringHall"
-                                                       data-rule-number='true'
-                                                       class="form-control input-full">
-                                            </div>
-                                            <label class="col-sm-1">
-                                                共用餐区
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" placeholder="个数" name="shareRepast"
-                                                       data-rule-number='true'
-                                                       class="form-control input-full">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <%--办公 work--%>
-                                <div style="display: none;" class="row form-group work">
-                                    <div class="col-md-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-1">
-                                                会议室
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" placeholder="个数" name="meetingRoom2"
-                                                       data-rule-number='true'
-                                                       class="form-control input-full">
-                                            </div>
-                                            <label class="col-sm-1">
-                                                会客室
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" placeholder="个数" name="receptionArea"
-                                                       data-rule-number='true'
-                                                       class="form-control input-full">
-                                            </div>
-                                            <label class="col-sm-1">
-                                                休息室
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" placeholder="个数" name="lounge"
-                                                       data-rule-number='true'
-                                                       class="form-control input-full">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div style="display: none;" class="row form-group work">
-                                    <div class="col-md-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-1">
-                                                办公室
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" placeholder="个数" name="workRoom"
-                                                       data-rule-number='true'
-                                                       class="form-control input-full">
-                                            </div>
-                                            <label class="col-sm-1">
-                                                办公区
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" placeholder="个数" name="workArea"
-                                                       data-rule-number='true'
-                                                       class="form-control input-full">
-                                            </div>
-                                            <label class="col-sm-1">
-                                                档案室
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" placeholder="个数" name="archivesRoom"
-                                                       data-rule-number='true'
-                                                       class="form-control input-full">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div style="display: none;" class="row form-group work">
-                                    <div class="col-md-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-1">
-                                                影视室
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" placeholder="个数" name="televisionRoom"
-                                                       data-rule-number='true'
-                                                       class="form-control input-full">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <%--生产 production--%>
-                                <div style="display: none;" class="row form-group production">
-                                    <div class="col-md-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-1">
-                                                生产车间
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" placeholder="个数" name="productionShop"
-                                                       data-rule-number='true'
-                                                       class="form-control input-full">
-                                            </div>
-                                            <label class="col-sm-1">
-                                                维修车间
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" placeholder="个数" name="maintainShop"
-                                                       data-rule-number='true'
-                                                       class="form-control input-full">
-                                            </div>
-                                            <label class="col-sm-1">
-                                                成品车间
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" placeholder="个数" name="finishedShop"
-                                                       data-rule-number='true'
-                                                       class="form-control input-full">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div style="display: none;" class="row form-group production">
-                                    <div class="col-md-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-1">
-                                                热力车间
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" placeholder="个数" name="heatingShop"
-                                                       data-rule-number='true'
-                                                       class="form-control input-full">
-                                            </div>
-                                            <label class="col-sm-1">
-                                                中转车间
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" placeholder="个数" name="transferShop"
-                                                       data-rule-number='true'
-                                                       class="form-control input-full">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <%--仓储 storage--%>
-                                <div style="display: none;" class="row form-group storage">
-                                    <div class="col-md-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-1">
-                                                储库
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" placeholder="个数" name="storageCavern"
-                                                       data-rule-number='true'
-                                                       class="form-control input-full">
-                                            </div>
-                                            <label class="col-sm-1">
-                                                储仓
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <input type="text" placeholder="个数" name="warehouse"
-                                                       data-rule-number='true'
-                                                       class="form-control input-full">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="x_title common">通用部分</div>
-                                <div class="row form-group common">
-                                    <div class="col-md-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-1">
-                                                卫生间
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <div class="input-group">
-                                                    <input type="text" placeholder="个数"
-                                                           name="toilet"
-                                                           class="form-control">
-                                                    <input type="hidden" name="toiletContent">
-                                                    <div class="input-group-prepend">
-                                                        <button class="btn btn-primary btn-sm "
-                                                                style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                                type="button"
-                                                                onclick="houseCommon.openCommonItemModal(this);">
-                                                            编辑
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <label class="col-sm-1">
-                                                洗浴间
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <div class="input-group">
-                                                    <input type="text" placeholder="个数"
-                                                           name="bathroom"
-                                                           class="form-control">
-                                                    <input type="hidden" name="bathroomContent">
-                                                    <div class="input-group-prepend">
-                                                        <button class="btn btn-primary btn-sm "
-                                                                style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                                type="button"
-                                                                onclick="houseCommon.openCommonItemModal(this);">
-                                                            编辑
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <label class="col-sm-1">
-                                                厨房
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <div class="input-group">
-                                                    <input type="text" placeholder="个数"
-                                                           name="kitchen"
-                                                           class="form-control">
-                                                    <input type="hidden" name="kitchenContent">
-                                                    <div class="input-group-prepend">
-                                                        <button class="btn btn-primary btn-sm "
-                                                                style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                                type="button"
-                                                                onclick="houseCommon.openCommonItemModal(this);">
-                                                            编辑
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row form-group common">
-                                    <div class="col-md-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-1">
-                                                阳台
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <div class="input-group">
-                                                    <input type="text" placeholder="个数"
-                                                           name="balcony"
-                                                           class="form-control">
-                                                    <input type="hidden" name="balconyContent">
-                                                    <div class="input-group-prepend">
-                                                        <button class="btn btn-primary btn-sm "
-                                                                style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                                type="button"
-                                                                onclick="houseCommon.openCommonItemModal(this);">
-                                                            编辑
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <label class="col-sm-1">
-                                                车库
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <div class="input-group">
-                                                    <input type="text" placeholder="个数"
-                                                           name="carport"
-                                                           class="form-control">
-                                                    <input type="hidden" name="carportContent">
-                                                    <div class="input-group-prepend">
-                                                        <button class="btn btn-primary btn-sm "
-                                                                style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                                type="button"
-                                                                onclick="houseCommon.openCommonItemModal(this);">
-                                                            编辑
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <label class="col-sm-1">
-                                                楼梯间
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <div class="input-group">
-                                                    <input type="text" placeholder="个数"
-                                                           name="staircase"
-                                                           class="form-control">
-                                                    <input type="hidden" name="staircaseContent">
-                                                    <div class="input-group-prepend">
-                                                        <button class="btn btn-primary btn-sm "
-                                                                style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                                type="button"
-                                                                onclick="houseCommon.openCommonItemModal(this);">
-                                                            编辑
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row form-group common">
-                                    <div class="col-md-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-1">
-                                                电梯间
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <div class="input-group">
-                                                    <input type="text" placeholder="个数"
-                                                           name="elevator"
-                                                           class="form-control">
-                                                    <input type="hidden" name="elevatorContent">
-                                                    <div class="input-group-prepend">
-                                                        <button class="btn btn-primary btn-sm "
-                                                                style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                                type="button"
-                                                                onclick="houseCommon.openCommonItemModal(this);">
-                                                            编辑
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <label class="col-sm-1">
-                                                过道
-                                            </label>
-                                            <div class="col-sm-3">
-                                                <div class="input-group">
-                                                    <input type="text" placeholder="个数"
-                                                           name="passage"
-                                                           class="form-control">
-                                                    <input type="hidden" name="passageContent">
-                                                    <div class="input-group-prepend">
-                                                        <button class="btn btn-primary btn-sm "
-                                                                style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                                type="button"
-                                                                onclick="houseCommon.openCommonItemModal(this);">
-                                                            编辑
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6" id="huxingSpecialPartCategoryDiv" style="display: none;">
+                            <div class="form-inline">
+                                <label class="col-sm-4 col-form-label">
+                                    专有部分(类别)
+                                </label>
+                                <div class="col-sm-8">
+                                    <select id="huxingSpecialPartCategory" class="form-control input-full" onchange="houseCommon.huxingSpecialPartChange(this,true);"></select>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div class="row form-group">
+                        <div class="col-md-6">
+                            <div class="form-inline">
+                                <label class="col-sm-4 col-form-label">
+                                    公共部分
+                                </label>
+                                <div class="col-sm-8">
+                                    <select id="huxingCommonPart" class="form-control input-full" onchange="houseCommon.huxingCommonPartChange(this);">
+                                        <option value="">-请选择-</option>
+                                        <option value="卫生间" data-desc="卫">卫生间</option>
+                                        <option value="洗浴间">洗浴间</option>
+                                        <option value="厨房"  data-desc="厨">厨房</option>
+                                        <option value="阳台">阳台</option>
+                                        <option value="车库">车库</option>
+                                        <option value="楼梯间">楼梯间</option>
+                                        <option value="电梯间">电梯间</option>
+                                        <option value="过道">过道</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-inline form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" value="">
+                                    <span class="form-check-sign">公共</span>
+                                </label>
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" value="">
+                                    <span class="form-check-sign">独立</span>
+                                </label>
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" value="">
+                                    <span class="form-check-sign">公用</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%" color="#6f5499" size="10">
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
                     关闭
                 </button>
-                <button type="button" class="btn btn-primary btn-sm" onclick="houseCommon.spliceHouseHuxing()">
+                <button type="button" class="btn btn-primary btn-sm" onclick="houseCommon.spliceHouseHuxing(this)">
                     保存
                 </button>
             </div>
@@ -1674,7 +954,8 @@
     </div>
 </div>
 
-<div id="divBoxHuxingCommonDetail" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+<div id="divBoxHuxingCommonDetail" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+     role="dialog"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -1696,7 +977,8 @@
                                                 公共
                                             </label>
                                             <div class="col-sm-3">
-                                                <input type="text" placeholder="个数" name="common" data-rule-number='true'
+                                                <input type="text" placeholder="个数" name="common"
+                                                       data-rule-number='true'
                                                        class="form-control input-full">
                                             </div>
                                             <label class="col-sm-1">

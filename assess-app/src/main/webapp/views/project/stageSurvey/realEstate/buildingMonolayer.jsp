@@ -76,7 +76,7 @@
                                                                     </select>
                                                                 </div>
                                                                 <label class="col-sm-1">
-                                                                    物业类别<span class="symbol required"></span>
+                                                                    物业档次<span class="symbol required"></span>
                                                                 </label>
                                                                 <div class="col-md-3">
                                                                     <select name="propertyCategory"

@@ -640,8 +640,7 @@
                     notifySuccess('成功', '保存成功');
                     $("#" + divBoxSon).modal("hide");
                     houseCommon.loadTradingSellAndLeaseList(data.type);
-                }
-                else {
+                } else {
                     AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
@@ -665,8 +664,7 @@
                 if (result.ret) {
                     notifySuccess('成功', '删除成功');
                     houseCommon.loadTradingSellAndLeaseList(type);
-                }
-                else {
+                } else {
                     AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             },
@@ -868,128 +866,165 @@
         }
     };
 
-    //打开户型字段modal
-    houseCommon.openHuxingModal = function () {
-        var huxingData = houseCommon.houseForm.find("input[name='huxingData']").val();
-        $("#divBoxHuxing").clearAll();
-        if (huxingData) {
-            $("#frmHuxing").initForm(JSON.parse(huxingData));
-        }
-        $("#divBoxHuxing").modal("show");
-    };
-
-    //打开户型字段modal
-    houseCommon.openHouseHuxingModal = function () {
+    //户型专有字段初始化
+    houseCommon.huxingSpecialPartInit = function () {
         var tenementType = houseCommon.houseHuxingForm.find("input[name='tenementType']").val();
         if (!tenementType) {
             notifyInfo('提示', "请先填写物业类型！");
+            return;
         }
-        $("#frmHouseHuxing").find(".form-group").attr("style", "display:none");
-        $("#frmHouseHuxing").find(".common").show();
+        var html = ' <option value="">-请选择-</option>';
         if (tenementType == '住宅') {
-            $("#frmHouseHuxing").find(".residence").show();
+            html += '<option value="卧室" data-desc="室">卧室</option>';
+            html += '<option value="客厅" data-desc="厅">客厅</option>';
+            html += '<option value="中餐厅">中餐厅</option>';
+            html += '<option value="西餐厅">西餐厅</option>';
+            html += '<option value="茶室">茶室</option>';
+            html += '<option value="影视室">影视室</option>';
         }
         if (tenementType == '商铺' || tenementType == '商场') {
-            $("#frmHouseHuxing").find(".store").show();
+            html += '<option value="商间">商间</option>';
+            html += '<option value="商区">商区</option>';
         }
         if (tenementType == '餐饮酒店') {
-            $("#frmHouseHuxing").find(".hotel").show();
+            html += '<option value="住宿" data-child="标间(普通),标间(商务),标间(高级),单间(普通),单间(商务),单间(高级),套房(普通),套房(商务),套房(高级)">住宿</option>';
+            html += '<option value="商业" data-child="会议室,会议厅,商务厅,影视厅">商业</option>';
+            html += '<option value="餐饮" data-child="包间(普通),包间(标准),包间(豪华),餐饮大厅,共用餐区">餐饮</option>';
         }
         if (tenementType == '办公') {
-            $("#frmHouseHuxing").find(".work").show();
+            html += '<option value="会议室">会议室</option>';
+            html += '<option value="会客室">会客室</option>';
+            html += '<option value="休息室">休息室</option>';
+            html += '<option value="办公室">办公室</option>';
+            html += '<option value="办公区">办公区</option>';
+            html += '<option value="档案室">档案室</option>';
+            html += '<option value="影视室">影视室</option>';
         }
         if (tenementType == '生产') {
-            $("#frmHouseHuxing").find(".production").show();
+            html += '<option value="生产车间">生产车间</option>';
+            html += '<option value="维修车间">维修车间</option>';
+            html += '<option value="成品车间">成品车间</option>';
+            html += '<option value="热力车间">热力车间</option>';
+            html += '<option value="中转车间">中转车间</option>';
         }
         if (tenementType == '仓储') {
-            $("#frmHouseHuxing").find(".storage").show();
+            html += '<option value="储库">储库</option>';
+            html += '<option value="储仓">储仓</option>';
         }
-
-        var huxingData = houseCommon.houseHuxingForm.find("input[name='huxingData']").val();
-        $("#divBoxHouseHuxing").clearAll();
-        if (huxingData) {
-            $("#frmHouseHuxing").initForm(JSON.parse(huxingData));
-        }
-        $("#divBoxHouseHuxing").modal("show");
+        $('#huxingSpecialPart').empty().append(html);
     };
 
+    houseCommon.huxingSpecialPartChange = function (_this, isCategory) {
+        var $form = $(_this).closest('form');
+        var $option = $(_this).find('option:selected');
+        var name = AssessCommon.toString($(_this).val());
+        var descName = AssessCommon.toString($option.attr('data-desc'));
+        var dataChild = $option.attr('data-child');
+        if (dataChild) {
+            $("#huxingSpecialPartCategoryDiv").show();
+            var array = dataChild.split(',');
+            var html = ' <option value="">-请选择-</option>';
+            $.each(array, function (i, item) {
+                html += '<option value="' + item + '">' + item + '</option>';
+            })
+            $("#huxingSpecialPartCategory").empty().append(html);
+        } else {
+            if (!isCategory) {
+                $("#huxingSpecialPartCategoryDiv").hide();
+            }
+            houseCommon.appendHuxingItemHtml($form, name, null, descName);
+        }
+    }
 
-    //拼接户型字段
-    houseCommon.spliceHouseHuxing = function () {
-        if (!$("#frmHouseHuxing").valid()) {
-            return false;
+    houseCommon.huxingCommonPartChange = function (_this) {
+        var form = $(_this).closest('form');
+        var name = AssessCommon.toString($(_this).val());
+        var descName = AssessCommon.toString($(_this).find('option:selected').attr('data-desc'));
+        var cbxs = form.find('.form-check').find(':checkbox:checked');
+        if (cbxs.length > 0) {
+            $.each(cbxs, function (i, item) {
+                var prefix = $(item).closest('.form-check-label').find('.form-check-sign').text();
+                houseCommon.appendHuxingItemHtml(form, prefix + name, null, descName);
+            })
+        } else {
+            houseCommon.appendHuxingItemHtml(form, name, null, descName);
         }
-        var text = "";
-        if (houseCommon.isNotBlank($("#frmHouseHuxing").find("input[name='toilet']").val())) {
-            text += $("#frmHouseHuxing").find("input[name='toilet']").val() + "卫生间";
-        }
-        if (houseCommon.isNotBlank($("#frmHouseHuxing").find("input[name='bathroom']").val())) {
-            text += $("#frmHouseHuxing").find("input[name='bathroom']").val() + "洗浴间";
-        }
-        if (houseCommon.isNotBlank($("#frmHouseHuxing").find("input[name='kitchen']").val())) {
-            text += $("#frmHouseHuxing").find("input[name='kitchen']").val() + "厨房";
-        }
-        if (houseCommon.isNotBlank($("#frmHouseHuxing").find("input[name='balcony']").val())) {
-            text += $("#frmHouseHuxing").find("input[name='balcony']").val() + "阳台";
-        }
-        if (houseCommon.isNotBlank($("#frmHouseHuxing").find("input[name='carport']").val())) {
-            text += $("#frmHouseHuxing").find("input[name='carport']").val() + "车库";
-        }
-        if (houseCommon.isNotBlank($("#frmHouseHuxing").find("input[name='staircase']").val())) {
-            text += $("#frmHouseHuxing").find("input[name='staircase']").val() + "楼梯间";
-        }
-        if (houseCommon.isNotBlank($("#frmHouseHuxing").find("input[name='elevator']").val())) {
-            text += $("#frmHouseHuxing").find("input[name='elevator']").val() + "电梯间";
-        }
-        if (houseCommon.isNotBlank($("#frmHouseHuxing").find("input[name='passage']").val())) {
-            text += $("#frmHouseHuxing").find("input[name='passage']").val() + "过道";
-        }
+    }
 
-        houseCommon.houseHuxingForm.find("input[name='name']").val(text);
+    houseCommon.appendHuxingItemHtml = function ($form, name, number, descName) {
+        var html = '<div class="col-md-6 item">' +
+            ' <div class="form-inline">' +
+            '    <label class="col-sm-4" data-desc="{descName}">{name}</label>' +
+            '    <div class="col-sm-6">' +
+            '       <input type="text" placeholder="个数" name="number" value="{number}"  data-rule-number="true" class="form-control input-full">' +
+            '    </div>' +
+            '    <label class="col-sm-2">' +
+            '        <input class="btn btn-sm btn-warning" type="button" value="X" onclick="houseCommon.removeHuxingItemHtml(this);">' +
+            '    </label>' +
+            ' </div>' +
+            ' </div>';
+        var itemLength = $form.find('.item').length;
+        if (itemLength % 2 == 0) {
+            $form.append('<div class="row form-group"></div>');
+        }
+        var name = AssessCommon.toString(name);
+        var number = AssessCommon.toString(number);
+        var descName = AssessCommon.toString(descName);
+        html = html.replace(/{name}/, name).replace(/{number}/, number).replace(/{descName}/, descName);
+        $form.find('.form-group:last').append(html);
+    }
 
-        $("#divBoxHouseHuxing").modal('hide');
-        var huxingData = JSON.stringify(formParams("frmHouseHuxing"));
-        houseCommon.houseHuxingForm.find("input[name='huxingData']").val(huxingData);
+    houseCommon.removeHuxingItemHtml = function (_this) {
+        var group = $(_this).closest('.form-group');
+        if (group.find('.item').length <= 1) {
+            group.remove();
+        } else {
+            $(_this).closest('.item').remove();
+        }
+    }
+
+    //拼接户型名称
+    houseCommon.spliceHouseHuxing = function (_this) {
+        var items = $(_this).closest('.modal-content').find('form').find('.item');
+        var jsonArray = [];
+        var huxingName = '';
+        $.each(items, function (i, item) {
+            var value = $(item).find('[name=number]').val();
+            if (value) {
+                var keyValue = {};
+                var desc=$.trim($(item).find('label').attr('data-desc'));
+                var text=$.trim($(item).find('label').text());
+                if (desc) {
+                    keyValue.key = desc;
+                    keyValue.explain = desc;
+                }else {
+                    keyValue.key = text;
+                }
+                keyValue.value = value;
+                huxingName += value + keyValue.key + ',';
+                jsonArray.push(keyValue);
+            }
+        })
+        houseCommon.houseHuxingForm.find("input[name='name']").val(huxingName.replace(/,$/, ''));
+        houseCommon.houseHuxingForm.find("input[name='huxingData']").val(JSON.stringify(jsonArray));
+        $("#divBoxHouseHuxing").modal("hide");
     };
 
-    //打开通用字段明细modal
-    houseCommon.openCommonItemModal = function (_this) {
-        var typeName = $(_this).closest('.input-group').find('input').first().attr("name");
-        var html = "";
-        html += '<button type="button" data-dismiss="modal" class="btn btn-default btn-sm">关闭</button>';
-        html += '<button type="button" class="btn btn-primary btn-sm" onclick="houseCommon.spliceHuxingCommonItem(\''+typeName+'\')">保存</button>';
-        $("#divBoxHuxingCommonDetail").find(".modal-footer").empty().append(html);
+    //回显户型名称
+    houseCommon.displayHouseHuxing = function (_this) {
+        var $form = $(_this).closest('form');
+        var huxingData=$form.find('[name=huxingData]').val();
+        if(huxingData){
+            var array=JSON.parse(huxingData);
+            $('#frmHouseHuxing').find('.item').closest('.form-group').remove();
+            $.each(array,function (i,item) {
+                houseCommon.appendHuxingItemHtml($('#frmHouseHuxing'),item.key,item.value,item.explain);
+            })
+        }
+        houseCommon.huxingSpecialPartInit();
+        $("#divBoxHouseHuxing").modal();
+    }
 
-        var contentName = typeName+'Content';
-        var data = $("#frmHouseHuxing").find('input[name="' + contentName + '"]').val();
-        $("#frmHuxingCommonDetail").clearAll();
-        if (data) {
-            $("#frmHuxingCommonDetail").initForm(JSON.parse(data));
-        }
-        $("#divBoxHuxingCommonDetail").modal("show");
-    };
-    //拼接通用字段明细
-    houseCommon.spliceHuxingCommonItem = function (typeName) {
-        var contentName = typeName+'Content';
-        var common = parseFloat($("#frmHuxingCommonDetail").find("input[name='common']").val());
-        var independent = parseFloat($("#frmHuxingCommonDetail").find("input[name='independent']").val());
-        var public = parseFloat($("#frmHuxingCommonDetail").find("input[name='public']").val());
-        var result = 0;
-        if ($.isNumeric(common)) {
-            result += common;
-        }
-        if ($.isNumeric(independent)) {
-            result += independent;
-        }
-        if ($.isNumeric(public)) {
-            result += public;
-        }
-        var data = JSON.stringify(formParams("frmHuxingCommonDetail"));
 
-        $("#frmHouseHuxing").find('input[name="' + contentName + '"]').val(data);
-        $("#frmHouseHuxing").find('input[name="' + typeName + '"]').val(result);
-        $("#divBoxHuxingCommonDetail").modal('hide');
-
-    };
     window.houseCommon = houseCommon;
 })(jQuery);

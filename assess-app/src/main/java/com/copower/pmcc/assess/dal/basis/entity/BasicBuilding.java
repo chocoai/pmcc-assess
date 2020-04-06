@@ -50,6 +50,8 @@ public class BasicBuilding {
 
     private Integer propertyCategory;
 
+    private Integer propertyGrade;
+
     private Date openTime;
 
     private Date roomTime;
@@ -306,6 +308,14 @@ public class BasicBuilding {
 
     public void setPropertyCategory(Integer propertyCategory) {
         this.propertyCategory = propertyCategory;
+    }
+
+    public Integer getPropertyGrade() {
+        return propertyGrade;
+    }
+
+    public void setPropertyGrade(Integer propertyGrade) {
+        this.propertyGrade = propertyGrade;
     }
 
     public Date getOpenTime() {
