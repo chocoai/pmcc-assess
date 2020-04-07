@@ -478,7 +478,7 @@ public class DeclareRealtyLandCertService {
             declareRecord.setCreator(declareApply.getCreator());
             declareRecord.setBisPartIn(true);
             declareRecord.setType(DeclareCertificateTypeEnum.LAND.getKey());
-            declareRecord.setNumber(declareRecordService.getMaxNumber(declareApply.getProjectId()));
+            declareRecord.setNumber(oo.getAutoInitNumber());
             try {
                 int declareId = declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
                 DeclareRecordExtend declareRecordExtend = new DeclareRecordExtend();

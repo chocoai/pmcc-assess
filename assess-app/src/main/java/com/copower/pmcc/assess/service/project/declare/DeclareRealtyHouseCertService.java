@@ -447,7 +447,7 @@ public class DeclareRealtyHouseCertService {
             declareRecord = new DeclareRecord();
             setDeclareRealtyHouseCertForDeclareRecordProperties(declareRealtyHouseCert, declareRecord, declareApply.getProjectId());
             declareRecord.setType(DeclareCertificateTypeEnum.HOUSE.getKey());
-            declareRecord.setNumber(declareRecordService.getMaxNumber(declareApply.getProjectId()));
+            declareRecord.setNumber(declareRealtyHouseCert.getAutoInitNumber());
             try {
                 int declareId = declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
                 DeclareRecordExtend declareRecordExtend = new DeclareRecordExtend();

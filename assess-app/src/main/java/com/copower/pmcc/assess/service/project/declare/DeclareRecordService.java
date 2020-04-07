@@ -272,4 +272,11 @@ public class DeclareRecordService {
         return declareRecordDao.getCountByProjectId(projectId) + 1;
     }
 
+
+    public String changeDeclareRecordNumber(Integer declareRecordId,Integer projectId,String number){
+        StringBuilder stringBuilder = new StringBuilder() ;
+
+        return stringBuilder.toString();
+    }
+
 }

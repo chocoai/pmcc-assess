@@ -22,6 +22,9 @@
                                    value="估价委托书及相关证明">
                             <input type="button" class="btn btn-xs btn-primary"
                                    onclick="projectDetailsEnterNextStage();" value="进入下阶段">
+                            <input type="button" class="btn btn-xs btn-primary"
+                                   onclick="window.open('${pageContext.request.contextPath}/declareRecord/editDeclareRecordNumber/${projectInfo.id}');"
+                                   value="权证编号变更">
                         </small>
                     </div>
                 </div>

@@ -2,13 +2,14 @@ package com.copower.pmcc.assess.controller.project.declare;
 
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.service.BaseService;
+import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -30,19 +31,29 @@ public class DeclareRecordController {
     private DeclareRecordService declareRecordService;
     @Autowired
     private ProcessControllerComponent processControllerComponent;
+    @Autowired
+    private ProjectInfoService projectInfoService;
 
     @RequestMapping(value = "/view/{declareId}", name = "转到详情页面 ", method = {RequestMethod.GET})
-    public ModelAndView index(@PathVariable(name = "declareId",required = true) Integer declareId) {
+    public ModelAndView index(@PathVariable(name = "declareId", required = true) Integer declareId) {
         String view = "/project/stageDeclare/declareRecord/detail";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
-        modelAndView.addObject(StringUtils.uncapitalize(DeclareRecord.class.getSimpleName()),declareRecordService.getDeclareRecordById(declareId)) ;
+        modelAndView.addObject(StringUtils.uncapitalize(DeclareRecord.class.getSimpleName()), declareRecordService.getDeclareRecordById(declareId));
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/editDeclareRecordNumber/{projectId}", name = "更改  权证  编号 ", method = {RequestMethod.GET})
+    public ModelAndView editDeclareRecordNumber(@PathVariable(name = "projectId", required = true) Integer projectId) {
+        String view = "/project/stageDeclare/declareRecord/editDeclareRecordNumberView";
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
+        modelAndView.addObject(StringUtils.uncapitalize(ProjectInfo.class.getSimpleName()), projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(projectId)));
         return modelAndView;
     }
 
 
     @RequestMapping(value = "/getDeclareRecordList", method = {RequestMethod.GET}, name = "获取申报记录数据")
-    public BootstrapTableVo getDeclareRecordList(Integer projectId, String name, String seat, Boolean bisPartIn, String province, String city, String district,String inventoryStatus) {
-        return declareRecordService.getDeclareRecordList(projectId, name, seat, bisPartIn, province, city, district,inventoryStatus);
+    public BootstrapTableVo getDeclareRecordList(Integer projectId, String name, String seat, Boolean bisPartIn, String province, String city, String district, String inventoryStatus) {
+        return declareRecordService.getDeclareRecordList(projectId, name, seat, bisPartIn, province, city, district, inventoryStatus);
     }
 
     @RequestMapping(value = "/addOrRemoveDeclareRecord", name = "添加或移除申报记录数据", method = RequestMethod.POST)
@@ -94,8 +105,18 @@ public class DeclareRecordController {
     public HttpResult saveDeclareRecordArray(String formData, @RequestParam(required = false, defaultValue = "false") boolean updateNull) {
         try {
             List<DeclareRecord> declareRecordList = JSONObject.parseArray(formData, DeclareRecord.class);
-            declareRecordList.forEach(declareRecord -> declareRecordService.saveAndUpdateDeclareRecord(declareRecord,updateNull));
+            declareRecordList.forEach(declareRecord -> declareRecordService.saveAndUpdateDeclareRecord(declareRecord, updateNull));
             return HttpResult.newCorrectResult(200, declareRecordList);
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
+            return HttpResult.newErrorResult(500, e);
+        }
+    }
+
+    @PostMapping(value = "/changeDeclareRecordNumber",name = "变更权证号")
+    public HttpResult changeDeclareRecordNumber(Integer declareRecordId, Integer projectId,String number){
+        try {
+            return HttpResult.newCorrectResult(200, declareRecordService.changeDeclareRecordNumber(declareRecordId,projectId , number));
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult(500, e);
