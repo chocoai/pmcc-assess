@@ -19,6 +19,7 @@ public enum BasicFormClassifyEnum {
     BUILDING_BASE("building.base", "综合楼（基础部分）", "tb_basic_building", "basicBuildingBaseService"),
     BUILDING_DIFFERENCE("building.difference", "综合楼（差异部分）", "tb_basic_building", "basicBuildingDifferenceService"),
     UNIT("unit", "单元", "tb_basic_unit", "basicUnitService"),
+    UNIT_RESIDENCE("unit.residence", "单元（住宅）", "tb_basic_unit", "basicUnitResidenceService"),
     HOUSE("house", "房屋", "tb_basic_house", "basicHouseService");
 
     private Integer level;

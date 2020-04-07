@@ -448,6 +448,7 @@ public class BasicBuildingService extends BasicEntityAbstract {
     @Override
     public List<BasicFormClassifyEnum> getLowerFormClassifyList() {
         List<BasicFormClassifyEnum> list = Lists.newArrayList();
+        list.add(BasicFormClassifyEnum.UNIT_RESIDENCE);
         list.add(BasicFormClassifyEnum.UNIT);
         return list;
     }

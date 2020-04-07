@@ -67,18 +67,6 @@
                                                                            class="form-control input-full"
                                                                            value="${basicHouse.floor}">
                                                                 </div>
-                                                                <label class="col-sm-1">楼层描述</label>
-                                                                <div class="col-sm-3">
-                                                                    <input type="text" class="form-control input-full"
-                                                                           name="floorDesc"
-                                                                           value="${basicHouse.floorDesc}">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row form-group">
-                                                        <div class="col-md-12">
-                                                            <div class="form-inline x-valid">
                                                                 <label class="col-sm-1">面积</label>
                                                                 <div class="col-sm-3">
                                                                     <input type="text" placeholder="面积" name="area"
@@ -86,14 +74,12 @@
                                                                            class="form-control input-full"
                                                                            value="${basicHouse.area}">
                                                                 </div>
-                                                                <label class="col-sm-1">面积描述</label>
-                                                                <div class="col-sm-3">
-                                                                    <input type="text" data-rule-maxlength="255"
-                                                                           placeholder="面积描述"
-                                                                           name="areaDesc"
-                                                                           class="form-control input-full"
-                                                                           value="${basicHouse.areaDesc}">
-                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row form-group">
+                                                        <div class="col-md-12">
+                                                            <div class="form-inline x-valid">
                                                                 <label class="col-sm-1">调查方式<span
                                                                         class="symbol required"></span></label>
                                                                 <div class="col-sm-3">
@@ -102,12 +88,6 @@
                                                                             required>
                                                                     </select>
                                                                 </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row form-group">
-                                                        <div class="col-md-12">
-                                                            <div class="form-inline x-valid">
                                                                 <label class="col-sm-1">
                                                                     证载用途<span class="symbol required"></span>
                                                                 </label>
@@ -153,6 +133,12 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row form-group">
+                                                        <div class="col-md-12">
+                                                            <div class="form-inline x-valid">
                                                                 <label class="col-sm-1">装修情况<span
                                                                         class="symbol required"></span></label>
                                                                 <div class="col-sm-3">
@@ -160,12 +146,6 @@
                                                                             name="decorateSituation" required>
                                                                     </select>
                                                                 </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row form-group">
-                                                        <div class="col-md-12">
-                                                            <div class="form-inline x-valid">
                                                                 <label class="col-sm-1">装修情况描述<span
                                                                         class="symbol required"></span></label>
                                                                 <div class="col-sm-3">
@@ -289,7 +269,7 @@
                                                     <div class="col-sm-3">
                                                         <input type="text" placeholder="面积" name="area"
                                                                class="form-control input-full"
-                                                               required
+                                                               required  onfocus="examineCommon.referenceValue(houseCommon.houseForm.find('input[name=area]'),$(this));"
                                                                value="${basicHouseHuxing.area}">
                                                     </div>
                                                 </div>
@@ -334,19 +314,6 @@
                                                         <input type="text" placeholder="所在楼层" name="currentFloor"
                                                                class="form-control input-full" id="currentFloor"
                                                                required value="${basicHouseHuxing.currentFloor}">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row form-group">
-                                            <div class="col-md-12">
-                                                <div class="form-inline x-valid">
-                                                    <label class="col-sm-1">备注<span
-                                                            class="symbol required"></span></label>
-                                                    <div class="col-sm-11">
-                                                        <textarea class="form-control input-full" required
-                                                                  name="description"
-                                                                  id="description">${basicHouseHuxing.description}</textarea>
                                                     </div>
                                                 </div>
                                             </div>

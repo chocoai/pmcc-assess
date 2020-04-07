@@ -49,6 +49,11 @@
                         </span>
                                                     </div>
                                                 </div>
+                                                <label class="col-sm-1 control-label">梯户比</label>
+                                                <div class=" col-sm-3 ">
+                                                    <label class="form-control input-full"
+                                                           name="elevatorHouseholdRatio">${basicUnit.elevatorHouseholdRatio}</label>
+                                                </div>
                                                 <label class="col-sm-1 control-label">户型数</label>
                                                 <div class=" col-sm-3 ">
                                                     <label class="form-control input-full"
