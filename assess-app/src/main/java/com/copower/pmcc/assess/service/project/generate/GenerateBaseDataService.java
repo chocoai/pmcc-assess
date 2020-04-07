@@ -942,7 +942,7 @@ public class GenerateBaseDataService {
     /**
      * 获取某些土地证字段,不动产证字段
      *
-     * @param baseReportEnum
+     * @param enumName
      * @return
      */
     public String getLandCertificateFieldValue(String enumName) {
@@ -1936,7 +1936,8 @@ public class GenerateBaseDataService {
             }
         }
         if (StringUtils.isEmpty(value)) {
-            value = "/";
+//            value = "/";
+            value = errorStr;
         }
         return value;
     }
@@ -2076,7 +2077,7 @@ public class GenerateBaseDataService {
             center.setType(DeclareRealtyLandCert.class.getSimpleName());
             center.setLandId(declareRecord.getDataTableId());
         }
-        if (StringUtils.isBlank(center.getType())){
+        if (StringUtils.isBlank(center.getType())) {
             return new ArrayList<>();
         }
         List<DeclareBuildEngineeringAndEquipmentCenter> centerList = declareBuildEngineeringAndEquipmentCenterService.declareBuildEngineeringAndEquipmentCenterList(center);
@@ -2293,14 +2294,13 @@ public class GenerateBaseDataService {
         generateCommonMethod.settingBuildingTable(builder);
         String localPath = getLocalPath(RandomStringUtils.randomNumeric(8));
         if (groupItem != null) {
-//            String recordIds = groupItem.getRecordIds();
-//            List<Integer> recordList = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(recordIds));
-//            List<Integer> judgeNumberByDeclareIds = schemeJudgeObjectService.getJudgeNumberByDeclareIds(recordList);
             List<Integer> schemeJudgeObjIds = schemeLiquidationAnalysisService.getSchemeJudgeObjIds(groupItem.getId());
-            List<Integer> judgeNumbers = schemeJudgeObjectService.getJudgeNumberByIds(schemeJudgeObjIds);
-            String number = generateCommonMethod.convertNumber(judgeNumbers);
-            if (StringUtils.isNotEmpty(number)) {
-                builder.insertHtml(generateCommonMethod.getSongWarpCssHtml3(String.format("%s%s", number, "号委估对象")));
+            if (CollectionUtils.isNotEmpty(schemeJudgeObjIds)) {
+                List<Integer> judgeNumbers = schemeJudgeObjectService.getJudgeNumberByIds(schemeJudgeObjIds);
+                String number = generateCommonMethod.convertNumber(judgeNumbers);
+                if (StringUtils.isNotEmpty(number)) {
+                    builder.insertHtml(generateCommonMethod.getSongWarpCssHtml3(String.format("%s%s", number, "号委估对象")));
+                }
             }
         }
         List<SchemeLiquidationAnalysisItem> itemList = Lists.newArrayList();
@@ -3986,7 +3986,7 @@ public class GenerateBaseDataService {
     /**
      * 获取其它  某些字段数据
      *
-     * @param reportFieldEnum
+     * @param enumName
      * @return
      * @throws Exception
      */
@@ -4223,7 +4223,7 @@ public class GenerateBaseDataService {
     /**
      * 获取房屋的装修情况
      *
-     * @param reportFieldEnum
+     * @param enumName
      * @return
      */
     public String getJudgeObjectDamagedDegreeFieldB(String enumName) throws Exception {
@@ -4365,7 +4365,7 @@ public class GenerateBaseDataService {
     /**
      * 获取某些区位信息字段
      *
-     * @param reportFieldEnum
+     * @param enumName
      * @return
      * @throws Exception
      */
@@ -5210,7 +5210,6 @@ public class GenerateBaseDataService {
      * @return
      * @throws Exception
      */
-    @Deprecated
     public String getJudgeObjectEquitySheet() throws Exception {
         Document doc = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
@@ -5223,118 +5222,55 @@ public class GenerateBaseDataService {
                 if (linkedHashMap.size() > 1) {//添加楼盘或估价对象编号作区分
                     builder.insertHtml(generateCommonMethod.getWarpCssHtml("<div style='text-align:center;;font-size:16.0pt;'>" + entry.getKey().getName() + "</div>"));
                 }
+
                 if (projectInfo.getProjectCategoryName().contains("房产")) {
-                    {
-                        String s = null;
-                        try {
-                            s = generateEquityService.getLandEquity(entry.getKey(), entry.getValue());
-                        } catch (Exception e) {
-                            baseService.writeExceptionInfo(e, "土地权益状况未获取到");
-                        }
-                        if (StringUtils.isNotBlank(s)) {
-                            builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml("1、土地权益状况")));
-                            builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml(s)), false);
-                        }
-                    }
-                    {
-                        String s = null;
-                        try {
-                            s = generateEquityService.getHouseEquity(entry.getValue(), projectId);
-                        } catch (Exception e) {
-                            baseService.writeExceptionInfo(e, "房屋权益状况未获取到");
-                        }
-                        if (StringUtils.isNotBlank(s)) {
-                            builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml("2、房屋权益状况")));
-                            builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml(s)), false);
-                        }
-                    }
-                } else if (projectInfo.getProjectCategoryName().contains("土地")) {
-                    {
-                        String s = null;
-                        try {
-                            s = generateEquityService.getLandEquityFull(entry.getKey(), entry.getValue(), projectId);
-                        } catch (Exception e) {
-                            baseService.writeExceptionInfo(e, "土地权益状况未获取到");
-                        }
-                        if (StringUtils.isNotBlank(s)) {
-                            builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml("1、土地权益状况")));
-                            builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml(s)), false);
-                        }
-                    }
+                    StringBuilder stringBuilder = new StringBuilder();
+                    stringBuilder.append(generateCommonMethod.getIndentHtml("1、土地权益状况"));
+
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("土地取得方式:%s", generateEquityService.getLandEquityValue(entry.getKey(), entry.getValue(), GenerateEquityService.Land_acquisition_methods))));
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("土地用途:%s", generateEquityService.getLandEquityValue(entry.getKey(), entry.getValue(), GenerateEquityService.Land_use))));
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("权益人:%s", generateEquityService.getLandEquityValue(entry.getKey(), entry.getValue(), GenerateEquityService.Stakeholder))));
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("规划条件:%s", generateEquityService.getLandEquityValue(entry.getKey(), entry.getValue(), GenerateEquityService.PLANNINGCONDITIONS))));
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("土地开发程度:%s", generateEquityService.getLandEquityValue(entry.getKey(), entry.getValue(), GenerateEquityService.DEGREEOFLANDDEVELOPMENT))));
+
+
+                    stringBuilder.append(generateCommonMethod.getIndentHtml("2、房屋权益状况"));
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("房屋性质:%s", generateEquityService.getHouseEquityValue(entry.getValue(), projectId, "房屋性质"))));
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("规划用途:%s", generateEquityService.getHouseEquityValue(entry.getValue(), projectId, "规划用途"))));
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("共有情况:%s", generateEquityService.getHouseEquityValue(entry.getValue(), projectId, "共有情况"))));
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("权益人:%s", generateEquityService.getHouseEquityValue(entry.getValue(), projectId, "权益人"))));
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("他项权利:%s", generateEquityService.getHouseEquityValue(entry.getValue(), projectId, "他项权利"))));
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("转让限制:%s", generateEquityService.getHouseEquityValue(entry.getValue(), projectId, "转让限制"))));
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("他权综述:%s", generateEquityService.getHouseEquityValue(entry.getValue(), projectId, "他权综述"))));
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("物业:%s", generateEquityService.getHouseEquityValue(entry.getValue(), projectId, "物业"))));
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("综合评价:%s", generateEquityService.getHouseEquityValue(entry.getValue(), projectId, "综合评价"))));
+
+                    builder.insertHtml(generateCommonMethod.getWarpCssHtml(stringBuilder.toString()));
+
                 }
+
+                if (projectInfo.getProjectCategoryName().contains("土地")) {
+                    StringBuilder stringBuilder = new StringBuilder();
+                    stringBuilder.append(generateCommonMethod.getIndentHtml("1、土地权益状况"));
+                    builder.insertHtml(generateCommonMethod.getWarpCssHtml(stringBuilder.toString()));
+
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("土地取得方式:%s", generateEquityService.getLandEquityValue(entry.getKey(), entry.getValue(), GenerateEquityService.Land_acquisition_methods))));
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("土地用途:%s", generateEquityService.getLandEquityValue(entry.getKey(), entry.getValue(), GenerateEquityService.Land_use))));
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("权益人:%s", generateEquityService.getLandEquityValue(entry.getKey(), entry.getValue(), GenerateEquityService.Stakeholder))));
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("规划条件:%s", generateEquityService.getLandEquityValue(entry.getKey(), entry.getValue(), GenerateEquityService.PLANNINGCONDITIONS))));
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("土地开发程度:%s", generateEquityService.getLandEquityValue(entry.getKey(), entry.getValue(), GenerateEquityService.DEGREEOFLANDDEVELOPMENT))));
+
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("他项权利类别:%s", generateEquityService.getRightCategory(projectId, entry.getValue()))));
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("转让限制:%s", generateEquityService.getTransferLimit(entry.getValue(), null))));
+
+                    builder.insertHtml(generateCommonMethod.getWarpCssHtml(stringBuilder.toString()));
+                }
+
+
             }
         }
         String localPath = getLocalPath();
         doc.save(localPath);
-        return localPath;
-    }
-
-
-    /**
-     * 估价对象权益状况表
-     *
-     * @return
-     * @throws Exception
-     */
-    public String getJudgeObjectEquitySheet2() throws Exception {
-        Document doc = new Document();
-        String localPath = generateCommonMethod.getLocalPath();
-        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
-        AsposeUtils.saveWord(localPath, doc);
-        //1.先根据楼盘分组，再分别获取到楼盘下的权益信息
-        generateCommonMethod.setDefaultDocumentBuilderSetting(builder);
-        LinkedHashMap<BasicEstate, List<SchemeJudgeObject>> linkedHashMap = generateCommonMethod.getEstateGroupByAreaId(areaId);
-        LinkedList<BasicExamineHandle.BasicVo> estateHandleList = new LinkedList<>();
-        if (!linkedHashMap.isEmpty()) {
-            for (Map.Entry<BasicEstate, List<SchemeJudgeObject>> entry : linkedHashMap.entrySet()) {
-                //根据不同项目类别确定获取数据的方法
-                BasicExamineHandle.BasicVo basicVo = new BasicExamineHandle.BasicVo();
-                basicVo.setName(entry.getKey().getName());
-                Consumer<BasicExamineHandle.BasicVo> houseFun = new Consumer<BasicExamineHandle.BasicVo>() {
-                    @Override
-                    public void accept(BasicExamineHandle.BasicVo basicVo) {
-                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo("2、房屋权益状况"));
-                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("", "房屋性质:"), generateEquityService.getHouseEquityValue(entry.getValue(), projectId, "房屋性质")));
-                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("", "规划用途:"), generateEquityService.getHouseEquityValue(entry.getValue(), projectId, "规划用途")));
-                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("", "共有情况:"), generateEquityService.getHouseEquityValue(entry.getValue(), projectId, "共有情况")));
-                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("", "权益人:"), generateEquityService.getHouseEquityValue(entry.getValue(), projectId, "权益人")));
-                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("", "他项权利:"), generateEquityService.getHouseEquityValue(entry.getValue(), projectId, "他项权利")));
-                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("", "转让限制:"), generateEquityService.getHouseEquityValue(entry.getValue(), projectId, "转让限制")));
-                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("", "他权综述:"), generateEquityService.getHouseEquityValue(entry.getValue(), projectId, "他权综述")));
-                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("", "物业:"), generateEquityService.getHouseEquityValue(entry.getValue(), projectId, "物业")));
-                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("", "综合评价:"), generateEquityService.getHouseEquityValue(entry.getValue(), projectId, "综合评价")));
-                    }
-                };
-                Consumer<BasicExamineHandle.BasicVo> landFun = new Consumer<BasicExamineHandle.BasicVo>() {
-                    @Override
-                    public void accept(BasicExamineHandle.BasicVo basicVo) {
-                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo("1、土地权益状况"));
-                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("", GenerateEquityService.Land_acquisition_methods, ":"), generateEquityService.getLandEquityValue(entry.getKey(), entry.getValue(), GenerateEquityService.Land_acquisition_methods)));
-                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("", GenerateEquityService.Land_use, ":"), generateEquityService.getLandEquityValue(entry.getKey(), entry.getValue(), GenerateEquityService.Land_use)));
-                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("", GenerateEquityService.Stakeholder, ":"), generateEquityService.getLandEquityValue(entry.getKey(), entry.getValue(), GenerateEquityService.Stakeholder)));
-                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("", GenerateEquityService.PLANNINGCONDITIONS, ":"), generateEquityService.getLandEquityValue(entry.getKey(), entry.getValue(), GenerateEquityService.PLANNINGCONDITIONS)));
-                        basicVo.getBasicVoLinkedHashSet().add(new BasicExamineHandle.BasicVo(String.join("", GenerateEquityService.DEGREEOFLANDDEVELOPMENT, ":"), generateEquityService.getLandEquityValue(entry.getKey(), entry.getValue(), GenerateEquityService.DEGREEOFLANDDEVELOPMENT)));
-                    }
-                };
-                try {
-                    if (projectInfo.getProjectCategoryName().contains("房产")) {
-                        landFun.accept(basicVo);
-                        houseFun.accept(basicVo);
-                    }
-                    if (projectInfo.getProjectCategoryName().contains("土地")) {
-                        landFun.accept(basicVo);
-                    }
-                } catch (Exception e) {
-                    baseService.writeExceptionInfo(e, String.join("", "权益数据", e.getMessage()));
-                }
-                estateHandleList.add(basicVo);
-            }
-        }
-        if (CollectionUtils.isNotEmpty(estateHandleList)) {
-            String estateMergeValue = mergeJudgeObjectAreaStatus(estateHandleList, true);
-            AsposeUtils.insertHtml(builder, estateMergeValue, true);
-        }
-        AsposeUtils.saveWord(localPath, doc);
         return localPath;
     }
 
@@ -5347,7 +5283,7 @@ public class GenerateBaseDataService {
      */
     public String getHuxingLayout() throws Exception {
         String s = generateCommonMethod.trim(generateHouseEntityService.getSpatialDistribution(getSchemeJudgeObjectList()));
-        return StringUtils.isNotBlank(s) ? s : "/";
+        return StringUtils.isNotBlank(s) ? s : errorStr;
     }
 
     /**
@@ -5607,7 +5543,7 @@ public class GenerateBaseDataService {
     /**
      * 评估净值
      *
-     * @param reportFieldEnum
+     * @param enumName
      * @return
      */
     public String getNetAssessmentNumber(String enumName) {

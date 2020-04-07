@@ -105,7 +105,7 @@ public class BasicBuildingSurfaceService {
      * @return
      * @throws Exception
      */
-    public List<BasicBuildingSurface> basicBuildingSurfaceList(BasicBuildingSurface basicBuildingSurface) throws Exception {
+    public List<BasicBuildingSurface> basicBuildingSurfaceList(BasicBuildingSurface basicBuildingSurface)  {
         return basicBuildingSurfaceDao.basicBuildingSurfaceList(basicBuildingSurface);
     }
 

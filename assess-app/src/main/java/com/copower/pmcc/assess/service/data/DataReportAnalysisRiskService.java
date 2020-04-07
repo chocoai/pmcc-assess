@@ -10,11 +10,12 @@ import com.copower.pmcc.assess.dto.input.data.SurveyTaxesPaymentDto;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.project.generate.GenerateCommonMethod;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
-import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryService;
+import com.copower.pmcc.assess.service.project.survey.SurveyAssetInfoService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,8 @@ public class DataReportAnalysisRiskService {
     @Autowired
     private SchemeJudgeObjectService schemeJudgeObjectService;
     @Autowired
-    private SurveyAssetInventoryService surveyAssetInventoryService;
+    private SurveyAssetInfoService surveyAssetInfoService;
+
 
     /**
      * 保存数据
@@ -74,7 +76,6 @@ public class DataReportAnalysisRiskService {
         List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaGroupId);
         for (int i = 0; i < reportAnalysisList.size(); i++) {
             DataReportAnalysis dataReportAnalysis = reportAnalysisList.get(i);
-
             //风险分析税费缴纳
             if (AssessReportFieldConstant.RISK_ANALYSIS_TAXES_PAYMENT.equals(dataReportAnalysis.getFieldName())) {
                 //缴纳正常委估对象
@@ -82,22 +83,37 @@ public class DataReportAnalysisRiskService {
                 for (SchemeJudgeObject judgeObject : judgeObjectList) {
                     StringBuilder damageContent = new StringBuilder();
                     ArrayList<Integer> paymentAbnormality = Lists.newArrayList();
+                    if (judgeObject.getDeclareRecordId() == null || judgeObject.getDeclareRecordId() == 0) {
+                        continue;
+                    }
+                    List<SurveyAssetInventory> surveyAssetInventories = surveyAssetInfoService.getSurveyAssetInventoryListByDeclareRecordId(judgeObject.getDeclareRecordId());
+                    if (CollectionUtils.isEmpty(surveyAssetInventories)) {
+                        continue;
+                    }
                     //对应资产清查内容
-                    SurveyAssetInventory surveyAssetInventory = surveyAssetInventoryService.getDataByDeclareId(judgeObject.getDeclareRecordId());
-                    if (!"不正常".equals(surveyAssetInventory.getPaymentStatus())) {
-                        paymentNormal.add(Integer.valueOf(judgeObject.getNumber()));
-                    } else {
-                        paymentAbnormality.add(Integer.valueOf(judgeObject.getNumber()));
-                        damageContent.append(generateCommonMethod.convertNumber(paymentAbnormality)).append("号估价对象税费缴纳不正常，");
-                        List<SurveyTaxesPaymentDto> dataList = JSON.parseArray(surveyAssetInventory.getPaymentContent(), SurveyTaxesPaymentDto.class);
-                        if (CollectionUtils.isNotEmpty(dataList)) {
-                            for (SurveyTaxesPaymentDto dto : dataList) {
-                                damageContent.append(dto.getProjectName()).append(dto.getRemark()).append(dto.getMoney()).append("元;");
+                    for (SurveyAssetInventory surveyAssetInventory : surveyAssetInventories) {
+                        if (!"不正常".equals(surveyAssetInventory.getPaymentStatus())) {
+                            if (NumberUtils.isNumber(judgeObject.getNumber())) {
+                                paymentNormal.add(Integer.valueOf(judgeObject.getNumber()));
                             }
-                            damageContent.deleteCharAt(damageContent.length() - 1);
-                            damageContent.append("。");
+                        } else {
+
+                            if (NumberUtils.isNumber(judgeObject.getNumber())) {
+                                paymentAbnormality.add(Integer.valueOf(judgeObject.getNumber()));
+                            }
+
+                            damageContent.append(generateCommonMethod.convertNumber(paymentAbnormality)).append("号估价对象税费缴纳不正常，");
+                            List<SurveyTaxesPaymentDto> dataList = JSON.parseArray(surveyAssetInventory.getPaymentContent(), SurveyTaxesPaymentDto.class);
+                            if (CollectionUtils.isNotEmpty(dataList)) {
+                                for (SurveyTaxesPaymentDto dto : dataList) {
+                                    damageContent.append(dto.getProjectName()).append(dto.getRemark()).append(dto.getMoney()).append("元;");
+                                }
+                                damageContent.deleteCharAt(damageContent.length() - 1);
+                                damageContent.append("。");
+                            }
                         }
                     }
+
 
                     if (StringUtils.isNotBlank(damageContent)) {
                         stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s、%s", i + 1, dataReportAnalysis.getName())));
@@ -114,7 +130,7 @@ public class DataReportAnalysisRiskService {
 //                    DataReportTemplateItem dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.RISK_ANALYSIS_TAXES_PAYMENT_SURVEY);
 //                    stringBuilder.append("<p style=\"text-indent:2em\">").append(dataReportTemplateByField.getTemplate().replace("#{税费缴纳调查}", content)).append("</p>");
 //                }
-            }else {
+            } else {
                 stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s、%s", i + 1, dataReportAnalysis.getName())));
                 stringBuilder.append(dataReportAnalysis.getTemplate());
             }

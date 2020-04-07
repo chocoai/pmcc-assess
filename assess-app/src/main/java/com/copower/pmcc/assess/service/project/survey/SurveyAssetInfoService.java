@@ -52,6 +52,8 @@ public class SurveyAssetInfoService {
     private BaseDataDicService baseDataDicService;
     @Autowired
     private ProjectPlanDetailsService projectPlanDetailsService;
+    @Autowired
+    private SurveyAssetInventoryService surveyAssetInventoryService;
 
     /**
      * 提交要做的事
@@ -316,6 +318,46 @@ public class SurveyAssetInfoService {
             }
         }
         declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
+    }
+
+
+    public List<SurveyAssetInventory> getSurveyAssetInventoryListByDeclareRecordId(Integer declareRecordId) {
+        List<SurveyAssetInventory> inventoryList = new ArrayList<>();
+        SurveyAssetInfoItem queryItem = new SurveyAssetInfoItem();
+        queryItem.setStatus(SysProjectEnum.FINISH.getValue());
+        queryItem.setDeclareId(declareRecordId);
+        List<SurveyAssetInfoItem> surveyAssetInfoItems = surveyAssetInfoItemService.getSurveyAssetInfoItemListByQuery(queryItem);
+        if (CollectionUtils.isNotEmpty(surveyAssetInfoItems)) {
+            Iterator<SurveyAssetInfoItem> iterator = surveyAssetInfoItems.iterator();
+            while (iterator.hasNext()) {
+                SurveyAssetInfoItem assetInfoItem = iterator.next();
+                if (assetInfoItem.getInventoryId() != null && assetInfoItem.getInventoryId() != 0) {
+                    SurveyAssetInventory assetInventory = surveyAssetInventoryService.getSurveyAssetInventoryById(assetInfoItem.getInventoryId());
+                    if (assetInventory != null){
+                        inventoryList.add(assetInventory) ;
+                    }
+                }
+                if (assetInfoItem.getGroupId() != null && assetInfoItem.getGroupId() != 0){
+                    SurveyAssetInfoGroup assetInfoGroup = surveyAssetInfoGroupService.getSurveyAssetInfoGroupById(assetInfoItem.getGroupId());
+                    if (assetInfoGroup.getInventoryId() != null && assetInfoGroup.getInventoryId() != 0){
+                        SurveyAssetInventory assetInventory = surveyAssetInventoryService.getSurveyAssetInventoryById(assetInfoGroup.getInventoryId());
+                        if (assetInventory != null){
+                            inventoryList.add(assetInventory) ;
+                        }
+                    }
+                }
+            }
+        }
+
+        return inventoryList;
+    }
+
+    public SurveyAssetInventory getSurveyAssetInventoryByDeclareRecordId(Integer declareRecordId){
+        List<SurveyAssetInventory> surveyAssetInventories = getSurveyAssetInventoryListByDeclareRecordId(declareRecordId);
+        if (CollectionUtils.isNotEmpty(surveyAssetInventories)){
+            return surveyAssetInventories.get( 0) ;
+        }
+        return null;
     }
 
 

@@ -5,7 +5,6 @@ import com.aspose.words.ControlChar;
 import com.copower.pmcc.assess.common.enums.SchemeSupportTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
-import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyDao;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataReportAnalysisDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.data.SurveyDamageDto;
@@ -15,13 +14,14 @@ import com.copower.pmcc.assess.dto.output.data.DataReportAnalysisVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.basic.BasicApplyBatchService;
 import com.copower.pmcc.assess.service.project.generate.GenerateCommonMethod;
 import com.copower.pmcc.assess.service.project.generate.GenerateHouseEntityService;
 import com.copower.pmcc.assess.service.project.generate.GenerateLandEntityService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeLiquidationAnalysisService;
-import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryService;
+import com.copower.pmcc.assess.service.project.survey.SurveyAssetInfoService;
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetRightGroupService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -67,13 +67,9 @@ public class DataReportAnalysisService {
     @Autowired
     private PublicService publicService;
     @Autowired
-    private SurveyAssetInventoryService surveyAssetInventoryService;
-    @Autowired
     private SchemeLiquidationAnalysisService schemeLiquidationAnalysisService;
     @Autowired
     private SchemeAreaGroupService schemeAreaGroupService;
-    @Autowired
-    private BasicApplyDao basicApplyDao;
     @Autowired
     private GenerateLandEntityService generateLandEntityService;
     @Autowired
@@ -82,7 +78,10 @@ public class DataReportAnalysisService {
     private DataBestUseDescriptionService dataBestUseDescriptionService;
     @Autowired
     private SurveyAssetRightGroupService surveyAssetRightGroupService;
-
+    @Autowired
+    private BasicApplyBatchService basicApplyBatchService;
+    @Autowired
+    private SurveyAssetInfoService surveyAssetInfoService;
 
     /**
      * 保存数据
@@ -435,7 +434,8 @@ public class DataReportAnalysisService {
             StringBuilder builder = new StringBuilder();
             BasicEstate basicEstate = entry.getKey();
             builder.append(erpAreaService.getSysAreaName(basicEstate.getDistrict())).append(basicEstate.getName());
-            builder.append(generateLandEntityService.getContent(basicApplyDao.getBasicApplyById(basicEstate.getApplyId())));
+            BasicApplyBatch basicApplyBatch = basicApplyBatchService.getBasicApplyBatchByEstateId(basicEstate.getId());
+            builder.append(generateLandEntityService.getContent(basicApplyBatch));
             entry.getValue().forEach(o -> resultMap.put(generateCommonMethod.parseIntJudgeNumber(o.getNumber()), builder.toString()));
         }
         return generateCommonMethod.trim(generateCommonMethod.judgeEachDesc(resultMap, "", "。", false));
@@ -514,36 +514,43 @@ public class DataReportAnalysisService {
      */
     public String getIndependenceAnalysis(List<SchemeJudgeObject> judgeObjectList) {
         DataReportTemplateItem intactTemplateItem = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.INDEPENDENCE_ANALYSIS_INTACT);
-        DataReportTemplateItem damageTemplateItem = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.INDEPENDENCE_ANALYSIS_DAMAGE);
         Map<Integer, String> resultMap = Maps.newHashMap();
         for (SchemeJudgeObject judgeObject : judgeObjectList) {
             Integer number = generateCommonMethod.parseIntJudgeNumber(judgeObject.getNumber());
             //对应资产清查内容
-            SurveyAssetInventory surveyAssetInventory = surveyAssetInventoryService.getDataByDeclareId(judgeObject.getDeclareRecordId());
-            if (!"不正常".equals(surveyAssetInventory.getRimIsNormal()) && !"损坏".equals(surveyAssetInventory.getEntityIsDamage())) {
-                resultMap.put(number, intactTemplateItem.getTemplate());
-            } else {
-                StringBuilder damageContent = new StringBuilder();
-                if ("不正常".equals(surveyAssetInventory.getRimIsNormal())) {
-                    List<SurveyDamageDto> zoneDamegeList = JSON.parseArray(surveyAssetInventory.getZoneDamage(), SurveyDamageDto.class);
-                    if (CollectionUtils.isNotEmpty(zoneDamegeList)) {
-                        for (SurveyDamageDto dto : zoneDamegeList) {
-                            damageContent.append("项目:").append(dto.getZoneProjectName()).append(",明细").append(dto.getZoneProjectItem()).append(";");
+
+            List<SurveyAssetInventory> surveyAssetInventories = surveyAssetInfoService.getSurveyAssetInventoryListByDeclareRecordId(judgeObject.getDeclareRecordId());
+            if (CollectionUtils.isEmpty(surveyAssetInventories)) {
+                continue;
+            }
+            //对应资产清查内容
+            for (SurveyAssetInventory surveyAssetInventory : surveyAssetInventories){
+                if (!"不正常".equals(surveyAssetInventory.getRimIsNormal()) && !"损坏".equals(surveyAssetInventory.getEntityIsDamage())) {
+                    resultMap.put(number, intactTemplateItem.getTemplate());
+                } else {
+                    StringBuilder damageContent = new StringBuilder();
+                    if ("不正常".equals(surveyAssetInventory.getRimIsNormal())) {
+                        List<SurveyDamageDto> zoneDamegeList = JSON.parseArray(surveyAssetInventory.getZoneDamage(), SurveyDamageDto.class);
+                        if (CollectionUtils.isNotEmpty(zoneDamegeList)) {
+                            for (SurveyDamageDto dto : zoneDamegeList) {
+                                damageContent.append("项目:").append(dto.getZoneProjectName()).append(",明细").append(dto.getZoneProjectItem()).append(";");
+                            }
                         }
                     }
-                }
-                if ("损坏".equals(surveyAssetInventory.getEntityIsDamage())) {
-                    List<SurveyDamageDto> entityDamegeList = JSON.parseArray(surveyAssetInventory.getEntityDamage(), SurveyDamageDto.class);
-                    if (CollectionUtils.isNotEmpty(entityDamegeList)) {
-                        for (SurveyDamageDto dto : entityDamegeList) {
-                            damageContent.append("项目:").append(dto.getEntityProjectName()).append(",明细").append(dto.getEntityProjectItem()).append(";");
+                    if ("损坏".equals(surveyAssetInventory.getEntityIsDamage())) {
+                        List<SurveyDamageDto> entityDamegeList = JSON.parseArray(surveyAssetInventory.getEntityDamage(), SurveyDamageDto.class);
+                        if (CollectionUtils.isNotEmpty(entityDamegeList)) {
+                            for (SurveyDamageDto dto : entityDamegeList) {
+                                damageContent.append("项目:").append(dto.getEntityProjectName()).append(",明细").append(dto.getEntityProjectItem()).append(";");
+                            }
                         }
                     }
-                }
-                if (StringUtils.isNotBlank(damageContent)) {
-                    resultMap.put(number, String.format("%s；估价对象不能独立使用。", damageContent));
+                    if (StringUtils.isNotBlank(damageContent)) {
+                        resultMap.put(number, String.format("%s；估价对象不能独立使用。", damageContent));
+                    }
                 }
             }
+
         }
         return generateCommonMethod.judgeEachDesc(resultMap, "", "。", false);
     }
@@ -566,13 +573,18 @@ public class DataReportAnalysisService {
         Map<Integer, String> resultMap = Maps.newHashMap();
         for (SchemeJudgeObject judgeObject : judgeObjectList) {
             Integer number = generateCommonMethod.parseIntJudgeNumber(judgeObject.getNumber());
-            SurveyAssetInventory surveyAssetInventory = surveyAssetInventoryService.getDataByDeclareId(judgeObject.getDeclareRecordId());
-            if ("不可分".equals(surveyAssetInventory.getSegmentationLimit())) {
-                resultMap.put(number, impartibility.getTemplate());
-            } else if ("可分".equals(surveyAssetInventory.getSegmentationLimit())) {
-                if (refuseId.equals(Integer.valueOf(surveyAssetInventory.getCertificate()))) {
-                    resultMap.put(number, detachableNotRush.getTemplate());
-                } else {
+            if (judgeObject.getDeclareRecordId() == null || judgeObject.getDeclareRecordId() == 0) {
+                continue;
+            }
+            List<SurveyAssetInventory> surveyAssetInventories = surveyAssetInfoService.getSurveyAssetInventoryListByDeclareRecordId(judgeObject.getDeclareRecordId());
+            if (CollectionUtils.isEmpty(surveyAssetInventories)) {
+                continue;
+            }
+            //对应资产清查内容
+            for (SurveyAssetInventory surveyAssetInventory : surveyAssetInventories) {
+                if ("不可分".equals(surveyAssetInventory.getSegmentationLimit())) {
+                    resultMap.put(number, impartibility.getTemplate());
+                } else if ("可分".equals(surveyAssetInventory.getSegmentationLimit())) {
                     resultMap.put(number, detachableCanRush.getTemplate());
                 }
             }

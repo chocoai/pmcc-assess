@@ -5,17 +5,15 @@ import com.copower.pmcc.assess.common.ArithmeticUtils;
 import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.FileUtils;
 import com.copower.pmcc.assess.common.MyEntry;
-import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.MergeCellModel;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
-import com.copower.pmcc.assess.service.project.ProjectPhaseService;
-import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.assess.service.project.SchemeReportFileService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
+import com.copower.pmcc.assess.service.project.survey.SurveyAssetInfoService;
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryContentService;
 import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
@@ -63,10 +61,6 @@ public class GenerateCommonMethod {
     @Autowired
     private BaseAttachmentService baseAttachmentService;
     @Autowired
-    private ProjectPhaseService projectPhaseService;
-    @Autowired
-    private ProjectPlanDetailsService projectPlanDetailsService;
-    @Autowired
     private BaseDataDicService baseDataDicService;
     @Autowired
     private SurveyCommonService surveyCommonService;
@@ -78,7 +72,8 @@ public class GenerateCommonMethod {
     private SurveyAssetInventoryContentService surveyAssetInventoryContentService;
     @Autowired
     private SchemeReportFileService schemeReportFileService;
-
+    @Autowired
+    private SurveyAssetInfoService surveyAssetInfoService;
     public static final String SchemeJudgeObjectName = "委估对象";
 
 
@@ -107,29 +102,23 @@ public class GenerateCommonMethod {
      * @throws Exception
      */
     public String getAssetInventoryCommon(String fieldName, BaseDataDic type, Integer declareRecordId, ProjectInfo projectInfo) throws Exception {
-        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.ASSET_INVENTORY, projectInfo.getProjectCategoryId());
         Set<SurveyAssetInventoryContent> surveyAssetInventoryContentSet = Sets.newHashSet();
         Set<String> stringSet = Sets.newHashSet();
-        List<ProjectPlanDetails> projectPlanDetailsList = Lists.newArrayList();
-        if (projectPhase != null) {
-            ProjectPlanDetails query = new ProjectPlanDetails();
-            query.setProjectId(projectInfo.getId());
-            query.setProjectPhaseId(projectPhase.getId());
-            query.setDeclareRecordId(declareRecordId);
-            List<ProjectPlanDetails> projectPlanDetailsList2 = projectPlanDetailsService.getProjectDetails(query);
-            if (CollectionUtils.isNotEmpty(projectPlanDetailsList2)) {
-                projectPlanDetailsList.addAll(projectPlanDetailsList2);
+        List<SurveyAssetInventory> surveyAssetInventories = surveyAssetInfoService.getSurveyAssetInventoryListByDeclareRecordId(declareRecordId);
+        List<SurveyAssetInventoryContent> contentList = new ArrayList<>() ;
+        if (CollectionUtils.isNotEmpty(surveyAssetInventories)){
+            for (SurveyAssetInventory surveyAssetInventory:surveyAssetInventories){
+                List<SurveyAssetInventoryContent> surveyAssetInventoryContents = surveyAssetInventoryContentService.getSurveyAssetInventoryContentListByMasterId(surveyAssetInventory.getId());
+                if (CollectionUtils.isEmpty(surveyAssetInventoryContents)){
+                    continue;
+                }
+                contentList.addAll(surveyAssetInventoryContents) ;
             }
         }
-        if (CollectionUtils.isNotEmpty(projectPlanDetailsList)) {
-            for (ProjectPlanDetails projectPlanDetails : projectPlanDetailsList) {
-                List<SurveyAssetInventoryContent> listByPlanDetailsId = surveyAssetInventoryContentService.getContentListByPlanDetailsId(projectPlanDetails.getId());
-                if (CollectionUtils.isNotEmpty(listByPlanDetailsId)) {
-                    listByPlanDetailsId.forEach(o -> {
-                        if (com.google.common.base.Objects.equal("不一致", o.getAreConsistent()) && com.google.common.base.Objects.equal(type.getId(), o.getInventoryContent()))
-                            surveyAssetInventoryContentSet.add(o);
-                    });
-                }
+        if (CollectionUtils.isNotEmpty(contentList)){
+            for (SurveyAssetInventoryContent o:contentList){
+                if (com.google.common.base.Objects.equal("不一致", o.getAreConsistent()) && com.google.common.base.Objects.equal(type.getId(), o.getInventoryContent()))
+                    surveyAssetInventoryContentSet.add(o);
             }
         }
         if (CollectionUtils.isNotEmpty(surveyAssetInventoryContentSet)) {
@@ -182,7 +171,6 @@ public class GenerateCommonMethod {
      * @param areaId
      * @return
      */
-    @Deprecated
     public LinkedHashMap<BasicEstate, List<SchemeJudgeObject>> getEstateGroupByAreaId(Integer areaId) throws Exception {
         LinkedHashMap<BasicEstate, List<SchemeJudgeObject>> listLinkedHashMap = Maps.newLinkedHashMap();
         List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaId);
@@ -544,9 +532,6 @@ public class GenerateCommonMethod {
         StringBuilder stringBuilder = new StringBuilder(8);
         if (CollectionUtils.isNotEmpty(numbers)) {
             numbers = numbers.stream().distinct().sorted().collect(Collectors.toList());
-            if (!checkSchemeJudgeObjectNumberOverloadTwenty(numbers)) {
-                return StringUtils.join(numbers, ",");
-            }
             Integer[] ints = new Integer[numbers.size()];
             for (int i = 0; i < numbers.size(); i++) {
                 ints[i] = numbers.get(i);
@@ -573,6 +558,9 @@ public class GenerateCommonMethod {
                 text = ints[0].toString();
             }
             List<String> stringList = convertNumberHelp(text);
+            if (!checkSchemeJudgeObjectNumberOverloadTwenty(numbers)) {
+                return StringUtils.join(stringList, "");
+            }
             if (CollectionUtils.isNotEmpty(stringList)) {
                 stringList.stream().forEach(s -> {
                     if (NumberUtils.isNumber(s)) {

@@ -523,30 +523,31 @@ public class GenerateLoactionService {
         LinkedHashSet<String> linkedHashSet = Sets.newLinkedHashSet();
         LinkedHashSet<String> hashSet = Sets.newLinkedHashSet();
         BasicExamineHandle basicExamineHandle = new BasicExamineHandle(basicApply);
-        List<BasicHouseFaceStreetVo> basicHouseFaceStreetVoList = basicExamineHandle.getBasicHouseFaceStreetAll();
-        if (CollectionUtils.isEmpty(basicHouseFaceStreetVoList)) {
-            return "";
-        }
-        basicHouseFaceStreetVoList = Arrays.asList(basicHouseFaceStreetVoList.get(0));
-        for (int i = 0; i < basicHouseFaceStreetVoList.size(); i++) {
-            BasicHouseFaceStreetVo basicHouseFaceStreetVo = basicHouseFaceStreetVoList.get(i);
-            if (StringUtils.isNotBlank(basicHouseFaceStreetVo.getPositionName())) {
-                linkedHashSet.add(basicHouseFaceStreetVo.getPositionName());
+        List<BasicMatchingTrafficVo> basicMatchingTrafficList = basicExamineHandle.getBasicMatchingTrafficList();
+        List<BasicMatchingTrafficVo> metroList = basicMatchingTrafficList.stream().filter(basicMatchingTrafficVo -> {
+            if (Objects.equal(basicMatchingTrafficVo.getType(), ExamineMatchingTrafficTypeEnum.MainRoad.getName()) && basicMatchingTrafficVo.getDistance() != null) {
+                return true;
             }
-            if (StringUtils.isNotBlank(basicHouseFaceStreetVo.getStreetLevelName())) {
-                linkedHashSet.add(basicHouseFaceStreetVo.getStreetLevelName());
+            return false;
+        }).collect(Collectors.toList());
+        if (CollectionUtils.isNotEmpty(metroList)){
+            for (int i = 0; i < 1; i++) {
+                BasicMatchingTrafficVo trafficVo = metroList.get(0) ;
+                if (StringUtils.isNotBlank(trafficVo.getName())) {
+                    linkedHashSet.add(trafficVo.getName());
+                }
+                if (StringUtils.isNotBlank(trafficVo.getPositionName())) {
+                    linkedHashSet.add(trafficVo.getPositionName());
+                }
+                if (StringUtils.isNotBlank(trafficVo.getTrafficFlowName())) {
+                    linkedHashSet.add(String.format("交通流量%s 、", trafficVo.getTrafficFlowName()));
+                }
+                if (StringUtils.isNotBlank(trafficVo.getVisitorsFlowrateName())) {
+                    linkedHashSet.add(String.format("人流量%s", trafficVo.getVisitorsFlowrateName()));
+                }
+                hashSet.add(StringUtils.join(linkedHashSet, ""));
+                linkedHashSet.clear();
             }
-            if (StringUtils.isNotBlank(basicHouseFaceStreetVo.getStreetName())) {
-                linkedHashSet.add(basicHouseFaceStreetVo.getStreetName());
-            }
-            if (StringUtils.isNotBlank(basicHouseFaceStreetVo.getTrafficFlowName())) {
-                linkedHashSet.add(String.format("交通流量%s 、", basicHouseFaceStreetVo.getTrafficFlowName()));
-            }
-            if (StringUtils.isNotBlank(basicHouseFaceStreetVo.getVisitorsFlowrateName())) {
-                linkedHashSet.add(String.format("人流量%s", basicHouseFaceStreetVo.getVisitorsFlowrateName()));
-            }
-            hashSet.add(StringUtils.join(linkedHashSet, ""));
-            linkedHashSet.clear();
         }
         return StringUtils.join(hashSet, "；");
     }
