@@ -304,14 +304,16 @@ public class SurveyAssetInfoService {
         for (SurveyAssetInventoryContent content : contentList) {
             //反写实际面积
             if (areaDic != null) {
-                if (content.getInventoryContent().equals(areaDic.getId()) && org.apache.commons.lang3.StringUtils.isNotBlank(content.getActual()) && NumberUtils.isNumber(content.getActual())) {
+                if (content.getInventoryContent().equals(areaDic.getId()) && StringUtils.isNotBlank(content.getActual()) && NumberUtils.isNumber(content.getActual())) {
                     declareRecord.setPracticalArea(new BigDecimal(content.getActual()));
                 }
             }
             //反写实际地址
             if (addressDic != null) {
-                if (content.getInventoryContent().equals(addressDic.getId()) && org.apache.commons.lang3.StringUtils.isNotBlank(content.getActual())) {
-                    declareRecord.setSeat(content.getActual());
+                if (content.getInventoryContent().equals(addressDic.getId()) && StringUtils.isNotBlank(content.getActual())) {
+                    String seat = declareRecord.getSeat();
+                    if (StringUtils.isNotBlank(seat))
+                        declareRecord.setSeat(seat.replace(content.getRegistration(),content.getActual()));
                 }
             }
         }

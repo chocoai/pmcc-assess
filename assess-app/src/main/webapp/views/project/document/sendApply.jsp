@@ -175,11 +175,6 @@
     function submit() {
         var customCmsContractInfo = formSerializeArray($("#cmsContractInfo"));
         var extendConten = JSON.stringify(customCmsContractInfo);
-        var id = parseInt($("#id").val());
-        if (id == 0) {
-            AlertError("提交前请先生成文件");
-            return false;
-        }
         if ("${bisEdit}" == "1") {
             saveEditformToServer(extendConten);
         }

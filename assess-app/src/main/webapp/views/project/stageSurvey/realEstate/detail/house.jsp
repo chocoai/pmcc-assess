@@ -43,57 +43,31 @@
                                                     <label class="form-control input-full"
                                                            name="floor">${basicHouse.floor}</label>
                                                 </div>
-
-                                                <label class="col-sm-1 control-label">楼层描述</label>
-                                                <div class="col-sm-3">
-                                                    <label class="form-control input-full"
-                                                           name="floorDesc">${basicHouse.floorDesc}</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row form-group">
-                                        <div class="col-md-12">
-                                            <div class="form-inline x-valid">
                                                 <label class="col-sm-1 control-label">面积</label>
                                                 <div class="col-sm-3">
                                                     <label class="form-control input-full"
                                                            name="area">${basicHouse.area}</label>
                                                 </div>
-
-                                                <label class="col-sm-1 control-label">面积描述</label>
-                                                <div class="col-sm-3">
-                                                    <label class="form-control input-full"
-                                                           name="areaDesc">${basicHouse.areaDesc}</label>
-                                                </div>
-
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
                                                 <label class="col-sm-1 control-label">调查方式</label>
                                                 <div class="col-sm-3">
                                                     <label class="form-control input-full"
                                                            name="researchTypeName">${basicHouse.researchTypeName}</label>
                                                 </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row form-group">
-                                        <div class="col-md-12">
-                                            <div class="form-inline x-valid">
                                                 <label class="col-sm-1 control-label">证载用途</label>
                                                 <div class="col-sm-3">
                                                     <label class="form-control input-full"
                                                            name="certUseName">${basicHouse.certUseName}</label>
                                                 </div>
-
                                                 <label class="col-sm-1 control-label">实际用途</label>
                                                 <div class="col-sm-3">
                                                     <label class="form-control input-full"
                                                            name="practicalUseName">${basicHouse.practicalUseName}</label>
-                                                </div>
-
-                                                <label class="col-sm-1 control-label">装修情况</label>
-                                                <div class="col-sm-3">
-                                                    <label class="form-control input-full"
-                                                           name="decorateSituationName">${basicHouse.decorateSituationName}</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -101,6 +75,11 @@
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
+                                                <label class="col-sm-1 control-label">装修情况</label>
+                                                <div class="col-sm-3">
+                                                    <label class="form-control input-full"
+                                                           name="decorateSituationName">${basicHouse.decorateSituationName}</label>
+                                                </div>
                                                 <label class="col-sm-1 control-label">装修情况描述</label>
                                                 <div class="col-sm-3">
                                                     <label class="form-control input-full"
@@ -221,18 +200,6 @@
                                                 <div class="col-sm-11">
                                                     <label class="form-control input-full" id="currentFloor"
                                                            name="currentFloor">${basicHouseHuxing.currentFloor}</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row form-group">
-                                        <div class="col-md-12">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-1">备注<span
-                                                        class="symbol required"></span></label>
-                                                <div class="col-sm-11">
-                                                    <label class="form-control input-full"
-                                                           name="description">${basicHouseHuxing.description}</label>
                                                 </div>
                                             </div>
                                         </div>

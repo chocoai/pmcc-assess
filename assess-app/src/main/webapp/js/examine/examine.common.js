@@ -7,12 +7,12 @@ examineCommon.getFormData = function () {
         item.basicEstate.id = estateCommon.estateForm.find("input[name='id']").val();
         item.basicEstate.name = estateCommon.estateForm.find("input[name='name']").val();
         var streetNumbers = item.basicEstate.streetNumber.split(",");
-        var attachNumbers =item.basicEstate.attachNumber.split(",");
+        var attachNumbers = item.basicEstate.attachNumber.split(",");
         var length = streetNumbers.length;
         var streetNumberValue = [];
         var attachNumberValue = [];
         for (var i = 0; i < length; i++) {
-            if(estateCommon.isNotBlank(streetNumbers[i])) {
+            if (estateCommon.isNotBlank(streetNumbers[i])) {
                 streetNumberValue.push(streetNumbers[i]);
                 attachNumberValue.push(attachNumbers[i])
             }
@@ -126,6 +126,15 @@ examineCommon.addBasicEstateTagging = function (data, callback) {
         }
     })
 };
+
+examineCommon.referenceValue = function ($source, $target) {
+    if ($source && $target) {
+        var sourceValue = $source.val();
+        var targetValue = $target.val();
+        if (!sourceValue || targetValue) return;
+        $target.val(sourceValue);
+    }
+}
 
 examineCommon.getMarkerAreaInHeight = '80%';
 examineCommon.getMarkerAreaInWidth = '80%';

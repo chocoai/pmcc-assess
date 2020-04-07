@@ -417,13 +417,7 @@
                         str += "<button type='button' onclick='projectStagePlan.taskOpenWin(\"" + row.excuteUrl + "\")' href='javascript://' style='margin-left: 5px;' title='提交' class='btn btn-xs " + btnClass + "'  ><i class='fa fa-arrow-right fa-white'></i></button>";
                     }
                     if (row.displayUrl) {
-                        str += "<button type='button' onclick='projectStagePlan.taskOpenWin(\"" + row.displayUrl + "\")' href='javascript://' style='margin-left: 5px;' title='查看' class='btn btn-xs btn-warning'  ><i class='fa fa-search fa-white'></i></button>";
-                    }
-                    if (row.canCopy) {
-                        str += "<button type='button'  onclick='projectStagePlan.taskCopy(this," + row.id + ");' data-planDetailsId='" + row.id + "' title='复制' class='btn btn-xs btn-warning btn-copy' ><i class='fa fa-copy fa-white'></i> <span>复制</span></button>";
-                    }
-                    if (row.canPaste) {
-                        str += " <button type='button' onclick='projectStagePlan.taskPaste(this," + row.id + ");' data-planDetailsId='" + row.id + "' title='粘贴' class='btn btn-xs btn-warning tooltips' ><i class='fa fa-paste fa-white'></i> <span>粘贴</span></button>";
+                        str += "<button type='button' onclick='projectStagePlan.taskOpenWin(\"" + row.displayUrl + "\")' href='javascript://' style='margin-left: 5px;' title='查看' class='btn btn-xs btn-info'  ><i class='fa fa-search fa-white'></i></button>";
                     }
                     return str;
                 }
