@@ -1936,7 +1936,8 @@ public class GenerateBaseDataService {
             }
         }
         if (StringUtils.isEmpty(value)) {
-            value = "/";
+//            value = "/";
+            value = errorStr;
         }
         return value;
     }
@@ -2293,14 +2294,13 @@ public class GenerateBaseDataService {
         generateCommonMethod.settingBuildingTable(builder);
         String localPath = getLocalPath(RandomStringUtils.randomNumeric(8));
         if (groupItem != null) {
-//            String recordIds = groupItem.getRecordIds();
-//            List<Integer> recordList = FormatUtils.ListStringToListInteger(FormatUtils.transformString2List(recordIds));
-//            List<Integer> judgeNumberByDeclareIds = schemeJudgeObjectService.getJudgeNumberByDeclareIds(recordList);
             List<Integer> schemeJudgeObjIds = schemeLiquidationAnalysisService.getSchemeJudgeObjIds(groupItem.getId());
-            List<Integer> judgeNumbers = schemeJudgeObjectService.getJudgeNumberByIds(schemeJudgeObjIds);
-            String number = generateCommonMethod.convertNumber(judgeNumbers);
-            if (StringUtils.isNotEmpty(number)) {
-                builder.insertHtml(generateCommonMethod.getSongWarpCssHtml3(String.format("%s%s", number, "号委估对象")));
+            if (CollectionUtils.isNotEmpty(schemeJudgeObjIds)) {
+                List<Integer> judgeNumbers = schemeJudgeObjectService.getJudgeNumberByIds(schemeJudgeObjIds);
+                String number = generateCommonMethod.convertNumber(judgeNumbers);
+                if (StringUtils.isNotEmpty(number)) {
+                    builder.insertHtml(generateCommonMethod.getSongWarpCssHtml3(String.format("%s%s", number, "号委估对象")));
+                }
             }
         }
         List<SchemeLiquidationAnalysisItem> itemList = Lists.newArrayList();
@@ -5260,8 +5260,8 @@ public class GenerateBaseDataService {
                     stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("规划条件:%s", generateEquityService.getLandEquityValue(entry.getKey(), entry.getValue(), GenerateEquityService.PLANNINGCONDITIONS))));
                     stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("土地开发程度:%s", generateEquityService.getLandEquityValue(entry.getKey(), entry.getValue(), GenerateEquityService.DEGREEOFLANDDEVELOPMENT))));
 
-                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("他项权利类别:%s", generateEquityService.getRightCategory(  projectId ,entry.getValue()))));
-                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("转让限制:%s", generateEquityService.getTransferLimit(  entry.getValue() ,null))));
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("他项权利类别:%s", generateEquityService.getRightCategory(projectId, entry.getValue()))));
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("转让限制:%s", generateEquityService.getTransferLimit(entry.getValue(), null))));
 
                     builder.insertHtml(generateCommonMethod.getWarpCssHtml(stringBuilder.toString()));
                 }
@@ -5273,9 +5273,6 @@ public class GenerateBaseDataService {
         doc.save(localPath);
         return localPath;
     }
-
-
-
 
 
     /**

@@ -1012,8 +1012,19 @@ public class SchemeJudgeObjectService {
         List<SchemeJudgeObject> judgeObjects = schemeJudgeObjectDao.getListByIds(ids);
         List<Integer> list = Lists.newArrayList();
         for (SchemeJudgeObject judgeObject : judgeObjects) {
-            if (NumberUtils.isNumber(judgeObject.getNumber())) {
-                list.add(NumberUtils.createInteger(judgeObject.getNumber()));
+            List<String> string2List = FormatUtils.transformString2List(judgeObject.getNumber(), ",");
+            if (CollectionUtils.isEmpty(string2List)) {
+                string2List = FormatUtils.transformString2List(judgeObject.getNumber(), "-");
+            }
+            if (CollectionUtils.isEmpty(string2List)) {
+                string2List = FormatUtils.transformString2List(judgeObject.getNumber(), "_");
+            }
+            if (CollectionUtils.isNotEmpty(string2List)) {
+                for (String num : string2List) {
+                    if (NumberUtils.isNumber(num)) {
+                        list.add(NumberUtils.createInteger(num));
+                    }
+                }
             }
         }
         return list;

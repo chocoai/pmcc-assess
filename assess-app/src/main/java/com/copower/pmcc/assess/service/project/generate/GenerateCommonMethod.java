@@ -532,9 +532,6 @@ public class GenerateCommonMethod {
         StringBuilder stringBuilder = new StringBuilder(8);
         if (CollectionUtils.isNotEmpty(numbers)) {
             numbers = numbers.stream().distinct().sorted().collect(Collectors.toList());
-            if (!checkSchemeJudgeObjectNumberOverloadTwenty(numbers)) {
-                return StringUtils.join(numbers, ",");
-            }
             Integer[] ints = new Integer[numbers.size()];
             for (int i = 0; i < numbers.size(); i++) {
                 ints[i] = numbers.get(i);
@@ -561,6 +558,9 @@ public class GenerateCommonMethod {
                 text = ints[0].toString();
             }
             List<String> stringList = convertNumberHelp(text);
+            if (!checkSchemeJudgeObjectNumberOverloadTwenty(numbers)) {
+                return StringUtils.join(stringList, "");
+            }
             if (CollectionUtils.isNotEmpty(stringList)) {
                 stringList.stream().forEach(s -> {
                     if (NumberUtils.isNumber(s)) {
