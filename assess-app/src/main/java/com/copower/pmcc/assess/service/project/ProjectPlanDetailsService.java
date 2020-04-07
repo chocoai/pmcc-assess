@@ -317,10 +317,6 @@ public class ProjectPlanDetailsService {
                         if (projectPlanDetailsVo.getId().intValue() == responsibilityDto.getPlanDetailsId().intValue()) {
                             String executeUrl = String.format(responsibilityDto.getUrl().contains("?") ? "%s&responsibilityId=%s" : "%s?responsibilityId=%s", responsibilityDto.getUrl(), responsibilityDto.getId());
                             projectPlanDetailsVo.setExcuteUrl(executeUrl);
-                            //设置粘贴
-                            if (CollectionUtils.isNotEmpty(phaseFullIds) && phaseFullIds.contains(projectPlanDetailsVo.getProjectPhaseId())) {
-                                projectPlanDetailsVo.setCanPaste(true);
-                            }
                         }
                     }
                 }
@@ -359,10 +355,6 @@ public class ProjectPlanDetailsService {
             }
             if (projectPlanDetailsVo.getBisLastLayer() == Boolean.TRUE)
                 projectPlanDetailsVo.setDisplayUrl(String.format("%s%s", viewUrl, projectPlanDetailsVo.getId()));
-            //设置复制
-            if (projectPlanDetailsVo.getBisLastLayer() == Boolean.TRUE && phaseFullIds.contains(projectPlanDetailsVo.getProjectPhaseId())) {
-                projectPlanDetailsVo.setCanCopy(true);
-            }
             boolean isMember = projectMemberService.isProjectMember(projectId, commonService.thisUserAccount());
             boolean isOperable = projectInfoService.isProjectOperable(projectId);
 

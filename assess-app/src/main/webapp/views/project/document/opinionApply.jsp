@@ -204,11 +204,6 @@
     function submit() {
         var customCmsContractInfo = formSerializeArray($("#opinionInfoFrm"));
         var extendConten = JSON.stringify(customCmsContractInfo);
-        var id = parseInt($("#id").val());
-        if (id == 0) {
-            notifyInfo("提示","提交前请先生成文件")
-            return false;
-        }
         if ("${bisEdit}" == "1") {
             saveEditformToServer(extendConten);
         }

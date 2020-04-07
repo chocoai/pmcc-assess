@@ -358,7 +358,7 @@
                                                             class="symbol required"></span></label>
                                                     <div class="col-sm-3">
                                                         <input type="text" class="form-control input-full" name="name"
-                                                               required
+                                                               required onfocus="examineCommon.referenceValue(estateCommon.estateForm.find('input[name=name]'),$(this));"
                                                                placeholder="名称" value="${basicEstateLandState.name}">
                                                     </div>
                                                     <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
@@ -610,20 +610,20 @@
                                                     <div class="col-sm-3">
                                                         <input type="text" class="form-control input-full "
                                                                placeholder="容积率"
-                                                               name="plotRatio"
+                                                               name="plotRatio" onfocus="examineCommon.referenceValue(estateCommon.estateForm.find('input[name=volumetricRate]'),$(this));"
                                                                value="${basicEstateLandState.plotRatio}">
                                                     </div>
                                                     <label class="col-sm-1">建筑密度</label>
                                                     <div class="col-sm-3">
-                                                        <input type="text" class="form-control input-full x-percent"
+                                                        <input type="text" class="form-control input-full"
                                                                placeholder="建筑密度"
                                                                name="buildingDensity"
                                                                value="${basicEstateLandState.buildingDensity}">
                                                     </div>
                                                     <label class="col-sm-1">绿地率</label>
                                                     <div class="col-sm-3">
-                                                        <input type="text" class="form-control input-full x-percent"
-                                                               placeholder="绿地率"
+                                                        <input type="text" class="form-control input-full"
+                                                               placeholder="绿地率" onfocus="examineCommon.referenceValue(estateCommon.estateForm.find('input[name=greeningRate]'),$(this));"
                                                                name="greenSpaceRate"
                                                                value="${basicEstateLandState.greenSpaceRate}">
                                                     </div>

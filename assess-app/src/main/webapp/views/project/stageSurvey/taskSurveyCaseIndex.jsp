@@ -103,6 +103,24 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="row form-group">
+                                                <div class="col-md-12 form-inline">
+                                                    <label class=" col-xs-2  col-sm-2  col-md-2  col-lg-2  control-label">
+                                                        建筑状态<span class="symbol required"></span>
+                                                    </label>
+                                                    <div class="col-xs-10  col-sm-10  col-md-10  col-lg-10">
+                                                        <select class="form-control input-full" name="buildingStatus"
+                                                                onchange="saveBasicApplyBatch();" required>
+                                                            <option value="">-请选择-</option>
+                                                            <c:if test="${not empty buildingStatusList}">
+                                                                <c:forEach var="item" items="${buildingStatusList}">
+                                                                    <option value="${item.id}" ${item.id eq applyBatch.buildingStatus?'selected="selected"':''}>${item.name}</option>
+                                                                </c:forEach>
+                                                            </c:if>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </form>
                                     </div>
                                 </div>
