@@ -4,7 +4,6 @@ import com.aspose.words.*;
 import com.copower.pmcc.assess.common.ArithmeticUtils;
 import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.FileUtils;
-import com.copower.pmcc.assess.common.MyEntry;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.MergeCellModel;
 import com.copower.pmcc.assess.service.PublicService;
@@ -37,7 +36,6 @@ import javax.servlet.ServletContext;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -196,47 +194,6 @@ public class GenerateCommonMethod {
         return listLinkedHashMap;
     }
 
-    public LinkedHashMap<BasicEstate, List<SchemeJudgeObject>> getEstateGroupByAreaId2(Integer areaId) throws Exception {
-        LinkedHashMap<BasicEstate, List<SchemeJudgeObject>> listLinkedHashMap = Maps.newLinkedHashMap();
-        List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaId);
-        List<DeclareRecord> declareRecords = declareRecordService.getDeclareRecordListByIds(LangUtils.transform(schemeJudgeObjectList, o -> o.getDeclareRecordId()));
-        if (CollectionUtils.isNotEmpty(declareRecords)) {
-            Map<String, List<Integer>> map = Maps.newHashMap();
-            for (DeclareRecord declareRecord : declareRecords) {
-                if (map.containsKey(declareRecord.getStreetNumber())) {
-                    List<Integer> list = map.get(declareRecord.getStreetNumber());
-                    list.add(declareRecord.getId());
-                    map.put(declareRecord.getStreetNumber(), list);
-                } else {
-                    map.put(declareRecord.getStreetNumber(), Lists.newArrayList(declareRecord.getId()));
-                }
-            }
-            for (Map.Entry<String, List<Integer>> stringListEntry : map.entrySet()) {
-                Iterator<Integer> iterator = stringListEntry.getValue().iterator();
-                Map<String,Map.Entry<BasicEstate,List<Integer>>> stringEntryMap = new HashMap<>() ;
-                while (iterator.hasNext()){
-                    Integer declareId = iterator.next();
-                    BasicApplyBatch basicApplyBatch = surveyCommonService.getBasicApplyBatchById(declareId) ;
-                    if (basicApplyBatch == null){
-                        continue;
-                    }
-                    BasicExamineHandle basicExamineHandle = new BasicExamineHandle(basicApplyBatch.getId()) ;
-                    BasicEstate basicEstate = basicExamineHandle.getEstate();
-                    //当街道名称和楼盘名称一致的时候 归为一类
-                    String key = String.join("",stringListEntry.getKey(),basicEstate.getName()) ;
-                    stringEntryMap.put(key,new MyEntry<>(basicEstate,stringListEntry.getValue())) ;
-                }
-                if (!stringEntryMap.isEmpty()){
-                    Iterator<Map.Entry<String, Map.Entry<BasicEstate, List<Integer>>>> entryIterator = stringEntryMap.entrySet().iterator();
-                    while (entryIterator.hasNext()){
-                        Map.Entry<String, Map.Entry<BasicEstate, List<Integer>>> stringEntryEntry = entryIterator.next();
-                        listLinkedHashMap.put(stringEntryEntry.getValue().getKey(), schemeJudgeObjectService.getListByDeclareIds(stringEntryEntry.getValue().getValue()));
-                    }
-                }
-            }
-        }
-        return listLinkedHashMap;
-    }
 
     /**
      * 基本排序
@@ -453,35 +410,6 @@ public class GenerateCommonMethod {
         return ArithmeticUtils.isInteger(bigDecimal);
     }
 
-    /**
-     * 获取合并的估价对象
-     *
-     * @param schemeJudgeObjectsA
-     * @return
-     */
-    public List<SchemeJudgeObject> getByRootAndChildSchemeJudgeObjectList(List<SchemeJudgeObject> schemeJudgeObjectsA, boolean declareRecordFilter) {
-        Set<SchemeJudgeObject> schemeJudgeObjectHashSet = Sets.newHashSet();
-        if (CollectionUtils.isNotEmpty(schemeJudgeObjectsA)) {
-            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectsA) {
-                if (schemeJudgeObject.getBisMerge()) {
-                    List<SchemeJudgeObject> schemeJudgeObjects = schemeJudgeObjectService.getChildrenJudgeObject(schemeJudgeObject.getId());
-                    if (CollectionUtils.isNotEmpty(schemeJudgeObjects)) {
-                        schemeJudgeObjectHashSet.addAll(schemeJudgeObjects);
-                    }
-                }
-                schemeJudgeObjectHashSet.add(schemeJudgeObject);
-            }
-        }
-        List<SchemeJudgeObject> objectList = Lists.newArrayList(schemeJudgeObjectHashSet);
-        if (declareRecordFilter) {
-            objectList = objectList.stream().filter(schemeJudgeObject -> schemeJudgeObject.getDeclareRecordId() != null).collect(Collectors.toList());
-        }
-        if (CollectionUtils.isNotEmpty(objectList)) {
-            objectList = getSortSchemeJudgeObject(objectList);
-            objectList = this.removeDuplicate(objectList);
-        }
-        return objectList;
-    }
 
 
     /**
@@ -748,26 +676,7 @@ public class GenerateCommonMethod {
         return listTemp;
     }
 
-    /**
-     * 为图片设置间隔
-     *
-     * @param builder
-     * @param imgPath
-     * @throws Exception
-     */
-    public void builderInsertImage(DocumentBuilder builder, String imgPath) throws Exception {
-        if (StringUtils.isNotBlank(imgPath) && FileUtils.checkImgSuffix(imgPath)) {
-            File file = new File(imgPath);
-            BufferedImage sourceImg = ImageIO.read(new FileInputStream(file));
-            int targetWidth = sourceImg.getWidth() > 400 ? 400 : sourceImg.getWidth();
-            builder.insertImage(imgPath, targetWidth, getImageTargeHeight(sourceImg.getWidth(), targetWidth, sourceImg.getHeight()));
-        }
-    }
 
-    public int getImageTargeHeight(int sourceWidth, int targeWidth, int sourceHeight) {
-        int targetHeight = sourceHeight / (sourceWidth / targeWidth);
-        return targetHeight;
-    }
 
     /**
      * 设置表格属性
@@ -1168,22 +1077,17 @@ public class GenerateCommonMethod {
         if (StringUtils.isEmpty(number)) {
             return integerList;
         }
-        List<String> stringList = FormatUtils.transformString2List(number);
-        if (CollectionUtils.isEmpty(stringList)) {
-            return integerList;
+        List<String> string2List = FormatUtils.transformString2List(number, ",");
+        if (CollectionUtils.isEmpty(string2List)) {
+            string2List = FormatUtils.transformString2List(number, "-");
         }
-        for (String s : stringList) {
-            if (NumberUtils.isNumber(s)) {
-                integerList.add(Integer.parseInt(s));
-            } else {
-                List<String> strings = FormatUtils.transformString2List(s);
-                if (CollectionUtils.isEmpty(strings)) {
-                    continue;
-                }
-                for (String ss : strings) {
-                    if (NumberUtils.isNumber(ss)) {
-                        integerList.add(Integer.parseInt(ss));
-                    }
+        if (CollectionUtils.isEmpty(string2List)) {
+            string2List = FormatUtils.transformString2List(number, "_");
+        }
+        if (CollectionUtils.isNotEmpty(string2List)) {
+            for (String num : string2List) {
+                if (NumberUtils.isNumber(num)) {
+                    integerList.add(NumberUtils.createInteger(num));
                 }
             }
         }

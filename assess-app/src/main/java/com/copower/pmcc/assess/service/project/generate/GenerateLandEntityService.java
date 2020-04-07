@@ -36,15 +36,15 @@ public class GenerateLandEntityService {
      * @throws Exception
      */
     @Deprecated
-    public String getContent(BasicApply basicApply) throws Exception {
-        if (basicApply == null) return null;
-        GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
-        BasicEstateLandStateVo landStateVo = generateBaseExamineService.getBasicEstateLandState();
-        if (landStateVo == null || landStateVo.getId() == null) {
-            return "";
-        }
-        return getContent2(generateBaseExamineService.getBasicEstateLandState());
-    }
+//    public String getContent(BasicApply basicApply) throws Exception {
+//        if (basicApply == null) return null;
+//        GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
+//        BasicEstateLandStateVo landStateVo = generateBaseExamineService.getBasicEstateLandState();
+//        if (landStateVo == null || landStateVo.getId() == null) {
+//            return "";
+//        }
+//        return getContent2(generateBaseExamineService.getBasicEstateLandState());
+//    }
 
     /**
      * 综上所述
