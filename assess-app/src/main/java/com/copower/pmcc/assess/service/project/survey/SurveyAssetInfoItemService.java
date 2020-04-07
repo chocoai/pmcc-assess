@@ -199,6 +199,14 @@ public class SurveyAssetInfoItemService {
         return surveyAssetInfoItemDao.getSurveyAssetInfoItemById(id);
     }
 
+    public SurveyAssetInfoItem getSurveyAssetInfoItemByDeclareId(Integer declareId) {
+        SurveyAssetInfoItem item=new SurveyAssetInfoItem();
+        item.setDeclareId(declareId);
+        List<SurveyAssetInfoItem> assetInfoItems = surveyAssetInfoItemDao.getSurveyAssetInfoItemListByExample(item);
+        if(CollectionUtils.isEmpty(assetInfoItems)) return null;
+        return assetInfoItems.get(0);
+    }
+
 
     public List<SurveyAssetInfoItem> getSurveyAssetInfoItemListByQuery(SurveyAssetInfoItem oo) {
         return surveyAssetInfoItemDao.getSurveyAssetInfoItemListByExample(oo);

@@ -12,6 +12,8 @@ public class BasicApply {
 
     private String structuralInfo;
 
+    private String address;
+
     private Integer caseEstateId;
 
     private Integer caseBuildingId;
@@ -104,6 +106,14 @@ public class BasicApply {
 
     public void setStructuralInfo(String structuralInfo) {
         this.structuralInfo = structuralInfo == null ? null : structuralInfo.trim();
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address == null ? null : address.trim();
     }
 
     public Integer getCaseEstateId() {

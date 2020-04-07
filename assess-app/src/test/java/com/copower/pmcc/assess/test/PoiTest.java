@@ -648,6 +648,11 @@ public class PoiTest {
         System.out.println(DateUtils.format(DateUtils.convertDate("40769"),DateUtils.DATE_PATTERN));
 
     }
+
+    @org.junit.Test
+    public void testReplace1(){
+        System.out.println("张三123".replace("张三","李四"));
+    }
 }
 
 

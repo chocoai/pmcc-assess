@@ -208,16 +208,28 @@ public class BasicApplyBatchDetailService {
         collectionParentBatchDetails(houseBasicApplyBatchDetail.getId(), list);
         if (CollectionUtils.isNotEmpty(list)) {
             StringBuilder stringBuilder = new StringBuilder();
+            StringBuilder addressBuilder = new StringBuilder();
             List<KeyValueDto> keyValueDtos = Lists.newArrayList();
             for (int i = list.size() - 1; i >= 0; i--) {
                 BasicApplyBatchDetail batchDetail = list.get(i);
                 stringBuilder.append(batchDetail.getName());
+                if (BasicFormClassifyEnum.ESTATE.getKey().equals(batchDetail.getType())) {
+                    BasicEstate estate = basicEstateService.getBasicEstateById(batchDetail.getTableId());
+                    if (estate != null) {
+                        addressBuilder.append(estate.getStreetNumber());
+                        if (StringUtils.isNotBlank(estate.getAttachNumber()))
+                            addressBuilder.append("附").append(estate.getAttachNumber());
+                    }
+                } else {
+                    addressBuilder.append(batchDetail.getName());
+                }
                 KeyValueDto keyValueDto = new KeyValueDto();
                 keyValueDto.setKey(batchDetail.getType());
                 keyValueDto.setValue(String.valueOf(batchDetail.getTableId()));
                 keyValueDtos.add(keyValueDto);
             }
             basicApply.setName(stringBuilder.toString());
+            basicApply.setAddress(addressBuilder.toString());
             basicApply.setStructuralInfo(JSON.toJSONString(keyValueDtos));
         }
         basicApplyService.saveBasicApply(basicApply);
@@ -236,14 +248,14 @@ public class BasicApplyBatchDetailService {
         return basicApplyBatchDetailDao.getInfoList(basicApplyBatchDetail);
     }
 
-    public List<BasicApplyBatchDetail> getBasicApplyBatchDetailListByType(String type, Integer applyBatchId,Integer pid, Boolean isFuzzyMatching) {
+    public List<BasicApplyBatchDetail> getBasicApplyBatchDetailListByType(String type, Integer applyBatchId, Integer pid, Boolean isFuzzyMatching) {
         List<String> types = Lists.newArrayList();
         if (isFuzzyMatching) {
             types.addAll(LangUtils.transform(BasicFormClassifyEnum.getEnumByFuzzyKey(type), o -> o.getKey()));
         } else {
             types.add(type);
         }
-        return basicApplyBatchDetailDao.getBasicApplyBatchDetailListByTypes(types, applyBatchId,pid);
+        return basicApplyBatchDetailDao.getBasicApplyBatchDetailListByTypes(types, applyBatchId, pid);
     }
 
 
