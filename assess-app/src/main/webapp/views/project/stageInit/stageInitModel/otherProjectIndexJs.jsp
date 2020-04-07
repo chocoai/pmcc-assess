@@ -3,6 +3,73 @@
 <script>
     var objProject = {};
 
+
+    objProject.run = function (data, url, type, callback, funParams, errorCallback) {
+        Loading.progressShow();
+        $.ajax({
+            type: type,
+            url: '${pageContext.request.contextPath}' + url,
+            data: data,
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    if (funParams) {
+                        if (funParams == 'save') {
+                            notifySuccess("成功", "保存数据成功!");
+                        }
+                        if (funParams == 'add') {
+                            notifySuccess("成功", "添加数据成功!");
+                        }
+                        if (funParams == 'update') {
+                            notifySuccess("成功", "修改数据成功!");
+                        }
+                        if (funParams == 'query') {
+                            notifySuccess("成功", "查询数据成功!");
+                        }
+                        if (funParams == 'delete') {
+                            notifySuccess("成功", "删除数据成功!");
+                        }
+                    }
+                    if (callback) {
+                        callback(result.data);
+                    }
+                } else {
+                    if (result.errmsg) {
+                        AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
+                    } else {
+                        AlertError("错误", "调用服务端方法失败，失败原因:" + result);
+                    }
+                    if (errorCallback) {
+                        errorCallback();
+                    }
+                }
+            },
+            error: function (result) {
+                Loading.progressHide();
+                if (result.errmsg) {
+                    AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
+                } else {
+                    AlertError("错误", "调用服务端方法失败，失败原因:" + result);
+                }
+            }
+        });
+    };
+    objProject.ajaxServerMethod = function (data, url, type, callback, funParams, errorCallback) {
+        var deleteParams = false;
+        if (funParams) {
+            if (funParams == 'delete') {
+                deleteParams = true;
+            }
+        }
+        if (deleteParams) {
+            AlertConfirm("是否确认删除当前数据", "删除相应的数据后将不可恢复", function (flag) {
+                objProject.run(data, url, type, callback, funParams, errorCallback);
+            });
+        } else {
+            objProject.run(data, url, type, callback, funParams, errorCallback);
+        }
+    };
+
     /**
      * 判断字符串以及null等
      */
@@ -83,43 +150,9 @@
     };
 
     objProject.getCategory = function (pid, value) {
-        if (!pid) {
-            var option = "<option value=''>-请先选择委托目的-</option>";
-            $("#" + objProject.config.info.frm).find('select.entrustAimType_p').html(option);
-            $("#" + objProject.config.info.frm).find('select.entrustAimType_p').val(['']).trigger('change');
-            return false;
-        }
-        $.ajax({
-            url: "${pageContext.request.contextPath}/baseDataDic/getCacheDataDicListByPid",
-            type: "get",
-            dataType: "json",
-            data: {pid: pid},
-            success: function (result) {
-                if (result.ret) {
-                    var data = result.data;
-                    if (data.length >= 1) {
-                        var option = "<option value=''>-请选择-</option>";
-                        for (var i = 0; i < data.length; i++) {
-                            option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                        }
-                        $("#" + objProject.config.info.frm).find('select.entrustAimType_p').html(option);
-                        if (value) {
-                            $("#" + objProject.config.info.frm).find('select.entrustAimType_p').val([value]).trigger('change');
-                        } else {
-                            $("#" + objProject.config.info.frm).find('select.entrustAimType_p').val(['']).trigger('change');
-                        }
-                    }
-
-                }
-                else {
-                    AlertError("保存数据失败，失败原因:" + result.errmsg);
-                }
-            },
-            error: function (result) {
-                AlertError("调用服务端方法失败，失败原因:" + result);
-            }
-        })
-
+        AssessCommon.loadDataDicByPid(pid, value, function (html, data) {
+            $("#" + objProject.config.info.frm).find("select[name='entrustAimType']").empty().html(html).trigger('change');
+        });
     };
 
     objProject.config = {
@@ -172,36 +205,10 @@
             return cols;
         },
         save: function (data, callback) {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/initiateContacts/saveAndUpdate",
-                type: "post",
-                dataType: "json",
-                data: data,
-                success: function (result) {
-                    if (result.ret) {
-                        callback();
-                    }
-                },
-                error: function (result) {
-                    AlertError("调用服务端方法失败，失败原因:" + result);
-                }
-            })
+            objProject.ajaxServerMethod(data, '/initiateContacts/saveAndUpdate', "post", callback, null);
         },
         get: function (id, callback) {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/initiateContacts/get",
-                type: "get",
-                dataType: "json",
-                data: {id: id},
-                success: function (result) {
-                    if (result.ret) {
-                        callback(result.data);
-                    }
-                },
-                error: function (result) {
-                    AlertError("调用服务端方法失败，失败原因:" + result);
-                }
-            })
+            objProject.ajaxServerMethod({id: id}, '/initiateContacts/get', "get", callback, null);
         },
         loadList: function (col, data) {
             var cols = objProject.commonContacts.getCols();
@@ -216,55 +223,14 @@
             });
         },
         delete: function (id, callback) {
-            AlertConfirm("是否确认删除", "删除相应的数据后将不可恢复", function () {
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/initiateContacts/delete",
-                    type: "post",
-                    dataType: "json",
-                    data: {id: id},
-                    success: function (result) {
-                        if (result.ret) {
-                            callback();
-                        }
-                    },
-                    error: function (result) {
-                        AlertError("调用服务端方法失败，失败原因:" + result);
-                    }
-                })
-            });
+            objProject.ajaxServerMethod({id: id}, "/initiateContacts/delete", "post", callback, 'delete', null);
         },
         clear: function (data, callback) {
             data.creator = '${currUserAccount}';
-            $.ajax({
-                url: "${pageContext.request.contextPath}/initiateContacts/clear",
-                type: "post",
-                dataType: "json",
-                data: data,
-                success: function (result) {
-                    if (result.ret) {
-                        callback();
-                    }
-                },
-                error: function (result) {
-                    AlertError("调用服务端方法失败，失败原因:" + result);
-                }
-            })
+            objProject.ajaxServerMethod(data, '/initiateContacts/clear', "post", callback, null, null);
         },
         writeCustomerLinkmanInContacts: function (data, callback) {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/initiateCrmCustomer/writeCustomerLinkmanInContacts",
-                type: "post",
-                dataType: "json",
-                data: data,
-                success: function (result) {
-                    if (result.ret) {
-                        callback();
-                    }
-                },
-                error: function (result) {
-                    AlertError("调用服务端方法失败，失败原因:" + result);
-                }
-            })
+            objProject.ajaxServerMethod(data, '/initiateCrmCustomer/writeCustomerLinkmanInContacts', "post", callback, null, null);
         },
         findCRMContacts: function (that) {
             var text = $(that).parent().parent().prev().find("input[name='name']").val();
@@ -316,38 +282,13 @@
                     cPhone: item.phoneNumber
                 });
             });
-            $.ajax({
-                url: "${pageContext.request.contextPath}/initiateContacts/saveAndUpdateList",
-                type: "post",
-                dataType: "json",
-                data: {formData: JSON.stringify(data)},
-                success: function (result) {
-                    if (result.ret) {
-                        objProject.unit_information.loadContactList();
-                        $('#divBoxCRMContacts').modal("hide");
-                    }
-                },
-                error: function (result) {
-                    notifyWaring('警告', "调用服务端方法失败，失败!");
-                    console.log(result);
-                }
-            })
+            objProject.ajaxServerMethod({formData: JSON.stringify(data)}, "/initiateContacts/saveAndUpdateList", "post", function () {
+                objProject.unit_information.loadContactList();
+                $('#divBoxCRMContacts').modal("hide");
+            });
         },
         copyContacts: function (data, callback) {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/initiateContacts/copyContacts",
-                type: "post",
-                dataType: "json",
-                data: data,
-                success: function (result) {
-                    if (result.ret) {
-                        callback();
-                    }
-                },
-                error: function (result) {
-                    AlertError("调用服务端方法失败，失败原因:" + result);
-                }
-            })
+            objProject.ajaxServerMethod(data, "/initiateContacts/copyContacts", "post", callback);
         }
     };
 
@@ -371,7 +312,7 @@
                 districtValue: item.district
             });
             AssessCommon.loadDataDicByKey(AssessDicKey.value_type, item.valueType, function (html, data) {
-                $("#" + objProject.config.info.frm).find("select.valueType").empty().html(html).trigger('change');
+                $("#" + objProject.config.info.frm).find("select[name='valueType']").empty().html(html).trigger('change');
             });
             AssessCommon.loadDataDicByKey(AssessDicKey.serviceComeFrom, item.serviceComeFrom, function (html, data) {
                 $("#" + objProject.config.info.frm).find("select[name='serviceComeFrom']").empty().html(html).trigger('change');
@@ -393,51 +334,33 @@
                 $("#" + objProject.config.info.frm).find("select.loanType").empty().html(html).trigger('change');
             });
 
-            $("#" + objProject.config.info.frm).find("select.valueType").change(function () {
-                var entrustPurpose = $("#" + objProject.config.info.frm).find("select.entrustPurpose").find("option:selected").val();
-                var valueType = $("#" + objProject.config.info.frm).find("select.valueType").find("option:selected").val();
-                AssessCommon.getDataDicInfo(valueType, function (data) {
+            $("#" + objProject.config.info.frm).find("select[name='valueType']").change(function () {
+                AssessCommon.getDataDicInfo($(this).val(), function (data) {
                     if (data) {
-                        console.log(objProject.Trim(data.remark));
                         $("#" + objProject.config.info.frm).find("input[name='remarkValueType']").val($.trim(data.remark));
                     }
                 });
-                if (entrustPurpose && valueType) {
-                    entrustPurpose = "," + entrustPurpose + ",";
-                    valueType = "," + valueType + ",";
-                    $.ajax({
-                        url: "${pageContext.request.contextPath}/projectInfo/getValueDefinition",
-                        type: "post",
-                        dataType: "json",
-                        data: {
-                            entrustPurpose: entrustPurpose,
-                            valueType: valueType
-                        },
-                        success: function (result) {
-                            if (result.ret) {
-                                if (result.data) {
-                                    $("#" + objProject.config.info.frm).find("select.propertyScope").val([result.data.propertyScope]).trigger('change');
-                                    $("#" + objProject.config.info.frm).find("input[name='scopeInclude']").val(result.data.scopeInclude);
-                                    $("#" + objProject.config.info.frm).find("input[name='scopeNotInclude']").val(result.data.scopeNotInclude);
-                                } else {
-                                    $("#" + objProject.config.info.frm).find("select.propertyScope").val(null).trigger("change");
-                                    $("#" + objProject.config.info.frm).find("input[name='scopeInclude']").val("");
-                                    $("#" + objProject.config.info.frm).find("input[name='scopeNotInclude']").val("");
-                                }
-                            }
-                            else {
-                                notifyWaring('警告', result.errmsg);
-                            }
-                        },
-                        error: function (result) {
-                            AlertError("调用服务端方法失败，失败原因:" + result);
+                var data = formSerializeArray($("#" + objProject.config.info.frm));
+                objProject.ajaxServerMethod(data, '/projectInfo/getValueDefinition', "post", function (data) {
+                    if (data){
+                        if (data.propertyScope) {
+                            $("#" + objProject.config.info.frm).find("select.propertyScope").val(data.propertyScope).trigger('change');
                         }
-                    })
-
-                }
+                        if (data.scopeInclude) {
+                            $("#" + objProject.config.info.frm).find("input[name='scopeInclude']").val(data.scopeInclude);
+                        }
+                        if (data.scopeNotInclude) {
+                            $("#" + objProject.config.info.frm).find("input[name='scopeNotInclude']").val(data.scopeNotInclude);
+                        }
+                    }
+                }, null, function () {
+                    $("#" + objProject.config.info.frm).find("select[name='propertyScope']").val(null).trigger("change");
+                    $("#" + objProject.config.info.frm).find("input[name='scopeInclude']").val("");
+                    $("#" + objProject.config.info.frm).find("input[name='scopeNotInclude']").val("");
+                });
             });
-            $("#" + objProject.config.info.frm).find("select.entrustPurpose").change(function () {
-                var entrustPurpose = $("#" + objProject.config.info.frm).find("select.entrustPurpose").find("option:selected").val();
+            $("#" + objProject.config.info.frm).find("select[name='entrustPurpose']").change(function () {
+                var entrustPurpose = $("#" + objProject.config.info.frm).find("select[name='entrustPurpose']").find("option:selected").val();
                 var strArr = ["抵押评估"];//来自于实体描述1(1).docx中的规则
                 if (entrustPurpose) {
                     AssessCommon.getDataDicInfo(entrustPurpose, function (entrustPurposeData) {
@@ -458,71 +381,34 @@
                 } else {
                     objProject.getCategory(entrustPurpose, false);
                 }
-                var valueType = $("#" + objProject.config.info.frm).find("select.valueType").find("option:selected").val();
-
-                if (entrustPurpose && valueType) {
-                    entrustPurpose = "," + entrustPurpose + ",";
-                    valueType = "," + valueType + ",";
-                    $.ajax({
-                        url: "${pageContext.request.contextPath}/projectInfo/getValueDefinition",
-                        type: "post",
-                        dataType: "json",
-                        data: {
-                            entrustPurpose: entrustPurpose,
-                            valueType: valueType
-                        },
-                        success: function (result) {
-                            if (result.ret) {
-                                if (result.data) {
-                                    $("#" + objProject.config.info.frm).find("select.propertyScope").val([result.data.propertyScope]).trigger('change');
-                                    $("#" + objProject.config.info.frm).find("input[name='scopeInclude']").val(result.data.scopeInclude);
-                                    $("#" + objProject.config.info.frm).find("input[name='scopeNotInclude']").val(result.data.scopeNotInclude);
-                                } else {
-                                    $("#" + objProject.config.info.frm).find("select.propertyScope").val(null).trigger("change");
-                                    $("#" + objProject.config.info.frm).find("input[name='scopeInclude']").val("");
-                                    $("#" + objProject.config.info.frm).find("input[name='scopeNotInclude']").val("");
-
-                                }
-                            }
-                            else {
-                                notifyWaring('警告', result.errmsg);
-                            }
-                        },
-                        error: function (result) {
-                            AlertError("调用服务端方法失败，失败原因:" + result);
+                var data = formSerializeArray($("#" + objProject.config.info.frm));
+                objProject.ajaxServerMethod(data, '/projectInfo/getValueDefinition', "post", function (data) {
+                    if (data){
+                        if (data.propertyScope) {
+                            $("#" + objProject.config.info.frm).find("select.propertyScope").val(data.propertyScope).trigger('change');
                         }
-                    })
-
-                }
+                        if (data.scopeInclude) {
+                            $("#" + objProject.config.info.frm).find("input[name='scopeInclude']").val(data.scopeInclude);
+                        }
+                        if (data.scopeNotInclude) {
+                            $("#" + objProject.config.info.frm).find("input[name='scopeNotInclude']").val(data.scopeNotInclude);
+                        }
+                    }
+                }, null, function () {
+                    $("#" + objProject.config.info.frm).find("select[name='propertyScope']").val(null).trigger("change");
+                    $("#" + objProject.config.info.frm).find("input[name='scopeInclude']").val("");
+                    $("#" + objProject.config.info.frm).find("input[name='scopeNotInclude']").val("");
+                });
             });
 
-            $("#" + objProject.config.info.frm).find("select.entrustAimType_p").change(function () {
+            $("#" + objProject.config.info.frm).find("select[name='entrustAimType']").change(function () {
                 var remarkEntrustPurpose = $("#" + objProject.config.info.frm).find("input[name='remarkEntrustPurpose']");
                 remarkEntrustPurpose.val('');
-                var entrustAimType = $("#" + objProject.config.info.frm).find("select.entrustAimType_p").find("option:selected").val();
+                var entrustAimType = $("#" + objProject.config.info.frm).find("select[name='entrustAimType']").find("option:selected").val();
                 if (entrustAimType) {
-                    $.ajax({
-                        url: "${pageContext.request.contextPath}/projectInfo/getRemarkEntrustPurpose",
-                        type: "post",
-                        dataType: "json",
-                        data: {
-                            entrustAimType: entrustAimType,
-                        },
-                        success: function (result) {
-                            if (result.ret) {
-                                if (result.data) {
-                                    remarkEntrustPurpose.val(result.data.remark);
-                                }
-                            }
-                            else {
-                                notifyWaring('警告', result.errmsg);
-                            }
-                        },
-                        error: function (result) {
-                            AlertError("调用服务端方法失败，失败原因:" + result);
-                        }
-                    })
-
+                    objProject.ajaxServerMethod({entrustAimType: entrustAimType}, '/projectInfo/getRemarkEntrustPurpose', "post", function (data) {
+                        remarkEntrustPurpose.val(data.remark);
+                    });
                 }
             });
 
@@ -802,7 +688,6 @@
                     objProject.commonContacts.copyContacts(replaceData, function () {
                         objProject.possessor.loadContactList();
                     });
-                    //附件拷贝
                     $.ajax({
                         url: getContextPath() + "/public/getSysAttachmentDtoList",
                         type: "get",
@@ -955,8 +840,8 @@
                     if (node.name) {
                         names.push(node.name);
                     }
-                    if (node.uuid && node.name){
-                        var url = "<a target='_blank' href='${sysUrl}/pmcc-contract/contractCurrency/details/" + node.uuid +"'"+ ">" +node.name+ "</a>";
+                    if (node.uuid && node.name) {
+                        var url = "<a target='_blank' href='${sysUrl}/pmcc-contract/contractCurrency/details/" + node.uuid + "'" + ">" + node.name + "</a>";
                         viewArray.push(url);
                     }
                 });
