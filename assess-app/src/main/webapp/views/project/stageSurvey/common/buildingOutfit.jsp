@@ -52,18 +52,6 @@
                             <div class="card-body">
                                 <div class="row form-group">
                                     <div class="col-md-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-2 control-label">
-                                                装修部位<span class="symbol required"></span>
-                                            </label>
-                                            <div class="col-sm-10">
-                                                <input type="text" class="form-control input-full" name="decorationPart" required>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row form-group">
-                                    <div class="col-md-12">
                                     <div class="form-inline x-valid">
                                         <label class="col-sm-2 control-label">
                                             装修材料<span class="symbol required"></span>
@@ -116,6 +104,18 @@
                                             </select>
                                         </div>
                                     </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                装修部位<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control input-full" name="decorationPart" required>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

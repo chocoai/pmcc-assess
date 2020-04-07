@@ -797,16 +797,10 @@ public class BasicApplyBatchController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "/initBasicApplyBatchInfo", method = {RequestMethod.POST}, name = "初始化")
-    public HttpResult initBasicApplyBatchInfo(Integer planDetailsId, Integer projectId, Integer classify, Integer type, Integer buildingStatus) {
+    public HttpResult initBasicApplyBatchInfo(BasicApplyBatch applyBatch) {
         try {
-            BasicApplyBatch applyBatch = new BasicApplyBatch();
-            applyBatch.setPlanDetailsId(planDetailsId);
-            applyBatch.setClassify(classify);
-            applyBatch.setProjectId(projectId);
-            applyBatch.setType(type);
-            applyBatch.setBuildingStatus(buildingStatus);
-            basicApplyBatchService.initBasicApplyBatchInfo(applyBatch);
-            return HttpResult.newCorrectResult(applyBatch);
+            BasicApplyBatch basicApplyBatch = basicApplyBatchService.initBasicApplyBatchInfo(applyBatch);
+            return HttpResult.newCorrectResult(basicApplyBatch);
         } catch (Exception e) {
             logger.error(String.format("exception: %s", e.getMessage()), e);
             return HttpResult.newErrorResult("初始化异常");
@@ -862,9 +856,9 @@ public class BasicApplyBatchController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "/referenceEstate", method = RequestMethod.POST, name = "引用其他楼盘")
-    public HttpResult referenceEstate(Integer referenceId, Integer basicApplyBatchId,Integer planDetailsId) throws Exception {
+    public HttpResult referenceEstate(Integer referenceId, Integer basicApplyBatchId, Integer planDetailsId) throws Exception {
         try {
-            basicApplyBatchService.referenceEstate(referenceId, basicApplyBatchId,planDetailsId);
+            basicApplyBatchService.referenceEstate(referenceId, basicApplyBatchId, planDetailsId);
             return HttpResult.newCorrectResult();
         } catch (Exception e1) {
             logger.error(e1.getMessage(), e1);
@@ -883,5 +877,17 @@ public class BasicApplyBatchController extends BaseController {
         vo.setTotal(page.getTotal());
         vo.setRows(CollectionUtils.isEmpty(estateBatchDetailList) ? new ArrayList<BasicApplyBatchDetail>() : estateBatchDetailList);
         return vo;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getBasicApplyBatchDetailListByType", method = RequestMethod.POST, name = "获取数据")
+    public HttpResult getBasicApplyBatchDetailListByType(String type, Integer basicApplyBatchId,Integer pid) {
+        try {
+            List<BasicApplyBatchDetail> batchDetailList = basicApplyBatchDetailService.getBasicApplyBatchDetailListByType(type, basicApplyBatchId,pid, true);
+            return HttpResult.newCorrectResult(batchDetailList);
+        } catch (Exception e1) {
+            logger.error(e1.getMessage(), e1);
+            return HttpResult.newErrorResult("异常");
+        }
     }
 }

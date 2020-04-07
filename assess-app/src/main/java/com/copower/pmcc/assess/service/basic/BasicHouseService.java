@@ -291,10 +291,12 @@ public class BasicHouseService extends BasicEntityAbstract {
     public BasicHouse getHouseByBasicApply(BasicApply basicApply) {
         if (basicApply == null) return null;
         String structuralInfo = basicApply.getStructuralInfo();
-        List<KeyValueDto> keyValueDtos = JSON.parseArray(structuralInfo, KeyValueDto.class);
-        for (KeyValueDto keyValueDto : keyValueDtos) {
-            if (BasicFormClassifyEnum.HOUSE.getKey().equals(keyValueDto.getKey())) {
-                return getBasicHouseById(Integer.valueOf(keyValueDto.getValue()));
+        if(StringUtils.isNotBlank(structuralInfo)){
+            List<KeyValueDto> keyValueDtos = JSON.parseArray(structuralInfo, KeyValueDto.class);
+            for (KeyValueDto keyValueDto : keyValueDtos) {
+                if (BasicFormClassifyEnum.HOUSE.getKey().equals(keyValueDto.getKey())) {
+                    return getBasicHouseById(Integer.valueOf(keyValueDto.getValue()));
+                }
             }
         }
         return null;

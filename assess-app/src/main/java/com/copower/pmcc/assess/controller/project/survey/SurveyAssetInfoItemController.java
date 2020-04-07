@@ -105,8 +105,8 @@ public class SurveyAssetInfoItemController {
     }
 
     @GetMapping(value = "/getBootstrapTableVo", name = "get Pagination list")
-    public BootstrapTableVo getBootstrapTableVo(SurveyAssetInfoItem oo) {
-        return surveyAssetInfoItemService.getBootstrapTableVo(oo);
+    public BootstrapTableVo getBootstrapTableVo(SurveyAssetInfoItem oo,Integer eatate,Integer building,Integer unit) {
+        return surveyAssetInfoItemService.getBootstrapTableVo(oo,eatate,building,unit);
     }
 
 }

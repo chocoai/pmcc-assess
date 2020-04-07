@@ -36,6 +36,8 @@ public class BasicBuilding {
 
     private String unitInterval;
 
+    private Integer unitCount;
+
     private BigDecimal propertyFee;
 
     private BigDecimal facilitiesUseFee;
@@ -250,6 +252,14 @@ public class BasicBuilding {
 
     public void setUnitInterval(String unitInterval) {
         this.unitInterval = unitInterval == null ? null : unitInterval.trim();
+    }
+
+    public Integer getUnitCount() {
+        return unitCount;
+    }
+
+    public void setUnitCount(Integer unitCount) {
+        this.unitCount = unitCount;
     }
 
     public BigDecimal getPropertyFee() {

@@ -190,8 +190,8 @@ AssessDicKey.estate_examinematchingmedical_distance = "estate.examineMatchingMed
 //楼栋
 AssessDicKey.examine_building_residence_data = "examine.building.residence.data";//非工业仓储(建筑使用寿命)
 AssessDicKey.examine_building_property_type = "building.property_type";//物业类型
+AssessDicKey.examine_building_property_category = "building.property_category";//物业类别
 AssessDicKey.examine_building_property_structure = "building.building_structure";//建筑结构
-AssessDicKey.examine_building_property_category = "building.building_category";//建筑类别
 AssessDicKey.examine_building_construction_quality = "examine.building.construction.quality";//工程质量
 AssessDicKey.examine_building_appearance_style = "examine.building.appearance.style";//外观风格
 AssessDicKey.examine_building_appearance_new_and_old = "examine.building.appearance_new_and_old";//外观新旧
@@ -223,6 +223,7 @@ AssessDicKey.examineUnitQuantity = "unit.quantity";//数量
 
 //房屋
 AssessDicKey.examineHouseSpatialDistribution = "examine.house.spatial.distribution";//空间布局
+AssessDicKey.examineHouseUtilitiesMeasure = "examine.house.utilities.measure";//水电费标准
 AssessDicKey.examineHouseTenementType = "examine.house.tenement.type";//空间布局
 AssessDicKey.examineHouseFinancingConditions = "examine.house.financing.conditions";//融资条件
 AssessDicKey.examineHouseScopeProperty = "examine.house.scope.property";//财产范围
@@ -252,6 +253,7 @@ AssessDicKey.examineHouseUseCondition = "examine.house.use.condition";//使用�
 AssessDicKey.examineHouseDecorateSituation = "examine.house.decorate.situation";//使用情况
 
 AssessDicKey.examine_house_room_part = "examine.house.room.part";//房间装修部位
+AssessDicKey.examine_house_room_level = "examine.house.room.level";//房间装修档次
 AssessDicKey.examine_house_room_material = "examine.house.room.material";//房间装修材料
 AssessDicKey.examine_house_room_adjacent_position = "examine.house.room.adjacent.position";//相邻位置
 AssessDicKey.examine_house_room_orientation = "examine.house.room.orientation";//方位

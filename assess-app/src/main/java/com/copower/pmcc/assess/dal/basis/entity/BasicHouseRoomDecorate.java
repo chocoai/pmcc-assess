@@ -29,6 +29,8 @@ public class BasicHouseRoomDecorate {
 
     private String location;
 
+    private Integer level;
+
     public Integer getId() {
         return id;
     }
@@ -131,5 +133,13 @@ public class BasicHouseRoomDecorate {
 
     public void setLocation(String location) {
         this.location = location == null ? null : location.trim();
+    }
+
+    public Integer getLevel() {
+        return level;
+    }
+
+    public void setLevel(Integer level) {
+        this.level = level;
     }
 }

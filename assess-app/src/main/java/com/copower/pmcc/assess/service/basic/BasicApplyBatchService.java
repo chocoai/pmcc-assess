@@ -74,9 +74,7 @@ public class BasicApplyBatchService {
     @Autowired
     private BasicHouseTradingService basicHouseTradingService;
     @Autowired
-    private BasicHouseDamagedDegreeService basicHouseDamagedDegreeService;
-    @Autowired
-    private ResidueRatioService residueRatioService;
+    private BasicUnitHuxingService basicUnitHuxingService;
     @Autowired
     private PublicService publicService;
     @Autowired
@@ -150,7 +148,7 @@ public class BasicApplyBatchService {
             ztreeDto.setApplyBatchId(item.getApplyBatchId());
             ztreeDto.setDeclareRecordId(item.getDeclareRecordId());
             DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(item.getDeclareRecordId());
-            if (declareRecord != null) {
+            if(declareRecord!=null){
                 ztreeDto.setDeclareRecordName(declareRecord.getName());
             }
             treeDtos.add(ztreeDto);
@@ -203,7 +201,7 @@ public class BasicApplyBatchService {
         whereBasicBuilding.setEstateId(estateId);
         whereBasicBuilding.setBisCase(true);
         List<BasicBuilding> buildingList = basicBuildingService.getBasicBuildingList(whereBasicBuilding);
-        if (CollectionUtils.isEmpty(buildingList)) return ztreeDtoList;
+        if(CollectionUtils.isEmpty(buildingList)) return ztreeDtoList;
         for (BasicBuilding basicBuilding : buildingList) {
             ZtreeDto ztreeDtoBuilding = new ZtreeDto();
             ztreeDtoBuilding.setPid(ztreeDtoEstate.getId());
@@ -219,7 +217,7 @@ public class BasicApplyBatchService {
             whereBasicUnit.setBuildingId(basicBuilding.getId());
             whereBasicUnit.setBisCase(true);
             List<BasicUnit> basicUnitList = basicUnitService.getBasicUnitList(whereBasicUnit);
-            if (CollectionUtils.isEmpty(basicUnitList)) continue;
+            if(CollectionUtils.isEmpty(basicUnitList)) continue;
             for (BasicUnit basicUnit : basicUnitList) {
                 ZtreeDto ztreeDtoUnit = new ZtreeDto();
                 ztreeDtoUnit.setPid(ztreeDtoBuilding.getId());
@@ -235,7 +233,7 @@ public class BasicApplyBatchService {
                 whereBasicHouse.setUnitId(basicUnit.getId());
                 whereBasicHouse.setBisCase(true);
                 List<BasicHouse> basicHouseList = basicHouseService.getBasicHouseList(whereBasicHouse);
-                if (CollectionUtils.isEmpty(basicHouseList)) continue;
+                if(CollectionUtils.isEmpty(basicHouseList)) continue;
                 for (BasicHouse basicHouse : basicHouseList) {
                     ZtreeDto ztreeDtoHouse = new ZtreeDto();
                     ztreeDtoHouse.setPid(ztreeDtoUnit.getId());
@@ -386,6 +384,7 @@ public class BasicApplyBatchService {
                 basicApplyBatchDetailService.deleteBasicApplyBatchDetail(basicApplyBatchDetail.getId());
             }
         }
+        basicApplyBatchDao.deleteInfo(basicApplyBatchId);
     }
 
     public void addBasicApplyBatch(BasicApplyBatch applyBatch) {
@@ -499,6 +498,12 @@ public class BasicApplyBatchService {
             basicHouseTrading.setHouseId(basicHouse.getId());
             basicHouseTrading.setCreator(commonService.thisUserAccount());
             basicHouseTradingService.saveAndUpdateBasicHouseTrading(basicHouseTrading, false);
+
+            BasicUnitHuxing huxing = new BasicUnitHuxing();
+            huxing.setHouseId(basicHouse.getId());
+            huxing.setEstateId(basicHouse.getEstateId());
+            basicUnitHuxingService.saveAndUpdateBasicUnitHuxing(huxing, false);
+
             BasicApplyBatchDetail houseApplyBatchDetail = new BasicApplyBatchDetail();
             houseApplyBatchDetail.setBisStandard(true);
             houseApplyBatchDetail.setPid(unitApplyBatchDetail.getId());
@@ -835,7 +840,7 @@ public class BasicApplyBatchService {
         applyBatchDetail.setApplyBatchId(applyBatchId);
         applyBatchDetail.setCreator(commonService.thisUserAccount());
         applyBatchDetail.setExecutor(commonService.thisUserAccount());
-        ZtreeDto ztreeDto = JSON.parseObject(nodeJson, ZtreeDto.class);
+        ZtreeDto ztreeDto = JSON.parseObject(nodeJson,ZtreeDto.class);
         ArrayList<String> ignoreList = Lists.newArrayList("bisCase");
         if (ztreeDto != null) {
             applyBatchDetail.setUpgradeTableId(ztreeDto.getTableId());
@@ -968,5 +973,16 @@ public class BasicApplyBatchService {
             basicApplyBatchDao.addBasicApplyBatch(newBasicApplyBatch);
         }
 
+    }
+
+    /**
+     * 获取批量信息 by planDetailsIds
+     *
+     * @param planDetailsIdList
+     * @return
+     */
+    public List<BasicApplyBatch> getBasicApplyBatchsByPlanDetailsIds(List<Integer> planDetailsIdList) {
+        if (CollectionUtils.isEmpty(planDetailsIdList)) return null;
+        return basicApplyBatchDao.getBasicApplyBatchsByPlanDetailsIds(planDetailsIdList);
     }
 }

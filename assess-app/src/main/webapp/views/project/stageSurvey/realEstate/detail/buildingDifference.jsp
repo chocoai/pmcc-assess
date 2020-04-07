@@ -39,17 +39,17 @@
                                                     <label class="form-control input-full" name="propertyTypeName">${basicBuilding.propertyTypeName}</label>
                                                 </div>
                                                 <label class="col-sm-1 control-label">
-                                                    物业类别
+                                                    物业档次
                                                 </label>
                                                 <div class="col-sm-3">
                                                     <label class="form-control input-full"
                                                            name="propertyCategoryName">${basicBuilding.propertyCategoryName}</label>
                                                 </div>
                                                 <label class="col-sm-1 control-label">
-                                                    户型区间
+                                                    单元数
                                                 </label>
                                                 <div class="col-sm-3">
-                                                    <label class="form-control input-full" name="unitInterval">${basicBuilding.unitInterval}</label>
+                                                    <label class="form-control input-full" name="unitCount">${basicBuilding.unitCount}</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -64,7 +64,6 @@
                                                 <div class="col-sm-3">
                                                     <label class="form-control input-full" name="firstFloor">${basicBuilding.firstFloor}</label>
                                                 </div>
-
                                                 <label class="col-sm-1 control-label">
                                                     最高层
                                                 </label>
@@ -84,13 +83,13 @@
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
                                                 <label class="col-sm-1 control-label">
-                                                    建筑面积
+                                                    建筑面积(平方米)
                                                 </label>
                                                 <div class="col-sm-3">
                                                     <label class="form-control input-full" name="buildingArea">${basicBuilding.buildingArea}</label>
                                                 </div>
                                                 <label class="col-sm-1 control-label">
-                                                    物业费
+                                                    物业费(平方米)
                                                 </label>
                                                 <div class="col-sm-3">
                                                     <label class="form-control input-full" name="propertyFee">${basicBuilding.propertyFee}</label>

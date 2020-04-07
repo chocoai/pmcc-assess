@@ -14,6 +14,7 @@ import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
@@ -235,29 +236,16 @@ public class BasicApplyBatchDetailService {
         return basicApplyBatchDetailDao.getInfoList(basicApplyBatchDetail);
     }
 
-    /**
-     * 获取一个完整估价Map
-     *
-     * @param houseBasicApplyBatchDetail
-     * @return
-     */
-    public Map<BasicFormClassifyEnum, BasicApplyBatchDetail> getApplyBatchDetailMap(BasicApplyBatchDetail houseBasicApplyBatchDetail) {
-        Map<BasicFormClassifyEnum, BasicApplyBatchDetail> map = Maps.newHashMap();
-        map.put(BasicFormClassifyEnum.HOUSE, houseBasicApplyBatchDetail);
-        BasicApplyBatchDetail unitBatchDetail = basicApplyBatchDetailDao.getInfoById(houseBasicApplyBatchDetail.getPid());
-        if (unitBatchDetail != null) {
-            map.put(BasicFormClassifyEnum.UNIT, unitBatchDetail);
-            BasicApplyBatchDetail buildBatchDetail = basicApplyBatchDetailDao.getInfoById(unitBatchDetail.getPid());
-            if (buildBatchDetail != null) {
-                map.put(BasicFormClassifyEnum.BUILDING, buildBatchDetail);
-                BasicApplyBatchDetail estateBatchDetail = basicApplyBatchDetailDao.getInfoById(buildBatchDetail.getPid());
-                if (estateBatchDetail != null) {
-                    map.put(BasicFormClassifyEnum.ESTATE, estateBatchDetail);
-                }
-            }
+    public List<BasicApplyBatchDetail> getBasicApplyBatchDetailListByType(String type, Integer applyBatchId,Integer pid, Boolean isFuzzyMatching) {
+        List<String> types = Lists.newArrayList();
+        if (isFuzzyMatching) {
+            types.addAll(LangUtils.transform(BasicFormClassifyEnum.getEnumByFuzzyKey(type), o -> o.getKey()));
+        } else {
+            types.add(type);
         }
-        return map;
+        return basicApplyBatchDetailDao.getBasicApplyBatchDetailListByTypes(types, applyBatchId,pid);
     }
+
 
     /**
      * 删除
@@ -307,11 +295,6 @@ public class BasicApplyBatchDetailService {
         return basicApplyBatchDetailDao.getBasicApplyBatchDetail(where);
     }
 
-    public BasicApplyBatchDetail getSingleData(BasicApplyBatchDetail basicApplyBatchDetail) {
-        List<BasicApplyBatchDetail> infoList = basicApplyBatchDetailDao.getInfoList(basicApplyBatchDetail);
-        if (CollectionUtils.isNotEmpty(infoList)) return infoList.get(0);
-        return null;
-    }
 
     /**
      * 获取楼盘
@@ -417,6 +400,19 @@ public class BasicApplyBatchDetailService {
             stringBuilder.append(list.get(i).getName());
         }
         return stringBuilder.toString();
+    }
+
+    public List<BasicApplyBatchDetail> getBasicApplyBatchDetailList(List<Integer> basicApplyBatchIds, String type) {
+        if (CollectionUtils.isEmpty(basicApplyBatchIds)) return null;
+        return basicApplyBatchDetailDao.getBasicApplyBatchDetailList(basicApplyBatchIds, type);
+    }
+
+    public List<BasicApplyBatchDetail> getHouseBatchDetailList(Integer batchDetailId) {
+        BasicApplyBatchDetail batchDetail = getDataById(batchDetailId);
+        List<BasicApplyBatchDetail> list = Lists.newArrayList();
+        collectionChildBatchDetails(batchDetail, list);
+        List<BasicApplyBatchDetail> filter = LangUtils.filter(list, o -> BasicFormClassifyEnum.HOUSE.getKey().equals(o.getType()));
+        return filter;
     }
 
 

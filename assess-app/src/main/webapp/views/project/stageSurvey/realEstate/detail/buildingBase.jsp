@@ -79,7 +79,7 @@
                                                     <label class="form-control input-full" name="buildingHeight">${basicBuilding.buildingHeight}</label>
                                                 </div>
                                                 <label class="col-sm-1 control-label">
-                                                    占地面积
+                                                    占地面积(平方米)
                                                 </label>
                                                 <div class="col-sm-3">
                                                     <label class="form-control input-full" name="coverAnArea">${basicBuilding.coverAnArea}</label>
@@ -90,12 +90,6 @@
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
-                                                <label class="col-sm-1 control-label">
-                                                    单元数
-                                                </label>
-                                                <div class="col-sm-3">
-                                                    <label class="form-control input-full" name="remark">${basicBuilding.remark}</label>
-                                                </div>
                                                 <label class="col-sm-1 control-label">
                                                     建筑结构类型
                                                 </label>
@@ -109,6 +103,12 @@
                                                 <div class="col-sm-3">
                                                     <label class="form-control input-full"
                                                            name="buildingStructureCategoryName">${basicBuilding.buildingStructureCategoryName}</label>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <button type="button" class="btn btn-info btn-sm"
+                                                            onclick="buildingCommon.constructionInstallationEngineeringFeeEvent.loadHtml();">
+                                                        建筑安装完工度调查
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -257,15 +257,7 @@
                                                     物业服务
                                                 </label>
                                                 <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
-                                                    <table class="table table-bordered" id="basicBuildingPropertyServiceItemTable">
-
-                                                    </table>
-                                                </div>
-                                                <div class="col-sm-3">
-                                                    <button type="button" class="btn btn-info btn-sm"
-                                                            onclick="buildingCommon.constructionInstallationEngineeringFeeEvent.loadHtml();">
-                                                        建筑安装完工度调查
-                                                    </button>
+                                                    <table class="table table-bordered" id="basicBuildingPropertyServiceItemTable"></table>
                                                 </div>
                                             </div>
                                         </div>

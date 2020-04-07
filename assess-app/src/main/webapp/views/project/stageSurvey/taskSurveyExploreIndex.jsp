@@ -332,17 +332,14 @@
 
     //初始化信息
     function initBasicApplyBatchInfo() {
+        var data=formSerializeArray($("#basicBatchApplyFrm"));
+        data.planDetailsId='${projectPlanDetails.id}';
+        data.projectId='${projectId}';
         $.ajax({
             url: "${pageContext.request.contextPath}/basicApplyBatch/initBasicApplyBatchInfo",
             type: "post",
             dataType: "json",
-            data: {
-                planDetailsId: '${projectPlanDetails.id}',
-                projectId: '${projectId}',
-                classify: $("#basicBatchApplyFrm").find('[name=classify]').val(),
-                type: $("#basicBatchApplyFrm").find('[name=type]').val(),
-                buildingStatus: $("#basicBatchApplyFrm").find('[name=buildingStatus]').val()
-            },
+            data: data,
             success: function (result) {
                 if (result.ret) {
                     $("#basicBatchApplyFrm").find('[name=id]').val(result.data.id);

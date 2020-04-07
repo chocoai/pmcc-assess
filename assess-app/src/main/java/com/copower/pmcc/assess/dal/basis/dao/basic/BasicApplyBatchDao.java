@@ -120,6 +120,14 @@ public class BasicApplyBatchDao {
         return basicApplyBatchMapper.selectByExample(example);
     }
 
+    public List<BasicApplyBatch> getBasicApplyBatchsByPlanDetailsIds(List<Integer> planDetailsIdList) {
+        BasicApplyBatchExample example = new BasicApplyBatchExample();
+        BasicApplyBatchExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
+        criteria.andPlanDetailsIdIn(planDetailsIdList);
+        example.setOrderByClause("id desc");
+        return basicApplyBatchMapper.selectByExample(example);
+    }
+
     /**
      * 获取数据（未引用）
      *

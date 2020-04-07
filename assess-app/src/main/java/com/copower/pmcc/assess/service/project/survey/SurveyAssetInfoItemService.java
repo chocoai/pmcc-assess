@@ -3,11 +3,13 @@ package com.copower.pmcc.assess.service.project.survey;
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInfoItemDao;
+import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatchDetail;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInfoGroup;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInfoItem;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
+import com.copower.pmcc.assess.service.basic.BasicApplyBatchDetailService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -16,10 +18,12 @@ import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
+import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Objects;
+import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +53,8 @@ public class SurveyAssetInfoItemService {
     private SurveyAssetInfoGroupService surveyAssetInfoGroupService;
     @Autowired
     private BaseService baseService;
+    @Autowired
+    private BasicApplyBatchDetailService basicApplyBatchDetailService;
 
 
     public boolean updateSurveyAssetInfoItem(SurveyAssetInfoItem oo, boolean updateNull) {
@@ -159,11 +165,19 @@ public class SurveyAssetInfoItemService {
         }
     }
 
-    public BootstrapTableVo getBootstrapTableVo(SurveyAssetInfoItem oo) {
+    public BootstrapTableVo getBootstrapTableVo(SurveyAssetInfoItem oo,Integer eatate,Integer building,Integer unit) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        List<BasicApplyBatchDetail> houseBatchDetailList= null;
+        if(unit!=null){
+            houseBatchDetailList = basicApplyBatchDetailService.getHouseBatchDetailList(unit);
+        }else  if(building!=null){
+            houseBatchDetailList = basicApplyBatchDetailService.getHouseBatchDetailList(building);
+        }else  if(eatate!=null){
+            houseBatchDetailList = basicApplyBatchDetailService.getHouseBatchDetailList(eatate);
+        }
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<SurveyAssetInfoItem> surveyAssetInfoItems = getSurveyAssetInfoItemLikeList(oo);
+        List<SurveyAssetInfoItem> surveyAssetInfoItems = getSurveyAssetInfoItemLikeList(oo, LangUtils.transform(houseBatchDetailList,o->o.getDeclareRecordId()));
         if (CollectionUtils.isNotEmpty(surveyAssetInfoItems)) {
             for (SurveyAssetInfoItem assetInfoItem : surveyAssetInfoItems) {
                 if (assetInfoItem.getGroupId() != null && assetInfoItem.getGroupId() != 0) {
@@ -190,8 +204,8 @@ public class SurveyAssetInfoItemService {
         return surveyAssetInfoItemDao.getSurveyAssetInfoItemListByExample(oo);
     }
 
-    public List<SurveyAssetInfoItem> getSurveyAssetInfoItemLikeList(SurveyAssetInfoItem oo) {
-        return surveyAssetInfoItemDao.getSurveyAssetInfoItemLikeList(oo);
+    public List<SurveyAssetInfoItem> getSurveyAssetInfoItemLikeList(SurveyAssetInfoItem oo,List<Integer> declareIds) {
+        return surveyAssetInfoItemDao.getSurveyAssetInfoItemLikeList(oo,declareIds);
     }
 
 

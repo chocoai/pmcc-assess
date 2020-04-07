@@ -16,9 +16,15 @@ public class BasicEstateLandState {
 
     private String landUseCategory;
 
+    private BigDecimal landUseYear;
+
     private BigDecimal landFactorTotalScore;
 
+    private String landLevelContent;
+
     private Integer landLevel;
+
+    private String landAreaUnit;
 
     private String landArea;
 
@@ -51,6 +57,8 @@ public class BasicEstateLandState {
     private String developmentDegreeRemark;
 
     private String developmentDegreeContent;
+
+    private Date acquisitionTime;
 
     private String plotRatio;
 
@@ -91,8 +99,6 @@ public class BasicEstateLandState {
     private Date gmtCreated;
 
     private Date gmtModified;
-
-    private String landLevelContent;
 
     public Integer getId() {
         return id;
@@ -142,6 +148,14 @@ public class BasicEstateLandState {
         this.landUseCategory = landUseCategory == null ? null : landUseCategory.trim();
     }
 
+    public BigDecimal getLandUseYear() {
+        return landUseYear;
+    }
+
+    public void setLandUseYear(BigDecimal landUseYear) {
+        this.landUseYear = landUseYear;
+    }
+
     public BigDecimal getLandFactorTotalScore() {
         return landFactorTotalScore;
     }
@@ -150,12 +164,28 @@ public class BasicEstateLandState {
         this.landFactorTotalScore = landFactorTotalScore;
     }
 
+    public String getLandLevelContent() {
+        return landLevelContent;
+    }
+
+    public void setLandLevelContent(String landLevelContent) {
+        this.landLevelContent = landLevelContent == null ? null : landLevelContent.trim();
+    }
+
     public Integer getLandLevel() {
         return landLevel;
     }
 
     public void setLandLevel(Integer landLevel) {
         this.landLevel = landLevel;
+    }
+
+    public String getLandAreaUnit() {
+        return landAreaUnit;
+    }
+
+    public void setLandAreaUnit(String landAreaUnit) {
+        this.landAreaUnit = landAreaUnit == null ? null : landAreaUnit.trim();
     }
 
     public String getLandArea() {
@@ -284,6 +314,14 @@ public class BasicEstateLandState {
 
     public void setDevelopmentDegreeContent(String developmentDegreeContent) {
         this.developmentDegreeContent = developmentDegreeContent == null ? null : developmentDegreeContent.trim();
+    }
+
+    public Date getAcquisitionTime() {
+        return acquisitionTime;
+    }
+
+    public void setAcquisitionTime(Date acquisitionTime) {
+        this.acquisitionTime = acquisitionTime;
     }
 
     public String getPlotRatio() {
@@ -444,13 +482,5 @@ public class BasicEstateLandState {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public String getLandLevelContent() {
-        return landLevelContent;
-    }
-
-    public void setLandLevelContent(String landLevelContent) {
-        this.landLevelContent = landLevelContent == null ? null : landLevelContent.trim();
     }
 }

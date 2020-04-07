@@ -120,6 +120,17 @@ public class SurveyAssetInventoryController {
         }
     }
 
+    @PostMapping(value = "/canInventory")
+    public HttpResult canInventory(Integer assetInfoItemId) {
+        try {
+            Boolean canInventory = surveyAssetInventoryService.canInventory(assetInfoItemId);
+            return HttpResult.newCorrectResult(200, canInventory);
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
+            return HttpResult.newErrorResult(500, e.getMessage());
+        }
+    }
+
 
     private void setModelViewParam(Integer inventoryId, DeclareRecord declareRecord, ModelAndView modelAndView) {
         modelAndView.addObject("thisUserInfo", processControllerComponent.getThisUserInfo());    //当前操作用户信息

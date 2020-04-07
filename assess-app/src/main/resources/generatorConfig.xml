@@ -44,8 +44,12 @@
         <!--<columnOverride column="json_content" jdbcType="VARCHAR"></columnOverride>-->
 
         <!-- 具体表 -->
-        <table tableName="tb_survey_asset_right_declare" >
+        <table tableName="tb_basic_building" >
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+        <table tableName="tb_basic_estate_land_state" >
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+            <columnOverride column="land_level_content" jdbcType="VARCHAR"></columnOverride>
         </table>
         <!--<table tableName="tb_md_development" domainObjectName="MdDevelopment">-->
             <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->

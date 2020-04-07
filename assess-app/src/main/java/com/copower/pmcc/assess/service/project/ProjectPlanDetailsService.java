@@ -366,7 +366,7 @@ public class ProjectPlanDetailsService {
             boolean isMember = projectMemberService.isProjectMember(projectId, commonService.thisUserAccount());
             boolean isOperable = projectInfoService.isProjectOperable(projectId);
 
-            if (isMember && isOperable &&ProjectStatusEnum.FINISH.getKey().equals(sysProjectEnum.getKey())) {
+            if (isMember && isOperable && ProjectStatusEnum.FINISH.getKey().equals(sysProjectEnum.getKey())) {
                 if (StringUtils.isNotBlank(projectPlanDetailsVo.getExecuteUserAccount()) && projectPlanDetailsVo.getBisStart()) {
                     ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseById(projectPlanDetailsVo.getProjectPhaseId());
                     if (projectPhase != null) {
@@ -513,40 +513,6 @@ public class ProjectPlanDetailsService {
             projectPlanDetailsDao.deleteProjectPlanDetails(projectPlanDetails.getId());
         } catch (Exception ex) {
             logger.error(ex.getMessage(), ex);
-        }
-    }
-
-    /**
-     * 获取任务及子项任务数据
-     *
-     * @param planDetailsId
-     * @return
-     */
-    public List<ProjectPlanDetails> getPlanDetailsListRecursion(Integer planDetailsId, boolean containThis) {
-        List<ProjectPlanDetails> list = Lists.newArrayList();
-        ProjectPlanDetails projectPlanDetails = projectPlanDetailsDao.getProjectPlanDetailsById(planDetailsId);
-        if (projectPlanDetails != null) {
-            if (containThis)
-                list.add(projectPlanDetails);
-            getPlanDetailsSubList(projectPlanDetails.getId(), list);
-        }
-        return list;
-    }
-
-    /**
-     * 递归获取子项任务
-     *
-     * @param pid
-     * @param list
-     */
-    private void getPlanDetailsSubList(Integer pid, List<ProjectPlanDetails> list) {
-        if (pid == null) return;
-        if (list == null) return;
-        List<ProjectPlanDetails> planDetailsList = projectPlanDetailsDao.getProjectPlanDetailsByPid(pid);
-        if (CollectionUtils.isEmpty(planDetailsList)) return;
-        for (ProjectPlanDetails projectPlanDetails : planDetailsList) {
-            list.add(projectPlanDetails);
-            getPlanDetailsSubList(projectPlanDetails.getId(), list);
         }
     }
 
@@ -705,5 +671,21 @@ public class ProjectPlanDetailsService {
      */
     public Integer getTotalPlanDetails(Integer planId) {
         return projectPlanDetailsDao.getTotalPlanDetails(planId);
+    }
+
+    /**
+     * 根据事项key获取该项目下的任务
+     *
+     * @param projectId
+     * @param phaseKey
+     * @return
+     */
+    public List<ProjectPlanDetails> getProjectPlanDetailsByPhaseKey(Integer projectId, Integer categoryId, String phaseKey) {
+        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByReferenceId(phaseKey, categoryId);
+        if (projectPhase == null) return null;
+        ProjectPlanDetails where = new ProjectPlanDetails();
+        where.setProjectId(projectId);
+        where.setProjectPhaseId(projectPhase.getId());
+        return getProjectDetails(where);
     }
 }

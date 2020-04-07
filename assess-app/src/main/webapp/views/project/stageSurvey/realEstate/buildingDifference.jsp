@@ -53,7 +53,7 @@
                                                                     </select>
                                                                 </div>
                                                                 <label class="col-sm-1">
-                                                                    物业类别<span class="symbol required"></span>
+                                                                    物业档次<span class="symbol required"></span>
                                                                 </label>
                                                                 <div class="col-md-3">
                                                                     <select name="propertyCategory"
@@ -62,13 +62,13 @@
                                                                     </select>
                                                                 </div>
                                                                 <label class="col-sm-1">
-                                                                    户型区间
+                                                                    单元数<span class="symbol required"></span>
                                                                 </label>
                                                                 <div class="col-md-3">
-                                                                    <input type="text" placeholder="户型区间"
-                                                                           name="unitInterval"
+                                                                    <input type="text" placeholder="单元数"
+                                                                           name="unitCount"
                                                                            class="form-control input-full"
-                                                                           value="${basicBuilding.unitInterval}">
+                                                                           value="${basicBuilding.unitCount}">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -115,7 +115,7 @@
                                                         <div class="col-md-12">
                                                             <div class="form-inline x-valid">
                                                                 <label class="col-sm-1">
-                                                                    建筑面积
+                                                                    建筑面积(平方米)
                                                                 </label>
                                                                 <div class="col-md-3">
                                                                     <input type="text" placeholder="建筑面积(数字)"
@@ -125,7 +125,7 @@
                                                                            value="${basicBuilding.buildingArea}">
                                                                 </div>
                                                                 <label class="col-sm-1">
-                                                                    物业费<span class="symbol required"></span>
+                                                                    物业费(平方米)<span class="symbol required"></span>
                                                                 </label>
                                                                 <div class="col-md-3">
                                                                     <input type="text" placeholder="物业费(数字)"

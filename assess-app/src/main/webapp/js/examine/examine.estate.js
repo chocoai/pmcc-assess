@@ -85,7 +85,7 @@
     };
 
     //附件显示
-    estateCommon.fileShow = function (fieldsName, tableName, id,deleteFlag) {
+    estateCommon.fileShow = function (fieldsName, tableName, id, deleteFlag) {
         FileUtils.getFileShows({
             target: fieldsName,
             formData: {
@@ -94,65 +94,6 @@
                 tableId: estateCommon.getEstateId()
             },
             deleteFlag: deleteFlag
-        })
-    };
-
-    //添加楼盘
-    estateCommon.add = function (_this, callback) {
-        var $form = $(_this).closest('form');
-        var province = $form.find('[name=province]').val();
-        var city = $form.find('[name=city]').val();
-        var estateName = $form.find('[name=estateName]').val();
-        if (!estateName) {
-            notifyInfo('提示','请填写楼盘名称！');
-            return false;
-        }
-        $.ajax({
-            url: getContextPath() + '/basicEstate/addEstateAndLandstate',
-            data: {
-                estateName: estateName,
-                province: province,
-                city: city
-            },
-            success: function (result) {
-                if (result.ret) {
-                    var data = result.data;
-                    var basicEstate = data.basicEstate;
-                    var basicEstateLandState = data.basicEstateLandState;
-                    estateCommon.initForm({estate: basicEstate, land: basicEstateLandState});
-                    if (callback) {
-                        callback($(_this).attr('data-mode'));
-                    }
-                }
-            }
-        })
-    };
-
-    //升级楼盘
-    estateCommon.upgrade = function (_this, callback) {
-        var caseEstateId = $(_this).closest('form').find("input[name='caseEstateId']").val();
-        var estatePartInMode = $(_this).attr('data-mode');
-        if (!caseEstateId) {
-            notifyInfo('提示','请选择系统中已存在的楼盘信息！');
-            return false;
-        }
-        $.ajax({
-            url: getContextPath() + '/basicEstate/appWriteEstate',
-            data: {
-                caseEstateId: caseEstateId,
-                estatePartInMode: estatePartInMode
-            },
-            success: function (result) {
-                if (result.ret) {
-                    var data = result.data;
-                    var basicEstate = data.basicEstate;
-                    var basicEstateLandState = data.basicEstateLandState;
-                    estateCommon.initForm({estate: basicEstate, land: basicEstateLandState});
-                    if (callback) {
-                        callback($(_this).attr('data-mode'));
-                    }
-                }
-            }
         })
     };
 
@@ -198,7 +139,7 @@
     };
 
     //楼盘详情页面
-    estateCommon.initDetailById = function (id, callback,bisDetail) {
+    estateCommon.initDetailById = function (id, callback, bisDetail) {
         $.ajax({
             url: getContextPath() + '/basicEstate/getBasicEstateMapById',
             type: 'get',
@@ -208,7 +149,7 @@
                     var data = result.data;
                     var basicEstate = data.basicEstate;
                     var basicEstateLandState = data.basicEstateLandState;
-                    estateCommon.initForm({estate: basicEstate, land: basicEstateLandState},bisDetail);
+                    estateCommon.initForm({estate: basicEstate, land: basicEstateLandState}, bisDetail);
                     if (callback) {
                         callback(result.data);
                     }
@@ -237,9 +178,17 @@
      * @param data
      * @param bisDetail 是否是详情页面
      */
-    estateCommon.initForm = function (data,bisDetail) {
+    estateCommon.initForm = function (data, bisDetail) {
         estateCommon.estateForm.clearAll().initForm(data.estate);
+        estateCommon.estateForm.find('.x-percent').each(function () {
+            $(this).attr('data-value', data.estate[$(this).attr('name')]);
+            AssessCommon.elementParsePercent($(this));
+        })
         estateCommon.estateLandStateForm.clearAll().initForm(data.land);
+        estateCommon.estateLandStateForm.find('.x-percent').each(function () {
+            $(this).attr('data-value', data.land[$(this).attr('name')]);
+            AssessCommon.elementParsePercent($(this));
+        })
         AssessCommon.initAreaInfo({
             provinceTarget: estateCommon.estateForm.find("select[name='province']"),
             cityTarget: estateCommon.estateForm.find("select[name='city']"),
@@ -306,11 +255,7 @@
 
         $.each(estateCommon.estateFileControlIdArray, function (i, n) {
             estateCommon.fileUpload(n, AssessDBKey.BasicEstate, data.estate.id);
-            if(bisDetail==false){
-                estateCommon.fileShow(n, AssessDBKey.BasicEstate, data.estate.id,false);
-            }else{
-                estateCommon.fileShow(n, AssessDBKey.BasicEstate, data.estate.id,true);
-            }
+            estateCommon.fileShow(n, AssessDBKey.BasicEstate, data.estate.id, bisDetail);
         });
 
         AssessCommon.loadDataListHtml(AssessDicKey.estate_total_land_use, data.land.landUseType, function (html, data) {
@@ -389,22 +334,22 @@
                         resultHtml += "&nbsp;&nbsp;&nbsp;&nbsp;<span class='label label-primary'>" + '反选' + "</span>";
                         resultHtml += "<input type=\"radio\" name=\"developmentDegreeContentSelect\"  onclick=\"estateCommon.checkedFun(this,'developmentDegreeContent',false)\">";
                         $("#developmentDegreeContentContainer").html(resultHtml);
-                        }
+                    }
                 });
                 estateCommon.estateLandStateForm.find(".developmentDegreeContent").hide();
-            }else{
+            } else {
                 estateCommon.estateLandStateForm.find(".developmentDegreeContent").show();
             }
         });
 
-        if(bisDetail==false){
-            estateCommon.writeHTMLDataDetail(data.estate.streetNumber,data.estate.attachNumber);
-        }else {
-            estateCommon.writeHTMLData(data.estate.streetNumber,data.estate.attachNumber);
+        if (bisDetail == true) {
+            estateCommon.writeHTMLDataDetail(data.estate.streetNumber, data.estate.attachNumber);
+        } else {
+            estateCommon.writeHTMLData(data.estate.streetNumber, data.estate.attachNumber);
         }
     };
 
-    estateCommon.writeHTMLData = function(streetNumbers,attachNumbers) {
+    estateCommon.writeHTMLData = function (streetNumbers, attachNumbers) {
         estateCommon.estateForm.find(".streetNumbers").empty();
         var strs = streetNumbers.split(",");
         var strs2 = attachNumbers.split(",");
@@ -412,7 +357,7 @@
         estateCommon.estateForm.find("input[name='streetNumber']").val(strs[0]);
         estateCommon.estateForm.find("input[name='attachNumber']").val(strs2[0]);
         for (var i = 1; i < length; i++) {
-            if(estateCommon.isNotBlank(strs[i])) {
+            if (estateCommon.isNotBlank(strs[i])) {
                 var html = "<div class='row form-group'>";
                 html += '<div class="col-sm-12">';
                 html += '<div class="form-inline x-valid">';
@@ -438,24 +383,24 @@
         }
     };
 
-    estateCommon.writeHTMLDataDetail = function(streetNumbers,attachNumbers) {
+    estateCommon.writeHTMLDataDetail = function (streetNumbers, attachNumbers) {
         estateCommon.estateForm.find(".streetNumbers").empty();
         var strs = streetNumbers.split(",");
         var strs2 = attachNumbers.split(",");
         var length = strs.length;
         for (var i = 0; i < length; i++) {
-            if(estateCommon.isNotBlank(strs[i])){
+            if (estateCommon.isNotBlank(strs[i])) {
                 var html = "<div class='row form-group'>";
                 html += '<div class="col-sm-12">';
                 html += '<div class="form-inline x-valid">';
 
                 html += "<label class='col-sm-1 control-label'>街道号</label>";
                 html += "<div class='col-sm-3'>";
-                html += "<label class='form-control input-full'" + "name='streetNumber'>"+strs[i]+"</label>";
+                html += "<label class='form-control input-full'" + "name='streetNumber'>" + strs[i] + "</label>";
                 html += "</div>";
                 html += "<label class='col-sm-1 control-label'>附号</label>";
                 html += "<div class='col-sm-3'>";
-                html += "<label class='form-control input-full'" + "name='attachNumber'>"+strs2[i]+"</label>";
+                html += "<label class='form-control input-full'" + "name='attachNumber'>" + strs2[i] + "</label>";
                 html += "</div>";
 
                 html += "</div>";
@@ -466,11 +411,11 @@
         }
     };
 
-    estateCommon.cleanHTMLData = function(item) {
+    estateCommon.cleanHTMLData = function (item) {
         $(item).closest('.form-group').remove();
     };
 
-    estateCommon.appendHTML = function() {
+    estateCommon.appendHTML = function () {
         var html = "<div class='row form-group'>";
         html += '<div class="col-sm-12">';
         html += '<div class="form-inline x-valid">';
@@ -629,7 +574,7 @@
                             pathArray: estateCommon.estateMapiframe.pathArrayJson,
                             name: estateCommon.getEstateName()
                         }, function () {
-                            notifySuccess('成功','标记成功');
+                            notifySuccess('成功', '标记成功');
                         });
                     }
                 }
@@ -724,13 +669,12 @@
                     if (result.data) {
                         estateCommon.estateForm.find("textarea[name='locationDescribe']").val(result.data.remark);
                     }
-                }
-                else {
-                    notifyWaring('警告',result.errmsg);
+                } else {
+                    notifyWaring('警告', result.errmsg);
                 }
             },
             error: function (result) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         })
     };
@@ -886,7 +830,7 @@
             obj.pid = pid;
             obj.id = target.find("input[name='constructionInstallationEngineeringFeeId']").val();
             developmentCommon.saveMdArchitecturalObj2(developmentCommon.architecturalB.getFomData(table), obj, function (item) {
-                notifySuccess('成功','保存成功!');
+                notifySuccess('成功', '保存成功!');
             });
             target.modal("hide");
         }
@@ -901,13 +845,13 @@
         var landLevelContentResult = estateCommon.estateLandStateForm.find("input[name='landLevelContentResult']").val();
         if (estateCommon.isNotBlank(landLevelContentResult)) {
             estateCommon.landLevelLoadEditHtml();
-        }else{
+        } else {
             $.ajax({
                 url: getContextPath() + "/dataLandLevelDetailAchievement/landLevelFilter",
                 type: "get",
                 data: {levelDetailId: landLevelId},
                 success: function (result) {
-                    estateCommon.landLevelLoadHtml(result.data,false);
+                    estateCommon.landLevelLoadHtml(result.data, false);
                 }
             })
         }
@@ -962,7 +906,7 @@
         var landLevelContentResult = estateCommon.estateLandStateForm.find("input[name='landLevelContentResult']").val();
         var jsonContent = JSON.parse(landLevelContentResult);
         var data = estateCommon.landLevelFilter(jsonContent);
-        estateCommon.landLevelLoadHtml(data,true);
+        estateCommon.landLevelLoadHtml(data, true);
     };
 
     estateCommon.saveLandLevelTabContent = function () {

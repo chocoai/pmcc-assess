@@ -1554,6 +1554,9 @@ var houseRoomDecorate;
             AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_room_part, item.part, function (html, data) {
                 $("#" + houseRoomDecorate.prototype.config().frm).find('select.part').empty().html(html).trigger('change');
             });
+            AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_room_level, item.level, function (html, data) {
+                $("#" + houseRoomDecorate.prototype.config().frm).find('select.level').empty().html(html).trigger('change');
+            });
         },
         openLocationModal: function (_this) {
             var tenementType = houseCommon.houseHuxingForm.find("input[name='tenementType']").val();

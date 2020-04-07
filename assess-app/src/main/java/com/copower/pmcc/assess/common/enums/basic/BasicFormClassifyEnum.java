@@ -19,9 +19,7 @@ public enum BasicFormClassifyEnum {
     BUILDING_BASE("building.base", "综合楼（基础部分）", "tb_basic_building", "basicBuildingBaseService"),
     BUILDING_DIFFERENCE("building.difference", "综合楼（差异部分）", "tb_basic_building", "basicBuildingDifferenceService"),
     UNIT("unit", "单元", "tb_basic_unit", "basicUnitService"),
-    HOUSE("house", "房屋", "tb_basic_house", "basicHouseService")
-
-    ;
+    HOUSE("house", "房屋", "tb_basic_house", "basicHouseService");
 
     private Integer level;
     private String key;
@@ -43,6 +41,16 @@ public enum BasicFormClassifyEnum {
             }
         }
         return null;
+    }
+
+    public static List<BasicFormClassifyEnum> getEnumByFuzzyKey(String key) {
+        List<BasicFormClassifyEnum> list = Lists.newArrayList();
+        for (BasicFormClassifyEnum e : BasicFormClassifyEnum.values()) {
+            if (e.getKey().contains(key)) {
+                list.add(e);
+            }
+        }
+        return list;
     }
 
     public static BasicFormClassifyEnum getEnumByTableName(String tableName) {

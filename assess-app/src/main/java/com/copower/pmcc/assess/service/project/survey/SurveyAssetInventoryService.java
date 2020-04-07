@@ -10,6 +10,7 @@ import com.copower.pmcc.assess.dto.output.basic.SurveyAssetInventoryVo;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.basic.BasicApplyService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
@@ -57,6 +58,8 @@ public class SurveyAssetInventoryService extends BaseService {
     private SurveyAssetInfoGroupService surveyAssetInfoGroupService;
     @Autowired
     private SurveyAssetInfoItemService surveyAssetInfoItemService;
+    @Autowired
+    private BasicApplyService basicApplyService;
 
     /**
      * 保存资产清查数据
@@ -317,6 +320,17 @@ public class SurveyAssetInventoryService extends BaseService {
 
         baseAttachmentService.copyFtpAttachments(attachmentDto, sysAttachmentDto);
 
+    }
+
+    /**
+     * 该权证是否可清查
+     * @param assetInfoItemId
+     * @return
+     */
+    public Boolean canInventory(Integer assetInfoItemId){
+        SurveyAssetInfoItem assetInfoItem = surveyAssetInfoItemService.getSurveyAssetInfoItemById(assetInfoItemId);
+        List<BasicApply> list = basicApplyService.getListByDeclareRecordId(assetInfoItem.getDeclareId());
+        return CollectionUtils.isNotEmpty(list);
     }
 
 }
