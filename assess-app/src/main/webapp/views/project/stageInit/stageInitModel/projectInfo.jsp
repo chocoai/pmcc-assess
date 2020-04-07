@@ -72,14 +72,12 @@
             <div class="col-md-12">
                 <div class="form-inline x-valid">
                     <label class="col-sm-1 col-form-label">
-                        评估范围
+                        价值定义
                     </label>
                     <div class="col-sm-3">
-                        <select name="propertyScope" class="form-control input-full search-select select2 propertyScope"
-                                onchange="$(this).closest('.form-group').find('[name=propertyScopeName]').val($(this).find('option:selected').text())">
+                        <select name="valueType" class="form-control input-full search-select select2 valueType">
                         </select>
-
-                        <input type="hidden" name="propertyScopeName">
+                        <input type="hidden" name="remarkValueType">
                     </div>
                     <label class="col-sm-1 col-form-label">
                         评估包括
@@ -260,6 +258,18 @@
         <div class="row form-group">
             <div class="col-md-12">
                 <div class="form-inline">
+
+                    <label class="col-sm-1 col-form-label">
+                        评估范围
+                    </label>
+                    <div class="col-sm-3">
+                        <select name="propertyScope" class="form-control input-full search-select select2 propertyScope"
+                                onchange="$(this).closest('.form-group').find('[name=propertyScopeName]').val($(this).find('option:selected').text())">
+                        </select>
+
+                        <input type="hidden" name="propertyScopeName">
+                    </div>
+
                     <label class="col-sm-1 col-form-label">
                         业务来源
                     </label>
