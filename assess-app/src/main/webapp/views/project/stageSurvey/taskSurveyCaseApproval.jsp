@@ -93,7 +93,7 @@
                                                     <div class="col-xs-10  col-sm-10  col-md-10  col-lg-10">
                                                         <c:if test="${not empty buildingStatusList}">
                                                             <c:forEach var="item" items="${buildingStatusList}">
-                                                                <c:if test="${applyBatch.type == item.id}">
+                                                                <c:if test="${applyBatch.buildingStatus == item.id}">
                                                                     <label class="form-control input-full">${item.name}</label>
                                                                 </c:if>
                                                             </c:forEach>

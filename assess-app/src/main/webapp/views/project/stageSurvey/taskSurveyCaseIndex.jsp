@@ -522,6 +522,30 @@
         });
     }
 
+    //删除备选案例
+    batchTreeTool.deleteAlternativeCase=function(id){
+        AlertConfirm("是否确认删除", "删除相应的数据后将不可恢复", function () {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/basicAlternativeCase/deleteDataById",
+                type: "post",
+                dataType: "json",
+                data: {id: id},
+                success: function (result) {
+                    if (result.ret) {
+                        notifySuccess("成功", "删除数据成功");
+                        batchTreeTool.loadAlternativeCaseList();
+                    }
+                    else {
+                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                    }
+                },
+                error: function (result) {
+                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                }
+            })
+        })
+    }
+
     //显示弹窗
     batchTreeTool.showAlternativeCaseModal = function () {
         batchTreeTool.loadAlternativeCaseList();
@@ -536,6 +560,7 @@
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
                 str += '<button type="button" class="btn btn-xs btn-warning tooltips" style="margin-left: 5px;"  data-placement="top" data-original-title="引用" onclick="batchTreeTool.referenceAlternativeCase(' + row.id + ')"><i class="fa fa-check"></i></button>';
+                str += '<button type="button" class="btn btn-xs btn-warning tooltips" style="margin-left: 5px;"  data-placement="top" data-original-title="删除" onclick="batchTreeTool.deleteAlternativeCase(' + row.id + ')"><i class="fa fa-minus"></i></button>';
                 str += '</div>';
                 return str;
             }

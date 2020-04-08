@@ -873,7 +873,7 @@ public class BasicApplyBatchController extends BaseController {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(planDetailsId);
-        List<BasicApplyBatchDetail> estateBatchDetailList = basicApplyBatchService.getOriginalBasicApplyBatchListByProjectId(projectPlanDetails.getProjectId(),projectPlanDetails.getProjectPhaseId(),projectPlanDetails.getId(),name);
+        List<BasicApplyBatchDetail> estateBatchDetailList =basicApplyBatchDetailService.getExploreEstateList(projectPlanDetails);
         vo.setTotal(page.getTotal());
         vo.setRows(CollectionUtils.isEmpty(estateBatchDetailList) ? new ArrayList<BasicApplyBatchDetail>() : estateBatchDetailList);
         return vo;

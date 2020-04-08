@@ -71,6 +71,10 @@
                                                         查询
                                                     </button>
                                                     <button type="button" class="btn btn-primary  btn-sm"
+                                                            onclick="programme.autoChangeDeclareRecordNumber('${projectId}');">
+                                                        重设编号
+                                                    </button>
+                                                    <button type="button" class="btn btn-primary  btn-sm"
                                                             onclick="programme.generatorAreaGroup();">
                                                         生成方案数据
                                                     </button>
@@ -1705,7 +1709,29 @@
         })
     }
 
-
+    //重设编号
+    programme.autoChangeDeclareRecordNumber = function (projectId) {
+        $.ajax({
+            url: "${pageContext.request.contextPath}/declareRecord/autoChangeDeclareRecordNumber",
+            type: "post",
+            dataType: "json",
+            data: {
+                projectId: projectId
+            },
+            success: function (result) {
+                if (result.ret) {
+                    notifySuccess("成功",result.data);
+                    programme.loadDeclareRecordList();
+                }
+                else {
+                    AlertError(result.errmsg);
+                }
+            },
+            error: function (result) {
+                AlertError("调用服务端方法失败，失败原因:" + result);
+            }
+        })
+    }
 </script>
 
 <script type="text/javascript">

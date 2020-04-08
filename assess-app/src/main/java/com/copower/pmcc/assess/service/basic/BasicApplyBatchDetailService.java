@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.service.basic;
 
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
+import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyBatchDetailDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
@@ -40,7 +41,7 @@ public class BasicApplyBatchDetailService {
     @Autowired
     private BasicHouseTradingService basicHouseTradingService;
     @Autowired
-    private BasicApplyBatchDao basicApplyBatchDao;
+    private BasicApplyBatchService basicApplyBatchService;
     @Autowired
     private ProcessControllerComponent processControllerComponent;
     @Autowired
@@ -427,5 +428,17 @@ public class BasicApplyBatchDetailService {
         return filter;
     }
 
-
+    /**
+     * 获取查勘楼盘信息
+     *
+     * @param projectPlanDetails
+     * @return
+     */
+    public List<BasicApplyBatchDetail> getExploreEstateList(ProjectPlanDetails projectPlanDetails) {
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
+        List<ProjectPlanDetails> planDetailsList = projectPlanDetailsService.getProjectPlanDetailsByPhaseKey(projectInfo.getId(), projectInfo.getProjectCategoryId(), AssessPhaseKeyConstant.SCENE_EXPLORE);
+        List<BasicApplyBatch> applyBatchList = basicApplyBatchService.getBasicApplyBatchsByPlanDetailsIds(LangUtils.transform(planDetailsList, o -> o.getId()));
+        List<BasicApplyBatchDetail> batchDetailList = basicApplyBatchDetailService.getBasicApplyBatchDetailList(LangUtils.transform(applyBatchList, o -> o.getId()), BasicFormClassifyEnum.ESTATE.getKey());
+        return batchDetailList;
+    }
 }

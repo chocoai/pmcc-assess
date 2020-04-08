@@ -121,20 +121,8 @@ public class SurveyAssetInfoAssist implements ProjectTaskInterface {
 
         modelAndView.addObject(StringUtils.uncapitalize(SurveyAssetInfo.class.getSimpleName()), surveyAssetInfo);
         modelAndView.addObject("thisUserInfo", processControllerComponent.getThisUserInfo());    //当前操作用户信息
-        modelAndView.addObject("exploreEstateList", getExploreEstateList(projectPlanDetails));
+        modelAndView.addObject("exploreEstateList", basicApplyBatchDetailService.getExploreEstateList(projectPlanDetails));
     }
 
-    /**
-     * 获取查勘楼盘信息
-     *
-     * @param projectPlanDetails
-     * @return
-     */
-    private List<BasicApplyBatchDetail> getExploreEstateList(ProjectPlanDetails projectPlanDetails) {
-        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
-        List<ProjectPlanDetails> planDetailsList = projectPlanDetailsService.getProjectPlanDetailsByPhaseKey(projectInfo.getId(), projectInfo.getProjectCategoryId(), AssessPhaseKeyConstant.SCENE_EXPLORE);
-        List<BasicApplyBatch> applyBatchList = basicApplyBatchService.getBasicApplyBatchsByPlanDetailsIds(LangUtils.transform(planDetailsList, o -> o.getId()));
-        List<BasicApplyBatchDetail> batchDetailList = basicApplyBatchDetailService.getBasicApplyBatchDetailList(LangUtils.transform(applyBatchList, o -> o.getId()), BasicFormClassifyEnum.ESTATE.getKey());
-        return batchDetailList;
-    }
+
 }
