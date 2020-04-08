@@ -54,12 +54,6 @@
                                             <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
                                                 <label class="form-control input-full">${item.remarkEntrustPurpose}</label>
                                             </div>
-                                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
-                                                财产范围
-                                            </label>
-                                            <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                                                <label class="form-control input-full">${item.propertyScopeName}</label>
-                                            </div>
                                         </div>
                                         <div class="row form-group form-inline">
                                             <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
@@ -83,9 +77,17 @@
                                                 <label class="form-control input-full">${item.valueDefinitionName}</label>
                                             </div>
                                             <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
-                                                价值类型描述
+                                                财产范围
                                             </label>
                                             <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
+                                                <label class="form-control input-full">${item.propertyScopeName}</label>
+                                            </div>
+                                        </div>
+                                        <div class="row form-group form-inline">
+                                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
+                                                价值类型描述
+                                            </label>
+                                            <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
                                                 <label class="form-control input-full">${item.valueDefinitionDesc}</label>
                                             </div>
                                         </div>

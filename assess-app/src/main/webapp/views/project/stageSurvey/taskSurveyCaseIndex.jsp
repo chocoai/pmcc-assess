@@ -491,20 +491,9 @@
         url += '&tbId=' + node.tableId;
         url += '&tbType=' + node.type;
         url += '&planDetailsId=${projectPlanDetails.id}';
-        var frame = layer.open({
-            type: 2,
-            title: node.name,
-            shadeClose: true,
-            shade: true,
-            maxmin: true, //开启最大化最小化按钮
-            area: ['893px', '600px'],
-            content: url,
-            cancel: function (index, layero) {
-                var iframe = window[layero.find('iframe')[0]['name']];
-                batchTreeTool.ztreeInit(batchTreeTool.getApplyBatchId());
-            }
-        });
-        layer.full(frame);
+        openWin(url, function () {
+            batchTreeTool.ztreeInit(batchTreeTool.getApplyBatchId());
+        })
     }
 
     //添加到备选案例

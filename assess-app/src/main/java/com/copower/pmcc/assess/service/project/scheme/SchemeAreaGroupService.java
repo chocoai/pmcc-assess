@@ -478,21 +478,21 @@ public class SchemeAreaGroupService {
         if (CollectionUtils.isEmpty(ids) || ids.size() <= 1)
             throw new BusinessException("参与合并的区域至少为两个");
         List<SchemeAreaGroup> schemeAreaGroupList = schemeAreaGroupDao.getSchemeAreaGroupByIds(ids);
-        String province = schemeAreaGroupList.get(0).getProvince();
-        String city = schemeAreaGroupList.get(0).getCity();
+        SchemeAreaGroup standardArea=schemeAreaGroupList.get(0);
+        String province = standardArea.getProvince();
+        String city = standardArea.getCity();
         for (SchemeAreaGroup schemeAreaGroup : schemeAreaGroupList) {
             if (!StringUtils.equals(schemeAreaGroup.getProvince(), province) || !StringUtils.equals(schemeAreaGroup.getCity(), city))
-                throw new BusinessException("区域不一致不能参与合并");
+                throw new BusinessException("城市不一致不能参与合并");
         }
 
         SchemeAreaGroup newAreaGroup = new SchemeAreaGroup();
+        BeanUtils.copyProperties(standardArea,newAreaGroup);
         newAreaGroup.setPid(0);
         newAreaGroup.setProjectId(projectId);
         newAreaGroup.setProvince(province);
         newAreaGroup.setCity(city);
         newAreaGroup.setAreaName(erpAreaService.getAreaFullName(province, city, null));
-        newAreaGroup.setValueTimePoint(schemeAreaGroupList.get(0).getValueTimePoint());
-        newAreaGroup.setTimePointExplain(schemeAreaGroupList.get(0).getTimePointExplain());
         newAreaGroup.setBisEnable(true);
         newAreaGroup.setBisMerge(true);
         newAreaGroup.setBisNew(true);

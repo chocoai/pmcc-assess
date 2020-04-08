@@ -20,14 +20,14 @@
                         <div class="x_panel card">
                             <div class="x_content card-body">
                                 <div style="text-align: center;">
-                                    <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
+                                    <button type="button" id="cancel_btn" class="btn btn-default" onclick="window.close()">
                                         取消
                                     </button>
-                                    <button id="btn_save" class="btn btn-warning" onclick="save();">
-                                        保存<i style="margin-left: 10px" class="fa fa-save"></i>
+                                    <button type="button" id="btn_save" class="btn btn-warning" style="margin-left: 10px;" onclick="save();">
+                                        保存
                                     </button>
-                                    <button id="btn_submit" class="btn btn-success" onclick="submit();">
-                                        提交<i style="margin-left: 10px" class="fa fa-arrow-circle-right"></i>
+                                    <button type="button" id="btn_submit" class="btn btn-primary" style="margin-left: 10px;" onclick="submit();">
+                                        提交
                                     </button>
                                 </div>
                             </div>

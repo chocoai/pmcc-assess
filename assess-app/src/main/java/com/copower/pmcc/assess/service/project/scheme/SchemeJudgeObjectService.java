@@ -861,11 +861,12 @@ public class SchemeJudgeObjectService {
                         }
                     }
                     if (CollectionUtils.isNotEmpty(item.getNewMethodList())) {
-                        String planRemark = generatePlanRemark(item.getSchemeAreaGroup(), item.getSchemeJudgeObject());
+                        String planRemark = generatePlanRemark(item.getSchemeJudgeObject());
                         for (Integer methodType : item.getNewMethodList()) {
                             BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(methodType);
                             ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByKey(baseDataDic.getFieldName());
-                            savePlanDetails(projectInfo, projectWorkStage, projectPlan, 0, item.getSchemeAreaGroup(), item.getJudgeObjectId(), planRemark, projectPhase, projectManager);
+                            if (!hasPlanDetails(projectInfo.getId(), null, projectPhase.getId(), item.getJudgeObjectId()))
+                                savePlanDetails(projectInfo, projectWorkStage, projectPlan, 0, item.getSchemeAreaGroup(), item.getJudgeObjectId(), planRemark, projectPhase, projectManager);
                         }
                     }
                 }
@@ -926,28 +927,33 @@ public class SchemeJudgeObjectService {
         String projectManager = schemeJudgeObjectAppendTaskDto.getProjectManager();
         Map<Integer, ProjectPhase> phaseMap = schemeJudgeObjectAppendTaskDto.getPhaseMap();
 
-        String planRemark = generatePlanRemark(schemeAreaGroup, schemeJudgeObject);
+        String planRemark = generatePlanRemark(schemeJudgeObject);
         List<SchemeJudgeFunction> judgeFunctions = schemeJudgeFunctionService.getApplicableJudgeFunctions(schemeJudgeObject.getId());
         if (CollectionUtils.isNotEmpty(judgeFunctions)) {
             for (SchemeJudgeFunction judgeFunction : judgeFunctions) {
                 ProjectPhase projectPhase = phaseMap.get(judgeFunction.getMethodType());
                 if (projectPhase != null) {
                     sorting = schemeJudgeObjectAppendTaskDto.getSorting() + schemeJudgeObject.getSorting() * 100 + projectPhase.getPhaseSort();
-                    savePlanDetails(projectInfo, projectWorkStage, projectPlan, sorting, null, schemeJudgeObject.getId(), planRemark, projectPhase, projectManager);
+                    if (!hasPlanDetails(projectInfo.getId(), null, projectPhase.getId(), schemeJudgeObject.getId()))
+                        savePlanDetails(projectInfo, projectWorkStage, projectPlan, sorting, null, schemeJudgeObject.getId(), planRemark, projectPhase, projectManager);
                 }
             }
         }
         sorting = schemeJudgeObjectAppendTaskDto.getSorting() + schemeJudgeObject.getSorting() * 100 + phaseSurePrice.getPhaseSort();
-        return savePlanDetails(projectInfo, projectWorkStage, projectPlan, sorting, null, schemeJudgeObject.getId(), planRemark, phaseSurePrice, projectManager);//确定单价
+        if (!hasPlanDetails(projectInfo.getId(), null, phaseSurePrice.getId(), schemeJudgeObject.getId()))
+            sorting = savePlanDetails(projectInfo, projectWorkStage, projectPlan, sorting, null, schemeJudgeObject.getId(), planRemark, phaseSurePrice, projectManager);//确定单价
+        return sorting;
     }
 
-    private String generatePlanRemark(SchemeAreaGroup schemeAreaGroup, SchemeJudgeObject schemeJudgeObject) {
+    private String generatePlanRemark(SchemeJudgeObject schemeJudgeObject) {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(schemeAreaGroup.getAreaName()).append("/").append(schemeJudgeObject.getNumber());
-        if (schemeJudgeObject.getSplitNumber() != null && schemeJudgeObject.getSplitNumber() > 0) {
-            stringBuilder.append("-").append(schemeJudgeObject.getSplitNumber());
+        if (schemeJudgeObject != null) {
+            stringBuilder.append(schemeJudgeObject.getNumber());
+            if (schemeJudgeObject.getSplitNumber() != null && schemeJudgeObject.getSplitNumber() > 0) {
+                stringBuilder.append("-").append(schemeJudgeObject.getSplitNumber());
+            }
+            stringBuilder.append(BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME);
         }
-        stringBuilder.append(BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME);
         return stringBuilder.toString();
     }
 
@@ -974,6 +980,19 @@ public class SchemeJudgeObjectService {
         //发起任务
         projectPlanService.saveProjectPlanDetailsResponsibility(details, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.TASK);
         return sorting;
+    }
+
+    public Boolean hasPlanDetails(Integer projectId, Integer areaId, Integer phaseId, Integer judgeId) {
+        ProjectPlanDetails where = new ProjectPlanDetails();
+        if (projectId != null)
+            where.setProjectId(projectId);
+        if (areaId != null)
+            where.setAreaId(areaId);
+        if (phaseId != null)
+            where.setProjectPhaseId(phaseId);
+        if (judgeId != null)
+            where.setJudgeObjectId(judgeId);
+        return CollectionUtils.isNotEmpty(projectPlanDetailsService.getProjectDetails(where));
     }
 
     private Map<Integer, ProjectPhase> getProjectPhaseMap(Integer categoryId) {

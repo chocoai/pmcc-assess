@@ -21,7 +21,6 @@
                 <div class="row mt--2">
                     <%@include file="/views/share/project/projectInfoSimple.jsp" %>
                     <%@include file="/views/share/project/projectPlanDetails.jsp" %>
-
                     <div class="col-md-12">
                         <div class="x_panel card full-height">
                             <div class="card-header collapse-link">
@@ -181,13 +180,6 @@
                                                                placeholder="委托目的描述" class="form-control input-full"
                                                                value="${empty item.remarkEntrustPurpose?projectInfo.remarkEntrustPurpose:item.remarkEntrustPurpose}">
                                                     </div>
-                                                    <label class="col-sm-1 control-label">
-                                                        财产范围<span class="symbol required"></span>
-                                                    </label>
-                                                    <div class="x-valid col-sm-2">
-                                                        <select class="form-control input-full" name="propertyScope"
-                                                                required></select>
-                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -242,12 +234,24 @@
                                                         </select>
                                                     </div>
                                                     <label class="col-sm-1 control-label">
+                                                        财产范围<span class="symbol required"></span>
+                                                    </label>
+                                                    <div class="x-valid col-sm-2">
+                                                        <select class="form-control input-full" name="propertyScope"
+                                                                required></select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col-md-12">
+                                                <div class="form-inline">
+                                                    <label class="col-sm-1 control-label">
                                                         价值类型描述<span class="symbol required"></span>
                                                     </label>
-                                                    <div class="col-sm-2 x-valid">
-                                                        <input type="text" name="valueDefinitionDesc" required="required"
-                                                               placeholder="价值类型描述" class="form-control input-full"
-                                                               value="${item.valueDefinitionDesc}">
+                                                    <div class="col-sm-11 x-valid">
+                                        <textarea class="form-control input-full" name="valueDefinitionDesc" placeholder="价值类型描述"
+                                                  required>${item.valueDefinitionDesc}</textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1506,6 +1510,7 @@
     //加载权证信息
     programme.loadDeclareRecordList = function () {
         var cols = [];
+        cols.push({field: 'number', title: '编号'});
         cols.push({field: 'name', title: '权证号'});
         cols.push({field: 'seat', title: '坐落'});
         cols.push({field: 'certUse', title: '证载用途'});
