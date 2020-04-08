@@ -61,7 +61,7 @@
                 <div class="row form-group">
                     <div class="col-md-12">
                         <div class="form-inline x-valid">
-                            <label class="col-sm-1 col-form-label">价值定义</label>
+                            <label class="col-sm-1 col-form-label">价值类型</label>
                             <div class="col-sm-3">
                                 <label class="form-control input-full">${projectInfo.valueTypeName}</label>
                             </div>

@@ -72,7 +72,7 @@
             <div class="col-md-12">
                 <div class="form-inline x-valid">
                     <label class="col-sm-1 col-form-label">
-                        价值定义
+                        价值类型
                     </label>
                     <div class="col-sm-3">
                         <select name="valueType" class="form-control input-full search-select select2 valueType">
