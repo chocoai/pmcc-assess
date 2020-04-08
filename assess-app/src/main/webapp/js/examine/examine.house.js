@@ -1042,14 +1042,13 @@
                 var keyValue = {};
                 var desc=$.trim($(item).find('label').attr('data-desc'));
                 var text=$.trim($(item).find('label').text());
+                keyValue.key = text;
+                keyValue.explain = text;
                 if (desc) {
-                    keyValue.key = desc;
                     keyValue.explain = desc;
-                }else {
-                    keyValue.key = text;
                 }
                 keyValue.value = value;
-                huxingName += value + keyValue.key + ',';
+                huxingName += value + keyValue.explain;
                 jsonArray.push(keyValue);
             }
         })
