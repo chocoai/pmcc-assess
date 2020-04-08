@@ -94,6 +94,18 @@ public class BasicUnitHuxingController {
         }
     }
 
+
+    @GetMapping(value = "/getHuxingByHouseId", name = "获取通过HouseId")
+    public HttpResult getHuxingByHouseId(Integer basicHouseId) {
+        try {
+            return HttpResult.newCorrectResult(200, basicUnitHuxingService.getHuxingByHouseId(basicHouseId));
+        } catch (Exception e) {
+            logger.error(String.format("Server-side exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(500, e.getMessage());
+        }
+    }
+
+
     @ResponseBody
     @RequestMapping(value = "/getUnitId", name = "批量申请获取单元id")
     public HttpResult getUnitId(Integer tableId) {

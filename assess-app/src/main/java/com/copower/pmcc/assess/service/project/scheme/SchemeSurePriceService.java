@@ -20,11 +20,15 @@ import com.copower.pmcc.assess.service.basic.*;
 import com.copower.pmcc.assess.service.event.project.SchemeSurePriceEvent;
 import com.copower.pmcc.assess.service.method.MdCommonService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
+import com.copower.pmcc.assess.service.project.declare.DeclarePublicService;
+import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.api.provider.BpmRpcActivitiProcessManageService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.LangUtils;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -85,7 +89,7 @@ public class SchemeSurePriceService {
     @Autowired
     private ProjectInfoService projectInfoService;
     @Autowired
-    private SchemeSurePriceFactorService schemeSurePriceFactorService;
+    private DeclareRecordService declareRecordService;
     @Autowired
     private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
     @Autowired
@@ -103,7 +107,7 @@ public class SchemeSurePriceService {
     @Autowired
     private BasicHouseService basicHouseService;
     @Autowired
-    private BasicUnitHuxingService basicUnitHuxingService;
+    private DeclarePublicService declarePublicService;
 
     /**
      * 保存确定单价信息
@@ -618,7 +622,7 @@ public class SchemeSurePriceService {
      * @auther: zch
      * @date: 2018/9/25 18:31
      */
-    public String importHuxingPrice(MultipartFile multipartFile, Integer houseId) throws Exception {
+    public String importData(MultipartFile multipartFile, Integer houseId, Integer projectId) throws Exception {
         Workbook workbook = null;
         Row row = null;
         StringBuilder builder = new StringBuilder();
@@ -636,7 +640,7 @@ public class SchemeSurePriceService {
         //工作表的第一行
         row = sheet.getRow(0);
         //读取数据的起始行
-        int startRowNumber = 1;
+        int startRowNumber = 2;
         //导入成功数据条数
         int successCount = 0;
         //总列数
@@ -644,6 +648,9 @@ public class SchemeSurePriceService {
         //总行数
         int rowLength = sheet.getPhysicalNumberOfRows() != 0 ? sheet.getPhysicalNumberOfRows() : sheet.getLastRowNum();
         rowLength = rowLength - startRowNumber;
+
+        Multimap<String, Map.Entry<Class<?>, Integer>> classArrayListMultimap = declarePublicService.getMultimapByClass(BasicHouseHuxingPrice.class, row);
+
         if (rowLength == 0) {
             builder.append("没有数据!");
             return builder.toString();
@@ -658,7 +665,7 @@ public class SchemeSurePriceService {
                 }
                 basicHouseHuxingPrice = new BasicHouseHuxingPrice();
                 basicHouseHuxingPrice.setHouseId(houseId);
-                if (!this.importBasicHouseHuxingPrice(basicHouseHuxingPrice, builder, row, colLength, i, sheet.getRow(0))) {
+                if (!this.importBasicHouseHuxingPrice(classArrayListMultimap,basicHouseHuxingPrice, builder, row, projectId)) {
                     continue;
                 }
                 basicHouseHuxingPriceService.saveAndUpdateBasicHouseHuxingPrice(basicHouseHuxingPrice, false);
@@ -672,51 +679,50 @@ public class SchemeSurePriceService {
     }
 
 
-    public boolean importBasicHouseHuxingPrice(BasicHouseHuxingPrice basicHouseHuxingPrice, StringBuilder builder, Row row, int colLength, int i, Row header) throws Exception {
-        //房号
+    public boolean importBasicHouseHuxingPrice(Multimap<String, Map.Entry<Class<?>, Integer>> classArrayListMultimap, BasicHouseHuxingPrice basicHouseHuxingPrice, StringBuilder builder, Row row, Integer projectId) throws Exception {
+        BasicHouseHuxingPrice oldBasicHouseHuxingPrice = new BasicHouseHuxingPrice();
+        //房号存在则修改数据
         if (org.apache.commons.lang.StringUtils.isNotEmpty(PoiUtils.getCellValue(row.getCell(0)))) {
-            basicHouseHuxingPrice.setHouseNumber(PoiUtils.getCellValue(row.getCell(0)));
-            List<BasicHouseHuxingPrice> list = basicHouseHuxingPriceDao.basicHouseHuxingPriceList(basicHouseHuxingPrice);
+            oldBasicHouseHuxingPrice.setHouseId(basicHouseHuxingPrice.getHouseId());
+            oldBasicHouseHuxingPrice.setHouseNumber(PoiUtils.getCellValue(row.getCell(0)));
+            List<BasicHouseHuxingPrice> list = basicHouseHuxingPriceDao.basicHouseHuxingPriceList(oldBasicHouseHuxingPrice);
             if (CollectionUtils.isNotEmpty(list)) {
-                BeanUtils.copyProperties(list.get(0), basicHouseHuxingPrice);
+                oldBasicHouseHuxingPrice.setId(list.get(0).getId());
+                BeanUtils.copyProperties(list.get(0), oldBasicHouseHuxingPrice);
             }
         }
 
-        //面积
+        //必填项
+        List<String> requiredList = new ArrayList<>();
+        requiredList.addAll(Arrays.asList("houseNumber", "area"));
+
+        //数据字典 map
+        Multimap<String, List<BaseDataDic>> baseMap = ArrayListMultimap.create();
+        baseMap.put("standardMeasure", baseDataDicService.getCacheDataDicList("examine.house.room.standard.measure"));
+        baseMap.put("storageRequest", baseDataDicService.getCacheDataDicList("examine.house.room.storage.request"));
+        baseMap.put("adjacentPosition", baseDataDicService.getCacheDataDicList("examine.house.room.adjacent.position"));
+        baseMap.put("orientation", baseDataDicService.getCacheDataDicList("examine.house.room.orientation"));
+
+        //权证号
         if (org.apache.commons.lang.StringUtils.isNotEmpty(PoiUtils.getCellValue(row.getCell(1)))) {
-            if (this.isNumeric(PoiUtils.getCellValue(row.getCell(1)))) {
-                basicHouseHuxingPrice.setArea(new BigDecimal(PoiUtils.getCellValue(row.getCell(1))));
-            } else {
-                builder.append(String.format("\n第%s行异常：面积应填写数字", i));
-                return false;
+            String value = PoiUtils.getCellValue(row.getCell(1));
+            basicHouseHuxingPrice.setDeclareName(value);
+            List<DeclareRecord> declareRecordList = declareRecordService.getDeclareRecordByProjectId(projectId);
+            if (CollectionUtils.isNotEmpty(declareRecordList)) {
+                for (DeclareRecord item : declareRecordList) {
+                    if (value.equals(item.getName())) {
+                        basicHouseHuxingPrice.setDeclareId(item.getId());
+                    }
+                }
             }
         }
 
-        //价格
-        if (org.apache.commons.lang.StringUtils.isNotEmpty(PoiUtils.getCellValue(row.getCell(2)))) {
-            if (this.isNumeric(PoiUtils.getCellValue(row.getCell(2)))) {
-                basicHouseHuxingPrice.setPrice(new BigDecimal(PoiUtils.getCellValue(row.getCell(2))));
-            } else {
-                builder.append(String.format("\n第%s行异常：价格应填写数字", i));
-                return false;
-            }
+        boolean check = declarePublicService.excelImportHelp(classArrayListMultimap, basicHouseHuxingPrice, builder, row, baseMap, requiredList);
+
+        if(oldBasicHouseHuxingPrice.getId()!=null){
+            BeanUtils.copyProperties(oldBasicHouseHuxingPrice, basicHouseHuxingPrice,"price", "adjustFactor");
         }
-        //因素
-        if (org.apache.commons.lang.StringUtils.isNotEmpty(PoiUtils.getCellValue(row.getCell(3)))) {
-            basicHouseHuxingPrice.setAdjustFactor(PoiUtils.getCellValue(row.getCell(3)));
-        }
-        HashMap<String, Object> map = new HashMap<>();
-        //自定义数据
-        for (int c = 4; c < colLength; c++) {
-            String value = PoiUtils.getCellValue(row.getCell(c));
-            map.put(PoiUtils.getCellValue(header.getCell(c)), value);
-        }
-        String string = JSONObject.toJSONString(map);
-        if (org.apache.commons.lang.StringUtils.isNotEmpty(string)) {
-            basicHouseHuxingPrice.setJsonData(string);
-        }
-        return true;
+        return check;
     }
-
 
 }

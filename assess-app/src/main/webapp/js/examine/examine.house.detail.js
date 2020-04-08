@@ -23,6 +23,22 @@ var houseHuxingPrice;
         },
         loadDataDicList: function () {
             var cols = commonColumn.houseHuxingPriceColumn();
+            var temp = [];
+            var tenementType = houseCommon.houseHuxingForm.find('label[name="tenementType"]').text();
+            if (tenementType == '住宅' || tenementType == '办公') {
+                temp = commonColumn.houseRoomResidence();
+            } else if (tenementType == '商铺' || tenementType == '商场') {
+                temp = commonColumn.houseRoomStore();
+            } else if (tenementType == '餐饮酒店') {
+                temp = commonColumn.houseRoomHotel();
+            } else if (tenementType == '生产') {
+                temp = commonColumn.houseRoomProduction();
+            } else if (tenementType == '仓储') {
+                temp = commonColumn.houseRoomStorage();
+            }
+            $.each(temp, function (i, item) {
+                cols.push(item);
+            })
             $("#" + houseHuxingPrice.prototype.config().table).bootstrapTable('destroy');
             TableInit(houseHuxingPrice.prototype.config().table, getContextPath()+"/basicHouseHuxingPrice/getBootstrapTableVo", cols, {
                 houseId: houseCommon.getHouseId(),

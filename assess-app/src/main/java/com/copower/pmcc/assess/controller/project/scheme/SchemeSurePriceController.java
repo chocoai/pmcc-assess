@@ -2,10 +2,7 @@ package com.copower.pmcc.assess.controller.project.scheme;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.copower.pmcc.assess.dal.basis.entity.BasicUnitHuxing;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
-import com.copower.pmcc.assess.dal.basis.entity.SchemeSurePriceFactor;
-import com.copower.pmcc.assess.dal.basis.entity.SchemeSurePriceItem;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeSurePriceApplyDto;
 import com.copower.pmcc.assess.dto.output.project.scheme.SchemeJudgeObjectVo;
 import com.copower.pmcc.assess.service.BaseService;
@@ -60,7 +57,7 @@ public class SchemeSurePriceController {
     @GetMapping(value = "/getAdjustObjectListByPid", name = "获取待调整价格的估价对象")
     public HttpResult getAdjustObjectListByPid(Integer judgeObjectId) {
         try {
-            List<SchemeJudgeObjectVo> vos = schemeJudgeObjectService.getAdjustObjectListByPid(judgeObjectId);
+            List<SchemeJudgeObjectVo> vos = schemeJudgeObjectService.getVoListByPid(judgeObjectId);
             return HttpResult.newCorrectResult(200, vos);
         } catch (Exception e) {
             baseService.writeExceptionInfo(e, errorInfo);
@@ -156,13 +153,11 @@ public class SchemeSurePriceController {
 
     }
 
-
-
-    @GetMapping(value = "/getUnitHuxing", name = "获取待调整价格的估价对象")
-    public HttpResult getUnitHuxing(Integer judgeObjectId) {
+    @GetMapping(value = "/getBasicHouse", name = "获取待调整价格的估价对象")
+    public HttpResult getBasicHouse(Integer judgeObjectId) {
         try {
-            BasicUnitHuxing unitHuxing = null;
-            return HttpResult.newCorrectResult(200, unitHuxing);
+            BasicHouse house = schemeSurePriceService.getBasicHouse(judgeObjectId);
+            return HttpResult.newCorrectResult(200, house);
         } catch (Exception e) {
             baseService.writeExceptionInfo(e, errorInfo);
             return HttpResult.newErrorResult(500, "获取数据异常");
@@ -180,7 +175,7 @@ public class SchemeSurePriceController {
 
     @ResponseBody
     @RequestMapping(value = "/importHuxingPrice", name = "导入单价记录", method = RequestMethod.POST)
-    public HttpResult importHuxingPrice(HttpServletRequest request, Integer huxingId) {
+    public HttpResult importHuxingPrice(HttpServletRequest request, Integer houseId,Integer projectId) {
         try {
             MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
             Iterator<String> fileNames = multipartRequest.getFileNames();
@@ -188,7 +183,7 @@ public class SchemeSurePriceController {
             if (multipartFile.isEmpty()) {
                 return HttpResult.newErrorResult("上传的文件不能为空");
             }
-            String str = schemeSurePriceService.importHuxingPrice(multipartFile, huxingId);
+            String str = schemeSurePriceService.importData(multipartFile, houseId,projectId);
             return HttpResult.newCorrectResult(str);
         } catch (Exception e) {
             return HttpResult.newErrorResult(e.getMessage());

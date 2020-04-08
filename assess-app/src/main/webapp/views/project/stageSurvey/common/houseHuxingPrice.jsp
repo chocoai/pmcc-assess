@@ -40,7 +40,8 @@
                                 </button>
                                 <ul class="dropdown-menu" role="menu">
                                     <li><a class="btn"
-                                           onclick="AssessCommon.downloadFileTemplate(AssessFTKey.ftBasicUnitPriceInvestigation)">下载模板</a>
+                                           onclick="exportData()">下载模板</a>
+
                                     </li>
                                     <li>
                                         <a class="btn"
@@ -78,7 +79,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="card-body">
-                                <div class="row form-group">
+                                <div style="display: none" class="row form-group common">
                                     <div class="col-md-12">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-2 control-label">
@@ -94,6 +95,274 @@
                                             <div class="col-sm-4">
                                                 <input type="text" placeholder="面积" name="area" data-rule-number='true'
                                                        class="form-control input-full">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="display: none" class="row form-group common">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                楼层
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" placeholder="楼层" name="floor"
+                                                       class="form-control input-full">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <%--住宅，办公--%>
+                                <div style="display: none" class="row form-group residence">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                通风
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" placeholder="通风" name="aeration"
+                                                       class="form-control input-full" required>
+                                            </div>
+                                            <label class="col-sm-2 control-label">
+                                                采光
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" placeholder="采光" name="lighting"
+                                                       class="form-control input-full" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="display: none" class="row form-group residence">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                日照
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" placeholder="日照" name="sunshine"
+                                                       class="form-control input-full" required>
+                                            </div>
+                                            <label class="col-sm-2 control-label">
+                                                隔音
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" placeholder="隔音" name="soundInsulation"
+                                                       class="form-control input-full" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="display: none" class="row form-group residence">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                长度
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" placeholder="长度" name="length"
+                                                       class="form-control input-full" required>
+                                            </div>
+                                            <label class="col-sm-2 control-label">
+                                                宽度
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" placeholder="宽度" name="width"
+                                                       class="form-control input-full" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <%-- 餐饮酒店--%>
+                                <div style="display: none;" class="row form-group hotel">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                通风
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" placeholder="通风" name="aeration"
+                                                       class="form-control input-full" required>
+                                            </div>
+                                            <label class="col-sm-2 control-label">
+                                                采光
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" placeholder="采光" name="lighting"
+                                                       class="form-control input-full" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="display: none" class="row form-group hotel">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                长度
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" placeholder="长度" name="length"
+                                                       class="form-control input-full" required>
+                                            </div>
+                                            <label class="col-sm-2 control-label">
+                                                宽度
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" placeholder="宽度" name="width"
+                                                       class="form-control input-full" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <%-- 商铺、商场--%>
+                                <div style="display: none" class="row form-group store">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                相邻位置
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <select class="form-control input-full search-select select2 adjacentPosition"
+                                                        name="adjacentPosition">
+                                                </select>
+                                            </div>
+                                            <label class="col-sm-2 control-label">
+                                                方位
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <select class="form-control input-full search-select select2 orientation"
+                                                        name="orientation">
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="display: none" class="row form-group store">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                开间
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" placeholder="开间" name="opening"
+                                                       class="form-control input-full" required>
+                                            </div>
+                                            <label class="col-sm-2 control-label">
+                                                进深
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" placeholder="进深" name="depth"
+                                                       class="form-control input-full" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="display: none" class="row form-group store">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                距离
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" placeholder="距离" name="distance"
+                                                       class="form-control input-full" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <%--生产--%>
+                                <div style="display: none" class="row form-group production">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                跨长
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" placeholder="跨长" name="spanLength"
+                                                       class="form-control input-full" required>
+                                            </div>
+                                            <label class="col-sm-2 control-label">
+                                                跨数
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" placeholder="跨数" name="spanNum"
+                                                       class="form-control input-full" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="display: none" class="row form-group production">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                通风
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" placeholder="通风" name="aeration"
+                                                       class="form-control input-full" required>
+                                            </div>
+                                            <label class="col-sm-2 control-label">
+                                                采光
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" placeholder="采光" name="lighting"
+                                                       class="form-control input-full" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="display: none" class="row form-group production">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                最大跨距
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" placeholder="最大跨距" name="maxSpan"
+                                                       class="form-control input-full" required>
+                                            </div>
+                                            <label class="col-sm-2 control-label">
+                                                最小跨距
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" placeholder="最小跨距" name="minSpan"
+                                                       class="form-control input-full" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="display: none" class="row form-group production">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                标准跨距
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" placeholder="标准跨距" name="standardSpan"
+                                                       class="form-control input-full" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <%-- 仓储--%>
+                                <div style="display: none" class="row form-group storage">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                计量标准
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <select class="form-control input-full search-select select2 standardMeasure"
+                                                        name="standardMeasure">
+                                                </select>
+                                            </div>
+                                            <label class="col-sm-2 control-label">
+                                                仓储要求
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <select class="form-control input-full search-select select2 storageRequest"
+                                                        name="storageRequest">
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
@@ -119,4 +388,13 @@
 <input type="file" id="ajaxFileUpload" name="file" style="display: none;"
        onchange="houseHuxingPrice.prototype.importData(${planDetailsId});">
 </html>
+<script>
+    //生成并下载模板
+    function exportData() {
+        var columns = houseCommon.houseHuxingForm.find("input[name='priceExportColumns']").val();
+        var href = "${pageContext.request.contextPath}/basicHouseHuxingPrice/generateAndExport";
+        href += "?columns=" + encodeURIComponent(columns);
+        window.open(href, "");
 
+    }
+</script>

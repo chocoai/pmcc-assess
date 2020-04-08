@@ -125,7 +125,7 @@
                                                             <td data-name="price">${item.price}</td>
                                                             <td data-name="coefficient">${item.factor}</td>
                                                             <td><div class="btn btn-xs btn-primary"
-                                                                                             onclick="determinePrice.getHuxingId(${item.id})">单价调整
+                                                                                             onclick="determinePrice.getHouseId(${item.id})">单价调整
                                                             </div></td>
                                                         </tr>
                                                     </c:forEach>
@@ -190,6 +190,7 @@
             <div class="modal-body">
                 <form id="frmHouseHuxingPriceTable" class="form-horizontal">
                     <input type="hidden" name="houseId">
+                    <input type="hidden" name="tenementType">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="card-body">
@@ -310,7 +311,7 @@
         });
     }
 
-    determinePrice.getHuxingId = function (judgeObjectId) {
+    determinePrice.getHouseId = function (judgeObjectId) {
         $.ajax({
             url: getContextPath() + "/schemeSurePrice/getBasicHouse",
             type: "get",
@@ -319,8 +320,7 @@
             success: function (result) {
                 if (result.ret) {
                     if (houseHuxingPrice.prototype.isNotNull(result.data)) {
-                        $("#" + houseHuxingPrice.prototype.config().tableFrm).find("input[name='houseId']").val(result.data.id);
-                        houseHuxingPrice.prototype.showTableModel();
+                        determinePrice.getHuxingId(result.data.id);
                     } else {
                         notifyInfo("提示", "标准房号未关联单价表")
                     }
@@ -332,6 +332,28 @@
         })
     }
 
+    determinePrice.getHuxingId = function (houseId) {
+        $.ajax({
+            url: getContextPath() + "/basicUnitHuxing/getHuxingByHouseId",
+            type: "get",
+            dataType: "json",
+            data: {basicHouseId: houseId},
+            success: function (result) {
+                if (result.ret) {
+                    if (houseHuxingPrice.prototype.isNotNull(result.data)) {
+                        $("#" + houseHuxingPrice.prototype.config().tableFrm).find("input[name='houseId']").val(houseId);
+                        $("#" + houseHuxingPrice.prototype.config().tableFrm).find("input[name='tenementType']").val(result.data.tenementType);
+                        houseHuxingPrice.prototype.showTableModel();
+                    } else {
+                        notifyInfo("提示", "没有户型信息")
+                    }
+                }
+            },
+            error: function (result) {
+                AlertError("失败", "调用服务端方法失败，失败原因:" + result);
+            }
+        })
+    }
 </script>
 
 <script type="application/javascript">
@@ -347,10 +369,30 @@
             data.tableFrm = "frmHouseHuxingPriceTable";
             return data;
         },
+        isNotBlank: function (item) {
+            if (item) {
+                return true;
+            }
+            return false;
+        },
         loadDataDicList: function (houseId) {
-            var cols = [];
-            cols.push({field: 'houseNumber', title: '房号'});
-            cols.push({field: 'area', title: '面积'});
+            var cols = commonColumn.houseHuxingPriceColumn();
+            var tenementType = $("#" + houseHuxingPrice.prototype.config().tableFrm).find("input[name='tenementType']").val();
+            var temp = [];
+            if (tenementType == '住宅' || tenementType == '办公') {
+                temp = commonColumn.houseRoomResidence();
+            } else if (tenementType == '商铺' || tenementType == '商场') {
+                temp = commonColumn.houseRoomStore();
+            } else if (tenementType == '餐饮酒店') {
+                temp = commonColumn.houseRoomHotel();
+            } else if (tenementType == '生产') {
+                temp = commonColumn.houseRoomProduction();
+            } else if (tenementType == '仓储') {
+                temp = commonColumn.houseRoomStorage();
+            }
+            $.each(temp, function (i, item) {
+                cols.push(item);
+            })
             cols.push({field: 'price', title: '价格'});
             cols.push({field: 'adjustFactor', title: '因素'});
             $("#" + houseHuxingPrice.prototype.config().table).bootstrapTable('destroy');

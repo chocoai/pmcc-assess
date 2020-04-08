@@ -1,7 +1,9 @@
 package com.copower.pmcc.assess.controller.baisc;
 
+import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.dal.basis.entity.BasicHouseHuxingPrice;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlanDetails;
+import com.copower.pmcc.assess.dto.input.project.survey.ExamineHousePriceDto;
 import com.copower.pmcc.assess.service.basic.BasicHouseHuxingPriceService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -18,7 +20,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * @Auther: zch
@@ -106,5 +110,15 @@ public class BasicHouseHuxingPriceController {
             return HttpResult.newErrorResult(e.getMessage());
         }
 
+    }
+
+    @RequestMapping(value = "/generateAndExport", name = "生成并导出模板")
+    public void generateAndExport(HttpServletResponse response, String columns, String source) throws Exception {
+        try {
+            List<ExamineHousePriceDto> dtoList = JSON.parseArray(columns, ExamineHousePriceDto.class);
+            basicHouseHuxingPriceService.generateAndExport(response, dtoList, source);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

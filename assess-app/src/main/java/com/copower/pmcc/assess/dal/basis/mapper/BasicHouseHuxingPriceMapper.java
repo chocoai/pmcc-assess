@@ -16,21 +16,15 @@ public interface BasicHouseHuxingPriceMapper {
 
     int insertSelective(BasicHouseHuxingPrice record);
 
-    List<BasicHouseHuxingPrice> selectByExampleWithBLOBs(BasicHouseHuxingPriceExample example);
-
     List<BasicHouseHuxingPrice> selectByExample(BasicHouseHuxingPriceExample example);
 
     BasicHouseHuxingPrice selectByPrimaryKey(Integer id);
 
     int updateByExampleSelective(@Param("record") BasicHouseHuxingPrice record, @Param("example") BasicHouseHuxingPriceExample example);
 
-    int updateByExampleWithBLOBs(@Param("record") BasicHouseHuxingPrice record, @Param("example") BasicHouseHuxingPriceExample example);
-
     int updateByExample(@Param("record") BasicHouseHuxingPrice record, @Param("example") BasicHouseHuxingPriceExample example);
 
     int updateByPrimaryKeySelective(BasicHouseHuxingPrice record);
-
-    int updateByPrimaryKeyWithBLOBs(BasicHouseHuxingPrice record);
 
     int updateByPrimaryKey(BasicHouseHuxingPrice record);
 }

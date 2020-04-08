@@ -467,6 +467,7 @@ commonColumn.houseHuxingPriceColumn = function () {
     var cols = [];
     cols.push({field: 'houseNumber', title: '房号'});
     cols.push({field: 'area', title: '面积'});
+    cols.push({field: 'floor', title: '楼层'});
     return cols;
 }
 
@@ -574,21 +575,6 @@ commonColumn.houseRoomColumn = function () {
 
 commonColumn.houseRoomResidence = function () {
     var cols = [];
-    cols.push({
-        field: 'name', title: '名称', formatter: function (value, row, index) {
-            var s = "";
-            if (row.name) {
-                s += row.name;
-            }
-            if (row.creatorName) {
-                s += "<span style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</span>"
-            }
-            return s;
-        }
-    });    cols.push({field: 'houseShape', title: '房间形状'});
-    cols.push({field: 'area', title: '面积'});
-    cols.push({field: 'layerHeight', title: '层高'});
-    cols.push({field: 'clearHeight', title: '净高'});
     cols.push({field: 'aeration', title: '通风'});
     cols.push({field: 'lighting', title: '采光'});
     cols.push({field: 'sunshine', title: '日照'});
@@ -600,21 +586,6 @@ commonColumn.houseRoomResidence = function () {
 
 commonColumn.houseRoomStore = function () {
     var cols = [];
-    cols.push({
-        field: 'name', title: '名称', formatter: function (value, row, index) {
-            var s = "";
-            if (row.name) {
-                s += row.name;
-            }
-            if (row.creatorName) {
-                s += "<span style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</span>"
-            }
-            return s;
-        }
-    });    cols.push({field: 'houseShape', title: '房间形状'});
-    cols.push({field: 'area', title: '面积'});
-    cols.push({field: 'layerHeight', title: '层高'});
-    cols.push({field: 'clearHeight', title: '净高'});
     cols.push({field: 'adjacentPositionName', title: '相邻位置'});
     cols.push({field: 'orientationName', title: '方位'});
     cols.push({field: 'opening', title: '开间(最大开间)'});
@@ -626,21 +597,6 @@ commonColumn.houseRoomStore = function () {
 
 commonColumn.houseRoomHotel = function () {
     var cols = [];
-    cols.push({
-        field: 'name', title: '名称', formatter: function (value, row, index) {
-            var s = "";
-            if (row.name) {
-                s += row.name;
-            }
-            if (row.creatorName) {
-                s += "<span style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</span>"
-            }
-            return s;
-        }
-    });    cols.push({field: 'houseShape', title: '房间形状'});
-    cols.push({field: 'area', title: '面积'});
-    cols.push({field: 'layerHeight', title: '层高'});
-    cols.push({field: 'clearHeight', title: '净高'});
     cols.push({field: 'aeration', title: '通风'});
     cols.push({field: 'lighting', title: '采光'});
     cols.push({field: 'length', title: '长度(最长)'});
@@ -650,21 +606,6 @@ commonColumn.houseRoomHotel = function () {
 
 commonColumn.houseRoomProduction = function () {
     var cols = [];
-    cols.push({
-        field: 'name', title: '名称', formatter: function (value, row, index) {
-            var s = "";
-            if (row.name) {
-                s += row.name;
-            }
-            if (row.creatorName) {
-                s += "<span style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</span>"
-            }
-            return s;
-        }
-    });    cols.push({field: 'houseShape', title: '房间形状'});
-    cols.push({field: 'area', title: '面积'});
-    cols.push({field: 'layerHeight', title: '层高'});
-    cols.push({field: 'clearHeight', title: '净高'});
     cols.push({field: 'spanLength', title: '跨长'});
     cols.push({field: 'spanNum', title: '跨数'});
     cols.push({field: 'aeration', title: '通风'});
@@ -678,21 +619,6 @@ commonColumn.houseRoomProduction = function () {
 
 commonColumn.houseRoomStorage = function () {
     var cols = [];
-    cols.push({
-        field: 'name', title: '名称', formatter: function (value, row, index) {
-            var s = "";
-            if (row.name) {
-                s += row.name;
-            }
-            if (row.creatorName) {
-                s += "<span style='padding: 5px;' class='label label-info'>" + row.creatorName.split("_")[0] + "</span>"
-            }
-            return s;
-        }
-    });    cols.push({field: 'houseShape', title: '房间形状'});
-    cols.push({field: 'area', title: '面积'});
-    cols.push({field: 'layerHeight', title: '层高'});
-    cols.push({field: 'clearHeight', title: '净高'});
     cols.push({field: 'standardMeasureName', title: '计量标准'});
     cols.push({field: 'storageRequestName', title: '仓储要求'});
     return cols;

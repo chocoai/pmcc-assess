@@ -1,26 +1,34 @@
 package com.copower.pmcc.assess.service.basic;
 
-import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.PoiUtils;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicHouseHuxingPriceDao;
+import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.BasicHouseHuxingPrice;
 import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
+import com.copower.pmcc.assess.dto.input.project.survey.ExamineHousePriceDto;
+import com.copower.pmcc.assess.dto.output.basic.BasicHouseHuxingPriceVo;
+import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
+import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.project.declare.DeclarePublicService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
+import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
 import com.copower.pmcc.erp.common.utils.DateUtils;
+import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Multimap;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -29,12 +37,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.FileInputStream;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.regex.Pattern;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.util.*;
 
 /**
  * @Auther: zch
@@ -51,7 +59,13 @@ public class BasicHouseHuxingPriceService {
     @Autowired
     private CommonService commonService;
     @Autowired
+    private DeclarePublicService declarePublicService;
+    @Autowired
+    private BaseDataDicService baseDataDicService;
+    @Autowired
     private DeclareRecordService declareRecordService;
+    @Autowired
+    private PublicService publicService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
@@ -125,9 +139,97 @@ public class BasicHouseHuxingPriceService {
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<BasicHouseHuxingPrice> basicHouseHuxingPriceList = basicHouseHuxingPriceDao.basicHouseHuxingPriceList(basicHouseHuxingPrice);
+        List<BasicHouseHuxingPriceVo> voList = LangUtils.transform(basicHouseHuxingPriceList, o -> getBasicHouseHuxingPriceVo(o));
         vo.setTotal(page.getTotal());
-        vo.setRows(ObjectUtils.isEmpty(basicHouseHuxingPriceList) ? new ArrayList<BasicHouseHuxingPrice>(10) : basicHouseHuxingPriceList);
+        vo.setRows(ObjectUtils.isEmpty(voList) ? new ArrayList<BasicHouseHuxingPriceVo>(10) : voList);
         return vo;
+    }
+
+    public BasicHouseHuxingPriceVo getBasicHouseHuxingPriceVo(BasicHouseHuxingPrice basicHouseHuxingPrice) {
+        if (basicHouseHuxingPrice == null) {
+            return null;
+        }
+        BasicHouseHuxingPriceVo vo = new BasicHouseHuxingPriceVo();
+        BeanUtils.copyProperties(basicHouseHuxingPrice, vo);
+        vo.setOrientationName(baseDataDicService.getNameById(basicHouseHuxingPrice.getOrientation()));
+        vo.setStandardMeasureName(baseDataDicService.getNameById(basicHouseHuxingPrice.getStandardMeasure()));
+        vo.setStorageRequestName(baseDataDicService.getNameById(basicHouseHuxingPrice.getStorageRequest()));
+        vo.setAdjacentPositionName(baseDataDicService.getNameById(basicHouseHuxingPrice.getAdjacentPosition()));
+        vo.setCreatorName(publicService.getUserNameByAccount(basicHouseHuxingPrice.getCreator()));
+        return vo;
+    }
+
+
+
+    /**
+     * 导出
+     *
+     * @param response
+     */
+    public void generateAndExport(HttpServletResponse response, List<ExamineHousePriceDto> dynamicList, String source) throws BusinessException, IOException {
+        Workbook wb = new HSSFWorkbook();
+        Sheet sheet = wb.createSheet();
+        Row row1 = sheet.createRow(0);
+        Row row2 = sheet.createRow(1);
+        //创建Excel标题 估价对象名称、评估面积、楼层、房号、评估价格、因素
+        ArrayList<ExamineHousePriceDto> columnsList = Lists.newArrayList();
+        LinkedHashMap<String, String> base = new LinkedHashMap<>();
+        base.put("houseNumber","房号");
+        base.put("declareName","权证名称");
+        base.put("area","面积");
+        base.put("floor","楼层");
+        if(StringUtils.isNotEmpty(source)){
+            base.put("price","价格");
+            base.put("adjustFactor","因素");
+        }
+        for (Map.Entry<String, String> stringObjectEntry : base.entrySet()) {
+            ExamineHousePriceDto dto = new ExamineHousePriceDto();
+            dto.setKey(stringObjectEntry.getKey());
+            dto.setValue(stringObjectEntry.getValue());
+            columnsList.add(dto);
+        }
+        columnsList.addAll(dynamicList);
+        for (int i = 0; i < columnsList.size(); i++) {
+            Cell cell = row1.createCell(i);
+            cell.setCellValue(columnsList.get(i).getKey());
+            Cell cell2 = row2.createCell(i);
+            cell2.setCellValue(columnsList.get(i).getValue());
+            sheet.setColumnWidth(i, 4000);
+        }
+        row1.setZeroHeight(true);
+
+        OutputStream os = response.getOutputStream();
+        try {
+            this.setResponseHeader(response, "单价调查模板.XLS");
+            wb.write(os);
+        } catch (Exception e) {
+            throw new BusinessException("导出Excel出错:" + e);
+        } finally {
+            os.flush();
+            os.close();
+        }
+    }
+
+    /**
+     * 响应流
+     *
+     * @param response
+     * @param fileName
+     */
+    public void setResponseHeader(HttpServletResponse response, String fileName) {
+        try {
+            try {
+                fileName = new String(fileName.getBytes(), "ISO8859-1");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            response.setContentType("application/octet-stream;charset=ISO8859-1");
+            response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
+            response.addHeader("Pargam", "no-cache");
+            response.addHeader("Cache-Control", "no-cache");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
 
@@ -157,7 +259,7 @@ public class BasicHouseHuxingPriceService {
         //工作表的第一行
         row = sheet.getRow(0);
         //读取数据的起始行
-        int startRowNumber = 1;
+        int startRowNumber = 2;
         //导入成功数据条数
         int successCount = 0;
         //总列数
@@ -165,6 +267,9 @@ public class BasicHouseHuxingPriceService {
         //总行数
         int rowLength = sheet.getPhysicalNumberOfRows() != 0 ? sheet.getPhysicalNumberOfRows() : sheet.getLastRowNum();
         rowLength = rowLength - startRowNumber;
+
+        Multimap<String, Map.Entry<Class<?>, Integer>> classArrayListMultimap = declarePublicService.getMultimapByClass(BasicHouseHuxingPrice.class, row);
+
         if (rowLength == 0) {
             builder.append("没有数据!");
             return builder.toString();
@@ -179,7 +284,7 @@ public class BasicHouseHuxingPriceService {
                 }
                 basicHouseHuxingPrice = new BasicHouseHuxingPrice();
                 basicHouseHuxingPrice.setHouseId(houseId);
-                if (!this.importBasicHouseHuxingPrice(basicHouseHuxingPrice, builder, row, colLength, i, sheet.getRow(0), projectId)) {
+                if (!this.importBasicHouseHuxingPrice(classArrayListMultimap,basicHouseHuxingPrice, builder, row, colLength, i, sheet.getRow(1), projectId)) {
                     continue;
                 }
                 saveAndUpdateBasicHouseHuxingPrice(basicHouseHuxingPrice, false);
@@ -193,16 +298,26 @@ public class BasicHouseHuxingPriceService {
     }
 
 
-    public boolean importBasicHouseHuxingPrice(BasicHouseHuxingPrice basicHouseHuxingPrice, StringBuilder builder, Row row, int colLength, int i, Row header, Integer projectId) throws Exception {
+    public boolean importBasicHouseHuxingPrice(Multimap<String, Map.Entry<Class<?>, Integer>> classArrayListMultimap,BasicHouseHuxingPrice basicHouseHuxingPrice, StringBuilder builder, Row row, int colLength, int i, Row header, Integer projectId) throws Exception {
+        //必填项
+        List<String> requiredList = new ArrayList<>();
+        requiredList.addAll(Arrays.asList("houseNumber", "area"));
+
+        //数据字典 map
+        Multimap<String, List<BaseDataDic>> baseMap = ArrayListMultimap.create();
+        baseMap.put("standardMeasure", baseDataDicService.getCacheDataDicList("examine.house.room.standard.measure"));
+        baseMap.put("storageRequest", baseDataDicService.getCacheDataDicList("examine.house.room.storage.request"));
+        baseMap.put("adjacentPosition", baseDataDicService.getCacheDataDicList("examine.house.room.adjacent.position"));
+        baseMap.put("orientation", baseDataDicService.getCacheDataDicList("examine.house.room.orientation"));
+
         //房号
         if (StringUtils.isNotEmpty(PoiUtils.getCellValue(row.getCell(0)))) {
             basicHouseHuxingPrice.setHouseNumber(PoiUtils.getCellValue(row.getCell(0)));
             List<BasicHouseHuxingPrice> list = basicHouseHuxingPriceDao.basicHouseHuxingPriceList(basicHouseHuxingPrice);
             if (CollectionUtils.isNotEmpty(list)) {
-                BeanUtils.copyProperties(list.get(0), basicHouseHuxingPrice);
+                basicHouseHuxingPrice.setId(list.get(0).getId());
             }
         }
-
         //权证号
         if (StringUtils.isNotEmpty(PoiUtils.getCellValue(row.getCell(1)))) {
             String value = PoiUtils.getCellValue(row.getCell(1));
@@ -217,41 +332,8 @@ public class BasicHouseHuxingPriceService {
             }
         }
 
-        //面积
-        if (StringUtils.isNotEmpty(PoiUtils.getCellValue(row.getCell(2)))) {
-            if (this.isNumeric(PoiUtils.getCellValue(row.getCell(2)))) {
-                basicHouseHuxingPrice.setArea(new BigDecimal(PoiUtils.getCellValue(row.getCell(2))));
-            } else {
-                builder.append(String.format("\n第%s行异常：面积应填写数字", i));
-                return false;
-            }
-        }
-
-        HashMap<String, Object> map = new HashMap<>();
-        //自定义数据
-        for (int c = 3; c < colLength; c++) {
-            String value = PoiUtils.getCellValue(row.getCell(c));
-            map.put(PoiUtils.getCellValue(header.getCell(c)), value);
-        }
-        String string = JSONObject.toJSONString(map);
-        if (StringUtils.isNotEmpty(string)) {
-            basicHouseHuxingPrice.setJsonData(string);
-        }
-        return true;
+        boolean check = declarePublicService.excelImportHelp(classArrayListMultimap, basicHouseHuxingPrice, builder, row, baseMap, requiredList);
+        return check;
     }
 
-    //验证是否是数字或小数
-    public boolean isNumeric(String str) {
-        Pattern pattern = Pattern.compile("[0-9]*");
-        if (str.indexOf(".") > 0) {//判断是否有小数点
-            if (str.indexOf(".") == str.lastIndexOf(".") && str.split("\\.").length == 2) { //判断是否只有一个小数点
-                return pattern.matcher(str.replace(".", "")).matches();
-            } else {
-                return false;
-            }
-        } else {
-            return pattern.matcher(str).matches();
-        }
-
-    }
 }

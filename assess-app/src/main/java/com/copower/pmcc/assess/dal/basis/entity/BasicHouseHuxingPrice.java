@@ -8,11 +8,17 @@ public class BasicHouseHuxingPrice {
 
     private Integer huxingId;
 
+    private Integer houseId;
+
     private String houseNumber;
 
     private BigDecimal area;
 
+    private String floor;
+
     private String adjustFactor;
+
+    private String jsonData;
 
     private BigDecimal price;
 
@@ -28,9 +34,41 @@ public class BasicHouseHuxingPrice {
 
     private Date gmtModified;
 
-    private Integer houseId;
+    private String aeration;
 
-    private String jsonData;
+    private String lighting;
+
+    private String sunshine;
+
+    private String soundInsulation;
+
+    private String length;
+
+    private String width;
+
+    private String adjacentPosition;
+
+    private String orientation;
+
+    private String opening;
+
+    private String depth;
+
+    private String distance;
+
+    private String spanLength;
+
+    private String spanNum;
+
+    private String maxSpan;
+
+    private String minSpan;
+
+    private String standardSpan;
+
+    private String standardMeasure;
+
+    private String storageRequest;
 
     public Integer getId() {
         return id;
@@ -46,6 +84,14 @@ public class BasicHouseHuxingPrice {
 
     public void setHuxingId(Integer huxingId) {
         this.huxingId = huxingId;
+    }
+
+    public Integer getHouseId() {
+        return houseId;
+    }
+
+    public void setHouseId(Integer houseId) {
+        this.houseId = houseId;
     }
 
     public String getHouseNumber() {
@@ -64,12 +110,28 @@ public class BasicHouseHuxingPrice {
         this.area = area;
     }
 
+    public String getFloor() {
+        return floor;
+    }
+
+    public void setFloor(String floor) {
+        this.floor = floor == null ? null : floor.trim();
+    }
+
     public String getAdjustFactor() {
         return adjustFactor;
     }
 
     public void setAdjustFactor(String adjustFactor) {
         this.adjustFactor = adjustFactor == null ? null : adjustFactor.trim();
+    }
+
+    public String getJsonData() {
+        return jsonData;
+    }
+
+    public void setJsonData(String jsonData) {
+        this.jsonData = jsonData == null ? null : jsonData.trim();
     }
 
     public BigDecimal getPrice() {
@@ -128,19 +190,147 @@ public class BasicHouseHuxingPrice {
         this.gmtModified = gmtModified;
     }
 
-    public Integer getHouseId() {
-        return houseId;
+    public String getAeration() {
+        return aeration;
     }
 
-    public void setHouseId(Integer houseId) {
-        this.houseId = houseId;
+    public void setAeration(String aeration) {
+        this.aeration = aeration == null ? null : aeration.trim();
     }
 
-    public String getJsonData() {
-        return jsonData;
+    public String getLighting() {
+        return lighting;
     }
 
-    public void setJsonData(String jsonData) {
-        this.jsonData = jsonData == null ? null : jsonData.trim();
+    public void setLighting(String lighting) {
+        this.lighting = lighting == null ? null : lighting.trim();
+    }
+
+    public String getSunshine() {
+        return sunshine;
+    }
+
+    public void setSunshine(String sunshine) {
+        this.sunshine = sunshine == null ? null : sunshine.trim();
+    }
+
+    public String getSoundInsulation() {
+        return soundInsulation;
+    }
+
+    public void setSoundInsulation(String soundInsulation) {
+        this.soundInsulation = soundInsulation == null ? null : soundInsulation.trim();
+    }
+
+    public String getLength() {
+        return length;
+    }
+
+    public void setLength(String length) {
+        this.length = length == null ? null : length.trim();
+    }
+
+    public String getWidth() {
+        return width;
+    }
+
+    public void setWidth(String width) {
+        this.width = width == null ? null : width.trim();
+    }
+
+    public String getAdjacentPosition() {
+        return adjacentPosition;
+    }
+
+    public void setAdjacentPosition(String adjacentPosition) {
+        this.adjacentPosition = adjacentPosition == null ? null : adjacentPosition.trim();
+    }
+
+    public String getOrientation() {
+        return orientation;
+    }
+
+    public void setOrientation(String orientation) {
+        this.orientation = orientation == null ? null : orientation.trim();
+    }
+
+    public String getOpening() {
+        return opening;
+    }
+
+    public void setOpening(String opening) {
+        this.opening = opening == null ? null : opening.trim();
+    }
+
+    public String getDepth() {
+        return depth;
+    }
+
+    public void setDepth(String depth) {
+        this.depth = depth == null ? null : depth.trim();
+    }
+
+    public String getDistance() {
+        return distance;
+    }
+
+    public void setDistance(String distance) {
+        this.distance = distance == null ? null : distance.trim();
+    }
+
+    public String getSpanLength() {
+        return spanLength;
+    }
+
+    public void setSpanLength(String spanLength) {
+        this.spanLength = spanLength == null ? null : spanLength.trim();
+    }
+
+    public String getSpanNum() {
+        return spanNum;
+    }
+
+    public void setSpanNum(String spanNum) {
+        this.spanNum = spanNum == null ? null : spanNum.trim();
+    }
+
+    public String getMaxSpan() {
+        return maxSpan;
+    }
+
+    public void setMaxSpan(String maxSpan) {
+        this.maxSpan = maxSpan == null ? null : maxSpan.trim();
+    }
+
+    public String getMinSpan() {
+        return minSpan;
+    }
+
+    public void setMinSpan(String minSpan) {
+        this.minSpan = minSpan == null ? null : minSpan.trim();
+    }
+
+    public String getStandardSpan() {
+        return standardSpan;
+    }
+
+    public void setStandardSpan(String standardSpan) {
+        this.standardSpan = standardSpan == null ? null : standardSpan.trim();
+    }
+
+    public String getStandardMeasure() {
+        return standardMeasure;
+    }
+
+    public void setStandardMeasure(String standardMeasure) {
+        this.standardMeasure = standardMeasure == null ? null : standardMeasure.trim();
+    }
+
+    public String getStorageRequest() {
+        return storageRequest;
+    }
+
+    public void setStorageRequest(String storageRequest) {
+        this.storageRequest = storageRequest == null ? null : storageRequest.trim();
     }
 }

@@ -24,6 +24,22 @@ var houseHuxingPrice;
         },
         loadDataDicList: function () {
             var cols = commonColumn.houseHuxingPriceColumn();
+            var temp = [];
+            var tenementType = houseCommon.houseHuxingForm.find('input[name="tenementType"]').val();
+            if (tenementType == '住宅' || tenementType == '办公') {
+                temp = commonColumn.houseRoomResidence();
+            } else if (tenementType == '商铺' || tenementType == '商场') {
+                temp = commonColumn.houseRoomStore();
+            } else if (tenementType == '餐饮酒店') {
+                temp = commonColumn.houseRoomHotel();
+            } else if (tenementType == '生产') {
+                temp = commonColumn.houseRoomProduction();
+            } else if (tenementType == '仓储') {
+                temp = commonColumn.houseRoomStorage();
+            }
+            $.each(temp, function (i, item) {
+                cols.push(item);
+            })
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
                     var str = '<div class="btn-margin">';
@@ -118,7 +134,51 @@ var houseHuxingPrice;
         },
         init: function (item) {
             $("#" + houseHuxingPrice.prototype.config().frm).clearAll();
+            var tenementType = houseCommon.houseHuxingForm.find('input[name="tenementType"]').val();
+            if (houseHuxingPrice.prototype.isNotBlank(tenementType)) {
+                $("#" + houseHuxingPrice.prototype.config().frm).find(".form-group").attr("style", "display:none");
+                $("#" + houseHuxingPrice.prototype.config().frm).find(".form-group").find("input").attr("disabled", true);
+
+                $("#" + houseHuxingPrice.prototype.config().frm).find(".common").show();
+                $("#" + houseHuxingPrice.prototype.config().frm).find(".common").find("input").attr("disabled", false);
+
+                if (tenementType == '住宅' || tenementType == '办公') {
+                    $("#" + houseHuxingPrice.prototype.config().frm).find(".residence").show();
+                    $("#" + houseHuxingPrice.prototype.config().frm).find(".residence").find("input").attr("disabled", false);
+                }
+                if (tenementType == '商铺' || tenementType == '商场') {
+                    $("#" + houseHuxingPrice.prototype.config().frm).find(".store").show();
+                    $("#" + houseHuxingPrice.prototype.config().frm).find(".store").find("input").attr("disabled", false);
+
+                }
+                if (tenementType == '餐饮酒店') {
+                    $("#" + houseHuxingPrice.prototype.config().frm).find(".hotel").show();
+                    $("#" + houseHuxingPrice.prototype.config().frm).find(".hotel").find("input").attr("disabled", false);
+                }
+                if (tenementType == '生产') {
+                    $("#" + houseHuxingPrice.prototype.config().frm).find(".production").show();
+                    $("#" + houseHuxingPrice.prototype.config().frm).find(".production").find("input").attr("disabled", false);
+                }
+                if (tenementType == '仓储') {
+                    $("#" + houseHuxingPrice.prototype.config().frm).find(".storage").show();
+                }
+            } else {
+                $("#" + houseHuxingPrice.prototype.config().frm).find(".common").show();
+            }
             $("#" + houseHuxingPrice.prototype.config().frm).initForm(item);
+            AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_room_adjacent_position, item.adjacentPosition, function (html, data) {
+                $("#" + houseHuxingPrice.prototype.config().frm).find("select.adjacentPosition").empty().html(html).trigger('change');
+            });
+            AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_room_orientation, item.orientation, function (html, data) {
+                $("#" + houseHuxingPrice.prototype.config().frm).find("select.orientation").empty().html(html).trigger('change');
+            });
+            AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_room_standard_measure, item.standardMeasure, function (html, data) {
+                $("#" + houseHuxingPrice.prototype.config().frm).find("select.standardMeasure").empty().html(html).trigger('change');
+            });
+            AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_room_storage_request, item.storageRequest, function (html, data) {
+                $("#" + houseHuxingPrice.prototype.config().frm).find("select.storageRequest").empty().html(html).trigger('change');
+            });
+
         },
         importData: function (planDetailsId) {
             $.ajaxFileUpload({
@@ -1560,36 +1620,36 @@ var houseRoomDecorate;
         },
         openLocationModal: function (_this) {
             var tenementType = houseCommon.houseHuxingForm.find("input[name='tenementType']").val();
-            if(!tenementType){
-                notifyInfo('提示',"请先填写物业类型！");
+            if (!tenementType) {
+                notifyInfo('提示', "请先填写物业类型！");
             }
-            $("#frmLocation").find(".form-group").attr("style","display:none");
+            $("#frmLocation").find(".form-group").attr("style", "display:none");
             $("#frmLocation").find(".common").show();
-            if(tenementType=='住宅'){
+            if (tenementType == '住宅') {
                 $("#frmLocation").find(".residence").show();
             }
-            if(tenementType=='商铺'||tenementType=='商场'){
+            if (tenementType == '商铺' || tenementType == '商场') {
                 $("#frmLocation").find(".store").show();
             }
-            if(tenementType=='餐饮酒店'){
+            if (tenementType == '餐饮酒店') {
                 $("#frmLocation").find(".hotel").show();
             }
-            if(tenementType=='办公'){
+            if (tenementType == '办公') {
                 $("#frmLocation").find(".work").show();
             }
-            if(tenementType=='生产'){
+            if (tenementType == '生产') {
                 $("#frmLocation").find(".production").show();
             }
-            if(tenementType=='仓储'){
+            if (tenementType == '仓储') {
                 $("#frmLocation").find(".storage").show();
             }
 
             $("#divBoxLocation").clearAll();
             var value = $('#' + houseRoomDecorate.prototype.config().frm).find("input[name='location']").val();
-            if(houseRoomDecorate.prototype.isNotBlank(value)){
+            if (houseRoomDecorate.prototype.isNotBlank(value)) {
                 var valueArray = value.split(",");
                 var checkboxs = $("#frmLocation").find("input[name='locationCheckBox']");
-                AssessCommon.checkboxToChecked(checkboxs,valueArray);
+                AssessCommon.checkboxToChecked(checkboxs, valueArray);
             }
             $("#divBoxLocation").modal("show");
         },
@@ -1606,9 +1666,9 @@ var houseRoomDecorate;
             $("#" + houseRoomDecorate.prototype.config().frm).find('input[name="decoratePart"]').val(data.join());
             $("#divBoxDecoratePart").modal("hide");
         },
-        spliceLocation:function () {
+        spliceLocation: function () {
             var value = [];
-            $("#frmLocation").find("input[name='locationCheckBox']:checked").each(function(i){
+            $("#frmLocation").find("input[name='locationCheckBox']:checked").each(function (i) {
                 value.push($(this).val());
             })
             $("#" + houseRoomDecorate.prototype.config().frm).find("input[name='location']").val(value);
@@ -1785,22 +1845,23 @@ var houseRoom;
             return data;
         },
         loadDataDicList: function () {
-            var cols = [];
+            var cols = commonColumn.houseRoomColumn();
+            var temp = [];
             var tenementType = houseCommon.houseHuxingForm.find('input[name="tenementType"]').val();
-            if (tenementType == '住宅'|| tenementType == '办公') {
-                cols = commonColumn.houseRoomResidence();
+            if (tenementType == '住宅' || tenementType == '办公') {
+                temp = commonColumn.houseRoomResidence();
             } else if (tenementType == '商铺' || tenementType == '商场') {
-                cols = commonColumn.houseRoomStore();
+                temp = commonColumn.houseRoomStore();
             } else if (tenementType == '餐饮酒店') {
-                cols = commonColumn.houseRoomHotel();
+                temp = commonColumn.houseRoomHotel();
             } else if (tenementType == '生产') {
-                cols = commonColumn.houseRoomProduction();
+                temp = commonColumn.houseRoomProduction();
             } else if (tenementType == '仓储') {
-                cols = commonColumn.houseRoomStorage();
-            }else{
-                cols = commonColumn.houseRoomColumn();
+                temp = commonColumn.houseRoomStorage();
             }
-
+            $.each(temp, function (i, item) {
+                cols.push(item);
+            })
             cols.push({field: 'fileViewName', title: '附件'});
             cols.push({
                 field: 'id', title: '操作', formatter: function (value, row, index) {
@@ -2043,7 +2104,7 @@ var houseRoom;
                 $("#" + houseRoom.prototype.config().frm).find(".common").show();
                 $("#" + houseRoom.prototype.config().frm).find(".common").find("input").attr("disabled", false);
                 if (houseRoom.prototype.isNotBlank(tenementType)) {
-                    if (tenementType == '住宅'|| tenementType == '办公') {
+                    if (tenementType == '住宅' || tenementType == '办公') {
                         $("#" + houseRoom.prototype.config().frm).find(".residence.base").show();
                         $("#" + houseRoom.prototype.config().frm).find(".residence.base").find("input").attr("disabled", false);
                     }
@@ -2107,9 +2168,8 @@ var houseRoom;
         houseShapeChange() {
             var tenementType = houseCommon.houseHuxingForm.find('input[name="tenementType"]').val();
             var houseShape = $("#" + houseRoom.prototype.config().frm).find('select[name="houseShape"]').val();
-            console.log(houseShape + "==" + tenementType)
             if (houseRoom.prototype.isNotBlank(tenementType) && houseRoom.prototype.isNotBlank(tenementType)) {
-                if (tenementType == '住宅'|| tenementType == '办公') {
+                if (tenementType == '住宅' || tenementType == '办公') {
                     if (houseShape == '规则') {
                         $("#" + houseRoom.prototype.config().frm).find(".residence.unruled").hide();
                         $("#" + houseRoom.prototype.config().frm).find(".residence.unruled").find("input").attr("disabled", true);

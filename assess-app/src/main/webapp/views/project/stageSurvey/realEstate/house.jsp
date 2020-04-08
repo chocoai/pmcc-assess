@@ -228,6 +228,7 @@
                                                             class="symbol required"></span></label>
                                                     <div class="col-sm-3">
                                                         <div class="input-group">
+                                                            <input type="hidden" name="priceExportColumns">
                                                             <input type="text" required name="tenementType"
                                                                    value="${basicHouseHuxing.tenementType}"
                                                                    class="form-control" list="tenementTypeList">
@@ -289,7 +290,7 @@
                                                     <label class="col-sm-1">空间布局<span
                                                             class="symbol required"></span></label>
                                                     <div class="col-sm-3">
-                                                        <select class="form-control input-full search-select select2 spatialDistribution"
+                                                        <select class="form-control input-full spatialDistribution"
                                                                 name="spatialDistribution"
                                                                 required>
                                                         </select>

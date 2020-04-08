@@ -50,7 +50,7 @@ public class ProjectTaskSurePriceAssist implements ProjectTaskInterface {
         }
         modelAndView.addObject("schemeSurePrice", schemeSurePrice);
         modelAndView.addObject("judgeObject", schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId()));
-        modelAndView.addObject("subJudgeObjectList", schemeJudgeObjectService.getAdjustObjectListByPid(projectPlanDetails.getJudgeObjectId()));
+        modelAndView.addObject("subJudgeObjectList", schemeJudgeObjectService.getVoListByPid(projectPlanDetails.getJudgeObjectId()));
         return modelAndView;
     }
 
@@ -76,7 +76,7 @@ public class ProjectTaskSurePriceAssist implements ProjectTaskInterface {
         } catch (BusinessException e) {
             logger.error(e.getMessage(),e);
         }
-        modelAndView.addObject("subJudgeObjectList", schemeJudgeObjectService.getAdjustObjectListByPid(projectPlanDetails.getJudgeObjectId()));
+        modelAndView.addObject("subJudgeObjectList", schemeJudgeObjectService.getVoListByPid(projectPlanDetails.getJudgeObjectId()));
         return modelAndView;
     }
 
@@ -96,7 +96,7 @@ public class ProjectTaskSurePriceAssist implements ProjectTaskInterface {
         SchemeSurePrice schemeSurePrice = schemeSurePriceService.getSurePriceByPlanDetailsId(projectPlanDetails.getId());
         modelAndView.addObject("schemeSurePrice", schemeSurePrice == null ? new SchemeSurePrice() : schemeSurePrice);
         modelAndView.addObject("judgeObject", schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId()));
-        modelAndView.addObject("subJudgeObjectList", schemeJudgeObjectService.getAdjustObjectListByPid(projectPlanDetails.getJudgeObjectId()));
+        modelAndView.addObject("subJudgeObjectList", schemeJudgeObjectService.getVoListByPid(projectPlanDetails.getJudgeObjectId()));
         return modelAndView;
     }
 
@@ -117,7 +117,7 @@ public class ProjectTaskSurePriceAssist implements ProjectTaskInterface {
         } catch (BusinessException e) {
             logger.error(e.getMessage(),e);
         }
-        modelAndView.addObject("subJudgeObjectList", schemeJudgeObjectService.getAdjustObjectListByPid(projectPlanDetails.getJudgeObjectId()));
+        modelAndView.addObject("subJudgeObjectList", schemeJudgeObjectService.getVoListByPid(projectPlanDetails.getJudgeObjectId()));
         return modelAndView;
     }
 

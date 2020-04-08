@@ -290,6 +290,7 @@
                     houseCommon.houseHuxingForm.find("select.utilitiesMeasure").empty().html(html).trigger('change');
                 });
                 houseCommon.showCurrentFloor(data);
+                houseCommon.tenementTypeChange(data);
             }
 
         });
@@ -336,6 +337,53 @@
             }
         });
     }
+
+    houseCommon.getPriceExportColumns = function(tenementType){
+        var temp;
+        if (houseCommon.isNotBlank(tenementType)) {
+            if (tenementType == '住宅'|| tenementType == '办公') {
+                temp = "residence";
+            }
+            if (tenementType == '商铺' || tenementType == '商场') {
+                temp = "store";
+            }
+            if (tenementType == '餐饮酒店') {
+                temp = "hotel";
+            }
+            if (tenementType == '生产') {
+                temp = "production";
+            }
+            if (tenementType == '仓储') {
+                temp = "storage";
+            }
+            var columns = [];
+
+            $("#" + houseHuxingPrice.prototype.config().frm).find("."+temp).find(".control-label").each(function () {
+                var column = {};
+                column.value = $.trim($(this).text());
+                if(houseCommon.isNotBlank($(this).next().find("input").attr("name"))){
+                    column.key =  $(this).next().find("input").attr("name");
+                }else{
+                    column.key =  $(this).next().find("select").attr("name");
+                }
+                columns.push(column);
+            });
+
+            houseCommon.houseHuxingForm.find("input[name='priceExportColumns']").val(JSON.stringify(columns));
+        }
+    };
+
+    houseCommon.tenementTypeChange = function(data){
+        if (houseCommon.isNotBlank(data.basicHouseHuxing.tenementType)) {
+            houseCommon.getPriceExportColumns(data.basicHouseHuxing.tenementType);
+        }
+
+        //绑定变更事件
+        houseCommon.houseHuxingForm.find("input[name='tenementType']").off('change').on('change', function () {
+            var tenementType = houseCommon.houseHuxingForm.find("input[name='tenementType']").val();
+            houseCommon.getPriceExportColumns(tenementType);
+        });
+    };
 
     houseCommon.showCurrentFloor = function (data) {
         if (houseCommon.isNotBlank(data.basicHouseHuxing.spatialDistribution)) {
