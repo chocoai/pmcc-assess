@@ -113,9 +113,8 @@
                                                 <label class="col-sm-1 control-label">绿化率</label>
                                                 <div class="col-sm-3">
                                                     <label class="form-control input-full">
-                                                        <fmt:formatNumber value="${basicEstate.greeningRate}"
-                                                                          type="percent"
-                                                                          maxFractionDigits="4"/></label>
+                                                        ${basicEstate.greeningRate}
+                                                    </label>
                                                 </div>
                                             </div>
                                         </div>
