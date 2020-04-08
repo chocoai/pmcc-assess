@@ -858,6 +858,7 @@
     };
 
     estateCommon.landLevelLoadHtml = function (data, beEcho) {
+        console.log(data) ;
         if (jQuery.isEmptyObject(data)) {
             return false;
         }

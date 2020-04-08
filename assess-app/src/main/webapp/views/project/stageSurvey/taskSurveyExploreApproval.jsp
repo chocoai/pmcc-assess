@@ -135,6 +135,15 @@
         }
     });
     var setting = {
+        view: {
+            fontCss: function (treeId, treeNode) {
+                if (treeNode.executor != '${projectPlanDetails.executeUserAccount}') {
+                    return {color: "grey"};//灰色 业务规定的
+                } else {
+                    return {color: "black"};
+                }
+            }
+        },
         data: {
             key: {
                 name: "displayName"
@@ -187,6 +196,10 @@
     //进入填写信息页面
     function fillInformation() {
         var node = zTreeObj.getSelectedNodes()[0];
+        if (node.executor != '${projectPlanDetails.executeUserAccount}'){
+            notifyWarning("提示", "此节点不属于当前登陆人的,无操作权限!");
+            return false ;
+        }
         var frm = $("#frmProjectCIP");
         var data = formSerializeArray(frm);
         data.tbType = node.type;
@@ -246,6 +259,5 @@
         });
     }
 </script>
-</body>
 </html>
 
