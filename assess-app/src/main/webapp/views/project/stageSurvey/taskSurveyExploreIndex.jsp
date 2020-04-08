@@ -409,10 +409,18 @@
     }
 </script>
 <script type="text/javascript">
+
+
     var batchApply = undefined;
     var setting = {
         view: {
-            fontCss: setFontCss,
+            fontCss: function (treeId, treeNode) {
+                if (treeNode.executor != '${userAccount}') {
+                    return {color: "grey"};//灰色 业务规定的
+                } else {
+                    return {color: "black"};
+                }
+            }
         },
         data: {
             key: {
@@ -670,7 +678,10 @@
     //编辑明细
     batchTreeTool.getAndEditDetail = function () {
         var node = zTreeObj.getSelectedNodes()[0];
-
+        if (node.executor != '${userAccount}'){
+            notifyWarning("提示", "此节点不属于当前登陆人的,无操作权限!");
+            return false ;
+        }
         $.ajax({
             url: "${pageContext.request.contextPath}/basicApplyBatch/getAndEditDetail",
             data: {id: node.id},
@@ -816,12 +827,16 @@
 
     //删除明细
     batchTreeTool.deleteDetail = function () {
+        var node = zTreeObj.getSelectedNodes()[0];
+        if (node.id == 0) {
+            notifyInfo('提示', "无法删除，请重新选择。");
+            return false;
+        }
+        if (node.executor != '${userAccount}'){
+            notifyWarning("提示", "此节点不属于当前登陆人的,无操作权限!");
+            return false ;
+        }
         AlertConfirm("是否确认删除", "删除相应的数据后将不可恢复", function () {
-            var node = zTreeObj.getSelectedNodes()[0];
-            if (node.id == 0) {
-                notifyInfo('提示', "无法删除，请重新选择。");
-                return false;
-            }
             $.ajax({
                 url: "${pageContext.request.contextPath}/basicApplyBatch/deleteDetail",
                 data: {id: node.id},
@@ -859,6 +874,10 @@
         url += '&tbId=' + node.tableId;
         url += '&tbType=' + node.type;
         url += '&planDetailsId=${projectPlanDetails.id}';
+        if (node.executor != '${userAccount}'){
+            notifyWarning("提示", "此节点不属于当前登陆人的,无操作权限!");
+            return false ;
+        }
         openWin(url, function () {
         })
     }
@@ -1121,13 +1140,7 @@
         })
     }
 
-    function setFontCss(treeId, treeNode) {
-        if (treeNode.executor != '${userAccount}') {
-            return {color: "#AAAAAA"};
-        } else {
-            return {color: "black"};
-        }
-    }
+
 
     //选择人员
     function personSelect() {
