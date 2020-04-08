@@ -342,7 +342,7 @@
             }
         });
 
-        if (bisDetail == true) {
+        if (bisDetail == false) {
             estateCommon.writeHTMLDataDetail(data.estate.streetNumber, data.estate.attachNumber);
         } else {
             estateCommon.writeHTMLData(data.estate.streetNumber, data.estate.attachNumber);

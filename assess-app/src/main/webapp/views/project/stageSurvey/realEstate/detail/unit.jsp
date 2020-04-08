@@ -116,7 +116,7 @@
 
 <script type="text/javascript">
     $(function () {
-        unitCommon.initById('${basicUnit.id}');
+        unitCommon.initDetailById('${basicUnit.id}','',false);
     })
 </script>
 </html>

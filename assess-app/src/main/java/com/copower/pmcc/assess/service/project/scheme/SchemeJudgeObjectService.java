@@ -172,6 +172,10 @@ public class SchemeJudgeObjectService {
         return schemeJudgeObjectDao.getJudgeObjectList(schemeJudgeObject);
     }
 
+    public List<SchemeJudgeObject> getJudgeObjectList(SchemeJudgeObject schemeJudgeObject){
+        return schemeJudgeObjectDao.getJudgeObjectList(schemeJudgeObject);
+    }
+
     /**
      * 获取启用的委估对象
      *

@@ -648,7 +648,7 @@
 
 <script type="text/javascript">
     $(function () {
-        estateCommon.initDetailById('${basicEstate.id}', '', true);
+        estateCommon.initDetailById('${basicEstate.id}', '', false);
     })
 </script>
 </html>
