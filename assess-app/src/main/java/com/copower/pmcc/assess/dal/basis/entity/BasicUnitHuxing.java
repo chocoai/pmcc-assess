@@ -54,6 +54,8 @@ public class BasicUnitHuxing {
 
     private String currentFloor;
 
+    private Integer utilitiesType;
+
     public Integer getId() {
         return id;
     }
@@ -252,5 +254,13 @@ public class BasicUnitHuxing {
 
     public void setCurrentFloor(String currentFloor) {
         this.currentFloor = currentFloor == null ? null : currentFloor.trim();
+    }
+
+    public Integer getUtilitiesType() {
+        return utilitiesType;
+    }
+
+    public void setUtilitiesType(Integer utilitiesType) {
+        this.utilitiesType = utilitiesType;
     }
 }

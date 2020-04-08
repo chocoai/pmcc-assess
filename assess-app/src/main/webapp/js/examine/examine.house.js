@@ -219,6 +219,7 @@
                 });
             }
             houseCommon.showUseCondition(data);
+            houseCommon.showHouseDecorate(data);
 
             //初始化上传控件
             $.each(houseCommon.houseFileControlIdArray, function (i, item) {
@@ -290,7 +291,10 @@
                 AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseUtilitiesMeasure, data.basicHouseHuxing.utilitiesMeasure, function (html, data) {
                     houseCommon.houseHuxingForm.find("select.utilitiesMeasure").empty().html(html).trigger('change');
                 });
-                houseCommon.showCurrentFloor(data);
+                AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseUtilitiesType, data.basicHouseHuxing.utilitiesType, function (html, data) {
+                    houseCommon.houseHuxingForm.find("select.utilitiesType").empty().html(html).trigger('change');
+                });
+                houseCommon.showUtilitiesType(data);
                 houseCommon.tenementTypeChange(data);
             }
 
@@ -333,6 +337,41 @@
                         $("#useConditionDescription").parent().parent().hide();
                     } else {
                         $("#useConditionDescription").parent().parent().show();
+                    }
+                });
+            }
+        });
+    };
+
+    houseCommon.showHouseDecorate = function (data) {
+        if (houseCommon.isNotBlank(data.basicHouse.decorateSituation)) {
+            var strArr = ["清水"];//来自于实体描述1(1).docx中的规则
+            var decorateSituationId = data.basicHouse.decorateSituation;
+            if (decorateSituationId) {
+                AssessCommon.getDataDicInfo(decorateSituationId, function (decorateSituationData) {
+                    var str = strArr.join(",");
+                    //当属于数组中的任意一项时显示
+                    if (str.indexOf(decorateSituationData.name) > -1) {
+                        $("#showHouseDecorate").hide();
+                    } else {
+                        $("#showHouseDecorate").show();
+                    }
+                });
+            }
+        }
+
+        //绑定变更事件
+        houseCommon.houseForm.find("select.decorateSituation").off('change').on('change', function () {
+            var strArr = ["清水"];//来自于实体描述1(1).docx中的规则
+            var decorateSituationId = houseCommon.houseForm.find("select.decorateSituation").val();
+            if (decorateSituationId) {
+                AssessCommon.getDataDicInfo(decorateSituationId, function (decorateSituationData) {
+                    var str = strArr.join(",");
+                    //当属于数组中的任意一项时显示
+                    if (str.indexOf(decorateSituationData.name) > -1) {
+                        $("#showHouseDecorate").hide();
+                    } else {
+                        $("#showHouseDecorate").show();
                     }
                 });
             }
@@ -386,37 +425,37 @@
         });
     };
 
-    houseCommon.showCurrentFloor = function (data) {
-        if (houseCommon.isNotBlank(data.basicHouseHuxing.spatialDistribution)) {
-            var strArr = ["多层"];//来自于实体描述1(1).docx中的规则
-            var spatialDistributionId = data.basicHouseHuxing.spatialDistribution;
-            if (spatialDistributionId) {
-                AssessCommon.getDataDicInfo(spatialDistributionId, function (spatialDistributionData) {
+    houseCommon.showUtilitiesType = function (data) {
+        if (houseCommon.isNotBlank(data.basicHouseHuxing.utilitiesMeasure)) {
+            var strArr = ["非标准"];//来自于实体描述1(1).docx中的规则
+            var utilitiesMeasureId = data.basicHouseHuxing.utilitiesMeasure;
+            if (utilitiesMeasureId) {
+                AssessCommon.getDataDicInfo(utilitiesMeasureId, function (utilitiesMeasureData) {
                     var str = strArr.join(",");
                     //当属于数组中的任意一项时显示
-                    if (str.indexOf(spatialDistributionData.name) > -1) {
-                        $("#currentFloor").parent().parent().parent().parent().show();
+                    if (str.indexOf(utilitiesMeasureData.name) > -1) {
+                        $("#utilitiesType").parent().parent().parent().parent().show();
                     } else {
-                        $("#currentFloor").parent().parent().parent().parent().hide();
+                        $("#utilitiesType").parent().parent().parent().parent().hide();
                     }
                 });
             }
         } else {
-            $("#currentFloor").parent().parent().parent().parent().hide();
+            $("#utilitiesType").parent().parent().parent().parent().hide();
         }
 
         //绑定变更事件
-        houseCommon.houseHuxingForm.find("select.spatialDistribution").off('change').on('change', function () {
-            var strArr = ["多层"];//来自于实体描述1(1).docx中的规则
-            var spatialDistributionId = houseCommon.houseHuxingForm.find("select.spatialDistribution").val();
-            if (spatialDistributionId) {
-                AssessCommon.getDataDicInfo(spatialDistributionId, function (spatialDistributionData) {
+        houseCommon.houseHuxingForm.find("select.utilitiesMeasure").off('change').on('change', function () {
+            var strArr = ["非标准"];//来自于实体描述1(1).docx中的规则
+            var utilitiesMeasureId = houseCommon.houseHuxingForm.find("select.utilitiesMeasure").val();
+            if (utilitiesMeasureId) {
+                AssessCommon.getDataDicInfo(utilitiesMeasureId, function (utilitiesMeasureData) {
                     var str = strArr.join(",");
                     //当属于数组中的任意一项时显示
-                    if (str.indexOf(spatialDistributionData.name) > -1) {
-                        $("#currentFloor").parent().parent().parent().parent().show();
+                    if (str.indexOf(utilitiesMeasureData.name) > -1) {
+                        $("#utilitiesType").parent().parent().parent().parent().show();
                     } else {
-                        $("#currentFloor").parent().parent().parent().parent().hide();
+                        $("#utilitiesType").parent().parent().parent().parent().hide();
                     }
                 });
             }

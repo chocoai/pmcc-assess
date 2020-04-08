@@ -1705,6 +1705,66 @@ public class BasicUnitHuxingExample {
             addCriterion("current_floor not between", value1, value2, "currentFloor");
             return (Criteria) this;
         }
+
+        public Criteria andUtilitiesTypeIsNull() {
+            addCriterion("utilities_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUtilitiesTypeIsNotNull() {
+            addCriterion("utilities_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUtilitiesTypeEqualTo(Integer value) {
+            addCriterion("utilities_type =", value, "utilitiesType");
+            return (Criteria) this;
+        }
+
+        public Criteria andUtilitiesTypeNotEqualTo(Integer value) {
+            addCriterion("utilities_type <>", value, "utilitiesType");
+            return (Criteria) this;
+        }
+
+        public Criteria andUtilitiesTypeGreaterThan(Integer value) {
+            addCriterion("utilities_type >", value, "utilitiesType");
+            return (Criteria) this;
+        }
+
+        public Criteria andUtilitiesTypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("utilities_type >=", value, "utilitiesType");
+            return (Criteria) this;
+        }
+
+        public Criteria andUtilitiesTypeLessThan(Integer value) {
+            addCriterion("utilities_type <", value, "utilitiesType");
+            return (Criteria) this;
+        }
+
+        public Criteria andUtilitiesTypeLessThanOrEqualTo(Integer value) {
+            addCriterion("utilities_type <=", value, "utilitiesType");
+            return (Criteria) this;
+        }
+
+        public Criteria andUtilitiesTypeIn(List<Integer> values) {
+            addCriterion("utilities_type in", values, "utilitiesType");
+            return (Criteria) this;
+        }
+
+        public Criteria andUtilitiesTypeNotIn(List<Integer> values) {
+            addCriterion("utilities_type not in", values, "utilitiesType");
+            return (Criteria) this;
+        }
+
+        public Criteria andUtilitiesTypeBetween(Integer value1, Integer value2) {
+            addCriterion("utilities_type between", value1, value2, "utilitiesType");
+            return (Criteria) this;
+        }
+
+        public Criteria andUtilitiesTypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("utilities_type not between", value1, value2, "utilitiesType");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

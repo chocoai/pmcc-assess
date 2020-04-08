@@ -210,6 +210,7 @@ public class BasicUnitHuxingService {
         vo.setSpatialDistributionName(baseDataDicService.getNameById(NumberUtils.isNumber(basicUnitHuxing.getSpatialDistribution()) ? Integer.parseInt(basicUnitHuxing.getSpatialDistribution()) : null));
         vo.setCreatorName(publicService.getUserNameByAccount(basicUnitHuxing.getCreator()));
         vo.setUtilitiesMeasureName(baseDataDicService.getNameById(basicUnitHuxing.getUtilitiesMeasure()));
+        vo.setUtilitiesTypeName(baseDataDicService.getNameById(basicUnitHuxing.getUtilitiesType()));
         return vo;
     }
 

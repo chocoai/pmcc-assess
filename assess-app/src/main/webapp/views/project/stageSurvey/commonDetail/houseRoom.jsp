@@ -89,6 +89,12 @@
                                             <div class="col-sm-4">
                                                 <label class="form-control input-full" name="clearHeight"></label>
                                             </div>
+                                            <label class="col-sm-2 control-label">
+                                                所在楼层
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <label class="form-control input-full" name="currentFloor"></label>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

@@ -27,6 +27,7 @@
     <result column="huxing_data" property="huxingData" jdbcType="VARCHAR" />
     <result column="utilities_measure" property="utilitiesMeasure" jdbcType="INTEGER" />
     <result column="current_floor" property="currentFloor" jdbcType="VARCHAR" />
+    <result column="utilities_type" property="utilitiesType" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -90,7 +91,7 @@
     id, house_id, estate_id, unit_id, type, name, area, orientation, span_length, span_width, 
     span_number, bay, deep, house_category, description, bis_delete, creator, gmt_created, 
     gmt_modified, spatial_distribution, standard_house_number, tenement_type, huxing_data, 
-    utilities_measure, current_floor
+    utilities_measure, current_floor, utilities_type
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicUnitHuxingExample" >
     select
@@ -133,7 +134,8 @@
       description, bis_delete, creator, 
       gmt_created, gmt_modified, spatial_distribution, 
       standard_house_number, tenement_type, huxing_data, 
-      utilities_measure, current_floor)
+      utilities_measure, current_floor, utilities_type
+      )
     values (#{houseId,jdbcType=INTEGER}, #{estateId,jdbcType=INTEGER}, #{unitId,jdbcType=INTEGER}, 
       #{type,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{area,jdbcType=DECIMAL}, #{orientation,jdbcType=VARCHAR}, 
       #{spanLength,jdbcType=DECIMAL}, #{spanWidth,jdbcType=INTEGER}, #{spanNumber,jdbcType=DECIMAL}, 
@@ -141,7 +143,8 @@
       #{description,jdbcType=VARCHAR}, #{bisDelete,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, 
       #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{spatialDistribution,jdbcType=VARCHAR}, 
       #{standardHouseNumber,jdbcType=VARCHAR}, #{tenementType,jdbcType=VARCHAR}, #{huxingData,jdbcType=VARCHAR}, 
-      #{utilitiesMeasure,jdbcType=INTEGER}, #{currentFloor,jdbcType=VARCHAR})
+      #{utilitiesMeasure,jdbcType=INTEGER}, #{currentFloor,jdbcType=VARCHAR}, #{utilitiesType,jdbcType=INTEGER}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicUnitHuxing" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -221,6 +224,9 @@
       <if test="currentFloor != null" >
         current_floor,
       </if>
+      <if test="utilitiesType != null" >
+        utilities_type,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="houseId != null" >
@@ -294,6 +300,9 @@
       </if>
       <if test="currentFloor != null" >
         #{currentFloor,jdbcType=VARCHAR},
+      </if>
+      <if test="utilitiesType != null" >
+        #{utilitiesType,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -381,6 +390,9 @@
       <if test="record.currentFloor != null" >
         current_floor = #{record.currentFloor,jdbcType=VARCHAR},
       </if>
+      <if test="record.utilitiesType != null" >
+        utilities_type = #{record.utilitiesType,jdbcType=INTEGER},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -412,7 +424,8 @@
       tenement_type = #{record.tenementType,jdbcType=VARCHAR},
       huxing_data = #{record.huxingData,jdbcType=VARCHAR},
       utilities_measure = #{record.utilitiesMeasure,jdbcType=INTEGER},
-      current_floor = #{record.currentFloor,jdbcType=VARCHAR}
+      current_floor = #{record.currentFloor,jdbcType=VARCHAR},
+      utilities_type = #{record.utilitiesType,jdbcType=INTEGER}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -492,6 +505,9 @@
       <if test="currentFloor != null" >
         current_floor = #{currentFloor,jdbcType=VARCHAR},
       </if>
+      <if test="utilitiesType != null" >
+        utilities_type = #{utilitiesType,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -520,7 +536,8 @@
       tenement_type = #{tenementType,jdbcType=VARCHAR},
       huxing_data = #{huxingData,jdbcType=VARCHAR},
       utilities_measure = #{utilitiesMeasure,jdbcType=INTEGER},
-      current_floor = #{currentFloor,jdbcType=VARCHAR}
+      current_floor = #{currentFloor,jdbcType=VARCHAR},
+      utilities_type = #{utilitiesType,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

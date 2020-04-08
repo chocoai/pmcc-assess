@@ -10,6 +10,7 @@ import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -99,21 +100,26 @@ public class BasicHouseRoomController {
 
     @ResponseBody
     @RequestMapping(value = "/copyBasicHouseRoom", method = {RequestMethod.GET}, name = "房间 复制")
-    public HttpResult copyBasicHouseRoom(Integer id) {
+    public HttpResult copyBasicHouseRoom(Integer sourceId,Integer targetId) {
         try {
-            BasicHouseRoom basicHouseRoomById = basicHouseRoomService.getBasicHouseRoomById(id);
-            BasicHouseRoomDecorate basicHouseRoomDecorate = new BasicHouseRoomDecorate();
-            basicHouseRoomDecorate.setRoomId(basicHouseRoomById.getId());
-            List<BasicHouseRoomDecorate> roomDecorates = basicHouseRoomDecorateDao.basicHouseRoomDecorateList(basicHouseRoomDecorate);
-            //复制主表
-            basicHouseRoomById.setId(null);
-            Integer integer = basicHouseRoomService.saveAndUpdateBasicHouseRoom(basicHouseRoomById,false);
-            //复制子表
-            for (BasicHouseRoomDecorate item : roomDecorates) {
-                item.setId(null);
-                item.setRoomId(integer);
-                basicHouseRoomDecorateService.saveAndUpdateBasicHouseRoomDecorate(item,false);
-            }
+            BasicHouseRoom source = basicHouseRoomService.getBasicHouseRoomById(sourceId);
+            BasicHouseRoom target = basicHouseRoomService.getBasicHouseRoomById(targetId);
+            BeanUtils.copyProperties(source, target, "id","name");
+            basicHouseRoomService.saveAndUpdateBasicHouseRoom(target,false);
+
+            return HttpResult.newCorrectResult(200, "success!");
+        } catch (Exception e) {
+            logger.error(String.format("exception:%s", e.getMessage()), e);
+            return HttpResult.newErrorResult(500, "异常");
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/autoGenerate", method = {RequestMethod.POST}, name = "自动生成房间")
+    public HttpResult autoGenerate(String huxingData,Integer houseId) {
+        try {
+            basicHouseRoomService.autoGenerate(huxingData,houseId);
+
             return HttpResult.newCorrectResult(200, "success!");
         } catch (Exception e) {
             logger.error(String.format("exception:%s", e.getMessage()), e);

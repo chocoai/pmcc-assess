@@ -225,6 +225,7 @@ AssessDicKey.examineUnitQuantity = "unit.quantity";//数量
 AssessDicKey.examineBasicHouse = "basicHouse";//房屋附件
 AssessDicKey.examineHouseSpatialDistribution = "examine.house.spatial.distribution";//空间布局
 AssessDicKey.examineHouseUtilitiesMeasure = "examine.house.utilities.measure";//水电费标准
+AssessDicKey.examineHouseUtilitiesType = "examine.house.utilities.type";//水电费类型
 AssessDicKey.examineHouseTenementType = "examine.house.tenement.type";//空间布局
 AssessDicKey.examineHouseFinancingConditions = "examine.house.financing.conditions";//融资条件
 AssessDicKey.examineHouseScopeProperty = "examine.house.scope.property";//财产范围
@@ -255,6 +256,7 @@ AssessDicKey.examineHouseDecorateSituation = "examine.house.decorate.situation";
 
 AssessDicKey.examineBasicHouseRoom = "basicHouseRoom";//房间附件
 AssessDicKey.examine_house_room_part = "examine.house.room.part";//房间装修部位
+AssessDicKey.examine_house_room_names = "examine.house.room.names";//房间名称
 AssessDicKey.examine_house_room_level = "examine.house.room.level";//房间装修档次
 AssessDicKey.examine_house_room_material = "examine.house.room.material";//房间装修材料
 AssessDicKey.examine_house_room_adjacent_position = "examine.house.room.adjacent.position";//相邻位置

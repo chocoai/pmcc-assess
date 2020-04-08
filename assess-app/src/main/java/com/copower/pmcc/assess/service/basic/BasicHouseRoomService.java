@@ -1,10 +1,12 @@
 package com.copower.pmcc.assess.service.basic;
 
+import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.dal.basis.dao.base.BaseDataDicDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicHouseRoomDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.BasicHouseRoom;
 import com.copower.pmcc.assess.dal.basis.entity.BasicHouseRoomDecorate;
+import com.copower.pmcc.assess.dto.input.baseDto;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseRoomVo;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
@@ -28,6 +30,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -177,6 +180,26 @@ public class BasicHouseRoomService {
         }
         vo.setCreatorName(publicService.getUserNameByAccount(basicHouseRoom.getCreator()));
         return vo;
+    }
+
+    public void autoGenerate(String huxingData,Integer houseId)throws Exception{
+        if(!StringUtils.isEmpty(huxingData)){
+            List<baseDto> baseDtos = JSON.parseArray(huxingData, baseDto.class);
+            if(CollectionUtils.isNotEmpty(baseDtos)){
+                for (baseDto item:baseDtos) {
+                    for (int i = 0; i < Integer.valueOf(item.getValue()); i++) {
+                        BasicHouseRoom basicHouseRoom = new BasicHouseRoom();
+                        basicHouseRoom.setHouseId(houseId);
+                        if(Integer.valueOf(item.getValue())>1){
+                            basicHouseRoom.setName(String.format("%s%s",item.getKey(),i+1));
+                        }else {
+                            basicHouseRoom.setName(item.getKey());
+                        }
+                        saveAndUpdateBasicHouseRoom(basicHouseRoom,true);
+                    }
+                }
+            }
+        }
     }
 
     /**

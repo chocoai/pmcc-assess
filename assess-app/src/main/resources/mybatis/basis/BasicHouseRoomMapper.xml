@@ -33,6 +33,7 @@
     <result column="standard_measure" property="standardMeasure" jdbcType="VARCHAR" />
     <result column="storage_request" property="storageRequest" jdbcType="VARCHAR" />
     <result column="span_num" property="spanNum" jdbcType="VARCHAR" />
+    <result column="current_floor" property="currentFloor" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -97,7 +98,7 @@
     sunshine, lighting, opening, depth, layer_height, clear_height, bis_delete, creator, 
     gmt_created, gmt_modified, house_shape, length, width, adjacent_position, distance, 
     span_length, standard_span, max_span, min_span, standard_measure, storage_request, 
-    span_num
+    span_num, current_floor
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseRoomExample" >
     select
@@ -142,8 +143,8 @@
       house_shape, length, width, 
       adjacent_position, distance, span_length, 
       standard_span, max_span, min_span, 
-      standard_measure, storage_request, span_num
-      )
+      standard_measure, storage_request, span_num, 
+      current_floor)
     values (#{houseId,jdbcType=INTEGER}, #{roomType,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
       #{area,jdbcType=DECIMAL}, #{orientation,jdbcType=VARCHAR}, #{aeration,jdbcType=VARCHAR}, 
       #{illumination,jdbcType=VARCHAR}, #{soundInsulation,jdbcType=VARCHAR}, #{sunshine,jdbcType=VARCHAR}, 
@@ -153,8 +154,8 @@
       #{houseShape,jdbcType=VARCHAR}, #{length,jdbcType=VARCHAR}, #{width,jdbcType=VARCHAR}, 
       #{adjacentPosition,jdbcType=VARCHAR}, #{distance,jdbcType=VARCHAR}, #{spanLength,jdbcType=VARCHAR}, 
       #{standardSpan,jdbcType=VARCHAR}, #{maxSpan,jdbcType=VARCHAR}, #{minSpan,jdbcType=VARCHAR}, 
-      #{standardMeasure,jdbcType=VARCHAR}, #{storageRequest,jdbcType=VARCHAR}, #{spanNum,jdbcType=VARCHAR}
-      )
+      #{standardMeasure,jdbcType=VARCHAR}, #{storageRequest,jdbcType=VARCHAR}, #{spanNum,jdbcType=VARCHAR}, 
+      #{currentFloor,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseRoom" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -252,6 +253,9 @@
       <if test="spanNum != null" >
         span_num,
       </if>
+      <if test="currentFloor != null" >
+        current_floor,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="houseId != null" >
@@ -343,6 +347,9 @@
       </if>
       <if test="spanNum != null" >
         #{spanNum,jdbcType=VARCHAR},
+      </if>
+      <if test="currentFloor != null" >
+        #{currentFloor,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -448,6 +455,9 @@
       <if test="record.spanNum != null" >
         span_num = #{record.spanNum,jdbcType=VARCHAR},
       </if>
+      <if test="record.currentFloor != null" >
+        current_floor = #{record.currentFloor,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -485,7 +495,8 @@
       min_span = #{record.minSpan,jdbcType=VARCHAR},
       standard_measure = #{record.standardMeasure,jdbcType=VARCHAR},
       storage_request = #{record.storageRequest,jdbcType=VARCHAR},
-      span_num = #{record.spanNum,jdbcType=VARCHAR}
+      span_num = #{record.spanNum,jdbcType=VARCHAR},
+      current_floor = #{record.currentFloor,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -583,6 +594,9 @@
       <if test="spanNum != null" >
         span_num = #{spanNum,jdbcType=VARCHAR},
       </if>
+      <if test="currentFloor != null" >
+        current_floor = #{currentFloor,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -617,7 +631,8 @@
       min_span = #{minSpan,jdbcType=VARCHAR},
       standard_measure = #{standardMeasure,jdbcType=VARCHAR},
       storage_request = #{storageRequest,jdbcType=VARCHAR},
-      span_num = #{spanNum,jdbcType=VARCHAR}
+      span_num = #{spanNum,jdbcType=VARCHAR},
+      current_floor = #{currentFloor,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

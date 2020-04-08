@@ -14,7 +14,16 @@ public class BasicUnitHuxingVo extends BasicUnitHuxing {
     private String tableName;
     private String creatorName;
     private String utilitiesMeasureName;
+    private String utilitiesTypeName;
     private String spatialDistributionName;
+
+    public String getUtilitiesTypeName() {
+        return utilitiesTypeName;
+    }
+
+    public void setUtilitiesTypeName(String utilitiesTypeName) {
+        this.utilitiesTypeName = utilitiesTypeName;
+    }
 
     public String getUtilitiesMeasureName() {
         return utilitiesMeasureName;

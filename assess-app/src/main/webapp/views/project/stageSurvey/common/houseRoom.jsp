@@ -27,6 +27,10 @@
 											</span>
                         新增
                     </button>
+                    <button style="margin-left: 5px" class="btn btn-primary btn-sm" type="button"
+                            data-toggle="modal" onclick="houseRoom.prototype.autoGenerate()">
+                        自动生成
+                    </button>
                 </p>
                 <table class="table table-bordered" id="HouseRoomList">
                     <!-- cerare document add ajax data-->
@@ -59,8 +63,22 @@
                                                 名称<span class="symbol required"></span>
                                             </label>
                                             <div class="col-sm-4">
-                                                <input type="text" placeholder="名称" class="form-control input-full"
-                                                       name="name">
+                                                <div class="input-group">
+                                                    <input type="text" required name="name"
+                                                           value="${basicHouseHuxing.name}"
+                                                           class="form-control" list="nameList">
+                                                    <datalist id="nameList">
+
+                                                    </datalist>
+                                                    <div class="input-group-prepend">
+                                                        <button class="btn btn-warning btn-sm "
+                                                                style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                                type="button"
+                                                                onclick="$(this).closest('.input-group').find('input').val('');">
+                                                            清空
+                                                        </button>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <label class="col-sm-2 control-label">
                                                 房间形状<span class="symbol required"></span>
@@ -80,18 +98,18 @@
                                     <div class="col-md-12">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-2 control-label">
-                                                使用面积
+                                                使用面积(m²)
                                             </label>
                                             <div class="col-sm-4">
                                                 <input type="text" data-rule-number="true" placeholder="使用面积"
-                                                       name="area" class="form-control input-full" required>
+                                                       name="area" class="form-control input-full">
                                             </div>
                                             <label class="col-sm-2 control-label">
-                                                层高<span class="symbol required"></span>
+                                                层高(m)
                                             </label>
                                             <div class="col-sm-4">
                                                 <input type="text" data-rule-number="true" placeholder="层高"
-                                                       name="layerHeight" class="form-control input-full" required>
+                                                       name="layerHeight" class="form-control input-full">
                                             </div>
                                         </div>
                                     </div>
@@ -100,11 +118,18 @@
                                     <div class="col-md-12">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-2 control-label">
-                                                净高
+                                                净高(m)
                                             </label>
                                             <div class="col-sm-4">
                                                 <input type="text" placeholder="净高" name="clearHeight"
-                                                       class="form-control input-full" required>
+                                                       class="form-control input-full">
+                                            </div>
+                                            <label class="col-sm-2 control-label">
+                                                所在楼层
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input type="text" placeholder="所在楼层" name="currentFloor"
+                                                       class="form-control input-full">
                                             </div>
                                         </div>
                                     </div>
@@ -118,14 +143,14 @@
                                             </label>
                                             <div class="col-sm-4">
                                                 <input type="text" placeholder="通风" name="aeration"
-                                                       class="form-control input-full" required>
+                                                       class="form-control input-full" >
                                             </div>
                                             <label class="col-sm-2 control-label">
                                                 采光
                                             </label>
                                             <div class="col-sm-4">
                                                 <input type="text" placeholder="采光" name="lighting"
-                                                       class="form-control input-full" required>
+                                                       class="form-control input-full" >
                                             </div>
                                         </div>
                                     </div>
@@ -138,14 +163,14 @@
                                             </label>
                                             <div class="col-sm-4">
                                                 <input type="text" placeholder="日照" name="sunshine"
-                                                       class="form-control input-full" required>
+                                                       class="form-control input-full" >
                                             </div>
                                             <label class="col-sm-2 control-label">
                                                 隔音
                                             </label>
                                             <div class="col-sm-4">
                                                 <input type="text" placeholder="隔音" name="soundInsulation"
-                                                       class="form-control input-full" required>
+                                                       class="form-control input-full" >
                                             </div>
                                         </div>
                                     </div>
@@ -158,14 +183,14 @@
                                             </label>
                                             <div class="col-sm-4">
                                                 <input type="text" placeholder="长度" name="length"
-                                                       class="form-control input-full" required>
+                                                       class="form-control input-full" >
                                             </div>
                                             <label class="col-sm-2 control-label">
                                                 宽度
                                             </label>
                                             <div class="col-sm-4">
                                                 <input type="text" placeholder="宽度" name="width"
-                                                       class="form-control input-full" required>
+                                                       class="form-control input-full" >
                                             </div>
                                         </div>
                                     </div>
@@ -178,14 +203,14 @@
                                             </label>
                                             <div class="col-sm-4">
                                                 <input type="text" placeholder="最长" name="length"
-                                                       class="form-control input-full" required>
+                                                       class="form-control input-full" >
                                             </div>
                                             <label class="col-sm-2 control-label">
                                                 最宽
                                             </label>
                                             <div class="col-sm-4">
                                                 <input type="text" placeholder="最宽" name="width"
-                                                       class="form-control input-full" required>
+                                                       class="form-control input-full" >
                                             </div>
                                         </div>
                                     </div>
@@ -199,14 +224,14 @@
                                             </label>
                                             <div class="col-sm-4">
                                                 <input type="text" placeholder="通风" name="aeration"
-                                                       class="form-control input-full" required>
+                                                       class="form-control input-full" >
                                             </div>
                                             <label class="col-sm-2 control-label">
                                                 采光
                                             </label>
                                             <div class="col-sm-4">
                                                 <input type="text" placeholder="采光" name="lighting"
-                                                       class="form-control input-full" required>
+                                                       class="form-control input-full" >
                                             </div>
                                         </div>
                                     </div>
@@ -219,14 +244,14 @@
                                             </label>
                                             <div class="col-sm-4">
                                                 <input type="text" placeholder="长度" name="length"
-                                                       class="form-control input-full" required>
+                                                       class="form-control input-full" >
                                             </div>
                                             <label class="col-sm-2 control-label">
                                                 宽度
                                             </label>
                                             <div class="col-sm-4">
                                                 <input type="text" placeholder="宽度" name="width"
-                                                       class="form-control input-full" required>
+                                                       class="form-control input-full" >
                                             </div>
                                         </div>
                                     </div>
@@ -239,14 +264,14 @@
                                             </label>
                                             <div class="col-sm-4">
                                                 <input type="text" placeholder="最长" name="length"
-                                                       class="form-control input-full" required>
+                                                       class="form-control input-full" >
                                             </div>
                                             <label class="col-sm-2 control-label">
                                                 最宽
                                             </label>
                                             <div class="col-sm-4">
                                                 <input type="text" placeholder="最宽" name="width"
-                                                       class="form-control input-full" required>
+                                                       class="form-control input-full" >
                                             </div>
                                         </div>
                                     </div>
@@ -282,14 +307,14 @@
                                             </label>
                                             <div class="col-sm-4">
                                                 <input type="text" placeholder="开间" name="opening"
-                                                       class="form-control input-full" required>
+                                                       class="form-control input-full" >
                                             </div>
                                             <label class="col-sm-2 control-label">
                                                 进深
                                             </label>
                                             <div class="col-sm-4">
                                                 <input type="text" placeholder="进深" name="depth"
-                                                       class="form-control input-full" required>
+                                                       class="form-control input-full" >
                                             </div>
                                         </div>
                                     </div>
@@ -302,14 +327,14 @@
                                             </label>
                                             <div class="col-sm-4">
                                                 <input type="text" placeholder="最大开间" name="opening"
-                                                       class="form-control input-full" required>
+                                                       class="form-control input-full" >
                                             </div>
                                             <label class="col-sm-2 control-label">
                                                 最小进深
                                             </label>
                                             <div class="col-sm-4">
                                                 <input type="text" placeholder="最小进深" name="depth"
-                                                       class="form-control input-full" required>
+                                                       class="form-control input-full" >
                                             </div>
                                         </div>
                                     </div>
@@ -322,7 +347,7 @@
                                             </label>
                                             <div class="col-sm-4">
                                                 <input type="text" placeholder="距离" name="distance"
-                                                       class="form-control input-full" required>
+                                                       class="form-control input-full" >
                                             </div>
                                         </div>
                                     </div>
@@ -336,14 +361,14 @@
                                             </label>
                                             <div class="col-sm-4">
                                                 <input type="text" placeholder="跨长" name="spanLength"
-                                                       class="form-control input-full" required>
+                                                       class="form-control input-full" >
                                             </div>
                                             <label class="col-sm-2 control-label">
                                                 跨数
                                             </label>
                                             <div class="col-sm-4">
                                                 <input type="text" placeholder="跨数" name="spanNum"
-                                                       class="form-control input-full" required>
+                                                       class="form-control input-full" >
                                             </div>
                                         </div>
                                     </div>
@@ -356,14 +381,14 @@
                                             </label>
                                             <div class="col-sm-4">
                                                 <input type="text" placeholder="通风" name="aeration"
-                                                       class="form-control input-full" required>
+                                                       class="form-control input-full" >
                                             </div>
                                             <label class="col-sm-2 control-label">
                                                 采光
                                             </label>
                                             <div class="col-sm-4">
                                                 <input type="text" placeholder="采光" name="lighting"
-                                                       class="form-control input-full" required>
+                                                       class="form-control input-full" >
                                             </div>
                                         </div>
                                     </div>
@@ -376,14 +401,14 @@
                                             </label>
                                             <div class="col-sm-4">
                                                 <input type="text" placeholder="最大跨距" name="maxSpan"
-                                                       class="form-control input-full" required>
+                                                       class="form-control input-full" >
                                             </div>
                                             <label class="col-sm-2 control-label">
                                                 最小跨距
                                             </label>
                                             <div class="col-sm-4">
                                                 <input type="text" placeholder="最小跨距" name="minSpan"
-                                                       class="form-control input-full" required>
+                                                       class="form-control input-full" >
                                             </div>
                                         </div>
                                     </div>
@@ -396,7 +421,7 @@
                                             </label>
                                             <div class="col-sm-4">
                                                 <input type="text" placeholder="标准跨距" name="standardSpan"
-                                                       class="form-control input-full" required>
+                                                       class="form-control input-full" >
                                             </div>
                                         </div>
                                     </div>

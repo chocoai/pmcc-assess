@@ -195,11 +195,11 @@
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
-                                                <label class="col-sm-1">所在楼层<span
+                                                <label class="col-sm-1">水电费类型<span
                                                         class="symbol required"></span></label>
                                                 <div class="col-sm-11">
-                                                    <label class="form-control input-full" id="currentFloor"
-                                                           name="currentFloor">${basicHouseHuxing.currentFloor}</label>
+                                                    <label class="form-control input-full" id="utilitiesType"
+                                                           name="utilitiesTypeName">${basicHouseHuxing.utilitiesTypeName}</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -529,7 +529,9 @@
                             <%@include file="/views/project/stageSurvey/commonDetail/houseIntelligent.jsp" %>
                         </c:if>
                         <%@include file="/views/project/stageSurvey/commonDetail/houseRoom.jsp" %>
+                    <div class="x_content" id="showHouseDecorate">
                         <%@include file="/views/project/stageSurvey/commonDetail/houseRoomDecorate.jsp" %>
+                    </div>
                         <c:if test="${formType eq 'industry'}">
                             <%@include file="/views/project/stageSurvey/commonDetail/houseCorollaryEquipment.jsp" %>
                         </c:if>

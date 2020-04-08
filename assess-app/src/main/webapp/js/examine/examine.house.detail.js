@@ -93,22 +93,23 @@ var houseRoom;
             return data;
         },
         loadDataDicList: function () {
-            var cols = [];
+            var cols = commonColumn.houseRoomColumn();
+            var temp = [];
             var tenementType = houseCommon.houseHuxingForm.find('label[name="tenementType"]').text();
-            if (tenementType == '住宅'|| tenementType == '办公') {
-                cols = commonColumn.houseRoomResidence();
+            if (tenementType == '住宅' || tenementType == '办公') {
+                temp = commonColumn.houseRoomResidence();
             } else if (tenementType == '商铺' || tenementType == '商场') {
-                cols = commonColumn.houseRoomStore();
+                temp = commonColumn.houseRoomStore();
             } else if (tenementType == '餐饮酒店') {
-                cols = commonColumn.houseRoomHotel();
+                temp = commonColumn.houseRoomHotel();
             } else if (tenementType == '生产') {
-                cols = commonColumn.houseRoomProduction();
+                temp = commonColumn.houseRoomProduction();
             } else if (tenementType == '仓储') {
-                cols = commonColumn.houseRoomStorage();
-            }else{
-                cols = commonColumn.houseRoomColumn();
+                temp = commonColumn.houseRoomStorage();
             }
-
+            $.each(temp, function (i, item) {
+                cols.push(item);
+            })
             cols.push({field: 'fileViewName', title: '附件'});
             $("#" + houseRoom.prototype.config().table).bootstrapTable('destroy');
             TableInit(houseRoom.prototype.config().table, getContextPath()+"/basicHouseRoom/getBootstrapTableVo", cols, {

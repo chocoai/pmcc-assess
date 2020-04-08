@@ -290,7 +290,7 @@
                                                     <label class="col-sm-1">空间布局<span
                                                             class="symbol required"></span></label>
                                                     <div class="col-sm-3">
-                                                        <select class="form-control input-full spatialDistribution"
+                                                        <select class="form-control input-full search-select select2 spatialDistribution"
                                                                 name="spatialDistribution"
                                                                 required>
                                                         </select>
@@ -298,7 +298,7 @@
                                                     <label class="col-sm-1">水电费标准<span
                                                             class="symbol required"></span></label>
                                                     <div class="col-sm-3">
-                                                        <select class="form-control input-full search-select select2 utilitiesMeasure"
+                                                        <select class="form-control input-full utilitiesMeasure"
                                                                 name="utilitiesMeasure"
                                                                 required>
                                                         </select>
@@ -309,12 +309,13 @@
                                         <div class="row form-group">
                                             <div class="col-md-12">
                                                 <div class="form-inline x-valid">
-                                                    <label class="col-sm-1">所在楼层<span
+                                                    <label class="col-sm-1">水电费类型<span
                                                             class="symbol required"></span></label>
                                                     <div class="col-sm-3">
-                                                        <input type="text" placeholder="所在楼层" name="currentFloor"
-                                                               class="form-control input-full" id="currentFloor"
-                                                               required value="${basicHouseHuxing.currentFloor}">
+                                                        <select class="form-control input-full utilitiesType"
+                                                                name="utilitiesType" id="utilitiesType"
+                                                                required>
+                                                        </select>
                                                     </div>
                                                 </div>
                                             </div>
@@ -682,7 +683,9 @@
                                 <div class="x_content">
                                     <%@include file="/views/project/stageSurvey/common/houseFaceStreet.jsp" %>
                                     <%@include file="/views/project/stageSurvey/common/houseRoom.jsp" %>
+                                    <div class="x_content" id="showHouseDecorate">
                                     <%@include file="/views/project/stageSurvey/common/houseRoomDecorate.jsp" %>
+                                    </div>
                                     <c:if test="${formType eq 'residence'}">
                                         <%@include file="/views/project/stageSurvey/common/houseWater.jsp" %>
                                         <%@include file="/views/project/stageSurvey/common/houseWaterDrain.jsp" %>

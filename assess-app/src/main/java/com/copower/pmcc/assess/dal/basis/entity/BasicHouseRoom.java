@@ -66,6 +66,8 @@ public class BasicHouseRoom {
 
     private String spanNum;
 
+    private String currentFloor;
+
     public Integer getId() {
         return id;
     }
@@ -312,5 +314,13 @@ public class BasicHouseRoom {
 
     public void setSpanNum(String spanNum) {
         this.spanNum = spanNum == null ? null : spanNum.trim();
+    }
+
+    public String getCurrentFloor() {
+        return currentFloor;
+    }
+
+    public void setCurrentFloor(String currentFloor) {
+        this.currentFloor = currentFloor == null ? null : currentFloor.trim();
     }
 }

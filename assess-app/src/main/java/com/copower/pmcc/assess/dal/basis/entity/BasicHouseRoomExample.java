@@ -2195,6 +2195,76 @@ public class BasicHouseRoomExample {
             addCriterion("span_num not between", value1, value2, "spanNum");
             return (Criteria) this;
         }
+
+        public Criteria andCurrentFloorIsNull() {
+            addCriterion("current_floor is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentFloorIsNotNull() {
+            addCriterion("current_floor is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentFloorEqualTo(String value) {
+            addCriterion("current_floor =", value, "currentFloor");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentFloorNotEqualTo(String value) {
+            addCriterion("current_floor <>", value, "currentFloor");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentFloorGreaterThan(String value) {
+            addCriterion("current_floor >", value, "currentFloor");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentFloorGreaterThanOrEqualTo(String value) {
+            addCriterion("current_floor >=", value, "currentFloor");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentFloorLessThan(String value) {
+            addCriterion("current_floor <", value, "currentFloor");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentFloorLessThanOrEqualTo(String value) {
+            addCriterion("current_floor <=", value, "currentFloor");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentFloorLike(String value) {
+            addCriterion("current_floor like", value, "currentFloor");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentFloorNotLike(String value) {
+            addCriterion("current_floor not like", value, "currentFloor");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentFloorIn(List<String> values) {
+            addCriterion("current_floor in", values, "currentFloor");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentFloorNotIn(List<String> values) {
+            addCriterion("current_floor not in", values, "currentFloor");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentFloorBetween(String value1, String value2) {
+            addCriterion("current_floor between", value1, value2, "currentFloor");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentFloorNotBetween(String value1, String value2) {
+            addCriterion("current_floor not between", value1, value2, "currentFloor");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {
