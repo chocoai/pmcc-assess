@@ -209,17 +209,19 @@
     }
 
     //js对象转成路径参数
-    var parseParam = function (param, key) {
-        var paramStr = "";
-        if (param instanceof String || param instanceof Number || param instanceof Boolean) {
-            paramStr += "&" + key + "=" + encodeURIComponent(param);
-        } else {
-            $.each(param, function (i) {
-                var k = key == null ? i : key + (param instanceof Array ? "[" + i + "]" : "." + i);
-                paramStr += '&' + parseParam(this, k);
-            });
+    var parseParam = function (param) {
+        var arr = [];
+        var keys = Object.keys(param);
+        for (var i = 0; i < keys.length; i++) {
+            var key = keys[i];
+            var value = param[key];
+            if (!value) {
+                // continue ;
+            }
+            var paramStr = key + "=" + value;
+            arr.push(paramStr)
         }
-        return paramStr.substr(1);
+        return arr.join("&");
     };
 
     function showFunctionBtn() {
