@@ -49,10 +49,20 @@
                             <div class="col-sm-3 x-valid">
                                 <label class="form-control input-full">${projectInfo.entrustAimTypeName}</label>
                             </div>
+                            <label class="col-sm-1 col-form-label">价值类型</label>
+                            <div class="col-sm-3">
+                                <label class="form-control input-full">${projectInfo.valueTypeName}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-12">
+                        <div class="form-inline x-valid">
                             <label class="col-sm-1 col-form-label">
                                 委托目的描述
                             </label>
-                            <div class="col-sm-3">
+                            <div class="col-sm-11">
                                 <label class="form-control input-full">${projectInfo.remarkEntrustPurpose}</label>
                             </div>
                         </div>
@@ -61,9 +71,11 @@
                 <div class="row form-group">
                     <div class="col-md-12">
                         <div class="form-inline x-valid">
-                            <label class="col-sm-1 col-form-label">价值类型</label>
+                            <label class="col-sm-1 col-form-label">
+                                评估范围
+                            </label>
                             <div class="col-sm-3">
-                                <label class="form-control input-full">${projectInfo.valueTypeName}</label>
+                                <label class="form-control input-full">${projectInfo.propertyScopeName}</label>
                             </div>
                             <label class="col-sm-1 col-form-label">
                                 评估包括
@@ -147,12 +159,6 @@
                 <div class="row form-group">
                     <div class="col-md-12">
                         <div class="form-inline">
-                            <label class="col-sm-1 col-form-label">
-                                评估范围
-                            </label>
-                            <div class="col-sm-3">
-                                <label class="form-control input-full">${projectInfo.propertyScopeName}</label>
-                            </div>
                             <label class="col-sm-1 col-form-label">
                                 业务来源
                             </label>

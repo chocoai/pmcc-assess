@@ -1086,12 +1086,7 @@ public class SchemeJudgeObjectService {
     public void reNumberJudgeObject(Integer areaGroupId) {
         //1.根据权证的编号确定估价对象的序号 2.将合并对象独立处理
         List<SchemeJudgeObject> judgeObjects = getJudgeObjectDeclareListByAreaId(areaGroupId);
-        int i = 1;
         for (SchemeJudgeObject judgeObject : judgeObjects) {
-            judgeObject.setNumber(String.valueOf(i));
-            judgeObject.setName(String.format("%s%s", i, BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME));
-            updateSchemeJudgeObject(judgeObject);
-            judgeNameChangeEvent(judgeObject);
             //处理该估价对象的拆分对象
             List<SchemeJudgeObject> splitJudgeObjectList = getJudgeObjectListBySplitFrom(judgeObject.getId());
             if (CollectionUtils.isNotEmpty(splitJudgeObjectList)) {
@@ -1102,7 +1097,6 @@ public class SchemeJudgeObjectService {
                     judgeNameChangeEvent(o);
                 });
             }
-            i++;
         }
         List<SchemeJudgeObject> mergeJudgeObjectList = schemeJudgeObjectDao.getMergeListByAreaId(areaGroupId);
         if (CollectionUtils.isNotEmpty(mergeJudgeObjectList)) {

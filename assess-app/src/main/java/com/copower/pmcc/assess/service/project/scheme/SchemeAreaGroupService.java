@@ -214,7 +214,6 @@ public class SchemeAreaGroupService {
                 areaGroup.setBisNew(true);
                 areaGroup.setCreator(commonService.thisUserAccount());
                 this.add(areaGroup);
-                int i = 1;
                 //初始化估价对象
                 List<DeclareRecord> declareRecordList = getAreaGroupDeclareRecords(declareRecords, areaGroup.getProvince(), areaGroup.getCity(), areaGroup.getDistrict(), true);
                 Iterator declareRecordIterator = declareRecordList.iterator();
@@ -224,9 +223,8 @@ public class SchemeAreaGroupService {
                     boolean isSameCity = StringUtils.equals(StringUtils.defaultString(declareRecord.getCity()), StringUtils.defaultString(areaGroup.getCity()));
                     boolean isSameDistrict = StringUtils.equals(StringUtils.defaultString(declareRecord.getDistrict()), StringUtils.defaultString(areaGroup.getDistrict()));
                     if (isSameProvince && isSameCity && isSameDistrict) {
-                        declareRecordToJudgeObject(declareRecord, areaGroup, i);
+                        declareRecordToJudgeObject(declareRecord, areaGroup);
                         declareRecordIterator.remove();
-                        i++;
                     }
                 }
             }
@@ -251,7 +249,7 @@ public class SchemeAreaGroupService {
                 Boolean isNeedReNumber = false;//是否需要重新编号
                 if (CollectionUtils.isNotEmpty(declareRecordList)) {//为权证添加估价对象
                     isNeedReNumber = true;
-                    declareRecordList.forEach(o -> declareRecordToJudgeObject(o, sameAreaGroup, schemeJudgeObjectDao.getAreaGroupMaxNumber(projectId, sameAreaGroup.getId()) + 1));
+                    declareRecordList.forEach(o -> declareRecordToJudgeObject(o, sameAreaGroup));
                 }
                 if (CollectionUtils.isNotEmpty(judgeObjectDeclareList)) {//需被移除的估价对象
                     isNeedReNumber = true;
@@ -288,7 +286,7 @@ public class SchemeAreaGroupService {
      * @param i
      * @return
      */
-    private SchemeJudgeObject declareRecordToJudgeObject(DeclareRecord declareRecord, SchemeAreaGroup areaGroup, Integer i) {
+    private SchemeJudgeObject declareRecordToJudgeObject(DeclareRecord declareRecord, SchemeAreaGroup areaGroup) {
         BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(declareRecord.getId());
         SchemeJudgeObject schemeJudgeObject = new SchemeJudgeObject();
         schemeJudgeObject.setProjectId(declareRecord.getProjectId());
@@ -298,12 +296,12 @@ public class SchemeAreaGroupService {
             schemeJudgeObject.setBasicApplyId(basicApply.getId());
             schemeJudgeObject.setEvaluationArea(basicApply.getArea());
         }
-        schemeJudgeObject.setNumber(String.valueOf(i));
+        schemeJudgeObject.setNumber(String.valueOf(declareRecord.getNumber()));
         schemeJudgeObject.setCreator(commonService.thisUserAccount());
         schemeJudgeObject.setAreaGroupId(areaGroup.getId());
         schemeJudgeObject.setOriginalAreaGroupId(areaGroup.getId());
         schemeJudgeObject.setFloorArea(declareRecord.getFloorArea());
-        schemeJudgeObject.setName(String.format("%s%s", i, BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME));
+        schemeJudgeObject.setName(String.format("%s%s", declareRecord.getNumber(), BaseConstant.ASSESS_JUDGE_OBJECT_CN_NAME));
         schemeJudgeObject.setCertName(declareRecord.getName());
         schemeJudgeObject.setOwnership(declareRecord.getOwnership());
         schemeJudgeObject.setSeat(declareRecord.getSeat());

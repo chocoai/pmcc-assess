@@ -57,10 +57,25 @@
                                 class="form-control input-full search-select select2 entrustAimType_p">
                         </select>
                     </div>
+
+                    <label class="col-sm-1 col-form-label">
+                        价值类型
+                    </label>
+                    <div class="col-sm-3">
+                        <select name="valueType" class="form-control input-full search-select select2 valueType">
+                        </select>
+                        <input type="hidden" name="remarkValueType">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-12">
+                <div class="form-inline x-valid">
                     <label class="col-sm-1 col-form-label">
                         委托目的描述
                     </label>
-                    <div class="col-sm-3">
+                    <div class="col-sm-11">
                         <input name="remarkEntrustPurpose"
                                class="form-control input-full"
                                placeholder="委托目的描述" value="${projectInfo.remarkEntrustPurpose}"/>
@@ -72,12 +87,14 @@
             <div class="col-md-12">
                 <div class="form-inline x-valid">
                     <label class="col-sm-1 col-form-label">
-                        价值类型
+                        评估范围
                     </label>
                     <div class="col-sm-3">
-                        <select name="valueType" class="form-control input-full search-select select2 valueType">
+                        <select name="propertyScope" class="form-control input-full search-select select2 propertyScope"
+                                onchange="$(this).closest('.form-group').find('[name=propertyScopeName]').val($(this).find('option:selected').text())">
                         </select>
-                        <input type="hidden" name="remarkValueType">
+
+                        <input type="hidden" name="propertyScopeName">
                     </div>
                     <label class="col-sm-1 col-form-label">
                         评估包括
@@ -259,16 +276,7 @@
             <div class="col-md-12">
                 <div class="form-inline">
 
-                    <label class="col-sm-1 col-form-label">
-                        评估范围
-                    </label>
-                    <div class="col-sm-3">
-                        <select name="propertyScope" class="form-control input-full search-select select2 propertyScope"
-                                onchange="$(this).closest('.form-group').find('[name=propertyScopeName]').val($(this).find('option:selected').text())">
-                        </select>
 
-                        <input type="hidden" name="propertyScopeName">
-                    </div>
 
                     <label class="col-sm-1 col-form-label">
                         业务来源
