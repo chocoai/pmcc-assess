@@ -136,7 +136,7 @@ public class DeclareRealtyRealEstateCertService {
                     declarePublicService.excelImportWriteErrorInfo(i, "编号重复", stringBuilder);
                     continue;
                 }
-                saveAndUpdateDeclareRealtyRealEstateCert(realtyRealEstateCert,true) ;
+                saveDeclareRealtyRealEstateCert(realtyRealEstateCert, true);
                 DeclareBuildEngineeringAndEquipmentCenter center = new DeclareBuildEngineeringAndEquipmentCenter();
                 center.setPlanDetailsId(realtyRealEstateCert.getPlanDetailsId());
                 center.setRealEstateId(realtyRealEstateCert.getId());
@@ -169,6 +169,21 @@ public class DeclareRealtyRealEstateCertService {
             declareRealtyRealEstateCertDao.updateDeclareRealtyRealEstateCert(declareRealtyRealEstateCert, updateNull);
             updateDeclareRealtyRealEstateCertAndUpdateDeclareRecordOrJudgeObject(declareRealtyRealEstateCert);
             return null;
+        }
+    }
+
+    public void saveDeclareRealtyRealEstateCert(DeclareRealtyRealEstateCert declareRealtyRealEstateCert, boolean updateNull) {
+        if (declareRealtyRealEstateCert.getId() == null || declareRealtyRealEstateCert.getId() == 0) {
+            if (StringUtils.isBlank(declareRealtyRealEstateCert.getCreator())) {
+                declareRealtyRealEstateCert.setCreator(commonService.thisUserAccount());
+            }
+            if (declareRealtyRealEstateCert.getAutoInitNumber() == null && com.google.common.base.Objects.equal(DeclareTypeEnum.MasterData.getKey(), declareRealtyRealEstateCert.getEnable())) {
+                declareRealtyRealEstateCert.setAutoInitNumber(declarePublicService.getCountByPlanDetailsIdGetMaxAutoInitNumber(declareRealtyRealEstateCert.getPlanDetailsId()));
+            }
+            declareRealtyRealEstateCertDao.addDeclareRealtyRealEstateCert(declareRealtyRealEstateCert);
+        } else {
+            declareRealtyRealEstateCertDao.updateDeclareRealtyRealEstateCert(declareRealtyRealEstateCert, updateNull);
+            updateDeclareRealtyRealEstateCertAndUpdateDeclareRecordOrJudgeObject(declareRealtyRealEstateCert);
         }
     }
 
@@ -254,13 +269,13 @@ public class DeclareRealtyRealEstateCertService {
         DeclareRealtyRealEstateCertVo vo = new DeclareRealtyRealEstateCertVo();
         BeanUtils.copyProperties(declareRealtyRealEstateCert, vo);
         if (declareRealtyRealEstateCert.getUseEndDate() != null) {
-            vo.setUseEndDateFmt(DateUtils.format(declareRealtyRealEstateCert.getUseEndDate(),DateUtils.DATE_CHINESE_PATTERN));
+            vo.setUseEndDateFmt(DateUtils.format(declareRealtyRealEstateCert.getUseEndDate(), DateUtils.DATE_CHINESE_PATTERN));
         }
         if (declareRealtyRealEstateCert.getRegistrationTime() != null) {
-            vo.setRegistrationTimeFmt(DateUtils.format(declareRealtyRealEstateCert.getRegistrationTime(),DateUtils.DATE_CHINESE_PATTERN));
+            vo.setRegistrationTimeFmt(DateUtils.format(declareRealtyRealEstateCert.getRegistrationTime(), DateUtils.DATE_CHINESE_PATTERN));
         }
         if (declareRealtyRealEstateCert.getUseStartDate() != null) {
-            vo.setUseStartDateFmt(DateUtils.format(declareRealtyRealEstateCert.getUseStartDate(),DateUtils.DATE_CHINESE_PATTERN));
+            vo.setUseStartDateFmt(DateUtils.format(declareRealtyRealEstateCert.getUseStartDate(), DateUtils.DATE_CHINESE_PATTERN));
         }
 //        if (declareRealtyRealEstateCert.getHouseCertUseCategory() != null) {
 //            vo.setHouseCertUseCategoryName(baseDataDicService.getNameById(declareRealtyRealEstateCert.getHouseCertUseCategory()));
@@ -430,6 +445,18 @@ public class DeclareRealtyRealEstateCertService {
                 declareRecord.setDataFromType(declareRealtyRealEstateCert.getCertName());
             }
         }
+    }
+
+    public void changeAutoInitNumber(Integer autoInitNumber, Integer id) {
+        DeclareRealtyRealEstateCert declareRealtyRealEstateCert = getDeclareRealtyRealEstateCertById(id);
+
+        if (declareRealtyRealEstateCert == null) {
+            return;
+        }
+
+        declareRealtyRealEstateCert.setAutoInitNumber(autoInitNumber);
+
+        saveAndUpdateDeclareRealtyRealEstateCert(declareRealtyRealEstateCert, true);
     }
 
 }

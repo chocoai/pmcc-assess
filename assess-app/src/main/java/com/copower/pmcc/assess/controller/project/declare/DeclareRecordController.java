@@ -113,10 +113,20 @@ public class DeclareRecordController {
         }
     }
 
-    @PostMapping(value = "/changeDeclareRecordNumber",name = "变更权证号")
-    public HttpResult changeDeclareRecordNumber(Integer declareRecordId, Integer projectId,String number){
+    @PostMapping(value = "/changeDeclareRecordNumber", name = "变更权证号")
+    public HttpResult changeDeclareRecordNumber(Integer declareRecordId, Integer projectId, String number) {
         try {
-            return HttpResult.newCorrectResult(200, declareRecordService.changeDeclareRecordNumber(declareRecordId,projectId , number));
+            return HttpResult.newCorrectResult(200, declareRecordService.changeDeclareRecordNumber(declareRecordId, projectId, number));
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e);
+            return HttpResult.newErrorResult(500, e);
+        }
+    }
+
+    @PostMapping(value = "/autoChangeDeclareRecordNumber", name = "自动变更权证号")
+    public HttpResult autoChangeDeclareRecordNumber(Integer projectId) {
+        try {
+            return HttpResult.newCorrectResult(200, declareRecordService.autoChangeDeclareRecordNumber(projectId));
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult(500, e);

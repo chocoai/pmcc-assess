@@ -118,7 +118,7 @@
                                                     </button>
                                                     <button class="btn btn-success btn-sm"
                                                             type="button"
-                                                            onclick="">
+                                                            onclick="objRecord.autoChangeDeclareRecordNumberFun() ;">
                                                         <span class="btn-label"><i
                                                                 class="fa fa-cog"></i></span>自动重设编号
                                                     </button>
@@ -263,6 +263,15 @@
     } ;
 
 
+    /**
+     * 自动变更权证号
+     * @param callback
+     */
+    objRecord.autoChangeDeclareRecordNumber = function (callback) {
+        objRecord.ajaxServerFun({projectId:'${projectInfo.id}'}, "/declareRecord/autoChangeDeclareRecordNumber", "post", callback, null);
+    } ;
+
+
     objRecord.declareRecordTable = $("#tb_declare_record_list");
     objRecord.declareRecordBox = $("#divRecordBox");
 
@@ -340,10 +349,19 @@
         if (!frm.valid()) {
             return false;
         }
+        //编号是否重复校验
+
         var data = formSerializeArray(frm);
-        objRecord.saveDeclareRecord(data,function () {
-            notifySuccess("成功", "修改数据成功!");
+        objRecord.changeDeclareRecordNumber(data.id,data.number,function (message) {
+            notifyInfo("变更情况", message);
             objRecord.handleJquery(objRecord.declareRecordBox).modal("hide");
+            objRecord.loadDeclareRecordList() ;
+        }) ;
+    } ;
+
+    objRecord.autoChangeDeclareRecordNumberFun = function () {
+        objRecord.autoChangeDeclareRecordNumber(function (message) {
+            notifyInfo("变更情况", message);
             objRecord.loadDeclareRecordList() ;
         }) ;
     } ;

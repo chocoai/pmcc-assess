@@ -1,8 +1,7 @@
 package com.copower.pmcc.assess.service.project.declare;
 
 import com.copower.pmcc.assess.dal.basis.dao.project.declare.DeclareRecordDao;
-import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
-import com.copower.pmcc.assess.dal.basis.entity.DeclareRecordExtend;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.declare.DeclareRecordVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
@@ -16,6 +15,8 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Objects;
+import com.google.common.collect.Ordering;
+import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -24,13 +25,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * Created by 13426 on 2018/5/15.
@@ -47,6 +46,13 @@ public class DeclareRecordService {
     private CommonService commonService;
     @Autowired
     private ErpAreaService erpAreaService;
+    @Autowired
+    private DeclareRealtyHouseCertService declareRealtyHouseCertService;
+    @Autowired
+    private DeclareRealtyLandCertService declareRealtyLandCertService;
+    @Autowired
+    private DeclareRealtyRealEstateCertService declareRealtyRealEstateCertService;
+
 
     /**
      * 获取申报 扩展表
@@ -73,10 +79,10 @@ public class DeclareRecordService {
 
 
     public Integer saveAndUpdateDeclareRecord(DeclareRecord declareRecord) {
-       return saveAndUpdateDeclareRecord(declareRecord,false) ;
+        return saveAndUpdateDeclareRecord(declareRecord, false);
     }
 
-    public Integer saveAndUpdateDeclareRecord(DeclareRecord declareRecord , boolean updateNull) {
+    public Integer saveAndUpdateDeclareRecord(DeclareRecord declareRecord, boolean updateNull) {
         if (declareRecord == null) {
             return null;
         }
@@ -85,7 +91,7 @@ public class DeclareRecordService {
             declareRecordDao.saveReturnId(declareRecord);
             return declareRecord.getId();
         } else {
-            updateDeclareRecord(declareRecord,updateNull) ;
+            updateDeclareRecord(declareRecord, updateNull);
             return declareRecord.getId();
         }
     }
@@ -178,11 +184,11 @@ public class DeclareRecordService {
         return vo;
     }
 
-    public BootstrapTableVo getDeclareRecordList(Integer projectId, String name, String seat, Boolean bisPartIn, String province, String city, String district,String inventoryStatus) {
+    public BootstrapTableVo getDeclareRecordList(Integer projectId, String name, String seat, Boolean bisPartIn, String province, String city, String district, String inventoryStatus) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<DeclareRecord> declareRecordList = declareRecordDao.getDeclareRecordList(projectId, name, seat, bisPartIn, province, city, district,inventoryStatus);
+        List<DeclareRecord> declareRecordList = declareRecordDao.getDeclareRecordList(projectId, name, seat, bisPartIn, province, city, district, inventoryStatus);
         List<DeclareRecordVo> vos = LangUtils.transform(declareRecordList, o -> getDeclareRecordVo(o));
         vo.setTotal(page.getTotal());
         vo.setRows(CollectionUtils.isEmpty(vos) ? new ArrayList<DeclareRecordVo>() : vos);
@@ -273,10 +279,127 @@ public class DeclareRecordService {
     }
 
 
-    public String changeDeclareRecordNumber(Integer declareRecordId,Integer projectId,String number){
-        StringBuilder stringBuilder = new StringBuilder() ;
-
+    /**
+     * 变更  编号
+     *
+     * @param declareRecordId
+     * @param projectId
+     * @param number
+     * @return
+     */
+    public String changeDeclareRecordNumber(Integer declareRecordId, Integer projectId, String number) {
+        StringBuilder stringBuilder = new StringBuilder();
+        DeclareRecord declareRecord = getDeclareRecordById(declareRecordId);
+        SchemeJudgeObject query = new SchemeJudgeObject();
+        query.setProjectId(projectId);
+        query.setDeclareRecordId(declareRecordId);
+        List<SchemeJudgeObject> objectList = schemeJudgeObjectService.getJudgeObjectList(query);
+        if (CollectionUtils.isNotEmpty(objectList)) {
+            stringBuilder.append("已经生成了估价对象不允许修改");
+            return stringBuilder.toString();
+        }
+        TreeSet<Integer> treeSet = getCountByPlanDetailsIdAndAutoInitNumberList(projectId);
+        if (CollectionUtils.isNotEmpty(treeSet) && treeSet.contains(Integer.parseInt(number))) {
+            stringBuilder.append("编号重复");
+            return stringBuilder.toString();
+        }
+        changeDeclareRecordNumberHelp(declareRecord,Integer.parseInt(number)) ;
+        stringBuilder.append("变更成功");
         return stringBuilder.toString();
     }
+
+    private void changeDeclareRecordNumberHelp(DeclareRecord declareRecord,Integer number){
+        if (Objects.equal(declareRecord.getDataTableName(), FormatUtils.entityNameConvertToTableName(DeclareRealtyHouseCert.class))) {
+            declareRealtyHouseCertService.changeAutoInitNumber(number, declareRecord.getDataTableId());
+        }
+
+        if (Objects.equal(declareRecord.getDataTableName(), FormatUtils.entityNameConvertToTableName(DeclareRealtyLandCert.class))) {
+            declareRealtyLandCertService.changeAutoInitNumber(number, declareRecord.getDataTableId());
+        }
+        if (Objects.equal(declareRecord.getDataTableName(), FormatUtils.entityNameConvertToTableName(DeclareRealtyRealEstateCert.class))) {
+            declareRealtyRealEstateCertService.changeAutoInitNumber(number, declareRecord.getDataTableId());
+        }
+
+        declareRecord.setNumber(number);
+        saveAndUpdateDeclareRecord(declareRecord, true);
+    }
+
+    /**
+     * 自动变更编号
+     *
+     * @param projectId
+     * @return
+     */
+    public String autoChangeDeclareRecordNumber(Integer projectId) {
+        StringBuilder stringBuilder = new StringBuilder();
+        List<DeclareRecord> declareRecordList = getDeclareRecordByProjectId(projectId);
+        if (CollectionUtils.isEmpty(declareRecordList)) {
+            return "无权证记录";
+        }
+        TreeSet<Integer> treeSet = Sets.newTreeSet();
+        int startIndex = 1;
+        List<SchemeJudgeObject> schemeJudgeObjectList = getJudgeObjectListByProjectId(projectId);
+        if (CollectionUtils.isNotEmpty(declareRecordList) && CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+            List<Integer> collect = schemeJudgeObjectList.stream().map(schemeJudgeObject -> schemeJudgeObject.getDeclareRecordId()).collect(Collectors.toList());
+            Iterator<DeclareRecord> iterator = declareRecordList.iterator();
+            while (iterator.hasNext()) {
+                DeclareRecord declareRecord = iterator.next();
+                if (CollectionUtils.isNotEmpty(collect)){
+                    if (collect.contains(declareRecord.getId())){
+                        if (declareRecord.getNumber() != null || declareRecord.getNumber() != 0){
+                            treeSet.add(declareRecord.getNumber()) ;
+                        }
+                        iterator.remove();
+                    }
+                }
+            }
+        }
+        if (CollectionUtils.isEmpty(declareRecordList)) {
+            return "权证已经全部生成了估价对象,无剩余可以变更编号的权证";
+        }
+        if (CollectionUtils.isNotEmpty(treeSet)){
+            startIndex += treeSet.last().intValue() ;
+        }
+        //排下序
+        Ordering<DeclareRecord> ordering = Ordering.from(new Comparator<DeclareRecord>() {
+            @Override
+            public int compare(DeclareRecord o1, DeclareRecord o2) {
+                return o1.getId().compareTo(o2.getId());
+            }
+        }) ;
+        declareRecordList.sort(ordering);
+        Iterator<DeclareRecord> iterator = declareRecordList.iterator();
+        while (iterator.hasNext()){
+            DeclareRecord declareRecord = iterator.next();
+            changeDeclareRecordNumberHelp(declareRecord,startIndex) ;
+            startIndex++ ;
+        }
+        stringBuilder.append("变更成功");
+        return stringBuilder.toString();
+    }
+
+
+    private TreeSet<Integer> getCountByPlanDetailsIdAndAutoInitNumberList(Integer projectId) {
+        TreeSet<Integer> treeSet = Sets.newTreeSet();
+        List<DeclareRecord> declareRecordList = getDeclareRecordByProjectId(projectId);
+        if (CollectionUtils.isNotEmpty(declareRecordList)) {
+            Iterator<DeclareRecord> iterator = declareRecordList.iterator();
+            while (iterator.hasNext()) {
+                DeclareRecord declareRecord = iterator.next();
+                if (declareRecord.getNumber() == null || declareRecord.getNumber() == 0) {
+                    continue;
+                }
+                treeSet.add(declareRecord.getNumber());
+            }
+        }
+        return treeSet;
+    }
+
+    private List<SchemeJudgeObject> getJudgeObjectListByProjectId(Integer projectId){
+        SchemeJudgeObject schemeJudgeObject = new SchemeJudgeObject();
+        schemeJudgeObject.setProjectId(projectId);
+        return schemeJudgeObjectService.getJudgeObjectList(schemeJudgeObject) ;
+    }
+
 
 }
