@@ -190,4 +190,13 @@ public class SchemeSurePriceController {
         }
 
     }
+
+    @RequestMapping(value = "/export", name = "导出")
+    public void export(HttpServletResponse response,Integer houseId) throws Exception {
+        try {
+            schemeSurePriceService.export(response, houseId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
