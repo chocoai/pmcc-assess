@@ -255,40 +255,8 @@
                         aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="card-body">
-                                <div class="row form-group ">
-                                    <div class="col-md-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-1 control-label">
-                                                名称
-                                            </label>
-                                            <div class="col-sm-5">
-                                                <input type="text" data-rule-maxlength="50" placeholder="名称"
-                                                       id="queryAlternativeName" class="form-control input-full">
-                                            </div>
-                                            <div class="col-sm-5">
-                                                <button type="button" class="btn btn-sm btn-info"
-                                                        onclick="batchTreeTool.loadAlternativeSurveyList();">
-                                                    <span class="btn-label"><i class="fa fa-search"></i></span>
-                                                    查询
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row form-group">
-                                    <div class="col-md-12">
-                                        <table class="table table-bordered" id="basicAlternativeSurveyList">
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
+                <table class="table table-bordered" id="basicAlternativeSurveyList">
+                </table>
             </div>
             <div class="modal-footer">
                 <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">
@@ -1108,6 +1076,7 @@
             name: $('#queryAlternativeName').val(),
             planDetailsId: "${projectPlanDetails.id}"
         }, {
+            pagination: false,
             showColumns: false,
             showRefresh: false,
             search: false,

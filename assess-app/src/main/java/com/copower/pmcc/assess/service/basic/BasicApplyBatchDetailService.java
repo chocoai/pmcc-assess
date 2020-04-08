@@ -132,6 +132,7 @@ public class BasicApplyBatchDetailService {
                 basicApplyBatchDetail.setTableId(building.getId());
                 break;
             case UNIT:
+            case UNIT_RESIDENCE:
                 BasicUnit unitData = basicUnitService.getBasicUnitById(basicApplyBatchDetail.getTableId());
                 BasicUnit unit = unitData == null ? new BasicUnit() : unitData;
                 BasicBuilding basicBuilding = getBasicBuildingByBatchDetailId(basicApplyBatchDetail.getPid());

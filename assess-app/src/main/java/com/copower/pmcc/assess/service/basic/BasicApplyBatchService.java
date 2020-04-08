@@ -715,6 +715,7 @@ public class BasicApplyBatchService {
         BasicApplyBatchDetail newBatchDetail = new BasicApplyBatchDetail();
         BeanUtils.copyProperties(source, newBatchDetail, BaseConstant.ASSESS_IGNORE_ARRAY);
         newBatchDetail.setTableId(targetBuilding.getId());
+        newBatchDetail.setExecutor(commonService.thisUserAccount());
         newBatchDetail.setCreator(commonService.thisUserAccount());
         basicApplyBatchDetailDao.addInfo(newBatchDetail);
 
