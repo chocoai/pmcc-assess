@@ -161,7 +161,7 @@ public class SurveyAssetInventoryContentService {
                 SurveyAssetInventoryContent inventoryAddress = getInventoryAddress(declareRecord);
                 if (inventoryAddress != null) {
                     surveyAssetInventoryContent.setRegistration(inventoryAddress.getRegistration());
-                    surveyAssetInventoryContent.setActual(inventoryAddress.getActual());
+                    //surveyAssetInventoryContent.setActual(inventoryAddress.getActual());
                 }
                 inventoryContentList.add(surveyAssetInventoryContent);
             }

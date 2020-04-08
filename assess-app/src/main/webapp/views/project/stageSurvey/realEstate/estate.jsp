@@ -418,7 +418,7 @@
                                                     <label class="col-sm-1">土地使用年限<span class="symbol required"></span></label>
                                                     <div class="col-sm-3">
                                                         <input placeholder="土地使用年限" data-rule-number="true"
-                                                               name="acquisitionTime" required
+                                                               name="landUseYear" required
                                                                class="form-control input-full">
                                                     </div>
                                                     <label class="col-sm-1">土地级别<span

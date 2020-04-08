@@ -8,201 +8,189 @@
 <div class="wrapper">
     <div class="main-panel" style="width: 100%">
         <div class="content" style="margin-top: 0px;">
-            <div class="page-inner mt--5">
-                <div class="row mt--2">
-                    <%--项目基本信息--%>
-                    <%@include file="/views/share/project/projectInfoSimple.jsp" %>
-                    <!-- 估价委托书 start -->
-                    <div class="col-md-12">
-                        <div class="card full-height">
-                            <div class="card-header collapse-link">
-                                <div class="card-head-row">
-                                    <div class="card-title">
-                                        估价委托书
-                                    </div>
-                                    <div class="card-tools">
-                                        <button class="btn  btn-link btn-primary btn-xs"><span
-                                                class="fa fa-angle-down"></span>
-                                        </button>
-                                    </div>
-                                </div>
+            <!-- 估价委托书 start -->
+            <div class="col-md-12">
+                <div class="card full-height">
+                    <div class="card-header collapse-link">
+                        <div class="card-head-row">
+                            <div class="card-title">
+                                估价委托书
                             </div>
-                            <div class="card-body">
-                                <form class="form-horizontal">
-                                    <div class="row form-group">
-                                        <div class="col-md-4">
-                                            <input id="project_proxy" name="project_proxy" type="file" multiple="false">
-                                            <div id="_project_proxy"></div>
-                                        </div>
-                                    </div>
-                                </form>
+                            <div class="card-tools">
+                                <button class="btn  btn-link btn-primary btn-xs"><span
+                                        class="fa fa-angle-down"></span>
+                                </button>
                             </div>
                         </div>
                     </div>
-                    <!-- 估价委托书及相关证明 start -->
-                    <div class="col-md-12">
-                        <div class="card full-height">
-                            <div class="card-header collapse-link">
-                                <div class="card-head-row">
-                                    <div class="card-title">
-                                        估价委托书及相关证明
-                                    </div>
-                                    <div class="card-tools">
-                                        <button class="btn  btn-link btn-primary btn-xs"><span
-                                                class="fa fa-angle-down"></span>
-                                        </button>
+                    <div class="card-body">
+                        <form class="form-horizontal">
+                            <div class="row form-group">
+                                <div class="col-md-4">
+                                    <input id="project_proxy" name="project_proxy" type="file" multiple="false">
+                                    <div id="_project_proxy"></div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- 估价委托书及相关证明 start -->
+            <div class="col-md-12">
+                <div class="card full-height">
+                    <div class="card-header collapse-link">
+                        <div class="card-head-row">
+                            <div class="card-title">
+                                估价委托书及相关证明
+                            </div>
+                            <div class="card-tools">
+                                <button class="btn  btn-link btn-primary btn-xs"><span
+                                        class="fa fa-angle-down"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <form class="form-horizontal">
+                            <div class="row form-group">
+                                <div class="col-md-12">
+                                    <div class="form-inline x-valid">
+                                        <label class="col-sm-1 col-form-label">
+                                            省
+                                        </label>
+                                        <div class="col-sm-2">
+                                            <select id="queryProvince" class="form-control input-full">
+                                            </select>
+                                        </div>
+                                        <label class="col-sm-1 control-label">
+                                            市
+                                        </label>
+                                        <div class="col-sm-2">
+                                            <select id="queryCity" class="form-control input-full">
+                                            </select>
+                                        </div>
+                                        <label class="col-sm-1 control-label">
+                                            区
+                                        </label>
+                                        <div class="col-sm-2">
+                                            <select id="queryDistrict" class="form-control input-full">
+                                            </select>
+                                        </div>
+                                        <label class="col-sm-1 control-label">
+                                            名称
+                                        </label>
+                                        <div class="col-sm-2">
+                                            <input type="text" class="form-control input-full" id="queryName"/>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="card-body">
-                                <form class="form-horizontal">
-                                    <div class="row form-group">
-                                        <div class="col-md-12">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-1 col-form-label">
-                                                    省
-                                                </label>
-                                                <div class="col-sm-2">
-                                                    <select id="queryProvince" class="form-control input-full">
-                                                    </select>
-                                                </div>
-                                                <label class="col-sm-1 control-label">
-                                                    市
-                                                </label>
-                                                <div class="col-sm-2">
-                                                    <select id="queryCity" class="form-control input-full">
-                                                    </select>
-                                                </div>
-                                                <label class="col-sm-1 control-label">
-                                                    区
-                                                </label>
-                                                <div class="col-sm-2">
-                                                    <select id="queryDistrict" class="form-control input-full">
-                                                    </select>
-                                                </div>
-                                                <label class="col-sm-1 control-label">
-                                                    名称
-                                                </label>
-                                                <div class="col-sm-2">
-                                                    <input type="text" class="form-control input-full" id="queryName"/>
-                                                </div>
-                                            </div>
+                            <div class="row form-group">
+                                <div class="col-md-12">
+                                    <div class="form-inline x-valid">
+                                        <label class="col-sm-1 col-form-label">
+                                            坐落
+                                        </label>
+                                        <div class="col-sm-2">
+                                            <input type="text" class="form-control input-full" id="querySeat"/>
                                         </div>
-                                    </div>
-                                    <div class="row form-group">
-                                        <div class="col-md-12">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-1 col-form-label">
-                                                    坐落
-                                                </label>
-                                                <div class="col-sm-2">
-                                                    <input type="text" class="form-control input-full" id="querySeat"/>
-                                                </div>
-                                                <button style="margin-left: 10px" class="btn btn-info btn-sm" type="button"
-                                                        onclick="reloadDeclareList()">
+                                        <button style="margin-left: 10px" class="btn btn-info btn-sm" type="button"
+                                                onclick="reloadDeclareList()">
 											<span class="btn-label">
 												<i class="fa fa-search"></i>
 											</span>
-                                                    查询
-                                                </button>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    <table class="table table-bordered" id="declareTable">
-                                        <!-- cerare document add ajax data-->
-                                    </table>
-
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- 位置示意图 start -->
-                    <div class="col-md-12">
-                        <div class="card full-height">
-                            <div class="card-header collapse-link">
-                                <div class="card-head-row">
-                                    <div class="card-title">
-                                        位置示意图
-                                    </div>
-                                    <div class="card-tools">
-                                        <button class="btn  btn-link btn-primary btn-xs"><span
-                                                class="fa fa-angle-down"></span>
+                                            查询
                                         </button>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="card-body">
-                                <form class="form-horizontal">
-                                    <table class="table table-hover">
-                                        <thead>
-                                        <tr>
-                                            <th width='40%'>权证对象</th>
-                                            <th width='60%'>位置图</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody id="positionTbody">
-                                        </tbody>
-                                    </table>
-
-                                </form>
                             </div>
-                        </div>
+                            <table class="table table-bordered" id="declareTable">
+                                <!-- cerare document add ajax data-->
+                            </table>
+
+                        </form>
                     </div>
-
-
-                    <!-- 实况照片 start -->
-                    <div class="col-md-12">
-                        <div class="card full-height">
-                            <div class="card-header collapse-link">
-                                <div class="card-head-row">
-                                    <div class="card-title">
-                                        实况照片
-                                    </div>
-                                    <div class="card-tools">
-                                        <button class="btn  btn-link btn-primary btn-xs"><span
-                                                class="fa fa-angle-down"></span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-body" id="liveSituationHtml">
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 估价中引用的专用文件资料 start -->
-                    <div class="col-md-12">
-                        <div class="card full-height">
-                            <div class="card-header collapse-link">
-                                <div class="card-head-row">
-                                    <div class="card-title">
-                                        估价中引用的专用文件资料
-                                    </div>
-                                    <div class="card-tools">
-                                        <button class="btn  btn-link btn-primary btn-xs"><span
-                                                class="fa fa-angle-down"></span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-body" id="ReportFileCustom">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-12" style="text-align: center;padding-bottom: 1.25rem">
-                        <button id="cancel_btn btn-sm" class="btn btn-default" onclick="window.close()">
-                            取消
-                        </button>
-                        <button id="btn_submit btn-sm" class="btn btn-warning" onclick="submit()">
-                            保存<i style="margin-left: 10px" class="fa fa-save"></i>
-                        </button>
-
-                    </div>
-                    <%@include file="/views/share/form_log.jsp" %>
                 </div>
+            </div>
+            <!-- 位置示意图 start -->
+            <div class="col-md-12">
+                <div class="card full-height">
+                    <div class="card-header collapse-link">
+                        <div class="card-head-row">
+                            <div class="card-title">
+                                位置示意图
+                            </div>
+                            <div class="card-tools">
+                                <button class="btn  btn-link btn-primary btn-xs"><span
+                                        class="fa fa-angle-down"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <form class="form-horizontal">
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th width='40%'>权证对象</th>
+                                    <th width='60%'>位置图</th>
+                                </tr>
+                                </thead>
+                                <tbody id="positionTbody">
+                                </tbody>
+                            </table>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- 实况照片 start -->
+            <div class="col-md-12">
+                <div class="card full-height">
+                    <div class="card-header collapse-link">
+                        <div class="card-head-row">
+                            <div class="card-title">
+                                实况照片
+                            </div>
+                            <div class="card-tools">
+                                <button class="btn  btn-link btn-primary btn-xs"><span
+                                        class="fa fa-angle-down"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body" id="liveSituationHtml">
+                    </div>
+                </div>
+            </div>
+            <!-- 估价中引用的专用文件资料 start -->
+            <div class="col-md-12">
+                <div class="card full-height">
+                    <div class="card-header collapse-link">
+                        <div class="card-head-row">
+                            <div class="card-title">
+                                估价中引用的专用文件资料
+                            </div>
+                            <div class="card-tools">
+                                <button class="btn  btn-link btn-primary btn-xs"><span
+                                        class="fa fa-angle-down"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body" id="ReportFileCustom">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12" style="text-align: center;padding-bottom: 1.25rem">
+                <button type="button" id="cancel_btn btn-sm" class="btn btn-default" onclick="window.close()">
+                    取消
+                </button>
+                <button type="button" id="btn_submit btn-sm" class="btn btn-warning" style="margin-left: 10px;" onclick="submit()">
+                    保存
+                </button>
             </div>
         </div>
         <%@include file="/views/share/main_footer.jsp" %>
