@@ -40,7 +40,23 @@
         })
     };
 
-    unitCommon.initForm = function (data) {
+    unitCommon.initDetailById = function (id, callback, bisDetail) {
+        $.ajax({
+            url: getContextPath() + '/basicUnit/getBasicUnitById',
+            type: 'get',
+            data: {id: id},
+            success: function (result) {
+                if (result.ret) {
+                    unitCommon.initForm(result.data,bisDetail);
+                    if (callback) {
+                        callback(result.data);
+                    }
+                }
+            }
+        })
+    };
+
+    unitCommon.initForm = function (data,bisDetail) {
         try {
             data.applyBatchId = unitCommon.unitForm.find("input[name='applyBatchId']").val();
         } catch (e) {
@@ -50,6 +66,11 @@
         //初始化上传控件
         $.each(unitCommon.unitFileControlIdArray, function (i, item) {
             unitCommon.fileUpload(item);
+            if (bisDetail == false) {
+                unitCommon.fileShow(item, false);
+            } else {
+                unitCommon.fileShow(item, true);
+            }
             unitCommon.fileShow(item);
         });
     };
@@ -217,7 +238,7 @@
                 tableName: AssessDBKey.BasicUnit,
                 tableId: unitCommon.getUnitId()
             },
-            deleteFlag: true
+            deleteFlag: deleteFlag
         })
     };
 

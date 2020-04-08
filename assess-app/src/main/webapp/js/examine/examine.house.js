@@ -34,15 +34,15 @@
     };
 
     //附件上传控件id数组
-    houseCommon.houseFileControlIdArray = [
-        AssessUploadKey.HOUSE_HUXING_PLAN,
-        AssessUploadKey.HOUSE_HUXING,
-        AssessUploadKey.HOUSE_NEW_HUXING_PLAN,
-        AssessUploadKey.HOUSE_IMG_PLAN,
-        AssessUploadKey.HOUSE_DECORATE,
-        AssessUploadKey.HOUSE_FILE,
-        AssessUploadKey.HOUSE_TRADING_FILE
-    ];
+    houseCommon.houseFileControlIdArray = [];
+
+    houseCommon.getUploadKey = function(){
+        AssessCommon.loadAsyncDataDicByKey(AssessDicKey.examineBasicHouse, '', function (html, resultData) {
+            $.each(resultData, function (i, item) {
+                houseCommon.houseFileControlIdArray.push(item.fieldName);
+            });
+        }, false);
+    }
 
     houseCommon.getHouseId = function () {
         return houseCommon.houseForm.find('[name=id]').val() != null ? houseCommon.houseForm.find('[name=id]').val() : houseCommon.tableId;
@@ -180,6 +180,7 @@
 
     //房屋初始化以及赋值
     houseCommon.initForm = function (data, bisDetail) {
+        houseCommon.getUploadKey();
         if (!data || !data.basicHouse) return;
         //基本信息
         houseCommon.houseForm.initForm(data.basicHouse, function () {
@@ -488,14 +489,14 @@
             deleteFlag: true,
             onUploadComplete: function () {
                 houseCommon.fileShow(fieldsName);
-                if (houseCommon.houseFileControlIdArray[1] == fieldsName) {
-                    toolMapHandleFun.removeToolMapHandle({
-                        type: "house",
-                        tableId: houseCommon.getHouseId()
-                    }, function () {
-
-                    });
-                }
+                // if (houseCommon.houseFileControlIdArray[1] == fieldsName) {
+                //     toolMapHandleFun.removeToolMapHandle({
+                //         type: "house",
+                //         tableId: houseCommon.getHouseId()
+                //     }, function () {
+                //
+                //     });
+                // }
             }
         });
     };
@@ -531,16 +532,16 @@
                 tableId: houseCommon.getHouseId()
             },
             deleteFlag: deleteFlag == undefined ? true : deleteFlag,
-            deleteSuccess: function (attachemntId) {
-                if (houseCommon.houseFileControlIdArray[1] == fieldsName) {
-                    toolMapHandleFun.removeToolMapHandle({
-                        type: "house",
-                        tableId: houseCommon.getHouseId()
-                    }, function () {
-
-                    });
-                }
-            }
+            // deleteSuccess: function (attachemntId) {
+            //     if (houseCommon.houseFileControlIdArray[1] == fieldsName) {
+            //         toolMapHandleFun.removeToolMapHandle({
+            //             type: "house",
+            //             tableId: houseCommon.getHouseId()
+            //         }, function () {
+            //
+            //         });
+            //     }
+            // }
         })
     };
 

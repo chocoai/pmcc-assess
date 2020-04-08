@@ -1841,7 +1841,6 @@ var houseRoom;
             data.boxSubclassSaveView = "boxSubclassSaveViewHouseRoom";
             data.frmSubclass = "SubclassFrmHouseRoom";
             data.type = "null";//
-            data.fileIDName = "house_room_file";
             return data;
         },
         loadDataDicList: function () {
@@ -2143,27 +2142,13 @@ var houseRoom;
                 $("#" + houseRoom.prototype.config().frm).find("select.storageRequest").empty().html(html).trigger('change');
             });
 
+            AssessCommon.loadAsyncDataDicByKey(AssessDicKey.examineBasicHouseRoom, '', function (html, resultData) {
+                $.each(resultData, function (i, fileData) {
+                    houseRoom.prototype.fileUpload(fileData.fieldName,item.id);
+                    houseRoom.prototype.fileShow(fileData.fieldName,item.id);
+                });
+            }, false);
 
-            FileUtils.uploadFiles({
-                target: houseRoom.prototype.config().fileIDName,
-                disabledTarget: "btn_submit",
-                formData: {
-                    fieldsName: houseRoom.prototype.config().fileIDName,
-                    tableName: AssessDBKey.BasicHouseRoom,
-                    tableId: houseRoom.prototype.isNotBlank(item.id) ? item.id : "0"
-                },
-                deleteFlag: true
-            });
-
-            FileUtils.getFileShows({
-                target: houseRoom.prototype.config().fileIDName,
-                formData: {
-                    fieldsName: houseRoom.prototype.config().fileIDName,
-                    tableName: AssessDBKey.BasicHouseRoom,
-                    tableId: houseRoom.prototype.isNotBlank(item.id) ? item.id : "0"
-                },
-                deleteFlag: true
-            })
         },
         houseShapeChange() {
             var tenementType = houseCommon.houseHuxingForm.find('input[name="tenementType"]').val();
@@ -2222,6 +2207,33 @@ var houseRoom;
                     }
                 }
             }
+        },
+        //附件上传
+        fileUpload: function (fieldsName,id) {
+            FileUtils.uploadFiles({
+                target: fieldsName,
+                disabledTarget: "btn_submit",
+                formData: {
+                    fieldsName: fieldsName,
+                    tableName: AssessDBKey.BasicHouseRoom,
+                    tableId: houseRoom.prototype.isNotBlank(id) ? id : "0"
+                },
+                deleteFlag: true,
+                onUploadComplete: function () {
+                    houseRoom.prototype.fileShow(fieldsName,id);
+                }
+            });
+        },
+        fileShow: function (fieldsName,id) {
+            FileUtils.getFileShows({
+                target: fieldsName,
+                formData: {
+                    fieldsName: fieldsName,
+                    tableName: AssessDBKey.BasicHouseRoom,
+                    tableId: houseRoom.prototype.isNotBlank(id) ? id : "0"
+                },
+                deleteFlag: true
+            })
         }
     }
 
