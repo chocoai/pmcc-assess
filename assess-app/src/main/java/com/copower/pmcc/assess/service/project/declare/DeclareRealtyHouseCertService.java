@@ -149,7 +149,7 @@ public class DeclareRealtyHouseCertService {
             select.setAutoInitNumber(landCert.getAutoInitNumber());
             select.setEnable(DeclareTypeEnum.MasterData.getKey());
             List<DeclareRealtyHouseCert> houseCertList = declareRealtyHouseCertDao.getDeclareRealtyHouseCertList(select);
-            boolean yes = false ;
+            boolean yes = false;
             if (CollectionUtils.isNotEmpty(houseCertList)) {
                 ListIterator<DeclareRealtyHouseCert> declareRealtyHouseCertListIterator = houseCertList.listIterator();
                 while (declareRealtyHouseCertListIterator.hasNext()) {
@@ -166,7 +166,7 @@ public class DeclareRealtyHouseCertService {
                     while (iterator.hasNext()) {
                         DeclareBuildEngineeringAndEquipmentCenter equipmentCenter = iterator.next();
                         if (equipmentCenter.getLandId() != null && equipmentCenter.getLandId() != 0) {
-                            yes = true ;//此编号已经有匹配的房产证了 但是不能够匹配
+                            yes = true;//此编号已经有匹配的房产证了 但是不能够匹配
                         }
                         if (equipmentCenter.getLandId() == null || equipmentCenter.getLandId() == 0) {
                             relatedMap.put(equipmentCenter, declareRealtyHouseCert);
@@ -174,7 +174,7 @@ public class DeclareRealtyHouseCertService {
                     }
                 }
             }
-            if (yes){
+            if (yes) {
                 relatedMap.clear();
                 declarePublicService.excelImportWriteErrorInfo(i, "此编号已经有匹配的房产证了,请修改编号再行匹配", stringBuilder);
                 continue;
@@ -259,7 +259,7 @@ public class DeclareRealtyHouseCertService {
                     declarePublicService.excelImportWriteErrorInfo(i, "编号重复", stringBuilder);
                     continue;
                 }
-                saveAndUpdateDeclareRealtyHouseCert(realtyHouseCert, true);
+                savDeclareRealtyHouseCertData(realtyHouseCert, true);
                 DeclareBuildEngineeringAndEquipmentCenter center = new DeclareBuildEngineeringAndEquipmentCenter();
                 center.setPlanDetailsId(realtyHouseCert.getPlanDetailsId());
                 center.setHouseId(realtyHouseCert.getId());
@@ -293,6 +293,21 @@ public class DeclareRealtyHouseCertService {
             declareRealtyHouseCertDao.updateDeclareRealtyHouseCert(declareRealtyHouseCert, updateNull);
             updateDeclareRealtyHouseCertAndUpdateDeclareRecordOrJudgeObject(declareRealtyHouseCert);
             return declareRealtyHouseCert.getId();
+        }
+    }
+
+    public void savDeclareRealtyHouseCertData(DeclareRealtyHouseCert declareRealtyHouseCert, boolean updateNull) {
+        if (declareRealtyHouseCert.getId() == null || declareRealtyHouseCert.getId() == 0) {
+            if (StringUtils.isBlank(declareRealtyHouseCert.getCreator())) {
+                declareRealtyHouseCert.setCreator(commonService.thisUserAccount());
+            }
+            if (declareRealtyHouseCert.getAutoInitNumber() == null && com.google.common.base.Objects.equal(DeclareTypeEnum.MasterData.getKey(), declareRealtyHouseCert.getEnable())) {
+                declareRealtyHouseCert.setAutoInitNumber(declarePublicService.getCountByPlanDetailsIdGetMaxAutoInitNumber(declareRealtyHouseCert.getPlanDetailsId()));
+            }
+            declareRealtyHouseCertDao.addDeclareRealtyHouseCert(declareRealtyHouseCert);
+        } else {
+            declareRealtyHouseCertDao.updateDeclareRealtyHouseCert(declareRealtyHouseCert, updateNull);
+            updateDeclareRealtyHouseCertAndUpdateDeclareRecordOrJudgeObject(declareRealtyHouseCert);
         }
     }
 
@@ -529,4 +544,43 @@ public class DeclareRealtyHouseCertService {
             declareRecord.setLandUseRightArea(realtyLandCert.getUseRightArea());
         }
     }
+
+    public void changeAutoInitNumber(Integer autoInitNumber, Integer id) {
+
+        DeclareRealtyHouseCert declareRealtyHouseCert = getDeclareRealtyHouseCertById(id);
+
+        if (declareRealtyHouseCert == null) {
+            return;
+        }
+
+        declareRealtyHouseCert.setAutoInitNumber(autoInitNumber);
+
+        saveAndUpdateDeclareRealtyHouseCert(declareRealtyHouseCert);
+
+        DeclareBuildEngineeringAndEquipmentCenter query = new DeclareBuildEngineeringAndEquipmentCenter();
+        query.setHouseId(declareRealtyHouseCert.getId());
+        query.setPlanDetailsId(declareRealtyHouseCert.getPlanDetailsId());
+        query.setType(DeclareRealtyHouseCert.class.getSimpleName());
+        List<DeclareBuildEngineeringAndEquipmentCenter> centerList = declareBuildEngineeringAndEquipmentCenterService.declareBuildEngineeringAndEquipmentCenterList(query);
+
+        if (CollectionUtils.isEmpty(centerList)) {
+            return;
+        }
+
+        Iterator<DeclareBuildEngineeringAndEquipmentCenter> iterator = centerList.iterator();
+        while (iterator.hasNext()) {
+            DeclareBuildEngineeringAndEquipmentCenter equipmentCenter = iterator.next();
+            if (equipmentCenter.getLandId() == null || equipmentCenter.getLandId() == 0) {
+                continue;
+            }
+            DeclareRealtyLandCert landCert = declareRealtyLandCertDao.getDeclareRealtyLandCertById(equipmentCenter.getLandId());
+            if (landCert == null) {
+                continue;
+            }
+            landCert.setAutoInitNumber(autoInitNumber);
+            declareRealtyLandCertDao.updateDeclareRealtyLandCert(landCert, true);
+        }
+    }
+
+
 }

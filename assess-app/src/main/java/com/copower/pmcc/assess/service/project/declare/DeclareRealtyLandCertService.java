@@ -173,12 +173,12 @@ public class DeclareRealtyLandCertService {
                             relatedMap.put(equipmentCenter, realtyLandCert);
                         }
                         if (equipmentCenter.getHouseId() != null && equipmentCenter.getHouseId() != 0) {
-                            yes = true ;
+                            yes = true;
                         }
                     }
                 }
             }
-            if (yes){
+            if (yes) {
                 relatedMap.clear();
                 declarePublicService.excelImportWriteErrorInfo(i, "此编号已经有匹配的土地证了,请修改编号再行匹配", stringBuilder);
                 continue;
@@ -262,7 +262,7 @@ public class DeclareRealtyLandCertService {
                     declarePublicService.excelImportWriteErrorInfo(i, "编号重复", stringBuilder);
                     continue;
                 }
-                saveAndUpdateDeclareRealtyLandCert(realtyLandCert, true);
+                saveDeclareRealtyLandCert(realtyLandCert, true);
                 DeclareBuildEngineeringAndEquipmentCenter center = new DeclareBuildEngineeringAndEquipmentCenter();
                 center.setPlanDetailsId(declareRealtyLandCert.getPlanDetailsId());
                 center.setLandId(realtyLandCert.getId());
@@ -296,6 +296,21 @@ public class DeclareRealtyLandCertService {
             declareRealtyLandCertDao.updateDeclareRealtyLandCert(declareRealtyLandCert, updateNull);
             updateDeclareRealtyLandCertAndUpdateDeclareRecordOrJudgeObject(declareRealtyLandCert);
             return declareRealtyLandCert.getId();
+        }
+    }
+
+    public void saveDeclareRealtyLandCert(DeclareRealtyLandCert declareRealtyLandCert, boolean updateNull) {
+        if (declareRealtyLandCert.getId() == null || declareRealtyLandCert.getId() == 0) {
+            if (StringUtils.isBlank(declareRealtyLandCert.getCreator())) {
+                declareRealtyLandCert.setCreator(commonService.thisUserAccount());
+            }
+            if (declareRealtyLandCert.getAutoInitNumber() == null && com.google.common.base.Objects.equal(DeclareTypeEnum.MasterData.getKey(), declareRealtyLandCert.getEnable())) {
+                declareRealtyLandCert.setAutoInitNumber(declarePublicService.getCountByPlanDetailsIdGetMaxAutoInitNumber(declareRealtyLandCert.getPlanDetailsId()));
+            }
+            declareRealtyLandCertDao.addDeclareRealtyLandCert(declareRealtyLandCert);
+        } else {
+            declareRealtyLandCertDao.updateDeclareRealtyLandCert(declareRealtyLandCert, updateNull);
+            updateDeclareRealtyLandCertAndUpdateDeclareRecordOrJudgeObject(declareRealtyLandCert);
         }
     }
 
@@ -556,6 +571,38 @@ public class DeclareRealtyLandCertService {
             declareRecord.setCertUse(realtyHouseCert.getCertUse());
             declareRecord.setHousingStructure(realtyHouseCert.getHousingStructure());
             declareRecord.setNature(baseDataDicService.getNameById(realtyHouseCert.getNature()));
+        }
+    }
+
+    public void changeAutoInitNumber(Integer autoInitNumber, Integer id) {
+        DeclareRealtyLandCert declareRealtyLandCert = getDeclareRealtyLandCertById(id);
+        if (declareRealtyLandCert == null) {
+            return;
+        }
+        declareRealtyLandCert.setAutoInitNumber(autoInitNumber);
+
+        saveAndUpdateDeclareRealtyLandCert(declareRealtyLandCert, true);
+        DeclareBuildEngineeringAndEquipmentCenter query = new DeclareBuildEngineeringAndEquipmentCenter();
+        query.setLandId(declareRealtyLandCert.getId());
+        query.setPlanDetailsId(declareRealtyLandCert.getPlanDetailsId());
+        query.setType(DeclareRealtyLandCert.class.getSimpleName());
+        List<DeclareBuildEngineeringAndEquipmentCenter> centerList = declareBuildEngineeringAndEquipmentCenterService.declareBuildEngineeringAndEquipmentCenterList(query);
+        if (CollectionUtils.isEmpty(centerList)) {
+            return;
+        }
+        Iterator<DeclareBuildEngineeringAndEquipmentCenter> iterator = centerList.iterator();
+        while (iterator.hasNext()) {
+            DeclareBuildEngineeringAndEquipmentCenter equipmentCenter = iterator.next();
+            if (equipmentCenter.getHouseId() == null || equipmentCenter.getHouseId() == 0) {
+                continue;
+            }
+            DeclareRealtyHouseCert declareRealtyHouseCert = declareRealtyHouseCertDao.getDeclareRealtyHouseCertById(equipmentCenter.getHouseId());
+            if (declareRealtyHouseCert == null) {
+                continue;
+            }
+            declareRealtyHouseCert.setAutoInitNumber(autoInitNumber);
+
+            declareRealtyHouseCertDao.updateDeclareRealtyHouseCert(declareRealtyHouseCert, true);
         }
     }
 
