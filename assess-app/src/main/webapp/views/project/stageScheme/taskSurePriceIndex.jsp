@@ -872,6 +872,9 @@
                                                     <li><a class="btn"
                                                            onclick="houseHuxingPrice.prototype.generateHuxingPrice()">下载模板</a>
                                                     </li>
+                                                    <li><a class="btn"
+                                                           onclick="houseHuxingPrice.prototype.exportData()">导出数据</a>
+                                                    </li>
                                                     <li>
                                                         <a class="btn"
                                                            onclick="$('#ajaxFileUpload').val('').trigger('click')"><span>导入</span></a>
@@ -1478,6 +1481,13 @@
             var columns = $("#" + houseHuxingPrice.prototype.config().tableFrm).find("input[name='priceExportColumns']").val();
             var href = "${pageContext.request.contextPath}/basicHouseHuxingPrice/generateAndExport";
             href += "?columns=" + encodeURIComponent(columns)+ "&source=taskSurePrice";
+            window.open(href, "");
+        },
+        //导出数据
+        exportData: function () {
+            var houseId = $("#" + houseHuxingPrice.prototype.config().tableFrm).find("input[name='houseId']").val();
+            var href = "${pageContext.request.contextPath}/schemeSurePrice/export";
+            href += "?houseId=" + houseId
             window.open(href, "");
         },
         getPriceExportColumns: function (tenementType) {

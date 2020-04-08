@@ -12,6 +12,7 @@ import com.copower.pmcc.assess.dal.basis.dao.method.MdMarketCompareDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.*;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeSurePriceApplyDto;
+import com.copower.pmcc.assess.dto.input.project.survey.ExamineHousePriceDto;
 import com.copower.pmcc.assess.dto.output.project.scheme.SchemeJudgeObjectVo;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
@@ -28,6 +29,7 @@ import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -665,7 +667,7 @@ public class SchemeSurePriceService {
                 }
                 basicHouseHuxingPrice = new BasicHouseHuxingPrice();
                 basicHouseHuxingPrice.setHouseId(houseId);
-                if (!this.importBasicHouseHuxingPrice(classArrayListMultimap,basicHouseHuxingPrice, builder, row, projectId)) {
+                if (!this.importBasicHouseHuxingPrice(classArrayListMultimap, basicHouseHuxingPrice, builder, row, projectId)) {
                     continue;
                 }
                 basicHouseHuxingPriceService.saveAndUpdateBasicHouseHuxingPrice(basicHouseHuxingPrice, false);
@@ -719,10 +721,77 @@ public class SchemeSurePriceService {
 
         boolean check = declarePublicService.excelImportHelp(classArrayListMultimap, basicHouseHuxingPrice, builder, row, baseMap, requiredList);
 
-        if(oldBasicHouseHuxingPrice.getId()!=null){
-            BeanUtils.copyProperties(oldBasicHouseHuxingPrice, basicHouseHuxingPrice,"price", "adjustFactor");
+        if (oldBasicHouseHuxingPrice.getId() != null) {
+            BeanUtils.copyProperties(oldBasicHouseHuxingPrice, basicHouseHuxingPrice, "price", "adjustFactor");
         }
         return check;
     }
 
+
+    /**
+     * 导出
+     *
+     * @param response
+     */
+    public void export(HttpServletResponse response, Integer houseId) throws BusinessException, IOException {
+        BasicHouseHuxingPrice basicHouseHuxingPrice = new BasicHouseHuxingPrice();
+        basicHouseHuxingPrice.setHouseId(houseId);
+        List<BasicHouseHuxingPrice> list = basicHouseHuxingPriceDao.basicHouseHuxingPriceList(basicHouseHuxingPrice);
+
+        if (CollectionUtils.isEmpty(list)) {
+            throw new BusinessException("没有获取到有效的数据");
+        }
+
+        Workbook wb = new HSSFWorkbook();
+        Sheet sheet = wb.createSheet();
+        Row row1 = sheet.createRow(0);
+        Row row2 = sheet.createRow(1);
+        ArrayList<ExamineHousePriceDto> columnsList = Lists.newArrayList();
+        LinkedHashMap<String, String> base = new LinkedHashMap<>();
+        base.put("houseNumber", "房号");
+        base.put("declareName", "权证名称");
+        base.put("area", "面积");
+        base.put("floor", "楼层");
+        base.put("price", "价格");
+        base.put("adjustFactor", "因素");
+        //创建标题及key
+        for (Map.Entry<String, String> stringObjectEntry : base.entrySet()) {
+            ExamineHousePriceDto dto = new ExamineHousePriceDto();
+            dto.setKey(stringObjectEntry.getKey());
+            dto.setValue(stringObjectEntry.getValue());
+            columnsList.add(dto);
+        }
+        for (int i = 0; i < columnsList.size(); i++) {
+            Cell cell = row1.createCell(i);
+            cell.setCellValue(columnsList.get(i).getKey());
+            Cell cell2 = row2.createCell(i);
+            cell2.setCellValue(columnsList.get(i).getValue());
+            sheet.setColumnWidth(i, 4000);
+        }
+        row1.setZeroHeight(true);
+        //写入数据
+        for (int i = 0; i < list.size(); i++) {
+            Row row = sheet.createRow(i + 2);
+            BasicHouseHuxingPrice houseHuxingPrice = list.get(i);
+            row.createCell(0).setCellValue(houseHuxingPrice.getHouseNumber());
+            row.createCell(1).setCellValue(houseHuxingPrice.getDeclareName());
+            row.createCell(2).setCellValue(houseHuxingPrice.getArea() == null ? "" : houseHuxingPrice.getArea().toString());
+            row.createCell(3).setCellValue(houseHuxingPrice.getFloor());
+            row.createCell(4).setCellValue(houseHuxingPrice.getPrice() == null ? "" : houseHuxingPrice.getPrice().toString());
+            row.createCell(5).setCellValue(houseHuxingPrice.getAdjustFactor());
+
+        }
+
+        OutputStream os = response.getOutputStream();
+        try {
+            this.setResponseHeader(response, "单价调查.XLS");
+            wb.write(os);
+
+        } catch (Exception e) {
+            throw new BusinessException("导出Excel出错:" + e);
+        } finally {
+            os.flush();
+            os.close();
+        }
+    }
 }
