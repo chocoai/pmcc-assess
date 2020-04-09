@@ -193,9 +193,10 @@ public class SchemeReportFileService extends BaseService {
                 baseAttachmentService.deleteAttachmentByDto(attachment);
             }
         }
+        BasicUnit basicUnit = basicUnitService.getBasicUnitByApplyId(basicApply.getId());
         BasicEstateTagging where = new BasicEstateTagging();
         where.setType(BasicFormClassifyEnum.UNIT.getKey());
-        where.setTableId(basicApply.getBasicUnitId());
+        where.setTableId(basicUnit.getId());
         List<BasicEstateTagging> taggings = basicEstateTaggingService.getBasicEstateTaggingList(where);
         if (CollectionUtils.isNotEmpty(taggings)) {
             taggings.forEach(o -> publicService.downLoadLocationImage(o.getLng(), o.getLat(), sysAttachmentDto));
