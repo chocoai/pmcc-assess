@@ -580,8 +580,25 @@ commonColumn.houseRoomResidence = function () {
     cols.push({field: 'lighting', title: '采光'});
     cols.push({field: 'sunshine', title: '日照'});
     cols.push({field: 'soundInsulation', title: '隔音'});
-    cols.push({field: 'length', title: '长度(最长)'});
-    cols.push({field: 'width', title: '宽度(最宽)'});
+    cols.push({
+        field: 'lengthDisplay', title: '长度', formatter: function (value, row, index) {
+            var s = row.length;
+            if (row.houseShape=='不规则') {
+                s += "(最长)";
+            }
+            return s;
+        }
+    });
+    cols.push({
+        field: 'widthDisplay', title: '宽度', formatter: function (value, row, index) {
+            var s = row.width;
+            if (row.houseShape=='不规则') {
+                s += "(最宽)";
+            }
+            return s;
+        }
+    });
+
     return cols;
 }
 

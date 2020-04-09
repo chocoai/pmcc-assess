@@ -262,7 +262,7 @@
         var select = {tableId:buildingCommon.buildingForm.find("[name='estateId']").val(),type:"estate"} ;
         examineCommon.getApplyBatchEstateTaggingsByTableId(select,function (data) {
             if (data.length == 0){
-                Alert("请先标注楼盘");
+                notifyInfo("提示","请先标注楼盘");
                 return false;
             }
             var item = data[0] ;
@@ -305,7 +305,7 @@
             }
             if (!readonly) {
                 if (objArray.length == 0) {
-                    Alert("请先标注楼盘");
+                    notifyInfo("提示","请先标注楼盘");
                     return false;
                 }
             }
@@ -469,7 +469,7 @@
                         notifySuccess('成功','删除成功!');
                     }
                     else {
-                        Alert("数据失败，失败原因:" + result.errmsg);
+                        AlertError("失败","数据失败，失败原因:" + result.errmsg);
                     }
                 },
                 error: function (result) {
@@ -527,7 +527,7 @@
                     }
                 }
                 else {
-                    Alert("数据失败，失败原因:" + result.errmsg);
+                    AlertError("失败","数据失败，失败原因:" + result.errmsg);
                 }
             },
             error: function (result) {

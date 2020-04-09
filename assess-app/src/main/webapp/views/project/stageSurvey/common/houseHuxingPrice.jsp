@@ -30,25 +30,20 @@
 											</span>
                                 新增
                             </button>
-                            <div class="btn-group">
-                                <button type="button" style="margin-left: 5px"
-                                        class="btn btn-info btn-sm dropdown-toggle"
-                                        data-toggle="dropdown">
-                                                     <span class="btn-label">
+                            <button style="margin-left: 5px" class="btn btn-success btn-sm" type="button"
+                                    onclick="exportData();">
+											<span class="btn-label">
+												<i class="fa fa-cloud-download-alt"></i>
+											</span>
+                                下载模板
+                            </button>
+                            <button style="margin-left: 5px" class="btn btn-info btn-sm" type="button"
+                                    onclick="$('#ajaxFileUpload').val('').trigger('click')">
+											<span class="btn-label">
 												<i class="fa fa-cloud-upload-alt"></i>
-                                                         </span>导入数据
-                                </button>
-                                <ul class="dropdown-menu" role="menu">
-                                    <li><a class="btn"
-                                           onclick="exportData()">下载模板</a>
-
-                                    </li>
-                                    <li>
-                                        <a class="btn"
-                                           onclick="$('#ajaxFileUpload').val('').trigger('click')"><span>导入</span></a>
-                                    </li>
-                                </ul>
-                            </div>
+											</span>
+                                导入数据
+                            </button>
                         </div>
                     </div>
                 </div>

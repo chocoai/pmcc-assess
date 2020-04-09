@@ -2192,7 +2192,20 @@ var houseRoom;
                     houseRoom.prototype.fileShow(fileData.fieldName,item.id);
                 });
             }, false);
-
+            //所在楼层
+            var spatialDistributionId = houseCommon.houseHuxingForm.find("select.spatialDistribution").val();
+            if (spatialDistributionId) {
+                var strArr = ["错层"];
+                AssessCommon.getDataDicInfo(spatialDistributionId, function (spatialDistributionData) {
+                    var str = strArr.join(",");
+                    //当属于数组中的任意一项时显示
+                    if (str.indexOf(spatialDistributionData.name) > -1) {
+                        $("#" + houseRoom.prototype.config().frm).find(".currentFloor").show();
+                    } else {
+                        $("#" + houseRoom.prototype.config().frm).find(".currentFloor").hide();
+                    }
+                });
+            }
         },
         houseShapeChange() {
             var tenementType = houseCommon.houseHuxingForm.find('input[name="tenementType"]').val();

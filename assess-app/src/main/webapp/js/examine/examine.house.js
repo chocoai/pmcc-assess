@@ -422,6 +422,9 @@
         houseCommon.houseHuxingForm.find("input[name='tenementType']").off('change').on('change', function () {
             var tenementType = houseCommon.houseHuxingForm.find("input[name='tenementType']").val();
             houseCommon.getPriceExportColumns(tenementType);
+            //房间及单价确定表的列表字段
+            houseHuxingPrice.prototype.loadDataDicList();
+            houseRoom.prototype.loadDataDicList();
         });
     };
 

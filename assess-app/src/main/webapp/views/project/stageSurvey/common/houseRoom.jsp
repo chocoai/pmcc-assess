@@ -85,8 +85,8 @@
                                             </label>
                                             <div class="col-sm-4">
                                                 <select id='type' name='houseShape' onchange="houseRoom.prototype.houseShapeChange()"
-                                                        class='form-control input-full search-select select2'>
-                                                    <option value="-1">-请选择-</option>
+                                                        class='form-control input-full' required>
+                                                    <option value="">-请选择-</option>
                                                     <option value="规则">规则</option>
                                                     <option value="不规则">不规则</option>
                                                 </select>
@@ -98,10 +98,10 @@
                                     <div class="col-md-12">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-2 control-label">
-                                                使用面积(m²)
+                                                使用面积(m²)<span class="symbol required"></span>
                                             </label>
                                             <div class="col-sm-4">
-                                                <input type="text" data-rule-number="true" placeholder="使用面积"
+                                                <input type="text" data-rule-number="true" placeholder="使用面积" required
                                                        name="area" class="form-control input-full">
                                             </div>
                                             <label class="col-sm-2 control-label">
@@ -124,10 +124,10 @@
                                                 <input type="text" placeholder="净高" name="clearHeight"
                                                        class="form-control input-full">
                                             </div>
-                                            <label class="col-sm-2 control-label">
+                                            <label class="col-sm-2 control-label currentFloor" style="display: none">
                                                 所在楼层
                                             </label>
-                                            <div class="col-sm-4">
+                                            <div class="col-sm-4 currentFloor" style="display: none">
                                                 <input type="text" placeholder="所在楼层" name="currentFloor"
                                                        class="form-control input-full">
                                             </div>
