@@ -135,37 +135,39 @@
                                             </div>
                                         </div>
                                     </div>
+
+
+
+
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
-                                                <label class="col-sm-1">街道号<span class="symbol required"></span></label>
-                                                <div class="col-sm-3">
-                                                    <input type="text" required
-                                                           placeholder="街道号" name="streetNumber"
-                                                           class="form-control input-full"
-                                                           value="${basicEstate.streetNumber}">
-                                                </div>
+                                                <div class="col-sm-12">
+                                                    <table class="table estateStreetInfos">
+                                                        <thead>
+                                                        <tr>
+                                                            <td colspan="4">
+                                                                <button class="btn btn-sm btn-success" type="button"
+                                                                        onclick="estateStreetInfoObj.appendHTML(this) ;"><i
+                                                                        class="fa fa-plus"></i></button>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th style="width: 10%">街道号</th>
+                                                            <th style="width: 10%">大门名称</th>
+                                                            <th style="width: 10%">附号</th>
+                                                            <th style="width: 7%">大门图</th>
+                                                            <th style="width: 7%"></th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
 
-                                                <label class="col-sm-1">附号</label>
-                                                <div class="col-sm-3">
-                                                    <input type="text" data-rule-maxlength="100"
-                                                           data-rule-number='true'
-                                                           placeholder="附号(请输入数字)"
-                                                           name="attachNumber"
-                                                           class="form-control input-full"
-                                                           value="${basicEstate.attachNumber}">
-                                                </div>
-                                                <div class="col-sm-3">
-                                                    <button class="btn btn-sm btn-success" type="button"
-                                                            onclick="estateCommon.appendHTML()"><i
-                                                            class="fa fa-plus"></i></button>
+                                                        </tbody>
+                                                    </table>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-
-                                    <div class="streetNumbers"></div>
-
 
 
                                     <div class="row form-group">
@@ -362,7 +364,8 @@
                                                             class="symbol required"></span></label>
                                                     <div class="col-sm-3">
                                                         <input type="text" class="form-control input-full" name="name"
-                                                               required onfocus="examineCommon.referenceValue(estateCommon.estateForm.find('input[name=name]'),$(this));"
+                                                               required
+                                                               onfocus="examineCommon.referenceValue(estateCommon.estateForm.find('input[name=name]'),$(this));"
                                                                placeholder="名称" value="${basicEstateLandState.name}">
                                                     </div>
                                                     <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1  control-label">
@@ -466,7 +469,8 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%" color="#6f5499" size="10">
+                                        <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%"
+                                            color="#6f5499" size="10">
                                         <div class="row form-group">
                                             <div class="col-md-12">
                                                 <div class="form-inline x-valid">
@@ -614,7 +618,8 @@
                                                     <div class="col-sm-3">
                                                         <input type="text" class="form-control input-full "
                                                                placeholder="容积率"
-                                                               name="plotRatio" onfocus="examineCommon.referenceValue(estateCommon.estateForm.find('input[name=volumetricRate]'),$(this));"
+                                                               name="plotRatio"
+                                                               onfocus="examineCommon.referenceValue(estateCommon.estateForm.find('input[name=volumetricRate]'),$(this));"
                                                                value="${basicEstateLandState.plotRatio}">
                                                     </div>
                                                     <label class="col-sm-1">建筑密度</label>
@@ -627,7 +632,8 @@
                                                     <label class="col-sm-1">绿地率</label>
                                                     <div class="col-sm-3">
                                                         <input type="text" class="form-control input-full"
-                                                               placeholder="绿地率" onfocus="examineCommon.referenceValue(estateCommon.estateForm.find('input[name=greeningRate]'),$(this));"
+                                                               placeholder="绿地率"
+                                                               onfocus="examineCommon.referenceValue(estateCommon.estateForm.find('input[name=greeningRate]'),$(this));"
                                                                name="greenSpaceRate"
                                                                value="${basicEstateLandState.greenSpaceRate}">
                                                     </div>
@@ -765,7 +771,9 @@
                             <button type="button" id="cancel_btn btn-sm" class="btn btn-default"
                                     onclick="window.close()">关闭
                             </button>
-                            <button type="button" style="margin-left: 10px;" class="btn btn-warning" onclick="saveDataInfo();">保存</button>
+                            <button type="button" style="margin-left: 10px;" class="btn btn-warning"
+                                    onclick="saveDataInfo();">保存
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -825,6 +833,7 @@
 </div>
 <%@include file="/views/project/stageSurvey/common/applyInfoHistory.jsp" %>
 <%@include file="/views/project/stageSurvey/common/applyInfoQuote.jsp" %>
+<%@include file="/views/project/stageSurvey/common/estateStreetInfo.jsp" %>
 <script type="text/html" id="landLevelTabContentBody">
     <tr class="group">
         <td class="table-cell">
@@ -890,7 +899,7 @@
         estateCommon.initById('${basicEstate.id}');
         //楼盘自动填充插件
         estateCommon.autocompleteStart();
-    })
+    });
 
     //保存数据信息
     function saveDataInfo() {
@@ -929,7 +938,7 @@
     }
 
     function showHistoryModal() {
-        historyInfo.caseEstate.showModel('${tbId}','${formClassify}','${tbType}','${basicApplyBatch.id}');
+        historyInfo.caseEstate.showModel('${tbId}', '${formClassify}', '${tbType}', '${basicApplyBatch.id}');
     };
 
     function showCaseQuoteModal() {

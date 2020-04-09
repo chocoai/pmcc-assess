@@ -100,13 +100,15 @@
                                                                            class="form-control input-full"
                                                                            value="${basicBuilding.landUseYear}">
                                                                 </div>
-                                                                <label class="col-sm-1">单元数<span class="symbol required"></span></label>
+                                                                <label class="col-sm-1">单元数<span
+                                                                        class="symbol required"></span></label>
                                                                 <div class="col-md-3">
                                                                     <input type="text" name="unitCount" required
                                                                            class="form-control input-full"
                                                                            value="${basicBuilding.unitCount}">
                                                                 </div>
-                                                                <div class="col-md-3 col-lg-offset-1 ">
+                                                                <div class="col-md-3 col-lg-offset-1  constructionInstallationEngineeringFeeEvent"
+                                                                     style="display: none;">
                                                                     <button type="button" class="btn btn-info btn-sm"
                                                                             onclick="buildingCommon.constructionInstallationEngineeringFeeEvent.loadHtml();">
                                                                         建筑安装完工度调查
@@ -122,10 +124,55 @@
                                                                     楼栋所在位置<span class="symbol required"></span>
                                                                 </label>
                                                                 <div class="col-md-3">
-                                                                    <input type="text" placeholder="楼栋所在位置"
-                                                                           name="location"
-                                                                           class="form-control input-full" required
-                                                                           value="${basicBuilding.location}">
+
+                                                                    <div class="input-group">
+                                                                        <input type="text" required="required"
+                                                                               name="reference" placeholder="参照物"
+                                                                               class="form-control form-control-sm"
+                                                                               list="build_reference_data"
+                                                                               value="${basicBuilding.reference}">
+                                                                        <datalist id="build_reference_data">
+                                                                            <option value="" selected="">-请选择-</option>
+                                                                            <option value="楼盘中">楼盘中</option>
+                                                                            <option value="楼盘大门">楼盘大门</option>
+                                                                        </datalist>
+                                                                        <input type="text" required="required"
+                                                                               name="orientation" placeholder="方位"
+                                                                               class="form-control form-control-sm"
+                                                                               list="build_orientation_data"
+                                                                               value="${basicBuilding.orientation}">
+                                                                        <datalist id="build_orientation_data">
+                                                                            <option value="" selected="">-请选择-</option>
+                                                                            <option value="左面">左面</option>
+                                                                            <option value="右面">右面</option>
+                                                                            <option value="正面">正面</option>
+                                                                            <option value="南面">南面</option>
+                                                                            <option value="北面">北面</option>
+                                                                            <option value="东面">东面</option>
+                                                                            <option value="东面">东面</option>
+                                                                            <option value="西面">西面</option>
+                                                                            <option value="东北">东北</option>
+                                                                            <option value="东南面">东南面</option>
+                                                                            <option value="东北面">东北面</option>
+                                                                            <option value="西南面">西南面</option>
+                                                                            <option value="西北面">西北面</option>
+                                                                        </datalist>
+                                                                        <div class="input-group-prepend ">
+                                                                            <button class="btn btn-warning btn-sm "
+                                                                                    style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                                                    type="button"
+                                                                                    onclick="$(this).closest('.input-group').find('input').val('');">
+                                                                                清空
+                                                                                <i class="fa "></i>
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+
+
+                                                                    <%--<input type="text" placeholder="楼栋所在位置"--%>
+                                                                    <%--name="location"--%>
+                                                                    <%--class="form-control input-full" required--%>
+                                                                    <%--value="${basicBuilding.location}">--%>
                                                                 </div>
                                                                 <label class="col-sm-1">
                                                                     首层位置<span class="symbol required"></span>
@@ -737,7 +784,8 @@
 <script src='${pageContext.request.contextPath}/js/autocomplete/building.case.js?v=${assessVersion}'></script>
 <script src='${pageContext.request.contextPath}/js/autocomplete/property.js?v=${assessVersion}'></script>
 <script src='${pageContext.request.contextPath}/js/autocomplete/builder.js?v=${assessVersion}'></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/examine/sonBuildView.js?v=${assessVersion}"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/js/examine/sonBuildView.js?v=${assessVersion}"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/tree-grid/css/jquery.treegrid.css">
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/assets/tree-grid/js/jquery.treegrid.js?v=${assessVersion}"></script>
@@ -749,6 +797,7 @@
         src="${pageContext.request.contextPath}/js/method/developmentCommon.js?v=${assessVersion}"></script>
 
 <script type="text/javascript">
+
     $(function () {
         buildingCommon.initById('${basicBuilding.id}');
         $("#txt_building_search").apBuilding({
@@ -760,7 +809,24 @@
             }
         });
         buildingCommon.autocompleteStart();
-    })
+
+
+        (function (buildingStatus) {
+            if (!buildingStatus) {
+                return false;
+            }
+            AssessCommon.getDataDicInfo(buildingStatus, function (data) {
+                if (data.fieldName == AssessDicKey.project_survey_building_status_in_progress) {
+                    $(document).find(".constructionInstallationEngineeringFeeEvent").show() ;
+                }
+                if (data.fieldName == AssessDicKey.project_survey_building_status_in_finish) {
+                    $(document).find(".constructionInstallationEngineeringFeeEvent").hide() ;
+                }
+            });
+        }('${basicApplyBatch.buildingStatus}'));
+
+
+    });
 
     //保存数据信息
     function saveDataInfo() {
@@ -803,7 +869,7 @@
     }
 
     function showHistoryModal() {
-        historyInfo.caseBuild.showModel('${tbId}','${formClassify}','${tbType}','${basicApplyBatch.id}');
+        historyInfo.caseBuild.showModel('${tbId}', '${formClassify}', '${tbType}', '${basicApplyBatch.id}');
     };
 
     function showCaseQuoteModal() {

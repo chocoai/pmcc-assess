@@ -96,7 +96,29 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="streetNumbers"></div>
+
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <div class="col-sm-12">
+                                                    <table class="table estateStreetInfos">
+                                                        <thead>
+                                                        <tr>
+                                                            <th style="width: 10%">街道号</th>
+                                                            <th style="width: 10%">大门名称</th>
+                                                            <th style="width: 10%">附号</th>
+                                                            <th style="width: 7%">大门图</th>
+                                                            <th style="width: 7%"></th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
@@ -636,6 +658,7 @@
 
 </body>
 
+<%@include file="/views/project/stageSurvey/commonDetail/estateStreetInfo.jsp" %>
 <%@include file="/views/share/chksCommon.jsp" %>
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/js/examine/examine.common.js?v=${assessVersion}"></script>

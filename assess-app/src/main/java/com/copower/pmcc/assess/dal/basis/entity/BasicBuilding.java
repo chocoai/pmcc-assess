@@ -116,6 +116,10 @@ public class BasicBuilding {
 
     private Boolean bisCase;
 
+    private String reference;
+
+    private String orientation;
+
     private Boolean bisEnable;
 
     private Boolean bisDelete;
@@ -572,6 +576,22 @@ public class BasicBuilding {
 
     public void setBisCase(Boolean bisCase) {
         this.bisCase = bisCase;
+    }
+
+    public String getReference() {
+        return reference;
+    }
+
+    public void setReference(String reference) {
+        this.reference = reference == null ? null : reference.trim();
+    }
+
+    public String getOrientation() {
+        return orientation;
+    }
+
+    public void setOrientation(String orientation) {
+        this.orientation = orientation == null ? null : orientation.trim();
     }
 
     public Boolean getBisEnable() {

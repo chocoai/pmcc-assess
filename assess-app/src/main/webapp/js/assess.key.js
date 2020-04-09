@@ -40,6 +40,7 @@ AssessDBKey.BasicUnitHuxing = "tb_basic_unit_huxing";
 AssessDBKey.BasicEstateParking = "tb_basic_estate_parking";
 AssessDBKey.BasicHouseCorollaryEquipment = "tb_basic_house_corollary_equipment";
 AssessDBKey.BasicHouseRoom = "tb_basic_house_room";
+AssessDBKey.BasicEstateStreetInfo = "tb_basic_estate_street_info";
 
 AssessDBKey.SurveyExaminePurenessLand = "tb_survey_examine_pureness_land";
 AssessDBKey.SurveyAssetInventory = "tb_survey_asset_inventory";
@@ -186,6 +187,9 @@ AssessDicKey.estate_supply_new_type = "estate.supply.new.type";//购物场所类
 AssessDicKey.estate_examinematchingmedical_level = "estate.examineMatchingMedical.level";//医养机构等级
 AssessDicKey.estate_examinematchingmedical_bedNumber = "estate.examineMatchingMedical.bedNumber";//医养机构床位数
 AssessDicKey.estate_examinematchingmedical_distance = "estate.examineMatchingMedical.distance";//医养机构距离
+
+AssessDicKey.project_survey_building_status_in_progress = "project.survey.building.status.in.progress";//建筑物状态 在建
+AssessDicKey.project_survey_building_status_in_finish = "project.survey.building.status.finish";//建筑物状态 已完
 
 //楼栋
 AssessDicKey.examine_building_residence_data = "examine.building.residence.data";//非工业仓储(建筑使用寿命)

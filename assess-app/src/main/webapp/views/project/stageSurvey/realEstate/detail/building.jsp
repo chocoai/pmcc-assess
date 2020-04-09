@@ -93,7 +93,12 @@
                                                 楼栋所在位置
                                             </label>
                                             <div class="col-sm-3">
-                                                <label class="form-control input-full" name="location">${basicBuilding.location}</label>
+                                                <div class="input-group">
+                                                    <label class="form-control form-control-sm"
+                                                               name="reference">${basicBuilding.reference}</label>
+                                                    <label class="form-control form-control-sm"
+                                                              name="orientation">${basicBuilding.orientation}</label>
+                                                </div>
                                             </div>
                                     
                                             <label class="col-sm-1 control-label">
@@ -391,6 +396,7 @@
 <script type="text/javascript">
     $(function () {
         buildingCommon.initDetailById('${basicBuilding.id}', '', false);
+
     })
 </script>
 </html>
