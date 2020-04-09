@@ -97,7 +97,7 @@
             <!--<columnOverride column="content" jdbcType="VARCHAR"></columnOverride>-->
         <!--</table>-->
 
-        <table tableName="tb_declare_record" domainObjectName="DeclareRecord">
+        <table tableName="tb_basic_unit_common_part" domainObjectName="BasicUnitCommonPart">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 

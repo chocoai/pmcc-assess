@@ -144,24 +144,31 @@
         src="${pageContext.request.contextPath}/js/examine/examine.common.js?v=${assessVersion}"></script>
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/js/examine/examine.unit.js?v=${assessVersion}"></script>
+
+<script src='${pageContext.request.contextPath}/js/autocomplete/unit.case.js?v=${assessVersion}'></script>
+
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/js/examine/sonUnitView.js?v=${assessVersion}"></script>
-<script type="text/javascript"
-        src="${pageContext.request.contextPath}/js/basic/basic.common.js?v=${assessVersion}"></script>
+
+<%--<script type="text/javascript"--%>
+        <%--src="${pageContext.request.contextPath}/js/basic/basic.common.js?v=${assessVersion}"></script>--%>
+
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/js/ajaxfileupload.js?v=${assessVersion}"></script>
 <script type="text/javascript">
     $(function () {
         unitCommon.initById('${basicUnit.id}');
-        $("#txt_Unit_search").apUnit({
-            caseBuildingId: function () {
-                return '${quoteId}';
-            },
-            onSelect: function (id, name) {
-                caseFun.caseUnit.showModel('${quoteId}', name);
-            }
-        });
-    })
+
+        <%--$("#txt_Unit_search").apUnit({--%>
+            <%--caseBuildingId: function () {--%>
+                <%--return '${quoteId}';--%>
+            <%--},--%>
+            <%--onSelect: function (id, name) {--%>
+                <%--caseFun.caseUnit.showModel('${quoteId}', name);--%>
+            <%--}--%>
+        <%--});--%>
+
+    });
 
     //保存数据信息
     function saveDataInfo() {

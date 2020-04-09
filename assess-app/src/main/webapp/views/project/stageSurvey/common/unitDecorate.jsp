@@ -130,18 +130,28 @@
                                                 公共部位<span class="symbol required"></span>
                                             </label>
                                             <div class="col-sm-10">
+
                                                 <div class="input-group">
-                                                    <input type="text" required name="unitCommonPart"
-                                                           class="form-control">
-                                                    <div class="input-group-prepend">
-                                                        <button class="btn btn-primary btn-sm "
+                                                    <input type="text" required="required" name="unitCommonPart"
+                                                           placeholder="公共部位(从公共部分列表中获取)" class="form-control form-control-sm"
+                                                           list="unitDecorate_datalist">
+                                                    <datalist id="unitDecorate_datalist">
+                                                        <option value="" selected="">-请选择-</option>
+                                                    </datalist>
+
+
+                                                    <div class="input-group-prepend ">
+                                                        <button class="btn btn-warning btn-sm "
                                                                 style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
                                                                 type="button"
-                                                                onclick="unitDecorate.prototype.openPartItemModal();">
-                                                            编辑
+                                                                onclick="$(this).closest('.input-group').find('input').val('');">
+                                                            清空
+                                                            <i class="fa "></i>
                                                         </button>
                                                     </div>
+
                                                 </div>
+
                                             </div>
                                         </div>
                                     </div>

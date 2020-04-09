@@ -3,6 +3,14 @@
 <html lang="en" class="no-js">
 <head>
     <%@include file="/views/share/main_css.jsp" %>
+    <script type="text/javascript"
+            src="${pageContext.request.contextPath}/assets/jquery-ui/jquery-ui.min.js?v=${assessVersion}"></script>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/jquery-ui/jquery-ui.css">
+    <style>
+        .ui-autocomplete {
+            z-index: 2147483647;
+        }
+    </style>
 </head>
 
 <body>
@@ -37,6 +45,7 @@
                             <div class="card-body">
                                 <div class="row col-md-12">
                                     <div class="col-md-9">
+
                                         <button type="button" class="btn btn-sm btn-primary"
                                                 onclick=" batchTreeTool.expandAll(true);">
                                             展开
@@ -318,9 +327,9 @@
 
     //初始化信息
     function initBasicApplyBatchInfo() {
-        var data=formSerializeArray($("#basicBatchApplyFrm"));
-        data.planDetailsId='${projectPlanDetails.id}';
-        data.projectId='${projectId}';
+        var data = formSerializeArray($("#basicBatchApplyFrm"));
+        data.planDetailsId = '${projectPlanDetails.id}';
+        data.projectId = '${projectId}';
         $.ajax({
             url: "${pageContext.request.contextPath}/basicApplyBatch/initBasicApplyBatchInfo",
             type: "post",
@@ -490,7 +499,7 @@
                         })
                         typeHtml += "</select>";
                         typeHtml += "</div>";
-                        console.log(typeHtml)
+                        console.log(typeHtml);
 
                         switch (type) {
                             case "estate":
@@ -498,18 +507,21 @@
                                 html += '<div class="row form-group">';
                                 html += '<div class="col-md-12">';
                                 html += '<div class="form-inline x-valid">';
+                                html += typeHtml;
                                 html += "<label class='col-sm-1 control-label'>";
                                 html += "名称";
                                 html += "<span class='symbol required'></span>";
                                 html += "</label>";
                                 html += " <div class='col-sm-5'>";
                                 html += "<input type='hidden'  name='tableName' value='tb_basic_building'>";
-                                html += "<input type='text'  name='name' class='form-control input-full' required value=''>";
+
+                                html += '<input type="text" name="name"  class="form-control input-full" required  onkeyup="batchTreeTool.staticLocalAutoComplete(this' + "," + "'" + type + "'" + ')" > ';
+
                                 html += "</div>";
-                                html += typeHtml;
                                 html += "</div>";
                                 html += "</div>";
                                 html += "</div>";
+
                                 html += '<div class="row form-group">';
                                 html += '<div class="col-md-12">';
                                 html += '<div class="form-inline x-valid">';
@@ -525,18 +537,19 @@
                                 html += '<div class="row form-group">';
                                 html += '<div class="col-md-12">';
                                 html += '<div class="form-inline x-valid">';
+                                html += typeHtml;
                                 html += "<label class='col-sm-1 control-label'>";
                                 html += "名称";
                                 html += "<span class='symbol required'></span>";
                                 html += "</label>";
                                 html += " <div class='col-sm-5'>";
                                 html += "<input type='hidden'  name='tableName' value='tb_basic_unit'>";
-                                html += "<input type='text'  name='name' class='form-control input-full' required value=''>";
-                                html += "</div>";
-                                html += typeHtml;
+                                html += '<input type="text" name="name"  class="form-control input-full" required  onkeyup="batchTreeTool.staticLocalAutoComplete(this' + "," + "'" + type + "'" + ')" > ';
                                 html += "</div>";
                                 html += "</div>";
                                 html += "</div>";
+                                html += "</div>";
+
                                 html += '<div class="row form-group">';
                                 html += '<div class="col-md-12">';
                                 html += '<div class="form-inline x-valid">';
@@ -550,18 +563,19 @@
                                 html += '<div class="row form-group">';
                                 html += '<div class="col-md-12">';
                                 html += '<div class="form-inline x-valid">';
+                                html += typeHtml;
                                 html += "<label class='col-sm-1 control-label'>";
                                 html += "名称";
                                 html += "<span class='symbol required'></span>";
                                 html += "</label>";
                                 html += " <div class='col-sm-5'>";
                                 html += "<input type='hidden'  name='tableName' value='tb_basic_house'>";
-                                html += "<input type='text'  name='name' class='form-control input-full' required value=''>";
-                                html += "</div>";
-                                html += typeHtml;
+                                html += '<input type="text" name="name"  class="form-control input-full" required  onkeyup="batchTreeTool.staticLocalAutoComplete(this' + "," + "'" + type + "'" + ')" > ';
                                 html += "</div>";
                                 html += "</div>";
                                 html += "</div>";
+                                html += "</div>";
+
                                 html += '<div class="row form-group">';
                                 html += '<div class="col-md-12">';
                                 html += '<div class="form-inline x-valid">';
@@ -578,6 +592,8 @@
                             }
                         }
                         $("#detailContent").empty().append(html);
+
+
                         $("#frm_detail").find("input[name='applyBatchId']").val(node.applyBatchId);
                         $("#frm_detail").find("input[name='pid']").val(node.id);
                         $("#frm_detail").find("input[name='executor']").val(node.creator);
@@ -585,6 +601,8 @@
                         $("#frm_detail").find("input[name='declareRecordId']").val(declareRecordId);
                         $("#frm_detail").find("input[name='declareRecordName']").val(declareRecordName);
                         $("#detail_modal").modal();
+
+
                     } else {
                         notifyInfo('提示', "没有下级表单");
                     }
@@ -596,7 +614,92 @@
         })
 
 
-    }
+    };
+
+    /**
+     * 自动填充数据
+     * @param type
+     * @returns {Array}
+     */
+    batchTreeTool.getAutoCompleteData = function (type,name) {
+        var availableTags = [];
+        switch (type) {
+            case 'building': {
+                var a = "栋", b = "幢", c = "楼";
+                availableTags.push(name+a);
+                availableTags.push(name+b);
+                availableTags.push(name+c);
+                break;
+            }
+            case 'unit': {
+                var d = "单元", e = "区";
+                availableTags.push(name+d);
+                availableTags.push(name+e);
+                break;
+            }
+            default:
+                break;
+        }
+        return availableTags;
+    };
+    /**
+     * 新增节点填充
+     * @param _this
+     * @param type
+     */
+    batchTreeTool.staticLocalAutoComplete = function (_this, type) {
+        var value = $(_this).val();
+        if (!value){
+            return false ;
+        }
+        switch (type) {
+            case 'estate': {
+                $(_this).autocomplete({
+                    source: batchTreeTool.getAutoCompleteData('building',value),
+                    minLength: 2
+                });
+                break;
+            }
+            case 'building': {
+                $(_this).autocomplete({
+                    source: batchTreeTool.getAutoCompleteData('unit',value),
+                    minLength: 2
+                });
+                break;
+            }
+            default:
+                break;
+        }
+    };
+    /**
+     * 编辑节点填充
+     * @param _this
+     * @param type
+     */
+    batchTreeTool.staticLocalAutoCompleteEdit = function (_this, type) {
+        var value = $(_this).val();
+        if (!value){
+            return false ;
+        }
+        switch (type) {
+            case 'building': {
+                $(_this).autocomplete({
+                    source: batchTreeTool.getAutoCompleteData(type,value),
+                    minLength: 2
+                });
+                break;
+            }
+            case 'unit': {
+                $(_this).autocomplete({
+                    source: batchTreeTool.getAutoCompleteData(type,value),
+                    minLength: 2
+                });
+                break;
+            }
+            default:
+                break;
+        }
+    };
 
 
     //保存明细
@@ -604,7 +707,6 @@
         if (!$("#frm_detail").valid()) {
             return false;
         }
-
         var formData = formParams("frm_detail");
         $.ajax({
             url: "${pageContext.request.contextPath}/basicApplyBatch/saveItemData",
@@ -646,9 +748,9 @@
     //编辑明细
     batchTreeTool.getAndEditDetail = function () {
         var node = zTreeObj.getSelectedNodes()[0];
-        if (node.executor != '${userAccount}'){
+        if (node.executor != '${userAccount}') {
             notifyWarning("提示", "此节点不属于当前登陆人的,无操作权限!");
-            return false ;
+            return false;
         }
         $.ajax({
             url: "${pageContext.request.contextPath}/basicApplyBatch/getAndEditDetail",
@@ -677,7 +779,8 @@
                 html += "名称";
                 html += "</label>";
                 html += " <div class='col-sm-5'>";
-                html += "<input type='text'  name='name' class='form-control input-full' required>";
+                html += '<input type="text" name="name"  class="form-control input-full" required  onkeyup="batchTreeTool.staticLocalAutoCompleteEdit(this' + "," + "'" + type + "'" + ')" > ';
+
                 html += "</div>";
                 html += declareRecordsHtml;
 
@@ -695,7 +798,7 @@
                 html += "名称";
                 html += "</label>";
                 html += " <div class='col-sm-5'>";
-                html += "<input type='text'  name='name' class='form-control input-full' required>";
+                html += '<input type="text" name="name"  class="form-control input-full" required  onkeyup="batchTreeTool.staticLocalAutoCompleteEdit(this' + "," + "'" + type + "'" + ')" > ';
                 html += "</div>";
                 html += declareRecordsHtml;
 
@@ -713,7 +816,7 @@
                 html += "名称";
                 html += "</label>";
                 html += " <div class='col-sm-5'>";
-                html += "<input type='text'  name='name' class='form-control input-full' required>";
+                html += '<input type="text" name="name"  class="form-control input-full" required  onkeyup="batchTreeTool.staticLocalAutoCompleteEdit(this' + "," + "'" + type + "'" + ')" > ';
                 html += "</div>";
                 html += declareRecordsHtml;
                 html += "</div>";
@@ -730,7 +833,7 @@
                 html += "名称";
                 html += "</label>";
                 html += " <div class='col-sm-5'>";
-                html += "<input type='text'  name='name' class='form-control input-full' required>";
+                html += '<input type="text" name="name"  class="form-control input-full" required  onkeyup="batchTreeTool.staticLocalAutoCompleteEdit(this' + "," + "'" + type + "'" + ')" > ';
                 html += "</div>";
                 html += declareRecordsHtml;
                 html += "</div>";
@@ -800,9 +903,9 @@
             notifyInfo('提示', "无法删除，请重新选择。");
             return false;
         }
-        if (node.executor != '${userAccount}'){
+        if (node.executor != '${userAccount}') {
             notifyWarning("提示", "此节点不属于当前登陆人的,无操作权限!");
-            return false ;
+            return false;
         }
         AlertConfirm("是否确认删除", "删除相应的数据后将不可恢复", function () {
             $.ajax({
@@ -842,9 +945,9 @@
         url += '&tbId=' + node.tableId;
         url += '&tbType=' + node.type;
         url += '&planDetailsId=${projectPlanDetails.id}';
-        if (node.executor != '${userAccount}'){
+        if (node.executor != '${userAccount}') {
             notifyWarning("提示", "此节点不属于当前登陆人的,无操作权限!");
-            return false ;
+            return false;
         }
         openWin(url, function () {
         })
@@ -1110,7 +1213,6 @@
     }
 
 
-
     //选择人员
     function personSelect() {
         erpEmployee.select({
@@ -1163,5 +1265,6 @@
             $("#frm_detail").find("input[name='declareRecordName']").attr("required", false);
         }
     }
+
 
 </script>

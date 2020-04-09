@@ -375,52 +375,62 @@ public class BasicUnitCommonPartExample {
             return (Criteria) this;
         }
 
-        public Criteria andUnitMonadEqualTo(Integer value) {
+        public Criteria andUnitMonadEqualTo(String value) {
             addCriterion("unit_monad =", value, "unitMonad");
             return (Criteria) this;
         }
 
-        public Criteria andUnitMonadNotEqualTo(Integer value) {
+        public Criteria andUnitMonadNotEqualTo(String value) {
             addCriterion("unit_monad <>", value, "unitMonad");
             return (Criteria) this;
         }
 
-        public Criteria andUnitMonadGreaterThan(Integer value) {
+        public Criteria andUnitMonadGreaterThan(String value) {
             addCriterion("unit_monad >", value, "unitMonad");
             return (Criteria) this;
         }
 
-        public Criteria andUnitMonadGreaterThanOrEqualTo(Integer value) {
+        public Criteria andUnitMonadGreaterThanOrEqualTo(String value) {
             addCriterion("unit_monad >=", value, "unitMonad");
             return (Criteria) this;
         }
 
-        public Criteria andUnitMonadLessThan(Integer value) {
+        public Criteria andUnitMonadLessThan(String value) {
             addCriterion("unit_monad <", value, "unitMonad");
             return (Criteria) this;
         }
 
-        public Criteria andUnitMonadLessThanOrEqualTo(Integer value) {
+        public Criteria andUnitMonadLessThanOrEqualTo(String value) {
             addCriterion("unit_monad <=", value, "unitMonad");
             return (Criteria) this;
         }
 
-        public Criteria andUnitMonadIn(List<Integer> values) {
+        public Criteria andUnitMonadLike(String value) {
+            addCriterion("unit_monad like", value, "unitMonad");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitMonadNotLike(String value) {
+            addCriterion("unit_monad not like", value, "unitMonad");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitMonadIn(List<String> values) {
             addCriterion("unit_monad in", values, "unitMonad");
             return (Criteria) this;
         }
 
-        public Criteria andUnitMonadNotIn(List<Integer> values) {
+        public Criteria andUnitMonadNotIn(List<String> values) {
             addCriterion("unit_monad not in", values, "unitMonad");
             return (Criteria) this;
         }
 
-        public Criteria andUnitMonadBetween(Integer value1, Integer value2) {
+        public Criteria andUnitMonadBetween(String value1, String value2) {
             addCriterion("unit_monad between", value1, value2, "unitMonad");
             return (Criteria) this;
         }
 
-        public Criteria andUnitMonadNotBetween(Integer value1, Integer value2) {
+        public Criteria andUnitMonadNotBetween(String value1, String value2) {
             addCriterion("unit_monad not between", value1, value2, "unitMonad");
             return (Criteria) this;
         }
@@ -435,52 +445,62 @@ public class BasicUnitCommonPartExample {
             return (Criteria) this;
         }
 
-        public Criteria andUnitQuantityEqualTo(Integer value) {
+        public Criteria andUnitQuantityEqualTo(String value) {
             addCriterion("unit_quantity =", value, "unitQuantity");
             return (Criteria) this;
         }
 
-        public Criteria andUnitQuantityNotEqualTo(Integer value) {
+        public Criteria andUnitQuantityNotEqualTo(String value) {
             addCriterion("unit_quantity <>", value, "unitQuantity");
             return (Criteria) this;
         }
 
-        public Criteria andUnitQuantityGreaterThan(Integer value) {
+        public Criteria andUnitQuantityGreaterThan(String value) {
             addCriterion("unit_quantity >", value, "unitQuantity");
             return (Criteria) this;
         }
 
-        public Criteria andUnitQuantityGreaterThanOrEqualTo(Integer value) {
+        public Criteria andUnitQuantityGreaterThanOrEqualTo(String value) {
             addCriterion("unit_quantity >=", value, "unitQuantity");
             return (Criteria) this;
         }
 
-        public Criteria andUnitQuantityLessThan(Integer value) {
+        public Criteria andUnitQuantityLessThan(String value) {
             addCriterion("unit_quantity <", value, "unitQuantity");
             return (Criteria) this;
         }
 
-        public Criteria andUnitQuantityLessThanOrEqualTo(Integer value) {
+        public Criteria andUnitQuantityLessThanOrEqualTo(String value) {
             addCriterion("unit_quantity <=", value, "unitQuantity");
             return (Criteria) this;
         }
 
-        public Criteria andUnitQuantityIn(List<Integer> values) {
+        public Criteria andUnitQuantityLike(String value) {
+            addCriterion("unit_quantity like", value, "unitQuantity");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitQuantityNotLike(String value) {
+            addCriterion("unit_quantity not like", value, "unitQuantity");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitQuantityIn(List<String> values) {
             addCriterion("unit_quantity in", values, "unitQuantity");
             return (Criteria) this;
         }
 
-        public Criteria andUnitQuantityNotIn(List<Integer> values) {
+        public Criteria andUnitQuantityNotIn(List<String> values) {
             addCriterion("unit_quantity not in", values, "unitQuantity");
             return (Criteria) this;
         }
 
-        public Criteria andUnitQuantityBetween(Integer value1, Integer value2) {
+        public Criteria andUnitQuantityBetween(String value1, String value2) {
             addCriterion("unit_quantity between", value1, value2, "unitQuantity");
             return (Criteria) this;
         }
 
-        public Criteria andUnitQuantityNotBetween(Integer value1, Integer value2) {
+        public Criteria andUnitQuantityNotBetween(String value1, String value2) {
             addCriterion("unit_quantity not between", value1, value2, "unitQuantity");
             return (Criteria) this;
         }

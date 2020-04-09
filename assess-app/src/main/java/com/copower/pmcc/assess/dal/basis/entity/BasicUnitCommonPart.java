@@ -11,9 +11,9 @@ public class BasicUnitCommonPart {
 
     private String unitLocation;
 
-    private Integer unitMonad;
+    private String unitMonad;
 
-    private Integer unitQuantity;
+    private String unitQuantity;
 
     private Boolean bisDelete;
 
@@ -55,20 +55,20 @@ public class BasicUnitCommonPart {
         this.unitLocation = unitLocation == null ? null : unitLocation.trim();
     }
 
-    public Integer getUnitMonad() {
+    public String getUnitMonad() {
         return unitMonad;
     }
 
-    public void setUnitMonad(Integer unitMonad) {
-        this.unitMonad = unitMonad;
+    public void setUnitMonad(String unitMonad) {
+        this.unitMonad = unitMonad == null ? null : unitMonad.trim();
     }
 
-    public Integer getUnitQuantity() {
+    public String getUnitQuantity() {
         return unitQuantity;
     }
 
-    public void setUnitQuantity(Integer unitQuantity) {
-        this.unitQuantity = unitQuantity;
+    public void setUnitQuantity(String unitQuantity) {
+        this.unitQuantity = unitQuantity == null ? null : unitQuantity.trim();
     }
 
     public Boolean getBisDelete() {

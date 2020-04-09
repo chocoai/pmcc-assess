@@ -6,8 +6,8 @@
     <result column="unit_id" property="unitId" jdbcType="INTEGER" />
     <result column="unit_common_part" property="unitCommonPart" jdbcType="VARCHAR" />
     <result column="unit_location" property="unitLocation" jdbcType="VARCHAR" />
-    <result column="unit_monad" property="unitMonad" jdbcType="INTEGER" />
-    <result column="unit_quantity" property="unitQuantity" jdbcType="INTEGER" />
+    <result column="unit_monad" property="unitMonad" jdbcType="VARCHAR" />
+    <result column="unit_quantity" property="unitQuantity" jdbcType="VARCHAR" />
     <result column="bis_delete" property="bisDelete" jdbcType="BIT" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
@@ -114,7 +114,7 @@
       creator, gmt_created, gmt_modified
       )
     values (#{unitId,jdbcType=INTEGER}, #{unitCommonPart,jdbcType=VARCHAR}, #{unitLocation,jdbcType=VARCHAR}, 
-      #{unitMonad,jdbcType=INTEGER}, #{unitQuantity,jdbcType=INTEGER}, #{bisDelete,jdbcType=BIT}, 
+      #{unitMonad,jdbcType=VARCHAR}, #{unitQuantity,jdbcType=VARCHAR}, #{bisDelete,jdbcType=BIT}, 
       #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
       )
   </insert>
@@ -163,10 +163,10 @@
         #{unitLocation,jdbcType=VARCHAR},
       </if>
       <if test="unitMonad != null" >
-        #{unitMonad,jdbcType=INTEGER},
+        #{unitMonad,jdbcType=VARCHAR},
       </if>
       <if test="unitQuantity != null" >
-        #{unitQuantity,jdbcType=INTEGER},
+        #{unitQuantity,jdbcType=VARCHAR},
       </if>
       <if test="bisDelete != null" >
         #{bisDelete,jdbcType=BIT},
@@ -204,10 +204,10 @@
         unit_location = #{record.unitLocation,jdbcType=VARCHAR},
       </if>
       <if test="record.unitMonad != null" >
-        unit_monad = #{record.unitMonad,jdbcType=INTEGER},
+        unit_monad = #{record.unitMonad,jdbcType=VARCHAR},
       </if>
       <if test="record.unitQuantity != null" >
-        unit_quantity = #{record.unitQuantity,jdbcType=INTEGER},
+        unit_quantity = #{record.unitQuantity,jdbcType=VARCHAR},
       </if>
       <if test="record.bisDelete != null" >
         bis_delete = #{record.bisDelete,jdbcType=BIT},
@@ -232,8 +232,8 @@
       unit_id = #{record.unitId,jdbcType=INTEGER},
       unit_common_part = #{record.unitCommonPart,jdbcType=VARCHAR},
       unit_location = #{record.unitLocation,jdbcType=VARCHAR},
-      unit_monad = #{record.unitMonad,jdbcType=INTEGER},
-      unit_quantity = #{record.unitQuantity,jdbcType=INTEGER},
+      unit_monad = #{record.unitMonad,jdbcType=VARCHAR},
+      unit_quantity = #{record.unitQuantity,jdbcType=VARCHAR},
       bis_delete = #{record.bisDelete,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -255,10 +255,10 @@
         unit_location = #{unitLocation,jdbcType=VARCHAR},
       </if>
       <if test="unitMonad != null" >
-        unit_monad = #{unitMonad,jdbcType=INTEGER},
+        unit_monad = #{unitMonad,jdbcType=VARCHAR},
       </if>
       <if test="unitQuantity != null" >
-        unit_quantity = #{unitQuantity,jdbcType=INTEGER},
+        unit_quantity = #{unitQuantity,jdbcType=VARCHAR},
       </if>
       <if test="bisDelete != null" >
         bis_delete = #{bisDelete,jdbcType=BIT},
@@ -280,8 +280,8 @@
     set unit_id = #{unitId,jdbcType=INTEGER},
       unit_common_part = #{unitCommonPart,jdbcType=VARCHAR},
       unit_location = #{unitLocation,jdbcType=VARCHAR},
-      unit_monad = #{unitMonad,jdbcType=INTEGER},
-      unit_quantity = #{unitQuantity,jdbcType=INTEGER},
+      unit_monad = #{unitMonad,jdbcType=VARCHAR},
+      unit_quantity = #{unitQuantity,jdbcType=VARCHAR},
       bis_delete = #{bisDelete,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},

@@ -1,11 +1,14 @@
 package com.copower.pmcc.assess.service.basic;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicUnitCommonPartDao;
 import com.copower.pmcc.assess.dal.basis.entity.BasicUnitCommonPart;
 import com.copower.pmcc.assess.dto.output.basic.BasicUnitCommonPartVo;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
@@ -17,14 +20,17 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -136,6 +142,38 @@ public class BasicUnitCommonPartService {
         vo.setUnitMonadName(baseDataDicService.getNameById(basicUnitCommonPart.getUnitMonad()));
         vo.setUnitQuantityName(baseDataDicService.getNameById(basicUnitCommonPart.getUnitQuantity()));
         vo.setCreatorName(publicService.getUserNameByAccount(basicUnitCommonPart.getCreator()));
+        List<String> stringList = new ArrayList<>();
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(basicUnitCommonPart.getUnitLocation())) {
+            JSONArray jsonArray = null;
+            try {
+                jsonArray = JSONArray.parseArray(basicUnitCommonPart.getUnitLocation());
+            } catch (Exception e) {
+                logger.error(e.getMessage(), e);
+            }
+            if (jsonArray != null) {
+                Iterator<Object> iterator = jsonArray.iterator();
+                while (iterator.hasNext()) {
+                    Object next = iterator.next();
+                    JSONObject jsonObject = (JSONObject) next;
+                    if (jsonObject == null) {
+                        continue;
+                    }
+                    int index = jsonObject.getIntValue("index");
+                    String name = jsonObject.getString("name");
+                    String unitLocation = jsonObject.getString("unitLocation");
+                    if (org.apache.commons.lang3.StringUtils.isBlank(name)) {
+                        continue;
+                    }
+                    if (org.apache.commons.lang3.StringUtils.isBlank(unitLocation)) {
+                        continue;
+                    }
+                    stringList.add(String.join("", name, String.valueOf(index),":", unitLocation));
+                }
+            }
+        }
+        if (CollectionUtils.isNotEmpty(stringList)) {
+            vo.setUnitLocation(org.apache.commons.lang3.StringUtils.join(stringList, ","));
+        }
         return vo;
     }
 }

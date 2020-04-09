@@ -112,25 +112,51 @@ var unitDecorate;
             })
         },
         init: function (item) {
-            $("#" + unitDecorate.prototype.config().frm).clearAll().initForm(item, function () {
-                $("#" + unitDecorate.prototype.config().frm).find('select.decoratingMaterial').off('change').on('change', function () {
+            var frm = $("#" + unitDecorate.prototype.config().frm);
+            frm.clearAll().initForm(item, function () {
+                frm.find('select.decoratingMaterial').off('change').on('change', function () {
                     AssessCommon.loadDataDicByPid($(this).val(), item.constructionTechnology, function (html, data) {
-                        $("#" + unitDecorate.prototype.config().frm).find('select.constructionTechnology').empty().html(html).trigger('change');
+                        frm.find('select.constructionTechnology').empty().html(html).trigger('change');
                     });
                 });
-                $("#" + unitDecorate.prototype.config().frm).find('select.constructionTechnology').off('change').on('change', function () {
+                frm.find('select.constructionTechnology').off('change').on('change', function () {
                     AssessCommon.loadDataDicByPid($(this).val(), item.materialPriceRange, function (html, data) {
-                        $("#" + unitDecorate.prototype.config().frm).find('select.materialPriceRange').empty().html(html).trigger('change');
+                        frm.find('select.materialPriceRange').empty().html(html).trigger('change');
                     });
                 });
                 AssessCommon.loadDataDicByKey(AssessDicKey.examineUnitInteriorDecorationPart, item.decorationPart, function (html, data) {
-                    $("#" + unitDecorate.prototype.config().frm).find('select.decorationPart').empty().html(html).trigger('change');
+                    frm.find('select.decorationPart').empty().html(html).trigger('change');
                 });
                 AssessCommon.loadDataDicByKey(AssessDicKey.examineUnitInteriorDecorationMaterial, item.decoratingMaterial, function (html, data) {
-                    $("#" + unitDecorate.prototype.config().frm).find('select.decoratingMaterial').empty().html(html).trigger('change');
+                    frm.find('select.decoratingMaterial').empty().html(html).trigger('change');
                 });
                 AssessCommon.loadDataDicByKey(AssessDicKey.examineCommonMaterialGrade, item.materialGrade, function (html, data) {
-                    $("#" + unitDecorate.prototype.config().frm).find('select.materialGrade').empty().html(html).trigger('change');
+                    frm.find('select.materialGrade').empty().html(html).trigger('change');
+                });
+
+                UnitCommonPartFun.getBasicUnitCommonPartList({unitId: unitCommon.getUnitId()}, function (dataAll) {
+                    var unitCommonParts = [];
+                    $.each(dataAll, function (i, data) {
+                        var resultData = null;
+                        if (data.unitLocation) {
+                            try {
+                                resultData = JSON.parse(data.unitLocation);
+                            } catch (e) {
+                            }
+                        }
+                        if (resultData) {
+                            $.each(resultData, function (j, item) {
+                                var name = item.name + item.index;
+                                unitCommonParts.push(name);
+                            })
+                        }
+                    });
+                    var html = '';
+                    $.each(unitCommonParts, function (i, name) {
+                        html += '<option value="" selected>-请选择-</option>';
+                        html += "<option value='" + name + "'>" + name + "</option>";
+                    });
+                    frm.find('#unitDecorate_datalist').empty().html(html).trigger('change');
                 });
             });
         },
@@ -139,13 +165,13 @@ var unitDecorate;
                 var target = $("#frmUnitDecoratePartItem").find(".card-body");
                 target.empty();
                 var resultHtml = '<div>';
-                var divLength = Math.ceil(resultData.length/6);
+                var divLength = Math.ceil(resultData.length / 6);
                 for (var j = 0; j < divLength; j++) {
                     resultHtml += '<div class="row form-group">';
                     resultHtml += '<div class="col-md-12">';
                     resultHtml += "<div class='form-check' style='justify-content:left'>";
-                    var length = (j+1)*6>resultData.length?resultData.length:(j+1)*6;
-                    for (var i = j*6; i < length; i++) {
+                    var length = (j + 1) * 6 > resultData.length ? resultData.length : (j + 1) * 6;
+                    for (var i = j * 6; i < length; i++) {
                         resultHtml += "<label class='form-check-label'>";
                         resultHtml += "<input class='form-check-input' type='checkbox' name='partItemCheckBox' ";
                         resultHtml += 'value="' + resultData[i].name + '">';
@@ -160,16 +186,16 @@ var unitDecorate;
             }, false);
 
             var value = $('#' + unitDecorate.prototype.config().frm).find("input[name='unitCommonPart']").val();
-            if(unitDecorate.prototype.isNotBlank(value)){
+            if (unitDecorate.prototype.isNotBlank(value)) {
                 var valueArray = value.split(",");
                 var checkboxs = $("#frmUnitDecoratePartItem").find("input[name='partItemCheckBox']");
-                AssessCommon.checkboxToChecked(checkboxs,valueArray);
+                AssessCommon.checkboxToChecked(checkboxs, valueArray);
             }
             $("#divBoxUnitDecoratePartItem").modal("show");
         },
-        splicePartItem:function () {
+        splicePartItem: function () {
             var value = [];
-            $("#frmUnitDecoratePartItem").find("input[name='partItemCheckBox']:checked").each(function(i){
+            $("#frmUnitDecoratePartItem").find("input[name='partItemCheckBox']:checked").each(function (i) {
                 value.push($(this).val());
             })
             $("#" + unitDecorate.prototype.config().frm).find("input[name='unitCommonPart']").val(value);
@@ -183,182 +209,304 @@ var unitDecorate;
     })
 })();
 
-var unitCommonPart;
-(function () {
-    unitCommonPart = function () {
+var unitCommonPart = function () {
 
-    };
-    unitCommonPart.prototype = {
-        config: function () {
-            var data = {};
-            data.table = "ExamineUnitCommonPartList";
-            data.box = "divBoxExamineUnitCommonPart";
-            data.frm = "frmExamineUnitCommonPart";
-            return data;
-        },
-        isNotBlank: function (item) {
-            if (item) {
-                return true;
-            }
-            return false;
-        },
-        loadDataDicList: function () {
-            var cols = commonColumn.unitCommonPartColumn();
-            cols.push({
-                field: 'id', title: '操作', formatter: function (value, row, index) {
-                    var str = '<div class="btn-margin">';
-                    str += '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-primary tooltips"  data-placement="top" data-original-title="编辑" onclick="unitCommonPart.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
-                    str += '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="unitCommonPart.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
-                    str += '</div>';
-                    return str;
-                }
-            });
-            $("#" + unitCommonPart.prototype.config().table).bootstrapTable('destroy');
-            TableInit(unitCommonPart.prototype.config().table, getContextPath() + "/basicUnitCommonPart/getBootstrapTableVo", cols, {
-                unitId: unitCommon.getUnitId()
-            }, {
-                showColumns: false,
-                showRefresh: false,
-                search: false,
-                onLoadSuccess: function () {
-                    $('.tooltips').tooltip();
-                }
-            });
-        },
-        removeData: function (id) {
-            $.ajax({
-                url: getContextPath() + "/basicUnitCommonPart/deleteBasicUnitCommonPart",
-                type: "post",
-                dataType: "json",
-                data: {id: id},
-                success: function (result) {
-                    if (result.ret) {
-                        notifySuccess("成功", "删除成功");
-                        unitCommonPart.prototype.loadDataDicList();
-                    }
-                    else {
-                        AlertError("失败", "保存数据失败，失败原因:" + result.errmsg);
-                    }
-                },
-                error: function (result) {
-                    AlertError("失败", "调用服务端方法失败，失败原因:" + result);
-                }
-            })
-        },
-        showModel: function () {
-            unitCommonPart.prototype.init({});
-            $('#' + unitCommonPart.prototype.config().box).modal("show");
-        },
-        saveData: function () {
-            if (!$("#" + unitCommonPart.prototype.config().frm).valid()) {
-                return false;
-            }
-            var data = formParams(unitCommonPart.prototype.config().frm, true);
-            data.unitId = unitCommon.getUnitId();
-            $.ajax({
-                url: getContextPath() + "/basicUnitCommonPart/saveAndUpdateBasicUnitCommonPart",
-                type: "post",
-                dataType: "json",
-                data: data,
-                success: function (result) {
-                    if (result.ret) {
-                        notifySuccess("成功", "保存成功");
-                        $('#' + unitCommonPart.prototype.config().box).modal('hide');
-                        unitCommonPart.prototype.loadDataDicList();
-                    }
-                    else {
-                        AlertError("失败", "保存数据失败，失败原因:" + result.errmsg);
-                    }
-                },
-                error: function (result) {
-                    AlertError("失败", "调用服务端方法失败，失败原因:" + result);
-                }
-            })
-        },
-        getAndInit: function (id) {
-            $.ajax({
-                url: getContextPath() + "/basicUnitCommonPart/getBasicUnitCommonPartById",
-                type: "get",
-                dataType: "json",
-                data: {id: id},
-                success: function (result) {
-                    if (result.ret) {
-                        if (unitCommonPart.prototype.isNotBlank(result.data)) {
-                            unitCommonPart.prototype.init(result.data);
-                        } else {
-                            unitCommonPart.prototype.init({});
-                        }
-                        $('#' + unitCommonPart.prototype.config().box).modal("show");
-                    }
-                },
-                error: function (result) {
-                    AlertError("失败", "调用服务端方法失败，失败原因:" + result);
-                }
-            })
-        },
-        init: function (item) {
-            $("#" + unitCommonPart.prototype.config().frm).clearAll().initForm(item, function () {
-                AssessCommon.loadDataListHtml(AssessDicKey.examineUnitLocation, item.unitLocation, function (html, data) {
-                    $("#" + unitCommonPart.prototype.config().frm).find("#unitLocationList").empty().html(html).trigger('change');
-                }, true);
+};
 
-                AssessCommon.loadDataDicByKey(AssessDicKey.examineUnitMonad, item.unitMonad, function (html, data) {
-                    $("#" + unitCommonPart.prototype.config().frm).find('select.unitMonad').empty().html(html).trigger('change');
-                });
-                AssessCommon.loadDataDicByKey(AssessDicKey.examineUnitQuantity, item.unitQuantity, function (html, data) {
-                    $("#" + unitCommonPart.prototype.config().frm).find('select.unitQuantity').empty().html(html).trigger('change');
-                });
+unitCommonPart.prototype.config = function () {
+    var data = {};
+    data.table = "ExamineUnitCommonPartList";
+    data.box = "divBoxExamineUnitCommonPart";
+    data.frm = "frmExamineUnitCommonPart";
+    return data;
+};
 
-            });
-        },
-        openPartItemModal: function () {
-            AssessCommon.loadAsyncDataDicByKey(AssessDicKey.examineUnitCommonPart, '', function (html, resultData) {
-                var target = $("#frmExamineUnitPartItem").find(".card-body");
-                target.empty();
-                var resultHtml = '<div>';
-                var divLength = Math.ceil(resultData.length/6);
-                for (var j = 0; j < divLength; j++) {
-                    resultHtml += '<div class="row form-group">';
-                    resultHtml += '<div class="col-md-12">';
-                    resultHtml += "<div class='form-check' style='justify-content:left'>";
-                    var length = (j+1)*6>resultData.length?resultData.length:(j+1)*6;
-                    for (var i = j*6; i < length; i++) {
-                        resultHtml += "<label class='form-check-label'>";
-                        resultHtml += "<input class='form-check-input' type='checkbox' name='partItemCheckBox' ";
-                        resultHtml += 'value="' + resultData[i].name + '">';
-                        resultHtml += "<span class='form-check-sign'>" + resultData[i].name + "</span></label>";
-                    }
-                    resultHtml += "</div>";
-                    resultHtml += "</div>";
-                    resultHtml += "</div>";
-                }
-
-                target.append(resultHtml);
-            }, false);
-
-            var value = $('#' + unitCommonPart.prototype.config().frm).find("input[name='unitCommonPart']").val();
-            if(unitCommonPart.prototype.isNotBlank(value)){
-                var valueArray = value.split(",");
-                var checkboxs = $("#frmExamineUnitPartItem").find("input[name='partItemCheckBox']");
-                AssessCommon.checkboxToChecked(checkboxs,valueArray);
-            }
-            $("#divBoxExamineUnitPartItem").modal("show");
-        },
-        splicePartItem:function () {
-            var value = [];
-            $("#frmExamineUnitPartItem").find("input[name='partItemCheckBox']:checked").each(function(i){
-                value.push($(this).val());
-            })
-            $("#" + unitCommonPart.prototype.config().frm).find("input[name='unitCommonPart']").val(value);
-            $("#divBoxExamineUnitPartItem").modal("hide");
+unitCommonPart.prototype.isNotBlank = function (item) {
+    if (item) {
+        return true;
+    }
+    return false;
+};
+unitCommonPart.prototype.loadDataDicList = function () {
+    var cols = commonColumn.unitCommonPartColumn();
+    cols.push({
+        field: 'id', title: '操作', formatter: function (value, row, index) {
+            var str = '<div class="btn-margin">';
+            str += '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-primary tooltips"  data-placement="top" data-original-title="编辑" onclick="unitCommonPart.prototype.getAndInit(' + row.id + ',\'tb_List\')"><i class="fa fa-pen"></i></button>';
+            str += '<button type="button" style="margin-left: 5px;" class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="删除" onclick="unitCommonPart.prototype.removeData(' + row.id + ',\'tb_List\')"><i class="fa fa-minus"></i></button>';
+            str += '</div>';
+            return str;
         }
+    });
+    $("#" + unitCommonPart.prototype.config().table).bootstrapTable('destroy');
+    TableInit(unitCommonPart.prototype.config().table, getContextPath() + "/basicUnitCommonPart/getBootstrapTableVo", cols, {
+        unitId: unitCommon.getUnitId()
+    }, {
+        showColumns: false,
+        showRefresh: false,
+        search: false,
+        onLoadSuccess: function () {
+            $('.tooltips').tooltip();
+        }
+    });
+};
+unitCommonPart.prototype.removeData = function (id) {
+    $.ajax({
+        url: getContextPath() + "/basicUnitCommonPart/deleteBasicUnitCommonPart",
+        type: "post",
+        dataType: "json",
+        data: {id: id},
+        success: function (result) {
+            if (result.ret) {
+                notifySuccess("成功", "删除成功");
+                unitCommonPart.prototype.loadDataDicList();
+            }
+            else {
+                AlertError("失败", "保存数据失败，失败原因:" + result.errmsg);
+            }
+        },
+        error: function (result) {
+            AlertError("失败", "调用服务端方法失败，失败原因:" + result);
+        }
+    })
+};
+unitCommonPart.prototype.showModel = function () {
+    unitCommonPart.prototype.init({});
+    $('#' + unitCommonPart.prototype.config().box).modal("show");
+};
+unitCommonPart.prototype.saveData = function () {
+    var frm = $("#" + unitCommonPart.prototype.config().frm);
+    if (!frm.valid()) {
+        return false;
+    }
+    var data = formSerializeArray(frm);
+    data.unitId = unitCommon.getUnitId();
+    var resultData = [];
+    frm.find(".unitLocationTextModel").find(".form-group").each(function () {
+        var group = $(this);
+        var index = group.find("[data-name=index]").val();
+        var name = group.find("[data-name=name]").val();
+        var unitLocation = group.find("[data-name=unitLocation]").val();
+        var obj = {index: index, name: name, unitLocation: unitLocation};
+        resultData.push(obj);
+    });
+    data.unitLocation = JSON.stringify(resultData);
+    $.ajax({
+        url: getContextPath() + "/basicUnitCommonPart/saveAndUpdateBasicUnitCommonPart",
+        type: "post",
+        dataType: "json",
+        data: data,
+        success: function (result) {
+            if (result.ret) {
+                notifySuccess("成功", "保存成功");
+                $('#' + unitCommonPart.prototype.config().box).modal('hide');
+                unitCommonPart.prototype.loadDataDicList();
+            }
+            else {
+                AlertError("失败", "保存数据失败，失败原因:" + result.errmsg);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+            AlertError("失败", "调用服务端方法失败，失败原因:" + result);
+        }
+    })
+};
+unitCommonPart.prototype.getAndInit = function (id) {
+    $.ajax({
+        url: getContextPath() + "/basicUnitCommonPart/getBasicUnitCommonPartById",
+        type: "get",
+        dataType: "json",
+        data: {id: id},
+        success: function (result) {
+            if (result.ret) {
+                if (unitCommonPart.prototype.isNotBlank(result.data)) {
+                    unitCommonPart.prototype.init(result.data);
+                } else {
+                    unitCommonPart.prototype.init({});
+                }
+                $('#' + unitCommonPart.prototype.config().box).modal("show");
+            }
+        },
+        error: function (result) {
+            AlertError("失败", "调用服务端方法失败，失败原因:" + result);
+        }
+    })
+};
+unitCommonPart.prototype.getBasicUnitCommonPartList = function (query, callback) {
+    $.ajax({
+        url: getContextPath() + "/basicUnitCommonPart/basicUnitCommonPartList",
+        type: "get",
+        dataType: "json",
+        data: query,
+        success: function (result) {
+            if (result.ret) {
+                if (callback) {
+                    callback(result.data);
+                }
+            }
+        },
+        error: function (result) {
+            AlertError("失败", "调用服务端方法失败，失败原因:" + result);
+        }
+    })
+};
+unitCommonPart.prototype.compare = function (obj1, obj2) {
+    var val1 = obj1.index;
+    var val2 = obj2.index;
+    if (val1 < val2) {
+        return -1;
+    } else if (val1 > val2) {
+        return 1;
+    } else {
+        return 0;
+    }
+};
+unitCommonPart.prototype.init = function (item) {
+    $("#" + unitCommonPart.prototype.config().frm).clearAll().initForm(item, function () {
+        AssessCommon.loadDataListHtml(AssessDicKey.examineUnitLocation, item.unitLocation, function (html, data) {
+            $("#" + unitCommonPart.prototype.config().frm).find("#unitLocationList").empty().html(html).trigger('change');
+        }, true);
+        AssessCommon.loadDataDicByKey(AssessDicKey.examineUnitCommonPart, null, function (html, data) {
+            html = '';
+            html += '<option value="" selected>-请选择-</option>';
+            $.each(data, function (i, item) {
+                html += "<option value='" + item.name + "'>" + item.name + "</option>";
+            });
+            $("#" + unitCommonPart.prototype.config().frm).find('#unitCommonPart_datalist').empty().html(html).trigger('change');
+        });
+        AssessCommon.loadDataDicByKey(AssessDicKey.examineUnitMonad, null, function (html, data) {
+            html = '';
+            html += '<option value="" selected>-请选择-</option>';
+            $.each(data, function (i, item) {
+                html += "<option value='" + item.name + "'>" + item.name + "</option>";
+            });
+            $("#" + unitCommonPart.prototype.config().frm).find('#unitMonad_datalist').empty().html(html).trigger('change');
+        });
+        AssessCommon.loadDataDicByKey(AssessDicKey.examineUnitQuantity, null, function (html, data) {
+            html = '';
+            html += '<option value="" selected>-请选择-</option>';
+            $.each(data, function (i, item) {
+                html += "<option value='" + item.name + "'>" + item.name + "</option>";
+            });
+            $("#" + unitCommonPart.prototype.config().frm).find('#unitQuantity_datalist').empty().html(html).trigger('change');
+        });
+        if (item.unitLocation) {
+            var resultData = JSON.parse(item.unitLocation);
+            try {
+                resultData.sort(unitCommonPart.prototype.compare);
+            } catch (e) {
+            }
+            var target = $(".unitLocationTextModel");
+            target.empty();
+            for (var i = 0; i < resultData.length; i++) {
+                var obj = resultData[i];
+                var html = unitCommonPart.prototype.replaceHtml(obj);
+                target.append(html);
+            }
+        }
+    });
+};
+unitCommonPart.prototype.openPartItemModal = function () {
+    AssessCommon.loadAsyncDataDicByKey(AssessDicKey.examineUnitCommonPart, '', function (html, resultData) {
+        var target = $("#frmExamineUnitPartItem").find(".card-body");
+        target.empty();
+        var resultHtml = '<div>';
+        var divLength = Math.ceil(resultData.length / 6);
+        for (var j = 0; j < divLength; j++) {
+            resultHtml += '<div class="row form-group">';
+            resultHtml += '<div class="col-md-12">';
+            resultHtml += "<div class='form-check' style='justify-content:left'>";
+            var length = (j + 1) * 6 > resultData.length ? resultData.length : (j + 1) * 6;
+            for (var i = j * 6; i < length; i++) {
+                resultHtml += "<label class='form-check-label'>";
+                resultHtml += "<input class='form-check-input' type='checkbox' name='partItemCheckBox' ";
+                resultHtml += 'value="' + resultData[i].name + '">';
+                resultHtml += "<span class='form-check-sign'>" + resultData[i].name + "</span></label>";
+            }
+            resultHtml += "</div>";
+            resultHtml += "</div>";
+            resultHtml += "</div>";
+        }
+
+        target.append(resultHtml);
+    }, false);
+
+    var value = $('#' + unitCommonPart.prototype.config().frm).find("input[name='unitCommonPart']").val();
+    if (unitCommonPart.prototype.isNotBlank(value)) {
+        var valueArray = value.split(",");
+        var checkboxs = $("#frmExamineUnitPartItem").find("input[name='partItemCheckBox']");
+        AssessCommon.checkboxToChecked(checkboxs, valueArray);
+    }
+    $("#divBoxExamineUnitPartItem").modal("show");
+};
+unitCommonPart.prototype.splicePartItem = function () {
+    var value = [];
+    $("#frmExamineUnitPartItem").find("input[name='partItemCheckBox']:checked").each(function (i) {
+        value.push($(this).val());
+    });
+    $("#" + unitCommonPart.prototype.config().frm).find("input[name='unitCommonPart']").val(value);
+    $("#divBoxExamineUnitPartItem").modal("hide");
+};
+
+unitCommonPart.prototype.appendRecording = function (_this) {
+    var frm = $(_this).closest("form");
+    var data = formSerializeArray(frm);
+    if (!data.unitCommonPart) {
+        notifyWarning("提示", "部位名称必须填写!");
+        return false;
+    }
+    if (!data.unitQuantity) {
+        notifyWarning("提示", "数量必须填写!");
+        return false;
+    }
+    if (!data.unitMonad) {
+        notifyWarning("提示", "单位必须填写!");
+        return false;
+    }
+    var target = $(".unitLocationTextModel");
+    target.empty();
+    var start = target.find(".form-group").size();
+    var len = Number(data.unitQuantity) + start;
+    for (var i = 1 + start; i <= len; i++) {
+        var html = unitCommonPart.prototype.replaceHtml({index: i, name: data.unitCommonPart});
+        target.append(html);
     }
 
+};
+
+unitCommonPart.prototype.replaceHtml = function (data) {
+    var html = $("#unitLocationTextModelHtml").html();
+    html = html.replace(/{index}/g, data.index);
+    if (data.unitLocation) {
+        html = html.replace(/{unitLocation}/g, data.unitLocation);
+    } else {
+        html = html.replace(/{unitLocation}/g, '');
+    }
+    if (data.name) {
+        html = html.replace(/{name}/g, data.name);
+    } else {
+        html = html.replace(/{name}/g, '');
+    }
+    return html;
+};
+
+unitCommonPart.prototype.clearHtml = function (_this) {
+    $(_this).closest(".form-group").remove();
+};
+
+(function () {
     //绑定事件
     $('#' + unitCommonPart.prototype.config().table).closest('.full-height').find('.card-header').bind('click', function () {
         unitCommonPart.prototype.loadDataDicList();
     })
+
 })();
+
+var UnitCommonPartFun = new unitCommonPart();
+window.UnitCommonPartFun = UnitCommonPartFun;
+
+
 ////----------------------------------
 var unitHuxing;
 (function () {
