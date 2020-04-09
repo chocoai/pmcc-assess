@@ -173,14 +173,14 @@
     $(function () {
         unitCommon.initById('${basicUnit.id}');
 
-        <%--$("#txt_Unit_search").apUnit({--%>
-            <%--caseBuildingId: function () {--%>
-                <%--return '${quoteId}';--%>
-            <%--},--%>
-            <%--onSelect: function (id, name) {--%>
-                <%--caseFun.caseUnit.showModel('${quoteId}', name);--%>
-            <%--}--%>
-        <%--});--%>
+        $("#txt_Unit_search").apUnit({
+            caseBuildingId: function () {
+                return '${quoteId}';
+            },
+            onSelect: function (id, name) {
+                caseFun.caseUnit.showModel('${quoteId}', name);
+            }
+        });
 
     });
 
