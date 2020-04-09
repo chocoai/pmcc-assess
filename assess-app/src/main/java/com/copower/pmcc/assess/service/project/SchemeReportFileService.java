@@ -350,7 +350,7 @@ public class SchemeReportFileService extends BaseService {
                     removeGenerateFile(dtoList);
                     if (CollectionUtils.isNotEmpty(dtoList)) {
                         dtoList.forEach(o -> {
-                            o.setReName(String.format("%s", item.getRoomType()));
+                            o.setReName(AssessUploadEnum.HOUSE_ROOM_FILE.getValue());
                             attachmentDtoList.add(o);
                         });
                     }
@@ -461,6 +461,12 @@ public class SchemeReportFileService extends BaseService {
                         });
                     }
 
+                }
+            }
+            if ("basicHouseRoom".equals(dataDic.getFieldName())) {
+                BasicHouse basicHouse = basicHouseService.getHouseByApplyId(basicApply.getId());
+                if (basicHouse != null) {
+
                     List<BasicHouseRoom> basicHouseRoomList = basicHouseRoomService.getBasicHouseRoomList(basicHouse.getId());
                     if (CollectionUtils.isNotEmpty(basicHouseRoomList)) {
                         for (BasicHouseRoom item : basicHouseRoomList) {
@@ -468,7 +474,7 @@ public class SchemeReportFileService extends BaseService {
                             removeGenerateFile(dtoList);
                             if (CollectionUtils.isNotEmpty(dtoList)) {
                                 dtoList.forEach(o -> {
-                                    o.setReName(String.format("%s", item.getRoomType()));
+                                    o.setReName(AssessUploadEnum.HOUSE_ROOM_FILE.getValue());
                                     attachmentDtoList.add(o);
                                 });
                             }
@@ -486,7 +492,7 @@ public class SchemeReportFileService extends BaseService {
      *
      * @param declareRecordId
      * @param certifyPartCategory
-     * @return
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        * @return
      */
     public List<SysAttachmentDto> correspondingSitePic(Integer declareRecordId, Integer certifyPartCategory) throws Exception {
         BaseDataDic correspondingSite = baseDataDicService.getDataDicById(certifyPartCategory);
