@@ -4278,8 +4278,8 @@ public class GenerateBaseDataService {
                         } else if (StringUtils.isNotEmpty(oo.getMaterialName())) {
                             stringBuilder.append(oo.getMaterialName());
                         }
+                        stringBuilder.append(",");
                     }
-                    stringBuilder.append(",");
                 });
             }
             if (StringUtils.isNotBlank(stringBuilder.toString())) {

@@ -531,7 +531,7 @@ public class GenerateLoactionService {
             return false;
         }).collect(Collectors.toList());
         if (CollectionUtils.isNotEmpty(metroList)){
-            for (int i = 0; i < 1; i++) {
+            for (int i = 0; i < i; i++) {
                 BasicMatchingTrafficVo trafficVo = metroList.get(0) ;
                 if (StringUtils.isNotBlank(trafficVo.getName())) {
                     linkedHashSet.add(trafficVo.getName());
