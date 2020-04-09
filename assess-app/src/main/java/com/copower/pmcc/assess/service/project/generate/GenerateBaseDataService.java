@@ -1382,24 +1382,13 @@ public class GenerateBaseDataService {
     public String getDeclareRecordFloor() {
         Map<Integer, String> map = Maps.newHashMap();
         for (SchemeJudgeObject schemeJudgeObject : getSchemeJudgeObjectList()) {
-            if (schemeJudgeObject.getDeclareRecordId() == null) {
-                continue;
-            }
-            DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
-            if (declareRecord == null) {
-                continue;
-            }
-            if (StringUtils.isNotEmpty(declareRecord.getFloor())) {
-                map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), declareRecord.getFloor());
-            } else {
-                BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
-                if (basicApply != null) {
-                    GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
-                    BasicHouseVo basicHouseVo = generateBaseExamineService.getBasicHouse();
-                    if (basicHouseVo != null) {
-                        if (StringUtils.isNotEmpty(basicHouseVo.getFloor())) {
-                            map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), basicHouseVo.getFloor());
-                        }
+            BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
+            if (basicApply != null) {
+                GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
+                BasicHouseVo basicHouseVo = generateBaseExamineService.getBasicHouse();
+                if (basicHouseVo != null) {
+                    if (StringUtils.isNotEmpty(basicHouseVo.getFloor())) {
+                        map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), basicHouseVo.getFloor());
                     }
                 }
             }

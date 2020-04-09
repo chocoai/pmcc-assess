@@ -195,7 +195,7 @@ public class GenerateBaseExamineService {
 
     public List<BasicUnitHuxing> getBasicUnitHuxingList()  {
         BasicUnitHuxing query = new BasicUnitHuxing();
-        query.setUnitId(getBasicUnit().getId());
+        query.setHouseId(getBasicHouse().getId());
         return basicUnitHuxingService.basicUnitHuxingList(query);
     }
 
