@@ -494,20 +494,15 @@ public class MdMarketCompareFieldService extends BaseService {
                                 }
                             }
                             if (CollectionUtils.isNotEmpty(roomList)) {//房间内装
-                                for (BasicHouseRoom room : roomList) {
-                                    List<BasicHouseRoomDecorateVo> roomDecorateList = basicHouseRoomDecorateService.getHouseRoomDecorateList(room.getId());
-                                    if (CollectionUtils.isNotEmpty(roomDecorateList)) {
-                                        StringBuilder decorate = new StringBuilder();
-                                        for (BasicHouseRoomDecorateVo roomDecorate : roomDecorateList) {
-                                            decorate.append(roomDecorate.getPartName());
-                                            if (StringUtils.isNotBlank(roomDecorate.getRemark())) {
-                                                decorate.append(roomDecorate.getRemark()).append(",");
-                                            } else if (StringUtils.isNotBlank(roomDecorate.getMaterialName())) {
-                                                decorate.append(roomDecorate.getMaterialName()).append(",");
-                                            }
-                                        }
-                                        if (decorate.length() > 0) {
-                                            stringBuilder.append(String.format("%s:%s；", room.getRoomType(), decorate));
+                                List<BasicHouseRoomDecorateVo> roomDecorateList = basicHouseRoomDecorateService.getHouseRoomDecorateList(examineHouse.getId());
+                                if (CollectionUtils.isNotEmpty(roomDecorateList)) {
+                                    StringBuilder decorate = new StringBuilder();
+                                    for (BasicHouseRoomDecorateVo roomDecorate : roomDecorateList) {
+                                        decorate.append(roomDecorate.getPartName());
+                                        if (StringUtils.isNotBlank(roomDecorate.getRemark())) {
+                                            decorate.append(roomDecorate.getRemark()).append(",");
+                                        } else if (StringUtils.isNotBlank(roomDecorate.getMaterialName())) {
+                                            decorate.append(roomDecorate.getMaterialName()).append(",");
                                         }
                                     }
                                 }

@@ -4267,33 +4267,25 @@ public class GenerateBaseDataService {
                 continue;
             }
             GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
-            List<BasicHouseRoom> basicHouseRoomList = generateBaseExamineService.getBasicHouseRoomList();
             StringBuilder stringBuilder = new StringBuilder(8);
-            if (CollectionUtils.isNotEmpty(basicHouseRoomList)) {
-                for (BasicHouseRoom basicHouseRoom : basicHouseRoomList) {
-                    if (StringUtils.isNotBlank(basicHouseRoom.getRoomType())) {
-                        if (basicHouseRoom.getRoomType().contains(nameValue)) {
-                            List<BasicHouseRoomDecorateVo> basicHouseRoomDecorateVos = generateBaseExamineService.getBasicHouseRoomDecorateList(basicHouseRoom.getId());
-                            if (CollectionUtils.isNotEmpty(basicHouseRoomDecorateVos)) {
-                                basicHouseRoomDecorateVos.forEach(oo -> {
-                                    stringBuilder.append(oo.getPartName());
-                                    if (StringUtils.isNotEmpty(oo.getRemark())) {
-                                        stringBuilder.append(oo.getRemark());
-                                    } else if (StringUtils.isNotEmpty(oo.getMaterialName())) {
-                                        stringBuilder.append(oo.getMaterialName());
-                                    }
-                                    stringBuilder.append(",");
-                                });
-                            }
+            List<BasicHouseRoomDecorateVo> basicHouseRoomDecorateVos = generateBaseExamineService.getBasicHouseRoomDecorateList();
+            if (CollectionUtils.isNotEmpty(basicHouseRoomDecorateVos)) {
+                basicHouseRoomDecorateVos.forEach(oo -> {
+                    if(StringUtils.isNotBlank(oo.getLocation())&&oo.getLocation().contains(nameValue)){
+                        stringBuilder.append(oo.getPartName());
+                        if (StringUtils.isNotEmpty(oo.getRemark())) {
+                            stringBuilder.append(oo.getRemark());
+                        } else if (StringUtils.isNotEmpty(oo.getMaterialName())) {
+                            stringBuilder.append(oo.getMaterialName());
                         }
                     }
-                }
+                    stringBuilder.append(",");
+                });
             }
             if (StringUtils.isNotBlank(stringBuilder.toString())) {
                 map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), StringUtils.strip(stringBuilder.toString()));
             }
         }
-//        String value = "/";
         String value = errorStr;
         if (!map.isEmpty()) {
             value = generateCommonMethod.judgeEachDesc2(map, "", "", true);
@@ -4301,7 +4293,7 @@ public class GenerateBaseDataService {
         return value;
     }
 
-    public String getJudgeObjectDamagedDegreeFieldA(String enumName) throws Exception {
+    public String getJudgeObjectDamagedDegreeFieldA(String enumName) {
         ReportFieldUniversalBankEnum reportFieldEnum = ReportFieldUniversalBankEnum.getEnumByName(enumName);
         String name = null;
         switch (reportFieldEnum) {
@@ -4339,31 +4331,25 @@ public class GenerateBaseDataService {
             Set<String> stringSet = Sets.newHashSet();
             StringBuilder stringBuilder = new StringBuilder(8);
             GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
-            List<BasicHouseRoom> basicHouseRoomList = generateBaseExamineService.getBasicHouseRoomList();
-            if (CollectionUtils.isNotEmpty(basicHouseRoomList)) {
-                for (BasicHouseRoom basicHouseRoom : basicHouseRoomList) {
-                    StringBuilder stringBuilderDecorate = new StringBuilder(8);
-                    if (StringUtils.isNotBlank(basicHouseRoom.getRoomType())) {
-                        List<BasicHouseRoomDecorateVo> basicHouseRoomDecorateVos = generateBaseExamineService.getBasicHouseRoomDecorateList(basicHouseRoom.getId());
-                        if (CollectionUtils.isNotEmpty(basicHouseRoomDecorateVos)) {
-                            basicHouseRoomDecorateVos.forEach(oo -> {
-                                if (StringUtils.contains(oo.getPartName(), nameValue) && !StringUtils.contains(oo.getPartName(), "卫生间") && !StringUtils.contains(oo.getPartName(), "厨房")) {
-                                    if (StringUtils.isNotEmpty(oo.getRemark())) {
-                                        stringBuilderDecorate.append(oo.getRemark());
-                                    } else {
-                                        if (StringUtils.isNotEmpty(oo.getMaterialName())) {
-                                            stringBuilderDecorate.append(oo.getMaterialName());
-                                        }
-                                    }
-                                }
-
-                            });
+            List<BasicHouseRoomDecorateVo> basicHouseRoomDecorateVos = generateBaseExamineService.getBasicHouseRoomDecorateList();
+            if (CollectionUtils.isNotEmpty(basicHouseRoomDecorateVos)) {
+                basicHouseRoomDecorateVos.forEach(oo -> {
+                    if (StringUtils.contains(oo.getPartName(), nameValue)) {
+                        if(StringUtils.isNotBlank(oo.getLocation())){
+                            stringBuilder.append(oo.getLocation());
+                        }
+                        if(StringUtils.isNotBlank(oo.getPartName())){
+                            stringBuilder.append(oo.getPartName()).append("为");
+                        }
+                        if (StringUtils.isNotBlank(oo.getRemark())) {
+                            stringBuilder.append(oo.getRemark());
+                        } else {
+                            if (StringUtils.isNotEmpty(oo.getMaterialName())) {
+                                stringBuilder.append(oo.getMaterialName());
+                            }
                         }
                     }
-                    if (stringBuilderDecorate.length() > 0) {
-                        stringBuilder.append(basicHouseRoom.getRoomType()).append(stringBuilderDecorate.toString()).append(",");
-                    }
-                }
+                });
             }
             if (StringUtils.isNotEmpty(stringBuilder.toString())) {
                 stringSet.add(StringUtils.strip(stringBuilder.toString(), ","));
@@ -4373,7 +4359,6 @@ public class GenerateBaseDataService {
                 map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), StringUtils.join(stringSet, "、"));
             }
         }
-//        String value = "/";
         String value = errorStr;
         if (!map.isEmpty()) {
             value = generateCommonMethod.judgeEachDesc2(map, "", "", true);
@@ -6435,7 +6420,7 @@ public class GenerateBaseDataService {
                 Map<BasicHouseRoom, List<BasicHouseRoomDecorateVo>> basicHouseRoomListMap = Maps.newHashMap();
                 if (CollectionUtils.isNotEmpty(basicHouseRoomList)) {
                     basicHouseRoomList.forEach(oo -> {
-                        List<BasicHouseRoomDecorateVo> decorateVos = generateBaseExamineService.getBasicHouseRoomDecorateList(oo.getId());
+                        List<BasicHouseRoomDecorateVo> decorateVos = generateBaseExamineService.getBasicHouseRoomDecorateList();
                         if (CollectionUtils.isNotEmpty(decorateVos)) {
                             basicHouseRoomListMap.put(oo, decorateVos);
                         }

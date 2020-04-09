@@ -509,12 +509,12 @@ public class GenerateHouseEntityService {
             List<BasicHouseRoom> basicHouseRoomList = basicExamineHandle.getBasicHouseRoomAll();
             if (CollectionUtils.isNotEmpty(basicHouseRoomList)) {
                 Map<BasicHouseRoom, List<BasicHouseRoomDecorateVo>> basicHouseRoomListMap = Maps.newHashMap();
-                basicHouseRoomList.forEach(oo -> {
-                    List<BasicHouseRoomDecorateVo> decorateVos = basicExamineHandle.getHouseRoomDecorateList(oo.getId());
-                    if (CollectionUtils.isNotEmpty(decorateVos)) {
-                        basicHouseRoomListMap.put(oo, decorateVos);
-                    }
-                });
+//                basicHouseRoomList.forEach(oo -> {
+//                    List<BasicHouseRoomDecorateVo> decorateVos = basicExamineHandle.getHouseRoomDecorateList(oo.getId());
+//                    if (CollectionUtils.isNotEmpty(decorateVos)) {
+//                        basicHouseRoomListMap.put(oo, decorateVos);
+//                    }
+//                });
                 if (!basicHouseRoomListMap.isEmpty()) {
                     if (basicHouseRoomListMap.entrySet().stream().anyMatch(obj -> {
                         if (StringUtils.isNotEmpty(obj.getKey().getRoomType())) {

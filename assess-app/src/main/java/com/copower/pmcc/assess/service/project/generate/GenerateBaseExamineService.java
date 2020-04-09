@@ -252,8 +252,8 @@ public class GenerateBaseExamineService {
         return basicHouseWaterDrainService.getBasicHouseWaterDrainList(getBasicHouse().getId());
     }
 
-    public List<BasicHouseRoomDecorateVo> getBasicHouseRoomDecorateList(Integer roomId)  {
-        return basicHouseRoomDecorateService.getHouseRoomDecorateList(roomId);
+    public List<BasicHouseRoomDecorateVo> getBasicHouseRoomDecorateList()  {
+        return basicHouseRoomDecorateService.getHouseRoomDecorateList(getBasicHouse().getId());
     }
 
     public List<BasicHouseFaceStreetVo> getBasicHouseFaceStreetList()  {

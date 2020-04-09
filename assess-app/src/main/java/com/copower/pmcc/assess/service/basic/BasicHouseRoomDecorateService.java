@@ -111,9 +111,9 @@ public class BasicHouseRoomDecorateService {
         return basicHouseRoomDecorateDao.basicHouseRoomDecorateList(basicHouseRoomDecorate);
     }
 
-    public List<BasicHouseRoomDecorateVo> getHouseRoomDecorateList(Integer roomId)  {
+    public List<BasicHouseRoomDecorateVo> getHouseRoomDecorateList(Integer houseId)  {
         BasicHouseRoomDecorate basicHouseRoomDecorate =new BasicHouseRoomDecorate();
-        basicHouseRoomDecorate.setRoomId(roomId);
+        basicHouseRoomDecorate.setHouseId(houseId);
         List<BasicHouseRoomDecorate> roomDecorates = basicHouseRoomDecorateDao.basicHouseRoomDecorateList(basicHouseRoomDecorate);
         if(CollectionUtils.isEmpty(roomDecorates)) return null;
         return LangUtils.transform(roomDecorates, o -> getBasicHouseRoomDecorateVo(o));

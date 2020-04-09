@@ -172,7 +172,7 @@ public class SchemeJudgeObjectService {
         return schemeJudgeObjectDao.getJudgeObjectList(schemeJudgeObject);
     }
 
-    public List<SchemeJudgeObject> getJudgeObjectList(SchemeJudgeObject schemeJudgeObject){
+    public List<SchemeJudgeObject> getJudgeObjectList(SchemeJudgeObject schemeJudgeObject) {
         return schemeJudgeObjectDao.getJudgeObjectList(schemeJudgeObject);
     }
 
@@ -259,7 +259,9 @@ public class SchemeJudgeObjectService {
 
     public List<SchemeJudgeObjectVo> getVoListByPid(Integer pid) {
         List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectDao.getListByPid(pid);
-        if (CollectionUtils.isEmpty(judgeObjectList)) return null;
+        if (CollectionUtils.isEmpty(judgeObjectList)) {
+            judgeObjectList = Lists.newArrayList(schemeJudgeObjectDao.getSchemeJudgeObject(pid));
+        }
         List<BasicApply> basicApplyList = basicApplyService.getBasicApplyListByIds(LangUtils.transform(judgeObjectList, o -> o.getBasicApplyId()));
         List<SchemeJudgeObjectVo> judgeObjectVoList = Lists.newArrayList();
         for (SchemeJudgeObject judgeObject : judgeObjectList) {
@@ -275,21 +277,6 @@ public class SchemeJudgeObjectService {
                 }
             }
             judgeObjectVoList.add(schemeJudgeObjectVo);
-        }
-        if (CollectionUtils.isNotEmpty(judgeObjectVoList)) {
-            //根据楼层编号和房号排序
-            judgeObjectVoList.sort((o1, o2) -> {
-                int result = 0;
-                if (NumberUtils.isNumber(o1.getFloor()) && NumberUtils.isNumber(o2.getFloor())) {
-                    result = Integer.compare(NumberUtils.toInt(o1.getFloor()), NumberUtils.toInt(o2.getFloor()));
-                }
-                if (result == 0) {//如果楼层相同再根据房号判断
-                    if (NumberUtils.isNumber(o1.getRoomNumber()) && NumberUtils.isNumber(o2.getRoomNumber())) {
-                        result = Integer.compare(NumberUtils.toInt(o1.getRoomNumber()), NumberUtils.toInt(o2.getRoomNumber()));
-                    }
-                }
-                return result;
-            });
         }
         return judgeObjectVoList;
     }
