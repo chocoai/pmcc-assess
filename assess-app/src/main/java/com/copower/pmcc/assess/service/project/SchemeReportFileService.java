@@ -1011,7 +1011,11 @@ public class SchemeReportFileService extends BaseService {
         BeanUtils.copyProperties(sysAttachmentDto, copyAttachment);
         copyAttachment.setTableName(FormatUtils.entityNameConvertToTableName(DeclareRecord.class));
         copyAttachment.setFieldsName("live_situation_select_supplement");
-        copyAttachment.setTableId(reportFileItemById.getId());
+        if(reportFileItemById!=null){
+            copyAttachment.setTableId(reportFileItemById.getId());
+        }else {
+            copyAttachment.setTableId(0);
+        }
         copyAttachment.setCreater(commonService.thisUserAccount());
         baseAttachmentService.addAttachment(copyAttachment);
 
