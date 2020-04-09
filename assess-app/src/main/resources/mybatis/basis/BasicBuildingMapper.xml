@@ -58,6 +58,8 @@
     <result column="relevance_id" property="relevanceId" jdbcType="INTEGER" />
     <result column="version" property="version" jdbcType="INTEGER" />
     <result column="bis_case" property="bisCase" jdbcType="BIT" />
+    <result column="reference" property="reference" jdbcType="VARCHAR" />
+    <result column="orientation" property="orientation" jdbcType="VARCHAR" />
     <result column="bis_enable" property="bisEnable" jdbcType="BIT" />
     <result column="bis_delete" property="bisDelete" jdbcType="BIT" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
@@ -132,8 +134,8 @@
     in_jacket_area, use_area, construction_quality, appearance_style, appearance_new_and_old, 
     between_distance, between_distance_description, v_structura, v_specifications, v_structural_construction, 
     v_basic_practice, v_structural_practice, property_social_prestige, property_company_nature, 
-    map_id, remark, display_case_id, relevance_id, version, bis_case, bis_enable, bis_delete, 
-    creator, gmt_created, gmt_modified
+    map_id, remark, display_case_id, relevance_id, version, bis_case, reference, orientation, 
+    bis_enable, bis_delete, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicBuildingExample" >
     select
@@ -187,9 +189,9 @@
       v_basic_practice, v_structural_practice, property_social_prestige, 
       property_company_nature, map_id, remark, 
       display_case_id, relevance_id, version, 
-      bis_case, bis_enable, bis_delete, 
-      creator, gmt_created, gmt_modified
-      )
+      bis_case, reference, orientation, 
+      bis_enable, bis_delete, creator, 
+      gmt_created, gmt_modified)
     values (#{applyId,jdbcType=INTEGER}, #{estateId,jdbcType=INTEGER}, #{quoteId,jdbcType=INTEGER}, 
       #{residenceUseYear,jdbcType=INTEGER}, #{industryUseYear,jdbcType=INTEGER}, #{buildingNumber,jdbcType=VARCHAR}, 
       #{buildingName,jdbcType=VARCHAR}, #{fullName,jdbcType=VARCHAR}, #{floorCount,jdbcType=VARCHAR}, 
@@ -208,9 +210,9 @@
       #{vBasicPractice,jdbcType=VARCHAR}, #{vStructuralPractice,jdbcType=VARCHAR}, #{propertySocialPrestige,jdbcType=INTEGER}, 
       #{propertyCompanyNature,jdbcType=INTEGER}, #{mapId,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, 
       #{displayCaseId,jdbcType=INTEGER}, #{relevanceId,jdbcType=INTEGER}, #{version,jdbcType=INTEGER}, 
-      #{bisCase,jdbcType=BIT}, #{bisEnable,jdbcType=BIT}, #{bisDelete,jdbcType=BIT}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+      #{bisCase,jdbcType=BIT}, #{reference,jdbcType=VARCHAR}, #{orientation,jdbcType=VARCHAR}, 
+      #{bisEnable,jdbcType=BIT}, #{bisDelete,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicBuilding" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -382,6 +384,12 @@
       </if>
       <if test="bisCase != null" >
         bis_case,
+      </if>
+      <if test="reference != null" >
+        reference,
+      </if>
+      <if test="orientation != null" >
+        orientation,
       </if>
       <if test="bisEnable != null" >
         bis_enable,
@@ -564,6 +572,12 @@
       </if>
       <if test="bisCase != null" >
         #{bisCase,jdbcType=BIT},
+      </if>
+      <if test="reference != null" >
+        #{reference,jdbcType=VARCHAR},
+      </if>
+      <if test="orientation != null" >
+        #{orientation,jdbcType=VARCHAR},
       </if>
       <if test="bisEnable != null" >
         #{bisEnable,jdbcType=BIT},
@@ -759,6 +773,12 @@
       <if test="record.bisCase != null" >
         bis_case = #{record.bisCase,jdbcType=BIT},
       </if>
+      <if test="record.reference != null" >
+        reference = #{record.reference,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orientation != null" >
+        orientation = #{record.orientation,jdbcType=VARCHAR},
+      </if>
       <if test="record.bisEnable != null" >
         bis_enable = #{record.bisEnable,jdbcType=BIT},
       </if>
@@ -837,6 +857,8 @@
       relevance_id = #{record.relevanceId,jdbcType=INTEGER},
       version = #{record.version,jdbcType=INTEGER},
       bis_case = #{record.bisCase,jdbcType=BIT},
+      reference = #{record.reference,jdbcType=VARCHAR},
+      orientation = #{record.orientation,jdbcType=VARCHAR},
       bis_enable = #{record.bisEnable,jdbcType=BIT},
       bis_delete = #{record.bisDelete,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
@@ -1014,6 +1036,12 @@
       <if test="bisCase != null" >
         bis_case = #{bisCase,jdbcType=BIT},
       </if>
+      <if test="reference != null" >
+        reference = #{reference,jdbcType=VARCHAR},
+      </if>
+      <if test="orientation != null" >
+        orientation = #{orientation,jdbcType=VARCHAR},
+      </if>
       <if test="bisEnable != null" >
         bis_enable = #{bisEnable,jdbcType=BIT},
       </if>
@@ -1089,6 +1117,8 @@
       relevance_id = #{relevanceId,jdbcType=INTEGER},
       version = #{version,jdbcType=INTEGER},
       bis_case = #{bisCase,jdbcType=BIT},
+      reference = #{reference,jdbcType=VARCHAR},
+      orientation = #{orientation,jdbcType=VARCHAR},
       bis_enable = #{bisEnable,jdbcType=BIT},
       bis_delete = #{bisDelete,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},

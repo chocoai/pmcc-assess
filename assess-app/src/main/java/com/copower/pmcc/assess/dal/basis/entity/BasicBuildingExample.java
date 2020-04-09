@@ -3656,6 +3656,146 @@ public class BasicBuildingExample {
             return (Criteria) this;
         }
 
+        public Criteria andReferenceIsNull() {
+            addCriterion("reference is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andReferenceIsNotNull() {
+            addCriterion("reference is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andReferenceEqualTo(String value) {
+            addCriterion("reference =", value, "reference");
+            return (Criteria) this;
+        }
+
+        public Criteria andReferenceNotEqualTo(String value) {
+            addCriterion("reference <>", value, "reference");
+            return (Criteria) this;
+        }
+
+        public Criteria andReferenceGreaterThan(String value) {
+            addCriterion("reference >", value, "reference");
+            return (Criteria) this;
+        }
+
+        public Criteria andReferenceGreaterThanOrEqualTo(String value) {
+            addCriterion("reference >=", value, "reference");
+            return (Criteria) this;
+        }
+
+        public Criteria andReferenceLessThan(String value) {
+            addCriterion("reference <", value, "reference");
+            return (Criteria) this;
+        }
+
+        public Criteria andReferenceLessThanOrEqualTo(String value) {
+            addCriterion("reference <=", value, "reference");
+            return (Criteria) this;
+        }
+
+        public Criteria andReferenceLike(String value) {
+            addCriterion("reference like", value, "reference");
+            return (Criteria) this;
+        }
+
+        public Criteria andReferenceNotLike(String value) {
+            addCriterion("reference not like", value, "reference");
+            return (Criteria) this;
+        }
+
+        public Criteria andReferenceIn(List<String> values) {
+            addCriterion("reference in", values, "reference");
+            return (Criteria) this;
+        }
+
+        public Criteria andReferenceNotIn(List<String> values) {
+            addCriterion("reference not in", values, "reference");
+            return (Criteria) this;
+        }
+
+        public Criteria andReferenceBetween(String value1, String value2) {
+            addCriterion("reference between", value1, value2, "reference");
+            return (Criteria) this;
+        }
+
+        public Criteria andReferenceNotBetween(String value1, String value2) {
+            addCriterion("reference not between", value1, value2, "reference");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrientationIsNull() {
+            addCriterion("orientation is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrientationIsNotNull() {
+            addCriterion("orientation is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrientationEqualTo(String value) {
+            addCriterion("orientation =", value, "orientation");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrientationNotEqualTo(String value) {
+            addCriterion("orientation <>", value, "orientation");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrientationGreaterThan(String value) {
+            addCriterion("orientation >", value, "orientation");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrientationGreaterThanOrEqualTo(String value) {
+            addCriterion("orientation >=", value, "orientation");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrientationLessThan(String value) {
+            addCriterion("orientation <", value, "orientation");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrientationLessThanOrEqualTo(String value) {
+            addCriterion("orientation <=", value, "orientation");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrientationLike(String value) {
+            addCriterion("orientation like", value, "orientation");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrientationNotLike(String value) {
+            addCriterion("orientation not like", value, "orientation");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrientationIn(List<String> values) {
+            addCriterion("orientation in", values, "orientation");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrientationNotIn(List<String> values) {
+            addCriterion("orientation not in", values, "orientation");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrientationBetween(String value1, String value2) {
+            addCriterion("orientation between", value1, value2, "orientation");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrientationNotBetween(String value1, String value2) {
+            addCriterion("orientation not between", value1, value2, "orientation");
+            return (Criteria) this;
+        }
+
         public Criteria andBisEnableIsNull() {
             addCriterion("bis_enable is null");
             return (Criteria) this;
