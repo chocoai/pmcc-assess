@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en" class="no-js">
 <head>
@@ -52,12 +53,21 @@
                                                                                name="unitNumber" class="form-control"
                                                                                value="${basicUnit.unitNumber}"
                                                                                id="txt_Unit_search">
-                                                                        <span class="input-group-btn">
-                            <input type="hidden" name="mapId" value="${basicUnit.mapId}">
-                             <div onclick="unitCommon.mapMarker(false);" class="btn btn-info">
-                                 <i class="fa fa-map-marker"></i> 标注
-                             </div>
-                        </span>
+                                                                        <input type="hidden" name="mapId"
+                                                                               value="${basicUnit.mapId}">
+                                                                        <%--<span class="input-group-btn">--%>
+                                                                        <%--<div onclick="unitCommon.mapMarker(false);" class="btn btn-info">--%>
+                                                                        <%--<i class="fa fa-map-marker"></i> 标注--%>
+                                                                        <%--</div>--%>
+                                                                        <%--</span>--%>
+                                                                        <div class="input-group-prepend">
+                                                                            <button class="btn btn-info btn-sm "
+                                                                                    style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                                                    type="button"
+                                                                                    onclick="unitCommon.mapMarker(false);">
+                                                                                标注
+                                                                            </button>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                                 <label class="col-sm-1">户型数<span
@@ -139,7 +149,10 @@
 </html>
 <%@include file="/views/project/stageSurvey/common/applyInfoHistory.jsp" %>
 <%@include file="/views/project/stageSurvey/common/applyInfoQuote.jsp" %>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/assets/jquery-ui/jquery-ui.min.js?v=${assessVersion}"></script>
 <script src='${pageContext.request.contextPath}/js/common.column.js?v=${assessVersion}'></script>
+<script src='${pageContext.request.contextPath}/js/autocomplete/unit.case.js?v=${assessVersion}'></script>
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/js/examine/examine.common.js?v=${assessVersion}"></script>
 <script type="text/javascript"
@@ -149,6 +162,7 @@
 
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/js/examine/sonUnitView.js?v=${assessVersion}"></script>
+
 
 <%--<script type="text/javascript"--%>
         <%--src="${pageContext.request.contextPath}/js/basic/basic.common.js?v=${assessVersion}"></script>--%>

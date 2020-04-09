@@ -195,7 +195,7 @@ public class GenerateBaseExamineService {
 
     public List<BasicUnitHuxing> getBasicUnitHuxingList()  {
         BasicUnitHuxing query = new BasicUnitHuxing();
-        query.setUnitId(getBasicUnit().getId());
+        query.setHouseId(getBasicHouse().getId());
         return basicUnitHuxingService.basicUnitHuxingList(query);
     }
 
@@ -252,8 +252,8 @@ public class GenerateBaseExamineService {
         return basicHouseWaterDrainService.getBasicHouseWaterDrainList(getBasicHouse().getId());
     }
 
-    public List<BasicHouseRoomDecorateVo> getBasicHouseRoomDecorateList(Integer roomId)  {
-        return basicHouseRoomDecorateService.getHouseRoomDecorateList(roomId);
+    public List<BasicHouseRoomDecorateVo> getBasicHouseRoomDecorateList()  {
+        return basicHouseRoomDecorateService.getHouseRoomDecorateList(getBasicHouse().getId());
     }
 
     public List<BasicHouseFaceStreetVo> getBasicHouseFaceStreetList()  {

@@ -99,7 +99,7 @@ public class BasicHouseRoomController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/copyBasicHouseRoom", method = {RequestMethod.GET}, name = "房间 复制")
+    @RequestMapping(value = "/copyBasicHouseRoom", method = {RequestMethod.POST}, name = "房间 复制")
     public HttpResult copyBasicHouseRoom(Integer sourceId,Integer targetId) {
         try {
             BasicHouseRoom source = basicHouseRoomService.getBasicHouseRoomById(sourceId);

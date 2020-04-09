@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en" class="no-js">
@@ -683,9 +684,7 @@
                                 <div class="x_content">
                                     <%@include file="/views/project/stageSurvey/common/houseFaceStreet.jsp" %>
                                     <%@include file="/views/project/stageSurvey/common/houseRoom.jsp" %>
-                                    <div class="x_content" id="showHouseDecorate">
-                                    <%@include file="/views/project/stageSurvey/common/houseRoomDecorate.jsp" %>
-                                    </div>
+
                                     <c:if test="${formType eq 'residence'}">
                                         <%@include file="/views/project/stageSurvey/common/houseWater.jsp" %>
                                         <%@include file="/views/project/stageSurvey/common/houseWaterDrain.jsp" %>
@@ -700,6 +699,9 @@
                                     </c:if>
                                     <%@include file="/views/project/stageSurvey/common/houseDamagedDegree.jsp" %>
                                     <%@include file="/views/project/stageSurvey/common/houseHuxingPrice.jsp" %>
+                                </div>
+                                <div class="x_content" id="showHouseDecorate">
+                                    <%@include file="/views/project/stageSurvey/common/houseRoomDecorate.jsp" %>
                                 </div>
                             </div>
                         </div>
@@ -984,8 +986,10 @@
     </div>
 </div>
 
-
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/assets/jquery-ui/jquery-ui.min.js?v=${assessVersion}"></script>
 <script src='${pageContext.request.contextPath}/js/common.column.js?v=${assessVersion}'></script>
+<script src='${pageContext.request.contextPath}/js/autocomplete/house.case.js?v=${assessVersion}'></script>
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/js/examine/examine.common.js?v=${assessVersion}"></script>
 <script type="text/javascript"

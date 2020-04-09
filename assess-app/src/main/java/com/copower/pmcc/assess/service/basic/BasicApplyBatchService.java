@@ -410,8 +410,8 @@ public class BasicApplyBatchService {
         //申报表代入的信息
         DeclareRecord declareRecord = null;
         ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(basicApplyBatch.getPlanDetailsId());
-        basicApplyBatch.setProjectId(projectPlanDetails.getProjectId());
         if (projectPlanDetails != null && projectPlanDetails.getDeclareRecordId() != null) {
+            basicApplyBatch.setProjectId(projectPlanDetails.getProjectId());
             declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
         }
         if (declareRecord != null) {
