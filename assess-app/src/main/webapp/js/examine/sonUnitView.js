@@ -173,7 +173,7 @@ var unitDecorate;
                     }
                     if (resultData) {
                         $.each(resultData, function (j, item) {
-                            var name = item.name + item.index;
+                            var name = item.name;
                             unitCommonParts.push(name);
                         })
                     }
@@ -197,7 +197,7 @@ var unitDecorate;
                     resultHtml += "</div>";
                     resultHtml += "</div>";
                 }
-
+                console.log(resultHtml) ;
                 target.append(resultHtml);
             });
             // AssessCommon.loadAsyncDataDicByKey(AssessDicKey.examineUnitCommonPart, '', function (html, resultData) {
