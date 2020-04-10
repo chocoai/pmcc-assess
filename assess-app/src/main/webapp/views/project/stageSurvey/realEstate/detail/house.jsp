@@ -445,6 +445,8 @@
                                 </div>
                                 <div class="x_content">
                                     <c:if test="${empty isHistory}">
+                                        <%@include file="/views/project/stageSurvey/commonDetail/houseRoom.jsp" %>
+                                        <%@include file="/views/project/stageSurvey/commonDetail/houseRoomDecorate.jsp" %>
                                         <%@include file="/views/project/stageSurvey/commonDetail/houseFaceStreet.jsp" %>
                                         <c:if test="${formType eq 'residence'}">
                                             <%@include file="/views/project/stageSurvey/commonDetail/houseWater.jsp" %>
@@ -454,16 +456,13 @@
                                             <%@include file="/views/project/stageSurvey/commonDetail/houseHeating.jsp" %>
                                             <%@include file="/views/project/stageSurvey/commonDetail/houseIntelligent.jsp" %>
                                         </c:if>
-                                        <%@include file="/views/project/stageSurvey/commonDetail/houseRoom.jsp" %>
+
                                         <c:if test="${formType eq 'industry'}">
                                             <%@include file="/views/project/stageSurvey/commonDetail/houseCorollaryEquipment.jsp" %>
                                         </c:if>
                                         <%@include file="/views/project/stageSurvey/commonDetail/houseDamagedDegree.jsp" %>
                                     </c:if>
                                     <%@include file="/views/project/stageSurvey/commonDetail/houseHuxingPrice.jsp" %>
-                                </div>
-                                <div class="x_content" id="showHouseDecorate">
-                                    <%@include file="/views/project/stageSurvey/commonDetail/houseRoomDecorate.jsp" %>
                                 </div>
                             </div>
                         </div>

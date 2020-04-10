@@ -629,9 +629,9 @@
                                     </form>
                                 </div>
                                 <div class="x_content">
-                                    <%@include file="/views/project/stageSurvey/common/houseFaceStreet.jsp" %>
                                     <%@include file="/views/project/stageSurvey/common/houseRoom.jsp" %>
-
+                                    <%@include file="/views/project/stageSurvey/common/houseRoomDecorate.jsp" %>
+                                    <%@include file="/views/project/stageSurvey/common/houseFaceStreet.jsp" %>
                                     <c:if test="${formType eq 'residence'}">
                                         <%@include file="/views/project/stageSurvey/common/houseWater.jsp" %>
                                         <%@include file="/views/project/stageSurvey/common/houseWaterDrain.jsp" %>
@@ -646,9 +646,6 @@
                                     </c:if>
                                     <%@include file="/views/project/stageSurvey/common/houseDamagedDegree.jsp" %>
                                     <%@include file="/views/project/stageSurvey/common/houseHuxingPrice.jsp" %>
-                                </div>
-                                <div class="x_content" id="showHouseDecorate">
-                                    <%@include file="/views/project/stageSurvey/common/houseRoomDecorate.jsp" %>
                                 </div>
                             </div>
                         </div>
