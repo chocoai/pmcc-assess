@@ -152,7 +152,7 @@ public class DataBlockController extends BaseController {
     @RequestMapping(value = "/updateOldData", method = {RequestMethod.GET}, name = "更新数据")
     public HttpResult updateOldData() {
         try {
-            basicApplyBatchService.writeRelevanceId();
+            dataBlockService.updateOldData();
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             logger.error(String.format("exception: %s", e.getMessage()), e);
