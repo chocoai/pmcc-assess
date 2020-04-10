@@ -121,7 +121,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row form-group">
+                                        <div class="row form-group" style="display: none;">
                                             <div class="col-md-12">
                                                 <div class="form-inline x-valid">
                                                     <label class="col-sm-1 control-label">
@@ -147,7 +147,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row form-group">
+                                        <div class="row form-group" style="display: none;">
                                             <div class="col-md-12">
                                                 <div class="form-inline x-valid">
                                                     <label class="col-sm-1 control-label">评估类型(增加封面)</label>
@@ -218,17 +218,6 @@
                                                             <button type="button" class="btn-primary btn btn-sm"
                                                                onclick="getReportNumber('${generationVo.areaGroupId}','${reportType.id}',this)">拿号<i
                                                                     class="fa fa-dot-circle-o"></i></button>
-                                                        </div>
-
-                                                        <!-- 结果表附件 方法 -->
-                                                        <div class="col-sm-1">
-                                                            <button type="button" class="btn-primary btn btn-sm"
-                                                               onclick="resultSheetReport('${generationVo.areaGroupId}','${reportType.id}',this)">结果表附件<i
-                                                                    class="fa fa-file-word-o"></i></button>
-                                                        </div>
-                                                        <!-- 结果表附件id -->
-                                                        <div class="col-sm-2">
-                                                            <div id="_${reportType.id}result_sheet_one${generationVo.areaGroupId}"></div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -404,8 +393,6 @@
                         fileArray.push(tempArray.join(underline));
                     }
                 }
-                //单一的一个结果集
-                fileArray.push(value.id + "result_sheet_one");
             });
             if (callback) {
                 callback(fileArray);
@@ -514,23 +501,7 @@
         });
     }
 
-    //生成  结果集  附件
-    function resultSheetReport(areaId, reportType, item) {
-        var form = $(item).closest("form");
-        var data = formSerializeArray(form);
-        data.areaGroupId = areaId;
-        data.projectPlanId = '${projectPlan.id}';
-        data.projectId = '${projectPlan.projectId}';
-        if (!AssessCommon.isNumber(data.assessCategory)) {
-            data.assessCategory = null;
-        }
-        objGenerate.ajaxServerMethod({fomData: JSON.stringify(data), reportType: reportType} , '/generateReport/resultSheetReport' ,"post",function () {
-            notifySuccess("成功",'生成结果集附件成功');
-            getSchemeReportGeneration(data, function (info) {
-                initFormSchemeReportGeneration(info, form, areaId);
-            });
-        });
-    }
+
 
     //生成报告
     function generateReport(areaId, reportType, item) {

@@ -91,7 +91,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row form-group">
+                                        <div class="row form-group" style="display: none;">
                                             <div class="col-md-12">
                                                 <div class="form-inline x-valid">
                                                     <label class="col-sm-1 control-label">查询码</label>
@@ -122,12 +122,6 @@
                                                         </label>
                                                         <div class="col-sm-3">
                                                             <div id="_${reportType.fieldName}${generationVo.areaGroupId}"></div>
-                                                        </div>
-                                                        <label class="col-sm-1 control-label">
-                                                            结果表附件
-                                                        </label>
-                                                        <div class="col-sm-3">
-                                                            <div id="_${reportType.id}result_sheet_one${generationVo.areaGroupId}"></div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -198,8 +192,6 @@
                         fileArray.push(tempArray.join(underline));
                     }
                 }
-                //单一的一个结果集
-                fileArray.push(value.id + "result_sheet_one");
             });
             if (callback) {
                 callback(fileArray);
