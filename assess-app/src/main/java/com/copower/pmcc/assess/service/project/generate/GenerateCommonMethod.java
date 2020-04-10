@@ -103,18 +103,18 @@ public class GenerateCommonMethod {
         Set<SurveyAssetInventoryContent> surveyAssetInventoryContentSet = Sets.newHashSet();
         Set<String> stringSet = Sets.newHashSet();
         List<SurveyAssetInventory> surveyAssetInventories = surveyAssetInfoService.getSurveyAssetInventoryListByDeclareRecordId(declareRecordId);
-        List<SurveyAssetInventoryContent> contentList = new ArrayList<>() ;
-        if (CollectionUtils.isNotEmpty(surveyAssetInventories)){
-            for (SurveyAssetInventory surveyAssetInventory:surveyAssetInventories){
+        List<SurveyAssetInventoryContent> contentList = new ArrayList<>();
+        if (CollectionUtils.isNotEmpty(surveyAssetInventories)) {
+            for (SurveyAssetInventory surveyAssetInventory : surveyAssetInventories) {
                 List<SurveyAssetInventoryContent> surveyAssetInventoryContents = surveyAssetInventoryContentService.getSurveyAssetInventoryContentListByMasterId(surveyAssetInventory.getId());
-                if (CollectionUtils.isEmpty(surveyAssetInventoryContents)){
+                if (CollectionUtils.isEmpty(surveyAssetInventoryContents)) {
                     continue;
                 }
-                contentList.addAll(surveyAssetInventoryContents) ;
+                contentList.addAll(surveyAssetInventoryContents);
             }
         }
-        if (CollectionUtils.isNotEmpty(contentList)){
-            for (SurveyAssetInventoryContent o:contentList){
+        if (CollectionUtils.isNotEmpty(contentList)) {
+            for (SurveyAssetInventoryContent o : contentList) {
                 if (com.google.common.base.Objects.equal("不一致", o.getAreConsistent()) && com.google.common.base.Objects.equal(type.getId(), o.getInventoryContent()))
                     surveyAssetInventoryContentSet.add(o);
             }
@@ -185,10 +185,21 @@ public class GenerateCommonMethod {
                 }
             }
             for (Map.Entry<String, List<Integer>> stringListEntry : map.entrySet()) {
-                BasicApply basicApply = surveyCommonService.getSceneExploreBasicApply(stringListEntry.getValue().get(0));
-                GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
-                BasicEstate basicEstate = generateBaseExamineService.getEstate();
-                listLinkedHashMap.put(basicEstate, schemeJudgeObjectService.getListByDeclareIds(stringListEntry.getValue()));
+                List<Integer> integerList = stringListEntry.getValue();
+                for (Integer integer : integerList) {
+                    List<BasicApply> basicApplyList = surveyCommonService.getSceneExploreBasicApplyList(integer) ;
+                    if (CollectionUtils.isNotEmpty(basicApplyList)){
+                       for ( BasicApply basicApply :basicApplyList){
+                           GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
+                           BasicEstate basicEstate = generateBaseExamineService.getEstate();
+                           if (basicEstate == null){
+                               continue;
+                           }
+                           listLinkedHashMap.put(basicEstate, schemeJudgeObjectService.getListByDeclareIds(stringListEntry.getValue()));
+                           break;
+                       }
+                    }
+                }
             }
         }
         return listLinkedHashMap;
@@ -409,7 +420,6 @@ public class GenerateCommonMethod {
     public boolean isInteger(BigDecimal bigDecimal) {
         return ArithmeticUtils.isInteger(bigDecimal);
     }
-
 
 
     /**
@@ -675,7 +685,6 @@ public class GenerateCommonMethod {
         }
         return listTemp;
     }
-
 
 
     /**

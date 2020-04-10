@@ -62,6 +62,18 @@ public class ProjectReportController {
         }
     }
 
+    @PostMapping(value = "/resultSheetReportNew", name = "生成单一的结果集")
+    public HttpResult resultSheetReportNew(String fieldsName, String tableName, Integer projectId) {
+        //生成单一的结果集
+        try {
+            generateReportService.resultSheetReportNew(fieldsName, tableName, projectId);
+            return HttpResult.newCorrectResult(200, "success");
+        } catch (Exception e) {
+            baseService.writeExceptionInfo(e, "生成单一的结果集");
+            return HttpResult.newErrorResult(500, e.getMessage());
+        }
+    }
+
     @GetMapping(value = "/getGenerateReportGeneration", name = "获取报告替换数据")
     public HttpResult getGenerateReportGeneration(Integer areaGroupId, Integer projectPlanId) {
         GenerateReportInfo generateReportGeneration = null;

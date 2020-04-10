@@ -42,13 +42,15 @@
                                                     结果表
                                                 </label>
                                                 <div class="col-sm-9">
+                                                    <div id="_resultSheetReportMoreAndMoreFile">
 
+                                                    </div>
                                                 </div>
 
                                                 <div class="col-sm-2">
                                                     <button type="button" class="btn-primary btn btn-sm"
                                                             onclick="objReport.resultSheetReport(this)">结果表附件<i
-                                                            class="fa fa-file-word-o"></i></button>
+                                                            class="fas fa-file-word"></i></button>
                                                 </div>
 
 
@@ -59,8 +61,6 @@
                             </div>
                         </div>
                     </div>
-
-
 
 
                     <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
@@ -96,10 +96,9 @@
 </body>
 
 
-
 <script>
 
-    var objReport = {} ;
+    var objReport = {};
 
     objReport.run = function (data, url, type, callback, funParams, errorCallback) {
         Loading.progressShow();
@@ -131,22 +130,27 @@
                         callback(result.data);
                     }
                 } else {
-                    if (result.errmsg) {
-                        AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
-                    } else {
-                        AlertError("错误", "调用服务端方法失败，失败原因:" + result);
-                    }
                     if (errorCallback) {
-                        errorCallback();
+                        errorCallback(result.errmsg);
+                    }else {
+                        if (result.errmsg) {
+                            AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
+                        } else {
+                            AlertError("错误", "调用服务端方法失败，失败原因:" + result);
+                        }
                     }
                 }
             },
             error: function (result) {
                 Loading.progressHide();
-                if (result.errmsg) {
-                    AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
-                } else {
-                    AlertError("错误", "调用服务端方法失败，失败原因:" + result);
+                if (errorCallback) {
+                    errorCallback(result.errmsg);
+                }else {
+                    if (result.errmsg) {
+                        AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
+                    } else {
+                        AlertError("错误", "调用服务端方法失败，失败原因:" + result);
+                    }
                 }
             }
         });
@@ -171,11 +175,37 @@
         objReport.ajaxServerFun(data, url, type, callback, null, errorCallback);
     };
 
-
-    objReport.resultSheetReport = function (_this) {
-
+    objReport.fileShow = function (fieldsName , tableId) {
+        FileUtils.getFileShows({
+            target: fieldsName,
+            formData: {
+                fieldsName: fieldsName,
+                tableName: AssessDBKey.ProjectInfo,
+                tableId: tableId
+            },
+            editFlag: true,
+            deleteFlag: false
+        })
     };
 
+    objReport.fileId = "resultSheetReportMoreAndMoreFile";
+
+    objReport.resultSheetReport = function (_this) {
+        var projectId = '${projectInfo.id}';
+        objReport.ajaxServerMethod({projectId: projectId ,fieldsName:objReport.fileId,tableName:AssessDBKey.ProjectInfo}, "/generateReport/resultSheetReportNew", "post", function () {
+            objReport.initForm() ;
+        },function (message) {
+            notifyInfo('提示', "无法生成结果集"+message);
+        });
+    };
+
+    objReport.initForm = function () {
+        objReport.fileShow(objReport.fileId,'${projectInfo.id}') ;
+    };
+
+    $(document).ready(function () {
+        objReport.initForm() ;
+    });
 
 
 </script>

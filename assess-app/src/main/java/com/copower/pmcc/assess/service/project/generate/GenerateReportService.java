@@ -327,10 +327,10 @@ public class GenerateReportService {
                 if (StringUtils.isBlank(next)) {
                     continue;
                 }
-                try{
+                try {
                     handleReport(next, textMap, bookmarkMap, fileMap, generateBaseDataService, generateReportInfo, reportType);
-                }catch (Exception e){
-                    logger.error(e.getMessage(),e);
+                } catch (Exception e) {
+                    logger.error(e.getMessage(), e);
                 }
             }
             replaceWord(tempDir, textMap, bookmarkMap, fileMap);
@@ -1201,6 +1201,26 @@ public class GenerateReportService {
         return bookmarkAndRegexDtoHashSet;
     }
 
+    /**
+     * 仅仅生成结果集一个sheet
+     *
+     * @param fieldsName
+     * @param tableName
+     * @param projectId
+     * @throws Exception
+     */
+    public void resultSheetReportNew(String fieldsName, String tableName, Integer projectId) throws Exception {
+        List<SchemeAreaGroup> schemeAreaGroups = schemeAreaGroupService.getAreaGroupAllByProjectId(projectId);
+        if (CollectionUtils.isEmpty(schemeAreaGroups)) {
+            throw new Exception("评估方案编制没有设置");
+        }
+        ProjectInfoVo projectInfoVo = projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(projectId));
+        for (SchemeAreaGroup schemeAreaGroup : schemeAreaGroups) {
+            GenerateBaseDataService generateBaseDataService = new GenerateBaseDataService(projectInfoVo, schemeAreaGroup.getId(), new BaseReportTemplate(), new ProjectPlan());
+            String path = generateBaseDataService.getjudgeBuildResultSurveySheet(true, schemeAreaGroup.getId(), projectInfoVo);
+            resultSheetReportCreateSysAttachmentNew(schemeAreaGroup.getAreaName(), path, fieldsName, tableName, projectId, false);
+        }
+    }
 
     /**
      * 仅仅生成结果集一个sheet
@@ -1230,21 +1250,36 @@ public class GenerateReportService {
             return;
         }
         String fieldsName = String.join("", reportType, "result_sheet_one", generateReportInfo.getAreaGroupId().toString());
+        resultSheetReportCreateSysAttachmentNew(null, path, fieldsName, FormatUtils.entityNameConvertToTableName(GenerateReportInfo.class), generateReportInfo.getId(), true);
+    }
+
+    private void resultSheetReportCreateSysAttachmentNew(String prefix, String path, String fieldsName, String tableName, Integer tableId, boolean delete) throws Exception {
+        if (StringUtils.isEmpty(path)) {
+            return;
+        }
         SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
-        sysAttachmentDto.setTableId(generateReportInfo.getId());
-        sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(GenerateReportInfo.class));
+        sysAttachmentDto.setTableId(tableId);
+        sysAttachmentDto.setTableName(tableName);
         sysAttachmentDto.setFieldsName(fieldsName);
         sysAttachmentDto.setAppKey(applicationConstant.getAppKey());
-        List<SysAttachmentDto> sysAttachmentDtoList = baseAttachmentService.getAttachmentList(sysAttachmentDto);
-        if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
-            sysAttachmentDtoList.stream().forEach(attachmentDto -> {
-                if (Objects.equal(attachmentDto.getFieldsName(), sysAttachmentDto.getFieldsName())) {
-                    baseAttachmentService.deleteAttachmentByDto(attachmentDto);
-                }
-            });
+        if (delete) {
+            List<SysAttachmentDto> sysAttachmentDtoList = baseAttachmentService.getAttachmentList(sysAttachmentDto);
+            if (CollectionUtils.isNotEmpty(sysAttachmentDtoList)) {
+                sysAttachmentDtoList.stream().forEach(attachmentDto -> {
+                    if (Objects.equal(attachmentDto.getFieldsName(), sysAttachmentDto.getFieldsName())) {
+                        baseAttachmentService.deleteAttachmentByDto(attachmentDto);
+                    }
+                });
+            }
         }
         File file = new File(path);
-        sysAttachmentDto.setFileName("结果集.doc");
+        String fileName = null;
+        if (StringUtils.isNotBlank(prefix)) {
+            fileName = String.join("", prefix, DateUtils.format(DateUtils.now(), DateUtils.DATETIME_SHORT_PATTERN), "结果集.", "doc");
+        } else {
+            fileName = String.join("", DateUtils.format(DateUtils.now(), DateUtils.DATETIME_SHORT_PATTERN), "结果集.", "doc");
+        }
+        sysAttachmentDto.setFileName(fileName);
         sysAttachmentDto.setFileExtension(FilenameUtils.getExtension(file.getName()));// sysAttachmentDto.setFileExtension(file.getName().substring(file.getName().lastIndexOf(".") + 1, file.getName().length()))
         sysAttachmentDto.setCreater(processControllerComponent.getThisUser());
         sysAttachmentDto.setFileSize(org.apache.commons.io.FileUtils.sizeOfAsBigInteger(file).toString());

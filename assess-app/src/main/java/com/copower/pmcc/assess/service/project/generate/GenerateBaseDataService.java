@@ -141,7 +141,7 @@ public class GenerateBaseDataService {
     private BasicHouseTradingService basicHouseTradingService;
     private GenerateEquityService generateEquityService;
     private DeclareRealtyCheckListService declareRealtyCheckListService;
-    private SurveyCommonService surveyCommonService ;
+    private SurveyCommonService surveyCommonService;
 
     /**
      * 构造器必须传入的参数
@@ -3622,6 +3622,16 @@ public class GenerateBaseDataService {
      * @return
      */
     private Map<SchemeReimbursementItemVo, List<SchemeJudgeObject>> getSurveyAssetInventoryRightRecordListMap(List<SchemeJudgeObject> list) {
+        return getSurveyAssetInventoryRightRecordListMap(list, projectInfo);
+    }
+
+    /**
+     * 分组
+     *
+     * @param list
+     * @return
+     */
+    private Map<SchemeReimbursementItemVo, List<SchemeJudgeObject>> getSurveyAssetInventoryRightRecordListMap(List<SchemeJudgeObject> list, ProjectInfo projectInfo) {
         Map<SchemeReimbursementItemVo, List<SchemeJudgeObject>> map = Maps.newHashMap();
         final List<SchemeJudgeObject> schemeJudgeObjectList = new ArrayList<>(list.size());
         if (CollectionUtils.isNotEmpty(list)) {
@@ -3631,7 +3641,7 @@ public class GenerateBaseDataService {
         }
         ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByReferenceId(AssessPhaseKeyConstant.OTHER_RIGHT, projectInfo.getProjectCategoryId());
         ProjectPlanDetails query = new ProjectPlanDetails();
-        query.setProjectId(projectId);
+        query.setProjectId(projectInfo.getId());
         query.setProjectPhaseId(projectPhase.getId());
         List<ProjectPlanDetails> projectPlanDetailsList = projectPlanDetailsService.getProjectDetails(query);
         if (CollectionUtils.isEmpty(projectPlanDetailsList)) {
@@ -3681,7 +3691,25 @@ public class GenerateBaseDataService {
      * @throws Exception
      */
     public String getjudgeBuildResultSurveySheet(boolean seat) throws Exception {
+       return getjudgeBuildResultSurveySheet(seat,areaId,projectInfo) ;
+    }
+
+    /**
+     * 估价结果一览表
+     *
+     * @throws Exception
+     */
+    public String getjudgeBuildResultSurveySheet(boolean seat , Integer areaId ,ProjectInfo projectInfo) throws Exception {
         List<SchemeJudgeObject> schemeJudgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaId);
+       return getjudgeBuildResultSurveySheet(seat,schemeJudgeObjectList,projectInfo) ;
+    }
+
+    /**
+     * 估价结果一览表
+     *
+     * @throws Exception
+     */
+    public String getjudgeBuildResultSurveySheet(boolean seat , List<SchemeJudgeObject> schemeJudgeObjectList ,ProjectInfo projectInfo) throws Exception {
         LinkedHashMap<BasicApply, SchemeJudgeObject> schemeJudgeObjectLinkedHashMap = Maps.newLinkedHashMap();
         Document doc = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
@@ -3699,7 +3727,7 @@ public class GenerateBaseDataService {
         Table table = builder.startTable();
         final Integer colMax = seat ? new Integer(11) : new Integer(10);
         Set<MergeCellModel> mergeCellModelList = Sets.newHashSet();
-        Map<SchemeReimbursementItemVo, List<SchemeJudgeObject>> reimbursementItemVoListMap = this.getSurveyAssetInventoryRightRecordListMap(schemeJudgeObjectList);
+        Map<SchemeReimbursementItemVo, List<SchemeJudgeObject>> reimbursementItemVoListMap = this.getSurveyAssetInventoryRightRecordListMap(schemeJudgeObjectList,projectInfo);
 
         LinkedList<String> strings = Lists.newLinkedList(Lists.newArrayList("估价对象", "坐落", "用途(证载)", "用途(实际)", "房屋总层数", "所在层数", "建筑面积㎡", "单价", "评估总价（万元）", "法定优先受偿款(万元)", "抵押价值(万元)"));
         //有他项权力的情况
@@ -4167,18 +4195,18 @@ public class GenerateBaseDataService {
 //        String value = "/";
         String value = errorStr;
         for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
-            if (schemeJudgeObject.getDeclareRecordId() == null || schemeJudgeObject.getDeclareRecordId() == 0){
+            if (schemeJudgeObject.getDeclareRecordId() == null || schemeJudgeObject.getDeclareRecordId() == 0) {
                 continue;
             }
-            BasicApplyBatch basicApplyBatch = surveyCommonService.getBasicApplyBatchById(schemeJudgeObject.getDeclareRecordId()) ;
-            if (basicApplyBatch == null || basicApplyBatch.getId() == 0){
+            BasicApplyBatch basicApplyBatch = surveyCommonService.getBasicApplyBatchById(schemeJudgeObject.getDeclareRecordId());
+            if (basicApplyBatch == null || basicApplyBatch.getId() == 0) {
                 continue;
             }
-            BasicExamineHandle basicExamineHandle = new BasicExamineHandle(basicApplyBatch) ;
-            if (basicExamineHandle == null){
+            BasicExamineHandle basicExamineHandle = new BasicExamineHandle(basicApplyBatch);
+            if (basicExamineHandle == null) {
                 continue;
             }
-            List<BasicMatchingEnvironmentVo> basicMatchingEnvironmentVoList = basicExamineHandle.getBasicMatchingEnvironmentList() ;
+            List<BasicMatchingEnvironmentVo> basicMatchingEnvironmentVoList = basicExamineHandle.getBasicMatchingEnvironmentList();
             if (CollectionUtils.isEmpty(basicMatchingEnvironmentVoList)) {
                 continue;
             }
@@ -4260,7 +4288,7 @@ public class GenerateBaseDataService {
             List<BasicHouseRoomDecorateVo> basicHouseRoomDecorateVos = generateBaseExamineService.getBasicHouseRoomDecorateList();
             if (CollectionUtils.isNotEmpty(basicHouseRoomDecorateVos)) {
                 basicHouseRoomDecorateVos.forEach(oo -> {
-                    if(StringUtils.isNotBlank(oo.getLocation())&&oo.getLocation().contains(nameValue)){
+                    if (StringUtils.isNotBlank(oo.getLocation()) && oo.getLocation().contains(nameValue)) {
                         stringBuilder.append(oo.getPartName());
                         if (StringUtils.isNotEmpty(oo.getRemark())) {
                             stringBuilder.append(oo.getRemark());
@@ -4324,10 +4352,10 @@ public class GenerateBaseDataService {
             if (CollectionUtils.isNotEmpty(basicHouseRoomDecorateVos)) {
                 basicHouseRoomDecorateVos.forEach(oo -> {
                     if (StringUtils.contains(oo.getPartName(), nameValue)) {
-                        if(StringUtils.isNotBlank(oo.getLocation())){
+                        if (StringUtils.isNotBlank(oo.getLocation())) {
                             stringBuilder.append(oo.getLocation());
                         }
-                        if(StringUtils.isNotBlank(oo.getPartName())){
+                        if (StringUtils.isNotBlank(oo.getPartName())) {
                             stringBuilder.append(oo.getPartName()).append("为");
                         }
                         if (StringUtils.isNotBlank(oo.getRemark())) {
@@ -4694,7 +4722,6 @@ public class GenerateBaseDataService {
     }
 
 
-
     /**
      * 估价土地实体状况表
      */
@@ -4863,7 +4890,6 @@ public class GenerateBaseDataService {
         AsposeUtils.saveWord(localPath, doc);
         return localPath;
     }
-
 
 
     /**
