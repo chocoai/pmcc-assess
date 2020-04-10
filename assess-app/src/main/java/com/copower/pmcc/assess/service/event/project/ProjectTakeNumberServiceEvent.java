@@ -34,7 +34,7 @@ public class ProjectTakeNumberServiceEvent extends BaseProcessEvent {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void processFinishExecute(ProcessExecution processExecution) throws Exception {
+    public synchronized void processFinishExecute(ProcessExecution processExecution) throws Exception {
         ProjectTakeNumber projectTakeNumber = projectTakeNumberService.getDataByProcessInsId(processExecution.getProcessInstanceId());
         projectTakeNumber.setStatus(ProcessStatusEnum.FINISH.getValue());
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectTakeNumber.getProjectId());

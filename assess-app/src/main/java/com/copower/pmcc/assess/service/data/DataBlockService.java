@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.data;
 
+import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
 import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.dao.basic.*;
@@ -13,6 +14,8 @@ import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.assist.DdlMySqlAssist;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.basic.*;
+import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
+import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -62,6 +65,16 @@ public class DataBlockService {
     private BasicHouseRoomDecorateService basicHouseRoomDecorateService;
     @Autowired
     private BasicHouseRoomService basicHouseRoomService;
+    @Autowired
+    private BasicApplyBatchService basicApplyBatchService;
+    @Autowired
+    private BasicApplyBatchDetailService basicApplyBatchDetailService;
+    @Autowired
+    private BasicApplyService basicApplyService;
+    @Autowired
+    private BasicApplyDao basicApplyDao;
+    @Autowired
+    private ProjectPlanDetailsService projectPlanDetailsService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -202,22 +215,48 @@ public class DataBlockService {
                     BasicUnitHuxing basicUnitHuxing = basicUnitHuxingService.getBasicUnitHuxingById(basicHouse.getHuxingId());
                     if (basicUnitHuxing != null) {
                         basicUnitHuxing.setHouseId(basicHouse.getId());
-                        basicUnitHuxingService.saveAndUpdateBasicUnitHuxing(basicUnitHuxing,false);
+                        basicUnitHuxingService.saveAndUpdateBasicUnitHuxing(basicUnitHuxing, false);
                     }
                 }
                 List<BasicHouseRoom> basicHouseRoomList = basicHouseRoomService.getBasicHouseRoomList(basicHouse.getId());
-                if(CollectionUtils.isNotEmpty(basicHouseRoomList)){
+                if (CollectionUtils.isNotEmpty(basicHouseRoomList)) {
                     for (BasicHouseRoom basicHouseRoom : basicHouseRoomList) {
-                        BasicHouseRoomDecorate where =new BasicHouseRoomDecorate();
+                        BasicHouseRoomDecorate where = new BasicHouseRoomDecorate();
                         where.setRoomId(basicHouseRoom.getId());
                         List<BasicHouseRoomDecorate> houseRoomDecorateList = basicHouseRoomDecorateService.basicHouseRoomDecorateList(where);
-                        if(CollectionUtils.isNotEmpty(houseRoomDecorateList)){
+                        if (CollectionUtils.isNotEmpty(houseRoomDecorateList)) {
                             for (BasicHouseRoomDecorate basicHouseRoomDecorate : houseRoomDecorateList) {
                                 basicHouseRoomDecorate.setHouseId(basicHouse.getId());
-                                basicHouseRoomDecorateService.saveAndUpdateBasicHouseRoomDecorate(basicHouseRoomDecorate,false);
+                                basicHouseRoomDecorateService.saveAndUpdateBasicHouseRoomDecorate(basicHouseRoomDecorate, false);
                             }
                         }
                     }
+                }
+                BasicApply where = new BasicApply();
+                where.setBasicHouseId(basicHouse.getId());
+                List<BasicApply> basicApplies = basicApplyDao.getBasicApplyList(where);
+                if (CollectionUtils.isNotEmpty(basicApplies)) {
+                    BasicApply apply = basicApplies.get(0);
+                    BasicApplyBatchDetail basicApplyBatchDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(FormatUtils.entityNameConvertToTableName(BasicHouse.class), basicHouse.getId());
+                    ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(apply.getPlanDetailsId());
+                    if (projectPlanDetails != null)
+                        apply.setDeclareRecordId(projectPlanDetails.getDeclareRecordId());
+                    if(basicApplyBatchDetail!=null){
+                        apply.setBatchDetailId(basicApplyBatchDetail.getId());
+                        List<BasicApplyBatchDetail> list = Lists.newArrayList();
+                        basicApplyBatchDetailService.collectionParentBatchDetails(basicApplyBatchDetail.getId(), list);
+                        List<KeyValueDto> keyValueDtos = Lists.newArrayList();
+                        for (int i = list.size() - 1; i >= 0; i--) {
+                            BasicApplyBatchDetail batchDetail = list.get(i);
+                            KeyValueDto keyValueDto = new KeyValueDto();
+                            keyValueDto.setKey(batchDetail.getType());
+                            keyValueDto.setValue(String.valueOf(batchDetail.getTableId()));
+                            keyValueDtos.add(keyValueDto);
+                        }
+                        apply.setStructuralInfo(JSON.toJSONString(keyValueDtos));
+                        basicApplyBatchDetail.setDeclareRecordId(projectPlanDetails.getDeclareRecordId());
+                    }
+                    basicApplyDao.updateBasicApply(apply);
                 }
             }
         }
