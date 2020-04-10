@@ -8,6 +8,7 @@ import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -80,6 +82,24 @@ public class BaseDataDicController {
     public HttpResult getCacheDataDicListByPid(Integer pid) {
         try {
             List<BaseDataDic> sysDataDics = baseDataDicService.getCacheDataDicListByPid(pid);
+            return HttpResult.newCorrectResult(sysDataDics);
+        } catch (Exception e) {
+            LOGGER.error("获取数据字典异常", e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
+
+    /**
+     * 通过pid获取所有最低级数据
+     *
+     * @return
+     */
+    @ResponseBody
+    @GetMapping("/getBestLowDicListByPid")
+    public HttpResult getBestLowDicListByPid(Integer pid) {
+        try {
+            List<BaseDataDic> sysDataDics = Lists.newArrayList();
+            baseDataDicService.getBestLowDicListByPid(sysDataDics,pid);
             return HttpResult.newCorrectResult(sysDataDics);
         } catch (Exception e) {
             LOGGER.error("获取数据字典异常", e);

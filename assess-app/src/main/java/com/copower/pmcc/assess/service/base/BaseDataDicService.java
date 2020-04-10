@@ -189,6 +189,24 @@ public class BaseDataDicService {
     }
 
     /**
+     * 通过pid获取所有最低级数据
+     *
+     * @return
+     */
+    public void getBestLowDicListByPid(List<BaseDataDic> list,Integer pid) {
+        List<BaseDataDic> dataDicList = cmsBaseDataDicDao.getEnableListByPid(pid);
+        if(CollectionUtils.isNotEmpty(dataDicList)){
+            for (BaseDataDic item: dataDicList) {
+                getBestLowDicListByPid(list,item.getId());
+            }
+        }else {
+            BaseDataDic singleObject = cmsBaseDataDicDao.getSingleObject(pid);
+            list.add(singleObject);
+        }
+    }
+
+
+    /**
      * 获取缓存中的数据字典数据
      *
      * @return

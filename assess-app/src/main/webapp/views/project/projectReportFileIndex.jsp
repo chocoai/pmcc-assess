@@ -1244,7 +1244,7 @@
             return false;
         }
         $.ajax({
-            url: "${pageContext.request.contextPath}/baseDataDic/getCacheDataDicListByPid",
+            url: "${pageContext.request.contextPath}/baseDataDic/getBestLowDicListByPid",
             type: "get",
             dataType: "json",
             data: {pid: pid},
