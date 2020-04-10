@@ -268,28 +268,90 @@
 <input type="file" id="ajaxFileUpload" name="file" style="display: none;">
 <script type="text/javascript">
 
+    var objGenerate = {};
+
+    objGenerate.run = function (data, url, type, callback, funParams, errorCallback) {
+        Loading.progressShow();
+        $.ajax({
+            type: type,
+            url: '${pageContext.request.contextPath}' + url,
+            data: data,
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    if (funParams) {
+                        if (funParams == 'save') {
+                            notifySuccess("成功", "保存数据成功!");
+                        }
+                        if (funParams == 'add') {
+                            notifySuccess("成功", "添加数据成功!");
+                        }
+                        if (funParams == 'update') {
+                            notifySuccess("成功", "修改数据成功!");
+                        }
+                        if (funParams == 'query') {
+                            notifySuccess("成功", "查询数据成功!");
+                        }
+                        if (funParams == 'delete') {
+                            notifySuccess("成功", "删除数据成功!");
+                        }
+                    }
+                    if (callback) {
+                        callback(result.data);
+                    }
+                } else {
+                    if (errorCallback) {
+                        errorCallback(result.errmsg);
+                    }else {
+                        if (result.errmsg) {
+                            AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
+                        } else {
+                            AlertError("错误", "调用服务端方法失败，失败原因:" + result);
+                        }
+                    }
+                }
+            },
+            error: function (result) {
+                Loading.progressHide();
+                if (errorCallback) {
+                    errorCallback(result.errmsg);
+                }else {
+                    if (result.errmsg) {
+                        AlertError("错误", "调用服务端方法失败，失败原因:" + result.errmsg);
+                    } else {
+                        AlertError("错误", "调用服务端方法失败，失败原因:" + result);
+                    }
+                }
+            }
+        });
+    };
+    objGenerate.ajaxServerFun = function (data, url, type, callback, funParams, errorCallback) {
+        var deleteParams = false;
+        if (funParams) {
+            if (funParams == 'delete') {
+                deleteParams = true;
+            }
+        }
+        if (deleteParams) {
+            AlertConfirm("是否确认删除当前数据", "删除相应的数据后将不可恢复", function (flag) {
+                objGenerate.run(data, url, type, callback, funParams, errorCallback);
+            });
+        } else {
+            objGenerate.run(data, url, type, callback, funParams, errorCallback);
+        }
+    };
+
+    objGenerate.ajaxServerMethod = function (data, url, type, callback, errorCallback) {
+        objGenerate.ajaxServerFun(data, url, type, callback, null, errorCallback);
+    };
+
     /**
      * 获取资质
      * @param data
      * @param callback
      */
     function getAdPersonalIdentityDto(data, callback) {
-        $.ajax({
-            url: "${pageContext.request.contextPath}/public/getAdPersonalIdentityDto",
-            data: data,
-            type: "get",
-            dataType: "json",
-            success: function (result) {
-                if (result.ret && result.data) {
-                    callback(result.data);
-                } else {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
-                }
-            },
-            error: function (result) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
-            }
-        });
+        objGenerate.ajaxServerMethod(data,'/public/getAdPersonalIdentityDto',"get",callback,null) ;
     }
 
     //上传报告 临时添加zch
@@ -414,20 +476,7 @@
     }
 
     function getSchemeReportGeneration(data, callback) {
-        $.ajax({
-            url: "${pageContext.request.contextPath}/generateReport/getGenerateReportGeneration",
-            data: data,
-            type: "get",
-            dataType: "json",
-            success: function (result) {
-                if (result.ret && result.data) {
-                    callback(result.data);
-                }
-            },
-            error: function (result) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
-            }
-        });
+        objGenerate.ajaxServerMethod(data,'/generateReport/getGenerateReportGeneration' ,"get",callback,null) ;
     }
 
     //重新拿号 也会替换文号相关的内容
@@ -475,26 +524,11 @@
         if (!AssessCommon.isNumber(data.assessCategory)) {
             data.assessCategory = null;
         }
-        Loading.progressShow();
-        $.ajax({
-            url: "${pageContext.request.contextPath}/generateReport/resultSheetReport",
-            data: {fomData: JSON.stringify(data), reportType: reportType},
-            type: "post",
-            dataType: "json",
-            success: function (result) {
-                Loading.progressHide();
-                if (result.ret) {
-                    notifySuccess("成功",'生成结果集附件成功');
-                    getSchemeReportGeneration(data, function (info) {
-                        initFormSchemeReportGeneration(info, form, areaId);
-                    });
-                } else {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
-                }
-            },
-            error: function (result) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
-            }
+        objGenerate.ajaxServerMethod({fomData: JSON.stringify(data), reportType: reportType} , '/generateReport/resultSheetReport' ,"post",function () {
+            notifySuccess("成功",'生成结果集附件成功');
+            getSchemeReportGeneration(data, function (info) {
+                initFormSchemeReportGeneration(info, form, areaId);
+            });
         });
     }
 
@@ -525,30 +559,14 @@
 
     //报告替换 method
     function generateReportHandle(data, ids, form, areaId, callback) {
-        Loading.progressShow();
-        $.ajax({
-            url: "${pageContext.request.contextPath}/generateReport/generate",
-            data: {ids: ids, fomData: JSON.stringify(data)},
-            type: "post",
-            dataType: "json",
-            success: function (result) {
-                Loading.progressHide();
-                if (result.ret) {
-                    getSchemeReportGeneration(data, function (info) {
-                        initFormSchemeReportGeneration(info, form, areaId);
-                        if (callback) {
-                            callback();
-                        }
-                        Loading.progressHide();
-                    });
-                } else {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+        objGenerate.ajaxServerMethod({ids: ids, fomData: JSON.stringify(data)} ,'/generateReport/generate' ,"post",function () {
+            getSchemeReportGeneration(data, function (info) {
+                initFormSchemeReportGeneration(info, form, areaId);
+                if (callback) {
+                    callback();
                 }
-            },
-            error: function (result) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
-            }
-        });
+            });
+        }) ;
     }
 
     /**
@@ -557,24 +575,7 @@
      * @param callback
      */
     function saveGenerateReportInfo(data, callback) {
-        $.ajax({
-            url: "${pageContext.request.contextPath}/generateReport/saveGenerateReportInfo",
-            data: {fomData: JSON.stringify(data)},
-            type: "post",
-            dataType: "json",
-            success: function (result) {
-                if (result.ret) {
-                    if (callback) {
-                        callback();
-                    }
-                } else {
-                    AlertError("失败，失败原因:" + result.errmsg);
-                }
-            },
-            error: function (result) {
-                AlertError("调用服务端方法失败，失败原因:" + result);
-            }
-        });
+        objGenerate.ajaxServerFun({fomData: JSON.stringify(data)} , '/generateReport/saveGenerateReportInfo' ,"post",callback) ;
     }
 
     //提交

@@ -224,7 +224,7 @@
                                                            name="name"
                                                            class="form-control input-full">
                                                 </div>
-                                                <div class="col-sm-3 ">
+                                                <div class="col-sm-2 ">
                                                     <button type="button" class="btn btn-info btn-sm"
                                                             onclick="assetInfo.loadSurveyAssetInfoItemBaseList(this);">
                                                         <span class="btn-label"><i class="fa fa-search"></i></span>
@@ -235,6 +235,9 @@
                                                             onclick="assetInfo.delSurveyAssetInfoItemByDeclareId() ;"><span
                                                             class="btn-label"><i class="fa fa-minus"></i></span>移除
                                                     </button>
+
+                                                </div>
+                                                <div class="col-sm-2">
                                                     <div class="btn-group" role="group"
                                                          aria-label="Button group with nested dropdown">
 
@@ -266,7 +269,7 @@
                                                             class="fa fa-clipboard" aria-hidden="true"></i>粘贴
                                                     </button>
                                                 </div>
-                                                <div class="col-sm-4">
+                                                <div class="col-sm-2">
                                                     <div class="input-group ">
                                                         <input type="hidden" name="copyId">
                                                         <input type="text" readonly="readonly" name="copyName"
