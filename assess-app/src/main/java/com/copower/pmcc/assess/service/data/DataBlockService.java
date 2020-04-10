@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.dal.basis.dao.basic.*;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataBlockDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.SynchronousDataDto;
+import com.copower.pmcc.assess.dto.output.basic.BasicHouseRoomDecorateVo;
 import com.copower.pmcc.assess.dto.output.data.DataBlockVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.PublicService;
@@ -52,60 +53,15 @@ public class DataBlockService {
     @Autowired
     private BasicEstateService basicEstateService;
     @Autowired
-    private PublicService publicService;
-    @Autowired
-    private BaseAttachmentService baseAttachmentService;
-    @Autowired
-    private BasicEstateLandStateDao basicEstateLandStateDao;
-    @Autowired
-    private BasicEstateTaggingService basicEstateTaggingService;
-    @Autowired
-    private BasicEstateParkingService basicEstateParkingService;
-    @Autowired
-    private DdlMySqlAssist ddlMySqlAssist;
-    @Autowired
-    private BasicBuildingService basicBuildingService;
-    @Autowired
-    private BasicUnitService basicUnitService;
-    @Autowired
-    private BasicUnitHuxingService basicUnitHuxingService;
+    private BasicEstateStreetInfoService basicEstateStreetInfoService;
     @Autowired
     private BasicHouseService basicHouseService;
     @Autowired
-    private BasicHouseTradingService basicHouseTradingService;
-    @Autowired
-    private BasicHouseRoomService basicHouseRoomService;
-    @Autowired
-    private BasicHouseCorollaryEquipmentService basicHouseCorollaryEquipmentService;
+    private BasicUnitHuxingService basicUnitHuxingService;
     @Autowired
     private BasicHouseRoomDecorateService basicHouseRoomDecorateService;
     @Autowired
-    private BasicHouseDamagedDegreeService basicHouseDamagedDegreeService;
-    @Autowired
-    private BasicHouseCaseSummaryService basicHouseCaseSummaryService;
-    @Autowired
-    private BasicEstateDao basicEstateDao;
-    @Autowired
-    private BasicBuildingDao basicBuildingDao;
-    @Autowired
-    private BasicUnitDao basicUnitDao;
-    @Autowired
-    private BasicHouseDao basicHouseDao;
-    @Autowired
-    private BasicEstateParkingDao basicEstateParkingDao;
-    @Autowired
-    private BasicUnitHuxingDao basicUnitHuxingDao;
-    @Autowired
-    private BasicHouseTradingDao basicHouseTradingDao;
-    @Autowired
-    private BasicHouseRoomDecorateDao basicHouseRoomDecorateDao;
-    @Autowired
-    private BasicHouseCorollaryEquipmentDao basicHouseCorollaryEquipmentDao;
-    @Autowired
-    private BasicHouseDamagedDegreeDao basicHouseDamagedDegreeDao;
-    @Autowired
-    private BasicHouseDamagedDegreeDetailDao basicHouseDamagedDegreeDetailDao;
-
+    private BasicHouseRoomService basicHouseRoomService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -220,5 +176,50 @@ public class DataBlockService {
         dataBlock.setName(blockName);
         List<DataBlock> blockList = dataBlockDao.getDataBlockList(dataBlock);
         return blockList.size() > 0;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void updateOldData() throws Exception {
+        List<BasicEstate> basicEstateList = basicEstateService.getBasicEstateList(new BasicEstate());
+        if (CollectionUtils.isNotEmpty(basicEstateList)) {
+            for (BasicEstate basicEstate : basicEstateList) {
+                if (basicEstate.getStreetNumber() != null) {
+                    BasicEstateStreetInfo basicEstateStreetInfo = new BasicEstateStreetInfo();
+                    basicEstateStreetInfo.setEstateId(basicEstate.getId());
+                    basicEstateStreetInfo.setStreetNumber(basicEstate.getStreetNumber());
+                    basicEstateStreetInfo.setAttachedNumber(basicEstate.getAttachNumber());
+                    basicEstateStreetInfo.setBisDelete(false);
+                    basicEstateStreetInfo.setCreator(basicEstate.getCreator());
+                    basicEstateStreetInfoService.saveAndUpdateBasicEstateStreetInfo(basicEstateStreetInfo, false);
+                }
+            }
+        }
+
+        List<BasicHouse> basicHouseList = basicHouseService.getBasicHouseList(new BasicHouse());
+        if (CollectionUtils.isNotEmpty(basicHouseList)) {
+            for (BasicHouse basicHouse : basicHouseList) {
+                if (basicHouse.getHuxingId() != null) {
+                    BasicUnitHuxing basicUnitHuxing = basicUnitHuxingService.getBasicUnitHuxingById(basicHouse.getHuxingId());
+                    if (basicUnitHuxing != null) {
+                        basicUnitHuxing.setHouseId(basicHouse.getId());
+                        basicUnitHuxingService.saveAndUpdateBasicUnitHuxing(basicUnitHuxing,false);
+                    }
+                }
+                List<BasicHouseRoom> basicHouseRoomList = basicHouseRoomService.getBasicHouseRoomList(basicHouse.getId());
+                if(CollectionUtils.isNotEmpty(basicHouseRoomList)){
+                    for (BasicHouseRoom basicHouseRoom : basicHouseRoomList) {
+                        BasicHouseRoomDecorate where =new BasicHouseRoomDecorate();
+                        where.setRoomId(basicHouseRoom.getId());
+                        List<BasicHouseRoomDecorate> houseRoomDecorateList = basicHouseRoomDecorateService.basicHouseRoomDecorateList(where);
+                        if(CollectionUtils.isNotEmpty(houseRoomDecorateList)){
+                            for (BasicHouseRoomDecorate basicHouseRoomDecorate : houseRoomDecorateList) {
+                                basicHouseRoomDecorate.setHouseId(basicHouse.getId());
+                                basicHouseRoomDecorateService.saveAndUpdateBasicHouseRoomDecorate(basicHouseRoomDecorate,false);
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
