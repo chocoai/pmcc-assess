@@ -2,16 +2,18 @@ package com.copower.pmcc.assess.controller.project;
 
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.dal.basis.entity.GenerateReportInfo;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.service.BaseService;
+import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.generate.GenerateReportInfoService;
 import com.copower.pmcc.assess.service.project.generate.GenerateReportService;
+import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -22,6 +24,10 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/generateReport", name = "出具报告")
 public class ProjectReportController {
+    @Autowired
+    private ProjectInfoService projectInfoService;
+    @Autowired
+    private ProcessControllerComponent processControllerComponent;
     @Autowired
     private GenerateReportService generateReportService;
     @Autowired
@@ -82,6 +88,14 @@ public class ProjectReportController {
             baseService.writeExceptionInfo(e, error);
             return HttpResult.newErrorResult(500, e.getMessage());
         }
+    }
+
+    @RequestMapping(value = "/viewResultSheetReport/{projectId}", name = "生成单一的结果集 view", method = {RequestMethod.GET})
+    public ModelAndView viewResultSheetReport(@PathVariable(name = "projectId", required = true) Integer projectId) {
+        String view = "/project/stageGenerate/viewResultSheetReport";
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
+        modelAndView.addObject(StringUtils.uncapitalize(ProjectInfo.class.getSimpleName()), projectInfoService.getSimpleProjectInfoVo(projectInfoService.getProjectInfoById(projectId)));
+        return modelAndView;
     }
 
 }

@@ -4105,6 +4105,76 @@ public class BasicBuildingExample {
             addCriterion("gmt_modified not between", value1, value2, "gmtModified");
             return (Criteria) this;
         }
+
+        public Criteria andMinimumFloorDistanceIsNull() {
+            addCriterion("minimum_floor_distance is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMinimumFloorDistanceIsNotNull() {
+            addCriterion("minimum_floor_distance is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMinimumFloorDistanceEqualTo(String value) {
+            addCriterion("minimum_floor_distance =", value, "minimumFloorDistance");
+            return (Criteria) this;
+        }
+
+        public Criteria andMinimumFloorDistanceNotEqualTo(String value) {
+            addCriterion("minimum_floor_distance <>", value, "minimumFloorDistance");
+            return (Criteria) this;
+        }
+
+        public Criteria andMinimumFloorDistanceGreaterThan(String value) {
+            addCriterion("minimum_floor_distance >", value, "minimumFloorDistance");
+            return (Criteria) this;
+        }
+
+        public Criteria andMinimumFloorDistanceGreaterThanOrEqualTo(String value) {
+            addCriterion("minimum_floor_distance >=", value, "minimumFloorDistance");
+            return (Criteria) this;
+        }
+
+        public Criteria andMinimumFloorDistanceLessThan(String value) {
+            addCriterion("minimum_floor_distance <", value, "minimumFloorDistance");
+            return (Criteria) this;
+        }
+
+        public Criteria andMinimumFloorDistanceLessThanOrEqualTo(String value) {
+            addCriterion("minimum_floor_distance <=", value, "minimumFloorDistance");
+            return (Criteria) this;
+        }
+
+        public Criteria andMinimumFloorDistanceLike(String value) {
+            addCriterion("minimum_floor_distance like", value, "minimumFloorDistance");
+            return (Criteria) this;
+        }
+
+        public Criteria andMinimumFloorDistanceNotLike(String value) {
+            addCriterion("minimum_floor_distance not like", value, "minimumFloorDistance");
+            return (Criteria) this;
+        }
+
+        public Criteria andMinimumFloorDistanceIn(List<String> values) {
+            addCriterion("minimum_floor_distance in", values, "minimumFloorDistance");
+            return (Criteria) this;
+        }
+
+        public Criteria andMinimumFloorDistanceNotIn(List<String> values) {
+            addCriterion("minimum_floor_distance not in", values, "minimumFloorDistance");
+            return (Criteria) this;
+        }
+
+        public Criteria andMinimumFloorDistanceBetween(String value1, String value2) {
+            addCriterion("minimum_floor_distance between", value1, value2, "minimumFloorDistance");
+            return (Criteria) this;
+        }
+
+        public Criteria andMinimumFloorDistanceNotBetween(String value1, String value2) {
+            addCriterion("minimum_floor_distance not between", value1, value2, "minimumFloorDistance");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

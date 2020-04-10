@@ -174,6 +174,14 @@
         AssessCommon.loadDataDicByKey(AssessDicKey.data_company_reputation, data.propertySocialPrestige, function (html, data) {
             buildingCommon.buildingForm.find("select[name='propertySocialPrestige']").empty().html(html).trigger('change');
         });
+        AssessCommon.loadDataDicByKey(AssessDicKey.examine_building_minimumFloorDistance, null, function (html, data) {
+            html = '';
+            html += '<option value="" selected>-请选择-</option>';
+            $.each(data, function (i, item) {
+                html += "<option value='" + item.name + "'>" + item.name + "</option>";
+            });
+            buildingCommon.buildingForm.find('#build_minimumFloorDistance_data').empty().html(html).trigger('change');
+        });
         $.ajax({
             url: getContextPath() + '/architecture/dataBuildingNewRateList',
             type: 'get',
@@ -211,6 +219,16 @@
             buildingCommon.addLableData(data.vSpecifications);
         }
         buildingCommon.getBasicBuildingPropertyServiceItemBootstrapTableVo(buildingCommon.getBuildingId(), $("#basicBuildingPropertyServiceItemTable"));
+    };
+
+    buildingCommon.minimumFloorDistanceEvent = function (_this) {
+        var value = $(_this).val() ;
+        if (! value){
+            return false ;
+        }
+        var text = "相邻楼栋高度的{value}倍" ;
+        text = text.replace(/{value}/g, value) ;
+        buildingCommon.buildingForm.find("[name=betweenDistanceDescription]").val(text);
     };
 
     buildingCommon.addLableData = function (json) {

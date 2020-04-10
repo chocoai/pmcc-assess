@@ -219,10 +219,10 @@
                                                 <label class="form-control input-full" name="betweenDistanceName">${basicBuilding.betweenDistanceName}</label>
                                             </div>
 
-                                            <label class="col-sm-1 control-label">楼间距描述</label>
+                                            <label class="col-sm-1 control-label">最小楼间距倍数</label>
                                             <div class="col-sm-3">
                                                 <label class="form-control input-full"
-                                                       name="betweenDistanceDescription">${basicBuilding.betweenDistanceDescription}</label>
+                                                       name="minimumFloorDistance">${basicBuilding.minimumFloorDistance}</label>
                                             </div>
                                         </div>
                                         </div>

@@ -432,18 +432,13 @@
                                                 </div>
                                                 <label class="col-sm-1 control-label">建筑密度</label>
                                                 <div class="col-sm-3">
-                                                    <label class="form-control input-full">
-                                                        <fmt:formatNumber
-                                                                value="${basicEstateLandState.buildingDensity}"
-                                                                type="percent"
-                                                                maxFractionDigits="4"/></label>
+                                                    <label class="form-control input-full" name="buildingDensity">
+                                                        ${basicEstateLandState.buildingDensity}</label>
                                                 </div>
                                                 <label class="col-sm-1 control-label">绿地率</label>
                                                 <div class="col-sm-3">
-                                                    <label class="form-control input-full">
-                                                        <fmt:formatNumber value="${basicEstateLandState.greenSpaceRate}"
-                                                                          type="percent"
-                                                                          maxFractionDigits="4"/></label>
+                                                    <label class="form-control input-full" name="greenSpaceRate">
+                                                        ${basicEstateLandState.greenSpaceRate}</label>
                                                 </div>
                                             </div>
                                         </div>

@@ -515,7 +515,7 @@
                                 html += " <div class='col-sm-5'>";
                                 html += "<input type='hidden'  name='tableName' value='tb_basic_building'>";
 
-                                html += '<input type="text" name="name"  class="form-control input-full" required  onkeyup="batchTreeTool.staticLocalAutoComplete(this' + "," + "'" + type + "'" + ')" > ';
+                                html += '<input type="text" name="name"  class="form-control input-full" required  oninput="batchTreeTool.staticLocalAutoComplete(this' + "," + "'" + type + "'" + ')" > ';
 
                                 html += "</div>";
                                 html += "</div>";
@@ -544,7 +544,7 @@
                                 html += "</label>";
                                 html += " <div class='col-sm-5'>";
                                 html += "<input type='hidden'  name='tableName' value='tb_basic_unit'>";
-                                html += '<input type="text" name="name"  class="form-control input-full" required  onkeyup="batchTreeTool.staticLocalAutoComplete(this' + "," + "'" + type + "'" + ')" > ';
+                                html += '<input type="text" name="name"  class="form-control input-full" required  oninput="batchTreeTool.staticLocalAutoComplete(this' + "," + "'" + type + "'" + ')" > ';
                                 html += "</div>";
                                 html += "</div>";
                                 html += "</div>";
@@ -570,7 +570,7 @@
                                 html += "</label>";
                                 html += " <div class='col-sm-5'>";
                                 html += "<input type='hidden'  name='tableName' value='tb_basic_house'>";
-                                html += '<input type="text" name="name"  class="form-control input-full" required  onkeyup="batchTreeTool.staticLocalAutoComplete(this' + "," + "'" + type + "'" + ')" > ';
+                                html += '<input type="text" name="name"  class="form-control input-full" required  oninput="batchTreeTool.staticLocalAutoComplete(this' + "," + "'" + type + "'" + ')" > ';
                                 html += "</div>";
                                 html += "</div>";
                                 html += "</div>";
@@ -621,20 +621,20 @@
      * @param type
      * @returns {Array}
      */
-    batchTreeTool.getAutoCompleteData = function (type,name) {
+    batchTreeTool.getAutoCompleteData = function (type, name) {
         var availableTags = [];
         switch (type) {
             case 'building': {
                 var a = "栋", b = "幢", c = "楼";
-                availableTags.push(name+a);
-                availableTags.push(name+b);
-                availableTags.push(name+c);
+                availableTags.push(name + a);
+                availableTags.push(name + b);
+                availableTags.push(name + c);
                 break;
             }
             case 'unit': {
                 var d = "单元", e = "区";
-                availableTags.push(name+d);
-                availableTags.push(name+e);
+                availableTags.push(name + d);
+                availableTags.push(name + e);
                 break;
             }
             default:
@@ -649,26 +649,20 @@
      */
     batchTreeTool.staticLocalAutoComplete = function (_this, type) {
         var value = $(_this).val();
-        if (!value){
-            return false ;
+        if (!value) {
+            return false;
         }
-        switch (type) {
-            case 'estate': {
-                $(_this).autocomplete({
-                    source: batchTreeTool.getAutoCompleteData('building',value),
-                    minLength: 2
-                });
-                break;
-            }
-            case 'building': {
-                $(_this).autocomplete({
-                    source: batchTreeTool.getAutoCompleteData('unit',value),
-                    minLength: 2
-                });
-                break;
-            }
-            default:
-                break;
+        if (type.indexOf('estate') != -1) {
+            $(_this).autocomplete({
+                source: batchTreeTool.getAutoCompleteData('building', value),
+                minLength: 1
+            });
+        }
+        if (type.indexOf('building') != -1) {
+            $(_this).autocomplete({
+                source: batchTreeTool.getAutoCompleteData('unit', value),
+                minLength: 1
+            });
         }
     };
     /**
@@ -678,26 +672,20 @@
      */
     batchTreeTool.staticLocalAutoCompleteEdit = function (_this, type) {
         var value = $(_this).val();
-        if (!value){
-            return false ;
+        if (!value) {
+            return false;
         }
-        switch (type) {
-            case 'building': {
-                $(_this).autocomplete({
-                    source: batchTreeTool.getAutoCompleteData(type,value),
-                    minLength: 2
-                });
-                break;
-            }
-            case 'unit': {
-                $(_this).autocomplete({
-                    source: batchTreeTool.getAutoCompleteData(type,value),
-                    minLength: 2
-                });
-                break;
-            }
-            default:
-                break;
+        if (type.indexOf('building') != -1) {
+            $(_this).autocomplete({
+                source: batchTreeTool.getAutoCompleteData(type, value),
+                minLength: 1
+            });
+        }
+        if (type.indexOf('unit') != -1) {
+            $(_this).autocomplete({
+                source: batchTreeTool.getAutoCompleteData(type, value),
+                minLength: 1
+            });
         }
     };
 
@@ -779,7 +767,7 @@
                 html += "名称";
                 html += "</label>";
                 html += " <div class='col-sm-5'>";
-                html += '<input type="text" name="name"  class="form-control input-full" required  onkeyup="batchTreeTool.staticLocalAutoCompleteEdit(this' + "," + "'" + type + "'" + ')" > ';
+                html += '<input type="text" name="name"  class="form-control input-full" required  oninput="batchTreeTool.staticLocalAutoCompleteEdit(this' + "," + "'" + type + "'" + ')" > ';
 
                 html += "</div>";
                 html += declareRecordsHtml;
@@ -798,7 +786,7 @@
                 html += "名称";
                 html += "</label>";
                 html += " <div class='col-sm-5'>";
-                html += '<input type="text" name="name"  class="form-control input-full" required  onkeyup="batchTreeTool.staticLocalAutoCompleteEdit(this' + "," + "'" + type + "'" + ')" > ';
+                html += '<input type="text" name="name"  class="form-control input-full" required  oninput="batchTreeTool.staticLocalAutoCompleteEdit(this' + "," + "'" + type + "'" + ')" > ';
                 html += "</div>";
                 html += declareRecordsHtml;
 
@@ -816,7 +804,7 @@
                 html += "名称";
                 html += "</label>";
                 html += " <div class='col-sm-5'>";
-                html += '<input type="text" name="name"  class="form-control input-full" required  onkeyup="batchTreeTool.staticLocalAutoCompleteEdit(this' + "," + "'" + type + "'" + ')" > ';
+                html += '<input type="text" name="name"  class="form-control input-full" required  oninput="batchTreeTool.staticLocalAutoCompleteEdit(this' + "," + "'" + type + "'" + ')" > ';
                 html += "</div>";
                 html += declareRecordsHtml;
                 html += "</div>";
@@ -833,7 +821,7 @@
                 html += "名称";
                 html += "</label>";
                 html += " <div class='col-sm-5'>";
-                html += '<input type="text" name="name"  class="form-control input-full" required  onkeyup="batchTreeTool.staticLocalAutoCompleteEdit(this' + "," + "'" + type + "'" + ')" > ';
+                html += '<input type="text" name="name"  class="form-control input-full" required  oninput="batchTreeTool.staticLocalAutoCompleteEdit(this' + "," + "'" + type + "'" + ')" > ';
                 html += "</div>";
                 html += declareRecordsHtml;
                 html += "</div>";

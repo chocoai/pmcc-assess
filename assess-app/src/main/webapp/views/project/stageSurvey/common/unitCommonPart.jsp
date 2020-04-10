@@ -5,12 +5,17 @@
     <div class="row form-group">
         <div class="col-md-12">
             <div class="form-inline x-valid">
-                <label class="col-sm-2 col-form-label">
-                    {name}{index} 所在位置 <span class="symbol required"></span>
-                    <input type="hidden" name="name{index}" data-name="name" value="{name}">
+                <label class="col-sm-1 col-form-label">
+                    名称 <span class="symbol required"></span>
+                </label>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control input-full" name="name{index}" required data-name="name" value="{name}">
+                </div>
+                <label class="col-sm-1 col-form-label">
+                    所在位置 <span class="symbol required"></span>
                     <input type="hidden" name="index{index}" data-name="index" value="{index}">
                 </label>
-                <div class="col-sm-7">
+                <div class="col-sm-3">
                     <div class="input-group">
                         <input type="text" required="required"  name="unitLocation{index}" data-name="unitLocation"
                                class="form-control" list="unitLocationList" value="{unitLocation}">

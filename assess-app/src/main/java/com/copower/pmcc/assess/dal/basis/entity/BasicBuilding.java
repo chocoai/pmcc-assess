@@ -130,6 +130,8 @@ public class BasicBuilding {
 
     private Date gmtModified;
 
+    private String minimumFloorDistance;
+
     public Integer getId() {
         return id;
     }
@@ -632,5 +634,13 @@ public class BasicBuilding {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public String getMinimumFloorDistance() {
+        return minimumFloorDistance;
+    }
+
+    public void setMinimumFloorDistance(String minimumFloorDistance) {
+        this.minimumFloorDistance = minimumFloorDistance == null ? null : minimumFloorDistance.trim();
     }
 }

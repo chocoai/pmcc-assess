@@ -167,7 +167,7 @@ public class BasicUnitCommonPartService {
                     if (org.apache.commons.lang3.StringUtils.isBlank(unitLocation)) {
                         continue;
                     }
-                    stringList.add(String.join("", name, String.valueOf(index),":", unitLocation));
+                    stringList.add(String.join("", name,":", unitLocation));
                 }
             }
         }

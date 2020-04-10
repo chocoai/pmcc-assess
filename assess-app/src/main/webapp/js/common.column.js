@@ -256,7 +256,7 @@ commonColumn.matchingMainRoadColumn = function () {
     cols.push({field: 'visitorsFlowrateName', title: '人流量'});
     cols.push({
         field: 'id', title: '限行时间,限行速度,特殊限行', formatter: function (value, row, index) {
-            var str = row.limitTime+row.limitSpeed+row.limitSpeialName;
+            var str = row.limitTime + row.limitSpeed + row.limitSpeialName;
             return str;
         }
     });
@@ -493,7 +493,7 @@ commonColumn.unitDecorateColumn = function () {
 
 
 //单元-公共部分
-commonColumn.unitCommonPartColumn  = function () {
+commonColumn.unitCommonPartColumn = function () {
     var cols = [];
     cols.push({
         field: 'name', title: '公共部位', formatter: function (value, row, index) {
@@ -505,8 +505,22 @@ commonColumn.unitCommonPartColumn  = function () {
         }
     });
     cols.push({field: 'unitLocation', title: '所在位置'});
-    cols.push({field: 'unitMonadName', title: '单位'});
-    cols.push({field: 'unitQuantityName', title: '数量'});
+    cols.push({
+        field: 'unitMonadName', title: '单位', formatter: function (value, row, index) {
+            if (value) {
+                return value;
+            }
+            return row.unitMonad;
+        }
+    });
+    cols.push({
+        field: 'unitQuantityName', title: '数量', formatter: function (value, row, index) {
+            if (value) {
+                return value;
+            }
+            return row.unitQuantity;
+        }
+    });
     return cols;
 }
 
@@ -583,7 +597,7 @@ commonColumn.houseRoomResidence = function () {
     cols.push({
         field: 'lengthDisplay', title: '长度', formatter: function (value, row, index) {
             var s = row.length;
-            if (row.houseShape=='不规则') {
+            if (row.houseShape == '不规则') {
                 s += "(最长)";
             }
             return s;
@@ -592,7 +606,7 @@ commonColumn.houseRoomResidence = function () {
     cols.push({
         field: 'widthDisplay', title: '宽度', formatter: function (value, row, index) {
             var s = row.width;
-            if (row.houseShape=='不规则') {
+            if (row.houseShape == '不规则') {
                 s += "(最宽)";
             }
             return s;

@@ -46,6 +46,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.NumberUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -172,7 +173,7 @@ public class BasicBuildingService extends BasicEntityAbstract {
         if (containDifference) {
             List<BasicBuilding> buildingDifferenceList = Lists.newArrayList();
             for (KeyValueDto keyValueDto : keyValueDtos) {
-                if(BasicFormClassifyEnum.BUILDING.getKey().equals(keyValueDto.getKey())){
+                if (BasicFormClassifyEnum.BUILDING.getKey().equals(keyValueDto.getKey())) {
                     buildingDifferenceList.add(getBasicBuildingById(Integer.valueOf(keyValueDto.getValue())));
                 }
             }
@@ -256,6 +257,12 @@ public class BasicBuildingService extends BasicEntityAbstract {
         }
         vo.setPropertySocialPrestigeName(baseDataDicService.getNameById(basicBuilding.getPropertySocialPrestige()));
         vo.setCreatorName(publicService.getUserNameByAccount(basicBuilding.getCreator()));
+        if (org.apache.commons.lang.math.NumberUtils.isNumber(basicBuilding.getMinimumFloorDistance())) {
+            String nameById = baseDataDicService.getNameById(basicBuilding.getMinimumFloorDistance());
+            if (StringUtils.isNotBlank(nameById)) {
+                vo.setMinimumFloorDistance(nameById);
+            }
+        }
         return vo;
     }
 

@@ -25,6 +25,9 @@
                             <input type="button" class="btn btn-xs btn-primary"
                                    onclick="window.open('${pageContext.request.contextPath}/declareRecord/editDeclareRecordNumber/${projectInfo.id}');"
                                    value="权证编号变更">
+                            <input type="button" class="btn btn-xs btn-primary"
+                                   onclick="window.open('${pageContext.request.contextPath}/generateReport/viewResultSheetReport/${projectInfo.id}');"
+                                   value="结果表生成">
                         </small>
                     </div>
                 </div>

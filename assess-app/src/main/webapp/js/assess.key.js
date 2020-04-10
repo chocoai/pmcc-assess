@@ -209,6 +209,7 @@ AssessDicKey.examine_building_maintenance_category = "examine.building.maintenan
 AssessDicKey.examine_building_materialquality = "examine.building.maintenance.materialQuality";//围护结构材质
 AssessDicKey.examine_building_function_type = "building.function.type";//建筑功能类型
 AssessDicKey.examine_building_between_distance = "examine.building.between.distance";//楼间距
+AssessDicKey.examine_building_minimumFloorDistance = "examine.building.minimumFloorDistance";//最小楼间距倍数
 AssessDicKey.completed_time_type = "completed.time.type";//建筑功能类型
 
 //单元

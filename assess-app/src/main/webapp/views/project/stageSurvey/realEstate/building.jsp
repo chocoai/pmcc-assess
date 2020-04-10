@@ -325,9 +325,33 @@
                                                                             class="form-control input-full betweenDistance search-select select2">
                                                                     </select>
                                                                 </div>
-                                                                <label class="col-sm-1">楼间距描述</label>
+                                                                <label class="col-sm-1">最小楼间距倍数</label>
                                                                 <div class="col-md-3">
-                                                                    <input type="text" placeholder="楼间距描述"
+
+                                                                    <div class="input-group">
+
+                                                                        <input type="text" required="required"
+                                                                               name="minimumFloorDistance" placeholder="最小楼间距倍数"
+                                                                               class="form-control form-control-sm" onblur="buildingCommon.minimumFloorDistanceEvent(this);"
+                                                                               list="build_minimumFloorDistance_data"
+                                                                               value="${basicBuilding.minimumFloorDistance}">
+
+                                                                        <datalist id="build_minimumFloorDistance_data">
+                                                                            <option value="" selected="">-请选择-</option>
+                                                                        </datalist>
+
+                                                                        <div class="input-group-prepend ">
+                                                                            <button class="btn btn-warning btn-sm "
+                                                                                    style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                                                    type="button"
+                                                                                    onclick="$(this).closest('.input-group').find('input').val('');">
+                                                                                清空
+                                                                                <i class="fa "></i>
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <input type="hidden" placeholder="楼间距描述"
                                                                            class="form-control input-full"
                                                                            name="betweenDistanceDescription"
                                                                            value="${basicBuilding.betweenDistanceDescription}">

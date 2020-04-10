@@ -161,21 +161,37 @@ var unitDecorate;
             });
         },
         openPartItemModal: function () {
-            AssessCommon.loadAsyncDataDicByKey(AssessDicKey.examineUnitCommonPart, '', function (html, resultData) {
+            UnitCommonPartFun.getBasicUnitCommonPartList({unitId: unitCommon.getUnitId()}, function (dataAll) {
+                var unitCommonParts = [];
+                $.each(dataAll, function (i, data) {
+                    var resultData = null;
+                    if (data.unitLocation) {
+                        try {
+                            resultData = JSON.parse(data.unitLocation);
+                        } catch (e) {
+                        }
+                    }
+                    if (resultData) {
+                        $.each(resultData, function (j, item) {
+                            var name = item.name + item.index;
+                            unitCommonParts.push(name);
+                        })
+                    }
+                });
                 var target = $("#frmUnitDecoratePartItem").find(".card-body");
                 target.empty();
                 var resultHtml = '<div>';
-                var divLength = Math.ceil(resultData.length / 6);
+                var divLength = Math.ceil(unitCommonParts.length / 6);
                 for (var j = 0; j < divLength; j++) {
                     resultHtml += '<div class="row form-group">';
                     resultHtml += '<div class="col-md-12">';
                     resultHtml += "<div class='form-check' style='justify-content:left'>";
-                    var length = (j + 1) * 6 > resultData.length ? resultData.length : (j + 1) * 6;
+                    var length = (j + 1) * 6 > unitCommonParts.length ? unitCommonParts.length : (j + 1) * 6;
                     for (var i = j * 6; i < length; i++) {
                         resultHtml += "<label class='form-check-label'>";
                         resultHtml += "<input class='form-check-input' type='checkbox' name='partItemCheckBox' ";
-                        resultHtml += 'value="' + resultData[i].name + '">';
-                        resultHtml += "<span class='form-check-sign'>" + resultData[i].name + "</span></label>";
+                        resultHtml += 'value="' + unitCommonParts[i] + '">';
+                        resultHtml += "<span class='form-check-sign'>" + unitCommonParts[i] + "</span></label>";
                     }
                     resultHtml += "</div>";
                     resultHtml += "</div>";
@@ -183,7 +199,30 @@ var unitDecorate;
                 }
 
                 target.append(resultHtml);
-            }, false);
+            });
+            // AssessCommon.loadAsyncDataDicByKey(AssessDicKey.examineUnitCommonPart, '', function (html, resultData) {
+            //     var target = $("#frmUnitDecoratePartItem").find(".card-body");
+            //     target.empty();
+            //     var resultHtml = '<div>';
+            //     var divLength = Math.ceil(resultData.length / 6);
+            //     for (var j = 0; j < divLength; j++) {
+            //         resultHtml += '<div class="row form-group">';
+            //         resultHtml += '<div class="col-md-12">';
+            //         resultHtml += "<div class='form-check' style='justify-content:left'>";
+            //         var length = (j + 1) * 6 > resultData.length ? resultData.length : (j + 1) * 6;
+            //         for (var i = j * 6; i < length; i++) {
+            //             resultHtml += "<label class='form-check-label'>";
+            //             resultHtml += "<input class='form-check-input' type='checkbox' name='partItemCheckBox' ";
+            //             resultHtml += 'value="' + resultData[i].name + '">';
+            //             resultHtml += "<span class='form-check-sign'>" + resultData[i].name + "</span></label>";
+            //         }
+            //         resultHtml += "</div>";
+            //         resultHtml += "</div>";
+            //         resultHtml += "</div>";
+            //     }
+            //
+            //     target.append(resultHtml);
+            // }, false);
 
             var value = $('#' + unitDecorate.prototype.config().frm).find("input[name='unitCommonPart']").val();
             if (unitDecorate.prototype.isNotBlank(value)) {
@@ -469,7 +508,7 @@ unitCommonPart.prototype.appendRecording = function (_this) {
     var start = target.find(".form-group").size();
     var len = Number(data.unitQuantity) + start;
     for (var i = 1 + start; i <= len; i++) {
-        var html = unitCommonPart.prototype.replaceHtml({index: i, name: data.unitCommonPart});
+        var html = unitCommonPart.prototype.replaceHtml({index: i, name: data.unitCommonPart+i});
         target.append(html);
     }
 

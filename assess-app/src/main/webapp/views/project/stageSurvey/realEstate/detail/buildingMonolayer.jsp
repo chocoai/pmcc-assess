@@ -92,8 +92,12 @@
                                                 楼栋所在位置
                                             </label>
                                             <div class="col-sm-3">
-                                                <label class="form-control input-full" name="location">${basicBuilding.location}</label>
-                                            </div>
+                                                <div class="input-group">
+                                                    <label class="form-control form-control-sm"
+                                                           name="reference">${basicBuilding.reference}</label>
+                                                    <label class="form-control form-control-sm"
+                                                           name="orientation">${basicBuilding.orientation}</label>
+                                                </div>                                            </div>
                                             <label class="col-sm-1 control-label">
                                                 层高
                                             </label>
@@ -187,10 +191,10 @@
                                                 <label class="form-control input-full" name="betweenDistanceName">${basicBuilding.betweenDistanceName}</label>
                                             </div>
 
-                                            <label class="col-sm-1 control-label">楼间距描述</label>
+                                            <label class="col-sm-1 control-label">最小楼间距倍数</label>
                                             <div class="col-sm-3">
                                                 <label class="form-control input-full"
-                                                       name="betweenDistanceDescription">${basicBuilding.betweenDistanceDescription}</label>
+                                                       name="minimumFloorDistance">${basicBuilding.minimumFloorDistance}</label>
                                             </div>
                                         </div>
                                         </div>

@@ -124,10 +124,54 @@
                                                                     楼栋所在位置<span class="symbol required"></span>
                                                                 </label>
                                                                 <div class="col-md-3">
-                                                                    <input type="text" placeholder="楼栋所在位置"
-                                                                           name="location"
-                                                                           class="form-control input-full" required
-                                                                           value="${basicBuilding.location}">
+                                                                    <div class="input-group">
+                                                                        <input type="text" required="required"
+                                                                               name="reference" placeholder="参照物"
+                                                                               class="form-control form-control-sm"
+                                                                               list="build_reference_data"
+                                                                               value="${basicBuilding.reference}">
+                                                                        <datalist id="build_reference_data">
+                                                                            <option value="" selected="">-请选择-</option>
+                                                                            <option value="楼盘中">楼盘中</option>
+                                                                            <option value="楼盘大门">楼盘大门</option>
+                                                                        </datalist>
+                                                                        <input type="text" required="required"
+                                                                               name="orientation" placeholder="方位"
+                                                                               class="form-control form-control-sm"
+                                                                               list="build_orientation_data"
+                                                                               value="${basicBuilding.orientation}">
+                                                                        <datalist id="build_orientation_data">
+                                                                            <option value="" selected="">-请选择-</option>
+                                                                            <option value="左面">左面</option>
+                                                                            <option value="右面">右面</option>
+                                                                            <option value="正面">正面</option>
+                                                                            <option value="南面">南面</option>
+                                                                            <option value="北面">北面</option>
+                                                                            <option value="东面">东面</option>
+                                                                            <option value="东面">东面</option>
+                                                                            <option value="西面">西面</option>
+                                                                            <option value="东北">东北</option>
+                                                                            <option value="东南面">东南面</option>
+                                                                            <option value="东北面">东北面</option>
+                                                                            <option value="西南面">西南面</option>
+                                                                            <option value="西北面">西北面</option>
+                                                                        </datalist>
+                                                                        <div class="input-group-prepend ">
+                                                                            <button class="btn btn-warning btn-sm "
+                                                                                    style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                                                    type="button"
+                                                                                    onclick="$(this).closest('.input-group').find('input').val('');">
+                                                                                清空
+                                                                                <i class="fa "></i>
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+
+
+                                                                    <%--<input type="text" placeholder="楼栋所在位置"--%>
+                                                                    <%--name="location"--%>
+                                                                    <%--class="form-control input-full" required--%>
+                                                                    <%--value="${basicBuilding.location}">--%>
                                                                 </div>
                                                                 <label class="col-sm-1">
                                                                     层高<span class="symbol required"></span>
@@ -243,9 +287,33 @@
                                                                             class="form-control input-full betweenDistance search-select select2">
                                                                     </select>
                                                                 </div>
-                                                                <label class="col-sm-1">楼间距描述</label>
+                                                                <label class="col-sm-1">最小楼间距倍数</label>
                                                                 <div class="col-md-3">
-                                                                    <input type="text" placeholder="楼间距描述"
+
+                                                                    <div class="input-group">
+
+                                                                        <input type="text" required="required"
+                                                                               name="minimumFloorDistance" placeholder="最小楼间距倍数"
+                                                                               class="form-control form-control-sm" onblur="buildingCommon.minimumFloorDistanceEvent(this);"
+                                                                               list="build_minimumFloorDistance_data"
+                                                                               value="${basicBuilding.minimumFloorDistance}">
+
+                                                                        <datalist id="build_minimumFloorDistance_data">
+                                                                            <option value="" selected="">-请选择-</option>
+                                                                        </datalist>
+
+                                                                        <div class="input-group-prepend ">
+                                                                            <button class="btn btn-warning btn-sm "
+                                                                                    style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                                                    type="button"
+                                                                                    onclick="$(this).closest('.input-group').find('input').val('');">
+                                                                                清空
+                                                                                <i class="fa "></i>
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <input type="hidden" placeholder="楼间距描述"
                                                                            class="form-control input-full"
                                                                            name="betweenDistanceDescription"
                                                                            value="${basicBuilding.betweenDistanceDescription}">
