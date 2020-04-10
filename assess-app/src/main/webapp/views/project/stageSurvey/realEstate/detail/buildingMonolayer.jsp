@@ -308,26 +308,7 @@
                                         </div>
                                         </div>
                                     </div>
-                                    <div class="row form-group" id="navButtonBuildGroupFileId">
-                                        <div class="col-md-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-1 control-label">平面图</label>
-                                            <div class="col-sm-3">
-                                                <div id="_building_floor_plan"></div>
-                                            </div>
-                                    
-                                            <label class="col-sm-1 control-label">外装图</label>
-                                            <div class="col-sm-3">
-                                                <div id="_building_figure_outside"></div>
-                                            </div>
-                                    
-                                            <label class="col-sm-1 control-label">外观图</label>
-                                            <div class="col-sm-3">
-                                                <div id="_building_floor_Appearance_figure"></div>
-                                            </div>
-                                        </div>
-                                        </div>
-                                    </div>
+                                    <div id="basicBuilding"></div>
                                 </form>
                             </div>
                         </div>

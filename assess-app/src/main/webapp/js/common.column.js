@@ -620,8 +620,24 @@ commonColumn.houseRoomStore = function () {
     var cols = [];
     cols.push({field: 'adjacentPositionName', title: '相邻位置'});
     cols.push({field: 'orientationName', title: '方位'});
-    cols.push({field: 'opening', title: '开间(最大开间)'});
-    cols.push({field: 'depth', title: '进深(最小进深)'});
+    cols.push({
+        field: 'openingDisplay', title: '开间', formatter: function (value, row, index) {
+            var s = row.opening;
+            if (row.houseShape=='不规则') {
+                s += "(最大)";
+            }
+            return s;
+        }
+    });
+    cols.push({
+        field: 'depthDisplay', title: '进深', formatter: function (value, row, index) {
+            var s = row.depth;
+            if (row.houseShape=='不规则') {
+                s += "(最小)";
+            }
+            return s;
+        }
+    });
     cols.push({field: 'distance', title: '距离'});
 
     return cols;
@@ -631,8 +647,24 @@ commonColumn.houseRoomHotel = function () {
     var cols = [];
     cols.push({field: 'aeration', title: '通风'});
     cols.push({field: 'lighting', title: '采光'});
-    cols.push({field: 'length', title: '长度(最长)'});
-    cols.push({field: 'width', title: '宽度(最宽)'});
+    cols.push({
+        field: 'lengthDisplay', title: '长度', formatter: function (value, row, index) {
+            var s = row.length;
+            if (row.houseShape=='不规则') {
+                s += "(最长)";
+            }
+            return s;
+        }
+    });
+    cols.push({
+        field: 'widthDisplay', title: '宽度', formatter: function (value, row, index) {
+            var s = row.width;
+            if (row.houseShape=='不规则') {
+                s += "(最宽)";
+            }
+            return s;
+        }
+    });
     return cols;
 }
 

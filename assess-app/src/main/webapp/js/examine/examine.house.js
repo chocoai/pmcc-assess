@@ -36,13 +36,41 @@
     //附件上传控件id数组
     houseCommon.houseFileControlIdArray = [];
 
-    houseCommon.getUploadKey = function(){
-        AssessCommon.loadAsyncDataDicByKey(AssessDicKey.examineBasicHouse, '', function (html, resultData) {
-            $.each(resultData, function (i, item) {
-                houseCommon.houseFileControlIdArray.push(item.fieldName);
-            });
+    houseCommon.getUploadKey = function(bisDetail){
+        houseCommon.getFilePartHtml(AssessDicKey.examineHouseFilePart,bisDetail);
+        houseCommon.getFilePartHtml(AssessDicKey.examineHouseHuxingFilePart,bisDetail);
+        houseCommon.getFilePartHtml(AssessDicKey.examineHouseTradingFilePart,bisDetail);
+    };
+
+    houseCommon.getFilePartHtml = function(fieldName,bisDetail){
+        var fileDiv = $('#'+fieldName);
+        fileDiv.empty();
+        var houseFileHtml = '';
+        AssessCommon.loadAsyncDataDicByKey(fieldName, '', function (html, resultData) {
+            var divLength = Math.ceil(resultData.length/3);
+            for (var j = 0; j < divLength; j++) {
+                houseFileHtml += '<div class="row form-group">';
+                houseFileHtml += '<div class="col-md-12">';
+                houseFileHtml += '<div class="form-inline x-valid">';
+                var length = (j+1)*3>resultData.length?resultData.length:(j+1)*3;
+                for (var i = j*3; i < length; i++) {
+                    houseFileHtml += '<label class="col-sm-1">'+resultData[i].name+'</label>';
+                    houseFileHtml += '<div class="col-sm-3">';
+                    if (bisDetail != false) {
+                        houseFileHtml += '<input id="' + resultData[i].fieldName + '" placeholder="上传附件" class="form-control input-full" type="file">';
+                    }
+                    houseFileHtml += '<div id="_' + resultData[i].fieldName + '"></div>';
+                    houseFileHtml += '</div>';
+                    houseCommon.houseFileControlIdArray.push(resultData[i].fieldName);
+                }
+                houseFileHtml += "</div>";
+                houseFileHtml += "</div>";
+                houseFileHtml += "</div>";
+            }
+
         }, false);
-    }
+        fileDiv.append(houseFileHtml);
+    };
 
     houseCommon.getHouseId = function () {
         return houseCommon.houseForm.find('[name=id]').val() != null ? houseCommon.houseForm.find('[name=id]').val() : houseCommon.tableId;
@@ -180,7 +208,7 @@
 
     //房屋初始化以及赋值
     houseCommon.initForm = function (data, bisDetail) {
-        houseCommon.getUploadKey();
+        houseCommon.getUploadKey(bisDetail);
         if (!data || !data.basicHouse) return;
         //基本信息
         houseCommon.houseForm.initForm(data.basicHouse, function () {
@@ -315,14 +343,14 @@
                     var str = strArr.join(",");
                     //当属于数组中的任意一项时显示
                     if (str.indexOf(useConditionData.name) != -1) {
-                        $("#useConditionDescription").parent().parent().hide();
+                        $("#useConditionDescription").parent().parent().parent().parent().hide();
                     } else {
-                        $("#useConditionDescription").parent().parent().show();
+                        $("#useConditionDescription").parent().parent().parent().parent().show();
                     }
                 });
             }
         } else {
-            $("#useConditionDescription").parent().parent().hide();
+            $("#useConditionDescription").parent().parent().parent().parent().hide();
         }
 
         //绑定变更事件
@@ -334,9 +362,9 @@
                     var str = strArr.join(",");
                     //当属于数组中的任意一项时显示
                     if (str.indexOf(useConditionData.name) != -1) {
-                        $("#useConditionDescription").parent().parent().hide();
+                        $("#useConditionDescription").parent().parent().parent().parent().hide();
                     } else {
-                        $("#useConditionDescription").parent().parent().show();
+                        $("#useConditionDescription").parent().parent().parent().parent().show();
                     }
                 });
             }

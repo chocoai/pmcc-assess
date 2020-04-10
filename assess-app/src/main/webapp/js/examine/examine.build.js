@@ -11,10 +11,41 @@
     buildingCommon.tableName = AssessDBKey.BasicBuilding;
     //附件上传控件id数组
     buildingCommon.buildingFileControlIdArray = [
-        AssessUploadKey.BUILDING_FLOOR_PLAN,
-        AssessUploadKey.BUILDING_FIGURE_OUTSIDE,
-        AssessUploadKey.BUILDING_FLOOR_APPEARANCE_FIGURE
     ];
+
+    buildingCommon.getUploadKey = function(bisDetail){
+        buildingCommon.getFilePartHtml(AssessDicKey.examineBasicBuilding,bisDetail);
+    };
+
+    buildingCommon.getFilePartHtml = function(fieldName,bisDetail){
+        var fileDiv = buildingCommon.buildingForm.find('#'+fieldName);
+        fileDiv.empty();
+        var buildingFileHtml = '';
+        AssessCommon.loadAsyncDataDicByKey(fieldName, '', function (html, resultData) {
+            var divLength = Math.ceil(resultData.length/3);
+            for (var j = 0; j < divLength; j++) {
+                buildingFileHtml += '<div class="row form-group">';
+                buildingFileHtml += '<div class="col-md-12">';
+                buildingFileHtml += '<div class="form-inline x-valid">';
+                var length = (j+1)*3>resultData.length?resultData.length:(j+1)*3;
+                for (var i = j*3; i < length; i++) {
+                    buildingFileHtml += '<label class="col-sm-1">'+resultData[i].name+'</label>';
+                    buildingFileHtml += '<div class="col-sm-3">';
+                    if (bisDetail != false) {
+                        buildingFileHtml += '<input id="' + resultData[i].fieldName + '" placeholder="上传附件" class="form-control input-full" type="file">';
+                    }
+                    buildingFileHtml += '<div id="_' + resultData[i].fieldName + '"></div>';
+                    buildingFileHtml += '</div>';
+                    buildingCommon.buildingFileControlIdArray.push(resultData[i].fieldName);
+                }
+                buildingFileHtml += "</div>";
+                buildingFileHtml += "</div>";
+                buildingFileHtml += "</div>";
+            }
+
+        }, false);
+        fileDiv.append(buildingFileHtml);
+    };
 
     buildingCommon.getBuildingId = function () {
         var id = buildingCommon.buildingForm.find('[name=id]').val() != null ? buildingCommon.buildingForm.find('[name=id]').val() : buildingCommon.tableId;
@@ -130,6 +161,7 @@
             data.estateId = buildingCommon.buildingForm.find("input[name='estateId']").val();
         } catch (e) {
         }
+        buildingCommon.getUploadKey(bisDetail);
         buildingCommon.buildingForm.clearAll();
         buildingCommon.buildingForm.initForm(data);
         //1.初始化下拉框；2.初始化上传控件；3.显示已上传的附件信息；4.加载从表数据

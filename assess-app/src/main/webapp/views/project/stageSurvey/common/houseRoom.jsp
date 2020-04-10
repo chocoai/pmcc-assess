@@ -55,7 +55,7 @@
                     <input type="hidden" name="id">
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="card-body">
+                            <div class="card-body content">
                                 <div style="display: none" class="row form-group common">
                                     <div class="col-md-12">
                                         <div class="form-inline x-valid">
@@ -450,25 +450,15 @@
                                     </div>
                                 </div>
 
-                                <div style="display: none" class="row form-group common">
-                                    <div class="col-md-12">
-                                    <div class="form-inline x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            附件
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <input id="house_room_file" name="house_room_file"
-                                                   placeholder="上传附件" class="form-control input-full"
-                                                   type="file">
-                                            <div id="_house_room_file"></div>
-                                        </div>
-                                    </div>
-                                    </div>
-                                </div>
+                            </div>
+                            <div class="card-body">
+                            <div id="houseRoomFilePart"></div>
                             </div>
                         </div>
                     </div>
+
                 </form>
+
             </div>
             <div class="modal-footer">
                 <button type="button" data-dismiss="modal" class="btn btn-default btn-sm">

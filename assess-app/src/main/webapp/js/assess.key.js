@@ -137,6 +137,8 @@ AssessDicKey.dataDealType = "data.deal.type";//土地带房产
 
 
 //楼盘
+AssessDicKey.estateIndustrialFile = "industrialFile";//工业附件
+AssessDicKey.estateNonIndustrialFile = "nonIndustrialFile";//非工业附件
 AssessDicKey.estate_position = "estate.position";//楼盘方位
 AssessDicKey.estate_total_land_level = "estate.land_level";//土地级别
 AssessDicKey.estateLandContaminated = "estate.land.contaminated";//	污染
@@ -192,6 +194,7 @@ AssessDicKey.project_survey_building_status_in_progress = "project.survey.buildi
 AssessDicKey.project_survey_building_status_in_finish = "project.survey.building.status.finish";//建筑物状态 已完
 
 //楼栋
+AssessDicKey.examineBasicBuilding = "basicBuilding";//楼栋附件
 AssessDicKey.examine_building_residence_data = "examine.building.residence.data";//非工业仓储(建筑使用寿命)
 AssessDicKey.examine_building_property_type = "building.property_type";//物业类型
 AssessDicKey.examine_building_property_category = "building.property_category";//物业类别
@@ -213,6 +216,7 @@ AssessDicKey.examine_building_minimumFloorDistance = "examine.building.minimumFl
 AssessDicKey.completed_time_type = "completed.time.type";//建筑功能类型
 
 //单元
+AssessDicKey.examineBasicUnit = "basicUnit";//单元附件
 AssessDicKey.examineUnitInteriorDecorationPart = "unit.interior.decoration.part";//内装装修部位
 AssessDicKey.examineUnitInteriorDecorationMaterial = "unit.interior.decoration.material";//内装装修材料
 AssessDicKey.examineUnitElevatorType = "unit.elevator.type";//电梯类型
@@ -228,6 +232,10 @@ AssessDicKey.examineUnitQuantity = "unit.quantity";//数量
 
 //房屋
 AssessDicKey.examineBasicHouse = "basicHouse";//房屋附件
+AssessDicKey.examineHouseFilePart = "houseFilePart";//房屋附件部分
+AssessDicKey.examineHouseHuxingFilePart = "houseHuxingFilePart";//户型附件部分
+AssessDicKey.examineHouseTradingFilePart = "houseTradingFilePart";//交易附件部分
+AssessDicKey.examineHouseRoomFilePart = "houseRoomFilePart";//房间附件部分
 AssessDicKey.examineHouseSpatialDistribution = "examine.house.spatial.distribution";//空间布局
 AssessDicKey.examineHouseUtilitiesMeasure = "examine.house.utilities.measure";//水电费标准
 AssessDicKey.examineHouseUtilitiesType = "examine.house.utilities.type";//水电费类型

@@ -446,37 +446,7 @@
                                                         </div>
                                                     </div>
 
-
-                                                    <div class="row form-group" id="navButtonBuildGroupFileId">
-                                                        <div class="col-md-12">
-                                                            <div class="form-inline x-valid">
-                                                                <label class="col-sm-1">平面图<span
-                                                                        class="symbol required"></span></label>
-                                                                <div class="col-md-3">
-                                                                    <input id="building_floor_plan" placeholder="上传附件"
-                                                                           class="form-control input-full" type="file">
-                                                                    <div id="_building_floor_plan"></div>
-                                                                </div>
-                                                                <label class="col-sm-1">外装图<span
-                                                                        class="symbol required"></span></label>
-                                                                <div class="col-md-3">
-                                                                    <input id="building_figure_outside"
-                                                                           placeholder="上传附件"
-                                                                           class="form-control input-full" type="file">
-                                                                    <div id="_building_figure_outside"></div>
-                                                                </div>
-                                                                <label class="col-sm-1">外观图<span
-                                                                        class="symbol required"></span></label>
-                                                                <div class="col-md-3">
-                                                                    <input id="building_floor_Appearance_figure"
-                                                                           placeholder="上传附件"
-                                                                           class="form-control input-full" type="file">
-                                                                    <div id="_building_floor_Appearance_figure"></div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                    <div id="basicBuilding"></div>                                                </div>
                                             </div>
                                         </div>
                                     </form>

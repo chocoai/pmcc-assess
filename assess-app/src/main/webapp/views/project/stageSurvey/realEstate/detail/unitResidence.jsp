@@ -75,17 +75,7 @@
                                             </div>
                                         </div>
                                     </c:if>
-                                    <div class="row form-group">
-                                        <div class="col-md-12">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-1">单元平面图<span
-                                                        class="symbol required"></span></label>
-                                                <div class="col-md-3">
-                                                    <div id="_unit_appearance"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <div id="basicUnit"></div>
                                 </form>
                             </div>
                         </div>
@@ -121,7 +111,7 @@
 
 <script type="text/javascript">
     $(function () {
-        unitCommon.initById('${basicUnit.id}');
+        unitCommon.initDetailById('${basicUnit.id}','',false);
     })
 </script>
 </html>

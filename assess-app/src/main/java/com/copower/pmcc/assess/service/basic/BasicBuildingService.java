@@ -107,6 +107,14 @@ public class BasicBuildingService extends BasicEntityAbstract {
         return basicBuildingDao.getBasicBuildingIds(ids);
     }
 
+    public List<BasicBuilding> getBasicBuildingByEstateId(Integer estateId) {
+        BasicBuilding building = new BasicBuilding();
+        building.setEstateId(estateId);
+        building.setBisDelete(false);
+        return basicBuildingDao.getBasicBuildingList(building);
+    }
+
+
     /**
      * 获取数据
      *

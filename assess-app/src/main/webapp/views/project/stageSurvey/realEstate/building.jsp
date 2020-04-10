@@ -331,8 +331,10 @@
                                                                     <div class="input-group">
 
                                                                         <input type="text" required="required"
-                                                                               name="minimumFloorDistance" placeholder="最小楼间距倍数"
-                                                                               class="form-control form-control-sm" onblur="buildingCommon.minimumFloorDistanceEvent(this);"
+                                                                               name="minimumFloorDistance"
+                                                                               placeholder="最小楼间距倍数"
+                                                                               class="form-control form-control-sm"
+                                                                               onblur="buildingCommon.minimumFloorDistanceEvent(this);"
                                                                                list="build_minimumFloorDistance_data"
                                                                                value="${basicBuilding.minimumFloorDistance}">
 
@@ -537,37 +539,8 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <div id="basicBuilding"></div>
 
-
-                                                    <div class="row form-group" id="navButtonBuildGroupFileId">
-                                                        <div class="col-md-12">
-                                                            <div class="form-inline x-valid">
-                                                                <label class="col-sm-1">平面图<span
-                                                                        class="symbol required"></span></label>
-                                                                <div class="col-md-3">
-                                                                    <input id="building_floor_plan" placeholder="上传附件"
-                                                                           class="form-control input-full" type="file">
-                                                                    <div id="_building_floor_plan"></div>
-                                                                </div>
-                                                                <label class="col-sm-1">外装图<span
-                                                                        class="symbol required"></span></label>
-                                                                <div class="col-md-3">
-                                                                    <input id="building_figure_outside"
-                                                                           placeholder="上传附件"
-                                                                           class="form-control input-full" type="file">
-                                                                    <div id="_building_figure_outside"></div>
-                                                                </div>
-                                                                <label class="col-sm-1">外观图<span
-                                                                        class="symbol required"></span></label>
-                                                                <div class="col-md-3">
-                                                                    <input id="building_floor_Appearance_figure"
-                                                                           placeholder="上传附件"
-                                                                           class="form-control input-full" type="file">
-                                                                    <div id="_building_floor_Appearance_figure"></div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -841,10 +814,10 @@
             }
             AssessCommon.getDataDicInfo(buildingStatus, function (data) {
                 if (data.fieldName == AssessDicKey.project_survey_building_status_in_progress) {
-                    $(document).find(".constructionInstallationEngineeringFeeEvent").show() ;
+                    $(document).find(".constructionInstallationEngineeringFeeEvent").show();
                 }
                 if (data.fieldName == AssessDicKey.project_survey_building_status_in_finish) {
-                    $(document).find(".constructionInstallationEngineeringFeeEvent").hide() ;
+                    $(document).find(".constructionInstallationEngineeringFeeEvent").hide();
                 }
             });
         }('${basicApplyBatch.buildingStatus}'));

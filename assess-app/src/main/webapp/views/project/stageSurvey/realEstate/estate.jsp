@@ -246,87 +246,9 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row form-group">
-                                        <div class="col-md-12">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-1">总平面图<span
-                                                        class="symbol required"></span></label>
-                                                <div class="col-md-5">
-                                                    <input id="estate_floor_total_plan" placeholder="上传附件"
-                                                           class="form-control input-full"
-                                                           type="file">
-                                                    <div id="_estate_floor_total_plan"></div>
-                                                </div>
-                                                <label class="col-sm-1">外观图<span
-                                                        class="symbol required"></span></label>
-                                                <div class="col-md-5">
-                                                    <input id="estate_floor_Appearance_figure"
-                                                           placeholder="上传附件"
-                                                           class="form-control input-full"
-                                                           type="file">
-                                                    <div id="_estate_floor_Appearance_figure"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row form-group">
-                                        <div class="col-md-12">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-1">大门入口图<span
-                                                        class="symbol required"></span></label>
-                                                <div class="col-md-5">
-                                                    <input id="estate_gate_entrance_plan" placeholder="上传附件"
-                                                           class="form-control input-full"
-                                                           type="file">
-                                                    <div id="_estate_gate_entrance_plan"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <div id="nonIndustrialFile"></div>
                                     <c:if test="${formType eq 'industry'}">
-                                        <div class="row form-group">
-                                            <div class="col-md-12">
-                                                <div class="form-inline x-valid">
-                                                    <label class="col-sm-1">供水平面图</label>
-                                                    <div class="col-md-5">
-                                                        <input id="estate_water_supply_plan"
-                                                               placeholder="上传附件"
-                                                               class="form-control input-full"
-                                                               type="file">
-                                                        <div id="_estate_water_supply_plan"></div>
-                                                    </div>
-                                                    <label class="col-sm-1">供电平面图</label>
-                                                    <div class="col-md-5">
-                                                        <input id="estate_power_supply_plan"
-                                                               placeholder="上传附件"
-                                                               class="form-control input-full"
-                                                               type="file">
-                                                        <div id="_estate_power_supply_plan"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row form-group">
-                                            <div class="col-md-12">
-                                                <div class="form-inline x-valid">
-                                                    <label class="col-sm-1">供气平面图</label>
-                                                    <div class="col-md-5">
-                                                        <input id="estate_air_supply_plan"
-                                                               placeholder="上传附件"
-                                                               class="form-control input-full"
-                                                               type="file">
-                                                        <div id="_estate_air_supply_plan"></div>
-                                                    </div>
-                                                    <label class="col-sm-1">采暖平面图</label>
-                                                    <div class="col-md-5">
-                                                        <input id="estate_heating_plan" placeholder="上传附件"
-                                                               class="form-control input-full"
-                                                               type="file">
-                                                        <div id="_estate_heating_plan"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <div id="industrialFile"></div>
                                     </c:if>
                                     <div class="card-header">
                                         <div class="card-category">基础设施情况</div>

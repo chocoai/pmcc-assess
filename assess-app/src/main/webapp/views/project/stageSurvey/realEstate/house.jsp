@@ -168,7 +168,7 @@
                                                     </div>
                                                     <div class="row form-group">
                                                         <div class="col-md-12">
-                                                            <div class="form-inline x-valid" style="display: none;">
+                                                            <div class="form-inline x-valid">
                                                                 <label class="col-sm-1">使用情况描述<span
                                                                         class="symbol required"></span></label>
                                                                 <div class="col-sm-11">
@@ -179,35 +179,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="row form-group">
-                                                        <div class="col-md-12">
-                                                            <div class="form-inline x-valid">
-                                                                <label class="col-sm-1">房屋平面图</label>
-                                                                <div class="col-sm-3">
-                                                                    <input id="house_img_plan" placeholder="上传附件"
-                                                                           class="form-control input-full"
-                                                                           type="file">
-                                                                    <div id="_house_img_plan"></div>
-                                                                </div>
-                                                                <label class="col-sm-1">房屋装饰图</label>
-                                                                <div class="col-sm-3">
-                                                                    <input id="house_decorate" placeholder="上传附件"
-                                                                           class="form-control input-full"
-                                                                           type="file">
-                                                                    <div id="_house_decorate"></div>
-                                                                </div>
-                                                                <label class="col-sm-1">
-                                                                    附件
-                                                                </label>
-                                                                <div class="col-sm-3">
-                                                                    <input id="house_file" placeholder="上传附件"
-                                                                           class="form-control input-full"
-                                                                           type="file">
-                                                                    <div id="_house_file"></div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                    <div id="houseFilePart"></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -321,19 +293,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row form-group">
-                                            <div class="col-md-12">
-                                                <div class="form-inline x-valid">
-                                                    <label class="col-sm-1">
-                                                        附件
-                                                    </label>
-                                                    <div class="col-sm-3">
-                                                        <input id="house_huxing" type="file" multiple="false">
-                                                        <div id="_house_huxing"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <div id="houseHuxingFilePart"></div>
                                     </form>
                                 </div>
                                 <div class="x_content">
@@ -662,23 +622,10 @@
                                                                value="${basicHouseTrading.phone}">
                                                     </div>
                                                 </div>
-
-
                                             </div>
                                         </div>
-                                        <div class="row form-group">
-                                            <div class="col-md-12">
-                                                <div class="form-inline x-valid">
-                                                    <label class="col-sm-1">
-                                                        交易附件
-                                                    </label>
-                                                    <div class="col-sm-3">
-                                                        <input id="house_trading_file_f" type="file" multiple="false">
-                                                        <div id="_house_trading_file_f"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <div id="houseTradingFilePart"></div>
+
                                     </form>
                                 </div>
                                 <div class="x_content">

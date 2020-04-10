@@ -98,6 +98,13 @@ public class BasicUnitService extends BasicEntityAbstract {
         return basicUnitDao.getBasicUnitListByIds(ids);
     }
 
+    public List<BasicUnit> getBasicUnitByUnitId(Integer buildingId) {
+        BasicUnit unit = new BasicUnit();
+        unit.setBuildingId(buildingId);
+        unit.setBisDelete(false);
+        return basicUnitDao.getBasicUnitList(unit);
+    }
+
     /**
      * 删除数据
      *

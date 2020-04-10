@@ -12,8 +12,41 @@
 
     //附件上传控件id数组
     unitCommon.unitFileControlIdArray = [
-        AssessUploadKey.UNIT_APPEARANCE
     ];
+
+    unitCommon.getUploadKey = function(bisDetail){
+        unitCommon.getFilePartHtml(AssessDicKey.examineBasicUnit,bisDetail);
+    };
+
+    unitCommon.getFilePartHtml = function(fieldName,bisDetail){
+        var fileDiv = unitCommon.unitForm.find('#'+fieldName);
+        fileDiv.empty();
+        var unitFileHtml = '';
+        AssessCommon.loadAsyncDataDicByKey(fieldName, '', function (html, resultData) {
+            var divLength = Math.ceil(resultData.length/3);
+            for (var j = 0; j < divLength; j++) {
+                unitFileHtml += '<div class="row form-group">';
+                unitFileHtml += '<div class="col-md-12">';
+                unitFileHtml += '<div class="form-inline x-valid">';
+                var length = (j+1)*3>resultData.length?resultData.length:(j+1)*3;
+                for (var i = j*3; i < length; i++) {
+                    unitFileHtml += '<label class="col-sm-1">'+resultData[i].name+'</label>';
+                    unitFileHtml += '<div class="col-sm-3">';
+                    if (bisDetail != false) {
+                        unitFileHtml += '<input id="' + resultData[i].fieldName + '" placeholder="上传附件" class="form-control input-full" type="file">';
+                    }
+                    unitFileHtml += '<div id="_' + resultData[i].fieldName + '"></div>';
+                    unitFileHtml += '</div>';
+                    unitCommon.unitFileControlIdArray.push(resultData[i].fieldName);
+                }
+                unitFileHtml += "</div>";
+                unitFileHtml += "</div>";
+                unitFileHtml += "</div>";
+            }
+
+        }, false);
+        fileDiv.append(unitFileHtml);
+    };
 
     unitCommon.getUnitId = function () {
         return unitCommon.unitForm.find('[name=id]').val() != null ? unitCommon.unitForm.find('[name=id]').val() : unitCommon.tableId;
@@ -61,6 +94,7 @@
             data.applyBatchId = unitCommon.unitForm.find("input[name='applyBatchId']").val();
         } catch (e) {
         }
+        unitCommon.getUploadKey(bisDetail);
         unitCommon.unitForm.clearAll();
         unitCommon.unitForm.initForm(data);
         //初始化上传控件

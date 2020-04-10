@@ -217,7 +217,7 @@
                                                 相邻位置
                                             </label>
                                             <div class="col-sm-4">
-                                                <select class="form-control input-full search-select select2 adjacentPosition"
+                                                <select class="form-control input-full adjacentPosition2"
                                                         name="adjacentPosition">
                                                 </select>
                                             </div>
@@ -225,7 +225,7 @@
                                                 方位
                                             </label>
                                             <div class="col-sm-4">
-                                                <select class="form-control input-full search-select select2 orientation"
+                                                <select class="form-control input-full orientation2"
                                                         name="orientation">
                                                 </select>
                                             </div>
@@ -347,7 +347,7 @@
                                                 计量标准
                                             </label>
                                             <div class="col-sm-4">
-                                                <select class="form-control input-full search-select select2 standardMeasure"
+                                                <select class="form-control input-full search-select select2 standardMeasure2"
                                                         name="standardMeasure">
                                                 </select>
                                             </div>
@@ -355,7 +355,7 @@
                                                 仓储要求
                                             </label>
                                             <div class="col-sm-4">
-                                                <select class="form-control input-full search-select select2 storageRequest"
+                                                <select class="form-control input-full search-select select2 storageRequest2"
                                                         name="storageRequest">
                                                 </select>
                                             </div>

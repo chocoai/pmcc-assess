@@ -101,29 +101,7 @@
                                                 </div>
                                             </div>
                                         </div>
-
-                                        <div class="row form-group">
-                                            <div class="col-md-12">
-                                                <div class="form-inline x-valid">
-                                                    <label class="col-sm-1 control-label">房屋平面图</label>
-                                                    <div class="col-sm-3">
-                                                        <div id="_house_img_plan"></div>
-                                                    </div>
-
-                                                    <label class="col-sm-1 control-label">房屋装饰图</label>
-                                                    <div class="col-sm-3">
-                                                        <div id="_house_decorate"></div>
-                                                    </div>
-
-                                                    <label class="col-sm-1 control-label">
-                                                        附件
-                                                    </label>
-                                                    <div class="col-sm-3">
-                                                        <div id="_house_file"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <div id="houseFilePart"></div>
                                     </form>
                                 </div>
                                 <div class="x_content">
@@ -189,18 +167,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row form-group">
-                                            <div class="col-md-12">
-                                                <div class="form-inline x-valid">
-                                                    <label class="col-sm-1">
-                                                        附件
-                                                    </label>
-                                                    <div class="col-sm-3">
-                                                        <div id="_house_huxing"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <div id="houseHuxingFilePart"></div>
                                     </form>
                                 </div>
                                 <div class="x_content">
@@ -473,18 +440,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row form-group">
-                                            <div class="col-md-12">
-                                                <div class="form-inline x-valid">
-                                                    <label class="col-sm-1 control-label">
-                                                        交易附件
-                                                    </label>
-                                                    <div class="col-sm-3">
-                                                        <div id="_house_trading_file_f"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <div id="houseTradingFilePart"></div>
                                     </form>
                                 </div>
                                 <div class="x_content">

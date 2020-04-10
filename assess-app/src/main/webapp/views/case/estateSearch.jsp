@@ -250,9 +250,9 @@
          * 描述:详情数据
          * @date:2018-09-13
          **/
-        findData: function (id) {
-            var href = "${pageContext.request.contextPath}/basicEstate/detailView";
-            href += "?id=" + id;
+        findData: function (estateId) {
+            var href = "${pageContext.request.contextPath}/basic/checkCaseDetail";
+            href += "?estateId=" + estateId;
             window.open(href, "");
         },
 

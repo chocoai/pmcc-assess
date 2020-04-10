@@ -176,66 +176,13 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div id="nonIndustrialFile"></div>
+                                    <c:if test="${formType eq 'industry'}">
+                                        <div id="industrialFile"></div>
+                                    </c:if>
                                     <script src="${pageContext.request.contextPath}/js/method/developmentCommon.js?v=${assessVersion}"></script>
                                     <%@include file="/views/method/module/developmentCommon.jsp" %>
-                                    <div class="row form-group">
-                                        <div class="col-md-12">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-1 control-label">总平面图</label>
-                                                <div class="col-sm-5">
-                                                    <div id="_estate_floor_total_plan"></div>
-                                                </div>
-                                                <label class="col-sm-1 control-label">外观图</label>
-                                                <div class="col-sm-5">
 
-                                                    <div id="_estate_floor_Appearance_figure"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row form-group">
-                                        <div class="col-md-12">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-1 control-label">大门入口图</label>
-                                                <div class="col-sm-5">
-                                                    <div id="_estate_gate_entrance_plan"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <c:if test="${formType eq 'industry'}">
-                                        <div class="row form-group">
-                                            <div class="col-md-12">
-                                                <div class="form-inline x-valid">
-                                                    <label class="col-sm-1 control-label">供水平面图</label>
-                                                    <div class="col-sm-5">
-
-                                                        <div id="_estate_water_supply_plan"></div>
-                                                    </div>
-                                                    <label class="col-sm-1 control-label">供电平面图</label>
-                                                    <div class="col-sm-5">
-
-                                                        <div id="_estate_power_supply_plan"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row form-group">
-                                            <div class="col-md-12">
-                                                <div class="form-inline x-valid">
-                                                    <label class="col-sm-1 control-label">供气平面图</label>
-                                                    <div class="col-sm-5">
-
-                                                        <div id="_estate_air_supply_plan"></div>
-                                                    </div>
-                                                    <label class="col-sm-1 control-label">采暖平面图</label>
-                                                    <div class="col-sm-5">
-                                                        <div id="_estate_heating_plan"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </c:if>
 
                                     <div class="card-header">
                                         <div class="card-category">基础设施情况</div>

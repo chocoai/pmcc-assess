@@ -2,8 +2,10 @@ package com.copower.pmcc.assess.controller.baisc;
 
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
+import com.copower.pmcc.assess.dal.basis.entity.BasicApplyBatch;
 import com.copower.pmcc.assess.dal.basis.entity.BasicHouseCaseSummary;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseCaseSummaryVo;
+import com.copower.pmcc.assess.service.basic.BasicApplyBatchService;
 import com.copower.pmcc.assess.service.basic.BasicEstateService;
 import com.copower.pmcc.assess.service.basic.BasicEstateTaggingService;
 import com.copower.pmcc.assess.service.basic.BasicHouseCaseSummaryService;
@@ -39,6 +41,8 @@ public class BasicController {
     private BasicEstateService basicEstateService;
     @Autowired
     private BasicEstateTaggingService basicEstateTaggingService;
+    @Autowired
+    private BasicApplyBatchService basicApplyBatchService;
 
     @RequestMapping(value = "/areaCaseMap", name = "案例地图", method = {RequestMethod.GET})
     public ModelAndView areaEstateCaseMap() {
@@ -112,5 +116,28 @@ public class BasicController {
             return HttpResult.newErrorResult(String.format("异常! %s", e.getMessage()));
         }
         return HttpResult.newCorrectResult();
+    }
+
+    @RequestMapping(value = "/checkCaseDetail", name = "查看详情", method = RequestMethod.GET)
+    public ModelAndView checkDetail(Integer estateId) {
+        String view = "/case/caseDetail";
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
+        try {
+            BasicApplyBatch basicApplyBatch = new BasicApplyBatch();
+            basicApplyBatch.setEstateId(estateId);
+            basicApplyBatch.setBisCase(true);
+            BasicApplyBatch caseData = basicApplyBatchService.getSingleData(basicApplyBatch);
+            if (caseData != null) {
+                modelAndView.addObject("applyBatch", caseData);
+            } else {
+                //创建树结构
+                BasicApplyBatch applyBatch = basicApplyBatchService.generateTree(estateId);
+                modelAndView.addObject("applyBatch", applyBatch);
+            }
+
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+        }
+        return modelAndView;
     }
 }

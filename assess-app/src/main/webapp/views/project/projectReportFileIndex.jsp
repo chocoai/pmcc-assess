@@ -1056,7 +1056,7 @@
         var declareRecordId = $("#frmItemFile").find("input[name='declareRecordId']").val();
         var certifyPart = $("#frmItemFile").find("select[name='certifyPart']").val();
         if (!certifyPart) {
-            alert("先选择查勘部位");
+            notifyInfo("提示","先选择查勘部位");
             return;
         }
         $.ajax({

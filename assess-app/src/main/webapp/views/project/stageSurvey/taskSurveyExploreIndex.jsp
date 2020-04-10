@@ -194,7 +194,39 @@
                                 <input type="hidden" name="applyBatchId">
                                 <input type="hidden" name="tableName">
                                 <input type="hidden" name="tableId">
-                                <div id="detailContent">
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1">名称<span class="symbol required"></span></label>
+                                            <div class="col-sm-5">
+                                                <input type="text" data-rule-maxlength="100" placeholder="名称" onkeyup="batchTreeTool.staticLocalAutoComplete(this)"
+                                                       name="name" class="form-control input-full" required>
+                                            </div>
+                                            <label class="col-sm-1">表单类型<span class="symbol required"></span></label>
+                                            <div class="col-sm-5">
+                                                <select name='type' required onchange="batchTreeTool.typeChange(this)"
+                                                        class='form-control input-full'></select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1">权证</label>
+                                            <div class="col-sm-5">
+                                                <div class='input-group'>
+                                                    <input name='declareRecordId' id='declareRecordId' type='hidden'>
+                                                    <input name='declareRecordName' id='declareRecordName' class='form-control' readonly onclick='declareRecordModeObj.init({callback:selectRecord,this_:this});'>
+                                                    <div class="input-group-prepend">
+                                                        <button class="btn btn-warning btn-sm " style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;" type="button" onclick="$(this).closest('.input-group').find('input').val('');">
+                                                            清空
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
 
                             </div>
@@ -233,7 +265,28 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="card-body">
-                                <div id="detailContent_b">
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-1">名称<span class="symbol required"></span></label>
+                                            <div class="col-sm-5">
+                                                <input type="text" data-rule-maxlength="100" placeholder="名称" onkeyup="batchTreeTool.staticLocalAutoCompleteEdit(this)"
+                                                       name="name" class="form-control input-full" required>
+                                            </div>
+                                            <label class="col-sm-1">权证</label>
+                                            <div class="col-sm-5">
+                                                <div class='input-group'>
+                                                    <input name='declareRecordId' type='hidden'>
+                                                    <input name='declareRecordName' class='form-control' readonly onclick='declareRecordModeObj.init({callback:selectRecord,this_:this});'>
+                                                    <div class="input-group-prepend">
+                                                        <button class="btn btn-warning btn-sm " style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;" type="button" onclick="$(this).closest('.input-group').find('input').val('');">
+                                                            清空
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -462,11 +515,12 @@
 
 
     //添加数据打开modal
-    var declareRecordsHtml = "";
     batchTreeTool.showAddModal = function () {
         var node = zTreeObj.getSelectedNodes()[0];
-        var type = node.type;
-        var html = "";
+        if (node == null) {
+            notifyInfo('提示', '还未选择节点');
+            return;
+        }
         var declareRecordId;
         var declareRecordName;
         var pNode = node;
@@ -478,143 +532,34 @@
             }
             pNode = pNode.getParentNode();
         }
-        var typeHtml = "";
         $.ajax({
             url: "${pageContext.request.contextPath}/basicApplyBatch/getTableTypeList",
-            data: {type: type},
+            data: {type: node.type},
             type: "get",
             dataType: "json",
             success: function (result) {
-                if (result.ret) {
-                    if (!jQuery.isEmptyObject(result.data)) {
-                        typeHtml = "<label class='col-sm-1 control-label'>";
-                        typeHtml += "表单类型";
-                        typeHtml += "<span class='symbol required'></span>";
-                        typeHtml += "</label>";
-                        typeHtml += "<div class='col-sm-5'>";
-                        typeHtml += "<select name='type' required class='form-control input-full' onchange='typeChange(this)'>";
-                        typeHtml += "<option value=''>--请选择--</option>";
-                        $.each(result.data, function (i, item) {
-                            typeHtml += "<option value='" + item.key + "'>" + item.value + "</option>";
-                        })
-                        typeHtml += "</select>";
-                        typeHtml += "</div>";
-                        console.log(typeHtml);
+                if (result.ret && result.data && result.data.length>0) {
 
-                        switch (type) {
-                            case "estate":
-                            case "building.base": {
-                                html += '<div class="row form-group">';
-                                html += '<div class="col-md-12">';
-                                html += '<div class="form-inline x-valid">';
-                                html += typeHtml;
-                                html += "<label class='col-sm-1 control-label'>";
-                                html += "名称";
-                                html += "<span class='symbol required'></span>";
-                                html += "</label>";
-                                html += " <div class='col-sm-5'>";
-                                html += "<input type='hidden'  name='tableName' value='tb_basic_building'>";
-
-                                html += '<input type="text" name="name"  class="form-control input-full" required  oninput="batchTreeTool.staticLocalAutoComplete(this' + "," + "'" + type + "'" + ')" > ';
-
-                                html += "</div>";
-                                html += "</div>";
-                                html += "</div>";
-                                html += "</div>";
-
-                                html += '<div class="row form-group">';
-                                html += '<div class="col-md-12">';
-                                html += '<div class="form-inline x-valid">';
-                                html += declareRecordsHtml;
-                                html += "</div>";
-                                html += "</div>";
-                                html += "</div>";
-                                break;
-                            }
-                            case "building":
-                            case "building.monolaye":
-                            case "building.difference": {
-                                html += '<div class="row form-group">';
-                                html += '<div class="col-md-12">';
-                                html += '<div class="form-inline x-valid">';
-                                html += typeHtml;
-                                html += "<label class='col-sm-1 control-label'>";
-                                html += "名称";
-                                html += "<span class='symbol required'></span>";
-                                html += "</label>";
-                                html += " <div class='col-sm-5'>";
-                                html += "<input type='hidden'  name='tableName' value='tb_basic_unit'>";
-                                html += '<input type="text" name="name"  class="form-control input-full" required  oninput="batchTreeTool.staticLocalAutoComplete(this' + "," + "'" + type + "'" + ')" > ';
-                                html += "</div>";
-                                html += "</div>";
-                                html += "</div>";
-                                html += "</div>";
-
-                                html += '<div class="row form-group">';
-                                html += '<div class="col-md-12">';
-                                html += '<div class="form-inline x-valid">';
-                                html += declareRecordsHtml;
-                                html += "</div>";
-                                html += "</div>";
-                                html += "</div>";
-                                break;
-                            }
-                            case "unit": {
-                                html += '<div class="row form-group">';
-                                html += '<div class="col-md-12">';
-                                html += '<div class="form-inline x-valid">';
-                                html += typeHtml;
-                                html += "<label class='col-sm-1 control-label'>";
-                                html += "名称";
-                                html += "<span class='symbol required'></span>";
-                                html += "</label>";
-                                html += " <div class='col-sm-5'>";
-                                html += "<input type='hidden'  name='tableName' value='tb_basic_house'>";
-                                html += '<input type="text" name="name"  class="form-control input-full" required  oninput="batchTreeTool.staticLocalAutoComplete(this' + "," + "'" + type + "'" + ')" > ';
-                                html += "</div>";
-                                html += "</div>";
-                                html += "</div>";
-                                html += "</div>";
-
-                                html += '<div class="row form-group">';
-                                html += '<div class="col-md-12">';
-                                html += '<div class="form-inline x-valid">';
-                                html += declareRecordsHtml;
-                                html += "</div>";
-                                html += "</div>";
-                                html += "</div>";
-                                break;
-                            }
-                            case "house": {
-                                notifyInfo('提示', "房屋下无法继续添加节点。");
-                                return false;
-                                break;
-                            }
-                        }
-                        $("#detailContent").empty().append(html);
-
-
-                        $("#frm_detail").find("input[name='applyBatchId']").val(node.applyBatchId);
-                        $("#frm_detail").find("input[name='pid']").val(node.id);
-                        $("#frm_detail").find("input[name='executor']").val(node.creator);
-                        $("#frm_detail").find("input[name='executorName']").val(node.creatorName);
-                        $("#frm_detail").find("input[name='declareRecordId']").val(declareRecordId);
-                        $("#frm_detail").find("input[name='declareRecordName']").val(declareRecordName);
-                        $("#detail_modal").modal();
-
-
-                    } else {
-                        notifyInfo('提示', "没有下级表单");
-                    }
+                    var typeHtml = "<option value=''>--请选择--</option>";
+                    $.each(result.data, function (i, item) {
+                        typeHtml += "<option value='" + item.key + "'>" + item.value + "</option>";
+                    })
+                    $("#frm_detail").clearAll();
+                    $("#frm_detail").find("[name='type']").empty().html(typeHtml);
+                    $("#frm_detail").find("input[name='applyBatchId']").val(node.applyBatchId);
+                    $("#frm_detail").find("input[name='pid']").val(node.id);
+                    $("#frm_detail").find("input[name='executor']").val(node.creator);
+                    $("#frm_detail").find("input[name='executorName']").val(node.creatorName);
+                    $("#frm_detail").find("input[name='declareRecordId']").val(declareRecordId);
+                    $("#frm_detail").find("input[name='declareRecordName']").val(declareRecordName);
+                    $("#detail_modal").modal();
                 } else {
-                    AlertError("失败", "调用服务端方法失败，失败原因:" + result);
+                    notifyInfo('提示', '该节点下没有可添加的表单类型');
                 }
             }
-
         })
 
-
-    };
+    }
 
     /**
      * 自动填充数据
@@ -647,7 +592,9 @@
      * @param _this
      * @param type
      */
-    batchTreeTool.staticLocalAutoComplete = function (_this, type) {
+    batchTreeTool.staticLocalAutoComplete = function (_this) {
+        var node = zTreeObj.getSelectedNodes()[0];
+        var type = node.type;
         var value = $(_this).val();
         if (!value) {
             return false;
@@ -671,6 +618,8 @@
      * @param type
      */
     batchTreeTool.staticLocalAutoCompleteEdit = function (_this, type) {
+        var node = zTreeObj.getSelectedNodes()[0];
+        var type = node.type;
         var value = $(_this).val();
         if (!value) {
             return false;
@@ -757,81 +706,7 @@
     batchTreeTool.showEditModal = function (data) {
         var node = zTreeObj.getSelectedNodes()[0];
         var type = node.type;
-        var html = "";
-        switch (type) {
-            case "estate": {
-                html += '<div class="row form-group">';
-                html += '<div class="col-md-12">';
-                html += '<div class="form-inline x-valid">';
-                html += "<label class='col-sm-1 control-label'>";
-                html += "名称";
-                html += "</label>";
-                html += " <div class='col-sm-5'>";
-                html += '<input type="text" name="name"  class="form-control input-full" required  oninput="batchTreeTool.staticLocalAutoCompleteEdit(this' + "," + "'" + type + "'" + ')" > ';
-
-                html += "</div>";
-                html += declareRecordsHtml;
-
-                html += "</div>";
-                html += "</div>";
-                html += "</div>";
-                break;
-            }
-            case "building": {
-                html += '<div class="row form-group">';
-                html += '<div class="col-md-12">';
-                html += '<div class="form-inline x-valid">';
-
-                html += "<label class='col-sm-1 control-label'>";
-                html += "名称";
-                html += "</label>";
-                html += " <div class='col-sm-5'>";
-                html += '<input type="text" name="name"  class="form-control input-full" required  oninput="batchTreeTool.staticLocalAutoCompleteEdit(this' + "," + "'" + type + "'" + ')" > ';
-                html += "</div>";
-                html += declareRecordsHtml;
-
-                html += "</div>";
-                html += "</div>";
-                html += "</div>";
-                break;
-            }
-            case "unit": {
-                html += '<div class="row form-group">';
-                html += '<div class="col-md-12">';
-                html += '<div class="form-inline x-valid">';
-
-                html += "<label class='col-sm-1 control-label'>";
-                html += "名称";
-                html += "</label>";
-                html += " <div class='col-sm-5'>";
-                html += '<input type="text" name="name"  class="form-control input-full" required  oninput="batchTreeTool.staticLocalAutoCompleteEdit(this' + "," + "'" + type + "'" + ')" > ';
-                html += "</div>";
-                html += declareRecordsHtml;
-                html += "</div>";
-                html += "</div>";
-                html += "</div>";
-                break;
-            }
-            case "house": {
-                html += '<div class="row form-group">';
-                html += '<div class="col-md-12">';
-                html += '<div class="form-inline x-valid">';
-
-                html += "<label class='col-sm-1 control-label'>";
-                html += "名称";
-                html += "</label>";
-                html += " <div class='col-sm-5'>";
-                html += '<input type="text" name="name"  class="form-control input-full" required  oninput="batchTreeTool.staticLocalAutoCompleteEdit(this' + "," + "'" + type + "'" + ')" > ';
-                html += "</div>";
-                html += declareRecordsHtml;
-                html += "</div>";
-                html += "</div>";
-                html += "</div>";
-                break;
-            }
-        }
         $("#frm_detail_b").clearAll();
-        $("#frm_detail_b").find("#detailContent_b").empty().append(html);
         $("#frm_detail_b").initForm(data);
         if (type == "house") {
             $("#frm_detail_b").find("input[name='declareRecordName']").attr("required", true);
@@ -1059,8 +934,6 @@
 
     batchTreeTool.showFunctionBtn = function () {
         var node = zTreeObj.getSelectedNodes()[0];
-        //batchTreeTool.getTypeHtml(node.type);
-        batchTreeTool.getDeclareRecordsHtml();
         //是当前执行人时
         if (node.executor == '${userAccount}') {
             $("#btnGroup").find('.btn.masterTool').show();
@@ -1106,26 +979,7 @@
         })
     }
 
-    //获取该节点下子级表单类型
-    batchTreeTool.getDeclareRecordsHtml = function () {
-        declareRecordsHtml = "<label class='col-sm-1 control-label'>";
-        declareRecordsHtml += "权证";
-        declareRecordsHtml += "</label>";
-        declareRecordsHtml += "<div class='col-sm-5'>";
-        declareRecordsHtml += "<div class='input-group'>";
-        declareRecordsHtml += "<input name='declareRecordId' id='declareRecordId' type='hidden'>";
-        declareRecordsHtml += "<input name='declareRecordName' id='declareRecordName'" +
-            " class='form-control' readonly onclick='declareRecordModeObj.init({callback:selectRecord,this_:this});'>";
 
-        declareRecordsHtml += '<div class="input-group-prepend">';
-        declareRecordsHtml += '<button class="btn btn-warning btn-sm " style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;" type="button" onclick="$(this).closest(\'.input-group\').find(\'input\').val(\'\');">';
-        declareRecordsHtml += "清空</button>";
-        declareRecordsHtml += "</div>";
-
-        declareRecordsHtml += "</div>";
-        declareRecordsHtml += "</div>";
-
-    }
 
     //信息详情页面
     batchTreeTool.checkInfo = function () {
@@ -1246,8 +1100,8 @@
         });
     }
 
-    function typeChange(_this) {
-        if ($(_this).val() == "house") {
+    batchTreeTool.typeChange = function(_that){
+        if ($(_that).val() == "house") {
             $("#frm_detail").find("input[name='declareRecordName']").attr("required", true);
         } else {
             $("#frm_detail").find("input[name='declareRecordName']").attr("required", false);

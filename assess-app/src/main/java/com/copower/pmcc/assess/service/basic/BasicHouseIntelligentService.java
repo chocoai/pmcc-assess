@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.service.basic;
 
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicHouseIntelligentDao;
+import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.BasicHouseIntelligent;
 import com.copower.pmcc.assess.dto.output.basic.BasicHouseIntelligentVo;
 import com.copower.pmcc.assess.service.PublicService;
@@ -136,6 +137,8 @@ public class BasicHouseIntelligentService {
         vo.setSwitchCircuitName(baseDataDicService.getNameById(basicHouseIntelligent.getSwitchCircuit()));
         vo.setLayingMethodName(baseDataDicService.getNameById(basicHouseIntelligent.getLayingMethod()));
         vo.setGradeName(baseDataDicService.getNameById(basicHouseIntelligent.getGrade()));
+        List<BaseDataDic> sysDataDics = baseDataDicService.getCacheDataDicList("examine.house.lamps_lanterns");
+        vo.setLampsLanternsName(baseDataDicService.getDataDicName(sysDataDics,basicHouseIntelligent.getLampsLanterns()));
         vo.setCreatorName(publicService.getUserNameByAccount(basicHouseIntelligent.getCreator()));
         return vo;
     }

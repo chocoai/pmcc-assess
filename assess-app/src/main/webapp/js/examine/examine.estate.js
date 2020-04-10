@@ -14,13 +14,6 @@
     estateCommon.tableName = AssessDBKey.BasicEstate;
     //附件上传控件id数组
     estateCommon.estateFileControlIdArray = [
-        AssessUploadKey.ESTATE_FLOOR_TOTAL_PLAN,
-        AssessUploadKey.ESTATE_FLOOR_APPEARANCE_FIGURE,
-        AssessUploadKey.ESTATE_WATER_SUPPLY_PLAN,
-        AssessUploadKey.ESTATE_POWER_SUPPLY_PLAN,
-        AssessUploadKey.ESTATE_AIR_SUPPLY_PLAN,
-        AssessUploadKey.ESTATE_HEATING_PLAN,
-        AssessUploadKey.ESTATE_GATE_ENTRANCE_PLAN
     ];
 
     /**
@@ -69,6 +62,41 @@
         }
     };
 
+    estateCommon.getUploadKey = function(bisDetail){
+        estateCommon.getFilePartHtml(AssessDicKey.estateIndustrialFile,bisDetail);
+        estateCommon.getFilePartHtml(AssessDicKey.estateNonIndustrialFile,bisDetail);
+    };
+
+    estateCommon.getFilePartHtml = function(fieldName,bisDetail){
+        var fileDiv = estateCommon.estateForm.find('#'+fieldName);
+        fileDiv.empty();
+        var estateFileHtml = '';
+        AssessCommon.loadAsyncDataDicByKey(fieldName, '', function (html, resultData) {
+            var divLength = Math.ceil(resultData.length/3);
+            for (var j = 0; j < divLength; j++) {
+                estateFileHtml += '<div class="row form-group">';
+                estateFileHtml += '<div class="col-md-12">';
+                estateFileHtml += '<div class="form-inline x-valid">';
+                var length = (j+1)*3>resultData.length?resultData.length:(j+1)*3;
+                for (var i = j*3; i < length; i++) {
+                    estateFileHtml += '<label class="col-sm-1">'+resultData[i].name+'</label>';
+                    estateFileHtml += '<div class="col-sm-3">';
+                    if (bisDetail != false) {
+                        estateFileHtml += '<input id="' + resultData[i].fieldName + '" placeholder="上传附件" class="form-control input-full" type="file">';
+                    }
+                    estateFileHtml += '<div id="_' + resultData[i].fieldName + '"></div>';
+                    estateFileHtml += '</div>';
+                    estateCommon.estateFileControlIdArray.push(resultData[i].fieldName);
+                }
+                estateFileHtml += "</div>";
+                estateFileHtml += "</div>";
+                estateFileHtml += "</div>";
+            }
+
+        }, false);
+        fileDiv.append(estateFileHtml);
+    };
+    
 
     //附件上传
     estateCommon.fileUpload = function (fieldsName, tableName, id) {
@@ -179,6 +207,7 @@
      * @param bisDetail 是否是详情页面
      */
     estateCommon.initForm = function (data, bisDetail) {
+        estateCommon.getUploadKey(bisDetail);
         estateCommon.estateForm.clearAll().initForm(data.estate);
         estateCommon.estateForm.find('.x-percent').each(function () {
             $(this).attr('data-value', data.estate[$(this).attr('name')]);
@@ -777,7 +806,6 @@
     };
 
     estateCommon.landLevelLoadHtml = function (data, beEcho) {
-        console.log(data) ;
         if (jQuery.isEmptyObject(data)) {
             return false;
         }

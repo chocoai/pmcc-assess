@@ -89,7 +89,7 @@ var houseHuxingPrice;
             if (!$("#" + houseHuxingPrice.prototype.config().frm).valid()) {
                 return false;
             }
-            var data = formParams(houseHuxingPrice.prototype.config().frm, true);
+            var data = formParams(houseHuxingPrice.prototype.config().frm);
             data.houseId = houseCommon.getHouseId();
             $.ajax({
                 url: getContextPath() + "/basicHouseHuxingPrice/saveAndUpdateBasicHouseHuxingPrice",
@@ -167,16 +167,16 @@ var houseHuxingPrice;
             }
             $("#" + houseHuxingPrice.prototype.config().frm).initForm(item);
             AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_room_adjacent_position, item.adjacentPosition, function (html, data) {
-                $("#" + houseHuxingPrice.prototype.config().frm).find("select.adjacentPosition").empty().html(html).trigger('change');
+                $("#" + houseHuxingPrice.prototype.config().frm).find("select.adjacentPosition2").empty().html(html).trigger('change');
             });
             AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_room_orientation, item.orientation, function (html, data) {
-                $("#" + houseHuxingPrice.prototype.config().frm).find("select.orientation").empty().html(html).trigger('change');
+                $("#" + houseHuxingPrice.prototype.config().frm).find("select.orientation2").empty().html(html).trigger('change');
             });
             AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_room_standard_measure, item.standardMeasure, function (html, data) {
-                $("#" + houseHuxingPrice.prototype.config().frm).find("select.standardMeasure").empty().html(html).trigger('change');
+                $("#" + houseHuxingPrice.prototype.config().frm).find("select.standardMeasure2").empty().html(html).trigger('change');
             });
             AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_room_storage_request, item.storageRequest, function (html, data) {
-                $("#" + houseHuxingPrice.prototype.config().frm).find("select.storageRequest").empty().html(html).trigger('change');
+                $("#" + houseHuxingPrice.prototype.config().frm).find("select.storageRequest2").empty().html(html).trigger('change');
             });
 
         },
@@ -1628,7 +1628,7 @@ var houseRoomDecorate;
                 success: function (result) {
                     if (result.ret) {
                         if (houseRoomDecorate.prototype.isNotBlank(result.data)) {
-                            console.log(result.data+"===")
+                            console.log(result.data + "===")
                             houseRoomDecorate.prototype.getLocationHtml(result.data)
                         } else {
 
@@ -1642,35 +1642,35 @@ var houseRoomDecorate;
             })
 
         },
-        getLocationHtml(resultData){
-                var target = $("#frmLocation").find(".card-body");
-                target.empty();
-                var resultHtml = '<div>';
-                var divLength = Math.ceil(resultData.length/6);
-                for (var j = 0; j < divLength; j++) {
-                    resultHtml += '<div class="row form-group">';
-                    resultHtml += '<div class="col-md-12">';
-                    resultHtml += "<div class='form-check' style='justify-content:left'>";
-                    var length = (j+1)*6>resultData.length?resultData.length:(j+1)*6;
-                    for (var i = j*6; i < length; i++) {
-                        resultHtml += "<label class='form-check-label'>";
-                        resultHtml += "<input class='form-check-input' type='checkbox' name='locationCheckBox' ";
-                        resultHtml += 'value="' + resultData[i].name + '">';
-                        resultHtml += "<span class='form-check-sign'>" + resultData[i].name + "</span></label>";
-                    }
-                    resultHtml += "</div>";
-                    resultHtml += "</div>";
-                    resultHtml += "</div>";
+        getLocationHtml(resultData) {
+            var target = $("#frmLocation").find(".card-body");
+            target.empty();
+            var resultHtml = '<div>';
+            var divLength = Math.ceil(resultData.length / 6);
+            for (var j = 0; j < divLength; j++) {
+                resultHtml += '<div class="row form-group">';
+                resultHtml += '<div class="col-md-12">';
+                resultHtml += "<div class='form-check' style='justify-content:left'>";
+                var length = (j + 1) * 6 > resultData.length ? resultData.length : (j + 1) * 6;
+                for (var i = j * 6; i < length; i++) {
+                    resultHtml += "<label class='form-check-label'>";
+                    resultHtml += "<input class='form-check-input' type='checkbox' name='locationCheckBox' ";
+                    resultHtml += 'value="' + resultData[i].name + '">';
+                    resultHtml += "<span class='form-check-sign'>" + resultData[i].name + "</span></label>";
                 }
+                resultHtml += "</div>";
+                resultHtml += "</div>";
+                resultHtml += "</div>";
+            }
 
-                target.append(resultHtml);
+            target.append(resultHtml);
 
 
             var value = $("#" + houseRoomDecorate.prototype.config().frm).find("input[name='location']").val();
-            if(houseRoomDecorate.prototype.isNotBlank(value)){
+            if (houseRoomDecorate.prototype.isNotBlank(value)) {
                 var valueArray = value.split(",");
                 var checkboxs = $("#frmLocation").find("input[name='locationCheckBox']");
-                AssessCommon.checkboxToChecked(checkboxs,valueArray);
+                AssessCommon.checkboxToChecked(checkboxs, valueArray);
             }
             $("#divBoxLocation").modal("show");
         },
@@ -2043,7 +2043,7 @@ var houseRoom;
             if (!$("#" + houseRoom.prototype.config().frm).valid()) {
                 return false;
             }
-            var data = formParams(houseRoom.prototype.config().frm, true);
+            var data = formParams(houseRoom.prototype.config().frm);
             data.houseId = houseCommon.getHouseId();
             $.ajax({
                 url: getContextPath() + "/basicHouseRoom/saveAndUpdateBasicHouseRoom",
@@ -2105,7 +2105,7 @@ var houseRoom;
         },
         dataPaste: function (targetId) {
             if (houseRoom.prototype.isNotBlank(houseRoom.prototype.beCopyObjectId)) {
-                if(houseRoom.prototype.beCopyObjectId==targetId){
+                if (houseRoom.prototype.beCopyObjectId == targetId) {
                     notifyInfo('提示', "不能粘贴自身");
                     return false;
                 }
@@ -2128,7 +2128,7 @@ var houseRoom;
                     }
                 })
 
-            }else{
+            } else {
                 notifyInfo('提示', "选择需要复制的数据");
                 return false;
             }
@@ -2138,7 +2138,7 @@ var houseRoom;
             $("#" + houseRoom.prototype.config().frm).clearAll();
             var tenementType = houseCommon.houseHuxingForm.find('input[name="tenementType"]').val();
             if (houseRoom.prototype.isNotBlank(tenementType)) {
-                $("#" + houseRoom.prototype.config().frm).find(".form-group").attr("style", "display:none");
+                $("#" + houseRoom.prototype.config().frm).find(".content").find(".form-group").attr("style", "display:none");
                 $("#" + houseRoom.prototype.config().frm).find(".form-group").find("input").attr("disabled", true);
 
                 $("#" + houseRoom.prototype.config().frm).find(".common").show();
@@ -2185,13 +2185,8 @@ var houseRoom;
             AssessCommon.loadDataListHtml(AssessDicKey.examine_house_room_names, item.name, function (html, data) {
                 $("#" + houseRoom.prototype.config().frm).find("#nameList").empty().html(html).trigger('change');
             }, true);
+            houseRoom.prototype.getFilePartHtml(AssessDicKey.examineHouseRoomFilePart,item);
 
-            AssessCommon.loadAsyncDataDicByKey(AssessDicKey.examineBasicHouseRoom, '', function (html, resultData) {
-                $.each(resultData, function (i, fileData) {
-                    houseRoom.prototype.fileUpload(fileData.fieldName,item.id);
-                    houseRoom.prototype.fileShow(fileData.fieldName,item.id);
-                });
-            }, false);
             //所在楼层
             var spatialDistributionId = houseCommon.houseHuxingForm.find("select.spatialDistribution").val();
             if (spatialDistributionId) {
@@ -2206,6 +2201,7 @@ var houseRoom;
                     }
                 });
             }
+            houseRoom.prototype.houseShapeChange();
         },
         houseShapeChange() {
             var tenementType = houseCommon.houseHuxingForm.find('input[name="tenementType"]').val();
@@ -2266,7 +2262,7 @@ var houseRoom;
             }
         },
         //附件上传
-        fileUpload: function (fieldsName,id) {
+        fileUpload: function (fieldsName, id) {
             FileUtils.uploadFiles({
                 target: fieldsName,
                 disabledTarget: "btn_submit",
@@ -2277,11 +2273,11 @@ var houseRoom;
                 },
                 deleteFlag: true,
                 onUploadComplete: function () {
-                    houseRoom.prototype.fileShow(fieldsName,id);
+                    houseRoom.prototype.fileShow(fieldsName, id);
                 }
             });
         },
-        fileShow: function (fieldsName,id) {
+        fileShow: function (fieldsName, id) {
             FileUtils.getFileShows({
                 target: fieldsName,
                 formData: {
@@ -2293,11 +2289,11 @@ var houseRoom;
             })
         },
         //自动生成
-        autoGenerate(){
+        autoGenerate() {
             var huxingData = houseCommon.houseHuxingForm.find("input[name='huxingData']").val();
             var houseId = houseCommon.getHouseId();
-            console.log("huxingData="+huxingData+',houseId=='+houseId)
-            if(houseRoom.prototype.isNotBlank(huxingData)){
+            console.log("huxingData=" + huxingData + ',houseId==' + houseId)
+            if (houseRoom.prototype.isNotBlank(huxingData)) {
                 $.ajax({
                     url: getContextPath() + "/basicHouseRoom/autoGenerate",
                     type: "post",
@@ -2316,9 +2312,37 @@ var houseRoom;
                         AlertError("调用服务端方法失败，失败原因:" + result);
                     }
                 })
-            }else {
+            } else {
                 notifyInfo("提示", "没有户型数据")
             }
+        },
+        getFilePartHtml: function (fieldName,item) {
+            var fileDiv = $('#' + fieldName);
+            fileDiv.empty();
+            var houseFileHtml = '';
+            AssessCommon.loadAsyncDataDicByKey(fieldName, '', function (html, resultData) {
+                houseFileHtml += '<div class="row form-group">';
+                houseFileHtml += '<div class="col-md-12">';
+                houseFileHtml += '<div class="form-inline x-valid">';
+                for (var i = 0; i < resultData.length; i++) {
+                    houseFileHtml += '<label class="col-sm-2">' + resultData[i].name + '</label>';
+                    houseFileHtml += '<div class="col-sm-10">';
+                    houseFileHtml += '<input id="' + resultData[i].fieldName + '" placeholder="上传附件" class="form-control input-full" type="file">';
+                    houseFileHtml += '<div id="_' + resultData[i].fieldName + '"></div>';
+                    houseFileHtml += '</div>';
+                }
+                houseFileHtml += "</div>";
+                houseFileHtml += "</div>";
+                houseFileHtml += "</div>";
+
+            }, false);
+            fileDiv.append(houseFileHtml);
+            AssessCommon.loadAsyncDataDicByKey(fieldName, '', function (html, resultData) {
+                $.each(resultData, function (i, fileData) {
+                    houseRoom.prototype.fileUpload(fileData.fieldName, item.id);
+                    houseRoom.prototype.fileShow(fileData.fieldName, item.id);
+                });
+            }, false);
         }
 
     }
