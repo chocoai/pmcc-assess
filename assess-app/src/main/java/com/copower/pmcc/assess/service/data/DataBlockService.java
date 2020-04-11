@@ -192,18 +192,20 @@ public class DataBlockService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void updateOldData() throws Exception {
-        List<BasicEstate> basicEstateList = basicEstateService.getBasicEstateList(new BasicEstate());
-        if (CollectionUtils.isNotEmpty(basicEstateList)) {
-            for (BasicEstate basicEstate : basicEstateList) {
-                if (basicEstate.getStreetNumber() != null) {
-                    BasicEstateStreetInfo basicEstateStreetInfo = new BasicEstateStreetInfo();
-                    basicEstateStreetInfo.setEstateId(basicEstate.getId());
-                    basicEstateStreetInfo.setStreetNumber(basicEstate.getStreetNumber());
-                    basicEstateStreetInfo.setAttachedNumber(basicEstate.getAttachNumber());
-                    basicEstateStreetInfo.setBisDelete(false);
-                    basicEstateStreetInfo.setCreator(basicEstate.getCreator());
-                    basicEstateStreetInfoService.saveAndUpdateBasicEstateStreetInfo(basicEstateStreetInfo, false);
+    public void updateOldData(Integer key) throws Exception {
+        if(key==1){
+            List<BasicEstate> basicEstateList = basicEstateService.getBasicEstateList(new BasicEstate());
+            if (CollectionUtils.isNotEmpty(basicEstateList)) {
+                for (BasicEstate basicEstate : basicEstateList) {
+                    if (basicEstate.getStreetNumber() != null) {
+                        BasicEstateStreetInfo basicEstateStreetInfo = new BasicEstateStreetInfo();
+                        basicEstateStreetInfo.setEstateId(basicEstate.getId());
+                        basicEstateStreetInfo.setStreetNumber(basicEstate.getStreetNumber());
+                        basicEstateStreetInfo.setAttachedNumber(basicEstate.getAttachNumber());
+                        basicEstateStreetInfo.setBisDelete(false);
+                        basicEstateStreetInfo.setCreator(basicEstate.getCreator());
+                        basicEstateStreetInfoService.saveAndUpdateBasicEstateStreetInfo(basicEstateStreetInfo, false);
+                    }
                 }
             }
         }
@@ -211,52 +213,58 @@ public class DataBlockService {
         List<BasicHouse> basicHouseList = basicHouseService.getBasicHouseList(new BasicHouse());
         if (CollectionUtils.isNotEmpty(basicHouseList)) {
             for (BasicHouse basicHouse : basicHouseList) {
-                if (basicHouse.getHuxingId() != null) {
-                    BasicUnitHuxing basicUnitHuxing = basicUnitHuxingService.getBasicUnitHuxingById(basicHouse.getHuxingId());
-                    if (basicUnitHuxing != null) {
-                        basicUnitHuxing.setHouseId(basicHouse.getId());
-                        basicUnitHuxingService.saveAndUpdateBasicUnitHuxing(basicUnitHuxing, false);
+                if (key == 2) {
+                    if (basicHouse.getHuxingId() != null) {
+                        BasicUnitHuxing basicUnitHuxing = basicUnitHuxingService.getBasicUnitHuxingById(basicHouse.getHuxingId());
+                        if (basicUnitHuxing != null) {
+                            basicUnitHuxing.setHouseId(basicHouse.getId());
+                            basicUnitHuxingService.saveAndUpdateBasicUnitHuxing(basicUnitHuxing, false);
+                        }
                     }
                 }
-                List<BasicHouseRoom> basicHouseRoomList = basicHouseRoomService.getBasicHouseRoomList(basicHouse.getId());
-                if (CollectionUtils.isNotEmpty(basicHouseRoomList)) {
-                    for (BasicHouseRoom basicHouseRoom : basicHouseRoomList) {
-                        BasicHouseRoomDecorate where = new BasicHouseRoomDecorate();
-                        where.setRoomId(basicHouseRoom.getId());
-                        List<BasicHouseRoomDecorate> houseRoomDecorateList = basicHouseRoomDecorateService.basicHouseRoomDecorateList(where);
-                        if (CollectionUtils.isNotEmpty(houseRoomDecorateList)) {
-                            for (BasicHouseRoomDecorate basicHouseRoomDecorate : houseRoomDecorateList) {
-                                basicHouseRoomDecorate.setHouseId(basicHouse.getId());
-                                basicHouseRoomDecorateService.saveAndUpdateBasicHouseRoomDecorate(basicHouseRoomDecorate, false);
+                if (key == 3) {
+                    List<BasicHouseRoom> basicHouseRoomList = basicHouseRoomService.getBasicHouseRoomList(basicHouse.getId());
+                    if (CollectionUtils.isNotEmpty(basicHouseRoomList)) {
+                        for (BasicHouseRoom basicHouseRoom : basicHouseRoomList) {
+                            BasicHouseRoomDecorate where = new BasicHouseRoomDecorate();
+                            where.setRoomId(basicHouseRoom.getId());
+                            List<BasicHouseRoomDecorate> houseRoomDecorateList = basicHouseRoomDecorateService.basicHouseRoomDecorateList(where);
+                            if (CollectionUtils.isNotEmpty(houseRoomDecorateList)) {
+                                for (BasicHouseRoomDecorate basicHouseRoomDecorate : houseRoomDecorateList) {
+                                    basicHouseRoomDecorate.setHouseId(basicHouse.getId());
+                                    basicHouseRoomDecorateService.saveAndUpdateBasicHouseRoomDecorate(basicHouseRoomDecorate, false);
+                                }
                             }
                         }
                     }
                 }
-                BasicApply where = new BasicApply();
-                where.setBasicHouseId(basicHouse.getId());
-                List<BasicApply> basicApplies = basicApplyDao.getBasicApplyList(where);
-                if (CollectionUtils.isNotEmpty(basicApplies)) {
-                    BasicApply apply = basicApplies.get(0);
-                    BasicApplyBatchDetail basicApplyBatchDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(FormatUtils.entityNameConvertToTableName(BasicHouse.class), basicHouse.getId());
-                    ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(apply.getPlanDetailsId());
-                    if (projectPlanDetails != null)
-                        apply.setDeclareRecordId(projectPlanDetails.getDeclareRecordId());
-                    if(basicApplyBatchDetail!=null){
-                        apply.setBatchDetailId(basicApplyBatchDetail.getId());
-                        List<BasicApplyBatchDetail> list = Lists.newArrayList();
-                        basicApplyBatchDetailService.collectionParentBatchDetails(basicApplyBatchDetail.getId(), list);
-                        List<KeyValueDto> keyValueDtos = Lists.newArrayList();
-                        for (int i = list.size() - 1; i >= 0; i--) {
-                            BasicApplyBatchDetail batchDetail = list.get(i);
-                            KeyValueDto keyValueDto = new KeyValueDto();
-                            keyValueDto.setKey(batchDetail.getType());
-                            keyValueDto.setValue(String.valueOf(batchDetail.getTableId()));
-                            keyValueDtos.add(keyValueDto);
+                if(key==4){
+                    BasicApply where = new BasicApply();
+                    where.setBasicHouseId(basicHouse.getId());
+                    List<BasicApply> basicApplies = basicApplyDao.getBasicApplyList(where);
+                    if (CollectionUtils.isNotEmpty(basicApplies)) {
+                        BasicApply apply = basicApplies.get(0);
+                        BasicApplyBatchDetail basicApplyBatchDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(FormatUtils.entityNameConvertToTableName(BasicHouse.class), basicHouse.getId());
+                        ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(apply.getPlanDetailsId());
+                        if (projectPlanDetails != null)
+                            apply.setDeclareRecordId(projectPlanDetails.getDeclareRecordId());
+                        if(basicApplyBatchDetail!=null){
+                            apply.setBatchDetailId(basicApplyBatchDetail.getId());
+                            List<BasicApplyBatchDetail> list = Lists.newArrayList();
+                            basicApplyBatchDetailService.collectionParentBatchDetails(basicApplyBatchDetail.getId(), list);
+                            List<KeyValueDto> keyValueDtos = Lists.newArrayList();
+                            for (int i = list.size() - 1; i >= 0; i--) {
+                                BasicApplyBatchDetail batchDetail = list.get(i);
+                                KeyValueDto keyValueDto = new KeyValueDto();
+                                keyValueDto.setKey(batchDetail.getType());
+                                keyValueDto.setValue(String.valueOf(batchDetail.getTableId()));
+                                keyValueDtos.add(keyValueDto);
+                            }
+                            apply.setStructuralInfo(JSON.toJSONString(keyValueDtos));
+                            basicApplyBatchDetail.setDeclareRecordId(projectPlanDetails.getDeclareRecordId());
                         }
-                        apply.setStructuralInfo(JSON.toJSONString(keyValueDtos));
-                        basicApplyBatchDetail.setDeclareRecordId(projectPlanDetails.getDeclareRecordId());
+                        basicApplyDao.updateBasicApply(apply);
                     }
-                    basicApplyDao.updateBasicApply(apply);
                 }
             }
         }
