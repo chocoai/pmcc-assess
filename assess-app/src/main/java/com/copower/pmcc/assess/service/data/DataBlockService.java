@@ -219,7 +219,7 @@ public class DataBlockService {
                         List<BasicApply> basicApplies = basicApplyDao.getBasicApplyList(where);
                         if (CollectionUtils.isNotEmpty(basicApplies)) {
                             BasicApply apply = basicApplies.get(0);
-                            if(StringUtils.isNotBlank(apply.getStructuralInfo()) ){
+                            if(StringUtils.isBlank(apply.getStructuralInfo()) ){
                                 BasicApplyBatchDetail basicApplyBatchDetail = basicApplyBatchDetailService.getBasicApplyBatchDetail(FormatUtils.entityNameConvertToTableName(BasicHouse.class), basicHouse.getId());
                                 ProjectPlanDetails projectPlanDetails = projectPlanDetailsService.getProjectPlanDetailsById(apply.getPlanDetailsId());
                                 if (projectPlanDetails != null){
