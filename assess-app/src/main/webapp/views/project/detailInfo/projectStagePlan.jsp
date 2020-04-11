@@ -541,10 +541,10 @@
 
     /*执行人员安排*/
     projectStagePlan.setExecuteUserAccount = function () {
-        if ('${projectInfo.projectMemberVo.userAccountManager}' != '${sysUserDto.userAccount}') {
-            notifyInfo('提示',"只有项目经理才能安排任务的执行人员");
-            return false;
-        }
+        <%--if ('${projectInfo.projectMemberVo.userAccountManager}' != '${sysUserDto.userAccount}') {--%>
+        <%--    notifyInfo('提示',"只有项目经理才能安排任务的执行人员");--%>
+        <%--    return false;--%>
+        <%--}--%>
         var rows = projectStagePlan.stageTable.bootstrapTable('getSelections');
         if (!rows || rows.length <= 0) {
             notifyInfo('提示',"还未选择相关任务");
@@ -651,10 +651,10 @@
      * @param id
      */
     projectStagePlan.deletePlanDetailsByIds = function () {
-        if ('${projectInfo.projectMemberVo.userAccountManager}' != '${sysUserDto.userAccount}') {
-            notifyInfo('提示',"只有项目经理才能刪除相关任务");
-            return false;
-        }
+        <%--if ('${projectInfo.projectMemberVo.userAccountManager}' != '${sysUserDto.userAccount}') {--%>
+        <%--    notifyInfo('提示',"只有项目经理才能刪除相关任务");--%>
+        <%--    return false;--%>
+        <%--}--%>
         var rows = projectStagePlan.stageTable.bootstrapTable('getSelections');
         if (!rows || rows.length <= 0) {
             notifyInfo('提示',"还未选择相关任务");
