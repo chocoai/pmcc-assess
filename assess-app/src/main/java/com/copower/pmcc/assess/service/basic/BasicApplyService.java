@@ -95,7 +95,6 @@ public class BasicApplyService {
     public Integer saveBasicApply(BasicApply basicApply) {
         if (basicApply.getId() == null || basicApply.getId() == 0) {
             basicApply.setCreator(commonService.thisUserAccount());
-            basicApply.setStatus(ProjectStatusEnum.STARTAPPLY.getKey());
             basicApplyDao.addBasicApply(basicApply);
         } else {
             basicApplyDao.updateBasicApply(basicApply);

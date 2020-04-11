@@ -68,7 +68,6 @@ public class PublicBasicService {
         BasicApply targetBasicApply = new BasicApply();
         BeanUtils.copyProperties(sourceBasicApply, targetBasicApply);
         targetBasicApply.setPlanDetailsId(targetPlanDetailsId);
-        targetBasicApply.setStatus(ProjectStatusEnum.STARTAPPLY.getKey());
         targetBasicApply.setBasicEstateId(0);
         targetBasicApply.setBasicBuildingId(0);
         targetBasicApply.setBasicUnitId(0);

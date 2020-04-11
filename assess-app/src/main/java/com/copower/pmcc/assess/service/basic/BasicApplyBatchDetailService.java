@@ -200,7 +200,6 @@ public class BasicApplyBatchDetailService {
         }
         basicApply.setBasicHouseId(houseBasicApplyBatchDetail.getTableId());
         basicApply.setDeclareRecordId(houseBasicApplyBatchDetail.getDeclareRecordId());
-        basicApply.setHouseNumber(houseBasicApplyBatchDetail.getName());
         BasicHouse basicHouse = basicHouseService.getBasicHouseById(houseBasicApplyBatchDetail.getTableId());
         if (basicHouse != null)
             basicApply.setArea(basicHouse.getArea());

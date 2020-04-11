@@ -35,26 +35,6 @@ public class BasicApplyDao {
         return basicApplyMapper.selectByExample(example);
     }
 
-    /**
-     * 获取数据列表
-     *
-     * @param estateName
-     * @return
-     */
-    public List<BasicApply> getBasicApplyListByName(String estateName, String userAccount, Boolean draftFlag) {
-        BasicApplyExample example = new BasicApplyExample();
-        BasicApplyExample.Criteria criteria = example.createCriteria();
-        if (StringUtils.isNotBlank(estateName)) {
-            criteria.andEstateNameLike(String.format("%s%s%s", "%", estateName, "%"));
-        }
-        if (StringUtils.isNotBlank(userAccount)) {
-            criteria.andCreatorEqualTo(userAccount);
-        }
-        criteria.andDraftFlagEqualTo(draftFlag).andBisDeleteEqualTo(false);
-        example.setOrderByClause("id desc");
-        return basicApplyMapper.selectByExample(example);
-    }
-
     public List<BasicApply> getBasicApplyList(BasicApply basicApply) {
         BasicApplyExample example = new BasicApplyExample();
         BasicApplyExample.Criteria criteria = example.createCriteria().andBisDeleteEqualTo(false);
